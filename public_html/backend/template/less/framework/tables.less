@@ -56,6 +56,15 @@
 
   a {
     color: inherit;
+    &.link {
+      background: var(--table-link-background-color);
+      padding: 0.25em 1em;
+      border-radius: var(--border-radius);
+      &:hover {
+        text-decoration: none;
+        background: var(--table-link-background-color-hover);
+      }
+    }
   }
 
   &:not(.table-striped) {
@@ -166,7 +175,7 @@
 }
 
 .table {
-  .btn + .btn {
+  :not(.btn-group) > .btn + .btn {
     margin-inline-start: 1em;
   }
 }

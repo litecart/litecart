@@ -313,6 +313,8 @@ CREATE TABLE IF NOT EXISTS `lc_modules` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_newsletter_recipients` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `lastname` VARCHAR(64) NOT NULL DEFAULT '',
+  `firstname` VARCHAR(64) NOT NULL DEFAULT '',
   `email` VARCHAR(128) NOT NULL DEFAULT '',
   `client_ip` VARCHAR(64) NOT NULL DEFAULT '',
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -463,7 +465,7 @@ CREATE TABLE `lc_order_statuses` (
   `is_sale` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `is_archived` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-  `stock_action` ENUM('none','reserve','withdraw') NOT NULL DEFAULT 'none',
+  `stock_action` ENUM('none','reserve','commit') NOT NULL DEFAULT 'none',
   `notify` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

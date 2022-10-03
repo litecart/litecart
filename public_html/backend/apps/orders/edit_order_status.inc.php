@@ -166,8 +166,8 @@
               </div>
 
               <div class="checkbox">
-                <strong><?php echo functions::form_radio_button('stock_action', ['withdraw', language::translate('title_withdraw_stock', 'Withdraw Stock')], true); ?> </strong>
-                <?php echo language::translate('text_commit_changes_to_the_stock', 'Withdraw quantity from stock (or reinsert upon returns).'); ?></label>
+                <strong><?php echo functions::form_radio_button('stock_action', ['commit', language::translate('title_commit_stock', 'Commit Stock')], true); ?> </strong>
+                <?php echo language::translate('text_commit_changes_to_the_stock', 'Commit changes to stock.'); ?></label>
               </div>
             </div>
           </div>

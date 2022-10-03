@@ -108,7 +108,7 @@
         return '<i class="mdi '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
     }
 
-    switch($class) {
+    switch ($class) {
       case 'add':         return draw_fonticon('fa-plus');
       case 'cancel':      return draw_fonticon('fa-times');
       case 'edit':        return draw_fonticon('fa-pencil');

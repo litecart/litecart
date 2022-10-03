@@ -9,7 +9,10 @@
 
 // Stitch content with layout
   $_page = new ent_view(FS_DIR_TEMPLATE . 'layouts/'.document::$layout.'.inc.php');
-  $_page->snippets = ['content' => $content];
+  $_page->snippets = [
+    'important_notice' => settings::get('important_notice'),
+    'content' => $content,
+  ];
   $output = (string)$_page;
 
 // Run prepare output processes

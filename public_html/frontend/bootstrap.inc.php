@@ -6,7 +6,12 @@
 
 // Development Mode
   if (settings::get('development_mode')) {
-    user::require_login();
+    if (empty(user::$data['id']) && (!isset(route::$selected['endpoint']) || route::$selected['endpoint'] != 'backend')) {
+      http_response_code(403);
+      include vmod::check('app://pages/development_mode.inc.php');
+      require_once vmod::check('app://includes/app_footer.inc.php');
+      exit;
+    }
   }
 
 // Maintenance Mode

@@ -318,7 +318,7 @@
 
     // Clear modifications
       if (empty($keyword)) {
-        foreach (glob('storage://vmods/.cache/*.php') as $file) {
+        foreach (glob('storage://addons/.cache/*.php') as $file) {
           if (is_file($file)) unlink($file);
         }
       }

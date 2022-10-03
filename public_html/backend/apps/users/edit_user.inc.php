@@ -73,6 +73,13 @@
     }
   }
 ?>
+<style>
+#app-permissions li,
+#widget-permissions li {
+  padding: .25em 0;
+}
+</style>
+
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
@@ -152,19 +159,19 @@
         </div>
 
         <div class="col-md-4">
-          <div class="form-group">
+          <div id="app-permissions" class="form-group">
             <?php echo functions::form_checkbox('apps_toggle', ['1', language::translate('title_apps', 'Apps')]); ?>
             <div class="form-input" style="height: 400px; overflow-y: scroll;">
               <ul class="list-unstyled">
 <?php
   $apps = functions::admin_get_apps();
   foreach ($apps as $app) {
-    echo '<li>' . PHP_EOL
+    echo '  <li data-app="'. functions::escape_html($app['code']) .'">' . PHP_EOL
        . '  '. functions::form_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true) . PHP_EOL;
     if (!empty($app['docs'])) {
       echo '  <ul class="list-unstyled">' . PHP_EOL;
       foreach ($app['docs'] as $doc => $file) {
-        echo '    <li>'. functions::form_checkbox('apps['.$app['id'].'][docs][]', [$doc], true) . PHP_EOL;
+        echo '    <li data-doc="'. functions::escape_html($doc) .'"><label>'. functions::form_draw_checkbox('apps['.$app['code'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
       }
       echo '  </ul>' . PHP_EOL;
     }
@@ -175,7 +182,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div id="widget-permissions" class="form-group">
             <?php echo functions::form_checkbox('widgets_toggle', ['1', language::translate('title_widgets', 'Widgets')]); ?>
             <div class="form-input" style="height: 150px; overflow-y: scroll;">
               <ul class="list-unstyled">
@@ -195,7 +202,7 @@
 
       <div class="card-action">
         <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($user->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo !empty($user->data['id']) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
         <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
@@ -205,30 +212,27 @@
 
 <script>
   $('input[name="apps_toggle"]').change(function(){
-    if ($(this).is(':checked')) {
-      $('input[name^="apps"][name$="[status]"]').prop('disabled', false);
-      $('input[name^="apps"][name$="[docs][]"]').prop('disabled', false);
-    } else {
-      $('input[name^="apps"][name$="[status]"]').prop('disabled', true);
-      $('input[name^="apps"][name$="[docs][]"]').prop('disabled', true);
-    }
+    $('input[name^="apps"][name$="[status]"]').prop('disabled', !$(this).is(':checked'));
+    $('input[name^="apps"][name$="[docs][]"]').prop('disabled', !$(this).is(':checked'));
   }).trigger('change');
 
   $('input[name^="apps"][name$="[status]"]').change(function(){
-    if ($(this).is(':checked')) {
-      if (!$(this).closest('li').find('input[name^="apps"][name$="[docs][]"]:checked').length) {
-        $(this).closest('li').find('input[name^="apps"][name$="[docs][]"]').prop('checked', true);
+    if ($(this).prop('checked')) {
+      if (!$(this).closest('[data-app]').find('ul :input:checked').length) {
+        $(this).closest('[data-app]').find('ul :input').prop('checked', true);
       }
     } else {
-      $(this).closest('li').find('input[name^="apps"][name$="[docs][]"]').prop('checked', false);
+      $(this).closest('[data-app]').find('ul :input').prop('checked', false);
     }
-  }).trigger('change');
+  });
+
+  $('input[name^="apps"][name$="[docs][]"]').change(function() {
+    if ($(this).is(':checked')) {
+      $(this).closest('ul').closest('[data-app]').children().not('ul').find(':input').prop('checked', true);
+    }
+  });
 
   $('input[name="widgets_toggle"]').change(function(){
-    if ($(this).is(':checked')) {
-      $('input[name^="widgets["]').prop('disabled', false);
-    } else {
-      $('input[name^="widgets["]').prop('disabled', true);
-    }
+    $('input[name^="widgets["]').prop('disabled', !$(this).is(':checked'));
   }).trigger('change');
 </script>

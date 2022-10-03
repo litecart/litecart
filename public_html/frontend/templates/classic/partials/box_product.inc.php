@@ -181,6 +181,8 @@
         </div>
         <?php } ?>
 
+        <div class="stock-notice"></div>
+
         <?php echo functions::form_end(); ?>
       </div>
 
@@ -321,6 +323,31 @@
     $(this).find('.campaign-price').text(sales_price.toMoney());
     $(this).find('.price').text(sales_price.toMoney());
     $(this).find('.total-tax').text(tax.toMoney());
+  });
+
+  $('#box-product form[name="buy_now_form"] .options :input').change(function(){
+
+    $.ajax({
+      type: 'post',
+      url: '<?php echo document::ilink('ajax/product_stock_options.json'); ?>',
+      data: $(this).closest('form').serialize(),
+      dataType: 'json',
+      cache: false,
+
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log('error', errorThrown);
+      },
+
+      success: function(data){
+        if (data.status == 'ok') {
+          $('.options-stock-notice').text(data.notice).removeClass('warning');
+        } else if (data.status == 'warning') {
+          $('.options-stock-notice').text(data.notice).addClass('warning');
+        } else {
+          $('.options-stock-notice').html('');
+        }
+      }
+    });
   });
 
   $('#box-product[data-id="<?php echo $product_id; ?>"] .social-bookmarks .link').off().click(function(e){

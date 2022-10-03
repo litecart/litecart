@@ -21,7 +21,7 @@
     return preg_replace('#[+\-<>\(\)~*\"@;]+#', ' ', $string);
   }
 
-  function format_path_friendly($text, $language_code=null) {
+  function format_path_friendly($text, $language_code='') {
 
     if (empty($text)) return '';
 

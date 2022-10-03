@@ -282,12 +282,12 @@ INSERT INTO `lc_order_statuses` (`id`, `hidden`, `state`, `icon`, `color`, `is_s
 (4, 0, 'ready', 'fa-clock-o', '#bec11d', 1, 0, 0, 'reserve', NOW(), NOW()),
 (5, 0, 'delayed', 'fa-hourglass-half', '#e3ab44', 1, 0, 0, 'reserve', NOW(), NOW()),
 (6, 0, 'processing', 'fa-cog', '#e3ab44', 1, 0, 0, 'reserve', NOW(), NOW()),
-(7, 0, 'completed', 'fa-check', '#e3ab44', 1, 1, 0, 'withdraw', NOW(), NOW()),
-(8, 0, 'dispatched', 'fa-truck', '#99cc66', 1, 1, 1, 'withdraw', NOW(), NOW()),
-(9, 0, 'in_transit', 'fa-truck', '#e3ab44', 1, 0, 1, 'withdraw', NOW(), NOW()),
-(10, 0, 'delivered', 'fa-home', '#99cc66', 1, 1, 0, 'withdraw', NOW(), NOW()),
+(7, 0, 'completed', 'fa-check', '#e3ab44', 1, 1, 0, 'commit', NOW(), NOW()),
+(8, 0, 'dispatched', 'fa-truck', '#99cc66', 1, 1, 1, 'commit', NOW(), NOW()),
+(9, 0, 'in_transit', 'fa-truck', '#e3ab44', 1, 0, 1, 'commit', NOW(), NOW()),
+(10, 0, 'delivered', 'fa-home', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),
 (11, 0, 'returning', 'fa-undo', '#e3ab44', 1, 0, 1, 'reserve', NOW(), NOW()),
-(12, 0, 'returned', 'fa-building', '#99cc66', 1, 1, 0, 'withdraw', NOW(), NOW()),
+(12, 0, 'returned', 'fa-building', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),
 (13, 1, 'cancelled', 'fa-times', '#ff6666', 0, 1, 0, 'none', NOW(), NOW()),
 (14, 1, 'cancelled', 'fa-exclamation', '#ff6666', 0, 1, 0, 'none', NOW(), NOW());
 -- --------------------------------------------------------
@@ -298,14 +298,14 @@ INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, 
 (4, 4, 'en', 'Ready', ''),
 (5, 5, 'en', 'Delayed', ''),
 (6, 6, 'en', 'Processing', ''),
-(7, 6, 'en', 'Completed', ''),
-(8, 7, 'en', 'Dispatched', ''),
-(9, 8, 'en', 'In Transit', ''),
-(10, 9, 'en', 'Delivered', ''),
-(11, 10, 'en', 'Returning', ''),
-(12, 11, 'en', 'Returned', ''),
-(13, 12, 'en', 'Cancelled', ''),
-(14, 13, 'en', 'Fraud', '');
+(7, 7, 'en', 'Completed', ''),
+(8, 8, 'en', 'Dispatched', ''),
+(9, 9, 'en', 'In Transit', ''),
+(10, 10, 'en', 'Delivered', ''),
+(11, 11, 'en', 'Returning', ''),
+(12, 12, 'en', 'Returned', ''),
+(13, 13, 'en', 'Cancelled', ''),
+(14, 14, 'en', 'Fraud', '');
 -- --------------------------------------------------------
 INSERT INTO `lc_quantity_units` (`id`, `decimals`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 0, 0, NOW(), NOW());
@@ -368,6 +368,7 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('listings', 'global', 'Development Mode', 'Development mode restricts frontend access to backend users only.', 'development_mode', '0', 'toggle()', 0, 2, NOW(), NOW()),
 ('listings', 'global', 'Maintenance Mode', 'Maintenance mode will enable a slash screen that the site is down for maintenance.', 'maintenance_mode', '0', 'toggle()', 0, 2, NOW(), NOW()),
 ('listings', 'global', 'Catalog Only Mode', 'Disables the cart and checkout features leaving only a browsable catalog.', 'catalog_only_mode', '0', 'toggle("t/f")', 0, 1, NOW(), NOW()),
+('listings', 'global', 'Important Notice', 'An important notice to be displayed above your website.', 'important_notice', '', 1, 'regional_text()', NOW(), NOW()),
 ('listings', 'local', 'Items Per Page', 'The number of items to be displayed per page.', 'items_per_page', '20', 'number()', 0, 10, NOW(), NOW()),
 ('listings', 'local', 'Data Table Rows', 'The number of data table rows to be displayed per page.', 'data_table_rows_per_page', '25', 'text()', 0, 11, NOW(), NOW()),
 ('listings', 'local', 'Display Stock Count', 'Show the available amount of products in stock.', 'display_stock_count', '1', 'toggle()', 0, 12, NOW(), NOW()),

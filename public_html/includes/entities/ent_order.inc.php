@@ -275,7 +275,7 @@
       );
 
     // Restock previous items
-      if (!empty($this->previous['order_status_id']) && reference::order_status($this->previous['order_status_id'])->stock_action == 'withdraw') {
+      if (!empty($this->previous['order_status_id']) && reference::order_status($this->previous['order_status_id'])->stock_action == 'commit') {
         foreach ($this->previous['items'] as $previous_order_item) {
           if (empty($previous_order_item['stock_item_id'])) continue;
           database::query(
@@ -348,7 +348,7 @@
         );
 
       // Withdraw stock
-        if (!empty($this->data['order_status_id']) && reference::order_status($this->data['order_status_id'])->stock_action == 'withdraw') {
+        if (!empty($this->data['order_status_id']) && reference::order_status($this->data['order_status_id'])->stock_action == 'commit') {
           if (!empty($item['stock_item_id'])) {
             database::query(
               "update ". DB_TABLE_PREFIX ."stock_items

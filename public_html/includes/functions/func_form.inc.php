@@ -878,8 +878,9 @@ END;
       case 'email':
         return form_email_field($name, $input, $parameters);
 
-      case 'upload':
-        return functions::form_file_field($name);
+      case 'file':
+      case 'files':
+        return form_files_list($name, $options[0], $input, $parameters);
 
       case 'geo_zone':
       case 'geo_zones':
@@ -981,6 +982,9 @@ END;
       case 'tax_class':
       case 'tax_classes':
         return form_tax_classes_list($name, $input, $parameters);
+
+      case 'upload':
+        return form_file_field($name, $parameters);
 
       case 'url':
         return form_url_field($name, $input, $parameters);
@@ -1348,6 +1352,27 @@ END;
       return form_select_multiple_field($name, $options, $input, $parameters);
     } else {
       array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
+      return form_select_field($name, $options, $input, $parameters);
+    }
+  }
+
+  function form_files_list($name, $glob, $input=true, $parameters='') {
+
+    $options = [];
+
+    foreach (glob(FS_DIR_APP . $glob) as $file) {
+      $file = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file);
+      if (is_dir(FS_DIR_APP . $file)) {
+        $options[] = [basename($file).'/', $file.'/'];
+      } else {
+        $options[] = [basename($file), $file];
+      }
+    }
+
+    if (preg_match('#\[\]$#', $name)) {
+      return form_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_select_field($name, $options, $input, $parameters);
     }
   }

@@ -97,56 +97,80 @@
     }
 ?>
 <style>
+#chart-sales-monthly {
+  --chart-label-color: #999;
+  --chart-a-color: #ececec;
+  --chart-b-color: #d2d2d2;
+  --chart-c-color: #3ba5c6;
+}
+.dark-mode #chart-sales-monthly {
+  --chart-label-color: #999;
+  --chart-a-color: #343d5a;
+  --chart-b-color: #424d6e;
+  --chart-c-color: #4e90ad;
+}
+
+#chart-sales-daily {
+  --chart-label-color: #999;
+  --chart-a-color: #e4e4e4;
+  --chart-b-color: #3ba5c6;
+}
+.dark-mode #chart-sales-daily {
+  --chart-label-color: #999;
+  --chart-a-color: #424d6e;
+  --chart-b-color: #4e90ad;
+}
+
 #chart-sales-monthly .ct-label, #chart-sales-daily .ct-label {
   font-size: 12px;
-  color: var(--default-text-color);
+  color: var(--chart-label-color);
 }
 #chart-sales-monthly .ct-series-a .ct-bar, #chart-sales-daily .ct-series-a .ct-bar {
-  stroke: #ececec;
+  stroke: var(--chart-a-color);
 }
 #chart-sales-monthly .ct-series-b .ct-bar, #chart-sales-daily .ct-series-b .ct-bar {
-  stroke: #d2d2d2;
+  stroke: var(--chart-b-color);
 }
 #chart-sales-monthly .ct-series-c .ct-bar, #chart-sales-daily .ct-series-c .ct-bar {
-  stroke: url(#gradient);
+  stroke: var(--chart-c-color);
 }
 #chart-sales-monthly .ct-bar{
   stroke-width: 20px;
 }
 
 #chart-sales-daily .ct-series-a .ct-bar {
-  stroke: #e4e4e4;
+  stroke: var(--chart-a-color);
 }
 #chart-sales-daily .ct-series-b .ct-bar {
-  stroke: #3ba5c6;
+  stroke: var(--chart-b-color);
 }
 #chart-sales-daily .ct-bar {
   stroke-width: 10px;
 }
 </style>
 
-<div id="widget-graphs" class="row">
-
-  <div class="col-md-8 card card-widget">
-    <div class="card-header">
-      <div class="card-title">
-        <?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>
+<div id="widget-graphs" class="widget">
+  <div class="row" style="margin-bottom: 0;">
+    <div class="col-md-8">
+      <div class="card card-default">
+        <div class="card-header">
+          <div class="card-title"><?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?></div>
       </div>
     </div>
 
-    <div class="card-body">
+        <div class="card-body">
       <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
     </div>
   </div>
 
-  <div class="col-md-4 card card-widget">
-    <div class="card-header">
-      <div class="card-title">
-        <?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>
+    <div class="widget col-md-4">
+      <div class="card card-default">
+        <div class="card-header">
+          <div class="card-title"><?php echo language::translate('title_daily_sales', 'Daily Sales'); ?></div>
       </div>
     </div>
 
-    <div class="card-body">
+        <div class="card-body">
       <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
     </div>
   </div>

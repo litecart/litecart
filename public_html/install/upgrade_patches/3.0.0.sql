@@ -218,16 +218,7 @@ ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `tax`
 CHANGE COLUMN `value` `amount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `title`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_order_statuses`
-ADD COLUMN `hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
-ADD COLUMN `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `is_archived`,
-ADD COLUMN `stock_action` ENUM('none','reserve','withdraw') NOT NULL DEFAULT 'none' AFTER `is_trackable`,
-ADD COLUMN `state` ENUM('','created','on_hold','ready','delayed','processing','completed','dispatched','in_transit','delivered','returning','returned','cancelled','fraud') NOT NULL DEFAULT '' AFTER `id`,
-DROP COLUMN `keywords`,
-DROP COLUMN `priority`;
--- --------------------------------------------------------
-UPDATE `lc_order_statuses`
-SET stock_action = 'withdraw'
-WHERE is_sale = 1;
+ADD COLUMN `hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_stock_items`
 CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',

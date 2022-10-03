@@ -143,6 +143,8 @@
         database::query(
           "update ". DB_TABLE_PREFIX ."newsletter_recipients
           set email = '". database::input(strtolower($this->data['email'])) ."'
+            firstname = '". database::input($this->data['firstname']) ."',
+            lastname = '". database::input($this->data['lastname']) ."'
           where lower(email) = '". database::input(strtolower($this->previous['email'])) ."';"
         );
       }
@@ -150,8 +152,8 @@
       if (!empty($this->data['newsletter'])) {
         database::query(
           "insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
-          (email, client_ip, date_created)
-          values ('". database::input(strtolower($this->data['email'])) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."');"
+          (email, firstname, lastname, client_ip, date_created)
+          values ('". database::input(strtolower($this->data['email'])) ."', '". database::input($this->data['firstname']) ."', '". database::input($this->data['lastname']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."');"
         );
       } else if (!empty($this->previous['id'])) {
         database::query(

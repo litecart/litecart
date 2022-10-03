@@ -5,6 +5,9 @@
 * {
   box-sizing: border-box;
 }
+* {
+  box-sizing: border-box;
+}
 button,
 hr,
 input {
@@ -89,19 +92,6 @@ select {
 button {
   -webkit-appearance: button;
 }
-[type=button]::-moz-focus-inner,
-[type=reset]::-moz-focus-inner,
-[type=submit]::-moz-focus-inner,
-button::-moz-focus-inner {
-  border-style: none;
-  padding: 0;
-}
-[type=button]:-moz-focusring,
-[type=reset]:-moz-focusring,
-[type=submit]:-moz-focusring,
-button:-moz-focusring {
-  outline: ButtonText dotted 1px;
-}
 fieldset {
   padding: 0.35em 0.75em 0.625em;
 }
@@ -122,9 +112,6 @@ textarea {
   -webkit-appearance: textfield;
   outline-offset: -2px;
 }
-[type=search]::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
 ::-webkit-file-upload-button {
   -webkit-appearance: button;
   font: inherit;
@@ -140,19 +127,7 @@ template {
   display: none !important;
 }
 /* Extras */
-::-webkit-input-placeholder {
-  opacity: 1;
-  color: #999;
-}
-:-ms-input-placeholder {
-  opacity: 1;
-  color: #999;
-}
-::-moz-placeholder {
-  opacity: 1;
-  color: #999;
-}
-:-moz-placeholder {
+::placeholder {
   opacity: 1;
   color: #999;
 }
@@ -744,7 +719,6 @@ hr {
 }
 /* Chat */
 .bubbles {
-  padding: 0 15px;
   overflow-y: auto;
 }
 .bubbles .bubble {
@@ -760,7 +734,7 @@ hr {
 .bubbles .bubble.local:before {
   content: '';
   position: absolute;
-  bottom: -2px;
+  bottom: 2px;
   height: 20px;
   transform: translate(0, -2px);
 }
@@ -768,7 +742,7 @@ hr {
 .bubbles .bubble.local:after {
   content: '';
   position: absolute;
-  bottom: -2px;
+  bottom: 2px;
   width: 26px;
   height: 20px;
   background: #fcfcfc;
@@ -784,7 +758,7 @@ hr {
   border-end-end-radius: 16px 14px;
 }
 .bubbles .bubble.remote:after {
-  bottom: -2px;
+  bottom: 2px;
   left: 4px;
   border-end-end-radius: 10px;
 }
