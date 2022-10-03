@@ -36,6 +36,7 @@
 // Autoloader
   require_once 'app://includes/autoloader.inc.php';
 
+// Set error handler
   require_once 'app://includes/error_handler.inc.php';
 
   require_once 'app://includes/functions.inc.php';

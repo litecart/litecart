@@ -43,7 +43,8 @@
       if (!empty($_POST['set_database_default'])) {
         database::query(
           "alter database `". DB_DATABASE ."`
-          default character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ." collate ". database::input($_POST['collation']) .";"
+          default character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ."
+          collate ". database::input($_POST['collation']) .";"
         );
       }
 
@@ -51,7 +52,8 @@
         foreach ($_POST['tables'] as $table) {
           database::query(
             "alter table `". DB_DATABASE ."`.`". $table ."`
-            convert to character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ." collate ". database::input($_POST['collation']) .";"
+            convert to character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ."
+            collate ". database::input($_POST['collation']) .";"
           );
         }
       }

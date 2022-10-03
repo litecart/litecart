@@ -1,6 +1,6 @@
 /* Breadcrumbs - Bootstrap Compatible */
 
-ul.breadcrumb {
+.breadcrumbs {
   display: flex;
   flex-direction: row;
   padding: 0;
@@ -11,24 +11,29 @@ ul.breadcrumb {
   border: 1px solid var(--breadcrumbs-border-color);
   border-radius: var(--border-radius);
 
-  li {
-    display: inline-block;
+  @media(min-width: @media-breakpoint-md) {
+    margin: 0 0 var(--gutter-size) 0;
   }
 
-  .breadcrumb-item:empty {
-    display: none;
-  }
-
-  .breadcrumb-item {
+  .breadcrumb {
+    transition: all 150ms linear;
     position: relative;
     display: inline-block;
     padding: .5em 1.0em .5em 2em;
     color: inherit;
-    transition: all 150ms linear;
 
-    &:is(a):hover,
-    &:is(a):hover::after {
-      background: var(--breadcrumbs-background-color-hover);
+    &:is(a) {
+      &:hover {
+        background-color: var(--breadcrumbs-background-color-hover);
+      }
+      &:hover,
+      &:hover::after {
+        background: var(--breadcrumbs-background-color-hover);
+      }
+    }
+
+    &:not(a) {
+      cursor: default;
     }
 
     &::after,
@@ -49,13 +54,10 @@ ul.breadcrumb {
       background: var(--breadcrumbs-border-color);
       margin-left: 1px;
     }
-  }
 
-  a.breadcrumb-item:hover {
-    background-color: var(--breadcrumbs-background-color-hover);
-  }
+    &:empty {
+      display: none;
+    }
 
-  @media(min-width: @media-breakpoint-md) {
-    margin: 0 0 var(--gutter-size) 0;
   }
 }

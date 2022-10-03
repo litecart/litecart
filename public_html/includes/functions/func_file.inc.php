@@ -162,8 +162,9 @@
     return str_pad('', count($base) * 3, '../') . implode('/', $target);
   }
 
-
   function file_resolve_path($path) {
+
+    if (empty($path)) return $path;
 
     $path = str_replace('\\', '/', $path);
     $parts = array_filter(explode('/', $path), 'strlen');
@@ -325,6 +326,8 @@
 // Strip paths from logic e.g. ./ ../
   function file_strip_path($path) {
 
+    if (empty($path)) return $path;
+
     $new_path = [];
 
     foreach (explode('/', $path) as $part) {
@@ -335,7 +338,7 @@
       else throw new \Exception('Climbing above the root is not permitted.');
     }
 
-    return join('/', $new_path);
+    return implode('/', $new_path);
   }
 
   function file_webpath($file) {
@@ -349,6 +352,6 @@
       return preg_replace('#^storage://#', WS_DIR_STORAGE, $file);
 
     } else {
-      return preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $file);
+      return preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '/', $file);
     }
   }

@@ -52,7 +52,7 @@
     window.runQueue();
   }
 
-  var queueRunLock = false;
+  let queueRunLock = false;
   window.runQueue = function() {
 
     if (queueRunLock) return;
@@ -66,7 +66,7 @@
 
     if (!$('body > .loader-wrapper').length) {
 
-      var loader = [
+      let loader = [
         '<div class="loader-wrapper">'
         '  <div class="loader" style="width: 256px; height: 256px;"></div>',
         '</div>'
@@ -79,7 +79,7 @@
       $('#box-checkout .'+ task.component +'.wrapper').fadeTo('fast', 0.15);
     }
 
-    var url = '';
+    let url = '';
     switch (task.component) {
       case 'cart':
         url = '<?php echo document::ilink('checkout/cart'); ?>';
@@ -119,8 +119,8 @@
     }
 
     if (task.component == 'summary') {
-      var comments = $(':input[name="comments"]').val();
-      var terms_agreed = $(':input[name="terms_agreed"]').prop('checked');
+      let comments = $(':input[name="comments"]').val();
+      let terms_agreed = $(':input[name="terms_agreed"]').prop('checked');
     }
 
     $.ajax({
@@ -159,7 +159,7 @@
 
   $('#box-checkout .customer.wrapper').on('click', 'button[name="save_customer_details"]', function(e){
     e.preventDefault();
-    var data = [
+    let data = [
       $('#box-checkout-customer :input').serialize(),
       'save_customer_details=true'
     ].join('&');
@@ -182,7 +182,7 @@
     $('#box-checkout-shipping .option.active :input').prop('disabled', false);
     $('#box-checkout-shipping .option:not(.active) :input').prop('disabled', true);
 
-    var data = $('#box-checkout-shipping .option.active :input').serialize();
+    let data = $('#box-checkout-shipping .option.active :input').serialize();
     window.queueUpdateTask('shipping', data, false);
     window.queueUpdateTask('payment', true, true);
     window.queueUpdateTask('summary', null, true);
@@ -198,7 +198,7 @@
     $('#box-checkout-payment .option.active :input').prop('disabled', false);
     $('#box-checkout-payment .option:not(.active) :input').prop('disabled', true);
 
-    var data = $('#box-checkout-payment .option.active :input').serialize();
+    let data = $('#box-checkout-payment .option.active :input').serialize();
     window.queueUpdateTask('payment', data, false);
     window.queueUpdateTask('summary', null, true);
   });
@@ -212,7 +212,7 @@
       alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
     }
 
-    var dummy_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('fa-spinner'); ?> <?php echo functions::escape_js(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>';
+    let dummy_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('fa-spinner'); ?> <?php echo functions::escape_js(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>';
     $('#box-checkout-summary button[name="confirm_order"]').css('display', 'none').before(dummy_button);
   });
 </script>

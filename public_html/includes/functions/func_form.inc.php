@@ -87,14 +87,19 @@
 
   function form_checkbox($name, $value, $input=true, $parameters='') {
 
-    if (!is_array($value)) $value = [$value, ''];
+    if (is_array($value)) {
 
-    if ($input === true) $input = form_reinsert_value($name, $value[0]);
+      if ($input === true) $input = form_reinsert_value($name, $value[0]);
 
-    return '<label'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .'>' . PHP_EOL
-         . '  <input type="checkbox" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'" '. (!strcmp($input, $value[0]) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' />' . PHP_EOL
-         . '  ' . (isset($value[1]) ? $value[1] : $value[0]) . PHP_EOL
-         . '</label>';
+      return '<label'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .'>' . PHP_EOL
+      . '  <input type="checkbox" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'" '. (!strcmp($input, $value[0]) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' />' . PHP_EOL
+      . '  ' . (isset($value[1]) ? $value[1] : $value[0]) . PHP_EOL
+      . '</label>';
+    }
+
+    if ($input === true) $input = form_reinsert_value($name, $value);
+
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="checkbox" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" '. (!strcmp($input, $value) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' />';
   }
 
   function form_code_field($name, $input=true, $parameters='') {
@@ -444,14 +449,18 @@ END;
 
   function form_radio_button($name, $value, $input=true, $parameters='') {
 
-    if (!is_array($value)) $value = [$value, ''];
+    if (is_array($value)) {
+      if ($input === true) $input = form_reinsert_value($name, $value[0]);
 
-    if ($input === true) $input = form_reinsert_value($name, $value[0]);
+      return '<label'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .'>' . PHP_EOL
+          . '  <input type="radio" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'" '. (!strcmp($input, $value[0]) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' />' . PHP_EOL
+          . '  ' . (isset($value[1]) ? $value[1] : $value[0]) . PHP_EOL
+          . '</label>';
+    }
 
-    return '<label'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .'>' . PHP_EOL
-         . '  <input type="radio" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'" '. (!strcmp($input, $value[0]) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' />' . PHP_EOL
-         . '  ' . (isset($value[1]) ? $value[1] : $value[0]) . PHP_EOL
-         . '</label>';
+    if ($input === true) $input = form_reinsert_value($name, $value);
+
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="radio" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" '. (!strcmp($input, $value) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' />';
   }
 
   function form_range_slider($name, $input=true, $min='', $max='', $step='', $parameters='') {
@@ -657,6 +666,7 @@ END;
     }
 
     if ($input === true) $input = form_reinsert_value($name);
+
     $input = preg_match('#^(1|active|enabled|on|true|yes)$#i', $input) ? '1' : '0';
 
     switch ($type) {
@@ -868,7 +878,7 @@ END;
       case 'email':
         return form_email_field($name, $input, $parameters);
 
-      case 'file':
+      case 'upload':
         return functions::form_file_field($name);
 
       case 'geo_zone':
@@ -1086,7 +1096,7 @@ END;
           . '  <div class="form-input" style="overflow-y: auto; min-height: 100px; max-height: 480px;">' . PHP_EOL
           . '    <ul class="categories list-unstyled">' . PHP_EOL;
 
-    if (empty($parent_id)) $options[] = array(functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') . ' ['.language::translate('title_root', 'Root').']', '0');
+    if (empty($parent_id)) $options[] = ['0' => functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') . ' ['.language::translate('title_root', 'Root').']', ];
 
     $categories_query = database::query(
       "select c.id, ci.name from ". DB_TABLE_PREFIX ."categories c
@@ -1120,7 +1130,7 @@ END;
 
     document::$snippets['javascript']['category-picker'] = '$(\'[data-toggle="category-picker"]\').categoryPicker({' . PHP_EOL
                                                          . '  inputName: "'. $name .'",' . PHP_EOL
-                                                         . '  link: "'. document::ilink('catalog/categories.json') .'",' . PHP_EOL
+                                                         . '  link: "'. document::ilink('b:catalog/categories.json') .'",' . PHP_EOL
                                                          . '  icons: {' . PHP_EOL
                                                          . '    folder: \''. functions::draw_fonticon('folder') .'\',' . PHP_EOL
                                                          . '    back: \''. functions::draw_fonticon('fa-arrow-left') .'\'' . PHP_EOL

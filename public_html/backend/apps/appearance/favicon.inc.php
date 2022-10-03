@@ -103,25 +103,35 @@
     <?php echo functions::form_begin('logotype_form', 'post', false, true); ?>
 
       <div class="icons">
-        <div class="icon">
-          <img class="thumbnail" src="<?php echo document::href_rlink('storage://images/favicons/favicon-256x256.png'); ?>" width="256" height="256" alt="" />
-          <div>favicon-256x256.png</div>
-        </div>
 
+        <?php if (is_file($icon = 'storage://images/favicons/favicon-256x256.png')) { ?>
         <div class="icon">
-          <img class="thumbnail" src="<?php echo document::href_rlink('storage://images/favicons/favicon-192x192.png'); ?>" width="192" height="192" alt="" />
-          <div>favicon-192x192.png</div>
+          <img class="thumbnail" src="<?php echo document::href_rlink($icon); ?>" width="256" height="256" alt="" />
+          <div><?php echo basename($icon); ?></div>
         </div>
+        <?php } ?>
 
+        <?php if (is_file($icon = 'storage://images/favicons/favicon-192x192.png')) { ?>
         <div class="icon">
-          <img class="thumbnail" src="<?php echo document::href_rlink('storage://images/favicons/favicon-128x128.png'); ?>" width="128" height="128" alt="" />
-          <div>favicon-128x128.png</div>
+          <img class="thumbnail" src="<?php echo document::href_rlink($icon); ?>" width="192" height="192" alt="" />
+          <div><?php echo basename($icon); ?></div>
         </div>
+        <?php } ?>
 
+        <?php if (is_file($icon = 'storage://images/favicons/favicon-128x128.png')) { ?>
         <div class="icon">
-          <img class="thumbnail" src="data:image/x-icon;base64,<?php echo base64_encode(file_get_contents('storage://images/favicons/favicon.ico')); ?>" width="48" height="48" alt="" />
-          <div>favicon.ico</div>
+          <img class="thumbnail" src="<?php echo document::href_rlink($icon); ?>" width="128" height="128" alt="" />
+          <div><?php echo basename($icon); ?></div>
         </div>
+        <?php } ?>
+
+        <?php if (is_file($icon = 'storage://images/favicons/favicon.ico')) { ?>
+        <div class="icon">
+          <img class="thumbnail" src="data:image/x-icon;base64,<?php echo base64_encode(file_get_contents($icon)); ?>" width="48" height="48" alt="" />
+          <div><?php echo basename($icon); ?></div>
+        </div>
+        <?php } ?>
+
       </div>
 
       <div class="form-group" style="max-width: 480px;">

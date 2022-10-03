@@ -2,11 +2,14 @@
   <div class="row layout">
     <div class="col-md-3">
       <div id="sidebar">
+
         <h1 style="margin-top: 0;"><?php echo $main_category['name']; ?></h1>
 
         <?php if (!empty($image)) { ?>
         <div style="margin-bottom: 2em;">
-          <img class="thumbnail fit" src="<?php echo document::href_rlink($image['thumbnail']); ?>" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
+          <a href="<?php echo document::href_ilink('category', ['category_id' => $main_category['id']]); ?>">
+            <img class="thumbnail fit" src="<?php echo document::href_rlink($image['thumbnail']); ?>" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
+          </a>
         </div>
         <?php } ?>
 
@@ -32,8 +35,8 @@
             <?php } ?>
 
             <nav class="nav nav-pills" style="margin-bottom: 1em;">
-              <a class="nav-link" href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('fa-angle-left'); ?> <?php echo language::translate('title_back', 'Back'); ?></a>
-              <?php foreach ($subcategories as $subcategory) { ?><a class="nav-link" href="<?php echo document::href_ilink('category', ['category_id' => $subcategory['id']]); ?>"><?php echo $subcategory['name']; ?></a><?php } ?>
+              <a class="nav-item" href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('fa-angle-left'); ?> <?php echo language::translate('title_back', 'Back'); ?></a>
+              <?php foreach ($subcategories as $subcategory) { ?><a class="nav-item" href="<?php echo document::href_ilink('category', ['category_id' => $subcategory['id']]); ?>"><?php echo $subcategory['name']; ?></a><?php } ?>
             </nav>
 
             <?php include 'app://frontend/partials/box_filter.inc.php'; ?>

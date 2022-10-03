@@ -313,7 +313,9 @@
 
     public static function rlink($resource) {
 
-      if (empty($resource)) return '';
+      if (empty($resource) || !is_file($resource)) {
+        return '';
+      }
 
       if (preg_match('#^app://#', $resource)) {
         $webpath = preg_replace('#^app://#', WS_DIR_APP, $resource);
@@ -325,9 +327,7 @@
         $webpath = preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', str_replace('\\', '/', $resource));
       }
 
-      if (!is_file($resource)) {
-        return '';
-      }
+
 
       return document::link($webpath, ['_' => filemtime($resource)]);
     }

@@ -15,19 +15,19 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
   <div class="row layout" style="margin-bottom: 0;">
     <div class="col-sm-4 col-md-6">
-      <div class="images row" style="margin-bottom: 0;">
+      <div class="images row">
 
         <div class="col-12">
-          <a class="main-image thumbnail" href="<?php echo document::href_rlink($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="<?php echo $image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink($image['thumbnail']); ?>" srcset="<?php echo document::href_rlink($image['thumbnail']); ?> 1x, <?php echo document::href_rlink($image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
+          <a class="main-image" href="<?php echo document::href_rlink($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="thumbnail <?php echo $image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink($image['thumbnail']); ?>" srcset="<?php echo document::href_rlink($image['thumbnail']); ?> 1x, <?php echo document::href_rlink($image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
             {{sticker}}
           </a>
         </div>
 
         <?php foreach ($extra_images as $extra_image) { ?>
         <div class="col-4">
-          <a class="extra-image thumbnail" href="<?php echo document::href_rlink($extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="<?php echo $extra_image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink($extra_image['thumbnail']); ?>" srcset="<?php echo document::href_rlink($extra_image['thumbnail']); ?> 1x, <?php echo document::href_rlink($extra_image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
+          <a class="extra-image" href="<?php echo document::href_rlink($extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="thumbnail <?php echo $extra_image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink($extra_image['thumbnail']); ?>" srcset="<?php echo document::href_rlink($extra_image['thumbnail']); ?> 1x, <?php echo document::href_rlink($extra_image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
           </a>
         </div>
         <?php } ?>
@@ -133,10 +133,10 @@ form[name="buy_now_form"] .dropdown-menu .image {
         <?php if (count($stock_options) > 1) { ?>
         <div class="form-group">
           <label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
-          <?php echo form_product_stock_options_list('stock_item_id', $product_id, true); ?>
+          <?php echo form_product_stock_options_list('stock_option_id', $product_id, true); ?>
         </div>
         <?php } else if (count($stock_options) == 1) { ?>
-        <?php echo functions::form_hidden_field('stock_item_id', $stock_options[0]['stock_item_id']); ?>
+        <?php echo functions::form_hidden_field('stock_option_id', $stock_options[0]['stock_option_id']); ?>
         <?php } ?>
 
 
@@ -246,7 +246,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 <script>
   Number.prototype.toMoney = function() {
-    var n = this,
+    let n = this,
       c = <?php echo (int)currency::$selected['decimals']; ?>,
       d = '<?php echo language::$selected['decimal_point']; ?>',
       t = '<?php echo addslashes(language::$selected['thousands_sep']); ?>',
@@ -260,12 +260,12 @@ form[name="buy_now_form"] .dropdown-menu .image {
     return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (<?php echo (settings::get('auto_decimals')) ? "(c && f)" : "c"; ?> ? d + Math.abs(f).toFixed(c).slice(2) : '') + x;
   }
 
-  $('#box-product[data-id="<?php echo $product_id; ?>"] form[name=buy_now_form] input[name="stock_item_id"]').on('change', function(e) {
+  $('#box-product[data-id="<?php echo $product_id; ?>"] form[name=buy_now_form] input[name="stock_option_id"]').on('change', function(e) {
 
-    var $selected_option = $(this).closest('.dropdown').find(':input:checked');
-    var regular_price = <?php echo currency::format_raw($regular_price); ?>;
-    var sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>;
-    var tax = <?php echo currency::format_raw($total_tax); ?>;
+    let $selected_option = $(this).closest('.dropdown').find(':input:checked');
+    let regular_price = <?php echo currency::format_raw($regular_price); ?>;
+    let sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>;
+    let tax = <?php echo currency::format_raw($total_tax); ?>;
 
     $(this).closest('.form-group').find('[data-toggle="dropdown"]').text( $selected_option.data('name') );
 

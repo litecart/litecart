@@ -46,22 +46,23 @@
       '$target_url' => document::href_link($banner['link']),
     ];
 
-    document::$snippets['javascript'][] = '  var mouseOverAd = false;' . PHP_EOL
-                                        . '  $(\'.banner[data-id="'. $banner['id'] .'"]\').hover(function(){' . PHP_EOL
-                                        . '    mouseOverAd = "'. $banner['id'] .'";' . PHP_EOL
-                                        . '  }, function(){' . PHP_EOL
-                                        . '    mouseOverAd = false;' . PHP_EOL
-                                        . '  });' . PHP_EOL
-                                        . PHP_EOL
-                                        . '  $(\'.banner[data-id="'. $banner['id'] .'"]\').click(function(){' . PHP_EOL
-                                        . '    $.post("'. document::ilink('ajax/bct') .'", "banner_id='. $banner['id'] .'");' . PHP_EOL
-                                        . '  });' . PHP_EOL
-                                        . PHP_EOL
-                                        . '  $(window).blur(function(){' . PHP_EOL
-                                        . '    if (mouseOverAd == "'. $banner['id'] .'"){' . PHP_EOL
-                                        . '      $.post("'. document::ilink('ajax/bct') .'", "banner_id='. $banner['id'] .'");' . PHP_EOL
-                                        . '    }' . PHP_EOL
-                                        . '  });';
+  // Banner Click Tracking
+    document::$snippets['javascript']['bct'] = implode(PHP_EOL, [
+      '  var mouseOverAd = false;',
+      '  $(\'.banner[data-id]\').hover(function(){',
+      '    mouseOverAd = $(this).data("id");',
+      '  }, function(){',
+      '    mouseOverAd = false;',
+      '  });',
+      '  $(\'.banner[data-id]\').click(function(){',
+      '    $.post("'. document::ilink('ajax/bct') .'", "banner_id=" + $(this).data("id"));',
+      '  });',
+      '  $(window).blur(function(){',
+      '    if (mouseOverAd){',
+      '      $.post("'. document::ilink('ajax/bct') .'", "banner_id=" + mouseOverAd);',
+      '    }',
+      '  });',
+    ]);
 
     $output = strtr($banner['html'], $aliases);
 
@@ -114,10 +115,10 @@
       case 'fail':        return draw_fonticon('fa-times', 'color: #c00;"');
       case 'folder':      return draw_fonticon('fa-folder', 'style="color: #cc6;"');
       case 'folder-open': return draw_fonticon('fa-folder-open', 'style="color: #cc6;"');
-      case 'remove':      return draw_fonticon('fa-times-circle', 'style="color: #c33;"');
+      case 'remove':      return draw_fonticon('fa-times', 'style="color: #c33;"');
       case 'delete':      return draw_fonticon('fa-trash-o');
-      case 'move-up':     return draw_fonticon('fa-arrow-circle-up', 'style="color: #39c;"');
-      case 'move-down':   return draw_fonticon('fa-arrow-circle-down', 'style="color: #39c;"');
+      case 'move-up':     return draw_fonticon('fa-arrow-up', 'style="color: #39c;"');
+      case 'move-down':   return draw_fonticon('fa-arrow-down', 'style="color: #39c;"');
       case 'ok':          return draw_fonticon('fa-check', 'style="color: #8c4;"');
       case 'on':          return draw_fonticon('fa-circle', 'style="color: #8c4;"');
       case 'off':         return draw_fonticon('fa-circle', 'style="color: #f64;"');

@@ -45,15 +45,18 @@ input[type="number"] {
   > label:not(.form-check) {
     display: block;
     font-size: .9em;
+    padding: .25em 0;
   }
 }
 
-.form-check {
+label.form-check {
   display: block;
   user-select: none;
   line-height: 250%;
+}
 
-  input {
+.form-check, label.form-check > input {
+  &:is(input), &:is(label) > input {
     display: inline-block;
     position: relative;
     margin-inline-end: .25em;
@@ -76,14 +79,14 @@ input[type="number"] {
     }
   }
 
-  input[type="checkbox"] {
+  &:is([type="checkbox"]) {
     border-radius: var(--border-radius);
     &:checked {
       background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/></svg>");
     }
   }
 
-  input[type="radio"] {
+  &:is([type="radio"]) {
     border-radius: 50%;
     &:checked {
       background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='%23fff'/></svg>");
@@ -257,18 +260,6 @@ input[type="number"] {
   *:last-child:is(.input-group-text),
   *:last-child:is(.input-group) {
     border-inline-end: none;
-  }
-
-  .form-input + .form-input,
-  .form-input + .form-select,
-  .form-input + .input-group,
-  .form-select + .form-input,
-  .form-select + .form-select,
-  .form-select + .input-group,
-  .input-group + .form-input,
-  .input-group + .form-select,
-  .input-group + .input-group {
-    border-inline-start: 1x solid var(--input-border-color) !important;
   }
 }
 

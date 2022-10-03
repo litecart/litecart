@@ -279,7 +279,7 @@ hr {
   }
 }
 /* Breadcrumbs - Bootstrap Compatible */
-ul.breadcrumb {
+.breadcrumbs {
   display: flex;
   flex-direction: row;
   padding: 0;
@@ -290,25 +290,30 @@ ul.breadcrumb {
   border: 1px solid var(--breadcrumbs-border-color);
   border-radius: var(--border-radius);
 }
-ul.breadcrumb li {
-  display: inline-block;
+@media (min-width: 768px) {
+  .breadcrumbs {
+    margin: 0 0 var(--gutter-size) 0;
+  }
 }
-ul.breadcrumb .breadcrumb-item:empty {
-  display: none;
-}
-ul.breadcrumb .breadcrumb-item {
+.breadcrumbs .breadcrumb {
+  transition: all 150ms linear;
   position: relative;
   display: inline-block;
   padding: 0.5em 1em 0.5em 2em;
   color: inherit;
-  transition: all 150ms linear;
 }
-ul.breadcrumb .breadcrumb-item:is(a):hover,
-ul.breadcrumb .breadcrumb-item:is(a):hover::after {
+.breadcrumbs .breadcrumb:is(a):hover {
+  background-color: var(--breadcrumbs-background-color-hover);
+}
+.breadcrumbs .breadcrumb:is(a):hover,
+.breadcrumbs .breadcrumb:is(a):hover::after {
   background: var(--breadcrumbs-background-color-hover);
 }
-ul.breadcrumb .breadcrumb-item::after,
-ul.breadcrumb .breadcrumb-item::before {
+.breadcrumbs .breadcrumb:not(a) {
+  cursor: default;
+}
+.breadcrumbs .breadcrumb::after,
+.breadcrumbs .breadcrumb::before {
   background: var(--breadcrumbs-background-color);
   bottom: 0;
   clip-path: polygon(50% 50%, -50% -50%, 0 100%);
@@ -320,17 +325,12 @@ ul.breadcrumb .breadcrumb-item::before {
   width: 2em;
   z-index: 1;
 }
-ul.breadcrumb .breadcrumb-item::before {
+.breadcrumbs .breadcrumb::before {
   background: var(--breadcrumbs-border-color);
   margin-left: 1px;
 }
-ul.breadcrumb a.breadcrumb-item:hover {
-  background-color: var(--breadcrumbs-background-color-hover);
-}
-@media (min-width: 768px) {
-  ul.breadcrumb {
-    margin: 0 0 var(--gutter-size) 0;
-  }
+.breadcrumbs .breadcrumb:empty {
+  display: none;
 }
 /* Buttons & Button Groups - Bootstrap Compatible */
 .btn {
@@ -676,7 +676,7 @@ ul.breadcrumb a.breadcrumb-item:hover {
   background-color: var(--card-background-color);
   border: 1px solid var(--card-border-color);
   border-radius: var(--border-radius);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   color: var(--card-text-color);
 }
 .card:last-child {
@@ -1548,6 +1548,7 @@ img.responsive {
   object-fit: scale-down;
 }
 img.fit {
+  padding: 5%;
   width: 100%;
   object-fit: contain;
 }
@@ -1648,6 +1649,7 @@ ul.list-inline li {
   transition: all 125ms linear;
   color: var(--pills-text-color);
   border: 1px solid var(--pills-border-color);
+  box-shadow: 0 1px 10px 0px rgba(0, 0, 0, 0.03);
 }
 .nav-pills .nav-item:hover {
   background: var(--pills-background-color-hover);
@@ -1705,16 +1707,10 @@ ul.list-inline li {
   border-radius: var(--border-radius);
   color: var(--navigation-text-color);
 }
-@media (min-width: 768px) {
-  .navbar {
-    backdrop-filter: saturate(200%) blur(5px);
-  }
-}
 .navbar .navbar-header {
   display: flex;
   align-items: center;
   text-transform: uppercase;
-  backdrop-filter: saturate(200%) blur(5px);
 }
 .navbar .navbar-header > * {
   flex: 1 1 auto;

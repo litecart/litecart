@@ -197,8 +197,6 @@
       include 'app://frontend/pages/error_document.inc.php';
       include 'app://includes/app_footer.inc.php';
       exit;
-
-      return;
     }
 
     public static function strip_url_logic($path) {

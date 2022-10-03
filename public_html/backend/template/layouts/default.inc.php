@@ -141,7 +141,7 @@
 
 <script>
   $('button[name="font_size"]').click(function(){
-    var new_size = parseInt($(':root').css('--default-text-size').split('px')[0]) + (($(this).val() == 'increase') ? 1 : -1);
+    let new_size = parseInt($(':root').css('--default-text-size').split('px')[0]) + (($(this).val() == 'increase') ? 1 : -1);
     $(':root').css('--default-text-size', new_size + 'px');
     document.cookie = 'font_size='+ new_size +';Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000';
   });

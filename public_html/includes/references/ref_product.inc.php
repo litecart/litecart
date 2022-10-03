@@ -14,6 +14,7 @@
       if (empty($customer_id)) $customer_id = customer::$data['id'];
 
       $this->_data['id'] = (int)$product_id;
+
       $this->_customer_id = $customer_id;
 
       $this->_language_codes = array_unique([
@@ -104,6 +105,23 @@
 
         case 'campaign':
 
+          $this->_data['campaign'] = database::query(
+            "select *, min(
+              coalesce(
+                ". implode(", ", array_map(function($currency_code){ return "if(`". database::input($currency_code) ."` != 0, `". database::input($currency_code) ."` * ". currency::$currencies[$currency_code]['value'] .", null)"; }, $this->_currency_codes)) ."
+              )
+            ) as price
+            from ". DB_TABLE_PREFIX ."products_campaigns
+            where product_id = ". (int)$this->_data['id'] ."
+            and (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
+            and (end_date is null or end_date >= '". date('Y-m-d H:i:s') ."')
+            limit 1;"
+          )->fetch();
+
+          break;
+
+        case 'campaign':
+
           $this->_data['campaign'] = [];
 
           $campaigns_query = database::query(
@@ -148,23 +166,6 @@
               }
             }
           }
-
-          break;
-
-        case 'campaign':
-
-          $this->_data['campaign'] = database::query(
-            "select *, min(
-              coalesce(
-                ". implode(", ", array_map(function($currency_code){ return "if(`". database::input($currency_code) ."` != 0, `". database::input($currency_code) ."` * ". currency::$currencies[$currency_code]['value'] .", null)"; }, $this->_currency_codes)) ."
-              )
-            ) as price
-            from ". DB_TABLE_PREFIX ."products_campaigns
-            where product_id = ". (int)$this->_data['id'] ."
-            and (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
-            and (end_date is null or end_date >= '". date('Y-m-d H:i:s') ."')
-            limit 1;"
-          )->fetch();
 
           break;
 

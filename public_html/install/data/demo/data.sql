@@ -103,7 +103,7 @@ INSERT INTO `lc_products_to_categories` (`product_id`, `category_id`) VALUES
 (5, 1);
 -- --------------------------------------------------------
 INSERT INTO `lc_products_campaigns` (`id`, `product_id`, `start_date`, `end_date`, `USD`) VALUES
-(1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 18.0000);
+(1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 18.00);
 -- --------------------------------------------------------
 INSERT INTO `lc_products_images` (`id`, `product_id`, `filename`, `priority`) VALUES
 (1, 1, 'products/1-yellow-duck-1.jpg', 1),
@@ -125,11 +125,11 @@ INSERT INTO `lc_products_to_stock_items` (`id`, `product_id`, `stock_item_id`, `
 (3, 1, 3, 2);
 -- --------------------------------------------------------
 INSERT INTO `lc_products_prices` (`id`, `product_id`, `USD`) VALUES
-(1, 1, 20.0000),
-(2, 2, 20.0000),
-(3, 3, 20.0000),
-(4, 4, 20.0000),
-(5, 5, 20.0000);
+(1, 1, 20.00),
+(2, 2, 20.00),
+(3, 3, 20.00),
+(4, 4, 20.00),
+(5, 5, 20.00);
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = 2 WHERE `key` = 'cookie_policy';
 -- --------------------------------------------------------

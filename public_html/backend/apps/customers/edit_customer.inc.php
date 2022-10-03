@@ -30,7 +30,7 @@
         '%lastname' => customer::$data['lastname'],
       ]));
 
-      header('Location: '. document::ilink(''));
+      header('Location: '. document::ilink('f:'));
       exit;
 
     } catch (Exception $e) {

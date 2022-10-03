@@ -92,7 +92,7 @@
         'link' => document::ilink('category', ['category_id' => $category->main_category->id]),
       ];
 
-      list($width, $height) = functions::image_scale_by_width(160, settings::get('category_image_ratio'));
+      list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
 
       if (!empty($category->main_category->image)) {
         $_page->snippets['main_category']['image'] = [

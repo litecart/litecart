@@ -122,7 +122,7 @@
       }
 
       self::$stats['queries']++;
-      self::$stats['duration'] += microtime(true) - $timestamp;
+      self::$stats['duration'] += $duration;
 
       if ($result instanceof mysqli_result) {
         return new database_result($sql, $result);
@@ -364,7 +364,8 @@
     }
 
     public function seek($offset) {
-      return mysqli_data_seek($this->_result, $offset);
+      mysqli_data_seek($this->_result, $offset);
+      return $this;
     }
 
     public function num_rows() {
@@ -379,4 +380,3 @@
       $this->_result->free();
     }
   }
-

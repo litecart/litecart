@@ -118,7 +118,7 @@
           <td><?php echo functions::form_countries_list('new_zone[country_code]', ''); ?></td>
           <td><?php echo functions::form_zones_list('', 'new_zone[zone_code]', '', '', 'all'); ?></td>
           <td><?php echo functions::form_text_field('new_zone[city]', '', 'placeholder="-- '. language::translate('text_all_cities', 'All cities') .' --"'); ?></td>
-          <td><?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
+          <td><?php echo functions::form_button('add', ['', language::translate('title_add', 'Add')], 'button'); ?></td>
         </tr>
       </tfoot>
     </table>
@@ -161,9 +161,6 @@
           $(zone_field).append('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
           $(zone_field).prop('disabled', true);
         }
-      },
-      complete: function() {
-        $('body').css('cursor', 'auto');
       }
     });
   });
@@ -174,7 +171,7 @@
   $('tfoot button[name="add"]', function(e) {
     e.preventDefault();
 
-    if ($('select[name="country[code]"]').find('option:selected').val() == '') return;
+    if ($('select[name="country[code]"]').val() == '') return;
 
     let row = $(this).closest('tr');
 
@@ -203,9 +200,9 @@
 
     $(this).closest('table').find('tbody').append(output);
 
-    $('form[name="form_geo_zone"] tbody tr:last :input[name$="[country_code]"]').val($(':input[name="new_zone[country_code]"]').val());
-    $('form[name="form_geo_zone"] tbody tr:last :input[name$="[zone_code]"]').val($(':input[name="new_zone[zone_code]"]').val());
-    $('form[name="form_geo_zone"] tbody tr:last :input[name$="[city]"]').val($(':input[name="new_zone[city]"]').val());
+    $('tfoot :input[name$="[country_code]"]').val($(':input[name="new_zone[country_code]"]').val());
+    $('tfoot :input[name$="[zone_code]"]').val($(':input[name="new_zone[zone_code]"]').val());
+    $('tfoot :input[name$="[city]"]').val($(':input[name="new_zone[city]"]').val());
 
     if ($(':input[name="new_zone[city]"]').val() == '') {
       $(':input[name="new_zone[zone_code]"]').val('');

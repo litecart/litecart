@@ -24,9 +24,10 @@
         }
       }
 
-      foreach (glob(FS_DIR_STORAGE . 'addons/*/'.$relative_path.'/*') as $file) {
-        if (preg_match('#/vmod\.xml$#', $file)) continue;
-        if (preg_match('#/addons/[^/]+.disabled/#', $file)) continue;
+      foreach (glob(FS_DIR_STORAGE .'addons/*/'.$relative_path, GLOB_BRACE) as $file) {
+        $file = str_replace('\\', '/', $file);
+        if (preg_match('#^'. preg_quote(FS_DIR_STORAGE .'addons/', '#') .'[^/]+.disabled/#', $file)) continue;
+        if (preg_match('#^'. preg_quote(FS_DIR_STORAGE .'addons/', '#') .'[^/]+/vmod\.xml$#', $file)) continue;
         $this->_directory[basename($file)] = $file;
       }
 
@@ -117,7 +118,9 @@
       $path = $this->_resolve_path($path);
       $relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path);
 
-      foreach (glob(FS_DIR_STORAGE .'addons/*/'.$relative_path) as $file) {
+      foreach (glob(FS_DIR_STORAGE .'addons/*/'.$relative_path, GLOB_BRACE) as $file) {
+        $file = str_replace('\\', '/', $file);
+        if (preg_match('#^'. preg_quote(FS_DIR_STORAGE .'addons/', '#') .'[^/]+.disabled/#', $file)) continue;
         $path = $file;
       }
 
@@ -164,7 +167,9 @@
       $path = $this->_resolve_path($path);
       $relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path);
 
-      foreach (glob(FS_DIR_STORAGE .'addons/*/'.$relative_path) as $file) {
+      foreach (glob(FS_DIR_STORAGE .'addons/*/'.$relative_path, GLOB_BRACE) as $file) {
+        $file = str_replace('\\', '/', $file);
+        if (preg_match('#^'. preg_quote(FS_DIR_STORAGE .'addons/', '#') .'[^/]+.disabled/#', $file)) continue;
         $path = $file;
       }
 

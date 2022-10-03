@@ -2,9 +2,9 @@
 <?php
   foreach ($breadcrumbs as $breadcrumb) {
     if (!empty($breadcrumb['link'])) {
-      echo '<li class="breadcrumb"><a href="'. functions::escape_html($breadcrumb['link']) .'">'. $breadcrumb['title'] .'</a></li>';
+      echo '<a class="breadcrumb" href="'. functions::escape_html($breadcrumb['link']) .'">'. $breadcrumb['title'] .'</a>';
     } else {
-      echo '<li class="breadcrumb"><span>'. $breadcrumb['title'] .'</span></li>';
+      echo '<span class="breadcrumb">'. $breadcrumb['title'] .'</span>';
     }
   }
 ?>

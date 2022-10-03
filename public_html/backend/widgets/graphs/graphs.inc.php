@@ -154,18 +154,18 @@
 
 <script>
 // Monthly Sales
-  let data = {
+  var data = {
     labels: <?php echo json_encode(array_column($monthly_sales[date('Y')], 'label'), JSON_UNESCAPED_SLASHES); ?>,
     series: <?php echo json_encode([array_column($monthly_sales[date('Y')-2], 'total_sales'), array_column($monthly_sales[date('Y')-1], 'total_sales'), array_column($monthly_sales[date('Y')], 'total_sales')], JSON_UNESCAPED_SLASHES); ?>
   };
 
-  let options = {
+  var options = {
     seriesBarDistance: 10,
     showArea: true,
     lineSmooth: true
   };
 
-  let responsiveOptions = [
+  var responsiveOptions = [
     ['screen and (max-width: 640px)', {
       seriesBarDistance: 5,
       axisX: {
@@ -199,16 +199,16 @@
 
 // Daily Sales
 
-  let data = {
+  var data = {
     labels: <?php echo json_encode(array_column($daily_sales, 'label'), JSON_UNESCAPED_SLASHES); ?>,
     series: <?php echo json_encode([array_column($daily_sales, 'average_sales'), array_column($daily_sales, 'total_sales')], JSON_UNESCAPED_SLASHES); ?>
   };
 
-  let options = {
+  var options = {
     seriesBarDistance: 10
   };
 
-  let responsiveOptions = [
+  var responsiveOptions = [
     ['screen and (max-width: 640px)', {
       seriesBarDistance: 5,
       axisX: {

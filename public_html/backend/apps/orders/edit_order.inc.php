@@ -256,6 +256,7 @@
   if (isset($_POST['delete'])) {
 
     try {
+
       if (empty($order->data['id'])) throw new Exception(language::translate('error_must_provide_order', 'You must provide an order'));
 
       $order->delete();

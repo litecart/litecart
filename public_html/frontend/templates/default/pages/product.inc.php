@@ -8,7 +8,9 @@
 
         <?php if (!empty($main_category['image'])) { ?>
         <div style="margin-bottom: 2em;">
-          <img class="thumbnail" src="<?php echo document::href_rlink($main_category['image']['thumbnail']); ?>" />
+          <a href="<?php echo document::href_ilink('category', ['category_id' => $main_category['id']]); ?>">
+            <img class="thumbnail fit" src="<?php echo document::href_rlink($main_category['image']['thumbnail']); ?>" style="aspect-ratio: <?php echo $main_category['image']['viewport']['ratio']; ?>;" />
+          </a>
         </div>
         <?php } ?>
         <?php } ?>

@@ -10,7 +10,7 @@
 
       <div class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl">
         <ul class="navbar-nav">
-          <li><a class="nav-link regional-settings" href="<?php echo document::href_ilink('regional_settings'); ?>">
+          <li><a class="nav-item regional-settings" href="<?php echo document::href_ilink('regional_settings'); ?>">
             <span class="code"><?php echo language::$selected['code']; ?></span>
             <span class="code"><?php echo currency::$selected['code']; ?></span>
             <span class="code"><?php echo customer::$data['country_code']; ?></span>
