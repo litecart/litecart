@@ -7,9 +7,9 @@
   try {
 
     if (empty($_GET['vmod'])) throw new Exception('No vmod provided');
-    if (!is_file(FS_DIR_APP . 'vmods/' . basename($_GET['vmod']))) throw new Exception('The vmod does not exist');
+    if (!is_file(FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod']))) throw new Exception('The vmod does not exist');
 
-    $file = FS_DIR_APP . 'vmods/' . basename($_GET['vmod']);
+    $file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod']);
 
     $dom = new \DOMDocument('1.0', 'UTF-8');
     $dom->preserveWhiteSpace = false;

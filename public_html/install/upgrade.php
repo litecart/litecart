@@ -37,8 +37,10 @@
   require_once(__DIR__ . '/../includes/config.inc.php');
   if (!defined('DB_CONNECTION_CHARSET')) define('DB_CONNECTION_CHARSET', 'utf8'); // Prior to 1.2.x
   if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME); // Prior to 2.2.x
+  if (!defined('FS_DIR_STORAGE')) define('FS_DIR_STORAGE', FS_DIR_APP); // Prior to 2.5.x
   if (!defined('FS_DIR_ADMIN')) define('FS_DIR_ADMIN', FS_DIR_HTTP_ROOT . WS_DIR_ADMIN); // Prior to 2.2.x
   if (!defined('WS_DIR_APP')) define('WS_DIR_APP', WS_DIR_HTTP_HOME); // Prior to 2.2.x
+  if (!defined('WS_DIR_STORAGE')) define('WS_DIR_STORAGE', WS_DIR_APP); // Prior to 2.5.x
 
   error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
   ini_set('ignore_repeated_errors', 'On');
@@ -269,7 +271,7 @@
 
       echo '<p>Reset error log... ';
 
-      if (file_put_contents(FS_DIR_APP . 'logs/errors.log', '') !== false) {
+      if (file_put_contents(FS_DIR_STORAGE . 'logs/errors.log', '') !== false) {
         echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
         echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;

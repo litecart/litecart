@@ -42,7 +42,7 @@
       }
 
     // Load installed
-      $installed_file = FS_DIR_APP . 'vmods/.installed';
+      $installed_file = FS_DIR_STORAGE . 'vmods/.installed';
       if (is_file($installed_file)) {
         foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $installed) {
           list($id, $version) = explode(';', $installed);
@@ -54,7 +54,7 @@
       }
 
     // Get modifications from cache
-      $cache_file = FS_DIR_APP . 'vmods/.cache/.modifications';
+      $cache_file = FS_DIR_STORAGE . 'vmods/.cache/.modifications';
       if (is_file($cache_file) && filemtime($cache_file) > $last_modified) {
         if ($cache = file_get_contents($cache_file)) {
           if ($cache = json_decode($cache, true)) {
@@ -65,7 +65,7 @@
       }
 
     // Create a list of checked files
-      $checked_file = FS_DIR_APP . 'vmods/.cache/.checked';
+      $checked_file = FS_DIR_STORAGE . 'vmods/.cache/.checked';
       if (is_file($checked_file) && filemtime($checked_file) > $last_modified) {
         foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
           list($relative_path, $modified_relative_path, $checksum) = explode(';', $line);
@@ -81,7 +81,7 @@
     // Load modifications from disk
       if (empty(self::$_modifications)) {
 
-        foreach (glob(FS_DIR_APP . 'vmods/*.xml') as $file) {
+        foreach (glob(FS_DIR_STORAGE . 'vmods/*.xml') as $file) {
           self::load($file);
         }
 
@@ -96,8 +96,8 @@
       }
 
     // Load settings
-      if (!is_file(FS_DIR_APP . 'vmods/.settings')) file_put_contents(FS_DIR_APP . 'vmods/.settings', '{}');
-      if (!self::$_settings = json_decode(file_get_contents(FS_DIR_APP . 'vmods/.settings'), true)) {
+      if (!is_file(FS_DIR_STORAGE . 'vmods/.settings')) file_put_contents(FS_DIR_STORAGE . 'vmods/.settings', '{}');
+      if (!self::$_settings = json_decode(file_get_contents(FS_DIR_STORAGE . 'vmods/.settings'), true)) {
         self::$_settings = [];
       }
 
@@ -123,7 +123,7 @@
       }
 
       $relative_path = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
-      $modified_file = FS_DIR_APP . 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '-', $relative_path);
+      $modified_file = FS_DIR_STORAGE . 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '-', $relative_path);
       $modified_relative_path = 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '-', $relative_path);
 
     // Returned an already checked file
@@ -220,13 +220,13 @@
       }
 
     // Create cache folder for modified files if missing
-      if (!is_dir(FS_DIR_APP . 'vmods/.cache/')) {
-        if (!mkdir(FS_DIR_APP . 'vmods/.cache/', 0777)) {
+      if (!is_dir(FS_DIR_STORAGE . 'vmods/.cache/')) {
+        if (!mkdir(FS_DIR_STORAGE . 'vmods/.cache/', 0777)) {
           throw new \Exception('The modifications cache directory could not be created', E_USER_ERROR);
         }
       }
 
-      if (!is_writable(FS_DIR_APP . 'vmods/.cache/')) {
+      if (!is_writable(FS_DIR_STORAGE . 'vmods/.cache/')) {
         throw new \Exception('The modifications cache directory is not writable', E_USER_ERROR);
       }
 
@@ -241,7 +241,7 @@
 
       self::$_checked[$relative_path] = $modified_file;
       self::$_checksums[$relative_path] = $checksum;
-      file_put_contents(FS_DIR_APP . 'vmods/.cache/.checked', $relative_path .';'. $modified_relative_path .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
+      file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', $relative_path .';'. $modified_relative_path .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
 
       self::$time_elapsed += microtime(true) - $timestamp;
       return $modified_file;
@@ -318,7 +318,7 @@
             })($tmp_file);
           }
 
-          file_put_contents(FS_DIR_APP . 'vmods/.installed', $vmod['id'] .';'. $vmod['version'] . PHP_EOL, FILE_APPEND | LOCK_EX);
+          file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $vmod['id'] .';'. $vmod['version'] . PHP_EOL, FILE_APPEND | LOCK_EX);
 
           self::$_installed[] = [
             'id' => $vmod['id'],
@@ -353,7 +353,7 @@
                 return $vmod['id'] .';'. $vmod['version'];
               }, self::$_installed));
 
-              file_put_contents(FS_DIR_APP . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
+              file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
             }
           }
         }

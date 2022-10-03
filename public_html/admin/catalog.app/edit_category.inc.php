@@ -177,7 +177,7 @@
             <div class="col-md-4">
               <div id="image">
                 <div class="thumbnail" style="margin-bottom: 15px;">
-                  <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />
+                  <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />
                 </div>
 
                 <div class="form-group">
@@ -305,7 +305,7 @@
         $('#image img').attr('src', e.target.result);
       };
     } else {
-      $('#image img').attr('src', '<?php echo document::link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>');
+      $('#image img').attr('src', '<?php echo document::link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>');
     }
   });
 

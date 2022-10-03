@@ -8,11 +8,11 @@
       foreach ($_POST['vmods'] as $vmod) {
 
         if (!empty($_POST['enable'])) {
-          if (!is_file(FS_DIR_APP . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled')) continue;
-          rename(FS_DIR_APP . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled', FS_DIR_APP . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml');
+          if (!is_file(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled')) continue;
+          rename(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled', FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml');
         } else {
-          if (!is_file(FS_DIR_APP . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml')) continue;
-          rename(FS_DIR_APP . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml', FS_DIR_APP . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled');
+          if (!is_file(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml')) continue;
+          rename(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml', FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled');
         }
       }
 
@@ -31,7 +31,7 @@
       if (empty($_POST['vmods'])) throw new Exception(language::translate('error_must_select_vmods', 'You must select vMods'));
 
       foreach ($_POST['vmods'] as $vmod) {
-        unlink(FS_DIR_APP . 'vmods/' . pathinfo($vmod, PATHINFO_BASENAME));
+        unlink(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_BASENAME));
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
@@ -62,7 +62,7 @@
         throw new Exception(language::translate('error_xml_file_is_not_valid_vmod', 'XML file is not a valid vMod file'));
       }
 
-      $filename = FS_DIR_APP . 'vmods/' . pathinfo($_FILES['vmod']['name'], PATHINFO_FILENAME) .'.xml';
+      $filename = FS_DIR_STORAGE . 'vmods/' . pathinfo($_FILES['vmod']['name'], PATHINFO_FILENAME) .'.xml';
 
       if (is_file($filename)) {
         unlink($filename);
@@ -82,7 +82,7 @@
 // Table Rows
   $vmods = [];
 
-  foreach (glob(FS_DIR_APP . 'vmods/*.{xml,disabled}', GLOB_BRACE) as $file) {
+  foreach (glob(FS_DIR_STORAGE . 'vmods/*.{xml,disabled}', GLOB_BRACE) as $file) {
 
 		$dom = new \DOMDocument('1.0', 'UTF-8');
 		$dom->preserveWhiteSpace = false;

@@ -56,6 +56,7 @@
     echo '<p>Checking installation parameters...';
 
     define('FS_DIR_APP', file_absolute_path(__DIR__ .'/../') .'/');
+    define('FS_DIR_STORAGE', FS_DIR_APP);
 
     if (!empty($_SERVER['DOCUMENT_ROOT'])) {
       define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(file_absolute_path($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', '', FS_DIR_APP));
@@ -64,6 +65,8 @@
     } else {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
     }
+
+    define('WS_DIR_STORAGE', WS_DIR_APP);
 
     if (preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
       define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
@@ -635,7 +638,7 @@
 
     echo '<p>Create file container for error logging...';
 
-    if (file_put_contents(FS_DIR_APP . 'logs/errors.log', '') !== false) {
+    if (file_put_contents(FS_DIR_STORAGE . 'logs/errors.log', '') !== false) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;

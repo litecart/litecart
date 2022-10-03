@@ -43,7 +43,7 @@
         $clone = clone $image;
         $clone->scaleImage($size, 0);
         $icon->addImage($clone);
-        $icon->writeImage(FS_DIR_APP . 'images/favicon-'. $size .'x'. $size .'.png');
+        $icon->writeImage(FS_DIR_STORAGE . 'images/favicon-'. $size .'x'. $size .'.png');
       }
 
       $icon = new Imagick();
@@ -54,7 +54,7 @@
         $icon->addImage($clone);
       }
 
-      $icon->writeImages(FS_DIR_APP . 'images/favicons/favicon.ico', true);
+      $icon->writeImages(FS_DIR_STORAGE . 'images/favicons/favicon.ico', true);
 
       $image->destroy();
       $icon->destroy();
@@ -104,28 +104,28 @@
 
       <div class="icons">
 
-        <?php if (is_file($icon = FS_DIR_APP . 'images/favicons/favicon-256x256.png')) { ?>
+        <?php if (is_file($icon = FS_DIR_STORAGE . 'images/favicons/favicon-256x256.png')) { ?>
         <div class="icon">
           <img class="thumbnail" src="<?php echo document::href_rlink($icon); ?>" width="256" height="256" alt="" />
           <div><?php echo basename($icon); ?></div>
         </div>
         <?php } ?>
 
-        <?php if (is_file($icon = FS_DIR_APP . 'images/favicons/favicon-192x192.png')) { ?>
+        <?php if (is_file($icon = FS_DIR_STORAGE . 'images/favicons/favicon-192x192.png')) { ?>
         <div class="icon">
           <img class="thumbnail" src="<?php echo document::href_rlink($icon); ?>" width="192" height="192" alt="" />
           <div><?php echo basename($icon); ?></div>
         </div>
         <?php } ?>
 
-        <?php if (is_file($icon = FS_DIR_APP . 'images/favicons/favicon-128x128.png')) { ?>
+        <?php if (is_file($icon = FS_DIR_STORAGE . 'images/favicons/favicon-128x128.png')) { ?>
         <div class="icon">
           <img class="thumbnail" src="<?php echo document::href_rlink($icon); ?>" width="128" height="128" alt="" />
           <div><?php echo basename($icon); ?></div>
         </div>
         <?php } ?>
 
-        <?php if (is_file($icon = FS_DIR_APP . 'images/favicons/favicon.ico')) { ?>
+        <?php if (is_file($icon = FS_DIR_STORAGE . 'images/favicons/favicon.ico')) { ?>
         <div class="icon">
           <img class="thumbnail" src="data:image/x-icon;base64,<?php echo base64_encode(file_get_contents($icon)); ?>" width="48" height="48" alt="" />
           <div><?php echo basename($icon); ?></div>

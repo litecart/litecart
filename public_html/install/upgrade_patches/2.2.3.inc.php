@@ -380,7 +380,7 @@
 
 // Move/rename cache files
 
-  foreach (glob(FS_DIR_APP . 'cache/*') as $file) {
+  foreach (glob(FS_DIR_STORAGE . 'cache/*') as $file) {
 
     $new_file = $file;
 

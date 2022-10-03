@@ -144,23 +144,23 @@
         $this->save();
       }
 
-      if (!is_dir(FS_DIR_APP . 'images/manufacturers/')) mkdir(FS_DIR_APP . 'images/manufacturers/', 0777);
+      if (!is_dir(FS_DIR_STORAGE . 'images/manufacturers/')) mkdir(FS_DIR_STORAGE . 'images/manufacturers/', 0777);
 
       $image = new ent_image($file);
 
     // 456-12345_Fancy-title.jpg
       $filename = 'manufacturers/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'], settings::get('store_language_code')) .'.'. $image->type();
 
-      if (is_file(FS_DIR_APP . 'images/' . $this->data['image'])) unlink(FS_DIR_APP . 'images/' . $this->data['image']);
+      if (is_file(FS_DIR_STORAGE . 'images/' . $this->data['image'])) unlink(FS_DIR_STORAGE . 'images/' . $this->data['image']);
 
-      functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
+      functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $filename);
 
       if (settings::get('image_downsample_size')) {
         list($width, $height) = preg_split('#\s*,\s*#', settings::get('image_downsample_size'), -1, PREG_SPLIT_NO_EMPTY);
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
-      $image->write(FS_DIR_APP . 'images/' . $filename, 90);
+      $image->write(FS_DIR_STORAGE . 'images/' . $filename, 90);
 
       database::query(
         "update ". DB_TABLE_PREFIX ."manufacturers
@@ -175,9 +175,9 @@
 
       if (empty($this->data['id'])) return;
 
-      if (is_file(FS_DIR_APP . 'images/' . $this->data['image'])) unlink(FS_DIR_APP . 'images/' . $this->data['image']);
+      if (is_file(FS_DIR_STORAGE . 'images/' . $this->data['image'])) unlink(FS_DIR_STORAGE . 'images/' . $this->data['image']);
 
-      functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['image']);
+      functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['image']);
 
       database::query(
         "update ". DB_TABLE_PREFIX ."manufacturers
@@ -202,8 +202,8 @@
         throw new Exception(language::translate('error_cannot_delete_manfacturer_while_used_by_products', 'The manufacturer could not be deleted because there are products linked to it.'));
       }
 
-      if (!empty($this->data['image']) && is_file(FS_DIR_APP . 'images/manufacturers/' . $this->data['image'])) {
-        unlink(FS_DIR_APP . 'images/manufacturers/' . $this->data['image']);
+      if (!empty($this->data['image']) && is_file(FS_DIR_STORAGE . 'images/manufacturers/' . $this->data['image'])) {
+        unlink(FS_DIR_STORAGE . 'images/manufacturers/' . $this->data['image']);
       }
 
       database::query(

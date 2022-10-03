@@ -38,13 +38,13 @@
 
     public function load($filename) {
 
-      if (!is_file(FS_DIR_APP . 'vmods/'. $filename)) {
+      if (!is_file(FS_DIR_STORAGE . 'vmods/'. $filename)) {
         throw new Exception('Invalid vMod ('. $filename .')');
       }
 
       $this->reset();
 
-      $xml = file_get_contents(FS_DIR_APP . 'vmods/'. $filename);
+      $xml = file_get_contents(FS_DIR_STORAGE . 'vmods/'. $filename);
       $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
 
       $dom = new \DOMDocument('1.0', 'UTF-8');
@@ -57,8 +57,8 @@
       $this->data['id'] = preg_replace('#\.(xml|disabled)?$#', '', $filename);
       $this->data['status'] = !preg_match('#\.disabled$#', $filename) ? '1' : '0';
       $this->data['filename'] = $filename;
-      $this->data['date_created'] = date('Y-m-d H:i:s', filectime(FS_DIR_APP . 'vmods/' . $filename));
-      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime(FS_DIR_APP . 'vmods/' . $filename));
+      $this->data['date_created'] = date('Y-m-d H:i:s', filectime(FS_DIR_STORAGE . 'vmods/' . $filename));
+      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime(FS_DIR_STORAGE . 'vmods/' . $filename));
 
       switch ($dom->documentElement->tagName) {
 
@@ -360,10 +360,10 @@
       $xml = preg_replace('#^(\n|\r\n?){2,}#m', PHP_EOL, $xml);
 
       if (!empty($this->previous['filename'])) {
-         rename(FS_DIR_APP . 'vmods/' . $this->previous['filename'], FS_DIR_APP . 'vmods/' . $this->data['filename']);
+         rename(FS_DIR_STORAGE . 'vmods/' . $this->previous['filename'], FS_DIR_STORAGE . 'vmods/' . $this->data['filename']);
       }
 
-      file_put_contents(FS_DIR_APP . 'vmods/' . $this->data['filename'], $xml);
+      file_put_contents(FS_DIR_STORAGE . 'vmods/' . $this->data['filename'], $xml);
 
       $this->previous = $this->data;
 
@@ -382,7 +382,7 @@
         })($tmp_file);
       }
 
-      unlink(FS_DIR_APP . 'vmods/' . $this->previous['filename']);
+      unlink(FS_DIR_STORAGE . 'vmods/' . $this->previous['filename']);
 
       $this->reset();
 

@@ -28,7 +28,7 @@
         }
 
         if (($duration = microtime(true) - $measure_start) > 1) {
-          error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, FS_DIR_APP . 'logs/performance.log');
+          error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, FS_DIR_STORAGE . 'logs/performance.log');
         }
 
         if (class_exists('stats', false)) {
@@ -167,7 +167,7 @@
       }
 
       if (($duration = microtime(true) - $measure_start) > 3) {
-        error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query) . PHP_EOL, 3, FS_DIR_APP . 'logs/performance.log');
+        error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query) . PHP_EOL, 3, FS_DIR_STORAGE . 'logs/performance.log');
       }
 
       if (class_exists('stats', false)) {

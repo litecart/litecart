@@ -23,7 +23,7 @@
       'link' => document::ilink('product', ['product_id' => $item['product_id']]),
       'image' => [
         'original' => 'images/' . (!empty($item['image']) ? $item['image'] : 'no_image.png'), 320, 320, 'FIT_USE_WHITESPACING',
-        'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . (!empty($item['image']) ? $item['image'] : 'no_image.png'), 320, 320, 'FIT_USE_WHITESPACING'),
+        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . (!empty($item['image']) ? $item['image'] : 'no_image.png'), 320, 320, 'FIT_USE_WHITESPACING'),
       ],
       'name' => $item['name'],
       'sku' => $item['sku'],

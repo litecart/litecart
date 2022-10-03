@@ -3,7 +3,7 @@
 // Move vQmods to vMod
 
   foreach (glob(FS_DIR_APP . 'vqmod/xml/*.{xml,disabled}', GLOB_BRACE) as $file) {
-    rename($file, FS_DIR_APP . 'vmods/' . basename($file));
+    rename($file, FS_DIR_STORAGE . 'vmods/' . basename($file));
   }
 
 // Delete old files
@@ -26,31 +26,51 @@
   $modified_files = [
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  =>   "~## Backwards Compatible Directory Definitions \(LiteCart <2\.2\)  #######\R+"
-                   . "######################################################################\R+"
-                   . ".*?"
-                   . "######################################################################\R+~s",
+      'search'  => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');",
+      'replace' => "  define('FS_DIR_STORAGE',     FS_DIR_APP);" . PHP_EOL
+                 . "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');",
+      'regex'   => false,
+    ],
+    [
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');",
+      'replace' => "  define('WS_DIR_STORAGE',     WS_DIR_APP);" . PHP_EOL
+                 . "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');",
+      'regex'   => false,
+    ],
+    [
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "~## Backwards Compatible Directory Definitions \(LiteCart <2\.2\)  #######\R+"
+                 . "######################################################################\R+"
+                 . ".*?"
+                 . "######################################################################\R+~s",
       'replace' => "",
-      'regex' => true,
+      'regex'   => true,
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "~  define\('DB_PERSISTENT_CONNECTIONS', '[^']+'\);(\n\|\r\n?)?~",
       'replace' => "",
-      'regex' => true,
+      'regex'   => true,
+    ],
+    [
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "  ini_set('error_log', FS_DIR_APP . 'logs/errors.log');",
+      'replace' => "  ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');",
+      'regex'   => false,
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "~// Password Encryption Salt\R+"
                  . "  define('PASSWORD_SALT', '[^']+');\R+~s",
       'replace' => "",
-      'regex' => true,
+      'regex'   => true,
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "~\s*\?>\s*$~",
       'replace' => PHP_EOL,
-      'regex' => true,
+      'regex'   => true,
     ],
   ];
 
@@ -64,4 +84,4 @@
   }
 
 // Copy some files
-  file_xcopy(FS_DIR_APP . 'install/data/default/public_html/images/favicons/', FS_DIR_APP . 'images/favicons/');
+  file_xcopy(FS_DIR_APP . 'install/data/default/public_html/images/favicons/', FS_DIR_STORAGE . 'images/favicons/');

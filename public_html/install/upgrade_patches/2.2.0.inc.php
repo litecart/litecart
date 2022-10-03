@@ -4,9 +4,9 @@
   $deleted_files = [
     FS_DIR_ADMIN . 'orders.app/add_custom_item.inc.php',
     FS_DIR_ADMIN . 'orders.app/get_address.json.inc.php',
-    FS_DIR_APP . 'data/bad_urls.txt',
-    FS_DIR_APP . 'data/blacklist.txt',
-    FS_DIR_APP . 'data/whitelist.txt',
+    FS_DIR_STORAGE . 'data/bad_urls.txt',
+    FS_DIR_STORAGE . 'data/blacklist.txt',
+    FS_DIR_STORAGE . 'data/whitelist.txt',
     FS_DIR_APP . 'ext/jquery/jquery-3.3.1.min.js',
     FS_DIR_APP . 'ext/fontawesome/css',
     FS_DIR_APP . 'ext/fontawesome/fonts',
@@ -49,7 +49,7 @@
     FS_DIR_APP . 'includes/library/lib_catalog.inc.php',
     FS_DIR_APP . 'includes/library/lib_link.inc.php',
     FS_DIR_APP . 'includes/library/lib_security.inc.php',
-    FS_DIR_APP . 'logs/http_request_last.log',
+    FS_DIR_STORAGE . 'logs/http_request_last.log',
     FS_DIR_APP . 'includes/templates/default.catalog/views/column_left.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/listing_product.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/site_cookie_notice.inc.php',
@@ -97,7 +97,7 @@
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  ini_set('error_log', FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'errors.log');",
-      'replace' => "  ini_set('error_log', FS_DIR_APP . 'logs/errors.log');",
+      'replace' => "  ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');",
     ],
     [
       'file'    => FS_DIR_APP . 'install/.htaccess',
