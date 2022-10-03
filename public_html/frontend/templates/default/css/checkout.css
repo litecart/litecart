@@ -1,7 +1,4 @@
 /* Media Breakpoints */
-root {
-  --site-background-color: #eeeef3;
-}
 .loader-wrapper {
   position: fixed;
   top: 50%;
@@ -16,6 +13,7 @@ root {
   padding: 0;
 }
 #box-checkout > form > .row {
+  background: #eeeef3;
   height: 100vh;
   grid-gap: 0;
   margin-bottom: 0;

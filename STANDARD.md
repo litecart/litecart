@@ -64,17 +64,7 @@
 
 ## Line Breaks in Code
 
-  We use Linux line feed (LF) \n for new lines in the source code.
-  Do not use more than one empty line for separating logic.
-
-  Incorrect:
-
-    \r\n
-    \r
-
-  Correct:
-
-    \n
+  Use no more than one empty line when line separating logic.
 
 
 ## Outputting Line Breaks
@@ -90,7 +80,7 @@
     echo '<p>Hello World!</br />' . PHP_EOL
        . 'This is a new row</p>';
 
-  For emails and HTTP headers we use Windows style Carriage Return + Line Feed (CRLF) \r\n
+  For emails and HTTP headers we always use Windows style Carriage Return + Line Feed (CRLF) \r\n
   for new lines because the standard tells us to.
 
     Content-Type: text/plain\r\n
@@ -107,8 +97,9 @@
   Incorrect:
 
     <?php
-    ··echo·$variable;\n·····
+    ··echo·$variable;·····\n
     ··\n
+    \n
     \EOF
 
   Correct:

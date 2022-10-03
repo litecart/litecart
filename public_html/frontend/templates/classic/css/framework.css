@@ -1674,7 +1674,7 @@ ul.list-inline li {
     border: none;
   }
 }
-@media (max-width: 767px) {
+@media (max-width: calc(768px - 1px)) {
   .navbar .navbar-menu .open .dropdown-menu {
     position: static;
     float: none;

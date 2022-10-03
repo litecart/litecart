@@ -1,10 +1,11 @@
 <?php
 
   class smtp_client {
-    private $_socket = null;
-    private $_host = null;
-    private $_port = null;
-    private $_log_handle = '';
+    private $_socket;
+    private $_host;
+    private $_username;
+    private $_password;
+    private $_log_handle;
 
     function __construct($host, $port=25, $username='', $password='') {
 
@@ -22,25 +23,6 @@
 
     function __destruct() {
       if (is_resource($this->_socket)) $this->disconnect();
-    }
-
-    public function send($sender, $recipients, $data='') {
-
-      if (!is_array($recipients)) $recipients = [$recipients];
-
-      if (!is_resource($this->_socket)) $this->connect();
-
-      $this->write("MAIL FROM: <$sender>\r\n", 250);
-
-      foreach ($recipients as $recipient) {
-        $this->write("RCPT TO: <$recipient>\r\n", 250);
-      }
-
-      $this->write("DATA\r\n", 354)
-           ->write("$data\r\n")
-           ->write(".\r\n", 250);
-
-      return true;
     }
 
     public function connect() {
@@ -151,5 +133,26 @@
       }
 
       return $this;
+    }
+
+    ###################################################################
+
+    public function send($sender, $recipients, $data='') {
+
+      if (!is_array($recipients)) $recipients = [$recipients];
+
+      if (!is_resource($this->_socket)) $this->connect();
+
+      $this->write("MAIL FROM: <$sender>\r\n", 250);
+
+      foreach ($recipients as $recipient) {
+        $this->write("RCPT TO: <$recipient>\r\n", 250);
+  }
+
+      $this->write("DATA\r\n", 354)
+           ->write("$data\r\n")
+           ->write(".\r\n", 250);
+
+      return true;
     }
   }

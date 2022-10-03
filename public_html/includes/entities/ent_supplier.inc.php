@@ -89,9 +89,7 @@
       );
 
       if (database::num_rows($products_query)) {
-        notices::add('errors', language::translate('error_delete_supplier_not_empty_products', 'The supplier could not be deleted because there are products linked to it.'));
-        header('Location: '. $_SERVER['REQUEST_URI']);
-        exit;
+        throw new Exception(language::translate('error_cannot_delete_supplier_while_used_by_products', 'The supplier could not be deleted because there are products linked to it.'));
       }
 
       database::query(

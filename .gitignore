@@ -6,6 +6,7 @@
 !public_html/**/.htaccess
 
 public_html/storage/*
+public_html/vendor/*
 
 composer.lock
 package-lock.json

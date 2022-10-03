@@ -97,7 +97,7 @@ html {
 #cart .badge:empty {
   display: none;
 }
-@media (max-width: 767px) {
+@media (max-width: calc(768px - 1px)) {
   #cart .details {
     display: none;
   }
@@ -111,7 +111,7 @@ html {
     margin: 0 var(--gutter-size) var(--gutter-size) var(--gutter-size);
   }
 }
-@media (max-width: 767px) {
+@media (max-width: calc(768px - 1px)) {
   #site-navigation {
     position: sticky;
     top: 0;
