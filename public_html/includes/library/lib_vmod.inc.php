@@ -53,6 +53,10 @@
         }
       }
 
+      if (!is_dir(FS_DIR_STORAGE . 'vmods/.cache/')) {
+        mkdir(FS_DIR_STORAGE . 'vmods/.cache/');
+      }
+
     // Get modifications from cache
       $cache_file = FS_DIR_STORAGE . 'vmods/.cache/.modifications';
       if (is_file($cache_file) && filemtime($cache_file) > $last_modified) {
