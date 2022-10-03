@@ -169,6 +169,8 @@
   });
 
   let new_zone_index = 0;
+  while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++;
+
   $('tfoot button[name="add"]', function(e) {
     e.preventDefault();
 

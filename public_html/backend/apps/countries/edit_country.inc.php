@@ -216,6 +216,8 @@
   });
 
   let new_zone_index = 0;
+  while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++;
+
   $('form[name="country_form"] .add').click(function(event) {
     event.preventDefault();
     if ($('select[name="country[code]"]').find('option:selected').val() == '') return;

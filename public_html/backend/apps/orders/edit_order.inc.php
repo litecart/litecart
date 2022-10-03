@@ -1272,6 +1272,8 @@
   }).trigger('input');
 
   let new_comment_index = 0;
+  while ($(':input[name^="comments['+new_comment_index+']"]').length) new_comment_index++;
+
   $('#box-comments .add').click(function(e) {
     e.preventDefault();
 
@@ -1486,6 +1488,8 @@
   });
 
   let new_item_index = 0;
+  while ($(':input[name^="items['+new_item_index+']"]').length) new_item_index++;
+
   window.addItem = function(item) {
 
     let output = [
@@ -1570,6 +1574,8 @@
 // Order Total
 
   let new_ot_row_index = 0;
+  while ($(':input[name^="order_total['+new_ot_row_index+']"]').length) new_ot_row_index++;
+
   $('#order-total').on('click', '.add', function(e) {
 
     e.preventDefault();

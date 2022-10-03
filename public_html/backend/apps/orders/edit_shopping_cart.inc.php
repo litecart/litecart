@@ -809,6 +809,8 @@
   });
 
   let new_item_index = 0;
+  while ($(':input[name^="items['+new_item_index+']"]').length) new_item_index++;
+
   window.addItem = function(item) {
 
     let output = [

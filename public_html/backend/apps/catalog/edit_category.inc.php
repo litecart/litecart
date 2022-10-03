@@ -330,6 +330,8 @@
 // Filters
 
   let new_attribute_filter_index = 0;
+  while ($(':input[name^="filters['+new_attribute_filter_index+']"]').length) new_attribute_filter_index++;
+
   $('#tab-filters button[name="add"]').click(function(){
 
     if ($('select[name="new_attribute_group"]').val() == '') {

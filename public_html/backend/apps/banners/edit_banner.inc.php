@@ -173,6 +173,8 @@ table th:last-child {
   });
 
   let new_key_index = 0;
+  while ($(':input[name^="keys['+new_key_index+']"]').length) new_key_index++
+
   $('.data-table .add').click(function(e){
     e.preventDefault();
 
