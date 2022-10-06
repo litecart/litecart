@@ -100,7 +100,7 @@
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('logotype_form', 'post', false, true); ?>
+    <?php echo functions::form_draw_form_begin('favicon_form', 'post', false, true); ?>
 
       <div class="icons">
 

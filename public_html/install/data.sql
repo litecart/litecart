@@ -279,7 +279,7 @@ INSERT INTO `lc_order_statuses` (`id`, `state`, `icon`, `color`, `is_sale`, `is_
 (8, 'dispatched', 'fa-truck', '#99cc66', 1, 0, 1, 'commit', NOW(), NOW()),
 (9, 'in_transit', 'fa-truck', '#e3ab44', 1, 0, 1, 'commit', NOW(), NOW()),
 (10, 'delivered', 'fa-home', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),
-(11, 'returning', 'fa-undo', '#e3ab44', 1, 0, 1, 'reserved', NOW(), NOW()),
+(11, 'returning', 'fa-undo', '#e3ab44', 1, 0, 1, 'reserve', NOW(), NOW()),
 (12, 'returned', 'fa-building', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),
 (13, 'cancelled', 'fa-times', '#ff6666', 0, 1, 0, 'none', NOW(), NOW()),
 (14, 'cancelled', 'fa-exclamation', '#ff6666', 0, 1, 0, 'none', NOW(), NOW());
