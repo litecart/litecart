@@ -5,7 +5,9 @@
 
     $file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod']);
 
-    if (!is_file($file)) throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
+    if (!is_file($file)) {
+      throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
+    }
 
     header('Cache-Control: must-revalidate');
     header('Content-Description: File Transfer');
@@ -15,7 +17,7 @@
     header('Expires: 0');
 
     ob_end_clean();
-    readfile(FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod']));
+    readfile(FS_DIR_STORAGE . 'vmods/' . basename($file));
     exit;
 
   } catch (Exception $e) {

@@ -20,21 +20,25 @@
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
       if (empty($_POST['files'])) throw new Exception(language::translate('error_must_define_files', 'You must define files'));
 
-      foreach (array_keys($_POST['files']) as $f) {
-        foreach (array_keys($_POST['files'][$f]['operations']) as $o) {
-          if (!isset($_POST['files'][$f]['operations'][$o]['find']['regex'])) $_POST['files'][$f]['operations'][$o]['find']['regex'] = 'false';
-          if (!isset($_POST['files'][$f]['operations'][$o]['find']['trim'])) $_POST['files'][$f]['operations'][$o]['find']['trim'] = 'true';
-          if (!isset($_POST['files'][$f]['operations'][$o]['insert']['regex'])) $_POST['files'][$f]['operations'][$o]['insert']['regex'] = 'false';
-          if (!isset($_POST['files'][$f]['operations'][$o]['insert']['trim'])) $_POST['files'][$f]['operations'][$o]['insert']['trim'] = 'true';
-        }
-      }
+      if (empty($_POST['install'])) $_POST['install'] = '';
+      if (empty($_POST['uninstall'])) $_POST['uninstall'] = '';
+      if (empty($_POST['upgrades'])) $_POST['upgrades'] = [];
+      if (empty($_POST['settings'])) $_POST['settings'] = [];
+      if (empty($_POST['aliases'])) $_POST['aliases'] = [];
+      if (empty($_POST['files'])) $_POST['files'] = [];
 
       $fields = [
         'id',
         'status',
         'name',
         'description',
+        'author',
         'version',
+        'aliases',
+        'settings',
+        'install',
+        'uninstall',
+        'upgrades',
         'files',
       ];
 
@@ -83,7 +87,7 @@
     [language::translate('title_bottom', 'Bottom'), 'bottom'],
   ];
 
-  $match_options = [
+  $type_options = [
     [language::translate('title_inline', 'Inline'), 'inline'],
     [language::translate('title_multiline', 'Multiline'), 'multiline'],
     [language::translate('title_regex', 'RegEx'), 'regex'],
@@ -126,6 +130,9 @@
   padding: 1em;
   border-radius: 4px;
   margin-bottom: 2em;
+}
+html.dark-mode .operation {
+  background: #232a3e;
 }
 
 .fa-times-circle {
@@ -307,7 +314,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
                         <div class="form-group col-md-6">
                           <label><?php echo language::translate('title_match_type', 'Match Type'); ?></label>
-                          <?php echo functions::form_draw_toggle_buttons('files['.$f.'][operations]['.$o.'][type]', $match_options, (!isset($_POST['files'][$f]['operations'][$o]['type']) || $_POST['files'][$f]['operations'][$o]['type'] == '') ? 'multiline' : true); ?>
+                          <?php echo functions::form_draw_toggle_buttons('files['.$f.'][operations]['.$o.'][type]', $type_options, (!isset($_POST['files'][$f]['operations'][$o]['type']) || $_POST['files'][$f]['operations'][$o]['type'] == '') ? 'multiline' : true); ?>
                         </div>
 
                         <div class="form-group col-md-3">
@@ -529,7 +536,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
       <div class="form-group col-md-6">
         <label><?php echo language::translate('title_match_type', 'Match Type'); ?></label>
-        <?php echo functions::form_draw_toggle_buttons('files[new_tab_index][operations][new_operation_index][type]', $match_options, 'multiline'); ?>
+        <?php echo functions::form_draw_toggle_buttons('files[new_tab_index][operations][new_operation_index][type]', $type_options, 'multiline'); ?>
       </div>
 
       <div class="form-group col-md-3">

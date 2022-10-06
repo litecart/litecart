@@ -3,7 +3,10 @@
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {
-      if (empty($_POST['vmods'])) throw new Exception(language::translate('error_must_select_vmods', 'You must select vMods'));
+
+      if (empty($_POST['vmods'])) {
+        throw new Exception(language::translate('error_must_select_vmods', 'You must select vMods'));
+      }
 
       foreach ($_POST['vmods'] as $vmod) {
 
@@ -28,10 +31,16 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($_POST['vmods'])) throw new Exception(language::translate('error_must_select_vmods', 'You must select vMods'));
+
+      if (empty($_POST['vmods'])) {
+        throw new Exception(language::translate('error_must_select_vmods', 'You must select vMods'));
+      }
 
       foreach ($_POST['vmods'] as $vmod) {
-        unlink(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_BASENAME));
+
+        if (!is_file(FS_DIR_STORAGE . 'vmods/' . basename($vmod))) {
+          throw new Exception(language::translate('error_invalid_vmod', 'Invalid vMod') .' ('. $vmod .')');
+        }
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
@@ -46,6 +55,7 @@
   if (isset($_POST['upload'])) {
 
     try {
+
       if (!isset($_FILES['vmod']['tmp_name']) || !is_uploaded_file($_FILES['vmod']['tmp_name'])) {
         throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
       }

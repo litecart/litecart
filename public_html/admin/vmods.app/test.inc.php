@@ -2,7 +2,7 @@
   $_GET['debug'] = true;
   $_GET['vmod'] = basename($_GET['vmod']);
 
-  breadcrumbs::add(basename($_GET['vmod']));
+  breadcrumbs::add($_GET['vmod']);
 
   try {
 
