@@ -37,10 +37,8 @@
       }
 
       foreach ($_POST['vmods'] as $vmod) {
-
-        if (!is_file(FS_DIR_STORAGE . 'vmods/' . basename($vmod))) {
-          throw new Exception(language::translate('error_invalid_vmod', 'Invalid vMod') .' ('. $vmod .')');
-        }
+        $vmod = new ent_vmod($vmod);
+        $vmod->delete();
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
