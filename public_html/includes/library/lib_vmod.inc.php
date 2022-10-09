@@ -178,8 +178,9 @@
         if (!$vmod = self::$_modifications[$modification['id']]) continue;
         if (!$operations = self::$_modifications[$modification['id']]['files'][$modification['key']]['operations']) continue;
 
-        $tmp = $buffer; $i = 1;
+        $tmp = $buffer; $i = 0;
         foreach ($operations as $operation) {
+          $i++;
 
           $found = preg_match_all($operation['find']['pattern'], $tmp, $matches, PREG_OFFSET_CAPTURE);
 
@@ -216,8 +217,6 @@
               continue 2;
             }
           }
-
-          $i++;
         }
 
         $buffer = $tmp;
