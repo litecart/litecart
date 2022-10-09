@@ -135,10 +135,10 @@ html.dark-mode .operation {
   background: #232a3e;
 }
 
-.fa-times-circle {
+.nav-tabs .fa-times-circle {
   color: #c00;
 }
-.fa-plus {
+.nav-tabs .fa-plus {
   color: #0c0;
 }
 .operations {
@@ -547,7 +547,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
     <div class="form-group">
       <h4><?php echo language::translate('title_find', 'Find'); ?></h4>
-      <?php echo functions::form_draw_text_field('files[new_tab_index][operations][new_operation_index][find][content]', '', 'class="form-code" required'); ?>
+      <?php echo functions::form_draw_code_field('files[new_tab_index][operations][new_operation_index][find][content]', '', 'class="form-code" required'); ?>
 
     </div>
 
@@ -570,7 +570,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
     <div class="form-group">
       <h4><?php echo language::translate('title_insert', 'Insert'); ?></h4>
-      <?php echo functions::form_draw_text_field('files[new_tab_index][operations][new_operation_index][insert][content]', '', 'class="form-code" required'); ?>
+      <?php echo functions::form_draw_code_field('files[new_tab_index][operations][new_operation_index][insert][content]', '', 'class="form-code" required'); ?>
     </div>
 
   </fieldset>
@@ -585,7 +585,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 <script>
 // Tabs
 
-  let new_tab_index = 0;
+  let new_tab_index = 1;
   while ($('.tab-pane[id="tab-'+new_tab_index+'"]').length) new_tab_index++;
 
   $('.nav-tabs .add').click(function(e){
@@ -696,7 +696,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
   $(':input[name^="files"][name$="[name]"]').trigger('input');
 
-  let new_operation_index = 0;
+  let new_operation_index = 1;
   while ($(':input[name~="files\[[^\]]+\][operations]['+new_operation_index+']"]').length) new_operation_index++;
 
   $('#files').on('click', '.add', function(e) {
