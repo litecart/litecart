@@ -145,7 +145,7 @@
                 case 'abort':
                 case 'warning':
                 default:
-                  throw new Exception('Operation #'. $i+1 .' failed in '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file), E_USER_WARNING);
+                  throw new Exception('Operation #'. ($i+1) .' failed in '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file), E_USER_WARNING);
                   continue 2;
               }
             }
