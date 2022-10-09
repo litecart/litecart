@@ -112,7 +112,7 @@
     'name' => $product->name,
     'short_description' => !empty($product->short_description) ? $product->short_description : '',
     'description' => !empty($product->description) ? $product->description : '<em style="opacity: 0.65;">'. language::translate('text_no_product_description', 'There is no description for this product yet.') . '</em>',
-    'technical_data' => preg_split('#\r\n?|\n#', trim($product->technical_data)),
+    'technical_data' => preg_split('#\r\n?|\n#', $product->technical_data, -1, PREG_SPLIT_NO_EMPTY),
     'head_title' => !empty($product->head_title) ? $product->head_title : $product->name,
     'meta_description' => !empty($product->meta_description) ? $product->meta_description : $product->short_description,
     'attributes' => $product->attributes,
