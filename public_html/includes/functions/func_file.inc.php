@@ -127,39 +127,120 @@
   }
 
 // Search files (Supports dual globstar **)
-  function file_search($pattern, $flags=0) {
+  function file_search($glob, $flags=0) {
 
-    $pattern = preg_replace('#\*\*+#', '**', $pattern);
+  // Unixify paths
+    $glob = str_replace('\\', '/', $glob);
 
-    if (preg_match('#\*\*#', $pattern)) {
-      if (!preg_match('#^([^\*]+)\*\*(.*)$#', $pattern, $matches)) {
-        return false;
+  // Set basedir and remains
+    $basedir = '';
+    $remains = $glob;
+    for ($i=0; $i<strlen($glob); $i++) {
+      if (in_array($glob[$i], ['*', '[', ']', '{', '}'])) break;
+      if ($glob[$i] == '/') {
+        list($basedir, $remains) = str_split($glob, $i+1);
       }
-
-      $files = [];
-
-      foreach (glob(rtrim($matches[1], '/').'/*', $flags & GLOB_MARK) as $file) {
-        $files = array_merge($files, file_search($file.'**'.$matches[2], $flags));
-      }
-
-      $files = array_merge($files, file_search($matches[1].$matches[2], $flags));
-      return array_unique($files);
     }
 
-    $files = array_map(function($path){
-      return str_replace('\\', '/', $path);
-    }, glob($pattern, $flags | GLOB_MARK));
+  // Halt if basedir does not exist
+    if ($basedir && !is_dir($basedir)) {
+      return [];
+    }
 
-  // Sort directories first
-    usort($files, function($a, $b){
-      if (substr($a, -1) == '/' && substr($b, -1) != '/') return -1;
-      if (substr($a, -1) != '/' && substr($b, -1) == '/') return 1;
-      return ($a < $b) ? -1 : 1;
-    });
+  // If there are no pattern remains, return base directory if valid
+    if (!$remains) {
+      if (is_dir($basedir)) {
+        return [$basedir];
+      } else {
+        return [];
+      }
+    }
 
-    return $files;
+  // Extract pattern for current directory
+    if (($pos = strpos($remains, '/')) !== false) {
+      list($pattern, $remains) = [substr($remains, 0, $pos+1), substr($remains, $pos+1)];
+    } else {
+      list($pattern, $remains) = [$remains, ''];
+    }
+
+  // fnmatch() doesn't support GLOB_BRACE. Let's create a regex pattern instead.
+    $regex = strtr($pattern, [
+      '[!' => '[^',
+      '\\' => '\\\\',
+      '.'  => '\\.',
+      '('  => '\\(',
+      ')'  => '\\)',
+      '|'  => '\\|',
+      '+'  => '\\+',
+      '^'  => '\\^',
+      '$'  => '\\$',
+      '*'  => '[^/]*',
+      '**' => '.*',
+      '?'  => '.',
+    ]);
+
+    if ($flags & GLOB_BRACE) {
+
+      $regex = preg_replace_callback('#\{[^\}]+\}#', function($matches) {
+        return strtr($matches[0], ['{' => '(', '}' => ')', ',' => '|']);
+      }, $regex);
+
+    } else {
+      $regex = strtr($regex, ['{' => '\\{', '}' => '\\}']);
+    }
+
+    $regex = '#^'.$regex.'$#';
+
+    $folders = [];
+    $files = [];
+
+  // Open directory
+    $dh = opendir($basedir ? $basedir : './');
+
+  // Step through each file in directory
+    while ($file = readdir($dh)) {
+      if (in_array($file, ['.', '..'])) continue;
+
+    // Prepend path
+      $file = $basedir . $file;
+      $filetype = filetype($file);
+
+      if ($filetype == 'dir') {
+
+      // Resolve double globstars
+        if (strpos($pattern, '**') !== false) {
+          $folders = array_merge($folders, file_search($file .'/'. $pattern . $remains, $flags));
+        }
+
+      // Collect a matching folder
+        if (preg_match($regex, basename($file)) || preg_match($regex, basename($file).'/')) {
+          if ($remains) {
+            $folders = array_merge($folders, file_search($file .'/'. $remains, $flags));
+          } else {
+            $folders[] = $file .'/';
+          }
+        }
+
+      } else if ($filetype == 'file') {
+
+      // Skip if not a directory during GLOB_ONLYDIR
+        if ($flags & GLOB_ONLYDIR) continue;
+
+      // Collect a matching file
+        if (preg_match($regex, basename($file))) {
+          $files[] = $file;
+        }
+      }
+    }
+
+  // Merge folders and files into one and same result
+    $results = array_merge($folders, $files);
+
+  // Sort results
+    asort($results);
+
+    return $results;
   }
-
 
   function file_xcopy($source, $target, $flags=0, &$results=[]) {
 
