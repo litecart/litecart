@@ -22,7 +22,7 @@
       $timestamp = strtotime('-24 hours');
       $deleted = 0;
 
-      foreach (glob(FS_DIR_APP .'cache/*', GLOB_ONLYDIR) as $dir) {
+      foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
         $search = !empty($keyword) ? '/*_'.$keyword.'*.cache' : '/*.cache';
         foreach (glob($dir.$search) as $file) {
           if (filemtime($file) > $timestamp) continue;
