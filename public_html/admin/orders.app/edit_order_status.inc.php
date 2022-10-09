@@ -23,6 +23,7 @@
       if (empty($_POST['notify'])) $_POST['notify'] = 0;
       if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
       if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
+      if (empty($_POST['is_trackable'])) $_POST['is_trackable'] = 0;
 
       $fields = [
         'state',
@@ -142,7 +143,7 @@
               </div>
 
               <div class="checkbox">
-                <label><?php echo functions::form_draw_checkbox('is_trackable', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived'); ?><br />
+                <label><?php echo functions::form_draw_checkbox('is_trackable', '1', empty($_POST['is_trackable']) ? '0' : '1'); ?> <?php echo language::translate('text_is_trackable', 'Is trackable'); ?><br />
                 <?php echo language::translate('text_will_send_tracking_event_to_shipping_module', 'Will send an event to the shipping module for tracking the shipment.'); ?></label>
               </div>
             </div>
