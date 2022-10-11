@@ -275,7 +275,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
           <div id="files" class="tab-content">
 
             <?php if (!empty($_POST['files'])) foreach (array_keys($_POST['files']) as $f) { ?>
-            <div id="tab-<?php echo $f; ?>" class="tab-pane">
+            <div id="tab-<?php echo $f; ?>" data-tab-index="<?php echo $f; ?>" class="tab-pane">
 
               <div class="row">
                 <div class="col-md-6">
@@ -495,7 +495,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 </div>
 
 <div id="new-tab-pane-template" style="display: none;">
-  <div id="tab-new_tab_index" class="tab-pane">
+  <div id="tab-new_tab_index" data-tab-index="new_tab_index" class="tab-pane">
 
     <div class="row">
       <div class="col-md-6">
@@ -531,46 +531,46 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
     <div class="row">
       <div class="form-group col-md-3">
         <label><?php echo language::translate('title_method', 'Method'); ?></label>
-        <?php echo functions::form_draw_select_field('files[new_tab_index][operations][new_operation_index][method]', $method_options, ''); ?>
+        <?php echo functions::form_draw_select_field('files[current_tab_index][operations][new_operation_index][method]', $method_options, ''); ?>
       </div>
 
       <div class="form-group col-md-6">
         <label><?php echo language::translate('title_match_type', 'Match Type'); ?></label>
-        <?php echo functions::form_draw_toggle_buttons('files[new_tab_index][operations][new_operation_index][type]', $type_options, 'multiline'); ?>
+        <?php echo functions::form_draw_toggle_buttons('files[current_tab_index][operations][new_operation_index][type]', $type_options, 'multiline'); ?>
       </div>
 
       <div class="form-group col-md-3">
         <label><?php echo language::translate('title_on_error', 'On Error'); ?></label>
-        <?php echo functions::form_draw_select_field('files[new_tab_index][operations][new_operation_index][onerror]', $on_error_options, ''); ?>
+        <?php echo functions::form_draw_select_field('files[current_tab_index][operations][new_operation_index][onerror]', $on_error_options, ''); ?>
       </div>
     </div>
 
     <div class="form-group">
       <h4><?php echo language::translate('title_find', 'Find'); ?></h4>
-      <?php echo functions::form_draw_code_field('files[new_tab_index][operations][new_operation_index][find][content]', '', 'class="form-code" required'); ?>
+      <?php echo functions::form_draw_code_field('files[current_tab_index][operations][new_operation_index][find][content]', '', 'class="form-code" required'); ?>
 
     </div>
 
     <div class="row" style="font-size: .8em;">
       <div class="form-group col-md-2">
         <label><?php echo language::translate('title_offset_before', 'Offset Before'); ?></label>
-        <?php echo functions::form_draw_text_field('files[new_tab_index][operations][new_operation_index][find][offset-before]', '', 'placeholder="0"'); ?>
+        <?php echo functions::form_draw_text_field('files[current_tab_index][operations][new_operation_index][find][offset-before]', '', 'placeholder="0"'); ?>
       </div>
 
       <div class="form-group col-md-2">
         <label><?php echo language::translate('title_offset_after', 'Offset After'); ?></label>
-        <?php echo functions::form_draw_text_field('files[new_tab_index][operations][new_operation_index][find][offset-after]', '', 'placeholder="0"'); ?>
+        <?php echo functions::form_draw_text_field('files[current_tab_index][operations][new_operation_index][find][offset-after]', '', 'placeholder="0"'); ?>
       </div>
 
       <div class="form-group col-md-2">
         <label><?php echo language::translate('title_index', 'Index'); ?></label>
-        <?php echo functions::form_draw_text_field('files[new_tab_index][operations][new_operation_index][find][index]', '', 'placeholder="1,3,.."'); ?>
+        <?php echo functions::form_draw_text_field('files[current_tab_index][operations][new_operation_index][find][index]', '', 'placeholder="1,3,.."'); ?>
       </div>
     </div>
 
     <div class="form-group">
       <h4><?php echo language::translate('title_insert', 'Insert'); ?></h4>
-      <?php echo functions::form_draw_code_field('files[new_tab_index][operations][new_operation_index][insert][content]', '', 'class="form-code" required'); ?>
+      <?php echo functions::form_draw_code_field('files[current_tab_index][operations][new_operation_index][insert][content]', '', 'class="form-code" required'); ?>
     </div>
 
   </fieldset>
@@ -696,7 +696,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
   $(':input[name^="files"][name$="[name]"]').trigger('input');
 
-  let new_operation_index = 1;
+  let new_operation_index = 0;
   while ($(':input[name~="files\[[^\]]+\][operations]['+new_operation_index+']"]').length) new_operation_index++;
 
   $('#files').on('click', '.add', function(e) {
@@ -706,7 +706,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
       tab_index = $(this).closest('.tab-pane').data('tab-index');
 
      let output = $('#new-operation-template').html()
-       .replace(/tab_index/g, tab_index)
+       .replace(/current_tab_index/g, tab_index)
        .replace(/new_operation_index/g, new_operation_index++);
 
     $operations.append(output);
