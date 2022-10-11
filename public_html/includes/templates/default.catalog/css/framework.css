@@ -759,7 +759,7 @@ ul.breadcrumb li a {
   top: 0;
   left: 100%;
 }
-@media (max-width: 767px) {
+@media (max-width: calc(768px - 1px)) {
   .dropdown .dropdown-menu {
     display: none;
   }
@@ -820,10 +820,12 @@ tr.semi-transparent td {
   box-shadow: 0 0 3px 0 var(--link-text-color);
 }
 /* Grid - Bootstrap Compatible */
-.float-start {
+.float-start,
+.float-left {
   float: left;
 }
-.float-end {
+.float-end,
+.float-right {
   float: right;
 }
 /* Workaround as inline-start and inline-end are not yet supported by browsers */
@@ -1599,7 +1601,7 @@ ul.list-inline li {
     float: left;
   }
 }
-@media (max-width: 767px) {
+@media (max-width: calc(768px - 1px)) {
   .navbar .open .dropdown-menu {
     position: static;
     float: none;
