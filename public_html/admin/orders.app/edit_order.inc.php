@@ -714,7 +714,7 @@
           <td class="text-end">
             <div class="input-group">
               <span class="input-group-text"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'disabled title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')).'"'); ?></span>
-              <?php echo functions::form_draw_decimal_field('order_total['. $key .'][value]', true, !empty(currency::$currencies[$_POST['currency_code']]) ? currency::$currencies[$_POST['currency_code']]['decimals'] : 2, 'style="text-align: end;"'); ?>
+              <?php echo functions::form_draw_decimal_field('order_total['. $key .'][value]', true, !empty(currency::$currencies[$_POST['currency_code']]) ? currency::$currencies[$_POST['currency_code']]['decimals'] : 2, null, null, 'style="text-align: end;"'); ?>
               <span class="input-group-text"><?php echo $_POST['currency_code']; ?></span>
             </div>
           </td>
@@ -732,7 +732,7 @@
           <td class="text-end">
             <div class="input-group">
             <span class="input-group-text"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
-            <?php echo functions::form_draw_decimal_field('order_total['. $key .'][value]', true, !empty(currency::$currencies[$_POST['currency_code']]) ? currency::$currencies[$_POST['currency_code']]['decimals'] : 2, 'style="text-align: end;"'); ?>
+            <?php echo functions::form_draw_decimal_field('order_total['. $key .'][value]', true, !empty(currency::$currencies[$_POST['currency_code']]) ? currency::$currencies[$_POST['currency_code']]['decimals'] : 2, null, null, 'style="text-align: end;"'); ?>
             <span class="input-group-text"><?php echo $_POST['currency_code']; ?></span>
             </div>
           </td>
