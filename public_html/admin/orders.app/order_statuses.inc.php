@@ -147,7 +147,7 @@
   <div class="card-body">
     <?php echo functions::form_draw_form_begin('order_statuses_form', 'post'); ?>
 
-      <fieldset id="actions" disabled>
+      <fieldset>
         <legend><?php echo language::translate('text_change_status_for_orders', 'Change status for orders'); ?></legend>
 
         <div class="row">
@@ -176,11 +176,4 @@
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
   <?php } ?>
-
 </div>
-
-<script>
-  $('.data-table :checkbox').change(function() {
-    $('#actions').prop('disabled', !$('.data-table :checked').length);
-  }).first().trigger('change');
-</script>
