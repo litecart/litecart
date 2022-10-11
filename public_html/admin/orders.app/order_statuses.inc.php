@@ -44,7 +44,7 @@
       from ". DB_TABLE_PREFIX ."orders
       group by order_status_id
     ) o on (o.order_status_id = os.id)
-    order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), osi.name asc;"
+    order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, osi.name asc;"
   );
 
   if ($_GET['page'] > 1) database::seek($order_statuses_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
@@ -109,8 +109,8 @@
           <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
           <th><?php echo language::translate('title_trackable', 'Trackable'); ?></th>
           <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
+          <th><?php echo language::translate('title_prioritet', 'Prioritet'); ?></th>
           <th><?php echo language::translate('title_orders', 'Orders'); ?></th>
-          <th></th>
           <th></th>
         </tr>
       </thead>
@@ -128,8 +128,8 @@
           <td class="text-center"><?php echo empty($order_status['is_archived']) ? '' : functions::draw_fonticon('fa-check'); ?></td>
           <td class="text-center"><?php echo empty($order_status['is_trackable']) ? '' : functions::draw_fonticon('fa-check'); ?></td>
           <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td class="text-end"><?php echo language::number_format($order_status['num_orders'], 0); ?></td>
-          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'orders', 'order_status_id' => $order_status['id'], ['app']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
+          <td class="text-center"><?php echo $order_status['priority']; ?></td>
+          <td class="text-center"><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'orders', 'order_status_id' => $order_status['id'], ['app']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-external-link'); ?> <?php echo language::number_format($order_status['num_orders'], 0); ?></a></td>
           <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_order_status', 'order_status_id' => $order_status['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>

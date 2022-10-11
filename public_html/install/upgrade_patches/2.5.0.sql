@@ -2,8 +2,7 @@ ALTER TABLE `lc_order_statuses`
 ADD COLUMN `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `is_archived`,
 ADD COLUMN `stock_action` ENUM('none','reserve','commit') NOT NULL DEFAULT 'none' AFTER `is_trackable`,
 ADD COLUMN `state` ENUM('','created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled','fraud') NOT NULL DEFAULT '' AFTER `id`,
-DROP COLUMN `keywords`,
-DROP COLUMN `priority`;
+DROP COLUMN `keywords`;
  -- --------------------------------------------------------
 UPDATE `lc_order_statuses`
 SET stock_action = 'commit'

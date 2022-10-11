@@ -34,6 +34,7 @@
         'is_trackable',
         'stock_action',
         'notify',
+        'priority',
         'name',
         'description',
         'email_subject',
@@ -104,11 +105,14 @@
               <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true); ?>
             </div>
 
-            <div class="col-md-6">
-              <div class="form-group">
-                <label><?php echo language::translate('title_order_state', 'State'); ?></label>
-                <?php echo functions::form_draw_select_field('state', $state_options, true); ?>
-              </div>
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_order_state', 'State'); ?></label>
+              <?php echo functions::form_draw_select_field('state', $state_options, true); ?>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+              <?php echo functions::form_draw_number_field('priority', true); ?>
             </div>
           </div>
 
