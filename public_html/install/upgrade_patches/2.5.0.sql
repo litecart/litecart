@@ -92,3 +92,5 @@ nr.lastname = COALESCE(c.lastname, o.lastname, '');
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
 ('listings', 'global', 'Important Notice', 'An important notice to be displayed above your website.', 'important_notice', '', 'regional_text()', 0, NOW(), NOW()),
 ('listings', 'global', 'Development Mode', 'Development mode restricts frontend access to backend users only.', 'development_mode', '0', 'toggle()', 2, NOW(), NOW());
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET name = 'North Macedonia' WHERE iso_code_2 = 'MK' LIMIT 1;
