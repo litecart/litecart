@@ -77,6 +77,13 @@
     [language::translate('title_information', 'Information'), 'information'],
   ];
 ?>
+<style>
+table tbody .toggle {
+  width: 30px;
+  display: inline-block;
+}
+</style>
+
 
 <div class="card card-app">
   <div class="card-header">
@@ -109,7 +116,7 @@
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th class="main"><?php echo language::translate('title_title', 'Title'); ?></th>
+          <th class="main" style="padding-inline-start: 30px;"><?php echo language::translate('title_title', 'Title'); ?></th>
           <th><?php echo language::translate('title_site_menu', 'Site Menu'); ?></th>
           <th><?php echo language::translate('title_information', 'Information'); ?></th>
           <th><?php echo language::translate('title_customer_service', 'Customer Service'); ?></th>
@@ -202,21 +209,24 @@
         if (database::num_rows($subpages_query)) {
           if (!in_array($page['id'], $_GET['expanded'])) {
             $expanded = array_merge($_GET['expanded'], [$page['id']]);
-            $icon = '<a href="'. document::href_link(WS_DIR_ADMIN, ['expanded' => $expanded], ['app', 'doc', 'page']) .'">'. functions::draw_fonticon('fa-plus-square-o fa-fw') . '</a>';
+            $icon = '<a class="toggle" href="'. document::href_link(WS_DIR_ADMIN, ['expanded' => $expanded], ['app', 'doc', 'page']) .'">'. functions::draw_fonticon('fa-plus-square-o fa-fw') . '</a>';
 
           } else {
             $expanded = array_diff($_GET['expanded'], [$page['id']]);
-            $icon = '<a href="'. document::href_link(WS_DIR_ADMIN, ['expanded' => $expanded], ['app', 'doc', 'page']) .'">'. functions::draw_fonticon('fa-minus-square-o fa-fw') .'</a>';
+            $icon = '<a class="toggle" href="'. document::href_link(WS_DIR_ADMIN, ['expanded' => $expanded], ['app', 'doc', 'page']) .'">'. functions::draw_fonticon('fa-minus-square-o fa-fw') .'</a>';
           }
         } else {
-          $icon = '';
+          $icon = '<span class="toggle"></span>';
         }
 ?>
         <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : null; ?>">
           <td><?php echo functions::form_draw_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($page['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
           <td><?php echo $page['id']; ?></td>
-          <td style="padding-inline-start: <?php echo $depth * 30; ?>px"><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a> <?php echo $icon; ?></td>
+          <td style="padding-inline-start: <?php echo $depth * 30; ?>px">
+            <?php echo $icon; ?>
+            <a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a>
+          </td>
           <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
