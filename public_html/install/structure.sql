@@ -359,6 +359,7 @@ CREATE TABLE `lc_orders` (
   `payment_option_id` VARCHAR(32) NOT NULL DEFAULT '',
   `payment_option_name` VARCHAR(64) NOT NULL DEFAULT '',
   `payment_transaction_id` VARCHAR(128) NOT NULL DEFAULT '',
+  `incoterm` VARCHAR(3) NOT NULL DEFAULT '',
   `reference` VARCHAR(128) NOT NULL DEFAULT '',
   `language_code` VARCHAR(2) NOT NULL DEFAULT '',
   `weight_total` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',

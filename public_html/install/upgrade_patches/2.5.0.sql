@@ -1,3 +1,6 @@
+ALTER TABLE `lc_orders`
+ADD COLUMN `incoterm` VARCHAR(3) NOT NULL DEFAULT '' AFTER `payment_receipt_url`;
+ -- --------------------------------------------------------
 ALTER TABLE `lc_order_statuses`
 ADD COLUMN `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `is_archived`,
 ADD COLUMN `stock_action` ENUM('none','reserve','commit') NOT NULL DEFAULT 'none' AFTER `is_trackable`,
@@ -90,6 +93,7 @@ SET nr.firstname = COALESCE(c.firstname, o.firstname, ''),
 nr.lastname = COALESCE(c.lastname, o.lastname, '');
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
+('defaults', 'local', 'Default Incoterm', 'Default Incoterm for new orders if nothing else is set.', 'default_incoterm', 'EXW', 'incoterms()', 19, NOW(), NOW()),
 ('listings', 'global', 'Important Notice', 'An important notice to be displayed above your website.', 'important_notice', '', 'regional_text()', 0, NOW(), NOW()),
 ('listings', 'global', 'Development Mode', 'Development mode restricts frontend access to backend users only.', 'development_mode', '0', 'toggle()', 2, NOW(), NOW());
 -- --------------------------------------------------------

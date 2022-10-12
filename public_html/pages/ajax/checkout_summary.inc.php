@@ -48,6 +48,7 @@
 
   if (!empty($shipping->data['selected'])) {
     $order->data['shipping_option'] = $shipping->data['selected'];
+    $order->data['incoterm'] = $shipping->data['selected']['incoterm'];
   }
 
   if (!empty($payment->data['selected'])) {

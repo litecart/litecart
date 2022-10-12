@@ -502,19 +502,28 @@
                   <?php echo functions::form_draw_text_field('shipping_option[name]', true); ?>
                 </div>
 
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-8">
                   <label><?php echo language::translate('title_tracking_id', 'Tracking ID'); ?></label>
                   <?php echo functions::form_draw_text_field('shipping_tracking_id', true); ?>
                 </div>
 
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                   <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
                   <span class="form-control"><?php echo weight::format($order->data['weight_total'], $order->data['weight_class']) ?></span>
                 </div>
+              </div>
 
-                <div class="form-group col-md-12">
-                  <label><?php echo language::translate('title_tracking_url', 'Tracking URL'); ?></label>
-                  <?php echo functions::form_draw_url_field('shipping_tracking_url', true); ?>
+              <div class="form-group">
+                <label><?php echo language::translate('title_tracking_url', 'Tracking URL'); ?></label>
+                <?php echo functions::form_draw_url_field('shipping_tracking_url', true); ?>
+              </div>
+
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_incoterm', 'Incoterm'); ?></label>
+                  <?php echo functions::form_draw_incoterms_list('incoterm', true); ?>
+                </div>
+
                 </div>
               </div>
 

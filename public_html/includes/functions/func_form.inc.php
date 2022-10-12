@@ -1106,6 +1106,30 @@
     }
   }
 
+  function form_draw_incoterms_list($name, $input=true, $parameters='') {
+
+    $options = [
+      ['EXW &ndash; '. language::translate('title_incoterm_exw', 'Ex Works'), 'EXW'],
+      ['FCA &ndash; '. language::translate('title_incoterm_fca', 'Free Carrier'), 'FCA'],
+      ['FAS &ndash; '. language::translate('title_incoterm_fas', 'Free Alongside Ship'), 'FAS'],
+      ['FOB &ndash; '. language::translate('title_incoterm_fob', 'Free On Board'), 'FOB'],
+      ['CFR &ndash; '. language::translate('title_incoterm_cfr', 'Cost and Freight'), 'CFR'],
+      ['CIF &ndash; '. language::translate('title_incoterm_cif', 'Cost, Insurance and Freight'), 'CIF'],
+      ['CPT &ndash; '. language::translate('title_incoterm_cpt', 'Carriage Paid To'), 'CPT'],
+      ['CIP &ndash; '. language::translate('title_incoterm_cip', 'Carriage and Insurance Paid'), 'CIP'],
+      ['DDP &ndash; '. language::translate('title_incoterm_ddp', 'Delivered Duty Paid'), 'DDP'],
+      ['DPU &ndash; '. language::translate('title_incoterm_dpu', 'Delivered At Place Unloaded'), 'DPU'],
+      ['DAP &ndash; '. language::translate('title_incoterm_dap', 'Delivered At Place'), 'DAP'],
+    ];
+
+    if (preg_match('#\[\]$#', $name)) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
   function form_draw_languages_list($name, $input=true, $multiple=false, $parameters='') {
 
     $options = [];
