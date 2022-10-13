@@ -592,7 +592,7 @@
 
     foreach ($iterator as $file) {
       if (!preg_match('#\.php$#', $file)) continue;
-      if (preg_match('#vqmod/vqcache/#', $file)) continue;
+      if (preg_match('#vmods/.cache/#', $file)) continue;
 
       $pattern = '#'. implode(['language::translate\((?:(?!\$)', '(?:(__CLASS__)?\.)?', '(?:[\'"])([^\'"]+)(?:[\'"])', '(?:,?\s+(?:[\'"])([^\'"]+)?(?:[\'"]))?', '(?:,?\s+?(?:[\'"])([^\'"]+)?(?:[\'"]))?', ')\)']) .'#';
 
@@ -604,7 +604,7 @@
         } else {
           $code = $matches[2][$i];
         }
-        $translations[$code] = strtr($matches[3][$i], ["\\r" => "\r", "\\n" => "\n"]);
+        $translations[strtolower($code)] = strtr($matches[3][$i], ["\\r" => "\r", "\\n" => "\n"]);
       }
 
     }
@@ -642,9 +642,9 @@
       echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
-    echo '<p>Create files for vQmod cache...';
+    echo '<p>Create files for vMod cache...';
 
-    if (file_put_contents(FS_DIR_APP . 'vqmod/checked.cache', '') !== false && file_put_contents(FS_DIR_APP . 'vqmod/mods.cache', '') !== false) {
+    if (file_put_contents(FS_DIR_APP . 'vmods/.cache/.checked', '') !== false && file_put_contents(FS_DIR_APP . 'vmods/.cache/.modifications', '') !== false) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
