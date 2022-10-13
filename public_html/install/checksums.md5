@@ -72,7 +72,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/modules.app/index.html
 451c654ae359640d3822c0a31373257f	admin/modules.app/run_job.inc.php
 96fdf15c94d7d14796c51967ebf65fba	admin/orders.app/add_product.inc.php
 381895587d3476f5387c80a618b4bdf9	admin/orders.app/config.inc.php
-4c7b10279a432328cbe63dab39d24e58	admin/orders.app/edit_order.inc.php
+51758502bd0c2547b2759ce8019f1f67	admin/orders.app/edit_order.inc.php
 d7d8cec5c367e100b74d215cdd8762ec	admin/orders.app/edit_order_status.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.app/index.html
 ad52130cdca342c07d8099319928afac	admin/orders.app/order_statuses.inc.php
@@ -111,7 +111,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/tax.app/index.html
 951ef54fbc764093d2720d4fef8bf520	admin/translations.app/config.inc.php
 54f4fecd029e15c2342504582f099d0c	admin/translations.app/csv.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/translations.app/index.html
-2006d8ebd95398681709da65bd1da56c	admin/translations.app/scan.inc.php
+c53d14741c92f184953297a7954e83cb	admin/translations.app/scan.inc.php
 edc9645addea2092406b86bbac336437	admin/translations.app/search.inc.php
 d028baf97da2143daa16d6b09fe49d78	admin/users.app/config.inc.php
 1cdc9b8288dcc33fb6fac8cafd9663f5	admin/users.app/edit_user.inc.php
@@ -813,7 +813,7 @@ d459f0ff7c7684a60ae0f8d79237f6fb	install/data/demo/public_html/images/products/3
 894770bd21eb3fdba20f9434825e8075	install/includes/functions.inc.php
 f6e3fd49a163d4af16f255941ccdeac1	install/includes/header.inc.php
 e8525122739a60b9823ae97956a092f5	install/index.php
-8d15fbedb665fd38fd0df4b44ff9c97a	install/install.php
+9b679bbaf1b986460fec4e21fb7b2170	install/install.php
 d9afc8f43dd4742b6f13404cb5ab30ae	install/structure.sql
 41371a4e090eb1b5a94389aa19d3a047	install/upgrade.php
 2ce261713a375a16fe2305c1ea6772c4	install/upgrade_patches/1.0.1.3.inc.php

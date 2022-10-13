@@ -79,9 +79,14 @@
         'shipping_tracking_url',
         'payment_option',
         'payment_transaction_id',
+        'payment_receipt_url',
+        'payment_terms',
+        'incoterm',
         'display_prices_including_tax',
         'reference',
         'comments',
+        'date_paid',
+        'date_dispatched',
       ];
 
       foreach ($fields as $field) {

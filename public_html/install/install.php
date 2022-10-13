@@ -313,8 +313,6 @@
 
     $config = strtr($config, $map);
 
-    define('PASSWORD_SALT', $map['{PASSWORD_SALT}']); // we need it for later
-
     if (file_put_contents('../includes/config.inc.php', $config) !== false) {
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
