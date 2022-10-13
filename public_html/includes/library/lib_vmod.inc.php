@@ -37,9 +37,9 @@
       }
 
     // If no cache is requested by browser
-      if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
-        $last_modified = time();
-      }
+      //if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
+      //  $last_modified = time();
+      //}
 
     // Load installed
       $installed_file = FS_DIR_STORAGE . 'vmods/.installed';

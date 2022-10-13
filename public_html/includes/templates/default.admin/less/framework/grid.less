@@ -40,11 +40,6 @@ html[dir="rtl"] {
   }
 }
 
-*[class*="col-"] {
-  display: block;
-  grid-column: span 12;
-}
-
 .make-grid-columns(@device: ~'') {
   .col@{device}-1 { grid-column: span 1 }
   .col@{device}-2 { grid-column: span 2 }
@@ -58,10 +53,12 @@ html[dir="rtl"] {
   .col@{device}-10 { grid-column: span 10 }
   .col@{device}-11 { grid-column: span 11 }
   .col@{device}-12 { grid-column: span 12 }
-  .col@{device}-auto { grid-column: auto / span 2 }
 }
 
 .make-grid-columns();
+
+// Backwards compatibility (col-xs-)
+.make-grid-columns(xs);
 
 @media (min-width: @media-breakpoint-sm) {
   .make-grid-columns(-sm);
