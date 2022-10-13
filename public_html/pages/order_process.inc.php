@@ -133,9 +133,30 @@
         throw new Exception($result['error']);
       }
 
-    // Update order
-      $order->data['order_status_id'] = isset($result['order_status_id']) ? $result['order_status_id'] : '';
-      $order->data['payment_transaction_id'] = isset($result['transaction_id']) ? $result['transaction_id'] : '';
+    // Mark as paid
+      if (!empty($result['is_payed'])) {
+        $order->data['date_paid'] = date('Y-m-d H:i:s');
+      }
+
+    // Set order status id
+      if (isset($result['order_status_id'])) {
+        $order->data['order_status_id'] = $result['order_status_id'];
+      }
+
+    // Set transaction id
+      if (isset($result['transaction_id'])) {
+        $order->data['payment_transaction_id'] = $result['transaction_id'];
+      }
+
+    // Set transaction date
+      if (isset($result['receipt_url'])) {
+        $order->data['payment_receipt_url'] = $result['receipt_url'];
+      }
+
+    // Set payment terms
+      if (isset($result['payment_terms'])) {
+        $order->data['payment_terms'] = $result['payment_terms'];
+      }
     }
 
   // Save order

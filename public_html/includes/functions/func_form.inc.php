@@ -1329,6 +1329,27 @@
     }
   }
 
+  function form_draw_payment_terms_list($name, $input=true, $parameters='') {
+
+    $options = [
+      ['PIA &ndash; '. language::translate('title_payment_terms_pia', 'Payment In Advance'), 'PIA'],
+      ['PWO &ndash; '. language::translate('title_payment_terms_pwo', 'Payment With Order'), 'PWO'],
+      ['CBS &ndash; '. language::translate('title_payment_terms_cbs', 'Cash Before Shipment'), 'CBS'],
+      ['COD &ndash; '. language::translate('title_payment_terms_cod', 'Cash On Delivery'), 'COD'],
+      ['NET7 &ndash; '. language::translate('title_payment_terms_net7', 'Payment 7 days after invoice date'), 'NET7'],
+      ['NET10 &ndash; '. language::translate('title_payment_terms_net10', 'Payment 10 days after invoice date'), 'NET10'],
+      ['NET20 &ndash; '. language::translate('title_payment_terms_net20', 'Payment 20 days after invoice date'), 'NET20'],
+      ['NET30 &ndash; '. language::translate('title_payment_terms_net30', 'Payment 30 days after invoice date'), 'NET30'],
+    ];
+
+    if (preg_match('#\[\]$#', $name)) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
   function form_draw_product_field($name, $value=true, $parameters='') {
 
     if ($value === true) $value = form_reinsert_value($name);

@@ -479,10 +479,27 @@
                   <label><?php echo language::translate('title_name', 'Name'); ?></label>
                   <?php echo functions::form_draw_text_field('payment_option[name]', true); ?>
                 </div>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_transaction_id', 'Transaction ID'); ?></label>
+                <?php echo functions::form_draw_text_field('payment_transaction_id', true); ?>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_receipt_url', 'Receipt URL'); ?></label>
+                <?php echo functions::form_draw_url_field('payment_receipt_url', true); ?>
+              </div>
+
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_payment_terms', 'Payment Terms'); ?></label>
+                  <?php echo functions::form_draw_payment_terms_list('payment_terms', true); ?>
+                </div>
 
                 <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_transaction_id', 'Transaction ID'); ?></label>
-                  <?php echo functions::form_draw_text_field('payment_transaction_id', true); ?>
+                  <label><?php echo language::translate('title_date_paid', 'Date Paid'); ?></label>
+                  <?php echo functions::form_draw_datetime_field('date_paid', true); ?>
                 </div>
               </div>
             </div>
@@ -524,6 +541,9 @@
                   <?php echo functions::form_draw_incoterms_list('incoterm', true); ?>
                 </div>
 
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_date_dispatched', 'Date Dispatched'); ?></label>
+                  <?php echo functions::form_draw_datetime_field('date_dispatched', true); ?>
                 </div>
               </div>
 
