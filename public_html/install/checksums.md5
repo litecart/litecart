@@ -120,7 +120,7 @@ b0fd9eff59c1acb1a77d591dbadf3588	admin/users.app/users.inc.php
 f4d68321037efe916c386551430b4269	admin/vmods.app/config.inc.php
 05d6fa6a079d3209624e14a5a7b51477	admin/vmods.app/configure.inc.php
 3a15c105a7536c787fe6e7fea01f3313	admin/vmods.app/download.inc.php
-5c7d18a3b570a841ae54d88915328592	admin/vmods.app/edit_vmod.inc.php
+f3770e2c0f4b237041a34334bb6e5d75	admin/vmods.app/edit_vmod.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/vmods.app/index.html
 12bfc6df4c3c71a0b0deba18a1ecba2d	admin/vmods.app/sources.inc.php
 d12c9ef685a2f9fe035de1f88568076f	admin/vmods.app/test.inc.php
@@ -506,7 +506,7 @@ e2af395923278bea690f1e656c401291	includes/functions/func_csv.inc.php
 2739e20c6310bd01a89303e6d7910fab	includes/functions/func_draw.inc.php
 2341090b7652ec1d4486dc35406ab975	includes/functions/func_escape.inc.php
 7b9a8cf0badc818c5942fd5c6a7af7e2	includes/functions/func_file.inc.php
-57e82e44bedbe812cb75eb8810f6c583	includes/functions/func_form.inc.php
+fae742cc2648397e5fa0c8168140e951	includes/functions/func_form.inc.php
 a7a48a2bc12fdba9d0d3e96d71c6095e	includes/functions/func_format.inc.php
 c95e56a0bd50153bdc4dda7362190fcd	includes/functions/func_general.inc.php
 9e8bdd749d42a3e578e9a61fb4b5ddc1	includes/functions/func_image.inc.php
@@ -813,8 +813,8 @@ d459f0ff7c7684a60ae0f8d79237f6fb	install/data/demo/public_html/images/products/3
 894770bd21eb3fdba20f9434825e8075	install/includes/functions.inc.php
 f6e3fd49a163d4af16f255941ccdeac1	install/includes/header.inc.php
 e8525122739a60b9823ae97956a092f5	install/index.php
-9b679bbaf1b986460fec4e21fb7b2170	install/install.php
-d9afc8f43dd4742b6f13404cb5ab30ae	install/structure.sql
+a7144f22d85d56764bd3bedf64602a2d	install/install.php
+f948f4799318eb90c9ddf3e3708239aa	install/structure.sql
 41371a4e090eb1b5a94389aa19d3a047	install/upgrade.php
 2ce261713a375a16fe2305c1ea6772c4	install/upgrade_patches/1.0.1.3.inc.php
 d6fc90da968f9154fb0bca5d97717b0c	install/upgrade_patches/1.0.1.4.inc.php
