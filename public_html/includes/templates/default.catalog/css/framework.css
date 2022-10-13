@@ -1697,7 +1697,7 @@ ul.list-inline li {
 }
 @media (min-width: 768px) {
   .navbar-form {
-    margin: 0.5em 11px 0 11px;
+    margin: 0.4em;
   }
 }
 .navbar-toggle .icon-bar {
