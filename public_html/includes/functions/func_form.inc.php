@@ -1338,6 +1338,7 @@
       ['COD &ndash; '. language::translate('title_payment_terms_cod', 'Cash On Delivery'), 'COD'],
       ['NET7 &ndash; '. language::translate('title_payment_terms_net7', 'Payment 7 days after invoice date'), 'NET7'],
       ['NET10 &ndash; '. language::translate('title_payment_terms_net10', 'Payment 10 days after invoice date'), 'NET10'],
+      ['NET14 &ndash; '. language::translate('title_payment_terms_net14', 'Payment 14 days after invoice date'), 'NET14'],
       ['NET20 &ndash; '. language::translate('title_payment_terms_net20', 'Payment 20 days after invoice date'), 'NET20'],
       ['NET30 &ndash; '. language::translate('title_payment_terms_net30', 'Payment 30 days after invoice date'), 'NET30'],
     ];
