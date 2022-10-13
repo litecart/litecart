@@ -245,6 +245,11 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
                 <?php echo functions::form_draw_text_field('description', true); ?>
               </div>
 
+              <div class="form-group">
+                <label><?php echo language::translate('title_author', 'Author'); ?></label>
+                <?php echo functions::form_draw_text_field('author', true); ?>
+              </div>
+
               <?php if (!empty($vmod->data['id'])) { ?>
               <div class="row">
                 <div class="form-group col-md-6">
