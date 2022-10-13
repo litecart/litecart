@@ -11,6 +11,9 @@
   --site-background-color: #f0f0f0;
   --page-background-color: #fff;
   --sidebar-width: 300px;
+  /* Important Notice */
+  --important-notice-background-color: #333;
+  --important-notice-text-color: #fff;
   /* Cookie Notice */
   --cookie-notice-background-color: rgba(0, 0, 0, 0.75);
   --cookie-notice-text-color: #fff;

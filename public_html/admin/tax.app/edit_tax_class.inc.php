@@ -59,12 +59,14 @@
     }
   }
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo !empty($tax_class->data['id']) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_add_new_tax_class', 'Add New Tax Class'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo !empty($tax_class->data['id']) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_add_new_tax_class', 'Add New Tax Class'); ?>
+    </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('tax_class_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
       <div class="row">
@@ -84,10 +86,10 @@
         <?php echo functions::form_draw_text_field('description', true); ?>
       </div>
 
-      <div class="panel-action btn-group">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+      <div class="card-action">
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo !empty($tax_class->data['id']) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\\"'. language::translate('text_are_you_sure', 'Are you sure?') .'\\")) return false;"', 'delete') : ''; ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (isset($tax_class->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>

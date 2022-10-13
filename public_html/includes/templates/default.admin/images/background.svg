@@ -1,5 +1,5 @@
-<svg viewBox="0 0 1920 1080" width="1920" height="1080" xmlns="http://www.w3.org/2000/svg">
-  <path fill="url(#_Radial1)" d="M0 0h711.339v1080H0z" transform="matrix(2.69913 0 0 1 0 -4)"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920px" height="1080px">
+  <path fill="url(#_Radial1)" d="M0 0h711.339v1080H0z" transform="matrix(2.69913 0 0 1 0 -4)" opacity="0.9"/>
   <defs>
     <radialGradient id="_Radial1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(355.67 -4 .8336 540 355.67 544)">
       <stop offset="0" stop-color="#fff"/>

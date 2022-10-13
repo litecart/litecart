@@ -570,11 +570,11 @@
       );
 
       while ($product_image = database::fetch($products_images_query)) {
-        if (is_file(FS_DIR_APP . 'images/' . $product_image['filename'])) {
-          unlink(FS_DIR_APP . 'images/' . $product_image['filename']);
+        if (is_file(FS_DIR_STORAGE . 'images/' . $product_image['filename'])) {
+          unlink(FS_DIR_STORAGE . 'images/' . $product_image['filename']);
         }
 
-        functions::image_delete_cache(FS_DIR_APP . 'images/' . $product_image['filename']);
+        functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $product_image['filename']);
 
         database::query(
           "delete from ". DB_TABLE_PREFIX ."products_images
@@ -598,10 +598,10 @@
             $this->data['images'][$key]['id'] = database::insert_id();
           }
 
-          if (!empty($this->data['images'][$key]['new_filename']) && !is_file(FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename'])) {
-            functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['images'][$key]['filename']);
-            functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename']);
-            rename(FS_DIR_APP . 'images/' . $this->data['images'][$key]['filename'], FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename']);
+          if (!empty($this->data['images'][$key]['new_filename']) && !is_file(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename'])) {
+            functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['filename']);
+            functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename']);
+            rename(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['filename'], FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename']);
             $this->data['images'][$key]['filename'] = $this->data['images'][$key]['new_filename'];
           }
 
@@ -733,7 +733,7 @@
         $this->save();
       }
 
-      if (!is_dir(FS_DIR_APP . 'images/products/')) mkdir(FS_DIR_APP . 'images/products/', 0777);
+      if (!is_dir(FS_DIR_STORAGE . 'images/products/')) mkdir(FS_DIR_STORAGE . 'images/products/', 0777);
 
       if (!$image = new ent_image($file)) {
         throw new Exception('Failed decoding image');
@@ -741,8 +741,8 @@
 
     // 456-Fancy-product-title-N.jpg
       $i=1;
-      while (empty($filename) || is_file(FS_DIR_APP . 'images/' . $filename)) {
-        $filename = 'products/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'-'. $i++ .'.'. $image->type();
+      while (empty($filename) || is_file(FS_DIR_STORAGE . 'images/' . $filename)) {
+        $filename = 'products/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'-'. $i++ .'.'. $image->type();
       }
 
       $priority = count($this->data['images'])+1;
@@ -752,11 +752,11 @@
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
-      if (!$image->write(FS_DIR_APP . 'images/' . $filename, 90)) {
+      if (!$image->write(FS_DIR_STORAGE . 'images/' . $filename, 90)) {
         throw new Exception('Failed writing image to folder');
       }
 
-      functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
+      functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $filename);
 
       database::query(
         "insert into ". DB_TABLE_PREFIX ."products_images

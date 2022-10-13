@@ -69,12 +69,14 @@ form[name="filter_form"] li {
 }
 </style>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_most_shopping_customers', 'Most Shopping Customers'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_most_shopping_customers', 'Most Shopping Customers'); ?>
+    </div>
   </div>
 
-  <div class="panel-action">
+  <div class="card-action">
     <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
       <?php echo functions::form_draw_hidden_field('app'); ?>
       <?php echo functions::form_draw_hidden_field('doc'); ?>
@@ -93,29 +95,29 @@ form[name="filter_form"] li {
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 
-  <div class="panel-body">
-    <table class="table table-striped table-hover data-table">
-      <thead>
-        <tr>
-          <th><?php echo language::translate('title_customer', 'Customer'); ?></th>
-          <th width="100%"><?php echo language::translate('title_email_address', 'Email Address'); ?></th>
-          <th style="text-align: center;"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
-        </tr>
-      </thead>
+  <table class="table table-striped table-hover data-table">
+    <thead>
+      <tr>
+        <th><?php echo language::translate('title_customer', 'Customer'); ?></th>
+        <th class="main"><?php echo language::translate('title_email_address', 'Email Address'); ?></th>
+        <th class="text-center"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
+      </tr>
+    </thead>
 
-      <tbody>
-        <?php foreach ($customers as $customer) { ?>
-        <tr>
+    <tbody>
+      <?php foreach ($customers as $customer) { ?>
+      <tr>
           <td><?php echo !empty($customer['id']) ? '<a href="'. document::link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id']]) .'">'. functions::escape_html($customer['name']) .'</a>' : functions::escape_html($customer['name']) .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
-          <td><?php echo $customer['email']; ?></td>
-          <td style="text-align: end;"><?php echo currency::format($customer['total_amount'], false, settings::get('store_currency_code')); ?></td>
-        </tr>
-        <?php } ?>
-      </tbody>
-    </table>
-  </div>
+        <td><?php echo $customer['email']; ?></td>
+        <td class="text-end"><?php echo currency::format($customer['total_amount'], false, settings::get('store_currency_code')); ?></td>
+      </tr>
+      <?php } ?>
+    </tbody>
+  </table>
 
-  <div class="panel-footer">
+  <?php if ($num_pages > 1) { ?>
+  <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>

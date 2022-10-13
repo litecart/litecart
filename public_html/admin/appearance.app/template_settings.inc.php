@@ -115,12 +115,14 @@
   }
 ?>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_template_settings', 'Template Settings'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_template_settings', 'Template Settings'); ?>
+    </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('template_settings_form', 'post', null, false, 'style="max-width: 960px;"'); ?>
 
       <table class="table table-striped table-hover data-table">
@@ -142,10 +144,8 @@
             </td>
             <td><?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true); ?></td>
             <td class="text-end">
-              <div class="btn-group">
-                <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
-                <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-              </div>
+              <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+              <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
             </td>
           </tr>
           <?php } else { ?>
@@ -156,7 +156,7 @@
                 <?php echo nl2br($setting['value']); ?>
               </div>
             </td>
-            <td class="text-end"><a href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
           <?php } ?>

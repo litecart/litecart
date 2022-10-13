@@ -2,7 +2,7 @@
 
 // Delete old files
   $deleted_files = [
-    FS_DIR_APP . 'images/countries/fam.png',
+    FS_DIR_STORAGE . 'images/countries/fam.png',
   ];
 
   foreach ($deleted_files as $pattern) {

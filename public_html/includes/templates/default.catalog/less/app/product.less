@@ -82,6 +82,21 @@
     border-radius: var(--border-radius);
   }
 
+  .stock-notice {
+    margin-top: 1em;
+    padding: .5em;
+    border-radius: var(--border-radius);
+    border: 1px #86cb00 solid;
+    color: #86cb00;
+    &:empty {
+      display: none;
+    }
+    &.warning {
+      color: #c00;
+      border-color: #c00;
+    }
+  }
+
   .social-bookmarks {
     font-size: 1.75em;
     margin: var(--gutter-size) 0;

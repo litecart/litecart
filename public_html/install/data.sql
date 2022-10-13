@@ -268,19 +268,37 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 (5, 'job_cache_cleaner', 'job', 1, 0, '{"status":"1","priority":"0"}', '', NOW(), NOW()),
 (6, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `is_archived`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'fa-money', '#c0c0c0', 0, 0, 1, NOW(), NOW()),
-(2, 'fa-clock-o', '#d7d96f', 1, 0, 2, NOW(), NOW()),
-(3, 'fa-cog', '#ffa851', 1, 0, 3, NOW(), NOW()),
-(4, 'fa-truck', '#99cc66', 1, 1, 4, NOW(), NOW()),
-(5, 'fa-times', '#ff6666', 0, 1, 5, NOW(), NOW());
+INSERT INTO `lc_order_statuses` (`id`, `state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
+(1, 'created', 'fa-plus', '#c0c0c0', 0, 0, 0, 'none', NOW(), NOW()),
+(2, 'on_hold', 'fa-money', '#c0c0c0', 0, 0, 0, 'none', NOW(), NOW()),
+(3, 'on_hold', 'fa-pause', '#c0c0c0', 1, 0, 0, 'none', NOW(), NOW()),
+(4, 'ready', 'fa-clock-o', '#bec11d', 1, 0, 0, 'reserve', NOW(), NOW()),
+(5, 'delayed', 'fa-hourglass-half', '#e3ab44', 1, 0, 0, 'reserve', NOW(), NOW()),
+(6, 'processing', 'fa-cog', '#e3ab44', 1, 0, 0, 'reserved', NOW(), NOW()),
+(7, 'completed', 'fa-check', '#99cc66', 1, 0, 1, 'commit', NOW(), NOW()),
+(8, 'dispatched', 'fa-truck', '#99cc66', 1, 0, 1, 'commit', NOW(), NOW()),
+(9, 'in_transit', 'fa-truck', '#e3ab44', 1, 0, 1, 'commit', NOW(), NOW()),
+(10, 'delivered', 'fa-home', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),
+(11, 'returning', 'fa-undo', '#e3ab44', 1, 0, 1, 'reserve', NOW(), NOW()),
+(12, 'returned', 'fa-building', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),
+(13, 'cancelled', 'fa-times', '#ff6666', 0, 1, 0, 'none', NOW(), NOW()),
+(14, 'cancelled', 'fa-exclamation', '#ff6666', 0, 1, 0, 'none', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
-(1, 1, 'en', 'Awaiting payment', ''),
-(2, 2, 'en', 'Pending', ''),
-(3, 3, 'en', 'Processing', ''),
-(4, 4, 'en', 'Dispatched', ''),
-(5, 5, 'en', 'Cancelled', '');
+(1, 1, 'en', 'Created', ''),
+(2, 2, 'en', 'Awaiting payment', ''),
+(3, 3, 'en', 'On hold', ''),
+(4, 4, 'en', 'Ready', ''),
+(5, 5, 'en', 'Delayed', ''),
+(6, 6, 'en', 'Processing', ''),
+(7, 7, 'en', 'Completed', ''),
+(8, 8, 'en', 'Dispatched', ''),
+(9, 9, 'en', 'In Transit', ''),
+(10, 10, 'en', 'Delivered', ''),
+(11, 11, 'en', 'Returning', ''),
+(12, 12, 'en', 'Returned', ''),
+(13, 13, 'en', 'Cancelled', ''),
+(14, 14, 'en', 'Fraud', '');
 -- --------------------------------------------------------
 INSERT INTO `lc_quantity_units` (`id`, `decimals`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 0, 0, NOW(), NOW());
@@ -325,6 +343,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('defaults', 'global', 'Default Quantity Unit', 'The default quantity unit, if not otherwise set.', 'default_quantity_unit_id', '1', 'quantity_unit()', 16, NOW(), NOW()),
 ('defaults', 'global', 'Default Sold Out Status', 'The default sold-out status, if not otherwise set.', 'default_sold_out_status_id', '1', 'sold_out_status()', 17, NOW(), NOW()),
 ('defaults', 'global', 'Default Delivery Status', 'The default delivery status, if not otherwise set.', 'default_delivery_status_id', '1', 'delivery_status()', 18, NOW(), NOW()),
+('defaults', 'local', 'Default Incoterm', 'Default Incoterm for new orders if nothing else is set.', 'default_incoterm', 'EXW', 'incoterms()', 19, NOW(), NOW()),
 ('email', 'local', 'Send Emails', 'Whether or not the platform should deliver outgoing emails.', 'email_status', '1', 'toggle("y/n")', 1, NOW(), NOW()),
 ('email', 'local', 'SMTP Enabled', 'Whether or not to use an SMTP server for delivering email.', 'smtp_status', '0', 'toggle("e/d")', 10, NOW(), NOW()),
 ('email', 'local', 'SMTP Host', 'SMTP hostname, e.g. smtp.myprovider.com.', 'smtp_host', 'localhost', 'text()', 11, NOW(), NOW()),
@@ -336,8 +355,9 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('customer_details', 'local', 'Company Field', 'Display the field for the customer\'s company name.', 'customer_field_company', '1', 'toggle("y/n")', 21, NOW(), NOW()),
 ('customer_details', 'local', 'Tax ID Field', 'Display the field for the customer\'s tax ID.', 'customer_field_tax_id', '1', 'toggle("y/n")', 22, NOW(), NOW()),
 ('customer_details', 'local', 'Zone/State/Province Field', 'Display the field for the customer\'s zone/state.', 'customer_field_zone', '1', 'toggle("y/n")', 23, NOW(), NOW()),
-('listings', 'global', 'Maintenance Mode', 'Setting the store in maintenance mode will prevent users from browsing your site.', 'maintenance_mode', '0', 'toggle()', 2, NOW(), NOW()),
-('listings', 'global', 'Catalog Only Mode', 'Disables the cart and checkout features leaving only a browsable catalog.', 'catalog_only_mode', '0', 'toggle("t/f")', 1, NOW(), NOW()),
+('listings', 'global', 'Maintenance Mode', 'Setting the store in maintenance mode will prevent users from browsing your site.', 'maintenance_mode', '0', 'toggle()', 1, NOW(), NOW()),
+('listings', 'global', 'Important Notice', 'An important notice to be displayed above your website.', 'important_notice', '', 'regional_text()', 1, NOW(), NOW()),
+('listings', 'global', 'Catalog Only Mode', 'Disables the cart and checkout features leaving only a browsable catalog.', 'catalog_only_mode', '0', 'toggle("t/f")', 3, NOW(), NOW()),
 ('listings', 'local', 'Items Per Page', 'The number of items to be displayed per page.', 'items_per_page', '20', 'number()', 10, NOW(), NOW()),
 ('listings', 'local', 'Data Table Rows', 'The number of data table rows to be displayed per page.', 'data_table_rows_per_page', '25', 'text()', 11, NOW(), NOW()),
 ('listings', 'local', 'Display Stock Count', 'Show the available amount of products in stock.', 'display_stock_count', '1', 'toggle()', 12, NOW(), NOW()),

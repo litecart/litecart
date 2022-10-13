@@ -12,6 +12,14 @@
 </head>
 <body>
 
+<?php if ($important_notice) { ?>
+<div id="important-notice">
+  <div class="twelve-eighty">
+    <?php echo $important_notice; ?>
+  </div>
+</div>
+<?php } ?>
+
 <div id="page" class="fourteen-forty">
 
   <?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>

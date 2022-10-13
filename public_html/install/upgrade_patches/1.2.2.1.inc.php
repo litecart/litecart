@@ -13,5 +13,5 @@
     }
   }
 
-  if (!file_exists(FS_DIR_APP . 'data/blacklist.txt')) file_xcopy(FS_DIR_APP . 'install/data/default/public_html/data/blacklist.txt', FS_DIR_APP . 'data/blacklist.txt');
-  if (!file_exists(FS_DIR_APP . 'data/whitelist.txt')) file_xcopy(FS_DIR_APP . 'install/data/default/public_html/data/whitelist.txt', FS_DIR_APP . 'data/whitelist.txt');
+  if (!file_exists(FS_DIR_STORAGE . 'data/blacklist.txt')) file_xcopy(FS_DIR_APP . 'install/data/default/public_html/data/blacklist.txt', FS_DIR_STORAGE . 'data/blacklist.txt');
+  if (!file_exists(FS_DIR_STORAGE . 'data/whitelist.txt')) file_xcopy(FS_DIR_APP . 'install/data/default/public_html/data/whitelist.txt', FS_DIR_STORAGE . 'data/whitelist.txt');

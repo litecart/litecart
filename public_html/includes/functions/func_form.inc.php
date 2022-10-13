@@ -47,45 +47,13 @@
 
   function form_draw_button($name, $value, $type='submit', $parameters='', $icon='') {
 
-    if (!empty($icon)) {
-      switch($icon) {
-        case 'add':
-          $icon = functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"');
-          break;
-        case 'cancel':
-          $icon = functions::draw_fonticon('fa-times');
-          break;
-        case 'remove':
-        case 'delete':
-          $icon = functions::draw_fonticon('fa-trash-o');
-          break;
-        case 'ok':
-          $icon = functions::draw_fonticon('fa-check');
-          break;
-        case 'on':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #88cc44;"');
-          break;
-        case 'off':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6644;"');
-          break;
-        case 'save':
-          $icon = functions::draw_fonticon('fa-floppy-o');
-          break;
-        case 'send':
-          $icon = functions::draw_fonticon('fa-paper-plane');
-          break;
-        default:
-          $icon = functions::draw_fonticon($icon);
-      }
-    }
-
     if (is_array($value)) {
       list($value, $title) = $value;
     } else {
       $title = $value;
     }
 
-    return '<button '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' type="'. functions::escape_html($type) .'" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? $icon . ' ' : '') . $title .'</button>';
+    return '<button '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' type="'. functions::escape_html($type) .'" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? functions::draw_fonticon($icon) . ' ' : '') . $title .'</button>';
   }
 
   function form_draw_captcha_field($name, $id, $parameters='') {
@@ -133,7 +101,13 @@
   function form_draw_checkbox($name, $value, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name, $value);
 
-    return '<input type="checkbox" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" '. ($input == $value ? ' checked' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
+    return '<input class="form-check" type="checkbox" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" '. ($input == $value ? ' checked' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
+  }
+
+  function form_draw_code_field($name, $value=true, $parameters='') {
+    if ($value === true) $value = form_reinsert_value($name);
+
+    return '<textarea '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-code"' : '') .' name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. functions::escape_html($value) .'</textarea>';
   }
 
   function form_draw_color_field($name, $value=true, $parameters='') {
@@ -217,7 +191,7 @@
       $value = round((float)$value, $decimals);
     }
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="decimal" '. (($min != '') ? 'min="'. (float)$min .'"' : false) . (($max != '') ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) . (!preg_match('#step="([^"]+)?"#', $parameters) ? ' step="any"' : '') .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="decimal" '. (($min != '') ? 'min="'. (float)$min .'"' : '') . (($max != '') ? ' max="'. (float)$max .'"' : '') . (($parameters) ? ' '.$parameters : false) . (!preg_match('#step="([^"]+)?"#', $parameters) ? ' step="any"' : '') .' />';
   }
 
   function form_draw_email_field($name, $value=true, $parameters='') {
@@ -265,32 +239,7 @@
       $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     }
 
-    if (!empty($icon)) {
-      switch($icon) {
-        case 'add':
-          $icon = functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"');
-          break;
-        case 'cancel':
-          $icon = functions::draw_fonticon('fa-times');
-          break;
-        case 'delete':
-          $icon = functions::draw_fonticon('fa-trash-o');
-          break;
-        case 'on':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #88cc44;"');
-          break;
-        case 'off':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6644;"');
-          break;
-        case 'save':
-          $icon = functions::draw_fonticon('fa-floppy-o');
-          break;
-        default:
-          $icon = functions::draw_fonticon($icon);
-      }
-    }
-
-    return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. functions::escape_html($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. (!empty($icon) ? $icon . ' ' : false) . $title .'</a>';
+    return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. functions::escape_html($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. (!empty($icon) ? functions::draw_fonticon($icon) . ' ' : false) . $title .'</a>';
   }
 
   function form_draw_month_field($name, $value=true, $parameters='') {
@@ -336,7 +285,7 @@
   function form_draw_radio_button($name, $value, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name, $value);
 
-    return '<input type="radio" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" '. ($input == $value ? ' checked' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
+    return '<input class="form-check" type="radio" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" '. ($input == $value ? ' checked' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
   }
 
   function form_draw_range_slider($name, $value=true, $min='', $max='', $step='', $parameters='') {
@@ -347,7 +296,7 @@
 
   function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='') {
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-text"><img src="'. document::href_link(WS_DIR_APP . 'images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-text" style="font-family: monospace;">'. $language_code .'</span>' . PHP_EOL
          . '  ' . form_draw_text_field($name, $value, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -355,7 +304,7 @@
   function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='') {
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-text" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_APP . 'images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-text" style="font-family: monospace;">'. $language_code .'</span>' . PHP_EOL
          . '  ' . form_draw_textarea($name, $value, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -363,7 +312,7 @@
   function form_draw_regional_wysiwyg_field($language_code, $name, $value=true, $parameters='') {
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-text" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_APP . 'images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-text" style="font-family: monospace;">'. $language_code .'</span>' . PHP_EOL
          . '  ' . form_draw_wysiwyg_field($name, $value, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -478,36 +427,75 @@
   function form_draw_toggle($name, $input=true, $type='e/d', $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
-    $input = in_array(strtolower($input), ['1', 'active', 'enabled', 'on', 'true', 'yes']) ? '1' : '0';
+    $input = preg_match('#^(1|active|enabled|on|true|yes)$#i', $input) ? '1' : '0';
 
     switch ($type) {
       case 'a/i':
-        $true_text = language::translate('title_active', 'Active');
-        $false_text = language::translate('title_inactive', 'Inactive');
+        $options = [
+          '1' => language::translate('title_active', 'Active'),
+          '0' => language::translate('title_inactive', 'Inactive'),
+        ];
         break;
+
       case 'e/d':
-        $true_text = language::translate('title_enabled', 'Enabled');
-        $false_text = language::translate('title_disabled', 'Disabled');
+        $options = [
+          '1' => language::translate('title_enabled', 'Enabled'),
+          '0' => language::translate('title_disabled', 'Disabled'),
+        ];
         break;
+
       case 'y/n':
-        $true_text = language::translate('title_yes', 'Yes');
-        $false_text = language::translate('title_no', 'No');
+        $options = [
+          '1' => language::translate('title_yes', 'Yes'),
+          '0' => language::translate('title_no', 'No'),
+        ];
         break;
+
       case 'o/o':
-        $true_text = language::translate('title_on', 'On');
-        $false_text = language::translate('title_off', 'Off');
+        $options = [
+          '1' => language::translate('title_on', 'On'),
+          '0' => language::translate('title_off', 'Off'),
+        ];
         break;
+
       case 't/f':
       default:
-        $true_text = language::translate('title_true', 'True');
-        $false_text = language::translate('title_false', 'False');
+        $options = [
+          '1' => language::translate('title_true', 'True'),
+          '0' => language::translate('title_false', 'False'),
+        ];
         break;
     }
 
-    return '<div class="btn-group btn-block btn-group-inline" data-toggle="buttons">'. PHP_EOL
-         . '  <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. ($input ? ' active' : '') .'"' : '') .'><input type="radio" name="'. functions::escape_html($name) .'" value="1" '. (($input == '1') ? 'checked' : '') .' />'. $true_text .'</label>'. PHP_EOL
-         . '  <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (!$input ? ' active' : '') .'"' : '') .'><input type="radio" name="'. functions::escape_html($name) .'" value="0" '. (($input == '0') ? 'checked' : '') .' />'. $false_text .'</label>' . PHP_EOL
-         . '</div>';
+    return form_draw_toggle_buttons($name, $options, $input, $parameters);
+  }
+
+  function form_draw_toggle_buttons($name, $options, $input=true, $parameters='') {
+
+    if ($input === true) $input = form_reinsert_value($name);
+
+    $html = '<div class="btn-group btn-block btn-group-inline" data-toggle="buttons">'. PHP_EOL;
+
+    $is_numerical_index = (array_keys($options) === range(0, count($options) - 1));
+
+    foreach ($options as $key => $option) {
+
+      if (!is_array($option)) {
+        if ($is_numerical_index) {
+          $option = [$option, $option];
+        } else {
+          $option = [$option, $key];
+        }
+      }
+
+      $html .= '  <label class="btn btn-default'. ($input == $option[1] ? ' active' : '') .'">' . PHP_EOL
+             . '    <input type="radio" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($option[1]) .'"'. (!strcmp($input, $option[1]) ? ' checked' : '') . (!empty($option[2]) ? ' '. $option[2] : '') .' />'. $option[0]
+             . '  </label>'. PHP_EOL;
+    }
+
+    $html .= '</div>';
+
+    return $html;
   }
 
   function form_draw_url_field($name, $value=true, $parameters='') {
@@ -647,6 +635,10 @@
       case 'email':
         return form_draw_email_field($name, $input, $parameters);
 
+      case 'file':
+      case 'files':
+        return form_draw_files_list($name, $options[0], $input, $parameters);
+
       case 'geo_zone':
         return form_draw_geo_zones_list($name, $input, false, $parameters);
 
@@ -755,6 +747,9 @@
 
       case 'tax_classes':
         return form_draw_tax_classes_list($name, $input, true, $parameters);
+
+      case 'upload':
+        return form_draw_file_field($name, $parameters);
 
       case 'user':
         return form_draw_users_list($name, $input, false, $parameters);
@@ -1064,6 +1059,27 @@
     }
   }
 
+  function form_draw_files_list($name, $glob, $input=true, $parameters='') {
+
+    $options = [];
+
+    foreach (glob(FS_DIR_APP . $glob) as $file) {
+      $file = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file);
+      if (is_dir(FS_DIR_APP . $file)) {
+        $options[] = [basename($file).'/', $file.'/'];
+      } else {
+        $options[] = [basename($file), $file];
+      }
+    }
+
+    if (preg_match('#\[\]$#', $name)) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
   function form_draw_geo_zones_list($name, $input=true, $multiple=false, $parameters='') {
 
     $geo_zones_query = database::query(
@@ -1086,6 +1102,30 @@
     if ($multiple) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
+  function form_draw_incoterms_list($name, $input=true, $parameters='') {
+
+    $options = [
+      ['EXW &ndash; '. language::translate('title_incoterm_exw', 'Ex Works'), 'EXW'],
+      ['FCA &ndash; '. language::translate('title_incoterm_fca', 'Free Carrier'), 'FCA'],
+      ['FAS &ndash; '. language::translate('title_incoterm_fas', 'Free Alongside Ship'), 'FAS'],
+      ['FOB &ndash; '. language::translate('title_incoterm_fob', 'Free On Board'), 'FOB'],
+      ['CFR &ndash; '. language::translate('title_incoterm_cfr', 'Cost and Freight'), 'CFR'],
+      ['CIF &ndash; '. language::translate('title_incoterm_cif', 'Cost, Insurance and Freight'), 'CIF'],
+      ['CPT &ndash; '. language::translate('title_incoterm_cpt', 'Carriage Paid To'), 'CPT'],
+      ['CIP &ndash; '. language::translate('title_incoterm_cip', 'Carriage and Insurance Paid'), 'CIP'],
+      ['DDP &ndash; '. language::translate('title_incoterm_ddp', 'Delivered Duty Paid'), 'DDP'],
+      ['DPU &ndash; '. language::translate('title_incoterm_dpu', 'Delivered At Place Unloaded'), 'DPU'],
+      ['DAP &ndash; '. language::translate('title_incoterm_dap', 'Delivered At Place'), 'DAP'],
+    ];
+
+    if (preg_match('#\[\]$#', $name)) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
@@ -1201,7 +1241,7 @@
     $query = database::query(
       "select os.id, osi.name from ". DB_TABLE_PREFIX ."order_statuses os
       left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = os.id and osi.language_code = '". database::input(language::$selected['code']) ."')
-      order by priority, name;"
+      order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, osi.name asc;"
     );
 
     $options = [];
@@ -1285,6 +1325,27 @@
     if ($multiple) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
+  function form_draw_payment_terms_list($name, $input=true, $parameters='') {
+
+    $options = [
+      ['PIA &ndash; '. language::translate('title_payment_terms_pia', 'Payment In Advance'), 'PIA'],
+      ['PWO &ndash; '. language::translate('title_payment_terms_pwo', 'Payment With Order'), 'PWO'],
+      ['CBS &ndash; '. language::translate('title_payment_terms_cbs', 'Cash Before Shipment'), 'CBS'],
+      ['COD &ndash; '. language::translate('title_payment_terms_cod', 'Cash On Delivery'), 'COD'],
+      ['NET7 &ndash; '. language::translate('title_payment_terms_net7', 'Payment 7 days after invoice date'), 'NET7'],
+      ['NET10 &ndash; '. language::translate('title_payment_terms_net10', 'Payment 10 days after invoice date'), 'NET10'],
+      ['NET20 &ndash; '. language::translate('title_payment_terms_net20', 'Payment 20 days after invoice date'), 'NET20'],
+      ['NET30 &ndash; '. language::translate('title_payment_terms_net30', 'Payment 30 days after invoice date'), 'NET30'],
+    ];
+
+    if (preg_match('#\[\]$#', $name)) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }

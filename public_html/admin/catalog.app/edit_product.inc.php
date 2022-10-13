@@ -182,21 +182,23 @@
 }
 </style>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product'); ?>
+    </div>
   </div>
 
-  <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-attributes"><?php echo language::translate('title_attributes', 'Attributes'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-options"><?php echo language::translate('title_options', 'Options'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-stock"><?php echo language::translate('title_stock', 'Stock'); ?></a></li>
-  </ul>
+  <nav class="nav nav-tabs">
+    <a class="nav-link active" data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a>
+    <a class="nav-link" data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a>
+    <a class="nav-link" data-toggle="tab" href="#tab-attributes"><?php echo language::translate('title_attributes', 'Attributes'); ?></a>
+    <a class="nav-link" data-toggle="tab" href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a>
+    <a class="nav-link" data-toggle="tab" href="#tab-options"><?php echo language::translate('title_options', 'Options'); ?></a>
+    <a class="nav-link" data-toggle="tab" href="#tab-stock"><?php echo language::translate('title_stock', 'Stock'); ?></a>
+  </nav>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('product_form', 'post', false, true); ?>
 
       <div class="tab-content">
@@ -302,10 +304,10 @@
 <?php
   if (isset($product->data['id']) && !empty($product->data['images'])) {
     $image = current($product->data['images']);
-    echo '<img class="main-image" src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $image['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping'))) .'" alt="" />';
+    echo '<img class="main-image" src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping'))) .'" alt="" />';
     reset($product->data['images']);
   } else {
-    echo '<img class="main-image" src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))) .'" alt="" />';
+    echo '<img class="main-image" src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))) .'" alt="" />';
   }
 ?>
                 </div>
@@ -320,7 +322,7 @@
                     <?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
 
                     <div class="thumbnail float-start">
-                      <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->data['images'][$key]['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />
+                      <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->data['images'][$key]['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />
                     </div>
 
                     <div class="input-group">
@@ -338,7 +340,7 @@
                 <div class="new-images">
                   <div class="image form-group">
                     <div class="thumbnail float-start">
-                      <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />
+                      <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />
                     </div>
 
                     <div class="input-group">
@@ -363,11 +365,11 @@
 
         <div id="tab-information" class="tab-pane">
 
-          <ul class="nav nav-tabs">
+          <nav class="nav nav-tabs" style="padding-top:0; margin-top: -1em;">
             <?php foreach (language::$languages as $language) { ?>
-              <li<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a></li>
+            <a class="nav-link<?php echo ($language['code'] == language::$selected['code']) ? ' active' : ''; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
             <?php } ?>
-          </ul>
+          </nav>
 
           <div class="tab-content">
 
@@ -610,7 +612,7 @@
                   <?php foreach ($option['values'] as $value_id => $value) { ?>
                     <tr data-value-id="<?php echo functions::escape_html($value['value_id']); ?>" data-value-name="<?php echo functions::escape_html($_POST['options'][$group_id]['values'][$value_id]['name']); ?>">
                       <td class="grabable"><?php echo functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
-                      <td style="text-align: center;"><?php echo functions::form_draw_select_field('options['.$group_id.'][values]['. $value_id .'][price_operator]', ['+','%','*','='], true); ?></td>
+                      <td class="text-center"><?php echo functions::form_draw_select_field('options['.$group_id.'][values]['. $value_id .'][price_operator]', ['+','%','*','='], true); ?></td>
                       <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td>'. functions::form_draw_currency_field($currency_code, 'options['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['options'][$group_id]['values'][$value_id][$currency_code]) || $_POST['options'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
                       <td class="text-end"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
                     </tr>
@@ -811,10 +813,10 @@
         </div>
       </div>
 
-      <div class="panel-action btn-group">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+      <div class="card-action">
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo !empty($product->data['id']) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\\"'. language::translate('text_are_you_sure', 'Are you sure?') .'\\")) return false;"', 'delete') : ''; ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (isset($product->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
@@ -884,7 +886,7 @@
     e.preventDefault();
     var output = '<div class="image form-group">'
                + '  <div class="thumbnail float-start">'
-               + '    <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />'
+               + '    <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />'
                + '  </div>'
                + '  '
                + '  <div class="input-group">'
@@ -919,7 +921,7 @@
       return;
     }
 
-    $('#tab-general .main-image').attr('src', '<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>');
+    $('#tab-general .main-image').attr('src', '<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>');
   }
 
 // Technical Data
@@ -1374,7 +1376,7 @@
 
     var output = '<tr data-value-id="'+ escapeHTML($(valueElement).val()) +'" data-value-name="'+ escapeHTML(($(valueElement).val() != 0) ? $(valueElement).find('option:selected').text() : $(customValueElement).val()) +'">'
                + '  <td class="grabable"><?php echo functions::escape_js(functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][value_id]', 'new_value_id')) . functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>'
-               + '  <td style="text-align: center;"><?php echo functions::escape_js(functions::form_draw_select_field('options[new_group_id][values][new_option_value_i][price_operator]', ['+','%','*','='], true)); ?></td>'
+               + '  <td class="text-center"><?php echo functions::escape_js(functions::form_draw_select_field('options[new_group_id][values][new_option_value_i][price_operator]', ['+','%','*','='], true)); ?></td>'
                + '  <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td style="width: 200px;">'. functions::escape_js(functions::form_draw_currency_field($currency_code, 'options[new_group_id][values][new_option_value_i]['. $currency_code. ']', '')) .'</td>'; ?>'
                + '  <td class="text-end"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
                + '</tr>';

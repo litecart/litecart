@@ -128,9 +128,8 @@
       //document::$snippets['help_link'] = document::link('https://wiki.litecart.net/', array('id' => 'Admin:'. $_GET['app'] . (!empty($_GET['doc']) ? '/' . $_GET['doc'] : '')));
       document::$snippets['help_link'] = document::link('https://wiki.litecart.net/');
 
-      $app_icon = '<span class="fa-stack icon-wrapper">' . PHP_EOL
-                . '  ' . functions::draw_fonticon('fa-circle fa-stack-2x icon-background', 'style="color: '. $_page->snippets['theme']['color'] .';"') . PHP_EOL
-                . '  ' . functions::draw_fonticon($_page->snippets['theme']['icon'] .' fa-stack-1x icon', 'style="color: #fff;"') . PHP_EOL
+      $app_icon = '<span class="app-icon">' . PHP_EOL
+                . '  ' . functions::draw_fonticon($_page->snippets['theme']['icon']) . PHP_EOL
                 . '</span>';
 
       ob_start();

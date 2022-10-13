@@ -112,15 +112,15 @@
     'name' => $product->name,
     'short_description' => !empty($product->short_description) ? $product->short_description : '',
     'description' => !empty($product->description) ? $product->description : '<em style="opacity: 0.65;">'. language::translate('text_no_product_description', 'There is no description for this product yet.') . '</em>',
-    'technical_data' => preg_split('#\r\n?|\n#', trim($product->technical_data)),
+    'technical_data' => preg_split('#\r\n?|\n#', $product->technical_data, -1, PREG_SPLIT_NO_EMPTY),
     'head_title' => !empty($product->head_title) ? $product->head_title : $product->name,
     'meta_description' => !empty($product->meta_description) ? $product->meta_description : $product->short_description,
     'attributes' => $product->attributes,
     'keywords' => $product->keywords,
     'image' => [
       'original' => ltrim(!empty($product->images) ? 'images/' . $product->image : 'images/no_image.png', '/'),
-      'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
       'viewport' => [
         'width' => $width,
@@ -157,8 +157,8 @@
   foreach (array_slice(array_values($product->images), 1) as $image) {
     $_page->snippets['extra_images'][] = [
       'original' => 'images/' . $image,
-      'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'viewport' => [
         'width' => $width,
         'height' => $height,
@@ -196,8 +196,8 @@
     if (!empty($product->manufacturer->image)) {
       $_page->snippets['manufacturer']['image'] = [
         'original' => 'images/' . $product->manufacturer->image,
-        'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->manufacturer->image, 200, 60),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->manufacturer->image, 400, 120),
+        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->manufacturer->image, 200, 60),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->manufacturer->image, 400, 120),
         'viewport' => [
           'width' => 200,
           'height' => 60,
@@ -208,9 +208,9 @@
 
 // Stock Status
   if (!empty($product->quantity_unit['name'])) {
-    $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : language::translate('title_in_stock', 'In Stock');
+    $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity_available, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : language::translate('title_in_stock', 'In Stock');
   } else {
-    $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity, 0) : language::translate('title_in_stock', 'In Stock');
+    $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity_available, 0) : language::translate('title_in_stock', 'In Stock');
   }
 
 // Tax

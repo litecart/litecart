@@ -81,21 +81,23 @@
   }
 ?>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo !empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo !empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer'); ?>
+    </div>
   </div>
 
-  <ul class="nav nav-tabs">
-    <li role="presentation" class="active"><a data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
-    <li role="presentation"><a data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
-  </ul>
+  <nav class="nav nav-tabs">
+    <a class="nav-link active" data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a>
+    <a class="nav-link" data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a>
+  </nav>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('manufacturer_form', 'post', false, true); ?>
 
       <div class="tab-content">
-        <div id="tab-general" class="tab-pane active" style="max-width: 640px;">
+        <div id="tab-general" class="tab-pane active" style="max-width: 720px;">
 
           <div class="row">
             <div class="col-md-6">
@@ -128,7 +130,7 @@
             <div class="col-md-6">
               <div id="image">
                 <div class="thumbnail" style="margin-bottom: 15px;">
-                  <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $manufacturer->data['image'], 400, 100)); ?>" alt="" />
+                  <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $manufacturer->data['image'], 400, 100)); ?>" alt="" />
                 </div>
 
                 <div class="form-group">
@@ -147,11 +149,11 @@
 
         <div id="tab-information" class="tab-pane" style="max-width: 640px;">
 
-          <ul class="nav nav-tabs">
+          <nav class="nav nav-tabs" style="padding-top: 0;">
             <?php foreach (language::$languages as $language) { ?>
-              <li<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a></li>
+            <a class="nav-link <?php echo ($language['code'] == language::$selected['code']) ? ' active' : ''; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
             <?php } ?>
-          </ul>
+          </nav>
 
           <div class="tab-content">
 
@@ -196,10 +198,10 @@
         </div>
       </div>
 
-      <div class="panel-action btn-group">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+      <div class="card-action">
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo (!empty($manufacturer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\\"'. language::translate('text_are_you_sure', 'Are you sure?') .'\\")) return false;"', 'delete') : ''; ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (!empty($manufacturer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
@@ -220,7 +222,7 @@
         $('#image img').attr('src', e.target.result);
       };
     } else {
-      $('#image img').attr('src', '<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $manufacturer->data['image'], 400, 100)); ?>');
+      $('#image img').attr('src', '<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $manufacturer->data['image'], 400, 100)); ?>');
     }
   });
 

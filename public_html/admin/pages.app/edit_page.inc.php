@@ -65,12 +65,14 @@
     }
   }
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo !empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo !empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page'); ?>
+    </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('pages_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
       <div class="row">
@@ -100,11 +102,11 @@
         </div>
       </div>
 
-      <ul class="nav nav-tabs">
+      <nav class="nav nav-tabs">
         <?php foreach (language::$languages as $language) { ?>
-          <li<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a></li>
+        <a class="nav-link <?php echo ($language['code'] == language::$selected['code']) ? ' active' : ''; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
         <?php } ?>
-      </ul>
+      </nav>
 
       <div class="tab-content">
         <?php foreach (array_keys(language::$languages) as $language_code) { ?>
@@ -132,10 +134,10 @@
         <?php } ?>
       </div>
 
-      <div class="panel-action btn-group">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+      <div class="card-action">
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo !empty($page->data['id']) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\\"'. language::translate('text_are_you_sure', 'Are you sure?') .'\\")) return false;"', 'delete') : ''; ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (isset($page->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>

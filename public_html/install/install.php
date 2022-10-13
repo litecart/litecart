@@ -3,7 +3,7 @@
   if (php_sapi_name() == 'cli') {
 
     if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
-      echo "\nLiteCart® 2.4.4\n"
+      echo "\nLiteCart® 2.5.0\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -56,6 +56,7 @@
     echo '<p>Checking installation parameters...';
 
     define('FS_DIR_APP', file_absolute_path(__DIR__ .'/../') .'/');
+    define('FS_DIR_STORAGE', FS_DIR_APP);
 
     if (!empty($_SERVER['DOCUMENT_ROOT'])) {
       define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(file_absolute_path($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', '', FS_DIR_APP));
@@ -64,6 +65,8 @@
     } else {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
     }
+
+    define('WS_DIR_STORAGE', WS_DIR_APP);
 
     if (preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
       define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
@@ -305,9 +308,7 @@
       '{DB_DATABASE}' => $_REQUEST['db_database'],
       '{DB_TABLE_PREFIX}' => $_REQUEST['db_table_prefix'],
       '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
-      '{DB_PERSISTENT_CONNECTIONS}' => 'false',
       '{CLIENT_IP}' => $_REQUEST['client_ip'],
-      '{PASSWORD_SALT}' => substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)), 0, 128),
     ];
 
     $config = strtr($config, $map);
@@ -428,48 +429,6 @@
       } else {
         echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL . PHP_EOL;
       }
-    }
-
-    ### Admin > .htaccess Protection ##############################
-
-    echo '<p>Securing admin folder...';
-
-    $htaccess = '# Solve 401 rewrite and auth conflict on some machines' . PHP_EOL
-              .  'ErrorDocument 401 "Access Forbidden"' . PHP_EOL
-              . PHP_EOL
-              . '# Basic authentication' . PHP_EOL
-              . '<IfModule mod_auth.c>' . PHP_EOL
-              . '  AuthType Basic' . PHP_EOL
-              . '  AuthName "Restricted Area"' . PHP_EOL
-              . '  AuthUserFile "' . FS_DIR_APP . $_REQUEST['admin_folder'] . '/.htpasswd"' . PHP_EOL
-              . '  Require valid-user' . PHP_EOL
-              . '</IfModule>' . PHP_EOL
-              . '<IfModule mod_auth_basic.c>' . PHP_EOL
-              . '  AuthType Basic' . PHP_EOL
-              . '  AuthName "Restricted Area"' . PHP_EOL
-              . '  AuthUserFile "' . FS_DIR_APP . $_REQUEST['admin_folder'] . '/.htpasswd"' . PHP_EOL
-              . '  Require valid-user' . PHP_EOL
-              . '</IfModule>';
-
-    if (is_dir('../'.$_REQUEST['admin_folder']) && file_put_contents('../'. $_REQUEST['admin_folder'] .'/.htaccess', $htaccess) !== false) {
-      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-    } else {
-      echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL . PHP_EOL;
-    }
-
-    ### Admin > .htpasswd Users ###################################
-
-    echo '<p>Granting admin access for user '. $_REQUEST['username'] .'...';
-
-    if (is_dir('../'.$_REQUEST['admin_folder'])) {
-      $htpasswd = $_REQUEST['username'] .':{SHA}'. base64_encode(sha1($_REQUEST['password'], true)) . PHP_EOL;
-      if (file_put_contents('../'. $_REQUEST['admin_folder'] . '/.htpasswd', $htpasswd) !== false) {
-        echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-      } else {
-        echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
-      }
-    } else {
-      echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
     ### Admin > Database > Users ##################################
@@ -679,7 +638,7 @@
 
     echo '<p>Create file container for error logging...';
 
-    if (file_put_contents(FS_DIR_APP . 'logs/errors.log', '') !== false) {
+    if (file_put_contents(FS_DIR_STORAGE . 'logs/errors.log', '') !== false) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;

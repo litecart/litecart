@@ -67,6 +67,7 @@
             'fields' => !empty($option['fields']) ? $option['fields'] : '',
             'cost' => (float)$option['cost'],
             'tax_class_id' => (int)$option['tax_class_id'],
+            'incoterm' => !empty($option['incoterm']) ? $option['incoterm'] : settings::get('default_incoterm'),
             'exclude_cheapest' => !empty($option['exclude_cheapest']) ? true : false,
             'error' => !empty($option['error']) ? $option['error'] : false,
           ];
@@ -101,6 +102,7 @@
         'name' => $this->data['options'][$module_id]['options'][$option_id]['name'],
         'cost' => $this->data['options'][$module_id]['options'][$option_id]['cost'],
         'tax_class_id' => $this->data['options'][$module_id]['options'][$option_id]['tax_class_id'],
+        'incoterm' => $this->data['options'][$module_id]['options'][$option_id]['incoterm'],
       ];
     }
 

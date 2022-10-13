@@ -16,13 +16,13 @@ main {
   background: var(--page-background-color);
   margin: 0 auto;
   max-width: 1200px;
-  padding: 4em;
+  padding: 2em;
 }
 
 .show-grid {
   margin-bottom: 15px;
 }
-.show-grid [class^=col-] {
+.show-grid [class="col"], .show-grid [class^="col-"] {
   padding: .5rem;
   background-color: rgba(86,61,124,.015);
   border: 1px dashed rgba(86,61,124,.2);
@@ -159,16 +159,16 @@ main {
 
       <div class="carousel-inner">
         <div class="item active">
-          <img src="https://via.placeholder.com/1280x480.png?text=First%20slide" />
+          <img src="public_html/install/data/default/public_html/images/no_image.png" />
         </div>
 
         <div class="item">
-          <img src="https://via.placeholder.com/1280x480.png?text=Second%20slide" />
+          <img src="public_html/install/data/default/public_html/images/no_image.png" />
           <div class="carousel-caption">Lorem ipsum</div>
         </div>
 
         <div class="item">
-          <img src="https://via.placeholder.com/1280x480.png?text=Third%20slide" />
+          <img src="public_html/install/data/default/public_html/images/no_image.png" />
           <div class="carousel-caption">Dolor sit amet</div>
         </div>
       </div>
@@ -191,6 +191,14 @@ main {
   <section class="twelve-eighty">
 
     <h2>Grid</h2>
+
+    <div class="row show-grid">
+      <div class="col">.col</div>
+      <div class="col">.col</div>
+      <div class="col">.col</div>
+      <div class="col">.col</div>
+      <div class="col">.col</div>
+    </div>
 
     <div class="row show-grid">
       <div class="col-md-1">.col-md-1</div>
@@ -486,25 +494,25 @@ main {
     <div class="row">
       <div class="col-md-3">
         <a href="#" class="thumbnail">
-          <img src="https://via.placeholder.com/300x200.png" />
+          <img src="public_html/install/data/default/public_html/images/no_image.png" />
         </a>
       </div>
 
       <div class="col-md-3">
         <a href="#" class="thumbnail">
-          <img src="https://via.placeholder.com/300x200.png" />
+          <img src="public_html/install/data/default/public_html/images/no_image.png" />
         </a>
       </div>
 
       <div class="col-md-3">
         <a href="#" class="thumbnail">
-          <img src="https://via.placeholder.com/300x200.png" />
+          <img src="public_html/install/data/default/public_html/images/no_image.png" />
         </a>
       </div>
 
       <div class="col-md-3">
         <a href="#" class="thumbnail">
-          <img src="https://via.placeholder.com/300x200.png" />
+          <img src="public_html/install/data/default/public_html/images/no_image.png" />
         </a>
       </div>
     </div>
@@ -517,7 +525,7 @@ main {
   </section>
 </main>
 
-<script src="public_html/ext/jquery/jquery-3.6.0.min.js"></script>
+<script src="public_html/ext/jquery/jquery-3.6.1.min.js"></script>
 <script src="public_html/includes/templates/default.catalog/js/app.min.js"></script>
 </body>
 </html>

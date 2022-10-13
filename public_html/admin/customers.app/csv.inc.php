@@ -173,12 +173,14 @@
 
 ?>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_csv_import_export', 'CSV Import/Export'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_csv_import_export', 'CSV Import/Export'); ?>
+    </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <div class="row">
 
       <div class="col-sm-6 col-lg-4">
@@ -275,3 +277,9 @@
     </div>
   </div>
 </div>
+
+<script>
+  $('form[name="import_form"] input[name="insert"]').change(function(){
+    $('form[name="import_form"] input[name="reset"]').prop('checked', false).prop('disabled', !$(this).is(':checked'));
+  }).trigger('change');
+</script>

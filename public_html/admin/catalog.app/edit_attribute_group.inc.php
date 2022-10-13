@@ -72,12 +72,14 @@
     [language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'],
   ];
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo !empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo !empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group'); ?>
+    </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('attribute_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
       <div class="row">
@@ -121,17 +123,17 @@
           </tbody>
           <tfoot>
             <tr>
-              <td colspan="3"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_group_value', 'Add Group Value'); ?></a></td>
+              <td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_group_value', 'Add Group Value'); ?></a></td>
             </tr>
           </tfoot>
         </table>
 
       </div>
 
-      <div class="panel-action btn-group">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+      <div class="card-action">
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo (!empty($attribute_group->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" class="btn btn-danger" onclick="if (!window.confirm(\\"'. language::translate('text_are_you_sure', 'Are you sure?') .'\\")) return false;"', 'delete') : ''; ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (!empty($attribute_group->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>

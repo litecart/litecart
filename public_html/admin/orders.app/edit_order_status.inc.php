@@ -23,13 +23,16 @@
       if (empty($_POST['notify'])) $_POST['notify'] = 0;
       if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
       if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
+      if (empty($_POST['is_trackable'])) $_POST['is_trackable'] = 0;
 
       $fields = [
+        'state',
         'icon',
         'color',
-        'keywords',
         'is_sale',
         'is_archived',
+        'is_trackable',
+        'stock_action',
         'notify',
         'priority',
         'name',
@@ -68,13 +71,30 @@
       notices::add('errors', $e->getMessage());
     }
   }
+
+  $state_options = [
+    [language::translate('title_created', 'Created'), 'created'],
+    [language::translate('title_on_hold', 'On Hold'), 'on_hold'],
+    [language::translate('title_ready', 'Ready'), 'ready'],
+    [language::translate('title_delayed', 'Delayed'), 'delayed'],
+    [language::translate('title_processing', 'Processing'), 'processing'],
+    [language::translate('title_dispatched', 'Dispatched'), 'dispatched'],
+    [language::translate('title_in_transit', 'In Transit'), 'in_transit'],
+    [language::translate('title_delivered', 'Delivered'), 'delivered'],
+    [language::translate('title_returning', 'Returning'), 'returning'],
+    [language::translate('title_returned', 'Returned'), 'returned'],
+    [language::translate('title_cancelled', 'Cancelled'), 'cancelled'],
+  ];
+
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo !empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo !empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status'); ?>
+    </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('order_status_form', 'post'); ?>
 
       <div class="row">
@@ -85,9 +105,14 @@
               <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true); ?>
             </div>
 
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
-              <?php echo functions::form_draw_text_field('keywords', true); ?>
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_order_state', 'State'); ?></label>
+              <?php echo functions::form_draw_select_field('state', $state_options, true); ?>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+              <?php echo functions::form_draw_number_field('priority', true); ?>
             </div>
           </div>
 
@@ -109,24 +134,41 @@
           </div>
 
           <div class="row">
-            <div class="form-group col-md-12">
+            <div class="form-group col-md-6">
               <label><?php echo language::translate('title_properties', 'Properties'); ?></label>
               <div class="checkbox">
                 <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale'); ?><br />
-                <?php echo language::translate('order_status:description_is_sale', 'Reserve/withdraw stock and include in sales reports'); ?></label>
+                <?php echo language::translate('text_include_in_sales_reports', 'Include in sales reports'); ?></label>
               </div>
 
               <div class="checkbox">
                 <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived'); ?><br />
-                <?php echo language::translate('order_status:description_is_archived', 'Exclude from the default list of orders'); ?></label>
+                <?php echo language::translate('text_exclude_from_list_of_orders', 'Exclude from the default list of orders'); ?></label>
+              </div>
+
+              <div class="checkbox">
+                <label><?php echo functions::form_draw_checkbox('is_trackable', '1', empty($_POST['is_trackable']) ? '0' : '1'); ?> <?php echo language::translate('text_is_trackable', 'Is trackable'); ?><br />
+                <?php echo language::translate('text_will_send_tracking_event_to_shipping_module', 'Will send an event to the shipping module for tracking the shipment.'); ?></label>
               </div>
             </div>
-          </div>
 
-          <div class="row">
             <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-                <?php echo functions::form_draw_number_field('priority', true); ?>
+              <label><?php echo language::translate('title_stock_action', 'Stock Action'); ?></label>
+
+              <div class="checkbox">
+                <label><?php echo functions::form_draw_radio_button('stock_action', 'none', empty($_POST['stock_action']) ? 'none' : true); ?> <?php echo language::translate('title_none', 'None'); ?><br />
+                <?php echo language::translate('text_stock_remains_without_an_action', 'Stock remains without any action'); ?></label>
+              </div>
+
+              <div class="checkbox">
+                <label><?php echo functions::form_draw_radio_button('stock_action', 'reserve', true); ?> <?php echo language::translate('title_reserve', 'Reserve'); ?><br />
+                <?php echo language::translate('text_reserve_stock_for_orders_having_this_status', 'Reserve stock for orders having this status'); ?></label>
+              </div>
+
+              <div class="checkbox">
+                <label><?php echo functions::form_draw_radio_button('stock_action', 'commit', true); ?> <?php echo language::translate('title_commit', 'Commit'); ?><br />
+                <?php echo language::translate('text_commit_changes_to_the_stock', 'Commit changes to the stock'); ?></label>
+              </div>
             </div>
           </div>
         </div>
@@ -137,11 +179,11 @@
               <label><?php echo functions::form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo language::translate('title_email_notification', 'Email Notification'); ?></label>
             </legend>
 
-            <ul class="nav nav-tabs">
+            <nav class="nav nav-tabs">
               <?php foreach (language::$languages as $language) { ?>
-                <li<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a></li>
+              <a class="nav-link<?php echo ($language['code'] == language::$selected['code']) ? ' active' : ''; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
               <?php } ?>
-            </ul>
+            </nav>
 
             <div class="tab-content">
               <?php foreach (array_keys(language::$languages) as $language_code) { ?>
@@ -164,10 +206,10 @@
         </div>
       </div>
 
-      <div class="panel-action btn-group">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+      <div class="card-action">
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo !empty($order_status->data['id']) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\\"'. language::translate('text_are_you_sure', 'Are you sure?') .'\\")) return false;"', 'delete') : ''; ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (isset($order_status->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>

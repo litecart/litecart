@@ -48,22 +48,6 @@
         throw new Exception(sprintf(language::translate('error_account_expired', 'The account expired %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to']))));
       }
 
-    // Compatibility with older passwords (prior to LiteCart 2.2.0)
-      if (substr($user['password_hash'], 0, 1) != '$') {
-
-        if (functions::password_checksum($user['id'], $_POST['password']) != $user['password_hash']) {
-          throw new Exception(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
-        }
-
-      // Migrate password
-        database::query(
-          "update ". DB_TABLE_PREFIX ."users
-          set password_hash = '". database::input($user['password_hash'] = password_hash($_POST['password'], PASSWORD_DEFAULT)) ."'
-          where id = ". (int)$user['id'] ."
-          limit 1;"
-        );
-      }
-
       if (!password_verify($_POST['password'], $user['password_hash'])) {
         if (++$user['login_attempts'] < 3) {
 
@@ -171,7 +155,7 @@
       exit;
 
     } catch (Exception $e) {
-      //http_response_code(401); // Troublesome with HTTP Auth
+      http_response_code(401);
       notices::add('errors', $e->getMessage());
     }
   }

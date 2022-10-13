@@ -338,7 +338,7 @@
                 $value['price_adjust'] = $value['price_adjust'] * $this->campaign['price'] / $this->price;
               }
 
-              $option['values'][$value['id']] = $value;
+              $option['values'][$value['value_id']] = $value;
             }
 
             if ($option['sort'] == 'alphabetically') {
@@ -386,6 +386,23 @@
               $row['dim_z'] = $this->dim_z;
               $row['dim_class'] = $this->dim_class;
             }
+
+            $row['quantity_available'] = null;
+
+            $reserved_items_query = database::query(
+              "select sum(quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
+              left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+              where oi.product_id = ". (int)$this->_data['id'] ."
+              and oi.option_stock_combination = '". database::input($row['combination']) ."'
+              and o.order_status_id in (
+                select id from ". DB_TABLE_PREFIX ."order_statuses
+                where stock_action = 'reserve'
+              );"
+            );
+
+            $reserved_quantity = database::fetch($reserved_items_query, 'total_reserved');
+
+            $row['quantity_available'] = $this->quantity - $reserved_quantity;
 
             $row['name'] = [];
 
@@ -459,6 +476,26 @@
           } else {
             $this->_data['price'] = $product_price[settings::get('store_currency_code')];
           }
+
+          break;
+
+        case 'quantity_available':
+        case 'quantity_reserved':
+
+          $this->_data['quantity_available'] = null;
+
+          $reserved_items_query = database::query(
+            "select sum(quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
+            left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+            where oi.product_id = ". (int)$this->_data['id'] ."
+            and o.order_status_id in (
+              select id from ". DB_TABLE_PREFIX ."order_statuses
+              where stock_action = 'reserve'
+            );"
+          );
+
+          $this->_data['quantity_reserved'] = database::fetch($reserved_items_query, 'total_reserved');
+          $this->_data['quantity_available'] = $this->quantity - $this->_data['quantity_reserved'];
 
           break;
 

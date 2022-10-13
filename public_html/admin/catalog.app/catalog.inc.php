@@ -75,7 +75,7 @@
 
         if (!empty($original->data['images'])) {
           foreach ($original->data['images'] as $image) {
-            $product->add_image(FS_DIR_APP . 'images/' . $image['filename']);
+            $product->add_image(FS_DIR_STORAGE . 'images/' . $image['filename']);
           }
         }
 
@@ -221,17 +221,19 @@
   }
 ?>
 <style>
-.warning {
+.warning .fa {
   color: #f00;
 }
 </style>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_catalog', 'Catalog'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_catalog', 'Catalog'); ?>
+    </div>
   </div>
 
-  <div class="panel-action">
+  <div class="card-action">
     <ul class="list-inline">
       <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc'=> 'edit_category', 'parent_id' => $_GET['category_id']]), language::translate('title_add_new_category', 'Add New Category'), '', 'add'); ?></li>
       <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc'=> 'edit_product'], ['category_id']), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
@@ -241,29 +243,28 @@
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
     <?php echo functions::form_draw_hidden_field('app', true); ?>
     <?php echo functions::form_draw_hidden_field('doc', true); ?>
-    <div class="panel-filter">
+    <div class="card-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link(WS_DIR_ADMIN, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
       <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="panel-body">
-    <?php echo functions::form_draw_form_begin('catalog_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('catalog_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th></th>
-            <th></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th style="min-width: 150px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
-            <th><?php echo language::translate('title_price', 'Price'); ?></th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th></th>
+          <th></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th style="min-width: 150px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
+          <th><?php echo language::translate('title_price', 'Price'); ?></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
 <?php
   $num_category_rows = 0;
   $num_product_rows = 0;
@@ -332,26 +333,26 @@
           $warning = $e->getMessage();
         }
 ?>
-          <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : null; ?>">
-            <td><?php echo functions::form_draw_checkbox('products[]', $product['id']); ?></td>
-            <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
-            <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : ''; ?></td>
-            <td><?php echo '<img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
-            <td><?php echo $product['sku']; ?></td>
-            <td class="text-end"><?php echo currency::format($product['price']); ?></td>
-            <td><a href="<?php echo document::href_ilink('product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
-            <td class="text-end"><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
-          </tr>
+        <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : null; ?>">
+          <td><?php echo functions::form_draw_checkbox('products[]', $product['id']); ?></td>
+          <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
+          <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : ''; ?></td>
+          <td><?php echo '<img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
+          <td><?php echo $product['sku']; ?></td>
+          <td class="text-end"><?php echo currency::format($product['price']); ?></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+        </tr>
 <?php
       }
     }
 ?>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="8"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
-          </tr>
-        </tfoot>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="8"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+        </tr>
+      </tfoot>
 <?php
 
   } else {
@@ -410,15 +411,15 @@
                  . '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : '') .'</td>' . PHP_EOL;
 
         if ($display_images) {
-          $output .= '  <td><img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" style="margin-inline-start: '. ($depth*16) .'px; width: 16px; height: 16px; vertical-align: bottom;" /> <a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td><img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], 20, 20, 'FIT_USE_WHITESPACING')) .'" style="margin-inline-start: '. ($depth*25) .'px; width: 20px; height: 20px; vertical-align: bottom;" /> <a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
-          $output .= '  <td><span style="margin-inline-start: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
+          $output .= '  <td><span style="margin-inline-start: '. (($depth+1)*25) .'px;"><a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
         }
 
         $output .= '  <td>'. $product['sku'] .'</td>' . PHP_EOL
                  . '  <td class="text-end">'. currency::format($product['price']) .'</td>' . PHP_EOL
-                 . '  <td><a href="'. document::href_ilink('product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
-                 . '  <td class="text-end"><a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
+                 . '  <td><a class="btn btn-default btn-sm" href="'. document::href_ilink('product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
+                 . '  <td><a class="btn btn-default btn-sm" href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
       }
 
@@ -434,7 +435,7 @@
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66;"') .' <strong><a href="'. document::href_link('', ['category_id' => '0'], true) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
+                 . '  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cccc66;"') .' <strong><a href="'. document::href_link('', ['category_id' => '0'], true) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
@@ -460,17 +461,17 @@
                  . '  <td></td>' . PHP_EOL;
 
         if ($category['id'] == $_GET['category_id']) {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-inline-start: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cccc66; margin-inline-start: '. ($depth*25) .'px;"') .' <strong><a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
         } else if (in_array($category['id'], $category_trail)) {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-inline-start: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cccc66; margin-inline-start: '. ($depth*25) .'px;"') .' <a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder', 'style="color: #cccc66; margin-inline-start: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66; margin-inline-start: '. ($depth*25) .'px;"') .' <a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         }
 
         $output .= '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
-                 . '  <td><a href="'. document::href_ilink('category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
-                 . '  <td class="text-end"><a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
+                 . '  <td><a class="btn btn-default btn-sm" href="'. document::href_ilink('category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
+                 . '  <td><a class="btn btn-default btn-sm" href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
 
         if (in_array($category['id'], $category_trail)) {
@@ -490,7 +491,7 @@
                      . '  <td></td>' . PHP_EOL
                      . '  <td></td>' . PHP_EOL
                      . '  <td></td>' . PHP_EOL
-                     . '  <td><em style="margin-inline-start: '. (($depth+1)*16) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>' . PHP_EOL
+                     . '  <td><em style="margin-inline-start: '. (($depth+1)*25) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>' . PHP_EOL
                      . '  <td></td>' . PHP_EOL
                      . '  <td></td>' . PHP_EOL
                      . '  <td></td>' . PHP_EOL
@@ -510,47 +511,46 @@
 
     echo $category_iterator(0, 1);
 ?>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="8"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
-          </tr>
-        </tfoot>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="8"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+        </tr>
+      </tfoot>
 <?php
   }
 ?>
-      </table>
+    </table>
 
-      <p>
-        <ul class="list-inline">
-          <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
-          <li>
-            <div class="btn-group">
-              <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-              <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-            </div>
-          </li>
-          <li>
-            <div>
-              <?php echo functions::form_draw_category_field('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?>
-            </div>
-          </li>
-          <li>
-            <div class="btn-group">
-              <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?>
-              <?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?>
-              <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
-            </div>
-          </li>
-          <li>
-            <div class="btn-group">
-              <?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?>
-              <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
-            </div>
-          </li>
-        </ul>
-      </p>
+    <div class="card-body">
+      <ul class="list-inline">
+        <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
+        <li>
+          <div class="btn-group">
+            <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+            <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+          </div>
+        </li>
+        <li>
+          <div>
+            <?php echo functions::form_draw_category_field('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\\"'. language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.') .'\\")) return false;"'); ?>
+            <?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?>
+            <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
+          </div>
+        </li>
+        <li>
+          <?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?>
+        </li>
+        <li>
+          <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\\"'. language::translate('text_are_you_sure', 'Are you sure?') .'\\")) return false;"'); ?>
+        </li>
+      </ul>
+    </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 </div>

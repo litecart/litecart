@@ -113,12 +113,14 @@
         <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
 
         <?php if ($options) { ?>
+        <div class="options">
           <?php foreach ($options as $option) { ?>
           <div class="form-group">
             <label><?php echo $option['name']; ?></label>
             <?php echo $option['values']; ?>
           </div>
           <?php } ?>
+        </div>
         <?php } ?>
 
         <div class="price-wrapper">
@@ -160,6 +162,8 @@
           </div>
         </div>
         <?php } ?>
+
+        <div class="stock-notice"></div>
 
         <?php echo functions::form_draw_form_end(); ?>
       </div>
@@ -266,6 +270,31 @@
     $(this).find('.campaign-price').text(sales_price.toMoney());
     $(this).find('.price').text(sales_price.toMoney());
     $(this).find('.total-tax').text(tax.toMoney());
+  });
+
+  $('#box-product form[name="buy_now_form"] .options :input').change(function(){
+
+    $.ajax({
+      type: 'post',
+      url: '<?php echo document::ilink('ajax/product_options_stock.json'); ?>',
+      data: $(this).closest('form').serialize(),
+      dataType: 'json',
+      cache: false,
+
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log('error', errorThrown);
+      },
+
+      success: function(data){
+        if (data.status == 'ok') {
+          $('.options-stock-notice').text(data.notice).removeClass('warning');
+        } else if (data.status == 'warning') {
+          $('.options-stock-notice').text(data.notice).addClass('warning');
+        } else {
+          $('.options-stock-notice').html('');
+        }
+      }
+    });
   });
 
   $('#box-product[data-id="<?php echo $product_id; ?>"] .social-bookmarks .link').off().click(function(e){

@@ -132,7 +132,7 @@
       // Don't return an error page for content with a defined extension (presumably static)
         if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html?|php)$#', $request->path)) exit;
 
-        $not_found_file = FS_DIR_APP . 'logs/not_found.log';
+        $not_found_file = FS_DIR_STORAGE . 'logs/not_found.log';
 
         $lines = is_file($not_found_file) ? file($not_found_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : [];
         $lines[] = $request->path;
