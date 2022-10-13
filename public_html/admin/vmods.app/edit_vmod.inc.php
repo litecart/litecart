@@ -415,7 +415,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
                 </div>
 
                 <div class="form-group col-md-4">
-                  <label><?php echo language::translate('title_default_Value', 'Default Value'); ?></label>
+                  <label><?php echo language::translate('title_default_value', 'Default Value'); ?></label>
                   <?php echo functions::form_draw_text_field('settings['.$key.'][default_value]', true); ?>
                 </div>
               </div>
