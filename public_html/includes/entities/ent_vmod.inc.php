@@ -304,7 +304,7 @@
         foreach ($file['operations'] as $operation) {
           $operation_node = $dom->createElement('operation');
 
-          foreach (['type', 'method', 'onerror'] as $attribute_name) {
+          foreach (['method', 'type', 'onerror'] as $attribute_name) {
             if (!empty($operation[$attribute_name])) {
               $attribute = $dom->createAttribute($attribute_name);
               $attribute->value = $operation[$attribute_name];

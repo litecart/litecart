@@ -14,7 +14,7 @@
       <?php if ($_GET['page'] == 1 && $image) { ?>
       <div class="hidden-xs hidden-sm col-md-4">
         <div class="thumbnail">
-          <img src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail_1x']); ?>" style="aspect-ratio: <?php echo $image['ratio']; ?>;" />
+          <img src="<?php echo document::href_rlink(FS_DIR_APP . $image['thumbnail_1x']); ?>" style="aspect-ratio: <?php echo $image['ratio']; ?>;" />
         </div>
       </div>
       <?php } ?>

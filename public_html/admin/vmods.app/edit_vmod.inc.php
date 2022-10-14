@@ -339,6 +339,11 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
                       <div class="row" style="font-size: .8em;">
                         <div class="form-group col-md-2">
+                          <label><?php echo language::translate('title_index', 'Index'); ?></label>
+                          <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][index]', true, 'placeholder="1,3,.."'); ?>
+                        </div>
+
+                        <div class="form-group col-md-2">
                           <label><?php echo language::translate('title_offset_before', 'Offset Before'); ?></label>
                           <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][offset-before]', true, 'placeholder="0"'); ?>
                         </div>
@@ -346,11 +351,6 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
                         <div class="form-group col-md-2">
                           <label><?php echo language::translate('title_offset_after', 'Offset After'); ?></label>
                           <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][offset-after]', true, 'placeholder="0"'); ?>
-                        </div>
-
-                        <div class="form-group col-md-2">
-                          <label><?php echo language::translate('title_index', 'Index'); ?></label>
-                          <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][index]', true, 'placeholder="1,3,.."'); ?>
                         </div>
                       </div>
 
@@ -558,6 +558,11 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
     <div class="row" style="font-size: .8em;">
       <div class="form-group col-md-2">
+        <label><?php echo language::translate('title_index', 'Index'); ?></label>
+        <?php echo functions::form_draw_text_field('files[current_tab_index][operations][new_operation_index][find][index]', '', 'placeholder="1,3,.."'); ?>
+      </div>
+
+      <div class="form-group col-md-2">
         <label><?php echo language::translate('title_offset_before', 'Offset Before'); ?></label>
         <?php echo functions::form_draw_text_field('files[current_tab_index][operations][new_operation_index][find][offset-before]', '', 'placeholder="0"'); ?>
       </div>
@@ -565,11 +570,6 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
       <div class="form-group col-md-2">
         <label><?php echo language::translate('title_offset_after', 'Offset After'); ?></label>
         <?php echo functions::form_draw_text_field('files[current_tab_index][operations][new_operation_index][find][offset-after]', '', 'placeholder="0"'); ?>
-      </div>
-
-      <div class="form-group col-md-2">
-        <label><?php echo language::translate('title_index', 'Index'); ?></label>
-        <?php echo functions::form_draw_text_field('files[current_tab_index][operations][new_operation_index][find][index]', '', 'placeholder="1,3,.."'); ?>
       </div>
     </div>
 

@@ -30,7 +30,7 @@
       <div class="row">
         <div class="col-xs-3 col-sm-2 col-md-1">
           <a href="<?php echo functions::escape_html($item['link']); ?>" class="thumbnail float-start" style="margin-inline-end: 1em;">
-            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $item['image']['thumbnail']); ?>" alt="" />
+            <img class="img-responsive" src="<?php echo document::href_rlink(FS_DIR_APP . $item['image']['thumbnail']); ?>" alt="" />
           </a>
         </div>
 
