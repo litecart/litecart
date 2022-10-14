@@ -93,7 +93,7 @@
       }
 
       preg_match('#HTTP/\d(\.\d)?\s(\d{3})#', $response_headers, $matches);
-      $status_code = isset($matches[2]) ? $matches[2] : 'n/a';
+      $status_code = isset($matches[2]) ? $matches[2] : null;
 
       $this->last_response = [
         'timestamp' => time(),

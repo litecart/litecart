@@ -267,6 +267,9 @@
         payment_option_id = '". database::input($this->data['payment_option']['id']) ."',
         payment_option_name = '". database::input($this->data['payment_option']['name']) ."',
         payment_transaction_id = '". database::input($this->data['payment_transaction_id']) ."',
+        payment_receipt_url = '". database::input($this->data['payment_receipt_url']) ."',
+        payment_terms = '". database::input($this->data['payment_terms']) ."',
+        incoterm = '". database::input($this->data['incoterm']) ."',
         reference = '". database::input($this->data['reference']) ."',
         language_code = '". database::input($this->data['language_code']) ."',
         currency_code = '". database::input($this->data['currency_code']) ."',
@@ -277,6 +280,8 @@
         payment_due = ". (float)$this->data['payment_due'] .",
         tax_total = ". (float)$this->data['tax_total'] .",
         public_key = '". database::input($this->data['public_key']) ."',
+        date_paid = ". (!empty($this->data['date_paid']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['date_paid'])) ."'" : "null") .",
+        date_dispatched = ". (!empty($this->data['date_dispatched']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['date_dispatched'])) ."'" : "null") .",
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"

@@ -261,7 +261,7 @@
         $dom->preserveWhiteSpace = false;
 
         if (!$dom->loadXml($xml)) {
-          throw new \Exception(libxml_get_last_error());
+          throw new \Exception(libxml_get_last_error()->message);
         }
 
         switch ($dom->documentElement->tagName) {

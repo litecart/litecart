@@ -138,7 +138,7 @@
     for ($i=0; $i<strlen($glob); $i++) {
       if (in_array($glob[$i], ['*', '[', ']', '{', '}'])) break;
       if ($glob[$i] == '/') {
-        list($basedir, $remains) = str_split($glob, $i+1);
+        @list($basedir, $remains) = str_split($glob, $i+1);
       }
     }
 
