@@ -17,23 +17,49 @@
 
       $timestamp = microtime(true);
 
+      if (!is_dir(FS_DIR_STORAGE . 'vmods/.cache/')) {
+        mkdir(FS_DIR_STORAGE . 'vmods/.cache/');
+      }
+
+      if (!is_file($installed_file = FS_DIR_STORAGE .'vmods/.installed')) {
+        file_put_contents($installed_file, '', LOCK_EX);
+      }
+
+      if (!is_file($checked_file = FS_DIR_STORAGE . 'vmods/.cache/.checked')) {
+        file_put_contents($checked_file, '', LOCK_EX);
+      }
+
+      if (!is_file($cache_file = FS_DIR_STORAGE . 'vmods/.cache/.modifications')) {
+        file_put_contents($cache_file, '{}');
+      }
+
+      if (!is_file($settings_file = FS_DIR_STORAGE .'vmods/.settings')) {
+        file_put_contents($settings_file, '{}');
+      }
+
     // Backwards Compatibility
       self::$aliases['#^admin/#'] = BACKEND_ALIAS . '/';
       self::$aliases['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_'; // <2.2.0
 
+    // Determine last modified date
       $last_modified = null;
 
-    // Get last modification date for folder
-      $folder_last_modified = filemtime(FS_DIR_APP .'vmods/');
-      if ($folder_last_modified > $last_modified) {
+      if (($folder_last_modified = filemtime(FS_DIR_STORAGE .'vmods/')) > $last_modified) {
         $last_modified = $folder_last_modified;
       }
 
-    // Get last modification date modifications
-      foreach (glob(FS_DIR_APP .'vmods/*.xml') as $file) {
-        if (filemtime($file) > $last_modified) {
-          $last_modified = filemtime($file);
+      foreach (glob(FS_DIR_STORAGE .'vmods/*.xml') as $file) {
+        if (($modification_last_modified = filemtime($file)) > $last_modified) {
+          $last_modified = $modification_last_modified;
         }
+      }
+
+      if (($installed_last_modified = filemtime($installed_file)) > $last_modified) {
+        $last_modified = $installed_last_modified;
+      }
+
+      if (($settings_last_modified = filemtime($settings_file)) > $last_modified) {
+        $last_modified = $settings_last_modified;
       }
 
     // If no cache is requested by browser
@@ -42,35 +68,29 @@
       //}
 
     // Load installed
-      $installed_file = FS_DIR_STORAGE . 'vmods/.installed';
-      if (is_file($installed_file)) {
-        foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $installed) {
-          list($id, $version) = explode(';', $installed);
-          self::$_installed[] = [
-            'id' => $id,
-            'version' => $version,
-          ];
-        }
+      foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $installed) {
+        list($id, $version) = explode(';', $installed);
+        self::$_installed[] = [
+          'id' => $id,
+          'version' => $version,
+        ];
       }
 
-      if (!is_dir(FS_DIR_STORAGE . 'vmods/.cache/')) {
-        mkdir(FS_DIR_STORAGE . 'vmods/.cache/');
+    // Load settings
+      if (!self::$_settings = json_decode(file_get_contents($settings_file), true)) {
+        self::$_settings = [];
       }
 
     // Get modifications from cache
-      $cache_file = FS_DIR_STORAGE . 'vmods/.cache/.modifications';
-      if (is_file($cache_file) && filemtime($cache_file) > $last_modified) {
-        if ($cache = file_get_contents($cache_file)) {
-          if ($cache = json_decode($cache, true)) {
-            self::$_modifications = $cache['modifications'];
-            self::$_files_to_modifications = $cache['index'];
-          }
+      if (filemtime($cache_file) > $last_modified) {
+        if ($cache = json_decode(file_get_contents($cache_file), true)) {
+          self::$_modifications = $cache['modifications'];
+          self::$_files_to_modifications = $cache['index'];
         }
       }
 
     // Create a list of checked files
-      $checked_file = FS_DIR_STORAGE . 'vmods/.cache/.checked';
-      if (is_file($checked_file) && filemtime($checked_file) > $last_modified) {
+      if (filemtime($checked_file) > $last_modified) {
         foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
           list($relative_path, $modified_relative_path, $checksum) = explode(';', $line);
           if (is_file(FS_DIR_APP . $relative_path) && is_file(FS_DIR_APP . $modified_relative_path) && filemtime(FS_DIR_APP . $modified_relative_path) > filemtime(FS_DIR_APP . $relative_path)) {
@@ -78,8 +98,6 @@
             self::$_checksums[$relative_path] = $checksum;
           }
         }
-      } else {
-        file_put_contents($checked_file, '', LOCK_EX);
       }
 
     // Load modifications from disk
@@ -97,12 +115,6 @@
         ], JSON_UNESCAPED_SLASHES);
 
         file_put_contents($cache_file, $serialized, LOCK_EX);
-      }
-
-    // Load settings
-      if (!is_file(FS_DIR_STORAGE . 'vmods/.settings')) file_put_contents(FS_DIR_STORAGE . 'vmods/.settings', '{}');
-      if (!self::$_settings = json_decode(file_get_contents(FS_DIR_STORAGE . 'vmods/.settings'), true)) {
-        self::$_settings = [];
       }
 
       self::$time_elapsed += microtime(true) - $timestamp;
@@ -382,10 +394,11 @@
         'name' => $dom->getElementsByTagName('name')->item(0)->textContent,
         'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
         'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
+        'aliases' => [],
+        'settings' => [],
         'files' => [],
         'install' => null,
         'upgrades' => [],
-        'settings' => [],
       ];
 
       if (!$installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
@@ -418,6 +431,12 @@
       $aliases = [];
       foreach ($dom->getElementsByTagName('alias') as $alias_node) {
         $aliases[$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
+      }
+
+      foreach ($dom->getElementsByTagName('setting') as $setting_node) {
+        $key = $setting_node->getElementsByTagName('key')->item(0)->textContent;
+        $default_value = $setting_node->getElementsByTagName('default_value')->item(0)->textContent;
+        $vmod['settings'][$key] = isset(self::$_settings[$vmod['id']][$key]) ? self::$_settings[$vmod['id']][$key] : $default_value;
       }
 
       if (empty($dom->getElementsByTagName('file'))) {
@@ -494,8 +513,14 @@
           $insert_node = $operation_node->getElementsByTagName('insert')->item(0);
           $insert = strtr($insert_node->textContent, $aliases);
 
-          if (!empty(self::$_settings[$vmod['id']])) {
-            foreach (self::$_settings[$vmod['id']] as $key => $value) {
+          if (!empty($vmod['aliases'])) {
+            foreach ($vmod['aliases'] as $key => $value) {
+              $insert = str_replace('{alias:'. $key .'}', $value, $insert);
+            }
+          }
+
+          if (!empty($vmod['settings'])) {
+            foreach ($vmod['settings'] as $key => $value) {
               $insert = str_replace('{setting:'. $key .'}', $value, $insert);
             }
           }

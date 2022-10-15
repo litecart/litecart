@@ -85,7 +85,20 @@
       $this->data['author'] = !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '';
 
       foreach ($dom->getElementsByTagName('alias') as $alias_node) {
-        $this->data['aliases'][$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
+        $this->data['aliases'][] = [
+          'key' => $alias_node->getAttribute('key'),
+          'value' => $alias_node->getAttribute('value'),
+        ];
+      }
+
+      foreach ($dom->getElementsByTagName('setting') as $setting_node) {
+        $this->data['settings'][] = [
+          'title' => $setting_node->getElementsByTagName('title')->item(0)->textContent,
+          'description' => $setting_node->getElementsByTagName('description')->item(0)->textContent,
+          'function' => $setting_node->getElementsByTagName('function')->item(0)->textContent,
+          'key' => $setting_node->getElementsByTagName('key')->item(0)->textContent,
+          'default_value' => $setting_node->getElementsByTagName('default_value')->item(0)->textContent,
+        ];
       }
 
       $f = 0;
@@ -266,7 +279,17 @@
 
     // Aliases
       foreach ($this->data['aliases'] as $alias) {
-        $vmod_node->appendChild( $dom->createElement('alias', $alias) );
+        $alias_node = $dom->createElement('alias');
+
+        $attribute = $dom->createAttribute('key');
+        $attribute->value = $alias['key'];
+        $alias_node->appendChild( $attribute );
+
+        $attribute = $dom->createAttribute('value');
+        $attribute->value = $alias['value'];
+        $alias_node->appendChild( $attribute );
+
+        $vmod_node->appendChild( $alias_node );
       }
 
     // Install

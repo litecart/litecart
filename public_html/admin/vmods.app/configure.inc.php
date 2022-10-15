@@ -8,24 +8,38 @@
 
 		if (!is_file($file)) throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
 
-		$directives = [];
+// Load XML
 
-		$xml = simplexml_load_file($file);
+		if (!$xml = simplexml_load_file($file)) {
+      throw new Exception(language::translate('error_invalid_xml', 'Invalid XML'));
+    }
+
+    if ($xml->getName() != 'vmod') {
+      throw new Exception(language::translate('error_invalid_vmod', 'Invalid vMod'));
+    }
 
 		if (empty($xml->setting)) {
 			throw new Exception(language::translate('error_nothing_to_configure', 'Nothing to configure'));
 		}
 
-		if ($json = @json_decode(file_get_contents(FS_DIR_STORAGE . 'vmods/' . '.settings'), true)) {
-			$settings = $json;
-		} else {
-			$settings = [];
+		if (!$vmods_settings = @json_decode(file_get_contents(FS_DIR_STORAGE . 'vmods/' . '.settings'), true)) {
+			$vmods_settings = [];
 		}
 
 		$id = pathinfo($file, PATHINFO_FILENAME);
 
-		if (!$_POST && !empty($settings[$id])) {
-			$_POST['settings'] = $settings[$id];
+// Build Settings
+
+		$settings = [];
+    foreach ($xml->setting as $setting) {
+      $settings[(string)$setting->key] = (string)$setting->default_value;
+      if (isset($vmods_settings[$id][(string)$setting->key])) {
+        $settings[(string)$setting->key] = $vmods_settings[$id][(string)$setting->key];
+      }
+    }
+
+		if (!$_POST) {
+			$_POST['settings'] = $settings;
 		}
 
 	} catch (Exception $e) {
@@ -37,9 +51,9 @@
 
 		try {
 
-			$settings[$id] = $_POST['settings'];
+			$vmods_settings[$id] = $_POST['settings'];
 
-			file_put_contents(FS_DIR_STORAGE . 'vmods/' . '.settings', json_encode($settings, JSON_UNESCAPED_SLASHES), LOCK_EX);
+			file_put_contents(FS_DIR_STORAGE . 'vmods/' . '.settings', json_encode($vmods_settings, JSON_UNESCAPED_SLASHES), LOCK_EX);
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 			header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
@@ -76,7 +90,7 @@ pre {
 
 	<div class="card-body">
 
-		<h1><?php echo $id; ?></h1>
+		<h1><?php echo $xml->name; ?></h1>
 
 		<?php echo functions::form_draw_form_begin('settings_form', 'post', false, false, 'style="max-width: 960px;"'); ?>
 
@@ -89,11 +103,7 @@ pre {
 							<?php echo !empty($setting->description) ? '<div>'. $setting->description .'</div>' : ''; ?>
 						</td>
 						<td style="width: 50%">
-							<?php if (!empty($setting->multiple)) { ?>
-							<?php echo functions::form_draw_function('settings['.$setting->key.'][]', $setting->function, true); ?>
-							<?php } else { ?>
-							<?php echo functions::form_draw_function('settings['.$setting->key.']', $setting->function, true); ?>
-							<?php } ?>
+							<?php echo functions::form_draw_function($setting->function, 'settings['.$setting->key.']', true); ?>
 						</td>
 					</tr>
 					<?php } ?>
@@ -102,7 +112,6 @@ pre {
 
       <div class="card-action">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!confirm(&quot;'. language::translate('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"', 'delete'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
       </div>
 
