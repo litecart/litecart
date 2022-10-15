@@ -538,7 +538,7 @@
         </li>
         <li>
           <div class="btn-group">
-            <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\\"'. language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.') .'\\")) return false;"'); ?>
+            <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\\"'. language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.') .'\\")) return false;"'); ?>
             <?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?>
             <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
           </div>
@@ -547,7 +547,7 @@
           <?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?>
         </li>
         <li>
-          <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\\"'. language::translate('text_are_you_sure', 'Are you sure?') .'\\")) return false;"'); ?>
+          <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(&quot;'. language::translate('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"'); ?>
         </li>
       </ul>
     </div>

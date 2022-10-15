@@ -287,7 +287,7 @@ th:not(:last-child) {
   $('.delete').click(function(e){
     e.preventDefault();
 
-    if (!window.confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;
+    if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false;
 
     var row = $(this).closest('tr');
 
