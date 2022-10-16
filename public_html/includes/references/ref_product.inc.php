@@ -400,9 +400,8 @@
               );"
             );
 
-            $reserved_quantity = database::fetch($reserved_items_query, 'total_reserved');
-
-            $row['quantity_available'] = $this->quantity - $reserved_quantity;
+            $row['reserved_quantity'] = database::fetch($reserved_items_query, 'total_reserved');
+            $row['quantity_available'] = $row['quantity'] - $row['reserved_quantity'];
 
             $row['name'] = [];
 
