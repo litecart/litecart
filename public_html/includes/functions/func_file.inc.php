@@ -135,10 +135,12 @@
   // Set basedir and remains
     $basedir = '';
     $remains = $glob;
+
     for ($i=0; $i<strlen($glob); $i++) {
       if (in_array($glob[$i], ['*', '[', ']', '{', '}'])) break;
       if ($glob[$i] == '/') {
-        @list($basedir, $remains) = str_split($glob, $i+1);
+        $basedir = substr($glob, 0, $i+1);
+        $remains = substr($glob, $i+1);
       }
     }
 
