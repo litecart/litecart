@@ -69,7 +69,7 @@
 
     // Load installed
       foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $installed) {
-        list($id, $version) = explode(';', $installed);
+        list($id, $version) = preg_split('#;#', $installed);
         self::$_installed[] = [
           'id' => $id,
           'version' => $version,
