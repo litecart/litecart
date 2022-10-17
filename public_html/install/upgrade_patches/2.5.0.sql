@@ -1,9 +1,15 @@
+ALTER TABLE `lc_orders`
+ADD COLUMN `payment_receipt_url` VARCHAR(255) NOT NULL DEFAULT '' AFTER `payment_transaction_id`,
+ADD COLUMN `payment_terms` VARCHAR(8) NOT NULL DEFAULT '' AFTER `payment_receipt_url`,
+ADD COLUMN `incoterm` VARCHAR(3) NOT NULL DEFAULT '' AFTER `payment_terms`,
+ADD COLUMN `date_paid` TIMESTAMP NULL DEFAULT NULL AFTER `public_key`,
+ADD COLUMN `date_dispatched` TIMESTAMP NULL DEFAULT NULL AFTER `date_paid`;
+ -- --------------------------------------------------------
 ALTER TABLE `lc_order_statuses`
 ADD COLUMN `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `is_archived`,
 ADD COLUMN `stock_action` ENUM('none','reserve','commit') NOT NULL DEFAULT 'none' AFTER `is_trackable`,
 ADD COLUMN `state` ENUM('','created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled','fraud') NOT NULL DEFAULT '' AFTER `id`,
-DROP COLUMN `keywords`,
-DROP COLUMN `priority`;
+DROP COLUMN `keywords`;
  -- --------------------------------------------------------
 UPDATE `lc_order_statuses`
 SET stock_action = 'commit'
@@ -91,5 +97,8 @@ SET nr.firstname = COALESCE(c.firstname, o.firstname, ''),
 nr.lastname = COALESCE(c.lastname, o.lastname, '');
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
+('defaults', 'local', 'Default Incoterm', 'Default Incoterm for new orders if nothing else is set.', 'default_incoterm', 'EXW', 'incoterms()', 19, NOW(), NOW()),
 ('listings', 'global', 'Important Notice', 'An important notice to be displayed above your website.', 'important_notice', '', 'regional_text()', 0, NOW(), NOW()),
 ('listings', 'global', 'Development Mode', 'Development mode restricts frontend access to backend users only.', 'development_mode', '0', 'toggle()', 2, NOW(), NOW());
+-- --------------------------------------------------------
+UPDATE `lc_countries` SET name = 'North Macedonia' WHERE iso_code_2 = 'MK' LIMIT 1;

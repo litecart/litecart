@@ -131,7 +131,7 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1
 (123, 1, 'Lithuania', '', '440', 'LT', 'LTU', '^(LT)?([0-9]{9}|[0-9]{12})$', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'lt', 'LTL', '370', NOW(), NOW()),
 (124, 1, 'Luxembourg', '', '442', 'LU', 'LUX', '^(LU)?[0-9]{8}$', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{4}', 0, 'lb', 'EUR', '352', NOW(), NOW()),
 (125, 1, 'Macau', '', '446', 'MO', 'MAC', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'zh', 'MOP', '853', NOW(), NOW()),
-(126, 1, 'Macedonia', '', '807', 'MK', 'MKD', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{4}', 0, 'mk', 'MKD', '389', NOW(), NOW()),
+(126, 1, 'North Macedonia', '', '807', 'MK', 'MKD', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{4}', 0, 'mk', 'MKD', '389', NOW(), NOW()),
 (127, 1, 'Madagascar', '', '450', 'MG', 'MDG', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{3}', 0, 'fr', 'MGF', '261', NOW(), NOW()),
 (128, 1, 'Malawi', '', '454', 'MW', 'MWI', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'ny', 'MWK', '265', NOW(), NOW()),
 (129, 1, 'Malaysia', '', '458', 'MY', 'MYS', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'ms', 'MYR', '60', NOW(), NOW()),
@@ -276,13 +276,13 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 (7, 'job_shipping_tracker', 'job', 1, 0, '{"status":"1","frequency":"Hourly","priority":"0"}', '', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses` (`id`, `hidden`, `state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
-(1, 0, 'created', 'fa-plus', '#c0c0c0', 0, 0, 0, 'reserve', NOW(), NOW()),
-(2, 0, 'on_hold', 'fa-money', '#c0c0c0', 0, 0, 0, 'reserve', NOW(), NOW()),
-(3, 0, 'on_hold', 'fa-pause', '#c0c0c0', 1, 0, 0, 'reserve', NOW(), NOW()),
+(1, 0, 'created', 'fa-plus', '#c0c0c0', 0, 0, 0, 'none', NOW(), NOW()),
+(2, 0, 'on_hold', 'fa-money', '#c0c0c0', 0, 0, 0, 'none', NOW(), NOW()),
+(3, 0, 'on_hold', 'fa-pause', '#c0c0c0', 1, 0, 0, 'none', NOW(), NOW()),
 (4, 0, 'ready', 'fa-clock-o', '#bec11d', 1, 0, 0, 'reserve', NOW(), NOW()),
 (5, 0, 'delayed', 'fa-hourglass-half', '#e3ab44', 1, 0, 0, 'reserve', NOW(), NOW()),
 (6, 0, 'processing', 'fa-cog', '#e3ab44', 1, 0, 0, 'reserve', NOW(), NOW()),
-(7, 0, 'completed', 'fa-check', '#e3ab44', 1, 1, 0, 'commit', NOW(), NOW()),
+(7, 0, 'completed', 'fa-check', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),
 (8, 0, 'dispatched', 'fa-truck', '#99cc66', 1, 1, 1, 'commit', NOW(), NOW()),
 (9, 0, 'in_transit', 'fa-truck', '#e3ab44', 1, 0, 1, 'commit', NOW(), NOW()),
 (10, 0, 'delivered', 'fa-home', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),

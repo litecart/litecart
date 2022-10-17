@@ -111,6 +111,7 @@
           is_trackable = '". (empty($this->data['is_trackable']) ? '0' : '1') ."',
           stock_action = '". database::input($this->data['stock_action']) ."',
           notify = '". (empty($this->data['notify']) ? '0' : '1') ."',
+          priority = ". (int)$this->data['priority'] .",
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"

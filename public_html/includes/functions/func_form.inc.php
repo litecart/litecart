@@ -1406,7 +1406,7 @@ END;
     }
   }
 
-  function form_incoterms_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_incoterms_list($name, $input=true, $parameters='') {
 
     $options = [
       ['EXW', 'EXW &ndash; '. language::translate('title_incoterm_exw', 'Ex Works')],
@@ -1522,7 +1522,7 @@ END;
     $query = database::query(
       "select os.id, os.icon, os.color, osi.name from ". DB_TABLE_PREFIX ."order_statuses os
       left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = os.id and osi.language_code = '". database::input(language::$selected['code']) ."')
-      order by field(os.state,'created','on_hold','ready','delayed','processing','completed','dispatched','in_transit','delivered','returning','returned','cancelled',''), name;"
+      order by field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, osi.name asc;"
     );
 
     $options = [];
@@ -1612,7 +1612,7 @@ END;
     }
   }
 
-  function form_payment_terms_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_payment_terms_list($name, $input=true, $parameters='') {
 
     $options = [
       ['PIA', 'PIA &ndash; '. language::translate('title_payment_terms_pia', 'Payment In Advance')],

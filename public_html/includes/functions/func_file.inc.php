@@ -48,33 +48,34 @@
     return $tmp_file;
   }
 
-  function file_delete($source, &$results=[]) {
+  function file_delete($pattern, $flags=0, &$results=[]) {
 
     if (!isset($results) || !is_array($results)) {
       $results = [];
     }
 
-  // Resolve glob
-    if (strpos($source, '*') !== false) {
-      foreach (file_search($source) as $file) {
-        file_delete($file, $results);
+    foreach (file_search($pattern, $flags) as $file) {
+
+      if (is_dir($file)) {
+        file_delete($file.'*', $flags, $results);
+        $results[$file] = rmdir($file);
+        continue;
       }
-      return in_array(false, $results) ? false : true;
-    }
 
-    if (!file_exists($source)) {
-      $results[$source] = null;
-      return in_array(false, $results) ? false : true;
-
-    } else if (is_dir($source)) {
-      file_delete(rtrim($source, '/') .'/*', $results);
-      $results[$source] = rmdir($source);
-
-    } else if (is_file($source) || is_link($source)) {
-      $results[$source] = unlink($source);
+      return $results[$file] = unlink($file);
     }
 
     return in_array(false, $results) ? false : true;
+  }
+
+  function file_format_size(int $size) {
+    switch (true) {
+      case ($size == 0): return '-';
+      case ($size < 1000): return language::number_format($size, 0) . ' B';
+      case (($size/1024) < 1000): return language::number_format($size/1024, 2) . ' kB';
+      case (($size/1024/1024) < 1000): return language::number_format($size/1024/1024, 2) . ' MB';
+      case (($size/1024/1024/1024) < 1000): return language::number_format($size/1024/1024/1024, 2) . ' GB';
+    }
   }
 
   function file_is_binary($file) {
@@ -162,24 +163,25 @@
     return str_pad('', count($base) * 3, '../') . implode('/', $target);
   }
 
+// Strip paths from logic e.g. ./ ../
   function file_resolve_path($path) {
 
     if (empty($path)) return $path;
 
     $path = str_replace('\\', '/', $path);
-    $parts = array_filter(explode('/', $path), 'strlen');
+    $path = preg_replace('#(?<!:)//+#', '/', $path);
 
-    $absolutes = [];
-    foreach ($parts as $part) {
-      if ('.' == $part) continue;
-      if ('..' == $part) {
-        array_pop($absolutes);
-      } else {
-        $absolutes[] = $part;
-      }
+    $new_path = [];
+
+    foreach (explode('/', $path) as $part) {
+      if (empty($part) || $part === '.') continue;
+
+      if ($part !== '..') array_push($new_path, $part);
+      else if (count($new_path) > 0) array_pop($new_path);
+      else throw new \Exception('Climbing above the root is not permitted.');
     }
 
-    return implode('/', $absolutes);
+    return join('/', $new_path);
   }
 
 // PHP glob() does not support stream wrappers, so let's create our own glob.
@@ -192,10 +194,12 @@
   // Set basedir and remains
     $basedir = '';
     $remains = $glob;
+
     for ($i=0; $i<strlen($glob); $i++) {
       if (in_array($glob[$i], ['*', '[', ']', '{', '}'])) break;
       if ($glob[$i] == '/') {
-        @list($basedir, $remains) = str_split($glob, $i+1);
+        $basedir = substr($glob, 0, $i+1);
+        $remains = substr($glob, $i+1);
       }
     }
 
@@ -293,6 +297,9 @@
   // Merge folders and files into one and same result
     $results = array_merge($folders, $files);
 
+  // Sort results
+    asort($results);
+
     return $results;
   }
 
@@ -311,34 +318,6 @@
     }
 
     return false;
-  }
-
-  function file_format_size(int $size) {
-    switch (true) {
-      case ($size == 0): return '-';
-      case ($size < 1000): return language::number_format($size) . ' B';
-      case (($size/1024) < 1000): return language::number_format($size/1024, 2) . ' kB';
-      case (($size/1024/1024) < 1000): return language::number_format($size/1024/1024, 2) . ' MB';
-      case (($size/1024/1024/1024) < 1000): return language::number_format($size/1024/1024/1024, 2) . ' GB';
-    }
-  }
-
-// Strip paths from logic e.g. ./ ../
-  function file_strip_path($path) {
-
-    if (empty($path)) return $path;
-
-    $new_path = [];
-
-    foreach (explode('/', $path) as $part) {
-      if (empty($part) || $part === '.') continue;
-
-      if ($part !== '..') array_push($new_path, $part);
-      else if (count($new_path) > 0) array_pop($new_path);
-      else throw new \Exception('Climbing above the root is not permitted.');
-    }
-
-    return implode('/', $new_path);
   }
 
   function file_webpath($file) {

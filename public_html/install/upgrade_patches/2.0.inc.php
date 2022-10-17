@@ -4,10 +4,10 @@
     FS_DIR_ADMIN . 'orders.app/printable_packing_slip.php',
     FS_DIR_ADMIN . 'orders.app/printable_order_copy.php',
     FS_DIR_ADMIN . 'sales.widget/',
-    FS_DIR_APP . 'data/errors.log',
-    FS_DIR_APP . 'data/performance.log',
-    FS_DIR_APP . 'images/no_image.png',
-    FS_DIR_APP . 'images/icons/',
+    FS_DIR_STORAGE . 'data/errors.log',
+    FS_DIR_STORAGE . 'data/performance.log',
+    FS_DIR_STORAGE . 'images/no_image.png',
+    FS_DIR_STORAGE . 'images/icons/',
     FS_DIR_APP . 'ext/fancybox/',
     FS_DIR_APP . 'ext/jqplot/',
     FS_DIR_APP . 'ext/responsiveslider/',
@@ -60,7 +60,7 @@
   ]);
 
   perform_action('copy', [
-    'data/default/public_html/images/no_image.png' => FS_DIR_APP . 'images/no_image.png',
+    'data/default/public_html/images/no_image.png' => FS_DIR_STORAGE . 'images/no_image.png',
   ]);
 
   perform_action('modify', [
@@ -71,8 +71,8 @@
                    . "  define('WS_DIR_LOGS',        WS_DIR_APP . 'logs/');" . PHP_EOL,
       ],
       [
-        'search'  => "  ini_set('error_log', FS_DIR_APP . 'data/errors.log');" . PHP_EOL,
-        'replace' => "  ini_set('error_log', FS_DIR_APP . 'logs/errors.log');" . PHP_EOL,
+      'search'  => "  ini_set('error_log', FS_DIR_STORAGE . 'data/errors.log');" . PHP_EOL,
+      'replace' => "  ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');" . PHP_EOL,
       ],
       [
         'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'manufacturers_info`');",

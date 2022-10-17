@@ -576,6 +576,7 @@
 
     foreach ($iterator as $file) {
       if (!preg_match('#\.php$#', $file)) continue;
+      if (preg_match('#vmods/.cache/#', $file)) continue;
 
       $pattern = '#'. implode(['language::translate\((?:(?!\$)', '(?:(__CLASS__)?\.)?', '(?:[\'"])([^\'"]+)(?:[\'"])', '(?:,?\s+(?:[\'"])([^\'"]+)?(?:[\'"]))?', '(?:,?\s+?(?:[\'"])([^\'"]+)?(?:[\'"]))?', ')\)']) .'#';
 
@@ -587,7 +588,7 @@
         } else {
           $code = $matches[2][$i];
         }
-        $translations[$code] = strtr($matches[3][$i], ["\\r" => "\r", "\\n" => "\n"]);
+        $translations[strtolower($code)] = strtr($matches[3][$i], ["\\r" => "\r", "\\n" => "\n"]);
       }
 
     }

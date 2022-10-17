@@ -95,7 +95,7 @@ form[name="filter_form"] li {
     <thead>
       <tr>
         <th><?php echo language::translate('title_customer', 'Customer'); ?></th>
-        <th width="100%"><?php echo language::translate('title_email_address', 'Email Address'); ?></th>
+        <th class="main"><?php echo language::translate('title_email_address', 'Email Address'); ?></th>
         <th class="text-center"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
       </tr>
     </thead>

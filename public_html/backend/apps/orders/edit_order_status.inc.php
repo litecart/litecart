@@ -23,6 +23,7 @@
       if (empty($_POST['notify'])) $_POST['notify'] = 0;
       if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
       if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
+      if (empty($_POST['is_trackable'])) $_POST['is_trackable'] = 0;
 
       $fields = [
         'hidden',
@@ -33,6 +34,7 @@
         'is_archived',
         'is_trackable',
         'notify',
+        'priority',
         'name',
         'description',
         'email_subject',
@@ -108,6 +110,10 @@
               <label><?php echo language::translate('title_order_state', 'State'); ?></label>
               <?php echo functions::form_select_field('state', $states, true); ?>
             </div>
+
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+              <?php echo functions::form_draw_number_field('priority', true); ?>
           </div>
 
           <div class="form-group">
@@ -215,7 +221,7 @@
 
       <div class="card-action">
         <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo !empty($order_status->data['id']) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo !empty($order_status->data['id']) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(&quot;'. language::translate('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"', 'delete') : false; ?>
         <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 

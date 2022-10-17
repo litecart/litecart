@@ -40,7 +40,7 @@
       from ". DB_TABLE_PREFIX ."orders
       group by order_status_id
     ) o on (o.order_status_id = os.id)
-    order by field(state,'created','on_hold','ready','delayed','processing','completed','dispatched','in_transit','delivered','returning','returned','cancelled',''), osi.name asc;"
+    order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, osi.name asc;"
   )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
   foreach ($order_statuses as $i => $order_status) {
@@ -90,8 +90,8 @@
           <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
           <th><?php echo language::translate('title_track', 'Track'); ?></th>
           <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
+          <th><?php echo language::translate('title_prioritet', 'Prioritet'); ?></th>
           <th><?php echo language::translate('title_orders', 'Orders'); ?></th>
-          <th></th>
           <th></th>
         </tr>
       </thead>
@@ -110,9 +110,9 @@
           <td class="text-center"><?php echo !empty($order_status['is_archived']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
           <td class="text-center"><?php echo !empty($order_status['is_trackable']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
           <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
-          <td class="text-end"><?php echo language::number_format($order_status['num_orders'], 0); ?></td>
-          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/orders', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
-          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td class="text-center"><?php echo language::number_format($order_status['num_orders'], 0); ?></td>
+          <td class="text-center"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/orders', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>
@@ -158,11 +158,4 @@
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
   <?php } ?>
-
 </div>
-
-<script>
-  $('.data-table :checkbox').change(function() {
-    $('#actions').prop('disabled', !$('.data-table :checked').length);
-  }).first().trigger('change');
-</script>

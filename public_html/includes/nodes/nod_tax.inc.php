@@ -100,6 +100,10 @@
         }
       }
 
+      if (!isset($customer['city'])) $customer['city'] = '';
+      if (!isset($customer['shipping_address'])) $customer['shipping_address'] = $customer;
+      if (!isset($customer['shipping_address']['city'])) $customer['shipping_address']['city'] = '';
+
       $checksum = crc32(http_build_query($customer));
 
       if (isset(self::$_cache['rates'][$tax_class_id][$checksum])) {

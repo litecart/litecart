@@ -467,6 +467,7 @@ CREATE TABLE `lc_order_statuses` (
   `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `stock_action` ENUM('none','reserve','commit') NOT NULL DEFAULT 'none',
   `notify` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `priority` TINYINT(11) NOT NULL DEFAULT '0',
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),

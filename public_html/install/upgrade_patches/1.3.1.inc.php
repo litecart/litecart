@@ -5,7 +5,7 @@
     FS_DIR_ADMIN . 'vqmods.app/log.inc.php',
     FS_DIR_APP . 'ext/jquery/jquery-1.11.2.min.js',
     FS_DIR_APP . 'ext/jquery/jquery-1.11.2.min.map',
-    FS_DIR_APP . 'images/stickers/',
+    FS_DIR_STORAGE . 'images/stickers/',
     FS_DIR_APP . 'includes/templates/default.admin/styles/ie.css',
     FS_DIR_APP . 'includes/templates/default.admin/styles/ie8.css',
     FS_DIR_APP . 'includes/templates/default.admin/styles/ie9.css',

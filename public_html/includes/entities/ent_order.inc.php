@@ -251,8 +251,9 @@
           payment_option_name = '". (!empty($this->data['payment_option']['name']) ? database::input($this->data['payment_option']['name']) : '') ."',
           payment_option_userdata = '". (!empty($this->payment->selected['userdata']) ? database::input(json_encode($this->data['payment_option']['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
           payment_transaction_id = '". database::input($this->data['payment_transaction_id']) ."',
-          payment_receipt_url = '". database::input($this->data['payment_receipt_url']) ."',
-          payment_terms = '". database::input($this->data['payment_terms']) ."',
+        payment_receipt_url = '". database::input($this->data['payment_receipt_url']) ."',
+        payment_terms = '". database::input($this->data['payment_terms']) ."',
+        incoterm = '". database::input($this->data['incoterm']) ."',
           reference = '". database::input($this->data['reference']) ."',
           language_code = '". database::input($this->data['language_code']) ."',
           currency_code = '". database::input($this->data['currency_code']) ."',
@@ -267,8 +268,8 @@
           total = ". (float)$this->data['total'] .",
           total_tax = ". (float)$this->data['total_tax'] .",
           public_key = '". database::input($this->data['public_key']) ."',
-          date_paid = '". (!empty($this->data['date_paid']) ? date('Y-m-d H:i:s', strtotime($this->data['date_paid'])) : "null") ."',
-          date_dispatched = '". (!empty($this->data['date_dispatched']) ? date('Y-m-d H:i:s', strtotime($this->data['date_dispatched'])) : "null") ."',
+        date_paid = ". (!empty($this->data['date_paid']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['date_paid'])) ."'" : "null") .",
+        date_dispatched = ". (!empty($this->data['date_dispatched']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['date_dispatched'])) ."'" : "null") .",
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
@@ -318,6 +319,11 @@
           }
         }
 
+      // Withdraw stock
+        if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
+          $product = new ent_product($item['product_id']);
+          $product->adjust_quantity(-(float)$item['quantity'], $item['option_stock_combination']);
+        }
         database::query(
           "update ". DB_TABLE_PREFIX ."orders_items
           set product_id = ". (int)$item['product_id'] .",

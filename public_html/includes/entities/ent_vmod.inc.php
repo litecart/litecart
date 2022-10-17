@@ -38,13 +38,13 @@
 
     public function load($filename) {
 
-      if (!is_file(FS_DIR_APP . 'vmods/'. $filename)) {
+      if (!is_file(FS_DIR_STORAGE . 'vmods/'. $filename)) {
         throw new Exception('Invalid vMod ('. $filename .')');
       }
 
       $this->reset();
 
-      $xml = file_get_contents(FS_DIR_APP . 'vmods/'. $filename);
+      $xml = file_get_contents(FS_DIR_STORAGE . 'vmods/'. $filename);
       $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
 
       $dom = new \DOMDocument('1.0', 'UTF-8');
@@ -57,8 +57,8 @@
       $this->data['id'] = preg_replace('#\.(xml|disabled)?$#', '', $filename);
       $this->data['status'] = !preg_match('#\.disabled$#', $filename) ? '1' : '0';
       $this->data['filename'] = $filename;
-      $this->data['date_created'] = date('Y-m-d H:i:s', filectime(FS_DIR_APP . 'vmods/' . $filename));
-      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime(FS_DIR_APP . 'vmods/' . $filename));
+      $this->data['date_created'] = date('Y-m-d H:i:s', filectime(FS_DIR_STORAGE . 'vmods/' . $filename));
+      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime(FS_DIR_STORAGE . 'vmods/' . $filename));
 
       switch ($dom->documentElement->tagName) {
 
@@ -85,7 +85,20 @@
       $this->data['author'] = !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '';
 
       foreach ($dom->getElementsByTagName('alias') as $alias_node) {
-        $this->data['aliases'][$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
+        $this->data['aliases'][] = [
+          'key' => $alias_node->getAttribute('key'),
+          'value' => $alias_node->getAttribute('value'),
+        ];
+      }
+
+      foreach ($dom->getElementsByTagName('setting') as $setting_node) {
+        $this->data['settings'][] = [
+          'title' => $setting_node->getElementsByTagName('title')->item(0)->textContent,
+          'description' => $setting_node->getElementsByTagName('description')->item(0)->textContent,
+          'function' => $setting_node->getElementsByTagName('function')->item(0)->textContent,
+          'key' => $setting_node->getElementsByTagName('key')->item(0)->textContent,
+          'default_value' => $setting_node->getElementsByTagName('default_value')->item(0)->textContent,
+        ];
       }
 
       $f = 0;
@@ -266,7 +279,17 @@
 
     // Aliases
       foreach ($this->data['aliases'] as $alias) {
-        $vmod_node->appendChild( $dom->createElement('alias', $alias) );
+        $alias_node = $dom->createElement('alias');
+
+        $attribute = $dom->createAttribute('key');
+        $attribute->value = $alias['key'];
+        $alias_node->appendChild( $attribute );
+
+        $attribute = $dom->createAttribute('value');
+        $attribute->value = $alias['value'];
+        $alias_node->appendChild( $attribute );
+
+        $vmod_node->appendChild( $alias_node );
       }
 
     // Install
@@ -304,7 +327,7 @@
         foreach ($file['operations'] as $operation) {
           $operation_node = $dom->createElement('operation');
 
-          foreach (['type', 'method', 'onerror'] as $attribute_name) {
+          foreach (['method', 'type', 'onerror'] as $attribute_name) {
             if (!empty($operation[$attribute_name])) {
               $attribute = $dom->createAttribute($attribute_name);
               $attribute->value = $operation[$attribute_name];
@@ -360,10 +383,10 @@
       $xml = preg_replace('#^(\n|\r\n?){2,}#m', PHP_EOL, $xml);
 
       if (!empty($this->previous['filename'])) {
-         rename(FS_DIR_APP . 'vmods/' . $this->previous['filename'], FS_DIR_APP . 'vmods/' . $this->data['filename']);
+         rename(FS_DIR_STORAGE . 'vmods/' . $this->previous['filename'], FS_DIR_STORAGE . 'vmods/' . $this->data['filename']);
       }
 
-      file_put_contents(FS_DIR_APP . 'vmods/' . $this->data['filename'], $xml);
+      file_put_contents(FS_DIR_STORAGE . 'vmods/' . $this->data['filename'], $xml);
 
       $this->previous = $this->data;
 
@@ -382,7 +405,7 @@
         })($tmp_file);
       }
 
-      unlink(FS_DIR_APP . 'vmods/' . $this->previous['filename']);
+      unlink(FS_DIR_STORAGE . 'vmods/' . $this->previous['filename']);
 
       $this->reset();
 

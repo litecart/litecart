@@ -103,7 +103,7 @@ html {
       display: none;
     }
   }
-  @media (max-width: calc(@media-breakpoint-sm - 1px)) {
+  @media (max-width: (@media-breakpoint-sm - 1px)) {
     .details {
       display: none;
     }
@@ -116,7 +116,7 @@ html {
   @media (min-width: (@media-breakpoint-sm)) {
     margin: 0 var(--gutter-size) var(--gutter-size) var(--gutter-size);
   }
-  @media (max-width: calc(@media-breakpoint-sm - 1px)) {
+  @media (max-width: (@media-breakpoint-sm - 1px)) {
     position: sticky;
     top: 0;
     z-index: 999;

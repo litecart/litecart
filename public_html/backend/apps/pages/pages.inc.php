@@ -76,6 +76,13 @@
     'information' => language::translate('title_information', 'Information'),
   ];
 ?>
+<style>
+table tbody .toggle {
+  width: 30px;
+  display: inline-block;
+}
+</style>
+
 
 <div class="card card-app">
   <div class="card-header">
@@ -104,7 +111,7 @@
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th class="main"><?php echo language::translate('title_title', 'Title'); ?></th>
+          <th class="main" style="padding-inline-start: 30px;"><?php echo language::translate('title_title', 'Title'); ?></th>
           <th><?php echo language::translate('title_store_menu', 'Store Menu'); ?></th>
           <th><?php echo language::translate('title_information', 'Information'); ?></th>
           <th></th>
@@ -179,22 +186,25 @@
         if ($page['num_subpages']) {
           if (!in_array($page['id'], $_GET['expanded'])) {
             $expanded = array_merge($_GET['expanded'], [$page['id']]);
-            $icon = '<a href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. functions::draw_fonticon('fa-plus-square-o fa-fw') . '</a>';
+            $icon = '<a class="toggle" href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. functions::draw_fonticon('fa-plus-square-o fa-fw') . '</a>';
 
           } else {
             $expanded = array_diff($_GET['expanded'], [$page['id']]);
-            $icon = '<a href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. functions::draw_fonticon('fa-minus-square-o fa-fw') .'</a>';
+            $icon = '<a class="toggle" href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. functions::draw_fonticon('fa-minus-square-o fa-fw') .'</a>';
           }
 
         } else {
-          $icon = functions::draw_fonticon('fa-file-o fa-fw');
+          $icon = '<span class="toggle"></span>';
         }
 ?>
         <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : ''; ?>">
           <td><?php echo functions::form_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $page['id']; ?></td>
-          <td style="padding-inline-start: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
+          <td style="padding-inline-start: <?php echo $depth * 30; ?>px">
+            <?php echo $icon; ?>
+            <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a>
+          </td>
           <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>

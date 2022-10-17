@@ -339,12 +339,13 @@
       },
 
       success: function(data){
+        console.log(data);
         if (data.status == 'ok') {
-          $('.options-stock-notice').text(data.notice).removeClass('warning');
+          $('.stock-notice').text(data.notice).removeClass('warning');
         } else if (data.status == 'warning') {
-          $('.options-stock-notice').text(data.notice).addClass('warning');
+          $('.stock-notice').text(data.notice).addClass('warning');
         } else {
-          $('.options-stock-notice').html('');
+          $('.stock-notice').html('');
         }
       }
     });

@@ -131,8 +131,7 @@
       '.'.$extension,
     ]);
 
-    $cache_directory = 'storage://cache/' . substr($filename, 0, 2) .'/';
-    $cache_file = $cache_directory . $filename;
+    $cache_file = 'storage://cache/' . substr($filename, 0, 2) . '/' . $filename;
 
     if (is_file($cache_file)) {
       if (filemtime($cache_file) >= filemtime($source)) {
@@ -141,8 +140,8 @@
         functions::image_delete_cache($source);
       }
     }
-    if (!is_dir($cache_directory)) {
-      if (!mkdir($cache_directory)) {
+    if (!is_dir(dirname($cache_file))) {
+      if (!mkdir(dirname($cache_file))) {
         trigger_error('Could not create cache subfolder', E_USER_WARNING);
         return false;
       }

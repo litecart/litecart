@@ -187,7 +187,11 @@
         $email = new ent_email();
         $email->add_recipient(settings::get('store_email'))
               ->set_subject('[Not Found Report] '. settings::get('store_name'))
-              ->add_body("** This is a report of requests made to your website that did not have a destination. **\r\n\r\n". PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n".implode("\r\n", $lines))
+                ->add_body(
+                  wordwrap("This is a list of the last 100 requests made to your website that did not have a destination. Most of these reports usually contain scans and attacks by evil robots. But some URLs may be indexed by search engines requiring a redirect to a proper destination.", 72, "\r\n") . "\r\n\r\n" .
+                  PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n" .
+                  implode("\r\n", $lines)
+                )
               ->send();
         file_put_contents($not_found_file, '');
       } else {
