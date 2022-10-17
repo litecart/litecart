@@ -11,7 +11,7 @@
   $tables_query = database::query(
     "SELECT * FROM information_schema.TABLES
     WHERE TABLE_SCHEMA = '". DB_DATABASE ."'
-    ORDR BY TABLE_NAME;"
+    ORDER BY TABLE_NAME;"
   );
 
   $tables = [];
