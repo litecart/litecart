@@ -109,7 +109,7 @@
       <div class="form-group">
         <label><?php echo language::translate('title_image', 'Image'); ?></label>
         <?php echo functions::form_file_field('image', 'accept="image/*,.svg"'); ?>
-        <?php echo (!empty($slide->data['image'])) ? '</label>' . $slide->data['image'] : ''; ?>
+        <?php echo !empty($slide->data['image']) ? '</label>' . $slide->data['image'] : ''; ?>
       </div>
 
       <nav class="nav nav-tabs">

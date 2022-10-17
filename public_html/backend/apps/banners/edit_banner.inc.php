@@ -84,7 +84,7 @@ table th:last-child {
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo (!empty($banner->data['id'])) ? language::translate('title_edit_banner', 'Edit Banner') : language::translate('title_create_new_banner', 'Create New Banner'); ?>
+      <?php echo $app_icon; ?> <?php echo !empty($banner->data['id']) ? language::translate('title_edit_banner', 'Edit Banner') : language::translate('title_create_new_banner', 'Create New Banner'); ?>
     </div>
   </div>
 
@@ -113,7 +113,7 @@ table th:last-child {
       <div class="form-group">
         <label><?php echo language::translate('title_image', 'Image'); ?></label>
         <?php echo functions::form_file_field('image', 'accept="image/*"'); ?>
-        <?php echo (!empty($banner->data['image'])) ? '<div>' . $banner->data['image'] .'</div>' : ''; ?>
+        <?php echo !empty($banner->data['image']) ? '<div>' . $banner->data['image'] .'</div>' : ''; ?>
       </div>
 
       <div class="form-group">
@@ -150,7 +150,7 @@ table th:last-child {
 
       <div class="card-action">
         <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($banner->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo !empty($banner->data['id']) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
         <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 

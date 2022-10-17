@@ -67,8 +67,8 @@
         <tr class="<?php echo (!empty($campaign['end_date']) && $campaign['end_date'] < date('Y-m-d H:i:s')) ? 'semi-transparent' : ''; ?>">
           <td><?php echo functions::form_checkbox('campaigns[]', $campaign['id']); ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>"><?php echo $campaign['product_name']; ?></a></td>
-          <td class="text-end"><?php echo (!empty($campaign['start_date'])) ? language::strftime(language::$selected['format_date'], strtotime($campaign['start_date'])) : ''; ?></td>
-          <td class="text-end"><?php echo (!empty($campaign['end_date'])) ? language::strftime(language::$selected['format_date'], strtotime($campaign['end_date'])) : ''; ?></td>
+          <td class="text-end"><?php echo !empty($campaign['start_date']) ? language::strftime(language::$selected['format_date'], strtotime($campaign['start_date'])) : ''; ?></td>
+          <td class="text-end"><?php echo !empty($campaign['end_date']) ? language::strftime(language::$selected['format_date'], strtotime($campaign['end_date'])) : ''; ?></td>
           <td class="text-end"><?php echo currency::format($campaign['campaign_price'], false, settings::get('store_currency_code')); ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
