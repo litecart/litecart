@@ -1,7 +1,6 @@
 <?php
 
-// Delete old files
-  $deleted_files = [
+  perform_action('delete', [
     FS_DIR_ADMIN . 'orders.app/printable_packing_slip.php',
     FS_DIR_ADMIN . 'orders.app/printable_order_copy.php',
     FS_DIR_ADMIN . 'sales.widget/',
@@ -58,80 +57,61 @@
     FS_DIR_APP . 'includes/templates/default.catalog/views/printable_order_copy.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/printable_packing_slip.inc.php',
     FS_DIR_APP . 'includes/column_left.inc.php',
-  ];
+  ]);
 
-  foreach ($deleted_files as $pattern) {
-    if (!file_delete($pattern)) {
-      die('<span class="error">[Error]</span></p>');
-    }
-  }
+  perform_action('copy', [
+    FS_DIR_APP . 'install/data/default/public_html/images/no_image.png' => FS_DIR_STORAGE . 'images/no_image.png',
+  ]);
 
-// Copy new files
-  $copy_files = [
-    'data/default/public_html/images/no_image.png' => FS_DIR_STORAGE . 'images/no_image.png',
-  ];
-
-  foreach ($copy_files as $source => $destination) {
-    if (!file_xcopy($source, $destination)) {
-      die('<span class="error">[Error]</span></p>');
-    }
-  }
-
-// Modify some files
-  $modified_files = [
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('WS_DIR_INCLUDES',    WS_DIR_APP . 'includes/');" . PHP_EOL,
-      'replace' => "  define('WS_DIR_INCLUDES',    WS_DIR_APP . 'includes/');" . PHP_EOL
-                 . "  define('WS_DIR_LOGS',        WS_DIR_APP . 'logs/');" . PHP_EOL,
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+  perform_action('modify', [
+    FS_DIR_APP . 'includes/config.inc.php' => [
+      [
+        'search'  => "  define('WS_DIR_INCLUDES',    WS_DIR_APP . 'includes/');" . PHP_EOL,
+        'replace' => "  define('WS_DIR_INCLUDES',    WS_DIR_APP . 'includes/');" . PHP_EOL
+                   . "  define('WS_DIR_LOGS',        WS_DIR_APP . 'logs/');" . PHP_EOL,
+      ],
+      [
       'search'  => "  ini_set('error_log', FS_DIR_STORAGE . 'data/errors.log');" . PHP_EOL,
       'replace' => "  ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');" . PHP_EOL,
+      ],
+      [
+        'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'manufacturers_info`');",
+        'replace' => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'manufacturers_info`');" . PHP_EOL
+                   . "  define('DB_TABLE_MODULES',                           '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'modules`');",
+      ],
+      [
+        'search'  => "  define('DB_TABLE_SLIDES',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'slides`');",
+        'replace' => "  define('DB_TABLE_SLIDES',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'slides`');" . PHP_EOL
+                   . "  define('DB_TABLE_SLIDES_INFO',                       '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'slides_info`');",
+      ],
     ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'manufacturers_info`');",
-      'replace' => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'manufacturers_info`');" . PHP_EOL
-                 . "  define('DB_TABLE_MODULES',                           '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'modules`');",
+    FS_DIR_APP . '.htaccess' => [
+      [
+        'search'  => '<FilesMatch "\.(css|js)$">',
+        'replace' => '<FilesMatch "\.(css|js|svg)$">',
+      ],
+      [
+        'search'  => '<FilesMatch "\.(css|gif|ico|jpg|jpeg|js|pdf|png|ttf)$">',
+        'replace' => '<FilesMatch "\.(css|gif|ico|jpg|jpeg|js|pdf|png|svg|ttf)$">',
+      ],
     ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_SLIDES',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'slides`');",
-      'replace' => "  define('DB_TABLE_SLIDES',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'slides`');" . PHP_EOL
-                 . "  define('DB_TABLE_SLIDES_INFO',                       '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'slides_info`');",
-    ],
-    [
-      'file'    => FS_DIR_APP . '.htaccess',
-      'search'  => '<FilesMatch "\.(css|js)$">',
-      'replace' => '<FilesMatch "\.(css|js|svg)$">',
-    ],
-    [
-      'file'    => FS_DIR_APP . '.htaccess',
-      'search'  => '<FilesMatch "\.(css|gif|ico|jpg|jpeg|js|pdf|png|ttf)$">',
-      'replace' => '<FilesMatch "\.(css|gif|ico|jpg|jpeg|js|pdf|png|svg|ttf)$">',
-    ]
-  ];
-
-  foreach ($modified_files as $modification) {
-    if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
-      die('<span class="error">[Error]</span></p>');
-    }
-  }
+  ], 'abort');
 
 // Delete Deprecated Modules
   $module_types_query = database::query(
     "select * from ". DB_TABLE_PREFIX ."settings
     where `key` in ('order_action_modules', 'order_success_modules');"
   );
+
   while ($module_type = database::fetch($module_types_query)) {
+
     foreach (explode(';', $module_type['value']) as $module) {
       database::query(
         "delete from ". DB_TABLE_PREFIX ."settings
         where `key` = '". database::input($module) ."';"
       );
     }
+
     database::query(
       "delete from ". DB_TABLE_PREFIX ."settings
       where `key` = '". database::input($module_type['key']) ."'
@@ -152,6 +132,7 @@
   );
 
   while ($installed_modules = database::fetch($installed_modules_query)) {
+
     foreach (explode(';', $installed_modules['value']) as $module) {
 
       $module_query = database::query(

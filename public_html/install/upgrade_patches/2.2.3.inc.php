@@ -1,38 +1,25 @@
 <?php
 
-// Delete files
-  $deleted_files = [
+  perform_action('delete', [
     FS_DIR_APP . 'includes/templates/default.catalog/pages/page.inc.php',
-  ];
+  ]);
 
-  foreach ($deleted_files as $pattern) {
-    if (!file_delete($pattern)) {
-      echo '<span class="error">[Skipped]</span></p>';
-    }
-  }
-
-  $modified_files = [
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_PRODUCTS_OPTIONS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_options`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_PRODUCTS_OPTIONS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_options`');" . PHP_EOL
-                 . "  define('DB_TABLE_PRODUCTS_OPTIONS_VALUES',           '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_options_values`');" . PHP_EOL,
+  perform_action('modify', [
+    FS_DIR_APP . 'includes/config.inc.php' => [
+      [
+        'search'  => "  define('DB_TABLE_PRODUCTS_OPTIONS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_options`');" . PHP_EOL,
+        'replace' => "  define('DB_TABLE_PRODUCTS_OPTIONS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_options`');" . PHP_EOL
+                   . "  define('DB_TABLE_PRODUCTS_OPTIONS_VALUES',           '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_options_values`');" . PHP_EOL,
+      ],
+      [
+        'search'  => "  define('DB_TABLE_OPTION_GROUPS',                     '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'option_groups`');" . PHP_EOL
+                   . "  define('DB_TABLE_OPTION_GROUPS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'option_groups_info`');" . PHP_EOL
+                   . "  define('DB_TABLE_OPTION_VALUES',                     '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'option_values`');" . PHP_EOL
+                   . "  define('DB_TABLE_OPTION_VALUES_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'option_values_info`');" . PHP_EOL,
+        'replace' => "" . PHP_EOL,
+      ],
     ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_OPTION_GROUPS',                     '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'option_groups`');" . PHP_EOL
-                 . "  define('DB_TABLE_OPTION_GROUPS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'option_groups_info`');" . PHP_EOL
-                 . "  define('DB_TABLE_OPTION_VALUES',                     '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'option_values`');" . PHP_EOL
-                 . "  define('DB_TABLE_OPTION_VALUES_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'option_values_info`');" . PHP_EOL,
-      'replace' => "" . PHP_EOL,
-    ],
-  ];
-
-  foreach ($modified_files as $modification) {
-    if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
-      die('<span class="error">[Error]</span><br />Could not find: '. $modification['search'] .'</p>');
-    }
-  }
+  ], 'abort');
 
 // Reconstruct product options
 
@@ -114,8 +101,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."products_options
-        set
-          `function` = '". database::input($option_group['function']) ."',
+        set `function` = '". database::input($option_group['function']) ."',
           `sort` = '". database::input($option_group['sort']) ."'
         where group_id = ". (int)$option_group['id'] .";"
       );

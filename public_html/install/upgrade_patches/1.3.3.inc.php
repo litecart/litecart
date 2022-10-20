@@ -1,5 +1,20 @@
 <?php
 
+  perform_action('modify', [
+    FS_DIR_APP . 'includes/config.inc.php' => [
+      [
+        'search'  => "  ini_set('display_errors', 'Off');" . PHP_EOL,
+        'replace' => "  ini_set('display_startup_errors', 'Off');" . PHP_EOL
+                   . "  ini_set('display_errors', 'Off');" . PHP_EOL,
+      ],
+      [
+        'search'  => "    ini_set('display_errors', 'On');" . PHP_EOL,
+        'replace' => "    ini_set('display_startup_errors', 'On');" . PHP_EOL
+                   . "    ini_set('display_errors', 'On');" . PHP_EOL,
+      ],
+    ],
+  ], 'abort');
+
 // Rename module settings keys
   $query = database::query(
     "select * from ". DB_TABLE_PREFIX ."settings
@@ -13,6 +28,7 @@
       or `key` like 'order_total_module_%'
     );"
   );
+
   while ($row = database::fetch($query)) {
     $new_key = preg_replace('#^((customer|jobs|shipping|payment|order_action|order_success|order_total)_module_)#', '', $row['key']);
     database::query(
@@ -21,25 +37,4 @@
       where `key` = '". database::input($row['key']) ."'
       limit 1;"
     );
-  }
-
-  $modified_files = [
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  ini_set('display_errors', 'Off');" . PHP_EOL,
-      'replace' => "  ini_set('display_startup_errors', 'Off');" . PHP_EOL
-                 . "  ini_set('display_errors', 'Off');" . PHP_EOL,
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "    ini_set('display_errors', 'On');" . PHP_EOL,
-      'replace' => "    ini_set('display_startup_errors', 'On');" . PHP_EOL
-                 . "    ini_set('display_errors', 'On');" . PHP_EOL,
-    ],
-  ];
-
-  foreach ($modified_files as $modification) {
-    if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
-      die('<span class="error">[Error]</span></p>');
-    }
   }

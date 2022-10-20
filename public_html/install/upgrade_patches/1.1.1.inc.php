@@ -1,5 +1,6 @@
 <?php
-  $deleted_files = [
+
+  perform_action('delete', [
     FS_DIR_APP . 'ext/jqplot/plugins/jqplot.barRenderer.js',
     FS_DIR_APP . 'ext/jqplot/plugins/jqplot.BezierCurveRenderer.js',
     FS_DIR_APP . 'ext/jqplot/plugins/jqplot.blockRenderer.js',
@@ -35,10 +36,4 @@
     FS_DIR_APP . 'ext/jqplot/jquery.jqplot.js',
     FS_DIR_APP . 'ext/jqplot/jquery.js',
     FS_DIR_APP . 'ext/jqplot/jquery.min.js',
-  ];
-
-  foreach ($deleted_files as $pattern) {
-    if (!file_delete($pattern)) {
-      die('<span class="error">[Error]</span></p>');
-    }
-  }
+  ]);

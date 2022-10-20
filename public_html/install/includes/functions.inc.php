@@ -1,5 +1,7 @@
 <?php
 
+  include __DIR__.'/../../includes/functions/func_file.inc.php';
+
   function return_bytes($string) {
     sscanf($string, '%u%c', $number, $suffix);
     if (isset($suffix)) {
@@ -8,92 +10,126 @@
     return $number;
   }
 
-// Function to return absolute path from relative path
-  function file_absolute_path($path) {
+  function perform_action($action, $payload, $on_error='skip') {
 
-    if ($path = realpath($path)) {
-      $path = str_replace('\\', '/', $path);
+    switch ($action) {
+
+      case 'copy':
+
+        foreach ($payload as $source => $target) {
+
+          if (defined('DISABLE_FILE_MIGRATIONS') && filter_var(DISABLE_FILE_MIGRATIONS, FILTER_VALIDATE_BOOLEAN)) {
+echo 'Skipping '. $target . PHP_EOL;
+            if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $target)) continue;
+          }
+
+          echo 'Copying '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source) .' to '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $target);
+
+          if (file_xcopy($source, $target, $results)) {
+            echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else if ($on_error == 'skip') {
+            echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else {
+            die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
+          }
+        }
+
+        break;
+
+      case 'delete':
+
+        foreach ($payload as $source) {
+
+          if (defined('DISABLE_FILE_MIGRATIONS') && filter_var(DISABLE_FILE_MIGRATIONS, FILTER_VALIDATE_BOOLEAN)) {
+echo 'Skipping '. $source . PHP_EOL;
+            if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) continue;
+          }
+
+          echo 'Deleting '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source);
+
+          if (file_delete($source, $results)) {
+            echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else if ($on_error == 'skip') {
+            echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else {
+            die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
+          }
+        }
+
+        break;
+
+      case 'move':
+      case 'rename':
+
+        foreach ($payload as $source => $target) {
+
+          if (defined('DISABLE_FILE_MIGRATIONS') && filter_var(DISABLE_FILE_MIGRATIONS, FILTER_VALIDATE_BOOLEAN)) {
+echo 'Skipping '. $target . PHP_EOL;
+            if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) continue;
+          }
+
+          echo 'Moving '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source) .' to '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $target);
+
+          if (file_move($source, $target, $results)) {
+            echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else if ($on_error == 'skip') {
+            echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else {
+            die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
+          }
+        }
+
+        break;
+
+      case 'modify':
+
+        foreach ($payload as $source => $operations) {
+
+          if (defined('DISABLE_FILE_MIGRATIONS') && filter_var(DISABLE_FILE_MIGRATIONS, FILTER_VALIDATE_BOOLEAN)) {
+echo 'Skipping '. $target . PHP_EOL;
+            if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) continue;
+          }
+
+          echo 'Modifying ' . preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source);
+
+          $results = [];
+
+          if (!$files = file_search($source)) {
+            $results[] = false;
+          }
+
+          foreach ($files as $file) {
+
+            $contents = file_get_contents($file);
+            $contents = preg_replace('#(\r\n?|\n)#u', PHP_EOL, $contents);
+
+            foreach ($operations as $operation) {
+
+              if (!empty($operations['regex'])) {
+                $contents = preg_replace($operation['search'], $operation['replace'], $contents, -1, $count);
+              } else {
+                $contents = str_replace($operation['search'], $operation['replace'], $contents, $count);
+              }
+
+              $results[] = $count ? true : false;
+            }
+
+            $results[] = file_put_contents($file, $contents);
+          }
+
+          if (!in_array(false, $results)) {
+            echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else if ($on_error == 'skip') {
+            echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else {
+            die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
+          }
+        }
+
+        break;
+
+      default:
+        trigger_error("Unknown action ($action)", E_USER_ERROR);
+
     }
-
-    return $path;
-  }
-
-// Function to delete recursive data
-  function file_delete($target) {
-
-    if (strpos($target, '*') !== false) {
-      foreach (glob($target, GLOB_BRACE) as $file) {
-        if (preg_match('#(\\\\|/)\.{1,2}$#', $file)) continue;
-        file_delete($file);
-      }
-      return true;
-    }
-
-    if (!file_exists($target)) return true;
-
-    if (is_dir($target)) {
-      file_delete(rtrim($target, '\\/').'/{,.}*');
-      echo 'Delete ' . $target . '<br />' . PHP_EOL;
-      return rmdir($target);
-    }
-
-    echo 'Delete ' . $target . '<br />' . PHP_EOL;
-    return unlink($target);
-  }
-
-// Function to modify file
-  function file_modify($files, $search, $replace, $regex=false) {
-
-    foreach (glob($files) as $file) {
-      echo 'Modify '. $file . '<br />' . PHP_EOL;
-
-      $contents = file_get_contents($file);
-      $contents = preg_replace('#\R#u', PHP_EOL, $contents);
-
-      if ($regex) {
-        $contents = preg_replace($search, $replace, $contents);
-      } else {
-        $contents = str_replace($search, $replace, $contents);
-      }
-
-      $result = file_put_contents($file, $contents);
-    }
-
-    return !empty($result) ? true : false;
-  }
-
-// Function to rename file or folder
-  function file_rename($source, $target) {
-
-    $result = rename($source, $target);
-
-    return $result;
-  }
-
-// Function to copy recursive data
-  function file_xcopy($source, $target) {
-
-    $errors = false;
-
-    if (is_dir($source)) {
-      $source = rtrim($source, '/') . '/';
-      $target = rtrim($target, '/') . '/';
-
-      if (!file_exists($target)) {
-        if (!mkdir($target)) $errors = true;
-      }
-
-      $dir = opendir($source);
-      while (($file = readdir($dir)) !== false) {
-        if ($file == '.' || $file == '..') continue;
-        if (!file_xcopy($source.$file, $target.$file)) $errors = true;
-      }
-
-    } else if (!file_exists($target)) {
-      echo 'Write '. $target . '<br />' . PHP_EOL;
-
-      if (!copy($source, $target)) $errors = true;
-    }
-
-    return empty($errors) ? true : false;
   }

@@ -1,12 +1,17 @@
 <?php
-  require('../includes/compatibility.inc.php');
-  require('../includes/functions/func_draw.inc.php');
-  require('includes/header.inc.php');
-  require('includes/functions.inc.php');
+  define('DOCUMENT_ROOT', str_replace('\\', '/', realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'))) .'/';
+  define('FS_DIR_APP', str_replace('\\', '/', realpath(__DIR__.'/../')) . '/');
+  define('FS_DIR_STORAGE', str_replace('\\', '/', realpath(__DIR__.'/../storage')) . '/');
+  define('WS_DIR_APP', preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP));
+
+  require(__DIR__.'/../includes/compatibility.inc.php');
+  require(__DIR__.'/../includes/functions/func_draw.inc.php');
+  require(__DIR__.'/includes/header.inc.php');
+  require(__DIR__.'/includes/functions.inc.php');
 
   ini_set('display_errors', 'On');
 
-  $document_root = file_absolute_path(dirname(__FILE__) . '/..') .'/';
+  $document_root = realpath(dirname(__FILE__) . '/..') .'/';
 
   $countries = [
     'AF' => 'Afghanistan',
@@ -249,10 +254,15 @@
     'ZW' => 'Zimbabwe',
   ];
 
+// Include config
+  if (is_file(__DIR__ . '/../storage/config.inc.php') || is_file(__DIR__ . '/../includes/config.inc.php')) {
+    $installation_detected = true;
+  }
+
 ?>
 
-<?php if (file_exists('../includes/config.inc.php')) { ?>
-<link rel="stylesheet" href="../ext/featherlight/featherlight.min.css" />
+<?php if (!empty($installation_detected)) { ?>
+<link rel="stylesheet" href="<?php echo WS_DIR_APP; ?>ext/featherlight/featherlight.min.css" />
 
 <div id="modal-warning-existing-installation" style="display: none; width: 320px;">
   <h2>Existing Installation Detected</h2>
@@ -260,8 +270,8 @@
   <p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
 </div>
 
-<script src="../ext/jquery/jquery-3.6.1.min.js"></script>
-<script src="../ext/featherlight/featherlight.min.js"></script>
+<script src="<?php echo WS_DIR_APP; ?>ext/jquery/jquery-3.6.1.min.js"></script>
+<script src="<?php echo WS_DIR_APP; ?>ext/featherlight/featherlight.min.js"></script>
 <script>
   $.featherlight.autoBind = '[data-toggle="lightbox"]';
   $.featherlight.defaults.loading = '<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>';
@@ -272,6 +282,9 @@
 <?php } ?>
 
 <style>
+ul {
+  break-inside: avoid;
+}
 input[name="development_type"] {
   display: none;
 }
@@ -302,64 +315,59 @@ input[name="development_type"]:checked + div {
 
 <h1>Installer</h1>
 
-<div class="row">
-  <div class="col-md-6">
-    <h2>System Requirements</h2>
+<h2>System Requirements</h2>
 
-    <ul class="list-unstyled">
-      <li>PHP 5.4+ <?php echo version_compare(PHP_VERSION, '5.4', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?>
-        <ul>
-          <li>Settings
-            <ul>
-              <li>register_globals = <?php echo ini_get('register_globals') ? ini_get('register_globals') : 'off'; ?> <?php echo in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
-              <li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
-              <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
-            </ul>
-          </li>
-          <li>Extensions
-            <ul>
-              <li>apc / apcu <?php echo (extension_loaded('apcu') || extension_loaded('apc')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>dom <?php echo extension_loaded('dom') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>fileinfo <?php echo extension_loaded('fileinfo') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>gd / imagick <?php echo extension_loaded('imagick') ? '<span class="ok">[OK]</span>' : (extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'); ?></li>
-              <li>intl <?php echo extension_loaded('intl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>json <?php echo extension_loaded('json') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>libxml <?php echo extension_loaded('libxml') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>mbstring <?php echo extension_loaded('mbstring') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>mysqli <?php echo extension_loaded('mysqli') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>mysqlnd <?php echo extension_loaded('mysqlnd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>openssl <?php echo extension_loaded('openssl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>simplexml <?php echo extension_loaded('simplexml') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>zip <?php echo extension_loaded('zip') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li>Apache 2 compatible HTTP daemon
+<div style="columns: 320px auto; margin-bottom: 2em;">
+  <h3>PHP</h3>
+
+  <ul>
+    <li>5.4 - 8.1 <?php echo version_compare(PHP_VERSION, '5.4', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
+    <li>register_globals = <?php echo ini_get('register_globals') ? ini_get('register_globals') : 'off'; ?> <?php echo in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
+    <li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
+    <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
+    <li>Extensions
+      <ul>
+        <li>apc / apcu <?php echo (extension_loaded('apcu') || extension_loaded('apc')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>dom <?php echo extension_loaded('dom') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>fileinfo <?php echo extension_loaded('fileinfo') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>gd / imagick <?php echo extension_loaded('imagick') ? '<span class="ok">[OK]</span>' : (extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'); ?></li>
+        <li>intl <?php echo extension_loaded('intl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>json <?php echo extension_loaded('json') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>libxml <?php echo extension_loaded('libxml') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>mbstring <?php echo extension_loaded('mbstring') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>mysqli <?php echo extension_loaded('mysqli') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>mysqlnd <?php echo extension_loaded('mysqlnd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>openssl <?php echo extension_loaded('openssl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>simplexml <?php echo extension_loaded('simplexml') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>zip <?php echo extension_loaded('zip') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>HTTP Server</h3>
+
+  <ul>
+    <li>Apache Version 2 / LiteSpeed</li>
+    <li>Modules
+      <ul>
         <?php if (function_exists('apache_get_modules')) $installed_apache_modules = apache_get_modules(); ?>
-        <ul>
-          <li>Allow, Deny</li>
-          <li>Options -Indexes</li>
-          <li>Modules
-            <ul>
-              <li>mod_auth_basic <?php if (!empty($installed_apache_modules)) echo (in_array('mod_auth', $installed_apache_modules) || in_array('mod_auth_basic', $installed_apache_modules)) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-              <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li>MySQL 5.5+</li>
-    </ul>
-  </div>
+        <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
+        <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
+        <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
+        <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
+      </ul>
+    </li>
+  </ul>
 
-  <div class="col-md-6">
+  <h3>Database Server</h3>
 
-    <h2>Writables</h2>
+  <ul>
+    <li>MySQL Version 5.5 - 8.0 / MariaDB Version 10.8</li>
+  </ul>
 
-    <ul class="list-unstyled">
+  <h2>Writables</h2>
+
+  <ul class="list-unstyled">
 <?php
   $paths = [
     'admin/.htaccess',
@@ -386,8 +394,7 @@ input[name="development_type"]:checked + div {
     }
   }
 ?>
-    </ul>
-  </div>
+  </ul>
 </div>
 
 <h2>Installation Parameters</h2>
@@ -542,11 +549,11 @@ input[name="development_type"]:checked + div {
     </label>
   </div>
 
-  <h3>Administration</h3>
+  <h3>Backend</h3>
 
   <div class="row">
     <div class="form-group col-md-6">
-      <label>Folder Name</label>
+      <label>Backend URL</label>
       <div class="input-group">
         <span class="input-group-text">/</span>
         <input class="form-control" name="admin_folder" type="text" value="admin" required />
@@ -579,4 +586,4 @@ input[name="development_type"]:checked + div {
   <input class="btn btn-success btn-block" type="submit" name="install" value="Install Now" onclick="if (document.getElementById('accept_terms').value != 1) return false; if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />
 </form>
 
-<?php require('includes/footer.inc.php'); ?>
+<?php require(__DIR__.'/includes/footer.inc.php'); ?>
