@@ -19,7 +19,6 @@
         foreach ($payload as $source => $target) {
 
           if (defined('DISABLE_FILE_MIGRATIONS') && filter_var(DISABLE_FILE_MIGRATIONS, FILTER_VALIDATE_BOOLEAN)) {
-echo 'Skipping '. $target . PHP_EOL;
             if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $target)) continue;
           }
 
@@ -41,7 +40,6 @@ echo 'Skipping '. $target . PHP_EOL;
         foreach ($payload as $source) {
 
           if (defined('DISABLE_FILE_MIGRATIONS') && filter_var(DISABLE_FILE_MIGRATIONS, FILTER_VALIDATE_BOOLEAN)) {
-echo 'Skipping '. $source . PHP_EOL;
             if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) continue;
           }
 
@@ -64,7 +62,6 @@ echo 'Skipping '. $source . PHP_EOL;
         foreach ($payload as $source => $target) {
 
           if (defined('DISABLE_FILE_MIGRATIONS') && filter_var(DISABLE_FILE_MIGRATIONS, FILTER_VALIDATE_BOOLEAN)) {
-echo 'Skipping '. $target . PHP_EOL;
             if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) continue;
           }
 
@@ -86,7 +83,6 @@ echo 'Skipping '. $target . PHP_EOL;
         foreach ($payload as $source => $operations) {
 
           if (defined('DISABLE_FILE_MIGRATIONS') && filter_var(DISABLE_FILE_MIGRATIONS, FILTER_VALIDATE_BOOLEAN)) {
-echo 'Skipping '. $target . PHP_EOL;
             if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) continue;
           }
 

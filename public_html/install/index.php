@@ -370,20 +370,14 @@ input[name="development_type"]:checked + div {
   <ul class="list-unstyled">
 <?php
   $paths = [
-    'admin/.htaccess',
-    'admin/.htpasswd',
     'cache/',
     'data/',
     'images/',
     'includes/config.inc.php',
     'vmods/',
-    'vmods/.cache/',
-    'vmods/.cache/.checked',
-    'vmods/.cache/.modifications',
-    'vmods/.installed',
-    'vmods/.settings',
     '.htaccess',
   ];
+
   foreach ($paths as $path) {
     if (file_exists($path) && is_writable('../' . $path)) {
       echo '    <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
