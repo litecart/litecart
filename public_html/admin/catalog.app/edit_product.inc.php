@@ -589,9 +589,9 @@
                 <?php } ?>
 
                 <div class="form-group col-sm-4 col-md-2">
-                  <label><?php echo language::translate('title_required', 'Required'); ?></label>
+                  <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>
                   <div class="checkbox">
-                    <label><?php echo functions::form_draw_checkbox('options['.$group_id.'][required]', '1', true); ?> <?php echo language::translate('title_required', 'Required'); ?></label>
+                    <label><?php echo functions::form_draw_checkbox('options['.$group_id.'][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>
                   </div>
                 </div>
               </div>
@@ -892,9 +892,9 @@
                + '  <div class="input-group">'
                + '    <?php echo functions::form_draw_file_field('new_images[]'); ?>'
                + '    <div class="input-group-text">'
-               + '      <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>'
-               + '      <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>'
-               + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
+               + '      <a class="move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>'
+               + '      <a class="move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>'
+               + '      <a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
                + '    </div>'
                + '  </div>'
                + '</div>';
@@ -948,7 +948,7 @@
         $('select[name="new_attribute[value_id]"').html('');
         if ($('select[name="new_attribute[value_id]"').attr('disabled')) $('select[name="attribute[value_id]"]').prop('disabled', false);
         if (data) {
-          $('select[name="new_attribute[value_id]"').append('<option value="0">-- <?php echo language::translate('title_select', 'Select'); ?> --</option>');
+          $('select[name="new_attribute[value_id]"').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
           $.each(data, function(i, zone) {
             $('select[name="new_attribute[value_id]"').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
           });
@@ -966,18 +966,18 @@
   $('#tab-attributes button[name="add"]').click(function(){
 
     if ($('select[name="new_attribute[group_id]"]').val() == '') {
-      alert("<?php echo language::translate('error_must_select_attribute_group', 'You must select an attribute group'); ?>");
+      alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
       return;
     }
 
     if ($('select[name="new_attribute[value_id]"]').val() == '' || $('select[name="new_attribute[value_id]"]').val() == '0') {
       if ($('input[name="new_attribute[custom_value]"]').val() == '') {
-        alert("<?php echo language::translate('error_must_select_attribute_value', 'You must select an attribute value'); ?>");
+        alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_value', 'You must select an attribute value')); ?>");
         return;
       }
     } else {
       if ($('input[name="new_attribute[custom_value]"]').val() != '') {
-        alert("<?php echo language::translate('error_cannot_define_both_value_and_custom_value', 'You can not define both a value and a custom value'); ?>");
+        alert("<?php echo functions::escape_js(language::translate('error_cannot_define_both_value_and_custom_value', 'You can not define both a value and a custom value')); ?>");
         return;
       }
     }
@@ -992,7 +992,7 @@
                + '  <td>new_group_name</td>'
                + '  <td>new_value_name</td>'
                + '  <td>new_custom_value</td>'
-               + '  <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
+               + '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
                + '</tr>';
 
     while ($('input[name="attributes[new_'+new_attribute_i+']"]').length) new_attribute_i++;
@@ -1107,7 +1107,7 @@
 
   $('#price-incl-tax-tooltip').click(function(e) {
     e.preventDefault;
-    alert('<?php echo str_replace(["\r", "\n", "'"], ["", "", "\\'"], language::translate('tooltip_field_price_incl_tax', 'This field helps you calculate gross price based on the store region tax. All prices input to database are always excluding tax.')); ?>');
+    alert("<?php echo functions::esccape_js(language::translate('tooltip_field_price_incl_tax', 'This field helps you calculate gross price based on the store region tax. All prices input to database are always excluding tax.')); ?>");
   });
 
 // Campaigns
@@ -1234,7 +1234,7 @@
         $('select[name="new_predefined_option[value_id]"').html('');
         if ($('select[name="new_predefined_option[value_id]"').attr('disabled')) $('select[name="new_predefined_option[value_id]"]').prop('disabled', false);
         if (data) {
-          $('select[name="new_predefined_option[value_id]"').append('<option value="0">-- <?php echo language::translate('title_select', 'Select'); ?> --</option>');
+          $('select[name="new_predefined_option[value_id]"').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
           $.each(data, function(i, zone) {
             $('select[name="new_predefined_option[value_id]"').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
           });
@@ -1263,7 +1263,7 @@
         $('select[name="new_user_input_option[value_id]"').html('');
         if ($('select[name="new_user_input_option[value_id]"').attr('disabled')) $('select[name="new_user_input_option[value_id]"]').prop('disabled', false);
         if (data) {
-          $('select[name="new_user_input_option[value_id]"').append('<option value="0">-- <?php echo language::translate('title_select', 'Select'); ?> --</option>');
+          $('select[name="new_user_input_option[value_id]"').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
           $.each(data, function(i, zone) {
             $('select[name="new_user_input_option[value_id]"').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
           });
@@ -1295,18 +1295,18 @@
     var customValueElement = $(this).closest('fieldset').find('input[name="new_predefined_option[custom_value]"]');
 
     if ($(groupElement).val() == '') {
-      alert("<?php echo language::translate('error_must_select_attribute_group', 'You must select an attribute group'); ?>");
+      alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
       return;
     }
     if ($(valueElement).val() == '' || $(valueElement).val() == '0') {
       if ($(customValueElement).val() == '') {
-        alert("<?php echo language::translate('error_must_select_attribute_value', 'You must select an attribute value'); ?>");
+        alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_value', 'You must select an attribute value')); ?>");
         return;
       }
     } else {
       if ($(customValueElement).val() != '') {
         console.log($(valueElement).val(), $(customValueElement).val());
-        alert("<?php echo language::translate('error_cannot_define_both_value_and_custom_value', 'You cannot define both a value and a custom value'); ?>");
+        alert("<?php echo functions::escape_js(language::translate('error_cannot_define_both_value_and_custom_value', 'You cannot define both a value and a custom value')); ?>");
         return;
       }
     }
@@ -1314,13 +1314,13 @@
     if ($('#tab-options :input[name^="options"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').length) {
       if ($(customValueElement).val() != '') {
         if ($('#tab-options :input[name^="options"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[custom_value]"][value="'+ escape($(customValueElement).val()) +'"]').length) {
-          alert("<?php echo language::translate('error_option_already_defined', 'This option is already defined'); ?>");
+          alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>");
           return;
         }
 
       } else {
         if ($('#tab-options :input[name^="options"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').closest('tr').find('input[name$="[custom_value]"]').val() == $(customValueElement).val()) {
-          alert("<?php echo language::translate('error_option_already_defined', 'This option is already defined'); ?>");
+          alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>");
           return;
         }
       }
@@ -1329,9 +1329,9 @@
     if (!$('#tab-options input[name^="options"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
       var output = '<li data-group-id="'+ escapeHTML($(groupElement).val()) +'" data-group-name="'+ escapeHTML($(groupElement).find('option:selected').text()) +'">'
                  + '  <div class="float-end">'
-                 + '    <a class="move-group-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-2x', 'style="color: #3399cc;"'); ?></a>'
-                 + '    <a class="move-group-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-2x', 'style="color: #3399cc;"'); ?></a>'
-                 + '    <a class="remove-group" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-2x', 'style="color: #cc3333;"'); ?></a>'
+                 + '    <a class="move-group-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-2x', 'style="color: #3399cc;"'); ?></a>'
+                 + '    <a class="move-group-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-2x', 'style="color: #3399cc;"'); ?></a>'
+                 + '    <a class="remove-group" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-2x', 'style="color: #cc3333;"'); ?></a>'
                  + '  </div>'
                  + '  <h2>'+ $(this).closest('fieldset').find('select[name="new_predefined_option[group_id]"] option:selected').text() +'</h2>'
                  + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('options[new_group_id][group_id]', 'new_group_id')); ?>'
@@ -1347,7 +1347,7 @@
                  + '    <div class="form-group col-sm-4 col-md-2">'
                  + '      <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>'
                  + '      <div class="checkbox">'
-                 + '        <label><?php echo functions::form_draw_checkbox('options[new_group_id][required]', '1', true); ?> <?php echo language::translate('title_required', 'Required'); ?></label>'
+                 + '        <label><?php echo functions::form_draw_checkbox('options[new_group_id][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>'
                  + '      </div>'
                  + '    </div>'
                  + '  </div>'
@@ -1356,8 +1356,8 @@
                  + '      <thead>'
                  + '        <tr>'
                  + '          <th><?php echo functions::escape_js(language::translate('title_option', 'Option')); ?></th>'
-                 + '          <th style="width: 150px;"><?php echo language::translate('title_price_operator', 'Price Operator'); ?></th>'
-                 + '          <th colspan="<?php echo count(currency::$currencies); ?>"><?php echo language::translate('title_price_adjustment', 'Price Adjustment'); ?></th>'
+                 + '          <th style="width: 150px;"><?php echo functions::escape_js(language::translate('title_price_operator', 'Price Operator')); ?></th>'
+                 + '          <th colspan="<?php echo count(currency::$currencies); ?>"><?php echo functions::escape_js(language::translate('title_price_adjustment', 'Price Adjustment')); ?></th>'
                  + '          <th style="width: 85px;">&nbsp;</th>'
                  + '        </tr>'
                  + '      </thead>'
@@ -1378,7 +1378,7 @@
                + '  <td class="grabable"><?php echo functions::escape_js(functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][value_id]', 'new_value_id')) . functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>'
                + '  <td class="text-center"><?php echo functions::escape_js(functions::form_draw_select_field('options[new_group_id][values][new_option_value_i][price_operator]', ['+','%','*','='], true)); ?></td>'
                + '  <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td style="width: 200px;">'. functions::escape_js(functions::form_draw_currency_field($currency_code, 'options[new_group_id][values][new_option_value_i]['. $currency_code. ']', '')) .'</td>'; ?>'
-               + '  <td class="text-end"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
+               + '  <td class="text-end"><a class="move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
                + '</tr>';
 
     output = output.replace(/new_option_value_i/g, 'new_' + new_option_value_i);
@@ -1397,32 +1397,32 @@
     var groupElement = $(this).closest('fieldset').find('select[name="new_user_input_option[group_id]"]');
 
     if ($(groupElement).val() == '') {
-      alert("<?php echo language::translate('error_must_select_attribute_group', 'You must select an attribute group'); ?>");
+      alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
       return;
     }
 
     if ($('#tab-options :input[name^="options"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
-      alert("<?php echo language::translate('error_group_already_defined', 'This group is already defined'); ?>");
+      alert("<?php echo functions::escape_js(language::translate('error_group_already_defined', 'This group is already defined')); ?>");
       return;
     }
 
     var output = '<li>'
                + '  <div class="float-end">'
-               + '    <a class="move-group-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-2x', 'style="color: #3399cc;"'); ?></a>'
-               + '    <a class="move-group-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-2x', 'style="color: #3399cc;"'); ?></a>'
-               + '    <a class="remove-group" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-2x', 'style="color: #cc3333;"'); ?></a>'
+               + '    <a class="move-group-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-2x', 'style="color: #3399cc;"'); ?></a>'
+               + '    <a class="move-group-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-2x', 'style="color: #3399cc;"'); ?></a>'
+               + '    <a class="remove-group" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-2x', 'style="color: #cc3333;"'); ?></a>'
                + '  </div>'
                + '  <h2>'+ $(this).closest('fieldset').find('select[name="new_user_input_option[group_id]"] option:selected').text() +'</h2>'
                + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('options[new_group_id][group_id]', 'new_group_id')); ?>'
                + '  <div class="row">'
                + '    <div class="form-group col-sm-4 col-md-2">'
-               + '      <label><?php echo language::translate('title_function', 'Function'); ?></label>'
+               + '      <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>'
                + '      <?php echo functions::escape_js(functions::form_draw_select_field('options[new_group_id][function]', ['text', 'textarea'], 'text')); ?>'
                + '    </div>'
                + '    <div class="form-group col-sm-4 col-md-2">'
-               + '      <label><?php echo language::translate('title_required', 'Required'); ?></label>'
+               + '      <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>'
                + '      <div class="checkbox">'
-               + '        <label><?php echo functions::form_draw_checkbox('options[new_group_id][required]', '1', true); ?> <?php echo language::translate('title_required', 'Required'); ?></label>'
+               + '        <label><?php echo functions::form_draw_checkbox('options[new_group_id][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>'
                + '      </div>'
                + '    </div>'
                + '  </div>'
