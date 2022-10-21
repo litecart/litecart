@@ -14,7 +14,7 @@ input[name="payment_option[id]"]:checked + .option::after {
 
       <?php foreach ($options as $option) { ?>
       <label class="option-wrapper">
-        <input name="payment_option[id]" value="<?php echo functions::escape_html($option['id']); ?>" type="radio" hidden<?php if (!empty($option['error'])) echo ' disabled'; ?><?php if (!empty($selected['id'])) echo ' checked'; ?> />
+        <input name="payment_option[id]" value="<?php echo $option['id']; ?>" type="radio" hidden <?php echo (!empty($selected) && $selected['id'] == $option['id']) ? ' checked' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?> />
         <div class="option">
           <div class="header row" style="margin: 0;">
             <div class="col-3" style="margin: 0;">
@@ -48,17 +48,14 @@ input[name="payment_option[id]"]:checked + .option::after {
 </section>
 
 <script>
-  $('#box-checkout-payment .option:not(.active) .content :input').prop('disabled', true);
+  $(':input[name="payment_option[id]"]:not(:checked) .option :input').prop('disabled', true);
 
 // Payment Form: Process Data
 
-  $('#box-checkout-payment').on('change', '.option:not(.active) input[name="payment_option[id]"]', function(e){
+  $(':input[name="payment_option[id]"]').on('change', '', function(e){
 
-    $('#box-checkout-payment .option').removeClass('active');
-    $(this).closest('.option').addClass('active');
-
-    $('#box-checkout-payment .option:not(.active) .content :input').prop('disabled', true);
-    $(this).closest('.option').find('.content :input').prop('disabled', false);
+    $('input[name="payment_option[id]"]:not(:checked) + .option :input').prop('disabled', true);
+    $(this).next('.option').find(':input').prop('disabled', false);
 
     let formdata = $(this).closest('.option-wrapper :input').serialize();
 

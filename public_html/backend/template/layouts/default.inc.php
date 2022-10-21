@@ -148,10 +148,10 @@
 
   $('input[name="dark_mode"]').click(function(){
     if ($(this).val() == 1) {
-      document.cookie = 'dark_mode=1;Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000';
+      document.cookie = 'dark_mode=1;Path=<?php echo WS_DIR_ADMIN; ?>;Max-Age=2592000';
       $('html').addClass('dark-mode');
     } else {
-      document.cookie = 'dark_mode=0;Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000';
+      document.cookie = 'dark_mode=0;Path=<?php echo WS_DIR_ADMIN; ?>;Max-Age=2592000';
       $('html').removeClass('dark-mode');
     }
   });

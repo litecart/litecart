@@ -87,7 +87,6 @@
     border: none;
 
     .link {
-      display: flex;
       background: var(--navigation-background-color);
       border-radius: var(--border-radius);
       border: 1px solid var(--default-border-color);
@@ -95,10 +94,6 @@
       &:hover {
         border: 1px solid var(--default-border-color);
       }
-    }
-
-    img {
-      display: none;
     }
 
     .caption {
@@ -120,13 +115,11 @@
         margin: .25em;
         background: var(--whitespace-color);
         border-radius: var(--border-radius);
-        width: 75px;
         transform: scale(1);
         transition: all 150ms linear;
       }
       .caption {
-        font-size: 1.1em;
-        text-align: start;
+        //text-align: start;
       }
 
       &:hover {
@@ -135,7 +128,7 @@
         }
         img {
           box-shadow: 0 3px 6px var(--shadow-color);
-          transform: scale(1.15) rotate(-5deg);
+          transform: scale(1.10) rotate(-3deg);
         }
         .caption {
           color: #000;

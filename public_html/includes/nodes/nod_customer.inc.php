@@ -268,9 +268,9 @@
 
       while ($field = database::fetch($fields_query)) {
         if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
-          session::$data['customer']['shipping_address'][$matches[1]] = null;
+          session::$data['customer']['shipping_address'][$matches[1]] = database::create_variable($field);
         } else {
-          session::$data['customer'][$field['Field']] = null;
+          session::$data['customer'][$field['Field']] = database::create_variable($field);
         }
       }
 

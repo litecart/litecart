@@ -63,8 +63,8 @@
         switch ($route['endpoint']) {
           case 'frontend': $i = 'f:'.$i;  break;
           case 'backend':  $i = 'b:'.$i;  break;
+        }
       }
-    }
 
       self::$_routes[$i] = [
         'pattern' => fallback($route['pattern'], ''),
@@ -287,7 +287,9 @@
     // Strip logic from string
       $link->path = self::strip_url_logic($link->path);
 
-      $path = preg_match('#^(f|b):#', $link->path) ? $link->path : 'f:'.$link->path;
+      if (!preg_match('#^(f|b):#', $link->path)) {
+        $path = 'f:'.$link->path;
+      }
 
     // Rewrite link
       foreach (self::$_routes as $ilink => $route) {
@@ -297,7 +299,7 @@
               $link = $rewritten_link;
             }
           }
-       }
+        }
       }
 
     // Detect URL rewrite support

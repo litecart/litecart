@@ -2,7 +2,6 @@
   define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..')), '/'));
   define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../')), '/') . '/');
   define('FS_DIR_STORAGE', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../storage')), '/') . '/');
-
   define('WS_DIR_APP', preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP));
 
   define('VMOD_DISABLED', 'true');
@@ -264,7 +263,7 @@
 ?>
 
 <?php if (!empty($installation_detected)) { ?>
-<link rel="stylesheet" href="../assets/featherlight/featherlight.min.css" />
+<link rel="stylesheet" href="<?php echo WS_DIR_APP; ?>assets/featherlight/featherlight.min.css" />
 
 <div id="modal-warning-existing-installation" style="display: none; width: 320px;">
   <h2>Existing Installation Detected</h2>
@@ -272,8 +271,8 @@
   <p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
 </div>
 
-<script src="../assets/jquery/jquery-3.6.1.min.js"></script>
-<script src="../assets/featherlight/featherlight.min.js"></script>
+<script src="<?php echo WS_DIR_APP; ?>assets/jquery/jquery-3.6.1.min.js"></script>
+<script src="<?php echo WS_DIR_APP; ?>assets/featherlight/featherlight.min.js"></script>
 <script>
   $.featherlight.autoBind = '[data-toggle="lightbox"]';
   $.featherlight.defaults.loading = '<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>';
@@ -320,7 +319,7 @@ input[name="development_type"]:checked + div {
 <h2>System Requirements</h2>
 
 <div style="columns: 320px auto; margin-bottom: 2em;">
-  <h3>PHP </h3>
+  <h3>PHP</h3>
 
   <ul>
     <li>5.4 - 8.1 <?php echo version_compare(PHP_VERSION, '5.4', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
@@ -353,7 +352,6 @@ input[name="development_type"]:checked + div {
     <li>Modules
       <ul>
         <?php if (function_exists('apache_get_modules')) $installed_apache_modules = apache_get_modules(); ?>
-        <li>mod_auth_basic <?php if (!empty($installed_apache_modules)) echo (in_array('mod_auth', $installed_apache_modules) || in_array('mod_auth_basic', $installed_apache_modules)) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
         <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
         <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
         <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
@@ -552,7 +550,7 @@ input[name="development_type"]:checked + div {
     </label>
   </div>
 
-  <h3>Administration</h3>
+  <h3>Backend</h3>
 
   <div class="row">
     <div class="form-group col-md-6">

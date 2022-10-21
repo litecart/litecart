@@ -277,6 +277,9 @@ hr {
   padding: 0.5em 1em 0.5em 2em;
   color: inherit;
 }
+.breadcrumbs .breadcrumb:is(a) {
+  text-decoration: none;
+}
 .breadcrumbs .breadcrumb:is(a):hover {
   background-color: var(--breadcrumbs-background-color-hover);
 }
@@ -1757,6 +1760,14 @@ ul.list-inline li {
     box-shadow: 0 0 15px #0003;
   }
 }
+.navbar .navbar-search {
+  align-self: center;
+}
+@media (min-width: 768px) {
+  .navbar .navbar-search {
+    flex-grow: 1;
+  }
+}
 .navbar .navbar-nav {
   display: flex;
   flex-direction: column;
@@ -1770,6 +1781,7 @@ ul.list-inline li {
   padding: 0;
   list-style: none;
   width: 100%;
+  text-transform: uppercase;
 }
 .navbar .navbar-nav > li.open > .navbar-item {
   background-color: rgba(0, 0, 0, 0.15) !important;

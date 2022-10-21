@@ -9,7 +9,7 @@
 
   if (php_sapi_name() == 'cli') {
 
-    if (($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
+    if (!isset($argv[1]) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
       echo "\nLiteCart® 3.0.0\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
@@ -48,7 +48,6 @@
     return;
   }
 
-  if (!defined('DB_CONNECTION_CHARSET')) define('DB_CONNECTION_CHARSET', 'utf8mb4'); // Prior to 1.2.x
   if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME); // Prior to 2.2.x
   if (!defined('FS_DIR_STORAGE')) define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/'); // Prior to 3.0.0
   if (!defined('WS_DIR_STORAGE')) define('WS_DIR_STORAGE', WS_DIR_APP); // Prior to 2.5.x
@@ -344,6 +343,7 @@
         ]);
 
       } else {
+
         perform_action('delete', [
           FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
           FS_DIR_APP . 'frontend/templates/*/css/*.min.css.map',

@@ -97,6 +97,11 @@
     }
 ?>
 <style>
+#widget-graphs .card-body {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
 #chart-sales-monthly {
   --chart-label-color: #999;
   --chart-a-color: #ececec;
@@ -155,23 +160,24 @@
       <div class="card card-default">
         <div class="card-header">
           <div class="card-title"><?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?></div>
+        </div>
+
+        <div class="card-body">
+          <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
+        </div>
       </div>
     </div>
 
-        <div class="card-body">
-      <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
-    </div>
-  </div>
-
-    <div class="widget col-md-4">
+    <div class="col-md-4">
       <div class="card card-default">
         <div class="card-header">
           <div class="card-title"><?php echo language::translate('title_daily_sales', 'Daily Sales'); ?></div>
-      </div>
-    </div>
+        </div>
 
         <div class="card-body">
-      <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
+          <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

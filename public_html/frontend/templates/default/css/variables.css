@@ -32,9 +32,9 @@
   --default-title-color: #333;
   --default-title-border-color: #f0f0f0;
   --default-border-color: #e5e7eb;
-  --top-navigation-background-color: #c2c2db;
-  --top-navigation-text-color: #333;
-  --navigation-background-color: rgba(229, 229, 234, 0.8);
+  --top-navigation-background-color: #5a5a95;
+  --top-navigation-text-color: #fff;
+  --navigation-background-color: #fbfbffcc;
   --navigation-text-color: #333;
   --card-background-color: #fff;
   --card-text-color: var(--default-text-color);

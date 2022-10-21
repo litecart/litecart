@@ -79,9 +79,6 @@
     </div>
   </div>
 
-  <div class="card-action">
-  </div>
-
   <?php echo functions::form_begin('attribute_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
   <div class="card-body">
@@ -103,36 +100,33 @@
       <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text_field('name['. $language_code .']', $language_code, true); ?>
     </div>
 
-    <div id="product-values">
+    <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
 
-      <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
-
-      <table class="table table-striped table-hover table-dragable data-table">
-        <thead>
-          <tr>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th><?php echo language::translate('title_in_use', 'In Use'); ?></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) { ?>
-          <tr>
-            <td class="grabable"><?php echo $group_value['id']; ?><?php echo functions::form_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
-            <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text_field( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
-            <td class="text-center"><?php echo !empty($group_value['in_use']) ? language::translate('title_yes', 'Yes') : language::translate('title_no', 'No'); ?></td>
-            <td class="text-end"><?php echo empty($group_value['in_use']) ? '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"') .'</a>' : false; ?></td>
-          </tr>
-          <?php } ?>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?></a></td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
+    <table class="table table-striped table-hover table-dragable data-table">
+      <thead>
+        <tr>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_in_use', 'In Use'); ?></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) { ?>
+        <tr>
+          <td class="grabable"><?php echo $group_value['id']; ?><?php echo functions::form_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
+          <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text_field( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
+          <td class="text-center"><?php echo !empty($group_value['in_use']) ? language::translate('title_yes', 'Yes') : language::translate('title_no', 'No'); ?></td>
+          <td class="text-end"><?php echo empty($group_value['in_use']) ? '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"') .'</a>' : false; ?></td>
+        </tr>
+        <?php } ?>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?></a></td>
+        </tr>
+      </tfoot>
+    </table>
 
     <div class="card-action">
       <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>

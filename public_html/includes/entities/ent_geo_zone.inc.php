@@ -58,7 +58,9 @@
 
       $this->data['zones'] = [];
       while ($zone = database::fetch($zones_to_geo_zones_query)) {
-        if (empty($zone['zone_code'])) $zone['zone_name'] = '-- '. language::translate('title_all_zones', 'All Zones') .' --';
+        if (empty($zone['zone_code'])) {
+          $zone['zone_name'] = '-- '. language::translate('title_all_zones', 'All Zones') .' --';
+        }
         $this->data['zones'][] = $zone;
       }
 

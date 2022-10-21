@@ -28,7 +28,6 @@
   if (isset($_POST['clone'])) {
 
     try {
-      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_cant_clone_category', 'You can\'t clone a category'));
       if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
       if (empty($_POST['category_id'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
@@ -81,7 +80,6 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_only_products_are_supported', 'Only products are supported for this operation'));
       if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
 
       foreach ($_POST['products'] as $product_id) {
@@ -300,11 +298,20 @@ table .thumbnail {
 </div>
 
 <script>
-$('input[name="category_id"]').change(function(e){
-  $(this).closest('form').submit();
-});
+  $('input[name="category_id"]').change(function(e) {
+    $(this).closest('form').submit();
+  });
 
   $('.data-table :checkbox').change(function() {
     $('#actions').prop('disabled', !$('.data-table :checked').length);
   }).first().trigger('change');
+
+  $('form[name="search_form"]').on('input change', function(e) {
+    e.preventDefault();
+    $.get('', $(this).serialize(), function(response) {
+      $('.data-table tbody').html( $(response).find('.data-table tbody').html() );
+      $('.data-table tfoot').html( $(response).find('.data-table tfoot').html() );
+      $('.card-footer').after( $(response).find('.card-footer').html() ).remove();
+    });
+  });
 </script>

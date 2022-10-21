@@ -1,7 +1,8 @@
 <?php
 
   class ent_banner {
-    public $data = [];
+    public $data;
+    public $previous;
 
     public function __construct($banner_id=null) {
 
@@ -16,16 +17,22 @@
 
       $this->data = [];
 
-      $categories_query = database::query(
+      $banners_query = database::query(
         "show fields from ". DB_TABLE_PREFIX ."banners;"
       );
 
-      while ($field = database::fetch($categories_query)) {
+      while ($field = database::fetch($banners_query)) {
         $this->data[$field['Field']] = database::create_variable($field);
       }
+
+      $this->previous = $this->data;
     }
 
     public function load($banner_id) {
+
+      if (!preg_match('#^[0-9]+$#', $banner_id)) {
+        throw new Exception('Invalid banner (ID: '. $banner_id .')');
+      }
 
       $this->reset();
 
@@ -38,10 +45,11 @@
       if ($banner) {
         $this->data = array_replace($this->data, array_intersect_key($banner, $this->data));
       } else {
-        trigger_error('Could not find banner (ID: '. (int)$banner_id .') in database.', E_USER_ERROR);
+        throw new Exception('Could not find banner (ID: '. (int)$banner_id .') in database.');
       }
 
       $this->data['languages'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+      $this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
     }
 
     public function save() {
@@ -73,10 +81,12 @@
           keywords = '". database::input($this->data['keywords']) ."',
           date_valid_from = ". (!empty($this->data['date_valid_from']) ? "'". database::input($this->data['date_valid_from']) ."'" : "null") .",
           date_valid_to = ". (!empty($this->data['date_valid_to']) ? "'". database::input($this->data['date_valid_to']) ."'" : "null") .",
-          date_updated = '". date('Y-m-d H:i:s') ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );
+
+      $this->previous = $this->data;
 
       cache::clear_cache('banners');
     }
@@ -117,7 +127,7 @@
 
       if (file_exists('storage://images/' . $this->data['image'])) unlink('storage://images/' . $this->data['image']);
 
-      $this->data['id'] = 0;
+      $this->reset();
 
       cache::clear_cache('banners');
     }

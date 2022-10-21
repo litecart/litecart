@@ -956,6 +956,17 @@ END;
         }
         return $html;
 
+      case 'page':
+      case 'pages':
+        return form_pages_list($name, $input, $parameters);
+
+      case 'radio':
+        $html = '';
+        for ($i=0; $i<count($options); $i++) {
+          $html .= '<div class="radio"><label>'. form_radio_button($name, $options[$i], $input, $parameters) .' '. $options[$i] .'</label></div>';
+        }
+        return $html;
+
       case 'select':
       case 'select_multiple': // Deprecated
         for ($i=0; $i<count($options); $i++) $options[$i] = [$options[$i]];
@@ -1422,7 +1433,7 @@ END;
       ['DAP', 'DAP &ndash; '. language::translate('title_incoterm_dap', 'Delivered At Place')],
     ];
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple_field($name, $options, $input, $parameters);
     } else {
       array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
@@ -1625,7 +1636,7 @@ END;
       ['NET30', 'NET30 &ndash; '. language::translate('title_payment_terms_net30', 'Payment 30 days after invoice date')],
     ];
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple_field($name, $options, $input, $parameters);
     } else {
       array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
