@@ -24,10 +24,10 @@
         'author' => null,
         'settings' => [],
         'aliases' => [],
+        'install' => '',
+        'uninstall' => '',
+        'upgrades' => [],
         'files' => [],
-				'install' => '',
-				'uninstall' => '',
-				'upgrades' => [],
         'filename' => null,
         'date_updated' => null,
         'date_created' => null,
@@ -38,13 +38,13 @@
 
     public function load($filename) {
 
-      if (!is_file(FS_DIR_STORAGE . 'vmods/'. $filename)) {
+      if (!is_file('storage://vmods/'. $filename)) {
         throw new Exception('Invalid vMod ('. $filename .')');
       }
 
       $this->reset();
 
-      $xml = file_get_contents(FS_DIR_STORAGE . 'vmods/'. $filename);
+      $xml = file_get_contents('storage://vmods/'. $filename);
       $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
 
       $dom = new \DOMDocument('1.0', 'UTF-8');
@@ -57,8 +57,8 @@
       $this->data['id'] = preg_replace('#\.(xml|disabled)?$#', '', $filename);
       $this->data['status'] = !preg_match('#\.disabled$#', $filename) ? '1' : '0';
       $this->data['filename'] = $filename;
-      $this->data['date_created'] = date('Y-m-d H:i:s', filectime(FS_DIR_STORAGE . 'vmods/' . $filename));
-      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime(FS_DIR_STORAGE . 'vmods/' . $filename));
+      $this->data['date_created'] = date('Y-m-d H:i:s', filectime('storage://vmods/' . $filename));
+      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime('storage://vmods/' . $filename));
 
       switch ($dom->documentElement->tagName) {
 
@@ -300,21 +300,21 @@
       }
 
     // Uninstall
-     if (!empty($this->data['uninstall'])) {
-       $uninstall_node = $dom->createElement('uninstall');
-       $uninstall_node->appendChild( $dom->createCDATASection(PHP_EOL . rtrim($this->data['uninstall']) . PHP_EOL . str_repeat(' ', 2)) );
-       $vmod_node->appendChild( $uninstall_node );
-     }
+    if (!empty($this->data['uninstall'])) {
+      $uninstall_node = $dom->createElement('uninstall');
+      $uninstall_node->appendChild( $dom->createCDATASection(PHP_EOL . rtrim($this->data['uninstall']) . PHP_EOL . str_repeat(' ', 2)) );
+      $vmod_node->appendChild( $uninstall_node );
+    }
 
-   // Upgrade
-     foreach ($this->data['upgrades'] as $upgrade) {
-       $upgrade_node = $dom->createElement('upgrade');
-       $attribute = $dom->createAttribute('version');
-       $attribute->value = $upgrade['version'];
-       $upgrade_node->appendChild( $attribute );
-       $upgrade_node->appendChild( $dom->createCDATASection(PHP_EOL . rtrim($upgrade['script']) . PHP_EOL . str_repeat(' ', 4)) );
-       $vmod_node->appendChild( $upgrade_node );
-     }
+  // Upgrade
+    foreach ($this->data['upgrades'] as $upgrade) {
+      $upgrade_node = $dom->createElement('upgrade');
+      $attribute = $dom->createAttribute('version');
+      $attribute->value = $upgrade['version'];
+      $upgrade_node->appendChild( $attribute );
+      $upgrade_node->appendChild( $dom->createCDATASection(PHP_EOL . rtrim($upgrade['script']) . PHP_EOL . str_repeat(' ', 4)) );
+      $vmod_node->appendChild( $upgrade_node );
+    }
 
     // Files
       foreach ($this->data['files'] as $file) {
@@ -383,10 +383,10 @@
       $xml = preg_replace('#^(\n|\r\n?){2,}#m', PHP_EOL, $xml);
 
       if (!empty($this->previous['filename'])) {
-         rename(FS_DIR_STORAGE . 'vmods/' . $this->previous['filename'], FS_DIR_STORAGE . 'vmods/' . $this->data['filename']);
+        rename('storage://vmods/' . $this->previous['filename'], 'storage://vmods/' . $this->data['filename']);
       }
 
-      file_put_contents(FS_DIR_STORAGE . 'vmods/' . $this->data['filename'], $xml);
+      file_put_contents('storage://vmods/' . $this->data['filename'], $xml);
 
       $this->previous = $this->data;
 
@@ -405,7 +405,7 @@
         })($tmp_file);
       }
 
-      unlink(FS_DIR_STORAGE . 'vmods/' . $this->previous['filename']);
+      unlink('storage://vmods/' . $this->previous['filename']);
 
       $this->reset();
 

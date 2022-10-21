@@ -36,18 +36,18 @@
       $last_modified = null;
 
     // Get last modification date for folder
-      $folder_last_modified = filemtime('storage://addons/');
+      $folder_last_modified = filemtime(FS_DIR_STORAGE .'addons/');
       if ($folder_last_modified > $last_modified) {
         $last_modified = $folder_last_modified;
       }
 
     // Get last modification date modifications
-      foreach (scandir('storage://addons/') as $folder) {
-        if (in_array($folder, ['.', '..'])) continue;
-        if (!is_dir('storage://addons/'.$folder)) continue;
+      foreach (scandir(FS_DIR_STORAGE .'addons/') as $folder) {
+        if (in_array($folder, ['.', '..', '.cache'])) continue;
+        if (!is_dir(FS_DIR_STORAGE .'addons/'.$folder)) continue;
         if (preg_match('#\.disabled$#', $folder)) continue;
 
-        $vmod = 'storage://addons/'.$folder.'/vmod.xml';
+        $vmod = FS_DIR_STORAGE .'addons/'.$folder.'/vmod.xml';
         if (filemtime($vmod) > $last_modified) {
           $last_modified = filemtime($vmod);
         }
@@ -59,7 +59,7 @@
       }
 
     // Load installed
-      $installed_file = 'storage://addons/.installed';
+      $installed_file = FS_DIR_STORAGE .'addons/.installed';
       if (is_file($installed_file)) {
         foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $vmod_id) {
           self::$_installed[] = $vmod_id;
@@ -67,7 +67,7 @@
       }
 
     // Get modifications from cache
-      $cache_file = 'storage://addons/.cache/.modifications';
+      $cache_file = FS_DIR_STORAGE .'addons/.cache/.modifications';
       if (is_file($cache_file) && filemtime($cache_file) > $last_modified) {
         if ($cache = file_get_contents($cache_file)) {
           if ($cache = json_decode($cache, true)) {
@@ -78,7 +78,7 @@
       }
 
     // Create a list of checked files
-      $checked_file = 'storage://addons/.cache/.checked';
+      $checked_file = FS_DIR_STORAGE .'addons/.cache/.checked';
       if (is_file($checked_file) && filemtime($checked_file) > $last_modified) {
         foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
           list($relative_path, $modified_relative_path, $checksum) = explode(';', $line);
@@ -88,16 +88,16 @@
           }
         }
       } else {
-        file_put_contents($checked_file, '', LOCK_SH);
+        file_put_contents($checked_file, '', LOCK_EX);
       }
 
     // Load modifications from disk
       if (empty(self::$_modifications)) {
-        foreach (scandir('storage://addons/') as $folder) {
-          if (in_array($folder, ['.', '..'])) continue;
-          if (!is_dir('storage://addons/'.$folder)) continue;
+        foreach (scandir(FS_DIR_STORAGE .'addons/') as $folder) {
+          if (in_array($folder, ['.', '..', '.cache'])) continue;
+          if (!is_dir(FS_DIR_STORAGE .'addons/'.$folder)) continue;
           if (preg_match('#\.disabled$#', $folder)) continue;
-          self::load('storage://addons/'.$folder.'/vmod.xml');
+          self::load(FS_DIR_STORAGE .'addons/'.$folder.'/vmod.xml');
         }
 
       // Store modifications to cache
@@ -107,12 +107,12 @@
         //), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         ], JSON_UNESCAPED_SLASHES);
 
-        file_put_contents($cache_file, $serialized, LOCK_SH);
+        file_put_contents($cache_file, $serialized, LOCK_EX);
       }
 
     // Load settings
-      if (!is_file('storage://addons/.settings')) file_put_contents('storage://addons/.settings', '{}');
-      if (!self::$_settings = json_decode(file_get_contents('storage://addons/.settings'), true)) {
+      if (!is_file(FS_DIR_STORAGE .'addons/.settings')) file_put_contents(FS_DIR_STORAGE .'addons/.settings', '{}');
+      if (!self::$_settings = json_decode(file_get_contents(FS_DIR_STORAGE .'addons/.settings'), true)) {
         self::$_settings = [];
       }
 
@@ -138,7 +138,7 @@
       }
 
       $relative_path = preg_replace('#^(app://|' . preg_quote(FS_DIR_APP, '#') .')#', '', $file);
-      $modified_file = 'storage://addons/.cache/' . preg_replace('#[/\\\\]+#', '-', $relative_path);
+      $modified_file = FS_DIR_STORAGE .'addons/.cache/' . preg_replace('#[/\\\\]+#', '-', $relative_path);
       $modified_relative_path = 'addons/.cache/' . preg_replace('#[/\\\\]+#', '-', $relative_path);
 
     // Returned an already checked file
@@ -147,18 +147,19 @@
         return self::$_checked[$relative_path];
       }
 
+    // Return original file if there are no modifications
+      if (empty(self::$_files_to_modifications[$relative_path])) {
+        self::$time_elapsed += microtime(true) - $timestamp;
+        return $file;
+      }
+
     // Add modifications to queue and calculate checksum
       $queue = [];
       $digest = [filemtime($file)];
 
-      foreach (self::$_files_to_modifications as $pattern => $modifications) {
-        if (!fnmatch($pattern, $relative_path)) continue;
-
-        foreach ($modifications as $modification) {
-          $digest[] = strtotime($modification['date_modified']);
-        }
-
-        $queue[] = $modifications;
+      foreach (self::$_files_to_modifications[$relative_path] as $modification) {
+        $digest[] = strtotime($modification['date_modified']);
+        $queue[] = $modification;
       }
 
       $checksum = md5(implode($digest));
@@ -183,71 +184,64 @@
         $original = $buffer = null;
       }
 
-      foreach ($queue as $modifications) {
-        foreach ($modifications as $modification) {
+      foreach ($queue as $modification) {
 
-          if (empty(self::$_modifications[$modification['id']])) continue;
-          $vmod = self::$_modifications[$modification['id']];
+        if (!$vmod = self::$_modifications[$modification['id']]) continue;
+        if (!$operations = self::$_modifications[$modification['id']]['files'][$modification['key']]['operations']) continue;
 
-          if (empty(self::$_modifications[$modification['id']]['files'][$modification['key']]['operations'])) continue;
-          $operations = self::$_modifications[$modification['id']]['files'][$modification['key']]['operations'];
+        $tmp = $buffer; $i = 1;
+        foreach ($operations as $operation) {
 
-          $tmp = $buffer;
-          foreach ($operations as $i => $operation) {
+          $found = preg_match_all($operation['find']['pattern'], $tmp, $matches, PREG_OFFSET_CAPTURE);
 
-            if (!empty($operation['ignoreif']) && preg_match($operation['ignoreif'], $tmp)) {
-              continue;
-            }
-
-            $found = preg_match_all($operation['find']['pattern'], $tmp, $matches, PREG_OFFSET_CAPTURE);
-
-            if (!$found) {
-              switch ($operation['onerror']) {
-                case 'abort':
-                  trigger_error("Modification \"$vmod[title]\" failed during operation #$i in $relative_path: Search not found [ABORTED]", E_USER_WARNING);
-                  continue 3;
-                case 'ignore':
-                  continue 2;
-                case 'warning':
-                default:
-                  trigger_error("Modification \"$vmod[title]\" failed during operation #$i in $relative_path: Search not found", E_USER_WARNING);
-                  continue 2;
-              }
-            }
-
-            if (!empty($operation['find']['indexes'])) {
-              rsort($operation['find']['indexes']);
-
-              foreach ($operation['find']['indexes'] as $index) {
-                $index = $index - 1; // [0] is the 1st in computer language
-
-                if ($found > $index) {
-                  $tmp = substr_replace($tmp, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
-                }
-              }
-
-            } else {
-              $tmp = preg_replace($operation['find']['pattern'], $operation['insert'], $tmp, -1, $count);
-
-              if (!$count && $operation['onerror'] != 'skip') {
-                trigger_error("Vmod failed to perform insert", E_USER_ERROR);
+          if (!$found) {
+            switch ($operation['onerror']) {
+              case 'abort':
+                trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $relative_path: Search not found [ABORTED]", E_USER_WARNING);
+                continue 3;
+              case 'ignore':
                 continue 2;
-              }
+              case 'warning':
+              default:
+                trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $relative_path: Search not found", E_USER_WARNING);
+                continue 2;
             }
           }
 
-          $buffer = $tmp;
+          if (!empty($operation['find']['indexes'])) {
+            rsort($operation['find']['indexes']);
+
+            foreach ($operation['find']['indexes'] as $index) {
+              $index = $index - 1; // [0] is the 1st in computer language
+
+              if ($found > $index) {
+                $tmp = substr_replace($tmp, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
+              }
+            }
+
+          } else {
+            $tmp = preg_replace($operation['find']['pattern'], $operation['insert'], $tmp, -1, $count);
+
+            if (!$count && $operation['onerror'] != 'skip') {
+              trigger_error("Vmod failed to perform insert", E_USER_ERROR);
+              continue 2;
+            }
+          }
+
+          $i++;
         }
+
+        $buffer = $tmp;
       }
 
     // Create cache folder for modified files if missing
-      if (!is_dir('storage://addons/.cache/')) {
-        if (!mkdir('storage://addons/.cache/', 0777)) {
+      if (!is_dir(FS_DIR_STORAGE .'addons/.cache/')) {
+        if (!mkdir(FS_DIR_STORAGE .'addons/.cache/', 0777)) {
           throw new \Exception('The modifications cache directory could not be created', E_USER_ERROR);
         }
       }
 
-      if (!is_writable('storage://addons/.cache/')) {
+      if (!is_writable(FS_DIR_STORAGE .'addons/.cache/')) {
         throw new \Exception('The modifications cache directory is not writable', E_USER_ERROR);
       }
 
@@ -258,14 +252,13 @@
       }
 
     // Write modified file
-      file_put_contents($modified_file, $buffer, LOCK_SH);
+      file_put_contents($modified_file, $buffer, LOCK_EX);
 
       self::$_checked[$relative_path] = $modified_file;
       self::$_checksums[$relative_path] = $checksum;
-      file_put_contents('storage://addons/.cache/.checked', $relative_path .';'. $modified_relative_path .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_SH);
+      file_put_contents(FS_DIR_STORAGE .'addons/.cache/.checked', $relative_path .';'. $modified_relative_path .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_SH);
 
       self::$time_elapsed += microtime(true) - $timestamp;
-
       return $modified_file;
     }
 
@@ -281,17 +274,18 @@
 
       // Create cross reference for file patterns
         foreach (array_keys($vmod['files']) as $key) {
-          $patterns = explode(',', $vmod['files'][$key]['name']);
 
-          foreach ($patterns as $pattern) {
-            $path_and_file = $vmod['files'][$key]['path'].$pattern;
+          $glob_pattern = $vmod['files'][$key]['name'];
 
-          // Apply path aliases
-            if (!empty(self::$aliases)) {
-              $path_and_file = preg_replace(array_keys(self::$aliases), array_values(self::$aliases), $path_and_file);
-            }
+        // Apply path aliases
+          if (!empty(self::$aliases)) {
+            $glob_pattern = preg_replace(array_keys(self::$aliases), array_values(self::$aliases), $glob_pattern);
+          }
 
-            self::$_files_to_modifications[$path_and_file][] = [
+          foreach (glob(FS_DIR_APP . $glob_pattern, GLOB_BRACE) as $file_to_modify) {
+            $relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file_to_modify);
+
+            self::$_files_to_modifications[$relative_path][] = [
               'id' => $vmod['id'],
               'key' => $key,
               'date_modified' => $vmod['date_modified'],
@@ -300,21 +294,61 @@
         }
 
       // Run install for previously not installed modifications
-        if (!in_array($vmod['id'], self::$_installed)) {
+        if (!in_array($vmod['id'], array_column(self::$_installed, 'id'))) {
 
-        // Exceute install in an isolated scope
+        // Exceute install
           if (!empty($vmod['install'])) {
-            (function(){
-              eval(func_get_args()[0]);
-            })($vmod['install']);
+
+            $tmp_file = stream_get_meta_data(tmpfile())['uri'];
+            file_put_contents($tmp_file, "<?php\r\n" . $vmod['install']);
+
+            (function() {
+              include func_get_arg(0);
+            })($tmp_file);
           }
 
-          file_put_contents('storage://addons/.installed', $vmod['id'] . PHP_EOL, FILE_APPEND | LOCK_SH);
-          self::$_installed[] = $vmod['id'];
+          file_put_contents(FS_DIR_STORAGE .'addons/.installed', $vmod['id'] . PHP_EOL, FILE_APPEND | LOCK_EX);
+
+          self::$_installed[] = [
+            'id' => $vmod['id'],
+            'version' => $vmod['version'],
+          ];
+        }
+
+      // Run upgrades if a previous version is installed
+        if (!empty($vmod['upgrades'])) {
+          if ($installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
+
+            foreach ($vmod['upgrades'] as $upgrade) {
+
+              if (version_compare($upgrade['version'], $installed_version, '<=')) continue;
+
+            // Exceute upgrade in an isolated scope
+              $tmp_file = stream_get_meta_data(tmpfile())['uri'];
+              file_put_contents($tmp_file, "<?php\r\n" . $upgrade['script']);
+
+              (function() {
+                include func_get_arg(0);
+              })($tmp_file);
+
+              foreach (self::$_installed as $key => $installed) {
+                if ($installed['id'] == $vmod['id']) {
+                  self::$_installed[$key]['version'] = $upgrade['version'];
+                  break;
+                }
+              }
+
+              $new_contents = implode(PHP_EOL, array_map(function($vmod){
+                return $vmod['id'] .';'. $vmod['version'];
+              }, self::$_installed));
+
+              file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
+            }
+          }
         }
 
       } catch (\Exception $e) {
-        trigger_error("Could not load vMod ($file): " . $e->getMessage(), $e->getCode());
+        trigger_error("Could not load vMod ($file): " . $e->getMessage(), E_USER_WARNING);
       }
     }
 
@@ -334,25 +368,54 @@
       }
 
       if ($dom->documentElement->tagName != 'vmod') {
-        throw new \Exception('File is not a valid vMod', E_USER_WARNING);
+        throw new \Exception('File is not a valid vmod');
       }
 
-      if (empty($dom->getElementsByTagName('title')->item(0))) {
-        throw new \Exception('File is missing the title element', E_USER_WARNING);
+      if (empty($dom->getElementsByTagName('name')->item(0))) {
+        throw new \Exception('File is missing the name element');
       }
+
+      $id = preg_replace('#\.disabled$#', '', basename(dirname($file)));
+      if ($id == 'vmods') $id = preg_replace('#\.(disabled|xml)$#', '', basename($file));
 
       $vmod = [
         'type' => 'vmod',
-        'id' => $dom->getElementsByTagName('id')->item(0)->textContent,
-        'title' => $dom->getElementsByTagName('title')->item(0)->textContent,
+        'id' => $id,
+        'name' => $dom->getElementsByTagName('name')->item(0)->textContent,
+        'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
+        'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
         'files' => [],
         'install' => null,
+        'upgrades' => [],
         'settings' => [],
         'date_modified' => filemtime($file),
       ];
 
-      if ($dom->getElementsByTagName('install')->length > 0) {
-        $vmod['install'] = $dom->getElementsByTagName('install')->item(0)->textContent;
+      if (!$installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
+
+        if ($dom->getElementsByTagName('install')->length > 0) {
+          $vmod['install'] = $dom->getElementsByTagName('install')->item(0)->textContent;
+        }
+
+      } else {
+
+        if (!empty($dom->getElementsByTagName('upgrade'))) {
+          foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
+
+            $upgrade_version = $upgrade_node->getAttribute('version');
+
+            if (version_compare($vmod['version'], $upgrade_version, '<=')) {
+              $vmod['upgrades'][] = [
+                'version' => $upgrade_version,
+                'script' => $upgrade_node->textContent,
+              ];
+            }
+          }
+        }
+
+        uasort($vmod['upgrades'], function($a, $b){
+          return version_compare($a['version'], $b['version']);
+        });
       }
 
       $aliases = [];
@@ -360,12 +423,9 @@
         $aliases[$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
       }
 
-      if (empty($dom->getElementsByTagName('file'))) return;
-
       foreach ($dom->getElementsByTagName('file') as $file_node) {
 
         $vmod_file = [
-          'path' => $file_node->getAttribute('path'),
           'name' => $file_node->getAttribute('name'),
           'operations' => [],
         ];
@@ -376,69 +436,56 @@
           $onerror = $operation_node->getAttribute('onerror');
 
         // Find
-          $find_node = $operation_node->getElementsByTagName('find')->item(0);
-          $find = strtr($find_node->textContent, $aliases);
+          if (!in_array($operation_node->getAttribute('method'), ['top', 'bottom'])) {
 
-          if ($find_node->getAttribute('regex') == 'true') {
-            $find = trim($find);
+            $find_node = $operation_node->getElementsByTagName('find')->item(0);
+            $find = strtr($find_node->textContent, $aliases);
 
-          } else {
+          // Trim
+            if (in_array($operation_node->getAttribute('type'), ['inline', 'regex'])) {
+              $find = trim($find);
 
-          // Whitespace
-            if (preg_match('#[\r\n]#', $find)) {
-              $find = preg_split('#(\r\n?|\n)#', $find);
-              for ($i=0; $i<count($find); $i++) {
-                if ($find[$i] = trim($find[$i])) {
-                  $find[$i] = '(?:[ \\t]+)?' . preg_quote($find[$i], '#') . '(?:[ \\t]+)?(?:\r\n?|\n)';
-                } else if ($i != count($find)-1) {
-                  $find[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
-                }
-              }
-              $find = implode($find);
-            } else {
-              $find = '(?:[ \\t]+)?' . preg_quote(trim($find), '#') . '(?:[ \\t]+)?';
+            } else if (in_array($operation_node->getAttribute('type'), ['multiline', ''])) {
+              $find = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $find); // Trim beginning of CDATA
+              $find = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $find); // Trim end of CDATA
             }
 
-          // Offset
-            $offset_before = '(?:.*?(?:\r\n?|\n)){'. (int)$find_node->getAttribute('offset-before') .'}';
-            $offset_after = '(?:.*?(?:\r\n?|\n|$)){0,'. (int)$find_node->getAttribute('offset-after') .'}';
+          // Cook the regex pattern
+            if ($operation_node->getAttribute('type') != 'regex') {
 
-          // Glue
-            $find = '#'. $offset_before . $find . $offset_after .'#';
-          }
+              if ($operation_node->getAttribute('type') == 'inline') {
+                $find = preg_quote($find, '#');
 
-        // Indexes
-          if ($indexes = $find_node->getAttribute('index')) {
-            $indexes = preg_split('#, ?#', $indexes);
-          }
+              } else {
 
-        // Ignoreif
-          if ($ignoreif_node = $operation_node->getElementsByTagName('ignoreif')->item(0)) {
-            $ignoreif = strtr($ignoreif_node->textContent, $aliases);
-
-            if ($ignoreif_node->getAttribute('regex') == 'true') {
-              $ignoreif = trim($ignoreif);
-
-            } else {
-
-              if ($ignoreif_node->getAttribute('trim') != 'false') {
-                $ignoreif = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $ignoreif); // Trim beginning of CDATA
-                $ignoreif = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $ignoreif); // Trim end of CDATA
-              }
-
-              if (preg_match('#[\r\n]#', $ignoreif)) {
-                $ignoreif = preg_split('#(\r\n?|\n)#', $ignoreif);
-                for ($i=0; $i<count($ignoreif); $i++) {
-                  if ($ignoreif[$i] = trim($ignoreif[$i])) {
-                    $ignoreif[$i] = '(?:[ \\t]+)?' . preg_quote($ignoreif[$i], '#') . '(?:[ \\t]+)?(?:\r\n?|\n)';
-                  } else if ($i != count($ignoreif)-1) {
-                    $ignoreif[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
+              // Whitespace
+                $find = preg_split('#(\r\n?|\n)#', $find);
+                for ($i=0; $i<count($find); $i++) {
+                  if ($find[$i] = trim($find[$i])) {
+                    $find[$i] = '[ \\t]*' . preg_quote($find[$i], '#') . '[ \\t]*(?:\r\n?|\n|$)';
+                  } else if ($i != count($find)-1) {
+                    $find[$i] = '[ \\t]*(?:\r\n?|\n)';
                   }
                 }
-                $ignoreif = implode($ignoreif);
-              } else {
-                $ignoreif = '(?:[ \\t]+)?' . preg_quote(trim($ignoreif), '#') . '(?:[ \\t]+)?';
+                $find = implode($find);
+
+              // Offset
+                if ($find_node->getAttribute('offset-before') != '') {
+                  $find = '(?:.*?(?:\r\n?|\n)){'. (int)$find_node->getAttribute('offset-before') .'}' . $find;
+                }
+
+                if ($find_node->getAttribute('offset-after') != '') {
+                  $find = $find . '(?:.*?(?:\r\n?|\n|$)){0,'. (int)$find_node->getAttribute('offset-after') .'}';
+                }
               }
+
+            // Encapsulate regex
+              $find = '#'. $find .'#';
+            }
+
+          // Indexes
+            if ($indexes = $find_node->getAttribute('index')) {
+              $indexes = preg_split('#\s*,\s*#', $indexes, -1, PREG_SPLIT_NO_EMPTY);
             }
           }
 
@@ -452,36 +499,31 @@
             }
           }
 
-          if ($insert_node->getAttribute('regex') == 'true') {
-            $insert = trim($insert);
+          if ($operation_node->getAttribute('type') != 'regex') {
 
-          } else {
-
-            if ($insert_node->getAttribute('trim') != 'false') {
+            if (in_array($operation_node->getAttribute('type'), ['multiline', ''])) {
               $insert = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $insert); // Trim beginning of CDATA
               $insert = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $insert); // Trim end of CDATA
             }
 
-            switch($position = $insert_node->getAttribute('position')) {
+            switch ($method = $operation_node->getAttribute('method')) {
 
               case 'before':
-              case 'prepend':
                 $insert = addcslashes($insert, '\\$').'$0';
                 break;
 
               case 'after':
-              case 'append':
                 $insert = '$0'. addcslashes($insert, '\\$');
                 break;
 
               case 'top':
-                $find = '#^.*$#s';
+                $find = '#^#s';
                 $indexes = '';
                 $insert = addcslashes($insert, '\\$').'$0';
                 break;
 
               case 'bottom':
-                $find = '#^.*$#s';
+                $find = '#$#s';
                 $indexes = '';
                 $insert = '$0'.addcslashes($insert, '\\$');
                 break;
@@ -491,7 +533,8 @@
                 break;
 
               default:
-                throw new \Exception("Unknown value \"$position\" for attribute position (replace|before|after|all)");
+              echo $vmod['id'].$vmod['name'];
+                throw new \Exception("Unknown value \"$method\" for operation method (before|after|replace|bottom|top)");
                 continue 2;
             }
           }
@@ -503,12 +546,11 @@
               'pattern' => $find,
               'indexes' => $indexes,
             ],
-            'ignoreif' => !empty($ignoreif) ? $ignoreif : false,
             'insert' => $insert,
           ];
         }
 
-        $vmod['files'][$vmod_file['path'].$vmod_file['name']] = $vmod_file;
+        $vmod['files'][$vmod_file['name']] = $vmod_file;
       }
 
       return $vmod;

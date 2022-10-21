@@ -9,7 +9,7 @@
   try {
     if (empty($_GET['vmod'])) throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
 
-    $file = 'storage://addons/' . basename($_GET['vmod']).'/vmod.xml';
+    $file = 'storage://vmods/' . basename($_GET['vmod']);
 
     if (!is_file($file)) throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
 

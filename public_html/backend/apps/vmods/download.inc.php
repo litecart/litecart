@@ -5,43 +5,19 @@
 
     $folder = 'storage://addons/' . basename($_GET['vmod']) .'/';
 
-    if (!$xml = simplexml_load_file($folder.'vmod.xml')) {
-      throw new Exception('Failed parsing vmod.xml');
+    if (!is_file($file)) {
+      throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
     }
 
-    $version = !empty($xml->version) ? $xml->version : date('Y-m-d', filemtime($folder.'vmod.xml'));
-
-  // Create temporary zip archive
-    $tmp_file = functions::file_create_tempfile();
-
-    $zip = new ZipArchive();
-    if ($zip->open($tmp_file, ZipArchive::OVERWRITE) !== true) { // ZipArchive::CREATE throws an error with temp files in PHP 8.
-      throw new Exception('Failed creating ZIP archive');
-    }
-
-    if (!$files = functions::file_search($folder.'**')) {
-      throw new Exception('No files to add to ZIP archive');
-    }
-
-    foreach ($files as $file) {
-      if (is_dir($file)) continue;
-      if (!$zip->addFile(functions::file_realpath($file), preg_replace('#'. preg_quote($folder, '#') .'#', '', $file))) {
-        throw new Exception('Failed adding contents to ZIP archive');
-      }
-    }
-
-    $zip->close();
-
-  // Output the file
     header('Cache-Control: must-revalidate');
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename='. $_GET['vmod'] .'-'. $version .'.vmod.zip');
-    header('Content-Length: ' . filesize($tmp_file));
+    header('Content-Disposition: attachment; filename='. preg_replace('#\.disabled$#', '.xml', basename($_GET['vmod'])));
+    header('Content-Length: ' . filesize($file));
     header('Expires: 0');
 
     ob_end_clean();
-    readfile($tmp_file);
+    readfile(FS_DIR_STORAGE . 'vmods/' . basename($file['vmod']));
     exit;
 
   } catch (Exception $e) {

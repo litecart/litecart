@@ -3,19 +3,19 @@
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {
-      if (empty($_POST['vmods'])) throw new Exception(language::translate('error_must_select_vmods', 'You must select vMods'));
+
+      if (empty($_POST['vmods'])) {
+        throw new Exception(language::translate('error_must_select_vmods', 'You must select vMods'));
+      }
 
       foreach ($_POST['vmods'] as $vmod) {
 
-        if ((!$vmod = basename($vmod)) || (!is_dir('storage://addons/'. $vmod .'/') && !is_dir('storage://addons/'. $vmod .'.disabled/'))) {
-          throw new Exception(language::translate('error_invalid_vmod_folder', 'Invalid vmod folder') .' ('. $vmod .')');
-        }
         if (!empty($_POST['enable'])) {
-          if (!is_dir('storage://addons/'. $vmod .'.disabled/')) continue;
-          rename('storage://addons/'. $vmod .'.disabled/', 'storage://addons/'. $vmod .'/');
+          if (!is_file(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled')) continue;
+          rename(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled', FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml');
         } else {
-          if (!is_dir('storage://addons/'. $vmod .'/')) continue;
-          rename('storage://addons/'. $vmod .'/', 'storage://addons/'. $vmod .'.disabled/');
+          if (!is_file(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml')) continue;
+          rename(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml', FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled');
         }
       }
 
@@ -31,17 +31,14 @@
   if (isset($_POST['delete'])) {
 
     try {
+
       if (empty($_POST['vmods'])) {
         throw new Exception(language::translate('error_must_select_vmods', 'You must select vMods'));
       }
 
       foreach ($_POST['vmods'] as $vmod) {
-
-        if (!$vmod = basename($vmod) || !is_dir($vmod)) {
-          throw new Exception(language::translate('error_invalid_vmod_folder', 'Invalid vmod folder'));
-        }
-
-        functions::file_delete('storage://addons/' . basename($vmod) .'/');
+        $vmod = new ent_vmod($vmod);
+        $vmod->delete();
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
@@ -56,43 +53,33 @@
   if (isset($_POST['upload'])) {
 
     try {
+
       if (!isset($_FILES['vmod']['tmp_name']) || !is_uploaded_file($_FILES['vmod']['tmp_name'])) {
         throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
       }
 
-      if (!$id = preg_replace('#^(.*?)(-[0-9\.]+)?(\.vmod)?\.zip$#', '$1', $_FILES['vmod']['name'])) {
-        throw new Exception(language::translate('error_could_not_determine_archive_name', 'Could not determine archive name'));
-      }
-
-      $folder = 'storage://addons/'.$id.'/';
-
-      $zip = new ZipArchive();
-      if ($zip->open($_FILES['vmod']['tmp_name'], ZipArchive::RDONLY) !== true) { // ZipArchive::CREATE throws an error with temp files in PHP 8.
-        throw new Exception('Failed opening ZIP archive');
-      }
-
-      if (!$vmod = $zip->getFromName('vmod.xml')) {
-        throw new Exception('Could not find vmod.xml');
-      }
-
       $dom = new DOMDocument('1.0', 'UTF-8');
 
-      if (!@$dom->loadXML($vmod) || !$dom->getElementsByTagName('vmod')) {
+      $xml = file_get_contents($_FILES['vmod']['tmp_name']); // DOMDocument::load() does not support Windows paths so we use DOMDocument::loadXML()
+
+      if (!@$dom->loadXML($xml)) {
+        throw new Exception(language::translate('error_invalid_xml_file', 'Invalid XML file'));
+      }
+
+      if (!$dom->getElementsByTagName('modification')) {
         throw new Exception(language::translate('error_xml_file_is_not_valid_vmod', 'XML file is not a valid vMod file'));
       }
 
-      if (is_dir($folder)) {
-        functions::file_delete($folder.'*');
+      $filename = 'storage://vmods/' . pathinfo($_FILES['vmod']['name'], PATHINFO_FILENAME) .'.xml';
+
+      if (is_file($filename)) {
+        unlink($filename);
       }
 
-      if (!$zip->extractTo(functions::file_realpath($folder))) {
-        throw new Exception('Failed extracting contents from ZIP archive');
-      }
-
-      $zip->close();
+      move_uploaded_file($_FILES['vmod']['tmp_name'], $filename);
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink());
+      header('Location: '. document::link());
       exit;
 
     } catch (Exception $e) {
@@ -103,18 +90,73 @@
 // Table Rows
   $vmods = [];
 
-  foreach (functions::file_search('storage://addons/*/vmod.xml') as $file) {
+  foreach (functions::file_search('storage://vmods/*.{xml,disabled}', GLOB_BRACE) as $file) {
 
-    $xml = simplexml_load_file($file);
-    $vmods[] = [
-      'id' => preg_replace('#^storage://addons/([^/]+?)(\.disabled)?/.*$#', '$1', $file),
-      'status' => preg_match('#/addons/([^/]+)(\.disabled)/#', $file) ? false : true,
-      'location' => dirname($file) . '/',
-      'title' => $xml->title,
-      'version' => !empty($xml->version) ? $xml->version : date('Y-m-d', filemtime($file)),
-      'author' => $xml->author,
-      'configurable' => !empty($xml->setting) ? true : false,
-    ];
+		$vmod = vmod::parse($file);
+
+		$vmod = array_merge($vmod, [
+      'filename' => pathinfo($file, PATHINFO_BASENAME),
+      'status' => preg_match('#\.xml$#', $file) ? true : false,
+      'errors' => null,
+    ]);
+
+    if (empty($vmod['version'])) {
+      $vmod['version'] = date('Y-m-d', filemtime($file));
+    }
+
+	// Check for errors
+    try {
+
+      foreach (array_keys($vmod['files']) as $key) {
+
+        foreach (glob(FS_DIR_APP . $vmod['files'][$key]['name'], GLOB_BRACE) as $file) {
+
+          $buffer = file_get_contents($file);
+
+          foreach ($vmod['files'][$key]['operations'] as $i => $operation) {
+
+            $found = preg_match_all($operation['find']['pattern'], $buffer, $matches, PREG_OFFSET_CAPTURE);
+
+            if (!$found) {
+              switch ($operation['onerror']) {
+                case 'ignore':
+                  continue 2;
+                case 'abort':
+                case 'warning':
+                default:
+                  throw new Exception('Operation #'. ($i+1) .' failed in '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file), E_USER_WARNING);
+                  continue 2;
+              }
+            }
+
+            if (!empty($operation['find']['indexes'])) {
+              rsort($operation['find']['indexes']);
+
+              foreach ($operation['find']['indexes'] as $index) {
+                $index = $index - 1; // [0] is the 1st in computer language
+
+                if ($found > $index) {
+                  $buffer = substr_replace($buffer, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
+                }
+              }
+
+            } else {
+              $buffer = preg_replace($operation['find']['pattern'], $operation['insert'], $buffer, -1, $count);
+
+              if (!$count && $operation['onerror'] != 'skip') {
+                throw new Exception("Failed to perform insert");
+                continue;
+              }
+            }
+          }
+        }
+      }
+
+    } catch (Exception $e) {
+      $vmod['errors'] = $e->getMessage();
+    }
+
+		$vmods[] = $vmod;
   }
 
 // Number of Rows
@@ -124,7 +166,7 @@
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo language::translate('title_vmods', 'vMods'); ?>
+      <?php echo $app_icon; ?> <?php echo language::translate('title_vmods', 'vMods'); ?>™
     </div>
   </div>
 
@@ -140,9 +182,11 @@
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-          <th><?php echo language::translate('title_version', 'Version'); ?></th>
-          <th><?php echo language::translate('title_location', 'Location'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_version', 'Version'); ?></th>
+          <th><?php echo language::translate('title_filename', 'Filename'); ?></th>
           <th><?php echo language::translate('title_author', 'Author'); ?></th>
+          <th><?php echo language::translate('title_type', 'Type'); ?></th>
+          <th><?php echo language::translate('title_health', 'Health'); ?></th>
           <th></th>
           <th></th>
           <th></th>
@@ -154,12 +198,22 @@
         <tr class="<?php echo $vmod['status'] ? null : 'semi-transparent'; ?>">
           <td><?php echo functions::form_checkbox('vmods[]', $vmod['id']); ?></td>
           <td><?php echo functions::draw_fonticon($vmod['status'] ? 'on' : 'off'); ?></td>
-          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['id']]); ?>"><?php echo $vmod['title']; ?></a></td>
-          <td><?php echo $vmod['version']; ?></td>
-          <td><?php echo $vmod['location']; ?></td>
+          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['id']]); ?>"><?php echo $vmod['name']; ?></a></td>
+          <td class="text-center"><?php echo $vmod['version']; ?></td>
+          <td><?php echo $vmod['filename']; ?></td>
           <td><?php echo $vmod['author']; ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/test', ['vmod' => $vmod['id']]); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
-          <td><?php if ($vmod['configurable']) { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a><?php } ?></td>
+          <td class="text-center"><?php echo $vmod['type']; ?></td>
+          <td class="text-center">
+            <a href="<?php echo document::href_ilink(__APP__.'/test', ['vmod' => $vmod['filename']]); ?>">
+              <?php if (empty($vmod['errors'])) { ?>
+              <span style="color: #8c4"><?php echo functions::draw_fonticon('ok'); ?> <?php echo language::translate('title_ok', 'OK'); ?></span>
+              <?php } else { ?>
+              <span style="color: #c00" title="<?php echo functions::escape_html($vmod['errors']); ?>"><?php echo functions::draw_fonticon('warning'); ?> <?php echo language::translate('title_fail', 'Fail'); ?></span>
+              <?php } ?>
+            </a>
+          </td>
+          <td><?php if (!empty($vmod['settings'])) { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a><?php } ?></td>
+          <td><?php if ($vmod['type'] == 'vMod') { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a><?php } ?></td>
           <td>
             <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/download', ['vmod' => $vmod['id']]); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a>
             <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
@@ -170,7 +224,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="9"><?php echo language::translate('title_vmods', 'vMods'); ?>: <?php echo language::number_format($num_rows); ?></td>
+          <td colspan="11"><?php echo language::translate('title_vmods', 'vMods'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>
@@ -178,7 +232,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
-          <fieldset id="actions">
+          <fieldset id="actions" disabled>
             <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
             <ul class="list-inline">

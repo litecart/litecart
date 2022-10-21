@@ -1,7 +1,7 @@
 <?php
 
   return $app_config = [
-    'name' => language::translate('title_vMods', 'vMods'),
+    'name' => language::translate('title_vMods', 'vMods').'™',
     'default' => 'vmods',
     'priority' => 0,
 
@@ -18,6 +18,7 @@
       'download' => 'download.inc.php',
       'sources' => 'sources.inc.php',
       'test' => 'test.inc.php',
+      'view' => 'view.inc.php',
       'vmods' => 'vmods.inc.php',
     ],
   ];

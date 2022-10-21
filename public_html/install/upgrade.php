@@ -384,12 +384,11 @@
         limit 1;"
       );
 
-      foreach (glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file) {
-        if (is_file($file)) unlink($file);
-      }
-
-      if (is_file($file = FS_DIR_APP . 'vqmod/checked.cache')) unlink($file);
-      if (is_file($file = FS_DIR_APP . 'vqmod/mods.cache')) unlink($file);
+      perform_action('delete', [
+        FS_DIR_STORAGE . 'addons/.cache/*.php',
+        FS_DIR_STORAGE . 'addons/.cache/.checked',
+        FS_DIR_STORAGE . 'addons/.cache/.modifications',
+      ]);
 
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
