@@ -152,7 +152,7 @@
 
       echo '<p>Checking for updates... ';
 
-      require_once __DIR__.'/includes/wrappers/wrap_http.inc.php';
+      require_once __DIR__.'/../includes/wrappers/wrap_http.inc.php';
       $client = new wrap_http();
 
       $update_file = function($file) use ($client) {
