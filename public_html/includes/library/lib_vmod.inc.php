@@ -92,9 +92,9 @@
     // Create a list of checked files
       if (filemtime($checked_file) > $last_modified) {
         foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-          list($relative_path, $modified_relative_path, $checksum) = explode(';', $line);
-          if (is_file(FS_DIR_APP . $relative_path) && is_file(FS_DIR_APP . $modified_relative_path) && filemtime(FS_DIR_APP . $modified_relative_path) > filemtime(FS_DIR_APP . $relative_path)) {
-            self::$_checked[$relative_path] = FS_DIR_APP . $modified_relative_path;
+          list($relative_path, $modified_relative_path, $checksum) = preg_split('#;#', $line);
+          if (is_file(FS_DIR_APP . $relative_path) && is_file(FS_DIR_STORAGE . $modified_relative_path) && filemtime(FS_DIR_STORAGE . $modified_relative_path) > filemtime(FS_DIR_APP . $relative_path)) {
+            self::$_checked[$relative_path] = FS_DIR_STORAGE . $modified_relative_path;
             self::$_checksums[$relative_path] = $checksum;
           }
         }
