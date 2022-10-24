@@ -92,10 +92,10 @@
     // Create a list of checked files
       if (filemtime($checked_file) > $last_modified) {
         foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-          list($relative_path, $modified_relative_path, $checksum) = preg_split('#;#', $line);
-          if (is_file(FS_DIR_APP . $relative_path) && is_file(FS_DIR_STORAGE . $modified_relative_path) && filemtime(FS_DIR_STORAGE . $modified_relative_path) > filemtime(FS_DIR_APP . $relative_path)) {
-            self::$_checked[$relative_path] = FS_DIR_STORAGE . $modified_relative_path;
-            self::$_checksums[$relative_path] = $checksum;
+          list($original_file, $modified_file, $checksum) = preg_split('#;#', $line);
+          if (is_file(FS_DIR_APP . $original_file) && is_file(FS_DIR_STORAGE . $modified_file) && filemtime(FS_DIR_STORAGE . $modified_file) > filemtime(FS_DIR_APP . $original_file)) {
+            self::$_checked[$original_file] = $modified_file;
+            self::$_checksums[$original_file] = $checksum;
           }
         }
       }
@@ -138,18 +138,17 @@
         $file = str_replace('\\', '/', realpath($file));
       }
 
-      $relative_path = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
-      $modified_file = FS_DIR_STORAGE . 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '-', $relative_path);
-      $modified_relative_path = 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '-', $relative_path);
+      $original_file = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
+      $modified_file = 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '-', $original_file);
 
     // Returned an already checked file
-      if (!empty(self::$_checked[$relative_path]) && is_file(self::$_checked[$relative_path])) {
+      if (!empty(self::$_checked[$original_file]) && is_file(FS_DIR_STORAGE . self::$_checked[$original_file])) {
         self::$time_elapsed += microtime(true) - $timestamp;
-        return self::$_checked[$relative_path];
+        return FS_DIR_STORAGE . self::$_checked[$original_file];
       }
 
     // Return original file if there are no modifications
-      if (empty(self::$_files_to_modifications[$relative_path])) {
+      if (empty(self::$_files_to_modifications[$original_file])) {
         self::$time_elapsed += microtime(true) - $timestamp;
         return $file;
       }
@@ -158,7 +157,7 @@
       $queue = [];
       $digest = [filemtime($file)];
 
-      foreach (self::$_files_to_modifications[$relative_path] as $modification) {
+      foreach (self::$_files_to_modifications[$original_file] as $modification) {
         $digest[] = strtotime($modification['date_modified']);
         $queue[] = $modification;
       }
@@ -167,15 +166,15 @@
 
     // Return original file if nothing to modify
       if (empty($queue)) {
-        if (is_file($modified_file)) unlink($modified_file);
+        if (is_file(FS_DIR_STORAGE . $modified_file)) unlink(FS_DIR_STORAGE . $modified_file);
         self::$time_elapsed += microtime(true) - $timestamp;
-        return self::$_checked[$relative_path] = $file;
+        return FS_DIR_STORAGE . (self::$_checked[$original_file] = $file);
       }
 
     // Return modified file if checksum matches
-      if (!empty(self::$_checksums[$relative_path]) && !empty(self::$_checked[$relative_path]) && file_exists(FS_DIR_APP . self::$_checked[$relative_path]) && self::$_checksums[$relative_path] == $checksum) {
+      if (!empty(self::$_checksums[$original_file]) && !empty(self::$_checked[$original_file]) && file_exists(FS_DIR_APP . self::$_checked[$original_file]) && self::$_checksums[$original_file] == $checksum) {
         self::$time_elapsed += microtime(true) - $timestamp;
-        return self::$_checked[$relative_path] = $modified_file;
+        return FS_DIR_STORAGE . (self::$_checked[$original_file] = $modified_file);
       }
 
     // Modify file
@@ -199,13 +198,13 @@
           if (!$found) {
             switch ($operation['onerror']) {
               case 'abort':
-                trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $relative_path: Search not found [ABORTED]", E_USER_WARNING);
+                trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $original_file: Search not found [ABORTED]", E_USER_WARNING);
                 continue 3;
               case 'ignore':
                 continue 2;
               case 'warning':
               default:
-                trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $relative_path: Search not found", E_USER_WARNING);
+                trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $original_file: Search not found", E_USER_WARNING);
                 continue 2;
             }
           }
@@ -248,18 +247,18 @@
     // Return original if nothing was modified
       if ($buffer == $original) {
         self::$time_elapsed += microtime(true) - $timestamp;
-        return self::$_checked[$relative_path] = $file;
+        return FS_DIR_STORAGE . (self::$_checked[$original_file] = $file);
       }
 
     // Write modified file
-      file_put_contents($modified_file, $buffer, LOCK_EX);
+      file_put_contents(FS_DIR_STORAGE . $modified_file, $buffer, LOCK_EX);
 
-      self::$_checked[$relative_path] = $modified_file;
-      self::$_checksums[$relative_path] = $checksum;
-      file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', $relative_path .';'. $modified_relative_path .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
+      self::$_checked[$original_file] = $modified_file;
+      self::$_checksums[$original_file] = $checksum;
+      file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', $original_file .';'. $modified_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
 
       self::$time_elapsed += microtime(true) - $timestamp;
-      return $modified_file;
+      return FS_DIR_STORAGE . $modified_file;
     }
 
     public static function load($file) {
