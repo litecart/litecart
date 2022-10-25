@@ -101,7 +101,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_button('add_recipient', language::translate('title_add_new_recipient', 'Add New Recipient'), 'button', '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_button('add_recipients', language::translate('title_add_recipients', 'Add Recipients'), 'button', '', 'add'); ?></li>
       <li><?php echo functions::form_draw_link_button(document::link(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"'); ?></li>
     </ul>
   </div>
@@ -182,7 +182,7 @@
 </div>
 
 <script>
-  $('button[name="add_recipient"]').click(function(){
+  $('button[name="add_recipients"]').click(function(){
     $.featherlight('#modal-add-recipients');
     $('textarea[name="recipients"]').attr('placeholder', 'user@email.com\nanother@email.com');
   })
