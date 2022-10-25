@@ -36,7 +36,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_tax_class'], true), language::translate('title_add_new_tax_class', 'Add New Tax Class'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_tax_class'], true), language::translate('title_create_new_tax_class', 'Create New Tax Class'), '', 'add'); ?></li>
     </ul>
   </div>
 

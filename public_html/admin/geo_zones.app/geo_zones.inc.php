@@ -65,7 +65,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_geo_zone'], true, ['geo_zone_id']), language::translate('title_add_new_geo_zone', 'Add New Geo Zone'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_geo_zone'], true, ['geo_zone_id']), language::translate('title_create_new_geo_zone', 'Create New Geo Zone'), '', 'add'); ?></li>
     </ul>
   </div>
 

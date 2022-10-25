@@ -57,7 +57,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_slide'], true), language::translate('title_add_new_slide', 'Add New Slide'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_slide'], true), language::translate('title_create_new_slide', 'Create New Slide'), '', 'add'); ?></li>
     </ul>
   </div>
 

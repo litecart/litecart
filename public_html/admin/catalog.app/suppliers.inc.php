@@ -37,7 +37,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'edit_supplier']), language::translate('title_add_new_supplier', 'Add New Supplier'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'edit_supplier']), language::translate('title_create_new_supplier', 'Create New Supplier'), '', 'add'); ?></li>
     </ul>
   </div>
 
