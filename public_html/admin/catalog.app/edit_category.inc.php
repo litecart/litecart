@@ -66,7 +66,7 @@
       $category->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'catalog', 'category_id' => $_POST['parent_id']], ['app']));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'catalog', 'category_id' => $category->data['id']], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -79,10 +79,11 @@
     try {
       if (empty($category->data['id'])) throw new Exception(language::translate('error_must_provide_category', 'You must provide a category'));
 
+      $parent_id = $category->data['parent_id'];
       $category->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'catalog', 'category_id' => $_POST['parent_id']], ['app']));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'catalog', 'category_id' => $parent_id], ['app']));
       exit;
 
     } catch (Exception $e) {
