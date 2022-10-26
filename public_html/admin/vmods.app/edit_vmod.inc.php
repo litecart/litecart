@@ -160,6 +160,12 @@ html.dark-mode .operation {
   color: #fffc
 }
 
+#settings .setting:not(:first-child) {
+  border-top: 1px solid var(--default-border-color);
+  padding-top: 2em;
+  margin-top: 2em;
+}
+
 .sources .form-code {
   height: max-content;
   max-height: 100vh;
@@ -200,7 +206,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo !empty($vmod->data['id']) ? language::translate('title_edit_vmod', 'Edit vMod') .': '. $vmod->data['id'] : language::translate('title_create_new_vmod', 'Create New vMod'); ?>
+      <?php echo $app_icon; ?> <?php echo !empty($vmod->data['id']) ? language::translate('title_edit_vmod', 'Edit vMod') : language::translate('title_create_new_vmod', 'Create New vMod'); ?>
     </div>
   </div>
 
@@ -283,12 +289,12 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
                       </div>
                     </div>
 
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                       <label><?php echo language::translate('title_value', 'Value'); ?></label>
                       <?php echo functions::form_draw_text_field('aliases['.$key.'][value]'); ?>
                     </div>
 
-                    <div class="col-md-4" style="align-self: center;">
+                    <div class="col-md-2" style="align-self: center;">
                       <?php echo functions::form_draw_button('aliases[new_alias_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_up', 'Move Up')) .'"'); ?>
                       <?php echo functions::form_draw_button('aliases[new_alias_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_down', 'Move Down')) .'"'); ?>
                       <?php echo functions::form_draw_button('aliases[new_alias_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'"'); ?>
@@ -426,25 +432,10 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
           <h2><?php echo language::translate('title_settings', 'Settings'); ?></h2>
 
-          <div id="settings">
+          <div id="settings" style="max-width: 1200px;">
             <?php if (!empty($_POST['settings'])) foreach (array_keys($_POST['settings']) as $key) { ?>
             <fieldset class="setting">
               <div class="row">
-                <div class="form-group col-md-4">
-                  <label><?php echo language::translate('title_title', 'Title'); ?></label>
-                  <?php echo functions::form_draw_text_field('settings['.$key.'][title]', true, 'required'); ?>
-                </div>
-
-                <div class="form-group col-md-4">
-                  <label><?php echo language::translate('title_description', 'Description'); ?></label>
-                  <?php echo functions::form_draw_text_field('settings['.$key.'][description]', true, 'required'); ?>
-                </div>
-
-                <div class="form-group col-md-4">
-                  <label><?php echo language::translate('title_function', 'Function'); ?></label>
-                  <?php echo functions::form_draw_text_field('settings['.$key.'][function]', true, 'required placeholder="text()"'); ?>
-                </div>
-
                 <div class="form-group col-md-4">
                   <label><?php echo language::translate('title_key', 'Key'); ?></label>
                   <div class="input-group">
@@ -454,15 +445,32 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
                   </div>
                 </div>
 
-                <div class="form-group col-md-4">
-                  <label><?php echo language::translate('title_default_value', 'Default Value'); ?></label>
-                  <?php echo functions::form_draw_text_field('settings['.$key.'][default_value]'); ?>
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_title', 'Title'); ?></label>
+                  <?php echo functions::form_draw_text_field('settings['.$key.'][title]', true, 'required'); ?>
                 </div>
 
-                <div class="col-md-4" style="align-self: center;">
+                <div class="col-md-2 text-center" style="align-self: center;">
                   <?php echo functions::form_draw_button('settings['.$key.'][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_up', 'Move Up')) .'"'); ?>
                   <?php echo functions::form_draw_button('settings['.$key.'][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_down', 'Move Down')) .'"'); ?>
                   <?php echo functions::form_draw_button('settings['.$key.'][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'"'); ?>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_description', 'Description'); ?></label>
+                <?php echo functions::form_draw_text_field('settings['.$key.'][description]', true, 'required'); ?>
+              </div>
+
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_function', 'Function'); ?></label>
+                  <?php echo functions::form_draw_text_field('settings['.$key.'][function]', true, 'required placeholder="text()"'); ?>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_default_value', 'Default Value'); ?></label>
+                  <?php echo functions::form_draw_text_field('settings['.$key.'][default_value]'); ?>
                 </div>
               </div>
             </fieldset>
@@ -809,12 +817,12 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
       '      </div>',
       '    </div>',
       '',
-      '    <div class="form-group col-md-4">',
+      '    <div class="form-group col-md-6">',
       '      <label><?php echo functions::escape_js(language::translate('title_value', 'Value')); ?></label>',
       '      <?php echo functions::escape_js(functions::form_draw_text_field('aliases[new_alias_index][value]', '', 'required')); ?>',
       '    </div>',
       '',
-      '    <div class="col-md-4" style="align-self: center;">',
+      '    <div class="col-md-2" style="align-self: center;">',
       '     <?php echo functions::form_draw_button('aliases[new_alias_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_up', 'Move Up')) .'"'); ?>',
       '     <?php echo functions::form_draw_button('aliases[new_alias_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_down', 'Move Down')) .'"'); ?>',
       '     <?php echo functions::form_draw_button('aliases[new_alias_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'"'); ?>',
@@ -856,21 +864,6 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
       '<fieldset class="setting">',
       '  <div class="row">',
       '    <div class="form-group col-md-4">',
-      '      <label><?php echo functions::escape_js(language::translate('title_title', 'Title')); ?></label>',
-      '      <?php echo functions::escape_js(functions::form_draw_text_field('settings[new_setting_index][title]', '', 'required')); ?>',
-      '    </div>',
-      '',
-      '    <div class="form-group col-md-4">',
-      '      <label><?php echo functions::escape_js(language::translate('title_description', 'Description')); ?></label>',
-      '      <?php echo functions::escape_js(functions::form_draw_text_field('settings[new_setting_index][description]', '', 'required')); ?>',
-      '    </div>',
-      '',
-      '    <div class="form-group col-md-4">',
-      '      <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
-      '      <?php echo functions::escape_js(functions::form_draw_text_field('settings[new_setting_index][function]', '', 'required')); ?>',
-      '    </div>',
-      '',
-      '    <div class="form-group col-md-4">',
       '      <label><?php echo language::translate('title_key', 'Key'); ?></label>',
       '      <div class="input-group">',
       '        <span class="input-group-text" style="font-family: monospace;">{setting:</span>',
@@ -879,15 +872,32 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
       '      </div>',
       '    </div>',
       '',
-      '    <div class="form-group col-md-4">',
-      '      <label><?php echo functions::escape_js(language::translate('title_default_value', 'Default Value')); ?></label>',
-      '      <?php echo functions::escape_js(functions::form_draw_text_field('settings[new_setting_index][default_value]', '')); ?>',
+      '    <div class="form-group col-md-6">',
+      '      <label><?php echo functions::escape_js(language::translate('title_title', 'Title')); ?></label>',
+      '      <?php echo functions::escape_js(functions::form_draw_text_field('settings[new_setting_index][title]', '', 'required')); ?>',
       '    </div>',
       '',
-      '    <div class="col-md-4" style="align-self: center;">',
+      '    <div class="col-md-2 text-center" style="align-self: center;">',
       '     <?php echo functions::form_draw_button('settings[new_setting_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_up', 'Move Up')) .'"'); ?>',
       '     <?php echo functions::form_draw_button('settings[new_setting_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_down', 'Move Down')) .'"'); ?>',
       '     <?php echo functions::form_draw_button('settings[new_setting_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'"'); ?>',
+      '    </div>',
+      '  </div>',
+      '',
+      '  <div class="form-group">',
+      '    <label><?php echo functions::escape_js(language::translate('title_description', 'Description')); ?></label>',
+      '    <?php echo functions::escape_js(functions::form_draw_text_field('settings[new_setting_index][description]', '', 'required')); ?>',
+      '  </div>',
+      '',
+      '  <div class="row">',
+      '    <div class="form-group col-md-6">',
+      '      <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
+      '      <?php echo functions::escape_js(functions::form_draw_text_field('settings[new_setting_index][function]', '', 'required')); ?>',
+      '    </div>',
+      '',
+      '    <div class="form-group col-md-6">',
+      '      <label><?php echo functions::escape_js(language::translate('title_default_value', 'Default Value')); ?></label>',
+      '      <?php echo functions::escape_js(functions::form_draw_text_field('settings[new_setting_index][default_value]', '')); ?>',
       '    </div>',
       '  </div>',
       '</fieldset>'

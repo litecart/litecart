@@ -154,6 +154,11 @@
               <label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
               <?php echo functions::form_draw_text_field('date_login', true, 'readonly'); ?>
             </div>
+
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_last_active', 'Last Active'); ?></label>
+              <?php echo functions::form_draw_text_field('date_active', true, 'readonly'); ?>
+            </div>
           </div>
           <?php } ?>
         </div>

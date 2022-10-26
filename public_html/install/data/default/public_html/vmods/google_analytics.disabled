@@ -2,12 +2,12 @@
 <vmod>
   <name>Google Analytics</name>
   <version/>
-  <description>Website Tracking and Statistics for Google Analytics</description>
+  <description>Website Tracking and Statistics using Google Analytics</description>
   <author/>
 
   <setting>
     <title>Tracking ID</title>
-    <description>Your google analytics tracking ID as obtained by Google.</description>
+    <description>Your Google Analytics tracking ID as obtained by Google.</description>
     <key>GA_TRACKING_ID</key>
     <default_value>GA4-</default_value>
     <function>text()</function>

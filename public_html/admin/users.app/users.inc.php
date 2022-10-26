@@ -93,9 +93,10 @@
           <th></th>
           <th style="min-width: 200px;"><?php echo language::translate('title_username', 'Username'); ?></th>
           <th class="main"></th>
-          <th style="min-width: 200px;"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
-          <th style="min-width: 200px;"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
-          <th style="min-width: 200px;"><?php echo language::translate('title_access', 'Access'); ?></th>
+          <th><?php echo language::translate('title_restrictions', 'Restrictions'); ?></th>
+          <th class="text-end" style="min-width: 200px;"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
+          <th class="text-end" style="min-width: 200px;"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
+          <th class="text-end"><?php echo language::translate('title_last_login', 'Last Login'); ?></th>
           <th></th>
         </tr>
       </thead>
@@ -108,9 +109,10 @@
           <td class="warning"><?php echo !empty($user['warning']) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($user['warning']) .'"') : ''; ?></td>
           <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>"><?php echo $user['username']; ?></a></td>
           <td><?php echo $user['email']; ?></td>
-          <td><?php echo ($user['date_valid_from'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from'])) : '-'; ?></td>
-          <td><?php echo ($user['date_valid_to'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to'])) : '-'; ?></td>
-          <td><?php echo (json_decode($user['apps'], true)) ? language::translate('title_restricted', 'Restricted') : language::translate('title_full_access', 'Full Access'); ?></td>
+          <td><?php echo (json_decode($user['apps'], true)) ? language::translate('title_restricted', 'Restricted') : '-'; ?></td>
+          <td class="text-end"><?php echo ($user['date_valid_from'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from'])) : '-'; ?></td>
+          <td class="text-end"><?php echo ($user['date_valid_to'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to'])) : '-'; ?></td>
+          <td class="text-end"><?php echo ($user['date_login'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($user['date_login'])) : '-'; ?></td>
           <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php }?>
@@ -118,7 +120,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="9"><?php echo language::translate('title_users', 'Users'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="10"><?php echo language::translate('title_users', 'Users'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>
