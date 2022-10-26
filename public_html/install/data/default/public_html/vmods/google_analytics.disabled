@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vmod>
+  <name>Google Analytics</name>
+  <version/>
+  <description>Website Tracking and Statistics for Google Analytics</description>
+  <author/>
+
+  <setting>
+    <title>Tracking ID</title>
+    <description>Your google analytics tracking ID as obtained by Google.</description>
+    <key>GA_TRACKING_ID</key>
+    <default_value>GA4-</default_value>
+    <function>text()</function>
+  </setting>
+
+  <file name="includes/templates/*.catalog/layouts/{default,checkout,blank}.inc.php">
+
+    <operation method="before" type="multiline" onerror="warning">
+      <find><![CDATA[
+</body>
+      ]]></find>
+
+      <insert><![CDATA[
+<script async src="https://www.googletagmanager.com/gtag/js?id={setting:GA_TRACKING_ID}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){window.dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '{setting:GA_TRACKING_ID}');
+</script>
+      ]]></insert>
+    </operation>
+  </file>
+</vmod>
