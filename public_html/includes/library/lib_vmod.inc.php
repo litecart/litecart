@@ -168,7 +168,7 @@
       if (empty($queue)) {
         if (is_file(FS_DIR_STORAGE . $modified_file)) unlink(FS_DIR_STORAGE . $modified_file);
         self::$time_elapsed += microtime(true) - $timestamp;
-        return FS_DIR_STORAGE . (self::$_checked[$original_file] = $file);
+        return FS_DIR_STORAGE . (self::$_checked[$original_file] = $modified_file);
       }
 
     // Return modified file if checksum matches

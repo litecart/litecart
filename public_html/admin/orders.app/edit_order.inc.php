@@ -304,8 +304,8 @@
             </div>
           </div>
 
-          <div class="row layout" style="margin-bottom: 2em;">
-            <div class="col-md-6" id="customer-details">
+          <div id="customer-details" class="row layout" style="margin-bottom: 2em;">
+            <div id="billing-address" class="col-md-6">
 
               <h2><?php echo language::translate('title_billing_address', 'Billing Address'); ?></h2>
 
@@ -396,7 +396,7 @@
 
             </div>
 
-            <div class="col-md-6" id="shipping-address">
+            <div id="shipping-address" class="col-md-6">
 
               <h2><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></h2>
 
@@ -1068,9 +1068,14 @@
   });
 
   $('#customer-details button[name="copy_billing_address"]').click(function(){
-    fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone'];
+    console.log('a');
+
+    let fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone'];
     $.each(fields, function(key, field){
-      $('*[name="customer[shipping_address]['+ field +']"]').val($('*[name="customer['+ field +']"]').val()).trigger('change');
+          console.log($(':input[name="customer[shipping_address]['+ field +']"]').length);
+      $(':input[name="customer[shipping_address]['+ field +']"]').val(
+        $(':input[name="customer['+ field +']"]').val()
+      ).trigger('change');
     });
   });
 

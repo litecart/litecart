@@ -589,21 +589,20 @@
         $image_priority = 1;
 
         foreach (array_keys($this->data['images']) as $key) {
-          if (empty($this->data['images'][$key]['id'])) {
-            database::query(
-              "insert into ". DB_TABLE_PREFIX ."products_images
-              (product_id)
-              values (". (int)$this->data['id'] .");"
-            );
-            $this->data['images'][$key]['id'] = database::insert_id();
+
+          if (empty($this->data['images'][$key]['id'])) continue;
+          if (empty($this->data['images'][$key]['new_filename'])) continue;
+          if ($this->data['images'][$key]['new_filename'] == $this->data['images'][$key]['filename']) continue;
+
+          if (is_file(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename'])) {
+            throw new Exception('Cannot rename '. $this->data['images'][$key]['filename'] .' to '. $this->data['images'][$key]['filename'] .' as the new filename  already exists');
           }
 
-          if (!empty($this->data['images'][$key]['new_filename']) && !is_file(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename'])) {
-            functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['filename']);
-            functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename']);
-            rename(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['filename'], FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename']);
-            $this->data['images'][$key]['filename'] = $this->data['images'][$key]['new_filename'];
-          }
+          rename(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['filename'], FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename']);
+          $this->data['images'][$key]['filename'] = $this->data['images'][$key]['new_filename'];
+
+          functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['filename']);
+          functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename']);
 
           database::query(
             "update ". DB_TABLE_PREFIX ."products_images
