@@ -158,11 +158,11 @@
       $digest = [filemtime($file)];
 
       foreach (self::$_files_to_modifications[$original_file] as $modification) {
-        $digest[] = strtotime($modification['date_modified']);
+        $digest[] = strtotime(self::$_modifications[$modification['id']]['date_modified']);
         $queue[] = $modification;
       }
 
-      $checksum = md5(implode($digest));
+      $checksum = crc32(implode($digest));
 
     // Return original file if nothing to modify
       if (empty($queue)) {
@@ -289,12 +289,6 @@
             throw new \Exception("File ($file) is not a valid vmod or vQmod");
         }
 
-        $vmod['date_modified'] = filemtime($file);
-
-        if (empty($vmod['version'])) {
-          $vmod['version'] = date('Y-m-d', filemtime($file));
-        }
-
         self::$_modifications[$vmod['id']] = $vmod;
 
       // Create cross reference for file patterns
@@ -313,7 +307,6 @@
             self::$_files_to_modifications[$relative_path][] = [
               'id' => $vmod['id'],
               'key' => $key,
-              'date_modified' => $vmod['date_modified'],
             ];
           }
         }
@@ -393,12 +386,17 @@
         'name' => $dom->getElementsByTagName('name')->item(0)->textContent,
         'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
         'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
+        'date_modified' => date('Y-m-d H:i:s', filemtime($file)),
         'aliases' => [],
         'settings' => [],
         'files' => [],
         'install' => null,
         'upgrades' => [],
       ];
+
+      if (empty($vmod['version'])) {
+        $vmod['version'] = date('Y-m-d', filemtime($file));
+      }
 
       if (!$installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
 
@@ -596,8 +594,13 @@
         'name' => $dom->getElementsByTagName('id')->item(0)->textContent,
         'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
         'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
+        'date_modified' => date('Y-m-d H:i:s', filemtime($file)),
         'files' => [],
       ];
+
+      if (empty($vmod['version'])) {
+        $vmod['version'] = date('Y-m-d', filemtime($file));
+      }
 
       if (empty($dom->getElementsByTagName('file'))) {
         throw new \Exception("File has no defined files to modify");
