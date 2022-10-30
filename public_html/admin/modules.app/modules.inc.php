@@ -159,7 +159,7 @@
       <tbody>
         <?php foreach ($modules as $module) { ?>
         <?php if (!empty($module['installed'])) { ?>
-        <tr class="<?php echo empty($module['status']) ? 'semi-transparent' : null; ?>">
+        <tr class="<?php echo empty($module['status']) ? 'semi-transparent' : ''; ?>">
           <td><?php echo functions::form_draw_checkbox('modules[]', $module['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($module['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
           <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_'.$type, 'module_id' => $module['id']], true); ?>"><?php echo $module['name']; ?></a></td>
@@ -172,7 +172,7 @@
           <td><?php echo (!empty($module['website'])) ? '<a href="'. document::link($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
           <td><?php echo $module['id']; ?></td>
           <td class="text-center"><?php echo $module['priority']; ?></td>
-          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => $edit_doc, 'module_id' => $module['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => $edit_doc, 'module_id' => $module['id']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } else { ?>
         <tr class="semi-transparent">

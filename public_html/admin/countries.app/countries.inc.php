@@ -75,7 +75,7 @@
           <td><?php echo $country['iso_code_2']; ?></td>
           <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_country', 'country_code' => $country['iso_code_2']], true); ?>"><?php echo $country['name']; ?></a></td>
           <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."zones where country_code = '". database::input($country['iso_code_2']) ."'")); ?></td>
-          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_country', 'country_code' => $country['iso_code_2']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_country', 'country_code' => $country['iso_code_2']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

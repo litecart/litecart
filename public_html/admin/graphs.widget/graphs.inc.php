@@ -159,7 +159,7 @@
         </div>
 
         <div class="card-body">
-          <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
+          <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo functions::escape_html(language::translate('title_monthly_sales', 'Monthly Sales')); ?>"></div>
         </div>
       </div>
     </div>
@@ -171,7 +171,7 @@
         </div>
 
         <div class="card-body">
-          <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
+          <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo functions::escape_html(language::translate('title_daily_sales', 'Daily Sales')); ?>"></div>
         </div>
       </div>
     </div>

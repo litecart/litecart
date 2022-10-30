@@ -60,7 +60,7 @@
           <td><?php echo $tax_class['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>"><?php echo $tax_class['name']; ?></a></td>
           <td style="color: #999;"><?php echo $tax_class['description']; ?></td>
-          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

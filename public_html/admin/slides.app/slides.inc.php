@@ -80,7 +80,7 @@
 
       <tbody>
         <?php foreach ($slides as $slide) { ?>
-        <tr class="<?php echo empty($slide['status']) ? 'semi-transparent' : null; ?>">
+        <tr class="<?php echo empty($slide['status']) ? 'semi-transparent' : ''; ?>">
           <td><?php echo functions::form_draw_checkbox('slides[]', $slide['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($slide['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
           <td><?php echo $slide['id']; ?></td>
@@ -89,7 +89,7 @@
           <td class="text-end"><?php echo !empty($slide['date_valid_from']) ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
           <td class="text-end"><?php echo !empty($slide['date_valid_to']) ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
           <td class="text-end"><?php echo $slide['priority']; ?></td>
-          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_slide', 'slide_id' => $slide['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_slide', 'slide_id' => $slide['id']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

@@ -176,7 +176,7 @@
             <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo functions::escape_html($_POST['zones'][$key]['id']); ?></td>
             <td><?php echo functions::form_draw_text_field('zones['. $key .'][code]', true); ?></td>
             <td><?php echo functions::form_draw_text_field('zones['. $key .'][name]', true); ?></td>
-            <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+            <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

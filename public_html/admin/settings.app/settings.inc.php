@@ -161,13 +161,13 @@
         </tr>
         <?php } else { ?>
         <tr>
-          <td class="text-start"><a class="link" href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></a></td>
+          <td class="text-start"><a class="link" href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></a></td>
           <td style="white-space: normal;">
             <div style="max-height: 200px; overflow-y: auto;" title="<?php echo functions::escape_html(language::translate('settings_key:description_'.$setting['key'], $setting['description'])); ?>">
               <?php echo nl2br($setting['value']); ?>
             </div>
           </td>
-          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
         <?php } ?>

@@ -589,7 +589,7 @@
               <div class="date"><?php echo language::strftime(language::$selected['format_datetime'], !empty($_POST['comments'][$key]['date_created']) ? strtotime($_POST['comments'][$key]['date_created']) : 0); ?></div>
 
               <div class="actions">
-                <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
+                <a class="remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
                 <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
               </div>
             </div>
@@ -689,8 +689,8 @@
           <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][price]', true); ?></td>
           <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
           <td class="text-end">
-            <a class="btn btn-default btn-sm edit" href="#" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-fw'); ?></a>
-            <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
+            <a class="btn btn-default btn-sm edit" href="#" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-fw'); ?></a>
+            <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
           </td>
         </tr>
         <?php } ?>
@@ -760,7 +760,7 @@
       default:
 ?>
         <tr>
-          <td class="text-end"><a href="#" class="add" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?></a></td>
+          <td class="text-end"><a href="#" class="add" title="<?php echo functions::escape_html(language::translate('text_insert_before', 'Insert before')); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?></a></td>
           <td class="text-end"><?php echo functions::form_draw_hidden_field('order_total['. $key .'][id]', true) . functions::form_draw_text_field('order_total['. $key .'][module_id]', true); ?></td>
           <td class="text-end"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'style="text-align: end;"'); ?></td>
           <td class="text-end">
@@ -771,7 +771,7 @@
             </div>
           </td>
           <td class="text-end"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][tax]', true, 'style="text-align: end;"'); ?></td>
-          <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+          <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
         </tr>
 <?php
         break;
@@ -779,7 +779,7 @@
   }
 ?>
         <tr>
-          <td colspan="6"><a class="add" href="#" title="<?php echo language::translate('title_insert_', 'Insert'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?></a></td>
+          <td colspan="6"><a class="add" href="#" title="<?php echo functions::escape_html(language::translate('title_insert_', 'Insert')); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?></a></td>
         </tr>
       </tbody>
 
@@ -1198,7 +1198,7 @@
                + '    <div class="actions">'
                + '      <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::form_draw_checkbox('comments[new_comment_index][notify]', 1, true); ?> <?php echo functions::draw_fonticon('fa-envelope'); ?></label>'
                + '      <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments[new_comment_index][hidden]', 1, true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>'
-               + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw'); ?></a>'
+               + '      <a class="remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw'); ?></a>'
                + '    </div>'
                + '  </div>';
     output = output.replace(/new_comment_index/g, 'new_' + new_comment_index);

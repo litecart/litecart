@@ -110,7 +110,7 @@
     <?php echo functions::form_draw_form_begin('category_form', 'post', false, true); ?>
 
       <div class="tab-content">
-        <div id="tab-general" class="tab-pane active" style="max-width: 980px;">
+        <div id="tab-general" class="tab-pane active" style="max-width: 1200px;">
 
           <div class="row">
             <div class="col-md-4">
@@ -130,14 +130,16 @@
               </div>
 
               <?php if (!empty($category->data['id'])) { ?>
-              <div class="form-group">
-                <label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
-                <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_updated'])); ?></div>
-              </div>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
+                  <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_updated'])); ?></div>
+                </div>
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
-                <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_created'])); ?></div>
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
+                  <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_created'])); ?></div>
+                </div>
               </div>
               <?php } ?>
 
@@ -256,28 +258,35 @@
                 <th></th>
               </tr>
             </thead>
+
             <tbody>
               <?php if (!empty($_POST['filters'])) foreach (array_keys($_POST['filters']) as $key) { ?>
               <tr>
-                <?php echo functions::form_draw_hidden_field('filters['.$key.'][id]', true); ?>
-                <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_id]', true); ?>
-                <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
-                <td class="grabable"><?php echo functions::escape_html($_POST['filters'][$key]['attribute_group_name']); ?></td>
+                <td class="grabable">
+                  <?php echo functions::form_draw_hidden_field('filters['.$key.'][id]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_id]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
+                  <?php echo functions::escape_html($_POST['filters'][$key]['attribute_group_name']); ?>
+                </td>
                 <td class="grabable"><?php echo functions::form_draw_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
                 <td class="text-end">
-                  <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
-                  <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
-                  <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
+                  <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
+                  <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
+                  <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
                 </td>
               </tr>
               <?php } ?>
             </tbody>
+
+            <tfoot>
+              <tr>
+                <td><?php echo functions::form_draw_attribute_groups_list('new_attribute_group', true); ?></td>
+                <td><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
+                <td></td>
+              </tr>
+            </tfoot>
           </table>
 
-          <div class="input-group" style="max-width: 320px;">
-            <?php echo functions::form_draw_attribute_groups_list('new_attribute_group', true); ?>
-            <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?>
-          </div>
         </div>
       </div>
 
@@ -333,7 +342,7 @@
   $('#tab-filters button[name="add"]').click(function(){
 
     if ($('select[name="new_attribute_group"]').val() == '') {
-      alert("<?php echo language::translate('error_must_select_attribute_group', 'You must select an attribute group'); ?>");
+      alert("<?php echo functions::escape_html(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
       return;
     }
 
@@ -344,9 +353,9 @@
                + '  <td>new_attribute_group_name</td>'
                + '  <td><?php echo functions::form_draw_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>'
                + '  <td class="text-end">'
-               + '    <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>'
-               + '    <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>'
-               + '    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>'
+               + '    <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>'
+               + '    <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>'
+               + '    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>'
                + '  </td>'
                + '</tr>';
 

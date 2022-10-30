@@ -97,7 +97,7 @@
     <?php echo functions::form_draw_form_begin('manufacturer_form', 'post', false, true); ?>
 
       <div class="tab-content">
-        <div id="tab-general" class="tab-pane active" style="max-width: 720px;">
+        <div id="tab-general" class="tab-pane active" style="max-width: 800px;">
 
           <div class="row">
             <div class="col-md-6">
@@ -147,7 +147,7 @@
           </div>
         </div>
 
-        <div id="tab-information" class="tab-pane" style="max-width: 640px;">
+        <div id="tab-information" class="tab-pane" style="max-width: 720px;">
 
           <nav class="nav nav-tabs" style="padding-top: 0;">
             <?php foreach (language::$languages as $language) { ?>
