@@ -247,7 +247,7 @@
     // Return original if nothing was modified
       if ($buffer == $original) {
         self::$time_elapsed += microtime(true) - $timestamp;
-        return FS_DIR_STORAGE . (self::$_checked[$original_file] = $file);
+        return FS_DIR_STORAGE . (self::$_checked[$original_file] = $original_file);
       }
 
     // Write modified file
