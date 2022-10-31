@@ -176,7 +176,7 @@ module.exports = function(grunt) {
         files: [
           'public_html/ext/trumbowyg/ui/trumbowyg.scss',
         ],
-        tasks: ['sass']
+        tasks: ['dart-sass']
       },
     }
   });
