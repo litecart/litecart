@@ -643,7 +643,7 @@ f5d3c581b1f89a8054ace060bd3e0dc7	includes/templates/default.catalog/css/checkout
 ee40e23e0b5f36b7a4dc3cfb305d179d	includes/templates/default.catalog/css/checkout.min.css.map
 7816aa21fd541ca056dfc2ec127af2d0	includes/templates/default.catalog/css/framework.css
 aabb69c15c5fdf6b717a0745eb66b94b	includes/templates/default.catalog/css/framework.min.css
-9835904002f501455123d87a78ec5758	includes/templates/default.catalog/css/framework.min.css.map
+19378b83ed092595ce00fcc205d406f8	includes/templates/default.catalog/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/css/index.html
 eb82721c7af418e1c8fc5ab241fc117e	includes/templates/default.catalog/css/printable.css
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.catalog/css/printable.min.css
@@ -654,9 +654,9 @@ bc825e43730131a2cb4d3aea8ddec38c	includes/templates/default.catalog/images/cart.
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/images/index.html
 1972da6fe81de4653649025d7205c55a	includes/templates/default.catalog/images/loader.svg
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/index.html
-c0f0c2ca2ddcbc9ac8fa898938868ebf	includes/templates/default.catalog/js/app.js
-7263bd9707710650e7ba7788c2e8f59e	includes/templates/default.catalog/js/app.min.js
-3807cd8df9fe2a201586df8304a2745d	includes/templates/default.catalog/js/app.min.js.map
+c831a3e2fbfeb776b6b25f647c60de5e	includes/templates/default.catalog/js/app.js
+ff3defa5c5b2d3bdd9ddbff3ba89cba2	includes/templates/default.catalog/js/app.min.js
+0a8383d246cbb7d13793962d149f61ae	includes/templates/default.catalog/js/app.min.js.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/js/index.html
 06037af6e6e1dc266fee3de3495281a3	includes/templates/default.catalog/layouts/ajax.inc.php
 2dfd5350447b0ee662f2d04f50bfd7ad	includes/templates/default.catalog/layouts/blank.inc.php
@@ -727,7 +727,7 @@ df3fef8135eedbdd572844830a7da499	includes/templates/default.catalog/views/box_ac
 91101df8871a0d4d02eb192a5e3114a2	includes/templates/default.catalog/views/box_account_login.inc.php
 1222d41e01d1a6d7c3a869e62c2135a7	includes/templates/default.catalog/views/box_also_purchased_products.inc.php
 87d736f2a896d7065bbcc7f924263a64	includes/templates/default.catalog/views/box_campaign_products.inc.php
-e3731ba3c2b739712a8c07071d685b3c	includes/templates/default.catalog/views/box_cart.inc.php
+9491f5d95ea8d15faca911c0b1b81a89	includes/templates/default.catalog/views/box_cart.inc.php
 550687e06c5148a49eecbb14f187420b	includes/templates/default.catalog/views/box_categories.inc.php
 c93862383ac66fe4ed42ef766812dd44	includes/templates/default.catalog/views/box_category_tree.inc.php
 ec327e5dafa6127d681cab6af0c2cc67	includes/templates/default.catalog/views/box_checkout_cart.inc.php
@@ -766,7 +766,7 @@ ea71146b86faf44ea6ffbc7d6ef25487	includes/wrappers/wrap_http.inc.php
 61f0ae72a11f82002587f3bccbeff08f	index.php
 0016b8b6a91d572e9f4c9a8a9099f522	install/clean.sql
 9be73538c102cd5dfb0f9e825b744764	install/config
-487108ed0cb7007455ca502333b66622	install/data.sql
+5241fb9aff5b3ac73c142f7f04231240	install/data.sql
 f304e1b351dac187ad94acf3d855dd16	install/data/AU/AU.sql
 34cdc6f63a349b98d8badd124553bf61	install/data/CA/CA.sql
 f1fa16f3e783f8d58b158a01dae04055	install/data/DE/DE.sql
