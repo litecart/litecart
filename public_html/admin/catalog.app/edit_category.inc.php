@@ -92,6 +92,12 @@
   }
 
   list($category_image_width, $category_image_height) = functions::image_scale_by_width(320, settings::get('category_image_ratio'));
+
+  $list_style_options = [
+    [language::translate('title_columns', 'Columns'), 'columns'],
+    [language::translate('title_rows', 'Rows'), 'rows'],
+  ];
+
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -152,7 +158,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
+                <?php echo functions::form_draw_regional_input_field(settings::get('store_language_code'), 'name['. settings::get('store_language_code') .']', true, ''); ?>
               </div>
 
               <div class="form-group">
@@ -162,13 +168,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_list_style', 'List Style'); ?></label>
-<?php
-  $options = [
-    [language::translate('title_columns', 'Columns'), 'columns'],
-    [language::translate('title_rows', 'Rows'), 'rows'],
-  ];
-  echo functions::form_draw_select_field('list_style', $options, true);
-?>
+                <?php echo functions::form_draw_select_field('list_style', $list_style_options, true); ?>
               </div>
 
               <div class="form-group">
@@ -301,9 +301,19 @@
 </div>
 
 <script>
+
+// Init
+
   <?php if (!empty($category->data['id'])) { ?>
   $('select[name="parent_id"] option[value="<?php echo $category->data['id']; ?>"]').prop('disabled', true);
   <?php } ?>
+
+
+// Cross Referencing
+
+  $('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').on('input change', function(){
+    $('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
+  });
 
 // Image
 
