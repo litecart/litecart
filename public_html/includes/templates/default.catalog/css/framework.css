@@ -698,9 +698,9 @@ ul.breadcrumb li a {
   transition: 250ms;
   opacity: 0;
 }
-.dropdown .dropdown-menu.float-end {
-  right: 0;
+.dropdown .dropdown-menu.dropdown-menu-right {
   left: auto;
+  right: 0;
 }
 .dropdown .dropdown-menu .divider {
   height: 1px;
