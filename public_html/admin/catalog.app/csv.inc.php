@@ -512,6 +512,7 @@
 
             $fields = [
               'status',
+              'default_catgeory_id',
               'manufacturer_id',
               'supplier_id',
               'code',
@@ -893,6 +894,7 @@
               'id' => $product['id'],
               'status' => $product['status'],
               'categories' => $product['categories'],
+              'default_category_id' => $product['default_category_id'],
               'manufacturer_id' => $product['manufacturer_id'],
               'supplier_id' => $product['supplier_id'],
               'code' => $product['code'],
