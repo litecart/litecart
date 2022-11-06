@@ -6,8 +6,8 @@
  * MIT Licensed.
 **/
 
-@blur-size: 10px;
-@gutter-size: 20px;
+@blur-size: 3px;
+@gutter-size: 2em;
 @border-radius: 4px;
 
 body.featherlight-open {
@@ -27,11 +27,11 @@ body.featherlight-open {
   white-space: nowrap;
 
   cursor: pointer;
-  background: #333;
-  /* IE8 "hack" for nested featherlights */
-  background: rgba(0, 0, 0, 0);
 
-  animation: featherlight-fadein 0.1s linear;
+  z-index: 999;
+
+  animation: featherlight-fadein 100ms linear;
+  backdrop-filter: saturate(0%) blur(@blur-size);
 
   backdrop-filter: blur(3px) grayscale(1);
   z-index: 999;
