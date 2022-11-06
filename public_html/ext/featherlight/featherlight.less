@@ -62,9 +62,7 @@ body.featherlight-open {
     display: inline-block;
 
     margin: @gutter-size;
-    padding: @gutter-size;
 
-    background: #fff;
     cursor: auto;
     box-shadow: 0 5px @gutter-size rgba(0,0,0,0.25);
     border-radius: @border-radius;
@@ -72,7 +70,16 @@ body.featherlight-open {
     /* reset white-space wrapping */
     white-space: normal;
 
-    animation: featherlight-fadein 0.5s linear;
+    animation: featherlight-fadein 250ms linear;
+
+    &:not(.featherlight-seamless) {
+      padding: @gutter-size;
+      background: #fff;
+    }
+
+    &.featherlight-seamless > * {
+      margin: 0 !important;
+    }
   }
 
   .featherlight-close-icon {

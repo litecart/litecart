@@ -129,7 +129,7 @@
 
 			self.$instance = $([
 				'<div class="'+self.namespace+' '+self.namespace+'-loading">',
-					'<div class="'+self.namespace+'-content">',
+					'<div class="'+self.namespace+'-content'+ (self.seamless ? ' '+self.namespace+'-seamless' : '') +'">',
 						'<div class="'+self.namespace+'-inner">'+self.loading+'</div>',
 					'</div>',
 				'</div>'
