@@ -12,7 +12,7 @@
     > a, > span {
       position: relative;
       display: inline-block;
-      padding: var(--input-padding-y) var(--input-padding-x);
+      padding: var(--input-padding-y) ~"calc(var(--input-padding-x) / 1.5)";
       text-decoration: none;
       color: var(--pagination-text-color);
       background: var(--pagination-background-color);
@@ -21,6 +21,7 @@
     }
     &:first-child {
       > a, > span {
+        padding: var(--input-padding-y) var(--input-padding-x);
         margin-inline-start: 0;
         border-top-left-radius: var(--border-radius);
         border-bottom-left-radius: var(--border-radius);
@@ -28,6 +29,7 @@
     }
     &:last-child {
       > a, > span {
+        padding: var(--input-padding-y) var(--input-padding-x);
         border-top-right-radius: var(--border-radius);
         border-bottom-right-radius: var(--border-radius);
       }

@@ -11,12 +11,13 @@
 }
 
 .btn {
+  --input-padding-x: 2em;
   cursor: pointer;
   display: inline-block;
   padding: var(--input-padding-y) var(--input-padding-x);
   text-decoration:  none;
   font-weight: normal;
-  border-radius: var(--border-radius);
+  border-radius: var(--input-border-radius);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   text-align: center;
   white-space: nowrap;
@@ -40,19 +41,19 @@
 
 .btn-group {
   display: inline-flex;
-  border-radius: var(--border-radius);
+  border-radius: var(--input-border-radius);
   .btn {
     flex: 1 0 auto;
     border-radius: 0;
     font-size: inherit;
     margin-inline-start: -1px;
     &:first-child {
-      border-top-left-radius: var(--border-radius);
-      border-bottom-left-radius: var(--border-radius);
+      border-top-left-radius: var(--input-border-radius);
+      border-bottom-left-radius: var(--input-border-radius);
     }
     &:last-child {
-      border-top-right-radius: var(--border-radius);
-      border-bottom-right-radius: var(--border-radius);
+      border-top-right-radius: var(--input-border-radius);
+      border-bottom-right-radius: var(--input-border-radius);
     }
   }
 }
@@ -64,12 +65,12 @@
     font-size: inherit;
     margin-top: -1px;
     &:first-child {
-      border-top-left-radius: var(--border-radius);
-      border-top-right-radius: var(--border-radius);
+      border-top-left-radius: var(--input-border-radius);
+      border-top-right-radius: var(--input-border-radius);
     }
     &:last-child {
-      border-bottom-left-radius: var(--border-radius);
-      border-bottom-right-radius: var(--border-radius);
+      border-bottom-left-radius: var(--input-border-radius);
+      border-bottom-right-radius: var(--input-border-radius);
     }
   }
 }

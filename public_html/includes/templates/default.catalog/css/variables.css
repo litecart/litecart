@@ -1,33 +1,48 @@
 /* Fonts */
-/*@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');*/
+@font-face {
+  font-family: 'Asap';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/asap/v24/KFO9CniXp96a4Tc2EZzSuDAoKsE61qhO.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Asap';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/asap/v24/KFO9CniXp96a4Tc2EZzSuDAoKsHd0ahO.ttf) format('truetype');
+}
 /* Variables */
 :root {
   /* General */
-  --border-radius: 4px;
-  --gutter-size: 20px;
-  --link-text-color: #2e9cd4;
+  --border-radius: 8px;
+  --gutter-size: 1.5rem;
+  --link-text-color: #222;
   --shadow-color: rgba(0, 0, 0, 0.3);
   --whitespace-color: #fff;
-  --site-background-color: #f0f0f0;
+  --site-background-color: #f9f9fc;
   --page-background-color: #fff;
   --sidebar-width: 300px;
   /* Important Notice */
-  --important-notice-background-color: #333;
+  --important-notice-background-color: #222;
   --important-notice-text-color: #fff;
+  --header-background-color: transparent;
+  --header-text-color: var(--default-text-color);
   /* Cookie Notice */
-  --cookie-notice-background-color: rgba(0, 0, 0, 0.75);
+  --cookie-notice-background-color: rgba(45, 45, 56, 0.75);
   --cookie-notice-text-color: #fff;
   /* Navigation */
-  --navigation-background-color: #f0f0f0;
+  --navigation-background-color: #cfd3e1;
   --navigation-background-color-hover: rgba(0, 0, 0, 0.05);
   --navigation-background-color-active: rgba(0, 0, 0, 0.15);
-  --navigation-text-color: var(--default-text-color);
+  --navigation-text-color: #222;
   /* Defaults */
-  --default-background-color: #f9f9f9;
-  --default-border-color: rgba(0, 0, 0, 0.075);
+  --default-background-color: #edeff3;
+  --default-border-color: #e5e5e7;
   --default-line-height: 1.3333;
-  --default-text-font: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  --default-text-color: #333;
+  --default-text-font: 'Asap', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --default-text-color: #222;
   --default-text-size: 15px;
   /* Buttons */
   --default-button-background-color: #f9f9f9;
@@ -72,19 +87,29 @@
   --danger-notice-text-color: #fff;
   --danger-notice-border-color: #d9534f;
   /* Breadcrumbs */
-  --breadcrumbs-background-color: #f3f3f3;
-  --breadcrumbs-text-color: #333;
+  --breadcrumbs-background-color: #e2e8ef;
+  --breadcrumbs-text-color: #555;
   --breadcrumbs-border-color: transparent;
+  /* Cards */
+  --card-background-color: #fff;
+  --card-text-color: var(--default-text-color);
+  --card-border-color: #43617c26;
+  --card-header-background-color: transparent;
+  --card-header-text-color: var(--card-text-color);
+  --card-body-background-color: transparent;
+  --card-footer-backgorund-color: #f2f3f6;
   /* Input */
-  --input-background-color: #fff;
-  --input-padding-x: 1em;
+  --input-background-color: #fafafc;
+  --input-padding-x: 1.5em;
   --input-padding-y: 0.5em;
   --input-text-color: #000;
+  --input-border-radius: 1em;
   /* Pills */
-  --pills-background-color: #f3f3f3;
-  --pills-background-color-active: #cdcdcd;
-  --pills-text-color: #333;
-  --pills-text-color-active: var(--pills-text-color);
+  --pills-background-color: transparent;
+  --pills-background-color-active: #cfd3e1;
+  --pills-background-color-hover: #f1f3f7;
+  --pills-text-color: var(--default-text-color);
+  --pills-text-color-active: #222;
   /* Tabs */
   --tabs-pane-background-color: #f3f3f3;
   --tabs-pane-border-color: var(--tabs-pane-background-color);
@@ -108,10 +133,10 @@
   --pagination-hover-background-color: #f3f3f3;
   --pagination-hover-text-color: var(--default-text-color);
   /* Footer */
-  --footer-background-color: #fff;
-  --footer-title-color: #333;
-  --footer-text-color: #333;
+  --footer-background-color: #e7edf3;
+  --footer-title-color: var(--default-text-color);
+  --footer-text-color: var(--default-text-color);
   /* Copyright */
-  --copyright-background-color: #fff;
-  --copyright-text-color: #333;
+  --copyright-background-color: #cfd3e1;
+  --copyright-text-color: var(--default-text-color);
 }

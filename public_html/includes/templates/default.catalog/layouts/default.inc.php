@@ -14,39 +14,23 @@
 
 <?php if ($important_notice) { ?>
 <div id="important-notice">
-  <div class="twelve-eighty">
+  <div class="fourteen-forty container">
     <?php echo $important_notice; ?>
   </div>
 </div>
 <?php } ?>
 
-<div id="page" class="fourteen-forty">
+<?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
 
-  <?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
+<nav id="site-menu">
+  <div class="fourteen-forty container">
+    <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_site_menu.inc.php'); ?>
+  </div>
+</nav>
 
-  <header id="header" class="hidden-print">
-    <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-      <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
-    </a>
+{snippet:content}
 
-    <div class="text-center hidden-xs">
-      <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_region.inc.php'); ?>
-    </div>
-
-    <div class="text-end">
-      <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_cart.inc.php'); ?>
-    </div>
-  </header>
-
-  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_site_menu.inc.php'); ?>
-
-
-  <main id="main">
-    {snippet:content}
-  </main>
-
-  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_site_footer.inc.php'); ?>
-</div>
+<?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_site_footer.inc.php'); ?>
 
 <a id="scroll-up" class="hidden-print" href="#">
   <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>

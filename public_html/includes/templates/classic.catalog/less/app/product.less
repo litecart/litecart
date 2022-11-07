@@ -1,0 +1,127 @@
+#view-full-page {
+  float: right;
+  display: inline-block;
+  padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+}
+
+#box-product {
+
+  form[name="buy_now_form"] {
+    padding: var(--gutter-size);
+    margin: 1em 0;
+    border: 1px solid var(--default-border-color);
+    border-radius: var(--border-radius);
+  }
+
+  .images {
+    margin-bottom: ~"calc(var(--gutter-size)*2)";
+  }
+
+  .main-image {
+    position: relative;
+    background: var(--whitespace-color);
+    overflow: hidden;
+
+    .sticker {
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+      top: 15px;
+      left: -35px;
+      padding: ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/2)";
+      position: absolute;
+      text-align: center;
+      text-transform: uppercase;
+      transform: rotate(-45deg);
+      width: 140px;
+      &.new {
+        background: rgba(251, 184, 41, 0.85);
+      }
+      &.sale {
+        background: rgba(237, 60, 50, 0.85);
+      }
+    }
+  }
+
+  .price-wrapper {
+    font-size: 1.75em;
+    .regular-price, .recommended-price {
+      font-size: 0.75em;
+    }
+    .campaign-price {
+      color: #cc0000;
+    }
+  }
+  .tax {
+    color: #999;
+  }
+
+  .offer-expires {
+  }
+
+  .stock-available {
+    .value {
+      color: #009900;
+    }
+  }
+  .stock-partly-available {
+    .value {
+      color: #ff9900;
+    }
+  }
+  .stock-unavailable {
+    .value {
+      color: #cc0000;
+    }
+  }
+
+  .out-of-stock-notice {
+    background: var(--default-background-color);
+    border: 1px solid var(--default-border-color);
+    padding: var(--gutter-size);
+    border-radius: var(--border-radius);
+  }
+
+  .stock-notice {
+    margin-top: 1em;
+    padding: .5em;
+    border-radius: var(--border-radius);
+    border: 1px #86cb00 solid;
+    color: #86cb00;
+    &:empty {
+      display: none;
+    }
+    &.warning {
+      color: #c00;
+      border-color: #c00;
+    }
+  }
+
+  .social-bookmarks {
+    font-size: 1.75em;
+    margin: var(--gutter-size) 0;
+  }
+
+  .description {
+    p:first-child {
+      margin-top: 0;
+    }
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .technical-data {
+    table {
+      -webkit-column-break-inside: avoid;
+      -moz-column-break-inside: avoid;
+      break-inside: avoid-column;
+      td:first-child {
+        width: 50%;
+      }
+    }
+    @media(min-width: @media-breakpoint-sm) {
+      columns: auto 2;
+    }
+  }
+}

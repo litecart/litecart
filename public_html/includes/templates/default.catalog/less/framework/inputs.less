@@ -10,21 +10,18 @@ input, button, select, textarea {
 input[type="number"] {
   text-align: end;
 }
-input[type="number"]::-webkit-inner-spin-button {
-  margin-inline-start: var(--input-padding-x);
-}
 
 input[type="checkbox"] {
   -webkit-appearance: none;
   position: relative;
   background: var(--input-background-color);
-  height: 1em;
-  width: 1em;
+  height: 1.25em;
+  width: 1.25em;
   border: 1px solid var(--default-border-color);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
-  border-radius: var(--border-radius);
-  vertical-align: middle;
-  vertical-align: baseline;
+  border-radius: .25em;
+  vertical-align: text-bottom;
+  margin-inline-end: .5em;
   &:active, &:checked:active {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
   }
@@ -48,7 +45,7 @@ input[type="radio"] {
   border-radius: 50%;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   vertical-align: text-bottom;
-  margin-inline-end: .25em;
+  margin-inline-end: .5em;
   &:active, &:checked:active {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
   }
@@ -63,12 +60,12 @@ input[type="radio"] {
 
 
 .form-group {
-  margin-bottom: 1em;
   &.required > label::after {
     content: ' *';
     color: #f00;
   }
   &:not([class*="col-"]) {
+    margin-bottom: var(--gutter-size);
   }
   > label {
     display: block;
@@ -78,10 +75,10 @@ input[type="radio"] {
 
 .input-field() {
   position: relative;
-  color: #555;
+  color: var(--default-text-color);
   background: var(--input-background-color);
   border: 1px solid var(--default-border-color);
-  border-radius: var(--border-radius);
+  border-radius: var(--input-border-radius);
 }
 
 .form-control {
@@ -110,6 +107,10 @@ input[type="radio"] {
   .dropdown-menu li label:hover {
     background: var(--default-background-color);
   }
+}
+
+textarea.form-control {
+  padding: var(--input-padding-x);
 }
 
 select.form-control {
@@ -176,14 +177,14 @@ select.form-control {
     background-color: var(--default-background-color);
     border-left: 1px solid var(--default-border-color);
     border-right: 1px solid var(--default-border-color);
-    color: #555;
+    color: var(--default-text-color);
     white-space: nowrap;
     font-weight: normal;
     text-align: center;
   }
   .input-group-icon {
     flex: 0 1 auto;
-    padding: var(--input-padding-y) var(--input-padding-x);
+    padding: var(--input-padding-y) ~"calc(var(--input-padding-x) / 2)";
     margin-inline-end: -12px;
     align-self: center;
   }
@@ -195,12 +196,12 @@ select.form-control {
   }
   .form-control:first-child, .btn:first-child, .input-group-btn:first-child .btn,
   .input-group-text:first-child {
-    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    border-radius: var(--input-border-radius) 0 0 var(--input-border-radius);
   }
   .form-control:last-child, .input-group-btn:last-child .btn,
   .input-group-text:last-child {
     margin-inline-end: -1px;
-    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    border-radius: 0 var(--input-border-radius) var(--input-border-radius) 0;
   }
 }
 

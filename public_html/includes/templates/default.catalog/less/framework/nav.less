@@ -15,7 +15,7 @@
     > a {
       position: relative;
       display: block;
-      padding: 15px var(--gutter-size);
+      padding: ~"calc(var(--gutter-size) /1.5)" var(--gutter-size);
       color: inherit;
       text-decoration: none;
     }
@@ -68,7 +68,8 @@
     display: flex;
     flex-direction: column;
     li {
-      display: block;
+      display: flex;
+      flex-direction: column;
       + li > a {
         margin-inline-start: 0;
       }
@@ -87,7 +88,7 @@
     transition: all 125ms linear;
     color: var(--pills-text-color);
     &:hover {
-      background: darken(#f3f3f3, 5%);
+      background: var(--pills-background-color-hover);
     }
   }
   li.active > a {

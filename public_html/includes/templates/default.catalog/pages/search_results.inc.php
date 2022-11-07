@@ -1,16 +1,19 @@
-<div id="sidebar">
-  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_category_tree.inc.php'); ?>
-  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_recently_viewed_products.inc.php'); ?>
-</div>
+<style>
+.btn-group.float-end {
+  margin-inline-end: 1.5em;
+  margin-top: 1.5em;
+}
+</style>
 
-<div id="content">
-  {snippet:notices}
-  {snippet:breadcrumbs}
+<div class="fourteen-forty container">
+  <main id="content">
+    {snippet:notices}
+    {snippet:breadcrumbs}
 
-  <section id="box-search-results" class="box">
+    <section id="box-search-results" class="card">
 
-    <?php if ($products) { ?>
-    <div class="btn-group float-end hidden-xs">
+      <?php if ($products) { ?>
+      <div class="btn-group float-end hidden-xs">
 <?php
   $separator = false;
   foreach ($sort_alternatives as $key => $value) {
@@ -21,19 +24,28 @@
     }
   }
 ?>
-    </div>
-    <?php } ?>
+      </div>
+      <?php } ?>
 
-    <h1 class="title"><?php echo $title; ?></h1>
+      <div class="card-header">
+        <h1 class="card-title"><?php echo $title; ?></h1>
+      </div>
 
-    <?php if ($products) { ?>
-    <section class="listing products columns">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product); ?>
+      <div class="card-body">
+        <?php if ($products) { ?>
+        <section class="listing products columns">
+          <?php foreach ($products as $product) echo functions::draw_listing_product($product); ?>
+        </section>
+        <?php } else { ?>
+        <div><em><?php echo language::translate('text_no_matching_results', 'No matching results'); ?></em></div>
+        <?php } ?>
+      </div>
+
+      <?php if ($pagination) { ?>
+      <div class="card-footer">
+        <?php echo $pagination; ?>
+      </div>
+      <?php } ?>
     </section>
-    <?php } else { ?>
-    <div><em><?php echo language::translate('text_no_matching_results', 'No matching results'); ?></em></div>
-    <?php } ?>
-
-    <?php echo $pagination; ?>
-  </section>
+  </main>
 </div>

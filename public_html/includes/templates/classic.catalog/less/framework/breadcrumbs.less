@@ -1,0 +1,20 @@
+/* Breadcrumbs - Bootstrap Compatible */
+
+ul.breadcrumb {
+  padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+  margin-bottom: var(--gutter-size);
+  list-style: none;
+  background-color: var(--breadcrumbs-background-color);
+  border-radius: var(--border-radius);
+  li {
+    display: inline-block;
+    &:not(:last-child)::after {
+      content: "\00bb";
+      padding: 0 ~"calc(var(--gutter-size)/2)";
+      color: var(--breadcrumbs-text-color);
+    }
+    a {
+      color: inherit;
+    }
+  }
+}

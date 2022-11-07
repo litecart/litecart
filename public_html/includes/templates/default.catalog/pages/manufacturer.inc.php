@@ -1,15 +1,28 @@
-<div id="sidebar">
-  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_manufacturer_links.inc.php'); ?>
-  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_recently_viewed_products.inc.php'); ?>
-</div>
+<style>
+.btn-group.float-end {
+  margin-inline-end: 1.5em;
+  margin-top: 1.5em;
+}
+</style>
 
-<div id="content">
-  {snippet:notices}
-  {snippet:breadcrumbs}
+<div class="fourteen-forty container">
+  <div class="layout row">
+    <div class="col-md-3">
 
-  <article id="box-manufacturer" class="box">
-    <?php if ($products) { ?>
-    <div class="btn-group float-end hidden-xs">
+      <div id="sidebar">
+        <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_manufacturer_links.inc.php'); ?>
+        <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_recently_viewed_products.inc.php'); ?>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <main id="content">
+        {snippet:notices}
+        {snippet:breadcrumbs}
+
+        <article id="box-manufacturer" class="card">
+          <?php if ($products) { ?>
+          <div class="btn-group float-end hidden-xs">
 <?php
   foreach ($sort_alternatives as $key => $value) {
     if ($_GET['sort'] == $key) {
@@ -19,21 +32,33 @@
     }
   }
 ?>
+          </div>
+          <?php } ?>
+
+          <div class="card-header">
+            <h1 class="card-title"><?php echo $title; ?></h1>
+          </div>
+
+          <div class="card-body">
+            <?php if ($_GET['page'] == 1 && $description) { ?>
+            <p class="description"><?php echo $description; ?></p>
+            <?php } ?>
+
+            <?php if ($products) { ?>
+            <section class="listing products columns">
+              <?php foreach ($products as $product) echo functions::draw_listing_product($product, ['manufacturer_id']); ?>
+            </section>
+            <?php } ?>
+          </div>
+
+          <?php if ($pagination) { ?>
+          <div class="card-footer">
+            <?php echo $pagination; ?>
+          </div>
+          <?php } ?>
+        </article>
+      </main>
+
     </div>
-    <?php } ?>
-
-    <h1 class="title"><?php echo $title; ?></h1>
-
-    <?php if ($_GET['page'] == 1 && $description) { ?>
-    <p class="description"><?php echo $description; ?></p>
-    <?php } ?>
-
-    <?php if ($products) { ?>
-    <section class="listing products columns">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, ['manufacturer_id']); ?>
-    </section>
-    <?php } ?>
-
-    <?php echo $pagination; ?>
-  </article>
+  </div>
 </div>

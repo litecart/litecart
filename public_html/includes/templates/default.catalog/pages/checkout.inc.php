@@ -1,9 +1,9 @@
-<div id="content" class="fourteen-forty">
+<main id="content" class="fourteen-forty container">
   {snippet:notices}
 
   <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process'), false, 'autocomplete="off"'); ?>
 
-  <section id="box-checkout" class="box">
+  <section id="box-checkout">
     <div class="cart wrapper"></div>
 
     <div class="row" style="grid-gap: 2rem;">
@@ -22,7 +22,7 @@
   </section>
 
   <?php echo functions::form_draw_form_end(); ?>
-</div>
+</main>
 
 <script>
 // Queue Handler
@@ -387,7 +387,7 @@
   $('#box-checkout-summary-wrapper').on('click', 'button[name="confirm_order"]', function(e) {
     if (window.customer_form_changed) {
       e.preventDefault();
-      alert("<?php echo functions::escape_html(language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')); ?>");
+      alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
     }
   });
 

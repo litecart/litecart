@@ -1,0 +1,117 @@
+/* Fonts */
+/*@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');*/
+/* Variables */
+:root {
+  /* General */
+  --border-radius: 4px;
+  --gutter-size: 20px;
+  --link-text-color: #2e9cd4;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --whitespace-color: #fff;
+  --site-background-color: #f0f0f0;
+  --page-background-color: #fff;
+  --sidebar-width: 300px;
+  /* Important Notice */
+  --important-notice-background-color: #333;
+  --important-notice-text-color: #fff;
+  /* Cookie Notice */
+  --cookie-notice-background-color: rgba(0, 0, 0, 0.75);
+  --cookie-notice-text-color: #fff;
+  /* Navigation */
+  --navigation-background-color: #f0f0f0;
+  --navigation-background-color-hover: rgba(0, 0, 0, 0.05);
+  --navigation-background-color-active: rgba(0, 0, 0, 0.15);
+  --navigation-text-color: var(--default-text-color);
+  /* Defaults */
+  --default-background-color: #f9f9f9;
+  --default-border-color: rgba(0, 0, 0, 0.075);
+  --default-line-height: 1.3333;
+  --default-text-font: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --default-text-color: #333;
+  --default-text-size: 15px;
+  /* Buttons */
+  --default-button-background-color: #f9f9f9;
+  --default-button-background-color-hover: #f3f3f3;
+  --default-button-background-color-active: #f3f3f3;
+  --default-button-border-color: rgba(0, 0, 0, 0.075);
+  --default-button-text-color: #333;
+  --primary-button-background-color: #2e9cd4;
+  --primary-button-background-color-hover: #ddd;
+  --primary-button-background-color-active: #bdbdbd;
+  --primary-button-border-color: rgba(0, 0, 0, 0.075);
+  --primary-button-text-color: #fff;
+  --success-button-background-color: #98cc34;
+  --success-button-background-color-hover: #9dcf3e;
+  --success-button-background-color-active: #89b82e;
+  --success-button-border-color: rgba(0, 0, 0, 0.075);
+  --success-button-text-color: #fff;
+  --warning-button-background-color: #f0ad4e;
+  --warning-button-background-color-hover: #f2b866;
+  --warning-button-background-color-active: #f1b25a;
+  --warning-button-border-color: rgba(0, 0, 0, 0.1);
+  --warning-button-text-color: #aa0000;
+  --danger-button-background-color: #d9534f;
+  --danger-button-background-color-hover: #de6764;
+  --danger-button-background-color-active: #db5d59;
+  --danger-button-border-color: rgba(0, 0, 0, 0.1);
+  --danger-button-text-color: #fff;
+  /* Notices */
+  --default-notice-background-color: #e5e5e5;
+  --default-notice-text-color: #000;
+  --default-notice-border-color: #e5e5e5;
+  --primary-notice-background-color: #3ba5c6;
+  --primary-notice-text-color: #fff;
+  --primary-notice-border-color: #3ba5c6;
+  --success-notice-background-color: #98cc34;
+  --success-notice-text-color: #fff;
+  --success-notice-border-color: #98cc34;
+  --warning-notice-background-color: #ffcc66;
+  --warning-notice-text-color: #aa0000;
+  --warning-notice-border-color: #ffcc66;
+  --danger-notice-background-color: #d9534f;
+  --danger-notice-text-color: #fff;
+  --danger-notice-border-color: #d9534f;
+  /* Breadcrumbs */
+  --breadcrumbs-background-color: #f3f3f3;
+  --breadcrumbs-text-color: #333;
+  --breadcrumbs-border-color: transparent;
+  /* Input */
+  --input-background-color: #fff;
+  --input-padding-x: 1em;
+  --input-padding-y: 0.5em;
+  --input-text-color: #000;
+  /* Pills */
+  --pills-background-color: #f3f3f3;
+  --pills-background-color-active: #cdcdcd;
+  --pills-text-color: #333;
+  --pills-text-color-active: var(--pills-text-color);
+  /* Tabs */
+  --tabs-pane-background-color: #f3f3f3;
+  --tabs-pane-border-color: var(--tabs-pane-background-color);
+  --tabs-background-color: #e9e9e9;
+  --tabs-background-color-active: #fff;
+  --tabs-text-color: #333;
+  --tabs-text-color-active: var(--tabs-text-color);
+  --tabs-border-color: var(--tabs-background-color);
+  --tabs-border-color-active: var(--tabs-background-color-active);
+  --tabs-content-background-color: #fff;
+  /* Tables */
+  --table-striped-row-background-odd: #f9f9f9;
+  --table-striped-row-background-even: #fff;
+  --table-row-hover-background: #ececec;
+  /* Pagination */
+  --pagination-background-color: var(--default-background-color);
+  --pagination-text-color: var(--default-text-color);
+  --pagination-border-color: var(--default-border-color);
+  --pagination-active-background-color: #cdcdcd;
+  --pagination-active-text-color: var(--default-text-color);
+  --pagination-hover-background-color: #f3f3f3;
+  --pagination-hover-text-color: var(--default-text-color);
+  /* Footer */
+  --footer-background-color: #fff;
+  --footer-title-color: #333;
+  --footer-text-color: #333;
+  /* Copyright */
+  --copyright-background-color: #fff;
+  --copyright-text-color: #333;
+}

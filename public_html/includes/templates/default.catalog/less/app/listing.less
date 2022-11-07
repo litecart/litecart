@@ -15,7 +15,7 @@
     &.columns {
       grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
       @media (min-width: (@media-breakpoint-sm)) {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       }
     }
     &.rows {
@@ -70,12 +70,16 @@
   }
 
   .category {
+    position: relative;
+    background: var(--whitespace-color);
+
     .caption {
-      background: #f2f2f2;
+      background: var(--whitespace-color);
       padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
       color: var(--default-text-color);
       text-align: center;
       * {
+        font-weight: normal;
         color: inherit;
         margin: 0;
       }
@@ -83,6 +87,9 @@
   }
 
   .manufacturer {
+    position: relative;
+    background: var(--whitespace-color);
+
     img {
       width: 100%;
       height: auto;
@@ -100,6 +107,7 @@
 
   .product {
     position: relative;
+    background: var(--whitespace-color);
 
     .link {
       text-decoration: none;
@@ -153,6 +161,7 @@
     }
 
     .description {
+      max-width: 640px;
       text-align: left;
     }
 
@@ -160,7 +169,6 @@
       font-size: 1.25em;
       .price {
         font-weight: bold;
-        color: #333;
         white-space: nowrap;
       }
       .regular-price, .recommended-price {
@@ -171,7 +179,7 @@
       }
       .campaign-price {
         font-weight: bold;
-        color: #cc0000;
+        color: #c00;
         white-space: nowrap;
       }
     }
@@ -182,11 +190,9 @@
       position: absolute;
       top: 7.5px;
       right: 7.5px;
+      padding: var(--input-padding-y);
+      width: 2.5em;
       box-shadow: none;
-      //background: rgba(0, 0, 0 ,0.15);
-      //text-decoration: none;
-      //color: inherit;
-      //opacity: 0.5;
     }
 
     @media (min-width: (@media-breakpoint-sm)) {

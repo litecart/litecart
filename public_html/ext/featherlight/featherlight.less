@@ -6,9 +6,9 @@
  * MIT Licensed.
 **/
 
-@blur-size: 10px;
-@gutter-size: 20px;
-@border-radius: 4px;
+@blur-size: 3px;
+@gutter-size: 2em;
+@border-radius: 8px;
 
 body.featherlight-open {
   /* prevent scrolling */
@@ -27,11 +27,11 @@ body.featherlight-open {
   white-space: nowrap;
 
   cursor: pointer;
-  background: #333;
-  /* IE8 "hack" for nested featherlights */
-  background: rgba(0, 0, 0, 0);
 
-  animation: featherlight-fadein 0.1s linear;
+  z-index: 999;
+
+  animation: featherlight-fadein 100ms linear;
+  backdrop-filter: saturate(0%) blur(@blur-size);
 
   backdrop-filter: blur(3px) grayscale(1);
   z-index: 999;
@@ -62,17 +62,23 @@ body.featherlight-open {
     display: inline-block;
 
     margin: @gutter-size;
-    padding: @gutter-size;
 
-    background: #fff;
-    cursor: auto;
-    box-shadow: 0 5px @gutter-size rgba(0,0,0,0.25);
     border-radius: @border-radius;
 
     /* reset white-space wrapping */
     white-space: normal;
 
-    animation: featherlight-fadein 0.5s linear;
+    animation: featherlight-fadein 250ms linear;
+
+    &:not(.featherlight-seamless) {
+      padding: @gutter-size;
+      background: #fff;
+      box-shadow: 0 5px @gutter-size rgba(0,0,0,0.25);
+    }
+
+    &.featherlight-seamless > * {
+      margin: 0 !important;
+    }
   }
 
   .featherlight-close-icon {
