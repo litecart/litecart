@@ -36,7 +36,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_tax_class'], true), language::translate('title_add_new_tax_class', 'Add New Tax Class'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_tax_class'], true), language::translate('title_create_new_tax_class', 'Create New Tax Class'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -60,7 +60,7 @@
           <td><?php echo $tax_class['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>"><?php echo $tax_class['name']; ?></a></td>
           <td style="color: #999;"><?php echo $tax_class['description']; ?></td>
-          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

@@ -1,9 +1,13 @@
 <?php
   // Automatic upgrade: upgrade.php?upgrade=true&redirect={url}
 
+  set_time_limit(900);
+  ini_set('memory_limit', -1);
+  ini_set('display_errors', 'On');
+
   if (php_sapi_name() == 'cli') {
 
-    if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
+    if (!isset($argv[1]) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
       echo "\nLiteCart® 2.5.0\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
@@ -21,11 +25,19 @@
     $_REQUEST = getopt('', $options);
     $_REQUEST['upgrade'] = true;
 
-  } else {
-    require_once(__DIR__ . '/includes/header.inc.php');
   }
 
-  if (!is_file(__DIR__ . '/../includes/config.inc.php')) {
+  require_once __DIR__ . '/includes/header.inc.php';
+  require_once __DIR__ . '/includes/functions.inc.php';
+
+// Include config
+  if (is_file(__DIR__ . '/../storage/config.inc.php')) {
+    include(__DIR__ . '/../storage/config.inc.php');
+
+  } else if (is_file(__DIR__ . '/../includes/config.inc.php')) { // <3.0
+    include(__DIR__ . '/../includes/config.inc.php');
+
+  } else {
     echo '<h2>No Installation Detected</h2>' . PHP_EOL
        . '<p>Warning: No configuration file was found.</p>' . PHP_EOL
        . '<p><a class="btn btn-default" href="index.php">Click here to install instead</a></p>' . PHP_EOL;
@@ -33,9 +45,6 @@
     return;
   }
 
-// Include config
-  require_once(__DIR__ . '/../includes/config.inc.php');
-  if (!defined('DB_CONNECTION_CHARSET')) define('DB_CONNECTION_CHARSET', 'utf8'); // Prior to 1.2.x
   if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME); // Prior to 2.2.x
   if (!defined('FS_DIR_STORAGE')) define('FS_DIR_STORAGE', FS_DIR_APP); // Prior to 2.5.x
   if (!defined('FS_DIR_ADMIN')) define('FS_DIR_ADMIN', FS_DIR_HTTP_ROOT . WS_DIR_ADMIN); // Prior to 2.2.x
@@ -51,16 +60,17 @@
   ignore_user_abort(true);
   set_time_limit(600);
 
-  require_once(FS_DIR_APP . 'includes/error_handler.inc.php');
-  require_once(FS_DIR_APP . 'includes/library/lib_database.inc.php');
-  require_once(__DIR__ . '/includes/functions.inc.php');
+  require_once __DIR__.'/../includes/error_handler.inc.php';
+  require_once __DIR__.'/../includes/functions/func_file.inc.php';
+  require_once __DIR__.'/../includes/library/lib_database.inc.php';
+  require_once __DIR__.'/includes/functions.inc.php';
 
 // Set platform name
-  preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches);
+  preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../includes/app_header.inc.php'), $matches);
   define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
 
 // Set platform version
-  preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches);
+  preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../includes/app_header.inc.php'), $matches);
   define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
 
   if (!PLATFORM_VERSION) die('Could not identify target version.');
@@ -90,7 +100,12 @@
 
   if (!empty($_REQUEST['upgrade'])) {
 
-    ob_start();
+    ob_start(function($buffer) {
+      if (php_sapi_name() == 'cli') {
+        $buffer = strip_tags($buffer);
+      }
+      return $buffer;
+    });
 
     try {
 
@@ -137,7 +152,7 @@
 
       echo '<p>Checking for updates... ';
 
-      require_once FS_DIR_APP . 'includes/wrappers/wrap_http.inc.php';
+      require_once __DIR__.'/../includes/wrappers/wrap_http.inc.php';
       $client = new wrap_http();
 
       $update_file = function($file) use ($client) {
@@ -198,7 +213,7 @@
 
         if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.inc.php')) {
           echo '<p>Upgrading system to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
-          include(__DIR__ . '/upgrade_patches/'. $version .'.inc.php');
+          include(__DIR__.'/upgrade_patches/'. $version .'.inc.php');
         }
 
         echo '<p>Set platform database version...';
@@ -217,52 +232,38 @@
 
       echo '<p>Preparing CSS files...</p>' . PHP_EOL . PHP_EOL;
 
-      $files_to_delete = [
-        '../includes/templates/default.admin/less/',
-      ];
-
-      foreach ($files_to_delete as $file) {
-        file_delete($file);
-      }
+      perform_action('delete', [
+        FS_DIR_APP . '/includes/templates/default.admin/less/',
+      ]);
 
       if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
-        $files_to_delete = [
+        perform_action('delete', [
           FS_DIR_APP . 'includes/templates/default.catalog/css/app.css',
           FS_DIR_APP . 'includes/templates/default.catalog/css/checkout.css',
           FS_DIR_APP . 'includes/templates/default.catalog/css/framework.css',
           FS_DIR_APP . 'includes/templates/default.catalog/css/printable.css',
-        ];
-
-        foreach ($files_to_delete as $file) {
-          file_delete($file);
-        }
+        ]);
 
       } else {
 
-        $files_to_delete = [
+        perform_action('delete', [
           FS_DIR_APP . 'includes/templates/default.catalog/css/*.min.css',
           FS_DIR_APP . 'includes/templates/default.catalog/css/*.min.css.map',
           FS_DIR_APP . 'includes/templates/default.catalog/js/*.min.js',
           FS_DIR_APP . 'includes/templates/default.catalog/js/*.min.js.map',
           FS_DIR_APP . 'includes/templates/default.catalog/less/',
-        ];
+        ]);
 
-        foreach ($files_to_delete as $file) {
-          file_delete($file);
-        }
-
-        foreach (glob(FS_DIR_APP . 'includes/templates/default.catalog/layouts/*.inc.php') as $file) {
-          $contents = file_get_contents($file);
-          $search_replace = [
-            'app.min.css'  => 'app.css',
-            'checkout.min.css'  => 'checkout.css',
-            'framework.min.css' => 'framework.css',
-            'printable.min.css' => 'printable.css',
-            'app.min.js' => 'app.js',
-          ];
-          file_put_contents($file, strtr($contents, $search_replace));
-        }
+        perform_action('modify', [
+          FS_DIR_APP . 'includes/templates/default.catalog/layouts/*.inc.php' => [
+            ['search' => 'app.min.css',       'replace' => 'app.css'],
+            ['search' => 'checkout.min.css',  'replace' => 'checkout.css'],
+            ['search' => 'framework.min.css', 'replace' => 'framework.css'],
+            ['search' => 'printable.min.css', 'replace' => 'printable.css'],
+            ['search' => 'app.min.js',        'replace' => 'app.js'],
+          ],
+        ]);
       }
 
       echo PHP_EOL;
@@ -288,12 +289,11 @@
         limit 1;"
       );
 
-      foreach (glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file) {
-        if (is_file($file)) unlink($file);
-      }
-
-      if (is_file($file = FS_DIR_APP . 'vqmod/checked.cache')) unlink($file);
-      if (is_file($file = FS_DIR_APP . 'vqmod/mods.cache')) unlink($file);
+      perform_action('delete', [
+        FS_DIR_STORAGE . 'vmods/.cache/*.php',
+        FS_DIR_STORAGE . 'vmods/.cache/.checked',
+        FS_DIR_STORAGE . 'vmods/.cache/.modifications',
+      ]);
 
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
@@ -311,14 +311,9 @@
       echo $e->getMessage();
     }
 
-    $buffer = ob_get_clean();
+    echo ob_get_clean();
 
-    if (php_sapi_name() == 'cli') {
-      echo strip_tags($buffer);
-      exit;
-    }
-
-    echo $buffer;
+    if (php_sapi_name() == 'cli') exit;
 
     require('includes/footer.inc.php');
     exit;

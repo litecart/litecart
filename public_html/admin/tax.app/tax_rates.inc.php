@@ -38,7 +38,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_tax_rate'], true), language::translate('title_add_new_tax_rate', 'Add New Tax Rate'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_tax_rate'], true), language::translate('title_create_new_tax_rate', 'Create New Tax Rate'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -70,7 +70,7 @@
           <td><?php echo $tax_rate['description']; ?></td>
           <td><?php echo language::number_format($tax_rate['rate'], 4); ?></td>
           <td><?php echo $tax_rate['type']; ?></td>
-          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

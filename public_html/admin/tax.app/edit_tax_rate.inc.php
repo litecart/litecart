@@ -14,10 +14,10 @@
     }
   }
 
-  document::$snippets['title'][] = !empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_add_new_tax_rate', 'Add New Tax Rate');
+  document::$snippets['title'][] = !empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_create_new_tax_rate', 'Create New Tax Rate');
 
   breadcrumbs::add(language::translate('title_tax_rates', 'Tax Rates'), document::link(WS_DIR_ADMIN, ['doc' => 'tax_rates'], ['app']));
-  breadcrumbs::add(!empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_add_new_tax_rate', 'Add New Tax Rate'));
+  breadcrumbs::add(!empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_create_new_tax_rate', 'Create New Tax Rate'));
 
   if (isset($_POST['save'])) {
 
@@ -81,7 +81,7 @@
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo !empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_add_new_tax_rate', 'Add New Tax Rate'); ?>
+      <?php echo $app_icon; ?> <?php echo !empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_create_new_tax_rate', 'Create New Tax Rate'); ?>
     </div>
   </div>
 

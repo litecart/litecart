@@ -28,7 +28,7 @@
 
 	<div class="modal-body">
 
-    <button class="btn btn-primary" name="select" type="button" data-id="<?php echo !empty($_GET['parent_id']) ? (int)$_GET['parent_id'] : '0'; ?>" data-name="<?php echo !empty($_GET['parent_id']) ? reference::category($_GET['parent_id'])->name : language::translate('title_root', 'Root'); ?>" style="position: absolute; right: 1.5em; margin-inline-start: 1em;">
+    <button class="btn btn-primary" name="select" type="button" data-id="<?php echo !empty($_GET['parent_id']) ? (int)$_GET['parent_id'] : '0'; ?>" data-name="<?php echo functions::escape_html(!empty($_GET['parent_id']) ? reference::category($_GET['parent_id'])->name : language::translate('title_root', 'Root')); ?>" style="position: absolute; right: 1.5em; margin-inline-start: 1em;">
       <?php echo language::translate('title_select', 'Select'); ?>
     </button>
 
@@ -40,7 +40,7 @@
       </li>
       <?php foreach ($breadcrumbs as $category) { ?>
       <li>
-        <a href="<?php echo document::link(null, ['parent_id' => $category['id']], true); ?>" data-id="<?php echo $category['id']; ?>">
+        <a href="<?php echo document::link(null, ['parent_id' => $category['id']], true); ?>" data-id="<?php echo (int)$category['id']; ?>">
           <?php echo $category['name']; ?>
         </a>
       </li>

@@ -10,11 +10,11 @@
     $_POST = $supplier->data;
   }
 
-  document::$snippets['title'][] = !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_add_new_supplier', 'Add New Supplier');
+  document::$snippets['title'][] = !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_create_new_supplier', 'Create New Supplier');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_suppliers', 'Suppliers'), document::link(WS_DIR_ADMIN, ['doc' => 'suppliers'], ['app']));
-  breadcrumbs::add(!empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_add_new_supplier', 'Add New Supplier'));
+  breadcrumbs::add(!empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_create_new_supplier', 'Create New Supplier'));
 
   if (isset($_POST['save'])) {
 
@@ -66,7 +66,7 @@
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_add_new_supplier', 'Add New Supplier'); ?>
+      <?php echo $app_icon; ?> <?php echo !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_create_new_supplier', 'Create New Supplier'); ?>
     </div>
   </div>
 

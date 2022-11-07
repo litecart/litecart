@@ -203,15 +203,29 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_only_products_are_supported', 'Only products are supported for this operation'));
-      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
 
-      foreach ($_POST['products'] as $product_id) {
-        $product = new ent_product($product_id);
-        $product->delete();
+      if (empty($_POST['categories']) && empty($_POST['products'])) {
+        throw new Exception(language::translate('error_must_select_categories_or_products', 'You must select categories or products'));
       }
 
-      notices::add('success', sprintf(language::translate('success_deleted_d_products', 'Deleted %d products'), count($_POST['products'])));
+      if (!empty($_POST['products'])) {
+        foreach ($_POST['products'] as $product_id) {
+          $product = new ent_product($product_id);
+          $product->delete();
+        }
+
+        notices::add('success', sprintf(language::translate('success_deleted_d_products', 'Deleted %d products'), count($_POST['products'])));
+      }
+
+      if (!empty($_POST['categories'])) {
+        foreach ($_POST['categories'] as $category_id) {
+          $category = new ent_category($category_id);
+          $category->delete();
+        }
+
+        notices::add('success', sprintf(language::translate('success_deleted_d_categories', 'Deleted %d categories'), count($_POST['categories'])));
+      }
+
       header('Location: '. document::link());
       exit;
 
@@ -235,8 +249,8 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc'=> 'edit_category', 'parent_id' => $_GET['category_id']]), language::translate('title_add_new_category', 'Add New Category'), '', 'add'); ?></li>
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc'=> 'edit_product'], ['category_id']), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc'=> 'edit_category', 'parent_id' => $_GET['category_id']]), language::translate('title_create_new_category', 'Create New Category'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc'=> 'edit_product'], ['category_id']), language::translate('title_create_new_product', 'Create New Product'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -340,8 +354,8 @@
           <td><?php echo '<img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
           <td><?php echo $product['sku']; ?></td>
           <td class="text-end"><?php echo currency::format($product['price']); ?></td>
-          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
-          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('product', ['product_id' => $product['id']]); ?>" title="<?php echo functions::escape_html(language::translate('title_view', 'View')); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
 <?php
       }

@@ -14,10 +14,10 @@
     }
   }
 
-  document::$snippets['title'][] = !empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') : language::translate('title_add_new_category', 'Add New Category');
+  document::$snippets['title'][] = !empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') : language::translate('title_create_new_category', 'Create New Category');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-  breadcrumbs::add(!empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') : language::translate('title_add_new_category', 'Add New Category'));
+  breadcrumbs::add(!empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') : language::translate('title_create_new_category', 'Create New Category'));
 
   if (isset($_POST['save'])) {
 
@@ -66,7 +66,7 @@
       $category->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'catalog', 'category_id' => $_POST['parent_id']], ['app']));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'catalog', 'category_id' => $category->data['id']], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -79,10 +79,11 @@
     try {
       if (empty($category->data['id'])) throw new Exception(language::translate('error_must_provide_category', 'You must provide a category'));
 
+      $parent_id = $category->data['parent_id'];
       $category->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'catalog', 'category_id' => $_POST['parent_id']], ['app']));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'catalog', 'category_id' => $parent_id], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -91,11 +92,17 @@
   }
 
   list($category_image_width, $category_image_height) = functions::image_scale_by_width(320, settings::get('category_image_ratio'));
+
+  $list_style_options = [
+    [language::translate('title_columns', 'Columns'), 'columns'],
+    [language::translate('title_rows', 'Rows'), 'rows'],
+  ];
+
 ?>
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo !empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][language::$selected['code']] : language::translate('title_add_new_category', 'Add New Category'); ?>
+      <?php echo $app_icon; ?> <?php echo !empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][language::$selected['code']] : language::translate('title_create_new_category', 'Create New Category'); ?>
     </div>
   </div>
 
@@ -109,7 +116,7 @@
     <?php echo functions::form_draw_form_begin('category_form', 'post', false, true); ?>
 
       <div class="tab-content">
-        <div id="tab-general" class="tab-pane active" style="max-width: 980px;">
+        <div id="tab-general" class="tab-pane active" style="max-width: 1200px;">
 
           <div class="row">
             <div class="col-md-4">
@@ -129,14 +136,16 @@
               </div>
 
               <?php if (!empty($category->data['id'])) { ?>
-              <div class="form-group">
-                <label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
-                <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_updated'])); ?></div>
-              </div>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
+                  <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_updated'])); ?></div>
+                </div>
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
-                <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_created'])); ?></div>
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
+                  <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_created'])); ?></div>
+                </div>
               </div>
               <?php } ?>
 
@@ -149,7 +158,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
+                <?php echo functions::form_draw_regional_input_field(settings::get('store_language_code'), 'name['. settings::get('store_language_code') .']', true, ''); ?>
               </div>
 
               <div class="form-group">
@@ -159,13 +168,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_list_style', 'List Style'); ?></label>
-<?php
-  $options = [
-    [language::translate('title_columns', 'Columns'), 'columns'],
-    [language::translate('title_rows', 'Rows'), 'rows'],
-  ];
-  echo functions::form_draw_select_field('list_style', $options, true);
-?>
+                <?php echo functions::form_draw_select_field('list_style', $list_style_options, true); ?>
               </div>
 
               <div class="form-group">
@@ -196,11 +199,11 @@
 
         <div id="tab-information" class="tab-pane" style="max-width: 640px;">
 
-          <ul class="nav nav-tabs">
+          <nav class="nav nav-tabs">
             <?php foreach (language::$languages as $language) { ?>
-              <li<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a></li>
+            <a class="nav-link<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
             <?php } ?>
-          </ul>
+          </nav>
 
           <div class="tab-content">
 
@@ -255,28 +258,35 @@
                 <th></th>
               </tr>
             </thead>
+
             <tbody>
               <?php if (!empty($_POST['filters'])) foreach (array_keys($_POST['filters']) as $key) { ?>
               <tr>
-                <?php echo functions::form_draw_hidden_field('filters['.$key.'][id]', true); ?>
-                <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_id]', true); ?>
-                <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
-                <td class="grabable"><?php echo functions::escape_html($_POST['filters'][$key]['attribute_group_name']); ?></td>
+                <td class="grabable">
+                  <?php echo functions::form_draw_hidden_field('filters['.$key.'][id]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_id]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
+                  <?php echo functions::escape_html($_POST['filters'][$key]['attribute_group_name']); ?>
+                </td>
                 <td class="grabable"><?php echo functions::form_draw_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
                 <td class="text-end">
-                  <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
-                  <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
-                  <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                  <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
+                  <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
+                  <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
                 </td>
               </tr>
               <?php } ?>
             </tbody>
+
+            <tfoot>
+              <tr>
+                <td><?php echo functions::form_draw_attribute_groups_list('new_attribute_group', true); ?></td>
+                <td><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
+                <td></td>
+              </tr>
+            </tfoot>
           </table>
 
-          <div class="input-group" style="max-width: 320px;">
-            <?php echo functions::form_draw_attribute_groups_list('new_attribute_group', true); ?>
-            <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?>
-          </div>
         </div>
       </div>
 
@@ -291,9 +301,19 @@
 </div>
 
 <script>
+
+// Init
+
   <?php if (!empty($category->data['id'])) { ?>
   $('select[name="parent_id"] option[value="<?php echo $category->data['id']; ?>"]').prop('disabled', true);
   <?php } ?>
+
+
+// Cross Referencing
+
+  $('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').on('input change', function(){
+    $('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
+  });
 
 // Image
 
@@ -332,7 +352,7 @@
   $('#tab-filters button[name="add"]').click(function(){
 
     if ($('select[name="new_attribute_group"]').val() == '') {
-      alert("<?php echo language::translate('error_must_select_attribute_group', 'You must select an attribute group'); ?>");
+      alert("<?php echo functions::escape_html(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
       return;
     }
 
@@ -343,9 +363,9 @@
                + '  <td>new_attribute_group_name</td>'
                + '  <td><?php echo functions::form_draw_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>'
                + '  <td class="text-end">'
-               + '    <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>'
-               + '    <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>'
-               + '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
+               + '    <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>'
+               + '    <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>'
+               + '    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>'
                + '  </td>'
                + '</tr>';
 

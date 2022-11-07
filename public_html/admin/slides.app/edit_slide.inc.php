@@ -10,10 +10,10 @@
     $_POST = $slide->data;
   }
 
-  document::$snippets['title'][] = !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide');
+  document::$snippets['title'][] = !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_create_new_slide', 'Create New Slide');
 
   breadcrumbs::add(language::translate('title_slides', 'Slides'), document::link(WS_DIR_ADMIN, ['doc' => 'slides'], ['app']));
-  breadcrumbs::add(!empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide'));
+  breadcrumbs::add(!empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_create_new_slide', 'Create New Slide'));
 
   if (isset($_POST['save'])) {
 
@@ -77,7 +77,7 @@
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide'); ?>
+      <?php echo $app_icon; ?> <?php echo !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_create_new_slide', 'Create New Slide'); ?>
     </div>
   </div>
 

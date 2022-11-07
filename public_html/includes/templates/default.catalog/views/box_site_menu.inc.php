@@ -16,7 +16,7 @@
 
     <ul class="nav navbar-nav">
       <li class="hidden-xs">
-        <a href="<?php echo document::ilink(''); ?>" title="<?php echo language::translate('title_home', 'Home'); ?>"><?php echo functions::draw_fonticon('fa-home'); ?></a>
+        <a href="<?php echo document::ilink(''); ?>" title="<?php echo functions::escape_html(language::translate('title_home', 'Home')); ?>"><?php echo functions::draw_fonticon('fa-home'); ?></a>
       </li>
 
       <?php if ($categories) { ?>

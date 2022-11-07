@@ -85,8 +85,8 @@
 
       header('Content-Type: application/json');
 
-      if ($stock_option['quantity'] > 0) {
-        $notice = strtr(language::translate('text_there_are_n_items_in_stock_for_option', 'There are %quantity items remaining in stock for this option'), ['%quantity' => (int)$stock_option['quantity']]);
+      if ($stock_option['quantity_available'] > 0) {
+        $notice = strtr(language::translate('text_there_are_n_items_in_stock_for_option', 'There are %quantity items remaining in stock for this option'), ['%quantity' => (int)$stock_option['quantity_available']]);
         echo json_encode(['status' => 'ok', 'notice' => $notice]);
         exit;
 

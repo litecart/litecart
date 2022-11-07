@@ -73,7 +73,7 @@
     <?php echo functions::form_draw_form_begin('sold_out_status_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
       <div class="row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-8">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
           <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
         </div>

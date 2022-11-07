@@ -65,7 +65,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_geo_zone'], true, ['geo_zone_id']), language::translate('title_add_new_geo_zone', 'Add New Geo Zone'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_geo_zone'], true, ['geo_zone_id']), language::translate('title_create_new_geo_zone', 'Create New Geo Zone'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -89,7 +89,7 @@
           <td><?php echo $geo_zone['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']], true); ?>"><?php echo $geo_zone['name']; ?></a></td>
           <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones where geo_zone_id = ". (int)$geo_zone['id'] ."")); ?></td>
-          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

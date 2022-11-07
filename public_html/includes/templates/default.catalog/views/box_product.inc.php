@@ -5,16 +5,16 @@
       <div class="images row">
 
         <div class="col-xs-12">
-          <a class="main-image thumbnail" href="<?php echo document::href_rlink(FS_DIR_APP . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_rlink(FS_DIR_APP . $image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_APP . $image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_APP . $image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
+          <a class="main-image thumbnail" href="<?php echo document::href_link(WS_DIR_APP . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
             <?php echo $sticker; ?>
           </a>
         </div>
 
         <?php foreach ($extra_images as $extra_image) { ?>
         <div class="col-xs-4">
-          <a class="extra-image thumbnail" href="<?php echo document::href_rlink(FS_DIR_APP . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_rlink(FS_DIR_APP . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_APP . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_APP . $extra_image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
+          <a class="extra-image thumbnail" href="<?php echo document::href_link(WS_DIR_APP . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
           </a>
         </div>
         <?php } ?>
@@ -35,7 +35,7 @@
       <div class="manufacturer">
         <a href="<?php echo functions::escape_html($manufacturer['link']); ?>">
           <?php if ($manufacturer['image']) { ?>
-          <img src="<?php echo document::href_rlink(FS_DIR_APP . $manufacturer['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_APP . $manufacturer['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_APP . $manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($manufacturer['name']); ?>" title="<?php echo functions::escape_html($manufacturer['name']); ?>" />
+          <img src="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($manufacturer['name']); ?>" title="<?php echo functions::escape_html($manufacturer['name']); ?>" />
           <?php } else { ?>
           <h3><?php echo $manufacturer['name']; ?></h3>
           <?php } ?>
@@ -176,9 +176,9 @@
 
       <div class="social-bookmarks text-center">
         <a class="link" href="#"><?php echo functions::draw_fonticon('fa-link', 'style="color: #333;"'); ?></a>
-        <a class="twitter" href="<?php echo document::href_link('https://twitter.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>"><?php echo functions::draw_fonticon('fa-twitter-square fa-lg', 'style="color: #55acee;"'); ?></a>
-        <a class="facebook" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>"><?php echo functions::draw_fonticon('fa-facebook-square fa-lg', 'style="color: #3b5998;"'); ?></a>
-        <a class="pinterest" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Pinterest'); ?>"><?php echo functions::draw_fonticon('fa-pinterest-square fa-lg', 'style="color: #bd081c;"'); ?></a>
+        <a class="twitter" href="<?php echo document::href_link('https://twitter.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo functions::escape_html(sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter')); ?>"><?php echo functions::draw_fonticon('fa-twitter-square fa-lg', 'style="color: #55acee;"'); ?></a>
+        <a class="facebook" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook')); ?>"><?php echo functions::draw_fonticon('fa-facebook-square fa-lg', 'style="color: #3b5998;"'); ?></a>
+        <a class="pinterest" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Pinterest')); ?>"><?php echo functions::draw_fonticon('fa-pinterest-square fa-lg', 'style="color: #bd081c;"'); ?></a>
       </div>
 
     </div>
@@ -286,12 +286,13 @@
       },
 
       success: function(data){
+        console.log(data);
         if (data.status == 'ok') {
-          $('.options-stock-notice').text(data.notice).removeClass('warning');
+          $('.stock-notice').text(data.notice).removeClass('warning');
         } else if (data.status == 'warning') {
-          $('.options-stock-notice').text(data.notice).addClass('warning');
+          $('.stock-notice').text(data.notice).addClass('warning');
         } else {
-          $('.options-stock-notice').html('');
+          $('.stock-notice').html('');
         }
       }
     });
@@ -299,6 +300,6 @@
 
   $('#box-product[data-id="<?php echo $product_id; ?>"] .social-bookmarks .link').off().click(function(e){
     e.preventDefault();
-    prompt("<?php echo language::translate('text_link_to_this_product', 'Link to this product'); ?>", '<?php echo $link; ?>');
+    prompt("<?php echo functions::escape_html(language::translate('text_link_to_this_product', 'Link to this product')); ?>", '<?php echo $link; ?>');
   });
 </script>

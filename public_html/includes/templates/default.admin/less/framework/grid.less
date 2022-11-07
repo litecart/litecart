@@ -9,25 +9,20 @@
   margin: 0 auto;
 }
 
-.float-start {
-  float: left;
-}
-.float-end {
-  float: right;
-}
+.float-left { float: left; }
+.float-right { float: right; }
+.float-start { float: left; }
+.float-end { float: right; }
+
 html[dir="rtl"] {
-  .float-start {
-    float: right;
-  }
-  .float-end {
-    float: left;
-  }
+  .float-start { float: right; }
+  .float-end { float: left; }
 }
 
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-gap: 0 var(--gutter-size);
+  grid-gap: ~"calc(var(--gutter-size)/2)";
   &.column {
     flex-direction: column;
   }
@@ -38,27 +33,33 @@ html[dir="rtl"] {
     justify-items: center;
     align-items: center;
   }
+  @media (min-width: @media-breakpoint-sm) {
+    grid-gap: var(--gutter-size);
+  }
+  [class*="col-"] {
+    grid-column: span 12;
+  }
 }
 
 .make-grid-columns(@device: ~'') {
-  .col@{device}-1 { grid-column: span 1 }
-  .col@{device}-2 { grid-column: span 2 }
-  .col@{device}-3 { grid-column: span 3 }
-  .col@{device}-4 { grid-column: span 4 }
-  .col@{device}-5 { grid-column: span 5 }
-  .col@{device}-6 { grid-column: span 6 }
-  .col@{device}-7 { grid-column: span 7 }
-  .col@{device}-8 { grid-column: span 8 }
-  .col@{device}-9 { grid-column: span 9 }
-  .col@{device}-10 { grid-column: span 10 }
-  .col@{device}-11 { grid-column: span 11 }
-  .col@{device}-12 { grid-column: span 12 }
+  .col@{device}-1 { grid-column: span 1 !important; }
+  .col@{device}-2 { grid-column: span 2 !important; }
+  .col@{device}-3 { grid-column: span 3 !important; }
+  .col@{device}-4 { grid-column: span 4 !important; }
+  .col@{device}-5 { grid-column: span 5 !important; }
+  .col@{device}-6 { grid-column: span 6 !important; }
+  .col@{device}-7 { grid-column: span 7 !important; }
+  .col@{device}-8 { grid-column: span 8 !important; }
+  .col@{device}-9 { grid-column: span 9 !important; }
+  .col@{device}-10 { grid-column: span 10 !important; }
+  .col@{device}-11 { grid-column: span 11 !important; }
+  .col@{device}-12 { grid-column: span 12 !important; }
 }
 
 .make-grid-columns();
 
 // Backwards compatibility (col-xs-)
-.make-grid-columns(xs);
+.make-grid-columns(-xs);
 
 @media (min-width: @media-breakpoint-sm) {
   .make-grid-columns(-sm);

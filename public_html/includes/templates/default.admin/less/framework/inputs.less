@@ -14,7 +14,7 @@
 }
 
 fieldset {
-  padding: calc(var(--gutter-size) / 2) var(--gutter-size);
+  padding: ~"calc(var(--gutter-size) / 2)" var(--gutter-size);
   border: 1px solid var(--input-border-color);
   border-radius: var(--border-radius);
   > legend {
@@ -304,4 +304,25 @@ fieldset[disabled] > :not(legend),
 [data-toggle="buttons"] input[type="checkbox"],
 [data-toggle="buttons"] input[type="radio"] {
   display: none;
+}
+
+.input-group .trumbowyg-box {
+  --trumbowyg-pane-background-color: var(--input-addon-background-color);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin: -1px;
+  margin-bottom: -2px;
+  .trumbowyg-button-pane {
+    border-top-left-radius: 0;
+    .trumbowyg-button-group:first-child {
+      border-top-left-radius: 0;
+      button {
+        border-top-left-radius: 0;
+      }
+    }
+  }
+  .trumbowyg-editor, .trumbowyg-textarea {
+    border-bottom-left-radius: 0;
+  }
 }

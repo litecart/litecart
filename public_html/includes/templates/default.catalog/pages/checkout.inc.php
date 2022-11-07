@@ -387,7 +387,7 @@
   $('#box-checkout-summary-wrapper').on('click', 'button[name="confirm_order"]', function(e) {
     if (window.customer_form_changed) {
       e.preventDefault();
-      alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
+      alert("<?php echo functions::escape_html(language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')); ?>");
     }
   });
 

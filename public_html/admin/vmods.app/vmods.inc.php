@@ -191,6 +191,7 @@
 
   <div class="card-action">
     <?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_vmod'], ['app']), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?>
+    <?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => 'settings', 'doc' => 'advanced', 'action' => 'edit', 'key' => 'cache_clear']), language::translate('title_clear_cache', 'Clear Cache'), '', 'fa-external-link'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('vmod_form', 'post', '', true); ?>
@@ -206,7 +207,6 @@
           <th><?php echo language::translate('title_author', 'Author'); ?></th>
           <th><?php echo language::translate('title_type', 'Type'); ?></th>
           <th><?php echo language::translate('title_health', 'Health'); ?></th>
-          <th></th>
           <th></th>
           <th></th>
         </tr>
@@ -231,11 +231,10 @@
               <?php } ?>
             </a>
           </td>
-          <td><?php if (!empty($vmod['settings'])) { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'configure', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a><?php } ?></td>
-          <td><?php if ($vmod['type'] == 'vMod') { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'view', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a><?php } ?></td>
+          <td><?php if (!empty($vmod['settings'])) { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'configure', 'vmod' => $vmod['filename']], ['app']); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?> <?php echo language::translate('title_configure', 'Configure'); ?></a><?php } ?></td>
           <td>
-            <a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'download', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a>
-            <a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'edit_vmod', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
+            <a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'download', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo functions::escape_html(language::translate('title_download', 'Download')); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a>
+            <a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'edit_vmod', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
           </td>
         </tr>
         <?php } ?>
@@ -243,7 +242,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="11"><?php echo language::translate('title_vmods', 'vMods'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="10"><?php echo language::translate('title_vmods', 'vMods'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>

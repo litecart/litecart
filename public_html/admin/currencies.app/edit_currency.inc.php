@@ -10,10 +10,10 @@
     $_POST = $currency->data;
   }
 
-  document::$snippets['title'][] = !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_add_new_currency', 'Add New Currency');
+  document::$snippets['title'][] = !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_create_new_currency', 'Create New Currency');
 
   breadcrumbs::add(language::translate('title_currencies', 'Currencies'), document::link(WS_DIR_ADMIN, ['doc' => 'currencies'], ['app']));
-  breadcrumbs::add(!empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_add_new_currency', 'Add New Currency'));
+  breadcrumbs::add(!empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_create_new_currency', 'Create New Currency'));
 
   if (isset($_POST['save'])) {
 
@@ -100,7 +100,7 @@
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_add_new_currency', 'Add New Currency'); ?>
+      <?php echo $app_icon; ?> <?php echo !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_create_new_currency', 'Create New Currency'); ?>
     </div>
   </div>
 

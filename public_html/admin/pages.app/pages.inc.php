@@ -160,7 +160,7 @@ table tbody .toggle {
         );
 
 ?>
-        <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : null; ?>">
+        <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : ''; ?>">
           <td><?php echo functions::form_draw_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($page['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
           <td><?php echo $page['id']; ?></td>
@@ -168,7 +168,7 @@ table tbody .toggle {
           <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
 <?php
         if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -219,7 +219,7 @@ table tbody .toggle {
           $icon = '<span class="toggle"></span>';
         }
 ?>
-        <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : null; ?>">
+        <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : ''; ?>">
           <td><?php echo functions::form_draw_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($page['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
           <td><?php echo $page['id']; ?></td>
@@ -230,7 +230,7 @@ table tbody .toggle {
           <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
 <?php
         if (in_array($page['id'], $_GET['expanded'])) {

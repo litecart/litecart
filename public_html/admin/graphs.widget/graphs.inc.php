@@ -133,7 +133,7 @@
   stroke: var(--chart-b-color);
 }
 #chart-sales-monthly .ct-series-c .ct-bar, #chart-sales-daily .ct-series-c .ct-bar {
-  stroke: var(--chart-c-color);
+  stroke: url(#gradient);
 }
 #chart-sales-monthly .ct-bar{
   stroke-width: 20px;
@@ -159,7 +159,7 @@
         </div>
 
         <div class="card-body">
-          <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
+          <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo functions::escape_html(language::translate('title_monthly_sales', 'Monthly Sales')); ?>"></div>
         </div>
       </div>
     </div>
@@ -171,7 +171,7 @@
         </div>
 
         <div class="card-body">
-          <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
+          <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo functions::escape_html(language::translate('title_daily_sales', 'Daily Sales')); ?>"></div>
         </div>
       </div>
     </div>
@@ -202,7 +202,26 @@
     }]
   ];
 
-  new Chartist.Bar('#chart-sales-monthly', data, options, responsiveOptions);
+  var chart1 = new Chartist.Bar('#chart-sales-monthly', data, options, responsiveOptions);
+
+  // Offset x1 a tiny amount so that the straight stroke gets a bounding box
+  // Straight lines don't get a bounding box
+  // Last remark on -> http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox
+  chart1.on('draw', function(ctx) {
+    if(ctx.type === 'bar') {
+      ctx.element.attr({
+        x1: ctx.x1 + 0.001
+      });
+    }
+  });
+
+  // Create the gradient definition on created event (always after chart re-render)
+  chart1.on('created', function(ctx) {
+    var defs = ctx.svg.elem('defs');
+    defs.elem('linearGradient', { id: 'gradient', x1: 0, y1: 1, x2: 0, y2: 0 })
+    .elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .8)' })
+    .parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .8)' });
+  });
 
 // Daily Sales
 

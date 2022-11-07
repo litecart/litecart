@@ -10,11 +10,11 @@
     $_POST = $manufacturer->data;
   }
 
-  document::$snippets['title'][] = !empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer');
+  document::$snippets['title'][] = !empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_create_new_manufacturer', 'Create New Manufacturer');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::link(WS_DIR_ADMIN, ['doc' => 'manufacturers'], ['app']));
-  breadcrumbs::add(!empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer'));
+  breadcrumbs::add(!empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_create_new_manufacturer', 'Create New Manufacturer'));
 
   if (isset($_POST['save'])) {
 
@@ -84,7 +84,7 @@
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo !empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer'); ?>
+      <?php echo $app_icon; ?> <?php echo !empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_create_new_manufacturer', 'Create New Manufacturer'); ?>
     </div>
   </div>
 
@@ -97,10 +97,10 @@
     <?php echo functions::form_draw_form_begin('manufacturer_form', 'post', false, true); ?>
 
       <div class="tab-content">
-        <div id="tab-general" class="tab-pane active" style="max-width: 720px;">
+        <div id="tab-general" class="tab-pane active" style="max-width: 1200px;">
 
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
               <div class="form-group">
                 <label><?php echo language::translate('title_status', 'Status'); ?></label>
                 <?php echo functions::form_draw_toggle('status', (file_get_contents('php://input') != '') ? true : '1', 'e/d'); ?>
@@ -111,14 +111,30 @@
                 <?php echo functions::form_draw_toggle('featured', isset($_POST['featured']) ? $_POST['featured'] : '1', 'y/n'); ?>
               </div>
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                <?php echo functions::form_draw_text_field('code', true); ?>
-              </div>
+              <?php if (!empty($manufacturer->data['id'])) { ?>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
+                  <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($manufacturer->data['date_updated'])); ?></div>
+                </div>
 
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
+                  <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($manufacturer->data['date_created'])); ?></div>
+                </div>
+              </div>
+              <?php } ?>
+            </div>
+
+            <div class="col-md-4">
               <div class="form-group">
                 <label><?php echo language::translate('title_name', 'Name'); ?></label>
                 <?php echo functions::form_draw_text_field('name', true); ?>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_code', 'Code'); ?></label>
+                <?php echo functions::form_draw_text_field('code', true); ?>
               </div>
 
               <div class="form-group">
@@ -127,7 +143,7 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
               <div id="image">
                 <div class="thumbnail" style="margin-bottom: 15px;">
                   <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $manufacturer->data['image'], 400, 100)); ?>" alt="" />
@@ -147,7 +163,7 @@
           </div>
         </div>
 
-        <div id="tab-information" class="tab-pane" style="max-width: 640px;">
+        <div id="tab-information" class="tab-pane" style="max-width: 720px;">
 
           <nav class="nav nav-tabs" style="padding-top: 0;">
             <?php foreach (language::$languages as $language) { ?>

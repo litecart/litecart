@@ -4,6 +4,7 @@
     $product = new ent_product($_GET['product_id']);
   } else {
     $product = new ent_product();
+    $product->data['status'] = 1;
   }
 
   if (empty($_POST)) {
@@ -14,10 +15,10 @@
     }
   }
 
-  document::$snippets['title'][] = !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product');
+  document::$snippets['title'][] = !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_create_new_product', 'Create New Product');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'), document::link(WS_DIR_ADMIN, ['doc' => 'catalog'], ['app']));
-  breadcrumbs::add(!empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product'));
+  breadcrumbs::add(!empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_create_new_product', 'Create New Product'));
 
   if (isset($_POST['save'])) {
 
@@ -185,7 +186,7 @@
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product'); ?>
+      <?php echo $app_icon; ?> <?php echo !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_create_new_product', 'Create New Product'); ?>
     </div>
   </div>
 
@@ -251,7 +252,12 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                 <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true); ?>
+                 <?php echo functions::form_draw_regional_input_field(settings::get('store_language_code'), 'name['. settings::get('store_language_code') .']', true); ?>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_price', 'Price'); ?></label>
+                 <?php echo functions::form_draw_regional_input_field(settings::get('store_currency_code'), 'prices['. settings::get('store_currency_code') .']', true); ?>
               </div>
 
               <div class="form-group">
@@ -328,9 +334,9 @@
                     <div class="input-group">
                       <?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename']); ?>
                       <div class="input-group-text">
-                        <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
-                        <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
-                        <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                        <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
+                        <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
+                        <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
                       </div>
                     </div>
                   </div>
@@ -346,16 +352,16 @@
                     <div class="input-group">
                       <?php echo functions::form_draw_file_field('new_images[]'); ?>
                       <div class="input-group-text">
-                        <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
-                        <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
-                        <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                        <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
+                        <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
+                        <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <a href="#" class="add" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a>
+                  <a href="#" class="add" title="<?php echo functions::escape_html(language::translate('title_add', 'Add')); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a>
                 </div>
               </div>
             </div>
@@ -444,7 +450,7 @@
                 <td><?php echo functions::escape_html($_POST['attributes'][$key]['group_name']); ?></td>
                 <td><?php echo functions::escape_html($_POST['attributes'][$key]['value_name']); ?></td>
                 <td><?php echo functions::escape_html($_POST['attributes'][$key]['custom_value']); ?></td>
-                <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+                <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
               </tr>
               <?php } ?>
             </tbody>
@@ -511,7 +517,7 @@
             </table>
           </div>
 
-          <h2><?php echo language::translate('title_campaigns', 'Campaigns'); ?></h2>
+          <h2 style="margin-top: 2em;"><?php echo language::translate('title_campaigns', 'Campaigns'); ?></h2>
           <div class="table-responsive">
             <table id="table-campaigns" class="table table-striped data-table">
               <tbody>
@@ -539,13 +545,13 @@
 <?php
   }
 ?>
-                  <td><br /><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+                  <td><br /><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
                 </tr>
               <?php } ?>
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan="<?php echo 5 + count(currency::$currencies) - 1; ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <a class="add" href="#"><?php echo language::translate('text_add_campaign', 'Add Campaign'); ?></a></td>
+                  <td colspan="<?php echo 5 + count(currency::$currencies) - 1; ?>"><a class="btn btn-default add" href="#"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_campaign', 'Add Campaign'); ?></a></td>
                 </tr>
               </tfoot>
             </table>
@@ -567,9 +573,9 @@
             <li data-group-id="<?php echo functions::escape_html($group_id); ?>" data-group-name="<?php echo functions::escape_html($option['name']); ?>">
 
               <div class="float-end">
-                <a class="move-group-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-2x', 'style="color: #3399cc;"'); ?></a>
-                <a class="move-group-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-2x', 'style="color: #3399cc;"'); ?></a>
-                <a class="remove-group" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-2x', 'style="color: #cc3333;"'); ?></a>
+                <a class="move-group-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
+                <a class="move-group-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
+                <a class="remove-group" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
               </div>
 
               <h2><?php echo $option['name']; ?></h2>
@@ -589,9 +595,9 @@
                 <?php } ?>
 
                 <div class="form-group col-sm-4 col-md-2">
-                  <label><?php echo language::translate('title_required', 'Required'); ?></label>
+                  <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>
                   <div class="checkbox">
-                    <label><?php echo functions::form_draw_checkbox('options['.$group_id.'][required]', '1', true); ?> <?php echo language::translate('title_required', 'Required'); ?></label>
+                    <label><?php echo functions::form_draw_checkbox('options['.$group_id.'][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>
                   </div>
                 </div>
               </div>
@@ -614,7 +620,7 @@
                       <td class="grabable"><?php echo functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
                       <td class="text-center"><?php echo functions::form_draw_select_field('options['.$group_id.'][values]['. $value_id .'][price_operator]', ['+','%','*','='], true); ?></td>
                       <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td>'. functions::form_draw_currency_field($currency_code, 'options['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['options'][$group_id]['values'][$value_id][$currency_code]) || $_POST['options'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
-                      <td class="text-end"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+                      <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
                     </tr>
                   <?php } ?>
                   </tbody>
@@ -627,8 +633,8 @@
           </ul>
 
           <div>
-            <a class="btn btn-default" href="#modal-predefined-option" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_predefined_option', 'Add Predefined Option'); ?></a>
-            <a class="btn btn-default" href="#modal-user-input-option" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_user_input_option', 'Add User Input Option'); ?></a>
+            <a class="btn btn-default" href="#modal-predefined-option" data-toggle="lightbox"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_predefined_option', 'Add Predefined Option'); ?></a>
+            <a class="btn btn-default" href="#modal-user-input-option" data-toggle="lightbox"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_user_input_option', 'Add User Input Option'); ?></a>
           </div>
 
           <div id="modal-predefined-option" style="display: none;">
@@ -779,16 +785,16 @@
                     </div>
                   </td>
                   <td class="text-end">
-                    <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
-                    <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
-                    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                    <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
+                    <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
+                    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
                   </td>
                 </tr>
               <?php } ?>
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan="7"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <a class="add" href="#"><?php echo language::translate('title_add_stock_option', 'Add Stock Option'); ?></a></td>
+                  <td colspan="7"><a class="btn btn-default add" href="#"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_stock_option', 'Add Stock Option'); ?></a></td>
                 </tr>
               </tfoot>
             </table>
@@ -825,6 +831,20 @@
 
 <script>
 
+// Cross Referencing
+
+  $('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').on('input change', function(){
+    $('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
+  });
+
+  $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').on('input change', function(){
+    $('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
+  });
+
+  $('input[name="sku"]').on('input change', function(){
+    $('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
+  });
+
 // Initiate
 
   $('input[name^="name"]').on('input', function(e){
@@ -854,13 +874,7 @@
     $('select[name="default_category_id"] option[value="'+ default_category_id +'"]').prop('selected', true);
   }).trigger('change');
 
-  $('select[name="default_category_id"]').val('<?php echo $product->data['default_category_id']; ?>');
-
-// SKU
-
-  $('input[name="sku"]').change(function() {
-    $('input[name="sku"]').not(this).val($(this).val());
-  });
+  $('select[name="default_category_id"]').val('<?php echo (int)$product->data['default_category_id']; ?>');
 
 // Images
 
@@ -892,9 +906,9 @@
                + '  <div class="input-group">'
                + '    <?php echo functions::form_draw_file_field('new_images[]'); ?>'
                + '    <div class="input-group-text">'
-               + '      <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>'
-               + '      <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>'
-               + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
+               + '      <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>'
+               + '      <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>'
+               + '      <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>'
                + '    </div>'
                + '  </div>'
                + '</div>';
@@ -948,7 +962,7 @@
         $('select[name="new_attribute[value_id]"').html('');
         if ($('select[name="new_attribute[value_id]"').attr('disabled')) $('select[name="attribute[value_id]"]').prop('disabled', false);
         if (data) {
-          $('select[name="new_attribute[value_id]"').append('<option value="0">-- <?php echo language::translate('title_select', 'Select'); ?> --</option>');
+          $('select[name="new_attribute[value_id]"').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
           $.each(data, function(i, zone) {
             $('select[name="new_attribute[value_id]"').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
           });
@@ -966,18 +980,18 @@
   $('#tab-attributes button[name="add"]').click(function(){
 
     if ($('select[name="new_attribute[group_id]"]').val() == '') {
-      alert("<?php echo language::translate('error_must_select_attribute_group', 'You must select an attribute group'); ?>");
+      alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
       return;
     }
 
     if ($('select[name="new_attribute[value_id]"]').val() == '' || $('select[name="new_attribute[value_id]"]').val() == '0') {
       if ($('input[name="new_attribute[custom_value]"]').val() == '') {
-        alert("<?php echo language::translate('error_must_select_attribute_value', 'You must select an attribute value'); ?>");
+        alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_value', 'You must select an attribute value')); ?>");
         return;
       }
     } else {
       if ($('input[name="new_attribute[custom_value]"]').val() != '') {
-        alert("<?php echo language::translate('error_cannot_define_both_value_and_custom_value', 'You can not define both a value and a custom value'); ?>");
+        alert("<?php echo functions::escape_js(language::translate('error_cannot_define_both_value_and_custom_value', 'You can not define both a value and a custom value')); ?>");
         return;
       }
     }
@@ -992,7 +1006,7 @@
                + '  <td>new_group_name</td>'
                + '  <td>new_value_name</td>'
                + '  <td>new_custom_value</td>'
-               + '  <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
+               + '  <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>'
                + '</tr>';
 
     while ($('input[name="attributes[new_'+new_attribute_i+']"]').length) new_attribute_i++;
@@ -1107,7 +1121,7 @@
 
   $('#price-incl-tax-tooltip').click(function(e) {
     e.preventDefault;
-    alert('<?php echo str_replace(["\r", "\n", "'"], ["", "", "\\'"], language::translate('tooltip_field_price_incl_tax', 'This field helps you calculate gross price based on the store region tax. All prices input to database are always excluding tax.')); ?>');
+    alert("<?php echo functions::escape_js(language::translate('tooltip_field_price_incl_tax', 'This field helps you calculate gross price based on the store region tax. All prices input to database are always excluding tax.')); ?>");
   });
 
 // Campaigns
@@ -1179,7 +1193,7 @@
 <?php
   }
 ?>
-               + '  <td><br /><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+               + '  <td><br /><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>'
                + '</tr>';
     while ($('input[name="campaigns[new_'+new_campaign_i+']"]').length) new_campaign_i++;
     output = output.replace(/new_campaign_i/g, 'new_' + new_campaign_i);
@@ -1234,7 +1248,7 @@
         $('select[name="new_predefined_option[value_id]"').html('');
         if ($('select[name="new_predefined_option[value_id]"').attr('disabled')) $('select[name="new_predefined_option[value_id]"]').prop('disabled', false);
         if (data) {
-          $('select[name="new_predefined_option[value_id]"').append('<option value="0">-- <?php echo language::translate('title_select', 'Select'); ?> --</option>');
+          $('select[name="new_predefined_option[value_id]"').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
           $.each(data, function(i, zone) {
             $('select[name="new_predefined_option[value_id]"').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
           });
@@ -1263,7 +1277,7 @@
         $('select[name="new_user_input_option[value_id]"').html('');
         if ($('select[name="new_user_input_option[value_id]"').attr('disabled')) $('select[name="new_user_input_option[value_id]"]').prop('disabled', false);
         if (data) {
-          $('select[name="new_user_input_option[value_id]"').append('<option value="0">-- <?php echo language::translate('title_select', 'Select'); ?> --</option>');
+          $('select[name="new_user_input_option[value_id]"').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
           $.each(data, function(i, zone) {
             $('select[name="new_user_input_option[value_id]"').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
           });
@@ -1295,18 +1309,18 @@
     var customValueElement = $(this).closest('fieldset').find('input[name="new_predefined_option[custom_value]"]');
 
     if ($(groupElement).val() == '') {
-      alert("<?php echo language::translate('error_must_select_attribute_group', 'You must select an attribute group'); ?>");
+      alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
       return;
     }
     if ($(valueElement).val() == '' || $(valueElement).val() == '0') {
       if ($(customValueElement).val() == '') {
-        alert("<?php echo language::translate('error_must_select_attribute_value', 'You must select an attribute value'); ?>");
+        alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_value', 'You must select an attribute value')); ?>");
         return;
       }
     } else {
       if ($(customValueElement).val() != '') {
         console.log($(valueElement).val(), $(customValueElement).val());
-        alert("<?php echo language::translate('error_cannot_define_both_value_and_custom_value', 'You cannot define both a value and a custom value'); ?>");
+        alert("<?php echo functions::escape_js(language::translate('error_cannot_define_both_value_and_custom_value', 'You cannot define both a value and a custom value')); ?>");
         return;
       }
     }
@@ -1314,13 +1328,13 @@
     if ($('#tab-options :input[name^="options"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').length) {
       if ($(customValueElement).val() != '') {
         if ($('#tab-options :input[name^="options"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[custom_value]"][value="'+ escape($(customValueElement).val()) +'"]').length) {
-          alert("<?php echo language::translate('error_option_already_defined', 'This option is already defined'); ?>");
+          alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>");
           return;
         }
 
       } else {
         if ($('#tab-options :input[name^="options"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').closest('tr').find('input[name$="[custom_value]"]').val() == $(customValueElement).val()) {
-          alert("<?php echo language::translate('error_option_already_defined', 'This option is already defined'); ?>");
+          alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>");
           return;
         }
       }
@@ -1329,9 +1343,9 @@
     if (!$('#tab-options input[name^="options"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
       var output = '<li data-group-id="'+ escapeHTML($(groupElement).val()) +'" data-group-name="'+ escapeHTML($(groupElement).find('option:selected').text()) +'">'
                  + '  <div class="float-end">'
-                 + '    <a class="move-group-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-2x', 'style="color: #3399cc;"'); ?></a>'
-                 + '    <a class="move-group-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-2x', 'style="color: #3399cc;"'); ?></a>'
-                 + '    <a class="remove-group" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-2x', 'style="color: #cc3333;"'); ?></a>'
+                 + '    <a class="move-group-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>'
+                 + '    <a class="move-group-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>'
+                 + '    <a class="remove-group" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
                  + '  </div>'
                  + '  <h2>'+ $(this).closest('fieldset').find('select[name="new_predefined_option[group_id]"] option:selected').text() +'</h2>'
                  + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('options[new_group_id][group_id]', 'new_group_id')); ?>'
@@ -1347,7 +1361,7 @@
                  + '    <div class="form-group col-sm-4 col-md-2">'
                  + '      <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>'
                  + '      <div class="checkbox">'
-                 + '        <label><?php echo functions::form_draw_checkbox('options[new_group_id][required]', '1', true); ?> <?php echo language::translate('title_required', 'Required'); ?></label>'
+                 + '        <label><?php echo functions::form_draw_checkbox('options[new_group_id][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>'
                  + '      </div>'
                  + '    </div>'
                  + '  </div>'
@@ -1356,8 +1370,8 @@
                  + '      <thead>'
                  + '        <tr>'
                  + '          <th><?php echo functions::escape_js(language::translate('title_option', 'Option')); ?></th>'
-                 + '          <th style="width: 150px;"><?php echo language::translate('title_price_operator', 'Price Operator'); ?></th>'
-                 + '          <th colspan="<?php echo count(currency::$currencies); ?>"><?php echo language::translate('title_price_adjustment', 'Price Adjustment'); ?></th>'
+                 + '          <th style="width: 150px;"><?php echo functions::escape_js(language::translate('title_price_operator', 'Price Operator')); ?></th>'
+                 + '          <th colspan="<?php echo count(currency::$currencies); ?>"><?php echo functions::escape_js(language::translate('title_price_adjustment', 'Price Adjustment')); ?></th>'
                  + '          <th style="width: 85px;">&nbsp;</th>'
                  + '        </tr>'
                  + '      </thead>'
@@ -1378,7 +1392,7 @@
                + '  <td class="grabable"><?php echo functions::escape_js(functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][value_id]', 'new_value_id')) . functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>'
                + '  <td class="text-center"><?php echo functions::escape_js(functions::form_draw_select_field('options[new_group_id][values][new_option_value_i][price_operator]', ['+','%','*','='], true)); ?></td>'
                + '  <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td style="width: 200px;">'. functions::escape_js(functions::form_draw_currency_field($currency_code, 'options[new_group_id][values][new_option_value_i]['. $currency_code. ']', '')) .'</td>'; ?>'
-               + '  <td class="text-end"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
+               + '  <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>'
                + '</tr>';
 
     output = output.replace(/new_option_value_i/g, 'new_' + new_option_value_i);
@@ -1397,32 +1411,32 @@
     var groupElement = $(this).closest('fieldset').find('select[name="new_user_input_option[group_id]"]');
 
     if ($(groupElement).val() == '') {
-      alert("<?php echo language::translate('error_must_select_attribute_group', 'You must select an attribute group'); ?>");
+      alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
       return;
     }
 
     if ($('#tab-options :input[name^="options"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
-      alert("<?php echo language::translate('error_group_already_defined', 'This group is already defined'); ?>");
+      alert("<?php echo functions::escape_js(language::translate('error_group_already_defined', 'This group is already defined')); ?>");
       return;
     }
 
     var output = '<li>'
                + '  <div class="float-end">'
-               + '    <a class="move-group-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-2x', 'style="color: #3399cc;"'); ?></a>'
-               + '    <a class="move-group-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-2x', 'style="color: #3399cc;"'); ?></a>'
-               + '    <a class="remove-group" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-2x', 'style="color: #cc3333;"'); ?></a>'
+               + '    <a class="move-group-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>'
+               + '    <a class="move-group-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>'
+               + '    <a class="remove-group" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
                + '  </div>'
                + '  <h2>'+ $(this).closest('fieldset').find('select[name="new_user_input_option[group_id]"] option:selected').text() +'</h2>'
                + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('options[new_group_id][group_id]', 'new_group_id')); ?>'
                + '  <div class="row">'
                + '    <div class="form-group col-sm-4 col-md-2">'
-               + '      <label><?php echo language::translate('title_function', 'Function'); ?></label>'
+               + '      <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>'
                + '      <?php echo functions::escape_js(functions::form_draw_select_field('options[new_group_id][function]', ['text', 'textarea'], 'text')); ?>'
                + '    </div>'
                + '    <div class="form-group col-sm-4 col-md-2">'
-               + '      <label><?php echo language::translate('title_required', 'Required'); ?></label>'
+               + '      <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>'
                + '      <div class="checkbox">'
-               + '        <label><?php echo functions::form_draw_checkbox('options[new_group_id][required]', '1', true); ?> <?php echo language::translate('title_required', 'Required'); ?></label>'
+               + '        <label><?php echo functions::form_draw_checkbox('options[new_group_id][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>'
                + '      </div>'
                + '    </div>'
                + '  </div>'
@@ -1617,9 +1631,9 @@
                + '    </div>'
                + '  </td>'
                + '  <td class="text-end">'
-               + '    <a class="move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"')); ?></a>'
-               + '    <a class="move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"')); ?></a>'
-               + '    <a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a>'
+               + '    <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('move-up')); ?></a>'
+               + '    <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('move-down')); ?></a>'
+               + '    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a>'
                + '  </td>'
                + '</tr>';
 

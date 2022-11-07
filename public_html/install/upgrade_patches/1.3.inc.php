@@ -1,36 +1,6 @@
 <?php
 
-  $products_query =  database::query(
-    "select id, categories from ". DB_TABLE_PREFIX ."products;"
-  );
-
-  while ($product = database::fetch($products_query)) {
-    $categories = explode( ',', $product['categories']);
-
-    $is_first = true;
-    foreach ($categories as $category_id) {
-      if ($is_first) {
-        database::query(
-          "update ". DB_TABLE_PREFIX ."products set
-          default_category_id = ". (int)$category_id . "
-          where id = '". (int)$product['id'] ."'
-          limit 1;"
-        );
-      }
-      database::query(
-        "insert into `". DB_TABLE_PREFIX ."products_to_categories`
-        (product_id, category_id)
-        values ('". (int)$product['id'] ."', '". (int)$category_id ."');"
-      );
-      $is_first = false;
-    }
-  }
-
-  database::query(
-    "alter table ". DB_TABLE_PREFIX ."products drop `categories`;"
-  );
-
-  $deleted_files = [
+  perform_action('delete', [
     FS_DIR_ADMIN . 'appearance.app/icon.png',
     FS_DIR_ADMIN . 'catalog.app/icon.png',
     FS_DIR_ADMIN . 'countries.app/icon.png',
@@ -86,32 +56,50 @@
     FS_DIR_STORAGE . 'images/includes/templates/default.catalog/images/home.png',
     FS_DIR_STORAGE . 'images/includes/templates/default.catalog/images/scroll_up.png',
     FS_DIR_STORAGE . 'images/includes/templates/default.catalog/images/search.png',
-  ];
+  ]);
 
-  foreach ($deleted_files as $pattern) {
-    if (!file_delete($pattern)) {
-      die('<span class="error">[Error]</span></p>');
+  perform_action('modify', [
+    FS_DIR_APP . 'includes/config.inc.php' => [
+      [
+        'search'  => "define('DB_TABLE_SEO_LINKS_CACHE',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'seo_links_cache`');" . PHP_EOL,
+        'replace' => "",
+      ],
+      [
+        'search'  => "  define('DB_TABLE_PRODUCTS_PRICES',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_prices`');" . PHP_EOL,
+        'replace' => "  define('DB_TABLE_PRODUCTS_PRICES',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_prices`');" . PHP_EOL
+                   . "  define('DB_TABLE_PRODUCTS_TO_CATEGORIES',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_to_categories`');" . PHP_EOL
+                   . "  define('DB_TABLE_QUANTITY_UNITS',                    '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'quantity_units`');" . PHP_EOL
+                   . "  define('DB_TABLE_QUANTITY_UNITS_INFO',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'quantity_units_info`');" . PHP_EOL,
+      ],
+    ],
+  ], 'abort');
+
+  $products_query =  database::query(
+    "select id, categories from ". DB_TABLE_PREFIX ."products;"
+  );
+
+  while ($product = database::fetch($products_query)) {
+    $categories = explode( ',', $product['categories']);
+
+    $is_first = true;
+    foreach ($categories as $category_id) {
+      if ($is_first) {
+        database::query(
+          "update ". DB_TABLE_PREFIX ."products
+          set default_category_id = ". (int)$category_id . "
+          where id = '". (int)$product['id'] ."'
+          limit 1;"
+        );
+      }
+      database::query(
+        "insert into `". DB_TABLE_PREFIX ."products_to_categories`
+        (product_id, category_id)
+        values ('". (int)$product['id'] ."', '". (int)$category_id ."');"
+      );
+      $is_first = false;
     }
   }
 
-  $modified_files = [
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "define('DB_TABLE_SEO_LINKS_CACHE',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'seo_links_cache`');" . PHP_EOL,
-      'replace' => "",
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_PRODUCTS_PRICES',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_prices`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_PRODUCTS_PRICES',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_prices`');" . PHP_EOL
-                 . "  define('DB_TABLE_PRODUCTS_TO_CATEGORIES',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_to_categories`');" . PHP_EOL
-                 . "  define('DB_TABLE_QUANTITY_UNITS',                    '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'quantity_units`');" . PHP_EOL
-                 . "  define('DB_TABLE_QUANTITY_UNITS_INFO',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'quantity_units_info`');" . PHP_EOL,
-    ],
-  ];
-
-  foreach ($modified_files as $modification) {
-    if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
-      die('<span class="error">[Error]</span></p>');
-    }
-  }
+  database::query(
+    "alter table ". DB_TABLE_PREFIX ."products drop `categories`;"
+  );

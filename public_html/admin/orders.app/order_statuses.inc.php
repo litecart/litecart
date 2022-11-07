@@ -129,8 +129,8 @@
           <td class="text-center"><?php echo empty($order_status['is_trackable']) ? '' : functions::draw_fonticon('fa-check'); ?></td>
           <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo $order_status['priority']; ?></td>
-          <td class="text-center"><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'orders', 'order_status_id' => $order_status['id'], ['app']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-external-link'); ?> <?php echo language::number_format($order_status['num_orders'], 0); ?></a></td>
-          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_order_status', 'order_status_id' => $order_status['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td class="text-center"><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'orders', 'order_status_id' => $order_status['id'], ['app']]); ?>" title="<?php echo functions::escape_html(language::translate('title_view', 'View')); ?>"><?php echo functions::draw_fonticon('fa-external-link'); ?> <?php echo language::number_format($order_status['num_orders'], 0); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_order_status', 'order_status_id' => $order_status['id']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

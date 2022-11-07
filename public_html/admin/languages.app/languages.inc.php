@@ -62,7 +62,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_language'], true), language::translate('title_add_new_language', 'Add New Language'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_language'], true), language::translate('title_create_new_language', 'Create New Language'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -86,7 +86,7 @@
 
       <tbody>
       <?php foreach ($languages as $language) { ?>
-        <tr class="<?php echo empty($language['status']) ? 'semi-transparent' : null; ?>">
+        <tr class="<?php echo empty($language['status']) ? 'semi-transparent' : ''; ?>">
           <td><?php echo functions::form_draw_checkbox('languages[]', $language['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. $language['status_color'] .';"'); ?></td>
           <td><?php echo $language['id']; ?></td>
@@ -96,7 +96,7 @@
           <td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td><?php echo strtr($language['url_type'], ['none' => language::translate('title_none', 'None'), 'path' => language::translate('title_path_prefix', 'Path Prefix'), 'domain' => language::translate('title_domain', 'Domain')]); ?></td>
           <td class="text-center"><?php echo $language['priority']; ?></td>
-          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

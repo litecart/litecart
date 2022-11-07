@@ -46,7 +46,7 @@
         position: absolute;
         top: 0;
         left: 30px;
-        width: calc(var(--sidebar-width) - 64px);
+        width: ~"calc(var(--sidebar-width) - 64px)";
         padding: .5em;
         background: var(--sidebar-background-color);
         z-index: 999;
@@ -204,7 +204,7 @@
 
 #content {
   flex: 1 1 auto;
-  padding: 30px;
+  padding: var(--gutter-size);
   > h1 {
     padding: 0 0 ~"calc(var(--gutter-size)/2)" 0;
     margin-top: 0;

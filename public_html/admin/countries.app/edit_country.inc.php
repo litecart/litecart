@@ -10,10 +10,10 @@
     $_POST = $country->data;
   }
 
-  document::$snippets['title'][] = !empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country');
+  document::$snippets['title'][] = !empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_create_new_country', 'Create New Country');
 
   breadcrumbs::add(language::translate('title_countries', 'Countries'));
-  breadcrumbs::add(!empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country'));
+  breadcrumbs::add(!empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_create_new_country', 'Create New Country'));
 
   if (isset($_POST['save'])) {
 
@@ -83,7 +83,7 @@
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo !empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country'); ?>
+      <?php echo $app_icon; ?> <?php echo !empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_create_new_country', 'Create New Country'); ?>
     </div>
   </div>
 
@@ -176,7 +176,7 @@
             <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo functions::escape_html($_POST['zones'][$key]['id']); ?></td>
             <td><?php echo functions::form_draw_text_field('zones['. $key .'][code]', true); ?></td>
             <td><?php echo functions::form_draw_text_field('zones['. $key .'][name]', true); ?></td>
-            <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+            <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>
@@ -218,7 +218,7 @@
                + '      <td><?php echo functions::escape_js(functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
                + '      <td><?php echo functions::escape_js(functions::form_draw_text_field('zones[new_zone_i][code]', '')); ?></td>'
                + '      <td><?php echo functions::escape_js(functions::form_draw_text_field('zones[new_zone_i][name]', '')); ?></td>'
-               + '      <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+               + '      <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>'
                + '    </tr>';
     output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
     output = output.replace(/new_zone_code/g, $('input[name="zone[code]"]').val());

@@ -1,36 +1,44 @@
 <?php
 
-  function file_delete($pattern, $flags=0, &$results=[]) {
+// PHP doesn't always clean up temp files, so let's create a function that does
+  function file_create_tempfile() {
+    $tmp_file = stream_get_meta_data(tmpfile())['uri'];
 
-    foreach (file_search($pattern, $flags) as $file) {
+    register_shutdown_function(function($f){
+      is_file($f) && unlink($f);
+    }, $tmp_file);
 
-      if (is_dir($file)) {
-        file_delete($file.'*', $flags, $results);
-        $results[$file] = rmdir($file);
-        continue;
-      }
-
-      return $results[$file] = unlink($file);
-    }
-
-    return in_array(false, new RecursiveIteratorIterator(new RecursiveArrayIterator($results)));
+    return $tmp_file;
   }
 
-  function file_size($file) {
+  function file_delete($file, &$results=[]) {
 
-    if (is_file($file)) {
-      return filesize($file);
+    if (!isset($results) || !is_array($results)) {
+      $results = [];
     }
 
-    if (is_dir($file)) {
-      $size = 0;
-      foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($file)) as $f) {
-        $size += $f->getSize();
+  // Resolve logic
+    if (preg_match('#[*!\[\]{}]#', $file)) {
+
+      foreach (file_search($file, GLOB_BRACE) as $file) {
+        file_delete($file, $results);
       }
-      return $size;
+
+    } else {
+
+      if (is_dir($file)) {
+        file_delete(rtrim($file, '/') . '/*', $results);
+        $results[$file] = rmdir($file);
+
+      } else if (is_file($file) || is_link($file)) {
+        $results[$file] = unlink($file);
+
+      } else if (file_exists($file)) {
+        $results[$file] = false;
+      }
     }
 
-    return false;
+    return !in_array(false, $results);
   }
 
   function file_format_size($size) {
@@ -52,22 +60,23 @@
     return (substr_count($blk, "^ -~")/512 > 0.3) or (substr_count($blk, "\x00") > 0);
   }
 
-  function file_path($path) {
+  function file_move($source, $target, &$results=[]) {
 
-    $path = str_replace('\\', '/', $path);
-    $parts = array_filter(explode('/', $path), 'strlen');
+    $source = str_replace('\\', '/', $source);
+    $target = str_replace('\\', '/', $target);
 
-    $absolutes = [];
-    foreach ($parts as $part) {
-      if ('.' == $part) continue;
-      if ('..' == $part) {
-        array_pop($absolutes);
-      } else {
-        $absolutes[] = $part;
+    if (preg_match('#[*!\[\]{}]#', $source)) {
+
+      foreach (file_search($source, GLOB_BRACE) as $file) {
+        $base_source = preg_replace('#^(.*/).*?$#', '$1', strtok($source, '*'));
+        file_move($file, rtrim($target, '/') .'/'. preg_replace('#^'. preg_quote($base_source, '#') .'#', '', $file), $results);
       }
+
+    } else {
+      $results[$target] = rename($source, $target);
     }
 
-    return implode('/', $absolutes);
+    return !in_array(false, $results);
   }
 
   function file_permissions($file) {
@@ -84,11 +93,17 @@
   }
 
   function file_realpath($path) {
-    $path = str_replace('\\', '/', realpath($path));
+
+    if (file_exists($path)) {
+      $path = str_replace('\\', '/', realpath($path));
+    } else {
+      $path = str_replace('\\', '/', $path);
+    }
+
     if (is_dir($path)) $path = rtrim($path, '/') . '/';
+
     return $path;
   }
-
 
   function file_relative_path($target, $base = FS_DIR_APP) {
 
@@ -135,10 +150,12 @@
   // Set basedir and remains
     $basedir = '';
     $remains = $glob;
+
     for ($i=0; $i<strlen($glob); $i++) {
       if (in_array($glob[$i], ['*', '[', ']', '{', '}'])) break;
       if ($glob[$i] == '/') {
-        @list($basedir, $remains) = str_split($glob, $i+1);
+        $basedir = substr($glob, 0, $i+1);
+        $remains = substr($glob, $i+1);
       }
     }
 
@@ -242,22 +259,70 @@
     return $results;
   }
 
-  function file_xcopy($source, $target, $flags=0, &$results=[]) {
+  function file_size($file) {
 
-    if (is_file($source) || is_link($source)) {
-      return $results[$target] = copy($source, $target);
+    if (is_file($file)) {
+      return filesize($file);
     }
 
-    if (is_dir($source)) {
-      if (!is_dir($target)) {
-        return $results[$target] = mkdir($target);
+    if (is_dir($file)) {
+      $size = 0;
+      foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($file)) as $f) {
+        $size += $f->getSize();
+      }
+      return $size;
+    }
+
+    return false;
+  }
+
+  function file_webpath($file) {
+
+    $file = file_realpath($file);
+
+    return preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '/', $file);
+  }
+
+  function file_xcopy($source, $target, &$results=[]) {
+
+    if (!isset($results) || !is_array($results)) {
+      $results = [];
+    }
+
+    $source = str_replace('\\', '/', $source);
+    $target = str_replace('\\', '/', $target);
+
+  // Resolve logic
+    if (preg_match('#[*!\[\]{}]#', $source)) {
+
+      foreach (file_search($source, GLOB_BRACE) as $file) {
+        $base_source = preg_replace('#^([^*!\[\]{}]+/).*$#', '$1', $source);
+        file_xcopy($file, rtrim($target, '/') .'/'. preg_replace('#^'. preg_quote($base_source, '#') .'#', '', $file), $results);
       }
 
-      foreach (scandir($source) as $file) {
-        if ($file == '.' || $file == '..') continue;
-        file_xcopy(rtrim($source, '/') .'/'. $file, rtrim($target, '/') .'/'. $file);
+    } else {
+
+      if (!file_exists($source)) {
+        $results[$target] = false;
+
+      } else if (is_dir($source)) {
+
+        if (!is_dir($target)) {
+          $results[$target] = mkdir($target, 0777, true);
+          if (!$results[$target]) return false;
+        }
+
+        file_xcopy(rtrim($source, '/') .'/*', rtrim($target, '/') .'/', $results);
+
+      } else if (is_file($source) || is_link($source)) {
+
+        if (is_dir($target)) {
+          $results[$target] = copy(rtrim($source, '/') .'/*', rtrim($target, '/') .'/'. basename($source), $results);
+        } else {
+          $results[$target] = copy($source, $target);
+        }
       }
     }
 
-    return true;
+    return !in_array(false, $results);
   }
