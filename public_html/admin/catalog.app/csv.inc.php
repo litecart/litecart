@@ -543,7 +543,9 @@
               if (isset($row[$field])) $product->data[$field] = $row[$field];
             }
 
-            if (isset($row['categories'])) $product->data['categories'] = preg_split('#\s*,\s*#', $row['categories'], -1, PREG_SPLIT_NO_EMPTY);
+            if (isset($row['categories'])) {
+              $product->data['categories'] = preg_split('#\s*,\s*#', $row['categories'], -1, PREG_SPLIT_NO_EMPTY);
+            }
 
           // Set price
             if (!empty($row['currency_code'])) {

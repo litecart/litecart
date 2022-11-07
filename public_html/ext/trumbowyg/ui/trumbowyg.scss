@@ -17,7 +17,7 @@ $slow-transition-duration: 300ms;
  */
 
 :root {
-  --trumbowyg-icon-size: 17px;
+  --trumbowyg-icon-size: 1rem;
   --trumbowyg-pane-button-padding: 5px;
   --trumbowyg-text-color: #222;
 
@@ -26,12 +26,12 @@ $slow-transition-duration: 300ms;
 
   --trumbowyg-pane-background-color: #F4F7FA;
   --trumbowyg-pane-text-color: #222;
-  --trumbowyg-pane-button-size: 35px;
+  --trumbowyg-pane-button-size: 2.25em;
 
   --trumbowyg-button-background-color: #ecf0f1;
   --trumbowyg-button-background-color-active: #fff;
 
-  --trumbowyg-editor-background-color: #fff;
+  --trumbowyg-editor-background-color: var(--input-background-color);
   --trumbowyg-editor-text-color: #222;
 
   --trumbowyg-source-background-color: #222;
@@ -253,7 +253,10 @@ html.dark-mode .trumbowyg,
 
     svg {
       vertical-align: middle;
-      &:hover {
+    }
+
+    &:hover {
+      svg {
         transform: scale(1.25);
       }
     }
@@ -345,7 +348,7 @@ html.dark-mode .trumbowyg,
 
     &:hover,
     &:focus {
-      background: var(--trumbowyg-text-color);
+      filter: brightness(.85);
     }
 
     svg {
