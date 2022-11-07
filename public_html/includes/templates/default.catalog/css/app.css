@@ -364,7 +364,7 @@ body.has-offcanvas {
 }
 @media (min-width: 768px) {
   .listing.products.columns {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
 }
 .listing.products.rows {

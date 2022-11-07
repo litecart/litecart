@@ -110,7 +110,8 @@
       success: function(response){
         var content = $('.listing.products', response).html();
         var pagination = $('.pagination', response).length ? $('.pagination', response).html() : '';
-        $('.listing.products').html(content);
+        console.log($('.listing.products').length);
+        $('.listing.products').html(content).show();
         $('.pagination').html(pagination);
       }
     });
