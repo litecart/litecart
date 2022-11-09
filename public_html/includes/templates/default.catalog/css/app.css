@@ -252,6 +252,9 @@ body.has-offcanvas {
 .box {
   margin: var(--gutter-size) 0;
 }
+#box-filter {
+  margin-bottom: 2em;
+}
 #box-filter .filters {
   display: grid;
   grid-auto-flow: row;

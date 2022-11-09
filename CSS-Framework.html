@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<title>Framework Demo</title>
+<title>Frontend CSS Framework Demo</title>
 <meta charset="UTF-8" />
 <link rel="stylesheet" href="public_html/includes/templates/default.catalog/css/variables.css" />
 <link rel="stylesheet" href="public_html/includes/templates/default.catalog/css/framework.min.css" />
@@ -82,8 +82,8 @@ main {
     <h2>Tabs</h2>
 
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#tab-1" data-toggle="tab">Tab 1</a></li>
-      <li><a href="#tab-2" data-toggle="tab">Tab 2</a></li>
+      <li class="nav-link active"><a href="#tab-1" data-toggle="tab">Tab 1</a></li>
+      <li><a class="nav-link" href="#tab-2" data-toggle="tab">Tab 2</a></li>
     </ul>
 
     <div class="tab-content">
@@ -98,18 +98,34 @@ main {
     <h2>Pills</h2>
 
     <ul class="nav nav-pills">
-      <li class="active"><a href="#">Home</a></li>
-      <li><a href="#">Profile</a></li>
-      <li><a href="#">Messages</a></li>
+      <li class="active"><a href="#">Item 1</a></li>
+      <li><a class="nav-link" href="#">Item 2</a></li>
+      <li><a class="nav-link" href="#">Item 3</a></li>
     </ul>
 
     <h2>Stacked Pills</h2>
 
     <ul class="nav nav-pills nav-stacked">
-      <li class="active"><a href="#">Home</a></li>
-      <li><a href="#">Profile</a></li>
-      <li><a href="#">Messages</a></li>
+      <li class="active"><a href="#">Item 1</a></li>
+      <li><a class="nav-link" href="#">Item 2</a></li>
+      <li><a class="nav-link" href="#">Item 3</a></li>
     </ul>
+  </section>
+
+  <section class="twelve-eighty">
+    <h2>Cards</h2>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Card Title</div>
+      </div>
+      <div class="card-body">
+        Card Body
+      </div>
+      <div class="card-footer">
+        Card Footer
+      </div>
+    </div>
   </section>
 
   <section class="twelve-eighty">
@@ -141,11 +157,11 @@ main {
       <ul class="pagination">
         <li class="disabled"><span>&laquo;</span></li>
         <li class="active"><span>1</span></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#"><span>&raquo;</span></a>
+        <li><a class="nav-link" href="#">2</a></li>
+        <li><a class="nav-link" href="#">3</a></li>
+        <li><a class="nav-link" href="#">4</a></li>
+        <li><a class="nav-link" href="#">5</a></li>
+        <li><a class="nav-link" href="#"><span>&raquo;</span></a>
         </li>
       </ul>
     </nav>

@@ -1,84 +1,80 @@
-<section id="box-filter" class="card">
-  <div class="card-header">
+<div id="box-filter">
+  <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
+    <div class="filters">
 
-    <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
-
-      <div class="filters">
-
-        <div>
-          <?php echo functions::form_draw_search_field('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. language::translate('title_name', 'Name') .'" placeholder="'. functions::escape_html(language::translate('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>
-        </div>
-
-        <?php if ($manufacturers) { ?>
-        <div>
-          <div class="dropdown">
-            <div class="form-control" data-toggle="dropdown">
-              <?php echo language::translate('title_manufacturers', 'Brands'); ?>
-            </div>
-            <ul class="dropdown-menu">
-              <?php foreach ($manufacturers as $manufacturer) { ?>
-              <li>
-                <label class="option"><?php echo functions::form_draw_checkbox('manufacturers[]', $manufacturer['id'], true, 'data-token-group="manufacturer" data-token-title="'. language::translate('title_manufacturer', 'Brand') .'" data-token-value="'. $manufacturer['name'] .'"'); ?>
-                  <span class="title"><?php echo $manufacturer['name']; ?></span>
-                </label>
-              </li>
-              <?php } ?>
-            </ul>
-          </div>
-        </div>
-        <?php } ?>
-
-        <?php if ($attributes) foreach ($attributes as $group) { ?>
-        <div>
-          <div class="dropdown">
-            <div class="form-control" data-toggle="dropdown">
-              <?php echo $group['name']; ?>
-            </div>
-            <ul class="dropdown-menu">
-              <?php foreach ($group['values'] as $value) { ?>
-              <li>
-                <label class="option"><?php echo !empty($group['select_multiple']) ? functions::form_draw_checkbox('attributes['. $group['id'] .'][]', $value['id'], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_html($group['name']) .'" data-token-value="'. functions::escape_html($value['value']) .'"') : functions::form_draw_radio_button('attributes['. $group['id'] .'][]', $value['id'], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_html($group['name']) .'" data-token-value="'. functions::escape_html($value['value']) .'"'); ?>
-                  <span class="title"><?php echo $value['value']; ?></span>
-                </label>
-              </li>
-              <?php } ?>
-            </ul>
-          </div>
-        </div>
-        <?php } ?>
-
-        <div>
-          <div class="dropdown">
-            <div class="form-control" data-toggle="dropdown">
-              <?php echo language::translate('title_sort_by', 'Sort By'); ?>
-            </div>
-            <ul class="dropdown-menu">
-              <?php foreach ($sort_alternatives as $key => $title) { ?>
-              <li>
-                <label class="option">
-                  <?php echo functions::form_draw_radio_button('sort', $key, true); ?>
-                  <span class="title"><?php echo $title; ?></span>
-                </label>
-              </li>
-              <?php } ?>
-            </ul>
-          </div>
-        </div>
-
-        <div>
-          <div class="btn-group btn-group-inline float-end" data-toggle="buttons">
-            <label class="btn btn-default<?php echo ($_GET['list_style'] == 'columns') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="columns"<?php echo (!isset($_GET['list_style']) || $_GET['list_style'] == 'columns') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-th'); ?></label>
-            <label class="btn btn-default<?php echo ($_GET['list_style'] == 'rows') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="rows"<?php echo (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-th-list'); ?></label>
-          </div>
-        </div>
-
+      <div>
+        <?php echo functions::form_draw_search_field('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. language::translate('title_name', 'Name') .'" placeholder="'. functions::escape_html(language::translate('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>
       </div>
 
-      <div class="tokens"></div>
+      <?php if ($manufacturers) { ?>
+      <div>
+        <div class="dropdown">
+          <div class="form-control" data-toggle="dropdown">
+            <?php echo language::translate('title_manufacturers', 'Brands'); ?>
+          </div>
+          <ul class="dropdown-menu">
+            <?php foreach ($manufacturers as $manufacturer) { ?>
+            <li>
+              <label class="option"><?php echo functions::form_draw_checkbox('manufacturers[]', $manufacturer['id'], true, 'data-token-group="manufacturer" data-token-title="'. language::translate('title_manufacturer', 'Brand') .'" data-token-value="'. $manufacturer['name'] .'"'); ?>
+                <span class="title"><?php echo $manufacturer['name']; ?></span>
+              </label>
+            </li>
+            <?php } ?>
+          </ul>
+        </div>
+      </div>
+      <?php } ?>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
-</section>
+      <?php if ($attributes) foreach ($attributes as $group) { ?>
+      <div>
+        <div class="dropdown">
+          <div class="form-control" data-toggle="dropdown">
+            <?php echo $group['name']; ?>
+          </div>
+          <ul class="dropdown-menu">
+            <?php foreach ($group['values'] as $value) { ?>
+            <li>
+              <label class="option"><?php echo !empty($group['select_multiple']) ? functions::form_draw_checkbox('attributes['. $group['id'] .'][]', $value['id'], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_html($group['name']) .'" data-token-value="'. functions::escape_html($value['value']) .'"') : functions::form_draw_radio_button('attributes['. $group['id'] .'][]', $value['id'], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_html($group['name']) .'" data-token-value="'. functions::escape_html($value['value']) .'"'); ?>
+                <span class="title"><?php echo $value['value']; ?></span>
+              </label>
+            </li>
+            <?php } ?>
+          </ul>
+        </div>
+      </div>
+      <?php } ?>
+
+      <div>
+        <div class="dropdown">
+          <div class="form-control" data-toggle="dropdown">
+            <?php echo language::translate('title_sort_by', 'Sort By'); ?>
+          </div>
+          <ul class="dropdown-menu">
+            <?php foreach ($sort_alternatives as $key => $title) { ?>
+            <li>
+              <label class="option">
+                <?php echo functions::form_draw_radio_button('sort', $key, true); ?>
+                <span class="title"><?php echo $title; ?></span>
+              </label>
+            </li>
+            <?php } ?>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <div class="btn-group btn-group-inline float-end" data-toggle="buttons">
+          <label class="btn btn-default<?php echo ($_GET['list_style'] == 'columns') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="columns"<?php echo (!isset($_GET['list_style']) || $_GET['list_style'] == 'columns') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-th'); ?></label>
+          <label class="btn btn-default<?php echo ($_GET['list_style'] == 'rows') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="rows"<?php echo (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-th-list'); ?></label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tokens"></div>
+
+  <?php echo functions::form_draw_form_end(); ?>
+</div>
 
 <script>
   $('body').on('input', '#box-filter form[name="filter_form"] :input', function(){
@@ -109,9 +105,10 @@
       dataType: 'html',
       success: function(response){
         var content = $('.listing.products', response).html();
+        var classes = $('.listing.products', response).attr('class');
         var pagination = $('.pagination', response).length ? $('.pagination', response).html() : '';
         console.log($('.listing.products').length);
-        $('.listing.products').html(content).show();
+        $('.listing.products').html(content).attr('class', classes).show();
         $('.pagination').html(pagination);
       }
     });

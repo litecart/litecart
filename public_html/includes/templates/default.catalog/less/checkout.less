@@ -88,14 +88,20 @@
 }
 
 #box-checkout-shipping, #box-checkout-payment {
+
   .thumbnail {
     padding: .5em;
     overflow: hidden;
   }
   .option {
     position: relative;
+    background: var(--card-background-color);
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 10%);
     &.btn {
       padding: 12px;
+    }
+    &.active {
+      background: #eaebef;
     }
     &:not(.active) {
       .content {
@@ -104,9 +110,6 @@
       }
       &:not(.disabled) {
         opacity: 0.75;
-        -webkit-transition: all 0.25s ease;
-        -moz-transition: all 0.25s ease;
-        -o-transition: all 0.25s ease;
         transition: all 0.25s ease;
       }
     }

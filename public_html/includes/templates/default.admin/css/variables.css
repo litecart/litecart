@@ -21,7 +21,7 @@
   --whitespace-color: #fff;
   --top-background-color: var(--card-background-color);
   --top-text-color: var(--card-text-color);
-  --page-background-color: #f6f6f6;
+  --page-background-color: #f5f6f7;
   --sidebar-background-color: #e6e8ec;
   --sidebar-border-color: var(--default-border-color);
   --sidebar-text-color: #333;
@@ -47,6 +47,8 @@
   --card-body-background-color: transparent;
   --card-footer-backgorund-color: #f2f3f6;
   --pills-background-color: #f3f3f3;
+  --pills-background-color-active: #cfd3e1;
+  --pills-background-color-hover: #f1f3f7;
   --pills-text-color: var(--default-text-color);
   --tab-nav-background-color: #fff;
   --tab-nav-background-color-hover: transparent;
@@ -57,12 +59,12 @@
   --tab-content-text-color: var(--default-text-color);
   --table-header-background-color: #fff;
   --table-body-background-color: #fff;
-  --table-row-background-color-odd: #f9f9f9;
+  --table-row-background-color-odd: #f9fafb;
   --table-row-background-color-even: #fff;
-  --table-row-background-color-hover: #ececec;
+  --table-row-background-color-hover: #ecedef;
   --table-link-background-color: #e3ebf3;
   --table-link-background-color-hover: #cfddeb;
-  --table-footer-background-color: #f3f3f3;
+  --table-footer-background-color: #fbfcfd;
   --table-border-color: #e6e8f0;
   --pagination-background-color: #fff;
   --pagination-background-color-hover: #c8cbd0;

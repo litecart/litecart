@@ -3,7 +3,7 @@
 
   <div class="card-header">
     <?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
-    <a class="btn btn-default float-end" href="<?php echo document::ilink('login', ['redirect_url' => document::ilink('checkout')]) ?>" data-toggle="lightbox" data-require-window-width="768"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
+    <a class="btn btn-default float-end" href="<?php echo document::ilink('login', ['redirect_url' => document::ilink('checkout')]) ?>#box-login" data-toggle="lightbox" data-seamless="true" data-require-window-width="768"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
     <?php } ?>
 
     <h2 class="card-title"><?php echo language::translate('title_customer_details', 'Customer Details'); ?></h2>
@@ -43,24 +43,24 @@
       </div>
 
       <div class="row">
-        <div class="form-group col-xs-6">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
           <?php echo functions::form_draw_text_field('address1', true, 'required'); ?>
         </div>
 
-        <div class="form-group col-xs-6">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
           <?php echo functions::form_draw_text_field('address2', true); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-xs-6">
+        <div class="form-group col-xs-4 col-sm-6">
           <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
           <?php echo functions::form_draw_text_field('postcode', true); ?>
         </div>
 
-        <div class="form-group col-xs-6">
+        <div class="form-group col-xs-8 col-sm-6">
           <label><?php echo language::translate('title_city', 'City'); ?></label>
           <?php echo functions::form_draw_text_field('city', true); ?>
         </div>

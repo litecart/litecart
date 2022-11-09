@@ -40,11 +40,15 @@
             </section>
             <?php } ?>
 
-            <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_filter.inc.php'); ?>
+            <div class="card">
+              <div class="card-body">
+                <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_filter.inc.php'); ?>
 
-            <section class="listing products <?php echo (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? 'rows' : 'columns'; ?>">
-              <?php foreach ($products as $product) echo functions::draw_listing_product($product, ['category_id']); ?>
-            </section>
+                <section class="listing products <?php echo (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? 'rows' : 'columns'; ?>">
+                  <?php foreach ($products as $product) echo functions::draw_listing_product($product, ['category_id']); ?>
+                </section>
+              </div>
+            </div>
           </div>
 
           <?php if ($pagination) { ?>

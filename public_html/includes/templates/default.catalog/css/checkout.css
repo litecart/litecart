@@ -86,10 +86,16 @@
 #box-checkout-shipping .option,
 #box-checkout-payment .option {
   position: relative;
+  background: var(--card-background-color);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 }
 #box-checkout-shipping .option.btn,
 #box-checkout-payment .option.btn {
   padding: 12px;
+}
+#box-checkout-shipping .option.active,
+#box-checkout-payment .option.active {
+  background: #eaebef;
 }
 #box-checkout-shipping .option:not(.active) .content,
 #box-checkout-payment .option:not(.active) .content {
@@ -99,9 +105,6 @@
 #box-checkout-shipping .option:not(.active):not(.disabled),
 #box-checkout-payment .option:not(.active):not(.disabled) {
   opacity: 0.75;
-  -webkit-transition: all 0.25s ease;
-  -moz-transition: all 0.25s ease;
-  -o-transition: all 0.25s ease;
   transition: all 0.25s ease;
 }
 #box-checkout-shipping .option .thumbnail,
