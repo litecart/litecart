@@ -1,6 +1,6 @@
 <footer id="footer" class="hidden-print">
 
-  <div class="fourteen-forty container">
+  <div class="fourteen-forty">
 
     <div class="columns">
       <section class="categories hidden-xs">

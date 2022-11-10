@@ -114,6 +114,7 @@
   $('.offcanvas [data-toggle="dismiss"]').click(function(e){
     $('.offcanvas').removeClass('show');
     $('[data-toggle="offcanvas"]').removeClass('toggled');
+    $('body').removeClass('has-offcanvas');
   });
 
 // Password Strength
@@ -184,11 +185,6 @@
         $('#cart .items').append('<li><a href="' + window._env.platform.url + 'checkout"><i class="fa fa-shopping-cart"></i> ' + json['text_total'] + ': <span class="formatted-value">'+ json['formatted_value'] +'</a></li>');
         $('#cart .quantity').html(json['quantity'] ? json['quantity'] : '');
         $('#cart .formatted_value').html(json['formatted_value']);
-        if (json['quantity'] > 0) {
-          $('#cart img').attr('src', window._env.template.url + 'images/cart_filled.svg');
-        } else {
-          $('#cart img').attr('src', window._env.template.url + 'images/cart.svg');
-        }
       }
     });
   }

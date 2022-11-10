@@ -1,8 +1,8 @@
 /* Grid - Bootstrap Compatible */
-.float-start {
+.float-start, .float-left {
   float: left;
 }
-.float-end {
+.float-end, .float-right {
   float: right;
 }
 
@@ -42,10 +42,10 @@ html[dir="rtl"] {
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-gap: var(--gutter-size);
-  margin-bottom: var(--gutter-size);
+  grid-gap: var(--gutter-x);
+  margin-bottom: var(--gutter-y);
   &.layout {
-    grid-gap: ~"calc(var(--gutter-size) * 2)";
+    grid-gap: var(--gutter-x);
   }
   &.column {
     flex-direction: column;
@@ -56,10 +56,6 @@ html[dir="rtl"] {
   &.center {
     justify-items: center;
     align-items: center;
-  }
-  @media (min-width: @media-breakpoint-sm) {
-    grid-gap: var(--gutter-size);
-    margin-bottom: var(--gutter-size);
   }
   [class*="col-"] {
     grid-column: span 12;

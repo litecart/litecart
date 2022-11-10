@@ -1,11 +1,11 @@
 /* Boxes */
 
 .box {
-  margin: var(--gutter-size) 0;
+  margin-bottom: var(--gutter-y);
 }
 
 #box-filter {
-  margin-bottom: 2em;
+
   .filters {
     display: grid;
     grid-auto-flow: row;
@@ -32,7 +32,7 @@
 
   .tokens {
     &:not(:empty) {
-      padding-top: var(--gutter-size);
+      padding-top: var(--gutter-y);
     }
     .token {
       padding: .5em 1em;
@@ -69,6 +69,7 @@
   backdrop-filter: saturate(200%) blur(5px);
   color: var(--cookie-notice-text-color);
   z-index: 999;
+
   .notice {
     margin-bottom: 1em;
     a {
@@ -76,10 +77,15 @@
       text-decoration: underline;
     }
   }
+
+  button {
+    margin: 0 .5em;
+  }
+
   @media (min-width: (@media-breakpoint-sm)) {
     max-width: 480px;
     margin: 0 auto;
-    bottom: var(--gutter-size);
+    bottom: var(--gutter-y);
     border-radius: var(--border-radius);
   }
 }

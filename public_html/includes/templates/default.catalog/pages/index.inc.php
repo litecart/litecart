@@ -1,4 +1,4 @@
-<div class="fourteen-forty container">
+<div class="fourteen-forty">
   <main id="content">
     {snippet:notices}
 

@@ -11,10 +11,8 @@ html, body {
 
 h1, h2, h3, h4 {
   color: var(--default-text-color);
-  margin: ~"calc(var(--gutter-size)/2)" 0;
-  @media (min-width: @media-breakpoint-sm) {
-    margin: var(--gutter-size) 0;
-  }
+  margin: 0;
+  margin-bottom: 1rem;
 }
 
 a {
@@ -29,7 +27,14 @@ a {
 }
 
 hr {
-  margin: var(--gutter-size) 0;
+  margin: var(--gutter-y) 0;
   border: 0;
   border-top: 1px solid var(--default-border-color);
+}
+
+p {
+  margin-top: 1em;
+  + p {
+    margin-top: 1em;
+  }
 }

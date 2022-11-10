@@ -1,4 +1,4 @@
-<section id="box-manufacturer-links">
+<section id="box-manufacturer-links" class="box">
   <div class="card-header">
     <h2 class="card-title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h2>
   </div>

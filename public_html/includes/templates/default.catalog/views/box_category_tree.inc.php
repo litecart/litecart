@@ -27,7 +27,7 @@
 </style>
 <?php } ?>
 
-<section id="box-category-tree" class="hidden-xs">
+<section id="box-category-tree" class="box">
   <div class="card-header">
     <h2 class="card-title"><?php echo $title; ?></h2>
   </div>

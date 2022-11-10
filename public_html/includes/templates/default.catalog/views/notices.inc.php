@@ -19,7 +19,7 @@
           break;
 
         case 'notices':
-          echo '<div class="alert alert-info">' . PHP_EOL
+          echo '<div class="alert alert-default">' . PHP_EOL
              . '  <a href="#" class="close" data-dismiss="alert">'. functions::draw_fonticon('fa-times') .'</a>' . PHP_EOL
              . '  ' . functions::draw_fonticon('fa-info-circle') . ' ' . $notice . PHP_EOL
              . '</div>';
@@ -39,14 +39,18 @@
 
 <script>
   setTimeout(function(){
-    $('#notices .alert').not('.alert-danger').slideUp('fast');
+    $('#notices .alert').not('.alert-danger');
   }, 20000);
 
-  $('#notices .alert-danger').on('mouseout', function() {
-    $(this).stop().fadeTo(15000, 0.15);
+  $('#notices .alert').on('mouseout', function() {
+    $(this).stop().fadeTo(15e3, 0, function(){
+      $(this).slideUp('fast', function(){
+        $(this).remove();
+      });
+    });
   }).trigger('mouseout');
 
-  $('#notices .alert-danger').on('mouseover', function() {
+  $('#notices .alert').on('mouseover', function() {
     $(this).stop().fadeTo(200, 1);
   });
 </script>

@@ -17,7 +17,8 @@
 :root {
   /* General */
   --border-radius: 8px;
-  --gutter-size: 1.5rem;
+  --gutter-x: 0.5rem;
+  --gutter-y: 1rem;
   --link-text-color: #222;
   --shadow-color: rgba(0, 0, 0, 0.3);
   --whitespace-color: #fff;
@@ -38,7 +39,7 @@
   --navigation-text-color: #222;
   /* Defaults */
   --default-background-color: #edeff3;
-  --default-border-color: #e5e5e7;
+  --default-border-color: #efeff9;
   --default-line-height: 1.3333;
   --default-text-font: 'Asap', Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #222;
@@ -125,17 +126,35 @@
   --table-row-hover-background: #ececec;
   /* Pagination */
   --pagination-background-color: var(--default-background-color);
+  --pagination-background-color-active: #d7dae3;
+  --pagination-background-color-hover: #e7e8ed;
   --pagination-text-color: var(--default-text-color);
+  --pagination-text-color-active: var(--default-text-color);
+  --pagination-text-color-hover: var(--default-text-color);
   --pagination-border-color: var(--default-border-color);
-  --pagination-active-background-color: #cdcdcd;
-  --pagination-active-text-color: var(--default-text-color);
-  --pagination-hover-background-color: #f3f3f3;
-  --pagination-hover-text-color: var(--default-text-color);
   /* Footer */
   --footer-background-color: #d9dbe1;
   --footer-title-color: var(--default-text-color);
   --footer-text-color: var(--default-text-color);
   /* Copyright */
-  --copyright-background-color: #c3c7d3;
+  --copyright-background-color: #ced0d9;
   --copyright-text-color: var(--default-text-color);
+}
+@media (min-width: 768px) {
+  :root {
+    --gutter-x: 1rem;
+    --gutter-y: 1rem;
+  }
+}
+@media (min-width: 992px) {
+  :root {
+    --gutter-x: 1.5rem;
+    --gutter-y: 1.5rem;
+  }
+}
+@media (min-width: 1200px) {
+  :root {
+    --gutter-x: 2rem;
+    --gutter-y: 2rem;
+  }
 }

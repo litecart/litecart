@@ -6,10 +6,10 @@
 
   .bubble {
     position: relative;
-    margin: 0 10% var(--gutter-size) 10%;
-    padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+    margin: 0 10% var(--gutter-y) 10%;
+    padding: ~"calc(var(--gutter-y)/2)" var(--gutter-x);
     background: #e5e5ea;
-    border-radius: var(--gutter-size);
+    border-radius: 1.5rem;
     color: #000;
 
     &.remote, &.local {
@@ -32,7 +32,7 @@
     }
 
     &.remote {
-      margin: 0 10% var(--gutter-size) 0;
+      margin: 0 10% var(--gutter-y) 0;
       &:before {
         left: -7px;
         border-left: 20px solid #e5e5ea;
@@ -47,7 +47,7 @@
     }
 
     &.local {
-      margin: 0 0 var(--gutter-size) 10%;
+      margin: 0 0 var(--gutter-y) 10%;
       background: #0b93f6;
       color: #fff;
       &:before {
@@ -80,8 +80,8 @@
       content: "";
       position: absolute;
       bottom: 0;
-      width: var(--gutter-size);
-      height: var(--gutter-size);
+      width: var(--gutter-x);
+      height: var(--gutter-y);
     }
 
     .text {

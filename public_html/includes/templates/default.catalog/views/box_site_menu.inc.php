@@ -9,7 +9,7 @@
       <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
     <?php echo functions::form_draw_form_end(); ?>
 
-    <a class="regional-setting text-center" href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="lightbox" data-seamless="true">
+    <a class="regional-setting text-center" href="<?php echo document::href_ilink('regional_settings'); ?>#box-regional-settings" data-toggle="lightbox" data-seamless="true">
       <div class="navbar-icon"><?php echo functions::draw_fonticon('fa-globe'); ?></div>
       <small class="hidden-xs"><?php echo language::$selected['code']; ?> / <?php echo customer::$data['country_code']; ?> / <?php echo currency::$selected['code']; ?></small>
     </a>
@@ -43,10 +43,10 @@
 
         <?php if ($categories) { ?>
         <li class="nav-item categories dropdown">
-          <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_categories', 'Categories'); ?> <b class="caret"></b></a>
+          <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_categories', 'Categories'); ?></a>
           <ul class="dropdown-menu">
             <?php foreach ($categories as $item) { ?>
-            <li class="nav-item"><a href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
+            <li class="nav-item"><a class="nav-link" href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
             <?php } ?>
           </ul>
         </li>
@@ -54,10 +54,10 @@
 
         <?php if ($manufacturers) { ?>
         <li class="nav-item manufacturers dropdown">
-          <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?> <b class="caret"></b></a>
+          <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></a>
           <ul class="dropdown-menu">
             <?php foreach ($manufacturers as $item) { ?>
-            <li class="nav-item"><a href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
+            <li class="nav-item"><a class="nav-link" href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
             <?php } ?>
           </ul>
         </li>
@@ -65,7 +65,7 @@
 
         <?php if ($pages) { ?>
         <li class="nav-item information dropdown">
-          <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?> <b class="caret"></b></a>
+          <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?></a>
           <ul class="dropdown-menu">
             <?php foreach ($pages as $item) { ?>
             <li><a class="nav-link" href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
@@ -83,7 +83,7 @@
 
         <?php if (settings::get('accounts_enabled')) { ?>
         <li class="nav-item account dropdown">
-          <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? functions::escape_html(customer::$data['firstname']) : language::translate('title_sign_in', 'Sign In'); ?> <b class="caret"></b></a>
+          <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? functions::escape_html(customer::$data['firstname']) : language::translate('title_sign_in', 'Sign In'); ?></a>
           <ul class="dropdown-menu dropdown-menu-right">
             <?php if (!empty(customer::$data['id'])) { ?>
               <li><a class="dropdown-item" href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>

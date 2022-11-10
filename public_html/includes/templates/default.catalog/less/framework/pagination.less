@@ -39,17 +39,17 @@
   > li > a, > li > span {
     &:hover, &:focus {
       z-index: 2;
-      color: var(--pagination-hover-text-color);
-      background-color: var(--pagination-hover-background-color);
+      color: var(--pagination-text-color-hover);
+      background-color: var(--pagination-background-color-hover);
     }
   }
 
   > .active > a, > .active > span {
     &, &:hover, &:focus {
       z-index: 3;
-      color: var(--pagination-active-text-color);
-      background-color: var(--pagination-active-background-color);
-      border-color: var(--pagination-active-background-color);
+      color: var(--pagination-text-color-active);
+      background-color: var(--pagination-background-color-active);
+      border-color: var(--pagination-background-color-active);
       cursor: default;
     }
   }

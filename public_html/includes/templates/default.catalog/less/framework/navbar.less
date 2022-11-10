@@ -43,7 +43,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--gutter-size);
+    padding: var(--gutter-y);
 
     @media (min-width: @media-breakpoint-md) {
       display: none;
@@ -88,7 +88,7 @@ html[dir="rtl"] .offcanvas {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: var(--gutter-y);
   background: var(--navigation-background-color);
   color: var(--navigation-text-color);
   border-radius: var(--border-radius);
@@ -106,9 +106,9 @@ html[dir="rtl"] .offcanvas {
   }
 
   .navbar-brand {
-    padding-top: ~"calc(var(--gutter-size) / 2)";
-    padding-bottom: ~"calc(var(--gutter-size) / 2)";
-    margin-inline-end: 1em;
+    padding-top: var(--gutter-y);
+    padding-bottom: var(--gutter-y);
+    margin-inline-end: var(--gutter-x);
     color: var(--navigation-text-color);
     text-decoration: none;
     white-space: nowrap;
@@ -164,7 +164,7 @@ html[dir="rtl"] .offcanvas {
 
   .nav-link {
     display: block;
-    padding: 1em var(--gutter-size);
+    padding: 1em var(--gutter-x);
     color: var(--navigation-text-color);
     text-decoration: none;
     //border-radius: var(--border-radius);
@@ -181,21 +181,25 @@ html[dir="rtl"] .offcanvas {
     }
 
     @media (min-width: @media-breakpoint-md) {
-      padding-right: var(--gutter-size);
-      padding-left: var(--gutter-size);
+      padding: 1em 1.5em;
     }
   }
 
-  @media (max-width: calc(@media-breakpoint-sm - 1px)) {
+  @media (max-width: calc(@media-breakpoint-md - 1px)) {
+    .dropdown:not(.open) .dropdown-menu {
+      display: none;
+    }
     .dropdown.open .dropdown-menu {
       position: static;
       float: none;
       width: auto;
-      margin-left: 1.5em;
-      margin-top: 0;
+      margin: 1em;
       background-color: transparent;
       border: 0;
       box-shadow: none;
+      form {
+        margin: 0;
+      }
     }
   }
 }

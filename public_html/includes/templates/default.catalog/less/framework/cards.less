@@ -1,15 +1,16 @@
 /* Panels - Bootstrap Compatible */
 
 .card {
-  margin: var(--gutter-size) 0;
+  margin: 0;
+  margin-bottom: var(--gutter-y);
   background: var(--card-background-color);
   border: 1px solid var(--card-border-color);
   border-radius: var(--border-radius);
   box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
   color: var(--card-text-color);
 
-  .card-header, .card-filter, .card-body, .card-footer{
-    padding: var(--gutter-size);
+  .card-header, .card-filter, .card-body, .card-footer {
+    padding: var(--gutter-y) var(--gutter-x);
   }
 
   .card-header + .card-filter,
@@ -26,7 +27,13 @@
     .card-title {
       margin: 0;
       font-weight: bold;
-      font-size: 1.5rem;
+      font-size: 1.25rem;
+      @media (min-width: (@media-breakpoint-sm)) {
+        font-size: 1.33rem;
+      }
+      @media (min-width: (@media-breakpoint-md)) {
+        font-size: 1.5rem;
+      }
     }
   }
 

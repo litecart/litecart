@@ -14,7 +14,7 @@
 
 <?php if ($important_notice) { ?>
 <div id="important-notice">
-  <div class="fourteen-forty container">
+  <div class="fourteen-forty">
     <?php echo $important_notice; ?>
   </div>
 </div>
@@ -23,7 +23,7 @@
 <?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
 
 <nav id="site-menu">
-  <div class="fourteen-forty container">
+  <div class="fourteen-forty">
     <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_site_menu.inc.php'); ?>
   </div>
 </nav>

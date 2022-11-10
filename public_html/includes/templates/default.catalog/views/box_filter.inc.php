@@ -1,4 +1,4 @@
-<div id="box-filter">
+<div id="box-filter" class="box">
   <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
     <div class="filters">
 
