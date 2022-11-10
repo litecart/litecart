@@ -5,7 +5,7 @@
 }
 </style>
 
-<div class="fourteen-forty container">
+<div class="fourteen-forty">
   <div class="layout row">
     <div class="col-md-3">
 

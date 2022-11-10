@@ -16,7 +16,19 @@
   padding-bottom: var(--gutter-y);
 }
 #header .logotype img {
-  max-width: 250px;
+  max-width: 150px;
+  max-height: 32px;
+}
+@media (min-width: 768px) {
+  #header .logotype img {
+    max-width: 250px;
+    max-height: 80px;
+  }
+}
+@media (min-width: 768px) {
+  #header .logotype {
+    width: auto;
+  }
 }
 #header .middle {
   flex-grow: 1;
@@ -67,6 +79,10 @@
 }
 #box-checkout-cart .name {
   font-weight: 600;
+}
+#box-checkout-cart .btn {
+  padding-left: 1em;
+  padding-right: 1em;
 }
 #box-checkout-cart .error {
   color: #f00;

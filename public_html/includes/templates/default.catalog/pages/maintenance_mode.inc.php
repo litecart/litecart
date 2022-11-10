@@ -18,7 +18,7 @@ body {
 }
 </style>
 
-<div class="fourteen-forty container">
+<div class="fourteen-forty">
   <main id="content">
     <section id="box-maintenance-mode">
       <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />

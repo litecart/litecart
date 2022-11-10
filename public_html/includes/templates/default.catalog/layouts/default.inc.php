@@ -20,7 +20,6 @@
 </div>
 <?php } ?>
 
-<?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
 
 <nav id="site-menu">
   <div class="fourteen-forty">
@@ -29,6 +28,8 @@
 </nav>
 
 {snippet:content}
+
+<?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
 
 <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_site_footer.inc.php'); ?>
 

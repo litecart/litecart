@@ -1,4 +1,4 @@
-<div class="fourteen-forty container">
+<div class="fourteen-forty">
   <div class="layout row">
 
     <div class="hidden-xs hidden-sm col-md-3">

@@ -1,4 +1,4 @@
-<main id="content" class="fourteen-forty container">
+<main id="content" class="fourteen-forty">
   {snippet:notices}
 
   <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process'), false, 'autocomplete="off"'); ?>

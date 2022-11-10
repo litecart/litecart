@@ -898,7 +898,7 @@ html[dir="rtl"] .float-end {
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-gap: var(--gutter-x);
+  grid-gap: var(--gutter-y) var(--gutter-x);
   margin-bottom: var(--gutter-y);
 }
 .row.layout {
