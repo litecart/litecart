@@ -165,8 +165,12 @@
 
       if (empty($path)) return '';
 
-      if ($path = parse_url($path, PHP_URL_PATH)) {
-        $path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $path);
+      if (!$path = parse_url($path, PHP_URL_PATH)) {
+        return '';
+      }
+
+      if (!$path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', '$4', $path)) {
+        return '';
       }
 
       return $path;
