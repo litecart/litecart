@@ -4,8 +4,8 @@
     {snippet:breadcrumbs}
 
     <div class="row">
-      <div class="col-md-6">
-        <div id="box-login" class="card">
+      <div class="card col-sm-6 col-md-4">
+        <div id="box-login" style="margin: 0 auto;">
 
           <div class="card-header">
             <h2 class="card-title"><?php echo language::translate('title_sign_in', 'Sign In'); ?></h2>
@@ -41,9 +41,9 @@
         </div>
       </div>
 
-      <div class="col-md-6">
+      <div class="card col-sm-6 col-md-8">
 
-        <section id="box-login-create" class="card">
+        <section id="box-login-create">
           <div class="card-header">
             <h2 class="card-title"><?php echo language::translate('title_create_an_account', 'Create an Account'); ?></h2>
           </div>

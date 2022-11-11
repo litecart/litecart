@@ -51,9 +51,9 @@
     </div>
 
     <div class="confirm row" style="margin-bottom: 0;">
-      <div class="col-md-9">
+      <div class="col-md-9" style="align-self: center;">
         <?php if ($error) { ?>
-        <div class="alert alert-danger" style="margin-bottom: 0;"><?php echo functions::escape_html($error); ?></div>
+        <div class="error"><?php echo functions::escape_html($error); ?></div>
         <?php } ?>
 
         <?php if (!$error && $consent) { ?>

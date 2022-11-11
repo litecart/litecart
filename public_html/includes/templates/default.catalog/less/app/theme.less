@@ -5,11 +5,13 @@ body {
   }
 }
 
-#page {
-  display: flex;
-  flex-direction: column;
+#page-container {
   min-height: 100vh;
-  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-flow: column;
+}
+#content-wrapper {
+  flex-grow: 1;
 }
 
 #important-notice {

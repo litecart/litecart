@@ -120,7 +120,13 @@
     box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 10%);
     transition: all 250ms ease;
     &.btn {
-      padding: 12px;
+      padding: 1em;
+      &:first-child {
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+      }
+      &:last-child {
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+      }
     }
     &.active {
       background: #eaebef;
@@ -147,6 +153,13 @@
       text-align: start;
       transition: all 0.25s ease;
     }
+    .description {
+      margin-bottom: 1em;
+    }
+    hr {
+      margin: 1em 0;
+      border-color: #ddd;
+    }
   }
   @media(min-width: @media-breakpoint-sm) {
     .price {
@@ -159,10 +172,14 @@
 }
 
 #box-checkout-summary {
-  .alert {
-    padding: 12px 18px;
+  table {
+    margin-bottom: 0;
+  }
+  .error {
+    align-self: center;
+    font-size: 1.25em;
+    color: #ff0000;
     text-align: center;
-    line-height: 24px;
   }
   input[type=checkbox][required]:not(:checked) {
     animation: flasher 1s linear infinite;

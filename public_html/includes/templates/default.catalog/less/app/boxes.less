@@ -7,16 +7,13 @@
 #box-filter {
 
   .filters {
-    display: grid;
-    grid-auto-flow: row;
-    grid-gap: 1em;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
 
-    @media (min-width: 480px) {
-      grid-auto-flow: column;
-    }
-    @media (min-width: 768px) {
-      grid-auto-flow: column;
+    > * {
+      flex: 1 1 auto;
+      min-width: fit-content;
     }
 
     [data-toggle="dropdown"] {

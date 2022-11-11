@@ -23,7 +23,7 @@
 
         <?php if (settings::get('customer_field_tax_id')) { ?>
         <div class="form-group col-xs-6">
-          <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
+          <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
           <?php echo functions::form_draw_text_field('tax_id', true); ?>
         </div>
         <?php } ?>
@@ -121,24 +121,24 @@
         </div>
 
         <div class="row">
-          <div class="form-group col-xs-6">
+          <div class="form-group col-sm-6">
             <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
             <?php echo functions::form_draw_text_field('shipping_address[address1]', true); ?>
           </div>
 
-          <div class="form-group col-xs-6">
+          <div class="form-group col-sm-6">
             <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
             <?php echo functions::form_draw_text_field('shipping_address[address2]', true); ?>
           </div>
         </div>
 
         <div class="row">
-          <div class="form-group col-xs-6">
+          <div class="form-group col-xs-4">
             <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
             <?php echo functions::form_draw_text_field('shipping_address[postcode]', true); ?>
           </div>
 
-          <div class="form-group col-xs-6">
+          <div class="form-group col-xs-8">
             <label><?php echo language::translate('title_city', 'City'); ?></label>
             <?php echo functions::form_draw_text_field('shipping_address[city]', true); ?>
           </div>

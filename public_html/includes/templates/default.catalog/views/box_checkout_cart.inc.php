@@ -67,7 +67,7 @@
             </div>
 
             <div class="col-sm-2">
-              <div class="total-price text-xs-left text-md-end">
+              <div class="total-price text-xs-left text-sm-end">
                 <?php echo currency::format($item['display_price'] * $item['quantity']); ?>
               </div>
             </div>

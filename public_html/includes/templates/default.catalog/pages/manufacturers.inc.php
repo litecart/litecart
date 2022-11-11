@@ -2,7 +2,7 @@
   <main id="content">
     {snippet:notices}
 
-    <section id="box-manufacturers" class="card">
+    <section id="box-manufacturers" class="box">
 
       <div class="card-header">
         <h1 class="card-title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h1>

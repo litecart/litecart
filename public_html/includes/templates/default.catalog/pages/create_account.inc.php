@@ -3,7 +3,7 @@
 
     <div class="col-md-3">
       <div id="sidebar">
-        <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_customer_service_links.inc.php'); ?>
+        <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_account_links.inc.php'); ?>
       </div>
     </div>
 

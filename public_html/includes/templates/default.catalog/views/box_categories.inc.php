@@ -1,4 +1,4 @@
-<section id="box-categories" class="">
+<section id="box-categories" class="box">
   <div class="card-header">
     <h1 class="card-title"><?php echo language::translate('title_categories', 'Categories'); ?></h1>
   </div>
