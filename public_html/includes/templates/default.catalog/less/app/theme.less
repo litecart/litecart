@@ -40,14 +40,21 @@ body {
   }
 
   .navbar {
-    padding: var(--gutter-y) var(--gutter-x);
-    @media (max-width: @media-breakpoint-md - 1px) {
-      border-radius: 0 0 var(--border-radius) var(--border-radius);
-    }
+    padding: .5rem var(--gutter-x);
+
     @media (min-width: @media-breakpoint-md) {
       margin-top: 7.5em;
       padding: 0;
     }
+
+    @media (min-width: @media-breakpoint-md) and (max-width: 1460px) {
+      margin-left: 0.5em;
+      margin-right: 0.5em;
+    }
+  }
+
+  .dropdown-menu {
+    --gutter-y: .75em;
   }
 }
 
@@ -178,6 +185,13 @@ body {
     .details {
       display: none;
     }
+  }
+}
+
+#content {
+  padding: 0 .5em;
+  @media (min-width: 1460px) {
+    padding: 0;
   }
 }
 

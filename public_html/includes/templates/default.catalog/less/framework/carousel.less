@@ -2,6 +2,8 @@
 
 .carousel {
   position: relative;
+  border-radius: var(--border-radius);
+  overflow: hidden;
   .carousel-control,
   .carousel-indicators {
     opacity: 0;
@@ -20,7 +22,6 @@
 .carousel-inner {
   position: relative;
   width: 100%;
-  overflow: hidden;
   line-height: 0;
   > .item {
     position: relative;
@@ -28,7 +29,6 @@
     transition: .6s ease-in-out left;
     img {
       width: 100%;
-      border-radius: var(--border-radius);
     }
   }
 

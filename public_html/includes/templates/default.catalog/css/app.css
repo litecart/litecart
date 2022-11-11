@@ -35,18 +35,22 @@ body.has-offcanvas {
   }
 }
 #site-menu .navbar {
-  padding: var(--gutter-y) var(--gutter-x);
-}
-@media (max-width: 991px) {
-  #site-menu .navbar {
-    border-radius: 0 0 var(--border-radius) var(--border-radius);
-  }
+  padding: 0.5rem var(--gutter-x);
 }
 @media (min-width: 992px) {
   #site-menu .navbar {
     margin-top: 7.5em;
     padding: 0;
   }
+}
+@media (min-width: 992px) and (max-width: 1460px) {
+  #site-menu .navbar {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
+}
+#site-menu .dropdown-menu {
+  --gutter-y: 0.75em;
 }
 .navbar-header {
   display: flex;
@@ -180,6 +184,14 @@ body.has-offcanvas {
 @media (max-width: calc(768px - 1px)) {
   #cart .details {
     display: none;
+  }
+}
+#content {
+  padding: 0 0.5em;
+}
+@media (min-width: 1460px) {
+  #content {
+    padding: 0;
   }
 }
 #sidebar {

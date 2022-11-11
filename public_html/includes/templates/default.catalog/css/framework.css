@@ -416,6 +416,8 @@ ul.breadcrumb li a {
 /* Carousel - Bootstrap Compatible */
 .carousel {
   position: relative;
+  border-radius: var(--border-radius);
+  overflow: hidden;
 }
 .carousel .carousel-control,
 .carousel .carousel-indicators {
@@ -431,7 +433,6 @@ ul.breadcrumb li a {
 .carousel-inner {
   position: relative;
   width: 100%;
-  overflow: hidden;
   line-height: 0;
 }
 .carousel-inner > .item {
@@ -441,7 +442,6 @@ ul.breadcrumb li a {
 }
 .carousel-inner > .item img {
   width: 100%;
-  border-radius: var(--border-radius);
 }
 .carousel-inner > .active,
 .carousel-inner > .next,
@@ -1615,8 +1615,8 @@ ul.list-inline li {
   transition: transform 150ms ease-in-out;
   z-index: 999;
   border-radius: 0 var(--border-radius) var(--border-radius) 0;
-  background: var(--navigation-background-color);
-  color: var(--navigation-text-color);
+  background: var(--offcanvas-background-color);
+  color: var(--offcanvas-text-color);
   overflow-y: auto;
   box-shadow: 0 0 2em rgba(0, 0, 0, 0.25);
 }
@@ -1688,12 +1688,12 @@ html[dir="rtl"] .offcanvas {
   margin-bottom: var(--gutter-y);
   background: var(--navigation-background-color);
   color: var(--navigation-text-color);
-  border-radius: var(--border-radius);
 }
 @media (min-width: 992px) {
   .navbar {
     flex-wrap: nowrap;
     justify-content: flex-start;
+    border-radius: var(--border-radius);
   }
 }
 .navbar .container {
@@ -1731,14 +1731,14 @@ html[dir="rtl"] .offcanvas {
   top: 2px;
 }
 .navbar-toggler.toggled .icon-bar:nth-of-type(1) {
-  top: 6px;
+  top: 5px;
   transform: rotate(45deg);
 }
 .navbar-toggler.toggled .icon-bar:nth-of-type(2) {
   background-color: transparent;
 }
 .navbar-toggler.toggled .icon-bar:nth-of-type(3) {
-  top: -6px;
+  top: -5px;
   transform: rotate(-45deg);
 }
 .navbar-nav {

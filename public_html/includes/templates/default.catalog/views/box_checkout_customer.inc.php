@@ -133,12 +133,12 @@
         </div>
 
         <div class="row">
-          <div class="form-group col-xs-4">
+          <div class="form-group col-xs-4 col-sm-6">
             <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
             <?php echo functions::form_draw_text_field('shipping_address[postcode]', true); ?>
           </div>
 
-          <div class="form-group col-xs-8">
+          <div class="form-group col-xs-8 col-sm-6">
             <label><?php echo language::translate('title_city', 'City'); ?></label>
             <?php echo functions::form_draw_text_field('shipping_address[city]', true); ?>
           </div>
@@ -174,7 +174,7 @@
 
     <?php if (!$subscribed_to_newsletter) { ?>
     <div class="form-group">
-      <label class="checkbox"><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?></label>
+      <label class="checkbox"><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to occasionally be notified via e-mail when there are news or great offers.'); ?></label>
     </div>
     <?php } ?>
 
