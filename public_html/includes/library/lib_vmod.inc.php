@@ -253,9 +253,16 @@
     // Write modified file
       file_put_contents(FS_DIR_STORAGE . $modified_file, $buffer, LOCK_EX);
 
-      self::$_checked[$original_file] = $modified_file;
-      self::$_checksums[$original_file] = $checksum;
-      file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', $original_file .';'. $modified_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
+    // Update checked cache
+      if (!isset(self::$_checked[$original_file]) || self::$_checksums[$original_file] != $checksum) {
+        self::$_checked[$original_file] = $modified_file;
+        self::$_checksums[$original_file] = $checksum;
+        $serialized_checked = implode('', array_map(function($original_file){
+          return $original_file .';'. self::$_checked[$original_file] .';'. self::$_checksums[$original_file] . PHP_EOL;
+        }, array_keys(self::$_checked)));
+
+        file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', $serialized_checked, LOCK_EX);
+      }
 
       self::$time_elapsed += microtime(true) - $timestamp;
       return FS_DIR_STORAGE . $modified_file;
