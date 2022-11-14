@@ -141,14 +141,17 @@
       $original_file = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
       $modified_file = 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '-', $original_file);
 
-    // Returned an already checked file
-      if (!empty(self::$_checked[$original_file]) && is_file(FS_DIR_STORAGE . self::$_checked[$original_file])) {
-        self::$time_elapsed += microtime(true) - $timestamp;
-        return FS_DIR_STORAGE . self::$_checked[$original_file];
-      }
-
     // Return original file if there are no modifications
       if (empty(self::$_files_to_modifications[$original_file])) {
+
+        if (isset(self::$_checked[$original_file])) {
+          unset(self::$_checked[$original_file]);
+        }
+
+        if (isset(self::$_checksums[$original_file])) {
+          unset(self::$_checksums[$original_file]);
+        }
+
         self::$time_elapsed += microtime(true) - $timestamp;
         return $file;
       }
