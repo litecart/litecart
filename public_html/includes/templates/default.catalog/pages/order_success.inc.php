@@ -1,4 +1,4 @@
-<main id="content">
+<main id="content" class="fourteen-forty">
   {snippet:notices}
 
   <div class="row">
