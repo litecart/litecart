@@ -547,7 +547,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
     <div>
       <?php echo functions::form_draw_button('delete', language::translate('title_uninstall', 'Uninstall'), 'submit', 'class="btn btn-danger"'); ?>
-      <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'submit'); ?>
+      <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button'); ?>
     </div>
 
   <?php echo functions::form_draw_form_end(); ?>
@@ -952,8 +952,10 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
   $('.card-action button[name="delete"]').click(function(e){
     e.preventDefault();
-    $.featherlight('#modal-uninstall', {
-      seamless: true,
-    });
+    $.featherlight('#modal-uninstall');
+  });
+
+  $('body').on('click', '.featherlight button[name="cancel"]', function(e){
+    $.featherlight.close();
   });
 </script>
