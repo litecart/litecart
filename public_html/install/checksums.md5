@@ -72,7 +72,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/modules.app/index.html
 451c654ae359640d3822c0a31373257f	admin/modules.app/run_job.inc.php
 96fdf15c94d7d14796c51967ebf65fba	admin/orders.app/add_product.inc.php
 381895587d3476f5387c80a618b4bdf9	admin/orders.app/config.inc.php
-76d36b9cdf3ee2208c069cf9e1f81627	admin/orders.app/edit_order.inc.php
+c4e975b0b7277e07bdbb3cd56fcde52a	admin/orders.app/edit_order.inc.php
 ff2da361e6111f92dd8548c5ec06718b	admin/orders.app/edit_order_status.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.app/index.html
 5c7e0f5a5320175e405508e4d06352c0	admin/orders.app/order_statuses.inc.php
@@ -345,9 +345,9 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.admin/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.admin/css/printable.min.css.map
 190cb0e8997239c4c7c0e3096b5329a2	includes/templates/default.admin/css/variables.css
-bb1d2cde9027004baef2d31dcf099b10	includes/templates/default.admin/images/background.svg
+00c53b5605d6935ba663a53e391ca90f	includes/templates/default.admin/images/background.svg
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/images/index.html
-e07391a6317ce2056bac2fcfd1e33565	includes/templates/default.admin/images/loader.svg
+e6e2336e113f1248d03214ca228984d5	includes/templates/default.admin/images/loader.svg
 524c056f05c4f1c6e530aff4a9f06b05	includes/templates/default.admin/images/logotype.svg
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/index.html
 f94f3d61ac63e2a8e03c7d039953c561	includes/templates/default.admin/js/app.js
@@ -408,7 +408,7 @@ eb82721c7af418e1c8fc5ab241fc117e	includes/templates/default.catalog/css/printabl
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.catalog/css/printable.min.css.map
 353a6e6f28224d6d3aebf6cfbf5101bd	includes/templates/default.catalog/css/variables.css
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/images/index.html
-1972da6fe81de4653649025d7205c55a	includes/templates/default.catalog/images/loader.svg
+e6e2336e113f1248d03214ca228984d5	includes/templates/default.catalog/images/loader.svg
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/index.html
 c347f10e1d7c17505c3074d2441472e0	includes/templates/default.catalog/js/app.js
 fc606ed15c8a84c6373a66fc1b8ba777	includes/templates/default.catalog/js/app.min.js
