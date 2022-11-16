@@ -340,7 +340,7 @@ d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 478d4964edbc0f2ff5f62a9073d3daa2	includes/templates/default.admin/css/app.min.css
 32832eaa2f3942854da5dba902a5fa71	includes/templates/default.admin/css/app.min.css.map
 89db3e3441d8e396b0b6d0648a1aa1d1	includes/templates/default.admin/css/framework.min.css
-f9a0717487a93cafa3c58eae3cfd133d	includes/templates/default.admin/css/framework.min.css.map
+36c077e2c76412dd79238873027da230	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.admin/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.admin/css/printable.min.css.map
@@ -393,8 +393,8 @@ c350d51cd1b3329cd7f3f4a376746a97	includes/templates/default.admin/pages/error_do
 b32190003ceae2a8dd56c282195cf584	includes/templates/default.admin/views/notices.inc.php
 9a70738c8b02fe85ae87a9cd5b1bc734	includes/templates/default.admin/views/pagination.inc.php
 4f229050b33c408eec0ff63aa7b51d8d	includes/templates/default.catalog/config.inc.php
-1f9d8e8368765887e95f82aaf8c1f284	includes/templates/default.catalog/css/app.css
-4c7ea08f07061abfe0058d73a1749957	includes/templates/default.catalog/css/app.min.css
+678f820f206700b8a7ae4a8f46b35274	includes/templates/default.catalog/css/app.css
+02e4e050e1596d58fe99fc20ae35104f	includes/templates/default.catalog/css/app.min.css
 3107805cd3e4c02f87ad29d8dae9ac36	includes/templates/default.catalog/css/app.min.css.map
 2c68e80142dcbb4ade7f070fc21abd10	includes/templates/default.catalog/css/checkout.css
 d2c924af433a0e15322a626006d148cd	includes/templates/default.catalog/css/checkout.min.css
@@ -570,7 +570,7 @@ d459f0ff7c7684a60ae0f8d79237f6fb	install/data/demo/public_html/images/products/3
 7dcfba9333bfc574198ebb76de016571	install/includes/functions.inc.php
 f6e3fd49a163d4af16f255941ccdeac1	install/includes/header.inc.php
 d37864f66666999a9ed6f6440042ea71	install/index.php
-e887924cb9cf3d250e383efffffde456	install/install.php
+09135721ed9e59c0d33af6b9407d0a1c	install/install.php
 f948f4799318eb90c9ddf3e3708239aa	install/structure.sql
 55c703a4686ae37f474bafca5691770f	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
