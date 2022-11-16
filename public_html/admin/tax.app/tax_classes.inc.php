@@ -27,54 +27,56 @@
 // Pagination
   $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_tax_classes', 'Tax Classes'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_tax_classes', 'Tax Classes'); ?>
+    </div>
   </div>
 
-  <div class="panel-action">
+  <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_tax_class'], true), language::translate('title_add_new_tax_class', 'Add New Tax Class'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_tax_class'], true), language::translate('title_create_new_tax_class', 'Create New Tax Class'), '', 'add'); ?></li>
     </ul>
   </div>
 
-  <div class="panel-body">
-    <?php echo functions::form_draw_form_begin('tax_classs_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('tax_classs_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
-            <th></th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
+          <th></th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($tax_classes as $tax_class) { ?>
-          <tr>
-            <td><?php echo functions::form_draw_checkbox('tax_classes[]', $tax_class['id']); ?></td>
-            <td><?php echo $tax_class['id']; ?></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>"><?php echo $tax_class['name']; ?></a></td>
-            <td style="color: #999;"><?php echo $tax_class['description']; ?></td>
-            <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php foreach ($tax_classes as $tax_class) { ?>
+        <tr>
+          <td><?php echo functions::form_draw_checkbox('tax_classes[]', $tax_class['id']); ?></td>
+          <td><?php echo $tax_class['id']; ?></td>
+          <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>"><?php echo $tax_class['name']; ?></a></td>
+          <td style="color: #999;"><?php echo $tax_class['description']; ?></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="5"><?php echo language::translate('title_tax_classes', 'Tax Classes'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="5"><?php echo language::translate('title_tax_classes', 'Tax Classes'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="panel-footer">
+  <?php if ($num_pages > 1) { ?>
+  <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>

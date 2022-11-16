@@ -7,6 +7,18 @@
 // Form required asterix
   $(':input[required="required"]').closest('.form-group').addClass('required');
 
+// Detect scroll direction
+  let lastScrollTop = 0;
+  $(document).on('scroll', function(){
+     var scrollTop = $(this).scrollTop();
+     if (scrollTop > lastScrollTop) {
+       $('body').addClass('scrolling-down');
+     } else {
+       $('body').removeClass('scrolling-down');
+     }
+     lastScrollTop = (scrollTop < 0) ? 0 : scrollTop;
+  });
+
 // Sidebar parallax effect
   if (typeof window._env != 'undefined') {
     if (window._env.template.settings.sidebar_parallax_effect == true) {
@@ -96,6 +108,27 @@
     $(this).find('input:checkbox').trigger('click');
   });
 
+// Offcanvas
+  $('[data-toggle="offcanvas"]').click(function(e){
+    e.preventDefault();
+    var target = $(this).data('target');
+    if ($(target).hasClass('show')) {
+      $(target).removeClass('show');
+      $(this).removeClass('toggled');
+      $('body').removeClass('has-offcanvas');
+    } else {
+      $(target).addClass('show');
+      $(this).addClass('toggled');
+      $('body').addClass('has-offcanvas');
+    }
+  });
+
+  $('.offcanvas [data-toggle="dismiss"]').click(function(e){
+    $('.offcanvas').removeClass('show');
+    $('[data-toggle="offcanvas"]').removeClass('toggled');
+    $('body').removeClass('has-offcanvas');
+  });
+
 // Password Strength
   $('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function(){
 
@@ -159,16 +192,11 @@
           $.each(json['items'], function(i, item){
             $('#cart .items').append('<li><a href="'+ item.link +'">'+ item.quantity +' x '+ item.name +' - '+ item.formatted_price +'</a></li>');
           });
-          $('#cart .items').append('<li class="divider"></li>');
+          $('#cart .items').append('<li class="dropdown-divider"></li>');
         }
         $('#cart .items').append('<li><a href="' + window._env.platform.url + 'checkout"><i class="fa fa-shopping-cart"></i> ' + json['text_total'] + ': <span class="formatted-value">'+ json['formatted_value'] +'</a></li>');
         $('#cart .quantity').html(json['quantity'] ? json['quantity'] : '');
         $('#cart .formatted_value').html(json['formatted_value']);
-        if (json['quantity'] > 0) {
-          $('#cart img').attr('src', window._env.template.url + 'images/cart_filled.svg');
-        } else {
-          $('#cart img').attr('src', window._env.template.url + 'images/cart.svg');
-        }
       }
     });
   }
@@ -263,10 +291,10 @@
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: carousel.js v3.3.7
- * http://getbootstrap.com/javascript/#carousel
+ * Bootstrap: carousel.js v3.4.1
+ * https://getbootstrap.com/docs/3.4/javascript/#carousel
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -293,7 +321,7 @@
       .on('mouseleave.bs.carousel', $.proxy(this.cycle, this))
   }
 
-  Carousel.VERSION  = '3.3.7'
+  Carousel.VERSION  = '3.4.1'
 
   Carousel.TRANSITION_DURATION = 600
 
@@ -407,7 +435,9 @@
     var slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }) // yes, "slid"
     if ($.support.transition && this.$element.hasClass('slide')) {
       $next.addClass(type)
-      $next[0].offsetWidth // force reflow
+      if (typeof $next === 'object' && $next.length) {
+        $next[0].offsetWidth // force reflow
+      }
       $active.addClass(direction)
       $next.addClass(direction)
       $active
@@ -469,10 +499,13 @@
   // =================
 
   var clickHandler = function (e) {
-    var href
     var $this   = $(this)
-    var $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) // strip for ie7
+    var href    = $this.attr('href')
+    var target  = $this.attr('data-target') || href
+    var $target = $(document).find(target)
+
     if (!$target.hasClass('carousel')) return
+
     var options = $.extend({}, $target.data(), $this.data())
     var slideIndex = $this.attr('data-slide-to')
     if (slideIndex) options.interval = false
@@ -500,10 +533,10 @@
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: collapse.js v3.3.7
- * http://getbootstrap.com/javascript/#collapse
+ * Bootstrap: collapse.js v3.4.1
+ * https://getbootstrap.com/docs/3.4/javascript/#collapse
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -529,7 +562,7 @@
     if (this.options.toggle) this.toggle()
   }
 
-  Collapse.VERSION  = '3.3.7'
+  Collapse.VERSION  = '3.4.1'
 
   Collapse.TRANSITION_DURATION = 350
 
@@ -636,7 +669,7 @@
   }
 
   Collapse.prototype.getParent = function () {
-    return $(this.options.parent)
+    return $(document).find(this.options.parent)
       .find('[data-toggle="collapse"][data-parent="' + this.options.parent + '"]')
       .each($.proxy(function (i, element) {
         var $element = $(element)
@@ -659,7 +692,7 @@
     var target = $trigger.attr('data-target')
       || (href = $trigger.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') // strip for ie7
 
-    return $(target)
+    return $(document).find(target)
   }
 
 
@@ -711,10 +744,10 @@
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: dropdown.js v3.3.7
- * http://getbootstrap.com/javascript/#dropdowns
+ * Bootstrap: dropdown.js v3.4.1
+ * https://getbootstrap.com/docs/3.4/javascript/#dropdowns
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -730,7 +763,7 @@
     $(element).on('click.bs.dropdown', this.toggle)
   }
 
-  Dropdown.VERSION = '3.3.7'
+  Dropdown.VERSION = '3.4.1'
 
   function getParent($this) {
     var selector = $this.attr('data-target')
@@ -740,7 +773,7 @@
       selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
     }
 
-    var $parent = selector && $(selector)
+    var $parent = selector !== '#' ? $(document).find(selector) : null
 
     return $parent && $parent.length ? $parent : $this.parent()
   }
@@ -779,7 +812,7 @@
     if (!isActive) {
       if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
         // if mobile we use a backdrop because click events don't delegate
-        $('<div></div>')
+        $(document.createElement('div'))
           .addClass('dropdown-backdrop')
           .insertAfter($parent)
           .on('click', clearMenus)
@@ -876,17 +909,17 @@
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: transition.js v3.3.7
- * http://getbootstrap.com/javascript/#transitions
+ * Bootstrap: transition.js v3.4.1
+ * https://getbootstrap.com/docs/3.4/javascript/#transitions
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
 +function ($) {
   'use strict';
 
-  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
+  // CSS TRANSITION SUPPORT (Shoutout: https://modernizr.com/)
   // ============================================================
 
   function transitionEnd() {
@@ -908,7 +941,7 @@
     return false // explicit for ie8 (  ._.)
   }
 
-  // http://blog.alexmaccaw.com/css-transitions
+  // https://blog.alexmaccaw.com/css-transitions
   $.fn.emulateTransitionEnd = function (duration) {
     var called = false
     var $el = this

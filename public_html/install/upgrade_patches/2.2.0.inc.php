@@ -1,12 +1,11 @@
 <?php
 
-// Delete old files
-  $deleted_files = [
+  perform_action('delete', [
     FS_DIR_ADMIN . 'orders.app/add_custom_item.inc.php',
     FS_DIR_ADMIN . 'orders.app/get_address.json.inc.php',
-    FS_DIR_APP . 'data/bad_urls.txt',
-    FS_DIR_APP . 'data/blacklist.txt',
-    FS_DIR_APP . 'data/whitelist.txt',
+    FS_DIR_STORAGE . 'data/bad_urls.txt',
+    FS_DIR_STORAGE . 'data/blacklist.txt',
+    FS_DIR_STORAGE . 'data/whitelist.txt',
     FS_DIR_APP . 'ext/jquery/jquery-3.3.1.min.js',
     FS_DIR_APP . 'ext/fontawesome/css',
     FS_DIR_APP . 'ext/fontawesome/fonts',
@@ -49,7 +48,7 @@
     FS_DIR_APP . 'includes/library/lib_catalog.inc.php',
     FS_DIR_APP . 'includes/library/lib_link.inc.php',
     FS_DIR_APP . 'includes/library/lib_security.inc.php',
-    FS_DIR_APP . 'logs/http_request_last.log',
+    FS_DIR_STORAGE . 'logs/http_request_last.log',
     FS_DIR_APP . 'includes/templates/default.catalog/views/column_left.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/listing_product.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/site_cookie_notice.inc.php',
@@ -58,13 +57,7 @@
     FS_DIR_APP . 'pages/ajax/checkout_payment.html.inc.php',
     FS_DIR_APP . 'pages/ajax/checkout_shipping.html.inc.php',
     FS_DIR_APP . 'pages/ajax/checkout_summary.html.inc.php',
-  ];
-
-  foreach ($deleted_files as $pattern) {
-    if (!file_delete($pattern)) {
-      echo '<span class="error">[Skipped]</span></p>';
-    }
-  }
+  ]);
 
   if (preg_match("#define\('WS_DIR_ADMIN',\s+WS_DIR_HTTP_HOME \. '(.*?)'\);#", file_get_contents(FS_DIR_APP . 'includes/config.inc.php'), $matches)) {
     $admin_folder_name = rtrim($matches[1], '/');
@@ -73,137 +66,113 @@
   }
 
 // Modify some files
-  $modified_files = [
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "## Files and Directory  ##############################################",
-      'replace' => "## Files and Directories #############################################",
+  perform_action('modify', [
+    FS_DIR_APP . 'includes/config.inc.php' => [
+      [
+        'search'  => "## Files and Directory  ##############################################",
+        'replace' => "## Files and Directories #############################################",
+      ],
+      [
+        'search'  => "    //if (is_writable(__FILE__)) chmod(__FILE__, 0444);" . PHP_EOL . PHP_EOL,
+        'replace' => "",
+      ],
+      [
+        'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_HTTP_HOME . '{ADMIN_FOLDER}/');" . PHP_EOL,
+        'replace' => '',
+      ],
+      [
+        'search'  => "  define('WS_DIR_AJAX',        WS_DIR_APP . 'ajax/');" . PHP_EOL,
+        'replace' => '',
+      ],
+      [
+        'search'  => "  ini_set('error_log', FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'errors.log');",
+      'replace' => "  ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');",
+      ],
     ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "    //if (is_writable(__FILE__)) chmod(__FILE__, 0444);" . PHP_EOL . PHP_EOL,
-      'replace' => "",
+    FS_DIR_APP . 'install/.htaccess' => [
+      [
+        'search'  => '<FilesMatch "\.(gif|ico|jpg|jpeg|js|pdf|png|svg|ttf)$">',
+        'replace' => '<FilesMatch "\.(eot|gif|ico|jpg|jpeg|js|otf|pdf|png|svg|ttf|woff|woff2)$">',
+      ],
     ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_HTTP_HOME . '{ADMIN_FOLDER}/');" . PHP_EOL,
-      'replace' => '',
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('WS_DIR_AJAX',        WS_DIR_APP . 'ajax/');" . PHP_EOL,
-      'replace' => '',
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  ini_set('error_log', FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'errors.log');",
-      'replace' => "  ini_set('error_log', FS_DIR_APP . 'logs/errors.log');",
-    ],
-    [
-      'file'    => FS_DIR_APP . 'install/.htaccess',
-      'search'  => '<FilesMatch "\.(gif|ico|jpg|jpeg|js|pdf|png|svg|ttf)$">',
-      'replace' => '<FilesMatch "\.(eot|gif|ico|jpg|jpeg|js|otf|pdf|png|svg|ttf|woff|woff2)$">',
-    ],
-  ];
+  ]);
 
-  foreach ($modified_files as $modification) {
-    if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
-      echo '<span class="error">[Skipped]</span></p>';
-    }
-  }
-
-// Modify some files
-  $modified_files = [
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_HTTP_HOME . '". $admin_folder_name ."/');" . PHP_EOL,
-      'replace' => "",
+  perform_action('modify', [
+    FS_DIR_APP . 'includes/config.inc.php' => [
+      [
+        'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_HTTP_HOME . '". $admin_folder_name ."/');" . PHP_EOL,
+        'replace' => "",
+      ],
+      [
+        'search'  => "## Files and Directories #############################################" . PHP_EOL
+                   . "######################################################################" . PHP_EOL,
+        'replace' => "## Files and Directories #############################################" . PHP_EOL
+                   . "######################################################################" . PHP_EOL
+                   . PHP_EOL
+                   . "  define('BACKEND_ALIAS', '". $admin_folder_name ."');" . PHP_EOL
+                   . PHP_EOL
+                   . "// File System" . PHP_EOL
+                   . "  define('DOCUMENT_ROOT',      rtrim(str_replace(\"\\\\\", '/', realpath(\$_SERVER['DOCUMENT_ROOT'])), '/'));" . PHP_EOL
+                   . PHP_EOL
+                   . "  define('FS_DIR_APP',         DOCUMENT_ROOT . rtrim(str_replace(DOCUMENT_ROOT, '', str_replace(\"\\\\\", '/', realpath(__DIR__.'/..'))), '/') . '/');" . PHP_EOL
+                   . "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
+                   . PHP_EOL
+                   . "// Web System" . PHP_EOL
+                   . "  define('WS_DIR_APP',         rtrim(str_replace(DOCUMENT_ROOT, '', str_replace(\"\\\\\", '/', realpath(__DIR__.'/..'))), '/') . '/');" . PHP_EOL
+                   . "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
+                   . PHP_EOL
+                   . "######################################################################" . PHP_EOL
+                   . "## Backwards Compatible Directory Definitions (LiteCart <2.2)  #######" . PHP_EOL
+                   . "######################################################################" . PHP_EOL
+                   . PHP_EOL,
+      ],
+      [
+        'search'  => "  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/');" . PHP_EOL,
+        'replace' => "  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/'); // Deprecated in favour of Entities" . PHP_EOL
+                   . "  define('WS_DIR_ENTITIES',    WS_DIR_INCLUDES  . 'entities/');" . PHP_EOL,
+      ],
+      [
+        'search'  => "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,
+        'replace' => "  define('DB_TABLE_ATTRIBUTE_GROUPS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups`');" . PHP_EOL
+                   . "  define('DB_TABLE_ATTRIBUTE_GROUPS_INFO',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups_info`');" . PHP_EOL
+                   . "  define('DB_TABLE_ATTRIBUTE_VALUES',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_values`');" . PHP_EOL
+                   . "  define('DB_TABLE_ATTRIBUTE_VALUES_INFO',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_values_info`');" . PHP_EOL
+                   . "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,
+      ],
+      [
+        'search'  => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL,
+        'replace' => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL
+                   . "  define('DB_TABLE_CATEGORIES_FILTERS',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_filters`');" . PHP_EOL
+                   . "  define('DB_TABLE_CATEGORIES_IMAGES',                 '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_images`');" . PHP_EOL,
+      ],
+      [
+        'search'  => "  define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'delivery_statuses_info`');" . PHP_EOL,
+        'replace' => "  define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'delivery_statuses_info`');" . PHP_EOL
+                   . "  define('DB_TABLE_EMAILS',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'emails`');" . PHP_EOL,
+      ],
+      [
+        'search'  => "  define('DB_TABLE_PRODUCT_GROUPS',                    '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups`');" . PHP_EOL,
+        'replace' => "",
+      ],
+      [
+        'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_INFO',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_info`');" . PHP_EOL,
+        'replace' => "",
+      ],
+      [
+        'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_VALUES',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_values`');" . PHP_EOL,
+        'replace' => "",
+      ],
+      [
+        'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_VALUES_INFO',        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_values_info`');" . PHP_EOL,
+        'replace' => "",
+      ],
+      [
+        'search'  => "  define('DB_TABLE_PRODUCTS',                          '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products`');" . PHP_EOL,
+        'replace' => "  define('DB_TABLE_PRODUCTS',                          '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products`');" . PHP_EOL
+                   . "  define('DB_TABLE_PRODUCTS_ATTRIBUTES',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_attributes`');" . PHP_EOL,
+      ],
     ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "## Files and Directories #############################################" . PHP_EOL
-                 . "######################################################################" . PHP_EOL,
-      'replace' => "## Files and Directories #############################################" . PHP_EOL
-                 . "######################################################################" . PHP_EOL
-                 . PHP_EOL
-                 . "  define('BACKEND_ALIAS', '". $admin_folder_name ."');" . PHP_EOL
-                 . PHP_EOL
-                 . "// File System" . PHP_EOL
-                 . "  define('DOCUMENT_ROOT',      rtrim(str_replace(\"\\\\\", '/', realpath(\$_SERVER['DOCUMENT_ROOT'])), '/'));" . PHP_EOL
-                 . PHP_EOL
-                 . "  define('FS_DIR_APP',         DOCUMENT_ROOT . rtrim(str_replace(DOCUMENT_ROOT, '', str_replace(\"\\\\\", '/', realpath(__DIR__.'/..'))), '/') . '/');" . PHP_EOL
-                 . "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
-                 . PHP_EOL
-                 . "// Web System" . PHP_EOL
-                 . "  define('WS_DIR_APP',         rtrim(str_replace(DOCUMENT_ROOT, '', str_replace(\"\\\\\", '/', realpath(__DIR__.'/..'))), '/') . '/');" . PHP_EOL
-                 . "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
-                 . PHP_EOL
-                 . "######################################################################" . PHP_EOL
-                 . "## Backwards Compatible Directory Definitions (LiteCart <2.2)  #######" . PHP_EOL
-                 . "######################################################################" . PHP_EOL
-                 . PHP_EOL,
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/');" . PHP_EOL,
-      'replace' => "  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/'); // Deprecated in favour of Entities" . PHP_EOL
-                 . "  define('WS_DIR_ENTITIES',    WS_DIR_INCLUDES  . 'entities/');" . PHP_EOL,
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_ATTRIBUTE_GROUPS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups`');" . PHP_EOL
-                 . "  define('DB_TABLE_ATTRIBUTE_GROUPS_INFO',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups_info`');" . PHP_EOL
-                 . "  define('DB_TABLE_ATTRIBUTE_VALUES',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_values`');" . PHP_EOL
-                 . "  define('DB_TABLE_ATTRIBUTE_VALUES_INFO',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_values_info`');" . PHP_EOL
-                 . "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL
-                 . "  define('DB_TABLE_CATEGORIES_FILTERS',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_filters`');" . PHP_EOL
-                 . "  define('DB_TABLE_CATEGORIES_IMAGES',                 '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_images`');" . PHP_EOL,
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'delivery_statuses_info`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'delivery_statuses_info`');" . PHP_EOL
-                 . "  define('DB_TABLE_EMAILS',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'emails`');" . PHP_EOL,
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_PRODUCT_GROUPS',                    '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups`');" . PHP_EOL,
-      'replace' => "",
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_INFO',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_info`');" . PHP_EOL,
-      'replace' => "",
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_VALUES',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_values`');" . PHP_EOL,
-      'replace' => "",
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_VALUES_INFO',        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_values_info`');" . PHP_EOL,
-      'replace' => "",
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_PRODUCTS',                          '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_PRODUCTS',                          '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products`');" . PHP_EOL
-                 . "  define('DB_TABLE_PRODUCTS_ATTRIBUTES',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_attributes`');" . PHP_EOL,
-    ],
-  ];
-
-  foreach ($modified_files as $modification) {
-    if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
-      die('<span class="error">[Error]</span><br />Could not find: '. $modification['search'] .'</p>');
-    }
-  }
+  ], 'abort');
 
 // Complete Order Items
   $order_items_query = database::query(

@@ -1,6 +1,6 @@
 <?php
 /*!
- * LiteCart® 2.4.4
+ * LiteCart® 2.5.0
  *
  * Online Catalog and Shopping Cart Platform
  *
@@ -14,6 +14,16 @@
  */
 
   require_once('includes/app_header.inc.php');
+
+// Development Mode
+  if (settings::get('development_mode')) {
+    if (empty(user::$data['id']) && !preg_match('#^'. preg_quote(WS_DIR_ADMIN, '#') .'#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
+      http_response_code(403);
+      include vmod::check(FS_DIR_APP . 'pages/development_mode.inc.php');
+      require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
+      exit;
+    }
+  }
 
   if (settings::get('maintenance_mode')) {
     if (!empty(user::$data['id'])) {

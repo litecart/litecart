@@ -48,67 +48,81 @@
   $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
 ?>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_slides', 'Slides'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_slides', 'Slides'); ?>
+    </div>
   </div>
 
-  <div class="panel-action">
+  <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_slide'], true), language::translate('title_add_new_slide', 'Add New Slide'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_slide'], true), language::translate('title_create_new_slide', 'Create New Slide'), '', 'add'); ?></li>
     </ul>
   </div>
 
-  <div class="panel-body">
-    <?php echo functions::form_draw_form_begin('slides_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('slides_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th><?php echo language::translate('title_languages', 'Languages'); ?></th>
-            <th class="text-center"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
-            <th class="text-center"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
-            <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
-            <th></th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_languages', 'Languages'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
+          <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
+          <th></th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($slides as $slide) { ?>
-          <tr class="<?php echo empty($slide['status']) ? 'semi-transparent' : null; ?>">
-            <td><?php echo functions::form_draw_checkbox('slides[]', $slide['id']); ?></td>
-            <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($slide['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
-            <td><?php echo $slide['id']; ?></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_slide', 'slide_id' => $slide['id']], true); ?>"><?php echo $slide['name']; ?></a></td>
-            <td class="text-end"><?php echo !empty($slide['languages']) ? str_replace(',', ', ', $slide['languages']) : language::translate('title_all', 'All'); ?></td>
-            <td class="text-end"><?php echo !empty($slide['date_valid_from']) ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
-            <td class="text-end"><?php echo !empty($slide['date_valid_to']) ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
-            <td class="text-end"><?php echo $slide['priority']; ?></td>
-            <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_slide', 'slide_id' => $slide['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php foreach ($slides as $slide) { ?>
+        <tr class="<?php echo empty($slide['status']) ? 'semi-transparent' : ''; ?>">
+          <td><?php echo functions::form_draw_checkbox('slides[]', $slide['id']); ?></td>
+          <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($slide['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
+          <td><?php echo $slide['id']; ?></td>
+          <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_slide', 'slide_id' => $slide['id']], true); ?>"><?php echo $slide['name']; ?></a></td>
+          <td class="text-end"><?php echo !empty($slide['languages']) ? str_replace(',', ', ', $slide['languages']) : language::translate('title_all', 'All'); ?></td>
+          <td class="text-end"><?php echo !empty($slide['date_valid_from']) ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
+          <td class="text-end"><?php echo !empty($slide['date_valid_to']) ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
+          <td class="text-end"><?php echo $slide['priority']; ?></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_slide', 'slide_id' => $slide['id']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="9"><?php echo language::translate('title_slides', 'Slides'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="9"><?php echo language::translate('title_slides', 'Slides'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-      <div class="btn-group">
-        <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-        <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-      </div>
+    <div class="card-body">
+      <fieldset id="actions" disabled>
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+        <div class="btn-group">
+          <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+          <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+        </div>
+      </fieldset>
+    </div>
 
-  <div class="panel-footer">
+  <?php echo functions::form_draw_form_end(); ?>
+
+  <?php if ($num_pages > 1) { ?>
+  <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>
+
+<script>
+  $('.data-table :checkbox').change(function() {
+    $('#actions').prop('disabled', !$('.data-table :checked').length);
+  }).first().trigger('change');
+</script>

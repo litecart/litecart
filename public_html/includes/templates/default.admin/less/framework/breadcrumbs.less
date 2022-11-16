@@ -4,13 +4,15 @@ ul.breadcrumb {
   margin: 0;
   padding: 0;
   list-style: none;
-  background-color: @breadcrumbs-background-color;
+  background-color: var(--breadcrumbs-background-color);
+  border: 0px solid var(--breadcrumbs-border-color);
+  border-radius: var(--border-radius);
   li {
     display: inline-block;
     &::before {
       content: "/\00a0";
       padding: 0 5px;
-      color: #ccc;
+      color: var(--breadcrumbs-text-color);
     }
     a {
       color: inherit;

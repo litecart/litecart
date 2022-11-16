@@ -10,39 +10,13 @@
   define('DOCUMENT_ROOT',      str_replace('\\', '/', rtrim(realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/')));
 
   define('FS_DIR_APP',         str_replace('\\', '/', rtrim(realpath(__DIR__.'/..'), '/')) . '/');
+  define('FS_DIR_STORAGE',     FS_DIR_APP);
   define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');
 
 // Web System
   define('WS_DIR_APP',         preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP));
+  define('WS_DIR_STORAGE',     WS_DIR_APP);
   define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');
-
-######################################################################
-## Backwards Compatible Directory Definitions (LiteCart <2.2) ########
-######################################################################
-
-// File System
-  define('FS_DIR_HTTP_ROOT', DOCUMENT_ROOT);
-
-// Web System
-  define('WS_DIR_HTTP_HOME', rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');
-
-  define('WS_DIR_CACHE',       WS_DIR_HTTP_HOME . 'cache/');
-  define('WS_DIR_DATA',        WS_DIR_HTTP_HOME . 'data/');
-  define('WS_DIR_EXT',         WS_DIR_HTTP_HOME . 'ext/');
-  define('WS_DIR_IMAGES',      WS_DIR_HTTP_HOME . 'images/');
-  define('WS_DIR_INCLUDES',    WS_DIR_HTTP_HOME . 'includes/');
-  define('WS_DIR_LOGS',        WS_DIR_HTTP_HOME . 'logs/');
-  define('WS_DIR_PAGES',       WS_DIR_HTTP_HOME . 'pages/');
-
-  define('WS_DIR_BOXES',       WS_DIR_INCLUDES  . 'boxes/');
-  define('WS_DIR_CLASSES',     WS_DIR_INCLUDES  . 'classes/');
-  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/'); // Deprecated in favour of Entities
-  define('WS_DIR_FUNCTIONS',   WS_DIR_INCLUDES  . 'functions/');
-  define('WS_DIR_LIBRARY',     WS_DIR_INCLUDES  . 'library/');
-  define('WS_DIR_MODULES',     WS_DIR_INCLUDES  . 'modules/');
-  define('WS_DIR_REFERENCES',  WS_DIR_INCLUDES  . 'references/');
-  define('WS_DIR_ROUTES',      WS_DIR_INCLUDES  . 'routes/');
-  define('WS_DIR_TEMPLATES',   WS_DIR_INCLUDES  . 'templates/');
 
 ######################################################################
 ## Database ##########################################################
@@ -56,7 +30,6 @@
   define('DB_DATABASE', '{DB_DATABASE}');
   define('DB_TABLE_PREFIX', '{DB_TABLE_PREFIX}');
   define('DB_CONNECTION_CHARSET', 'utf8');
-  define('DB_PERSISTENT_CONNECTIONS', 'false');
 
 // Database Tables - Backwards Compatibility (LiteCart <2.3)
   define('DB_TABLE_ATTRIBUTE_GROUPS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups`');
@@ -123,13 +96,10 @@
   error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
   ini_set('ignore_repeated_errors', 'On');
   ini_set('log_errors', 'On');
-  ini_set('error_log', FS_DIR_APP . 'logs/errors.log');
+  ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');
   ini_set('display_startup_errors', 'Off');
   ini_set('display_errors', 'Off');
   if (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '{CLIENT_IP}'))) {
     ini_set('display_startup_errors', 'On');
     ini_set('display_errors', 'On');
   }
-
-// Password Encryption Salt
-  define('PASSWORD_SALT', '{PASSWORD_SALT}');

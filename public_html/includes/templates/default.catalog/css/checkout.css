@@ -1,11 +1,3 @@
-#content {
-  padding: calc(var(--gutter-size)/2);
-}
-@media (min-width: 768px) {
-  #content {
-    padding: var(--gutter-size);
-  }
-}
 .loader-wrapper {
   position: fixed;
   top: 50%;
@@ -17,12 +9,35 @@
   z-index: 999999;
 }
 #header {
+  display: flex;
   margin: 0 auto;
+  align-items: center;
+  padding-top: var(--gutter-y);
+  padding-bottom: var(--gutter-y);
+}
+#header .logotype img {
+  max-width: 150px;
+  max-height: 32px;
+}
+@media (min-width: 768px) {
+  #header .logotype img {
+    max-width: 250px;
+    max-height: 80px;
+  }
+}
+@media (min-width: 768px) {
+  #header .logotype {
+    width: auto;
+  }
+}
+#header .middle {
+  flex-grow: 1;
 }
 #header .customer-service {
   align-self: center;
   text-align: end;
   line-height: 150%;
+  flex-grow: 1;
 }
 @media (min-width: 768px) {
   #header .customer-service {
@@ -33,6 +48,14 @@
   font-weight: bold;
   margin: 0;
 }
+@media (min-width: 992px) {
+  #header .customer-service {
+    flex-grow: 0;
+  }
+}
+#box-checkout-cart {
+  margin-top: 0;
+}
 #box-checkout-cart .row {
   margin-bottom: 0;
 }
@@ -41,15 +64,12 @@
 }
 #box-checkout-cart .headings {
   font-weight: 600;
-  padding: calc(var(--gutter-size)/2) var(--gutter-size);
-  border-bottom: 2px solid var(--default-border-color);
-}
-#box-checkout-cart .items {
-  margin-bottom: 1em;
+  padding: 0.5em var(--gutter-x);
+  border-bottom: 1px solid var(--default-border-color);
 }
 #box-checkout-cart .item {
-  padding: calc(var(--gutter-size)/2) var(--gutter-size);
-  border-bottom: 1px solid #e0e0e0;
+  padding: var(--gutter-y) var(--gutter-x);
+  border-top: 1px solid #e0e0e0;
 }
 #box-checkout-cart .item:nth-child(odd) {
   background: var(--table-striped-row-background-odd);
@@ -59,6 +79,10 @@
 }
 #box-checkout-cart .name {
   font-weight: 600;
+}
+#box-checkout-cart .btn {
+  padding-left: 1em;
+  padding-right: 1em;
 }
 #box-checkout-cart .error {
   color: #f00;
@@ -82,27 +106,35 @@
 #box-checkout-shipping .thumbnail,
 #box-checkout-payment .thumbnail {
   padding: 0.5em;
+  overflow: hidden;
 }
 #box-checkout-shipping .option,
 #box-checkout-payment .option {
   position: relative;
+  background: var(--card-background-color);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  transition: all 250ms ease;
 }
 #box-checkout-shipping .option.btn,
 #box-checkout-payment .option.btn {
-  padding: 12px;
+  padding: 1em;
+}
+#box-checkout-shipping .option.btn:first-child,
+#box-checkout-payment .option.btn:first-child {
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+#box-checkout-shipping .option.btn:last-child,
+#box-checkout-payment .option.btn:last-child {
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+#box-checkout-shipping .option.active,
+#box-checkout-payment .option.active {
+  background: #eaebef;
 }
 #box-checkout-shipping .option:not(.active) .content,
 #box-checkout-payment .option:not(.active) .content {
   max-height: 0;
   overflow-y: hidden;
-}
-#box-checkout-shipping .option:not(.active):not(.disabled),
-#box-checkout-payment .option:not(.active):not(.disabled) {
-  opacity: 0.75;
-  -webkit-transition: all 0.25s ease;
-  -moz-transition: all 0.25s ease;
-  -o-transition: all 0.25s ease;
-  transition: all 0.25s ease;
 }
 #box-checkout-shipping .option .thumbnail,
 #box-checkout-payment .option .thumbnail {
@@ -120,19 +152,32 @@
   text-align: start;
   transition: all 0.25s ease;
 }
+#box-checkout-shipping .option .description,
+#box-checkout-payment .option .description {
+  margin-bottom: 1em;
+}
+#box-checkout-shipping .option hr,
+#box-checkout-payment .option hr {
+  margin: 1em 0;
+  border-color: #ddd;
+}
 @media (min-width: 768px) {
   #box-checkout-shipping .price,
   #box-checkout-payment .price {
     position: absolute;
     display: inline-block;
-    top: calc(var(--gutter-size)/2);
-    right: calc(var(--gutter-size)/2);
+    top: var(--gutter-y);
+    right: var(--gutter-x);
   }
 }
-#box-checkout-summary .alert {
-  padding: 12px 18px;
+#box-checkout-summary table {
+  margin-bottom: 0;
+}
+#box-checkout-summary .error {
+  align-self: center;
+  font-size: 1.25em;
+  color: #ff0000;
   text-align: center;
-  line-height: 24px;
 }
 #box-checkout-summary input[type=checkbox][required]:not(:checked) {
   animation: flasher 1s linear infinite;

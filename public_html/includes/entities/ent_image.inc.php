@@ -111,8 +111,8 @@
 
           // Prevent DoS attack
             Imagick::setResourceLimit(imagick::RESOURCETYPE_AREA, 24e6);
-            Imagick::setResourceLimit(imagick::RESOURCETYPE_MEMORY, 128e6);
-            Imagick::setResourceLimit(imagick::RESOURCETYPE_DISK, 128e6);
+            Imagick::setResourceLimit(imagick::RESOURCETYPE_MEMORY, 512e6);
+            Imagick::setResourceLimit(imagick::RESOURCETYPE_DISK, 512e6);
 
             $this->_image = new imagick($this->_src);
 
@@ -169,8 +169,8 @@
 
         // Prevent DoS attack
           Imagick::setResourceLimit(imagick::RESOURCETYPE_AREA, 24e6);
-          Imagick::setResourceLimit(imagick::RESOURCETYPE_MEMORY, 128e6);
-          Imagick::setResourceLimit(imagick::RESOURCETYPE_DISK, 128e6);
+          Imagick::setResourceLimit(imagick::RESOURCETYPE_MEMORY, 512e6);
+          Imagick::setResourceLimit(imagick::RESOURCETYPE_DISK, 512e6);
 
           $this->_image = new imagick();
 

@@ -9,7 +9,7 @@
     <div class="info">
       <h4 class="name"><?php echo $name; ?></h4>
       <div class="manufacturer-name"><?php echo !empty($manufacturer['name']) ? $manufacturer['name'] : '&nbsp;'; ?></div>
-      <p class="description"><?php echo $short_description; ?></p>
+      <div class="description"><?php echo $short_description; ?></div>
       <div class="price-wrapper">
         <?php if ($campaign_price) { ?>
         <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
@@ -20,7 +20,7 @@
     </div>
   </a>
 
-  <button class="preview btn btn-default btn-sm" data-toggle="lightbox" data-target="<?php echo functions::escape_html($link) ?>" data-require-window-width="768" data-max-width="980">
+  <button class="preview btn btn-default btn-sm" data-toggle="lightbox" data-target="<?php echo functions::escape_html($link) ?>" data-seamless="true" data-require-window-width="768" data-max-width="980">
     <?php echo functions::draw_fonticon('fa-search-plus'); ?>
   </button>
 </article>

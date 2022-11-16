@@ -15,7 +15,7 @@
     > a {
       position: relative;
       display: block;
-      padding: 15px var(--gutter-size);
+      padding: .75em var(--gutter-x);
       color: inherit;
       text-decoration: none;
     }
@@ -31,10 +31,6 @@
   > li {
     > a > img {
       max-width: none;
-    }
-    li > a {
-      padding-top: ~"calc(var(--gutter-size)/2)";
-      padding-bottom: ~"calc(var(--gutter-size)/2)";
     }
     > ul {
       list-style: none;
@@ -68,7 +64,8 @@
     display: flex;
     flex-direction: column;
     li {
-      display: block;
+      display: flex;
+      flex-direction: column;
       + li > a {
         margin-inline-start: 0;
       }
@@ -81,13 +78,11 @@
   li a {
     margin: 1px 0;
     background: var(--pills-background-color);
-    padding-top: ~"calc(var(--gutter-size)/2)";
-    padding-bottom: ~"calc(var(--gutter-size)/2)";
     border-radius: var(--border-radius);
     transition: all 125ms linear;
     color: var(--pills-text-color);
     &:hover {
-      background: darken(#f3f3f3, 5%);
+      background: var(--pills-background-color-hover);
     }
   }
   li.active > a {
@@ -104,16 +99,16 @@
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
   border-bottom: 1px solid var(--tabs-pane-border-color);
-  padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size) 0 var(--gutter-size);
+  padding: var(--gutter-y) var(--gutter-x) 0 var(--gutter-x);
   color: var(--tabs-text-color);
   padding-bottom: 0;
   > li {
     flex: 0 0 auto;
     > a {
-      margin-inline-end: ~"calc(var(--gutter-size)/2)";
+      margin-inline-end: var(--gutter-x);
       line-height: 1.4;
       border-radius: var(--border-radius) var(--border-radius) 0 0;
-      padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+      padding: var(--gutter-y) var(--gutter-x);
       background-color: var(--tabs-background-color);
       color: var(--tabs-text-color);
       border: 1px solid var(--tabs-border-color);
@@ -134,7 +129,7 @@
 }
 
 .tab-content {
-  padding: var(--gutter-size) 0;
+  padding: var(--gutter-y) 0;
   background: var(--tabs-content-background-color);
   .tab-pane {
     > .title {

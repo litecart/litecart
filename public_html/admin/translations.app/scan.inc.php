@@ -21,7 +21,7 @@
 
     foreach ($iterator as $file) {
       if (!preg_match('#\.php$#', $file)) continue;
-      if (preg_match('#vqmod/vqcache/#', $file)) continue;
+      if (preg_match('#vmod/\.cache/#', $file)) continue;
 
       $found_files++;
       $contents = file_get_contents($file);
@@ -143,12 +143,14 @@ pre {
 }
 </style>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_scan_files_for_translations', 'Scan Files For Translations'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_scan_files_for_translations', 'Scan Files For Translations'); ?>
+    </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <div class="row">
       <div class="col-md-6">
         <?php echo functions::form_draw_form_begin('scan_form', 'post'); ?>

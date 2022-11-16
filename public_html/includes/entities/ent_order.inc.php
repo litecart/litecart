@@ -75,6 +75,7 @@
         'currency_code' => currency::$selected['code'],
         'currency_value' => currency::$selected['value'],
         'language_code' => language::$selected['code'],
+        'incoterm' => settings::get('default_incoterm'),
         'items' => [],
         'order_total' => [],
         'comments' => [],
@@ -266,6 +267,9 @@
         payment_option_id = '". database::input($this->data['payment_option']['id']) ."',
         payment_option_name = '". database::input($this->data['payment_option']['name']) ."',
         payment_transaction_id = '". database::input($this->data['payment_transaction_id']) ."',
+        payment_receipt_url = '". database::input($this->data['payment_receipt_url']) ."',
+        payment_terms = '". database::input($this->data['payment_terms']) ."',
+        incoterm = '". database::input($this->data['incoterm']) ."',
         reference = '". database::input($this->data['reference']) ."',
         language_code = '". database::input($this->data['language_code']) ."',
         currency_code = '". database::input($this->data['currency_code']) ."',
@@ -276,13 +280,15 @@
         payment_due = ". (float)$this->data['payment_due'] .",
         tax_total = ". (float)$this->data['tax_total'] .",
         public_key = '". database::input($this->data['public_key']) ."',
+        date_paid = ". (!empty($this->data['date_paid']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['date_paid'])) ."'" : "null") .",
+        date_dispatched = ". (!empty($this->data['date_dispatched']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['date_dispatched'])) ."'" : "null") .",
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
     // Restock previous items
-      if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'], $this->data['language_code'])->is_sale)) {
+      if (!empty($this->previous['order_status_id']) && reference::order_status($this->previous['order_status_id'], $this->data['language_code'])->stock_action == 'commit') {
         foreach ($this->previous['items'] as $previous_order_item) {
           if (empty($previous_order_item['product_id'])) continue;
           $product = new ent_product($previous_order_item['product_id']);
@@ -319,9 +325,11 @@
         }
 
       // Withdraw stock
-        if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
-          $product = new ent_product($item['product_id']);
-          $product->adjust_quantity(-(float)$item['quantity'], $item['option_stock_combination']);
+        if (!empty($this->data['order_status_id']) && reference::order_status($this->data['order_status_id'])->stock_action == 'commit') {
+          if (!empty($item['product_id'])) {
+            $product = new ent_product($item['product_id']);
+            $product->adjust_quantity(-(float)$item['quantity'], $item['option_stock_combination']);
+          }
         }
 
         database::query(

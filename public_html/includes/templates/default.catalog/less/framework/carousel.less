@@ -2,6 +2,8 @@
 
 .carousel {
   position: relative;
+  border-radius: var(--border-radius);
+  overflow: hidden;
   .carousel-control,
   .carousel-indicators {
     opacity: 0;
@@ -20,7 +22,6 @@
 .carousel-inner {
   position: relative;
   width: 100%;
-  overflow: hidden;
   line-height: 0;
   > .item {
     position: relative;
@@ -28,7 +29,6 @@
     transition: .6s ease-in-out left;
     img {
       width: 100%;
-      border-radius: var(--border-radius);
     }
   }
 
@@ -91,7 +91,7 @@
 .carousel-caption {
   position: absolute;
   right: 15%;
-  bottom: ~"calc(var(--gutter-size)*2)";
+  bottom: var(--gutter-y);
   left: 15%;
   z-index: 10;
   color: #fff;
@@ -181,7 +181,7 @@
 
 .carousel-indicators {
   position: absolute;
-  bottom: var(--gutter-size);
+  bottom: var(--gutter-y);
   left: 50%;
   z-index: 15;
   width: 60%;

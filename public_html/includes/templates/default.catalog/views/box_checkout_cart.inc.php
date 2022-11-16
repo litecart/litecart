@@ -1,24 +1,23 @@
-<section id="box-checkout-cart" class="box">
+<section id="box-checkout-cart" class="card">
 
-  <h2 class="title"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></h2>
+  <div class="card-header">
+    <h2 class="card-title">
+      <?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?>
+    </h2>
+  </div>
 
-  <div class="headings row hidden-xs">
-    <div class="col-xs-3 col-sm-2 col-md-1">
-    </div>
+  <div class="headings hidden-xs">
+    <div class="row">
+      <div class="col-sm-8">
+        <?php echo language::translate('title_item', 'Item'); ?>
+      </div>
 
-    <div class="col-xs-9 col-sm-10 col-md-11">
-      <div class="row">
-        <div class="col-sm-8">
-          <?php echo language::translate('title_item', 'Item'); ?>
-        </div>
+      <div class="hidden-xs col-sm-2 text-end">
+        <?php echo language::translate('title_price', 'Price'); ?>
+      </div>
 
-        <div class="hidden-xs col-sm-2 text-end">
-          <?php echo language::translate('title_price', 'Price'); ?>
-        </div>
-
-        <div class="col-sm-2 text-end">
-          <?php echo language::translate('title_sum', 'Sum'); ?>
-        </div>
+      <div class="col-sm-2 text-end">
+        <?php echo language::translate('title_sum', 'Sum'); ?>
       </div>
     </div>
   </div>
@@ -68,7 +67,7 @@
             </div>
 
             <div class="col-sm-2">
-              <div class="total-price text-end">
+              <div class="total-price text-xs-left text-sm-end">
                 <?php echo currency::format($item['display_price'] * $item['quantity']); ?>
               </div>
             </div>
@@ -80,8 +79,7 @@
     <?php } ?>
   </ul>
 
-  <div class="subtotal text-end">
+  <div class="card-footer subtotal text-end">
     <?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format(cart::$total['value'] + cart::$total['tax']) : currency::format_html(cart::$total['value']); ?></strong>
   </div>
-
 </section>

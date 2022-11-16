@@ -93,7 +93,7 @@
       }
 
       preg_match('#HTTP/\d(\.\d)?\s(\d{3})#', $response_headers, $matches);
-      $status_code = $matches[2];
+      $status_code = isset($matches[2]) ? $matches[2] : null;
 
       $this->last_response = [
         'timestamp' => time(),
@@ -104,7 +104,7 @@
         'bytes' => strlen($response_headers . "\r\n" . $response_body),
       ];
 
-      file_put_contents(FS_DIR_APP . 'logs/http_request_last-'. $parts['host'] .'.log',
+      file_put_contents(FS_DIR_STORAGE . 'logs/http_request_last-'. $parts['host'] .'.log',
         '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_request['timestamp']) .'] Request ', 70, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .
         $this->last_request['head'] . "\r\n" .
         $this->last_request['body'] . "\r\n\r\n" .

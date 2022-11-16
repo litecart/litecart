@@ -11,7 +11,7 @@
           <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . $option['icon'], 140, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING')); ?>" />
         </div>
 
-        <div class="col-xs-9 text-start" style="padding-bottom: 0;">
+        <div class="col-xs-9 text-start">
           <div class="title"><?php echo $module['title']; ?></div>
           <div class="name"><?php echo $option['name']; ?></div>
           <div class="price"><?php echo (empty($option['error']) && (float)$option['cost'] != 0) ? '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])) : language::translate('text_no_fee', 'No fee'); ?></div>

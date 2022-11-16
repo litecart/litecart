@@ -122,7 +122,7 @@
         ],
         [
           'key' => 'priority',
-          'default_value' => '0',
+          'default_value' => '-1',
           'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
           'description' => language::translate(__CLASS__.':description_priority', 'Process this module in the given priority order.'),
           'function' => 'number()',

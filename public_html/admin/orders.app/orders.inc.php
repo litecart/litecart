@@ -187,7 +187,7 @@
       from ". DB_TABLE_PREFIX ."orders
       group by order_status_id
     ) o on (o.order_status_id = os.id)
-    order by os.priority, osi.name;"
+    order by field(state,'created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled',''), osi.name asc;"
   );
 
   while ($order_status = database::fetch($order_statuses_query)) {
@@ -228,12 +228,14 @@ table .fa-star:hover {
 }
 </style>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_orders', 'Orders'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_orders', 'Orders'); ?>
+    </div>
   </div>
 
-  <div class="panel-action">
+  <div class="card-action">
     <ul class="list-inline">
       <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_order', 'redirect_url' => $_SERVER['REQUEST_URI']], true), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?></li>
     </ul>
@@ -242,7 +244,7 @@ table .fa-star:hover {
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
     <?php echo functions::form_draw_hidden_field('app', true); ?>
     <?php echo functions::form_draw_hidden_field('doc', true); ?>
-    <div class="panel-filter">
+    <div class="card-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
       <div><?php echo functions::form_draw_select_optgroup_field('order_status_id', $order_status_options, true, false, 'style="width: auto;"'); ?></div>
       <div class="input-group" style="max-width: 450px;">
@@ -254,78 +256,80 @@ table .fa-star:hover {
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="panel-body">
-    <?php echo functions::form_draw_form_begin('orders_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('orders_form', 'post'); ?>
 
-      <table class="table table-striped table-hover table-sortable data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th></th>
-            <th data-sort="id"><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th></th>
-            <th data-sort="customer" class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
-            <th data-sort="country"><?php echo language::translate('title_country', 'Country'); ?></th>
-            <th data-sort="payment_method"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
-            <th class="text-center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
-            <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
-            <th data-sort="order_status" class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
-            <th data-sort="date_created"><?php echo language::translate('title_date', 'Date'); ?></th>
-            <th></th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover table-sortable data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th></th>
+          <th data-sort="id"><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th></th>
+          <th data-sort="customer" class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
+          <th data-sort="country"><?php echo language::translate('title_country', 'Country'); ?></th>
+          <th data-sort="payment_method"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+          <th data-sort="order_status" class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
+          <th data-sort="date_created"><?php echo language::translate('title_date', 'Date'); ?></th>
+          <th></th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($orders as $order) { ?>
-          <tr class="<?php echo implode(' ', $order['css_classes']); ?>" data-id="<?php echo $order['id']; ?>">
-            <td><?php echo functions::form_draw_checkbox('orders[]', $order['id'], true); ?></td>
-            <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
-            <td><?php echo $order['id']; ?></td>
-            <td><?php echo (!empty($order['starred'])) ? functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?></td>
-            <td><a href="<?php echo document::href_link('', ['app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo functions::escape_html($order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']); ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a> <span style="opacity: 0.5;"><?php echo functions::escape_html($order['customer_tax_id']); ?></span></td>
-            <td><?php echo !empty($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>
-            <td><?php echo $order['payment_option_name']; ?></td>
-            <td class="text-end"><?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></td>
-            <td class="text-end"><?php echo ($order['tax_total'] != 0) ? currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
-            <td class="text-center"><?php echo !empty($order['order_status_id']) ? $order['order_status_name'] : language::translate('title_unprocessed', 'Unprocessed'); ?></td>
-            <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
-            <td>
-              <a href="<?php echo document::href_ilink('printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key'], 'media' => 'print']); ?>" target="_blank" title="<?php echo language::translate('title_packing_slip', 'Packing Slip'); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
-              <a href="<?php echo document::href_ilink('printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key'], 'media' => 'print']); ?>" target="_blank" title="<?php echo language::translate('title_order_copy', 'Order Copy'); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
-              <a href="<?php echo document::href_link('', ['app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
-            </td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php foreach ($orders as $order) { ?>
+        <tr class="<?php echo implode(' ', $order['css_classes']); ?>" data-id="<?php echo $order['id']; ?>">
+          <td><?php echo functions::form_draw_checkbox('orders[]', $order['id'], true); ?></td>
+          <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
+          <td><?php echo $order['id']; ?></td>
+          <td><?php echo (!empty($order['starred'])) ? functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?></td>
+          <td><a class="link" href="<?php echo document::href_link('', ['app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo functions::escape_html($order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']); ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a> <span style="opacity: 0.5;"><?php echo functions::escape_html($order['customer_tax_id']); ?></span></td>
+          <td><?php echo !empty($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>
+          <td><?php echo $order['payment_option_name']; ?></td>
+          <td class="text-end"><?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></td>
+          <td class="text-end"><?php echo ($order['tax_total'] != 0) ? currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
+          <td class="text-center"><?php echo !empty($order['order_status_id']) ? $order['order_status_name'] : language::translate('title_unprocessed', 'Unprocessed'); ?></td>
+          <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
+          <td>
+            <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key'], 'media' => 'print']); ?>" target="_blank" title="<?php echo functions::escape_html(language::translate('title_packing_slip', 'Packing Slip')); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
+            <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key'], 'media' => 'print']); ?>" target="_blank" title="<?php echo functions::escape_html(language::translate('title_order_copy', 'Order Copy')); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
+            <a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
+          </td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="12"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="12"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-      <p>
-        <ul id="order-actions" class="list-inline">
-          <?php foreach ($order_actions as $module) { ?>
-          <li>
-            <fieldset title="<?php echo functions::escape_html($module['description']); ?>">
-              <legend><?php echo $module['name']; ?></legend>
-              <div class="btn-group">
-                <?php foreach ($module['actions'] as $action) echo functions::form_draw_button('order_action', [$module['id'].':'.$action['id'], $action['title']], 'submit', 'formtarget="'. functions::escape_html($action['target']) .'" title="'. functions::escape_html($action['description']) .'"'); ?>
-              </div>
-            </fieldset>
-          </li>
-          <?php } ?>
-        </ul>
-      </p>
+    <?php if ($order_actions) { ?>
+    <div class="card-body">
+      <ul id="actions" class="list-inline">
+        <?php foreach ($order_actions as $module) { ?>
+        <li>
+          <fieldset title="<?php echo functions::escape_html($module['description']); ?>">
+            <legend><?php echo $module['name']; ?></legend>
+            <div class="btn-group">
+              <?php foreach ($module['actions'] as $action) echo functions::form_draw_button('order_action', [$module['id'].':'.$action['id'], $action['title']], 'submit', 'formtarget="'. functions::escape_html($action['target']) .'" title="'. functions::escape_html($action['description']) .'"'); ?>
+            </div>
+          </fieldset>
+        </li>
+        <?php } ?>
+      </ul>
+    </div>
+    <?php } ?>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="panel-footer">
+  <?php if ($num_pages > 1) { ?>
+  <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>
 
 <script>
@@ -340,14 +344,9 @@ table .fa-star:hover {
     $(this).closest('form').submit();
   });
 
-  $('.data-table input[name^="orders["]').change(function() {
-    if ($('.data-table input[name^="orders["]:checked').length > 0) {
-      $('#order-actions button').prop('disabled', false);
-    } else {
-      $('#order-actions button').prop('disabled', true);
-    }
-  }).trigger('change');
-
+  $('.data-table :checkbox').change(function() {
+    $('#actions fieldset').prop('disabled', !$('.data-table :checked').length);
+  }).first().trigger('change');
 
   $('table').on('click', '.fa-star-o', function(e){
     e.stopPropagation();

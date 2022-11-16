@@ -22,7 +22,7 @@
       $manufacturer = reference::manufacturer($link->query['manufacturer_id'], $language_code);
       if (empty($manufacturer->id)) return $link;
 
-      $link->path = functions::general_path_friendly($manufacturer->name, $language_code) .'-m-'. $manufacturer->id .'/';
+      $link->path = functions::format_path_friendly($manufacturer->name, $language_code) .'-m-'. $manufacturer->id .'/';
       $link->unset_query('manufacturer_id');
 
       return $link;

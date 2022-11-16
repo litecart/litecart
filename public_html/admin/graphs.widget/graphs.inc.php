@@ -98,28 +98,52 @@
     }
 ?>
 <style>
+#chart-sales-monthly {
+  --chart-label-color: #999;
+  --chart-a-color: #ececec;
+  --chart-b-color: #d2d2d2;
+  --chart-c-color: #3ba5c6;
+}
+.dark-mode #chart-sales-monthly {
+  --chart-label-color: #999;
+  --chart-a-color: #343d5a;
+  --chart-b-color: #424d6e;
+  --chart-c-color: #4e90ad;
+}
+
+#chart-sales-daily {
+  --chart-label-color: #999;
+  --chart-a-color: #e4e4e4;
+  --chart-b-color: #3ba5c6;
+}
+.dark-mode #chart-sales-daily {
+  --chart-label-color: #999;
+  --chart-a-color: #424d6e;
+  --chart-b-color: #4e90ad;
+}
+
 #chart-sales-monthly .ct-label, #chart-sales-daily .ct-label {
   font-size: 12px;
-  color: #999;
+  color: var(--chart-label-color);
 }
 #chart-sales-monthly .ct-series-a .ct-bar, #chart-sales-daily .ct-series-a .ct-bar {
-  stroke: #ececec;
+  stroke: var(--chart-a-color);
 }
 #chart-sales-monthly .ct-series-b .ct-bar, #chart-sales-daily .ct-series-b .ct-bar {
-  stroke: #d2d2d2;
+  stroke: var(--chart-b-color);
 }
 #chart-sales-monthly .ct-series-c .ct-bar, #chart-sales-daily .ct-series-c .ct-bar {
-  stroke: #3ba5c6;
+  stroke: url(#gradient);
 }
 #chart-sales-monthly .ct-bar{
   stroke-width: 20px;
 }
 
 #chart-sales-daily .ct-series-a .ct-bar {
-  stroke: #e4e4e4;
+  stroke: var(--chart-a-color);
 }
 #chart-sales-daily .ct-series-b .ct-bar {
-  stroke: #3ba5c6;
+  stroke: var(--chart-b-color);
 }
 #chart-sales-daily .ct-bar {
   stroke-width: 10px;
@@ -127,27 +151,27 @@
 </style>
 
 <div id="widget-graphs" class="widget">
-  <div class="row" style="margin-bottom: 0;">
+  <div class="row">
     <div class="col-md-8">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <div class="panel-title"><?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?></div>
+      <div class="card card-default">
+        <div class="card-header">
+          <div class="card-title"><?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?></div>
         </div>
 
-        <div class="panel-body">
-          <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
+        <div class="card-body">
+          <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo functions::escape_html(language::translate('title_monthly_sales', 'Monthly Sales')); ?>"></div>
         </div>
       </div>
     </div>
 
     <div class="widget col-md-4">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <div class="panel-title"><?php echo language::translate('title_daily_sales', 'Daily Sales'); ?></div>
+      <div class="card card-default">
+        <div class="card-header">
+          <div class="card-title"><?php echo language::translate('title_daily_sales', 'Daily Sales'); ?></div>
         </div>
 
-        <div class="panel-body">
-          <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
+        <div class="card-body">
+          <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo functions::escape_html(language::translate('title_daily_sales', 'Daily Sales')); ?>"></div>
         </div>
       </div>
     </div>
@@ -178,7 +202,26 @@
     }]
   ];
 
-  new Chartist.Bar('#chart-sales-monthly', data, options, responsiveOptions);
+  var chart1 = new Chartist.Bar('#chart-sales-monthly', data, options, responsiveOptions);
+
+  // Offset x1 a tiny amount so that the straight stroke gets a bounding box
+  // Straight lines don't get a bounding box
+  // Last remark on -> http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox
+  chart1.on('draw', function(ctx) {
+    if(ctx.type === 'bar') {
+      ctx.element.attr({
+        x1: ctx.x1 + 0.001
+      });
+    }
+  });
+
+  // Create the gradient definition on created event (always after chart re-render)
+  chart1.on('created', function(ctx) {
+    var defs = ctx.svg.elem('defs');
+    defs.elem('linearGradient', { id: 'gradient', x1: 0, y1: 1, x2: 0, y2: 0 })
+    .elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .8)' })
+    .parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .8)' });
+  });
 
 // Daily Sales
 

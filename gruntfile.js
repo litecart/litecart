@@ -32,6 +32,17 @@ module.exports = function(grunt) {
     },
 
     less: {
+      backend: {
+        options: {
+          compress: false,
+          sourceMap: false,
+          relativeUrls: true
+        },
+        files: {
+          'public_html/includes/templates/default.admin/css/variables.css'       : 'public_html/includes/templates/default.admin/less/variables.less',
+        }
+      },
+
       backend_minified: {
         options: {
           compress: true,
@@ -165,7 +176,7 @@ module.exports = function(grunt) {
         files: [
           'public_html/ext/trumbowyg/ui/trumbowyg.scss',
         ],
-        tasks: ['sass']
+        tasks: ['dart-sass']
       },
     }
   });

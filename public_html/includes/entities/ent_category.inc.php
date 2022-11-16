@@ -39,6 +39,7 @@
       }
 
       $this->data['filters'] = [];
+      $this->data['products'] = [];
 
       $this->previous = $this->data;
     }
@@ -81,9 +82,19 @@
         order by priority;"
       );
 
-      $this->data['filters'] = [];
       while ($group = database::fetch($category_filters_query)) {
         $this->data['filters'][] = $group;
+      }
+
+    // Products
+      $products_query = database::query(
+        "select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+        where category_id = ". (int)$this->data['id'] ."
+        order by product_id;"
+      );
+
+      while ($product = database::fetch($products_query)) {
+        $this->data['products'][] = $product['product_id'];
       }
 
       $this->previous = $this->data;
@@ -210,18 +221,18 @@
         $this->save();
       }
 
-      if (!is_dir(FS_DIR_APP . 'images/categories/')) {
-        mkdir(FS_DIR_APP . 'images/categories/', 0777);
+      if (!is_dir(FS_DIR_STORAGE . 'images/categories/')) {
+        mkdir(FS_DIR_STORAGE . 'images/categories/', 0777);
       }
 
       $image = new ent_image($file);
 
       if (empty($filename)) {
-        $filename = 'categories/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type();
+        $filename = 'categories/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type();
       }
 
-      if (is_file(FS_DIR_APP . 'images/' . $filename)) {
-        unlink(FS_DIR_APP . 'images/' . $filename);
+      if (is_file(FS_DIR_STORAGE . 'images/' . $filename)) {
+        unlink(FS_DIR_STORAGE . 'images/' . $filename);
       }
 
       if (settings::get('image_downsample_size')) {
@@ -229,9 +240,9 @@
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
-      if (!$image->write(FS_DIR_APP . 'images/' . $filename, 90)) return false;
+      if (!$image->write(FS_DIR_STORAGE . 'images/' . $filename, 90)) return false;
 
-      functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
+      functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $filename);
 
       database::query(
         "update ". DB_TABLE_PREFIX ."categories
@@ -246,11 +257,11 @@
 
       if (empty($this->data['image'])) return;
 
-      if (is_file(FS_DIR_APP . 'images/' . $this->data['image'])) {
-        unlink(FS_DIR_APP . 'images/' . $this->data['image']);
+      if (is_file(FS_DIR_STORAGE . 'images/' . $this->data['image'])) {
+        unlink(FS_DIR_STORAGE . 'images/' . $this->data['image']);
       }
 
-      functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['image']);
+      functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['image']);
 
       database::query(
         "update ". DB_TABLE_PREFIX ."categories
@@ -266,24 +277,30 @@
 
       if (empty($this->data['id'])) return;
 
-      $products_query = database::query(
-        "select product_id from ". DB_TABLE_PREFIX ."products_to_categories
-        where category_id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
-
-      if (database::num_rows($products_query)) {
-        throw new Exception(language::translate('error_cannot_delete_category_while_it_contains_products', 'The category could not be deleted because it contains products.'));
-      }
-
+    // Delete subcategories
       $subcategories_query = database::query(
         "select id from ". DB_TABLE_PREFIX ."categories
-        where parent_id = ". (int)$this->data['id'] ."
-        limit 1;"
+        where parent_id = ". (int)$this->data['id'] .";"
       );
 
-      if (database::num_rows($subcategories_query)) {
-        throw new Exception(language::translate('error_cannot_delete_category_while_it_contains_subcategories', 'The category could not be deleted because it contains subcategories.'));
+      while ($subcategory = database::fetch($subcategories_query)) {
+        $subcategory = new ent_category($subcategory['id']);
+        $subcategory->delete();
+      }
+
+    // Delete products
+      foreach ($this->data['products'] as $product_id) {
+        $product = new ent_product($product_id);
+
+        if (($key = array_search($this->data['id'], $product->data['categories'])) !== false) {
+          unset($product->data['categories'][$key]);
+        }
+
+        if (empty($product->data['categories'])) {
+          $product->delete();
+        } else {
+          $product->save();
+        }
       }
 
       $this->data['filters'] = [];

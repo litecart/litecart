@@ -28,7 +28,8 @@
         }
 
         if (($duration = microtime(true) - $measure_start) > 1) {
-          error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, FS_DIR_APP . 'logs/performance.log');
+          $log_message = '['. date('Y-m-d H:i:s e').'] A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL . PHP_EOL;
+          file_put_contents(FS_DIR_APP . 'logs/performance.log', $log_message, FILE_APPEND);
         }
 
         if (class_exists('stats', false)) {
@@ -167,7 +168,9 @@
       }
 
       if (($duration = microtime(true) - $measure_start) > 3) {
-        error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query) . PHP_EOL, 3, FS_DIR_APP . 'logs/performance.log');
+        $log_message = '['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL
+                     . '  Query: '. str_replace("\r\n", "\r\n    ", $query) . PHP_EOL . PHP_EOL;
+        file_put_contents(FS_DIR_APP . 'logs/performance.log', $log_message, FILE_APPEND);
       }
 
       if (class_exists('stats', false)) {
@@ -191,7 +194,7 @@
       $i = 1;
       while (mysqli_more_results(self::$_links[$link])) {
         if (mysqli_next_result(self::$_links[$link]) === false) {
-          die('Fatal: Query '. $i .' failed');
+          trigger_error('Fatal: Query '. $i .' failed', E_USER_ERROR);
         }
         $i++;
       }

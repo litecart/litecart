@@ -512,6 +512,7 @@
 
             $fields = [
               'status',
+              'default_catgeory_id',
               'manufacturer_id',
               'supplier_id',
               'code',
@@ -542,8 +543,9 @@
               if (isset($row[$field])) $product->data[$field] = $row[$field];
             }
 
-            if (isset($row['keywords'])) $product->data['keywords'] = preg_split('#\s*,\s*#', $row['keywords'], -1, PREG_SPLIT_NO_EMPTY);
-            if (isset($row['categories'])) $product->data['categories'] = preg_split('#\s*,\s*#', $row['categories'], -1, PREG_SPLIT_NO_EMPTY);
+            if (isset($row['categories'])) {
+              $product->data['categories'] = preg_split('#\s*,\s*#', $row['categories'], -1, PREG_SPLIT_NO_EMPTY);
+            }
 
           // Set price
             if (!empty($row['currency_code'])) {
@@ -894,6 +896,7 @@
               'id' => $product['id'],
               'status' => $product['status'],
               'categories' => $product['categories'],
+              'default_category_id' => $product['default_category_id'],
               'manufacturer_id' => $product['manufacturer_id'],
               'supplier_id' => $product['supplier_id'],
               'code' => $product['code'],
@@ -992,12 +995,14 @@
   }
 
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_csv_import_export', 'CSV Import/Export'); ?>
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_csv_import_export', 'CSV Import/Export'); ?>
+    </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
 
     <div class="row">
 

@@ -132,7 +132,7 @@
       // Don't return an error page for content with a defined extension (presumably static)
         if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html?|php)$#', $request->path)) exit;
 
-        $not_found_file = FS_DIR_APP . 'logs/not_found.log';
+        $not_found_file = FS_DIR_STORAGE . 'logs/not_found.log';
 
         $lines = is_file($not_found_file) ? file($not_found_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : [];
         $lines[] = $request->path;
@@ -144,7 +144,11 @@
           $email = new ent_email();
           $email->add_recipient(settings::get('store_email'))
                 ->set_subject('[Not Found Report] '. settings::get('store_name'))
-                ->add_body("** This is a report of requests made to your website that did not have a destination. **\r\n\r\n". PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n".implode("\r\n", $lines))
+                ->add_body(
+                  wordwrap("This is a list of the last 100 requests made to your website that did not have a destination. Most of these reports usually contain scans and attacks by evil robots. But some URLs may be indexed by search engines requiring a redirect to a proper destination.", 72, "\r\n") . "\r\n\r\n" .
+                  PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n" .
+                  implode("\r\n", $lines)
+                )
                 ->send();
           file_put_contents($not_found_file, '');
         } else {
@@ -161,8 +165,12 @@
 
       if (empty($path)) return '';
 
-      if ($path = parse_url($path, PHP_URL_PATH)) {
-        $path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $path);
+      if (!$path = parse_url($path, PHP_URL_PATH)) {
+        return '';
+      }
+
+      if (!$path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', '$4', $path)) {
+        return '';
       }
 
       return $path;

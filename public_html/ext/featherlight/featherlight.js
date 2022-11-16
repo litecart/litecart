@@ -129,7 +129,7 @@
 
 			self.$instance = $([
 				'<div class="'+self.namespace+' '+self.namespace+'-loading">',
-					'<div class="'+self.namespace+'-content">',
+					'<div class="'+self.namespace+'-content'+ (self.seamless ? ' '+self.namespace+'-seamless' : '') +'">',
 						'<div class="'+self.namespace+'-inner">'+self.loading+'</div>',
 					'</div>',
 				'</div>'
@@ -217,7 +217,9 @@
 
 			self.$instance.removeClass(self.namespace+'-loading');
 
-			self.$content = $content.show();
+			$content.show().children().css('margin', '0');
+
+			self.$content = $content;
 			self.$instance.find('.'+self.namespace+'-content').html(self.$content);
 
 			if (self.closeIcon) {

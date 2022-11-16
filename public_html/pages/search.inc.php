@@ -31,7 +31,8 @@
 
   $query =
     "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price)) as final_price,
-    (
+
+    ". (!empty($_GET['query']) ? "(
       if(p.id = '". database::input($_GET['query']) ."', 10, 0)
       + (match(pi.name) against ('". database::input($query_fulltext) ."' in boolean mode))
       + (match(pi.short_description) against ('". database::input($query_fulltext) ."' in boolean mode) / 2)
@@ -48,7 +49,7 @@
         select product_id from ". DB_TABLE_PREFIX ."products_options_stock
         where sku regexp '". database::input($code_regex) ."'
       ), 5, 0)
-    ) as relevance
+    )" : "1") ." as relevance
 
     from (
       select id, code, mpn, gtin, sku, manufacturer_id, default_category_id, keywords, image, recommended_price, tax_class_id, quantity, sold_out_status_id, views, purchases, date_updated, date_created

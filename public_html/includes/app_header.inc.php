@@ -1,18 +1,19 @@
 <?php
   define('PLATFORM_NAME', 'LiteCart');
-  define('PLATFORM_VERSION', '2.4.4');
+  define('PLATFORM_VERSION', '2.5.0');
   define('SCRIPT_TIMESTAMP_START', microtime(true));
-
-  if (!file_exists(__DIR__ . '/config.inc.php')) {
-    header('Location: ./install/');
-    exit;
-  }
 
 // Start redirecting output to the output buffer
   ob_start();
 
 // Get config
-  require_once __DIR__ . '/config.inc.php';
+  if (!defined('FS_DIR_APP')) {
+    if (!file_exists(__DIR__ . '/config.inc.php')) {
+      header('Location: ./install/');
+      exit;
+    }
+    require_once __DIR__ . '/config.inc.php';
+  }
 
 // Virtual Modifications System
   require_once __DIR__ . '/library/lib_vmod.inc.php';
@@ -36,9 +37,6 @@
   class_exists('compression');
   class_exists('notices');
   class_exists('stats');
-  if (file_get_contents('php://input')) {
-    class_exists('form');
-  }
 
 // Run operations before capture
   event::fire('before_capture');

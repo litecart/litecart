@@ -1,9 +1,9 @@
-<div id="content" class="fourteen-forty">
+<main id="content" class="fourteen-forty">
   {snippet:notices}
 
   <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process'), false, 'autocomplete="off"'); ?>
 
-  <section id="box-checkout" class="box">
+  <section id="box-checkout">
     <div class="cart wrapper"></div>
 
     <div class="row" style="grid-gap: 2rem;">
@@ -22,7 +22,7 @@
   </section>
 
   <?php echo functions::form_draw_form_end(); ?>
-</div>
+</main>
 
 <script>
 // Queue Handler
