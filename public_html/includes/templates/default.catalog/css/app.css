@@ -24,9 +24,10 @@ body.has-offcanvas {
 @media (max-width: 991px) {
   #site-menu {
     position: sticky;
+    display: block;
     top: 0;
     z-index: 999;
-    display: block;
+    transition: top 200ms linear;
   }
 }
 @media (max-width: 991px) {
@@ -52,6 +53,9 @@ body.has-offcanvas {
 #site-menu .dropdown-menu {
   --gutter-y: 0.75em;
 }
+body.scrolling-down #site-menu {
+  top: -6em;
+}
 .navbar-header {
   display: flex;
   flex-flow: row wrap;
@@ -74,8 +78,8 @@ body.has-offcanvas {
     left: 0;
     right: 0;
     margin-bottom: var(--gutter-y);
-    padding-left: var(--gutter-x);
-    padding-right: var(--gutter-x);
+    padding-left: 1em;
+    padding-right: 1em;
   }
 }
 .navbar-header .fourteen-forty {
@@ -658,7 +662,10 @@ body.has-offcanvas {
 }
 #box-product .social-bookmarks {
   font-size: 1.75em;
-  margin: var(--gutter-y) 0;
+  margin-top: 1em;
+}
+#box-product .social-bookmarks a {
+  margin: 0 0.25em;
 }
 #box-product .description p:first-child {
   margin-top: 0;
