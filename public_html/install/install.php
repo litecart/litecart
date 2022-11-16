@@ -66,7 +66,7 @@
     define('FS_DIR_APP', str_replace('\\', '/', realpath(__DIR__ .'/../')) .'/');
     define('FS_DIR_STORAGE', FS_DIR_APP);
 
-    define('WS_DIR_APP',         preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP));
+    define('WS_DIR_APP',         preg_replace('#^'. preg_quote(rtrim(DOCUMENT_ROOT, '/'), '#') .'#', '', FS_DIR_APP));
     define('WS_DIR_STORAGE',     WS_DIR_APP);
 
     if (preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
