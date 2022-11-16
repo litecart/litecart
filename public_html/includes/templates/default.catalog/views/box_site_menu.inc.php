@@ -14,10 +14,12 @@
       <small class="hidden-xs"><?php echo language::$selected['code']; ?> / <?php echo customer::$data['country_code']; ?> / <?php echo currency::$selected['code']; ?></small>
     </a>
 
+    <?php if (settings::get('accounts_enabled')) { ?>
     <a class="account text-center" href="<?php echo document::href_ilink('edit_account'); ?>">
       <div class="navbar-icon"><?php echo functions::draw_fonticon('fa-user-o'); ?></div>
       <small class="hidden-xs"><?php echo language::translate('title_account', 'Account'); ?></small>
     </a>
+    <?php } ?>
 
     <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_cart.inc.php'); ?>
 

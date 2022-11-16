@@ -1,6 +1,6 @@
 <style>
 .logotype {
-  max-width: 320px;
+  max-width: 250px;
   max-height: 70px;
 }
 

@@ -25,12 +25,12 @@ body {
 }
 
 #site-menu {
-
   @media (max-width: @media-breakpoint-md - 1px) {
     position: sticky;
+    display: block;
     top: 0;
     z-index: 999;
-    display: block;
+    transition: top 200ms linear;
   }
 
   .container {
@@ -57,6 +57,9 @@ body {
     --gutter-y: .75em;
   }
 }
+body.scrolling-down #site-menu {
+  top: -6em;
+}
 
 .navbar-header {
   display: flex;
@@ -78,8 +81,8 @@ body {
     left: 0;
     right: 0;
     margin-bottom: var(--gutter-y);
-    padding-left: var(--gutter-x);
-    padding-right: var(--gutter-x);
+    padding-left: 1em;
+    padding-right: 1em;
   }
 
   .fourteen-forty {

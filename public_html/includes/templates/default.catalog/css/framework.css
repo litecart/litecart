@@ -263,7 +263,6 @@ ul.breadcrumb li a {
 /* Buttons & Button Groups - Bootstrap Compatible */
 .btn {
   --input-padding-x: 2em;
-  cursor: pointer;
   display: inline-block;
   padding: var(--input-padding-y) var(--input-padding-x);
   text-decoration: none;
@@ -272,6 +271,9 @@ ul.breadcrumb li a {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   text-align: center;
   white-space: nowrap;
+}
+.btn:not(:disabled):not(.active) {
+  cursor: pointer;
 }
 .btn.btn-default {
   background-color: var(--default-button-background-color);

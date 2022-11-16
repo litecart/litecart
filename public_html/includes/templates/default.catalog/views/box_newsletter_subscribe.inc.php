@@ -1,11 +1,11 @@
 <style>
 #box-newsletter-subscribe .form-group {
   max-width: 400px;
-  margin-bottom: 0;
+  margin: 0 auto;
 }
 </style>
 
-<section id="box-newsletter-subscribe" class="card">
+<section id="box-newsletter-subscribe" class="card text-center">
 
   <div class="card-header">
     <h2 class="card-title" style="margin-top: 0;"><?php echo language::translate('box_newsletter_subscribe:title', 'Subscribe to our newsletter!'); ?></h2>
