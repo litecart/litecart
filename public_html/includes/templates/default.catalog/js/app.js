@@ -7,6 +7,18 @@
 // Form required asterix
   $(':input[required="required"]').closest('.form-group').addClass('required');
 
+// Detect scroll direction
+  let lastScrollTop = 0;
+  $(document).on('scroll', function(){
+     var scrollTop = $(this).scrollTop();
+     if (scrollTop > lastScrollTop) {
+       $('body').addClass('scrolling-down');
+     } else {
+       $('body').removeClass('scrolling-down');
+     }
+     lastScrollTop = (scrollTop < 0) ? 0 : scrollTop;
+  });
+
 // Sidebar parallax effect
   if (typeof window._env != 'undefined') {
     if (window._env.template.settings.sidebar_parallax_effect == true) {
