@@ -523,7 +523,9 @@
                   <label><?php echo language::translate('title_name', 'Name'); ?></label>
                   <?php echo functions::form_draw_text_field('shipping_option[name]', true); ?>
                 </div>
+              </div>
 
+              <div class="row">
                 <div class="form-group col-md-8">
                   <label><?php echo language::translate('title_tracking_id', 'Tracking ID'); ?></label>
                   <?php echo functions::form_draw_text_field('shipping_tracking_id', true); ?>
