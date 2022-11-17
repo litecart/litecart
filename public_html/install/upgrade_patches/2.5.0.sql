@@ -86,6 +86,8 @@ ALTER TABLE `lc_newsletter_recipients`
 ADD COLUMN `firstname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `email`,
 ADD COLUMN `lastname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `firstname`;
 -- --------------------------------------------------------
+SET SQL_BIG_SELECTS=1; /* Prevent MAX_JOIN_SIZE error for query below */
+-- --------------------------------------------------------
 UPDATE `lc_newsletter_recipients` nr
 LEFT JOIN `lc_customers` c on (c.email = nr.email)
 LEFT JOIN (
