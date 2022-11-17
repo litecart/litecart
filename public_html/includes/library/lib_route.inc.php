@@ -90,7 +90,7 @@
       if (!empty(self::$route['page']) && is_file(vmod::check($page))) {
         $rewritten_url = document::ilink(self::$route['page'], $_GET);
 
-        if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) != parse_url($rewritten_url, PHP_URL_PATH)) {
+        if (urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != parse_url($rewritten_url, PHP_URL_PATH)) {
 
           $do_redirect = true;
 
@@ -165,7 +165,7 @@
 
       if (empty($path)) return '';
 
-      if (!$path = parse_url($path, PHP_URL_PATH)) {
+      if (!$path = urldecode(parse_url($path, PHP_URL_PATH))) {
         return '';
       }
 
