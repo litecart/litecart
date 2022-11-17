@@ -495,7 +495,7 @@ e5a645c2c87e16f9bab1889588cb428d	includes/templates/default.catalog/views/box_ch
 2e9b70e817106eb4e0245df6d2464506	includes/templates/default.catalog/views/box_contact_us.inc.php
 9ce35e7289bb1e4abb6242a3ab118bc9	includes/templates/default.catalog/views/box_cookie_notice.inc.php
 8af0371f5a33d2611b96867767039db0	includes/templates/default.catalog/views/box_customer_service_links.inc.php
-bfd4d8448694e13c73d7199db7a0dc66	includes/templates/default.catalog/views/box_filter.inc.php
+8e708ae7e3435fe60f9deb65eb3ada21	includes/templates/default.catalog/views/box_filter.inc.php
 b5f3674d7a7331948622378b84aae4c0	includes/templates/default.catalog/views/box_information_links.inc.php
 31955883e697e76040db66403f5b529b	includes/templates/default.catalog/views/box_latest_products.inc.php
 d545ed5026e367e906d43f4a2f7827db	includes/templates/default.catalog/views/box_manufacturer_links.inc.php

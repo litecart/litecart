@@ -73,12 +73,30 @@
 
     $.each($('#box-filter input[data-token-title][type="search"]'), function(i,el) {
       if (!$(this).val()) return;
-      $('#box-filter .tokens').append('<span class="token" data-group="'+ $(el).data('token-group') +'" data-name="'+ $(el).attr('name') +'" data-value="'+ $(el).val() +'">'+ $(el).data('token-title') +': '+ $(el).val() +'<a href="#" class="remove">×</a></span>');
+
+      var $token = $('<span class="token"></span>');
+
+      $token.attr('data-group', $(el).data('token-group'))
+        .attr('data-name', $(el).attr('name'))
+        .attr('data-value', $(el).val())
+        .text($(el).data('token-title') +': '+ $(el).val())
+        .append('<a href="#" class="remove">×</a></span>');
+
+      $('#box-filter .tokens').append($token);
     });
 
     $.each($('#box-filter input[data-token-title][type="checkbox"]:checked, #box-filter input[data-token-title][type="radio"]:checked'), function(i,el) {
       if (!$(this).val()) return;
-      $('#box-filter .tokens').append('<span class="token" data-group="'+ $(el).data('token-group') +'" data-name="'+ $(el).attr('name') +'" data-value="'+ $(el).val() +'">'+ $(el).data('token-title') +': '+ $(el).data('token-value') +'<a href="#" class="remove">&times;</a></span>');
+
+      var $token = $('<span class="token"></span>');
+
+      $token.attr('data-group', $(el).data('token-group'))
+        .attr('data-name', $(el).attr('name'))
+        .attr('data-value', $(el).val())
+        .text($(el).data('token-title') +': '+ $(el).data('token-value'))
+        .append('<a href="#" class="remove">×</a></span>');
+
+      $('#box-filter .tokens').append($token);
     });
   });
 
