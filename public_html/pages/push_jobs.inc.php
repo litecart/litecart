@@ -1,6 +1,6 @@
 <?php
   ignore_user_abort(true);
-  set_time_limit(60*5);
+  @set_time_limit(300);
 
   header('X-Robots-Tag: noindex');
   header('Content-type: text/plain; charset='. language::$selected['code']);
