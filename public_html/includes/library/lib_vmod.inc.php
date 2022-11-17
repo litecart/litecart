@@ -261,6 +261,7 @@
         self::$_checked[$original_file] = $modified_file;
         self::$_checksums[$original_file] = $checksum;
         $serialized_checked = implode('', array_map(function($original_file){
+          if (!isset(self::$_checksums[$original_file])) return;
           return $original_file .';'. self::$_checked[$original_file] .';'. self::$_checksums[$original_file] . PHP_EOL;
         }, array_keys(self::$_checked)));
 
