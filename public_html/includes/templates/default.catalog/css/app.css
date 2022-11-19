@@ -17,9 +17,8 @@ body.has-offcanvas {
   color: var(--important-notice-text-color);
   text-align: center;
 }
-#important-notice .container {
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
+#important-notice .fourteen-forty {
+  padding: 0.5em var(--gutter-x);
 }
 @media (max-width: 991px) {
   #site-menu {
