@@ -228,7 +228,7 @@
               'content' => $search_node->textContent,
               'index' => $search_node->getAttribute('index'),
               'offset-before' => ($search_node->getAttribute('position') == 'before') ? (int)$search_node->getAttribute('offset') : 0,
-              'offset-after' => ($search_node->getAttribute('position') == 'after') ? (int)$search_node->getAttribute('offset') : 0,
+              'offset-after' => ($search_node->getAttribute('position') != 'before') ? (int)$search_node->getAttribute('offset') : 0,
             ];
           }
 
