@@ -257,7 +257,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_price', 'Price'); ?></label>
-                 <?php echo functions::form_draw_regional_input_field(settings::get('store_currency_code'), 'prices['. settings::get('store_currency_code') .']', true); ?>
+                 <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'prices['. settings::get('store_currency_code') .']', true); ?>
               </div>
 
               <div class="form-group">
