@@ -33,14 +33,14 @@
     </button>
 
     <ul class="nav nav-pills" style="margin-bottom: 1em;">
-      <li>
-        <a href="<?php echo document::link(null, ['parent_id' => 0], true); ?>" data-id="0">
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo document::link(null, ['parent_id' => 0], true); ?>" data-id="0">
           <?php echo language::translate('title_root', 'Root'); ?>
         </a>
       </li>
       <?php foreach ($breadcrumbs as $category) { ?>
-      <li>
-        <a href="<?php echo document::link(null, ['parent_id' => $category['id']], true); ?>" data-id="<?php echo (int)$category['id']; ?>">
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo document::link(null, ['parent_id' => $category['id']], true); ?>" data-id="<?php echo (int)$category['id']; ?>">
           <?php echo $category['name']; ?>
         </a>
       </li>
@@ -49,15 +49,15 @@
 
 		<ul class="nav nav-pills nav-stacked">
       <?php if (!empty($_GET['parent_id'])) { ?>
-      <li>
-        <a href="<?php echo document::link(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id], true); ?>">
+      <li class="nav-item">
+        <a class="nav-link" ref="<?php echo document::link(null, ['parent_id' => reference::category($_GET['parent_id'])->id], true); ?>">
           <?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back', 'Back'); ?>
         </a>
       <li>
       <?php } ?>
       <?php foreach ($categories as $category) { ?>
-      <li>
-        <a href="<?php echo document::link(null, ['parent_id' => $category['id']], true); ?>">
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo document::link(null, ['parent_id' => $category['id']], true); ?>">
           <?php echo functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"'); ?> <?php echo !empty($category['name']) ? $category['name'] : '[untitled]'; ?>
         </a>
       <li>
