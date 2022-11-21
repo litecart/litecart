@@ -90,7 +90,7 @@
           <td><?php echo $currency['id']; ?></td>
           <td><?php echo $currency['code']; ?></td>
           <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_currency', 'currency_code' => $currency['code']], true); ?>"><?php echo $currency['name']; ?></a></td>
-          <td class="text-end"><?php echo $currency['value']; ?></td>
+          <td class="text-end"><?php echo language::number_format($currency['value'], 4); ?></td>
           <td class="text-center"><?php echo $currency['decimals']; ?></td>
           <td class="text-center"><?php echo $currency['prefix']; ?></td>
           <td class="text-center"><?php echo $currency['suffix']; ?></td>
