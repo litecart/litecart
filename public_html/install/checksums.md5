@@ -3,15 +3,15 @@
 d41d8cd98f00b204e9800998ecf8427e	admin/addons.widget/index.html
 fbfa82d0cab6683bb0135b182304ce5f	admin/appearance.app/config.inc.php
 fa89a536c3e8bd1abfa6ba1542a941d8	admin/appearance.app/edit_styling.inc.php
-61d828245fbbeb345e49e3726b25e4ab	admin/appearance.app/favicon.inc.php
-1001811824547b68d865b688ed137f7b	admin/appearance.app/logotype.inc.php
+0c8652854daa992930e84ec1105fa5d4	admin/appearance.app/favicon.inc.php
+14f8185081855dc93e9a670df5412f8e	admin/appearance.app/logotype.inc.php
 a4ff19eb943a2bbc82b3390ec59a38d9	admin/appearance.app/template.inc.php
 d2212a56f7c856dcb0a63115de5680b4	admin/appearance.app/template_settings.inc.php
 023c5466996fb29e91130b4a839a1f92	admin/catalog.app/attribute_groups.inc.php
 7d829528c1412da24a7d3d3503c315ff	admin/catalog.app/attribute_values.json.inc.php
 6c28f008a04344f07fef934649f3ae2b	admin/catalog.app/catalog.inc.php
 b30f270000d36cfb8f76bf57063935b4	admin/catalog.app/categories.json.inc.php
-be9b7897b52f4e86cec0cc601daded8d	admin/catalog.app/category_picker.inc.php
+3aeddee19d2bae6aaf3efd9babf2e793	admin/catalog.app/category_picker.inc.php
 641e19cc75c37392ee1f44f773262184	admin/catalog.app/config.inc.php
 34e95c3eabe22d77425439d0f103b3c7	admin/catalog.app/csv.inc.php
 fb30c89488d320d955612c6dee76862b	admin/catalog.app/delivery_statuses.inc.php
@@ -19,7 +19,7 @@ fb30c89488d320d955612c6dee76862b	admin/catalog.app/delivery_statuses.inc.php
 830e1eebd1c8f284b55032eeaecd4979	admin/catalog.app/edit_category.inc.php
 d533cb0cc85920b7cfc97c8b4001a3ed	admin/catalog.app/edit_delivery_status.inc.php
 a29ff307c6e8b2580961b62b12c79bc6	admin/catalog.app/edit_manufacturer.inc.php
-5f17627abf152baeb54c922a69bd9d74	admin/catalog.app/edit_product.inc.php
+e1391e6a051ca48236660fa44796b13d	admin/catalog.app/edit_product.inc.php
 63c8c86adb7aac9310e842d054448e8d	admin/catalog.app/edit_quantity_unit.inc.php
 8b0aa18eb94cba3e48e5e697d906bc9f	admin/catalog.app/edit_sold_out_status.inc.php
 d9926a9dcf952d605a1fe12fc78269f2	admin/catalog.app/edit_supplier.inc.php
@@ -35,7 +35,7 @@ d02dd57869b3586c03b552de4d40f397	admin/countries.app/config.inc.php
 1d147579e14a35d4a5091ed8b889bde8	admin/countries.app/edit_country.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/countries.app/index.html
 88eae3b0d3f9d5150ee9bb5faee59b5f	admin/currencies.app/config.inc.php
-285b6f91850374517f211c26e51969d6	admin/currencies.app/currencies.inc.php
+a5924271463cfc67b0d53a21789428a1	admin/currencies.app/currencies.inc.php
 48121e2119de7be0c7e8b8d6cacc0de3	admin/currencies.app/edit_currency.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/currencies.app/index.html
 2b54bdbe7fa88b1735a6c0f9e6506583	admin/customers.app/config.inc.php
@@ -94,7 +94,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/reports.app/index.html
 0dcae55f0a3d5cffeaf3fd2b968af0d6	admin/search_results.json.php
 caaff3f8682057a3e0d1d6088428adeb	admin/settings.app/config.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/settings.app/index.html
-1e0bde377a5d404dbc4b57eff0f6cbaf	admin/settings.app/settings.inc.php
+d150ad9c02c1eab934dc3982e27c540a	admin/settings.app/settings.inc.php
 47f3da665e0d875350184e25a5c78902	admin/slides.app/config.inc.php
 8ef591078ddf3d7d2d7e3f10148bb3e3	admin/slides.app/edit_slide.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/slides.app/index.html
@@ -237,7 +237,7 @@ a1d8a9cb8aa1d450219036f82747f9d2	includes/entities/ent_country.inc.php
 89541941304e266a24797153fff5eb91	includes/entities/ent_delivery_status.inc.php
 3e224d6e5abfeab8b16cb298dd44b8e6	includes/entities/ent_email.inc.php
 37357c40ffce997a17b1cf50540b6e0d	includes/entities/ent_geo_zone.inc.php
-def1dfd3c7c52f27218f80ee9a361b11	includes/entities/ent_image.inc.php
+a815eb1dea3ade4aaeda16b6e91da38b	includes/entities/ent_image.inc.php
 c161383835f0febc2b72975def1e4409	includes/entities/ent_language.inc.php
 6f43030dcab5c68fa42eafb03e919dd0	includes/entities/ent_link.inc.php
 a15440d35dc659a73fbfc6e1d7c29c01	includes/entities/ent_manufacturer.inc.php
