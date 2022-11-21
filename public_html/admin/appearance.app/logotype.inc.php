@@ -50,11 +50,9 @@
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('logotype_form', 'post', false, true, 'style="max-width: 320px;"'); ?>
+    <?php echo functions::form_draw_form_begin('logotype_form', 'post', false, true, 'style="max-width: 480px;"'); ?>
 
-      <div class="thumbnail" style="padding: 1em; display: inline-block;  margin-top: 1em;">
-        <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/logotype.png', 500, 500, 'FIT_ONLY_BIGGER')); ?>" alt="" />
-      </div>
+      <img class="thumbnail" src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/logotype.png', 500, 500, 'FIT_ONLY_BIGGER')); ?>" alt="" style="padding: 1em;" />
 
       <div class="form-group">
         <label><?php echo language::translate('title_new_image', 'New Image'); ?></label>
