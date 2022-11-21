@@ -37,13 +37,11 @@
 
       $image->cropImage(256, 256, 0, 0);
 
-      $icon = new Imagick();
-      $icon->setFormat('png32');
       foreach ([256, 192, 128] as $size) {
         $clone = clone $image;
+        $clone->setFormat('png32');
         $clone->scaleImage($size, 0);
-        $icon->addImage($clone);
-        $icon->writeImage(FS_DIR_STORAGE . 'images/favicon-'. $size .'x'. $size .'.png');
+        $clone->writeImage(FS_DIR_STORAGE . 'images/favicons/favicon-'. $size .'x'. $size .'.png');
       }
 
       $icon = new Imagick();
