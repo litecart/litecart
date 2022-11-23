@@ -5,7 +5,7 @@
   });
 
 // Form required asterix
-  $(':input[required="required"]').closest('.form-group').addClass('required');
+  $(':input[required]').closest('.form-group').addClass('required');
 
 // Detect scroll direction
   let lastScrollTop = 0;
