@@ -120,7 +120,7 @@ fc06272471417c0f583ad7a112c305b3	admin/users.app/users.inc.php
 f4d68321037efe916c386551430b4269	admin/vmods.app/config.inc.php
 0832586e236e642c4bcc475cef0ac7fe	admin/vmods.app/configure.inc.php
 3a15c105a7536c787fe6e7fea01f3313	admin/vmods.app/download.inc.php
-c56f9de734866c252e78575ff863ae2a	admin/vmods.app/edit_vmod.inc.php
+8f799ec16e06beac2f8640f175c93402	admin/vmods.app/edit_vmod.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/vmods.app/index.html
 12bfc6df4c3c71a0b0deba18a1ecba2d	admin/vmods.app/sources.inc.php
 d12c9ef685a2f9fe035de1f88568076f	admin/vmods.app/test.inc.php
@@ -245,7 +245,7 @@ a15440d35dc659a73fbfc6e1d7c29c01	includes/entities/ent_manufacturer.inc.php
 4831cfa9f4e0e09a260b4a04d0f41e81	includes/entities/ent_order.inc.php
 afa0a747674e9ed5ad68077832881b7f	includes/entities/ent_order_status.inc.php
 60fbc8ab51609a0fcbad27e80c2d63f1	includes/entities/ent_page.inc.php
-59aeb292ac4feeee1dfc9db624f52d85	includes/entities/ent_product.inc.php
+a4b91d565adf141002220b15f7b3c52d	includes/entities/ent_product.inc.php
 9c02bb592f51f02573ec3134bce009d0	includes/entities/ent_quantity_unit.inc.php
 e22b8bfe3b82a002df0d30d13e64bd6d	includes/entities/ent_slide.inc.php
 305011d49b5846ca57461753b3d7ad44	includes/entities/ent_sold_out_status.inc.php
@@ -318,7 +318,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/modules/order_total/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/payment/index.html
 4021f695bd8a49e49028d2177404b308	includes/modules/payment/pm_cod.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/shipping/index.html
-056725119a2465923438d7f453957fbd	includes/modules/shipping/sm_zone_weight.inc.php
+682bb1f2960c6b4401379a057421a17f	includes/modules/shipping/sm_zone_weight.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/references/index.html
 6117299ebbbd87ecfa90964dd0f08242	includes/references/ref_category.inc.php
 b02d741ad10ebd16847f121d6fc1992e	includes/references/ref_country.inc.php
@@ -339,8 +339,8 @@ db390b3ff0e45b37533913f7c5b345f5	includes/routes/url_order_process.inc.php
 d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 478d4964edbc0f2ff5f62a9073d3daa2	includes/templates/default.admin/css/app.min.css
 32832eaa2f3942854da5dba902a5fa71	includes/templates/default.admin/css/app.min.css.map
-89db3e3441d8e396b0b6d0648a1aa1d1	includes/templates/default.admin/css/framework.min.css
-dd93feba2b7baced6d8b9fda28f096d1	includes/templates/default.admin/css/framework.min.css.map
+80fe694360ba6045c5486f72552532a4	includes/templates/default.admin/css/framework.min.css
+ce6cb00746ff89109559e84a60c06cc8	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.admin/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.admin/css/printable.min.css.map
@@ -373,7 +373,7 @@ ce3414d517c8156972a455c41f62f1d1	includes/templates/default.admin/less/framework
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/less/framework/index.html
 4d02e0340ef8cc02e9f6d178962420aa	includes/templates/default.admin/less/framework/inputs.less
 535850a8de53574f4f9e4219116d65dc	includes/templates/default.admin/less/framework/lists.less
-8e26c6b55b63ceda375da0c3038d0bb8	includes/templates/default.admin/less/framework/loader.less
+3e76cbc834233619f3f51361db0a0434	includes/templates/default.admin/less/framework/loader.less
 14d6a8437c87a2bcff5172eb413b233c	includes/templates/default.admin/less/framework/media.less
 69cda9a8e6ad3134466f9683759ba2a2	includes/templates/default.admin/less/framework/nav.less
 587ac11ec395df0e1403ed062e3204d8	includes/templates/default.admin/less/framework/normalize.less
@@ -410,9 +410,9 @@ eb82721c7af418e1c8fc5ab241fc117e	includes/templates/default.catalog/css/printabl
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/images/index.html
 e6e2336e113f1248d03214ca228984d5	includes/templates/default.catalog/images/loader.svg
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/index.html
-c347f10e1d7c17505c3074d2441472e0	includes/templates/default.catalog/js/app.js
-fc606ed15c8a84c6373a66fc1b8ba777	includes/templates/default.catalog/js/app.min.js
-b5db67ec1adcb5b0f2f115060c2adc4e	includes/templates/default.catalog/js/app.min.js.map
+1b04cf43ffe5eac7a434b73d700e0f9f	includes/templates/default.catalog/js/app.js
+3043631fbfdc8fa0962b9d74ca179359	includes/templates/default.catalog/js/app.min.js
+3c1d37d0d3d4cc548fc43c636a7e0725	includes/templates/default.catalog/js/app.min.js.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/js/index.html
 06037af6e6e1dc266fee3de3495281a3	includes/templates/default.catalog/layouts/ajax.inc.php
 2dfd5350447b0ee662f2d04f50bfd7ad	includes/templates/default.catalog/layouts/blank.inc.php

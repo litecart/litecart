@@ -592,17 +592,19 @@
 
           if (empty($this->data['images'][$key]['id'])) continue;
           if (empty($this->data['images'][$key]['new_filename'])) continue;
-          if ($this->data['images'][$key]['new_filename'] == $this->data['images'][$key]['filename']) continue;
 
-          if (is_file(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename'])) {
-            throw new Exception('Cannot rename '. $this->data['images'][$key]['filename'] .' to '. $this->data['images'][$key]['filename'] .' as the new filename  already exists');
+          if ($this->data['images'][$key]['new_filename'] != $this->data['images'][$key]['filename']) {
+
+            if (is_file(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename'])) {
+              throw new Exception('Cannot rename '. $this->data['images'][$key]['filename'] .' to '. $this->data['images'][$key]['filename'] .' as the new filename already exists');
+            }
+
+            rename(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['filename'], FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename']);
+            $this->data['images'][$key]['filename'] = $this->data['images'][$key]['new_filename'];
+
+            functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['filename']);
+            functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename']);
           }
-
-          rename(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['filename'], FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename']);
-          $this->data['images'][$key]['filename'] = $this->data['images'][$key]['new_filename'];
-
-          functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['filename']);
-          functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['images'][$key]['new_filename']);
 
           database::query(
             "update ". DB_TABLE_PREFIX ."products_images

@@ -403,9 +403,9 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
                       <div class="form-group">
                         <h4><?php echo language::translate('title_insert', 'Insert'); ?></h4>
                         <?php if (isset($_POST['files'][$f]['operations'][$o]['type']) && in_array($_POST['files'][$f]['operations'][$o]['type'], ['inline', 'regex'])) { ?>
-                        <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][insert][content]', true, 'class="form-code" required'); ?>
+                        <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][insert][content]', true, 'class="form-code"'); ?>
                         <?php } else { ?>
-                        <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][insert][content]', true, 'required'); ?>
+                        <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][insert][content]', true); ?>
                         <?php }?>
                       </div>
 
@@ -629,7 +629,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
     <div class="form-group">
       <h4><?php echo language::translate('title_insert', 'Insert'); ?></h4>
-      <?php echo functions::form_draw_code_field('files[current_tab_index][operations][new_operation_index][insert][content]', '', 'class="form-code" required'); ?>
+      <?php echo functions::form_draw_code_field('files[current_tab_index][operations][new_operation_index][insert][content]', '', 'class="form-code"'); ?>
     </div>
 
   </fieldset>
@@ -755,8 +755,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
   $(':input[name^="files"][name$="[name]"]').trigger('input');
 
-  let new_operation_index = 0;
-  while ($(':input[name~="files\[[^\]]+\][operations]['+new_operation_index+']"]').length) new_operation_index++;
+  let new_operation_index = $(':input[name$="[find][content]"]').length || 0;
 
   $('#files').on('click', '.add', function(e) {
     e.preventDefault();
