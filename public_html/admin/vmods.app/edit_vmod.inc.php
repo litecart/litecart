@@ -755,8 +755,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
   $(':input[name^="files"][name$="[name]"]').trigger('input');
 
-  let new_operation_index = 0;
-  while ($(':input[name~="files\[[^\]]+\][operations]['+new_operation_index+']"]').length) new_operation_index++;
+  let new_operation_index = $(':input[name$="[find][content]"]').length || 0;
 
   $('#files').on('click', '.add', function(e) {
     e.preventDefault();
