@@ -1,7 +1,7 @@
 <?php
   define('DOCUMENT_ROOT', str_replace('\\', '/', realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'))) .'/';
   define('FS_DIR_APP', str_replace('\\', '/', realpath(__DIR__.'/../')) . '/');
-  define('FS_DIR_STORAGE', str_replace('\\', '/', realpath(__DIR__.'/../storage')) . '/');
+  define('FS_DIR_STORAGE', str_replace('\\', '/', realpath(__DIR__.'/../')) . '/');
   define('WS_DIR_APP', preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP));
 
   require(__DIR__.'/../includes/compatibility.inc.php');
@@ -370,21 +370,21 @@ input[name="development_type"]:checked + div {
   <ul>
 <?php
   $paths = [
-    'cache/',
-    'data/',
-    'images/',
-    'includes/config.inc.php',
-    'vmods/',
-    '.htaccess',
+    FS_DIR_STORAGE . 'cache/',
+    FS_DIR_STORAGE . 'data/',
+    FS_DIR_STORAGE . 'images/',
+    FS_DIR_STORAGE . 'includes/config.inc.php',
+    FS_DIR_STORAGE . 'vmods/',
+    FS_DIR_STORAGE . '.htaccess',
   ];
 
   foreach ($paths as $path) {
-    if (file_exists($path) && is_writable('../' . $path)) {
-      echo '    <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
+    if (file_exists($path) && is_writable($path)) {
+      echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="ok">[OK]</span></li>' . PHP_EOL;
     } else if (is_writable('../' . pathinfo($path, PATHINFO_DIRNAME))) {
-      echo '    <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
+      echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="ok">[OK]</span></li>' . PHP_EOL;
     } else {
-      echo '    <li>~/'. $path .' <span class="error">[Read-only, please make path writable]</span></li>' . PHP_EOL;
+      echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="error">[Read-only, please make path writable]</span></li>' . PHP_EOL;
     }
   }
 ?>
