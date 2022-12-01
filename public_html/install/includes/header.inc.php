@@ -4,7 +4,11 @@
 <meta charset="UTF-8" />
 <title>LiteCart Installer</title>
 <link rel="stylesheet" href="../includes/templates/default.catalog/css/variables.css" />
+<?php if (is_file(__DIR__.'/../../includes/templates/default.catalog/css/framework.css')) { ?>
+<link rel="stylesheet" href="../includes/templates/default.catalog/css/framework.css" />
+<?php } else { ?>
 <link rel="stylesheet" href="../includes/templates/default.catalog/css/framework.min.css" />
+<?php } ?>
 <style>
 html {
   background: radial-gradient(ellipse at center, #fff 20%, #d2d7de 100%);
