@@ -84,20 +84,26 @@
             </div>
             <?php if ($delivery_status) { ?>
             <div class="stock-delivery">
-              <?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>:
-              <span class="value"><?php echo $delivery_status['name']; ?></span>
+              <?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>: <span class="value"><?php echo $delivery_status['name']; ?></span>
+              <?php if (!empty($delivery_status['description'])) { ?>
+              <div class="description"><?php echo $delivery_status['description']; ?></div>
+              <?php } ?>
             </div>
             <?php } ?>
            <?php } else { ?>
             <?php if ($sold_out_status) { ?>
               <div class="<?php echo empty($sold_out_status['orderable']) ? 'stock-partly-available' : 'stock-unavailable'; ?>">
-                <?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
-                <span class="value"><?php echo $sold_out_status['name']; ?></span>
+                <?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo $sold_out_status['name']; ?></span>
+                <?php if (!empty($sold_out_status['description'])) { ?>
+                <div class="description"><?php echo $sold_out_status['description']; ?></div>
+                <?php } ?>
               </div>
             <?php } else { ?>
               <div class="stock-unavailable">
-                <?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
-                <span class="value"><?php echo language::translate('title_sold_out', 'Sold Out'); ?></span>
+                <?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo language::translate('title_sold_out', 'Sold Out'); ?></span>
+                <?php if (!empty($sold_out_status['description'])) { ?>
+                <div class="description"><?php echo $sold_out_status['description']; ?></div>
+                <?php } ?>
               </div>
             <?php } ?>
            <?php } ?>
