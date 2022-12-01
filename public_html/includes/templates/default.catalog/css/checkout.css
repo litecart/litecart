@@ -12,12 +12,12 @@
   display: flex;
   margin: 0 auto;
   align-items: center;
-  padding-top: var(--gutter-y);
-  padding-bottom: var(--gutter-y);
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
 }
 #header .logotype img {
-  max-width: 150px;
-  max-height: 32px;
+  max-width: 200px;
+  max-height: 40px;
 }
 @media (min-width: 768px) {
   #header .logotype img {
@@ -121,11 +121,13 @@
 }
 #box-checkout-shipping .option.btn:first-child,
 #box-checkout-payment .option.btn:first-child {
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
 }
 #box-checkout-shipping .option.btn:last-child,
 #box-checkout-payment .option.btn:last-child {
-  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }
 #box-checkout-shipping .option.active,
 #box-checkout-payment .option.active {

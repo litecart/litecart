@@ -46,6 +46,8 @@
       $this->data['options'] = [];
       $this->data['options_stock'] = [];
 
+      $this->data['purchase_price_currency_code'] = settings::get('store_currency_code');
+
       $this->previous = $this->data;
     }
 
