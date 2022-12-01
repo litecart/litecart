@@ -367,7 +367,7 @@ input[name="development_type"]:checked + div {
 
   <h2>Writables</h2>
 
-  <ul class="list-unstyled">
+  <ul>
 <?php
   $paths = [
     'cache/',

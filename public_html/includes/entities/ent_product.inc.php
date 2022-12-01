@@ -38,6 +38,9 @@
         }
       }
 
+      $this->data['status'] = 1;
+      $this->data['purchase_price_currency_code'] = settings::get('store_currency_code');
+
       $this->data['categories'] = [];
       $this->data['attributes'] = [];
       $this->data['images'] = [];
@@ -45,8 +48,6 @@
       $this->data['campaigns'] = [];
       $this->data['options'] = [];
       $this->data['options_stock'] = [];
-
-      $this->data['purchase_price_currency_code'] = settings::get('store_currency_code');
 
       $this->previous = $this->data;
     }

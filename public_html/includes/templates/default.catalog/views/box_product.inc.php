@@ -55,22 +55,19 @@
           <div class="codes" style="margin: 1em 0;">
             <?php if ($sku) { ?>
             <div class="sku">
-              <?php echo language::translate('title_sku', 'SKU'); ?>:
-              <span class="value"><?php echo $sku; ?></span>
+              <?php echo language::translate('title_sku', 'SKU'); ?>: <span class="value"><?php echo $sku; ?></span>
             </div>
             <?php } ?>
 
             <?php if ($mpn) { ?>
             <div class="mpn">
-              <?php echo language::translate('title_mpn', 'MPN'); ?>:
-              <span class="value"><?php echo $mpn; ?></span>
+              <?php echo language::translate('title_mpn', 'MPN'); ?>: <span class="value"><?php echo $mpn; ?></span>
             </div>
             <?php } ?>
 
             <?php if ($gtin) { ?>
             <div class="gtin">
-              <?php echo language::translate('title_gtin', 'GTIN'); ?>:
-              <span class="value"><?php echo $gtin; ?></span>
+              <?php echo language::translate('title_gtin', 'GTIN'); ?>: <span class="value"><?php echo $gtin; ?></span>
             </div>
             <?php } ?>
           </div>
@@ -111,8 +108,7 @@
 
           <?php if ($recommended_price) { ?>
           <div class="recommended-price" style="margin: 1em 0;">
-            <?php echo language::translate('title_recommended_price', 'Recommended Price'); ?>:
-            <span class="value"><?php echo currency::format($recommended_price); ?></span>
+            <?php echo language::translate('title_recommended_price', 'Recommended Price'); ?>: <span class="value"><?php echo currency::format($recommended_price); ?></span>
           </div>
           <?php } ?>
 

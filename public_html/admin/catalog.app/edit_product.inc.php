@@ -4,7 +4,6 @@
     $product = new ent_product($_GET['product_id']);
   } else {
     $product = new ent_product();
-    $product->data['status'] = 1;
   }
 
   if (empty($_POST)) {
