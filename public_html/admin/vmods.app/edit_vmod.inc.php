@@ -829,11 +829,11 @@ textarea.warning {
       switch (method) {
 
         case 'top':
-          find = '#^#';
+          find = '^';
           break;
 
         case 'bottom':
-          find = '#^#';
+          find = '$';
           break;
 
         case 'before':
@@ -841,13 +841,7 @@ textarea.warning {
         case 'replace':
 
       // Trim
-        if (type == 'inline' || type == 'regex') {
-          find = find.trim();
-
-        } else if (type == 'multiline') {
-          find = find.replace(/^[ \\t]*(\r\n?|\n)?/s, ''); // Trim beginning of CDATA
-          find = find.replace(/(\r\n?|\n)?[ \\t]*$/s, '$1'); // Trim end of CDATA
-        }
+        find = find.trim();
 
       // Cook the regex pattern
         if (type != 'regex') {
@@ -858,12 +852,13 @@ textarea.warning {
           } else {
 
           // Whitespace
-            find = find.split(/(\r\n?|\n)/);
+            find = find.split(/\r\n?|\n/);
+
             for (let i=0; i < find.length; i++) {
               if (find[i] = find[i].trim()) {
-                find[i] = '[ \\t]*'+ find[i].replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&") +'[ \\t]*(?:\r\n?|\n|$)';
+                find[i] = '[ \t]*'+ find[i].replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&") +'[ \t]*(?:\r\n?|\n|$)';
               } else if (i != (find.length -1)) {
-                find[i] = '[ \\t]*(?:\r\n?|\n)';
+                find[i] = '[ \t]*(?:\r\n?|\n)';
               }
             }
             find = find.join('');
@@ -887,12 +882,12 @@ textarea.warning {
 
       $.each($tab.find('.script'), function(){
 
-        let regex = new RegExp(find, 'g'),
+        let regex = new RegExp(find, 'gm'),
           source = $(this).find('.form-code').text(),
           matches = (source.match(regex) || []).length;
 
         if (!matches) {
-          throw new Error('Failed finding match');
+          throw new Error('Failed matching content');
         }
 
         if (indexes && Math.max(indexes) > (matches+1)) {
