@@ -364,8 +364,7 @@
 
     $map = [
       '`lc_' => '`'.$_REQUEST['db_table_prefix'],
-      '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
-      '{DB_DATABASE_COLLATION}' => $_REQUEST['db_collation'],
+      'utf8mb4_general_ci' => $_REQUEST['db_collation'],
     ];
 
     foreach ($map as $search => $replace) {
