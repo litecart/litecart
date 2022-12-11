@@ -361,7 +361,7 @@ input[name="development_type"]:checked + div {
 </style>
 
 <form name="upgrade_form" method="post">
-  <h1>Upgrade</h1>
+  <h1>Upgrade <?php echo PLATFORM_VERSION; ?></h1>
 
   <h2>Application</h2>
 

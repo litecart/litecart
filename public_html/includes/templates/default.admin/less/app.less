@@ -7,7 +7,7 @@
 #sidebar {
   flex: 0 0 var(--sidebar-width);
   background-color: var(--sidebar-background-color);
-  box-shadow: inset 0 0px 10px rgba(0, 0, 0, .15);
+  box-shadow: inset 0 0px .5em rgba(0, 0, 0, .05);
 }
 
 #logotype a {
@@ -92,7 +92,11 @@
   .nav-toggle {
     padding: 5px 10px;
     background-color: var(--default-background-color);
-    border-radius: var(--default-border-radius);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    &:hover {
+      filter: brightness(.9);
+    }
   }
 }
 

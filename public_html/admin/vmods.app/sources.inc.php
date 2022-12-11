@@ -11,10 +11,9 @@
     $skip_list = [
       '#.*(?<!\.inc\.php)$#',
       '#^assets/#',
-      '#^index.php$#',
       '#^includes/app_header.inc.php$#',
       '#^includes/library/nod_vmod.inc.php$#',
-      '#^(cache|data|ext|images|install|logs)/#',
+      '#^(cache|data|ext|images|install|logs|vmods|vqmods)/#',
     ];
 
     $files = functions::file_search(FS_DIR_APP . $_GET['pattern'], GLOB_BRACE);

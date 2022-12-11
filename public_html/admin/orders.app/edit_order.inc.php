@@ -199,6 +199,7 @@
 
 #comments {
   height: 100%;
+  bottom: 3em;
   padding: 1em;
 }
 
@@ -597,13 +598,11 @@
             </div>
             <?php } ?>
 
-            <div class="add text-end"><button class="btn btn-default" type="button" title="<?php echo language::translate('title_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_comment', 'Add Comment'); ?></button></div>
+            <div class="add text-end"><button class="btn btn-default" type="button" title="<?php echo language::translate('title_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus'); ?> <?php echo language::translate('title_add_comment', 'Add Comment'); ?></button></div>
           </div>
 
         </div>
       </div>
-
-      <h2 style="margin-bottom: 0;"><?php echo language::translate('title_order_items', 'Order Items'); ?></h2>
     </div>
 
     <div class="card-action">
@@ -625,8 +624,14 @@
         </li>
       </ul>
     </div>
+  </div>
 
-    <table id="order-items" class="table table-striped table-hover table-input">
+  <div id="order-items" class="card">
+    <div class="card-header">
+      <div class="card-title"><?php echo language::translate('title_order_items', 'Order Items'); ?></div>
+    </div>
+
+    <table class="table table-striped table-hover table-input">
       <thead>
         <tr>
           <th><?php echo language::translate('title_item', 'Item'); ?></th>
@@ -697,22 +702,18 @@
         </tr>
         <?php } ?>
       </tbody>
-
-      <tfoot>
-        <tr>
-          <td colspan="8">
-            <a class="btn btn-default add-product" href="<?php echo document::href_link('', ['doc' => 'product_picker'], ['app'], []); ?>" data-toggle="lightbox" data-width="" data-href="<?php echo document::href_link('', ['doc' => 'product_picker'], ['app'], []); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
-            <div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
-          </td>
-        </tr>
-      </tfoot>
     </table>
-  </div>
-
-  <div class="card card-default">
 
     <div class="card-body">
-      <h2><?php echo language::translate('title_order_total', 'Order Total'); ?></h2>
+      <a class="btn btn-default add-product" href="<?php echo document::href_link('', ['doc' => 'product_picker'], ['app'], []); ?>" data-toggle="lightbox" data-width="" data-href="<?php echo document::href_link('', ['doc' => 'product_picker'], ['app'], []); ?>"><?php echo functions::draw_fonticon('fa-plus'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
+      <div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('fa-plus'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
+    </div>
+  </div>
+
+  <div class="card">
+
+    <div class="card-header">
+      <div class="card-title"><?php echo language::translate('title_order_total', 'Order Total'); ?></div>
     </div>
 
     <table  id="order-total" class="table table-striped table-hover">
@@ -762,7 +763,7 @@
       default:
 ?>
         <tr>
-          <td class="text-end"><a href="#" class="add" title="<?php echo functions::escape_html(language::translate('text_insert_before', 'Insert before')); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?></a></td>
+          <td class="text-end"><a href="#" class="add btn btn-default btn-sm" title="<?php echo functions::escape_html(language::translate('text_insert_before', 'Insert before')); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?></a></td>
           <td class="text-end"><?php echo functions::form_draw_hidden_field('order_total['. $key .'][id]', true) . functions::form_draw_text_field('order_total['. $key .'][module_id]', true); ?></td>
           <td class="text-end"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'style="text-align: end;"'); ?></td>
           <td class="text-end">
@@ -781,7 +782,7 @@
   }
 ?>
         <tr>
-          <td colspan="6"><a class="add" href="#" title="<?php echo functions::escape_html(language::translate('title_insert_', 'Insert')); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?></a></td>
+          <td colspan="6"><a class="add btn btn-default btn-sm" href="#" title="<?php echo functions::escape_html(language::translate('title_insert', 'Insert')); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?></a></td>
         </tr>
       </tbody>
 
@@ -1425,7 +1426,7 @@
     while ($('input[name="order_total['+new_ot_row_index+'][id]"]').length) new_ot_row_index++;
     e.preventDefault();
     var output = '  <tr>'
-               + '    <td class="text-end"><a href="#" class="add" title="<?php echo functions::escape_js(language::translate('text_insert_before', 'Insert before'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"')); ?></a></td>'
+               + '    <td class="text-end"><a href="#" class="add btn btn-default btn-sm" title="<?php echo functions::escape_js(language::translate('text_insert_before', 'Insert before'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"')); ?></a></td>'
                + '    <td class="text-end"><?php echo functions::escape_js(functions::form_draw_hidden_field('order_total[new_ot_row_index][id]', '')); ?><?php echo functions::escape_js(functions::form_draw_text_field('order_total[new_ot_row_index][module_id]', '')); ?></td>'
                + '    <td class="text-end"><?php echo functions::escape_js(functions::form_draw_text_field('order_total[new_ot_row_index][title]', '', 'style="text-align: end;"')); ?></td>'
                + '    <td class="text-end">'
