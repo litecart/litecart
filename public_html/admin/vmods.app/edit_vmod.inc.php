@@ -201,6 +201,15 @@ textarea[name*="[insert]"][name$="[content]"] {
 textarea[name*="[insert]"][name$="[content]"]:focus {
   max-height: 250px;
 }
+
+.nav-tabs a.warning {
+  color: red;
+}
+
+input.warning,
+textarea.warning {
+  box-shadow: 0 0 5px 3px rgba(255 0,0, 0.7);
+}
 </style>
 
 <div class="card card-app">
@@ -708,6 +717,7 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
           break;
       }
     });
+    $(this).closest('.operation').find(':input[name$="[find][content]"]').trigger('input');
   });
 
   $('#files').on('change', ':input[name$="[method]"]', function(e) {
@@ -750,6 +760,8 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
           )
         );
       });
+
+      $tab_pane.find(':input[name$="[find][content]"]').trigger('input');
     });
   });
 
@@ -795,6 +807,107 @@ textarea[name*="[insert]"][name$="[content]"]:focus {
 
     $(this).closest('.operation').remove();
     reindex_operations($operations);
+
+    $operations.find(':input[name$="[find][content]"]').trigger('input');
+  });
+
+// Validate operation
+  $('#files').on('input', ':input[name*="[find]"]', function() {
+
+    let $tab = $(this).closest('.tab-pane'),
+      $operation = $(this).closest('.operation'),
+      method = $operation.find(':input[name$="[method]"]').val(),
+      find = $operation.find(':input[name$="[find][content]"]').val(),
+      type = $operation.find(':input[name$="[type]"]:checked').val(),
+      indexes = $operation.find(':input[name$="[index]"]').val().split(/\s*,\s*/).filter(Boolean),
+      offset_before = $operation.find(':input[name$="[offset-before]"]').val(),
+      offset_after = $operation.find(':input[name$="[offset-after]"]').val()
+      onerror = $operation.find(':input[name$="[onerror]"]').val();
+
+    try {
+
+      switch (method) {
+
+        case 'top':
+          find = '^';
+          break;
+
+        case 'bottom':
+          find = '$';
+          break;
+
+        case 'before':
+        case 'after':
+        case 'replace':
+
+      // Trim
+        find = find.trim();
+
+      // Cook the regex pattern
+        if (type != 'regex') {
+
+          if (type == 'inline') {
+            find = find.replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&");
+
+          } else {
+
+          // Whitespace
+            find = find.split(/\r\n?|\n/);
+
+            for (let i=0; i < find.length; i++) {
+              if (find[i] = find[i].trim()) {
+                find[i] = '[ \t]*'+ find[i].replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&") +'[ \t]*(?:\r\n?|\n|$)';
+              } else if (i != (find.length -1)) {
+                find[i] = '[ \t]*(?:\r\n?|\n)';
+              }
+            }
+            find = find.join('');
+
+          // Offset
+            if (offset_before != '') {
+              find = '(?:.*?(?:\r\n?|\n)){'+ offset_before +'}'+ find;
+            }
+
+            if (offset_after != '') {
+              find = find + '(?:.*?(?:\r\n?|\n|$)){0,'+ offset_after +'}';
+            }
+          }
+        }
+
+        break;
+
+        default:
+          throw new Error('Uknown error');
+      }
+
+      $.each($tab.find('.script'), function(){
+
+        let regex = new RegExp(find, 'gm'),
+          source = $(this).find('.form-code').text(),
+          matches = (source.match(regex) || []).length;
+
+        if (!matches) {
+          throw new Error('Failed matching content');
+        }
+
+        if (indexes && Math.max(indexes) > (matches+1)) {
+          throw new Error('Failed matching an index');
+        }
+      });
+
+      $operation.find(':input[name$="[find][content]"]').removeAttr('title').removeClass('warning');
+
+    } catch (err) {
+      if (onerror != 'ignore') {
+        $operation.find(':input[name$="[find][content]"]').attr('title', err.message).addClass('warning');
+      }
+    }
+
+    if ($tab.find(':input.warning').length) {
+      $('.nav-link[href="#'+ $tab.attr('id') +'"]').addClass('warning');
+    } else {
+      $('.nav-link[href="#'+ $tab.attr('id') +'"]').removeClass('warning');
+    }
   });
 
 // Aliases

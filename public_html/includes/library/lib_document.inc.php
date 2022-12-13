@@ -271,11 +271,15 @@
     }
 
     public static function rlink($resource) {
+
+      $resource = str_replace('\\', '/', realpath($resource));
+
       if (!is_file($resource)) {
         trigger_error('Could not create link for missing resource ('. $resource.')', E_USER_WARNING);
-        return '';
+        return document::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource));
       }
-      return document::link(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($resource))), ['_' => filemtime($resource)]);
+
+      return document::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource), ['_' => filemtime($resource)]);
     }
 
     public static function href_rlink($resource) {

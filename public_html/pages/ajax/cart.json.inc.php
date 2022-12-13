@@ -15,7 +15,7 @@
       'product_id' => $item['product_id'],
       'options' => $item['options'],
       'link' => document::ilink('product', ['product_id' => $item['product_id']]),
-      'thumbnail' => document::link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $item['image'], 320, 320, 'FIT_USE_WHITESPACING')),
+      'thumbnail' => document::rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $item['image'], 320, 320, 'FIT_USE_WHITESPACING')),
       'name' => $item['name'],
       'sku' => $item['sku'],
       'gtin' => $item['gtin'],

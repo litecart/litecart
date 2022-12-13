@@ -659,6 +659,10 @@ body.scrolling-down #site-menu {
   color: #c00;
   border-color: #c00;
 }
+#box-product .stock-notice .description {
+  margin-top: 1em;
+  font-size: 0.8em;
+}
 #box-product .social-bookmarks {
   font-size: 1.75em;
   margin-top: 1em;

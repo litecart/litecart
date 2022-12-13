@@ -36,20 +36,85 @@
         'watermark' => !empty($options['watermark']) ? $options['watermark'] : false,
       ];
 
-    // If destination is a directory
-      if (is_dir($options['destination'])) {
-        $options['destination'] = rtrim($options['destination'], '/') .'/'. basename($source);
+      if (substr($options['destination'], -1) == '/') {
+
+        if (preg_match('#^'. preg_quote(FS_DIR_STORAGE . 'cache/', '#') .'$#', $options['destination'])) {
+
+          if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
+            $extension = 'webp';
+          } else {
+            $extension = pathinfo($source, PATHINFO_EXTENSION);
+          }
+
+          switch (strtoupper($options['clipping'])) {
+
+            case 'CROP':
+              $clipping_filename_flag = '_c';
+              break;
+
+            case 'CROP_ONLY_BIGGER':
+              $clipping_filename_flag = '_cob';
+              break;
+
+            case 'STRETCH':
+              $clipping_filename_flag = '_s';
+              break;
+
+            case 'FIT':
+              $clipping_filename_flag = '_f';
+              break;
+
+            case 'FIT_USE_WHITESPACING':
+              $clipping_filename_flag = '_fwb';
+              break;
+
+            case 'FIT_ONLY_BIGGER':
+              $clipping_filename_flag = '_fob';
+              break;
+
+            case 'FIT_ONLY_BIGGER_USE_WHITESPACING':
+              $clipping_filename_flag = '_fobws';
+              break;
+
+            default:
+              trigger_error("Unknown image clipping method ($clipping)", E_USER_WARNING);
+              return;
+          }
+
+          $filename = implode([
+            sha1(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)))),
+            $options['trim'] ? '_t' : '',
+            '_'.(int)$options['width'] .'x'. (int)$options['height'],
+            $clipping_filename_flag,
+            $options['watermark'] ? '_wm' : '',
+            settings::get('image_thumbnail_interlaced') ? '_i' : '',
+            '.'.$extension,
+          ]);
+
+          $options['destination'] = FS_DIR_STORAGE .'cache/'. substr($filename, 0, 2) . '/' . $filename;
+
+        } else {
+          $options['destination'] = FS_DIR_STORAGE .'cache/'. basename($source);
+        }
       }
 
     // Return an already existing file
       if (is_file($options['destination'])) {
-        if (!empty($options['overwrite'])) {
-          unlink($options['destination']);
+        if (filemtime($options['destination']) >= filemtime($options['destination'])) {
+          return image_relative_file($options['destination']);
         } else {
-          return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
+          unlink($options['destination']);
         }
       }
 
+      if (!is_dir(dirname($options['destination']))) {
+        if (!mkdir(dirname($options['destination']), 0777, true)) {
+          trigger_error('Could not create destination folder', E_USER_WARNING);
+          return false;
+        }
+      }
+
+    // Process the image
       $image = new ent_image($source);
 
       if (!empty($options['trim'])) {
@@ -67,7 +132,7 @@
 
       if (!$image->write($options['destination'], $options['quality'], !empty($options['interlaced']))) return;
 
-      return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
+      return image_relative_file(str_replace('\\', '/', realpath($options['destination'])));
 
     } catch (Exception $e) {
       trigger_error('Could not process image: ' . $e->getMessage(), E_USER_WARNING);
@@ -91,79 +156,10 @@
     if (!is_file($source)) $source = FS_DIR_STORAGE . 'images/no_image.png';
 
     if (pathinfo($source, PATHINFO_EXTENSION) == 'svg') {
-      return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)));
-    }
-
-    if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
-      $extension = 'webp';
-    } else {
-      $extension = pathinfo($source, PATHINFO_EXTENSION);
-    }
-
-    switch (strtoupper($clipping)) {
-
-      case 'CROP':
-        $clipping_filename_flag = '_c';
-        break;
-
-      case 'CROP_ONLY_BIGGER':
-        $clipping_filename_flag = '_cob';
-        break;
-
-      case 'STRETCH':
-        $clipping_filename_flag = '_s';
-        break;
-
-      case 'FIT':
-        $clipping_filename_flag = '_f';
-        break;
-
-      case 'FIT_USE_WHITESPACING':
-        $clipping_filename_flag = '_fwb';
-        break;
-
-      case 'FIT_ONLY_BIGGER':
-        $clipping_filename_flag = '_fob';
-        break;
-
-      case 'FIT_ONLY_BIGGER_USE_WHITESPACING':
-        $clipping_filename_flag = '_fobws';
-        break;
-
-      default:
-        trigger_error("Unknown image clipping method ($clipping)", E_USER_WARNING);
-        return;
-    }
-
-    $filename = implode([
-      sha1(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)))),
-      $trim ? '_t' : null,
-      '_'.(int)$width .'x'. (int)$height,
-      $clipping_filename_flag,
-      settings::get('image_thumbnail_interlaced') ? '_i' : null,
-      '.'.$extension,
-    ]);
-
-    $cache_file = FS_DIR_STORAGE . 'cache/' . substr($filename, 0, 2) . '/' . $filename;
-
-  // Return an already existing file
-    if (is_file($cache_file)) {
-      if (filemtime($cache_file) >= filemtime($source)) {
-        return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $cache_file);
-      } else {
-        unlink($cache_file);
-      }
-    }
-
-    if (!is_dir(FS_DIR_STORAGE . 'cache/' . substr($filename, 0, 2))) {
-      if (!mkdir(FS_DIR_STORAGE . 'cache/' . substr($filename, 0, 2))) {
-        trigger_error('Could not create cache subfolder', E_USER_WARNING);
-        return false;
-      }
+      return image_relative_file(str_replace('\\', '/', realpath($source)));
     }
 
     return image_process($source, [
-      'destination' => $cache_file,
       'width' => $width,
       'height' => $height,
       'clipping' => $clipping,
@@ -173,9 +169,24 @@
     ]);
   }
 
+  function image_relative_file($file) {
+
+    $file = str_replace('\\', '/', $file);
+
+    if (preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $file)) {
+      return preg_replace('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', '', $file);
+
+    } else if (preg_match('#^'. preg_quote(FS_DIR_APP, '#') .'#', $file)) {
+      return preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file);
+
+    } else {
+      return preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $file);
+    }
+  }
+
   function image_delete_cache($file) {
 
-    $webpath = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', str_replace('\\', '/', $file));
+    $webpath = image_relative_file($file);
 
     $cachename = sha1($webpath);
 

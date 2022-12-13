@@ -7,16 +7,16 @@
           <div class="images row">
 
             <div class="col-xs-12">
-              <a class="main-image thumbnail" href="<?php echo document::href_link(WS_DIR_APP . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-                <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
+              <a class="main-image thumbnail" href="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+                <img class="img-responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
                 <?php echo $sticker; ?>
               </a>
             </div>
 
             <?php foreach ($extra_images as $extra_image) { ?>
             <div class="col-xs-4">
-              <a class="extra-image thumbnail" href="<?php echo document::href_link(WS_DIR_APP . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-                <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
+              <a class="extra-image thumbnail" href="<?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+                <img class="img-responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
               </a>
             </div>
             <?php } ?>
@@ -37,7 +37,7 @@
           <div class="manufacturer">
             <a href="<?php echo functions::escape_html($manufacturer['link']); ?>">
               <?php if ($manufacturer['image']) { ?>
-              <img src="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($manufacturer['name']); ?>" title="<?php echo functions::escape_html($manufacturer['name']); ?>" />
+              <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . $manufacturer['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $manufacturer['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($manufacturer['name']); ?>" title="<?php echo functions::escape_html($manufacturer['name']); ?>" />
               <?php } else { ?>
               <h3><?php echo $manufacturer['name']; ?></h3>
               <?php } ?>
@@ -55,22 +55,19 @@
           <div class="codes" style="margin: 1em 0;">
             <?php if ($sku) { ?>
             <div class="sku">
-              <?php echo language::translate('title_sku', 'SKU'); ?>:
-              <span class="value"><?php echo $sku; ?></span>
+              <?php echo language::translate('title_sku', 'SKU'); ?>: <span class="value"><?php echo $sku; ?></span>
             </div>
             <?php } ?>
 
             <?php if ($mpn) { ?>
             <div class="mpn">
-              <?php echo language::translate('title_mpn', 'MPN'); ?>:
-              <span class="value"><?php echo $mpn; ?></span>
+              <?php echo language::translate('title_mpn', 'MPN'); ?>: <span class="value"><?php echo $mpn; ?></span>
             </div>
             <?php } ?>
 
             <?php if ($gtin) { ?>
             <div class="gtin">
-              <?php echo language::translate('title_gtin', 'GTIN'); ?>:
-              <span class="value"><?php echo $gtin; ?></span>
+              <?php echo language::translate('title_gtin', 'GTIN'); ?>: <span class="value"><?php echo $gtin; ?></span>
             </div>
             <?php } ?>
           </div>
@@ -84,20 +81,26 @@
             </div>
             <?php if ($delivery_status) { ?>
             <div class="stock-delivery">
-              <?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>:
-              <span class="value"><?php echo $delivery_status['name']; ?></span>
+              <?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>: <span class="value"><?php echo $delivery_status['name']; ?></span>
+              <?php if (!empty($delivery_status['description'])) { ?>
+              <div class="description"><?php echo $delivery_status['description']; ?></div>
+              <?php } ?>
             </div>
             <?php } ?>
            <?php } else { ?>
             <?php if ($sold_out_status) { ?>
               <div class="<?php echo empty($sold_out_status['orderable']) ? 'stock-partly-available' : 'stock-unavailable'; ?>">
-                <?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
-                <span class="value"><?php echo $sold_out_status['name']; ?></span>
+                <?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo $sold_out_status['name']; ?></span>
+                <?php if (!empty($sold_out_status['description'])) { ?>
+                <div class="description"><?php echo $sold_out_status['description']; ?></div>
+                <?php } ?>
               </div>
             <?php } else { ?>
               <div class="stock-unavailable">
-                <?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
-                <span class="value"><?php echo language::translate('title_sold_out', 'Sold Out'); ?></span>
+                <?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo language::translate('title_sold_out', 'Sold Out'); ?></span>
+                <?php if (!empty($sold_out_status['description'])) { ?>
+                <div class="description"><?php echo $sold_out_status['description']; ?></div>
+                <?php } ?>
               </div>
             <?php } ?>
            <?php } ?>
@@ -105,8 +108,7 @@
 
           <?php if ($recommended_price) { ?>
           <div class="recommended-price" style="margin: 1em 0;">
-            <?php echo language::translate('title_recommended_price', 'Recommended Price'); ?>:
-            <span class="value"><?php echo currency::format($recommended_price); ?></span>
+            <?php echo language::translate('title_recommended_price', 'Recommended Price'); ?>: <span class="value"><?php echo currency::format($recommended_price); ?></span>
           </div>
           <?php } ?>
 
