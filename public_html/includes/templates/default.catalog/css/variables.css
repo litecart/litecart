@@ -98,7 +98,7 @@
   /* Cards */
   --card-background-color: #fff;
   --card-text-color: var(--default-text-color);
-  --card-border-color: #43617c26;
+  --card-border-color: var(--default-border-color);
   --card-header-background-color: transparent;
   --card-header-text-color: var(--card-text-color);
   --card-body-background-color: transparent;
