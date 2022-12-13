@@ -34,7 +34,6 @@
   require_once vmod::check(FS_DIR_APP . 'includes/error_handler.inc.php');
 
 // Jump-start some library modules
-  class_exists('compression');
   class_exists('notices');
   class_exists('stats');
 
