@@ -1511,13 +1511,16 @@ ul.list-inline li {
   padding: 0;
 }
 .nav > li > ul > li > a {
-  padding-inline-start: 30px;
+  padding-inline-start: 40px;
 }
 .nav > li > ul > li > ul > li > a {
-  padding-inline-start: 45px;
+  padding-inline-start: 50px;
 }
-.nav > li > ul > li > ul > li > ul > li > a {
+.nav > li > ul > li > ul ul > li > a {
   padding-inline-start: 60px;
+}
+.nav > li > ul > li > ul ul ul > li > a {
+  padding-inline-start: 70px;
 }
 .nav.nav-justified > li {
   flex: 1 0 auto;
