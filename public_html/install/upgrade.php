@@ -31,12 +31,8 @@
   require_once __DIR__ . '/includes/functions.inc.php';
 
 // Include config
-  if (is_file(__DIR__ . '/../storage/config.inc.php')) {
-    include(__DIR__ . '/../storage/config.inc.php');
-
-  } else if (is_file(__DIR__ . '/../includes/config.inc.php')) { // <3.0
+  if (is_file(__DIR__ . '/../includes/config.inc.php')) {
     include(__DIR__ . '/../includes/config.inc.php');
-
   } else {
     echo '<h2>No Installation Detected</h2>' . PHP_EOL
        . '<p>Warning: No configuration file was found.</p>' . PHP_EOL
