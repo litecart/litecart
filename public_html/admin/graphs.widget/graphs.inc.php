@@ -143,7 +143,7 @@
   stroke: var(--chart-a-color);
 }
 #chart-sales-daily .ct-series-b .ct-bar {
-  stroke: var(--chart-b-color);
+  stroke: url(#gradient2);
 }
 #chart-sales-daily .ct-bar {
   stroke-width: 10px;
@@ -188,7 +188,13 @@
   var options = {
     seriesBarDistance: 10,
     showArea: true,
-    lineSmooth: true
+    lineSmooth: true,
+    axisY: {
+      offset: 60,
+      labelInterpolationFnc: function(value) {
+        return new Intl.NumberFormat('<?php echo language::$selected['code']; ?>').format(value);
+      }
+    }
   };
 
   var responsiveOptions = [
@@ -219,8 +225,8 @@
   chart1.on('created', function(ctx) {
     var defs = ctx.svg.elem('defs');
     defs.elem('linearGradient', { id: 'gradient', x1: 0, y1: 1, x2: 0, y2: 0 })
-    .elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .8)' })
-    .parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .8)' });
+    .elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .7)' })
+    .parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .7)' });
   });
 
 // Daily Sales
@@ -231,7 +237,13 @@
   };
 
   var options = {
-    seriesBarDistance: 10
+    seriesBarDistance: 10,
+    axisY: {
+      offset: 60,
+      labelInterpolationFnc: function(value) {
+        return new Intl.NumberFormat('<?php echo language::$selected['code']; ?>').format(value);
+      }
+    }
   };
 
   var responsiveOptions = [
@@ -245,7 +257,26 @@
     }]
   ];
 
-  new Chartist.Bar('#chart-sales-daily', data, options, responsiveOptions);
+  var chart2 = new Chartist.Bar('#chart-sales-daily', data, options, responsiveOptions);
+
+  // Offset x1 a tiny amount so that the straight stroke gets a bounding box
+  // Straight lines don't get a bounding box
+  // Last remark on -> http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox
+  chart2.on('draw', function(ctx) {
+    if(ctx.type === 'bar') {
+      ctx.element.attr({
+        x1: ctx.x1 + 0.001
+      });
+    }
+  });
+
+  // Create the gradient definition on created event (always after chart re-render)
+  chart2.on('created', function(ctx) {
+    var defs = ctx.svg.elem('defs');
+    defs.elem('linearGradient', { id: 'gradient2', x1: 0, y1: 1, x2: 0, y2: 0 })
+    .elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .7)' })
+    .parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .7)' });
+  });
 </script>
 <?php
     cache::end_capture($widget_graphs_cache_token);

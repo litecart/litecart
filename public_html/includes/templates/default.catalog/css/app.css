@@ -189,12 +189,12 @@ body.scrolling-down #site-menu {
     display: none;
   }
 }
-#content {
-  padding: 0 0.5em;
+#content-wrapper .layout.row {
+  margin: 0 0.5em;
 }
 @media (min-width: 1460px) {
-  #content {
-    padding: 0;
+  #content-wrapper .layout.row {
+    margin: 0;
   }
 }
 #sidebar {
