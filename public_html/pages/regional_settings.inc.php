@@ -35,7 +35,7 @@
       }
 
       if (isset($_POST['display_prices_including_tax'])) {
-        customer::$data['display_prices_including_tax'] = (bool)$_POST['display_prices_including_tax'];
+        customer::$data['display_prices_including_tax'] = (int)$_POST['display_prices_including_tax'];
         if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
           header('Set-Cookie: display_prices_including_tax='. (int)customer::$data['display_prices_including_tax'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
         }

@@ -134,7 +134,7 @@
       }
 
     // Mark as paid
-      if (!empty($result['is_payed'])) {
+      if (!empty($result['is_paid'])) {
         $order->data['date_paid'] = date('Y-m-d H:i:s');
       }
 

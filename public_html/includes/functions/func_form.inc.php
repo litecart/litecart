@@ -645,6 +645,9 @@
       case 'geo_zones':
         return form_draw_geo_zones_list($name, $input, true, $parameters);
 
+      case 'incoterms':
+        return form_draw_incoterms_list($name, $input, $parameters);
+
       case 'language':
         return form_draw_languages_list($name, $input, false, $parameters);
 
@@ -656,6 +659,9 @@
 
       case 'length_classes':
         return form_draw_length_classes_list($name, $input, true, $parameters);
+
+      case 'payment_terms':
+        return form_draw_payment_terms_list($name, $input, $parameters);
 
       case 'product':
         return form_draw_products_list($name, $input, false, $parameters);

@@ -84,6 +84,21 @@
       $this->data['version'] = !empty($dom->getElementsByTagName('version')) ? $dom->getElementsByTagName('version')->item(0)->textContent : '';
       $this->data['author'] = !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '';
 
+      if ($install_node = $dom->getElementsByTagName('install')->item(0)) {
+        $this->data['install'] = $install_node->textContent;
+      }
+
+      if ($uninstall_node = $dom->getElementsByTagName('uninstall')->item(0)) {
+        $this->data['uninstall'] = $uninstall_node->textContent;
+      }
+
+      foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
+        $this->data['upgrades'][] = [
+          'version' => $upgrade_node->getAttribute('version'),
+          'script' => $upgrade_node->textContent,
+        ];
+      }
+
       foreach ($dom->getElementsByTagName('alias') as $alias_node) {
         $this->data['aliases'][] = [
           'key' => $alias_node->getAttribute('key'),

@@ -3,9 +3,8 @@
   perform_action('delete', [
     FS_DIR_ADMIN . 'orders.app/printable_order_copy.inc.php',
     FS_DIR_ADMIN . 'orders.app/printable_packing_slip.inc.php',
-    FS_DIR_ADMIN . 'includes/modules/customer/cm_google_maps.php',
-    FS_DIR_APP . 'includes/modules/customer/cm_google_maps.php',
-    FS_DIR_APP . 'includes/modules/customer/cm_local_database.php',
+    FS_DIR_APP . 'includes/modules/customer/cm_google_maps.inc.php',
+    FS_DIR_APP . 'includes/modules/customer/cm_local_database.inc.php',
   ]);
 
   perform_action('modify', [
