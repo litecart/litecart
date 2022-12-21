@@ -19,7 +19,7 @@ fb30c89488d320d955612c6dee76862b	admin/catalog.app/delivery_statuses.inc.php
 830e1eebd1c8f284b55032eeaecd4979	admin/catalog.app/edit_category.inc.php
 d533cb0cc85920b7cfc97c8b4001a3ed	admin/catalog.app/edit_delivery_status.inc.php
 d225e611df67a8d2550f251eeed8b938	admin/catalog.app/edit_manufacturer.inc.php
-06cf1bf8559ba8aaf63c16d29122682c	admin/catalog.app/edit_product.inc.php
+b7340fa8c3c6a5877229fb3ef4d6bc3b	admin/catalog.app/edit_product.inc.php
 63c8c86adb7aac9310e842d054448e8d	admin/catalog.app/edit_quantity_unit.inc.php
 8b0aa18eb94cba3e48e5e697d906bc9f	admin/catalog.app/edit_sold_out_status.inc.php
 d9926a9dcf952d605a1fe12fc78269f2	admin/catalog.app/edit_supplier.inc.php
@@ -254,7 +254,7 @@ e22b8bfe3b82a002df0d30d13e64bd6d	includes/entities/ent_slide.inc.php
 86801d53d26a7db2b1e007ea6caf5671	includes/entities/ent_tax_rate.inc.php
 e82749e5905672da9db4bd6179c07c18	includes/entities/ent_user.inc.php
 2c93b50e450878aa042811dc8524da6d	includes/entities/ent_view.inc.php
-8c40442bb6dc022b80f0d3786836dec2	includes/entities/ent_vmod.inc.php
+43bbe2d34c36f5a14a09ebf1be288abd	includes/entities/ent_vmod.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
 2dbb77fdc9a3c02bf272ae6509ffe4b2	includes/error_handler.inc.php
 988f26d135e78b5006307b43dac28557	includes/functions/func_admin.inc.php
@@ -264,7 +264,7 @@ e2af395923278bea690f1e656c401291	includes/functions/func_csv.inc.php
 2739e20c6310bd01a89303e6d7910fab	includes/functions/func_draw.inc.php
 2341090b7652ec1d4486dc35406ab975	includes/functions/func_escape.inc.php
 d7f0758b2ae6dff3b0fd52745e544431	includes/functions/func_file.inc.php
-fae742cc2648397e5fa0c8168140e951	includes/functions/func_form.inc.php
+ded560e692904db454ebf49d05e2c15e	includes/functions/func_form.inc.php
 a7a48a2bc12fdba9d0d3e96d71c6095e	includes/functions/func_format.inc.php
 c95e56a0bd50153bdc4dda7362190fcd	includes/functions/func_general.inc.php
 eb63c057a7ce98f6b76ae753f24fd07c	includes/functions/func_image.inc.php
@@ -521,7 +521,7 @@ ea71146b86faf44ea6ffbc7d6ef25487	includes/wrappers/wrap_http.inc.php
 60d4db3022ebb15410d168749a718b40	index.php
 0016b8b6a91d572e9f4c9a8a9099f522	install/clean.sql
 9be73538c102cd5dfb0f9e825b744764	install/config
-d09b446987ed923ded2dfb7990c8aee3	install/data.sql
+eb2afbf750e95f84ba884f68d8e47c73	install/data.sql
 f304e1b351dac187ad94acf3d855dd16	install/data/AU/AU.sql
 34cdc6f63a349b98d8badd124553bf61	install/data/CA/CA.sql
 f1fa16f3e783f8d58b158a01dae04055	install/data/DE/DE.sql
@@ -646,7 +646,7 @@ f149dc818c9639f796173ebd39ca32a2	install/upgrade_patches/2.2.12.inc.php
 b3b6607e8b9249efc60d945e2244b4dd	install/upgrade_patches/2.2.3.sql
 6db954cd5dfa0273689792961f392637	install/upgrade_patches/2.2.4.inc.php
 2cc0d2a6c557883c74488b6eae07e360	install/upgrade_patches/2.2.4.sql
-f313b6d03525aac03aaa23d682eedf66	install/upgrade_patches/2.2.5.inc.php
+4bc497b9ed86f7ade100fe6a854422f9	install/upgrade_patches/2.2.5.inc.php
 e9c3c9560cc90ee6c8c3da23d23544be	install/upgrade_patches/2.2.5.sql
 a51b055d3086b66d8570dcfba7493c10	install/upgrade_patches/2.2.6.inc.php
 854204a3c04a6a6586ebf02e13b273c3	install/upgrade_patches/2.2.6.sql
@@ -704,13 +704,13 @@ d9a95846f4ccb28ff105ab7e5086fc68	pages/index.inc.php
 fbe136a97b9eb800569b9b303424c535	pages/manufacturers.inc.php
 62b74fc24e0060d26c47d8eef58307fc	pages/order.inc.php
 6b67f80e164061ed4d4875fd74357f84	pages/order_history.inc.php
-e7abd55f33200f74ea0e4538070affa3	pages/order_process.inc.php
+72b827771c36ca849816ac99c267ec97	pages/order_process.inc.php
 a8fb7c25d6e858807b6ecc1cebb108a7	pages/order_success.inc.php
 fbdb8ba238778e576b8d78e4c9a8194f	pages/printable_order_copy.inc.php
 2daadd52e80308e417b8d5f50c60f05f	pages/printable_packing_slip.inc.php
 5bf5984b1497473aa43d41c3686d8c09	pages/product.inc.php
 51e1a5aaf48a8757e13d2213be592478	pages/push_jobs.inc.php
-8a996fd161c1d7d67f9838aed031e7b1	pages/regional_settings.inc.php
+afe5141e9005e939447140fda1de209b	pages/regional_settings.inc.php
 a926a4c2e39d60c7848cfed67d266ec0	pages/reset_password.inc.php
 7ce7c2d47517b44320585586e9df96bc	pages/search.inc.php
 d41d8cd98f00b204e9800998ecf8427e	vmods/.cache/index.html
