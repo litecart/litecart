@@ -71,7 +71,7 @@
           break;
 
         default:
-          throw new \Exception("File ($file) is not a valid vmod or vQmod");
+          throw new \Exception("File ($filename) is not a valid vmod or vQmod");
       }
 
       $this->previous = $this->data;
