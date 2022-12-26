@@ -109,7 +109,7 @@
           <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
           <th><?php echo language::translate('title_trackable', 'Trackable'); ?></th>
           <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
-          <th><?php echo language::translate('title_prioritet', 'Prioritet'); ?></th>
+          <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
           <th><?php echo language::translate('title_orders', 'Orders'); ?></th>
           <th></th>
         </tr>
