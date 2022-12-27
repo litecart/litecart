@@ -39,6 +39,7 @@
           </section>
           <?php } ?>
 
+          <?php if ($products) { ?>
           <div class="card">
             <div class="card-body">
               <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_filter.inc.php'); ?>
@@ -47,11 +48,12 @@
                 <?php foreach ($products as $product) echo functions::draw_listing_product($product, ['category_id']); ?>
               </section>
             </div>
-          </div>
 
-          <?php if ($pagination) { ?>
-          <div class="card-footer">
-            <?php echo $pagination; ?>
+            <?php if ($pagination) { ?>
+            <div class="card-footer">
+              <?php echo $pagination; ?>
+            </div>
+            <?php } ?>
           </div>
           <?php } ?>
 
