@@ -144,16 +144,14 @@
       $text = strtr($text, $characters);
     }
 
-  // Strip non printable characters
-    $text = preg_replace('#\[.*\]#U', '', $text);
+  // Strip non printable characters and symbols
+    $text = preg_replace(['#[[:cntrl:]]+#', '#&(amp;)?#', '#[!"\#$%\'()*+,./:;<=>?@\[\]\\^`{}|~\s+]#'], '', $text);
 
-  // Keep a-z0-9 and convert symbols to -
-    $text = preg_replace('#&(amp;)?\#?[a-z0-9]+;#i', '-', $text);
-    $text = preg_replace(['#[^a-z0-9]#i', '#[-]+#'], '-', $text);
-    $text = trim($text, '-');
+  // Underscores and dashes
+    $text = trim(preg_replace('#[-_]+#', '-', $text), '-');
 
   // Convert to lowercases
-    $text = strtolower($text);
+    $text = mb_strtolower($text);
 
     return $text;
   }
