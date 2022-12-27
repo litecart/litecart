@@ -85,17 +85,17 @@
       $this->data['author'] = !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '';
 
       if ($install_node = $dom->getElementsByTagName('install')->item(0)) {
-        $this->data['install'] = $install_node->textContent;
+        $this->data['install'] = preg_replace('#\R*(.*)\s*#', '$1', $install_node->textContent);
       }
 
       if ($uninstall_node = $dom->getElementsByTagName('uninstall')->item(0)) {
-        $this->data['uninstall'] = $uninstall_node->textContent;
+        $this->data['uninstall'] = preg_replace('#\R*(.*)\s*#', '$1', $uninstall_node->textContent);
       }
 
       foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
         $this->data['upgrades'][] = [
           'version' => $upgrade_node->getAttribute('version'),
-          'script' => $upgrade_node->textContent,
+          'script' => preg_replace('#\R*(.*)\s*#', '$1', $upgrade_node->textContent),
         ];
       }
 
@@ -394,8 +394,10 @@
       $xml = $dom->saveXML();
 
     // Pretty print
-      $xml = preg_replace('#^( +<(alias|setting|install|uninstall|upgrade|file|operation|insert)[^>]*>)#m', PHP_EOL . '$1', $xml);
-      $xml = preg_replace('#^(\n|\r\n?){2,}#m', PHP_EOL, $xml);
+      $xml = preg_replace('#( |\t)+(\r\n?|\n)#', '$2', $xml); // Remove trailing whitespace
+      $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml); // Convert line endings
+      $xml = preg_replace('#^( +<(alias|setting|install|uninstall|upgrade|file|operation|insert)[^>]*>)#m', PHP_EOL . '$1', $xml); // Add some empty lines
+      $xml = preg_replace('#(\r\n?|\n){3,}#', PHP_EOL . PHP_EOL, $xml); // Remove exceeding line breaks
 
       if (!empty($this->previous['filename'])) {
          rename(FS_DIR_STORAGE . 'vmods/' . $this->previous['filename'], FS_DIR_STORAGE . 'vmods/' . $this->data['filename']);
