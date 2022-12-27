@@ -121,13 +121,13 @@
 }
 #box-checkout-shipping .option.btn:first-child,
 #box-checkout-payment .option.btn:first-child {
-  border-top-left-radius: var(--border-radius);
-  border-top-right-radius: var(--border-radius);
+  border-start-start-radius: var(--border-radius);
+  border-start-end-radius: var(--border-radius);
 }
 #box-checkout-shipping .option.btn:last-child,
 #box-checkout-payment .option.btn:last-child {
-  border-bottom-left-radius: var(--border-radius);
-  border-bottom-right-radius: var(--border-radius);
+  border-end-start-radius: var(--border-radius);
+  border-end-end-radius: var(--border-radius);
 }
 #box-checkout-shipping .option.active,
 #box-checkout-payment .option.active {
