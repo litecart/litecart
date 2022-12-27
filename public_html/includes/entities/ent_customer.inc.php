@@ -143,7 +143,7 @@
       if (!empty($this->previous['email']) && $this->previous['email'] != $this->data['email']) {
         database::query(
           "update ". DB_TABLE_PREFIX ."newsletter_recipients
-          set email = '". database::input(strtolower($this->data['email'])) ."'
+          set email = '". database::input(strtolower($this->data['email'])) ."',
             firstname = '". database::input($this->data['firstname']) ."',
             lastname = '". database::input($this->data['lastname']) ."'
           where lower(email) = '". database::input(strtolower($this->previous['email'])) ."';"
