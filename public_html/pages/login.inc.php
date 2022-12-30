@@ -17,7 +17,7 @@
 
   if (empty($_POST['remember_me'])) $_POST['remember_me'] = false;
 
-  if (!empty(customer::$data['id'])) notices::add('notice', language::translate('text_already_logged_in', 'You are already logged in'));
+  if (!empty(customer::$data['id'])) notices::add('notices', language::translate('text_already_logged_in', 'You are already logged in'));
 
   if (!empty($_POST['login'])) {
 
@@ -42,7 +42,8 @@
       }
 
       if (empty($customer['status'])) {
-        throw new Exception(language::translate('error_account_inactive', 'Your account is inactive, contact customer support'));
+        throw new Exception(language::translate('error_customer_account_disabled_or_not_activated', 'The customer account is disabled or not activated'));
+      }
       }
 
       if (!password_verify($_POST['password'], $customer['password_hash'])) {
