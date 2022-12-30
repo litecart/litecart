@@ -45,8 +45,8 @@
         throw new Exception(language::translate('error_customer_account_disabled_or_not_activated', 'The customer account is disabled or not activated'));
       }
 
-      if (!empty($user['date_blocked_until']) && date('Y-m-d H:i:s') < $user['date_blocked_until']) {
-        throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_blocked_until']))));
+      if (!empty($customer['date_blocked_until']) && date('Y-m-d H:i:s') < $customer['date_blocked_until']) {
+        throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime(language::$selected['format_datetime'], strtotime($customer['date_blocked_until']))));
       }
 
       if (!password_verify($_POST['password'], $customer['password_hash'])) {
