@@ -322,9 +322,9 @@
 
                   case '=':
                     if ((float)$value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code')) - $this->price;
+                      $value['price_adjust'] = currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
                     } else {
-                      $value['price_adjust'] = $value[settings::get('store_currency_code')] - $this->price;
+                      $value['price_adjust'] = $value[settings::get('store_currency_code')];
                     }
                     break;
 
