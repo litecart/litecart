@@ -28,7 +28,7 @@
         'destination' => !empty($options['destination']) ? $options['destination'] : FS_DIR_STORAGE . 'cache/',
         'width' => !empty($options['width']) ? $options['width'] : 0,
         'height' => !empty($options['height']) ? $options['height'] : 0,
-        'clipping' => !empty($options['clipping']) ? $options['clipping'] : 'FIT_ONLY_BIGGER',
+        'clipping' => !empty($options['clipping']) ? strtoupper($options['clipping']) : 'FIT_ONLY_BIGGER',
         'quality' => isset($options['quality']) ? $options['quality'] : settings::get('image_quality'),
         'trim' => !empty($options['trim']) ? $options['trim'] : false,
         'interlaced' => !empty($options['interlaced']) ? true : false,
@@ -45,7 +45,7 @@
             $extension = pathinfo($source, PATHINFO_EXTENSION);
           }
 
-          switch (strtoupper($options['clipping'])) {
+          switch ($options['clipping']) {
 
             case 'CROP':
               $clipping_filename_flag = '_c';

@@ -118,6 +118,7 @@
 #box-checkout-shipping .option.btn,
 #box-checkout-payment .option.btn {
   padding: 1em;
+  white-space: normal;
 }
 #box-checkout-shipping .option.btn:first-child,
 #box-checkout-payment .option.btn:first-child {
@@ -132,6 +133,10 @@
 #box-checkout-shipping .option.active,
 #box-checkout-payment .option.active {
   background: #eaebef;
+}
+#box-checkout-shipping .option.disabled,
+#box-checkout-payment .option.disabled {
+  cursor: not-allowed;
 }
 #box-checkout-shipping .option:not(.active) .content,
 #box-checkout-payment .option:not(.active) .content {

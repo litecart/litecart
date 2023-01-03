@@ -121,6 +121,7 @@
     transition: all 250ms ease;
     &.btn {
       padding: 1em;
+      white-space: normal;
       &:first-child {
         border-start-start-radius: var(--border-radius);
         border-start-end-radius: var(--border-radius);
@@ -133,13 +134,13 @@
     &.active {
       background: #eaebef;
     }
+    &.disabled {
+      cursor: not-allowed;
+    }
     &:not(.active) {
       .content {
         max-height: 0;
         overflow-y: hidden;
-      }
-      &:not(.disabled) {
-
       }
     }
     .thumbnail {
