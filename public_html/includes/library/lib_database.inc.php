@@ -20,7 +20,7 @@
         if (defined('MYSQLI_OPT_INT_AND_FLOAT_NATIVE')) {
           self::set_option(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1, $link);
         } else {
-          trigger_error('Undefined constant MYSQLI_OPT_INT_AND_FLOAT_NATIVE', E_USER_WARNING);
+          trigger_error('Undefined constant MYSQLI_OPT_INT_AND_FLOAT_NATIVE. Make sure you enabled the PHP extension mysqlnd which is the recommended driver since PHP 5.4 instead of libmysql.', E_USER_WARNING);
         }
 
         if (!mysqli_real_connect(self::$_links[$link], $server, $username, $password, $database)) {
