@@ -264,8 +264,9 @@
             $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
             if ($value['price_adjust']) {
-              $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
-              if ($value['price_adjust'] > 0) $price_adjust_text = ' +' . $price_adjust_text;
+              if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
+              else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
+              $price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
             }
 
             $values .= '<div class="checkbox">' . PHP_EOL
@@ -283,8 +284,9 @@
             $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
             if ($value['price_adjust']) {
-              $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
-              if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
+              if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
+              else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
+              $price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
             }
 
             $values .= '<div class="radio">' . PHP_EOL
@@ -303,8 +305,9 @@
             $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
             if ($value['price_adjust']) {
-              $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
-              if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
+              if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
+              else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
+              $price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
             }
 
             $options[] = [$value['name'] . $price_adjust_text, $value['name'], 'data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"'];
