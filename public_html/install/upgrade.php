@@ -8,7 +8,7 @@
   if (php_sapi_name() == 'cli') {
 
     if (!isset($argv[1]) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
-      echo "\nLiteCart® 2.5.1\n"
+      echo "\nLiteCart® 2.5.2\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
