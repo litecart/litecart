@@ -72,7 +72,7 @@
             limit 1;"
           );
 
-          throw new Exception(strtr(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %n minutes'), ['%n' => 15, '%d' => 15]));
+          throw new Exception(strtr(language::translate('error_account_has_been_blocked', 'The account has been temporarily blocked %n minutes'), ['%n' => 15, '%d' => 15]));
         }
       }
 
@@ -123,7 +123,7 @@
       exit;
 
     } catch (Exception $e) {
-      //http_response_code(401); // Troublesome with HTTP Auth
+      http_response_code(401); // Troublesome with HTTP Auth (e.g. .htpasswd)
       notices::add('errors', $e->getMessage());
     }
   }

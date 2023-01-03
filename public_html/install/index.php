@@ -379,7 +379,7 @@ input[name="development_type"]:checked + div {
   ];
 
   foreach ($paths as $path) {
-    if (file_exists($path) && is_writable($path)) {
+    if (file_exists($path) && is_writable($path) || is_writable(dirname($path))) {
       echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="ok">[OK]</span></li>' . PHP_EOL;
     } else if (is_writable('../' . pathinfo($path, PATHINFO_DIRNAME))) {
       echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="ok">[OK]</span></li>' . PHP_EOL;

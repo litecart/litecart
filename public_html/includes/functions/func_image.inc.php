@@ -36,8 +36,7 @@
         'watermark' => !empty($options['watermark']) ? $options['watermark'] : false,
       ];
 
-      if (substr($options['destination'], -1) == '/') {
-
+      if (is_dir($options['destination']) || substr($options['destination'], -1) == '/') {
         if (preg_match('#^'. preg_quote(FS_DIR_STORAGE . 'cache/', '#') .'$#', $options['destination'])) {
 
           if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
@@ -94,7 +93,7 @@
           $options['destination'] = FS_DIR_STORAGE .'cache/'. substr($filename, 0, 2) . '/' . $filename;
 
         } else {
-          $options['destination'] = FS_DIR_STORAGE .'cache/'. basename($source);
+          $options['destination'] = rtrim($options['destination'], '/') .'/'. basename($source);
         }
       }
 
