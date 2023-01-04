@@ -47,3 +47,19 @@
       ],
     ],
   ]);
+
+// Copy Payson to swedish installations
+  $setting_query = database::query(
+    "select `value` from ". DB_PREFIX ."settings
+    where `key` = 'store_country_code'
+    limit 1;"
+  );
+
+  $store_country_code = database::fetch($setting_query, 'value');
+
+  if ($store_country_code == 'SE') {
+    perform_action('copy', [
+      FS_DIR_APP . 'install/data/default/public_html/includes/modules/payment/pm_payson.inc.php' => FS_DIR_APP . 'includes/modules/payment/',
+      FS_DIR_APP . 'install/data/default/public_html/ext/payson/' => FS_DIR_APP . 'ext/payson/',
+    ]);
+  }
