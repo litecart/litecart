@@ -26,7 +26,6 @@
 		"grunt-dart-sass": "^2.0.1",
 		"grunt-phplint": "^0.1.0",
 		"grunt-text-replace": "^0.4.0",
-		"less-plugin-clean-css": "^1.5.1",
 		"phplint": "^2.0.5",
 		"sass": "^1.55.0"
 	},
