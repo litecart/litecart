@@ -149,7 +149,7 @@ html.dark-mode .operation {
 .script {
   position: relative;
 }
-.script .script-filename {
+.script .filename {
   position: absolute;
   display: inline-block;
   top: 0;
@@ -740,12 +740,17 @@ textarea.warning {
       $tab_pane.find('.sources').html('');
 
       $.each(result, function(file, source_code){
-        $tab_pane.find('.sources').append(
-          $('<div class="script">').html(
-            $('<div class="form-code"></div>').text(source_code).prop('outerHTML') +
-            $('<div class="script-filename"></div>').text(file).prop('outerHTML')
-          )
+
+        var $script = $(
+          '<div class="script">' +
+          '  <div class="form-code"></div>' +
+          '  <div class="filename"></div>' +
+          '</div>'
         );
+
+        $script.find('.form-code').text(source_code);
+        $script.find('.filename').text(file);
+        $tab_pane.find('.sources').append($script);
       });
 
       $tab_pane.find(':input[name$="[find][content]"]').trigger('input');
