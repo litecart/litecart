@@ -31,15 +31,6 @@
   }
 
 ?>
-<style>
-textarea[name="content"] {
-  background: #2f3244;
-  color: #fff;
-  height: 640px;
-  font-family: Lucida Console, Monospace;
-}
-</style>
-
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
@@ -64,7 +55,7 @@ textarea[name="content"] {
 
       <div class="form-group">
         <label><?php echo language::translate('title_content', 'Content'); ?></label>
-        <?php echo functions::form_draw_textarea('content', true); ?>
+        <?php echo functions::form_draw_code_field('content', true); ?>
       </div>
 
       <div class="card-action">
