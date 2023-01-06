@@ -272,7 +272,7 @@
 
     public static function rlink($resource) {
 
-      if (substr($resource, 0, 1) != '/') {
+      if (!preg_match('#^([a-z]:)?[/\\\\]#i', $resource)) {
         $resource = FS_DIR_APP . $resource;
       }
 
