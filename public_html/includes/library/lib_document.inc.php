@@ -272,12 +272,16 @@
 
     public static function rlink($resource) {
 
-      $resource = str_replace('\\', '/', realpath($resource));
+      if (substr($resource, 0, 1) != '/') {
+        $resource = FS_DIR_APP . $resource;
+      }
 
       if (!is_file($resource)) {
         trigger_error('Could not create link for missing resource ('. $resource.')', E_USER_WARNING);
         return document::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource));
       }
+
+      $resource = str_replace('\\', '/', realpath($resource));
 
       return document::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource), ['_' => filemtime($resource)]);
     }
