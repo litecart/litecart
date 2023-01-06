@@ -186,21 +186,6 @@ textarea[name*="[insert]"][name$="[content]"] {
   height: auto;
   transition: all 100ms linear;
 }
-textarea[name*="[find]"][name$="[content]"] {
-  min-height: 50px;
-  max-height: 50px;
-}
-textarea[name*="[find]"][name$="[content]"]:focus {
-  max-height: 250px;
-}
-
-textarea[name*="[insert]"][name$="[content]"] {
-  min-height: 100px;
-  max-height: 100px;
-}
-textarea[name*="[insert]"][name$="[content]"]:focus {
-  max-height: 250px;
-}
 
 .nav-tabs a.warning {
   color: red;
@@ -734,10 +719,12 @@ textarea.warning {
 
   $('#files :input[name$="[method]"]').trigger('change');
 
-  $('body').on('input', '.form-code', function() {
-    $(this).css('height', 'auto');
-    $(this).height(this.scrollHeight);
-  });
+  $('body').on('input', 'textarea.form-code', function() {
+    $(this).css('height', '');
+    $(this).css('height', Math.min(this.scrollHeight + 10, 250) + 'px');
+  })
+
+  $('textarea.form-code').trigger('input');
 
   $('.tab-content').on('input', ':input[name^="files"][name$="[name]"]', function(){
     let $tab_pane = $(this).closest('.tab-pane'),
