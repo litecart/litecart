@@ -2,7 +2,7 @@
 
   class vmod {
     public static $enabled = true;                 // Bool whether or not to enable this feature
-    private static $aliases = [];                  // Array of path aliases ['pattern' => 'replace']
+    public static $aliases = [];                   // Array of path aliases ['pattern' => 'replace']
     private static $_checked = [];                 // Array of files that have already passed check() and
     private static $_checksums = [];               // Array of checksums for time comparison
     private static $_files_to_modifications = [];  // Array of references to modifications

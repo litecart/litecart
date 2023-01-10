@@ -16,6 +16,8 @@
       '#^(cache|data|ext|images|install|logs|vmods|vqmods)/#',
     ];
 
+    $_GET['pattern'] = preg_replace(array_keys(vmod::$aliases), array_values(vmod::$aliases), $_GET['pattern']);
+
     $files = functions::file_search(FS_DIR_APP . $_GET['pattern'], GLOB_BRACE);
 
     foreach ($files as $file) {
