@@ -133,7 +133,7 @@
               <?php } else if ($recommended_price) { ?>
               <del class="recommended-price"><?php echo currency::format($recommended_price); ?></del> <strong class="price"><?php echo currency::format($regular_price); ?></strong>
               <?php } else { ?>
-              <span class="price"><?php echo currency::format($regular_price); ?></span>
+              <span class="price"><?php echo currency::format($final_price); ?></span>
               <?php } ?>
             </div>
 
