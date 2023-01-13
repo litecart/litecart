@@ -140,7 +140,7 @@
     'total_tax' => $product->tax,
     'tax_rates' => [],
     'quantity' => round((float)$product->quantity, $product->quantity_unit ? (int)$product->quantity_unit['decimals'] : 0),
-    'quantity_min' => ($product->quantity_min > 0) ? $product->quantity_min : 1,
+    'quantity_min' => ($product->quantity_min > 0) ? $product->quantity_min : (($product->quantity_step > 0) ? $product->quantity_step : 1),
     'quantity_max' => ($product->quantity_max > 0) ? $product->quantity_max : null,
     'quantity_step' => ($product->quantity_step > 0) ? $product->quantity_step : null,
     'quantity_unit' => $product->quantity_unit,
