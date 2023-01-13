@@ -6,7 +6,9 @@
 
   if (empty(cart::$items)) return;
 
-  if (empty(customer::$data['country_code'])) customer::$data['country_code'] = settings::get('default_country_code');
+  if (empty(customer::$data['country_code'])) {
+    customer::$data['country_code'] = settings::get('default_country_code');
+  }
 
   $payment = new mod_payment();
   $options = $payment->options(cart::$items, currency::$selected['code'], customer::$data);

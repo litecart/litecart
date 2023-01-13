@@ -443,17 +443,16 @@
 
             } elseif (!empty($row['gtin']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
               $product = new ent_product($product['id']);
-
             }
 
             if (!empty($product->data['id'])) {
 
               if (empty($batch['overwrite'])) {
-                echo 'Skip updating existing product on line '. $batch['counters']['line'] . PHP_EOL;
+                echo 'Skip updating existing product (ID: '. $product->data['id'] .') on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Updating existing product '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              echo 'Updating existing product '. (!empty($row['name']) ? $row['name'] : '') .' (ID: '. $product->data['id'] .') on line '. $batch['counters']['line'] . PHP_EOL;
               $batch['counters']['updated']++;
 
             } else {
@@ -463,7 +462,7 @@
                 continue 2;
               }
 
-              echo 'Inserting new product: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              echo 'Inserting new product '. (!empty($row['name']) ? $row['name'] : '') .' on line '. $batch['counters']['line'] . PHP_EOL;
               $batch['counters']['inserted']++;
 
               if (!empty($row['id'])) {

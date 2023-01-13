@@ -378,7 +378,7 @@ input[name="development_type"]:checked + div {
       </div>
     </div>
 
-  <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
+    <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
     <div class="form-group col-md-4">
       <label>Current Version</label>
       <div class="form-control"><?php echo PLATFORM_DATABASE_VERSION; ?></div>

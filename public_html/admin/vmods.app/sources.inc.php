@@ -3,7 +3,7 @@
   try {
 
     if (empty($_GET['pattern'])) {
-      throw new Exception('Missing file');
+      throw new Exception('Missing file pattern');
     }
 
     $results = [];
