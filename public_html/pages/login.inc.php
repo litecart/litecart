@@ -87,6 +87,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."customers set
+          login_attempts = 0,
           total_logins = total_logins + 1,
           last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
           last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
