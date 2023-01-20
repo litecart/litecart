@@ -3,17 +3,13 @@
   font-family: 'Asap';
   font-style: normal;
   font-weight: 400;
-  font-stretch: normal;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/asap/v26/KFOOCniXp96a4Tc2DaTeuDAoKsE617JFc49knOIYdjTYkqUsLg.ttf) format('truetype');
+  src: url('../../../../ext/google_fonts/asap-v26-latin-ext_latin-regular.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Asap';
   font-style: normal;
   font-weight: 700;
-  font-stretch: normal;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/asap/v26/KFOOCniXp96a4Tc2DaTeuDAoKsE617JFc49knOIYdjTYdaIsLg.ttf) format('truetype');
+  src: url('../../../../ext/google_fonts/asap-v26-latin-ext_latin-700.woff2') format('woff2');
 }
 /* Variables */
 :root {

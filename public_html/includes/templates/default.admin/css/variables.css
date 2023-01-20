@@ -1,18 +1,17 @@
+/* Media Breakpoints */
+/* Fonts */
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Me5Q.ttf) format('truetype');
+  src: local(''), url('../../../../ext/google_fonts/roboto-v30-latin-ext_latin-regular.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 700;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlvAw.ttf) format('truetype');
+  src: local(''), url('../../../../ext/google_fonts/roboto-v30-latin-ext_latin-700.woff2') format('woff2');
 }
-/* Media Breakpoints */
 /* Variables */
 :root {
   --border-radius: 0.5em;
