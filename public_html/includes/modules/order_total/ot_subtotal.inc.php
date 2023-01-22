@@ -1,5 +1,6 @@
 <?php
 
+  #[AllowDynamicProperties]
   class ot_subtotal {
     public $id = __CLASS__;
     public $name = 'Subtotal';

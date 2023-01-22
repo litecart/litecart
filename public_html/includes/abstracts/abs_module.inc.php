@@ -37,6 +37,17 @@
           continue;
         }
 
+      // Patch modules for PHP 8.2 Compatibility
+        if (version_compare(PHP_VERSION, 8.2, '>=')) {
+          if (is_file($file = $directory . $module['module_id'] .'.inc.php')) {
+            $source = file_get_contents($file);
+            if (!preg_match('#\#\[AllowDynamicProperties\]#', $source)) {
+              $source = preg_replace('#( *)class [a-zA-Z0-9_-]+ *\{(\n|\r\n?)#', '$1#[AllowDynamicProperties]$2$0', $source);
+              file_put_contents($file, $source);
+            }
+          }
+        }
+
       // Create object
         $object = new $module['module_id'];
 

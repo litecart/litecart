@@ -1,5 +1,6 @@
 <?php
 
+  #[AllowDynamicProperties]
   class job_error_reporter {
     public $id = __CLASS__;
     public $name = 'Error Reporter';
