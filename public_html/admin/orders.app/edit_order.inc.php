@@ -206,7 +206,7 @@
 #comments .bubble .private {
   position: absolute;
   top: 0.5em;
-  right: 2.5em;
+  right: 3em;
   cursor: pointer;
 }
 #comments .bubble .private input[name$="[hidden]"] {
@@ -222,7 +222,7 @@
 #comments .bubble .notify  {
   position: absolute;
   top: 0.5em;
-  right: 4em;
+  right: 4.5em;
   cursor: pointer;
 }
 #comments .bubble .notify input[name$="[notify]"] {
