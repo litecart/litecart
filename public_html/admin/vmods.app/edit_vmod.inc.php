@@ -641,6 +641,10 @@ textarea.warning {
   let new_tab_index = 1;
   while ($('.tab-pane[id="tab-'+new_tab_index+'"]').length) new_tab_index++;
 
+  $('.nav-tabs').on('click', '[data-toggle="tab"]', function(e) {
+    $($(this).attr('href')).find(':input[name$="[content]"]').trigger('input');
+  });
+
   $('.nav-tabs .add').click(function(e){
     e.preventDefault();
 
