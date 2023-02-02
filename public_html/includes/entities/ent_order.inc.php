@@ -291,8 +291,7 @@
       if (!empty($this->previous['order_status_id']) && reference::order_status($this->previous['order_status_id'], $this->data['language_code'])->stock_action == 'commit') {
         foreach ($this->previous['items'] as $previous_order_item) {
           if (empty($previous_order_item['product_id'])) continue;
-          $product = new ent_product($previous_order_item['product_id']);
-          $product->adjust_quantity((float)$previous_order_item['quantity'], $previous_order_item['option_stock_combination']);
+          $this->adjust_stock_quantity($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], (float)$previous_order_item['quantity']);
         }
       }
 
@@ -327,8 +326,7 @@
       // Withdraw stock
         if (!empty($this->data['order_status_id']) && reference::order_status($this->data['order_status_id'])->stock_action == 'commit') {
           if (!empty($item['product_id'])) {
-            $product = new ent_product($item['product_id']);
-            $product->adjust_quantity(-(float)$item['quantity'], $item['option_stock_combination']);
+            $this->adjust_stock_quantity($item['product_id'], $item['option_stock_combination'], -(float)$item['quantity']);
           }
         }
 
@@ -839,6 +837,12 @@
             ->set_subject($subject)
             ->add_body($message, true)
             ->send();
+    }
+
+    public function adjust_stock_quantity($product_id, $combination, $quantity_adjustment) {
+      if ($quantity_adjustment == 0) return;
+      $product = new ent_product($product_id);
+      $product->adjust_quantity((float)$quantity_adjustment, $combination);
     }
 
     public function delete() {
