@@ -43,7 +43,7 @@
     try {
       if (!empty($_POST['categories'])) throw new Exception(language::translate('error_cant_duplicate_category', 'You can\'t duplicate a category'));
       if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
-      if (empty($_POST['category_id'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
+      if (!isset($_POST['category_id'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
       foreach ($_POST['products'] as $product_id) {
         $original = new ent_product($product_id);
