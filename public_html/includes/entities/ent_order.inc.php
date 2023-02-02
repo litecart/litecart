@@ -81,6 +81,9 @@
         'comments' => [],
         'subtotal' => ['amount' => 0, 'tax' => 0],
         'display_prices_including_tax' => settings::get('default_display_prices_including_tax'),
+        'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '',
+        'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
+        'domain' => isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '',
       ]);
 
       $this->previous = $this->data;
@@ -226,7 +229,7 @@
         database::query(
           "insert into ". DB_TABLE_PREFIX ."orders
           (uid, client_ip, user_agent, domain, date_created)
-          values ('". database::input($this->data['uid']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". database::input($_SERVER['HTTP_HOST']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+          values ('". database::input($this->data['uid']) ."', '". database::input($this->data['client_ip']) ."', '". database::input($this->data['user_agent']) ."', '". database::input($this->data['domain']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
 
         $this->data['id'] = database::insert_id();
