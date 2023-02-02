@@ -2,6 +2,7 @@
 
 // Delete some files
   perform_action('delete', [
+    FS_DIR_APP . 'ext/jquery/jquery-3.6.1.min.js',
     FS_DIR_APP . 'includes/modules/customer/cm_google_maps.inc.php',
     FS_DIR_APP . 'includes/modules/customer/cm_local_database.inc.php',
     FS_DIR_APP . 'includes/library/lib_form.inc.php',

@@ -50,7 +50,7 @@
         '<link rel="icon" href="'. document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-256x256.png') .'" type="image/png" sizes="255x255" />',
       ]);
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'ext/fontawesome/font-awesome.min.css') .'" />';
-      self::$snippets['foot_tags']['jquery'] = '<script src="'. document::href_rlink(FS_DIR_APP .'ext/jquery/jquery-3.6.1.min.js') .'"></script>';
+      self::$snippets['foot_tags']['jquery'] = '<script src="'. document::href_rlink(FS_DIR_APP .'ext/jquery/jquery-3.6.3.min.js') .'"></script>';
 
     // Hreflang
       if (!empty(route::$route['page'])) {
