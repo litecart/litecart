@@ -338,12 +338,12 @@ db390b3ff0e45b37533913f7c5b345f5	includes/routes/url_order_process.inc.php
 d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 31c1e94b1eb6502ee4842fce9066ea02	includes/templates/default.admin/css/app.min.css
 dd074822ff582b2d55a98f80fcbf64e4	includes/templates/default.admin/css/app.min.css.map
-6f22791003e548f49b6f850f911ecd70	includes/templates/default.admin/css/framework.min.css
-63ea684fc200521227b2dd7d6e59adf0	includes/templates/default.admin/css/framework.min.css.map
+24fe7bf6d746532e1f8e27d201f7fcda	includes/templates/default.admin/css/framework.min.css
+f5ad452f7861d69f1a34728a56aeb90a	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.admin/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.admin/css/printable.min.css.map
-0de54e377e8093c0c90d5edae1315ada	includes/templates/default.admin/css/variables.css
+b49942a5d39cc24143d2733c77d51fe1	includes/templates/default.admin/css/variables.css
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/fonts/index.html
 31d4f5fd96f7c0573e74a213b0bc3457	includes/templates/default.admin/fonts/roboto-v30-latin-ext_latin-700.woff2
 64f64a10033d482f2a6a78c530a46f39	includes/templates/default.admin/fonts/roboto-v30-latin-ext_latin-regular.woff2
@@ -373,7 +373,7 @@ c9d9a6da4ca416235da5473b7b7609a5	includes/templates/default.admin/less/framework
 fb2ed4862b2cfd7ee28b1f06c6c547d0	includes/templates/default.admin/less/framework/grid.less
 ce3414d517c8156972a455c41f62f1d1	includes/templates/default.admin/less/framework/images.less
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/less/framework/index.html
-9e994cdd4853759efdb7d6c5a88bc1fb	includes/templates/default.admin/less/framework/inputs.less
+7e89b4b18faaaeaee72a435a561f8391	includes/templates/default.admin/less/framework/inputs.less
 535850a8de53574f4f9e4219116d65dc	includes/templates/default.admin/less/framework/lists.less
 3e76cbc834233619f3f51361db0a0434	includes/templates/default.admin/less/framework/loader.less
 14d6a8437c87a2bcff5172eb413b233c	includes/templates/default.admin/less/framework/media.less
@@ -385,7 +385,7 @@ dd9bcd229163a0813c13c5a47be4ad92	includes/templates/default.admin/less/framework
 b50b64b067520fb80eb03cf36167244e	includes/templates/default.admin/less/framework/typography.less
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/less/index.html
 b8d27643da9bce960bb100085d9c408b	includes/templates/default.admin/less/printable.less
-8ab163676e639fe4cec0fabb677121a1	includes/templates/default.admin/less/variables.less
+2bf1f59aa8eba812a55ddda0cc7458fb	includes/templates/default.admin/less/variables.less
 b6fc7003936788dd0d2fa113c8f31734	includes/templates/default.admin/pages/doc.inc.php
 c350d51cd1b3329cd7f3f4a376746a97	includes/templates/default.admin/pages/error_document.inc.php
 eafbab5c5b3b16037aa78267beac0c8c	includes/templates/default.admin/pages/login.inc.php
@@ -403,7 +403,7 @@ b56ef2f26275dcc8e5ca4d5dfcb9c421	includes/templates/default.catalog/css/app.min.
 207ed3c2906c299e4783f0044aea42db	includes/templates/default.catalog/css/checkout.min.css.map
 04ba114d2ed87faa1c6ca020b48a07c7	includes/templates/default.catalog/css/framework.css
 4255ed16e3f54dfe3657f2115e4c10fc	includes/templates/default.catalog/css/framework.min.css
-ae12492423ea0c34a7b896bf4661cef8	includes/templates/default.catalog/css/framework.min.css.map
+b004347a406b8d6e19c15b9aa2c5dc60	includes/templates/default.catalog/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/css/index.html
 eb82721c7af418e1c8fc5ab241fc117e	includes/templates/default.catalog/css/printable.css
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.catalog/css/printable.min.css
@@ -678,7 +678,7 @@ fd11eee50b3585d2c64de0480dcffa9e	install/upgrade_patches/2.4.4.inc.php
 4d9ca2c51db9788501ff58bbfa251099	install/upgrade_patches/2.5.0.inc.php
 9ec1377e172e10ceae06a155627b20a4	install/upgrade_patches/2.5.0.sql
 55fc6e000139956efbb7d229520a1b55	install/upgrade_patches/2.5.1.inc.php
-1070cc5de9c9f564c477526093b9655f	install/upgrade_patches/2.5.2.inc.php
+85cfb8a48b15a03d1b3674278122d836	install/upgrade_patches/2.5.2.inc.php
 ab7ba686349fc0fd50570c6e0bf03299	install/upgrade_patches/2.5.2.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
