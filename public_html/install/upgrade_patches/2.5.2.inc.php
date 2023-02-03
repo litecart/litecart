@@ -51,7 +51,7 @@
 
 // Copy Payson to swedish installations
   $setting_query = database::query(
-    "select `value` from ". DB_PREFIX ."settings
+    "select `value` from ". DB_TABLE_PREFIX ."settings
     where `key` = 'store_country_code'
     limit 1;"
   );
