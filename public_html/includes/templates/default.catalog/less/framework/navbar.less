@@ -64,6 +64,7 @@
     overflow-y: visible;
     align-items: center;
     justify-content: space-between;
+    padding: 1em;
 
     @media (min-width: @media-breakpoint-md) {
       display: flex;
@@ -122,7 +123,7 @@ html[dir="rtl"] .offcanvas {
     display: block;
     width: 22px;
     height: 2px;
-    background-color: var(--navigation-text-color);
+    background-color: var(--default-button-text-color);
     transition: all 250ms ease-in-out;
     + .icon-bar {
       margin-top: 3px;
@@ -172,12 +173,12 @@ html[dir="rtl"] .offcanvas {
 
     &:hover {
       background-color: var(--navigation-background-color-hover);
-      color: var(--navbar-text-color-hover);
+      color: var(--navigation-text-color-hover);
     }
 
     &.active {
       background-color: var(--navigation-background-color-active);
-      color: var(--navbar-text-color-active);
+      color: var(--navigation-text-color-active);
     }
 
     @media (min-width: @media-breakpoint-md) {
