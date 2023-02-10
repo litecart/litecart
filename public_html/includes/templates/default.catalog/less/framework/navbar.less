@@ -186,6 +186,12 @@ html[dir="rtl"] .offcanvas {
     }
   }
 
+  .dropdown-menu .nav-link {
+    @media (min-width: @media-breakpoint-md) {
+      padding: .5em 1em;
+    }
+  }
+
   @media (max-width: calc(@media-breakpoint-md - 1px)) {
     .dropdown:not(.open) .dropdown-menu {
       display: none;

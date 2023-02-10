@@ -14,7 +14,7 @@
 
   $_page = new ent_view();
   $_page->snippets = [
-    'title' => sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])),
+    'title' => !empty($_GET['query']) ? sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])) : language::translate('text_displaying_all_products', 'Displaying all products'),
     'products' => [],
     'sort_alternatives' => [
       'relevance' => language::translate('title_relevance', 'Relevance'),

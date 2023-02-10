@@ -52,16 +52,18 @@ body {
         background: var(--dropdown-menu-item-background-color);
         color: var(--dropdown-menu-item-text-color);
         &:hover {
-          filter: brightness(.85);
+          filter: brightness(.95);
         }
       }
     }
   }
 
   .dropdown-menu {
+    overflow: hidden;
     --gutter-y: .75em;
   }
 }
+
 body.scrolling-down #site-menu {
   top: -6em;
 }

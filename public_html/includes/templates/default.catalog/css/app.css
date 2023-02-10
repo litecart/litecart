@@ -50,10 +50,11 @@ body.has-offcanvas {
     color: var(--dropdown-menu-item-text-color);
   }
   #site-menu .navbar .dropdown-menu .nav-link:hover {
-    filter: brightness(0.85);
+    filter: brightness(0.95);
   }
 }
 #site-menu .dropdown-menu {
+  overflow: hidden;
   --gutter-y: 0.75em;
 }
 body.scrolling-down #site-menu {

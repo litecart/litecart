@@ -1776,6 +1776,11 @@ html[dir="rtl"] .offcanvas {
     padding: 1em 1.5em;
   }
 }
+@media (min-width: 992px) {
+  .navbar-nav .dropdown-menu .nav-link {
+    padding: 0.5em 1em;
+  }
+}
 @media (max-width: calc(992px - 1px)) {
   .navbar-nav .dropdown:not(.open) .dropdown-menu {
     display: none;
