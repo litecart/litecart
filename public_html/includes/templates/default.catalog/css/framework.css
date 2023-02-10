@@ -1793,7 +1793,7 @@ html[dir="rtl"] .offcanvas {
     position: static;
     float: none;
     width: auto;
-    margin: 1em;
+    margin-left: 1em;
     background-color: transparent;
     border: 0;
     box-shadow: none;

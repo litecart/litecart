@@ -401,9 +401,9 @@ e66f7821e1becb103f840eaca8f69ceb	includes/templates/default.catalog/css/app.min.
 3ef1259bfbe917531b19cf91f36ebfbe	includes/templates/default.catalog/css/checkout.css
 89df9aed11506cbf3fc6bff54720308b	includes/templates/default.catalog/css/checkout.min.css
 a1822b38e13fd26331d20e50b789a230	includes/templates/default.catalog/css/checkout.min.css.map
-3ec53cb21b68e7814b8e3541b32f8761	includes/templates/default.catalog/css/framework.css
-2634fff09c3c989944bc5a1f0e525774	includes/templates/default.catalog/css/framework.min.css
-2922aff911d44d4f698ec0ae68d595d6	includes/templates/default.catalog/css/framework.min.css.map
+e91166a037a06c49df9feca9901812e6	includes/templates/default.catalog/css/framework.css
+e682fd2ab0c47ee0d210f47e01f8ff23	includes/templates/default.catalog/css/framework.min.css
+ef5a5b24060b2b565341abe145b08f93	includes/templates/default.catalog/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/css/index.html
 eb82721c7af418e1c8fc5ab241fc117e	includes/templates/default.catalog/css/printable.css
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.catalog/css/printable.min.css
@@ -450,7 +450,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/less/framewo
 e2c70f751c9e8d147651907bccd2cb79	includes/templates/default.catalog/less/framework/loader.less
 15e5d5083191a8e3226f6d3b99139a4e	includes/templates/default.catalog/less/framework/media.less
 469c965175f461acafe2cc399cc71af7	includes/templates/default.catalog/less/framework/nav.less
-c018dd2fbc0cfbcd946e896874d6ba1a	includes/templates/default.catalog/less/framework/navbar.less
+9f18d39ca881aeafc9e59050187bd403	includes/templates/default.catalog/less/framework/navbar.less
 5d31bc05def512f9ab2e781432e9c6f7	includes/templates/default.catalog/less/framework/normalize.less
 4fbed5546b4344ec7257d468c4c2cd28	includes/templates/default.catalog/less/framework/notices.less
 83a4ef35f3fd689880bf09cdde233d31	includes/templates/default.catalog/less/framework/pagination.less
