@@ -139,7 +139,7 @@
     }
   }
 
-  list($product_image_width, $product_image_height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
+  list($product_image_width, $product_image_height) = functions::image_scale_by_width(480, settings::get('product_image_ratio'));
 
   $language_codes = array_unique(array_merge([language::$selected['code']], [settings::get('store_language_code')], array_keys(language::$languages)));
   $currency_codes = array_unique(array_merge([currency::$selected['code']], [settings::get('store_currency_code')], array_keys(currency::$currencies)));
