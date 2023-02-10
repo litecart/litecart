@@ -102,11 +102,13 @@
         </div>
       </div>
 
+      <?php if (count(language::$languages) > 1) { ?>
       <nav class="nav nav-tabs">
         <?php foreach (language::$languages as $language) { ?>
         <a class="nav-link <?php echo ($language['code'] == language::$selected['code']) ? ' active' : ''; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
         <?php } ?>
       </nav>
+      <?php } ?>
 
       <div class="tab-content">
         <?php foreach (array_keys(language::$languages) as $language_code) { ?>

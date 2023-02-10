@@ -359,11 +359,13 @@
 
         <div id="tab-information" class="tab-pane">
 
+          <?php if (count(language::$languages) > 1) { ?>
           <nav class="nav nav-tabs" style="padding-top:0; margin-top: -1em;">
             <?php foreach (language::$languages as $language) { ?>
             <a class="nav-link<?php echo ($language['code'] == language::$selected['code']) ? ' active' : ''; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
             <?php } ?>
           </nav>
+          <?php } ?>
 
           <div class="tab-content">
 
