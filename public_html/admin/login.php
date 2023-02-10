@@ -11,10 +11,10 @@
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
-  if (!empty(user::$data['id'])) notices::add('notice', language::translate('text_already_logged_in', 'You are already logged in'));
+  if (!empty(user::$data['id'])) notices::add('notices', language::translate('text_already_logged_in', 'You are already logged in'));
 
   if (empty($_COOKIE[session_name()])) {
-    notices::add('notice', language::translate('error_missing_session_cookie', 'We failed to identify your browser session. Make sure your browser have cookies enabled or try another browser.'));
+    notices::add('notices', language::translate('error_missing_session_cookie', 'We failed to identify your browser session. Make sure your browser has cookies enabled or try another browser.'));
   }
 
   if (isset($_POST['login'])) {
@@ -38,7 +38,7 @@
         throw new Exception(language::translate('error_user_not_found', 'The user could not be found in our database'));
       }
 
-      if (empty($user['status'])) throw new Exception(language::translate('error_account_suspended', 'The account is suspended'));
+      if (empty($user['status'])) throw new Exception(language::translate('error_user_account_disabled', 'The user account is disabled'));
 
       if (!empty($user['date_valid_from']) && date('Y-m-d H:i:s') < $user['date_valid_from']) {
         throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from']))));
@@ -155,7 +155,7 @@
       exit;
 
     } catch (Exception $e) {
-      http_response_code(401);
+      http_response_code(401); // Troublesome with HTTP Auth (e.g. .htpasswd)
       notices::add('errors', $e->getMessage());
     }
   }

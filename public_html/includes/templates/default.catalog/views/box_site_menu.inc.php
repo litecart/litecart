@@ -9,7 +9,7 @@
       <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
     <?php echo functions::form_draw_form_end(); ?>
 
-    <a class="regional-setting text-center" href="<?php echo document::href_ilink('regional_settings'); ?>#box-regional-settings" data-toggle="lightbox" data-seamless="true">
+    <a class="regional-setting text-center" href="<?php echo document::href_ilink('regional_settings', ['redirect_url' => document::link()]); ?>#box-regional-settings" data-toggle="lightbox" data-seamless="true">
       <div class="navbar-icon"><?php echo functions::draw_fonticon('fa-globe'); ?></div>
       <small class="hidden-xs"><?php echo language::$selected['code']; ?> / <?php echo customer::$data['country_code']; ?> / <?php echo currency::$selected['code']; ?></small>
     </a>
@@ -70,7 +70,7 @@
           <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?></a>
           <ul class="dropdown-menu">
             <?php foreach ($pages as $item) { ?>
-            <li><a class="nav-link" href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
+            <li class="nav-item"><a class="nav-link" href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
             <?php } ?>
           </ul>
         </li>
@@ -86,13 +86,13 @@
         <?php if (settings::get('accounts_enabled')) { ?>
         <li class="nav-item account dropdown">
           <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? functions::escape_html(customer::$data['firstname']) : language::translate('title_sign_in', 'Sign In'); ?></a>
-          <ul class="dropdown-menu dropdown-menu-right">
+          <ul class="dropdown-menu dropdown-menu-end">
             <?php if (!empty(customer::$data['id'])) { ?>
-              <li><a class="dropdown-item" href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
-              <li><a class="dropdown-item" href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
-              <li><a class="dropdown-item" href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
+              <li><a class="nav-item" href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
+              <li><a class="nav-item" href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
+              <li><a class="nav-item" href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
             <?php } else { ?>
-              <li class="dropdown-item">
+              <li class="nav-item">
                 <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form"'); ?>
                   <?php echo functions::form_draw_hidden_field('redirect_url', document::link()); ?>
 
@@ -115,12 +115,12 @@
                   </div>
                 <?php echo functions::form_draw_form_end(); ?>
               </li>
-              <li class="text-center">
-                <a class="dropdown-item" href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('text_new_customers_click_here', 'New customers click here'); ?></a>
+              <li class="nav-item text-center">
+                <a class="nav-link" href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('text_new_customers_click_here', 'New customers click here'); ?></a>
               </li>
 
-              <li class="text-center">
-                <a class="dropdown-item" href="<?php echo document::href_ilink('reset_password'); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
+              <li class="nav-item text-center">
+                <a class="nav-link" href="<?php echo document::href_ilink('reset_password'); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
               </li>
             <?php } ?>
           </ul>

@@ -3,7 +3,7 @@
   if (php_sapi_name() == 'cli') {
 
     if (!isset($argv[1]) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
-      echo "\nLiteCart® 2.5.1\n"
+      echo "\nLiteCart® 2.5.2\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -373,10 +373,10 @@
     $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
     $map = [
-      '{STORE_NAME}' => $_REQUEST['store_name'],
-      '{STORE_EMAIL}' => $_REQUEST['store_email'],
-      '{STORE_TIME_ZONE}' => $_REQUEST['store_time_zone'],
-      '{STORE_COUNTRY_CODE}' => $_REQUEST['country_code'],
+      '{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
+      '{STORE_EMAIL}' => isset($_REQUEST['store_email']) ? $_REQUEST['store_email'] : '',
+      '{STORE_TIME_ZONE}' => isset($_REQUEST['store_time_zone']) ? $_REQUEST['store_time_zone'] : '',
+      '{STORE_COUNTRY_CODE}' => isset($_REQUEST['country_code']) ? $_REQUEST['country_code'] : '',
     ];
 
     foreach ($map as $search => $replace) {

@@ -117,12 +117,6 @@
         'Ý' => 'Y', 'Ỳ' => 'Y', 'Ỷ' => 'Y', 'Ỹ' => 'Y', 'Ỵ' => 'Y', 'ý' => 'y', 'ỳ' => 'y', 'ỷ' => 'y', 'ỹ' => 'y', 'ỵ' => 'y',
         'Đ' => 'D', 'đ' => 'd'
       ],
-      'ar' => [ /* Arabic */
-        'أ' => 'a', 'ب' => 'b', 'ت' => 't', 'ث' => 'th', 'ج' => 'g', 'ح' => 'h', 'خ' => 'kh', 'د' => 'd',
-        'ذ' => 'th', 'ر' => 'r', 'ز' => 'z', 'س' => 's', 'ش' => 'sh', 'ص' => 's', 'ض' => 'd', 'ط' => 't',
-        'ظ' => 'th', 'ع' => 'aa', 'غ' => 'gh', 'ف' => 'f', 'ق' => 'k', 'ك' => 'k', 'ل' => 'l', 'م' => 'm',
-        'ن' => 'n', 'ه' => 'h', 'و' => 'o', 'ي' => 'y'
-      ],
       'sr' => [ /* Serbian */
         'ђ' => 'dj', 'ј' => 'j', 'љ' => 'lj', 'њ' => 'nj', 'ћ' => 'c', 'џ' => 'dz', 'đ' => 'dj',
         'Ђ' => 'Dj', 'Ј' => 'j', 'Љ' => 'Lj', 'Њ' => 'Nj', 'Ћ' => 'C', 'Џ' => 'Dz', 'Đ' => 'Dj'
@@ -144,16 +138,14 @@
       $text = strtr($text, $characters);
     }
 
-  // Strip non printable characters
-    $text = preg_replace('#\[.*\]#U', '', $text);
+  // Strip non printable characters and symbols
+    $text = preg_replace(['#[[:cntrl:]]+#', '#&(amp;)?#', '#[!"\#$%\'()*+,./:;<=>?@\[\]\\^`{}|~\s+]#'], '', $text);
 
-  // Keep a-z0-9 and convert symbols to -
-    $text = preg_replace('#&(amp;)?\#?[a-z0-9]+;#i', '-', $text);
-    $text = preg_replace(['#[^a-z0-9]#i', '#[-]+#'], '-', $text);
-    $text = trim($text, '-');
+  // Underscores and dashes
+    $text = trim(preg_replace('#[-_]+#', '-', $text), '-');
 
   // Convert to lowercases
-    $text = strtolower($text);
+    $text = mb_strtolower($text);
 
     return $text;
   }

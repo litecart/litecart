@@ -139,7 +139,10 @@
     }
   }
 
-  list($product_image_width, $product_image_height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
+  list($product_image_width, $product_image_height) = functions::image_scale_by_width(480, settings::get('product_image_ratio'));
+
+  $language_codes = array_unique(array_merge([language::$selected['code']], [settings::get('store_language_code')], array_keys(language::$languages)));
+  $currency_codes = array_unique(array_merge([currency::$selected['code']], [settings::get('store_currency_code')], array_keys(currency::$currencies)));
 
   $option_sort_options = [
     [language::translate('title_list_order', 'List Order'), 'priority'],
@@ -356,11 +359,13 @@
 
         <div id="tab-information" class="tab-pane">
 
+          <?php if (count(language::$languages) > 1) { ?>
           <nav class="nav nav-tabs" style="padding-top:0; margin-top: -1em;">
             <?php foreach (language::$languages as $language) { ?>
             <a class="nav-link<?php echo ($language['code'] == language::$selected['code']) ? ' active' : ''; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
             <?php } ?>
           </nav>
+          <?php } ?>
 
           <div class="tab-content">
 
@@ -641,7 +646,7 @@
                   <?php echo functions::form_draw_text_field('new_predefined_option[custom_value]', ''); ?>
                 </div>
 
-                <div class="col-md-3" style="align-self: end;">
+                <div class="form-group col-md-3" style="align-self: end;">
                   <?php echo functions::form_draw_button('add_predefined_option', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
                 </div>
               </div>
@@ -656,7 +661,7 @@
                   <label><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></label>
                   <?php echo functions::form_draw_attribute_groups_list('new_user_input_option[group_id]', ''); ?>
                 </div>
-                <div class="col-md-4" style="align-self: end;">
+                <div class="form-group col-md-4" style="align-self: end;">
                   <?php echo functions::form_draw_button('add_user_input_option', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
                 </div>
               </div>
@@ -715,6 +720,7 @@
                   <th style="width: 85px;">&nbsp;</th>
                 </tr>
               </thead>
+
               <tbody>
                 <tr>
                   <td><strong><?php echo language::translate('title_default_item', 'Default Item'); ?></strong></td>
@@ -777,6 +783,7 @@
                 </tr>
               <?php } ?>
               </tbody>
+
               <tfoot>
                 <tr>
                   <td colspan="7"><a class="btn btn-default add" href="#"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_stock_option', 'Add Stock Option'); ?></a></td>

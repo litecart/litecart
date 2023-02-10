@@ -15,6 +15,7 @@
       ini_set('session.cookie_lifetime', 0);
       ini_set('session.cookie_path', WS_DIR_APP);
       ini_set('session.cookie_samesite', 'Lax');
+      ini_set('session.gc_maxlifetime', 1440);
 
       register_shutdown_function(['session', 'close']);
 

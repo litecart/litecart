@@ -206,7 +206,7 @@
 #comments .bubble .private {
   position: absolute;
   top: 0.5em;
-  right: 2.5em;
+  right: 3em;
   cursor: pointer;
 }
 #comments .bubble .private input[name$="[hidden]"] {
@@ -222,7 +222,7 @@
 #comments .bubble .notify  {
   position: absolute;
   top: 0.5em;
-  right: 4em;
+  right: 4.5em;
   cursor: pointer;
 }
 #comments .bubble .notify input[name$="[notify]"] {
@@ -1432,7 +1432,7 @@
                + '    <td class="text-end">'
                + '      <div class="input-group">'
                + '        <span class="input-group-text"><?php echo functions::escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>'
-               + '        <?php echo functions::form_draw_decimal_field('order_total[new_ot_row_index][value]', true, !empty(currency::$currencies[$_POST['currency_code']]) ? currency::$currencies[$_POST['currency_code']]['decimals'] : 2, 'style="text-align: end;"'); ?>'
+               + '        <?php echo functions::form_draw_decimal_field('order_total[new_ot_row_index][value]', true, !empty(currency::$currencies[$_POST['currency_code']]) ? currency::$currencies[$_POST['currency_code']]['decimals'] : 2, null, null, 'style="text-align: end;"'); ?>'
                + '        <span class="input-group-text"><?php echo $_POST['currency_code']; ?></span>'
                + '      </div>'
                + '    </td>'

@@ -2,7 +2,18 @@
 
 /* Fonts */
 
-@import url('https://fonts.googleapis.com/css2?family=Asap:wght@400;700&display=swap');
+@font-face {
+  font-family: 'Asap';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''), url('../fonts/asap-v26-latin-ext_latin-regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Asap';
+  font-style: normal;
+  font-weight: 700;
+  src: local(''), url('../fonts/asap-v26-latin-ext_latin-700.woff2') format('woff2');
+}
 
 /* Variables */
 
@@ -35,6 +46,8 @@
   --navigation-background-color-hover: rgba(0, 0, 0, .05);
   --navigation-background-color-active: rgba(0, 0, 0, .15);
   --navigation-text-color: #222;
+  --navigation-text-color-hover: var(--navigation-text-color);
+  --navigation-text-color-active: var(--navigation-text-color);
 
   /* Navigation */
   --offcanvas-background-color: var(--navigation-background-color);
@@ -139,6 +152,11 @@
   --tabs-border-color-active: var(--tabs-background-color-active);
   --tabs-content-background-color: #fff;
 
+  /* Dropdowns */
+  --dropdown-menu-background-color: #fff;
+  --dropdown-menu-item-background-color: var(--dropdown-menu-background-color);
+  --dropdown-menu-item-text-color: var(--default-text-color);
+
   /* Tables */
   --table-striped-row-background-odd: #f5f6f9;
   --table-striped-row-background-even: #fff;
@@ -154,12 +172,12 @@
   --pagination-border-color: var(--default-border-color);
 
   /* Footer */
-  --footer-background-color: #d9dbe1;
+  --footer-background-color: #ededf1;
   --footer-title-color: var(--default-text-color);
   --footer-text-color: var(--default-text-color);
 
   /* Copyright */
-  --copyright-background-color: #ced0d9;
+  --copyright-background-color: #e2e2e7;
   --copyright-text-color: var(--default-text-color);
 
   @media (min-width: (@media-breakpoint-sm)) {

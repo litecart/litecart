@@ -20,7 +20,7 @@
         if (defined('MYSQLI_OPT_INT_AND_FLOAT_NATIVE')) {
           self::set_option(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1, $link);
         } else {
-          trigger_error('Undefined constant MYSQLI_OPT_INT_AND_FLOAT_NATIVE', E_USER_WARNING);
+          trigger_error('Undefined constant MYSQLI_OPT_INT_AND_FLOAT_NATIVE. Make sure you enabled the PHP extension mysqlnd which is the recommended driver since PHP 5.4 instead of libmysql.', E_USER_WARNING);
         }
 
         if (!mysqli_real_connect(self::$_links[$link], $server, $username, $password, $database)) {
@@ -29,7 +29,7 @@
 
         if (($duration = microtime(true) - $measure_start) > 1) {
           $log_message = '['. date('Y-m-d H:i:s e').'] A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL . PHP_EOL;
-          file_put_contents(FS_DIR_APP . 'logs/performance.log', $log_message, FILE_APPEND);
+          file_put_contents(FS_DIR_STORAGE . 'logs/performance.log', $log_message, FILE_APPEND);
         }
 
         if (class_exists('stats', false)) {
@@ -69,6 +69,16 @@
       self::query("set names '". database::input($charset) ."';", $link);
 
       return self::$_links[$link];
+    }
+
+    public static function server_info($link='default') {
+
+      if (!$result = mysqli_get_server_info(self::$_links[$link])) {
+        trigger_error('Could not get server info for MySQL connection: '. mysqli_errno(self::$_links[$link]) .' - '. mysqli_error(self::$_links[$link]), E_USER_WARNING);
+        return false;
+      }
+
+      return $result;
     }
 
     public static function set_charset($charset, $link='default') {
@@ -170,7 +180,7 @@
       if (($duration = microtime(true) - $measure_start) > 3) {
         $log_message = '['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL
                      . '  Query: '. str_replace("\r\n", "\r\n    ", $query) . PHP_EOL . PHP_EOL;
-        file_put_contents(FS_DIR_APP . 'logs/performance.log', $log_message, FILE_APPEND);
+        file_put_contents(FS_DIR_STORAGE . 'logs/performance.log', $log_message, FILE_APPEND);
       }
 
       if (class_exists('stats', false)) {

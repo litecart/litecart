@@ -3,7 +3,7 @@
   try {
 
     if (empty($_GET['pattern'])) {
-      throw new Exception('Missing file');
+      throw new Exception('Missing file pattern');
     }
 
     $results = [];
@@ -15,6 +15,8 @@
       '#^includes/library/nod_vmod.inc.php$#',
       '#^(cache|data|ext|images|install|logs|vmods|vqmods)/#',
     ];
+
+    $_GET['pattern'] = preg_replace(array_keys(vmod::$aliases), array_values(vmod::$aliases), $_GET['pattern']);
 
     $files = functions::file_search(FS_DIR_APP . $_GET['pattern'], GLOB_BRACE);
 

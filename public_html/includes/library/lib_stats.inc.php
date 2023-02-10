@@ -38,7 +38,7 @@
       if ($page_parse_time > 5) {
 
         $log_message = '['. date('d-M-Y H:i:s e').'] Long page execution time '. number_format($page_parse_time, 3, ',', ' ') .' s requesting '. document::link() . PHP_EOL . PHP_EOL;
-        file_put_contents(FS_DIR_APP . 'logs/performance.log', $log_message, FILE_APPEND);
+        file_put_contents(FS_DIR_STORAGE . 'logs/performance.log', $log_message, FILE_APPEND);
 
         if ($page_parse_time > 10) {
           notices::add('warnings', sprintf(language::translate('text_long_execution_time', 'We apologize for the inconvenience that the server seems temporary overloaded right now.'), number_format($page_parse_time, 1, ',', ' ')));

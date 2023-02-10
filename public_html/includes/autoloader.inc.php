@@ -1,7 +1,7 @@
 <?php
   spl_autoload_register(function($class) {
 
-    switch($class) {
+    switch (true) {
 
       case (substr($class, 0, 4) == 'abs_'):
         require vmod::check(FS_DIR_APP . 'includes/abstracts/' . $class . '.inc.php');
@@ -29,40 +29,69 @@
 
         break;
 
-      case (substr($class, 0, 3) == 'cm_'):
-        require vmod::check(FS_DIR_APP . 'includes/modules/customer/' . $class . '.inc.php');
+      case (preg_match('#^(cm|job|om|ot|pm|sm)_#', $class)):
+
+      // Patch modules for PHP 8.2 Compatibility
+        if (version_compare(PHP_VERSION, 8.2, '>=')) {
+
+          $search_replace = [
+            '#^(cm_.*)#' => FS_DIR_APP . 'includes/modules/customer/$1.inc.php',
+            '#^(job_.*)#' => FS_DIR_APP . 'includes/modules/jobs/$1.inc.php',
+            '#^(om_.*)#' => FS_DIR_APP . 'includes/modules/order/$1.inc.php',
+            '#^(ot_.*)#' => FS_DIR_APP . 'includes/modules/order_total/$1.inc.php',
+            '#^(pm_.*)#' => FS_DIR_APP . 'includes/modules/payment/$1.inc.php',
+            '#^(sm_.*)#' => FS_DIR_APP . 'includes/modules/shipping/$1.inc.php',
+          ];
+
+          $file = preg_replace(array_keys($search_replace), array_values($search_replace), $class);
+
+          if (is_file($file)) {
+            $source = file_get_contents($file);
+            if (!preg_match('#\#\[AllowDynamicProperties\]#', $source)) {
+              $source = preg_replace('#([ \t]*)class [a-zA-Z0-9_-]+ *\{(\n|\r\n?)#', '$1#[AllowDynamicProperties]$2$0', $source);
+              file_put_contents($file, $source);
+            }
+          }
+        }
+
+        switch ($class) {
+          case (substr($class, 0, 3) == 'cm_'):
+            require vmod::check(FS_DIR_APP . 'includes/modules/customer/' . $class . '.inc.php');
+            break 2;
+
+          case (substr($class, 0, 4) == 'job_'):
+            require vmod::check(FS_DIR_APP . 'includes/modules/jobs/' . $class . '.inc.php');
+            break 2;
+
+          case (substr($class, 0, 3) == 'om_'):
+            require vmod::check(FS_DIR_APP . 'includes/modules/order/' . $class . '.inc.php');
+            break;
+
+          case (substr($class, 0, 3) == 'ot_'):
+            require vmod::check(FS_DIR_APP . 'includes/modules/order_total/' . $class . '.inc.php');
+            break;
+
+          case (substr($class, 0, 3) == 'pm_'):
+            require vmod::check(FS_DIR_APP . 'includes/modules/payment/' . $class . '.inc.php');
+            break;
+
+          case (substr($class, 0, 3) == 'sm_'):
+            require vmod::check(FS_DIR_APP . 'includes/modules/shipping/' . $class . '.inc.php');
+            break;
+        }
+
         break;
 
       case (substr($class, 0, 4) == 'ent_'):
         require vmod::check(FS_DIR_APP . 'includes/entities/' . $class . '.inc.php');
         break;
 
-      case (substr($class, 0, 4) == 'job_'):
-        require vmod::check(FS_DIR_APP . 'includes/modules/jobs/' . $class . '.inc.php');
-        break;
-
       case (substr($class, 0, 4) == 'mod_'):
         require vmod::check(FS_DIR_APP . 'includes/modules/' . $class . '.inc.php');
         break;
 
-      case (substr($class, 0, 3) == 'om_'):
-        require vmod::check(FS_DIR_APP . 'includes/modules/order/' . $class . '.inc.php');
-        break;
-
-      case (substr($class, 0, 3) == 'ot_'):
-        require vmod::check(FS_DIR_APP . 'includes/modules/order_total/' . $class . '.inc.php');
-        break;
-
-      case (substr($class, 0, 3) == 'pm_'):
-        require vmod::check(FS_DIR_APP . 'includes/modules/payment/' . $class . '.inc.php');
-        break;
-
       case (substr($class, 0, 4) == 'ref_'):
         require vmod::check(FS_DIR_APP . 'includes/references/' . $class . '.inc.php');
-        break;
-
-      case (substr($class, 0, 3) == 'sm_'):
-        require vmod::check(FS_DIR_APP . 'includes/modules/shipping/' . $class . '.inc.php');
         break;
 
       case (substr($class, 0, 4) == 'url_'):

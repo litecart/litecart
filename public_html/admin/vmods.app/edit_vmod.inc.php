@@ -149,7 +149,7 @@ html.dark-mode .operation {
 .script {
   position: relative;
 }
-.script .script-filename {
+.script .filename {
   position: absolute;
   display: inline-block;
   top: 0;
@@ -185,21 +185,6 @@ textarea[name*="[find]"][name$="[content]"],
 textarea[name*="[insert]"][name$="[content]"] {
   height: auto;
   transition: all 100ms linear;
-}
-textarea[name*="[find]"][name$="[content]"] {
-  min-height: 50px;
-  max-height: 50px;
-}
-textarea[name*="[find]"][name$="[content]"]:focus {
-  max-height: 250px;
-}
-
-textarea[name*="[insert]"][name$="[content]"] {
-  min-height: 100px;
-  max-height: 100px;
-}
-textarea[name*="[insert]"][name$="[content]"]:focus {
-  max-height: 250px;
 }
 
 .nav-tabs a.warning {
@@ -656,6 +641,10 @@ textarea.warning {
   let new_tab_index = 1;
   while ($('.tab-pane[id="tab-'+new_tab_index+'"]').length) new_tab_index++;
 
+  $('.nav-tabs').on('click', '[data-toggle="tab"]', function(e) {
+    $($(this).attr('href')).find(':input[name$="[content]"]').trigger('input');
+  });
+
   $('.nav-tabs .add').click(function(e){
     e.preventDefault();
 
@@ -734,10 +723,12 @@ textarea.warning {
 
   $('#files :input[name$="[method]"]').trigger('change');
 
-  $('body').on('input', '.form-code', function() {
-    $(this).css('height', 'auto');
-    $(this).height(this.scrollHeight);
-  });
+  $('body').on('input', 'textarea.form-code', function() {
+    $(this).css('height', '');
+    $(this).css('height', Math.min(this.scrollHeight + 10, 250) + 'px');
+  })
+
+  $('textarea.form-code').trigger('input');
 
   $('.tab-content').on('input', ':input[name^="files"][name$="[name]"]', function(){
     let $tab_pane = $(this).closest('.tab-pane'),
@@ -753,12 +744,17 @@ textarea.warning {
       $tab_pane.find('.sources').html('');
 
       $.each(result, function(file, source_code){
-        $tab_pane.find('.sources').append(
-          $('<div class="script">').html(
-            $('<div class="form-code"></div>').text(source_code).prop('outerHTML') +
-            $('<div class="script-filename"></div>').text(file).prop('outerHTML')
-          )
+
+        var $script = $(
+          '<div class="script">' +
+          '  <div class="form-code"></div>' +
+          '  <div class="filename"></div>' +
+          '</div>'
         );
+
+        $script.find('.form-code').text(source_code);
+        $script.find('.filename').text(file);
+        $tab_pane.find('.sources').append($script);
       });
 
       $tab_pane.find(':input[name$="[find][content]"]').trigger('input');

@@ -1,5 +1,6 @@
 <?php
 
+  #[AllowDynamicProperties]
   class job_cache_cleaner {
     public $id = __CLASS__;
     public $name = 'Cache Cleaner';

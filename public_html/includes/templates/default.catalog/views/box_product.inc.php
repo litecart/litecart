@@ -133,7 +133,7 @@
               <?php } else if ($recommended_price) { ?>
               <del class="recommended-price"><?php echo currency::format($recommended_price); ?></del> <strong class="price"><?php echo currency::format($regular_price); ?></strong>
               <?php } else { ?>
-              <span class="price"><?php echo currency::format($regular_price); ?></span>
+              <span class="price"><?php echo currency::format($final_price); ?></span>
               <?php } ?>
             </div>
 
@@ -156,7 +156,7 @@
               <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
               <div style="display: flex">
                 <div class="input-group">
-                  <?php echo (!empty($quantity_unit['decimals'])) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], $quantity_min, $quantity_max, 'step="'. ($quantity_step ? $quantity_step : '') .'"') : functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_min ? $quantity_min : '1', $quantity_max ? $quantity_max : null, 'step="'. ($quantity_step ? $quantity_step : '') .'" style="width: 100px;"'); ?>
+                  <?php echo (!empty($quantity_unit['decimals'])) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : $quantity_min, $quantity_unit['decimals'], $quantity_min, $quantity_max, 'step="'. ($quantity_step ? $quantity_step : 1) .'"') : functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : $quantity_min, $quantity_min, $quantity_max, 'step="'. ($quantity_step ? $quantity_step : 'step="any"') .'" style="width: 100px;"'); ?>
                   <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-text">'. $quantity_unit['name'] .'</div>' : ''; ?>
                 </div>
 

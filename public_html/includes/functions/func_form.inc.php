@@ -474,7 +474,7 @@
 
     if ($input === true) $input = form_reinsert_value($name);
 
-    $html = '<div class="btn-group btn-block btn-group-inline" data-toggle="buttons">'. PHP_EOL;
+    $html = '<div '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn-group btn-block btn-group-inline"' : '') .' data-toggle="buttons"'. (($parameters) ? ' '.$parameters : '') .'>'. PHP_EOL;
 
     $is_numerical_index = (array_keys($options) === range(0, count($options) - 1));
 

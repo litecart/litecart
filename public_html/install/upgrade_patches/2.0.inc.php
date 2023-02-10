@@ -160,7 +160,7 @@
         $priority = 0;
       }
 
-      mb_convert_variables('UTF-8', null, $module['settings']);
+      mb_convert_variables('UTF-8', '', $module['settings']);
 
       database::query(
         "insert into `". DB_DATABASE ."`.`". DB_TABLE_PREFIX . "modules`

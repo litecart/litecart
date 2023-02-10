@@ -140,7 +140,7 @@
     'total_tax' => $product->tax,
     'tax_rates' => [],
     'quantity' => round((float)$product->quantity, $product->quantity_unit ? (int)$product->quantity_unit['decimals'] : 0),
-    'quantity_min' => ($product->quantity_min > 0) ? $product->quantity_min : 1,
+    'quantity_min' => ($product->quantity_min > 0) ? $product->quantity_min : (($product->quantity_step > 0) ? $product->quantity_step : 1),
     'quantity_max' => ($product->quantity_max > 0) ? $product->quantity_max : null,
     'quantity_step' => ($product->quantity_step > 0) ? $product->quantity_step : null,
     'quantity_unit' => $product->quantity_unit,
@@ -159,6 +159,7 @@
       'original' => 'images/' . $image,
       'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
       'viewport' => [
         'width' => $width,
         'height' => $height,
@@ -264,8 +265,9 @@
             $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
             if ($value['price_adjust']) {
-              $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
-              if ($value['price_adjust'] > 0) $price_adjust_text = ' +' . $price_adjust_text;
+              if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
+              else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
+              $price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
             }
 
             $values .= '<div class="checkbox">' . PHP_EOL
@@ -283,8 +285,9 @@
             $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
             if ($value['price_adjust']) {
-              $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
-              if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
+              if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
+              else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
+              $price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
             }
 
             $values .= '<div class="radio">' . PHP_EOL
@@ -303,8 +306,9 @@
             $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
             if ($value['price_adjust']) {
-              $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
-              if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
+              if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
+              else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
+              $price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
             }
 
             $options[] = [$value['name'] . $price_adjust_text, $value['name'], 'data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"'];

@@ -99,28 +99,26 @@
 
 .nav-tabs {
   background: var(--tabs-pane-background-color);
-  border-top-left-radius: var(--border-radius);
-  border-top-right-radius: var(--border-radius);
+  border-start-start-radius: var(--border-radius);
+  border-start-end-radius: var(--border-radius);
   border-bottom: 1px solid var(--tabs-pane-border-color);
   padding: var(--gutter-y) var(--gutter-x) 0 var(--gutter-x);
   color: var(--tabs-text-color);
   padding-bottom: 0;
-  > li {
-    flex: 0 0 auto;
-    > a {
-      margin-inline-end: var(--gutter-x);
+  a {
+      flex: 0 0 auto;
+      margin-inline-end: .5em;
       line-height: 1.4;
       border-radius: var(--border-radius) var(--border-radius) 0 0;
-      padding: var(--gutter-y) var(--gutter-x);
+      padding: .5em 1em;
       background-color: var(--tabs-background-color);
       color: var(--tabs-text-color);
       border: 1px solid var(--tabs-border-color);
       border-bottom-color: var(--tabs-background-color);
-    }
-    &:hover a {
+    &:hover {
       background-color: rgba(255, 255, 255, .25);
     }
-    &.active a {
+    &.active {
       background-color: var(--tabs-background-color-active);
       color: var(--tabs-text-color-active);
       margin-top: 1px;

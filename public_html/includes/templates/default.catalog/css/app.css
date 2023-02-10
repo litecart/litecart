@@ -11,6 +11,12 @@ body.has-offcanvas {
 }
 #content-wrapper {
   flex-grow: 1;
+  margin: 0 0.5em;
+}
+@media (min-width: 1460px) {
+  #content-wrapper {
+    margin: 0;
+  }
 }
 #important-notice {
   background: var(--important-notice-background-color);
@@ -28,6 +34,9 @@ body.has-offcanvas {
     z-index: 999;
     transition: top 200ms linear;
   }
+  #site-menu .navbar-header a {
+    color: var(--navigation-text-color);
+  }
 }
 @media (max-width: 991px) {
   #site-menu .container {
@@ -42,14 +51,16 @@ body.has-offcanvas {
     margin-top: 6.5em;
     padding: 0;
   }
-}
-@media (min-width: 992px) and (max-width: 1460px) {
-  #site-menu .navbar {
-    margin-left: 0.5em;
-    margin-right: 0.5em;
+  #site-menu .navbar .dropdown-menu .nav-link {
+    background: var(--dropdown-menu-item-background-color);
+    color: var(--dropdown-menu-item-text-color);
+  }
+  #site-menu .navbar .dropdown-menu .nav-link:hover {
+    filter: brightness(0.95);
   }
 }
 #site-menu .dropdown-menu {
+  overflow: hidden;
   --gutter-y: 0.75em;
 }
 body.scrolling-down #site-menu {
@@ -59,7 +70,7 @@ body.scrolling-down #site-menu {
   display: flex;
   flex-flow: row wrap;
   align-items: center;
-  gap: var(--gutter-x);
+  gap: 0.5em 1em;
   justify-content: space-between;
   background: var(--header-background-color);
   color: var(--header-text-color);
@@ -90,6 +101,9 @@ body.scrolling-down #site-menu {
   padding-top: 0;
   padding-bottom: 0;
 }
+.navbar-header .logotype {
+  flex-grow: 1;
+}
 .navbar-header .logotype img {
   max-width: 150px;
   max-height: 32px;
@@ -97,12 +111,17 @@ body.scrolling-down #site-menu {
 @media (min-width: 768px) {
   .navbar-header .logotype img {
     max-width: 250px;
-    max-height: 80px;
+    max-height: 60px;
   }
 }
 @media (min-width: 768px) {
   .navbar-header .logotype {
     width: auto;
+  }
+}
+@media (min-width: 992px) {
+  .navbar-header .logotype {
+    flex-grow: 0;
   }
 }
 .navbar-header .navbar-brand {
@@ -121,6 +140,9 @@ body.scrolling-down #site-menu {
   .navbar-header .navbar-brand {
     display: block;
   }
+}
+.navbar-header form[name="search_form"] .input-group {
+  background-color: #f1f3f5;
 }
 .navbar-header .navbar-search {
   flex: 1 1 auto;
@@ -175,8 +197,8 @@ body.scrolling-down #site-menu {
   text-align: center;
   color: #fff;
   position: absolute;
-  left: 15px;
   top: 15px;
+  right: -10px;
   width: 2em;
   animation: pulsating 1.5s linear infinite;
   font-size: 10px;
@@ -189,12 +211,10 @@ body.scrolling-down #site-menu {
     display: none;
   }
 }
-#content-wrapper .layout.row {
-  margin: 0 0.5em;
-}
-@media (min-width: 1460px) {
-  #content-wrapper .layout.row {
-    margin: 0;
+@media (max-width: calc(992px)) {
+  #cart #cart .badge {
+    top: 15px;
+    right: 0;
   }
 }
 #sidebar {

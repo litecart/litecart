@@ -8,7 +8,7 @@
   if (php_sapi_name() == 'cli') {
 
     if (!isset($argv[1]) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
-      echo "\nLiteCart® 2.5.1\n"
+      echo "\nLiteCart® 2.5.2\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -145,41 +145,43 @@
 
       ### Installer > Update ########################################
 
-      echo '<p>Checking for updates... ';
+      if (!empty($_REQUEST['skip_updates'])) {
+        echo '<p>Checking for updates... ';
 
-      require_once __DIR__.'/../includes/wrappers/wrap_http.inc.php';
-      $client = new wrap_http();
+        require_once __DIR__.'/../includes/wrappers/wrap_http.inc.php';
+        $client = new wrap_http();
 
-      $update_file = function($file) use ($client) {
-        $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
-        $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
-        if ($client->last_response['status_code'] != 200) return false;
-        if (!is_dir(dirname(FS_DIR_APP . $local_file))) {
-          mkdir(dirname(FS_DIR_APP . $local_file), 0777, true);
-        }
-        file_put_contents(FS_DIR_APP . $local_file, $response);
-        return true;
-      };
-
-      $calculate_md5 = function($file) {
-        $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
-        if (!is_file(FS_DIR_APP . $local_file)) return;
-        $contents = preg_replace('#(\r\n?|\n)#', "\n", file_get_contents(FS_DIR_APP . $local_file));
-        return md5($contents);
-      };
-
-      if ($update_file('install/checksums.md5')) {
-
-        $files_updated = 0;
-        foreach (file(FS_DIR_APP . 'install/checksums.md5', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-          list($checksum, $file) = explode("\t", $line);
-          if ($calculate_md5($file) != $checksum) {
-            if ($update_file($file)) $files_updated++;
+        $update_file = function($file) use ($client) {
+          $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
+          $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
+          if ($client->last_response['status_code'] != 200) return false;
+          if (!is_dir(dirname(FS_DIR_APP . $local_file))) {
+            mkdir(dirname(FS_DIR_APP . $local_file), 0777, true);
           }
-        }
+          file_put_contents(FS_DIR_APP . $local_file, $response);
+          return true;
+        };
 
-        if (!empty($files_updated)) {
-          echo 'Updated '. $files_updated .' file(s) <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+        $calculate_md5 = function($file) {
+          $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
+          if (!is_file(FS_DIR_APP . $local_file)) return;
+          $contents = preg_replace('#(\r\n?|\n)#', "\n", file_get_contents(FS_DIR_APP . $local_file));
+          return md5($contents);
+        };
+
+        if ($update_file('install/checksums.md5')) {
+
+          $files_updated = 0;
+          foreach (file(FS_DIR_APP . 'install/checksums.md5', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+            list($checksum, $file) = explode("\t", $line);
+            if ($calculate_md5($file) != $checksum) {
+              if ($update_file($file)) $files_updated++;
+            }
+          }
+
+          if (!empty($files_updated)) {
+            echo 'Updated '. $files_updated .' file(s) <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+          }
         }
       }
 
@@ -376,7 +378,7 @@ input[name="development_type"]:checked + div {
       </div>
     </div>
 
-  <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
+    <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
     <div class="form-group col-md-4">
       <label>Current Version</label>
       <div class="form-control"><?php echo PLATFORM_DATABASE_VERSION; ?></div>
@@ -390,6 +392,11 @@ input[name="development_type"]:checked + div {
       </select>
     </div>
     <?php } ?>
+
+  </div>
+
+  <div class="form-group text-center">
+    <label><input type="checkbox" class="form-check" name="skip_updates" value="0" /> Skip downloading the latest updates</label>
   </div>
 
   <h2>Development</h2>

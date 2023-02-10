@@ -11,8 +11,11 @@ ul.breadcrumb {
     display: inline-block;
     &:not(:last-child)::after {
       content: "\00bb";
-      padding: 0 1em;
+      padding: 0 .5em;
       color: var(--breadcrumbs-text-color);
+      @media (min-width: @media-breakpoint-md) {
+        padding: 0 1em;
+      }
     }
     a {
       color: inherit;

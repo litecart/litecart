@@ -270,7 +270,7 @@
   <p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
 </div>
 
-<script src="<?php echo WS_DIR_APP; ?>ext/jquery/jquery-3.6.1.min.js"></script>
+<script src="<?php echo WS_DIR_APP; ?>ext/jquery/jquery-3.6.3.min.js"></script>
 <script src="<?php echo WS_DIR_APP; ?>ext/featherlight/featherlight.min.js"></script>
 <script>
   $.featherlight.autoBind = '[data-toggle="lightbox"]';
@@ -321,13 +321,13 @@ input[name="development_type"]:checked + div {
   <h3>PHP</h3>
 
   <ul>
-    <li>5.4 - 8.1 <?php echo version_compare(PHP_VERSION, '5.4', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
+    <li>5.4 - 8.1 <?php echo (version_compare(PHP_VERSION, '5.4', '>=') && version_compare(PHP_VERSION, '8.2', '<'))? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
     <li>register_globals = <?php echo ini_get('register_globals') ? ini_get('register_globals') : 'off'; ?> <?php echo in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
     <li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
     <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
     <li>Extensions
       <ul>
-        <li>apc / apcu <?php echo (extension_loaded('apcu') || extension_loaded('apc')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>apc / apcu <?php echo (extension_loaded('apcu') || extension_loaded('apc')) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Missing]</span>'; ?></li>
         <li>dom <?php echo extension_loaded('dom') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
         <li>fileinfo <?php echo extension_loaded('fileinfo') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
         <li>gd / imagick <?php echo extension_loaded('imagick') ? '<span class="ok">[OK]</span>' : (extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'); ?></li>
@@ -351,10 +351,10 @@ input[name="development_type"]:checked + div {
     <li>Modules
       <ul>
         <?php if (function_exists('apache_get_modules')) $installed_apache_modules = apache_get_modules(); ?>
-        <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
-        <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
-        <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
-        <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
+        <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected]</span>'; ?></li>
+        <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected]</span>'; ?></li>
+        <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected]</span>'; ?></li>
+        <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected]</span>'; ?></li>
       </ul>
     </li>
   </ul>
@@ -379,7 +379,7 @@ input[name="development_type"]:checked + div {
   ];
 
   foreach ($paths as $path) {
-    if (file_exists($path) && is_writable($path)) {
+    if (file_exists($path) && is_writable($path) || is_writable(dirname($path))) {
       echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="ok">[OK]</span></li>' . PHP_EOL;
     } else if (is_writable('../' . pathinfo($path, PATHINFO_DIRNAME))) {
       echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="ok">[OK]</span></li>' . PHP_EOL;
