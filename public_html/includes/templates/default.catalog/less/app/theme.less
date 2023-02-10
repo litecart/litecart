@@ -12,6 +12,10 @@ body {
 }
 #content-wrapper {
   flex-grow: 1;
+  margin: 0 .5em;
+  @media (min-width: 1460px) {
+    margin: 0;
+  }
 }
 
 #important-notice {
@@ -209,13 +213,6 @@ body.scrolling-down #site-menu {
       top: 15px;
       right: 0;
     }
-  }
-}
-
-#content-wrapper .layout.row {
-  margin: 0 .5em;
-  @media (min-width: 1460px) {
-    margin: 0;
   }
 }
 

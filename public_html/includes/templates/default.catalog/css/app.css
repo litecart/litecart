@@ -11,6 +11,12 @@ body.has-offcanvas {
 }
 #content-wrapper {
   flex-grow: 1;
+  margin: 0 0.5em;
+}
+@media (min-width: 1460px) {
+  #content-wrapper {
+    margin: 0;
+  }
 }
 #important-notice {
   background: var(--important-notice-background-color);
@@ -209,14 +215,6 @@ body.scrolling-down #site-menu {
   #cart #cart .badge {
     top: 15px;
     right: 0;
-  }
-}
-#content-wrapper .layout.row {
-  margin: 0 0.5em;
-}
-@media (min-width: 1460px) {
-  #content-wrapper .layout.row {
-    margin: 0;
   }
 }
 #sidebar {
