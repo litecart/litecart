@@ -1,5 +1,7 @@
 <?php
 
+  include __DIR__.'/../../includes/functions/func_file.inc.php';
+
   function return_bytes($string) {
     sscanf($string, '%u%c', $number, $suffix);
     if (isset($suffix)) {
@@ -15,9 +17,14 @@
       case 'copy':
 
         foreach ($payload as $source => $target) {
-          echo 'Copying '. preg_replace('#^('. FS_DIR_APP .')#', '', $source) .' to '. preg_replace('#^('. FS_DIR_APP .')#', '', $target);
 
-          if (file_copy($source, $target, $results)) {
+          if (defined('DISABLE_FILE_MIGRATIONS') && filter_var(DISABLE_FILE_MIGRATIONS, FILTER_VALIDATE_BOOLEAN)) {
+            if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $target)) continue;
+          }
+
+          echo 'Copying '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source) .' to '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $target);
+
+          if (file_xcopy($source, $target, $results)) {
             echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
           } else if ($on_error == 'skip') {
             echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
@@ -31,7 +38,12 @@
       case 'delete':
 
         foreach ($payload as $source) {
-          echo 'Deleting '. preg_replace('#^('. FS_DIR_APP .')#', '', $source);
+
+          if (defined('DISABLE_FILE_MIGRATIONS') && filter_var(DISABLE_FILE_MIGRATIONS, FILTER_VALIDATE_BOOLEAN)) {
+            if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) continue;
+          }
+
+          echo 'Deleting '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source);
 
           if (file_delete($source, $results)) {
             echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
@@ -48,7 +60,12 @@
       case 'rename':
 
         foreach ($payload as $source => $target) {
-          echo 'Moving '. preg_replace('#^('. FS_DIR_APP .')#', '', $source) .' to '. preg_replace('#^('. FS_DIR_APP .')#', '', $target);
+
+          if (defined('DISABLE_FILE_MIGRATIONS') && filter_var(DISABLE_FILE_MIGRATIONS, FILTER_VALIDATE_BOOLEAN)) {
+            if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) continue;
+          }
+
+          echo 'Moving '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source) .' to '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $target);
 
           if (file_move($source, $target, $results)) {
             echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
@@ -65,7 +82,11 @@
 
         foreach ($payload as $source => $operations) {
 
-          echo 'Modifying ' . preg_replace('#^('. FS_DIR_APP .')#', '', $source);
+          if (defined('DISABLE_FILE_MIGRATIONS') && filter_var(DISABLE_FILE_MIGRATIONS, FILTER_VALIDATE_BOOLEAN)) {
+            if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) continue;
+          }
+
+          echo 'Modifying ' . preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source);
 
           $results = [];
 

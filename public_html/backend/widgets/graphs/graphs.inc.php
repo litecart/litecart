@@ -137,7 +137,7 @@
   stroke: var(--chart-b-color);
 }
 #chart-sales-monthly .ct-series-c .ct-bar, #chart-sales-daily .ct-series-c .ct-bar {
-  stroke: var(--chart-c-color);
+  stroke: url(#gradient);
 }
 #chart-sales-monthly .ct-bar{
   stroke-width: 20px;
@@ -147,7 +147,7 @@
   stroke: var(--chart-a-color);
 }
 #chart-sales-daily .ct-series-b .ct-bar {
-  stroke: var(--chart-b-color);
+  stroke: url(#gradient2);
 }
 #chart-sales-daily .ct-bar {
   stroke-width: 10px;
@@ -163,7 +163,7 @@
         </div>
 
         <div class="card-body">
-          <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
+          <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo functions::escape_html(language::translate('title_monthly_sales', 'Monthly Sales')); ?>"></div>
         </div>
       </div>
     </div>
@@ -175,7 +175,7 @@
         </div>
 
         <div class="card-body">
-          <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
+          <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo functions::escape_html(language::translate('title_daily_sales', 'Daily Sales')); ?>"></div>
         </div>
       </div>
     </div>
@@ -192,7 +192,13 @@
   var options = {
     seriesBarDistance: 10,
     showArea: true,
-    lineSmooth: true
+    lineSmooth: true,
+    axisY: {
+      offset: 60,
+      labelInterpolationFnc: function(value) {
+        return new Intl.NumberFormat('<?php echo language::$selected['code']; ?>').format(value);
+      }
+    }
   };
 
   var responsiveOptions = [
@@ -223,8 +229,8 @@
   chart1.on('created', function(ctx) {
     let defs = ctx.svg.elem('defs');
     defs.elem('linearGradient', { id: 'gradient', x1: 0, y1: 1, x2: 0, y2: 0 })
-    .elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .8)' })
-    .parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .8)' });
+    .elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .7)' })
+    .parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .7)' });
   });
 
 // Daily Sales
@@ -235,7 +241,13 @@
   };
 
   var options = {
-    seriesBarDistance: 10
+    seriesBarDistance: 10,
+    axisY: {
+      offset: 60,
+      labelInterpolationFnc: function(value) {
+        return new Intl.NumberFormat('<?php echo language::$selected['code']; ?>').format(value);
+      }
+    }
   };
 
   var responsiveOptions = [
@@ -265,11 +277,10 @@
   // Create the gradient definition on created event (always after chart re-render)
   chart2.on('created', function(ctx) {
     let defs = ctx.svg.elem('defs');
-    defs.elem('linearGradient', { id: 'gradient', x1: 0, y1: 1, x2: 0, y2: 0 })
-    .elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .8)' })
-    .parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .8)' });
+    defs.elem('linearGradient', { id: 'gradient2', x1: 0, y1: 1, x2: 0, y2: 0 })
+    .elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .7)' })
+    .parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .7)' });
   });
-
 </script>
 <?php
     cache::end_capture($widget_graphs_cache_token);

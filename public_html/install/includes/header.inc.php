@@ -3,8 +3,12 @@
 <head>
 <meta charset="<?php echo mb_http_output(); ?>" />
 <title>LiteCart Installer</title>
-<link rel="stylesheet" href="../backend/template/css/variables.css" />
-<link rel="stylesheet" href="../backend/template/css/framework.min.css" />
+<link rel="stylesheet" href="../backend/templates/default.catalog/css/variables.css" />
+<?php if (is_file(__DIR__.'/../../backend/templates/default.catalog/css/framework.css')) { ?>
+<link rel="stylesheet" href="../backend/templates/default.catalog/css/framework.css" />
+<?php } else { ?>
+<link rel="stylesheet" href="../backend/templates/default.catalog/css/framework.min.css" />
+<?php } ?>
 <style>
 html {
   background: radial-gradient(ellipse at center, #fff 20%, #d2d7de 100%);
@@ -50,5 +54,5 @@ span.warning {
 <div class="glass-edges">
   <main id="content">
     <header class="text-center">
-      <img src="../backend/template/images/logotype.svg" alt="LiteCart" style="max-height: 70px" />
+      <img src="../backend/templates/default.admin/images/logotype.svg" alt="LiteCart" style="max-width: 300px; max-height: 100px;" />
     </header>

@@ -159,7 +159,7 @@
 </div>
 
 <script>
-  $('button[name="add_recipient"]').click(function(){
+  $('button[name="add_recipients"]').click(function(){
     $.featherlight('#modal-add-recipients');
     $('textarea[name="recipients"]').attr('placeholder', 'user@email.com\nanother@email.com');
   })

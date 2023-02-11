@@ -172,6 +172,7 @@
 
   <div class="card-action">
     <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_vmod'), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?>
+    <?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => 'settings', 'doc' => 'advanced', 'action' => 'edit', 'key' => 'cache_clear']), language::translate('title_clear_cache', 'Clear Cache'), '', 'fa-external-link'); ?>
   </div>
 
   <?php echo functions::form_begin('vmod_form', 'post', '', true); ?>
@@ -208,7 +209,7 @@
               <?php if (empty($vmod['errors'])) { ?>
               <span style="color: #8c4"><?php echo functions::draw_fonticon('ok'); ?> <?php echo language::translate('title_ok', 'OK'); ?></span>
               <?php } else { ?>
-              <span style="color: #c00" title="<?php echo functions::escape_html($vmod['errors']); ?>"><?php echo functions::draw_fonticon('warning'); ?> <?php echo language::translate('title_fail', 'Fail'); ?></span>
+              <span style="color: #c00" title="<?php echo functions::escape_html($vmod['errors']); ?>"><?php echo functions::draw_fonticon('warning'); ?> <?php echo language::translate('title_failed', 'Failed'); ?></span>
               <?php } ?>
             </a>
           </td>

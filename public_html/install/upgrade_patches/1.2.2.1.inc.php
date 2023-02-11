@@ -8,8 +8,3 @@
       ],
     ],
   ]);
-
-  $copied_files = [
-    FS_DIR_APP . 'data/blacklist.txt' => FS_DIR_APP . 'install/data/default/public_html/data/blacklist.txt',
-    FS_DIR_APP . 'data/whitelist.txt' => FS_DIR_APP . 'install/data/default/public_html/data/whitelist.txt',
-  ];

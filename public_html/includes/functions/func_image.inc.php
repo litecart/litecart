@@ -37,28 +37,48 @@
         'watermark' => fallback($options['watermark'], false),
       ];
 
-    // If destination is a directory
-      if (is_dir($options['destination'])) {
-        $options['destination'] = rtrim($options['destination'], '/') .'/'. basename($source);
-      }
+      if (is_dir($options['destination']) || substr($options['destination'], -1) == '/') {
+        if (preg_match('#^'. preg_quote('storage://cache/', '#') .'$#', $options['destination'])) {
 
-      if (is_file($options['destination'])) {
-        if (filemtime($options['destination']) >= filemtime($source)) {
-          return $options['destination'];
+          if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
+            $extension = 'webp';
+          } else {
+            $extension = pathinfo($source, PATHINFO_EXTENSION);
+          }
+
+          $filename = implode([
+            sha1(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)))),
+            $options['trim'] ? '_t' : '',
+            '_'.(int)$options['width'] .'x'. (int)$options['height'],
+            $options['watermark'] ? '_wm' : '',
+            settings::get('image_thumbnail_interlaced') ? '_i' : '',
+            '.'.$extension,
+          ]);
+
+          $options['destination'] = FS_DIR_STORAGE .'cache/'. substr($filename, 0, 2) . '/' . $filename;
+
         } else {
-          unlink($options['destination']);
+          $options['destination'] = rtrim($options['destination'], '/') .'/'. basename($source);
         }
       }
 
     // Return an already existing file
       if (is_file($options['destination'])) {
-        if (!empty($options['overwrite'])) {
-          unlink($options['destination']);
-        } else {
+        if (empty($options['overwrite']) || filemtime($options['destination']) >= filemtime($options['destination'])) {
           return $options['destination'];
+        } else {
+          unlink($options['destination']);
         }
       }
 
+      if (!is_dir(dirname($options['destination']))) {
+        if (!mkdir(dirname($options['destination']), 0777, true)) {
+          trigger_error('Could not create destination folder', E_USER_WARNING);
+          return false;
+        }
+      }
+
+    // Process the image
       $image = new ent_image($source);
 
       if (!empty($options['trim'])) {
@@ -111,44 +131,17 @@
 
     if (!is_file($source)) $source = 'storage://images/no_image.png';
 
-    $path = functions::file_webpath($source);
-
     if (pathinfo($source, PATHINFO_EXTENSION) == 'svg') {
-      return $path;
+      return $source;
     }
 
-    if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
+    if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
       $extension = 'webp';
     } else {
       $extension = pathinfo($source, PATHINFO_EXTENSION);
     }
 
-    $filename = implode([
-      sha1($path),
-      $trim ? '_t' : null,
-      '_'.(int)$width .'x'. (int)$height,
-      settings::get('image_thumbnail_interlaced') ? '_i' : null,
-      '.'.$extension,
-    ]);
-
-    $cache_file = 'storage://cache/' . substr($filename, 0, 2) . '/' . $filename;
-
-    if (is_file($cache_file)) {
-      if (filemtime($cache_file) >= filemtime($source)) {
-        return $cache_file;
-      } else {
-        functions::image_delete_cache($source);
-      }
-    }
-    if (!is_dir(dirname($cache_file))) {
-      if (!mkdir(dirname($cache_file))) {
-        trigger_error('Could not create cache subfolder', E_USER_WARNING);
-        return false;
-      }
-    }
-
     return image_process($source, [
-      'destination' => $cache_file,
       'width' => $width,
       'height' => $height,
       'trim' => fallback($trim, false),
@@ -157,13 +150,24 @@
     ]);
   }
 
+  function image_relative_file($file) {
+
+    $file = str_replace('\\', '/', $file);
+
+    if (preg_match('#^(storage://|'. preg_quote(FS_DIR_STORAGE, '#') .')#', $file)) {
+      return preg_replace('#^(storage://|'. preg_quote(FS_DIR_STORAGE, '#') .')#', '', $file);
+
+    } else if (preg_match('#^(app://|'. preg_quote(FS_DIR_APP, '#') .')#', $file)) {
+      return preg_replace('#^(app://|'. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
+
+    } else {
+      return preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $file);
+    }
+  }
+
   function image_delete_cache($file) {
 
-    $path = functions::file_webpath($file);
+    $cachename = sha1(image_relative_file($file));
 
-    $cache_name = sha1($path);
-
-    foreach (glob('storage://cache/'. substr($cache_name, 0, 2) .'/' . $cache_name .'*') as $file) {
-      unlink($file);
-    }
+    functions::file_delete('storage://cache/'. substr($cache_name, 0, 2) .'/' . $cache_name .'*');
   }

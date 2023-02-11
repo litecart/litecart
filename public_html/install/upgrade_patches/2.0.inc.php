@@ -60,7 +60,7 @@
   ]);
 
   perform_action('copy', [
-    'data/default/public_html/images/no_image.png' => FS_DIR_STORAGE . 'images/no_image.png',
+    FS_DIR_APP . 'install/data/default/public_html/images/no_image.png' => FS_DIR_STORAGE . 'images/no_image.png',
   ]);
 
   perform_action('modify', [
@@ -160,7 +160,7 @@
         $priority = 0;
       }
 
-      mb_convert_variables('UTF-8', null, $module['settings']);
+      mb_convert_variables('UTF-8', '', $module['settings']);
 
       database::query(
         "insert into `". DB_DATABASE ."`.`". DB_TABLE_PREFIX . "modules`

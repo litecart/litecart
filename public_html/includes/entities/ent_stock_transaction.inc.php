@@ -32,7 +32,9 @@
 
     public function load($transaction_id) {
 
-      if (!preg_match('#^(system|[0-9]+)$#', $transaction_id)) throw new Exception('Invalid stock transaction (ID: '. $transaction_id .')');
+      if (!preg_match('#^(system|[0-9]+)$#', $transaction_id)) {
+        throw new Exception('Invalid stock transaction (ID: '. functions::escape_html($transaction_id) .')');
+      }
 
       $this->reset();
 
@@ -63,7 +65,7 @@
       if ($transaction = database::fetch($transaction_query)) {
         $this->data = array_replace($this->data, array_intersect_key($transaction, $this->data));
       } else {
-        trigger_error('Could not find stock transacction (ID: '. (int)$transaction_id .') in database.', E_USER_ERROR);
+        trigger_error('Could not find stock transaction (ID: '. (int)$transaction_id .') in database.', E_USER_ERROR);
       }
 
       $this->data['contents'] = database::query(

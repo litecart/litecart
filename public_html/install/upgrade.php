@@ -1,7 +1,7 @@
 <?php
   // Automatic upgrade: upgrade.php?upgrade=true&redirect={url}
 
-  set_time_limit(900);
+  @set_time_limit(900);
   ini_set('memory_limit', -1);
   ini_set('display_errors', 'On');
   mb_internal_encoding('UTF-8');
@@ -59,7 +59,6 @@
   ini_set('html_errors', 'On');
 
   ignore_user_abort(true);
-  set_time_limit(600);
 
   require_once FS_DIR_APP . 'includes/error_handler.inc.php';
   require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';
@@ -69,11 +68,11 @@
   require FS_DIR_APP . 'includes/nodes/nod_stats.inc.php';
 
 // Set platform name
-  preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches);
+  preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../includes/app_header.inc.php'), $matches);
   define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
 
 // Set platform version
-  preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches);
+  preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../includes/app_header.inc.php'), $matches);
   define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
 
   if (!PLATFORM_VERSION) die('Could not identify target version.');
@@ -246,6 +245,7 @@
 
       ### Installer > Update ########################################
 
+      if (!empty($_REQUEST['skip_updates'])) {
       echo '<p>Checking for updates... ';
 
       require_once FS_DIR_APP . 'includes/clients/http_client.inc.php';
@@ -282,6 +282,7 @@
         if (!empty($files_updated)) {
           echo 'Updated '. $files_updated .' file(s) <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
         }
+      }
       }
 
       #############################################
@@ -348,6 +349,8 @@
           FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
           FS_DIR_APP . 'frontend/templates/*/css/*.min.css.map',
           FS_DIR_APP . 'frontend/templates/*/less/',
+          FS_DIR_APP . 'frontened/templates/default.catalog/js/*.min.js.map',
+          FS_DIR_APP . 'frontend/templates/default.catalog/less/',
         ]);
 
         perform_action('modify', [
@@ -457,7 +460,7 @@ input[name="development_type"]:checked + div {
 </style>
 
 <form name="upgrade_form" method="post">
-  <h1>Upgrade</h1>
+  <h1>Upgrade <?php echo PLATFORM_VERSION; ?></h1>
 
   <h2>Application</h2>
 
@@ -498,6 +501,11 @@ input[name="development_type"]:checked + div {
       </select>
     </div>
     <?php } ?>
+
+  </div>
+
+  <div class="form-group text-center">
+    <label><input type="checkbox" class="form-check" name="skip_updates" value="0" /> Skip downloading the latest updates</label>
   </div>
 
   <h2>Development</h2>

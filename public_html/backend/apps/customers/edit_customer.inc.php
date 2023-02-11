@@ -243,7 +243,7 @@
 
             <div class="form-group col-md-6">
               <label><?php echo !empty($customer->data['id']) ? language::translate('title_new_password', 'New Password') : language::translate('title_password', 'Password'); ?></label>
-              <?php echo functions::form_password_field('new_password', '', 'autocomplete="off"'); ?>
+              <?php echo functions::form_draw_password_field('new_password', '', 'autocomplete="new-password"'); ?>
             </div>
           </div>
 
@@ -270,7 +270,7 @@
 
           <h3><?php echo functions::form_checkbox('different_shipping_address', ['1', language::translate('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
 
-          <fieldset class="shipping-address"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : false; ?>>
+          <fieldset class="shipping-address"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : ''; ?>>
 
             <div class="row">
               <div class="form-group col-sm-6">

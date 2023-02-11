@@ -3,6 +3,7 @@
   class wrap_stream_app {
     private $_directory;
     private $_stream;
+    public $context;
 
     public function dir_opendir($path, $options) {
 

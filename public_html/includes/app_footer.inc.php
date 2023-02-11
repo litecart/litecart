@@ -28,6 +28,13 @@
 // Run before output processes
   event::fire('before_output');
 
+// Output Compression
+  if (filter_var(settings::get('gzip_enabled'), FILTER_VALIDATE_BOOLEAN)) {
+    ini_set('zlib.output_compression', 1);
+  } else {
+    ini_set('zlib.output_compression', 0);
+  }
+
 // Output page
   echo $GLOBALS['output'];
 

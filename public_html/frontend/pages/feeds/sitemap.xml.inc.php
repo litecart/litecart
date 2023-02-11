@@ -1,6 +1,6 @@
 <?php
 
-  set_time_limit(300);
+  @set_time_limit(300);
 
   language::set(settings::get('store_language_code'));
 

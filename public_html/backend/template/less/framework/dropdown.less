@@ -5,9 +5,9 @@
   [data-toggle="dropdown"] {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
-    background-position: right 1em center;
+    background-position: right var(--input-padding-x) center;
     background-size: .8em;
-    padding-inline-end: 2.5em !important;
+    padding-inline-end: ~"calc(var(--input-padding-x) + 1.5em)" !important;
   }
 
   &.open {
@@ -27,7 +27,6 @@
     visibility: hidden;
     top: 100%;
     left: 0;
-    float: left;
     min-width: 160px;
     margin: 0;
     padding: 0;
@@ -43,33 +42,42 @@
     transition: 250ms;
     opacity: 0;
 
-    &.float-end {
+    &.dropdown-menu-right {
       right: 0;
       left: auto;
     }
 
-    .divider {
+    .dropdown-divider {
       height: 1px;
       margin: 9px 0;
       overflow: hidden;
       background-color: #e5e5e5;
     }
 
+    > li:first-child > a {
+      border-start-start-radius: var(--border-radius);
+      border-start-end-radius: var(--border-radius);
+    }
+    > li:last-child > a {
+      border-end-start-radius: var(--border-radius);
+      border-end-end-radius: var(--border-radius);
+    }
+
     > li > a, > li > span,
     > li > label {
       display: block;
-      padding: ~"calc(var(--gutter-size)/4)" var(--gutter-size);
+      padding: .5em var(--gutter-x);
       clear: both;
       font-weight: normal;
       line-height: 1.42857143;
       color: inherit;
       white-space: nowrap;
-      &:hover,
-      &:focus {
-        text-decoration: none;
-        color: #262626;
-        background-color: #f5f5f5;
-      }
+    }
+
+    a:hover,
+    a:focus {
+      text-decoration: none;
+      filter: brightness(.8);
     }
 
     > .active > a,
@@ -98,7 +106,7 @@
     @media (min-width: @media-breakpoint-sm) {
       .navbar-form {
         min-width: 320px;
-        margin: var(--gutter-size);
+        margin: 1em;
       }
     }
   }
@@ -138,11 +146,6 @@ html[dir="rtl"] [data-toggle="dropdown"] {
   background: rgba(0, 0, 0, .15);
 }
 
-.float-end > .dropdown-menu {
-  right: 0;
-  left: auto;
-}
-
 .navbar-fixed-bottom .dropdown .dropdown-menu {
   top: auto;
   bottom: 100%;
@@ -150,22 +153,10 @@ html[dir="rtl"] [data-toggle="dropdown"] {
 }
 
 @media (min-width: @media-breakpoint-sm) {
-  .navbar-right .dropdown-menu {
-    left: auto;
-    right: 0;
-  }
-  .navbar-right .dropdown-menu-left {
-    left: 0;
-    right: auto;
-  }
   html[dir="rtl"] {
-    .navbar-right .dropdown-menu {
+    .dropdown-menu-right {
       left: 0;
       right: auto;
-    }
-    .navbar-right .dropdown-menu-left {
-      left: auto;
-      right: 0;
     }
   }
 }

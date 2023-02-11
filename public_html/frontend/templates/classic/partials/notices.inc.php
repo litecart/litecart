@@ -39,14 +39,18 @@
 
 <script>
   setTimeout(function(){
-    $('#notices .alert').not('.alert-danger').slideUp('fast');
+    $('#notices .alert').not('.alert-danger');
   }, 20000);
 
-  $('#notices .alert-danger').on('mouseout', function() {
-    $(this).stop().fadeTo(15000, 0.15);
+  $('#notices .alert').on('mouseout', function() {
+    $(this).stop().fadeTo(15e3, 0, function(){
+      $(this).slideUp('fast', function(){
+        $(this).remove();
+      });
+    });
   }).trigger('mouseout');
 
-  $('#notices .alert-danger').on('mouseover', function() {
+  $('#notices .alert').on('mouseover', function() {
     $(this).stop().fadeTo(200, 1);
   });
 </script>

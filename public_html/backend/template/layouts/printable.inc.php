@@ -19,6 +19,7 @@
 
 {{foot_tags}}
 {{javascript}}
+
 <?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
 <script>
   $('button[name="print"]').click(function(){

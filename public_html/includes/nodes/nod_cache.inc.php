@@ -35,6 +35,10 @@
           }
         }
 
+        foreach (glob(FS_DIR_STORAGE .'cache/*.{jpg,png,webp}', GLOB_BRACE) as $file) {
+          unlink($file);
+        }
+
         database::query(
           "update ". DB_TABLE_PREFIX ."settings
           set value = '0'

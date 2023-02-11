@@ -1781,7 +1781,6 @@ ul.list-inline li {
   padding: 0;
   list-style: none;
   width: 100%;
-  text-transform: uppercase;
 }
 .navbar .navbar-nav > li.open > .navbar-item {
   background-color: rgba(0, 0, 0, 0.15) !important;

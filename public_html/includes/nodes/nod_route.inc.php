@@ -108,7 +108,7 @@
       if (!empty($selected)) {
         $rewritten_url = document::ilink(self::$selected['controller'], $_GET);
 
-        if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) != parse_url($rewritten_url, PHP_URL_PATH)) {
+        if (urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != parse_url($rewritten_url, PHP_URL_PATH)) {
 
           $do_redirect = true;
 
@@ -209,8 +209,12 @@
 
       $path = str_replace('//', '/', $path);
 
-      if ($path = parse_url($path, PHP_URL_PATH)) {
+      if ($path = urldecode(parse_url($path, PHP_URL_PATH))) {
         $path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $path);
+      }
+
+      if (!$path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', '$4', $path)) {
+        return '';
       }
 
       return $path;
@@ -304,10 +308,10 @@
 
     // Detect URL rewrite support
       $use_rewrite = false;
-      if (isset($_SERVER['REDIRECT_HTTP_MOD_REWRITE']) && filter_var($_SERVER['REDIRECT_HTTP_MOD_REWRITE'], FILTER_VALIDATE_BOOLEAN)) {
+      if (isset($_SERVER['HTTP_MOD_REWRITE']) && filter_var($_SERVER['HTTP_MOD_REWRITE'], FILTER_VALIDATE_BOOLEAN)) { // PHP-FPM
         $use_rewrite = true;
 
-      } else if (isset($_SERVER['REDIRECT_MOD_REWRITE']) && in_array(strtolower($_SERVER['REDIRECT_MOD_REWRITE']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
+      } elseif (isset($_SERVER['REDIRECT_HTTP_MOD_REWRITE']) && filter_var($_SERVER['REDIRECT_HTTP_MOD_REWRITE'], FILTER_VALIDATE_BOOLEAN)) {  // Fast CGI
         $use_rewrite = true;
 
       } else if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {

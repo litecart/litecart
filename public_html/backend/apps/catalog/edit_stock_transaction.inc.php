@@ -62,8 +62,10 @@
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <div class="card-title"><?php echo $app_icon; ?> <?php echo !empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_stock_transaction', 'Create New Stock Transaction'); ?>
-    </div></div>
+      <div class="card-title">
+        <?php echo $app_icon; ?> <?php echo !empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_stock_transaction', 'Create New Stock Transaction'); ?>
+      </div>
+    </div>
   </div>
 
   <div class="card-body">
@@ -105,9 +107,10 @@
             <th class="text-end" style="min-width: 150px;"><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
             <th class="text-end" style="min-width: 150px;"><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></th>
             <th class="text-end" style="min-width: 175px;"><?php echo language::translate('title_backordered', 'Backordered'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
+
         <tbody>
           <?php if (!empty($_POST['contents'])) foreach (array_keys($_POST['contents']) as $key) { ?>
           <tr class="item">
@@ -132,10 +135,11 @@
                 <?php echo functions::form_decimal_field('contents['. $key .'][backordered]', true, 2); ?>
               </div>
             </td>
-            <td><a class="remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+            <td><a class="btn btn-default remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>
+
         <tfoot>
           <tr>
             <td><?php echo functions::form_text_field('new[sku]', true, 'list="available-stock-items"'); ?></td>

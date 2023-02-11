@@ -60,29 +60,26 @@
       $this->data['date_created'] = date('Y-m-d H:i:s', filectime('storage://vmods/' . $filename));
       $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime('storage://vmods/' . $filename));
 
-      switch ($dom->documentElement->tagName) {
-
-        case 'vmod': // LiteCart Modification
-          $this->_load_vmod($dom);
-          break;
-
-        case 'modification': // vQmod
-          $this->_load_vqmod($dom);
-          break;
-
-        default:
-          throw new \Exception("File ($file) is not a valid vmod or vQmod");
-      }
-
-      $this->previous = $this->data;
-    }
-
-    private function _load_vmod($dom) {
 
       $this->data['name'] = !empty($dom->getElementsByTagName('name')) ? $dom->getElementsByTagName('name')->item(0)->textContent : '';
       $this->data['description'] = !empty($dom->getElementsByTagName('description')) ? $dom->getElementsByTagName('description')->item(0)->textContent : '';
       $this->data['version'] = !empty($dom->getElementsByTagName('version')) ? $dom->getElementsByTagName('version')->item(0)->textContent : '';
       $this->data['author'] = !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '';
+
+      if ($install_node = $dom->getElementsByTagName('install')->item(0)) {
+        $this->data['install'] = preg_replace('#\R*(.*)\s*#', '$1', $install_node->textContent);
+      }
+
+      if ($uninstall_node = $dom->getElementsByTagName('uninstall')->item(0)) {
+        $this->data['uninstall'] = preg_replace('#\R*(.*)\s*#', '$1', $uninstall_node->textContent);
+      }
+
+      foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
+        $this->data['upgrades'][] = [
+          'version' => $upgrade_node->getAttribute('version'),
+          'script' => preg_replace('#\R*(.*)\s*#', '$1', $upgrade_node->textContent),
+        ];
+      }
 
       foreach ($dom->getElementsByTagName('alias') as $alias_node) {
         $this->data['aliases'][] = [
@@ -158,97 +155,8 @@
 
         $f++;
       }
-    }
 
-    private function _load_vqmod($dom) {
-
-      $this->data['name'] = $dom->getElementsByTagName('id')->item(0)->textContent;
-      $this->data['version'] = $dom->getElementsByTagName('version')->item(0)->textContent;
-      $this->data['author'] = $dom->getElementsByTagName('author')->item(0)->textContent;
-
-      $f = 0;
-      foreach ($dom->getElementsByTagName('file') as $file_node) {
-
-        $patterns = [];
-        foreach (explode(',', $file_node->getAttribute('name')) as $pattern) {
-          $patterns[] = $file_node->getAttribute('path') . $pattern;
-        }
-
-        $this->data['files'][$f] = [
-          'name' => implode(',', $patterns),
-          'operations' => [],
-        ];
-
-        $o = 0;
-        foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
-
-          $this->data['files'][$f]['operations'][$o] = [
-            'method' => '',
-            'find' => [],
-            'insert' => [],
-            'onerror' => '',
-          ];
-
-          switch ($file_node->getAttribute('name')) {
-            case 'error':
-              $onerror = 'warning';
-              break;
-
-            case 'skip':
-              $onerror = 'ignore';
-              break;
-
-            case 'abort':
-            default:
-              $onerror = 'cancel';
-              break;
-          }
-
-          if ($search_node = $operation_node->getElementsByTagName('search')->item(0)) {
-
-            if ($search_node->getAttribute('trim') == '' || filter_var($search_node->getAttribute('trim'), FILTER_VALIDATE_BOOLEAN)) {
-              $search_node->textContent = preg_replace('#^(\r\n?|\n)#s', '', $search_node->textContent); // Trim beginning of CDATA
-              $search_node->textContent = preg_replace('#(\r\n?|\n)[\t ]*$#s', '', $search_node->textContent); // Trim end of CDATA
-            }
-
-            if ($search_node->getAttribute('regex') == 'true') {
-              $this->data['files'][$f]['operations'][$o]['type'] = 'regex';
-            } else if (in_array($search_node->getAttribute('position'), ['ibefore', 'iafter'])) {
-              $this->data['files'][$f]['operations'][$o]['type'] = 'inline';
-            } else {
-              $this->data['files'][$f]['operations'][$o]['type'] = 'multiline';
-            }
-
-            $this->data['files'][$f]['operations'][$o]['method'] = strtr($search_node->getAttribute('position'), [
-              'ibefore' => 'before',
-              'iafter' => 'after',
-            ]);
-
-            $this->data['files'][$f]['operations'][$o]['find'] = [
-              'content' => $search_node->textContent,
-              'index' => $search_node->getAttribute('index'),
-              'offset-before' => ($search_node->getAttribute('position') == 'before') ? (int)$search_node->getAttribute('offset') : 0,
-              'offset-after' => ($search_node->getAttribute('position') == 'after') ? (int)$search_node->getAttribute('offset') : 0,
-            ];
-          }
-
-          if ($add_node = $operation_node->getElementsByTagName('add')->item(0)) {
-
-            if ($add_node->getAttribute('trim') == '' || filter_var($add_node->getAttribute('trim'), FILTER_VALIDATE_BOOLEAN)) {
-              $add_node->textContent = preg_replace('#^(\r\n?|\n)#s', '', $add_node->textContent); // Trim beginning of CDATA
-              $add_node->textContent = preg_replace('#(\r\n?|\n)[\t ]*$#s', '', $add_node->textContent); // Trim end of CDATA
-            }
-
-            $this->data['files'][$f]['operations'][$o]['insert'] = [
-              'content' => $add_node->textContent,
-            ];
-          }
-
-          $o++;
-        }
-
-        $f++;
-      }
+      $this->previous = $this->data;
     }
 
     public function save() {
@@ -379,8 +287,10 @@
       $xml = $dom->saveXML();
 
     // Pretty print
-      $xml = preg_replace('#^( +<(alias|setting|install|uninstall|upgrade|file|operation|insert)[^>]*>)#m', PHP_EOL . '$1', $xml);
-      $xml = preg_replace('#^(\n|\r\n?){2,}#m', PHP_EOL, $xml);
+      $xml = preg_replace('#( |\t)+(\r\n?|\n)#', '$2', $xml); // Remove trailing whitespace
+      $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml); // Convert line endings
+      $xml = preg_replace('#^( +<(alias|setting|install|uninstall|upgrade|file|operation|insert)[^>]*>)#m', PHP_EOL . '$1', $xml); // Add some empty lines
+      $xml = preg_replace('#(\r\n?|\n){3,}#', PHP_EOL . PHP_EOL, $xml); // Remove exceeding line breaks
 
       if (!empty($this->previous['filename'])) {
         rename('storage://vmods/' . $this->previous['filename'], 'storage://vmods/' . $this->data['filename']);
@@ -391,6 +301,60 @@
       $this->previous = $this->data;
 
       cache::clear_cache('vmods');
+    }
+
+    public function test() {
+
+      try {
+
+        foreach (array_keys($vmod->data['files']) as $key) {
+
+          foreach (glob(FS_DIR_APP . $vmod->data['files'][$key]['name'], GLOB_BRACE) as $file) {
+
+            $buffer = file_get_contents($file);
+
+            foreach ($vmod->data['files'][$key]['operations'] as $i => $operation) {
+
+              $found = preg_match_all($operation['find']['pattern'], $buffer, $matches, PREG_OFFSET_CAPTURE);
+
+              if (!$found) {
+                switch ($operation['onerror']) {
+                  case 'ignore':
+                    continue 2;
+                  case 'abort':
+                  case 'warning':
+                  default:
+                    throw new Exception('Operation #'. ($i+1) .' failed in '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file), E_USER_WARNING);
+                    continue 2;
+                }
+              }
+
+              if (!empty($operation['find']['indexes'])) {
+                rsort($operation['find']['indexes']);
+
+                foreach ($operation['find']['indexes'] as $index) {
+                  $index = $index - 1; // [0] is the 1st in computer language
+
+                  if ($found > $index) {
+                    $buffer = substr_replace($buffer, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
+                  }
+                }
+
+              } else {
+                $buffer = preg_replace($operation['find']['pattern'], $operation['insert'], $buffer, -1, $count);
+
+                if (!$count && $operation['onerror'] != 'skip') {
+                  throw new Exception("Failed to perform insert");
+                  continue;
+                }
+              }
+            }
+          }
+        }
+
+      } catch (Exception $e) {
+        $vmod->data['errors'] = $e->getMessage();
+      }
     }
 
     public function delete($cleanup=false) {

@@ -384,7 +384,7 @@ INSERT INTO `lc_products_to_stock_items`
 (product_id, stock_item_id)
 SELECT product_id, id FROM `lc_stock_items`;
 -- --------------------------------------------------------
-DELETE FROM `lc_settings` WHERE `key` IN ('store_template_admin', 'store_template_admin_settings', 'gzip_enabled', 'round_amounts', 'cache_system_breakpoint', 'jobs_interval', 'jobs_last_push');
+DELETE FROM `lc_settings` WHERE `key` IN ('store_template_admin', 'store_template_admin_settings', 'round_amounts', 'cache_system_breakpoint', 'jobs_interval', 'jobs_last_push');
 -- --------------------------------------------------------
 UPDATE `lc_settings`
 SET `key` = 'jobs_last_push',

@@ -3,6 +3,7 @@
   class wrap_stream_storage {
     private $_directory;
     private $_stream;
+    public $context;
 
     public function dir_opendir($path) {
       $this->_directory = opendir($this->_resolve_path($path));

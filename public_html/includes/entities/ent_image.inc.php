@@ -92,6 +92,11 @@
 
             case 'imagick':
 
+            // Prevent DoS attack
+              Imagick::setResourceLimit(imagick::RESOURCETYPE_AREA, 24e6);
+              Imagick::setResourceLimit(imagick::RESOURCETYPE_MEMORY, 512e6);
+              Imagick::setResourceLimit(imagick::RESOURCETYPE_DISK, 512e6);
+
               if (!$this->_image) $this->load();
 
               if (!$this->_image) {
@@ -307,7 +312,7 @@
           ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
 
         // Perform resample
-          $result = ImageCopyResampledFixed($_resized, $this->_image, round(($this->width - $new_width) / 2), round(($this->height - $new_height) / 2), 0, 0, $new_width, $new_height, $this->width, $this->height, $this->_whitespace);
+          $result = ImageCopyResampled($_resized, $this->_image, round(($this->width - $new_width) / 2), round(($this->height - $new_height) / 2), 0, 0, $new_width, $new_height, $this->width, $this->height);
 
           $new_image = ImageCreateTrueColor($new_width, $new_height);
           ImageAlphaBlending($new_image, true);
@@ -446,6 +451,7 @@
 
             $_watermark = new imagick();
             $_watermark->readImage($watermark);
+            $_watermark->thumbnailImage(round($this->width()/3), round($this->height()/3), true);
 
             switch (strtoupper($align_x)) {
               case 'LEFT':
@@ -474,7 +480,7 @@
                 break;
             }
 
-            return $this->_image->compositeImage($_watermark, imagick::COMPOSITE_COPY, $offset_x, $offset_y);
+            return $this->_image->compositeImage($_watermark, imagick::COMPOSITE_OVER, $offset_x, $offset_y);
 
           } catch (\ImagickException $e) {
             throw new Exception("Error applying watermark ($watermark)");
@@ -502,7 +508,7 @@
           }
 
         // Shrink a large watermark
-          $_watermark->resample($this->width/3, $this->height/3, 'FIT_ONLY_BIGGER');
+          $_watermark->resample(round($this->width()/3), round($this->height()/3), 'FIT_ONLY_BIGGER');
 
         // Align watermark and set horizontal offset
           switch (strtoupper($align_x)) {

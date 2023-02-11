@@ -11,21 +11,23 @@
 }
 
 .btn {
-  cursor: pointer;
+  --input-padding-x: 2em;
   display: inline-block;
   padding: var(--input-padding-y) var(--input-padding-x);
   text-decoration:  none;
   font-weight: normal;
-  border-radius: var(--border-radius);
+  border-radius: var(--input-border-radius);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   text-align: center;
   white-space: nowrap;
 
+  &:not(:disabled):not(.active) {
+    cursor: pointer;
+  }
+
   &.btn-default { .btn("default"); }
   &.btn-primary { .btn("primary"); }
   &.btn-success { .btn("success"); }
-  //&.btn-info { .btn(var(--info-background-color), #fff); }
-  //&.btn-warning { .btn(var(--warning-background-color), #fff); }
   &.btn-danger { .btn("danger"); }
 
   &.btn-sm { font-size: 0.8em; }
@@ -42,19 +44,19 @@
 
 .btn-group {
   display: inline-flex;
-  border-radius: var(--border-radius);
+  border-radius: var(--input-border-radius);
   .btn {
     flex: 1 0 auto;
     border-radius: 0;
     font-size: inherit;
     margin-inline-start: -1px;
     &:first-child {
-      border-start-start-radius: var(--border-radius);
-      border-end-start-radius: var(--border-radius);
+      border-start-start-radius: var(--input-border-radius);
+      border-end-start-radius: var(--input-border-radius);
     }
     &:last-child {
-      border-start-end-radius: var(--border-radius);
-      border-end-end-radius: var(--border-radius);
+      border-start-end-radius: var(--input-border-radius);
+      border-end-end-radius: var(--input-border-radius);
     }
   }
 }
@@ -66,12 +68,12 @@
     font-size: inherit;
     margin-top: -1px;
     &:first-child {
-      border-start-start-radius: var(--border-radius);
-      border-start-end-radius: var(--border-radius);
+      border-start-start-radius: var(--input-border-radius);
+      border-start-end-radius: var(--input-border-radius);
     }
     &:last-child {
-      border-end-start-radius: var(--border-radius);
-      border-end-end-radius: var(--border-radius);
+      border-end-start-radius: var(--input-border-radius);
+      border-end-end-radius: var(--input-border-radius);
     }
   }
 }

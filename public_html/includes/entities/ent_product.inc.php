@@ -38,6 +38,9 @@
         }
       }
 
+      $this->data['status'] = 1;
+      $this->data['purchase_price_currency_code'] = settings::get('store_currency_code');
+
       $this->data['categories'] = [];
       $this->data['attributes'] = [];
       $this->data['images'] = [];
@@ -393,26 +396,27 @@
         $image_priority = 1;
 
         foreach ($this->data['images'] as $key => $image) {
-          if (empty($image['id'])) {
-            database::query(
-              "insert into ". DB_TABLE_PREFIX ."products_images
-              (product_id)
-              values (". (int)$this->data['id'] .");"
-            );
-            $this->data['images'][$key]['id'] = $image['id'] = database::insert_id();
-          }
 
-          if (!empty($image['new_filename']) && !is_file('storage://images/' . $image['new_filename'])) {
+          if (empty($image['id'])) continue;
+          if (empty($image['new_filename'])) continue;
+
+          if ($this->data['images'][$key]['new_filename'] != $image['filename']) {
+
+            if (is_file('storage://images/' . $image['new_filename'])) {
+              throw new Exception('Cannot rename '. $this->data['images'][$key]['filename'] .' to '. $this->data['images'][$key]['filename'] .' as the new filename already exists');
+            }
+
+            rename('storage://images/' . $image['filename'], FS_DIR_STORAGE . 'images/' . $image['new_filename']);
+            $this->data['images'][$key]['filename'] = $image['new_filename'];
+
             functions::image_delete_cache('storage://images/' . $image['filename']);
             functions::image_delete_cache('storage://images/' . $image['new_filename']);
-            rename('storage://images/' . $image['filename'], 'storage://images/' . $image['new_filename']);
-            $image['filename'] = $image['new_filename'];
           }
 
           database::query(
             "update ". DB_TABLE_PREFIX ."products_images
             set filename = '". database::input($image['filename']) ."',
-              priority = '". $image_priority++ ."'
+              priority = ". (int)$image_priority++ ."
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$image['id'] ."
             limit 1;"
@@ -458,7 +462,9 @@
         $this->save();
       }
 
-      if (!is_dir('storage://images/products/')) mkdir('storage://images/products/', 0777);
+      if (!is_dir('storage://images/products/')) {
+        mkdir('storage://images/products/', 0777);
+      }
 
       if (!$image = new ent_image($file)) {
         throw new Exception('Failed decoding image');

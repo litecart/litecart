@@ -7,13 +7,26 @@
   perform_action('modify', [
     FS_DIR_APP . 'includes/config.inc.php' => [
       [
+        'search'  => "  define('DOCUMENT_ROOT',      rtrim(str_replace(\"\\\", '/', realpath(\$_SERVER['DOCUMENT_ROOT'])), '/'));",
+        'replace' => "  define('DOCUMENT_ROOT',      str_replace('\\', '/', rtrim(realpath(!empty(\$_SERVER['DOCUMENT_ROOT']) ? \$_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/')));",
+      ],
+      [
         'search'  => "  define('DOCUMENT_ROOT',      rtrim(str_replace('\\', '/', realpath(\$_SERVER['DOCUMENT_ROOT'])), '/'));",
         'replace' => "  define('DOCUMENT_ROOT',      str_replace('\\', '/', rtrim(realpath(!empty(\$_SERVER['DOCUMENT_ROOT']) ? \$_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/')));",
       ],
       [
+        'search'  => "  define('FS_DIR_APP',         DOCUMENT_ROOT . rtrim(str_replace(DOCUMENT_ROOT, '', str_replace(\"\\\", '/', realpath(__DIR__.'/..'))), '/') . '/');",
+        'replace' => "  define('FS_DIR_APP',         str_replace('\\', '/', rtrim(realpath(__DIR__.'/..'), '/')) . '/');",
+      ],
+      [
         'search'  => "  define('FS_DIR_APP',         DOCUMENT_ROOT . rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');",
         'replace' => "  define('FS_DIR_APP',         str_replace('\\', '/', rtrim(realpath(__DIR__.'/..'), '/')) . '/');",
-      ],    [
+      ],
+      [
+        'search'  => "  define('WS_DIR_APP',         rtrim(str_replace(DOCUMENT_ROOT, '', str_replace(\"\\\", '/', realpath(__DIR__.'/..'))), '/') . '/');",
+        'replace' => "  define('WS_DIR_APP',         preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP));",
+      ],
+      [
         'search'  => "  define('WS_DIR_APP',         rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');",
         'replace' => "  define('WS_DIR_APP',         preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP));",
       ],
@@ -26,7 +39,7 @@
         'replace' => "// Database Tables - Backwards Compatibility (LiteCart <2.3)",
       ],
     ],
-  ], 'abort');
+  ]);
 
 // Connect guest orders to account (if applicable)
   $orders_query = database::query(

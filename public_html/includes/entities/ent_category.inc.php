@@ -312,6 +312,7 @@
         }
       }
 
+
       database::query(
         "delete c, ci, cf, ptc
         from ". DB_TABLE_PREFIX ."categories c

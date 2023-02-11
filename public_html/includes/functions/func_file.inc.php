@@ -15,6 +15,7 @@
         $base_source = preg_replace('#^(.*/).*?$#', '$1', strtok($source, '*'));
         file_copy($file, rtrim($target, '/') .'/'. preg_replace('#^'. preg_quote($base_source, '#') .'#', '', $file), $results);
       }
+
     } else {
 
       if (is_dir($source)) {
@@ -39,6 +40,7 @@
 
 // PHP doesn't always clean up temp files, so let's create a function that does
   function file_create_tempfile() {
+
     $tmp_file = stream_get_meta_data(tmpfile())['uri'];
 
     register_shutdown_function(function($f){
@@ -48,31 +50,41 @@
     return $tmp_file;
   }
 
-  function file_delete($pattern, $flags=0, &$results=[]) {
+  function file_delete($file, &$results=[]) {
 
     if (!isset($results) || !is_array($results)) {
       $results = [];
     }
 
-    foreach (file_search($pattern, $flags) as $file) {
+  // Resolve logic
+    if (preg_match('#[*!\[\]{}]#', $file)) {
 
-      if (is_dir($file)) {
-        file_delete($file.'*', $flags, $results);
-        $results[$file] = rmdir($file);
-        continue;
+      foreach (file_search($file, GLOB_BRACE) as $file) {
+        file_delete($file, $results);
       }
 
-      return $results[$file] = unlink($file);
+    } else {
+
+      if (is_dir($file)) {
+        file_delete(rtrim($file, '/') . '/*', $results);
+        $results[$file] = rmdir($file);
+
+      } else if (is_file($file) || is_link($file)) {
+        $results[$file] = unlink($file);
+
+      } else if (file_exists($file)) {
+        $results[$file] = false;
+      }
     }
 
-    return in_array(false, $results) ? false : true;
+    return !in_array(false, $results);
   }
 
-  function file_format_size(int $size) {
+  function file_format_size($size) {
     switch (true) {
       case ($size == 0): return '-';
       case ($size < 1000): return language::number_format($size, 0) . ' B';
-      case (($size/1024) < 1000): return language::number_format($size/1024, 2) . ' kB';
+      case (($size/1024) < 1000): return language::number_format($size/1024) . ' kB';
       case (($size/1024/1024) < 1000): return language::number_format($size/1024/1024, 2) . ' MB';
       case (($size/1024/1024/1024) < 1000): return language::number_format($size/1024/1024/1024, 2) . ' GB';
     }
@@ -88,27 +100,21 @@
   }
 
   function file_move($source, $target, &$results=[]) {
-
     $source = str_replace('\\', '/', $source);
     $target = str_replace('\\', '/', $target);
 
-    if (strpos($source, '*') !== false) {
+    if (preg_match('#[*!\[\]{}]#', $source)) {
 
-      foreach (file_search($source) as $file) {
+      foreach (file_search($source, GLOB_BRACE) as $file) {
         $base_source = preg_replace('#^(.*/).*?$#', '$1', strtok($source, '*'));
         file_move($file, rtrim($target, '/') .'/'. preg_replace('#^'. preg_quote($base_source, '#') .'#', '', $file), $results);
       }
 
     } else {
-
-      if (file_exists($source) && !file_exists($target)) {
-        $results[$target] = rename($source, $target);
-      } else {
-        $results[$target] = false;
-      }
+      $results[$target] = rename($source, $target);
     }
 
-    return in_array(false, $results) ? false : true;
+    return !in_array(false, $results);
   }
 
   function file_permissions($file) {
@@ -324,13 +330,50 @@
 
     $file = file_realpath($file);
 
-    if (preg_match('#^app://#', $file)) {
-      return preg_replace('#^app://#', WS_DIR_APP, $file);
+    return preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '/', $file);
+  }
 
-    } else if (preg_match('#^storage://#', $file)) {
-      return preg_replace('#^storage://#', WS_DIR_STORAGE, $file);
+  function file_xcopy($source, $target, &$results=[]) {
+
+    if (!isset($results) || !is_array($results)) {
+      $results = [];
+    }
+
+    $source = str_replace('\\', '/', $source);
+    $target = str_replace('\\', '/', $target);
+
+  // Resolve logic
+    if (preg_match('#[*!\[\]{}]#', $source)) {
+
+      foreach (file_search($source, GLOB_BRACE) as $file) {
+        $base_source = preg_replace('#^([^*!\[\]{}]+/).*$#', '$1', $source);
+        file_xcopy($file, rtrim($target, '/') .'/'. preg_replace('#^'. preg_quote($base_source, '#') .'#', '', $file), $results);
+      }
 
     } else {
-      return preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '/', $file);
+
+      if (!file_exists($source)) {
+        $results[$target] = false;
+
+      } else if (is_dir($source)) {
+
+        if (!is_dir($target)) {
+          $results[$target] = mkdir($target, 0777, true);
+          if (!$results[$target]) return false;
+        }
+
+        file_xcopy(rtrim($source, '/') .'/*', rtrim($target, '/') .'/', $results);
+
+      } else if (is_file($source) || is_link($source)) {
+
+        if (is_dir($target)) {
+          $results[$target] = copy(rtrim($source, '/') .'/*', rtrim($target, '/') .'/'. basename($source), $results);
+        } else {
+          $results[$target] = copy($source, $target);
+        }
+      }
     }
+
+    return !in_array(false, $results);
   }
+

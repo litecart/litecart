@@ -1,19 +1,20 @@
-<section id="box-checkout-payment" class="box">
+<section id="box-checkout-payment">
   <h2 class="title"><?php echo language::translate('title_payment', 'Payment'); ?></h2>
 
   <div class="options btn-group-vertical">
 
-    <?php foreach ($options as $option) { ?>
-    <label class="option btn btn-default btn-block<?php echo (!empty($selected) && $selected['module_id'] == $option['module_id'] && $selected['option_id'] == $option['option_id']) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
-      <?php echo functions::form_radio_button('payment_option_id', $option['id'], !empty($selected['id']) ? $selected['id'] .':'. $selected['option_id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled' : '')); ?>
+    <?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
+    <label class="option btn btn-default btn-block<?php echo (!empty($selected['id']) && $selected['id'] == $module['id'].':'.$option['id']) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
+      <?php echo functions::form_draw_radio_button('payment[option_id]', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled' : '')); ?>
       <div class="header row" style="margin: 0;">
-        <div class="col-3 thumbnail" style="margin: 0;">
-          <img src="<?php echo document::href_rlink(functions::image_thumbnail($option['icon'], 140, 80)); ?>" />
+        <div class="col-xs-3 thumbnail" style="margin: 0;">
+          <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . $option['icon'], 140, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING')); ?>" />
         </div>
 
-        <div class="col-9 text-start" style="padding-bottom: 0;">
+        <div class="col-xs-9 text-start" style="padding-bottom: 0;">
+          <div class="title"><?php echo $module['title']; ?></div>
           <div class="name"><?php echo $option['name']; ?></div>
-          <div class="price"><?php echo (empty($option['error']) && (float)$option['fee'] != 0) ? '+ ' . currency::format(tax::get_price($option['fee'], $option['tax_class_id'])) : ''; ?></div>
+          <div class="price"><?php echo (empty($option['error']) && (float)$option['cost'] != 0) ? '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])) : ''; ?></div>
           <?php if (!empty($option['error'])) { ?><div class="error"><?php echo $option['error']; ?></div><?php } ?>
         </div>
       </div>

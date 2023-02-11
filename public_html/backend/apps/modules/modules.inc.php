@@ -53,6 +53,27 @@
       trigger_error('Unknown module type', E_USER_ERROR);
   }
 
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
+
+    try {
+
+      if (empty($_POST['modules'])) throw new Exception(language::translate('error_must_select_modules', 'You must select modules'));
+
+      foreach ($_POST['modules'] as $module_id) {
+        $module = new ent_module($module_id);
+        $module->data['settings']['status'] = !empty($_POST['enable']) ? 1 : 0;
+        $module->save();
+      }
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
   document::$snippets['title'][] = $title;
 
   breadcrumbs::add(language::translate('title_modules', 'Modules'));
@@ -143,6 +164,7 @@
           <?php } else { ?>
           <td class="text-center"></td>
           <?php } ?>
+          <td><?php echo (!empty($module['website'])) ? '<a href="'. document::link($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
           <td><?php echo $module['id']; ?></td>
           <td class="text-end"><?php echo $module['version']; ?></td>
           <td><?php echo !empty($module['website']) ? '<a href="'. functions::escape_html($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
@@ -155,6 +177,7 @@
           <td></td>
           <td><?php echo $module['name']; ?></td>
           <td class="text-center"></td>
+          <td><?php echo (!empty($module['website'])) ? '<a href="'. document::link($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
           <td><?php echo $module['id']; ?></td>
           <td class="text-end"><?php echo $module['version']; ?></td>
           <td><?php echo !empty($module['website']) ? '<a href="'. functions::escape_html($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
@@ -172,5 +195,22 @@
       </tfoot>
     </table>
 
+    <div class="card-body">
+      <fieldset id="actions" disabled>
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
+
+        <div class="btn-group">
+          <?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+          <?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+        </div>
+      </fieldset>
+    </div>
+
   <?php echo functions::form_end(); ?>
 </div>
+
+<script>
+  $('.data-table :checkbox').change(function() {
+    $('#actions').prop('disabled', !$('.data-table :checked').length);
+  }).first().trigger('change');
+</script>

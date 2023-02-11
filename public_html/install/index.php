@@ -328,7 +328,7 @@ input[name="development_type"]:checked + div {
     <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
     <li>Extensions
       <ul>
-        <li>apc / apcu <?php echo (extension_loaded('apcu') || extension_loaded('apc')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>apc / apcu <?php echo (extension_loaded('apcu') || extension_loaded('apc')) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Missing]</span>'; ?></li>
         <li>dom <?php echo extension_loaded('dom') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
         <li>fileinfo <?php echo extension_loaded('fileinfo') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
         <li>gd / imagick <?php echo extension_loaded('imagick') ? '<span class="ok">[OK]</span>' : (extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'); ?></li>
@@ -352,10 +352,10 @@ input[name="development_type"]:checked + div {
     <li>Modules
       <ul>
         <?php if (function_exists('apache_get_modules')) $installed_apache_modules = apache_get_modules(); ?>
-        <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
-        <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
-        <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
-        <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
+        <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected]</span>'; ?></li>
+        <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected]</span>'; ?></li>
+        <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected]</span>'; ?></li>
+        <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected]</span>'; ?></li>
       </ul>
     </li>
   </ul>
@@ -368,19 +368,24 @@ input[name="development_type"]:checked + div {
 
   <h2>Writables</h2>
 
-  <ul class="list-unstyled">
+  <ul>
 <?php
   $paths = [
-    'storage/',
-    '.htaccess',
+    FS_DIR_STORAGE . 'cache/',
+    FS_DIR_STORAGE . 'data/',
+    FS_DIR_STORAGE . 'images/',
+    FS_DIR_STORAGE . 'includes/config.inc.php',
+    FS_DIR_STORAGE . 'vmods/',
+    FS_DIR_STORAGE . '.htaccess',
   ];
+
   foreach ($paths as $path) {
-    if (file_exists($path) && is_writable('../' . $path)) {
-      echo '    <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
+    if (file_exists($path) && is_writable($path) || is_writable(dirname($path))) {
+      echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="ok">[OK]</span></li>' . PHP_EOL;
     } else if (is_writable('../' . pathinfo($path, PATHINFO_DIRNAME))) {
-      echo '    <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
+      echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="ok">[OK]</span></li>' . PHP_EOL;
     } else {
-      echo '    <li>~/'. $path .' <span class="error">[Read-only, please make path writable]</span></li>' . PHP_EOL;
+      echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="error">[Read-only, please make path writable]</span></li>' . PHP_EOL;
     }
   }
 ?>
@@ -587,4 +592,4 @@ input[name="development_type"]:checked + div {
   <input class="btn btn-success btn-block" type="submit" name="install" value="Install Now" onclick="if (document.getElementById('accept_terms').value != 1) return false; if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />
 </form>
 
-<?php require('includes/footer.inc.php'); ?>
+<?php require(__DIR__.'/includes/footer.inc.php'); ?>

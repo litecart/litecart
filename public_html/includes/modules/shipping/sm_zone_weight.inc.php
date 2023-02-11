@@ -54,7 +54,7 @@
           'name' => language::translate(__CLASS__.':title_option_name_zone_x', $this->name),
           'description' => language::translate(__CLASS__.':title_option_description_zone_x', ''),
           'fields' => '',
-          'fee' => $fee + $this->settings['handling_fee'],
+          'cost' => (float)$cost + (float)$this->settings['handling_fee'],
           'tax_class_id' => $this->settings['tax_class_id'],
         ];
       }

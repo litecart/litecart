@@ -7,31 +7,45 @@
 // Form required asterix
   $(':input[required]').closest('.form-group').addClass('required');
 
-// Sidebar parallax effect
-  if (typeof(window._env) !== 'undefined' && window._env.template.settings.sidebar_parallax_effect == true) {
+// Detect scroll direction
+  let lastScrollTop = 0;
+  $(document).on('scroll', function(){
+     var scrollTop = $(this).scrollTop();
+     if (scrollTop > lastScrollTop) {
+       $('body').addClass('scrolling-down');
+     } else {
+       $('body').removeClass('scrolling-down');
+     }
+     lastScrollTop = (scrollTop < 0) ? 0 : scrollTop;
+  });
 
-      let column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
-      let sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
+// Sidebar parallax effect
+  if (typeof window._env != 'undefined') {
+    if (window._env.template.settings.sidebar_parallax_effect == true) {
+
+      var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
+      var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
 
       $(window).on('resize scroll', function(e){
         if (sidebar_max_offset) {
-          let parallax_rate = 0.4;
+          var parallax_rate = 0.4;
 
           if ($(window).width() >= 768 && ($(column).outerHeight(true) < $(sidebar).height())) {
-            let offset = $(this).scrollTop() * parallax_rate;
+            var offset = $(this).scrollTop() * parallax_rate;
             if (offset > sidebar_max_offset) offset = sidebar_max_offset;
             if (offset > 0) $(column).css('margin-top', offset + 'px');
           } else {
-            $(column).css('margin-top', 0);
+            $(column).css('margin', 0);
           }
         }
       }).trigger('resize');
     }
+  }
 
 // Add to cart animation
   $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
     e.preventDefault();
-    let form = $(this);
+    var form = $(this);
     $(this).find('button[name="add_cart_product"]').animate_from_to('#cart', {
       pixels_per_second: 2000,
       initial_css: {
@@ -67,7 +81,7 @@
   }
 
 // Bootstrap Compatible (data-toggle="buttons")
-  $('body').on('click', '[data-toggle="buttons"] :checkbox', function(){
+  $('body').on('click', '[data-toggle="buttons"] input[type="checkbox"]', function(){
     if ($(this).is(':checked')) {
       $(this).closest('.btn').addClass('active');
     } else {
@@ -75,7 +89,7 @@
     }
   });
 
-  $('body').on('click', '[data-toggle="buttons"] :radio', function(){
+  $('body').on('click', '[data-toggle="buttons"] input[type="radio"]', function(){
     $(this).closest('.btn').addClass('active').siblings().removeClass('active');
   });
 
@@ -87,17 +101,32 @@
     return false;
   });
 
-// Dropdown Select
-  $('body').on('change', '.dropdown :input', function() {
-    let title = $(this).data('title');
-    if (title) $(this).closest('.dropdown-select').find('.form-control .title').text(title);
-  }).first().trigger('change');
-
   $('.data-table tbody tr').click(function(e) {
     if ($(e.target).is(':input')) return;
     if ($(e.target).is('a, a *')) return;
     if ($(e.target).is('th')) return;
-    $(this).find(':checkbox').trigger('click');
+    $(this).find('input:checkbox').trigger('click');
+  });
+
+// Offcanvas
+  $('[data-toggle="offcanvas"]').click(function(e){
+    e.preventDefault();
+    var target = $(this).data('target');
+    if ($(target).hasClass('show')) {
+      $(target).removeClass('show');
+      $(this).removeClass('toggled');
+      $('body').removeClass('has-offcanvas');
+    } else {
+      $(target).addClass('show');
+      $(this).addClass('toggled');
+      $('body').addClass('has-offcanvas');
+    }
+  });
+
+  $('.offcanvas [data-toggle="dismiss"]').click(function(e){
+    $('.offcanvas').removeClass('show');
+    $('[data-toggle="offcanvas"]').removeClass('toggled');
+    $('body').removeClass('has-offcanvas');
   });
 
 // Password Strength
@@ -107,7 +136,7 @@
 
     if ($(this).val() == '') return;
 
-    let numbers = ($(this).val().match(/[0-9]/g) || []).length,
+    var numbers = ($(this).val().match(/[0-9]/g) || []).length,
      lowercases = ($(this).val().match(/[a-z]/g) || []).length,
      uppercases = ($(this).val().match(/[A-Z]/g) || []).length,
      symbols =   ($(this).val().match(/[^\w]/g) || []).length,
@@ -115,7 +144,7 @@
      score = (numbers * 9) + (lowercases * 11.25) + (uppercases * 11.25) + (symbols * 15)
            + (numbers ? 10 : 0) + (lowercases ? 10 : 0) + (uppercases ? 10 : 0) + (symbols ? 10 : 0);
 
-    let meter = $('<meter min="0" low="80" high="120" optimum="150" max="150" value="'+ score +'"></meter>').css({
+    var meter = $('<meter min="0" low="80" high="120" optimum="150" max="150" value="'+ score +'"></meter>').css({
       position: 'absolute',
       bottom: '-1em',
       width: '100%',
@@ -163,21 +192,16 @@
           $.each(json['items'], function(i, item){
             $('#cart .items').append('<li><a href="'+ item.link +'">'+ item.quantity +' x '+ item.name +' - '+ item.formatted_price +'</a></li>');
           });
-          $('#cart .items').append('<li class="divider"></li>');
+          $('#cart .items').append('<li class="dropdown-divider"></li>');
         }
         $('#cart .items').append('<li><a href="' + window._env.platform.url + 'checkout"><i class="fa fa-shopping-cart"></i> ' + json['text_total'] + ': <span class="formatted-value">'+ json['formatted_value'] +'</a></li>');
         $('#cart .quantity').html(json['quantity'] ? json['quantity'] : '');
         $('#cart .formatted_value').html(json['formatted_value']);
-        if (json['quantity'] > 0) {
-          $('#cart img').attr('src', window._env.template.url + 'images/cart_filled.svg');
-        } else {
-          $('#cart img').attr('src', window._env.template.url + 'images/cart.svg');
-        }
       }
     });
   }
 
-  let timerCart = setInterval("updateCart()", 60e3); // Keeps session alive
+  var timerCart = setInterval("updateCart()", 60000); // Keeps session alive
 
 /*
  * jQuery Animate From To plugin 1.0
@@ -200,10 +224,10 @@
   });
 
   function animate_from_to(sourceElm, targetElm, options) {
-    let source = $(sourceElm).eq(0),
+    var source = $(sourceElm).eq(0),
       target = $(targetElm).eq(0);
 
-    let defaults = {
+    var defaults = {
       pixels_per_second: 1000,
       initial_css: {
         "background": "#dddddd",
@@ -213,7 +237,8 @@
         "left": source.offset().left,
         "height": source.height(),
         "width": source.width(),
-        "z-index": 100000
+        "z-index": 100000,
+        "image": ""
       },
       square: '',
       callback: function(){ return; }
@@ -223,7 +248,7 @@
     }
     options = $.extend({}, defaults, options);
 
-    let target_height = target.innerHeight(),
+    var target_height = target.innerHeight(),
       target_width = target.innerWidth();
 
     if (options.square.toLowerCase() == 'height') {
@@ -232,12 +257,17 @@
       target_height = target_width;
     }
 
-    let dy = source.offset().top + source.width()/2 - target.offset().top,
+    var shadowImage = "";
+    if (options.initial_css.image != "") {
+      shadowImage = "<img src='" + options.initial_css.image + "' style='width: 100%; height: 100%' />";
+    }
+
+    var dy = source.offset().top + source.width()/2 - target.offset().top,
       dx = source.offset().left + source.height()/2 - target.offset().left,
       pixel_distance = Math.floor(Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2))),
       duration = (pixel_distance/options.pixels_per_second)*1000,
 
-      shadow = $('<div id="animated-cart-item"></div>')
+      shadow = $('<div id="animated-cart-item">' + shadowImage + '</div>')
         .css(options.initial_css)
         .appendTo('body')
         .animate({
@@ -261,10 +291,10 @@
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: carousel.js v3.3.7
- * http://getbootstrap.com/javascript/#carousel
+ * Bootstrap: carousel.js v3.4.1
+ * https://getbootstrap.com/docs/3.4/javascript/#carousel
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -274,7 +304,7 @@
   // CAROUSEL CLASS DEFINITION
   // =========================
 
-  let Carousel = function (element, options) {
+  var Carousel = function (element, options) {
     this.$element    = $(element)
     this.$indicators = this.$element.find('.carousel-indicators')
     this.options     = options
@@ -291,7 +321,7 @@
       .on('mouseleave.bs.carousel', $.proxy(this.cycle, this))
   }
 
-  Carousel.VERSION  = '3.3.7'
+  Carousel.VERSION  = '3.4.1'
 
   Carousel.TRANSITION_DURATION = 600
 
@@ -331,18 +361,18 @@
   }
 
   Carousel.prototype.getItemForDirection = function (direction, active) {
-    let activeIndex = this.getItemIndex(active)
-    let willWrap = (direction == 'prev' && activeIndex === 0)
+    var activeIndex = this.getItemIndex(active)
+    var willWrap = (direction == 'prev' && activeIndex === 0)
                 || (direction == 'next' && activeIndex == (this.$items.length - 1))
     if (willWrap && !this.options.wrap) return active
-    let delta = direction == 'prev' ? -1 : 1
-    let itemIndex = (activeIndex + delta) % this.$items.length
+    var delta = direction == 'prev' ? -1 : 1
+    var itemIndex = (activeIndex + delta) % this.$items.length
     return this.$items.eq(itemIndex)
   }
 
   Carousel.prototype.to = function (pos) {
-    let that        = this
-    let activeIndex = this.getItemIndex(this.$active = this.$element.find('.item.active'))
+    var that        = this
+    var activeIndex = this.getItemIndex(this.$active = this.$element.find('.item.active'))
 
     if (pos > (this.$items.length - 1) || pos < 0) return
 
@@ -376,16 +406,16 @@
   }
 
   Carousel.prototype.slide = function (type, next) {
-    let $active   = this.$element.find('.item.active')
-    let $next     = next || this.getItemForDirection(type, $active)
-    let isCycling = this.interval
-    let direction = type == 'next' ? 'left' : 'right'
-    let that      = this
+    var $active   = this.$element.find('.item.active')
+    var $next     = next || this.getItemForDirection(type, $active)
+    var isCycling = this.interval
+    var direction = type == 'next' ? 'left' : 'right'
+    var that      = this
 
     if ($next.hasClass('active')) return (this.sliding = false)
 
-    let relatedTarget = $next[0]
-    let slideEvent = $.Event('slide.bs.carousel', {
+    var relatedTarget = $next[0]
+    var slideEvent = $.Event('slide.bs.carousel', {
       relatedTarget: relatedTarget,
       direction: direction
     })
@@ -398,14 +428,16 @@
 
     if (this.$indicators.length) {
       this.$indicators.find('.active').removeClass('active')
-      let $nextIndicator = $(this.$indicators.children()[this.getItemIndex($next)])
+      var $nextIndicator = $(this.$indicators.children()[this.getItemIndex($next)])
       $nextIndicator && $nextIndicator.addClass('active')
     }
 
-    let slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }) // yes, "slid"
+    var slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }) // yes, "slid"
     if ($.support.transition && this.$element.hasClass('slide')) {
       $next.addClass(type)
-      $next[0].offsetWidth // force reflow
+      if (typeof $next === 'object' && $next.length) {
+        $next[0].offsetWidth // force reflow
+      }
       $active.addClass(direction)
       $next.addClass(direction)
       $active
@@ -430,15 +462,16 @@
     return this
   }
 
+
   // CAROUSEL PLUGIN DEFINITION
   // ==========================
 
   function Plugin(option) {
     return this.each(function () {
-      let $this   = $(this)
-      let data    = $this.data('bs.carousel')
-      let options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
-      let action  = typeof option == 'string' ? option : options.slide
+      var $this   = $(this)
+      var data    = $this.data('bs.carousel')
+      var options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
+      var action  = typeof option == 'string' ? option : options.slide
 
       if (!data) $this.data('bs.carousel', (data = new Carousel(this, options)))
       if (typeof option == 'number') data.to(option)
@@ -447,10 +480,11 @@
     })
   }
 
-  let old = $.fn.carousel
+  var old = $.fn.carousel
 
   $.fn.carousel             = Plugin
   $.fn.carousel.Constructor = Carousel
+
 
   // CAROUSEL NO CONFLICT
   // ====================
@@ -460,16 +494,20 @@
     return this
   }
 
+
   // CAROUSEL DATA-API
   // =================
 
-  let clickHandler = function (e) {
-    let href
-    let $this   = $(this)
-    let $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) // strip for ie7
+  var clickHandler = function (e) {
+    var $this   = $(this)
+    var href    = $this.attr('href')
+    var target  = $this.attr('data-target') || href
+    var $target = $(document).find(target)
+
     if (!$target.hasClass('carousel')) return
-    let options = $.extend({}, $target.data(), $this.data())
-    let slideIndex = $this.attr('data-slide-to')
+
+    var options = $.extend({}, $target.data(), $this.data())
+    var slideIndex = $this.attr('data-slide-to')
     if (slideIndex) options.interval = false
 
     Plugin.call($target, options)
@@ -487,7 +525,7 @@
 
   $(window).on('load', function () {
     $('[data-ride="carousel"]').each(function () {
-      let $carousel = $(this)
+      var $carousel = $(this)
       Plugin.call($carousel, $carousel.data())
     })
   })
@@ -495,10 +533,221 @@
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: dropdown.js v3.3.7
- * http://getbootstrap.com/javascript/#dropdowns
+ * Bootstrap: collapse.js v3.4.1
+ * https://getbootstrap.com/docs/3.4/javascript/#collapse
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2019 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
++function ($) {
+  'use strict';
+
+  // COLLAPSE PUBLIC CLASS DEFINITION
+  // ================================
+
+  var Collapse = function (element, options) {
+    this.$element      = $(element)
+    this.options       = $.extend({}, Collapse.DEFAULTS, options)
+    this.$trigger      = $('[data-toggle="collapse"][href="#' + element.id + '"],' +
+                           '[data-toggle="collapse"][data-target="#' + element.id + '"]')
+    this.transitioning = null
+
+    if (this.options.parent) {
+      this.$parent = this.getParent()
+    } else {
+      this.addAriaAndCollapsedClass(this.$element, this.$trigger)
+    }
+
+    if (this.options.toggle) this.toggle()
+  }
+
+  Collapse.VERSION  = '3.4.1'
+
+  Collapse.TRANSITION_DURATION = 350
+
+  Collapse.DEFAULTS = {
+    toggle: true
+  }
+
+  Collapse.prototype.dimension = function () {
+    var hasWidth = this.$element.hasClass('width')
+    return hasWidth ? 'width' : 'height'
+  }
+
+  Collapse.prototype.show = function () {
+    if (this.transitioning || this.$element.hasClass('in')) return
+
+    var activesData
+    var actives = this.$parent && this.$parent.children('.panel').children('.in, .collapsing')
+
+    if (actives && actives.length) {
+      activesData = actives.data('bs.collapse')
+      if (activesData && activesData.transitioning) return
+    }
+
+    var startEvent = $.Event('show.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    if (actives && actives.length) {
+      Plugin.call(actives, 'hide')
+      activesData || actives.data('bs.collapse', null)
+    }
+
+    var dimension = this.dimension()
+
+    this.$element
+      .removeClass('collapse')
+      .addClass('collapsing')[dimension](0)
+      .attr('aria-expanded', true)
+
+    this.$trigger
+      .removeClass('collapsed')
+      .attr('aria-expanded', true)
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.$element
+        .removeClass('collapsing')
+        .addClass('collapse in')[dimension]('')
+      this.transitioning = 0
+      this.$element
+        .trigger('shown.bs.collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    var scrollSize = $.camelCase(['scroll', dimension].join('-'))
+
+    this.$element
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)[dimension](this.$element[0][scrollSize])
+  }
+
+  Collapse.prototype.hide = function () {
+    if (this.transitioning || !this.$element.hasClass('in')) return
+
+    var startEvent = $.Event('hide.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    var dimension = this.dimension()
+
+    this.$element[dimension](this.$element[dimension]())[0].offsetHeight
+
+    this.$element
+      .addClass('collapsing')
+      .removeClass('collapse in')
+      .attr('aria-expanded', false)
+
+    this.$trigger
+      .addClass('collapsed')
+      .attr('aria-expanded', false)
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.transitioning = 0
+      this.$element
+        .removeClass('collapsing')
+        .addClass('collapse')
+        .trigger('hidden.bs.collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    this.$element
+      [dimension](0)
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)
+  }
+
+  Collapse.prototype.toggle = function () {
+    this[this.$element.hasClass('in') ? 'hide' : 'show']()
+  }
+
+  Collapse.prototype.getParent = function () {
+    return $(document).find(this.options.parent)
+      .find('[data-toggle="collapse"][data-parent="' + this.options.parent + '"]')
+      .each($.proxy(function (i, element) {
+        var $element = $(element)
+        this.addAriaAndCollapsedClass(getTargetFromTrigger($element), $element)
+      }, this))
+      .end()
+  }
+
+  Collapse.prototype.addAriaAndCollapsedClass = function ($element, $trigger) {
+    var isOpen = $element.hasClass('in')
+
+    $element.attr('aria-expanded', isOpen)
+    $trigger
+      .toggleClass('collapsed', !isOpen)
+      .attr('aria-expanded', isOpen)
+  }
+
+  function getTargetFromTrigger($trigger) {
+    var href
+    var target = $trigger.attr('data-target')
+      || (href = $trigger.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') // strip for ie7
+
+    return $(document).find(target)
+  }
+
+
+  // COLLAPSE PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.collapse')
+      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
+
+      if (!data && options.toggle && /show|hide/.test(option)) options.toggle = false
+      if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.collapse
+
+  $.fn.collapse             = Plugin
+  $.fn.collapse.Constructor = Collapse
+
+
+  // COLLAPSE NO CONFLICT
+  // ====================
+
+  $.fn.collapse.noConflict = function () {
+    $.fn.collapse = old
+    return this
+  }
+
+
+  // COLLAPSE DATA-API
+  // =================
+
+  $(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
+    var $this   = $(this)
+
+    if (!$this.attr('data-target')) e.preventDefault()
+
+    var $target = getTargetFromTrigger($this)
+    var data    = $target.data('bs.collapse')
+    var option  = data ? 'toggle' : $this.data()
+
+    Plugin.call($target, option)
+  })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: dropdown.js v3.4.1
+ * https://getbootstrap.com/docs/3.4/javascript/#dropdowns
+ * ========================================================================
+ * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -508,23 +757,23 @@
   // DROPDOWN CLASS DEFINITION
   // =========================
 
-  let backdrop = '.dropdown-backdrop'
-  let toggle   = '[data-toggle="dropdown"]'
-  let Dropdown = function (element) {
+  var backdrop = '.dropdown-backdrop'
+  var toggle   = '[data-toggle="dropdown"]'
+  var Dropdown = function (element) {
     $(element).on('click.bs.dropdown', this.toggle)
   }
 
-  Dropdown.VERSION = '3.3.7'
+  Dropdown.VERSION = '3.4.1'
 
   function getParent($this) {
-    let selector = $this.attr('data-target')
+    var selector = $this.attr('data-target')
 
     if (!selector) {
       selector = $this.attr('href')
       selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
     }
 
-    let $parent = selector && $(selector)
+    var $parent = selector !== '#' ? $(document).find(selector) : null
 
     return $parent && $parent.length ? $parent : $this.parent()
   }
@@ -533,9 +782,9 @@
     if (e && e.which === 3) return
     $(backdrop).remove()
     $(toggle).each(function () {
-      let $this         = $(this)
-      let $parent       = getParent($this)
-      let relatedTarget = { relatedTarget: this }
+      var $this         = $(this)
+      var $parent       = getParent($this)
+      var relatedTarget = { relatedTarget: this }
 
       if (!$parent.hasClass('open')) return
 
@@ -545,17 +794,18 @@
 
       if (e.isDefaultPrevented()) return
 
+      $this.attr('aria-expanded', 'false')
       $parent.removeClass('open').trigger($.Event('hidden.bs.dropdown', relatedTarget))
     })
   }
 
   Dropdown.prototype.toggle = function (e) {
-    let $this = $(this)
+    var $this = $(this)
 
     if ($this.is('.disabled, :disabled')) return
 
-    let $parent  = getParent($this)
-    let isActive = $parent.hasClass('open')
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
 
     clearMenus()
 
@@ -564,16 +814,18 @@
         // if mobile we use a backdrop because click events don't delegate
         $(document.createElement('div'))
           .addClass('dropdown-backdrop')
-          .insertAfter($(this))
+          .insertAfter($parent)
           .on('click', clearMenus)
       }
 
-      let relatedTarget = { relatedTarget: this }
+      var relatedTarget = { relatedTarget: this }
       $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
 
       if (e.isDefaultPrevented()) return
 
-      $this.trigger('focus')
+      $this
+        .trigger('focus')
+        .attr('aria-expanded', 'true')
 
       $parent
         .toggleClass('open')
@@ -586,27 +838,27 @@
   Dropdown.prototype.keydown = function (e) {
     if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
 
-    let $this = $(this)
+    var $this = $(this)
 
     e.preventDefault()
     e.stopPropagation()
 
     if ($this.is('.disabled, :disabled')) return
 
-    let $parent  = getParent($this)
-    let isActive = $parent.hasClass('open')
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
 
     if (!isActive && e.which != 27 || isActive && e.which == 27) {
       if (e.which == 27) $parent.find(toggle).trigger('focus')
       return $this.trigger('click')
     }
 
-    let desc = ' li:not(.disabled):visible a'
-    let $items = $parent.find('.dropdown-menu' + desc)
+    var desc = ' li:not(.disabled):visible a'
+    var $items = $parent.find('.dropdown-menu' + desc)
 
     if (!$items.length) return
 
-    let index = $items.index(e.target)
+    var index = $items.index(e.target)
 
     if (e.which == 38 && index > 0)                 index--         // up
     if (e.which == 40 && index < $items.length - 1) index++         // down
@@ -615,23 +867,25 @@
     $items.eq(index).trigger('focus')
   }
 
+
   // DROPDOWN PLUGIN DEFINITION
   // ==========================
 
   function Plugin(option) {
     return this.each(function () {
-      let $this = $(this)
-      let data  = $this.data('bs.dropdown')
+      var $this = $(this)
+      var data  = $this.data('bs.dropdown')
 
       if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
       if (typeof option == 'string') data[option].call($this)
     })
   }
 
-  let old = $.fn.dropdown
+  var old = $.fn.dropdown
 
   $.fn.dropdown             = Plugin
   $.fn.dropdown.Constructor = Dropdown
+
 
   // DROPDOWN NO CONFLICT
   // ====================
@@ -640,6 +894,7 @@
     $.fn.dropdown = old
     return this
   }
+
 
   // APPLY TO STANDARD DROPDOWN ELEMENTS
   // ===================================
@@ -650,5 +905,64 @@
     .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
     .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
     .on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: transition.js v3.4.1
+ * https://getbootstrap.com/docs/3.4/javascript/#transitions
+ * ========================================================================
+ * Copyright 2011-2019 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
++function ($) {
+  'use strict';
+
+  // CSS TRANSITION SUPPORT (Shoutout: https://modernizr.com/)
+  // ============================================================
+
+  function transitionEnd() {
+    var el = document.createElement('bootstrap')
+
+    var transEndEventNames = {
+      WebkitTransition : 'webkitTransitionEnd',
+      MozTransition    : 'transitionend',
+      OTransition      : 'oTransitionEnd otransitionend',
+      transition       : 'transitionend'
+    }
+
+    for (var name in transEndEventNames) {
+      if (el.style[name] !== undefined) {
+        return { end: transEndEventNames[name] }
+      }
+    }
+
+    return false // explicit for ie8 (  ._.)
+  }
+
+  // https://blog.alexmaccaw.com/css-transitions
+  $.fn.emulateTransitionEnd = function (duration) {
+    var called = false
+    var $el = this
+    $(this).one('bsTransitionEnd', function () { called = true })
+    var callback = function () { if (!called) $($el).trigger($.support.transition.end) }
+    setTimeout(callback, duration)
+    return this
+  }
+
+  $(function () {
+    $.support.transition = transitionEnd()
+
+    if (!$.support.transition) return
+
+    $.event.special.bsTransitionEnd = {
+      bindType: $.support.transition.end,
+      delegateType: $.support.transition.end,
+      handle: function (e) {
+        if ($(e.target).is(this)) return e.handleObj.handler.apply(this, arguments)
+      }
+    }
+  })
 
 }(jQuery);

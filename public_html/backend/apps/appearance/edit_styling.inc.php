@@ -1,20 +1,26 @@
 <?php
 
-  $css_file = 'app://frontend/templates/'. settings::get('template') .'/css/variables.css';
+  $css_file = FS_DIR_APP . 'includes/templates/'. settings::get('template') .'/css/variables.css';
+  if (is_file(FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/less/variables.less')) {
+    $stylesheet = FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/less/variables.less';
 
-  if (!file_exists($css_file)) {
-    notices::add('errors', language::translate('error_template_missing_variables', 'This template does not have a variables.css file to edit.'));
+  } else if (is_file(FS_DIR_APP . 'includes/templates/'. settings::get('store_template_catalog') .'/css/variables.css')) {
+    $stylesheet = FS_DIR_APP . 'includes/templates/'. settings::get('store_template_catalog') .'/css/variables.css';
+
+  } else {
+    notices::add('errors', language::translate('error_template_missing_variables_stylesheet', 'This template does not have an editable stylesheet with variables (e.g. variables.css)'));
+    return;
   }
 
   if (!$_POST) {
-    $_POST['content'] = file_get_contents($css_file);
+    $_POST['content'] = file_get_contents($stylesheet);
   }
 
   if (!empty($_POST['save'])) {
 
     try {
 
-      file_put_contents($css_file, $_POST['content']);
+      file_put_contents($stylesheet, $_POST['content']);
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link());
@@ -34,14 +40,19 @@
   </div>
 
   <div class="card-body">
+
+    <?php if (preg_match('#\.less$#', $stylesheet)) { ?>
+    <div class="alerts">
+      <div class="alert alert-default"><?php echo functions::draw_fonticon('fa-info fa-fw'); ?> <?php echo language::translate('notice_detected_less_version_of_variables', 'We detected a LESS version present in this installation that will be used. A LESS compiler is needed to compile the CSS versions (e.g. Developer Kit add-on).'); ?></div>
+    </div>
+    <?php } ?>
+
     <?php echo functions::form_begin('file_form', 'post'); ?>
 
-      <div class="row" style="max-width: 640px;">
-        <div class="form-group col-md-8">
+      <div class="form-group" style="max-width: 640px;">
           <label><?php echo language::translate('title_file', 'File'); ?></label>
           <div class="form-input" readonly><?php echo parse_url($css_file, PHP_URL_PATH); ?></div>
         </div>
-      </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_content', 'Content'); ?></label>

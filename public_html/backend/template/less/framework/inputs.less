@@ -14,7 +14,7 @@
 }
 
 fieldset {
-  padding: calc(var(--gutter-size) / 2) var(--gutter-size);
+  padding: ~"calc(var(--gutter-size) / 2)" var(--gutter-size);
   border: 1px solid var(--input-border-color);
   border-radius: var(--border-radius);
   > legend {
@@ -123,7 +123,7 @@ label.form-check {
   }
 }
 
-.form-select {
+select.form-control {
   .input-field();
   display: block;
   width: 100%;
@@ -146,6 +146,10 @@ label.form-check {
   option {
     background: var(--input-background-color);
   }
+}
+
+html[dir="rtl"] select.form-control {
+  background-position: left 1em center;
 }
 
 .form-switch {
@@ -243,11 +247,13 @@ label.form-check {
   }
   //> *:first-child:is(.btn, .form-select, .form-input) {
   > *:first-child {
-    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    border-start-start-radius: var(--border-radius);
+    border-end-start-radius: var(--border-radius);
   }
   //> *:last-child:is(.btn, .form-select, .form-input) {
   > *:last-child {
-    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    border-end-start-radius: var(--border-radius);
+    border-end-end-radius: var(--border-radius);
   }
   *:first-child:is(.form-input),
   *:first-child:is(.form-select),
@@ -293,4 +299,25 @@ fieldset[disabled] > :not(legend),
 [data-toggle="buttons"] input[type="checkbox"],
 [data-toggle="buttons"] input[type="radio"] {
   display: none;
+}
+
+.input-group .trumbowyg-box {
+  --trumbowyg-pane-background-color: var(--input-addon-background-color);
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+  margin: -1px;
+  margin-bottom: -2px;
+  .trumbowyg-button-pane {
+    border-start-start-radius: 0;
+    .trumbowyg-button-group:first-child {
+      border-start-start-radius: 0;
+      button {
+        border-start-start-radius: 0;
+      }
+    }
+  }
+  .trumbowyg-editor, .trumbowyg-textarea {
+    border-end-start-radius: 0;
+  }
 }

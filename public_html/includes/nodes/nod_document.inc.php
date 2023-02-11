@@ -318,7 +318,7 @@
     public static function rlink($resource) {
 
       if (empty($resource) || !is_file($resource)) {
-        return '';
+        return document::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource));
       }
 
       if (preg_match('#^app://#', $resource)) {

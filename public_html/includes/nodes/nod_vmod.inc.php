@@ -21,6 +21,26 @@
 
       $timestamp = microtime(true);
 
+      if (!is_dir(FS_DIR_STORAGE . 'addons/.cache/')) {
+        mkdir(FS_DIR_STORAGE . 'addons/.cache/');
+      }
+
+      if (!is_file($installed_file = FS_DIR_STORAGE .'addons/.installed')) {
+        file_put_contents($installed_file, '', LOCK_EX);
+      }
+
+      if (!is_file($checked_file = FS_DIR_STORAGE . 'addons/.cache/.checked')) {
+        file_put_contents($checked_file, '', LOCK_EX);
+      }
+
+      if (!is_file($cache_file = FS_DIR_STORAGE . 'addons/.cache/.modifications')) {
+        file_put_contents($cache_file, '{}');
+      }
+
+      if (!is_file($settings_file = FS_DIR_STORAGE .'addons/.settings')) {
+        file_put_contents($settings_file, '{}');
+      }
+
     // Backwards Compatibility
       self::$aliases['#^admin/#'] = 'backend/'; // <3.0.0
       self::$aliases['#^admin/(.*?)\.app/#'] = 'backend/apps/$1/'; // <3.0.0
@@ -33,62 +53,69 @@
       self::$aliases['#^includes/templates/(.*?)\.admin/#'] = 'backend/template/'; // <3.0.0
       self::$aliases['#^includes/templates/(.*?)\.catalog/#'] = 'frontend/templates/$1/'; // <3.0.0
 
+    // Determine last modified date
       $last_modified = null;
 
-    // Get last modification date for folder
-      $folder_last_modified = filemtime(FS_DIR_STORAGE .'addons/');
-      if ($folder_last_modified > $last_modified) {
+      if (($folder_last_modified = filemtime(FS_DIR_STORAGE .'addons/')) > $last_modified) {
         $last_modified = $folder_last_modified;
       }
 
-    // Get last modification date modifications
       foreach (scandir(FS_DIR_STORAGE .'addons/') as $folder) {
         if (in_array($folder, ['.', '..', '.cache'])) continue;
         if (!is_dir(FS_DIR_STORAGE .'addons/'.$folder)) continue;
         if (preg_match('#\.disabled$#', $folder)) continue;
 
         $vmod = FS_DIR_STORAGE .'addons/'.$folder.'/vmod.xml';
+
         if (filemtime($vmod) > $last_modified) {
           $last_modified = filemtime($vmod);
         }
       }
 
-    // If no cache is requested by browser
-      if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
-        $last_modified = time();
+      if (($installed_last_modified = filemtime($installed_file)) > $last_modified) {
+        $last_modified = $installed_last_modified;
       }
 
+      if (($settings_last_modified = filemtime($settings_file)) > $last_modified) {
+        $last_modified = $settings_last_modified;
+      }
+
+    // If no cache is requested by browser
+      //if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
+      //  $last_modified = time();
+      //}
+
     // Load installed
-      $installed_file = FS_DIR_STORAGE .'addons/.installed';
-      if (is_file($installed_file)) {
-        foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $vmod_id) {
-          self::$_installed[] = $vmod_id;
-        }
+      foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $installed) {
+        list($id, $version) = preg_split('#;#', $installed);
+        self::$_installed[] = [
+          'id' => $id,
+          'version' => $version,
+        ];
+      }
+
+    // Load settings
+      if (!self::$_settings = json_decode(file_get_contents($settings_file), true)) {
+        self::$_settings = [];
       }
 
     // Get modifications from cache
-      $cache_file = FS_DIR_STORAGE .'addons/.cache/.modifications';
-      if (is_file($cache_file) && filemtime($cache_file) > $last_modified) {
-        if ($cache = file_get_contents($cache_file)) {
-          if ($cache = json_decode($cache, true)) {
-            self::$_modifications = $cache['modifications'];
-            self::$_files_to_modifications = $cache['index'];
-          }
+      if (filemtime($cache_file) > $last_modified) {
+        if ($cache = json_decode(file_get_contents($cache_file), true)) {
+          self::$_modifications = $cache['modifications'];
+          self::$_files_to_modifications = $cache['index'];
         }
       }
 
     // Create a list of checked files
-      $checked_file = FS_DIR_STORAGE .'addons/.cache/.checked';
-      if (is_file($checked_file) && filemtime($checked_file) > $last_modified) {
+      if (filemtime($checked_file) > $last_modified) {
         foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-          list($relative_path, $modified_relative_path, $checksum) = explode(';', $line);
-          if (is_file(FS_DIR_APP . $relative_path) && is_file(FS_DIR_STORAGE . $modified_relative_path) && filemtime(FS_DIR_STORAGE . $modified_relative_path) > filemtime(FS_DIR_APP . $relative_path)) {
-            self::$_checked[$relative_path] = FS_DIR_STORAGE . $modified_relative_path;
-            self::$_checksums[$relative_path] = $checksum;
+          list($original_file, $modified_file, $checksum) = preg_split('#;#', $line);
+          if (is_file(FS_DIR_APP . $original_file) && is_file(FS_DIR_STORAGE . $modified_file) && filemtime(FS_DIR_STORAGE . $modified_file) > filemtime(FS_DIR_APP . $original_file)) {
+            self::$_checked[$original_file] = $modified_file;
+            self::$_checksums[$original_file] = $checksum;
           }
         }
-      } else {
-        file_put_contents($checked_file, '', LOCK_EX);
       }
 
     // Load modifications from disk
@@ -108,12 +135,6 @@
         ], JSON_UNESCAPED_SLASHES);
 
         file_put_contents($cache_file, $serialized, LOCK_EX);
-      }
-
-    // Load settings
-      if (!is_file(FS_DIR_STORAGE .'addons/.settings')) file_put_contents(FS_DIR_STORAGE .'addons/.settings', '{}');
-      if (!self::$_settings = json_decode(file_get_contents(FS_DIR_STORAGE .'addons/.settings'), true)) {
-        self::$_settings = [];
       }
 
       self::$time_elapsed += microtime(true) - $timestamp;
@@ -137,18 +158,19 @@
         $file = str_replace('\\', '/', realpath($file));
       }
 
-      $relative_path = preg_replace('#^(app://|' . preg_quote(FS_DIR_APP, '#') .')#', '', $file);
-      $modified_file = FS_DIR_STORAGE .'addons/.cache/' . preg_replace('#[/\\\\]+#', '-', $relative_path);
-      $modified_relative_path = 'addons/.cache/' . preg_replace('#[/\\\\]+#', '-', $relative_path);
-
-    // Returned an already checked file
-      if (!empty(self::$_checked[$relative_path]) && is_file(self::$_checked[$relative_path])) {
-        self::$time_elapsed += microtime(true) - $timestamp;
-        return self::$_checked[$relative_path];
-      }
+      $original_file = preg_replace('#^(app://|' . preg_quote(FS_DIR_APP, '#') .')#', '', $file);
+      $modified_file = 'addons/.cache/' . preg_replace('#[/\\\\]+#', '-', $original_file);
 
     // Return original file if there are no modifications
-      if (empty(self::$_files_to_modifications[$relative_path])) {
+      if (empty(self::$_files_to_modifications[$original_file])) {
+        if (isset(self::$_checked[$original_file])) {
+          unset(self::$_checked[$original_file]);
+        }
+
+        if (isset(self::$_checksums[$original_file])) {
+          unset(self::$_checksums[$original_file]);
+        }
+
         self::$time_elapsed += microtime(true) - $timestamp;
         return $file;
       }
@@ -157,24 +179,24 @@
       $queue = [];
       $digest = [filemtime($file)];
 
-      foreach (self::$_files_to_modifications[$relative_path] as $modification) {
-        $digest[] = strtotime($modification['date_modified']);
+      foreach (self::$_files_to_modifications[$original_file] as $modification) {
+        $digest[] = strtotime(self::$_modifications[$modification['id']]['date_modified']);
         $queue[] = $modification;
       }
 
-      $checksum = md5(implode($digest));
+      $checksum = crc32(implode($digest));
 
     // Return original file if nothing to modify
       if (empty($queue)) {
-        if (is_file($modified_file)) unlink($modified_file);
+        if (is_file(FS_DIR_STORAGE . $modified_file)) unlink(FS_DIR_STORAGE . $modified_file);
         self::$time_elapsed += microtime(true) - $timestamp;
-        return self::$_checked[$relative_path] = $file;
+        return FS_DIR_STORAGE . (self::$_checked[$original_file] = $modified_file);
       }
 
     // Return modified file if checksum matches
-      if (!empty(self::$_checksums[$relative_path]) && !empty(self::$_checked[$relative_path]) && file_exists(FS_DIR_APP . self::$_checked[$relative_path]) && self::$_checksums[$relative_path] == $checksum) {
+      if (!empty(self::$_checksums[$original_file]) && !empty(self::$_checked[$original_file]) && file_exists(FS_DIR_APP . self::$_checked[$original_file]) && self::$_checksums[$original_file] == $checksum) {
         self::$time_elapsed += microtime(true) - $timestamp;
-        return self::$_checked[$relative_path] = $modified_file;
+        return FS_DIR_STORAGE . (self::$_checked[$original_file] = $modified_file);
       }
 
     // Modify file
@@ -189,21 +211,22 @@
         if (!$vmod = self::$_modifications[$modification['id']]) continue;
         if (!$operations = self::$_modifications[$modification['id']]['files'][$modification['key']]['operations']) continue;
 
-        $tmp = $buffer; $i = 1;
+        $tmp = $buffer; $i = 0;
         foreach ($operations as $operation) {
+          $i++;
 
           $found = preg_match_all($operation['find']['pattern'], $tmp, $matches, PREG_OFFSET_CAPTURE);
 
           if (!$found) {
             switch ($operation['onerror']) {
               case 'abort':
-                trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $relative_path: Search not found [ABORTED]", E_USER_WARNING);
+                trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $original_file: Search not found [ABORTED]", E_USER_WARNING);
                 continue 3;
               case 'ignore':
                 continue 2;
               case 'warning':
               default:
-                trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $relative_path: Search not found", E_USER_WARNING);
+                trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $original_file: Search not found", E_USER_WARNING);
                 continue 2;
             }
           }
@@ -227,47 +250,269 @@
               continue 2;
             }
           }
-
-          $i++;
         }
 
         $buffer = $tmp;
       }
 
     // Create cache folder for modified files if missing
-      if (!is_dir(FS_DIR_STORAGE .'addons/.cache/')) {
-        if (!mkdir(FS_DIR_STORAGE .'addons/.cache/', 0777)) {
+      if (!is_dir(FS_DIR_STORAGE . 'addons/.cache/')) {
+        if (!mkdir(FS_DIR_STORAGE . 'addons/.cache/', 0777)) {
           throw new \Exception('The modifications cache directory could not be created', E_USER_ERROR);
         }
       }
 
-      if (!is_writable(FS_DIR_STORAGE .'addons/.cache/')) {
+      if (!is_writable(FS_DIR_STORAGE . 'addons/.cache/')) {
         throw new \Exception('The modifications cache directory is not writable', E_USER_ERROR);
       }
 
     // Return original if nothing was modified
       if ($buffer == $original) {
         self::$time_elapsed += microtime(true) - $timestamp;
-        return self::$_checked[$relative_path] = $file;
+        return FS_DIR_STORAGE . (self::$_checked[$original_file] = $original_file);
       }
 
     // Write modified file
-      file_put_contents($modified_file, $buffer, LOCK_EX);
+      file_put_contents(FS_DIR_STORAGE . $modified_file, $buffer, LOCK_EX);
 
-      self::$_checked[$relative_path] = $modified_file;
-      self::$_checksums[$relative_path] = $checksum;
-      file_put_contents(FS_DIR_STORAGE .'addons/.cache/.checked', $relative_path .';'. $modified_relative_path .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_SH);
+    // Update checked cache
+      if (!isset(self::$_checked[$original_file]) || self::$_checksums[$original_file] != $checksum) {
+        self::$_checked[$original_file] = $modified_file;
+        self::$_checksums[$original_file] = $checksum;
+        $serialized_checked = implode('', array_map(function($original_file){
+          if (!isset(self::$_checksums[$original_file])) return;
+          return $original_file .';'. self::$_checked[$original_file] .';'. self::$_checksums[$original_file] . PHP_EOL;
+        }, array_keys(self::$_checked)));
+
+        file_put_contents(FS_DIR_STORAGE . 'addons/.cache/.checked', $serialized_checked, LOCK_EX);
+      }
 
       self::$time_elapsed += microtime(true) - $timestamp;
-      return $modified_file;
+      return FS_DIR_STORAGE . $modified_file;
     }
 
     public static function load($file) {
 
       try {
 
-        if (!$vmod = self::parse($file)) {
-          return;
+        if (!$xml = file_get_contents($file)) {
+          throw new \Exception('Could not read file', E_USER_ERROR);
+        }
+
+      // Normalize line endings
+        $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
+
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom->preserveWhiteSpace = false;
+
+        if (!$dom->loadXml($xml)) {
+          throw new \Exception(libxml_get_last_error()->message);
+        }
+
+        if ($dom->documentElement->tagName != 'vmod') {
+          throw new \Exception("File ($file) is not a valid vmod or vQmod");
+        }
+
+        if (empty($dom->getElementsByTagName('name')->item(0))) {
+          throw new \Exception('File is missing the name element');
+        }
+
+        $id = preg_replace('#\.disabled$#', '', basename(dirname($file)));
+        if ($id == 'vmods') $id = preg_replace('#\.(disabled|xml)$#', '', basename($file));
+
+        $vmod = [
+          'type' => 'vmod',
+          'id' => $id,
+          'name' => $dom->getElementsByTagName('name')->item(0)->textContent,
+          'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
+          'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
+          'date_modified' => date('Y-m-d H:i:s', filemtime($file)),
+          'aliases' => [],
+          'settings' => [],
+          'files' => [],
+          'install' => null,
+          'upgrades' => [],
+        ];
+
+        if (empty($vmod['version'])) {
+          $vmod['version'] = date('Y-m-d', filemtime($file));
+        }
+
+        if (!$installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
+
+          if ($dom->getElementsByTagName('install')->length > 0) {
+            $vmod['install'] = $dom->getElementsByTagName('install')->item(0)->textContent;
+          }
+
+        } else {
+
+          if (!empty($dom->getElementsByTagName('upgrade'))) {
+            foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
+
+              $upgrade_version = $upgrade_node->getAttribute('version');
+
+              if (version_compare($vmod['version'], $upgrade_version, '<=')) {
+                $vmod['upgrades'][] = [
+                  'version' => $upgrade_version,
+                  'script' => $upgrade_node->textContent,
+                ];
+              }
+            }
+          }
+
+          uasort($vmod['upgrades'], function($a, $b){
+            return version_compare($a['version'], $b['version']);
+          });
+        }
+
+        $aliases = [];
+        foreach ($dom->getElementsByTagName('alias') as $alias_node) {
+          $aliases[$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
+        }
+
+        foreach ($dom->getElementsByTagName('setting') as $setting_node) {
+          $key = $setting_node->getElementsByTagName('key')->item(0)->textContent;
+          $default_value = $setting_node->getElementsByTagName('default_value')->item(0)->textContent;
+          $vmod['settings'][$key] = isset(self::$_settings[$vmod['id']][$key]) ? self::$_settings[$vmod['id']][$key] : $default_value;
+        }
+
+        if (empty($dom->getElementsByTagName('file'))) {
+          throw new \Exception('File has no defined files to modify');
+        }
+
+        foreach ($dom->getElementsByTagName('file') as $file_node) {
+
+          $vmod_file = [
+            'name' => $file_node->getAttribute('name'),
+            'operations' => [],
+          ];
+
+          foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
+
+          // On Error
+            $onerror = $operation_node->getAttribute('onerror');
+
+          // Find
+            if (!in_array($operation_node->getAttribute('method'), ['top', 'bottom'])) {
+
+              $find_node = $operation_node->getElementsByTagName('find')->item(0);
+              $find = strtr($find_node->textContent, $aliases);
+
+            // Trim
+              if (in_array($operation_node->getAttribute('type'), ['inline', 'regex'])) {
+                $find = trim($find);
+
+              } else if (in_array($operation_node->getAttribute('type'), ['multiline', ''])) {
+                $find = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $find); // Trim beginning of CDATA
+                $find = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $find); // Trim end of CDATA
+              }
+
+            // Cook the regex pattern
+              if ($operation_node->getAttribute('type') != 'regex') {
+
+                if ($operation_node->getAttribute('type') == 'inline') {
+                  $find = preg_quote($find, '#');
+
+                } else {
+
+                // Whitespace
+                  $find = preg_split('#(\r\n?|\n)#', $find);
+                  for ($i=0; $i<count($find); $i++) {
+                    if ($find[$i] = trim($find[$i])) {
+                      $find[$i] = '[ \\t]*' . preg_quote($find[$i], '#') . '[ \\t]*(?:\r\n?|\n|$)';
+                    } else if ($i != count($find)-1) {
+                      $find[$i] = '[ \\t]*(?:\r\n?|\n)';
+                    }
+                  }
+                  $find = implode($find);
+
+                // Offset
+                  if ($find_node->getAttribute('offset-before') != '') {
+                    $find = '(?:.*?(?:\r\n?|\n)){'. (int)$find_node->getAttribute('offset-before') .'}' . $find;
+                  }
+
+                  if ($find_node->getAttribute('offset-after') != '') {
+                    $find = $find . '(?:.*?(?:\r\n?|\n|$)){0,'. (int)$find_node->getAttribute('offset-after') .'}';
+                  }
+                }
+
+              // Encapsulate regex
+                $find = '#'. $find .'#';
+              }
+
+            // Indexes
+              if ($indexes = $find_node->getAttribute('index')) {
+                $indexes = preg_split('#\s*,\s*#', $indexes, -1, PREG_SPLIT_NO_EMPTY);
+              }
+            }
+
+          // Insert
+            $insert_node = $operation_node->getElementsByTagName('insert')->item(0);
+            $insert = strtr($insert_node->textContent, $aliases);
+
+            if (!empty($vmod['aliases'])) {
+              foreach ($vmod['aliases'] as $key => $value) {
+                $insert = str_replace('{alias:'. $key .'}', $value, $insert);
+              }
+            }
+
+            if (!empty($vmod['settings'])) {
+              foreach ($vmod['settings'] as $key => $value) {
+                $insert = str_replace('{setting:'. $key .'}', $value, $insert);
+              }
+            }
+
+            if ($operation_node->getAttribute('type') != 'regex') {
+
+              if (in_array($operation_node->getAttribute('type'), ['multiline', ''])) {
+                $insert = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $insert); // Trim beginning of CDATA
+                $insert = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $insert); // Trim end of CDATA
+              }
+
+              switch ($method = $operation_node->getAttribute('method')) {
+
+                case 'before':
+                  $insert = addcslashes($insert, '\\$').'$0';
+                  break;
+
+                case 'after':
+                  $insert = '$0'. addcslashes($insert, '\\$');
+                  break;
+
+                case 'top':
+                  $find = '#^#s';
+                  $indexes = '';
+                  $insert = addcslashes($insert, '\\$').'$0';
+                  break;
+
+                case 'bottom':
+                  $find = '#$#s';
+                  $indexes = '';
+                  $insert = '$0'.addcslashes($insert, '\\$');
+                  break;
+
+                case 'replace':
+                  $insert = addcslashes($insert, '\\$');
+                  break;
+
+                default:
+                  throw new \Exception("Unknown value \"$method\" for operation method (before|after|replace|bottom|top)");
+                  continue 2;
+              }
+            }
+
+          // Gather
+            $vmod_file['operations'][] = [
+              'onerror' => $onerror,
+              'find' => [
+                'pattern' => $find,
+                'indexes' => $indexes,
+              ],
+              'insert' => $insert,
+            ];
+          }
+
+          $vmod['files'][$vmod_file['name']] = $vmod_file;
         }
 
         self::$_modifications[$vmod['id']] = $vmod;
@@ -283,12 +528,11 @@
           }
 
           foreach (glob(FS_DIR_APP . $glob_pattern, GLOB_BRACE) as $file_to_modify) {
-            $relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file_to_modify);
+            $original_file = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file_to_modify);
 
-            self::$_files_to_modifications[$relative_path][] = [
+            self::$_files_to_modifications[$original_file][] = [
               'id' => $vmod['id'],
               'key' => $key,
-              'date_modified' => $vmod['date_modified'],
             ];
           }
         }
@@ -307,7 +551,7 @@
             })($tmp_file);
           }
 
-          file_put_contents(FS_DIR_STORAGE .'addons/.installed', $vmod['id'] . PHP_EOL, FILE_APPEND | LOCK_EX);
+          file_put_contents(FS_DIR_STORAGE . 'addons/.installed', $vmod['id'].';'.$vmod['version'] . PHP_EOL, FILE_APPEND | LOCK_EX);
 
           self::$_installed[] = [
             'id' => $vmod['id'],
@@ -342,7 +586,7 @@
                 return $vmod['id'] .';'. $vmod['version'];
               }, self::$_installed));
 
-              file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
+              file_put_contents(FS_DIR_STORAGE . 'addons/.installed', $new_contents . PHP_EOL, LOCK_EX);
             }
           }
         }
@@ -350,209 +594,5 @@
       } catch (\Exception $e) {
         trigger_error("Could not load vMod ($file): " . $e->getMessage(), E_USER_WARNING);
       }
-    }
-
-    public static function parse($file) {
-
-      if (!$xml = file_get_contents($file)) {
-        throw new \Exception('Could not read file', E_USER_ERROR);
-      }
-
-      $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
-
-      $dom = new \DOMDocument('1.0', 'UTF-8');
-      $dom->preserveWhiteSpace = false;
-
-      if (!$dom->loadXml($xml)) {
-        throw new \Exception(libxml_get_last_error());
-      }
-
-      if ($dom->documentElement->tagName != 'vmod') {
-        throw new \Exception('File is not a valid vmod');
-      }
-
-      if (empty($dom->getElementsByTagName('name')->item(0))) {
-        throw new \Exception('File is missing the name element');
-      }
-
-      $id = preg_replace('#\.disabled$#', '', basename(dirname($file)));
-      if ($id == 'vmods') $id = preg_replace('#\.(disabled|xml)$#', '', basename($file));
-
-      $vmod = [
-        'type' => 'vmod',
-        'id' => $id,
-        'name' => $dom->getElementsByTagName('name')->item(0)->textContent,
-        'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
-        'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
-        'files' => [],
-        'install' => null,
-        'upgrades' => [],
-        'settings' => [],
-        'date_modified' => filemtime($file),
-      ];
-
-      if (!$installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
-
-        if ($dom->getElementsByTagName('install')->length > 0) {
-          $vmod['install'] = $dom->getElementsByTagName('install')->item(0)->textContent;
-        }
-
-      } else {
-
-        if (!empty($dom->getElementsByTagName('upgrade'))) {
-          foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
-
-            $upgrade_version = $upgrade_node->getAttribute('version');
-
-            if (version_compare($vmod['version'], $upgrade_version, '<=')) {
-              $vmod['upgrades'][] = [
-                'version' => $upgrade_version,
-                'script' => $upgrade_node->textContent,
-              ];
-            }
-          }
-        }
-
-        uasort($vmod['upgrades'], function($a, $b){
-          return version_compare($a['version'], $b['version']);
-        });
-      }
-
-      $aliases = [];
-      foreach ($dom->getElementsByTagName('alias') as $alias_node) {
-        $aliases[$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
-      }
-
-      foreach ($dom->getElementsByTagName('file') as $file_node) {
-
-        $vmod_file = [
-          'name' => $file_node->getAttribute('name'),
-          'operations' => [],
-        ];
-
-        foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
-
-        // On Error
-          $onerror = $operation_node->getAttribute('onerror');
-
-        // Find
-          if (!in_array($operation_node->getAttribute('method'), ['top', 'bottom'])) {
-
-            $find_node = $operation_node->getElementsByTagName('find')->item(0);
-            $find = strtr($find_node->textContent, $aliases);
-
-          // Trim
-            if (in_array($operation_node->getAttribute('type'), ['inline', 'regex'])) {
-              $find = trim($find);
-
-            } else if (in_array($operation_node->getAttribute('type'), ['multiline', ''])) {
-              $find = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $find); // Trim beginning of CDATA
-              $find = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $find); // Trim end of CDATA
-            }
-
-          // Cook the regex pattern
-            if ($operation_node->getAttribute('type') != 'regex') {
-
-              if ($operation_node->getAttribute('type') == 'inline') {
-                $find = preg_quote($find, '#');
-
-              } else {
-
-              // Whitespace
-                $find = preg_split('#(\r\n?|\n)#', $find);
-                for ($i=0; $i<count($find); $i++) {
-                  if ($find[$i] = trim($find[$i])) {
-                    $find[$i] = '[ \\t]*' . preg_quote($find[$i], '#') . '[ \\t]*(?:\r\n?|\n|$)';
-                  } else if ($i != count($find)-1) {
-                    $find[$i] = '[ \\t]*(?:\r\n?|\n)';
-                  }
-                }
-                $find = implode($find);
-
-              // Offset
-                if ($find_node->getAttribute('offset-before') != '') {
-                  $find = '(?:.*?(?:\r\n?|\n)){'. (int)$find_node->getAttribute('offset-before') .'}' . $find;
-                }
-
-                if ($find_node->getAttribute('offset-after') != '') {
-                  $find = $find . '(?:.*?(?:\r\n?|\n|$)){0,'. (int)$find_node->getAttribute('offset-after') .'}';
-                }
-              }
-
-            // Encapsulate regex
-              $find = '#'. $find .'#';
-            }
-
-          // Indexes
-            if ($indexes = $find_node->getAttribute('index')) {
-              $indexes = preg_split('#\s*,\s*#', $indexes, -1, PREG_SPLIT_NO_EMPTY);
-            }
-          }
-
-        // Insert
-          $insert_node = $operation_node->getElementsByTagName('insert')->item(0);
-          $insert = strtr($insert_node->textContent, $aliases);
-
-          if (!empty(self::$_settings[$vmod['id']])) {
-            foreach (self::$_settings[$vmod['id']] as $key => $value) {
-              $insert = str_replace('{setting:'. $key .'}', $value, $insert);
-            }
-          }
-
-          if ($operation_node->getAttribute('type') != 'regex') {
-
-            if (in_array($operation_node->getAttribute('type'), ['multiline', ''])) {
-              $insert = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $insert); // Trim beginning of CDATA
-              $insert = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $insert); // Trim end of CDATA
-            }
-
-            switch ($method = $operation_node->getAttribute('method')) {
-
-              case 'before':
-                $insert = addcslashes($insert, '\\$').'$0';
-                break;
-
-              case 'after':
-                $insert = '$0'. addcslashes($insert, '\\$');
-                break;
-
-              case 'top':
-                $find = '#^#s';
-                $indexes = '';
-                $insert = addcslashes($insert, '\\$').'$0';
-                break;
-
-              case 'bottom':
-                $find = '#$#s';
-                $indexes = '';
-                $insert = '$0'.addcslashes($insert, '\\$');
-                break;
-
-              case 'replace':
-                $insert = addcslashes($insert, '\\$');
-                break;
-
-              default:
-              echo $vmod['id'].$vmod['name'];
-                throw new \Exception("Unknown value \"$method\" for operation method (before|after|replace|bottom|top)");
-                continue 2;
-            }
-          }
-
-        // Gather
-          $vmod_file['operations'][] = [
-            'onerror' => $onerror,
-            'find' => [
-              'pattern' => $find,
-              'indexes' => $indexes,
-            ],
-            'insert' => $insert,
-          ];
-        }
-
-        $vmod['files'][$vmod_file['name']] = $vmod_file;
-      }
-
-      return $vmod;
     }
   }

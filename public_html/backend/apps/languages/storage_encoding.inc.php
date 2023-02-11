@@ -35,7 +35,7 @@
       $table_names = array_column($tables, 'TABLE_NAME');
 
       foreach ($_POST['tables'] as $table) {
-        if (!in_array($table, $table_names)) throw new Exception(strtr(language::translate('error_unknown_table_x', 'Unknown table (%table)')), ['%table' => $table]);
+        if (!in_array($table, $table_names)) throw new Exception(strtr(language::translate('error_unknown_table_x', 'Unknown table (%table)'), ['%table' => $table]));
       }
 
       $_POST['collation'] = preg_replace('#[^a-z0-9_]#', '', $_POST['collation']);

@@ -3,13 +3,20 @@
 .table {
   width: 100%;
   max-width: 100%;
-  margin-bottom: var(--gutter-size);
+  margin-bottom: var(--gutter-y);
   background-color: transparent;
   border-spacing: 0;
   border-collapse: collapse;
 
   td, th {
-    padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+    padding: .5em ~"calc(var(--gutter-x) / 2)";
+    line-height: var(--default-line-height);
+    &:first-child {
+      padding-inline-start: var(--gutter-x);
+    }
+    &:last-child {
+      padding-inline-end: var(--gutter-x);
+    }
   }
 
   > * > tr > td,

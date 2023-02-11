@@ -115,12 +115,12 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
-              <?php echo functions::form_password_field('password', '', 'autocomplete="off"'); ?>
+              <?php echo functions::form_draw_password_field('password', '', 'autocomplete="new-password"'); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-              <?php echo functions::form_password_field('confirmed_password', '', 'autocomplete="off"'); ?>
+              <?php echo functions::form_draw_password_field('confirmed_password', '', 'autocomplete="new-password"'); ?>
             </div>
           </div>
 
@@ -154,6 +154,11 @@
               <label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
               <?php echo functions::form_text_field('date_login', true, 'readonly'); ?>
             </div>
+
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_last_active', 'Last Active'); ?></label>
+              <?php echo functions::form_draw_text_field('date_active', true, 'readonly'); ?>
+          </div>
           </div>
           <?php } ?>
         </div>

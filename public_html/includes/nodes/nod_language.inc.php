@@ -305,7 +305,7 @@
           $pattern = $intl_formats[$format];
         }
 
-        return (new IntlDateFormatter(null, $date_type, $time_type, $tz, null, $pattern))->format($timestamp);
+        return (new IntlDateFormatter(self::$selected['code'], $date_type, $time_type, $tz, null, $pattern))->format($timestamp);
       };
 
       $translation_table = [

@@ -32,6 +32,7 @@
   }
 
 // Table Rows, Total Number of Rows, Total Number of Pages
+
   $order_statuses = database::query(
     "select os.*, osi.name, o.num_orders from ". DB_TABLE_PREFIX ."order_statuses os
     left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and language_code = '". database::input(language::$selected['code']) ."')
@@ -43,10 +44,19 @@
     order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, osi.name asc;"
   )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  foreach ($order_statuses as $i => $order_status) {
-    if (empty($order_status['icon'])) $order_status['icon'] = 'fa-circle-thin';
-    if (empty($order_status['color'])) $order_status['color'] = '#cccccc';
+  foreach ($order_statuses as $key => $order_status) {
+
+    if (empty($order_status['icon'])) {
+      $order_statuses[$key]['icon'] = 'fa-circle-thin';
+    }
+
+    if (empty($order_status['color'])) {
+      $order_statuses[$key]['color'] = '#cccccc';
+    }
   }
+
+// Pagination
+  $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
 
   $states = [
     'created' => language::translate('title_created', 'Created'),
@@ -54,6 +64,7 @@
     'ready' => language::translate('title_ready', 'Ready'),
     'delayed' => language::translate('title_delayed', 'Delayed'),
     'processing' => language::translate('title_processing', 'Processing'),
+    'completed' => language::translate('title_completed', 'Completed'),
     'dispatched' => language::translate('title_dispatched', 'Dispatched'),
     'in_transit' => language::translate('title_in_transit', 'In Transit'),
     'delivered' => language::translate('title_delivered', 'Delivered'),
@@ -72,6 +83,7 @@
 
   <div class="card-action">
     <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_order_status'), language::translate('title_create_new_order_status', 'Create New Order Status'), '', 'add'); ?>
+    </ul>
   </div>
 
   <?php echo functions::form_begin('order_statuses_form', 'post'); ?>
@@ -90,7 +102,7 @@
           <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
           <th><?php echo language::translate('title_track', 'Track'); ?></th>
           <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
-          <th><?php echo language::translate('title_prioritet', 'Prioritet'); ?></th>
+          <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
           <th><?php echo language::translate('title_orders', 'Orders'); ?></th>
           <th></th>
         </tr>

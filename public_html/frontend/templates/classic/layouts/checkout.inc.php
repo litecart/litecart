@@ -27,7 +27,11 @@
     <img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
   </a>
 
-  <div class="middle hidden-xs hidden-sm"></div>
+  <div class="middle hidden-xs text-center">
+    <a class="btn btn-default btn-lg" href="<?php echo document::href_ilink(''); ?>">
+      <?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back_to_store', 'Back To Store'); ?>
+    </a>
+  </div>
 
   <div class="contact-info hidden-xs">
     <div class="title"><?php echo language::translate('title_contact', 'Contact'); ?></div>
@@ -37,12 +41,10 @@
     <div class="email"><?php echo functions::draw_fonticon('fa-envelope'); ?> <?php echo settings::get('store_email'); ?></div>
     <?php } ?>
   </div>
+
 </header>
 
-
-<main id="page">
   {{content}}
-</main>
 
 {{foot_tags}}
 <script src="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'js/app.min.js'); ?>"></script>

@@ -40,6 +40,13 @@
     order by name asc;"
   )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
+  foreach ($geo_zones as $key => $geo_zone) {
+    $geo_zones[$key]['num_zones'] = database::query(
+      "select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+      where geo_zone_id = ". (int)$geo_zone['id']
+    )->num_rows;
+  }
+
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -71,7 +78,7 @@
           <td><?php echo functions::form_checkbox('geo_zones[]', $geo_zone['id']); ?></td>
           <td><?php echo $geo_zone['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>"><?php echo $geo_zone['name']; ?></a></td>
-          <td class="text-center"><?php echo database::query("select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones where geo_zone_id = ". (int)$geo_zone['id'] ."")->num_rows; ?></td>
+          <td class="text-center"><?php echo $geo_zone['num_zones']; ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
