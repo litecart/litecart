@@ -386,6 +386,7 @@ b50b64b067520fb80eb03cf36167244e	includes/templates/default.admin/less/framework
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/less/index.html
 b8d27643da9bce960bb100085d9c408b	includes/templates/default.admin/less/printable.less
 2bf1f59aa8eba812a55ddda0cc7458fb	includes/templates/default.admin/less/variables.less
+da27b9c662fe17f647215dc8fbc820dc	includes/templates/default.admin/pages/about.inc.php
 b6fc7003936788dd0d2fa113c8f31734	includes/templates/default.admin/pages/doc.inc.php
 c350d51cd1b3329cd7f3f4a376746a97	includes/templates/default.admin/pages/error_document.inc.php
 eafbab5c5b3b16037aa78267beac0c8c	includes/templates/default.admin/pages/login.inc.php
