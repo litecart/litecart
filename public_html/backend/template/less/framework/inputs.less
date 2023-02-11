@@ -1,12 +1,13 @@
 /* Input Fields & Input Groups - Bootstrap Compatible */
 
 .input-field() {
-  padding: ~"calc(var(--input-padding-y) + 1px)" ~"calc(var(--input-padding-x) + 1px)";
+  //padding: ~"calc(var(--input-padding-y) + 1px)" ~"calc(var(--input-padding-x) + 1px)";
+  padding: .75em 1.5em;
   position: relative;
   color: var(--input-text-color);
   background: var(--input-background-color);
   border: 1px solid var(--input-border-color);
-  //box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, .10);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 10%);
   border-radius: var(--border-radius);
   &:focus {
     border-color: var(--input-border-color-focus);
@@ -239,7 +240,7 @@ html[dir="rtl"] select.form-control {
   }
   .input-group-icon {
     flex: 0 1 auto;
-    padding: .5em 1em;
+    padding: var(--input-padding-y) var(--input-padding-x);
     margin-inline-end: -12px;
   }
   .btn {
@@ -272,6 +273,20 @@ html[dir="rtl"] select.form-control {
   *:last-child:is(.input-group) {
     border-inline-end: none;
   }
+
+/*
+  .form-input + .form-input,
+  .form-input + .form-select,
+  .form-input + .input-group,
+  .form-select + .form-input,
+  .form-select + .form-select,
+  .form-select + .input-group,
+  .input-group + .form-input,
+  .input-group + .form-select,
+  .input-group + .input-group {
+    border-inline-start: 1x solid var(--input-border-color);
+  }
+*/
 }
 
 .form-group > .form-input + .form-input,

@@ -70,6 +70,7 @@
           <th></th>
         </tr>
       </thead>
+
       <tbody>
         <?php foreach ($banners as $banner) { ?>
         <tr class="<?php echo $banner['status'] ? false : ' semi-transparent'; ?>">

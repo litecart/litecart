@@ -9,16 +9,18 @@
       $results = [];
     }
 
-    if (strpos($source, '*') !== false) {
+  // Resolve logic
+    if (preg_match('#[*!\[\]{}]#', $source)) {
 
-      foreach (file_search($source) as $file) {
-        $base_source = preg_replace('#^(.*/).*?$#', '$1', strtok($source, '*'));
+      foreach (file_search($source, GLOB_BRACE) as $file) {
+        $base_source = preg_replace('#^([^*!\[\]{}]+/).*$#', '$1', $source);
         file_copy($file, rtrim($target, '/') .'/'. preg_replace('#^'. preg_quote($base_source, '#') .'#', '', $file), $results);
       }
 
     } else {
 
       if (is_dir($source)) {
+
         if (!is_dir($target)) {
           $results[$target] = mkdir($target);
           if (!$results[$target]) return false;
@@ -100,6 +102,7 @@
   }
 
   function file_move($source, $target, &$results=[]) {
+
     $source = str_replace('\\', '/', $source);
     $target = str_replace('\\', '/', $target);
 
@@ -376,4 +379,3 @@
 
     return !in_array(false, $results);
   }
-

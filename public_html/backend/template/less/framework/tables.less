@@ -8,6 +8,7 @@
   border-collapse: collapse;
 
   thead th {
+    padding: 1em;
     background: var(--table-header-background-color);
     border-bottom: 2px solid var(--table-border-color);
     vertical-align: bottom;
@@ -16,8 +17,11 @@
     vertical-align: middle;
   }
 
+  tbody td {
+    padding: .75em 1em;
+  }
+
   td, th {
-    padding: .5em 1em;
     line-height: var(--default-line-height);
     color: var(--default-text-color);
 

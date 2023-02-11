@@ -61,10 +61,10 @@
       $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime('storage://vmods/' . $filename));
 
 
-      $this->data['name'] = !empty($dom->getElementsByTagName('name')) ? $dom->getElementsByTagName('name')->item(0)->textContent : '';
-      $this->data['description'] = !empty($dom->getElementsByTagName('description')) ? $dom->getElementsByTagName('description')->item(0)->textContent : '';
-      $this->data['version'] = !empty($dom->getElementsByTagName('version')) ? $dom->getElementsByTagName('version')->item(0)->textContent : '';
-      $this->data['author'] = !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '';
+      $this->data['name'] = !empty($dom->getElementsByTagName('name')->item(0)) ? $dom->getElementsByTagName('name')->item(0)->textContent : '';
+      $this->data['description'] = !empty($dom->getElementsByTagName('description')->item(0)) ? $dom->getElementsByTagName('description')->item(0)->textContent : '';
+      $this->data['version'] = !empty($dom->getElementsByTagName('version')->item(0)) ? $dom->getElementsByTagName('version')->item(0)->textContent : '';
+      $this->data['author'] = !empty($dom->getElementsByTagName('author')->item(0)) ? $dom->getElementsByTagName('author')->item(0)->textContent : '';
 
       if ($install_node = $dom->getElementsByTagName('install')->item(0)) {
         $this->data['install'] = preg_replace('#\R*(.*)\s*#', '$1', $install_node->textContent);
@@ -208,21 +208,21 @@
       }
 
     // Uninstall
-    if (!empty($this->data['uninstall'])) {
-      $uninstall_node = $dom->createElement('uninstall');
-      $uninstall_node->appendChild( $dom->createCDATASection(PHP_EOL . rtrim($this->data['uninstall']) . PHP_EOL . str_repeat(' ', 2)) );
-      $vmod_node->appendChild( $uninstall_node );
-    }
+      if (!empty($this->data['uninstall'])) {
+        $uninstall_node = $dom->createElement('uninstall');
+        $uninstall_node->appendChild( $dom->createCDATASection(PHP_EOL . rtrim($this->data['uninstall']) . PHP_EOL . str_repeat(' ', 2)) );
+        $vmod_node->appendChild( $uninstall_node );
+      }
 
-  // Upgrade
-    foreach ($this->data['upgrades'] as $upgrade) {
-      $upgrade_node = $dom->createElement('upgrade');
-      $attribute = $dom->createAttribute('version');
-      $attribute->value = $upgrade['version'];
-      $upgrade_node->appendChild( $attribute );
-      $upgrade_node->appendChild( $dom->createCDATASection(PHP_EOL . rtrim($upgrade['script']) . PHP_EOL . str_repeat(' ', 4)) );
-      $vmod_node->appendChild( $upgrade_node );
-    }
+   // Upgrade
+      foreach ($this->data['upgrades'] as $upgrade) {
+        $upgrade_node = $dom->createElement('upgrade');
+        $attribute = $dom->createAttribute('version');
+        $attribute->value = $upgrade['version'];
+        $upgrade_node->appendChild( $attribute );
+        $upgrade_node->appendChild( $dom->createCDATASection(PHP_EOL . rtrim($upgrade['script']) . PHP_EOL . str_repeat(' ', 4)) );
+        $vmod_node->appendChild( $upgrade_node );
+      }
 
     // Files
       foreach ($this->data['files'] as $file) {

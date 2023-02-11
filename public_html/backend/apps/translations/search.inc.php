@@ -179,17 +179,17 @@ th:not(:last-child) {
     <div class="col-md-6">
       <div class="form-group">
         <label><?php echo language::translate('text_paste_your_translated_result_below', 'Paste your translated result below'); ?></label>
-        <textarea class="form-input" name="result" style="height: 455px;"></textarea>
+        <textarea class="form-input" name="result" style="height: 475px;"></textarea>
       </div>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-6">
-      <ul class="list-unstyled">
-        <li><a href="https://translate.google.com" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Google Translate</a></li>
-        <li><a href="https://www.bing.com/translator" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Bing Translate</a></li>
-      </ul>
+      <div class="btn-group btn-block">
+        <a class="btn btn-default" href="https://translate.google.com" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Google Translate</a>
+        <a class="btn btn-default" href="https://www.bing.com/translator" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Bing Translate</a>
+      </div>
     </div>
 
     <div class="col-md-6 text-end">

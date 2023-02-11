@@ -435,8 +435,9 @@
 // Get Address
 
   $('form[name="customer_form"]').on('change', ':input', function() {
+
     if ($(this).val() == '') return;
-    $('body').css('cursor', 'wait');
+
     $.ajax({
       url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
       type: 'post',
@@ -450,11 +451,11 @@
       success: function(data) {
         if (data['alert']) {
           alert(data['alert']);
-          return;
         }
         $.each(data, function(key, value) {
-          console.log(key +' '+ value);
-          if ($('input[name="'+key+'"]').length && $('input[name="'+key+'"]').val() == '') $('input[name="'+key+'"]').val(data[key]);
+          if ($('input[name="'+key+'"]').length && $('input[name="'+key+'"]').val() == '') {
+            $('input[name="'+key+'"]').val(data[key]);
+        }
         });
       },
       complete: function() {
@@ -525,8 +526,8 @@
         if (console) console.warn(errorThrown.message);
       },
       success: function(data) {
-        $("select[name='zone_code']").html('');
-        if (data.length) {
+        $('select[name="zone_code"]').html('');
+        if (data) {
           $('select[name="zone_code"]').prop('disabled', false);
           $.each(data, function(i, zone) {
             $('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');

@@ -148,7 +148,7 @@
     case 'all':
       break;
     default:
-      $sql_where_order_status =  "and o.order_status_id = ". (int)$_GET['order_status_id'];
+      $sql_where_order_status = "and o.order_status_id = ". (int)$_GET['order_status_id'];
       break;
   }
 
@@ -222,7 +222,7 @@
       from ". DB_TABLE_PREFIX ."orders
       group by order_status_id
     ) o on (o.order_status_id = os.id)
-    order by field(state,'created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled',''), osi.name asc;"
+    order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), osi.name asc;"
   );
 
   while ($order_status = database::fetch($order_statuses_query)) {

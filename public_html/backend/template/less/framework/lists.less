@@ -31,15 +31,18 @@ ul.list-inline {
   margin: 0;
   padding: 0;
   list-style: none;
-  .list-group-item:first-child {
-    border-radius: var(--border-radius);
-  }
   .list-group-item {
     position: relative;
     display: block;
-    padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+    padding: ~"calc(var(--gutter-size)/2)";
     margin-bottom: -1px;
     background-color: #fff;
     border: 1px solid var(--default-border-color);
+    &:first-child {
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+    }
+    &:last-child {
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    }
   }
 }

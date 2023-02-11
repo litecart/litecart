@@ -27,7 +27,7 @@
       'id' => $customer['id'],
       'title' => $customer['name'],
       'description' => $customer['email'],
-      'link' => document::ilink($app.'/edit_customer', ['customer_id' => $customer['id']]),
+      'link' => document::ilink('customers/edit_customer', ['customer_id' => $customer['id']]),
     ];
   }
 

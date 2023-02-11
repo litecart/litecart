@@ -7,7 +7,7 @@
       $this->modules = [];
     }
 
-    public function load($filter=null) {
+    public function load($filter=[]) {
 
       $this->reset();
 

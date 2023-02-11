@@ -446,7 +446,7 @@ input[name="development_type"]:checked + div {
         <option>utf8mb4_polish_ci</option>
         <option>utf8mb4_estonian_ci</option>
         <option>utf8mb4_spanish_ci</option>
-        <option selected="selected">utf8mb4_swedish_ci</option>
+        <option selected>utf8mb4_swedish_ci</option>
         <option>utf8mb4_turkish_ci</option>
         <option>utf8mb4_czech_ci</option>
         <option>utf8mb4_danish_ci</option>

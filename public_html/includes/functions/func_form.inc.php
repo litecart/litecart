@@ -559,7 +559,7 @@ END;
         $option_input = $input;
       }
 
-      $html .= '  <option value="'. functions::escape_html($option[0]) .'"'. (!strcmp((string)$option[0], (string)$option_input) ? ' selected="selected"' : '') . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
+      $html .= '  <option value="'. functions::escape_html($option[0]) .'"'. (!strcmp((string)$option[0], (string)$option_input) ? ' selected' : '') . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
     }
 
     $html .= '</select>';
@@ -623,7 +623,7 @@ END;
           $option_input = $input;
         }
 
-        $html .= '      <option value="'. functions::escape_html($option[0]) .'"'. (($option[0] == $option_input) ? ' selected="selected"' : '') . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. $option[1] .'</option>' . PHP_EOL;
+        $html .= '      <option value="'. functions::escape_html($option[0]) .'"'. (($option[0] == $option_input) ? ' selected' : '') . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. $option[1] .'</option>' . PHP_EOL;
       }
 
       $html .= '    </optgroup>' . PHP_EOL;
@@ -1386,7 +1386,7 @@ END;
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple_field($name, $options, $input, $parameters);
     } else {
-      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
+      array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
       return form_select_field($name, $options, $input, $parameters);
     }
   }

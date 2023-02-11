@@ -125,7 +125,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="6"><?php echo language::translate('title_recipients', 'Customers'); ?>: <?php echo language::number_format($num_rows); ?></td>
+          <td colspan="6"><?php echo language::translate('title_recipients', 'Recipients'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>

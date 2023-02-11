@@ -23,11 +23,9 @@
 
   <div id="sidebar" class="hidden-print">
 
-    <div id="logotype">
-      <a href="<?php echo document::href_ilink(''); ?>">
+    <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
         <img class="center-block responsive" src="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
       </a>
-    </div>
 
     <div id="search">
       <?php echo functions::form_search_field('query', false, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'&hellip;" autocomplete="off"'); ?>
@@ -36,9 +34,12 @@
 
     {{box_apps_menu}}
 
-    <div id="platform" class="text-center"><a href="<?php echo document::href_link(WS_DIR_ADMIN . 'about.php'); ?>"><?php echo PLATFORM_NAME; ?>® <?php echo PLATFORM_VERSION; ?></a></div>
+    <a class="platform text-center" href="<?php echo document::ilink('about'); ?>">
+      <span class="name"><?php echo PLATFORM_NAME; ?>®</span>
+      <span class="version"><?php echo PLATFORM_VERSION; ?></span>
+    </a>
 
-    <div id="copyright" class="text-center">Copyright &copy; <?php echo date('2012-Y'); ?><br />
+    <div class="copyright" class="text-center">Copyright &copy; <?php echo date('2012-Y'); ?><br />
       <a href="https://www.litecart.net" target="_blank">www.litecart.net</a>
     </div>
   </div>

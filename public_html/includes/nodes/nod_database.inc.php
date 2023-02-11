@@ -68,6 +68,17 @@
       return self::$_links[$link];
     }
 
+
+    public static function server_info($link='default') {
+
+      if (!$result = mysqli_get_server_info(self::$_links[$link])) {
+        trigger_error('Could not get server info for MySQL connection: '. mysqli_errno(self::$_links[$link]) .' - '. mysqli_error(self::$_links[$link]), E_USER_WARNING);
+        return false;
+      }
+
+      return $result;
+    }
+
     public static function set_charset($charset, $link='default') {
 
       if (!$result = mysqli_set_charset(self::$_links[$link], $charset)) {
@@ -377,6 +388,6 @@
     }
 
     public function __destruct() {
-      $this->_result->free();
+      $this->free();
     }
   }

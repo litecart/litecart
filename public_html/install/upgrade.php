@@ -497,7 +497,7 @@ input[name="development_type"]:checked + div {
       <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
       <select class="form-control" name="from_version">
         <option value="">-- Select Version --</option>
-        <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected="selected"' : '') .'>'. PLATFORM_NAME .' '. $version .'</option>' . PHP_EOL; ?>
+        <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected' : '') .'>'. PLATFORM_NAME .' '. $version .'</option>' . PHP_EOL; ?>
       </select>
     </div>
     <?php } ?>

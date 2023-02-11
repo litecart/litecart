@@ -171,12 +171,12 @@
 <?php
   $apps = functions::admin_get_apps();
   foreach ($apps as $app) {
-    echo '  <li data-app="'. functions::escape_html($app['code']) .'">' . PHP_EOL
+    echo '  <li data-app="'. functions::escape_html($app['id']) .'">' . PHP_EOL
        . '  '. functions::form_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true) . PHP_EOL;
     if (!empty($app['docs'])) {
       echo '  <ul class="list-unstyled">' . PHP_EOL;
       foreach ($app['docs'] as $doc => $file) {
-        echo '    <li data-doc="'. functions::escape_html($doc) .'"><label>'. functions::form_draw_checkbox('apps['.$app['code'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
+        echo '    <li data-doc="'. functions::escape_html($doc) .'"><label>'. functions::form_draw_checkbox('apps['.$app['id'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
       }
       echo '  </ul>' . PHP_EOL;
     }

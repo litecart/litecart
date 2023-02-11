@@ -3,7 +3,6 @@
 .btn(@type) {
   background: ~"var(--button-@{type}-background-color)";
   color: ~"var(--button-@{type}-text-color)";
-  border: 1px solid ~"var(--button-@{type}-border-color)";
   text-decoration: none;
   &:hover:not(.active):not(.disabled):not([disabled]) {
     background: ~"var(--button-@{type}-background-color-hover)";
@@ -17,10 +16,10 @@
 .btn {
   cursor: pointer;
   display: inline-block;
-  padding: var(--input-padding-y) 1.5em; /* Compensate 1px for border */
+  padding:  0.75em 1.5em;
   text-decoration:  none;
   font-weight: normal;
-  border-radius: var(--border-radius);
+  border-radius: 1em;
   //box-shadow: 0 1px 0px rgba(0, 0, 0, .25);
   text-align: center;
   vertical-align: middle;

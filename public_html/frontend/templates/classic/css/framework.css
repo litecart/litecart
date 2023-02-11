@@ -275,8 +275,13 @@ ul.breadcrumb li {
 }
 ul.breadcrumb li:not(:last-child)::after {
   content: "\00bb";
-  padding: 0 1em;
+  padding: 0 0.5em;
   color: var(--breadcrumbs-text-color);
+}
+@media (min-width: 992px) {
+  ul.breadcrumb li:not(:last-child)::after {
+    padding: 0 1em;
+  }
 }
 ul.breadcrumb li a {
   color: inherit;
@@ -1615,23 +1620,21 @@ ul.list-inline li {
   color: var(--tabs-text-color);
   padding-bottom: 0;
 }
-.nav-tabs > li {
+.nav-tabs a {
   flex: 0 0 auto;
-}
-.nav-tabs > li > a {
-  margin-inline-end: var(--gutter-x);
+  margin-inline-end: 0.5em;
   line-height: 1.4;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
-  padding: var(--gutter-y) var(--gutter-x);
+  padding: 0.5em 1em;
   background-color: var(--tabs-background-color);
   color: var(--tabs-text-color);
   border: 1px solid var(--tabs-border-color);
   border-bottom-color: var(--tabs-background-color);
 }
-.nav-tabs > li:hover a {
+.nav-tabs a:hover {
   background-color: rgba(255, 255, 255, 0.25);
 }
-.nav-tabs > li.active a {
+.nav-tabs a.active {
   background-color: var(--tabs-background-color-active);
   color: var(--tabs-text-color-active);
   margin-top: 1px;
@@ -1710,6 +1713,7 @@ ul.list-inline li {
   overflow-y: visible;
   align-items: center;
   justify-content: space-between;
+  padding: 1em;
 }
 @media (min-width: 992px) {
   .offcanvas .offcanvas-body {
@@ -1739,6 +1743,10 @@ html[dir="rtl"] .offcanvas {
   .navbar {
     flex-wrap: nowrap;
     justify-content: flex-start;
+  }
+}
+@media (min-width: 1460px) {
+  .navbar {
     border-radius: var(--border-radius);
   }
 }
@@ -1764,7 +1772,7 @@ html[dir="rtl"] .offcanvas {
   display: block;
   width: 22px;
   height: 2px;
-  background-color: var(--navigation-text-color);
+  background-color: var(--default-button-text-color);
   transition: all 250ms ease-in-out;
 }
 .navbar-toggler .icon-bar + .icon-bar {
@@ -1809,15 +1817,20 @@ html[dir="rtl"] .offcanvas {
 }
 .navbar-nav .nav-link:hover {
   background-color: var(--navigation-background-color-hover);
-  color: var(--navbar-text-color-hover);
+  color: var(--navigation-text-color-hover);
 }
 .navbar-nav .nav-link.active {
   background-color: var(--navigation-background-color-active);
-  color: var(--navbar-text-color-active);
+  color: var(--navigation-text-color-active);
 }
 @media (min-width: 992px) {
   .navbar-nav .nav-link {
     padding: 1em 1.5em;
+  }
+}
+@media (min-width: 992px) {
+  .navbar-nav .dropdown-menu .nav-link {
+    padding: 0.5em 1em;
   }
 }
 @media (max-width: calc(992px - 1px)) {
@@ -1828,7 +1841,7 @@ html[dir="rtl"] .offcanvas {
     position: static;
     float: none;
     width: auto;
-    margin: 1em;
+    margin-left: 1em;
     background-color: transparent;
     border: 0;
     box-shadow: none;
