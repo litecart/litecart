@@ -263,6 +263,11 @@
         $timestamp = new \DateTime($timestamp);
       }
 
+      if (!extension_loaded('intl')) {
+        trigger_warning('You need the PHP Intl extension enabled to format dates', E_USER_WARNING);
+        return date('Y-m-d H:i:s', $timestamp);
+      }
+
       if (!($timestamp instanceof \DateTimeInterface)) {
         trigger_error('$timestamp argument is neither a valid UNIX timestamp, a valid date-time string or a DateTime object.', E_USER_WARNING);
         return 'n/a';

@@ -1,5 +1,6 @@
 <?php
 
+  #[AllowDynamicProperties]
   class job_error_reporter {
     public $name = 'Error Reporter';
     public $description = '';

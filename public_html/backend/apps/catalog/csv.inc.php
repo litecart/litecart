@@ -550,13 +550,12 @@
 
             } elseif (!empty($row['gtin']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;")->fetch()) {
               $product = new ent_product($product['id']);
-
             }
 
             if (!empty($product->data['id'])) {
 
               if (empty($batch['overwrite'])) {
-                echo 'Skip updating existing product on line '. $batch['counters']['line'] . PHP_EOL;
+                echo 'Skip updating existing product (ID: '. $product->data['id'] .') on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
@@ -666,32 +665,50 @@
               }
             }
 
-          // Set images
+            if (empty($product->data['id'])) {
+              $product->save(); // Create product ID as we need it for images
+            }
+
+          // Delete images (by reinserting the ones that should stay)
             if (isset($row['images'])) {
-              $row['images'] = explode(';', $row['images']);
+              $row['images'] = preg_split('#;#', $row['images'], -1, PREG_SPLIT_NO_EMPTY);
 
-              $product_images = [];
-              $current_images = [];
-              foreach ($product->data['images'] as $key => $image) {
+              $product->data['images'] = [];
+              foreach ($product->previous['images'] as $key => $image) {
                 if (in_array($image['filename'], $row['images'])) {
-                  $product_images[$key] = $image;
-                  $current_images[] = $image['filename'];
+                  $product->data['images'][$key] = $image;
                 }
               }
 
-              $i=0;
-              foreach ($row['images'] as $image) {
-                if (!in_array($image, $current_images)) {
-                  $product_images['new'.++$i] = ['filename' => $image];
+              foreach ($row['images'] as $filename) {
+                if (!in_array($filename, array_column($product->data['images'], 'filename'))) {
+
+                  if (!is_file(FS_DIR_STORAGE . 'images/' . $filename)) continue;
+
+                  $checksum = md5(FS_DIR_STORAGE . 'images/' . $filename);
+
+                  database::query(
+                    "insert into ". DB_TABLE_PREFIX ."products_images
+                    (product_id, filename, checksum)
+                    values (". (int)$product->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."');"
+                  );
+
+                  $image_id = database::insert_id();
+
+                  $product->data['images'][$image_id] = [
+                    'id' => $image_id,
+                    'filename' => $filename,
+                    'checksum' => $checksum,
+                    'priority' => 0,
+                  ];
+
                 }
               }
-
-              $product->data['images'] = $product_images;
             }
 
           // Import new images
             if (!empty($row['new_images'])) {
-              foreach (explode(';', $row['new_images']) as $new_image) {
+              foreach (preg_split('#;#', $row['new_images'], -1, PREG_SPLIT_NO_EMPTY) as $new_image) {
                 $product->add_image($new_image);
               }
             }

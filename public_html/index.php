@@ -2,9 +2,9 @@
 /*!
  * LiteCart® 3.0.0
  *
- * Online Catalog and Shopping Cart Platform
+ * E-Commerce Platform
  *
- * LiteCart is provided free without warranty. Use it at your own risk.
+ * LiteCart is provided free without warranty.
  *
  * @author    LiteCart Dev Team <development@litecart.net>
  * @license   http://creativecommons.org/licenses/by-nd/4.0/ CC BY-ND 4.0

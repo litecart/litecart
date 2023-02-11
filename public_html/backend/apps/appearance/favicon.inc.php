@@ -5,6 +5,9 @@
   breadcrumbs::add(language::translate('title_appearance', 'Appearance'));
   breadcrumbs::add(language::translate('title_favicon', 'Favicon'));
 
+  $icon_sizes = [96, 64, 48, 32];
+  $thumbnail_sizes = [256, 192, 128];
+
   if (isset($_POST['upload'])) {
 
     try {
@@ -37,7 +40,7 @@
 
       $image->cropImage(256, 256, 0, 0);
 
-      foreach ([256, 192, 128] as $size) {
+      foreach ($thumbnail_sizes as $size) {
         $clone = clone $image;
         $clone->setFormat('png32');
         $clone->scaleImage($size, 0);
@@ -46,7 +49,7 @@
 
       $icon = new Imagick();
       $icon->setFormat('ico');
-      foreach ([96, 64, 48, 32] as $size) {
+      foreach ($icon_sizes as $size) {
         $clone = clone $image;
         $clone->scaleImage($size, 0);
         $icon->addImage($clone);
@@ -102,25 +105,13 @@
 
       <div class="icons">
 
-        <?php if (is_file($icon = 'storage://images/favicons/favicon-256x256.png')) { ?>
+        <?php foreach ($thumbnail_sizes as $size) { ?>
+        <?php if (is_file($icon = FS_DIR_STORAGE . 'images/favicons/favicon-'.$size.'x'.$size.'.png')) { ?>
         <div class="icon">
           <img class="thumbnail" src="<?php echo document::href_rlink($icon); ?>" width="256" height="256" alt="" />
           <div><?php echo basename($icon); ?></div>
         </div>
         <?php } ?>
-
-        <?php if (is_file($icon = 'storage://images/favicons/favicon-192x192.png')) { ?>
-        <div class="icon">
-          <img class="thumbnail" src="<?php echo document::href_rlink($icon); ?>" width="192" height="192" alt="" />
-          <div><?php echo basename($icon); ?></div>
-        </div>
-        <?php } ?>
-
-        <?php if (is_file($icon = 'storage://images/favicons/favicon-128x128.png')) { ?>
-        <div class="icon">
-          <img class="thumbnail" src="<?php echo document::href_rlink($icon); ?>" width="128" height="128" alt="" />
-          <div><?php echo basename($icon); ?></div>
-        </div>
         <?php } ?>
 
         <?php if (is_file($icon = 'storage://images/favicons/favicon.ico')) { ?>
@@ -140,7 +131,7 @@
         </div>
       </div>
 
-      <p><?php echo language::translate('note_favicon_best_result_achieved', 'Note: Best results are achieved by uploading a 256 x 256px PNG image with alpha transparency.'); ?></p>
+      <p><?php echo strtr(language::translate('note_favicon_best_result_achieved', 'Note: Best results are achieved by uploading a %size pixels PNG image with alpha transparency.'), ['%size' => '256x256']); ?></p>
 
     <?php echo functions::form_end(); ?>
   </div>

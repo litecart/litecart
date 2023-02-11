@@ -59,6 +59,9 @@
         'subtotal' => 0,
         'subtotal_tax' => 0,
         'display_prices_including_tax' => settings::get('default_display_prices_including_tax'),
+        'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '',
+        'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
+        'domain' => isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '',
       ]);
 
       $this->data['shipping_option']['userdata'] = [];
@@ -201,8 +204,8 @@
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."orders
-          (client_ip, user_agent, domain, date_created)
-          values ('". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". database::input($_SERVER['HTTP_HOST']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+          (uid, client_ip, user_agent, domain, date_created)
+          values ('". database::input($this->data['uid']) ."', '". database::input($this->data['client_ip']) ."', '". database::input($this->data['user_agent']) ."', '". database::input($this->data['domain']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
 
         $this->data['id'] = database::insert_id();
@@ -278,13 +281,8 @@
     // Restock previous items
       if (!empty($this->previous['order_status_id']) && reference::order_status($this->previous['order_status_id'])->stock_action == 'commit') {
         foreach ($this->previous['items'] as $previous_order_item) {
-          if (empty($previous_order_item['stock_item_id'])) continue;
-          database::query(
-            "update ". DB_TABLE_PREFIX ."stock_items
-            set quantity = quantity + ". (float)$previous_order_item['quantity'] ."
-            where id = ". (int)$previous_order_item['stock_item_id'] ."
-            limit 1;"
-          );
+          if (empty($previous_order_item['product_id'])) continue;
+          $this->adjust_stock_quantity($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], (float)$previous_order_item['quantity']);
         }
       }
 
@@ -321,8 +319,7 @@
 
       // Withdraw stock
         if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
-          $product = new ent_product($item['product_id']);
-          $product->adjust_quantity(-(float)$item['quantity'], $item['option_stock_combination']);
+            $this->adjust_stock_quantity($item['product_id'], $item['option_stock_combination'], -(float)$item['quantity']);
         }
         database::query(
           "update ". DB_TABLE_PREFIX ."orders_items
@@ -693,6 +690,12 @@
             ->set_subject($subject)
             ->add_body($message, true)
             ->send();
+    }
+
+    public function adjust_stock_quantity($product_id, $combination, $quantity_adjustment) {
+      if ($quantity_adjustment == 0) return;
+      $product = new ent_product($product_id);
+      $product->adjust_quantity((float)$quantity_adjustment, $combination);
     }
 
     public function delete() {

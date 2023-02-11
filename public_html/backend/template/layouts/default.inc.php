@@ -36,7 +36,7 @@
 
     {{box_apps_menu}}
 
-    <div id="platform" class="text-center"><?php echo PLATFORM_NAME; ?>® <?php echo PLATFORM_VERSION; ?></div>
+    <div id="platform" class="text-center"><a href="<?php echo document::href_link(WS_DIR_ADMIN . 'about.php'); ?>"><?php echo PLATFORM_NAME; ?>® <?php echo PLATFORM_VERSION; ?></a></div>
 
     <div id="copyright" class="text-center">Copyright &copy; <?php echo date('2012-Y'); ?><br />
       <a href="https://www.litecart.net" target="_blank">www.litecart.net</a>

@@ -201,7 +201,11 @@
 
         case 'final_price':
 
-          $this->_data['final_price'] = (isset($this->campaign['price']) && $this->campaign['price'] > 0) ? $this->campaign['price'] : $this->price;
+          $this->_data['final_price'] = $this->price;
+
+          if (isset($this->campaign['price']) && $this->campaign['price'] > 0 && $this->campaign['price'] < $this->_data['final_price']) {
+            $this->_data['final_price'] = $this->campaign['price'];
+          }
 
           break;
 

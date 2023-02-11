@@ -424,14 +424,8 @@
         }
       }
 
-    // Update product image
-      if (!empty($this->data['images'])) {
-        $images = array_values($this->data['images']);
-        $image = array_shift($images);
-        $this->data['image'] = $image['filename'];
-      } else {
-        $this->data['image'];
-      }
+    // Set main product image
+      $this->data['image'] = !empty($this->data['images']) ? array_values($this->data['images'])[0]['filename'] : '';
 
       database::query(
         "update ". DB_TABLE_PREFIX ."products

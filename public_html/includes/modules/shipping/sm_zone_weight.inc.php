@@ -1,5 +1,6 @@
 <?php
 
+  #[AllowDynamicProperties]
   class sm_zone_weight {
     public $name = 'Zone Based Shipping';
     public $description = '';

@@ -1,12 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
 @import "framework/media.less";
+
+/* Fonts */
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''), url('../fonts/roboto-v30-latin-ext_latin-regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: local(''), url('../fonts/roboto-v30-latin-ext_latin-700.woff2') format('woff2');
+}
 
 /* Variables */
 
 :root {
 
-  --border-radius: .33em;
+  --border-radius: 8px;
   --gutter-size: 2rem;
   --link-text-color: #06b;
   --whitespace-color: #fff;
@@ -28,7 +41,7 @@
   --default-background-color: #f2f3f6;
   --default-background-color-hover: #f2f3f6;
 
-  --default-border-color: #e6e8ec;
+  --default-border-color: #f2f3f7;
   --default-line-height: 1.25;
   --default-text-font: Roboto, Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #444;

@@ -1,5 +1,6 @@
 <?php
 
+  #[AllowDynamicProperties]
   class job_cache_cleaner {
     public $name = 'Cache Cleaner';
     public $description = 'Wipe out old cache files that are starting to collect dust.';

@@ -451,7 +451,10 @@
 
             $_watermark = new imagick();
             $_watermark->readImage($watermark);
-            $_watermark->thumbnailImage(round($this->width()/3), round($this->height()/3), true);
+
+          if ($_watermark->getImageWidth() > ($this->width() / 5) || $_watermark->getImageHeight() > ($this->height() / 5)) {
+            $_watermark->thumbnailImage(round($this->width()/5), round($this->height()/5), true);
+          }
 
             switch (strtoupper($align_x)) {
               case 'LEFT':
@@ -508,7 +511,7 @@
           }
 
         // Shrink a large watermark
-          $_watermark->resample(round($this->width()/3), round($this->height()/3), 'FIT_ONLY_BIGGER');
+          $_watermark->resample(round($this->width()/5), round($this->height()/5), 'FIT_ONLY_BIGGER');
 
         // Align watermark and set horizontal offset
           switch (strtoupper($align_x)) {
