@@ -94,6 +94,9 @@
     case 'archived':
       $sql_where_order_status = "and (os.is_archived = 1)";
       break;
+    case 'unprocessed':
+      $sql_where_order_status = "and o.order_status_id = 0";
+      break;
     case 'all':
       break;
     default:
@@ -170,6 +173,7 @@
       'options' => [
         [language::translate('title_current', 'Current Orders'), ''],
         [language::translate('title_archived_orders', 'Archived Orders'), 'archived'],
+        [language::translate('title_unprocessed_orders', 'Unprocessed Orders'), 'unprocessed'],
         [language::translate('title_all_orders', 'All Orders'), 'all'],
       ],
     ],
