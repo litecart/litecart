@@ -126,6 +126,7 @@
             break;
 
           case 'prices':
+            $hash_string .= currency::$selected['code'];
             $hash_string .= !empty(customer::$data['display_prices_including_tax']) ? '1' : '0';
             $hash_string .= !empty(customer::$data['country_code']) ? customer::$data['country_code'] : '';
             $hash_string .= !empty(customer::$data['zone_code']) ? customer::$data['zone_code'] : '';
