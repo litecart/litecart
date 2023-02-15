@@ -2,6 +2,7 @@
 
 // PHP doesn't always clean up temp files, so let's create a function that does
   function file_create_tempfile() {
+
     $tmp_file = stream_get_meta_data(tmpfile())['uri'];
 
     register_shutdown_function(function($f){
