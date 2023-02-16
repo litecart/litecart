@@ -266,7 +266,7 @@ e2af395923278bea690f1e656c401291	includes/functions/func_csv.inc.php
 2341090b7652ec1d4486dc35406ab975	includes/functions/func_escape.inc.php
 d7f0758b2ae6dff3b0fd52745e544431	includes/functions/func_file.inc.php
 0a4c1a1000fb37672a2774b4a017ec37	includes/functions/func_form.inc.php
-9215b8d01b40f215fc2dadaa705cb8b7	includes/functions/func_format.inc.php
+8dbb0a63ba2f75765e1c92428c97e8fe	includes/functions/func_format.inc.php
 c95e56a0bd50153bdc4dda7362190fcd	includes/functions/func_general.inc.php
 e780527b9c0e155c753634aadb1b61e1	includes/functions/func_image.inc.php
 231cef34d721c9dc918fc6c64f795413	includes/functions/func_password.inc.php

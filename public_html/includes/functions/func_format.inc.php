@@ -139,10 +139,10 @@
     }
 
   // Strip non printable characters and symbols
-    $text = preg_replace(['#[[:cntrl:]]+#', '#&(amp;)?#', '#[!"\#$%\'()*+,./:;<=>?@\[\]\\^`{}|~\s+]#'], '', $text);
+    $text = preg_replace(['#[[:cntrl:]]+#', '#&(amp;)?#', '#[!"\#$%\'()*+,./:;<=>?@\[\]\\^`{}|~]#'], '', $text);
 
   // Underscores and dashes
-    $text = trim(preg_replace('#[-_]+#', '-', $text), '-');
+    $text = trim(preg_replace('#[-_ ]+#', '-', $text), '-');
 
   // Convert to lowercases
     $text = mb_strtolower($text);
