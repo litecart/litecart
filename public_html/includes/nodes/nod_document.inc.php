@@ -250,8 +250,8 @@
       }
 
     // Remove HTML comments
-      $GLOBALS['output'] = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function() {
-        return preg_replace('#<!--.*?-->#ms', '', $GLOBALS['output']);
+      $GLOBALS['output'] = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function($matches) {
+        return preg_replace('#<!--.*?-->#ms', '', $matches[0]);
       }, $GLOBALS['output']);
 
     // Static domain
