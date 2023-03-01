@@ -40,7 +40,9 @@
       }
 
     // Set time zone
-      date_default_timezone_set(self::get('store_timezone'));
+      if ($timezone = self::get('store_timezone')) {
+        date_default_timezone_set($timezone);
+      }
     }
 
     ######################################################################
