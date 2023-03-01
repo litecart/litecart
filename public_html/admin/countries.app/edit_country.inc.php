@@ -104,12 +104,12 @@
 
       <div class="row">
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-2) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+          <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-2) <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
           <?php echo functions::form_draw_text_field('iso_code_2', true, 'required pattern="[A-Z]{2}"'); ?>
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-3) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+          <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-3) <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
           <?php echo functions::form_draw_text_field('iso_code_3', true, 'required pattern="[A-Z]{3}"'); ?>
         </div>
       </div>
@@ -145,7 +145,7 @@
 
       <div class="row">
         <div class="form-group col-md-4">
-          <label><?php echo language::translate('title_language_code', 'Language Code'); ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+          <label><?php echo language::translate('title_language_code', 'Language Code'); ?> <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
           <?php echo functions::form_draw_text_field('language_code', true); ?>
         </div>
 
