@@ -1366,8 +1366,8 @@
     if (!empty($value)) {
       $product_query = database::query(
         "select p.id, p.sku, pp.price, pi.name
-        from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        from ". DB_TABLE_PREFIX ."products p
+        left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         left join (
           select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
           from ". DB_TABLE_PREFIX ."products_prices
