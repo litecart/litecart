@@ -563,9 +563,9 @@
             <li data-group-id="<?php echo functions::escape_html($group_id); ?>" data-group-name="<?php echo functions::escape_html($option['name']); ?>">
 
               <div class="float-end">
-                <a class="move-group-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
-                <a class="move-group-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
-                <a class="remove-group" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                <a class="btn btn-default move-group-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-up', 'style="color: #3399cc;"'); ?></a>
+                <a class="btn btn-default move-group-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-down', 'style="color: #3399cc;"'); ?></a>
+                <a class="btn btn-default remove-group" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times', 'style="color: #cc3333;"'); ?></a>
               </div>
 
               <h2><?php echo $option['name']; ?></h2>
@@ -1335,9 +1335,9 @@
     if (!$('#tab-options input[name^="options"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
       var output = '<li data-group-id="'+ escapeHTML($(groupElement).val()) +'" data-group-name="'+ escapeHTML($(groupElement).find('option:selected').text()) +'">'
                  + '  <div class="float-end">'
-                 + '    <a class="move-group-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>'
-                 + '    <a class="move-group-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>'
-                 + '    <a class="remove-group" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
+                 + '    <a class="btn btn-default move-group-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-up', 'style="color: #3399cc;"'); ?></a>'
+                 + '    <a class="btn btn-default move-group-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-down', 'style="color: #3399cc;"'); ?></a>'
+                 + '    <a class="btn btn-default remove-group" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times', 'style="color: #cc3333;"'); ?></a>'
                  + '  </div>'
                  + '  <h2>'+ $(this).closest('fieldset').find('select[name="new_predefined_option[group_id]"] option:selected').text() +'</h2>'
                  + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('options[new_group_id][group_id]', 'new_group_id')); ?>'
