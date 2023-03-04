@@ -6,6 +6,7 @@
     private $_username;
     private $_password;
     private $_log_handle;
+    private $_last_response;
 
     function __construct($host, $port=25, $username='', $password='') {
 
