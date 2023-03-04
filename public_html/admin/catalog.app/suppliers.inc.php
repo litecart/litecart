@@ -47,6 +47,7 @@
       <thead>
         <tr>
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th></th>
         </tr>
@@ -56,6 +57,7 @@
         <?php foreach ($suppliers as $supplier) { ?>
         <tr>
           <td><?php echo functions::form_draw_checkbox('suppliers[]', $supplier['id']); ?></td>
+          <td><?php echo $supplier['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_supplier', 'supplier_id' => $supplier['id']], ['app']); ?>"><?php echo $supplier['name']; ?></a></td>
           <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_supplier', 'supplier_id' => $supplier['id']]); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
@@ -64,7 +66,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="3"><?php echo language::translate('title_suppliers', 'Suppliers'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="4"><?php echo language::translate('title_suppliers', 'Suppliers'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>
