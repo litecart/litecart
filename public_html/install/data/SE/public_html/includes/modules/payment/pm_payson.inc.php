@@ -413,7 +413,7 @@
           'key' => 'geo_zone_id',
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_geo_zone_limitation', 'Geo Zone Limitation'),
-          'description' => language::translate(__CLASS__.':description_geo_zone', 'Limit this module to the selected geo zone. Otherwise leave blank.'),
+          'description' => language::translate(__CLASS__.':description_geo_zone', 'Limit this module to the selected geo zone. Otherwise, leave it blank.'),
           'function' => 'geo_zone()',
         ],
         [
