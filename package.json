@@ -29,6 +29,9 @@
 		"phplint": "^2.0.5",
 		"sass": "^1.55.0"
 	},
+	"engines": {
+		"node": ">=19"
+	},
 	"scripts": {
 		"build": "grunt",
 		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php",
