@@ -18,7 +18,7 @@
 
       header('X-Frame-Options: SAMEORIGIN'); // Clickjacking Protection
       header('Content-Security-Policy: frame-ancestors \'self\';'); // Clickjacking Protection
-      header('Access-Control-Allow-Origin: '. document::ilink('')); // Only allow HTTP POST data data from own domain
+      header('Access-Control-Allow-Origin: '. document::ilink('')); // Only allow HTTP POST data from own domain
       header('X-Powered-By: '. PLATFORM_NAME);
 
     // Set template

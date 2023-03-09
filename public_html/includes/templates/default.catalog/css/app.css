@@ -105,7 +105,7 @@ body.scrolling-down #site-menu {
   flex-grow: 1;
 }
 .navbar-header .logotype img {
-  max-width: 150px;
+  max-width: 140px;
   max-height: 32px;
 }
 @media (min-width: 768px) {
@@ -233,11 +233,12 @@ body.scrolling-down #site-menu {
 #footer .columns {
   display: grid;
   margin-bottom: 0;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
   grid-gap: var(--gutter-x);
 }
 @media (min-width: 768px) {
   #footer .columns {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     grid-template-columns: repeat(4, 1fr);
   }
 }

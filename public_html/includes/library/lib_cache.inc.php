@@ -191,8 +191,7 @@
         if (empty(self::$enabled)) return;
 
         if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
-          if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) return;
-          if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) return;
+          if (preg_match('#no-cache|max-age=0#i', $_SERVER['HTTP_CACHE_CONTROL'])) return;
         }
       }
 
