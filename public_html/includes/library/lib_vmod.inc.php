@@ -551,13 +551,13 @@
                 break;
 
               case 'top':
-                $find = '#^#s';
+                $find = '#^.*$#s';
                 $indexes = '';
                 $insert = addcslashes($insert, '\\$').'$0';
                 break;
 
               case 'bottom':
-                $find = '#$#s';
+                $find = '#^.*$#s';
                 $indexes = '';
                 $insert = '$0'.addcslashes($insert, '\\$');
                 break;
