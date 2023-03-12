@@ -467,7 +467,7 @@
           if (!in_array($operation_node->getAttribute('method'), ['top', 'bottom'])) {
 
             $find_node = $operation_node->getElementsByTagName('find')->item(0);
-            $find = strtr($find_node->textContent, $aliases);
+            $find = $find_node->textContent;
 
           // Trim
             if (in_array($operation_node->getAttribute('type'), ['inline', 'regex'])) {
@@ -519,10 +519,10 @@
 
         // Insert
           $insert_node = $operation_node->getElementsByTagName('insert')->item(0);
-          $insert = strtr($insert_node->textContent, $aliases);
+          $insert = $insert_node->textContent;
 
-          if (!empty($vmod['aliases'])) {
-            foreach ($vmod['aliases'] as $key => $value) {
+          if (!empty($aliases)) {
+            foreach ($aliases as $key => $value) {
               $insert = str_replace('{alias:'. $key .'}', $value, $insert);
             }
           }
