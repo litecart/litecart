@@ -29,6 +29,9 @@
       }
 
       if (settings::get('cache_clear_thumbnails')) {
+
+        clearstatcache();
+
         foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
           foreach (glob($dir.'/*.{jpg,png,webp}', GLOB_BRACE) as $file) {
             unlink($file);

@@ -23,6 +23,8 @@
       $timestamp = strtotime('-24 hours');
       $deleted = 0;
 
+      clearstatcache();
+
       foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
         $search = !empty($keyword) ? '/*_'.$keyword.'*.cache' : '/*.cache';
         foreach (glob($dir.$search) as $file) {
