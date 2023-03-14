@@ -217,7 +217,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_categories', 'Categories'); ?></label>
-                <?php echo functions::form_draw_categories_list('categories[]', true, 'style="max-height: 480px;"'); ?>
+                <?php echo functions::form_draw_categories_list('categories[]', true, 'style="max-height: 380px;"'); ?>
               </div>
 
               <div class="form-group">
