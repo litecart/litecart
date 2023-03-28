@@ -327,19 +327,19 @@ input[name="development_type"]:checked + div {
     <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
     <li>Extensions
       <ul>
-        <li>apc / apcu <?php echo (extension_loaded('apcu') || extension_loaded('apc')) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Missing]</span>'; ?></li>
-        <li>dom <?php echo extension_loaded('dom') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-        <li>fileinfo <?php echo extension_loaded('fileinfo') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-        <li>gd / imagick <?php echo extension_loaded('imagick') ? '<span class="ok">[OK]</span>' : (extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'); ?></li>
-        <li>intl <?php echo extension_loaded('intl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-        <li>json <?php echo extension_loaded('json') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-        <li>libxml <?php echo extension_loaded('libxml') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-        <li>mbstring <?php echo extension_loaded('mbstring') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-        <li>mysqli <?php echo extension_loaded('mysqli') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-        <li>mysqlnd <?php echo extension_loaded('mysqlnd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-        <li>openssl <?php echo extension_loaded('openssl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-        <li>simplexml <?php echo extension_loaded('simplexml') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-        <li>zip <?php echo extension_loaded('zip') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>apc / apcu <?php echo (extension_loaded('apcu') || extension_loaded('apc')) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Missing, optional]</span>'; ?></li>
+        <li>dom <?php echo extension_loaded('dom') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing, required]</span>'; ?></li>
+        <li>fileinfo <?php echo extension_loaded('fileinfo') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing, optional]</span>'; ?></li>
+        <li>gd / imagick <?php echo extension_loaded('imagick') ? '<span class="ok">[OK]</span>' : (extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing, required]</span>'); ?></li>
+        <li>intl <?php echo extension_loaded('intl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing, required]</span>'; ?></li>
+        <li>json <?php echo extension_loaded('json') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing, required]</span>'; ?></li>
+        <li>libxml <?php echo extension_loaded('libxml') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing, required]</span>'; ?></li>
+        <li>mbstring <?php echo extension_loaded('mbstring') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing, required]</span>'; ?></li>
+        <li>mysqli <?php echo extension_loaded('mysqli') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing, required]</span>'; ?></li>
+        <li>mysqlnd <?php echo extension_loaded('mysqlnd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing, required]</span>'; ?></li>
+        <li>openssl <?php echo extension_loaded('openssl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing, required]</span>'; ?></li>
+        <li>simplexml <?php echo extension_loaded('simplexml') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing, required]</span>'; ?></li>
+        <li>zip <?php echo extension_loaded('zip') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing, required]</span>'; ?></li>
       </ul>
     </li>
   </ul>

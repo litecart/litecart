@@ -533,6 +533,15 @@ body.scrolling-down #site-menu {
   max-width: 640px;
   text-align: left;
 }
+.listing .product .stock-available .value {
+  color: #009900;
+}
+.listing .product .stock-partly-available .value {
+  color: #ff9900;
+}
+.listing .product .stock-unavailable .value {
+  color: #cc0000;
+}
 .listing .product .price-wrapper {
   font-size: 1.25em;
 }
@@ -696,4 +705,7 @@ body.scrolling-down #site-menu {
 }
 #box-product .description p:last-child {
   margin-bottom: 0;
+}
+#box-product .description a {
+  text-decoration: underline;
 }
