@@ -14,7 +14,7 @@
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
       . "Options:\n"
       . "  --from_version       Manually set version migrating from. Omit for auto detection\n"
-      . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n";
+      . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n";
       exit;
     }
 

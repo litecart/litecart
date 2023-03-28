@@ -19,7 +19,7 @@
       . "  --admin_folder       Set admin folder name (Default admin)\n"
       . "  --username           Set admin username\n"
       . "  --password           Set admin user password\n\n"
-      . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n\n";
+      . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n\n";
       exit;
     }
 
