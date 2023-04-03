@@ -60,7 +60,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($vmod->data['id'])) throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vmod'));
+
+      if (empty($vmod->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vmod'));
+      }
 
       $vmod->delete(!empty($_POST['cleanup']));
 
@@ -106,6 +109,8 @@
     '#^includes/wrappers/wrap_storage.inc.php$#',
     '#^install/#',
     '#^storage/#',
+    '#^vendor/#',
+    '#^vmods/#',
   ];
 
   $scripts = functions::file_search(FS_DIR_APP . '**.php', GLOB_BRACE);
@@ -152,11 +157,13 @@ html.dark-mode .operation {
 .script .filename {
   position: absolute;
   display: inline-block;
-  top: 0;
+  top: 1px;
   right: 2em;
   padding: .5em 1em;
   border-radius: 0 0 4px 4px;
   background: #fff3;
+  backdrop-filter: blur(2px);
+  font-size: .8em;
   color: #fffc
 }
 
@@ -693,19 +700,23 @@ textarea.warning {
   $('#files').on('change', ':input[name$="[type]"]', function(e) {
     e.preventDefault();
     let match_type = $(this).val();
+
     $(this).closest('.operation').find(':input[name$="[content]"]').each(function(i, field){
       switch (match_type) {
+
         case 'inline':
         case 'regex':
           var $newfield = $('<input class="form-code" name="'+ $(field).attr('name') +'" type="text" />').val($(field).val());
           $(field).replaceWith($newfield);
           break;
+
         default:
           var $newfield = $('<textarea class="form-code" name="'+ $(field).attr('name') +'" /></textarea>').val($(field).val());
           $(field).replaceWith($newfield);
           break;
       }
     });
+
     $(this).closest('.operation').find(':input[name$="[find][content]"]').trigger('input');
   });
 

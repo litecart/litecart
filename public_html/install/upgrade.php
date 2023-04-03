@@ -364,27 +364,29 @@ input[name="development_type"]:checked + div {
   <h2>Application</h2>
 
   <div class="row">
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-6">
       <label>MySQL Server</label>
       <div class="form-control">
         <?php echo DB_SERVER; ?>
       </div>
     </div>
 
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-6">
       <label>MySQL Database</label>
       <div class="form-control">
         <?php echo DB_DATABASE; ?>
       </div>
     </div>
+  </div>
 
+  <div class="row">
     <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
       <label>Current Version</label>
       <div class="form-control"><?php echo PLATFORM_DATABASE_VERSION; ?></div>
     </div>
     <?php } else { ?>
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
       <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
       <select class="form-control" name="from_version">
         <option value="">-- Select Version --</option>
@@ -393,10 +395,16 @@ input[name="development_type"]:checked + div {
     </div>
     <?php } ?>
 
-  </div>
+    <div class="form-group col-md-3">
+      <label>New Version</label>
+      <div class="form-control"><?php echo PLATFORM_VERSION; ?></div>
+    </div>
 
-  <div class="form-group text-center">
-    <label><input type="checkbox" class="form-check" name="skip_updates" value="0" /> Skip downloading the latest updates</label>
+    <div class="form-group col-md-6">
+      <label style="margin-top: 2.25em;">
+        <input type="checkbox" class="form-check" name="skip_updates" value="0" /> Skip downloading the latest updates
+      </label>
+    </div>
   </div>
 
   <h2>Development</h2>
