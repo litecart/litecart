@@ -600,7 +600,7 @@
         return form_draw_textarea($name, $input, $parameters . ' rows="10"');
 
       case 'category':
-        return form_draw_categories_list($name, $input, $parameters);
+        return form_draw_category_field($name, $input, $parameters);
 
       case 'categories':
         return form_draw_categories_list($name, $input, true, $parameters);
