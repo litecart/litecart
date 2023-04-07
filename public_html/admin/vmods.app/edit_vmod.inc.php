@@ -591,7 +591,7 @@ textarea.warning {
     <div class="row">
       <div class="form-group col-md-3">
         <label><?php echo language::translate('title_method', 'Method'); ?></label>
-        <?php echo functions::form_draw_select_field('files[current_tab_index][operations][new_operation_index][method]', $method_options, ''); ?>
+        <?php echo functions::form_draw_select_field('files[current_tab_index][operations][new_operation_index][method]', $method_options, 'after'); ?>
       </div>
 
       <div class="form-group col-md-6">
