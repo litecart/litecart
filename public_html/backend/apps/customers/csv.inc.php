@@ -302,7 +302,7 @@
 
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
-              <div>
+              <div class="form-input">
                 <?php echo functions::form_radio_button('type', ['customers', language::translate('title_customers', 'Customers')], true); ?>
                 <?php echo functions::form_radio_button('type', ['newsletter_recipients', language::translate('title_newsletter_recipients', 'Newsletter Recipients')], true); ?>
               </div>
@@ -355,7 +355,7 @@
 
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
-              <div>
+              <div class="form-input">
                 <?php echo functions::form_radio_button('type', ['customers', language::translate('title_customers', 'Customers')], true); ?>
                 <?php echo functions::form_radio_button('type', ['newsletter_recipients', language::translate('title_newsletter_recipients', 'Newsletter Recipients')], true); ?>
               </div>

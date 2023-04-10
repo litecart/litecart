@@ -6,7 +6,7 @@
     'priority' => 0,
 
     'theme' => [
-      'color' => '#c71799',
+      'color' => '#b34095',
       'icon' => 'fa-th-large',
     ],
 

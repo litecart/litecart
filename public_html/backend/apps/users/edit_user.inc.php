@@ -115,12 +115,12 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
-              <?php echo functions::form_draw_password_field('password', '', 'autocomplete="new-password"'); ?>
+              <?php echo functions::form_password_field('password', '', 'autocomplete="new-password"'); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-              <?php echo functions::form_draw_password_field('confirmed_password', '', 'autocomplete="new-password"'); ?>
+              <?php echo functions::form_password_field('confirmed_password', '', 'autocomplete="new-password"'); ?>
             </div>
           </div>
 
@@ -157,7 +157,7 @@
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_active', 'Last Active'); ?></label>
-              <?php echo functions::form_draw_text_field('date_active', true, 'readonly'); ?>
+              <?php echo functions::form_text_field('date_active', true, 'readonly'); ?>
           </div>
           </div>
           <?php } ?>
@@ -176,7 +176,7 @@
     if (!empty($app['docs'])) {
       echo '  <ul class="list-unstyled">' . PHP_EOL;
       foreach ($app['docs'] as $doc => $file) {
-        echo '    <li data-doc="'. functions::escape_html($doc) .'"><label>'. functions::form_draw_checkbox('apps['.$app['id'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
+        echo '    <li data-doc="'. functions::escape_html($doc) .'"><label>'. functions::form_checkbox('apps['.$app['id'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
       }
       echo '  </ul>' . PHP_EOL;
     }

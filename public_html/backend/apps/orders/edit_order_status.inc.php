@@ -113,7 +113,7 @@
 
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-              <?php echo functions::form_draw_number_field('priority', true); ?>
+              <?php echo functions::form_number_field('priority', true); ?>
           </div>
 
           <div class="form-group">

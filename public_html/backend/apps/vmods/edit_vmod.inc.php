@@ -207,7 +207,7 @@ textarea.warning {
     </div>
   </div>
 
-  <?php echo functions::form_form_begin('vmod_form', 'post', false, true); ?>
+  <?php echo functions::form_begin('vmod_form', 'post', false, true); ?>
 
     <nav class="nav nav-tabs">
       <a class="nav-link active" href="#tab-general" data-toggle="tab"><?php echo language::translate('title_general', 'General'); ?></a>

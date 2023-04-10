@@ -36,7 +36,7 @@
 </div>
 
 <script>
-  let xhr_product_picker = null;
+  var xhr_product_picker = null;
   $('#modal-product-picker input[name="query"]').on('input', function(){
 
     if ($(this).val() == '') {

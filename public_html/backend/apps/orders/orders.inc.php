@@ -94,6 +94,9 @@
     }
   }
 
+// Table Rows
+  $orders = [];
+
   if (!empty($_GET['query'])) {
     $sql_where_query = [
       "o.id = '". database::input($_GET['query']) ."'",
@@ -345,7 +348,7 @@ table .fa-star:hover {
             </div>
           </fieldset>
         </li>
-        <?php if ($order_actions) foreach ($order_actions as $module) { ?>
+        <?php foreach ($order_actions as $module) { ?>
         <li>
           <fieldset title="<?php echo functions::escape_html($module['description']); ?>">
             <legend><?php echo $module['name']; ?></legend>

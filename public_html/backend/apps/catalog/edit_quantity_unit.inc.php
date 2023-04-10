@@ -93,7 +93,7 @@
       <div class="row">
         <div class="form-group col-md-4">
           <label><?php echo language::translate('title_decimals', 'Decimals'); ?></label>
-          <?php echo functions::form_draw_field('decimals', true); ?>
+          <?php echo functions::form_number_field('decimals', true); ?>
         </div>
 
         <div class="form-group col-md-8">

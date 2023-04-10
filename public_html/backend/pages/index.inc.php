@@ -5,10 +5,6 @@
   breadcrumbs::reset();
   breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), document::ilink(''));
 
-// Apps
-  include 'app://backend/partials/box_apps_menu.inc.php';
-  document::$snippets['box_apps_menu'] = $box_apps_menu;
-
 // Display app content
   if (defined('__APP__')) {
 

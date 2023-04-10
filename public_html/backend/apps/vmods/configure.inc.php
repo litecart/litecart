@@ -35,7 +35,7 @@
       $settings[(string)$setting->key] = (string)$setting->default_value;
       if (isset($vmods_settings[$id][(string)$setting->key])) {
         $settings[(string)$setting->key] = $vmods_settings[$id][(string)$setting->key];
-		}
+      }
     }
 
 		if (!$_POST) {

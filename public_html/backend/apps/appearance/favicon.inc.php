@@ -55,7 +55,7 @@
         $icon->addImage($clone);
       }
 
-      $icon->writeImages('storage://images/favicons/favicon.ico', true);
+      $icon->writeImages(FS_DIR_STORAGE . 'images/favicons/favicon.ico', true);
 
       $image->destroy();
       $icon->destroy();

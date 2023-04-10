@@ -354,10 +354,10 @@
 
           //if (function_exists('ImageCropAuto')) { // PHP 5.5
           //  return ImageCropAuto($this->_image, IMG_CROP_SIDES); // Doesn't do it's job properly
-          //  return ImageCropAuto($this->_image, IMG_CROP_THRESHOLD, 100, imagecolorat($this->_image, 0, 0)); // Doesn't do it's job properly
+          //  return ImageCropAuto($this->_image, IMG_CROP_THRESHOLD, 100, ImageColorAt($this->_image, 0, 0)); // Doesn't do it's job properly
           //}
 
-          $hexcolor = ImagecColorAt($this->_image, 0,0);
+          $hexcolor = ImageColorAt($this->_image, 0,0);
           $top = $left = 0;
           $right = $original_x = $width = $this->width;
           $bottom = $original_y = $height = $this->height;
@@ -365,8 +365,7 @@
           unset($this->_data['width']);
           unset($this->_data['height']);
 
-          while (true) {
-
+          do {
           // Top
             for (; $top < $original_y; ++$top) {
               for ($x = 0; $x < $original_x; ++$x) {
@@ -413,7 +412,7 @@
             $width = $right - $left;
             $height = $bottom - $top;
             $code = ($width < $original_x || $height < $original_y) ? 1 : 0;
-          }
+          } while (0);
 
           //$padding = 50; // Set padding size in px
           $padding = round($width * 0.15); // Set padding size in percentage

@@ -42,7 +42,7 @@
 
       $attribute_group->save();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink(__APP__.'/attribute_groups'));
       exit;
 
@@ -58,7 +58,7 @@
 
       $attribute_group->delete();
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink(__APP__.'/attribute_groups'));
       exit;
 

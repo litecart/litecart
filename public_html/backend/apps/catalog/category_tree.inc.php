@@ -258,6 +258,9 @@
   height: 24px;
   vertical-align: middle;
 }
+.fa-folder, .fa-folder-open, td .thumbnail {
+  margin-inline-end: 16px;
+}
 </style>
 
 <div class="card card-app">
