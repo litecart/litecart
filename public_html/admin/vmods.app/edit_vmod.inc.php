@@ -849,47 +849,51 @@ textarea.warning {
 
       // Trim
         find = find.trim();
+        find_operators = 'gm';
 
       // Cook the regex pattern
-        if (type != 'regex') {
+        if (type == 'regex') {
 
-          if (type == 'inline') {
-            find = find.replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&");
+          find_operators = 'g'+find.substr(find.lastIndexOf(find.substr(0, 1))+1);
+          find = find.substr(1, find.lastIndexOf(find.substr(0, 1))-1);
 
-          } else {
+        } else if (type == 'inline') {
 
-          // Whitespace
-            find = find.split(/\r\n?|\n/);
+          find = find.replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&");
 
-            for (let i=0; i < find.length; i++) {
-              if (find[i] = find[i].trim()) {
-                find[i] = '[ \t]*'+ find[i].replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&") +'[ \t]*(?:\r\n?|\n|$)';
-              } else if (i != (find.length -1)) {
-                find[i] = '[ \t]*(?:\r\n?|\n)';
-              }
+        } else {
+
+        // Whitespace
+          find = find.split(/\r\n?|\n/);
+
+          for (let i=0; i < find.length; i++) {
+            if (find[i] = find[i].trim()) {
+              find[i] = '[ \t]*'+ find[i].replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&") +'[ \t]*(?:\r\n?|\n|$)';
+            } else if (i != (find.length -1)) {
+              find[i] = '[ \t]*(?:\r\n?|\n)';
             }
-            find = find.join('');
+          }
+          find = find.join('');
 
-          // Offset
-            if (offset_before != '') {
-              find = '(?:.*?(?:\r\n?|\n)){'+ offset_before +'}'+ find;
-            }
+        // Offset
+          if (offset_before != '') {
+            find = '(?:.*?(?:\r\n?|\n)){'+ offset_before +'}'+ find;
+          }
 
-            if (offset_after != '') {
-              find = find + '(?:.*?(?:\r\n?|\n|$)){0,'+ offset_after +'}';
-            }
+          if (offset_after != '') {
+            find = find + '(?:.*?(?:\r\n?|\n|$)){0,'+ offset_after +'}';
           }
         }
 
         break;
 
         default:
-          throw new Error('Uknown error');
+          throw new Error('Unknown error');
       }
 
       $.each($tab.find('.script'), function(){
 
-        let regex = new RegExp(find, 'gm'),
+        let regex = new RegExp(find, find_operators),
           source = $(this).find('.form-code').text(),
           matches = (source.match(regex) || []).length;
 
