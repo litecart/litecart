@@ -65,12 +65,12 @@
           $auths = explode(' ', $matches[1]);
         }
 
-        switch(true) {
+        switch (true) {
 
           case (in_array('CRAM-MD5', $auths));
             $this->write("AUTH CRAM-MD5\r\n", 334);
             $challenge = base64_decode(substr($this->_last_response, 4));
-            $this->write(base64_encode($this->_username .' '. hash_hmac('md5', $challenge, $this->_password)) . "\r\n", 235);
+            $this->write(base64_encode($this->_username .' '. hash_hmac('md5', $this->_password, $challenge)) . "\r\n", 235);
             break;
 
           case (in_array('LOGIN', $auths)):
