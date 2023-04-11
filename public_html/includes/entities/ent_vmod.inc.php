@@ -333,6 +333,9 @@
 
     // Files
       foreach ($this->data['files'] as $file) {
+
+        if (empty($file['operations'])) continue;
+
         $file_node = $dom->createElement('file');
 
         $attribute = $dom->createAttribute('name');

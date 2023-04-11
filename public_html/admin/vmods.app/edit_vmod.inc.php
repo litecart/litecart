@@ -140,7 +140,7 @@ html.dark-mode .operation {
   background: #232a3e;
 }
 
-.nav-tabs .fa-times-circle {
+.nav-tabs .fa-times {
   color: #c00;
 }
 .nav-tabs .fa-plus {
@@ -318,7 +318,7 @@ textarea.warning {
           <nav class="nav nav-tabs">
             <?php foreach (array_keys($vmod->data['files']) as $f) { ?>
             <a class="nav-link" data-toggle="tab" href="#tab-<?php echo $f; ?>">
-              <span class="file"><?php echo functions::escape_html($_POST['files'][$f]['name']); ?></span> <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span>
+              <span class="file"><?php echo functions::escape_html($_POST['files'][$f]['name']); ?></span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times'); ?></span>
             </a>
             <?php } ?>
             <a class="nav-link add" href="#"><?php echo functions::draw_fonticon('fa-plus'); ?></a>
@@ -655,7 +655,7 @@ textarea.warning {
   $('.nav-tabs .add').click(function(e){
     e.preventDefault();
 
-    let tab = '<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'"><span class="file">new'+ new_tab_index +'</span> <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span></a>'
+    let tab = '<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'"><span class="file">new'+ new_tab_index +'</span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times'); ?></span></a>'
       .replace(/new_tab_index/g, new_tab_index);
 
     let tab_pane = $('#new-tab-pane-template').html()
