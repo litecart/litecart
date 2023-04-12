@@ -14,17 +14,21 @@
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
       . "Options:\n"
       . "  --from_version       Manually set version migrating from. Omit for auto detection\n"
-      . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n";
+      . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n"
+      . "  --cleanup            Cleanup the installation directory after finising the upgrade.\n";
       exit;
     }
 
     $options = [
-      'from_version::', 'development_type::'
+      'from_version::', 'development_type:: cleanup'
     ];
 
     $_REQUEST = getopt('', $options);
     $_REQUEST['upgrade'] = true;
 
+    if (isset($_REQUEST['cleanup'])) {
+      $_REQUEST['cleanup'] = true;
+    }
   }
 
   require_once __DIR__ . '/includes/header.inc.php';
@@ -293,6 +297,19 @@
       ]);
 
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
+      #############################################
+
+      if (!empty($_REQUEST['cleanup'])) {
+
+        echo '<p>Cleanup... ';
+
+        perform_action('delete', [
+          FS_DIR_APP . 'install/',
+        ]);
+
+        echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      }
 
       #############################################
 
