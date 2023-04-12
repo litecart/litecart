@@ -232,7 +232,7 @@ textarea.warning {
 
               <div class="form-group">
                 <label><?php echo language::translate('title_id', 'ID'); ?></label>
-                <?php echo functions::form_draw_text_field('id', true, 'required placeholder="my_fancy_mod" pattern="^[0-9a-zA-Z_-]+$"'); ?>
+                <?php echo functions::form_draw_text_field('id', true, 'required placeholder="my_fancy_mod" pattern="^[0-9a-zA-Z_\-]+$"'); ?>
               </div>
 
               <div class="row">
