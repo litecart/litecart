@@ -829,7 +829,8 @@ textarea.warning {
       indexes = $operation.find(':input[name$="[index]"]').val().split(/\s*,\s*/).filter(Boolean),
       offset_before = $operation.find(':input[name$="[offset-before]"]').val(),
       offset_after = $operation.find(':input[name$="[offset-after]"]').val()
-      onerror = $operation.find(':input[name$="[onerror]"]').val();
+      onerror = $operation.find(':input[name$="[onerror]"]').val(),
+      regex_flags = 's';
 
     try {
 
@@ -847,43 +848,44 @@ textarea.warning {
         case 'after':
         case 'replace':
 
-      // Trim
-        find = find.trim();
-        find_operators = 'gm';
+        // Trim
+          find = find.trim();
 
-      // Cook the regex pattern
-        if (type == 'regex') {
+        // Cook the regex pattern
+          if (type == 'regex') {
 
-          find_operators = 'g'+find.substr(find.lastIndexOf(find.substr(0, 1))+1);
-          find = find.substr(1, find.lastIndexOf(find.substr(0, 1))-1);
+            find_operators = 'g'+find.substr(find.lastIndexOf(find.substr(0, 1))+1);
+            find = find.substr(1, find.lastIndexOf(find.substr(0, 1))-1);
 
-        } else if (type == 'inline') {
+          } else if (type == 'inline') {
 
-          find = find.replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&");
+            find = find.replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&");
 
-        } else {
+          } else {
 
-        // Whitespace
-          find = find.split(/\r\n?|\n/);
+          // Whitespace
+            find = find.split(/\r\n?|\n/);
 
-          for (let i=0; i < find.length; i++) {
-            if (find[i] = find[i].trim()) {
-              find[i] = '[ \t]*'+ find[i].replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&") +'[ \t]*(?:\r\n?|\n|$)';
-            } else if (i != (find.length -1)) {
-              find[i] = '[ \t]*(?:\r\n?|\n)';
+            for (let i=0; i < find.length; i++) {
+              if (find[i] = find[i].trim()) {
+                find[i] = '[ \t]*'+ find[i].replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&") +'[ \t]*(?:\r\n?|\n|$)';
+              } else if (i != (find.length -1)) {
+                find[i] = '[ \t]*(?:\r\n?|\n)';
+              }
+            }
+            find = find.join('');
+
+          // Offset
+            if (offset_before != '') {
+              find = '(?:.*?(?:\r\n?|\n)){'+ offset_before +'}'+ find;
+            }
+
+            if (offset_after != '') {
+              find = find + '(?:.*?(?:\r\n?|\n|$)){0,'+ offset_after +'}';
             }
           }
-          find = find.join('');
 
-        // Offset
-          if (offset_before != '') {
-            find = '(?:.*?(?:\r\n?|\n)){'+ offset_before +'}'+ find;
-          }
-
-          if (offset_after != '') {
-            find = find + '(?:.*?(?:\r\n?|\n|$)){0,'+ offset_after +'}';
-          }
-        }
+          regex_flags = 'gm';
 
         break;
 
@@ -893,7 +895,7 @@ textarea.warning {
 
       $.each($tab.find('.script'), function(){
 
-        let regex = new RegExp(find, find_operators),
+        let regex = new RegExp(find, regex_flags),
           source = $(this).find('.form-code').text(),
           matches = (source.match(regex) || []).length;
 
