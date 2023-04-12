@@ -354,7 +354,7 @@
           }
 
         // Find
-          if (!in_array($operation['method'], ['top', 'bottom'])) {
+          if (!in_array($operation['method'], ['top', 'bottom', 'all'])) {
 
             $find_node = $dom->createElement('find');
 

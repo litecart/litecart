@@ -464,7 +464,7 @@
           $onerror = $operation_node->getAttribute('onerror');
 
         // Find
-          if (!in_array($operation_node->getAttribute('method'), ['top', 'bottom'])) {
+          if (!in_array($operation_node->getAttribute('method'), ['top', 'bottom', 'all'])) {
 
             $find_node = $operation_node->getElementsByTagName('find')->item(0);
             $find = $find_node->textContent;
@@ -564,6 +564,12 @@
 
               case 'replace':
                 $insert = addcslashes($insert, '\\$');
+                break;
+
+              case 'all':
+                $find = '#^(.*)$#s';
+                $indexes = '';
+                $add = addcslashes($insert, '\\$');
                 break;
 
               default:

@@ -88,6 +88,7 @@
     [language::translate('title_after', 'After'), 'after'],
     [language::translate('title_top', 'Top'), 'top'],
     [language::translate('title_bottom', 'Bottom'), 'bottom'],
+    [language::translate('title_all', 'All'), 'all'],
   ];
 
   $type_options = [
@@ -725,7 +726,7 @@ textarea.warning {
 
     let method = $(this).val();
 
-    if ($.inArray(method, ['top', 'bottom']) != -1) {
+    if ($.inArray(method, ['top', 'bottom', 'all']) != -1) {
       $(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', true);
     } else {
       $(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', false);
@@ -837,11 +838,18 @@ textarea.warning {
       switch (method) {
 
         case 'top':
+
           find = '^';
           break;
 
         case 'bottom':
+
           find = '$';
+          break;
+
+        case 'all':
+
+          find = '^.*$';
           break;
 
         case 'before':
