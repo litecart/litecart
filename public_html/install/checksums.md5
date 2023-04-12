@@ -121,7 +121,7 @@ fc06272471417c0f583ad7a112c305b3	admin/users.app/users.inc.php
 f4d68321037efe916c386551430b4269	admin/vmods.app/config.inc.php
 0832586e236e642c4bcc475cef0ac7fe	admin/vmods.app/configure.inc.php
 3a15c105a7536c787fe6e7fea01f3313	admin/vmods.app/download.inc.php
-4f65c991f1589c2197ec911516614997	admin/vmods.app/edit_vmod.inc.php
+fc02041e2ed84a224778029d5b91301f	admin/vmods.app/edit_vmod.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/vmods.app/index.html
 ec27c480c9062b44b5890cf0d1affe58	admin/vmods.app/sources.inc.php
 bc147558ae959de3b3eec8c1d6ed40ec	admin/vmods.app/test.inc.php
@@ -255,7 +255,7 @@ e22b8bfe3b82a002df0d30d13e64bd6d	includes/entities/ent_slide.inc.php
 86801d53d26a7db2b1e007ea6caf5671	includes/entities/ent_tax_rate.inc.php
 e82749e5905672da9db4bd6179c07c18	includes/entities/ent_user.inc.php
 5002e3b0802c3b536a756178a3224c6a	includes/entities/ent_view.inc.php
-3107ca8d43e348faf998dfabbdb53ced	includes/entities/ent_vmod.inc.php
+9380604538a90116f387aaa89c3cf451	includes/entities/ent_vmod.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
 2dbb77fdc9a3c02bf272ae6509ffe4b2	includes/error_handler.inc.php
 988f26d135e78b5006307b43dac28557	includes/functions/func_admin.inc.php
@@ -294,7 +294,7 @@ d466e44f0e71b79fc2039fc236668ab0	includes/library/lib_session.inc.php
 800cfd7082792c729df75f48e02877bb	includes/library/lib_stats.inc.php
 2ef8f2d0104760068c5eb270b5794127	includes/library/lib_tax.inc.php
 02a574b8d9085963911162da97729e95	includes/library/lib_user.inc.php
-5d89df00dce17902409ecba77f32b079	includes/library/lib_vmod.inc.php
+017c851fd0aa36e4993f0e91357087cb	includes/library/lib_vmod.inc.php
 bffdd3b21cdd54aace806009aba04a0e	includes/library/lib_volume.inc.php
 2533af53b5a32c7efae81971f1bf143e	includes/library/lib_weight.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/customer/index.html
@@ -339,7 +339,7 @@ d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 31c1e94b1eb6502ee4842fce9066ea02	includes/templates/default.admin/css/app.min.css
 dd074822ff582b2d55a98f80fcbf64e4	includes/templates/default.admin/css/app.min.css.map
 ba933aafa3b3ab84849bc492020e886f	includes/templates/default.admin/css/framework.min.css
-ac7b64c7416b504bb56ddcfc05616327	includes/templates/default.admin/css/framework.min.css.map
+b1f5b8c984081d23bbc4b2d79a7cac3b	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.admin/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.admin/css/printable.min.css.map
@@ -353,8 +353,8 @@ e6e2336e113f1248d03214ca228984d5	includes/templates/default.admin/images/loader.
 524c056f05c4f1c6e530aff4a9f06b05	includes/templates/default.admin/images/logotype.svg
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/index.html
 f94f3d61ac63e2a8e03c7d039953c561	includes/templates/default.admin/js/app.js
-22cbd8a6ea689add8129db7a12fd54cb	includes/templates/default.admin/js/app.min.js
-a97f7f372627599ff2b71b811f0ee3ae	includes/templates/default.admin/js/app.min.js.map
+7657671126c255a686a6099102de190c	includes/templates/default.admin/js/app.min.js
+9d09428de44e47213d6c86a5046d4544	includes/templates/default.admin/js/app.min.js.map
 2f781c885d05b3f7002560d93358a28e	includes/templates/default.admin/layouts/ajax.inc.php
 3c61f0cb0bcac9e48fd26733e61aaed4	includes/templates/default.admin/layouts/default.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/layouts/index.html
@@ -417,8 +417,8 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/images/index
 e6e2336e113f1248d03214ca228984d5	includes/templates/default.catalog/images/loader.svg
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/index.html
 eb8c5f9cd07080e098b6a3929bab2644	includes/templates/default.catalog/js/app.js
-aec177f9788dea968a2d3c13d8de6c3e	includes/templates/default.catalog/js/app.min.js
-40396888c1745178f24cbd5f0fd2ae7e	includes/templates/default.catalog/js/app.min.js.map
+470e593d559861abaf408fe1acbc97a9	includes/templates/default.catalog/js/app.min.js
+26402376ab7ea4f1c041a451a1c25e6d	includes/templates/default.catalog/js/app.min.js.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/js/index.html
 06037af6e6e1dc266fee3de3495281a3	includes/templates/default.catalog/layouts/ajax.inc.php
 2dfd5350447b0ee662f2d04f50bfd7ad	includes/templates/default.catalog/layouts/blank.inc.php
