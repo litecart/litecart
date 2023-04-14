@@ -464,7 +464,12 @@
           $onerror = $operation_node->getAttribute('onerror');
 
         // Find
-          if (!in_array($operation_node->getAttribute('method'), ['top', 'bottom', 'all'])) {
+          if (in_array($operation_node->getAttribute('method'), ['top', 'bottom', 'all'])) {
+
+            $find = '';
+            $indexes = '';
+
+          } else {
 
             $find_node = $operation_node->getElementsByTagName('find')->item(0);
             $find = $find_node->textContent;
@@ -552,13 +557,11 @@
 
               case 'top':
                 $find = '#^.*$#s';
-                $indexes = '';
                 $insert = addcslashes($insert, '\\$').'$0';
                 break;
 
               case 'bottom':
                 $find = '#^.*$#s';
-                $indexes = '';
                 $insert = '$0'.addcslashes($insert, '\\$');
                 break;
 
@@ -567,13 +570,12 @@
                 break;
 
               case 'all':
-                $find = '#^(.*)$#s';
-                $indexes = '';
+                $find = '#^.*$#s';
                 $add = addcslashes($insert, '\\$');
                 break;
 
               default:
-                throw new \Exception("Unknown value \"$method\" for operation method (before|after|replace|bottom|top)");
+                throw new \Exception("Unknown value \"$method\" for operation method (before|after|replace|bottom|top|all)");
                 continue 2;
             }
           }
