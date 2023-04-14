@@ -19,16 +19,23 @@
       . "  --admin_folder       Set admin folder name (Default admin)\n"
       . "  --username           Set admin username\n"
       . "  --password           Set admin user password\n\n"
-      . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n\n";
+      . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n"
+      . "  --cleanup            Delete the install/ directory after finising the installation.\n\n";
       exit;
     }
 
     $options = [
       'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
-      'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type::',
+      'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type:: cleanup',
     ];
+
     $_REQUEST = getopt('', $options);
     $_REQUEST['install'] = true;
+
+    if (isset($_REQUEST['cleanup'])) {
+      $_REQUEST['cleanup'] = true;
+    }
+
   } else {
     require __DIR__ . '/includes/header.inc.php';
   }
@@ -650,6 +657,19 @@
     } else {
       echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
     }
+
+    ### Cleanup ##########################################
+
+      if (!empty($_REQUEST['cleanup'])) {
+
+        echo '<p>Cleanup... ';
+
+        perform_action('delete', [
+          FS_DIR_APP . 'install/',
+        ]);
+
+        echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      }
 
     ### #############################################################
 

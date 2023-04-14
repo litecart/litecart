@@ -15,7 +15,7 @@
       . "Options:\n"
       . "  --from_version       Manually set version migrating from. Omit for auto detection\n"
       . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n"
-      . "  --cleanup            Cleanup the installation directory after finising the upgrade.\n";
+      . "  --cleanup            Delete the install/ directory after finising the upgrade.\n\n";
       exit;
     }
 
@@ -298,7 +298,7 @@
 
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-      #############################################
+      ### Cleanup ##########################################
 
       if (!empty($_REQUEST['cleanup'])) {
 
