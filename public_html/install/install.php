@@ -550,6 +550,8 @@
 
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
+      file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'advanced');
+
       $files_to_delete = [
         '../includes/templates/default.catalog/css/app.css',
         '../includes/templates/default.catalog/css/checkout.css',
@@ -562,6 +564,8 @@
       }
 
     } else {
+
+      file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'standard');
 
       $files_to_delete = [
         '../includes/templates/default.catalog/css/*.min.css',

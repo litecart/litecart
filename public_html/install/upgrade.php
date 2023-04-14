@@ -97,6 +97,12 @@
     return version_compare($a, $b, '>') ? 1 : -1;
   });
 
+  if (empty($_REQUEST['development_type'])) {
+    if (is_file($file = FS_DIR_APP . 'includes/templates/default.catalog/.development')) {
+      $_REQUEST['development_type'] = file_get_contents($file);
+    }
+  }
+
   if (!empty($_REQUEST['upgrade'])) {
 
     ob_start(function($buffer) {
@@ -239,6 +245,8 @@
 
       if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
+        file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'advanced');
+
         perform_action('delete', [
           FS_DIR_APP . 'includes/templates/default.catalog/css/app.css',
           FS_DIR_APP . 'includes/templates/default.catalog/css/checkout.css',
@@ -247,6 +255,8 @@
         ]);
 
       } else {
+
+        file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'standard');
 
         perform_action('delete', [
           FS_DIR_APP . 'includes/templates/default.catalog/css/*.min.css',
