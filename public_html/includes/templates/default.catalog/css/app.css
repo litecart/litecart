@@ -404,11 +404,6 @@ body.scrolling-down #site-menu {
 .listing.categories {
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
-@media (min-width: 768px) {
-  .listing.categories {
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  }
-}
 .listing.manufacturers {
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 }

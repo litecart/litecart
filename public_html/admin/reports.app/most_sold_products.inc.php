@@ -53,8 +53,7 @@
   }
 
   if (isset($_GET['download'])) {
-    //header('Content-Type: text/plain; charset='. language::$selected['code']);
-    header('Content-Type: application/csv; charset='. language::$selected['code']);
+    header('Content-Type: application/csv; charset='. language::$selected['charset']);
     header('Content-Disposition: filename="most_sold_products_'. date('Ymd', strtotime($_GET['date_from'])) .'-'. date('Ymd', strtotime($_GET['date_to'])) .'.csv"');
     echo functions::csv_encode($rows);
     exit;

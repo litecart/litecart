@@ -4,7 +4,7 @@
   @set_time_limit(300);
 
   header('X-Robots-Tag: noindex');
-  header('Content-type: text/plain; charset='. language::$selected['code']);
+  header('Content-type: text/plain; charset='. language::$selected['charset']);
 
   if ($last_run = settings::get('jobs_last_run')) {
     $last_run = strtotime($last_run);
