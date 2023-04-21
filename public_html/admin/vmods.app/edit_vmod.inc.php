@@ -165,7 +165,7 @@ html.dark-mode .operation {
   background: #fff3;
   backdrop-filter: blur(2px);
   font-size: .8em;
-  color: #fffc
+  color: #fffc;
 }
 
 #settings .setting:not(:first-child) {

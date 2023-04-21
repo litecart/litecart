@@ -276,7 +276,11 @@
 
       try {
 
-        $xml = file_get_contents($file);
+        if (!$xml = file_get_contents($file)) {
+          throw new \Exception('Could not read file', E_USER_ERROR);
+        }
+
+      // Normalize line endings
         $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
 
         $dom = new \DOMDocument('1.0', 'UTF-8');
@@ -377,14 +381,14 @@
         }
 
       } catch (\Exception $e) {
-        trigger_error("Could not parse file ($file): " . $e->getMessage(), E_USER_WARNING);
+        trigger_error("Could not load vMod ($file): " . $e->getMessage(), E_USER_WARNING);
       }
     }
 
     public static function parse_vmod($dom, $file) {
 
       if ($dom->documentElement->tagName != 'vmod') {
-        throw new \Exception('File is not a valid vmod');
+        throw new \Exception("File is not a valid vMod ($file)");
       }
 
       if (empty($dom->getElementsByTagName('name')->item(0))) {
