@@ -101,7 +101,7 @@
     // Save details to account
       if (!empty(customer::$data['id']) && !empty($_POST['save_to_account'])) {
         $customer = new ent_customer(customer::$data['id']);
-        $customer->data = array_replace_recursive(array_intersect_key(customer::$data, $customer->data));
+        $customer->data = array_replace_recursive(customer::$data, array_intersect_key(customer::$data, $customer->data));
         $customer->save();
       }
 

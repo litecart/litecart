@@ -86,7 +86,7 @@
       </tr>
       <tr>
         <th>Whoami</th>
-        <td><?php echo (!in_array('exec', preg_split('#\s*,\s*#', ini_get('disabled_functions')))) ? exec('whoami') : '<em>Unknown</em>'; ?></td>
+        <td><?php echo (function_exists('exec') && !in_array('exec', preg_split('#\s*,\s*#', ini_get('disabled_functions')))) ? exec('whoami') : '<em>Unknown</em>'; ?></td>
       </tr>
       <tr>
         <th>PHP Extensions</th>

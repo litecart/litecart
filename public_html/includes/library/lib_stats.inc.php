@@ -55,9 +55,18 @@
       $page_parse_time = microtime(true) - SCRIPT_TIMESTAMP_START;
       self::set('page_parse_time', $page_parse_time);
 
+      if (empty(cache::$enabled)) {
+        $cache = false;
+      } else if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
+        $cache = preg_match('#no-cache|max-age=0#i', $_SERVER['HTTP_CACHE_CONTROL']) ? false : true;
+      } else {
+        $cache = true;
+      }
+
     // Output stats
       $stats = '<!--' . PHP_EOL
-             . '  System Statistics:' . PHP_EOL
+             . '  Application Statistics:' . PHP_EOL
+             . '  - Using Cache: ' . ($cache ? 'Yes' : 'No') . PHP_EOL
              . '  - Page Parse Time: ' . number_format(self::get('page_parse_time')*1000, 0, '.', ' ') . ' ms' . PHP_EOL
              . '  - Page Capture Time: ' . number_format(self::get('page_capture_time')*1000, 0, '.', ' ') . ' ms' . PHP_EOL
              . '  - Included Files: ' . count(get_included_files()) . PHP_EOL

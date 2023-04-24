@@ -154,6 +154,7 @@
 
 // Extra Images
   list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
+
   foreach (array_slice(array_values($product->images), 1) as $image) {
     $_page->snippets['extra_images'][] = [
       'original' => 'images/' . $image,

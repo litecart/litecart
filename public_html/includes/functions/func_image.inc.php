@@ -1,21 +1,8 @@
 <?php
 
   function image_scale_by_width($width, $ratio) {
-    switch($ratio) {
-      case '2:3':
-        return [$width, round($width/2*3)];
-      case '3:2':
-        return [$width, round($width/3*2)];
-      case '3:4':
-        return [$width, round($width/3*4)];
-      case '4:3':
-        return [$width, round($width/4*3)];
-      case '16:9':
-        return [$width, round($width/16*9)];
-      case '1:1':
-      default:
-        return [$width, $width];
-    }
+    list($x, $y) = explode(':', $ratio);
+    return[$width, round($width / $x * $y)];
   }
 
   function image_process($source, $options) {
@@ -83,8 +70,8 @@
           $filename = implode([
             sha1(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)))),
             $options['trim'] ? '_t' : '',
-            '_'.(int)$options['width'] .'x'. (int)$options['height'],
-            $clipping_filename_flag,
+            ($options['width'] && $options['height']) ? '_'.(int)$options['width'] .'x'. (int)$options['height'] : '',
+            ($options['width'] && $options['height']) ? $clipping_filename_flag : '',
             $options['watermark'] ? '_wm' : '',
             settings::get('image_thumbnail_interlaced') ? '_i' : '',
             '.'.$extension,

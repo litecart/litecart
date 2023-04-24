@@ -28,9 +28,6 @@
 
   &.categories {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    @media (min-width: (@media-breakpoint-sm)) {
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    }
   }
 
   &.manufacturers {
@@ -84,6 +81,9 @@
         font-weight: normal;
         color: inherit;
         margin: 0;
+      }
+      .name {
+        font-size: 1.15em;
       }
     }
   }
@@ -165,6 +165,24 @@
     .description {
       max-width: 640px;
       text-align: left;
+    }
+
+    .stock-available {
+      .value {
+        color: #009900;
+      }
+    }
+
+    .stock-partly-available {
+      .value {
+        color: #ff9900;
+      }
+    }
+
+    .stock-unavailable {
+      .value {
+        color: #cc0000;
+      }
     }
 
     .price-wrapper {

@@ -342,7 +342,11 @@
                 $value['price_adjust'] = $value['price_adjust'] * $this->campaign['price'] / $this->price;
               }
 
-              $option['values'][] = $value;
+              if (!empty($value['value_id'])) {
+                $option['values'][$value['value_id']] = $value;
+              } else {
+                $option['values'][uniqid()] = $value;
+              }
             }
 
             if ($option['sort'] == 'alphabetically') {

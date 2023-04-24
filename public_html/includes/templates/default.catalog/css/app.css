@@ -105,7 +105,7 @@ body.scrolling-down #site-menu {
   flex-grow: 1;
 }
 .navbar-header .logotype img {
-  max-width: 150px;
+  max-width: 140px;
   max-height: 32px;
 }
 @media (min-width: 768px) {
@@ -233,11 +233,12 @@ body.scrolling-down #site-menu {
 #footer .columns {
   display: grid;
   margin-bottom: 0;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
   grid-gap: var(--gutter-x);
 }
 @media (min-width: 768px) {
   #footer .columns {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     grid-template-columns: repeat(4, 1fr);
   }
 }
@@ -403,11 +404,6 @@ body.scrolling-down #site-menu {
 .listing.categories {
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
-@media (min-width: 768px) {
-  .listing.categories {
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  }
-}
 .listing.manufacturers {
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 }
@@ -461,6 +457,9 @@ body.scrolling-down #site-menu {
   font-weight: normal;
   color: inherit;
   margin: 0;
+}
+.listing .category .caption .name {
+  font-size: 1.15em;
 }
 .listing .manufacturer {
   position: relative;
@@ -531,6 +530,15 @@ body.scrolling-down #site-menu {
 .listing .product .description {
   max-width: 640px;
   text-align: left;
+}
+.listing .product .stock-available .value {
+  color: #009900;
+}
+.listing .product .stock-partly-available .value {
+  color: #ff9900;
+}
+.listing .product .stock-unavailable .value {
+  color: #cc0000;
 }
 .listing .product .price-wrapper {
   font-size: 1.25em;
@@ -695,4 +703,7 @@ body.scrolling-down #site-menu {
 }
 #box-product .description p:last-child {
   margin-bottom: 0;
+}
+#box-product .description a {
+  text-decoration: underline;
 }

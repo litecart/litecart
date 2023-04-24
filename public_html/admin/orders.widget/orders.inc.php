@@ -27,6 +27,14 @@
 // Number of Rows
   $num_rows = database::num_rows($orders_query);
 ?>
+<style>
+#widget-orders table {
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  overflow: hidden;
+}
+</style>
+
 <div id="widget-orders" class="widget">
   <div class="card card-default">
     <div class="card-header">

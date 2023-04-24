@@ -235,12 +235,12 @@
 
       <div class="row">
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1) <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+          <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
           <?php echo functions::form_draw_text_field('code', true, 'required pattern="[a-z]{2}"'); ?>
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2) <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+          <label><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
           <?php echo functions::form_draw_text_field('code2', true, 'required pattern="[a-z]{3}"'); ?>
         </div>
       </div>
@@ -275,24 +275,24 @@
 
       <div class="row">
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_date_format', 'Date Format'); ?> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+          <label><?php echo language::translate('title_date_format', 'Date Format'); ?> <a href="https://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
           <?php echo functions::form_draw_select_field('format_date', $date_format_options, true); ?>
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_time_format', 'Time Format'); ?> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+          <label><?php echo language::translate('title_time_format', 'Time Format'); ?> <a href="https://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
           <?php echo functions::form_draw_select_optgroup_field('format_time', $time_format_options, true, false); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+          <label><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?> <a href="https://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
           <?php echo functions::form_draw_select_optgroup_field('raw_date', $raw_date_options, true, false); ?>
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+          <label><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?> <a href="https://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
           <?php echo functions::form_draw_select_optgroup_field('raw_time', $raw_time_options, true, false); ?>
         </div>
       </div>

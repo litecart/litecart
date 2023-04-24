@@ -142,7 +142,15 @@
               <u><?php echo language::translate(settings::get('store_template_catalog').':title_'.$setting['key'], $setting['title']); ?></u><br />
               <?php echo language::translate(settings::get('store_template_catalog').':description_'.$setting['key'], $setting['description']); ?>
             </td>
-            <td><?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true); ?></td>
+            <td>
+              <?php
+                if (!empty($setting['multiple'])) {
+                  echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].'][]', true);
+                } else {
+                  echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true);
+                }
+              ?>
+              </td>
             <td class="text-end">
               <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
               <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
@@ -153,7 +161,13 @@
             <td><?php echo language::translate(settings::get('store_template_catalog').':title_'.$setting['key'], $setting['title']); ?></td>
             <td>
               <div style="max-height: 200px; overflow-y: auto;">
-                <?php echo nl2br($setting['value']); ?>
+                <?php
+                  if (!empty($setting['multiple'])) {
+                    echo nl2br(implode(PHP_EOL, $setting['value']));
+                  } else {
+                    echo nl2br($setting['value']);
+                  }
+                ?>
               </div>
             </td>
             <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>

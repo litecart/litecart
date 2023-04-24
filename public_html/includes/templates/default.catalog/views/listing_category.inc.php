@@ -3,7 +3,7 @@
     <img class="img-responsive hidden-xs hidden-sm" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?>" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" />
 
     <div class="caption">
-      <h3><?php echo $name; ?></h3>
+      <h3 class="name"><?php echo $name; ?></h3>
       <div class="short-description"><?php echo $short_description; ?></div>
     </div>
   </a>

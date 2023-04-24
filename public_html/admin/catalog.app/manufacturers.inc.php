@@ -40,11 +40,11 @@
   while ($manufacturer = database::fetch($manufacturers_query)) {
 
     $products_query = database::query(
-      "select id from ". DB_TABLE_PREFIX ."products
+      "select count(id) as num_products from ". DB_TABLE_PREFIX ."products
       where manufacturer_id = ". (int)$manufacturer['id'] .";"
     );
 
-    $manufacturer['num_products'] = database::num_rows($products_query);
+    $manufacturer['num_products'] = database::fetch($products_query, 'num_products');
 
     $manufacturers[] = $manufacturer;
     if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -76,6 +76,8 @@
         <tr>
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th></th>
           <th></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_products', 'Products'); ?></th>
@@ -88,8 +90,10 @@
         <tr class="<?php echo empty($manufacturer['status']) ? 'semi-transparent' : ''; ?>">
           <td><?php echo functions::form_draw_checkbox('manufacturers[]', $manufacturer['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($manufacturer['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
+          <td><?php echo $manufacturer['id']; ?></td>
           <td><?php echo $manufacturer['featured'] ? functions::draw_fonticon('fa-star', 'style="color: #ffd700;"') : ''; ?></td>
-          <td><img src="<?php echo document::href_link($manufacturer['image'] ? WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $manufacturer['image'], 16, 16, 'FIT_USE_WHITESPACING') : 'images/no_image.png'); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /> <a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_manufacturer', 'manufacturer_id' => $manufacturer['id']], ['app']); ?>"><?php echo $manufacturer['name']; ?></a></td>
+          <td><img src="<?php echo document::href_link($manufacturer['image'] ? WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $manufacturer['image'], 16, 16, 'FIT_USE_WHITESPACING') : 'images/no_image.png'); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /></td>
+          <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_manufacturer', 'manufacturer_id' => $manufacturer['id']], ['app']); ?>"><?php echo $manufacturer['name']; ?></a></td>
           <td class="text-center"><?php echo (int)$manufacturer['num_products']; ?></td>
           <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_manufacturer', 'manufacturer_id' => $manufacturer['id']]); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
@@ -97,7 +101,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="6"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="8"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>

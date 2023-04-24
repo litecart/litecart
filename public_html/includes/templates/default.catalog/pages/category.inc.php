@@ -39,7 +39,7 @@
           </section>
           <?php } ?>
 
-          <?php if ($products) { ?>
+          <?php if (isset($_GET['product_name']) || isset($_GET['attributes']) || isset($_GET['manufacturers']) || $products) { ?>
           <div class="card">
             <div class="card-body">
               <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_filter.inc.php'); ?>

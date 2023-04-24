@@ -3,7 +3,7 @@
 
   functions::draw_lightbox();
 
-  $box_popular_products_cache_token = cache::token('box_popular_products', ['language', 'currency'], 'file');
+  $box_popular_products_cache_token = cache::token('box_popular_products', ['language', 'prices'], 'file');
   if (cache::capture($box_popular_products_cache_token)) {
 
     $products_query = functions::catalog_products_query([

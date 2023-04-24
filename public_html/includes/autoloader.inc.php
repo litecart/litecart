@@ -54,14 +54,14 @@
           }
         }
 
-        switch ($class) {
+        switch (true) {
           case (substr($class, 0, 3) == 'cm_'):
             require vmod::check(FS_DIR_APP . 'includes/modules/customer/' . $class . '.inc.php');
-            break 2;
+            break;
 
           case (substr($class, 0, 4) == 'job_'):
             require vmod::check(FS_DIR_APP . 'includes/modules/jobs/' . $class . '.inc.php');
-            break 2;
+            break;
 
           case (substr($class, 0, 3) == 'om_'):
             require vmod::check(FS_DIR_APP . 'includes/modules/order/' . $class . '.inc.php');

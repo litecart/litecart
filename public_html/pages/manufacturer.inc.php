@@ -31,7 +31,7 @@
   $_page = new ent_view();
 
   $manufacturer_cache_token = cache::token('box_manufacturer', ['get', 'language', 'currency', 'prices'], 'file');
-  if (!$_page->snippets = cache::get($manufacturer_cache_token, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
+  if (!$_page->snippets = cache::get($manufacturer_cache_token, ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
 
     $_page->snippets = [
       'id' => $manufacturer->id,
@@ -60,13 +60,12 @@
       'campaigns_first' => true,
     ]);
 
-    if (database::num_rows($products_query) > 0) {
+    if (database::num_rows($products_query)) {
       if ($_GET['page'] > 1) database::seek($products_query, (settings::get('items_per_page', 20) * ($_GET['page'] - 1)));
 
       $page_items = 0;
       while ($listing_item = database::fetch($products_query)) {
         $_page->snippets['products'][] = $listing_item;
-
         if (++$page_items == settings::get('items_per_page', 20)) break;
       }
     }

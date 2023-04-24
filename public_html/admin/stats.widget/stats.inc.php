@@ -127,6 +127,10 @@
           <table class="table table-striped table-hover data-table" style="margin-bottom: 0;">
             <tbody>
               <tr>
+                <td><?php echo language::translate('title_total_number_of_products', 'Total Number of Products'); ?>:</td>
+                <td class="text-end"><?php echo language::number_format($stats['num_products'], 0); ?></td>
+              </tr>
+              <tr>
                 <td><?php echo language::translate('title_total_number_of_orders', 'Total Number of Orders'); ?>:</td>
                 <td class="text-end"><?php echo language::number_format($stats['num_orders'], 0); ?></td>
               </tr>
