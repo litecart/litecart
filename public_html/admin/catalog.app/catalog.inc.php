@@ -537,34 +537,41 @@
     </table>
 
     <div class="card-body">
-      <ul class="list-inline">
-        <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
-        <li>
-          <div class="btn-group">
-            <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-            <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-          </div>
-        </li>
-        <li>
-          <div>
+      <fieldset id="actions" disabled>
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
+
+        <ul class="list-inline">
+          <li>
+            <div class="btn-group">
+              <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+              <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+            </div>
+          </li>
+          <li>
             <?php echo functions::form_draw_category_field('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?>
-          </div>
-        </li>
-        <li>
-          <div class="btn-group">
-            <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\\"'. language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.') .'\\")) return false;"'); ?>
-            <?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?>
-            <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
-          </div>
-        </li>
-        <li>
-          <?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?>
-        </li>
-        <li>
-          <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(&quot;'. language::translate('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"'); ?>
-        </li>
-      </ul>
+          </li>
+          <li>
+            <div class="btn-group">
+              <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\\"'. language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.') .'\\")) return false;"'); ?>
+              <?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?>
+              <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
+            </div>
+          </li>
+          <li>
+            <?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?>
+          </li>
+          <li>
+            <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(&quot;'. language::translate('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"'); ?>
+          </li>
+        </ul>
+      </fieldset>
     </div>
 
   <?php echo functions::form_draw_form_end(); ?>
 </div>
+
+<script>
+  $('.data-table :checkbox').change(function() {
+    $('#actions').prop('disabled', !$('.data-table :checked').length);
+  }).first().trigger('change');
+</script>

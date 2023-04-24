@@ -262,7 +262,6 @@ table tbody .toggle {
         <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
         <ul class="list-inline">
-          <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
           <li>
             <div class="btn-group">
               <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
@@ -270,19 +269,13 @@ table tbody .toggle {
             </div>
           </li>
           <li>
-            <div>
-              <?php echo functions::form_draw_pages_list('page_id', isset($_POST['page_id']) ? $_POST['page_id'] : ''); ?>
-            </div>
+            <?php echo functions::form_draw_pages_list('page_id', isset($_POST['page_id']) ? $_POST['page_id'] : ''); ?>
           </li>
           <li>
-            <div class="btn-group">
-              <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(&quot;'. language::translate('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"'); ?>
-            </div>
+            <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(&quot;'. language::translate('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"'); ?>
           </li>
           <li>
-            <div class="btn-group">
-              <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
-            </div>
+            <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
           </li>
         </ul>
       </fieldset>
