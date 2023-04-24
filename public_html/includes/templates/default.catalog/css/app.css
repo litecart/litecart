@@ -458,6 +458,9 @@ body.scrolling-down #site-menu {
   color: inherit;
   margin: 0;
 }
+.listing .category .caption .name {
+  font-size: 1.15em;
+}
 .listing .manufacturer {
   position: relative;
   background: var(--whitespace-color);

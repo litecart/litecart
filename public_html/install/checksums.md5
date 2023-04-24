@@ -396,15 +396,15 @@ eafbab5c5b3b16037aa78267beac0c8c	includes/templates/default.admin/pages/login.in
 9f5e9d0ca2790c600f7a542859e8cd9e	includes/templates/default.admin/views/notices.inc.php
 9a70738c8b02fe85ae87a9cd5b1bc734	includes/templates/default.admin/views/pagination.inc.php
 4f229050b33c408eec0ff63aa7b51d8d	includes/templates/default.catalog/config.inc.php
-a98bc9943c1250408c1fd820a97da24d	includes/templates/default.catalog/css/app.css
-e2177e050ff168ef3638f5748eb12046	includes/templates/default.catalog/css/app.min.css
-8ff332102ff3a9607e532c7ce6ac2878	includes/templates/default.catalog/css/app.min.css.map
+eeb492e9b1303364b612c41b0e1b6be0	includes/templates/default.catalog/css/app.css
+7ef785843bc043f708cc36c177688cf6	includes/templates/default.catalog/css/app.min.css
+016c3ec0eb528ac8bbf8db287fe248ee	includes/templates/default.catalog/css/app.min.css.map
 3ef1259bfbe917531b19cf91f36ebfbe	includes/templates/default.catalog/css/checkout.css
 89df9aed11506cbf3fc6bff54720308b	includes/templates/default.catalog/css/checkout.min.css
 a1822b38e13fd26331d20e50b789a230	includes/templates/default.catalog/css/checkout.min.css.map
 71a5480cdc30532ed19ae33e4ef58ccc	includes/templates/default.catalog/css/framework.css
 f6ba2f17e2d0a00739711aa358401b6e	includes/templates/default.catalog/css/framework.min.css
-8b306199aa8a88ded6042283e0ee73b6	includes/templates/default.catalog/css/framework.min.css.map
+a2579f68fca82f0994e3334126b47bf9	includes/templates/default.catalog/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/css/index.html
 eb82721c7af418e1c8fc5ab241fc117e	includes/templates/default.catalog/css/printable.css
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.catalog/css/printable.min.css
@@ -429,7 +429,7 @@ c493814150509b7be90c66e6bf0efe3c	includes/templates/default.catalog/layouts/prin
 58c63fcc015b20d8a56b7b820dd5e545	includes/templates/default.catalog/less/app.less
 a2009230ea377bd9efdedfb9a85000de	includes/templates/default.catalog/less/app/boxes.less
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/less/app/index.html
-2f13195814bf56d82cc69dd8aa8b8956	includes/templates/default.catalog/less/app/listing.less
+81e1bb25abf0ad3747d71f0959f86321	includes/templates/default.catalog/less/app/listing.less
 90ea982b4cca1cd1ced774628126f493	includes/templates/default.catalog/less/app/product.less
 3c759df15811c9bf0ffeef719c73cfc3	includes/templates/default.catalog/less/app/theme.less
 b7e0555c14e30fdee747eb12f673458b	includes/templates/default.catalog/less/checkout.less
@@ -517,7 +517,7 @@ eb75738118b21f614cee64ede57e9cd1	includes/templates/default.catalog/views/box_si
 f415beda538a3796a3fb3e63c53fd4cc	includes/templates/default.catalog/views/box_slides.inc.php
 643da0d69826e305ca6935eba7bfb4eb	includes/templates/default.catalog/views/breadcrumbs.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/views/index.html
-8c91a893eddb05042e2c0ade3f033a6d	includes/templates/default.catalog/views/listing_category.inc.php
+30fef202fe087e7e9a632a227428fd6d	includes/templates/default.catalog/views/listing_category.inc.php
 80fbc0f4b812f9ee333e090038581b07	includes/templates/default.catalog/views/listing_product.inc.php
 9e0854d2d5b5a4762b1f7b5a02d035cf	includes/templates/default.catalog/views/notices.inc.php
 3abee986a224a60b1d4848a8d84c9012	includes/templates/default.catalog/views/pagination.inc.php
