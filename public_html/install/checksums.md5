@@ -338,8 +338,8 @@ db390b3ff0e45b37533913f7c5b345f5	includes/routes/url_order_process.inc.php
 d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 31c1e94b1eb6502ee4842fce9066ea02	includes/templates/default.admin/css/app.min.css
 dd074822ff582b2d55a98f80fcbf64e4	includes/templates/default.admin/css/app.min.css.map
-ba933aafa3b3ab84849bc492020e886f	includes/templates/default.admin/css/framework.min.css
-ac7b64c7416b504bb56ddcfc05616327	includes/templates/default.admin/css/framework.min.css.map
+90e52857dcaab5fd54873dcb85c128b6	includes/templates/default.admin/css/framework.min.css
+bdf98a177d2da97724b08ec7fbf58a89	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.admin/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.admin/css/printable.min.css.map
@@ -373,7 +373,7 @@ c9d9a6da4ca416235da5473b7b7609a5	includes/templates/default.admin/less/framework
 fb2ed4862b2cfd7ee28b1f06c6c547d0	includes/templates/default.admin/less/framework/grid.less
 ce3414d517c8156972a455c41f62f1d1	includes/templates/default.admin/less/framework/images.less
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/less/framework/index.html
-c2f14a7e46834bffda7b7ce646def692	includes/templates/default.admin/less/framework/inputs.less
+77c1db8db37392b59ee5764c7806c76a	includes/templates/default.admin/less/framework/inputs.less
 535850a8de53574f4f9e4219116d65dc	includes/templates/default.admin/less/framework/lists.less
 3e76cbc834233619f3f51361db0a0434	includes/templates/default.admin/less/framework/loader.less
 14d6a8437c87a2bcff5172eb413b233c	includes/templates/default.admin/less/framework/media.less
@@ -381,7 +381,7 @@ c2f14a7e46834bffda7b7ce646def692	includes/templates/default.admin/less/framework
 587ac11ec395df0e1403ed062e3204d8	includes/templates/default.admin/less/framework/normalize.less
 edd0be6718efe3880d0ee48eca47f878	includes/templates/default.admin/less/framework/notices.less
 7e21af97093c97609bf4cc9e9d0381f8	includes/templates/default.admin/less/framework/pagination.less
-dd9bcd229163a0813c13c5a47be4ad92	includes/templates/default.admin/less/framework/tables.less
+82b122346bf3706146ada16891f7dddb	includes/templates/default.admin/less/framework/tables.less
 b50b64b067520fb80eb03cf36167244e	includes/templates/default.admin/less/framework/typography.less
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/less/index.html
 b8d27643da9bce960bb100085d9c408b	includes/templates/default.admin/less/printable.less
@@ -404,7 +404,7 @@ eeb492e9b1303364b612c41b0e1b6be0	includes/templates/default.catalog/css/app.css
 a1822b38e13fd26331d20e50b789a230	includes/templates/default.catalog/css/checkout.min.css.map
 71a5480cdc30532ed19ae33e4ef58ccc	includes/templates/default.catalog/css/framework.css
 f6ba2f17e2d0a00739711aa358401b6e	includes/templates/default.catalog/css/framework.min.css
-a2579f68fca82f0994e3334126b47bf9	includes/templates/default.catalog/css/framework.min.css.map
+a0f91798ca9d189e0d72180a4bd50669	includes/templates/default.catalog/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/css/index.html
 eb82721c7af418e1c8fc5ab241fc117e	includes/templates/default.catalog/css/printable.css
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.catalog/css/printable.min.css

@@ -74,8 +74,6 @@
   }
 
   > tfoot {
-    position: sticky;
-    bottom: 0;
     background: var(--table-footer-background-color);
     border-top: 1px solid var(--table-border-color);
     border-bottom: 1px solid var(--table-border-color);
@@ -151,9 +149,17 @@
     white-space: nowrap;
 
     thead th {
-      position: sticky;
-      top: 0;
-      z-index: 1;
+      @media only screen {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+    }
+    tfoot {
+      @media only screen {
+        position: sticky;
+        bottom: 0;
+      }
     }
   }
 }
