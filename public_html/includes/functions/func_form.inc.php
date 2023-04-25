@@ -566,6 +566,8 @@
 
     switch ($matches[1]) {
 
+      case 'attribute_groups':
+        return form_draw_attribute_groups_list($name, $input, true, $parameters);
       case 'date':
         return form_draw_date_field($name, $input, $parameters);
 
