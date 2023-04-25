@@ -200,7 +200,11 @@
 
         case 'final_price':
 
-          $this->_data['final_price'] = (isset($this->campaign['price']) && $this->campaign['price'] > 0) ? $this->campaign['price'] : $this->price;
+          $this->_data['final_price'] = $this->price;
+
+          if (isset($this->campaign['price']) && $this->campaign['price'] > 0 && $this->campaign['price'] < $this->_data['final_price']) {
+            $this->_data['final_price'] = $this->campaign['price'];
+          }
 
           break;
 
@@ -338,7 +342,11 @@
                 $value['price_adjust'] = $value['price_adjust'] * $this->campaign['price'] / $this->price;
               }
 
-              $option['values'][] = $value;
+              if (!empty($value['value_id'])) {
+                $option['values'][$value['value_id']] = $value;
+              } else {
+                $option['values'][uniqid()] = $value;
+              }
             }
 
             if ($option['sort'] == 'alphabetically') {

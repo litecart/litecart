@@ -27,7 +27,7 @@
 }
 @media (min-width: 768px) {
   #header .logotype {
-    width: auto;
+    width: 320px;
   }
 }
 #header .middle {
@@ -41,17 +41,14 @@
 }
 @media (min-width: 768px) {
   #header .customer-service {
+    flex-grow: 0;
+    width: 320px;
     font-size: 1.25em;
   }
 }
 #header .customer-service .title {
   font-weight: bold;
   margin: 0;
-}
-@media (min-width: 992px) {
-  #header .customer-service {
-    flex-grow: 0;
-  }
 }
 #box-checkout-cart {
   margin-top: 0;
@@ -118,20 +115,25 @@
 #box-checkout-shipping .option.btn,
 #box-checkout-payment .option.btn {
   padding: 1em;
+  white-space: normal;
 }
 #box-checkout-shipping .option.btn:first-child,
 #box-checkout-payment .option.btn:first-child {
-  border-top-left-radius: var(--border-radius);
-  border-top-right-radius: var(--border-radius);
+  border-start-start-radius: var(--border-radius);
+  border-start-end-radius: var(--border-radius);
 }
 #box-checkout-shipping .option.btn:last-child,
 #box-checkout-payment .option.btn:last-child {
-  border-bottom-left-radius: var(--border-radius);
-  border-bottom-right-radius: var(--border-radius);
+  border-end-start-radius: var(--border-radius);
+  border-end-end-radius: var(--border-radius);
 }
 #box-checkout-shipping .option.active,
 #box-checkout-payment .option.active {
   background: #eaebef;
+}
+#box-checkout-shipping .option.disabled,
+#box-checkout-payment .option.disabled {
+  cursor: not-allowed;
 }
 #box-checkout-shipping .option:not(.active) .content,
 #box-checkout-payment .option:not(.active) .content {

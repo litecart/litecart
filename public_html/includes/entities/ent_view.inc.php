@@ -1,4 +1,5 @@
 <?php
+
   class ent_view {
     public $snippets = [];
     public $html = '';

@@ -1,7 +1,8 @@
 <?php
-  document::$layout = 'blank';
 
   header('X-Robots-Tag: noindex');
+
+  document::$layout = 'blank';
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
   if (!isset($_GET['public_key']) && isset($_GET['checksum'])) $_GET['public_key'] = $_GET['checksum']; // Backwards compatible

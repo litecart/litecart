@@ -36,7 +36,7 @@
 
     {snippet:box_apps_menu}
 
-    <div id="platform" class="text-center"><?php echo PLATFORM_NAME; ?>® <?php echo PLATFORM_VERSION; ?></div>
+    <div id="platform" class="text-center"><a href="<?php echo document::href_link(WS_DIR_ADMIN . 'about.php'); ?>"><?php echo PLATFORM_NAME; ?>® <?php echo PLATFORM_VERSION; ?></a></div>
 
     <div id="copyright" class="text-center">Copyright &copy; <?php echo date('2012-Y'); ?><br />
       <a href="https://www.litecart.net" target="_blank">www.litecart.net</a>
@@ -96,7 +96,7 @@
 
       <?php if ($control_panel_link = settings::get('control_panel_link')) { ?>
       <li>
-        <a href="<?php echo ($control_panel_link != 'https://') ? functions::escape_html($control_panel_link) : document::href_link(WS_DIR_ADMIN, ['app' => 'settings', 'doc' => 'advanced', 'key' => 'control_panel_link', 'action' => 'edit']); ?>" target="_blank" title="<?php echo language::translate('title_control_card', 'Control Panel'); ?>">
+        <a href="<?php echo ($control_panel_link != 'https://') ? functions::escape_html($control_panel_link) : document::href_link(WS_DIR_ADMIN, ['app' => 'settings', 'doc' => 'advanced', 'key' => 'control_panel_link', 'action' => 'edit']); ?>" target="_blank" title="<?php echo language::translate('title_control_panel', 'Control Panel'); ?>">
           <?php echo functions::draw_fonticon('fa-cogs'); ?>
         </a>
       </li>

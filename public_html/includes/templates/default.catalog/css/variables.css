@@ -3,17 +3,15 @@
   font-family: 'Asap';
   font-style: normal;
   font-weight: 400;
-  font-stretch: normal;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/asap/v26/KFOOCniXp96a4Tc2DaTeuDAoKsE617JFc49knOIYdjTYkqUsLg.ttf) format('truetype');
+  src: local(''), url('../fonts/asap-v26-latin-ext_latin-regular.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Asap';
   font-style: normal;
   font-weight: 700;
-  font-stretch: normal;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/asap/v26/KFOOCniXp96a4Tc2DaTeuDAoKsE617JFc49knOIYdjTYdaIsLg.ttf) format('truetype');
+  src: local(''), url('../fonts/asap-v26-latin-ext_latin-700.woff2') format('woff2');
 }
 /* Variables */
 :root {
@@ -39,6 +37,8 @@
   --navigation-background-color-hover: rgba(0, 0, 0, 0.05);
   --navigation-background-color-active: rgba(0, 0, 0, 0.15);
   --navigation-text-color: #222;
+  --navigation-text-color-hover: var(--navigation-text-color);
+  --navigation-text-color-active: var(--navigation-text-color);
   /* Navigation */
   --offcanvas-background-color: var(--navigation-background-color);
   --offcanvas-text-color: var(--navigation-text-color);
@@ -98,7 +98,7 @@
   /* Cards */
   --card-background-color: #fff;
   --card-text-color: var(--default-text-color);
-  --card-border-color: #43617c26;
+  --card-border-color: var(--default-border-color);
   --card-header-background-color: transparent;
   --card-header-text-color: var(--card-text-color);
   --card-body-background-color: transparent;
@@ -125,6 +125,10 @@
   --tabs-border-color: var(--tabs-background-color);
   --tabs-border-color-active: var(--tabs-background-color-active);
   --tabs-content-background-color: #fff;
+  /* Dropdowns */
+  --dropdown-menu-background-color: #fff;
+  --dropdown-menu-item-background-color: var(--dropdown-menu-background-color);
+  --dropdown-menu-item-text-color: var(--default-text-color);
   /* Tables */
   --table-striped-row-background-odd: #f5f6f9;
   --table-striped-row-background-even: #fff;
@@ -138,11 +142,11 @@
   --pagination-text-color-hover: var(--default-text-color);
   --pagination-border-color: var(--default-border-color);
   /* Footer */
-  --footer-background-color: #d9dbe1;
+  --footer-background-color: #ededf1;
   --footer-title-color: var(--default-text-color);
   --footer-text-color: var(--default-text-color);
   /* Copyright */
-  --copyright-background-color: #ced0d9;
+  --copyright-background-color: #e2e2e7;
   --copyright-text-color: var(--default-text-color);
 }
 @media (min-width: 768px) {

@@ -573,6 +573,7 @@
       );
 
       while ($product_image = database::fetch($products_images_query)) {
+
         if (is_file(FS_DIR_STORAGE . 'images/' . $product_image['filename'])) {
           unlink(FS_DIR_STORAGE . 'images/' . $product_image['filename']);
         }
@@ -620,14 +621,8 @@
         }
       }
 
-    // Update product image
-      if (!empty($this->data['images'])) {
-        $images = array_values($this->data['images']);
-        $image = array_shift($images);
-        $this->data['image'] = $image['filename'];
-      } else {
-        $this->data['image'];
-      }
+    // Set main product image
+      $this->data['image'] = !empty($this->data['images']) ? array_values($this->data['images'])[0]['filename'] : '';
 
       database::query(
         "update ". DB_TABLE_PREFIX ."products set

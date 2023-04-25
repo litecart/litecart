@@ -82,13 +82,16 @@
     border-radius: var(--border-radius);
     border: 1px #86cb00 solid;
     color: #86cb00;
+
     &:empty {
       display: none;
     }
+
     &.warning {
       color: #c00;
       border-color: #c00;
     }
+
     .description {
       margin-top: 1em;
       font-size: .8em;
@@ -98,6 +101,7 @@
   .social-bookmarks {
     font-size: 1.75em;
     margin-top: 1em;
+
     a {
       margin: 0 .25em;
     }
@@ -109,6 +113,9 @@
     }
     p:last-child {
       margin-bottom: 0;
+    }
+    a {
+      text-decoration: underline;
     }
   }
 }

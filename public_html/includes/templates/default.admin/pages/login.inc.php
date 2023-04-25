@@ -124,10 +124,6 @@ html.dark-mode body {
   }
 
   $('form[name="login_form"]').submit(function() {
-    let form = this;
-    $('#box-login').removeClass('bounce-in');
-    $('#box-login .card-body').slideUp(100, function(){
-      $('#box-login').addClass('flip-out');
-    });
+    $('#box-login').removeClass('bounce-in').addClass('flip-out');
   });
 </script>

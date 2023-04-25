@@ -2,7 +2,7 @@
 
   class vmod {
     public static $enabled = true;                 // Bool whether or not to enable this feature
-    private static $aliases = [];                  // Array of path aliases ['pattern' => 'replace']
+    public static $aliases = [];                   // Array of path aliases ['pattern' => 'replace']
     private static $_checked = [];                 // Array of files that have already passed check() and
     private static $_checksums = [];               // Array of checksums for time comparison
     private static $_files_to_modifications = [];  // Array of references to modifications
@@ -276,7 +276,11 @@
 
       try {
 
-        $xml = file_get_contents($file);
+        if (!$xml = file_get_contents($file)) {
+          throw new \Exception('Could not read file', E_USER_ERROR);
+        }
+
+      // Normalize line endings
         $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
 
         $dom = new \DOMDocument('1.0', 'UTF-8');
@@ -377,14 +381,14 @@
         }
 
       } catch (\Exception $e) {
-        trigger_error("Could not parse file ($file): " . $e->getMessage(), E_USER_WARNING);
+        trigger_error("Could not load vMod ($file): " . $e->getMessage(), E_USER_WARNING);
       }
     }
 
     public static function parse_vmod($dom, $file) {
 
       if ($dom->documentElement->tagName != 'vmod') {
-        throw new \Exception('File is not a valid vmod');
+        throw new \Exception("File is not a valid vMod ($file)");
       }
 
       if (empty($dom->getElementsByTagName('name')->item(0))) {
@@ -464,10 +468,15 @@
           $onerror = $operation_node->getAttribute('onerror');
 
         // Find
-          if (!in_array($operation_node->getAttribute('method'), ['top', 'bottom'])) {
+          if (in_array($operation_node->getAttribute('method'), ['top', 'bottom', 'all'])) {
+
+            $find = '';
+            $indexes = '';
+
+          } else {
 
             $find_node = $operation_node->getElementsByTagName('find')->item(0);
-            $find = strtr($find_node->textContent, $aliases);
+            $find = $find_node->textContent;
 
           // Trim
             if (in_array($operation_node->getAttribute('type'), ['inline', 'regex'])) {
@@ -519,10 +528,10 @@
 
         // Insert
           $insert_node = $operation_node->getElementsByTagName('insert')->item(0);
-          $insert = strtr($insert_node->textContent, $aliases);
+          $insert = $insert_node->textContent;
 
-          if (!empty($vmod['aliases'])) {
-            foreach ($vmod['aliases'] as $key => $value) {
+          if (!empty($aliases)) {
+            foreach ($aliases as $key => $value) {
               $insert = str_replace('{alias:'. $key .'}', $value, $insert);
             }
           }
@@ -551,14 +560,12 @@
                 break;
 
               case 'top':
-                $find = '#^#s';
-                $indexes = '';
+                $find = '#^.*$#s';
                 $insert = addcslashes($insert, '\\$').'$0';
                 break;
 
               case 'bottom':
-                $find = '#$#s';
-                $indexes = '';
+                $find = '#^.*$#s';
                 $insert = '$0'.addcslashes($insert, '\\$');
                 break;
 
@@ -566,8 +573,13 @@
                 $insert = addcslashes($insert, '\\$');
                 break;
 
+              case 'all':
+                $find = '#^.*$#s';
+                $add = addcslashes($insert, '\\$');
+                break;
+
               default:
-                throw new \Exception("Unknown value \"$method\" for operation method (before|after|replace|bottom|top)");
+                throw new \Exception("Unknown value \"$method\" for operation method (before|after|replace|bottom|top|all)");
                 continue 2;
             }
           }

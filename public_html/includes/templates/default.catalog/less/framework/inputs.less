@@ -181,8 +181,8 @@ select.form-control {
     margin: 0 -1px;
     padding: var(--input-padding-y) var(--input-padding-x);
     background-color: var(--default-background-color);
-    border-left: 1px solid var(--default-border-color);
-    border-right: 1px solid var(--default-border-color);
+    border-inline-start: 1px solid var(--default-border-color);
+    border-inline-end: 1px solid var(--default-border-color);
     color: var(--default-text-color);
     white-space: nowrap;
     font-weight: normal;
@@ -207,7 +207,8 @@ select.form-control {
   .form-control:last-child, .input-group-btn:last-child .btn,
   .input-group-text:last-child {
     margin-inline-end: -1px;
-    border-radius: 0 var(--input-border-radius) var(--input-border-radius) 0;
+    border-end-end-radius: var(--input-border-radius);
+    border-start-end-radius: var(--input-border-radius);
   }
 }
 

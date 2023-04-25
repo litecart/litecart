@@ -1,0 +1,3 @@
+INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
+('legal', 'local', 'Do Not Share My Information / Opt-Out', 'Select a page for Do Not Share My Information or leave blank to disable.', 'do_not_share', '', 'page()', 13, NOW(), NOW()),
+('legal', 'local', 'Company Imprint / Impressum', 'Select a page for Company Imprint or leave blank to disable.', 'company_imprint', '', 'page()', 14, NOW(), NOW());

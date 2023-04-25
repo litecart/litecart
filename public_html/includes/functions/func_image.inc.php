@@ -1,21 +1,8 @@
 <?php
 
   function image_scale_by_width($width, $ratio) {
-    switch($ratio) {
-      case '2:3':
-        return [$width, round($width/2*3)];
-      case '3:2':
-        return [$width, round($width/3*2)];
-      case '3:4':
-        return [$width, round($width/3*4)];
-      case '4:3':
-        return [$width, round($width/4*3)];
-      case '16:9':
-        return [$width, round($width/16*9)];
-      case '1:1':
-      default:
-        return [$width, $width];
-    }
+    list($x, $y) = explode(':', $ratio);
+    return[$width, round($width / $x * $y)];
   }
 
   function image_process($source, $options) {
@@ -28,7 +15,7 @@
         'destination' => !empty($options['destination']) ? $options['destination'] : FS_DIR_STORAGE . 'cache/',
         'width' => !empty($options['width']) ? $options['width'] : 0,
         'height' => !empty($options['height']) ? $options['height'] : 0,
-        'clipping' => !empty($options['clipping']) ? $options['clipping'] : 'FIT_ONLY_BIGGER',
+        'clipping' => !empty($options['clipping']) ? strtoupper($options['clipping']) : 'FIT_ONLY_BIGGER',
         'quality' => isset($options['quality']) ? $options['quality'] : settings::get('image_quality'),
         'trim' => !empty($options['trim']) ? $options['trim'] : false,
         'interlaced' => !empty($options['interlaced']) ? true : false,
@@ -36,8 +23,7 @@
         'watermark' => !empty($options['watermark']) ? $options['watermark'] : false,
       ];
 
-      if (substr($options['destination'], -1) == '/') {
-
+      if (is_dir($options['destination']) || substr($options['destination'], -1) == '/') {
         if (preg_match('#^'. preg_quote(FS_DIR_STORAGE . 'cache/', '#') .'$#', $options['destination'])) {
 
           if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
@@ -46,7 +32,7 @@
             $extension = pathinfo($source, PATHINFO_EXTENSION);
           }
 
-          switch (strtoupper($options['clipping'])) {
+          switch ($options['clipping']) {
 
             case 'CROP':
               $clipping_filename_flag = '_c';
@@ -84,8 +70,8 @@
           $filename = implode([
             sha1(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)))),
             $options['trim'] ? '_t' : '',
-            '_'.(int)$options['width'] .'x'. (int)$options['height'],
-            $clipping_filename_flag,
+            ($options['width'] && $options['height']) ? '_'.(int)$options['width'] .'x'. (int)$options['height'] : '',
+            ($options['width'] && $options['height']) ? $clipping_filename_flag : '',
             $options['watermark'] ? '_wm' : '',
             settings::get('image_thumbnail_interlaced') ? '_i' : '',
             '.'.$extension,
@@ -94,7 +80,7 @@
           $options['destination'] = FS_DIR_STORAGE .'cache/'. substr($filename, 0, 2) . '/' . $filename;
 
         } else {
-          $options['destination'] = FS_DIR_STORAGE .'cache/'. basename($source);
+          $options['destination'] = rtrim($options['destination'], '/') .'/'. basename($source);
         }
       }
 

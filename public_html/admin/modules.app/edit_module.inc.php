@@ -114,11 +114,13 @@
               <?php echo !empty($setting['description']) ? '<div>'. $setting['description'] .'</div>' : ''; ?>
             </td>
             <td style="width: 50%">
-              <?php if (!empty($setting['multiple'])) { ?>
-              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].'][]', true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_html($setting['placeholder']) .'"' : ''); ?>
-              <?php } else { ?>
-              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_html($setting['placeholder']) .'"' : ''); ?>
-              <?php } ?>
+              <?php
+                if (!empty($setting['multiple'])) {
+                  echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].'][]', true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_html($setting['placeholder']) .'"' : '');
+                } else {
+                  echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_html($setting['placeholder']) .'"' : '');
+                }
+              ?>
             </td>
           </tr>
           <?php } ?>

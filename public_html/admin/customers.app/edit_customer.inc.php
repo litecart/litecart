@@ -248,7 +248,7 @@
 
             <div class="form-group col-md-6">
               <label><?php echo !empty($customer->data['id']) ? language::translate('title_new_password', 'New Password') : language::translate('title_password', 'Password'); ?></label>
-              <?php echo functions::form_draw_password_field('new_password', '', 'autocomplete="off"'); ?>
+              <?php echo functions::form_draw_password_field('new_password', '', 'autocomplete="new-password"'); ?>
             </div>
           </div>
 

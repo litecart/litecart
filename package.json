@@ -2,7 +2,7 @@
 	"name": "litecart",
 	"title": "LiteCart",
 	"description": "Lightweight e-commerce platform built with PHP, jQuery and HTML.",
-	"version": "2.5.1",
+	"version": "2.5.3",
 	"author": {
 		"name": "T. Almroth",
 		"url": "https://www.litecart.net/"
@@ -18,7 +18,7 @@
 		"url": "https://github.com/litecart/litecart/issues"
 	},
 	"devDependencies": {
-		"grunt": "^1.5.3",
+		"grunt": "^1.6.1",
 		"grunt-cli": "^1.4.3",
 		"grunt-contrib-less": "^3.0.0",
 		"grunt-contrib-uglify": "^5.2.2",
@@ -26,9 +26,11 @@
 		"grunt-dart-sass": "^2.0.1",
 		"grunt-phplint": "^0.1.0",
 		"grunt-text-replace": "^0.4.0",
-		"less-plugin-clean-css": "^1.5.1",
 		"phplint": "^2.0.5",
-		"sass": "^1.55.0"
+		"sass": "^1.62.0"
+	},
+	"engines": {
+		"node": ">=19"
 	},
 	"scripts": {
 		"build": "grunt",

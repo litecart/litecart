@@ -52,7 +52,6 @@
 .card-app,
 .panel-app {
   position: relative;
-  overflow: hidden;
 
   > .card-header,
   > .panel-heading {
@@ -99,6 +98,11 @@
     width: fit-content;
     margin-right: auto;
   }
+}
+
+html[dir="rtl"] .card .card-action {
+  left: var(--gutter-size);
+  right: auto;
 }
 
 .featherlight .card-app,

@@ -215,24 +215,26 @@
 
       if (empty($file)) return;
 
-      if (!empty($filename)) $filename = 'categories/' . $filename;
+      $image = new ent_image($file);
+
+      if (!empty($filename)) {
+        $filename = 'categories/'. $filename;
+      } else {
+        $filename = 'categories/'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type();
+      }
+
+      $fullpath = FS_DIR_STORAGE . 'images/' . $filename;
 
       if (empty($this->data['id'])) {
         $this->save();
       }
 
-      if (!is_dir(FS_DIR_STORAGE . 'images/categories/')) {
-        mkdir(FS_DIR_STORAGE . 'images/categories/', 0777);
+      if (!is_dir(dirname($fullpath))) {
+        mkdir(dirname($fullpath));
       }
 
-      $image = new ent_image($file);
-
-      if (empty($filename)) {
-        $filename = 'categories/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type();
-      }
-
-      if (is_file(FS_DIR_STORAGE . 'images/' . $filename)) {
-        unlink(FS_DIR_STORAGE . 'images/' . $filename);
+      if (is_file($fullpath)) {
+        unlink($fullpath);
       }
 
       if (settings::get('image_downsample_size')) {
@@ -240,9 +242,9 @@
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
-      if (!$image->write(FS_DIR_STORAGE . 'images/' . $filename, 90)) return false;
+      functions::image_delete_cache($fullpath);
 
-      functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $filename);
+      if (!$image->write($fullpath, 90)) return false;
 
       database::query(
         "update ". DB_TABLE_PREFIX ."categories

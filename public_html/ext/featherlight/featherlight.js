@@ -217,7 +217,7 @@
 
 			self.$instance.removeClass(self.namespace+'-loading');
 
-			$content.show().children().css('margin', '0');
+			$content.show();
 
 			self.$content = $content;
 			self.$instance.find('.'+self.namespace+'-content').html(self.$content);

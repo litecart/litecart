@@ -1,21 +1,22 @@
+/* Media Breakpoints */
+/* Fonts */
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Me5Q.ttf) format('truetype');
+  src: local(''), url('../fonts/roboto-v30-latin-ext_latin-regular.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlvAw.ttf) format('truetype');
+  src: local(''), url('../fonts/roboto-v30-latin-ext_latin-700.woff2') format('woff2');
 }
-/* Media Breakpoints */
 /* Variables */
 :root {
-  --border-radius: 0.5em;
+  --border-radius: 8px;
   --gutter-size: 2rem;
   --link-text-color: #06b;
   --whitespace-color: #fff;
@@ -31,7 +32,7 @@
   --navigation-text-color: #444;
   --default-background-color: #f2f3f6;
   --default-background-color-hover: #f2f3f6;
-  --default-border-color: #e6e8ec;
+  --default-border-color: #f2f3f7;
   --default-line-height: 1.25;
   --default-text-font: Roboto, Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #444;

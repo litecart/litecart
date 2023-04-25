@@ -41,7 +41,7 @@
         }
       }
 
-      if (!empty($node)) return $node;
+      if (!empty($node) || $node != '') return $node;
     }
 
     return '';
@@ -520,7 +520,7 @@
 
     if ($input === true) $input = form_reinsert_value($name);
 
-    $html = '<div class="btn-group btn-block btn-group-inline" data-toggle="buttons">'. PHP_EOL;
+    $html = '<div '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn-group btn-block btn-group-inline"' : '') .' data-toggle="buttons"'. (($parameters) ? ' '.$parameters : '') .'>'. PHP_EOL;
 
     $is_numerical_index = (array_keys($options) === range(0, count($options) - 1));
 
@@ -648,7 +648,7 @@
         return form_draw_textarea($name, $input, $parameters . ' rows="10"');
 
       case 'category':
-        return form_draw_categories_list($name, $input, $parameters);
+        return form_draw_category_field($name, $input, $parameters);
 
       case 'categories':
         return form_draw_categories_list($name, $input, true, $parameters);
@@ -693,6 +693,9 @@
       case 'geo_zones':
         return form_draw_geo_zones_list($name, $input, true, $parameters);
 
+      case 'incoterms':
+        return form_draw_incoterms_list($name, $input, $parameters);
+
       case 'language':
         return form_draw_languages_list($name, $input, false, $parameters);
 
@@ -704,6 +707,9 @@
 
       case 'length_classes':
         return form_draw_length_classes_list($name, $input, true, $parameters);
+
+      case 'payment_terms':
+        return form_draw_payment_terms_list($name, $input, $parameters);
 
       case 'product':
         return form_draw_products_list($name, $input, false, $parameters);
@@ -1408,8 +1414,8 @@
     if (!empty($value)) {
       $product_query = database::query(
         "select p.id, p.sku, pp.price, pi.name
-        from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        from ". DB_TABLE_PREFIX ."products p
+        left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         left join (
           select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
           from ". DB_TABLE_PREFIX ."products_prices

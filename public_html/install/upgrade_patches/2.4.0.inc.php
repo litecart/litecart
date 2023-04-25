@@ -7,7 +7,7 @@
         'replace' => "RewriteCond %{REQUEST_URI} !^/\\.well-known/",
       ],
     ],
-  ], 'abort');
+  ]);
 
   $columns_query = database::query(
     "SELECT * FROM `information_schema`.COLUMNS

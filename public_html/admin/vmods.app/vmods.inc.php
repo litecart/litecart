@@ -190,8 +190,8 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_vmod'], ['app']), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?>
     <?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => 'settings', 'doc' => 'advanced', 'action' => 'edit', 'key' => 'cache_clear']), language::translate('title_clear_cache', 'Clear Cache'), '', 'fa-external-link'); ?>
+    <?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_vmod'], ['app']), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('vmod_form', 'post', '', true); ?>

@@ -1,5 +1,6 @@
 <?php
 
+  #[AllowDynamicProperties]
   class pm_cod {
     public $id = __CLASS__;
     public $name = 'Cash on Delivery';

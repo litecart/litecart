@@ -1,5 +1,6 @@
 <?php
 
+// Delete some files
   perform_action('delete', [
     FS_DIR_ADMIN . '.htaccess',
     FS_DIR_ADMIN . '.htpasswd',
@@ -10,7 +11,6 @@
     FS_DIR_APP . 'ext/jquery/jquery-3.6.0.min.js',
     FS_DIR_APP . 'vqmod/xml/product_options_stock_notice.xml',
   ]);
-
 
 // Move vQmods to vMod
   foreach (glob(FS_DIR_APP . 'vqmod/xml/*.{xml,disabled}', GLOB_BRACE) as $file) {

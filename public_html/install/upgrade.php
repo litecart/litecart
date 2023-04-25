@@ -8,35 +8,35 @@
   if (php_sapi_name() == 'cli') {
 
     if (!isset($argv[1]) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
-      echo "\nLiteCart® 2.5.1\n"
+      echo "\nLiteCart® 2.5.3\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
       . "Options:\n"
       . "  --from_version       Manually set version migrating from. Omit for auto detection\n"
-      . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n";
+      . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n"
+      . "  --cleanup            Delete the install/ directory after finising the upgrade.\n\n";
       exit;
     }
 
     $options = [
-      'from_version::', 'development_type::'
+      'from_version::', 'development_type:: cleanup'
     ];
 
     $_REQUEST = getopt('', $options);
     $_REQUEST['upgrade'] = true;
 
+    if (isset($_REQUEST['cleanup'])) {
+      $_REQUEST['cleanup'] = true;
+    }
   }
 
   require_once __DIR__ . '/includes/header.inc.php';
   require_once __DIR__ . '/includes/functions.inc.php';
 
 // Include config
-  if (is_file(__DIR__ . '/../storage/config.inc.php')) {
-    include(__DIR__ . '/../storage/config.inc.php');
-
-  } else if (is_file(__DIR__ . '/../includes/config.inc.php')) { // <3.0
+  if (is_file(__DIR__ . '/../includes/config.inc.php')) {
     include(__DIR__ . '/../includes/config.inc.php');
-
   } else {
     echo '<h2>No Installation Detected</h2>' . PHP_EOL
        . '<p>Warning: No configuration file was found.</p>' . PHP_EOL
@@ -97,6 +97,12 @@
     return version_compare($a, $b, '>') ? 1 : -1;
   });
 
+  if (empty($_REQUEST['development_type'])) {
+    if (is_file($file = FS_DIR_APP . 'includes/templates/default.catalog/.development')) {
+      $_REQUEST['development_type'] = file_get_contents($file);
+    }
+  }
+
   if (!empty($_REQUEST['upgrade'])) {
 
     ob_start(function($buffer) {
@@ -149,41 +155,43 @@
 
       ### Installer > Update ########################################
 
-      echo '<p>Checking for updates... ';
+      if (!empty($_REQUEST['skip_updates'])) {
+        echo '<p>Checking for updates... ';
 
-      require_once __DIR__.'/../includes/wrappers/wrap_http.inc.php';
-      $client = new wrap_http();
+        require_once __DIR__.'/../includes/wrappers/wrap_http.inc.php';
+        $client = new wrap_http();
 
-      $update_file = function($file) use ($client) {
-        $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
-        $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
-        if ($client->last_response['status_code'] != 200) return false;
-        if (!is_dir(dirname(FS_DIR_APP . $local_file))) {
-          mkdir(dirname(FS_DIR_APP . $local_file), 0777, true);
-        }
-        file_put_contents(FS_DIR_APP . $local_file, $response);
-        return true;
-      };
-
-      $calculate_md5 = function($file) {
-        $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
-        if (!is_file(FS_DIR_APP . $local_file)) return;
-        $contents = preg_replace('#(\r\n?|\n)#', "\n", file_get_contents(FS_DIR_APP . $local_file));
-        return md5($contents);
-      };
-
-      if ($update_file('install/checksums.md5')) {
-
-        $files_updated = 0;
-        foreach (file(FS_DIR_APP . 'install/checksums.md5', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-          list($checksum, $file) = explode("\t", $line);
-          if ($calculate_md5($file) != $checksum) {
-            if ($update_file($file)) $files_updated++;
+        $update_file = function($file) use ($client) {
+          $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
+          $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
+          if ($client->last_response['status_code'] != 200) return false;
+          if (!is_dir(dirname(FS_DIR_APP . $local_file))) {
+            mkdir(dirname(FS_DIR_APP . $local_file), 0777, true);
           }
-        }
+          file_put_contents(FS_DIR_APP . $local_file, $response);
+          return true;
+        };
 
-        if (!empty($files_updated)) {
-          echo 'Updated '. $files_updated .' file(s) <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+        $calculate_md5 = function($file) {
+          $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
+          if (!is_file(FS_DIR_APP . $local_file)) return;
+          $contents = preg_replace('#(\r\n?|\n)#', "\n", file_get_contents(FS_DIR_APP . $local_file));
+          return md5($contents);
+        };
+
+        if ($update_file('install/checksums.md5')) {
+
+          $files_updated = 0;
+          foreach (file(FS_DIR_APP . 'install/checksums.md5', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+            list($checksum, $file) = explode("\t", $line);
+            if ($calculate_md5($file) != $checksum) {
+              if ($update_file($file)) $files_updated++;
+            }
+          }
+
+          if (!empty($files_updated)) {
+            echo 'Updated '. $files_updated .' file(s) <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+          }
         }
       }
 
@@ -237,6 +245,8 @@
 
       if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
+        file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'advanced');
+
         perform_action('delete', [
           FS_DIR_APP . 'includes/templates/default.catalog/css/app.css',
           FS_DIR_APP . 'includes/templates/default.catalog/css/checkout.css',
@@ -245,6 +255,8 @@
         ]);
 
       } else {
+
+        file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'standard');
 
         perform_action('delete', [
           FS_DIR_APP . 'includes/templates/default.catalog/css/*.min.css',
@@ -295,6 +307,19 @@
       ]);
 
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
+      ### Cleanup ##########################################
+
+      if (!empty($_REQUEST['cleanup'])) {
+
+        echo '<p>Cleanup... ';
+
+        perform_action('delete', [
+          FS_DIR_APP . 'install/',
+        ]);
+
+        echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      }
 
       #############################################
 
@@ -361,32 +386,34 @@ input[name="development_type"]:checked + div {
 </style>
 
 <form name="upgrade_form" method="post">
-  <h1>Upgrade</h1>
+  <h1>Upgrade <?php echo PLATFORM_VERSION; ?></h1>
 
   <h2>Application</h2>
 
   <div class="row">
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-6">
       <label>MySQL Server</label>
       <div class="form-control">
         <?php echo DB_SERVER; ?>
       </div>
     </div>
 
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-6">
       <label>MySQL Database</label>
       <div class="form-control">
         <?php echo DB_DATABASE; ?>
       </div>
     </div>
+  </div>
 
-  <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
-    <div class="form-group col-md-4">
+  <div class="row">
+    <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
+    <div class="form-group col-md-3">
       <label>Current Version</label>
       <div class="form-control"><?php echo PLATFORM_DATABASE_VERSION; ?></div>
     </div>
     <?php } else { ?>
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
       <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
       <select class="form-control" name="from_version">
         <option value="">-- Select Version --</option>
@@ -394,6 +421,17 @@ input[name="development_type"]:checked + div {
       </select>
     </div>
     <?php } ?>
+
+    <div class="form-group col-md-3">
+      <label>New Version</label>
+      <div class="form-control"><?php echo PLATFORM_VERSION; ?></div>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label style="margin-top: 2.25em;">
+        <input type="checkbox" class="form-check" name="skip_updates" value="0" /> Skip downloading the latest updates
+      </label>
+    </div>
   </div>
 
   <h2>Development</h2>

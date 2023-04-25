@@ -1,5 +1,6 @@
 <?php
 
+  #[AllowDynamicProperties]
   class ot_shipping_fee {
     public $id = __CLASS__;
     public $name = 'Shipping Fee';

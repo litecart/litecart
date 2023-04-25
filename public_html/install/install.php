@@ -3,7 +3,7 @@
   if (php_sapi_name() == 'cli') {
 
     if (!isset($argv[1]) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
-      echo "\nLiteCart® 2.5.1\n"
+      echo "\nLiteCart® 2.5.3\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -19,16 +19,23 @@
       . "  --admin_folder       Set admin folder name (Default admin)\n"
       . "  --username           Set admin username\n"
       . "  --password           Set admin user password\n\n"
-      . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n\n";
+      . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n"
+      . "  --cleanup            Delete the install/ directory after finising the installation.\n\n";
       exit;
     }
 
     $options = [
       'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
-      'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type::',
+      'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type:: cleanup',
     ];
+
     $_REQUEST = getopt('', $options);
     $_REQUEST['install'] = true;
+
+    if (isset($_REQUEST['cleanup'])) {
+      $_REQUEST['cleanup'] = true;
+    }
+
   } else {
     require __DIR__ . '/includes/header.inc.php';
   }
@@ -373,10 +380,10 @@
     $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
     $map = [
-      '{STORE_NAME}' => $_REQUEST['store_name'],
-      '{STORE_EMAIL}' => $_REQUEST['store_email'],
-      '{STORE_TIME_ZONE}' => $_REQUEST['store_time_zone'],
-      '{STORE_COUNTRY_CODE}' => $_REQUEST['country_code'],
+      '{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
+      '{STORE_EMAIL}' => isset($_REQUEST['store_email']) ? $_REQUEST['store_email'] : '',
+      '{STORE_TIME_ZONE}' => isset($_REQUEST['store_time_zone']) ? $_REQUEST['store_time_zone'] : '',
+      '{STORE_COUNTRY_CODE}' => isset($_REQUEST['country_code']) ? $_REQUEST['country_code'] : '',
     ];
 
     foreach ($map as $search => $replace) {
@@ -543,6 +550,8 @@
 
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
+      file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'advanced');
+
       $files_to_delete = [
         '../includes/templates/default.catalog/css/app.css',
         '../includes/templates/default.catalog/css/checkout.css',
@@ -555,6 +564,8 @@
       }
 
     } else {
+
+      file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'standard');
 
       $files_to_delete = [
         '../includes/templates/default.catalog/css/*.min.css',
@@ -650,6 +661,19 @@
     } else {
       echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
     }
+
+    ### Cleanup ##########################################
+
+      if (!empty($_REQUEST['cleanup'])) {
+
+        echo '<p>Cleanup... ';
+
+        perform_action('delete', [
+          FS_DIR_APP . 'install/',
+        ]);
+
+        echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      }
 
     ### #############################################################
 

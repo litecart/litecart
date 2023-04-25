@@ -1,5 +1,6 @@
 <?php
 
+  #[AllowDynamicProperties]
   class job_cache_cleaner {
     public $id = __CLASS__;
     public $name = 'Cache Cleaner';
@@ -21,6 +22,8 @@
 
       $timestamp = strtotime('-24 hours');
       $deleted = 0;
+
+      clearstatcache();
 
       foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
         $search = !empty($keyword) ? '/*_'.$keyword.'*.cache' : '/*.cache';

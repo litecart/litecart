@@ -46,6 +46,7 @@
 
     $_page->snippets = [
       'id' => $category->id,
+      'parent_id' => $category->parent_id,
       'name' => $category->name,
       'short_description' => $category->short_description,
       'description' => (!empty($category->description) && trim(strip_tags($category->description))) ? $category->description : '',

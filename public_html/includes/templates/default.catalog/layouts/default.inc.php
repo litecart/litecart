@@ -13,7 +13,6 @@
 <body>
 
 <div id="page-container">
-  <div id="content-wrapper">
 
     <?php if ($important_notice) { ?>
     <div id="important-notice">
@@ -29,15 +28,15 @@
       </div>
     </nav>
 
-    {snippet:content}
+    <div id="content-wrapper">
+      {snippet:content}
+    </div>
 
     <?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
 
     <a id="scroll-up" class="hidden-print" href="#">
       <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>
     </a>
-
-  </div>
 
   <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_site_footer.inc.php'); ?>
 </div>

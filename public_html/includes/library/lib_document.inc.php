@@ -43,6 +43,7 @@
       self::$snippets['home_path'] = WS_DIR_APP;
       self::$snippets['template_path'] = WS_DIR_TEMPLATE;
       self::$snippets['title'] = [settings::get('store_name')];
+      self::$snippets['head_tags']['manifest'] = '<link rel="manifest" href="'. document::href_ilink('manifest.json') .'" />';
       self::$snippets['head_tags']['favicon'] = implode(PHP_EOL, [
         '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon.ico') .'" type="image/x-icon" sizes="32x32 48x48 64x64 96x96" />',
         '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-128x128.png') .'" type="image/png" sizes="128x128" />',
@@ -272,13 +273,16 @@
 
     public static function rlink($resource) {
 
-      $resource = str_replace('\\', '/', realpath($resource));
+      if (!preg_match('#^([a-z]:)?[/\\\\]#i', $resource)) {
+        $resource = FS_DIR_APP . $resource;
+      }
 
       if (!is_file($resource)) {
         trigger_error('Could not create link for missing resource ('. $resource.')', E_USER_WARNING);
         return self::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource));
       }
 
+      $resource = str_replace('\\', '/', realpath($resource));
       return self::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource), ['_' => filemtime($resource)]);
     }
 

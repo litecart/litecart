@@ -81,6 +81,9 @@
         'comments' => [],
         'subtotal' => ['amount' => 0, 'tax' => 0],
         'display_prices_including_tax' => settings::get('default_display_prices_including_tax'),
+        'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '',
+        'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
+        'domain' => isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '',
       ]);
 
       $this->previous = $this->data;
@@ -227,7 +230,7 @@
         database::query(
           "insert into ". DB_TABLE_PREFIX ."orders
           (uid, client_ip, user_agent, domain, date_created)
-          values ('". database::input($this->data['uid']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". database::input($_SERVER['HTTP_HOST']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+          values ('". database::input($this->data['uid']) ."', '". database::input($this->data['client_ip']) ."', '". database::input($this->data['user_agent']) ."', '". database::input($this->data['domain']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
 
         $this->data['id'] = database::insert_id();
@@ -292,8 +295,7 @@
       if (!empty($this->previous['order_status_id']) && reference::order_status($this->previous['order_status_id'], $this->data['language_code'])->stock_action == 'commit') {
         foreach ($this->previous['items'] as $previous_order_item) {
           if (empty($previous_order_item['product_id'])) continue;
-          $product = new ent_product($previous_order_item['product_id']);
-          $product->adjust_quantity((float)$previous_order_item['quantity'], $previous_order_item['option_stock_combination']);
+          $this->adjust_stock_quantity($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], (float)$previous_order_item['quantity']);
         }
       }
 
@@ -328,8 +330,7 @@
       // Withdraw stock
         if (!empty($this->data['order_status_id']) && reference::order_status($this->data['order_status_id'])->stock_action == 'commit') {
           if (!empty($item['product_id'])) {
-            $product = new ent_product($item['product_id']);
-            $product->adjust_quantity(-(float)$item['quantity'], $item['option_stock_combination']);
+            $this->adjust_stock_quantity($item['product_id'], $item['option_stock_combination'], -(float)$item['quantity']);
           }
         }
 
@@ -649,31 +650,49 @@
 
     // Validate shipping option
       if (!empty($shipping->modules) && count($shipping->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
-        if (empty($this->data['shipping_option']['id'])) {
-          return language::translate('error_no_shipping_method_selected', 'No shipping method selected');
-        } else {
+
+        if (!empty($this->data['shipping_option']['id'])) {
+
           list($module_id, $option_id) = explode(':', $this->data['shipping_option']['id']);
+
           if (empty($shipping->data['options'][$module_id]['options'][$option_id])) {
             return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
           }
+
           if (!empty($shipping->data['options'][$module_id]['options'][$option_id]['error'])) {
             return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains errors');
           }
+
+          if ($error = $shipping->run('validate', $module_id, $this)) {
+            return $error;
+          }
+
+        } else {
+          return language::translate('error_no_shipping_method_selected', 'No shipping method selected');
         }
       }
 
     // Validate payment option
       if (!empty($payment->modules) && count($payment->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
-        if (empty($this->data['payment_option']['id'])) {
-          return language::translate('error_no_payment_method_selected', 'No payment method selected');
-        } else {
+
+        if (!empty($this->data['payment_option']['id'])) {
+
           list($module_id, $option_id) = explode(':', $this->data['payment_option']['id']);
+
           if (empty($payment->data['options'][$module_id]['options'][$option_id])) {
             return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
           }
+
           if (!empty($payment->data['options'][$module_id]['options'][$option_id]['error'])) {
             return language::translate('error_payment_method_contains_error', 'The selected payment method contains errors');
           }
+
+          if ($error = $payment->run('validate', $module_id, $this)) {
+            return $error;
+          }
+
+        } else {
+          return language::translate('error_no_payment_method_selected', 'No payment method selected');
         }
       }
 
@@ -824,6 +843,12 @@
             ->set_subject($subject)
             ->add_body($message, true)
             ->send();
+    }
+
+    public function adjust_stock_quantity($product_id, $combination, $quantity_adjustment) {
+      if ($quantity_adjustment == 0) return;
+      $product = new ent_product($product_id);
+      $product->adjust_quantity((float)$quantity_adjustment, $combination);
     }
 
     public function delete() {

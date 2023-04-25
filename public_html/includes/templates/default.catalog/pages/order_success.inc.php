@@ -22,7 +22,7 @@
 
           <p><strong><?php echo language::translate('title_order_total', 'Order Total'); ?></strong>: <?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></p>
 
-          <p><a href="<?php echo functions::escape_html($printable_link); ?>" target="_blank"><?php echo language::translate('description_click_printable_copy', 'Click here for a printable copy'); ?></a></p>
+          <p><a class="btn btn-default" href="<?php echo functions::escape_html($printable_link); ?>" target="_blank"><?php echo language::translate('description_click_printable_copy', 'Click here for a printable copy'); ?></a></p>
 
         </div>
       </section>

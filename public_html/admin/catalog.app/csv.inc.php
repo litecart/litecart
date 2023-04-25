@@ -443,17 +443,16 @@
 
             } elseif (!empty($row['gtin']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
               $product = new ent_product($product['id']);
-
             }
 
             if (!empty($product->data['id'])) {
 
               if (empty($batch['overwrite'])) {
-                echo 'Skip updating existing product on line '. $batch['counters']['line'] . PHP_EOL;
+                echo 'Skip updating existing product (ID: '. $product->data['id'] .') on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Updating existing product '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              echo 'Updating existing product '. (!empty($row['name']) ? $row['name'] : '') .' (ID: '. $product->data['id'] .') on line '. $batch['counters']['line'] . PHP_EOL;
               $batch['counters']['updated']++;
 
             } else {
@@ -463,7 +462,7 @@
                 continue 2;
               }
 
-              echo 'Inserting new product: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              echo 'Inserting new product '. (!empty($row['name']) ? $row['name'] : '') .' on line '. $batch['counters']['line'] . PHP_EOL;
               $batch['counters']['inserted']++;
 
               if (!empty($row['id'])) {
@@ -569,32 +568,50 @@
               }
             }
 
-          // Set images
+            if (empty($product->data['id'])) {
+              $product->save(); // Create product ID as we need it for images
+            }
+
+          // Delete images (by reinserting the ones that should stay)
             if (isset($row['images'])) {
-              $row['images'] = explode(';', $row['images']);
+              $row['images'] = preg_split('#;#', $row['images'], -1, PREG_SPLIT_NO_EMPTY);
 
-              $product_images = [];
-              $current_images = [];
-              foreach ($product->data['images'] as $key => $image) {
+              $product->data['images'] = [];
+              foreach ($product->previous['images'] as $key => $image) {
                 if (in_array($image['filename'], $row['images'])) {
-                  $product_images[$key] = $image;
-                  $current_images[] = $image['filename'];
+                  $product->data['images'][$key] = $image;
                 }
               }
 
-              $i=0;
-              foreach ($row['images'] as $image) {
-                if (!in_array($image, $current_images)) {
-                  $product_images['new'.++$i] = ['filename' => $image];
+              foreach ($row['images'] as $filename) {
+                if (!in_array($filename, array_column($product->data['images'], 'filename'))) {
+
+                  if (!is_file(FS_DIR_STORAGE . 'images/' . $filename)) continue;
+
+                  $checksum = md5(FS_DIR_STORAGE . 'images/' . $filename);
+
+                  database::query(
+                    "insert into ". DB_TABLE_PREFIX ."products_images
+                    (product_id, filename, checksum)
+                    values (". (int)$product->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."');"
+                  );
+
+                  $image_id = database::insert_id();
+
+                  $product->data['images'][$image_id] = [
+                    'id' => $image_id,
+                    'filename' => $filename,
+                    'checksum' => $checksum,
+                    'priority' => 0,
+                  ];
+
                 }
               }
-
-              $product->data['images'] = $product_images;
             }
 
           // Import new images
             if (!empty($row['new_images'])) {
-              foreach (explode(';', $row['new_images']) as $new_image) {
+              foreach (preg_split('#;#', $row['new_images'], -1, PREG_SPLIT_NO_EMPTY) as $new_image) {
                 $product->add_image($new_image);
               }
             }
@@ -1004,9 +1021,9 @@
 
   <div class="card-body">
 
-    <div class="row">
+    <div class="row" style="max-width: 980px;">
 
-      <div class="col-sm-6 col-lg-4">
+      <div class="col-xl-6">
         <?php echo functions::form_draw_form_begin('import_form', 'post', '', true); ?>
 
           <fieldset>
@@ -1039,7 +1056,9 @@
                 <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
                 <?php echo functions::form_draw_select_field('enclosure', [['" ('. language::translate('text_default', 'default') .')', '"']], true); ?>
               </div>
+            </div>
 
+            <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
                 <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
@@ -1062,7 +1081,7 @@
         <?php echo functions::form_draw_form_end(); ?>
       </div>
 
-      <div class="col-sm-6 col-lg-4">
+      <div class="col-xl-6">
         <?php echo functions::form_draw_form_begin('export_form', 'post'); ?>
 
           <fieldset>
@@ -1102,7 +1121,9 @@
                 <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
                 <?php echo functions::form_draw_select_field('enclosure', [['" ('. language::translate('text_default', 'default') .')', '"']], true); ?>
               </div>
+            </div>
 
+            <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
                 <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
@@ -1112,7 +1133,9 @@
                 <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
                 <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
               </div>
+            </div>
 
+            <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
                 <?php echo functions::form_draw_select_field('eol', [['Win'], ['Mac'], ['Linux']], true); ?>

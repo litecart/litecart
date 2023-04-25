@@ -1,10 +1,10 @@
 <?php
 /*!
- * LiteCart® 2.5.1
+ * LiteCart® 2.5.3
  *
- * Online Catalog and Shopping Cart Platform
+ * E-Commerce Platform
  *
- * LiteCart is provided free without warranty. Use it at your own risk.
+ * LiteCart is provided free without warranty.
  *
  * @author    LiteCart Dev Team <development@litecart.net>
  * @license   http://creativecommons.org/licenses/by-nd/4.0/ CC BY-ND 4.0
@@ -25,6 +25,7 @@
     }
   }
 
+// Maintenance Mode
   if (settings::get('maintenance_mode')) {
     if (!empty(user::$data['id'])) {
       notices::add('notices', strtr('%message [<a href="%link">%preview</a>]', [
@@ -46,7 +47,7 @@
 // Append default route
   route::add('#^([0-9a-zA-Z_\-/\.]+?)(?:\.php)?/?$#', '$1');
 
-// Go
+// Process route
   route::process();
 
   require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');

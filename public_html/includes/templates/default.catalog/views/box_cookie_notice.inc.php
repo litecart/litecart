@@ -1,7 +1,7 @@
 <?php
-  if (isset($_COOKIE['cookies_accepted']) && $_COOKIE['cookies_accepted'] != '') return;
   if (!settings::get('cookie_policy')) return;
 ?>
+<?php if (!isset($_COOKIE['cookies_accepted'])) { ?>
 <div id="box-cookie-notice">
   <div class="fourteen-forty">
     <div class="notice">
@@ -14,8 +14,10 @@
     </div>
   </div>
 </div>
+<?php } ?>
 
 <script>
+  <?php if (!isset($_COOKIE['cookies_accepted'])) { ?>
   $('#box-cookie-notice button[name="accept_cookies"]').click(function(){
     $('#box-cookie-notice').fadeOut();
     document.cookie = 'cookies_accepted=1; Max-Age=' + (365 * 24 * 60 * 60 * 1000) +'; Path=<?php echo WS_DIR_APP; ?>; SameSite=Lax';
@@ -26,6 +28,7 @@
     $('#box-cookie-notice').fadeOut();
     document.cookie = 'cookies_accepted=0; Expires=0; Path=<?php echo WS_DIR_APP; ?>; SameSite=Lax';
   });
+  <?php } ?>
 
   $(document).on('cookiesAccepted', function(){
     // Run code here for when cookies are accepted

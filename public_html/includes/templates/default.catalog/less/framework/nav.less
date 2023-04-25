@@ -36,13 +36,16 @@
       list-style: none;
       padding: 0;
       > li > a {
-        padding-inline-start: 30px;
+        padding-inline-start: 40px;
       }
       > li > ul > li > a {
-        padding-inline-start: 45px;
+        padding-inline-start: 50px;
       }
-      > li > ul > li > ul > li > a {
+      > li > ul ul > li > a {
         padding-inline-start: 60px;
+      }
+      > li > ul ul ul > li > a {
+        padding-inline-start: 70px;
       }
     }
   }
@@ -96,28 +99,27 @@
 
 .nav-tabs {
   background: var(--tabs-pane-background-color);
-  border-top-left-radius: var(--border-radius);
-  border-top-right-radius: var(--border-radius);
+  border-start-start-radius: var(--border-radius);
+  border-start-end-radius: var(--border-radius);
   border-bottom: 1px solid var(--tabs-pane-border-color);
-  padding: var(--gutter-y) var(--gutter-x) 0 var(--gutter-x);
+  padding: var(--gutter-y) var(--gutter-x);
+  padding-bottom: 4px;
   color: var(--tabs-text-color);
-  padding-bottom: 0;
-  > li {
+  a {
     flex: 0 0 auto;
-    > a {
-      margin-inline-end: var(--gutter-x);
-      line-height: 1.4;
-      border-radius: var(--border-radius) var(--border-radius) 0 0;
-      padding: var(--gutter-y) var(--gutter-x);
-      background-color: var(--tabs-background-color);
-      color: var(--tabs-text-color);
-      border: 1px solid var(--tabs-border-color);
-      border-bottom-color: var(--tabs-background-color);
+    margin-inline-end: .5em;
+    line-height: 1.4;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    padding: .5em 1em;
+    background-color: var(--tabs-background-color);
+    color: var(--tabs-text-color);
+    border: 1px solid var(--tabs-border-color);
+    border-bottom-color: var(--tabs-background-color);
+    text-decoration: none;
+    &:hover:not(.active) {
+      filter: brightness(0.95);
     }
-    &:hover a {
-      background-color: rgba(255, 255, 255, .25);
-    }
-    &.active a {
+    &.active {
       background-color: var(--tabs-background-color-active);
       color: var(--tabs-text-color-active);
       margin-top: 1px;

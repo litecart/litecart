@@ -3,7 +3,7 @@
 
   functions::draw_lightbox();
 
-  $box_campaign_products_cache_token = cache::token('box_campaign_products', ['language', 'currency'], 'file');
+  $box_campaign_products_cache_token = cache::token('box_campaign_products', ['language', 'prices'], 'file');
   if (cache::capture($box_campaign_products_cache_token)) {
 
     $box_campaign_products = new ent_view();

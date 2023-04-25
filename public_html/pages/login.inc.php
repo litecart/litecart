@@ -17,7 +17,7 @@
 
   if (empty($_POST['remember_me'])) $_POST['remember_me'] = false;
 
-  if (!empty(customer::$data['id'])) notices::add('notice', language::translate('text_already_logged_in', 'You are already logged in'));
+  if (!empty(customer::$data['id'])) notices::add('notices', language::translate('text_already_logged_in', 'You are already logged in'));
 
   if (!empty($_POST['login'])) {
 
@@ -28,7 +28,7 @@
       }
 
       if (empty($_POST['email']) || empty($_POST['password'])) {
-        throw new Exception(language::translate('error_missing_login_credentials', 'You must provide both email address and password.'));
+        throw new Exception(language::translate('error_missing_login_credentials', 'You must provide both your email address and password'));
       }
 
       $customer_query = database::query(
@@ -42,7 +42,11 @@
       }
 
       if (empty($customer['status'])) {
-        throw new Exception(language::translate('error_account_inactive', 'Your account is inactive, contact customer support'));
+        throw new Exception(language::translate('error_customer_account_disabled_or_not_activated', 'The customer account is disabled or not activated'));
+      }
+
+      if (!empty($customer['date_blocked_until']) && date('Y-m-d H:i:s') < $customer['date_blocked_until']) {
+        throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime(language::$selected['format_datetime'], strtotime($customer['date_blocked_until']))));
       }
 
       if (!password_verify($_POST['password'], $customer['password_hash'])) {
@@ -68,7 +72,7 @@
             limit 1;"
           );
 
-          throw new Exception(strtr(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %n minutes'), ['%n' => 15, '%d' => 15]));
+          throw new Exception(strtr(language::translate('error_account_has_been_blocked', 'The account has been temporarily blocked %n minutes'), ['%n' => 15, '%d' => 15]));
         }
       }
 
@@ -83,6 +87,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."customers set
+          login_attempts = 0,
           total_logins = total_logins + 1,
           last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
           last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
@@ -119,7 +124,7 @@
       exit;
 
     } catch (Exception $e) {
-      //http_response_code(401); // Troublesome with HTTP Auth
+      http_response_code(401); // Troublesome with HTTP Auth (e.g. .htpasswd)
       notices::add('errors', $e->getMessage());
     }
   }
