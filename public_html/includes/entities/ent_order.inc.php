@@ -175,9 +175,10 @@
       }
 
       $order_comments_query = database::query(
-        "select * from ". DB_TABLE_PREFIX ."orders_comments
-        where order_id = ". (int)$order_id ."
-        order by id;"
+        "select oc.*, u.username as author_username from ". DB_TABLE_PREFIX ."orders_comments oc
+        left join ". DB_TABLE_PREFIX ."users u on (u.id = oc.author_id)
+        where oc.order_id = ". (int)$order_id ."
+        order by oc.id;"
       );
 
       while ($row = database::fetch($order_comments_query)) {
@@ -196,7 +197,7 @@
       if (!empty($this->previous['id']) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
         $this->data['comments'][] = [
           'author' => 'system',
-          'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status by %username', settings::get('store_language_code')), [
+          'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status', settings::get('store_language_code')), [
             '%username' => !empty(user::$data['username']) ? user::$data['username'] : 'system',
             '%new_status' => reference::order_status($this->data['order_status_id'], settings::get('store_language_code'))->name,
           ]),
@@ -403,6 +404,7 @@
         foreach ($this->data['comments'] as &$comment) {
 
           if (empty($comment['author'])) $comment['author'] = 'system';
+          if (empty($comment['author_id'])) $comment['author_id'] = ($comment['author'] == 'customer') ? -1 : 0;
 
           if (empty($comment['id'])) {
             database::query(
@@ -420,6 +422,7 @@
           database::query(
             "update ". DB_TABLE_PREFIX ."orders_comments
             set author = '". (!empty($comment['author']) ? database::input($comment['author']) : 'system') ."',
+              author_id = ". (int)$comment['author_id'] .",
               text = '". database::input($comment['text']) ."',
               hidden = '". (!empty($comment['hidden']) ? 1 : 0) ."'
             where order_id = ". (int)$this->data['id'] ."

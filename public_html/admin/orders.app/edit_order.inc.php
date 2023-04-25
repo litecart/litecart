@@ -564,9 +564,9 @@
 
           <div id="comments" class="form-control bubbles">
 <?php
-  foreach (array_keys($_POST['comments']) as $key) {
+  foreach ($_POST['comments'] as $key => $comment) {
 
-    switch($_POST['comments'][$key]['author']) {
+    switch($comment['author']) {
       case 'customer':
         $type = 'remote';
         break;
@@ -578,17 +578,37 @@
         break;
     }
 
-    if (!empty($_POST['comments'][$key]['hidden'])) $type .= ' semi-transparent';
+    $aliases = [
+     '%author' => '',
+     '%datetime' => !empty($comment['date_created']) ? language::strftime(language::$selected['format_datetime'], strtotime($comment['date_created'])) : 0,
+    ];
+
+    switch (true) {
+      case (empty($comment['author_id'])):
+        $aliases['%author'] = 'system';
+        break;
+
+      case ($comment['author_id'] == -1):
+        $aliases['%author'] = 'customer';
+        break;
+
+      case ($comment['author_id'] > 0):
+        $aliases['%author'] = $comment['author_username'];
+        break;
+    }
+
+    if (!empty($comment['hidden'])) $type .= ' semi-transparent';
 ?>
             <div class="bubble <?php echo $type; ?>">
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][id]', true); ?>
+              <?php echo functions::form_draw_hidden_field('comments['. $key .'][author_id]', true); ?>
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][order_id]', true); ?>
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][author]', true); ?>
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][text]', true); ?>
 
-                <div class="text"><?php echo nl2br(functions::escape_html($_POST['comments'][$key]['text'])); ?></div>
+                <div class="text"><?php echo nl2br(functions::escape_html($comment['text'])); ?></div>
 
-              <div class="date"><?php echo language::strftime(language::$selected['format_datetime'], !empty($_POST['comments'][$key]['date_created']) ? strtotime($_POST['comments'][$key]['date_created']) : 0); ?></div>
+              <div class="date"><?php echo strtr(language::translate('description_by_author_on_datetime', 'By %author on %datetime'), $aliases); ?></div>
 
               <div class="actions">
                 <a class="remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
@@ -1194,6 +1214,7 @@
     var output = '  <div class="bubble local me">'
                + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][id]', ''); ?>'
                + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][author]', 'staff'); ?>'
+               + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][author_id]', user::$data['id']); ?>'
                + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][date_created]', language::strftime(language::$selected['format_datetime'])); ?>'
                + '    <div class="text"><?php echo functions::escape_js(functions::form_draw_textarea('comments[new_comment_index][text]', '')); ?></div>'
                + '    <div class="date"><?php echo language::strftime(language::$selected['format_datetime']); ?></div>'
