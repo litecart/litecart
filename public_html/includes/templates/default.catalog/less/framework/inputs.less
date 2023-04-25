@@ -8,7 +8,13 @@ input, button, select, textarea {
 }
 
 input[type="number"] {
+  -moz-appearance: textfield;
   text-align: end;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    display: none;
+  }
 }
 
 input[type="checkbox"] {
