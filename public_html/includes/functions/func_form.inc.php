@@ -9,9 +9,11 @@
   }
 
   function form_reinsert_value($name, $array_value=null) {
+
     if (empty($name)) return;
 
     foreach ([$_POST, $_GET] as $superglobal) {
+
       if (empty($superglobal)) continue;
 
     // Extract name parts
@@ -105,12 +107,14 @@
   }
 
   function form_draw_code_field($name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<textarea '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-code"' : '') .' name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. functions::escape_html($value) .'</textarea>';
   }
 
   function form_draw_color_field($name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="color" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="color" '. (($parameters) ? ' '.$parameters : false) .' />';
@@ -161,6 +165,7 @@
   }
 
   function form_draw_date_field($name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     if (!empty($value) && !in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-00-00', '1970-01-01'])) {
@@ -173,6 +178,7 @@
   }
 
   function form_draw_datetime_field($name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     if (!empty($value) && !in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-00-00', '1970-01-01'])) {
@@ -185,6 +191,7 @@
   }
 
   function form_draw_decimal_field($name, $value=true, $decimals=2, $min=null, $max=null, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     if ($value != '') {
@@ -195,6 +202,7 @@
   }
 
   function form_draw_email_field($name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
@@ -209,6 +217,7 @@
   }
 
   function form_draw_fonticon_field($name, $value, $type, $icon, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
@@ -218,6 +227,7 @@
   }
 
   function form_draw_hidden_field($name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<input type="hidden" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
@@ -228,6 +238,7 @@
   }
 
   function form_draw_input($name, $value=true, $type='text', $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="'. functions::escape_html($type) .'" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
@@ -243,6 +254,7 @@
   }
 
   function form_draw_month_field($name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     if (!in_array(substr($value, 0, 7), ['', '0000-00', '1970-00', '1970-01'])) {
@@ -255,6 +267,7 @@
   }
 
   function form_draw_number_field($name, $value=true, $min=null, $max=null, $parameters='') {
+
     if ($value === true) $value = (int)form_reinsert_value($name);
 
     if ($value != '') {
@@ -265,6 +278,7 @@
   }
 
   function form_draw_password_field($name, $value='', $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
@@ -274,6 +288,7 @@
   }
 
   function form_draw_phone_field($name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
@@ -289,12 +304,14 @@
   }
 
   function form_draw_range_slider($name, $value=true, $min='', $max='', $step='', $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="range" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="range" min="'. (float)$min .'" max="'. (float)$max .'" step="'. (float)$step .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='') {
+
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-text" style="font-family: monospace;">'. $language_code .'</span>' . PHP_EOL
          . '  ' . form_draw_text_field($name, $value, $parameters) . PHP_EOL
@@ -329,10 +346,13 @@
   function form_draw_select_field($name, $options=[], $input=true, $parameters='') {
 
     if (is_bool($parameters)) {
+
       $args = func_get_args();
+
       if ($parameters === true) {
         trigger_error('The 4th parameter $multiple in form_draw_select_field() has been deprecated. Use form_draw_select_multiple_field()', E_USER_DEPRECATED);
         return form_draw_select_multiple_field($args[0], $args[1], $args[2], isset($args[4]) ? $args[4] : '');
+
       } else {
         trigger_error('The 4th parameter $multiple in form_draw_select_field() has been deprecated', E_USER_DEPRECATED);
         return form_draw_select_field($args[0], $args[1], $args[2], isset($args[4]) ? $args[4] : '');
@@ -384,6 +404,7 @@
   }
 
   function form_draw_select_optgroup_field($name, $groups=[], $input=true, $multiple=false, $parameters='') {
+
     if (!is_array($groups)) $groups = [$groups];
 
     $html = '<select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. functions::escape_html($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
@@ -407,24 +428,28 @@
   }
 
   function form_draw_textarea($name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<textarea '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. functions::escape_html($value) .'</textarea>';
   }
 
   function form_draw_text_field($name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="text"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_time_field($name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="time" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="time"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_toggle($name, $input=true, $type='e/d', $parameters='') {
+
     if ($input === true) $input = form_reinsert_value($name);
 
     $input = preg_match('#^(1|active|enabled|on|true|yes)$#i', $input) ? '1' : '0';
@@ -499,12 +524,14 @@
   }
 
   function form_draw_url_field($name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="url" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="url"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_username_field($name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
