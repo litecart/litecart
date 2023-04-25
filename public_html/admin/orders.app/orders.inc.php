@@ -305,7 +305,7 @@ table .fa-star:hover {
 
       <tfoot>
         <tr>
-          <td colspan="15"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="12"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>
