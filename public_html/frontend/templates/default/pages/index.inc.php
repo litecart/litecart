@@ -2,9 +2,8 @@
   <div id="content">
     {{notices}}
 
-    <?php include 'app://frontend/partials/box_categories.inc.php'; ?>
-
     <?php include 'app://frontend/partials/box_slides.inc.php'; ?>
+
 
     <div class="row layout">
       <div class="col-md-4">
@@ -20,6 +19,7 @@
       </div>
     </div>
 
+    <?php include 'app://frontend/partials/box_categories.inc.php'; ?>
 
     <?php include 'app://frontend/partials/box_campaign_products.inc.php'; ?>
 

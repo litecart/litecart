@@ -1,6 +1,7 @@
 <?php
 
   switch (__DOC__) {
+
     case 'customer':
       $title = language::translate('title_customer_modules', 'Customer Modules');
       $files = functions::file_search('app://includes/modules/customer/*.inc.php');

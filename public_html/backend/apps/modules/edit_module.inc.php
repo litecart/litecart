@@ -4,30 +4,37 @@
   $module_id = basename($_GET['module_id']);
 
   switch (__DOC__) {
+
     case 'edit_customer':
       $type = 'customer';
       $return_doc = 'customer';
       break;
+
     case 'edit_job':
       $type = 'job';
       $return_doc = 'jobs';
       break;
+
     case 'edit_order':
       $type = 'order';
       $return_doc = 'order';
       break;
+
     case 'edit_order_total':
       $type = 'order_total';
       $return_doc = 'order_total';
       break;
+
     case 'edit_payment':
       $type = 'payment';
       $return_doc = 'payment';
       break;
+
     case 'edit_shipping':
       $type = 'shipping';
       $return_doc = 'shipping';
       break;
+
     default:
       trigger_error('Unknown module type', E_USER_ERROR);
   }

@@ -4,7 +4,7 @@
 
     <?php if (settings::get('accounts_enabled') && empty($shopping_cart->data['customer']['id'])) { ?>
     <div class="float-end">
-      <a class="btn btn-outline" href="<?php echo document::ilink('login', ['redirect_url' => document::ilink('checkout/index')]) ?>" data-toggle="lightbox" data-require-window-width="768" data-seamless="true"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
+      <a class="btn btn-outline" href="<?php echo document::href_ilink('login', ['redirect_url' => document::ilink('checkout/index')]) ?>" data-toggle="lightbox" data-seamless="true" data-require-window-width="768" data-seamless="true"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
     </div>
     <?php } ?>
 

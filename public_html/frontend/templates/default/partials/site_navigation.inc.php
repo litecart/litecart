@@ -1,28 +1,10 @@
 <div id="site-navigation">
   <div class="navbar wrapper">
 
-    <div class="navbar-header">
-      <div class="navbar-brand">
-        <a href="<?php echo document::href_ilink(''); ?>">
-          <img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
-        </a>
-      </div>
-
-      <div class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl">
-        <ul class="navbar-nav">
-          <li><a class="nav-item regional-settings" href="<?php echo document::href_ilink('regional_settings'); ?>">
-            <span class="code"><?php echo language::$selected['code']; ?></span>
-            <span class="code"><?php echo currency::$selected['code']; ?></span>
-            <span class="code"><?php echo customer::$data['country_code']; ?></span>
-          </a></li>
-        </ul>
-      </div>
-
-      <button type="button" class="navbar-toggle">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
+   <div class="navbar-brand">
+     <a href="<?php echo document::href_ilink(''); ?>">
+       <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+      </a>
     </div>
 
     <nav class="navbar-menu">
@@ -125,9 +107,11 @@
               </div>
             </li>
             <?php } ?>
+
             <li class="empty text-center">
               <span><?php echo language::translate('text_your_shopping_cart_is_empty'), 'Your shopping cart is empty'; ?></span>
             </li>
+
             <li class="checkout">
               <a class="btn btn-success btn-block" href="<?php echo document::href_ilink('checkout/index'); ?>">
                 <?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?> <?php echo functions::draw_fonticon('fa-arrow-right'); ?>

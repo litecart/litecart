@@ -51,3 +51,5 @@
       }
     }
   }
+
+  echo $box_apps_menu;

@@ -5,7 +5,12 @@
     switch (true) {
 
       case (substr($class, 0, 4) == 'abs_'):
+
         require 'app://includes/abstracts/' . $class . '.inc.php';
+        break;
+
+      case (substr($class, 0, 4) == 'chk_'):
+        require 'app://includes/modules/checkout/' . $class . '.inc.php';
         break;
 
       case (preg_match('#^(cm|job|om|ot|pm|sm)_#', $class)):
@@ -33,48 +38,40 @@
           }
         }
 
-        switch ($class) {
-      case (substr($class, 0, 3) == 'cm_'):
-        require 'app://includes/modules/customer/' . $class . '.inc.php';
+        switch (true) {
+          case (substr($class, 0, 3) == 'cm_'):
+            require 'app://includes/modules/customer/' . $class . '.inc.php';
             break 2;
 
-      case (substr($class, 0, 4) == 'ent_'):
-        require 'app://includes/entities/' . $class . '.inc.php';
-        break;
-
-      case (substr($class, 0, 4) == 'job_'):
-        require 'app://includes/modules/jobs/' . $class . '.inc.php';
+          case (substr($class, 0, 4) == 'job_'):
+            require 'app://includes/modules/jobs/' . $class . '.inc.php';
             break 2;
 
-      case (substr($class, 0, 4) == 'mod_'):
-        require 'app://includes/modules/' . $class . '.inc.php';
-        break;
+          case (substr($class, 0, 3) == 'om_'):
+            require 'app://includes/modules/order/' . $class . '.inc.php';
+            break;
 
-      case (substr($class, 0, 3) == 'om_'):
-        require 'app://includes/modules/order/' . $class . '.inc.php';
-        break;
+          case (substr($class, 0, 3) == 'ot_'):
+            require 'app://includes/modules/order_total/' . $class . '.inc.php';
+            break;
 
-      case (substr($class, 0, 3) == 'ot_'):
-        require 'app://includes/modules/order_total/' . $class . '.inc.php';
-        break;
-
-      case (substr($class, 0, 3) == 'pm_'):
-        require 'app://includes/modules/payment/' . $class . '.inc.php';
-        break;
+          case (substr($class, 0, 3) == 'pm_'):
+            require 'app://includes/modules/payment/' . $class . '.inc.php';
+            break;
 
           case (substr($class, 0, 3) == 'sm_'):
-            require vmod::check(FS_DIR_APP . 'includes/modules/shipping/' . $class . '.inc.php');
+            require 'app://includes/modules/shipping/' . $class . '.inc.php';
             break;
         }
 
         break;
 
       case (substr($class, 0, 4) == 'ent_'):
-        require vmod::check(FS_DIR_APP . 'includes/entities/' . $class . '.inc.php');
+        require 'app://includes/entities/' . $class . '.inc.php';
         break;
 
       case (substr($class, 0, 4) == 'mod_'):
-        require vmod::check(FS_DIR_APP . 'includes/modules/' . $class . '.inc.php');
+        require 'app://includes/modules/' . $class . '.inc.php';
         break;
 
       case (substr($class, 0, 4) == 'ref_'):
@@ -99,7 +96,6 @@
         break;
 
       default:
-
         require 'app://includes/nodes/nod_' . $class . '.inc.php';
 
         if (method_exists($class, 'init')) {
