@@ -68,6 +68,14 @@
 
       self::query("set names '". database::input($charset) ."';", $link);
 
+    // Set time zone for current session
+      $setting_query = database::query("SELECT * FROM ". DB_TABLE_PREFIX ."settings WHERE `key` = 'store_timezone' LIMIT 1;", 'default');
+
+      if ($timezone = database::fetch($setting_query, 'value')) {
+        $datetime = new \DateTime('now', new \DateTimezone($timezone));
+        self::query("set time_zone = '". $datetime->format('P') ."';", $link);
+      }
+
       return self::$_links[$link];
     }
 
