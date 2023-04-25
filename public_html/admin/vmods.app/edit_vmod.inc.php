@@ -147,10 +147,6 @@ html.dark-mode .operation {
 .nav-tabs .fa-plus {
   color: #0c0;
 }
-.operations {
-  position: sticky;
-  top: 0;
-}
 
 .script {
   position: relative;
