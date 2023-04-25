@@ -77,7 +77,7 @@
             $setting['value'] = [];
           }
 
-          if (isset($values[language::$selected['code']])) {
+          if (isset($setting['value'][language::$selected['code']])) {
             return self::$_cache[$key] = $setting['value'][language::$selected['code']];
 
           } else if (isset($value['en'])) {
