@@ -3,7 +3,7 @@
   return [
     'category' => [
       'pattern' => '#^.*-c-([0-9]+)/?$#',
-      'controller' => 'category',
+      'controller' => 'app://frontend/pages/category.inc.php',
       'params' => 'category_id=$1',
       'endpoint' => 'frontend',
       'options' => [

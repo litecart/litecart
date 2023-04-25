@@ -3,7 +3,7 @@
   return [
     'brand' => [
       'pattern' => '#^.*-[mb]-([0-9]+)/?$#',
-      'controller' => 'brand',
+      'controller' => 'app://frontend/pages/brand.inc.php.inc.php',
       'params' => 'brand_id=$1',
       'endpoint' => 'frontend',
       'options' => [

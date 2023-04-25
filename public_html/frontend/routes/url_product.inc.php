@@ -3,7 +3,7 @@
   return [
     'product' => [
       'pattern' => '#^(?:.*-c-([0-9]+)/)?(?:.*-m-([0-9]+)/)?.*-p-([0-9]+)$#',
-      'controller' => 'product',
+      'controller' => 'app://frontend/pages/product.inc.php',
       'params' => 'category_id=$1&brand_id=$2&product_id=$3',
       'endpoint' => 'frontend',
       'options' => [

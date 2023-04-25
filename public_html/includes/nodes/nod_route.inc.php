@@ -35,6 +35,7 @@
       foreach (functions::file_search($path) as $file) {
 
         $routes = include $file;
+        if (!$routes) continue;
 
         foreach ($routes as $i => $route) {
           self::add($i, $route);
@@ -139,29 +140,14 @@
         }
       }
 
-    // Execute a callable controller
-      if (is_callable(self::$selected['controller'])) {
-        call_user_func(self::$selected['controller']);
-        return;
-      }
-
     // Execute a file controller
       if (!empty(self::$selected['controller']) && is_string(self::$selected['controller'])) {
 
         if (is_file(self::$selected['controller'])) {
-          $page = self::$selected['controller'];
-        } else {
-          if (!empty(self::$selected['endpoint']) && self::$selected['endpoint'] == 'backend') {
-            $page = 'app://backend/pages/' . self::$selected['controller'] .'.inc.php';
-          } else {
-            $page = 'app://frontend/pages/' . self::$selected['controller'] .'.inc.php';
-          }
-        }
 
-        if (is_file($page)) {
           (function(){
             include func_get_arg(0);
-          })($page);
+          })(self::$selected['controller']);
 
           return;
         }
@@ -184,6 +170,7 @@
       sort($lines);
 
       if (count($lines) >= 100) {
+
         $email = new ent_email();
         $email->add_recipient(settings::get('store_email'))
               ->set_subject('[Not Found Report] '. settings::get('store_name'))
@@ -193,7 +180,9 @@
                   implode("\r\n", $lines)
                 )
               ->send();
+
         file_put_contents($not_found_file, '');
+
       } else {
         file_put_contents($not_found_file, implode(PHP_EOL, $lines) . PHP_EOL);
       }
@@ -237,6 +226,7 @@
           if (in_array($key, ['country', 'currency', 'language'])) continue;
           $link->set_query($key, $value);
         }
+
       } else if (is_array($inherit_params)) {
         foreach ($_GET as $key => $value) {
           if (in_array($key, $inherit_params)) {
@@ -247,6 +237,7 @@
 
     // Unset params that are to be skipped from the link
       if (is_string($skip_params)) $skip_params = [$skip_params];
+
       foreach ($skip_params as $key) {
         if (isset($link->query[$key])) $link->unset_query($key);
       }
@@ -259,11 +250,9 @@
       }
 
     // Rewrite URL
-      if ($rewrite) {
-        if ($link->host == $_SERVER['HTTP_HOST']) {
-          if (preg_match('#^'. WS_DIR_APP .'#', $link->path)) {
-            return self::rewrite($link, $language_code);
-          }
+      if ($rewrite && $link->host == $_SERVER['HTTP_HOST']) {
+        if (preg_match('#^'. WS_DIR_APP .'#', $link->path)) {
+          return self::rewrite($link, $language_code);
         }
       }
 

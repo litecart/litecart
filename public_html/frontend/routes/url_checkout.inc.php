@@ -3,7 +3,7 @@
   return [
     'checkout' => [
       'pattern' => '#^checkout/(index)?$#',
-      'controller' => 'checkout/index',
+      'controller' => 'app://frontend/pages/checkout/index.inc.php',
       'params' => '',
       'endpoint' => 'frontend',
       'options' => [

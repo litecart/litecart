@@ -3,7 +3,7 @@
   return [
     '' => [
       'pattern' => '#^(?:index\.php)?$#',
-      'controller' => 'index',
+      'controller' => 'app://frontend/pages/index.inc.php',
       'params' => '',
       'endpoint' => 'frontend',
       'options' => [

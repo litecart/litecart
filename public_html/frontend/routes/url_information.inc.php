@@ -3,7 +3,7 @@
   return [
     'information' => [
       'pattern' => '#^.*-[is]-([0-9]+)/?$#',
-      'controller' => 'information',
+      'controller' => 'app://frontend/pages/information.inc.php',
       'params' => 'page_id=$1',
       'endpoint' => 'frontend',
       'options' => [

@@ -22,7 +22,7 @@
   route::add('*', [
     'pattern' => '#^(.*)$#',
     'endpoint' => 'frontend',
-    'controller' => '$1',
+    'controller' => 'app://frontend/pages/$1.inc.php',
   ]);
 
   route::identify();
