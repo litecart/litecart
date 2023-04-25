@@ -34,6 +34,22 @@ body.has-offcanvas {
     padding: 0 !important;
   }
 }
+#site-menu .quick-access {
+  display: flex;
+  font-size: 0.8em;
+  align-items: center;
+  gap: 1em;
+}
+@media (min-width: 768px) {
+  #site-menu .quick-access {
+    font-size: 1em;
+  }
+}
+@media (min-width: 992px) {
+  #site-menu .quick-access {
+    font-size: 1em;
+  }
+}
 #site-menu .navbar {
   padding: 0.5rem var(--gutter-x);
 }

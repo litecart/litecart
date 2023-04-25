@@ -9,25 +9,34 @@
       <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
     <?php echo functions::form_draw_form_end(); ?>
 
-    <a class="regional-setting text-center" href="<?php echo document::href_ilink('regional_settings'); ?>#box-regional-settings" data-toggle="lightbox" data-seamless="true">
-      <div class="navbar-icon"><?php echo functions::draw_fonticon('fa-globe'); ?></div>
-      <small class="hidden-xs"><?php echo language::$selected['code']; ?> / <?php echo customer::$data['country_code']; ?> / <?php echo currency::$selected['code']; ?></small>
-    </a>
+    <div class="quick-access">
+      <a class="regional-setting text-center" href="<?php echo document::href_ilink('regional_settings'); ?>#box-regional-settings" data-toggle="lightbox" data-seamless="true">
+        <div class="navbar-icon"><?php echo functions::draw_fonticon('fa-globe'); ?></div>
+        <small class="hidden-xs"><?php echo language::$selected['code']; ?> / <?php echo customer::$data['country_code']; ?> / <?php echo currency::$selected['code']; ?></small>
+      </a>
 
-    <?php if (settings::get('accounts_enabled')) { ?>
-    <a class="account text-center" href="<?php echo document::href_ilink('edit_account'); ?>">
-      <div class="navbar-icon"><?php echo functions::draw_fonticon('fa-user-o'); ?></div>
-      <small class="hidden-xs"><?php echo language::translate('title_account', 'Account'); ?></small>
-    </a>
-    <?php } ?>
+      <?php if (settings::get('accounts_enabled')) { ?>
+      <a class="account text-center" href="<?php echo document::href_ilink('edit_account'); ?>">
+        <div class="navbar-icon"><?php echo functions::draw_fonticon('fa-user-o'); ?></div>
+        <small class="hidden-xs"><?php echo language::translate('title_account', 'Account'); ?></small>
+      </a>
+      <?php } ?>
 
-    <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_cart.inc.php'); ?>
+      <?php if (settings::get('store_phone')) { ?>
+      <a class="phone text-center" href="tel:<?php echo settings::get('store_phone'); ?>">
+        <div class="navbar-icon"><?php echo functions::draw_fonticon('fa-phone'); ?></div>
+        <small class="hidden-xs"><?php echo (strlen(settings::get('store_phone')) < 10) ? settings::get('store_phone') : language::translate('title_call_us', 'Call Us'); ?></small>
+      </a>
+      <?php } ?>
 
-    <button type="button" class="btn btn-default navbar-toggler hidden-md hidden-lg hidden-xl hidden-xxl" data-toggle="offcanvas" data-target="#offcanvas">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
+      <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_cart.inc.php'); ?>
+
+      <button type="button" class="btn btn-default navbar-toggler hidden-md hidden-lg hidden-xl hidden-xxl" data-toggle="offcanvas" data-target="#offcanvas">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
   </div>
 
   <div id="offcanvas" class="offcanvas">
