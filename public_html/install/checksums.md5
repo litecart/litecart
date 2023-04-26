@@ -279,7 +279,7 @@ a3560b069e543ea1c2a7bcd977cfff1e	includes/library/lib_breadcrumbs.inc.php
 44d1c99260905562d9f04edf21e8e61e	includes/library/lib_cache.inc.php
 296d2308c67145d064975fd98c0c1e9f	includes/library/lib_cart.inc.php
 0f14dd8a55acb482677c6ec16535d7b3	includes/library/lib_currency.inc.php
-56d546ede233b2e949c32868d6f6ded0	includes/library/lib_customer.inc.php
+c083e37f9b06d648a79f0f12165838ec	includes/library/lib_customer.inc.php
 3d59dad3b0b0658faed66ab9d9bb27d8	includes/library/lib_database.inc.php
 7e765cce9adcc57c58c5bd5bf760e4fa	includes/library/lib_document.inc.php
 b4401ef3e46e288212dfc2fd3eb1d165	includes/library/lib_event.inc.php
