@@ -339,11 +339,11 @@ d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 31c1e94b1eb6502ee4842fce9066ea02	includes/templates/default.admin/css/app.min.css
 dd074822ff582b2d55a98f80fcbf64e4	includes/templates/default.admin/css/app.min.css.map
 90e52857dcaab5fd54873dcb85c128b6	includes/templates/default.admin/css/framework.min.css
-bdf98a177d2da97724b08ec7fbf58a89	includes/templates/default.admin/css/framework.min.css.map
+c8eb8f6b6447aa93514c9de726be9b14	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.admin/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.admin/css/printable.min.css.map
-796b2730010b951fc98675aa7c409ed4	includes/templates/default.admin/css/variables.css
+a7394de16e4a9f0929737498c32d6711	includes/templates/default.admin/css/variables.css
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/fonts/index.html
 31d4f5fd96f7c0573e74a213b0bc3457	includes/templates/default.admin/fonts/roboto-v30-latin-ext_latin-700.woff2
 64f64a10033d482f2a6a78c530a46f39	includes/templates/default.admin/fonts/roboto-v30-latin-ext_latin-regular.woff2
@@ -385,7 +385,7 @@ edd0be6718efe3880d0ee48eca47f878	includes/templates/default.admin/less/framework
 b50b64b067520fb80eb03cf36167244e	includes/templates/default.admin/less/framework/typography.less
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/less/index.html
 b8d27643da9bce960bb100085d9c408b	includes/templates/default.admin/less/printable.less
-8b49e1c27e0f330db5454198793492e7	includes/templates/default.admin/less/variables.less
+e59127266f121b4c85c2042f3970cc23	includes/templates/default.admin/less/variables.less
 c8eb8b5034d80ff1bf09ee78c15f682a	includes/templates/default.admin/pages/about.inc.php
 b6fc7003936788dd0d2fa113c8f31734	includes/templates/default.admin/pages/doc.inc.php
 c350d51cd1b3329cd7f3f4a376746a97	includes/templates/default.admin/pages/error_document.inc.php
@@ -409,7 +409,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/css/index.ht
 eb82721c7af418e1c8fc5ab241fc117e	includes/templates/default.catalog/css/printable.css
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.catalog/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.catalog/css/printable.min.css.map
-4107c5454fbf6e55dce465024a6e70ba	includes/templates/default.catalog/css/variables.css
+66c275e182cbccdcf6eec679d336d327	includes/templates/default.catalog/css/variables.css
 4c19bedc92e1357460b8191e6a4d0908	includes/templates/default.catalog/fonts/asap-v26-latin-ext_latin-700.woff2
 4844111cf2b17ad5ae960e59f3b67310	includes/templates/default.catalog/fonts/asap-v26-latin-ext_latin-regular.woff2
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/fonts/index.html
@@ -459,7 +459,7 @@ bf2c1f92035e0522a702286f6c0d0a61	includes/templates/default.catalog/less/framewo
 98337e39488ee7a0383d0c4768069f44	includes/templates/default.catalog/less/framework/typography.less
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/less/index.html
 b8d27643da9bce960bb100085d9c408b	includes/templates/default.catalog/less/printable.less
-4506d6306dae4c8f0bc214e316901573	includes/templates/default.catalog/less/variables.less
+36297a334407229cbe1699c6c306bf2f	includes/templates/default.catalog/less/variables.less
 984cbdda599e468eb70e497e8b24d7ff	includes/templates/default.catalog/pages/categories.inc.php
 e086aa14fd153b886b29ec83dfcd74a6	includes/templates/default.catalog/pages/category.inc.php
 1f63eb09c29c90dfa42a93a2e6ae51a3	includes/templates/default.catalog/pages/checkout.inc.php
