@@ -109,10 +109,13 @@ table.items tbody tr:nth-child(11) {
           <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
           <th><?php echo language::translate('title_qty', 'Qty'); ?></th>
           <th class="text-end"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+          <?php if ($order['tax_total']) { ?>
           <th class="text-end"><?php echo language::translate('title_tax', 'Tax'); ?> </th>
+          <?php } ?>
           <th class="text-end"><?php echo language::translate('title_sum', 'Sum'); ?></th>
         </tr>
       </thead>
+
       <tbody>
         <?php foreach ($order['items'] as $item) { ?>
         <tr>
@@ -137,15 +140,11 @@ table.items tbody tr:nth-child(11) {
 ?>
           </td>
           <td><?php echo (float)$item['quantity']; ?></td>
-          <?php if (!empty($order['display_prices_including_tax'])) { ?>
           <td class="text-end"><?php echo currency::format($item['price'] + $item['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
+          <?php if ($order['tax_total']) { ?>
           <td class="text-end"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo ($item['price'] != 0 && $item['tax'] != 0) ? round($item['tax'] / $item['price'] * 100) : '0'; ?> %)</td>
-          <td class="text-end"><?php echo currency::format($item['quantity'] * ($item['price'] + $item['tax']), false, $order['currency_code'], $order['currency_value']); ?></td>
-          <?php } else { ?>
-          <td class="text-end"><?php echo currency::format($item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
-          <td class="text-end"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo ($item['price'] != 0 && $item['tax'] != 0) ? round($item['tax'] / $item['price'] * 100) : '0'; ?> %)</td>
-          <td class="text-end"><?php echo currency::format($item['quantity'] * $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
           <?php } ?>
+          <td class="text-end"><?php echo currency::format($item['quantity'] * ($order['display_prices_including_tax'] ? $item['price'] + $item['tax'] : $item['price']), false, $order['currency_code'], $order['currency_value']); ?></td>
         </tr>
         <?php } ?>
       </tbody>
@@ -154,17 +153,10 @@ table.items tbody tr:nth-child(11) {
     <table class="order-total table data-table">
       <tbody>
         <?php foreach ($order['order_total'] as $ot_row) { ?>
-        <?php if (!empty($order['display_prices_including_tax'])) { ?>
         <tr>
           <td class="text-end"><?php echo $ot_row['title']; ?>:</td>
-          <td class="text-end"><?php echo currency::format($ot_row['value'] + $ot_row['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
+          <td class="text-end"><?php echo currency::format($order['display_prices_including_tax'] ? $ot_row['value'] + $ot_row['tax'] : $ot_row['value'], false, $order['currency_code'], $order['currency_value']); ?></td>
         </tr>
-        <?php } else { ?>
-        <tr>
-          <td class="text-end"><?php echo $ot_row['title']; ?>:</td>
-          <td class="text-end"><?php echo currency::format($ot_row['value'], false, $order['currency_code'], $order['currency_value']); ?></td>
-        </tr>
-        <?php } ?>
         <?php } ?>
 
         <?php if ((float)$order['tax_total'] != 0) { ?>

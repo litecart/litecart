@@ -478,7 +478,7 @@ d6c4bd9bf7163338ca2d755be85b3fa3	includes/templates/default.catalog/pages/manufa
 64625ed779627b63b67703e71300fe9f	includes/templates/default.catalog/pages/order.inc.php
 4b70154d1ab6937867c91a406a356841	includes/templates/default.catalog/pages/order_history.inc.php
 c58e3cf0dda42a1057ecaa460e5f6570	includes/templates/default.catalog/pages/order_success.inc.php
-03719f60b01ba584ed7af2e5df9d9b48	includes/templates/default.catalog/pages/printable_order_copy.inc.php
+78fa441ef8928ff9d3c205c05a8f24e8	includes/templates/default.catalog/pages/printable_order_copy.inc.php
 9abb3818ce8c992ffcc63fe21d6a167d	includes/templates/default.catalog/pages/printable_packing_slip.inc.php
 800f31f477f86dfbe60992e92c619913	includes/templates/default.catalog/pages/product.ajax.inc.php
 e760c75c85a4c6b9aed9015d78e4f2d7	includes/templates/default.catalog/pages/product.inc.php
@@ -508,7 +508,7 @@ d545ed5026e367e906d43f4a2f7827db	includes/templates/default.catalog/views/box_ma
 519545d77846dd5192bb44685c9727b8	includes/templates/default.catalog/views/box_manufacturer_logotypes.inc.php
 941aac91e83b7d0aed38213987d0dfc4	includes/templates/default.catalog/views/box_newsletter_subscribe.inc.php
 223775640ffb24c1de06ff04faf41d28	includes/templates/default.catalog/views/box_popular_products.inc.php
-a576fae817922f92d640d9e82a7bc423	includes/templates/default.catalog/views/box_product.inc.php
+10809597ec18b5a0fb95612479792065	includes/templates/default.catalog/views/box_product.inc.php
 d6b8b65ec12cc171dee6b92ef3ecb350	includes/templates/default.catalog/views/box_recently_viewed_products.inc.php
 c2eda4079a017eb4a442f623cbad92be	includes/templates/default.catalog/views/box_region.inc.php
 fe29aeb6027be17f14ecf4ecbe4e1d08	includes/templates/default.catalog/views/box_similar_products.inc.php
