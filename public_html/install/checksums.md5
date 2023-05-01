@@ -682,6 +682,7 @@ fd11eee50b3585d2c64de0480dcffa9e	install/upgrade_patches/2.4.4.inc.php
 85cfb8a48b15a03d1b3674278122d836	install/upgrade_patches/2.5.2.inc.php
 ab7ba686349fc0fd50570c6e0bf03299	install/upgrade_patches/2.5.2.sql
 1882f2f77f1e050fe9bea6e8fd549c1e	install/upgrade_patches/2.5.3.inc.php
+fa7ca6d5a739046f956975f7b627f6cb	install/upgrade_patches/2.6.0.inc.php
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
 f7553e597197a2b08f1b43590f915b12	pages/ajax/cart.json.inc.php
