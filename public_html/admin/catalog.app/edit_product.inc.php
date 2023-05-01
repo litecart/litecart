@@ -144,9 +144,6 @@
   $language_codes = array_unique(array_merge([language::$selected['code']], [settings::get('store_language_code')], array_keys(language::$languages)));
   $currency_codes = array_unique(array_merge([currency::$selected['code']], [settings::get('store_currency_code')], array_keys(currency::$currencies)));
 
-  $language_codes = array_unique(array_merge([language::$selected['code']], [settings::get('store_language_code')], array_keys(language::$languages)));
-  $currency_codes = array_unique(array_merge([currency::$selected['code']], [settings::get('store_currency_code')], array_keys(currency::$currencies)));
-
   $option_sort_options = [
     [language::translate('title_list_order', 'List Order'), 'priority'],
     [language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'],

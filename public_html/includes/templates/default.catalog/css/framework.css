@@ -1214,7 +1214,12 @@ textarea {
   outline: 0;
 }
 input[type="number"] {
+  -moz-appearance: textfield;
   text-align: end;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  display: none;
 }
 input[type="checkbox"] {
   -webkit-appearance: none;
