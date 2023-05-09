@@ -374,7 +374,7 @@
       }
 
       $html .= '  <div class="checkbox">'. PHP_EOL
-             . '    <label>'. form_draw_checkbox($name, isset($option[1]) ? $option[1] : $option[0], $option_input, isset($option[2]) ? $option[2] : null) .' '.  $option[0] .'</label>' . PHP_EOL
+             . '    <label>'. form_draw_checkbox($name, isset($option[1]) ? $option[1] : $option[0], $option_input, isset($option[2]) ? $option[2] : '') .' '.  $option[0] .'</label>' . PHP_EOL
              . '  </div>';
     }
 
@@ -743,7 +743,7 @@
         return form_draw_time_field($name, $input, $parameters);
 
       case 'toggle':
-        return form_draw_toggle($name, $input, !empty($options[0]) ? $options[0] : null);
+        return form_draw_toggle($name, $input, !empty($options[0]) ? $options[0] : '');
 
       case 'sold_out_status':
         return form_draw_sold_out_statuses_list($name, $input, false, $parameters);
