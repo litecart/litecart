@@ -183,7 +183,7 @@
 
       <?php if (!empty($account_exists)) { ?>
 
-      <div class="alert alert-info">
+      <div class="alert alert-default">
         <?php echo functions::draw_fonticon('fa-info-circle'); ?> <?php echo language::translate('notice_existing_customer_account_will_be_used', 'We found an existing customer account that will be used for this order'); ?>
       </div>
 
