@@ -36,7 +36,7 @@
     and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'
     ". (!empty($_GET['query']) ? "and (
       oi.product_id = '". database::input($_GET['query']) ."'
-      oi.name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
+      or oi.name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
       or oi.sku like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
       or oi.gtin like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
     )" : "") ."
