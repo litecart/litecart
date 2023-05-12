@@ -88,6 +88,12 @@
   ];
 
 ?>
+<style>
+.form-group .checkbox {
+  margin-top: .5em;
+}
+</style>
+
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">

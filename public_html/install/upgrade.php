@@ -17,17 +17,24 @@
       . "Options:\n"
       . "  --from_version       Manually set version migrating from. Omit for auto detection\n"
       . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n"
-      . "  --backup             Backup the database before running upgrade (Default: true)\n";
+      . "  --backup             Backup the database before running upgrade (Default: true)\n"
+      . "  --cleanup            Delete the install/ directory after finising the upgrade.\n\n";
       exit;
     }
 
     $options = [
-      'from_version::', 'development_type::', 'backup::'
+      'from_version::',
+      'development_type::',
+      'backup::',
+      'cleanup::',
     ];
 
     $_REQUEST = getopt('', $options);
     $_REQUEST['upgrade'] = true;
 
+    if (isset($_REQUEST['cleanup'])) {
+      $_REQUEST['cleanup'] = true;
+    }
   }
 
   require_once __DIR__ . '/includes/header.inc.php';
@@ -97,6 +104,12 @@
   usort($supported_versions, function($a, $b) {
     return version_compare($a, $b, '>') ? 1 : -1;
   });
+
+  if (empty($_REQUEST['development_type'])) {
+    if (is_file($file = FS_DIR_APP . 'includes/templates/default.catalog/.development')) {
+      $_REQUEST['development_type'] = file_get_contents($file);
+    }
+  }
 
   if (!empty($_REQUEST['upgrade'])) {
 
@@ -335,6 +348,8 @@
 
       if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
+        file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'advanced');
+
         perform_action('delete', [
           FS_DIR_APP . 'frontend/templates/*/css/app.css',
           FS_DIR_APP . 'frontend/templates/*/css/checkout.css',
@@ -344,6 +359,8 @@
         ]);
 
       } else {
+
+        file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'standard');
 
         perform_action('delete', [
           FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
@@ -394,6 +411,19 @@
       ]);
 
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
+      ### Cleanup ##########################################
+
+      if (!empty($_REQUEST['cleanup'])) {
+
+        echo '<p>Cleanup... ';
+
+        perform_action('delete', [
+          FS_DIR_APP . 'install/',
+        ]);
+
+        echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      }
 
       #############################################
 
@@ -465,19 +495,20 @@ input[name="development_type"]:checked + div {
   <h2>Application</h2>
 
   <div class="row">
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-6">
       <label>MySQL Server</label>
       <div class="form-control">
         <?php echo DB_SERVER; ?>
       </div>
     </div>
 
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-6">
       <label>MySQL Database</label>
       <div class="form-control">
         <?php echo DB_DATABASE; ?>
       </div>
     </div>
+  </div>
 
   <h3>Backup</h3>
 
@@ -487,13 +518,14 @@ input[name="development_type"]:checked + div {
     </label>
   </div>
 
+  <div class="row">
   <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
       <label>Current Version</label>
       <div class="form-control"><?php echo PLATFORM_DATABASE_VERSION; ?></div>
     </div>
     <?php } else { ?>
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
       <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
       <select class="form-control" name="from_version">
         <option value="">-- Select Version --</option>
@@ -502,10 +534,16 @@ input[name="development_type"]:checked + div {
     </div>
     <?php } ?>
 
+    <div class="form-group col-md-3">
+      <label>New Version</label>
+      <div class="form-control"><?php echo PLATFORM_VERSION; ?></div>
   </div>
 
-  <div class="form-group text-center">
-    <label><input type="checkbox" class="form-check" name="skip_updates" value="0" /> Skip downloading the latest updates</label>
+    <div class="form-group col-md-6">
+      <label style="margin-top: 2.25em;">
+        <input type="checkbox" class="form-check" name="skip_updates" value="0" /> Skip downloading the latest updates
+      </label>
+    </div>
   </div>
 
   <h2>Development</h2>

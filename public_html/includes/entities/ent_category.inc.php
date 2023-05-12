@@ -222,7 +222,15 @@
 
       if (empty($file)) return;
 
-      if (!empty($filename)) $filename = 'categories/' . $filename;
+      $image = new ent_image($file);
+
+      if (!empty($filename)) {
+        $filename = 'categories/'. $filename;
+      } else {
+        $filename = 'categories/'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type();
+      }
+
+      $fullpath = FS_DIR_STORAGE . 'images/' . $filename;
 
       if (empty($this->data['id'])) {
         $this->save();

@@ -88,6 +88,7 @@
     'after' => language::translate('title_after', 'After'),
     'top' => language::translate('title_top', 'Top'),
     'bottom' => language::translate('title_bottom', 'Bottom'),
+    [language::translate('title_all', 'All'), 'all'],
   ];
 
   $type_options = [
@@ -109,6 +110,8 @@
     '#^includes/wrappers/wrap_storage.inc.php$#',
     '#^install/#',
     '#^storage/#',
+    '#^vendor/#',
+    '#^vmods/#',
   ];
 
   $scripts = functions::file_search(FS_DIR_APP . '**.php', GLOB_BRACE);
@@ -138,15 +141,11 @@ html.dark-mode .operation {
   background: #232a3e;
 }
 
-.nav-tabs .fa-times-circle {
+.nav-tabs .fa-times {
   color: #c00;
 }
 .nav-tabs .fa-plus {
   color: #0c0;
-}
-.operations {
-  position: sticky;
-  top: 0;
 }
 
 .script {
@@ -155,12 +154,14 @@ html.dark-mode .operation {
 .script .filename {
   position: absolute;
   display: inline-block;
-  top: 0;
+  top: 1px;
   right: 2em;
   padding: .5em 1em;
   border-radius: 0 0 4px 4px;
   background: #fff3;
-  color: #fffc
+  backdrop-filter: blur(2px);
+  font-size: .8em;
+  color: #fffc;
 }
 
 #settings .setting:not(:first-child) {
@@ -228,7 +229,7 @@ textarea.warning {
 
               <div class="form-group">
                 <label><?php echo language::translate('title_id', 'ID'); ?></label>
-                <?php echo functions::form_text_field('id', true, 'required placeholder="my_fancy_mod" pattern="^[0-9a-zA-Z_-]+$"'); ?>
+                <?php echo functions::form_text_field('id', true, 'required placeholder="my_fancy_mod" pattern="^[0-9a-zA-Z_\-]+$"'); ?>
               </div>
 
               <div class="row">
@@ -314,7 +315,7 @@ textarea.warning {
           <nav class="nav nav-tabs">
             <?php foreach (array_keys($vmod->data['files']) as $f) { ?>
             <a class="nav-link" data-toggle="tab" href="#tab-<?php echo $f; ?>">
-              <span class="file"><?php echo functions::escape_html($_POST['files'][$f]['name']); ?></span> <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span>
+              <span class="file"><?php echo functions::escape_html($_POST['files'][$f]['name']); ?></span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times'); ?></span>
             </a>
             <?php } ?>
             <a class="nav-link add" href="#"><?php echo functions::draw_fonticon('fa-plus'); ?></a>
@@ -587,7 +588,7 @@ textarea.warning {
     <div class="row">
       <div class="form-group col-md-3">
         <label><?php echo language::translate('title_method', 'Method'); ?></label>
-        <?php echo functions::form_select_field('files[current_tab_index][operations][new_operation_index][method]', $method_options, ''); ?>
+        <?php echo functions::form_select_field('files[current_tab_index][operations][new_operation_index][method]', $method_options, 'after'); ?>
       </div>
 
       <div class="form-group col-md-6">
@@ -651,7 +652,7 @@ textarea.warning {
   $('.nav-tabs .add').click(function(e){
     e.preventDefault();
 
-    let tab = '<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'"><span class="file">new'+ new_tab_index +'</span> <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span></a>'
+    let tab = '<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'"><span class="file">new'+ new_tab_index +'</span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times'); ?></span></a>'
       .replace(/new_tab_index/g, new_tab_index);
 
     let tab_pane = $('#new-tab-pane-template').html()
@@ -696,19 +697,23 @@ textarea.warning {
   $('#files').on('change', ':input[name$="[type]"]', function(e) {
     e.preventDefault();
     let match_type = $(this).val();
+
     $(this).closest('.operation').find(':input[name$="[content]"]').each(function(i, field){
       switch (match_type) {
+
         case 'inline':
         case 'regex':
           var $newfield = $('<input class="form-code" name="'+ $(field).attr('name') +'" type="text" />').val($(field).val());
           $(field).replaceWith($newfield);
           break;
+
         default:
           var $newfield = $('<textarea class="form-code" name="'+ $(field).attr('name') +'" /></textarea>').val($(field).val());
           $(field).replaceWith($newfield);
           break;
       }
     });
+
     $(this).closest('.operation').find(':input[name$="[find][content]"]').trigger('input');
   });
 
@@ -717,7 +722,7 @@ textarea.warning {
 
     let method = $(this).val();
 
-    if ($.inArray(method, ['top', 'bottom']) != -1) {
+    if ($.inArray(method, ['top', 'bottom', 'all']) != -1) {
       $(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', true);
     } else {
       $(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', false);
@@ -821,18 +826,26 @@ textarea.warning {
       indexes = $operation.find(':input[name$="[index]"]').val().split(/\s*,\s*/).filter(Boolean),
       offset_before = $operation.find(':input[name$="[offset-before]"]').val(),
       offset_after = $operation.find(':input[name$="[offset-after]"]').val()
-      onerror = $operation.find(':input[name$="[onerror]"]').val();
+      onerror = $operation.find(':input[name$="[onerror]"]').val(),
+      regex_flags = 's';
 
     try {
 
       switch (method) {
 
         case 'top':
+
           find = '^';
           break;
 
         case 'bottom':
+
           find = '$';
+          break;
+
+        case 'all':
+
+          find = '^.*$';
           break;
 
         case 'before':
@@ -843,9 +856,13 @@ textarea.warning {
         find = find.trim();
 
       // Cook the regex pattern
-        if (type != 'regex') {
+          if (type == 'regex') {
 
-          if (type == 'inline') {
+            find_operators = 'g'+find.substr(find.lastIndexOf(find.substr(0, 1))+1);
+            find = find.substr(1, find.lastIndexOf(find.substr(0, 1))-1);
+
+          } else if (type == 'inline') {
+
             find = find.replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&");
 
           } else {
@@ -871,17 +888,18 @@ textarea.warning {
               find = find + '(?:.*?(?:\r\n?|\n|$)){0,'+ offset_after +'}';
             }
           }
-        }
 
-        break;
+          regex_flags = 'gm';
+
+          break;
 
         default:
-          throw new Error('Uknown error');
+          throw new Error('Unknown error');
       }
 
       $.each($tab.find('.script'), function(){
 
-        let regex = new RegExp(find, 'gm'),
+        let regex = new RegExp(find, regex_flags),
           source = $(this).find('.form-code').text(),
           matches = (source.match(regex) || []).length;
 

@@ -18,7 +18,7 @@
 
       header('X-Frame-Options: SAMEORIGIN'); // Clickjacking Protection
       header('Content-Security-Policy: frame-ancestors \'self\';'); // Clickjacking Protection
-      header('Access-Control-Allow-Origin: '. document::ilink('')); // Only allow HTTP POST data data from own domain
+      header('Access-Control-Allow-Origin: '. document::ilink('')); // Only allow HTTP POST data from own domain
       header('X-Powered-By: '. PLATFORM_NAME);
 
     // Default to AJAX layout on AJAX request
@@ -33,6 +33,7 @@
       self::$snippets['home_path'] = WS_DIR_APP;
       self::$snippets['template_path'] = WS_DIR_TEMPLATE;
       self::$snippets['title'] = [settings::get('store_name')];
+      self::$snippets['head_tags']['manifest'] = '<link rel="manifest" href="'. document::href_ilink('manifest.json') .'" />';
       self::$snippets['head_tags']['favicon'] = implode(PHP_EOL, [
         '<link rel="icon" href="'. document::href_rlink('storage://images/favicons/favicon.ico') .'" type="image/x-icon" sizes="32x32 48x48 64x64 96x96" />',
         '<link rel="icon" href="'. document::href_rlink('storage://images/favicons/favicon-128x128.png') .'" type="image/png" sizes="128x128" />',
@@ -40,7 +41,7 @@
         '<link rel="icon" href="'. document::href_rlink('storage://images/favicons/favicon-256x256.png') .'" type="image/png" sizes="255x255" />',
       ]);
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. document::href_rlink('app://assets/fontawesome/font-awesome.min.css') .'" />';
-      self::$snippets['foot_tags']['jquery'] = '<script src="'. document::href_rlink('app://assets/jquery/jquery-3.6.1.min.js') .'"></script>';
+      self::$snippets['foot_tags']['jquery'] = '<script src="'. document::href_rlink('app://assets/jquery/jquery-3.6.4.min.js') .'"></script>';
 
     // Hreflang
       if (!empty(route::$selected['controller'])) {

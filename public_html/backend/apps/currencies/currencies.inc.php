@@ -38,13 +38,8 @@
   $currencies = database::query(
     "select * from ". DB_TABLE_PREFIX ."currencies
     order by field(status, 1, -1, 0), priority, name;"
-  )->fetch_all();
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-// Number of Rows
-  $num_rows = count($currencies);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -96,14 +91,14 @@
 
       <tfoot>
         <tr>
-          <td colspan="13"><?php echo language::translate('title_currencies', 'Currencies'); ?>: <?php echo language::number_format($num_rows); ?></td>
+          <td colspan="11"><?php echo language::translate('title_currencies', 'Currencies'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>
 
     <div class="card-body">
       <fieldset id="actions">
-        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
         <div class="btn-group">
           <?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>

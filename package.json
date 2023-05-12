@@ -18,7 +18,7 @@
 		"url": "https://github.com/litecart/litecart/issues"
 	},
 	"devDependencies": {
-		"grunt": "^1.5.3",
+		"grunt": "^1.6.1",
 		"grunt-cli": "^1.4.3",
 		"grunt-contrib-less": "^3.0.0",
 		"grunt-contrib-uglify": "^5.2.2",
@@ -27,7 +27,10 @@
 		"grunt-phplint": "^0.1.0",
 		"grunt-text-replace": "^0.4.0",
 		"phplint": "^2.0.5",
-		"sass": "^1.55.0"
+		"sass": "^1.62.0"
+	},
+	"engines": {
+		"node": ">=19"
 	},
 	"scripts": {
 		"build": "grunt",

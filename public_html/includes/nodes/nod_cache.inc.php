@@ -29,6 +29,9 @@
       }
 
       if (settings::get('cache_clear_thumbnails')) {
+
+        clearstatcache();
+
         foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
           foreach (glob($dir.'/*.{jpg,png,webp}', GLOB_BRACE) as $file) {
             unlink($file);
@@ -119,6 +122,7 @@
             break;
 
           case 'prices':
+            $hash_string .= currency::$selected['code'];
             $hash_string .= !empty(customer::$data['display_prices_including_tax']) ? '1' : '0';
             $hash_string .= !empty(customer::$data['country_code']) ? customer::$data['country_code'] : '';
             $hash_string .= !empty(customer::$data['zone_code']) ? customer::$data['zone_code'] : '';
@@ -176,7 +180,9 @@
 
       if (empty($force_cache)) {
         if (empty(self::$enabled)) return;
-        if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) return;
+        if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
+          if (preg_match('#no-cache|max-age=0#i', $_SERVER['HTTP_CACHE_CONTROL'])) return;
+        }
       }
 
       switch ($token['storage']) {

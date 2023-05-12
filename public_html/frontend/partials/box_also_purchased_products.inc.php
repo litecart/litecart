@@ -4,7 +4,7 @@
 
   functions::draw_lightbox();
 
-  $box_also_purchased_products_cache_token = cache::token('box_also_purchased_products', [$_GET['product_id'], 'language', 'currency']);
+  $box_also_purchased_products_cache_token = cache::token('box_also_purchased_products', [$_GET['product_id'], 'language', 'prices'], 'file');
   if (cache::capture($box_also_purchased_products_cache_token)) {
 
     $also_purchased_products = reference::product($_GET['product_id'])->also_purchased_products;

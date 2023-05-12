@@ -39,7 +39,7 @@
         }
       }
 
-      if (!empty($node)) return $node;
+      if (!empty($node) || $node != '') return $node;
     }
 
     return '';
@@ -853,6 +853,8 @@ END;
         return form_textarea($name, $input, $parameters . ' rows="10"');
 
       case 'category':
+        return form_draw_category_field($name, $input, $parameters);
+
       case 'categories':
         return form_categories_list($name, $input, $parameters);
 

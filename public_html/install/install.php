@@ -23,16 +23,23 @@
       . "  --admin_folder       Set admin folder name (Default: admin)\n"
       . "  --username           Set admin username\n"
       . "  --password           Set admin user password\n\n"
-      . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n\n";
+      . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n"
+      . "  --cleanup            Delete the install/ directory after finising the installation.\n\n";
       exit;
     }
 
     $options = [
       'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
-      'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type::',
+      'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type:: cleanup',
     ];
+
     $_REQUEST = getopt('', $options);
     $_REQUEST['install'] = true;
+
+    if (isset($_REQUEST['cleanup'])) {
+      $_REQUEST['cleanup'] = true;
+    }
+
   }
 
   if (empty($_REQUEST['install'])) {
@@ -571,7 +578,10 @@
 
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
+      file_put_contents(FS_DIR_APP . 'frontend/templates/default/.development', 'advanced');
+
       perform_action('delete', [
+
         FS_DIR_APP . 'frontend/templates/*/css/app.css',
         FS_DIR_APP . 'frontend/templates/*/css/checkout.css',
         FS_DIR_APP . 'frontend/templates/*/css/framework.css',
@@ -580,6 +590,9 @@
       ]);
 
     } else {
+
+      file_put_contents(FS_DIR_APP . 'frontend/templates/default/.development', 'standard');
+
       perform_action('delete', [
         FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
         FS_DIR_APP . 'frontend/templates/*/css/*.min.css.map',
@@ -587,6 +600,7 @@
       ]);
 
       perform_action('modify', [
+
         FS_DIR_APP . 'frontend/templates/*/layouts/*.inc.php' => [
           ['search' => 'app.min.css',       'replace' => 'app.css'],
           ['search' => 'checkout.min.css',  'replace' => 'checkout.css'],
@@ -672,9 +686,27 @@
     echo '<p>Create file container for requests without a destination...';
 
     if (file_put_contents(FS_DIR_STORAGE . 'logs/not_found.log', '') !== false) {
+
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
+        perform_action('delete', [
+          FS_DIR_APP . 'install/',
+        ]);
     } else {
       echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
+    }
+
+    ### Cleanup ##########################################
+
+    if (!empty($_REQUEST['cleanup'])) {
+
+      echo '<p>Cleanup... ';
+
+      perform_action('delete', [
+        FS_DIR_APP . 'install/',
+      ]);
+
+      echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
     ### #############################################################

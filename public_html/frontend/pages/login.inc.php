@@ -28,7 +28,7 @@
       }
 
       if (empty($_POST['email']) || empty($_POST['password'])) {
-        throw new Exception(language::translate('error_missing_login_credentials', 'You must provide both email address and password.'));
+        throw new Exception(language::translate('error_missing_login_credentials', 'You must provide both your email address and password'));
       }
 
       $customer = database::query(

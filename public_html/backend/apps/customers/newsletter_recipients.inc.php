@@ -106,6 +106,7 @@
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
+          <th><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_client_ip', 'Client IP'); ?></th>
           <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
         </tr>
@@ -117,6 +118,7 @@
           <td><?php echo functions::form_checkbox('recipients[]', $recipient['id']); ?></td>
           <td><?php echo $recipient['id']; ?></td>
           <td><?php echo $recipient['email']; ?></td>
+          <td><?php echo $recipient['name']; ?></td>
           <td><?php echo $recipient['client_ip']; ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
         </tr>
@@ -131,9 +133,13 @@
     </table>
 
     <div class="card-body">
+      <fieldset id="actions" disabled>
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
+
       <div class="btn-group">
         <?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger"', 'delete'); ?>
       </div>
+      </fieldset>
     </div>
 
   <?php echo functions::form_end(); ?>
@@ -163,4 +169,8 @@
     $.featherlight('#modal-add-recipients');
     $('textarea[name="recipients"]').attr('placeholder', 'user@email.com\nanother@email.com');
   })
+
+  $('.data-table :checkbox').change(function() {
+    $('#actions').prop('disabled', !$('.data-table :checked').length);
+  }).first().trigger('change');
 </script>

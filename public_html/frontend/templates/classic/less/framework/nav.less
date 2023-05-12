@@ -102,21 +102,22 @@
   border-start-start-radius: var(--border-radius);
   border-start-end-radius: var(--border-radius);
   border-bottom: 1px solid var(--tabs-pane-border-color);
-  padding: var(--gutter-y) var(--gutter-x) 0 var(--gutter-x);
+  padding: var(--gutter-y) var(--gutter-x);
+  padding-bottom: 4px;
   color: var(--tabs-text-color);
-  padding-bottom: 0;
   a {
-      flex: 0 0 auto;
-      margin-inline-end: .5em;
-      line-height: 1.4;
-      border-radius: var(--border-radius) var(--border-radius) 0 0;
-      padding: .5em 1em;
-      background-color: var(--tabs-background-color);
-      color: var(--tabs-text-color);
-      border: 1px solid var(--tabs-border-color);
-      border-bottom-color: var(--tabs-background-color);
-    &:hover {
-      background-color: rgba(255, 255, 255, .25);
+    flex: 0 0 auto;
+    margin-inline-end: .5em;
+    line-height: 1.4;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    padding: .5em 1em;
+    background-color: var(--tabs-background-color);
+    color: var(--tabs-text-color);
+    border: 1px solid var(--tabs-border-color);
+    border-bottom-color: var(--tabs-background-color);
+    text-decoration: none;
+    &:hover:not(.active) {
+      filter: brightness(0.95);
     }
     &.active {
       background-color: var(--tabs-background-color-active);

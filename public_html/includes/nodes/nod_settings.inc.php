@@ -15,22 +15,27 @@
 
         if (substr($setting['function'], 0, 9) == 'regional_') {
 
+          if (!class_exists('langauge', false) || empty(language::$selected)) continue;
+
           if ($setting['value']) {
-            $values = json_decode($setting['value'], true);
+            $setting['value'] = json_decode($setting['value'], true);
+
+            if (isset($setting['value'][language::$selected['code']])) {
+              $setting['value'] = $setting['value'][language::$selected['code']];
+
+            } else if (isset($value['en'])) {
+              $setting['value'] = $setting['value']['en'];
+
+            } else {
+              $setting['value'] = '';
+            }
+
           } else {
-            $values = [];
-          }
-
-          if (isset($values[language::$selected['code']])) {
-            self::$_cache[$setting['key']] = $values[language::$selected['code']];
-
-          } else if (isset($value['en'])) {
-            self::$_cache[$setting['key']] = $values['en'];
-
-          } else {
-            self::$_cache[$setting['key']] = '';
+            $setting['value'] = '';
           }
         }
+
+        self::$_cache[$setting['key']] = $setting['value'];
       }
 
     // Check version
@@ -39,7 +44,9 @@
       }
 
     // Set time zone
-      date_default_timezone_set(self::get('store_timezone'));
+      if ($timezone = self::get('store_timezone')) {
+        date_default_timezone_set($timezone);
+      }
     }
 
     ######################################################################
@@ -64,16 +71,16 @@
         if (substr($setting['function'], 0, 9) == 'regional_') {
 
           if ($setting['value']) {
-            $values = json_decode($setting['value'], true);
+            $setting['value'] = json_decode($setting['value'], true);
           } else {
-            $values = [];
+            $setting['value'] = [];
           }
 
-          if (isset($values[language::$selected['code']])) {
-            return self::$_cache[$key] = $values[language::$selected['code']];
+          if (isset($setting['value'][language::$selected['code']])) {
+            return self::$_cache[$key] = $setting['value'][language::$selected['code']];
 
           } else if (isset($value['en'])) {
-            return self::$_cache[$key] = $values['en'];
+            return self::$_cache[$key] = $setting['value']['en'];
 
           } else {
             return self::$_cache[$key] = '';

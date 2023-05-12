@@ -65,6 +65,7 @@
           ];
 
           $found = preg_match_all($operation['find']['pattern'], $buffer, $matches, PREG_OFFSET_CAPTURE);
+
           if (!$found) {
             switch ($operation['onerror']) {
               case 'ignore':

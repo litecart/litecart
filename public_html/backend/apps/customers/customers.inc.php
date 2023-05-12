@@ -135,7 +135,7 @@
 
     <div class="card-body">
       <fieldset id="actions">
-        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
         <ul class="list-inline">
           <li>
