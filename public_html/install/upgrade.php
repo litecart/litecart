@@ -300,10 +300,16 @@
 
       #############################################
 
+      $current_version = PLATFORM_DATABASE_VERSION;
+
       foreach ($supported_versions as $version) {
 
         if (version_compare(PLATFORM_DATABASE_VERSION, $version, '>=')) {
           continue;
+        }
+
+        if (version_compare($current_version, '3.0.0', '>=')) {
+          database::query('START TRANSACTION;');
         }
 
         if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.sql')) {
@@ -326,6 +332,10 @@
           include(__DIR__ . '/upgrade_patches/'. $version .'.inc.php');
         }
 
+        if (version_compare($current_version, '3.0.0', '>=')) {
+          database::query('COMMIT;');
+        }
+
         echo '<p>Set platform database version...';
 
         database::query(
@@ -336,6 +346,8 @@
         );
 
         echo ' <strong>'. $version .'</strong></p>' . PHP_EOL . PHP_EOL;
+
+        $current_version = $version;
       }
 
       #############################################
