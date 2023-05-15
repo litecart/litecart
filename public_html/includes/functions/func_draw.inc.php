@@ -42,7 +42,7 @@
     $aliases = [
       '$id' => $banner['id'],
       '$language_code' => language::$selected['code'],
-      '$image_url' => document::link(WS_DIR_APP .'images/' . $banner['image']),
+      '$image_url' => document::link(WS_DIR_STORAGE .'images/' . $banner['image']),
       '$target_url' => document::href_link($banner['link']),
     ];
 

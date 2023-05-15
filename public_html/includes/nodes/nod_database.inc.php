@@ -7,6 +7,10 @@
       'queries' => 0,
     ];
 
+    public static function init() {
+      event::register('shutdown', [__CLASS__, 'disconnect']);
+    }
+
     public static function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE, $charset='utf8mb4') {
 
       if (!isset(self::$_links[$link])) {
@@ -26,8 +30,6 @@
         if (!mysqli_real_connect(self::$_links[$link], $server, $username, $password, $database)) {
           trigger_error('Could not connect to database: '. mysqli_connect_errno() .' - '. mysqli_connect_error(), E_USER_ERROR);
         }
-
-        event::register('shutdown', [__CLASS__, 'disconnect']);
 
         if (($duration = microtime(true) - $timestamp) > 1) {
           error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, 'app://logs/performance.log');

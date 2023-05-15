@@ -167,7 +167,7 @@
   list($width, $height) = functions::image_scale_by_width(480, settings::get('product_image_ratio'));
   foreach (array_slice(array_values($product->images), 1) as $image) {
     $_page->snippets['extra_images'][] = [
-      'original' => 'images/' . $image,
+      'original' => 'storage://images/' . $image,
       'thumbnail' => functions::image_thumbnail('storage://images/' . $image, $width, $height, settings::get('product_image_trim')),
       'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $image, $width*2, $height*2, settings::get('product_image_trim')),
       'viewport' => [
@@ -180,10 +180,10 @@
   }
 
 // Watermark Images
-  if (settings::get('product_image_watermark')) {
-    $_page->snippets['image']['original'] = functions::image_process(FS_DIR_APP . $_page->snippets['image']['original'], ['watermark' => true]);
-    foreach (array_keys($_page->snippets['extra_images']) as $key) {
-      $_page->snippets['extra_images'][$key]['original'] = functions::image_process(FS_DIR_APP . $_page->snippets['extra_images'][$key]['original'], ['watermark' => true]);
+  if (settings::get('product_image_watermark') && $product->image) {
+    $_page->snippets['image']['original'] = functions::image_process('storage://images/' . $product->image, ['watermark' => true]);
+    foreach ($_page->snippets['extra_images'] as $image) {
+      $_page->snippets['extra_images'][$key]['original'] = functions::image_process('storage://images/' . $image, ['watermark' => true]);
     }
   }
 
@@ -208,7 +208,7 @@
 
     if (!empty($category->main_category->image)) {
       $_page->snippets['main_category']['image'] = [
-        'original' => 'images/' . $category->main_category->image,
+        'original' => 'storage://images/' . $category->main_category->image,
         'thumbnail' => functions::image_thumbnail('storage://images/' . $category->main_category->image, $width, $height),
         'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $category->main_category->image, $width, $height),
         'viewport' => [

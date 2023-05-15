@@ -59,7 +59,7 @@
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th class="text-end"><?php echo language::translate('title_date', 'Date'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>

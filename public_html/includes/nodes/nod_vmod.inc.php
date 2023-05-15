@@ -124,7 +124,7 @@
           if (in_array($folder, ['.', '..', '.cache'])) continue;
           if (!is_dir(FS_DIR_STORAGE .'addons/'.$folder)) continue;
           if (preg_match('#\.disabled$#', $folder)) continue;
-          self::load(FS_DIR_STORAGE .'addons/'.$folder.'/vmod.xml');
+          self::load(FS_DIR_STORAGE .'addons/'. $folder .'/vmod.xml');
         }
 
       // Store modifications to cache
@@ -163,6 +163,7 @@
 
     // Return original file if there are no modifications
       if (empty(self::$_files_to_modifications[$original_file])) {
+
         if (isset(self::$_checked[$original_file])) {
           unset(self::$_checked[$original_file]);
         }
@@ -528,9 +529,9 @@
           }
 
           foreach (glob(FS_DIR_APP . $glob_pattern, GLOB_BRACE) as $file_to_modify) {
-            $original_file = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file_to_modify);
+            $relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file_to_modify);
 
-            self::$_files_to_modifications[$original_file][] = [
+            self::$_files_to_modifications[$relative_path][] = [
               'id' => $vmod['id'],
               'key' => $key,
             ];
@@ -551,7 +552,7 @@
             })($tmp_file);
           }
 
-          file_put_contents(FS_DIR_STORAGE . 'addons/.installed', $vmod['id'].';'.$vmod['version'] . PHP_EOL, FILE_APPEND | LOCK_EX);
+          file_put_contents(FS_DIR_STORAGE . 'addons/.installed', $vmod['id'] .';'. $vmod['version'] . PHP_EOL, FILE_APPEND | LOCK_EX);
 
           self::$_installed[] = [
             'id' => $vmod['id'],

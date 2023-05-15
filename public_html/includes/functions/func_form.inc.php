@@ -329,6 +329,7 @@ END;
   }
 
   function form_email_field($name, $input=true, $parameters='') {
+
     if ($input === true) $input = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
@@ -338,6 +339,19 @@ END;
   }
 
   function form_file_field($name, $parameters='') {
+
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="file" name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
+  }
+
+  function form_file2_field($name, $parameters='') {
+
+
+    if ($input === true) $input = form_reinsert_value($name);
+
+    return '<div class="form-input"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
+         . '  ' . form_hidden_field($name, true) . PHP_EOL
+         . '  <span class="value">'. (!empty($input) ? $input : '('. language::translate('title_none', 'None') .')') .'</span> <a href="'. document::href_ilink('b:files/file_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '</div>';
 
     return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="file" name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
@@ -352,6 +366,7 @@ END;
   }
 
   function form_hidden_field($name, $input=true, $parameters='') {
+
     if ($input === true) $input = form_reinsert_value($name);
 
     return '<input type="hidden" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
@@ -362,6 +377,7 @@ END;
   }
 
   function form_input($name, $input=true, $type='text', $parameters='') {
+
     if ($input === true) $input = form_reinsert_value($name);
 
     return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="'. functions::escape_html($type) .'" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
@@ -902,6 +918,7 @@ END;
       case 'length_units':
         return form_length_units_list($name, $input, $parameters);
 
+      case 'payment_term':
       case 'payment_terms':
         return form_draw_payment_terms_list($name, $input, $parameters);
 
@@ -931,6 +948,9 @@ END;
 
       case 'password':
         return functions::form_password_field($name, $input);
+
+      case 'phone':
+        return functions::form_phone_field($name, $input);
 
       case 'radio':
         $html = '';
@@ -1709,7 +1729,7 @@ END;
         $aliases['%notice'] = language::translate('title_sold_out', 'Sold Out');
       }
 
-      $options[] = [$stock_option['stock_item_id'], strtr('%image %name &ndash; %icon %notice', $aliases), 'data-name="'. functions::escape_html($stock_option['name']) .'" data-sku="'. functions::escape_html($stock_option['sku']) .'" data-weight="'. functions::escape_html($stock_option['weight']) .'" data-weight-unit="'. functions::escape_html($stock_option['weight_unit']) .'" data-length="'. functions::escape_html($stock_option['length']) .'" data-width="'. functions::escape_html($stock_option['width']) .'" data-height="'. functions::escape_html($stock_option['height']) .'" data-length-unit="'. functions::escape_html($stock_option['length_unit']) .'"'];
+      $options[] = [$stock_option['stock_option_id'], strtr('%image %name &ndash; %icon %notice', $aliases), 'data-name="'. functions::escape_html($stock_option['name']) .'" data-sku="'. functions::escape_html($stock_option['sku']) .'" data-weight="'. functions::escape_html($stock_option['weight']) .'" data-weight-unit="'. functions::escape_html($stock_option['weight_unit']) .'" data-length="'. functions::escape_html($stock_option['length']) .'" data-width="'. functions::escape_html($stock_option['width']) .'" data-height="'. functions::escape_html($stock_option['height']) .'" data-length-unit="'. functions::escape_html($stock_option['length_unit']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {

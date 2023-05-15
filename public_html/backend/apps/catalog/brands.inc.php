@@ -57,6 +57,7 @@
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
           <th></th>
+          <th></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_products', 'Products'); ?></th>
           <th></th>
@@ -69,7 +70,8 @@
           <td><?php echo functions::form_checkbox('brands[]', $brand['id']); ?></td>
           <td><?php echo functions::draw_fonticon($brand['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $brand['featured'] ? functions::draw_fonticon('fa-star', 'style="color: #ffd700;"') : ''; ?></td>
-          <td><img class="fit" src="<?php echo document::href_rlink($brand['image'] ? functions::image_thumbnail('storage://images/' . $brand['image'], 16, 16) : ''); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /> <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_brand', ['brand_id' => $brand['id']]); ?>"><?php echo $brand['name']; ?></a></td>
+          <td><img class="thumbnail fit" src="<?php echo document::href_rlink($brand['image'] ? functions::image_thumbnail('storage://images/' . $brand['image'], 16, 16) : ''); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /></td>
+          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_brand', ['brand_id' => $brand['id']]); ?>"><?php echo $brand['name']; ?></a></td>
           <td class="text-center"><?php echo (int)$brand['num_products']; ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_brand', ['brand_id' => $brand['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
@@ -77,7 +79,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="6"><?php echo language::translate('title_brands', 'Brands'); ?>: <?php echo language::number_format($num_rows); ?></td>
+          <td colspan="7"><?php echo language::translate('title_brands', 'Brands'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>

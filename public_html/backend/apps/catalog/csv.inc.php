@@ -1166,7 +1166,7 @@
 
     <div class="row" style="max-width: 980px;">
 
-      <div class="col-xl-6">
+      <div class="col-lg-6">
         <?php echo functions::form_begin('import_form', 'post', '', true); ?>
 
           <fieldset>
@@ -1174,7 +1174,7 @@
 
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
-              <div>
+              <div class="form-input">
                 <?php echo functions::form_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
                 <?php echo functions::form_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
                 <?php echo functions::form_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true); ?>
@@ -1200,6 +1200,7 @@
                 <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
                 <?php echo functions::form_select_field('enclosure', ['"' => '" ('. language::translate('text_default', 'default') .')'], true); ?>
               </div>
+            </div>
 
             <div class="row">
               <div class="form-group col-sm-6">
@@ -1225,7 +1226,7 @@
         <?php echo functions::form_end(); ?>
       </div>
 
-      <div class="col-xl-6">
+      <div class="col-lg-6">
         <?php echo functions::form_begin('export_form', 'post'); ?>
 
           <fieldset>
@@ -1233,7 +1234,7 @@
 
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
-              <div>
+              <div class="form-input">
                 <?php echo functions::form_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
                 <?php echo functions::form_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
                 <?php echo functions::form_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true, 'data-dependencies="language"'); ?>
@@ -1266,6 +1267,7 @@
                 <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
                 <?php echo functions::form_select_field('enclosure', ['"' => '" ('. language::translate('text_default', 'default') .')'], true); ?>
               </div>
+            </div>
 
             <div class="row">
               <div class="form-group col-sm-6">
@@ -1277,6 +1279,7 @@
                 <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
                 <?php echo functions::form_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
               </div>
+            </div>
 
             <div class="row">
               <div class="form-group col-sm-6">
@@ -1302,7 +1305,7 @@
 
 <script>
   $('form[name="export_form"] input[name="type"]').change(function(){
-    var dependencies = $(this).data('dependencies') ? $(this).data('dependencies').split(',') : [];
+    let dependencies = $(this).data('dependencies') ? $(this).data('dependencies').split(',') : [];
     $('form[name="export_form"] select[name="currency_code"]').prop('disabled', ($.inArray('currency', dependencies) === -1));
     $('form[name="export_form"] select[name="language_code"]').prop('disabled', ($.inArray('language', dependencies) === -1));
   });

@@ -129,21 +129,21 @@
   }
 
   $date_format_options = [
-    [language::strftime('%e %b %Y'), '%e %b %Y'],
-    [language::strftime('%b %e %Y'), '%b %e %Y'],
+    '%e %b %Y' => language::strftime('%e %b %Y'),
+    '%b %e %Y' => language::strftime('%b %e %Y'),
   ];
 
   $time_format_options = [
     [
       'label' => '12-Hour Format',
       'options' => [
-        [language::strftime('%I:%M %p'), '%I:%M %P'],
+        '%I:%M %P' => language::strftime('%I:%M %p'),
       ],
     ],
     [
       'label' => '24-Hour Format',
       'options' => [
-        [language::strftime('%H:%M'), '%H:%M'],
+        '%H:%M' => language::strftime('%H:%M'),
       ],
     ],
   ];
@@ -152,23 +152,23 @@
     [
       'label' => 'Big-endian (YMD)', 'null', 'style="font-weight: bold;" disabled',
       'options' => [
-        [date('Y-m-d'), 'Y-m-d'],
-        [date('Y.m.d'), 'Y.m.d'],
-        [date('Y/m/d'), 'Y/m/d'],
+        'Y-m-d' => date('Y-m-d'),
+        'Y.m.d' => date('Y.m.d'),
+        'Y/m/d' => date('Y/m/d'),
       ],
     ],
     [
       'label' => 'Little-endian (DMY)', 'null', 'style="font-weight: bold;" disabled',
       'options' => [
-        [date('d-m-Y'), 'd-m-Y'],
-        [date('d.m.Y'), 'd.m.Y'],
-        [date('d/m/Y'), 'd/m/Y'],
+        'd-m-Y' => date('d-m-Y'),
+        'd.m.Y' => date('d.m.Y'),
+        'd/m/Y' => date('d/m/Y'),
       ],
     ],
     [
       'label' => 'Middle-endian (MDY)', 'null', 'style="font-weight: bold;" disabled',
       'options' => [
-        [date('m/d/y'), 'm/d/y'],
+        'm/d/y' => date('m/d/y'),
       ],
     ],
   ];
@@ -177,28 +177,28 @@
     [
       'label' => '12-hour format',
       'options' => [
-        [date('h:i A'), 'h:i A'],
+        'h:i A' => date('h:i A'),
       ],
     ],
     [
       'label' => '24-hour format',
       'options' => [
-        [date('H:i'), 'H:i'],
+        'H:i' => date('H:i'),
       ]
     ],
   ];
 
   $decimal_point_options = [
-    [language::translate('char_dot', 'Dot'), '.'],
-    [language::translate('char_comma', 'Comma'), ','],
+    '.' => language::translate('char_dot', 'Dot'),
+    ',' => language::translate('char_comma', 'Comma'),
   ];
 
   $thousands_separator_options = [
-    [language::translate('char_comma', 'Comma'), ','],
-    [language::translate('char_dot', 'Dot'), '.'],
-    [language::translate('char_space', 'Space'), ' '],
-    [language::translate('char_nonbreaking_space', 'Non-Breaking Space'), ' '],
-    [language::translate('char_single_quote', 'Single quote'), '\''],
+    ',' => language::translate('char_comma', 'Comma'),
+    '.' => language::translate('char_dot', 'Dot'),
+    ' ' => language::translate('char_space', 'Space'),
+    ' ' => language::translate('char_nonbreaking_space', 'Non-Breaking Space'),
+    '\'' => language::translate('char_single_quote', 'Single quote'),
   ];
 ?>
 <div class="card card-app">
@@ -285,7 +285,7 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?> <a href="https://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-          <?php echo functions::form_select_optgroup_field('raw_date', $raw_date_options, true, false); ?>
+          <?php echo functions::form_select_optgroup_field('raw_date', $raw_date_options, true); ?>
         </div>
 
         <div class="form-group col-md-6">

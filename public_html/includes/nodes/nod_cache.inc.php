@@ -275,10 +275,8 @@
       }
     }
 
-  // Output recorder
+    // Output recorder (This option is not affected by self::$enabled as fresh data is always building up cache)
     public static function capture($token, $max_age=900, $force_cache=false) {
-
-      if (empty(self::$enabled)) return true;
 
       if (isset(self::$_recorders[$token['id']])) {
         trigger_error('Cache recorder already initiated ('. $token['id'] .')', E_USER_ERROR);
@@ -300,8 +298,6 @@
     }
 
     public static function end_capture($token=[]) {
-
-      if (empty(self::$enabled)) return;
 
       if (empty($token['id'])) $token['id'] = current(array_reverse(self::$_recorders));
 

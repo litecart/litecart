@@ -16,7 +16,7 @@
   usort($recently_viewed_products, function ($a, $b) use ($product_ids) {
     $pos_a = array_search($a['id'], $product_ids);
     $pos_b = array_search($b['id'], $product_ids);
-    return $pos_a - $pos_b;
+    return $pos_b - $pos_a;
   });
 
 // Create list
@@ -31,7 +31,7 @@
       'id' => $product['id'],
       'name' => $product['name'],
       'image' => [
-        'original' => 'images/' . $product['image'],
+        'original' => 'storage://images/' . $product['image'],
         'thumbnail' => functions::image_thumbnail('storage://images/' . $product['image'], $width, $height, settings::get('product_image_trim')),
         'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $product['image'], $width*2, $height*2, settings::get('product_image_trim')),
         'viewport' => [
