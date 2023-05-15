@@ -6,16 +6,21 @@
     public $context;
 
     public function dir_opendir($path) {
-      $this->_directory = opendir($this->_resolve_path($path));
+      $path = $this->_resolve_path($path);
+      $this->_directory = opendir($path);
       return true;
     }
 
     public function dir_readdir() {
-      $string = readdir($this->_directory);
-      if (is_string($string) && $string[0] == '.') {
+
+      $file = readdir($this->_directory);
+
+    // Skip returning . and ..
+      if (is_string($file) && preg_match('#^\.{1,2}$#', $file)) {
         return $this->dir_readdir();
       }
-      return $string;
+
+      return $file;
     }
 
     public function dir_closedir() {

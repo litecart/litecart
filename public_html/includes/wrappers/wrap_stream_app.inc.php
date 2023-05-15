@@ -10,29 +10,33 @@
       $path = $this->_resolve_path($path);
       $relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path);
 
-      if (!preg_match('#^([a-z]:)?/$#', $path)) {
-        $this->_directory = [
-          '.' => $path . '/./',
-          '..' => $path . '/../',
-        ];
-      }
+      $this->_directory = [];
 
       foreach (glob($path.'*') as $file) {
-        if (is_dir($file)) {
-          $this->_directory[basename($file)] = 'app://'.$file.'/';
-        } else {
-          $this->_directory[basename($file)] = 'app://'.$file;
-        }
+        $basename = basename($file) . (is_dir($file) ? '/' : '');
+        $this->_directory[$basename] = $file . (is_dir($file) ? '/' : '');
       }
 
-      foreach (glob(FS_DIR_STORAGE .'addons/*/'.$relative_path, GLOB_BRACE) as $file) {
-        $file = str_replace('\\', '/', $file);
+      foreach (glob(FS_DIR_STORAGE .'addons/*/'.$relative_path.'*', GLOB_BRACE) as $file) {
+
+        $file = str_replace('\\', '/', $file) . (is_dir($file) ? '/' : '');
+        $basename = basename($file) . (is_dir($file) ? '/' : '');
+
+        if (preg_match('#^'. preg_quote(FS_DIR_STORAGE .'addons/', '#') .'[^/]+.cache/#', $file)) continue;
         if (preg_match('#^'. preg_quote(FS_DIR_STORAGE .'addons/', '#') .'[^/]+.disabled/#', $file)) continue;
         if (preg_match('#^'. preg_quote(FS_DIR_STORAGE .'addons/', '#') .'[^/]+/vmod\.xml$#', $file)) continue;
-        $this->_directory[basename($file)] = $file;
+
+        $this->_directory[$basename] = $file;
       }
 
-      ksort($this->_directory);
+      uasort($this->_directory, function($a, $b){
+
+        if (is_dir($a) == is_dir($b)) {
+          return (basename($a) < basename($b)) ? -1 : 1;
+        }
+
+        return is_dir($a) ? -1 : 1;
+      });
 
       return true;
     }
@@ -87,7 +91,7 @@
     }
 
     public function stream_metadata(string $path, int $option, mixed $value): bool {
-      $path = self::resolve_path($path);
+      $path = $this->_resolve_path($path);
 
       switch ($option) {
         case STREAM_META_TOUCH:
