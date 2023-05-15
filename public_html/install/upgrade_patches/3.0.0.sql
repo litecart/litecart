@@ -539,3 +539,94 @@ DELETE FROM `lc_sold_out_statuses_info` WHERE sold_out_status_id NOT IN (SELECT 
 DELETE FROM `lc_tax_rates` WHERE tax_class_id NOT IN (SELECT id from `lc_tax_classes`) OR geo_zone_id NOT IN (SELECT id from `lc_geo_zones`);
 -- --------------------------------------------------------
 DELETE FROM `lc_zones_to_geo_zones` WHERE geo_zone_id NOT IN (SELECT id from `lc_geo_zones`) OR country_code NOT IN (SELECT iso_code_2 from `lc_countries`);
+-- --------------------------------------------------------
+ALTER TABLE `lc_attribute_groups_info`
+ADD CONSTRAINT `attribute_group_info_to_attribute_group` FOREIGN KEY (`group_id`) REFERENCES `lc_attribute_groups` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `attribute_group_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE NO ACTION;
+-- --------------------------------------------------------
+ALTER TABLE `lc_attribute_values_info`
+ADD CONSTRAINT `attribute_value_info to attribute_value` FOREIGN KEY (`value_id`) REFERENCES `lc_attribute_values` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `attribute_value_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_brands_info`
+ADD CONSTRAINT `brand` FOREIGN KEY (`brand_id`) REFERENCES `lc_brands` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `brand_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_categories_filters`
+ADD CONSTRAINT `category_filter_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `category_filter_to_attribute_group` FOREIGN KEY (`attribute_group_id`) REFERENCES `lc_attribute_groups` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_categories_images`
+ADD CONSTRAINT `category_image_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_categories_info`
+ADD CONSTRAINT `category_info_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `category_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_delivery_statuses_info`
+ADD CONSTRAINT `delivery_status_info_to_delivery_status` FOREIGN KEY (`delivery_status_id`) REFERENCES `lc_delivery_statuses` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `delivery_status_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_orders_comments`
+ADD CONSTRAINT `order_comment_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_orders_items`
+ADD CONSTRAINT `order_item_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_orders_totals`
+ADD CONSTRAINT `order_total_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_order_statuses_info`
+ADD CONSTRAINT `order_status_info_to_order` FOREIGN KEY (`order_status_id`) REFERENCES `lc_order_statuses` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `order_status_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_pages_info`
+ADD CONSTRAINT `page_info_to_page` FOREIGN KEY (`page_id`) REFERENCES `lc_pages` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `page_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products_attributes`
+ADD CONSTRAINT `product_attribute_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `product_attribute_to_attribute_group` FOREIGN KEY (`group_id`) REFERENCES `lc_attribute_groups` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `product_attribute_to_attribute_value` FOREIGN KEY (`value_id`) REFERENCES `lc_attribute_values` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products_campaigns`
+ADD CONSTRAINT `product_campaign_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products_images`
+ADD CONSTRAINT `product_image_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products_info`
+ADD CONSTRAINT `product_info_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `product_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products_images`
+ADD CONSTRAINT `product_price_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products_to_categories`
+ADD CONSTRAINT `product_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `product_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_quantity_units_info`
+ADD CONSTRAINT `quantity_unit_info_to_quantity_unit` FOREIGN KEY (`quantity_unit_id`) REFERENCES `lc_quantity_units` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `quantity_unit_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_slides_info`
+ADD CONSTRAINT `slide_info_to_slide` FOREIGN KEY (`slide_id`) REFERENCES `lc_slides` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `slide_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_sold_out_statuses_info`
+ADD CONSTRAINT `sold_out_status_info_to_sold_out_status` FOREIGN KEY (`sold_out_status_id`) REFERENCES `lc_sold_out_statuses` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `sold_out_status_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_stock_transactions_contents`
+ADD CONSTRAINT `stock_transaction_content_to_transaction` FOREIGN KEY (`transaction_id`) REFERENCES `lc_stock_transactions` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `stock_transaction_content_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION,
+ADD CONSTRAINT `stock_transaction_content_to_stock_item` FOREIGN KEY (`stock_option_id`) REFERENCES `lc_products_stock_options` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION;
+-- --------------------------------------------------------
+ALTER TABLE `lc_tax_rates`
+ADD CONSTRAINT `tax_rate_to_tax_class` FOREIGN KEY (`tax_class_id`) REFERENCES `lc_tax_classes` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `tax_rate_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc_geo_zones` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_zones_to_geo_zones`
+ADD CONSTRAINT `zone_entry_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc_geo_zones` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `zone_entry_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE NO ACTION ON DELETE CASCADE;

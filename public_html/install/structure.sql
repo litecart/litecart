@@ -16,7 +16,9 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_groups_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `attribute_group` (`group_id`,`language_code`),
   KEY `group_id` (`group_id`),
-  KEY `language_code` (`language_code`)
+  KEY `language_code` (`language_code`),
+  CONSTRAINT `attribute_group_info_to_attribute_group` FOREIGN KEY (`group_id`) REFERENCES `lc_attribute_groups` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `attribute_group_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
@@ -37,7 +39,9 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_values_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `attribute_value` (`value_id`,`language_code`),
   KEY `value_id` (`value_id`),
-  KEY `language_code` (`language_code`)
+  KEY `language_code` (`language_code`),
+  CONSTRAINT `attribute_value_info to attribute_value` FOREIGN KEY (`value_id`) REFERENCES `lc_attribute_values` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `attribute_value_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_banners` (
@@ -86,7 +90,9 @@ CREATE TABLE `lc_brands_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `brand_info` (`brand_id`, `language_code`),
   KEY `brand_id` (`brand_id`),
-  KEY `language_code` (`language_code`)
+  KEY `language_code` (`language_code`),
+  CONSTRAINT `brand` FOREIGN KEY (`brand_id`) REFERENCES `lc_brands` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `brand_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories` (
@@ -113,7 +119,9 @@ CREATE TABLE `lc_categories_filters` (
   `priority` INT(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `attribute_filter` (`category_id`, `attribute_group_id`),
-  KEY `category_id` (`category_id`)
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `category_filter_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `category_filter_to_attribute_group` FOREIGN KEY (`attribute_group_id`) REFERENCES `lc_attribute_groups` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_info` (
@@ -129,7 +137,9 @@ CREATE TABLE `lc_categories_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `category` (`category_id`, `language_code`),
   KEY `category_id` (`category_id`),
-  KEY `language_code` (`language_code`)
+  KEY `language_code` (`language_code`),
+  CONSTRAINT `category_info_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `category_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_countries` (
@@ -170,7 +180,9 @@ CREATE TABLE `lc_currencies` (
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `status` (`status`)
+  KEY `status` (`status`),
+  KEY `code` (`code`),
+  KEY `number` (`number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_customers` (
@@ -233,7 +245,9 @@ CREATE TABLE `lc_delivery_statuses_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `delivery_status` (`delivery_status_id`, `language_code`),
   KEY `delivery_status_id` (`delivery_status_id`),
-  KEY `language_code` (`language_code`)
+  KEY `language_code` (`language_code`),
+  CONSTRAINT `delivery_status_info_to_delivery_status` FOREIGN KEY (`delivery_status_id`) REFERENCES `lc_delivery_statuses` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `delivery_status_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_emails` (
@@ -406,7 +420,8 @@ CREATE TABLE `lc_orders_comments` (
   `hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `order_id` (`order_id`)
+  KEY `order_id` (`order_id`),
+  CONSTRAINT `order_comment_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_orders_items` (
@@ -439,8 +454,9 @@ CREATE TABLE `lc_orders_items` (
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`),
   KEY `product_id` (`product_id`),
-  KEY `stock_item_id` (`stock_item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+  KEY `stock_option_id` (`stock_option_id`),
+  CONSTRAINT `order_item_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_orders_totals` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -453,7 +469,8 @@ CREATE TABLE `lc_orders_totals` (
   `calculate` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `priority` INT(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `order_id` (`order_id`)
+  KEY `order_id` (`order_id`),
+  CONSTRAINT `order_total_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_order_statuses` (
@@ -486,7 +503,9 @@ CREATE TABLE `lc_order_statuses_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `order_status_info` (`order_status_id`, `language_code`),
   KEY `order_status_id` (`order_status_id`),
-  KEY `language_code` (`language_code`)
+  KEY `language_code` (`language_code`),
+  CONSTRAINT `order_status_info_to_order` FOREIGN KEY (`order_status_id`) REFERENCES `lc_order_statuses` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `order_status_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_pages` (
@@ -514,7 +533,9 @@ CREATE TABLE `lc_pages_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `page_info` (`page_id`, `language_code`),
   KEY `page_id` (`page_id`),
-  KEY `language_code` (`language_code`)
+  KEY `language_code` (`language_code`),
+  CONSTRAINT `page_info_to_page` FOREIGN KEY (`page_id`) REFERENCES `lc_pages` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `page_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_products` (
@@ -565,7 +586,10 @@ CREATE TABLE `lc_products_attributes` (
   UNIQUE INDEX `id` (`id`, `product_id`, `group_id`, `value_id`),
   KEY `product_id` (`product_id`),
   KEY `group_id` (`group_id`),
-  KEY `value_id` (`value_id`)
+  KEY `value_id` (`value_id`),
+  CONSTRAINT `product_attribute_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `product_attribute_to_attribute_group` FOREIGN KEY (`group_id`) REFERENCES `lc_attribute_groups` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `product_attribute_to_attribute_value` FOREIGN KEY (`value_id`) REFERENCES `lc_attribute_values` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_campaigns` (
@@ -576,7 +600,8 @@ CREATE TABLE `lc_products_campaigns` (
   `USD` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
   `EUR` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
   PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`)
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `product_campaign_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_images` (
@@ -586,7 +611,8 @@ CREATE TABLE `lc_products_images` (
   `checksum` CHAR(32) NULL,
   `priority` INT(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`)
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `product_image_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_info` (
@@ -605,7 +631,9 @@ CREATE TABLE `lc_products_info` (
   KEY `language_code` (`language_code`),
   FULLTEXT KEY `name` (`name`),
   FULLTEXT KEY `short_description` (`short_description`),
-  FULLTEXT KEY `description` (`description`)
+  FULLTEXT KEY `description` (`description`),
+  CONSTRAINT `product_info_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `product_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_prices` (
@@ -614,13 +642,10 @@ CREATE TABLE `lc_products_prices` (
   `USD` FLOAT(11) NOT NULL DEFAULT '0.0000',
   `EUR` FLOAT(11) NOT NULL DEFAULT '0.0000',
   PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`)
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `product_price_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
-CREATE TABLE `lc_products_to_categories` (
-   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-   `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-   PRIMARY KEY(`product_id`, `category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_to_stock_items` (
@@ -634,6 +659,13 @@ CREATE TABLE `lc_products_to_stock_items` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `stock_option` (`product_id`, `stock_item_id`),
   KEY `product_id` (`product_id`)
+-- --------------------------------------------------------
+CREATE TABLE `lc_products_to_categories` (
+  `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY(`product_id`, `category_id`),
+  CONSTRAINT `product_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `product_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_quantity_units` (
@@ -655,7 +687,9 @@ CREATE TABLE IF NOT EXISTS `lc_quantity_units_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `quantity_unit_info` (`quantity_unit_id`, `language_code`),
   KEY `quantity_unit_id` (`quantity_unit_id`),
-  KEY `language_code` (`language_code`)
+  KEY `language_code` (`language_code`),
+  CONSTRAINT `quantity_unit_info_to_quantity_unit` FOREIGN KEY (`quantity_unit_id`) REFERENCES `lc_quantity_units` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `quantity_unit_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_settings` (
@@ -789,7 +823,9 @@ CREATE TABLE `lc_slides` (
   `date_valid_to` TIMESTAMP NULL DEFAULT NULL,
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  CONSTRAINT `slide_info_to_slide` FOREIGN KEY (`slide_id`) REFERENCES `lc_slides` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `slide_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_slides_info` (
@@ -824,49 +860,9 @@ CREATE TABLE `lc_sold_out_statuses_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `sold_out_status_info` (`sold_out_status_id`, `language_code`),
   KEY `sold_out_status_id` (`sold_out_status_id`),
-  KEY `language_code` (`language_code`)
-) ENGINE=InnoDB DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_stock_items` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `code` VARCHAR(32) NOT NULL DEFAULT '',
-  `sku` VARCHAR(32) NOT NULL DEFAULT '',
-  `mpn` VARCHAR(32) NOT NULL DEFAULT '',
-  `gtin` VARCHAR(32) NOT NULL DEFAULT '',
-  `taric` VARCHAR(16) NOT NULL DEFAULT '',
-  `image` VARCHAR(512) NOT NULL DEFAULT '',
-  `file` VARCHAR(128) NOT NULL DEFAULT '',
-  `filename` VARCHAR(128) NOT NULL DEFAULT '',
-  `mime_type` VARCHAR(32) NOT NULL DEFAULT '',
-  `downloads` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `quantity` FLOAT(11,4) NOT NULL DEFAULT '0',
-  `quantity_unit_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `backordered` FLOAT(11,4) NOT NULL DEFAULT '0',
-  `weight` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
-  `length` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `width` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `height` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
-  `purchase_price` FLOAT(11,4) NOT NULL DEFAULT '0',
-  `purchase_price_currency_code` CHAR(3) NOT NULL DEFAULT '',
-  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `sku` (`sku`),
-  INDEX `mpn` (`mpn`),
-  INDEX `gtin` (`gtin`),
-  INDEX `code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_stock_items_info` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `language_code` CHAR(2) NOT NULL DEFAULT '',
-  `name` VARCHAR(128) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  INDEX `stock_item_id` (`stock_item_id`),
-  FULLTEXT INDEX `name` (`name`)
+  KEY `language_code` (`language_code`),
+  CONSTRAINT `sold_out_status_info_to_sold_out_status` FOREIGN KEY (`sold_out_status_id`) REFERENCES `lc_sold_out_statuses` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `sold_out_status_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_stock_transactions` (
@@ -883,23 +879,13 @@ CREATE TABLE `lc_stock_transactions_contents` (
   `transaction_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `warehouse_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `quantity_adjustment` FLOAT(11,4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_stock_items_references` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `stock_item_id` INT UNSIGNED NOT NULL,
-  `source_type` VARCHAR(32) NOT NULL DEFAULT '',
-  `source` VARCHAR(32) NOT NULL DEFAULT '',
-  `type` VARCHAR(32) NOT NULL DEFAULT '',
-  `code` VARCHAR(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
-  INDEX `stock_item_id` (`stock_item_id`),
-  INDEX `type` (`type`),
-  INDEX `source` (`source`),
-  INDEX `source_type` (`source_type`),
-  UNIQUE INDEX `code` (`code`, `type`, `source`, `source_type`, `stock_item_id`)
+  KEY `transaction_id` (`transaction_id`),
+  KEY `product_id` (`product_id`),
+  KEY `stock_option_id` (`stock_option_id`),
+  CONSTRAINT `stock_transaction_content_to_transaction` FOREIGN KEY (`transaction_id`) REFERENCES `lc_stock_transactions` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `stock_transaction_content_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT `stock_transaction_content_to_stock_item` FOREIGN KEY (`stock_option_id`) REFERENCES `lc_products_stock_options` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_suppliers` (
@@ -943,7 +929,9 @@ CREATE TABLE `lc_tax_rates` (
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `tax_class_id` (`tax_class_id`),
-  KEY `geo_zone_id` (`geo_zone_id`)
+  KEY `geo_zone_id` (`geo_zone_id`),
+  CONSTRAINT `tax_rate_to_tax_class` FOREIGN KEY (`tax_class_id`) REFERENCES `lc_tax_classes` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `tax_rate_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc_geo_zones` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_translations` (
@@ -1013,5 +1001,7 @@ CREATE TABLE `lc_zones_to_geo_zones` (
   KEY `geo_zone_id` (`geo_zone_id`),
   KEY `country_code` (`country_code`),
   KEY `zone_code` (`zone_code`),
-  KEY `city` (`city`)
+  KEY `city` (`city`),
+  CONSTRAINT `zone_entry_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc_geo_zones` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT `zone_entry_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
