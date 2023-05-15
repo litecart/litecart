@@ -121,19 +121,42 @@ RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
 -- --------------------------------------------------------
 RENAME TABLE `lc_products_options` TO `lc_products_configurations`;
 -- --------------------------------------------------------
-RENAME TABLE `lc_products_options_values` TO `lc_products_configurations_values`;
+RENAME TABLE `lc_products_options_values` TO `lc_products_customizations_values`;
 -- --------------------------------------------------------
 RENAME TABLE `lc_products_options_stock` TO `lc_stock_items`;
+ALTER TABLE `lc_attribute_groups_info`
+CHANGE COLUMN `group_id` `group_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_attribute_values_info`
+CHANGE COLUMN `value_id` `value_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_brands_info`
 CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 ADD INDEX `brand_id` (`brand_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_categories`
+CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
+CHANGE COLUMN `parent_id` `parent_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
+CHANGE COLUMN `google_taxonomy_id` `google_taxonomy_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `parent_id`,
 DROP COLUMN `list_style`;
 -- --------------------------------------------------------
+ALTER TABLE `lc_categories_filters`
+CHANGE COLUMN `category_id` `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
+CHANGE COLUMN `attribute_group_id` `attribute_group_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `category_id`;
+-- ---------------------------------------------------------
+ALTER TABLE `lc_categories_images`
+CHANGE COLUMN `category_id` `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
+-- ---------------------------------------------------------
+ALTER TABLE `lc_categories_info`
+CHANGE COLUMN `category_id` `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
+-- ---------------------------------------------------------
 ALTER TABLE `lc_countries`
-CHANGE COLUMN `postcode_format` `postcode_format` VARCHAR(255) NOT NULL DEFAULT '';
+CHANGE COLUMN `postcode_format` `postcode_format` VARCHAR(255) NOT NULL DEFAULT '',
+ADD UNIQUE INDEX `iso_code_1` (`iso_code_1`);
+-- --------------------------------------------------------
+ALTER TABLE `lc_currencies`
+ADD INDEX `code` (`code`),
+ADD INDEX `number` (`number`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_customers`
 CHANGE COLUMN `country_code` `country_code` CHAR(2) NOT NULL DEFAULT '' ,
@@ -142,29 +165,16 @@ CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '';
 -- --------------------------------------------------------
+ALTER TABLE `lc_delivery_statuses_info`
+CHANGE COLUMN `delivery_status_id` `delivery_status_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
+-- --------------------------------------------------------
 ALTER TABLE `lc_emails`
 DROP COLUMN `charset`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_languages`
-DROP COLUMN `charset`;
--- --------------------------------------------------------
-ALTER TABLE `lc_products`
-ADD COLUMN `autofill_technical_data` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `image`,
-CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
-CHANGE COLUMN `dim_x` `length` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `dim_y` `width` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `dim_z` `height` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
-DROP COLUMN `upc`,
-DROP INDEX `manufacturer_id`,
-ADD INDEX `brand_id` (`brand_id`);
--- --------------------------------------------------------
-ALTER TABLE `lc_products_attributes`
-ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `custom_value`;
--- --------------------------------------------------------
-ALTER TABLE `lc_products_images`
-CHANGE COLUMN `checksum` `checksum` CHAR(32) NOT NULL DEFAULT '';
+DROP COLUMN `charset`,
+ADD INDEX `code` (`code`),
+ADD INDEX `code2` (`code2`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders`
 DROP COLUMN `uid`,
@@ -189,7 +199,11 @@ ADD COLUMN `payment_option_fee` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `payment_
 ADD COLUMN `payment_option_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `payment_option_fee`,
 ADD INDEX `no` (`no`);
 -- --------------------------------------------------------
+ALTER TABLE `lc_orders_comments`
+CHANGE COLUMN `order_id` `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
+-- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
+CHANGE COLUMN `order_id` `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
 CHANGE COLUMN `data` `userdata` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `dim_x` `length` FLOAT(11,4) NOT NULL DEFAULT '0',
@@ -209,13 +223,47 @@ ADD INDEX `product_id` (`product_id`),
 ADD INDEX `stock_item_id` (`stock_item_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_totals`
-ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `tax`
-CHANGE COLUMN `value` `amount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `title`;
+CHANGE COLUMN `order_id` `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
+CHANGE COLUMN `value` `amount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `title`,
+ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `tax`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_order_statuses`
 ADD COLUMN `hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
 -- --------------------------------------------------------
-ALTER TABLE `lc_stock_items`
+ALTER TABLE `lc_order_statuses_info`
+CHANGE COLUMN `order_status_id` `order_status_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_pages_info`
+CHANGE COLUMN `page_id` `page_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products`
+ADD COLUMN `autofill_technical_data` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `image`,
+CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
+CHANGE COLUMN `dim_x` `length` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `dim_y` `width` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `dim_z` `height` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
+DROP COLUMN `upc`,
+DROP INDEX `manufacturer_id`,
+ADD INDEX `type` (`type`),
+ADD INDEX `brand_id` (`brand_id`);
+-- --------------------------------------------------------
+ALTER TABLE `lc_products_attributes`
+CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
+CHANGE COLUMN `group_id` `group_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `product_id`,
+CHANGE COLUMN `value_id` `value_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `group_id`,
+ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `custom_value`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products_campaigns`
+CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products_images`
+CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
+CHANGE COLUMN `checksum` `checksum` CHAR(32) NOT NULL DEFAULT '';
+-- --------------------------------------------------------
+ALTER TABLE `lc_products_info`
+CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
 CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `combination` `attributes` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `sku` `sku` VARCHAR(32) NOT NULL DEFAULT '',
@@ -243,6 +291,13 @@ ADD INDEX `gtin` (`gtin`),
 ADD INDEX `mpn` (`mpn`),
 ADD FULLTEXT INDEX `name` (`name`);
 -- --------------------------------------------------------
+ALTER TABLE `lc_products_to_categories`
+CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' FIRST,
+CHANGE COLUMN `category_id` `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'test' AFTER `product_id`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_quantity_units_info`
+CHANGE COLUMN `quantity_unit_id` `quantity_unit_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
+-- --------------------------------------------------------
 ALTER TABLE `lc_settings`
 ADD COLUMN `required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `function`,
 CHANGE COLUMN `setting_group_key` `group_key` VARCHAR(64) NOT NULL DEFAULT '',
@@ -267,7 +322,15 @@ ADD COLUMN `sum_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `sum`,
 ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `length_unit`,
 ADD INDEX `cart_id` (`cart_id`);
 -- --------------------------------------------------------
+ALTER TABLE `lc_slides_info`
+CHANGE COLUMN `slide_id` `slide_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_sold_out_statuses_info`
+CHANGE COLUMN `sold_out_status_id` `sold_out_status_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
+-- --------------------------------------------------------
 ALTER TABLE `lc_tax_rates`
+CHANGE COLUMN `tax_class_id` `tax_class_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
+CHANGE COLUMN `geo_zone_id` `geo_zone_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `tax_class_id`,
 CHANGE COLUMN `rate` `rate` FLOAT(4,2) NOT NULL DEFAULT '0' AFTER `description`,
 DROP COLUMN `type`;
 -- --------------------------------------------------------
@@ -278,6 +341,12 @@ ALTER TABLE `lc_users`
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
 ADD COLUMN `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '' AFTER `last_hostname`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_zones`
+CHANGE COLUMN `country_code` `country_code` CHAR(2) NOT NULL DEFAULT '';
+-- --------------------------------------------------------
+ALTER TABLE `lc_zones_to_geo_zones`
+CHANGE COLUMN `geo_zone_id` `geo_zone_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
 -- --------------------------------------------------------
 UPDATE `lc_modules` SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit') WHERE `module_id` = 'sm_zone_weight' LIMIT 1;
 -- --------------------------------------------------------
@@ -428,5 +497,3 @@ SELECT transaction_id, stock_item_id, quantity_adjustment FROM (
   ORDER BY x.stock_item_id
 ) y;
 -- --------------------------------------------------------
-ALTER TABLE `lc_zones`
-CHANGE COLUMN `country_code` `country_code` CHAR(2) NOT NULL DEFAULT '';
