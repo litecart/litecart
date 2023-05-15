@@ -496,4 +496,46 @@ SELECT transaction_id, stock_item_id, quantity_adjustment FROM (
   GROUP BY x.stock_item_id
   ORDER BY x.stock_item_id
 ) y;
+DELETE FROM `lc_attribute_groups_info` WHERE group_id NOT IN (SELECT id from `lc_attribute_groups`) OR language_code NOT IN (SELECT code from `lc_languages`);
 -- --------------------------------------------------------
+DELETE FROM `lc_attribute_values` WHERE group_id NOT IN (SELECT id from `lc_attribute_groups`);
+-- --------------------------------------------------------
+DELETE FROM `lc_attribute_values_info` WHERE value_id NOT IN (SELECT id from `lc_attribute_values`) OR language_code NOT IN (SELECT code from `lc_languages`);
+-- --------------------------------------------------------
+DELETE FROM `lc_brands_info` WHERE brand_id NOT IN (SELECT id from `lc_brands`) OR language_code NOT IN (SELECT code from `lc_languages`);
+-- --------------------------------------------------------
+DELETE FROM `lc_categories_images` WHERE category_id NOT IN (SELECT id from `lc_categories`);
+-- --------------------------------------------------------
+DELETE FROM `lc_categories_filters` WHERE category_id NOT IN (SELECT id from `lc_categories`) OR attribute_group_id NOT IN (SELECT id from `lc_attribute_groups`);
+-- --------------------------------------------------------
+DELETE FROM `lc_categories_info` WHERE category_id NOT IN (SELECT id from `lc_categories`) OR language_code NOT IN (SELECT code from `lc_languages`);
+-- --------------------------------------------------------
+DELETE FROM `lc_delivery_statuses_info` WHERE delivery_status_id NOT IN (SELECT id from `lc_delivery_statuses`) OR language_code NOT IN (SELECT code from `lc_languages`);
+-- --------------------------------------------------------
+DELETE FROM `lc_orders_comments` WHERE order_id NOT IN (SELECT id from `lc_orders`);
+-- --------------------------------------------------------
+DELETE FROM `lc_orders_items` WHERE order_id NOT IN (SELECT id from `lc_orders`);
+-- --------------------------------------------------------
+DELETE FROM `lc_orders_totals` WHERE order_id NOT IN (SELECT id from `lc_orders`);
+-- --------------------------------------------------------
+DELETE FROM `lc_pages_info` WHERE page_id NOT IN (SELECT id from `lc_pages`) OR language_code NOT IN (SELECT code from `lc_languages`);
+-- --------------------------------------------------------
+DELETE FROM `lc_products_attributes` WHERE product_id NOT IN (SELECT id from `lc_products`) OR group_id NOT IN (SELECT id from `lc_attribute_groups`);
+-- --------------------------------------------------------
+DELETE FROM `lc_products_campaigns` WHERE product_id NOT IN (SELECT id from `lc_products`);
+-- --------------------------------------------------------
+DELETE FROM `lc_products_images` WHERE product_id NOT IN (SELECT id from `lc_products`);
+-- --------------------------------------------------------
+DELETE FROM `lc_products_info` WHERE product_id NOT IN (SELECT id from `lc_products`) OR language_code NOT IN (SELECT code from `lc_languages`);
+-- --------------------------------------------------------
+DELETE FROM `lc_products_to_categories` WHERE product_id NOT IN (SELECT id from `lc_products`) OR category_id NOT IN (SELECT id from `lc_categories`);
+-- --------------------------------------------------------
+DELETE FROM `lc_quantity_units_info` WHERE quantity_unit_id NOT IN (SELECT id from `lc_quantity_units`) OR language_code NOT IN (SELECT code from `lc_languages`);
+-- --------------------------------------------------------
+DELETE FROM `lc_slides_info` WHERE slide_id NOT IN (SELECT id from `lc_slides`) OR language_code NOT IN (SELECT code from `lc_languages`);
+-- --------------------------------------------------------
+DELETE FROM `lc_sold_out_statuses_info` WHERE sold_out_status_id NOT IN (SELECT id from `lc_sold_out_statuses`) OR language_code NOT IN (SELECT code from `lc_languages`);
+-- --------------------------------------------------------
+DELETE FROM `lc_tax_rates` WHERE tax_class_id NOT IN (SELECT id from `lc_tax_classes`) OR geo_zone_id NOT IN (SELECT id from `lc_geo_zones`);
+-- --------------------------------------------------------
+DELETE FROM `lc_zones_to_geo_zones` WHERE geo_zone_id NOT IN (SELECT id from `lc_geo_zones`) OR country_code NOT IN (SELECT iso_code_2 from `lc_countries`);
