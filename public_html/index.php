@@ -19,7 +19,8 @@
   route::load('app://backend/routes/url_*.inc.php');
 
 // Append last destination route
-  route::add('*', [
+  route::add([
+    'resource' => '*',
     'pattern' => '#^(.*)$#',
     'endpoint' => 'frontend',
     'controller' => 'app://frontend/pages/$1.inc.php',

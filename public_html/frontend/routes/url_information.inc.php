@@ -1,7 +1,8 @@
 <?php
 
   return [
-    'information' => [
+    [
+      'resource' => 'information',
       'pattern' => '#^.*-[is]-([0-9]+)/?$#',
       'controller' => 'app://frontend/pages/information.inc.php',
       'params' => 'page_id=$1',

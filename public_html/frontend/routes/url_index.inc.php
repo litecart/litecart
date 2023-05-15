@@ -1,7 +1,8 @@
 <?php
 
   return [
-    '' => [
+    [
+      'resource' => '',
       'pattern' => '#^(?:index\.php)?$#',
       'controller' => 'app://frontend/pages/index.inc.php',
       'params' => '',

@@ -1,8 +1,9 @@
 <?php
 
   return [
-    'category' => [
-      'pattern' => '#^.*-c-([0-9]+)/?$#',
+    [
+      'resource' => 'category',
+      'pattern' => '#^categories/([0-9]+)(/.*|/?$)#',
       'controller' => 'app://frontend/pages/category.inc.php',
       'params' => 'category_id=$1',
       'endpoint' => 'frontend',
@@ -13,17 +14,27 @@
 
         if (empty($link->query['category_id'])) return;
 
-        $category = reference::category($link->query['category_id'], $language_code);
+        $link->path = 'categories/'. $link->query['category_id'];
 
-        $new_path = '';
+        $category = reference::category($link->query['category_id'], $language_code);
         foreach ($category->path as $parent_id => $parent) {
-          $new_path .= functions::format_path_friendly($parent->name, $language_code) .'-c-'. $parent_id .'/';
+          $link->path .= '/'. functions::format_path_friendly($parent->name, $language_code);
         }
 
-        $link->path = $new_path;
         $link->unset_query('category_id');
 
         return $link;
       }
+    ],
+
+    [
+      'resource' => false,
+      'pattern' => '#^.*-c-([0-9]+)/?$#',
+      'controller' => 'app://frontend/pages/category.inc.php.inc.php',
+      'params' => 'category_id=$1',
+      'endpoint' => 'frontend',
+      'options' => [
+        'redirect' => true,
+      ],
     ],
   ];

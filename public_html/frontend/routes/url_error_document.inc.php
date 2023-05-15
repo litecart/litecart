@@ -1,7 +1,8 @@
 <?php
 
   return [
-    'error_document' => [
+    [
+      'resource' => 'error_document',
       'pattern' => '#^error_document$#',
       'controller' => 'app://frontend/pages/error_document.inc.php',
       'params' => '',

@@ -37,18 +37,18 @@
         $routes = include $file;
         if (!$routes) continue;
 
-        foreach ($routes as $i => $route) {
-          self::add($i, $route);
+        foreach ($routes as $route) {
+          self::add($route);
         }
       }
     }
 
-    public static function add($i, $route) {
+    public static function add($route) {
 
       if (empty($route['endpoint'])) {
-        if (strpos($i, ':') !== false) {
+        if (strpos($route['resource'], ':') !== false) {
           switch (true) {
-            case (preg_match('#^b(ackend)?:#', $i)):
+            case (preg_match('#^b(ackend)?:#', $route['resource'])):
               $route['endpoint'] = 'backend';
               break;
             default:
@@ -60,14 +60,15 @@
         }
       }
 
-      if (strpos($i, ':') === false) {
+      if (is_string($route['resource']) && strpos($route['resource'], ':') === false) {
         switch ($route['endpoint']) {
-          case 'frontend': $i = 'f:'.$i;  break;
-          case 'backend':  $i = 'b:'.$i;  break;
+          case 'frontend': $route['resource'] = 'f:'.$route['resource'];  break;
+          case 'backend':  $route['resource'] = 'b:'.$route['resource'];  break;
         }
       }
 
-      self::$_routes[$i] = [
+      self::$_routes[] = [
+        'resource' => fallback($route['resource'], ''),
         'pattern' => fallback($route['pattern'], ''),
         'endpoint' => fallback($route['endpoint'], 'frontend'),
         'controller' => fallback($route['controller']),
@@ -80,7 +81,7 @@
     public static function identify() {
 
     // Find a target route for requested URL
-      foreach (self::$_routes as $i => $route) {
+      foreach (self::$_routes as $route) {
 
         if (!preg_match($route['pattern'], self::$request)) continue;
 
@@ -93,10 +94,10 @@
           $_GET = array_filter(array_merge($_GET, $params));
         }
 
-        if (preg_match('#:\*$#', $i)) {
+        if (preg_match('#:\*$#', $route['resource'])) {
           return self::$selected = array_merge(['route' => route::$request], $route);
         } else {
-          return self::$selected = array_merge(['route' => $i], $route);
+          return self::$selected = array_merge(['route' => $route['resource']], $route);
         }
       }
     }
