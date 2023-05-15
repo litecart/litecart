@@ -9,6 +9,9 @@
 
     try {
 
+      $source = preg_replace('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', 'storage://', $source);
+      $source = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', 'app://', $source);
+
       if (!is_file($source)) {
         $source = 'storage://images/no_image.png';
       }
@@ -25,7 +28,7 @@
       ];
 
       if (is_dir($options['destination']) || substr($options['destination'], -1) == '/') {
-        if (preg_match('#^'. preg_quote('storage://cache/', '#') .'$#', $options['destination'])) {
+        if (preg_match('#^storage://cache/$#', $options['destination'])) {
 
           if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
             $extension = 'webp';
@@ -34,7 +37,7 @@
           }
 
           $filename = implode([
-            sha1(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)))),
+            sha1($source),
             $options['trim'] ? '_t' : '',
             ($options['width'] && $options['height']) ? '_'.(int)$options['width'] .'x'. (int)$options['height'] : '',
             $options['watermark'] ? '_wm' : '',
@@ -42,7 +45,7 @@
             '.'.$extension,
           ]);
 
-          $options['destination'] = FS_DIR_STORAGE .'cache/'. substr($filename, 0, 2) . '/' . $filename;
+          $options['destination'] = 'storage://cache/'. substr($filename, 0, 2) . '/' . $filename;
 
         } else {
           $options['destination'] = rtrim($options['destination'], '/') .'/'. basename($source);
@@ -137,24 +140,12 @@
     ]);
   }
 
-  function image_relative_file($file) {
-
-    $file = str_replace('\\', '/', $file);
-
-    if (preg_match('#^(storage://|'. preg_quote(FS_DIR_STORAGE, '#') .')#', $file)) {
-      return preg_replace('#^(storage://|'. preg_quote(FS_DIR_STORAGE, '#') .')#', '', $file);
-
-    } else if (preg_match('#^(app://|'. preg_quote(FS_DIR_APP, '#') .')#', $file)) {
-      return preg_replace('#^(app://|'. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
-
-    } else {
-      return preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $file);
-    }
-  }
-
   function image_delete_cache($file) {
 
-    $cachename = sha1(image_relative_file($file));
+    $file = preg_replace('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', 'storage://', $file);
+    $file = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', 'app://', $file);
+
+    $cache_name = sha1($file);
 
     functions::file_delete('storage://cache/'. substr($cache_name, 0, 2) .'/' . $cache_name .'*');
   }
