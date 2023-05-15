@@ -19,7 +19,7 @@
   padding:  0.75em 1.5em;
   text-decoration:  none;
   font-weight: normal;
-  border-radius: 1em;
+  border-radius: var(--border-radius);
   //box-shadow: 0 1px 0px rgba(0, 0, 0, .25);
   text-align: center;
   vertical-align: middle;
@@ -47,10 +47,10 @@
     border-inline-start: 5px solid var(--app-color);
   }
 
-  &.btn-sm { font-size: .75em; padding: .25em 1em; }
+  &.btn-sm { font-size: .75em; padding: .5em 1em; }
   &.btn-lg { font-size: 1.2em; }
 
-  &.active, &:active { box-shadow: inset 1px 1px 0px 0 rgba(0, 0, 0, .15); }
+  &.active, &:active { box-shadow: inset 2px 2px 0px 0 rgba(0, 0, 0, .05); }
   &.disabled, &[disabled] { opacity: 0.5; cursor: not-allowed; }
   [data-type="toggle"] { display: none; }
 

@@ -21,10 +21,15 @@ img.responsive {
   margin-inline-start: auto;
 }
 
-img.fit {
-  //object-fit: scale-down;
-  object-fit: contain;
-}
-img.crop {
-  object-fit: cover;
+img {
+  &.fit {
+    width: 100%;
+    padding: 10%;
+    object-fit: scale-down;
+    //object-fit: contain;
+  }
+  &.crop {
+    width: 100%;
+    object-fit: cover;
+  }
 }

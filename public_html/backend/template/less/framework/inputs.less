@@ -8,6 +8,7 @@
   background: var(--input-background-color);
   border: 1px solid var(--input-border-color);
   //box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 10%);
+  border: var(--input-border-size) solid var(--input-border-color);
   border-radius: var(--border-radius);
   &:focus {
     border-color: var(--input-border-color-focus);
@@ -20,6 +21,8 @@ fieldset {
   border-radius: var(--border-radius);
   > legend {
     padding: .25em .5em;
+    font-weight: 700;
+    font-size: 1.25em;
   }
   &:disabled {
     opacity: 0.5;
@@ -63,7 +66,6 @@ label.form-check {
     margin-inline-end: .25em;
     background: var(--input-background-color);
     border: 1px solid var(--input-border-color);
-    //box-shadow: 0 1px 2px rgba(0,0,0,0.15), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
     vertical-align: text-bottom;
     height: 1.25em;
     width: 1.25em;
@@ -73,7 +75,6 @@ label.form-check {
       background-color: #0066bb;
     }
     &:hover:not([disabled]) {
-      box-shadow: 0 0 0 0.25rem #ccc;
     }
     &:disabled {
       opacity: .5;
@@ -94,9 +95,14 @@ label.form-check {
     }
   }
 }
-
-.table tr:hover td:first-child > .form-check > input[type="checkbox"]:not([disabled]),
-.table tr:hover td:first-child > .form-check > input[type="radio"]:not([disabled]) {
+label.form-check:hover > input[type="checkbox"]:not([disabled]),
+label.form-check:hover > input[type="radio"]:not([disabled]),
+input[type="checkbox"].form-check:not([disabled]):hover,
+input[type="radio"].form-check:not([disabled]):hover,
+.table tr:hover td:first-child > label.form-check > input[type="checkbox"]:not([disabled]),
+.table tr:hover td:first-child > label.form-check > input[type="radio"]:not([disabled]),
+.table tr:hover td:first-child > input[type="checkbox"].form-check:not([disabled]),
+.table tr:hover td:first-child > input[type="radio"].form-check:not([disabled]) {
   box-shadow: 0 0 0 .25rem #ccc;
 }
 
@@ -113,7 +119,7 @@ label.form-check {
     height: 37px;
   }
   &[type="file"] {
-    font-size: .7em;
+    font-size: .9em;
   }
   &[disabled] {
     background: #f3f3f3;
@@ -124,7 +130,7 @@ label.form-check {
   }
 }
 
-select.form-control {
+.form-select {
   .input-field();
   display: block;
   width: 100%;
@@ -149,7 +155,7 @@ select.form-control {
   }
 }
 
-html[dir="rtl"] select.form-control {
+html[dir="rtl"] .form-select {
   background-position: left 1em center;
 }
 
@@ -179,7 +185,7 @@ html[dir="rtl"] select.form-control {
   }
   &:focus {
     outline: 0;
-    box-shadow: 0 0 0 .25rem #ccc;
+    border-color: var(--input-border-color-focus);
   }
   &:disabled {
     opacity: .5;
@@ -297,7 +303,7 @@ html[dir="rtl"] select.form-control {
 .form-group > .input-group + .form-input,
 .form-group > .input-group + .form-select,
 .form-group > .input-group + .input-group {
-  margin-top: -1px; // Compensate for border
+  margin-top: .25em;
 }
 
 .table .form-check {
