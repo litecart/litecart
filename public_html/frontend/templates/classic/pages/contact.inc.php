@@ -1,4 +1,4 @@
-<main id="main">
+<main id="main" class="container">
   <div class="row layout">
 
     <div class="col-md-8">

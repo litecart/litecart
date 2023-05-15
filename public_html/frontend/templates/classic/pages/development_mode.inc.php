@@ -18,7 +18,7 @@ body {
 }
 </style>
 
-<div class="fourteen-forty">
+<div class="container">
   <main id="content">
     <section id="box-development-mode">
       <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />

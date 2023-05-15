@@ -6,7 +6,7 @@
 }
 </style>
 
-<main id="main">
+<main id="main" class="container">
   <div id="content">
     {{notices}}
     {{breadcrumbs}}

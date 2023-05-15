@@ -9,7 +9,7 @@
     $language_options[$language['code']] = $language['name'];
   }
 ?>
-<main id="main">
+<main id="main" class="container">
   <aside id="sidebar">
     <section id="box-checkout-region">
 

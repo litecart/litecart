@@ -34,12 +34,18 @@
     &.border-end {
       border-inline-end: 1px solid var(--default-border-color);
     }
+    &.border-left {
+      border-left: 1px solid var(--default-border-color);
+    }
+    &.border-right{
+      border-right: 1px solid var(--default-border-color);
+    }
     &.border-bottom {
       border-bottom: 1px solid var(--default-border-color);
     }
 
     @media print {
-      &.border-top, &.border-start, &.border-end, &.border-bottom {
+      &.border-top, &.border-left, &.border-start, &.border-end, &.border-right, &.border-bottom {
         border-color: #000 !important;
       }
     }

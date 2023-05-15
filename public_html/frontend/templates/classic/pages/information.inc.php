@@ -1,4 +1,4 @@
-<main id="main">
+<main id="main" class="container">
   <div id="sidebar">
     <?php include 'app://frontend/partials/box_information_links.inc.php'; ?>
   </div>

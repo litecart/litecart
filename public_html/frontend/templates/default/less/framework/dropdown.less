@@ -33,9 +33,14 @@
       margin: 9px 0;
       overflow: hidden;
       background-color: #e5e5e5;
-     }
+    }
 
-     > li > * {
+    &.dropdown-menu-end {
+      left: auto;
+      right: 0;
+    }
+
+     > li > *:not(.btn) {
        display: block;
        padding: .25rem 1rem;
        white-space: nowrap;
@@ -118,10 +123,10 @@
 }
 .navbar-nav .dropdown {
   .dropdown-menu {
-    height: 0;
+    visibility: hidden;
   }
   &.open > .dropdown-menu {
-    height: fit-content;
+    visibility: visible;
   }
 }
 

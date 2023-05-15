@@ -61,11 +61,11 @@
           <?php } ?>
         </ul>
 
-        <ul class="social-bookmarks list-inline text-center">
+        <div class="social-bookmarks text-center">
           <?php foreach ($social_bookmarks as $bookmark) { ?>
-          <li><a class="thumbnail" href="<?php echo functions::escape_html($bookmark['link']); ?>"><?php echo functions::draw_fonticon($bookmark['icon'] .' fa-fw', 'title="'. functions::escape_html($bookmark['title']) .'"'); ?></a></li>
+          <a class="thumbnail" href="<?php echo functions::escape_html($bookmark['link']); ?>"><?php echo functions::draw_fonticon($bookmark['icon'] .' fa-fw', 'title="'. functions::escape_html($bookmark['title']) .'"'); ?></a>
           <?php } ?>
-        </ul>
+        </div>
       </section>
 
     </div>

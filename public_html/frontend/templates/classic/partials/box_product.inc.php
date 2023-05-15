@@ -7,16 +7,16 @@
           <div class="images row">
 
             <div class="col-xs-12">
-              <a class="main-image thumbnail" href="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-                <img class="img-responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
+              <a class="main-image thumbnail" href="<?php echo document::href_rlink($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+                <img class="<?php echo $image['viewport']['clipping']; ?>" style="aspect-ratio: <?php echo str_replace(':', '/', $image['viewport']['ratio']); ?>;" src="<?php echo document::href_rlink($image['thumbnail']); ?>" srcset="<?php echo document::href_rlink($image['thumbnail']); ?> 1x, <?php echo document::href_rlink($image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
                 <?php echo $sticker; ?>
               </a>
             </div>
 
             <?php foreach ($extra_images as $extra_image) { ?>
             <div class="col-xs-4">
-              <a class="extra-image thumbnail" href="<?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-                <img class="img-responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
+              <a class="extra-image thumbnail" href="<?php echo document::href_rlink($extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+                <img class="<?php echo $extra_image['viewport']['clipping']; ?>" style="aspect-ratio: <?php echo str_replace(':', '/', $extra_image['viewport']['ratio']); ?>;" src="<?php echo document::href_rlink($extra_image['thumbnail']); ?>" srcset="<?php echo document::href_rlink($extra_image['thumbnail']); ?> 1x, <?php echo document::href_rlink($extra_image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
               </a>
             </div>
             <?php } ?>
@@ -33,13 +33,13 @@
           </p>
           <?php } ?>
 
-          <?php if (!empty($manufacturer)) { ?>
-          <div class="manufacturer">
-            <a href="<?php echo functions::escape_html($manufacturer['link']); ?>">
-              <?php if ($manufacturer['image']) { ?>
-              <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . $manufacturer['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $manufacturer['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($manufacturer['name']); ?>" title="<?php echo functions::escape_html($manufacturer['name']); ?>" />
+          <?php if (!empty($brand)) { ?>
+          <div class="brand">
+            <a href="<?php echo functions::escape_html($brand['link']); ?>">
+              <?php if ($brand['image']) { ?>
+              <img src="<?php echo document::href_rlink($brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink($brand['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink($brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($brand['name']); ?>" title="<?php echo functions::escape_html($brand['name']); ?>" />
               <?php } else { ?>
-              <h3><?php echo $manufacturer['name']; ?></h3>
+              <h3><?php echo $brand['name']; ?></h3>
               <?php } ?>
             </a>
           </div>
@@ -113,28 +113,16 @@
           <?php } ?>
 
           <div class="buy_now" style="margin: 1em 0;">
-            <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
-            <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
+            <?php echo functions::form_begin('buy_now_form', 'post'); ?>
+            <?php echo functions::form_hidden_field('product_id', $product_id); ?>
 
-            <?php if ($stock_options) { ?>
-            <ul class="dropdown-menu stock-options" style="width: 100%;">
-              <?php foreach ($stock_options as $stock_option) { ?>
-              <li>
-                <label style="display: block;">
-                  <input type="radio" name="stock_option_id" value="<?php echo $stock_option['stock_option_id']; ?>" data-price-adjust="<?php echo (float)$stock_option['price_adjust']; ?>" style="display: none;" required />
-                  <div class="row">
-                    <div class="col-2">
-                      <img class="thumbnail" src="<?php echo document::href_rlink($stock_option['image']['thumbnail']); ?>" alt="" />
-                    </div>
-                    <div class="col-10">
-                      <div class="name"><?php echo $stock_option['name']; ?></div>
-                      <div class="stock-status"><?php echo $stock_option['quantity']; ?></div>
-                    </div>
-                  </div>
-                </label>
-              </li>
-              <?php } ?>
+            <?php if (count($stock_options) > 1) { ?>
+            <div class="form-group">
+              <label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
+              <?php echo form_product_stock_options_list('stock_option_id', $product_id, true); ?>
             </div>
+            <?php } else if (count($stock_options) == 1) { ?>
+            <?php echo functions::form_hidden_field('stock_option_id', $stock_options[0]['stock_option_id']); ?>
             <?php } ?>
 
             <div class="price-wrapper">
@@ -155,7 +143,7 @@
              <?php } ?>
             </div>
 
-            <?php if ($campaign_price_end_date) { ?>
+            <?php if (!empty($campaign['end_date'])) { ?>
             <div class="offer-expires" style="margin-bottom: 1em;">
               <?php echo strtr(language::translate('text_offer_expires_on_date', 'The offer expires on %datetime.'), ['%datetime' => language::strftime(language::$selected['format_datetime'], strtotime($campaign_price_end_date))]); ?>
             </div>
@@ -179,7 +167,7 @@
 
             <div class="stock-notice"></div>
 
-            <?php echo functions::form_draw_form_end(); ?>
+            <?php echo functions::form_end(); ?>
           </div>
 
           <?php if ($quantity <= 0 && !empty($sold_out_status) && empty($sold_out_status['orderable'])) { ?>

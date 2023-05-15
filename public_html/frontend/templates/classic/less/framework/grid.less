@@ -22,21 +22,15 @@ html[dir="rtl"] {
   margin: 0 auto;
 }
 
-.fourteen-forty {
+.container {
+  width: 100%;
   min-width: 320px;
   max-width: 1440px;
   margin: 0 auto;
 }
 
-.container {
-  width: 100%;
-  padding: 0 .5rem;
-  @media (min-width: @media-breakpoint-sm) {
-    padding: 0 .75rem;
-  }
-  @media (min-width: @media-breakpoint-md) {
-    padding: 0 1rem;
-  }
+.content {
+  padding: var(--gutter-y) var(--gutter-x);
 }
 
 .row {

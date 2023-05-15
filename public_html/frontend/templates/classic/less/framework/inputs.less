@@ -58,6 +58,9 @@ input[type="radio"] {
   }
 }
 
+textarea.form-input {
+  padding: var(--input-padding-x);
+}
 
 .form-group {
   &.required > label::after {
@@ -81,7 +84,7 @@ input[type="radio"] {
   border-radius: var(--input-border-radius);
 }
 
-.form-control {
+.form-input {
   .input-field();
   display: block;
   width: 100%;
@@ -109,11 +112,8 @@ input[type="radio"] {
   }
 }
 
-textarea.form-control {
-  padding: var(--input-padding-x);
-}
 
-select.form-control {
+.form-select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -132,7 +132,7 @@ select.form-control {
   }
 }
 
-.form-control .dropdown-menu {
+.form-input .dropdown-menu {
   user-select: none;
   li > label {
     display: block;
@@ -163,7 +163,7 @@ select.form-control {
 .input-group {
   .input-field();
   display: flex;
-  .form-control {
+  .form-input {
     flex: 1 1 auto;
     background-color: unset;
     border: none;
@@ -194,11 +194,11 @@ select.form-control {
   + .input-group {
     margin-top: -1px;
   }
-  .form-control:first-child, .btn:first-child, .input-group-btn:first-child .btn,
+  .form-input:first-child, .btn:first-child, .input-group-btn:first-child .btn,
   .input-group-text:first-child {
     border-radius: var(--input-border-radius) 0 0 var(--input-border-radius);
   }
-  .form-control:last-child, .input-group-btn:last-child .btn,
+  .form-input:last-child, .input-group-btn:last-child .btn,
   .input-group-text:last-child {
     margin-inline-end: -1px;
     border-end-end-radius: var(--input-border-radius);

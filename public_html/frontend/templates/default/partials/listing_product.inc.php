@@ -1,5 +1,5 @@
-<article class="product">
-  <a class="link" href="<?php echo functions::escape_html($link) ?>" title="{{name|escape}}" data-id="{{product_id}}" data-sku="{{sku|escape}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
+<article class="product" data-id="{{product_id}}" data-sku="{{sku|escape}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
+  <a class="link" href="<?php echo functions::escape_html($link) ?>">
 
     <div class="image-wrapper">
       <img class="<?php echo $image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink($image['thumbnail']); ?>" srcset="<?php echo document::href_rlink($image['thumbnail']); ?> 1x, <?php echo document::href_rlink($image['thumbnail_2x']); ?> 2x" alt="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
@@ -19,7 +19,13 @@
     </div>
   </a>
 
-  <button class="preview btn btn-default btn-sm" data-toggle="lightbox" data-target="<?php echo functions::escape_html($link) ?>" data-require-window-width="768" data-max-width="980">
-    <?php echo functions::draw_fonticon('fa-search-plus'); ?>
-  </button>
+  <div class="actions">
+    <button class="preview btn btn-default btn-sm" data-toggle="lightbox" data-target="<?php echo functions::escape_html($link) ?>" data-seamless="true" data-require-window-width="768" data-max-width="980">
+      <?php echo functions::draw_fonticon('fa-search-plus'); ?>
+    </button>
+
+    <button name="add_cart_product" class="preview btn btn-success btn-sm">
+      <?php echo functions::draw_fonticon('fa-shopping-cart'); ?>
+    </button>
+  </div>
 </article>

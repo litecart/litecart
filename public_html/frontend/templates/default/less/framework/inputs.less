@@ -10,7 +10,7 @@
 
   color: var(--input-text-color);
 
-  border: 1px solid var(--input-border-color);
+  border: var(--input-border-size) solid var(--input-border-color);
   border-radius: var(--border-radius);
 
   box-shadow: none;
@@ -43,9 +43,11 @@ input[type="number"] {
 .form-check {
   display: block;
   padding: .5em 0;
+  &:is(input) {
+    display: inline-block;
+  }
 
   input[type="checkbox"] {
-    display: inline-block;
     position: relative;
     -webkit-appearance: none;
     background: var(--input-background-color);
@@ -68,7 +70,6 @@ input[type="number"] {
   }
 
   input[type="radio"] {
-    display: inline-block;
     position: relative;
     -webkit-appearance: none;
     background: var(--input-background-color);
@@ -102,7 +103,7 @@ input[type="number"] {
     height: 42px;
   }
   &[type="file"] {
-    font-size: .75em;
+    font-size: .9em;
   }
   &[readonly] {
     color: #999;

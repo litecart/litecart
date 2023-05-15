@@ -2,13 +2,13 @@
   <a class="link" href="<?php echo functions::escape_html($link) ?>" title="<?php echo functions::escape_html($name); ?>" data-id="<?php echo $product_id; ?>" data-sku="<?php echo functions::escape_html($sku); ?>" data-name="<?php echo functions::escape_html($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>">
 
     <div class="image-wrapper">
-      <img class="image img-responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="<?php echo functions::escape_html($name); ?>" />
+      <img class="image img-responsive <?php echo $image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink($image['thumbnail']); ?>" srcset="<?php echo document::href_rlink($image['thumbnail']); ?> 1x, <?php echo document::href_rlink($image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" alt="<?php echo functions::escape_html($name); ?>" />
       <?php echo $sticker; ?>
     </div>
 
     <div class="info">
       <h4 class="name"><?php echo $name; ?></h4>
-      <div class="manufacturer-name"><?php echo !empty($manufacturer['name']) ? $manufacturer['name'] : '&nbsp;'; ?></div>
+      <div class="brand-name"><?php echo !empty($brand['name']) ? $brand['name'] : '&nbsp;'; ?></div>
       <div class="description"><?php echo $short_description; ?></div>
       <div class="price-wrapper">
         <?php if ($campaign_price) { ?>

@@ -17,22 +17,20 @@
     overflow: hidden;
 
     .sticker {
-      color: #fff;
-      font-size: 12px;
-      font-weight: bold;
-      top: 15px;
-      left: -35px;
-      padding: .25rem 0;
+      top: 1em;
+      left: 0;
+      padding: .25em 1em;
       position: absolute;
-      text-align: center;
       text-transform: uppercase;
-      transform: rotate(-45deg);
-      width: 140px;
+      font-weight: bold;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
       &.new {
         background: rgba(251, 184, 41, 0.85);
+        color: #fff;
       }
       &.sale {
         background: rgba(237, 60, 50, 0.85);
+        color: #fff;
       }
     }
   }

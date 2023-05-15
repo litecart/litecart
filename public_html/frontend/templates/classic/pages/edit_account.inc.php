@@ -1,4 +1,4 @@
-<main id="main">
+<main id="main" class="container">
   <div id="sidebar">
     <div id="column-left">
       <?php include 'app://frontend/partials/box_account_links.inc.php'; ?>

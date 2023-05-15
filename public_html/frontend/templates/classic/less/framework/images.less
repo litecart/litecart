@@ -1,30 +1,47 @@
 /* Images */
 
-.thumbnail {
+.thumbnail > img,
+.thumbnail a > img,
+.img-responsive {
   display: block;
   max-width: 100%;
   height: auto;
+  margin: 0 auto;
+}
+
+.thumbnail {
+  display: block;
   line-height: var(--default-line-height);
   background-color: var(--whitespace-color);
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
-  transition: border 200ms ease-in-out;
-  margin-inline-end: auto;
-  margin-inline-start: auto;
+  transition: border .2s ease-in-out;
+  > img,
+  a > img {
+    margin-inline-end: auto;
+    margin-inline-start: auto;
+  }
 }
 
-img.responsive {
-  display: block;
+.img-thumbnail {
+  padding: .5em;
   max-width: 100%;
   height: auto;
-  margin-inline-end: auto;
-  margin-inline-start: auto;
+  background-color: var(--whitespace-color);
+  border: 1px solid var(--default-border-color);
+  border-radius: var(--border-radius);
+  transition: all .1s ease-in-out;
 }
 
-img.fit {
-  //object-fit: scale-down;
-  object-fit: contain;
-}
-img.crop {
-  object-fit: cover;
+img {
+  &.fit {
+    width: 100%;
+    padding: 10%;
+    object-fit: scale-down;
+    //object-fit: contain;
+  }
+  &.crop {
+    width: 100%;
+    object-fit: cover;
+  }
 }

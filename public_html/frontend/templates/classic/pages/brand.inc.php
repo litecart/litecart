@@ -1,4 +1,4 @@
-<main id="main">
+<main id="main" class="container">
   <div id="sidebar">
     <?php include 'app://frontend/partials/box_brand_links.inc.php'; ?>
     <?php include 'app://frontend/partials/box_recently_viewed_products.inc.php'; ?>

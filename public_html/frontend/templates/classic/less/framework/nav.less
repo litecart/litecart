@@ -78,8 +78,10 @@
 
 .nav-pills {
   display: inline-flex;
-  li a {
-    margin: 1px 0;
+  gap: 2px;
+  a {
+    display: inline-block;
+    padding: .5em 1em;
     background: var(--pills-background-color);
     border-radius: var(--border-radius);
     transition: all 125ms linear;
@@ -88,7 +90,7 @@
       background: var(--pills-background-color-hover);
     }
   }
-  li.active > a {
+  li.active > a, a.active {
     background: var(--pills-background-color-active);
     color: var(--pills-text-color-active);
   }

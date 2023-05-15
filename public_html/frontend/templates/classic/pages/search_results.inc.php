@@ -3,7 +3,7 @@
   <?php include 'app://frontend/partials/box_recently_viewed_products.inc.php'; ?>
 </div>
 
-<main id="main">
+<main id="main" class="container">
   <div id="content">
     {{notices}}
     {{breadcrumbs}}

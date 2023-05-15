@@ -1,13 +1,13 @@
-<div class="navbar navbar-sticky">
+<div id="site-navigation" class="navbar navbar-sticky container">
 
   <div class="navbar-header">
     <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
       <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
     </a>
 
-    <?php echo functions::form_draw_form_begin('search_form', 'get', document::ilink('search'), false, 'class="navbar-search"'); ?>
-      <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_begin('search_form', 'get', document::ilink('search'), false, 'class="navbar-search"'); ?>
+      <?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
+    <?php echo functions::form_end(); ?>
 
     <a class="regional-setting text-center" href="<?php echo document::href_ilink('regional_settings', ['redirect_url' => document::link()]); ?>#box-regional-settings" data-toggle="lightbox" data-seamless="true">
       <div class="navbar-icon"><?php echo functions::draw_fonticon('fa-globe'); ?></div>
@@ -21,7 +21,7 @@
     </a>
     <?php } ?>
 
-    <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_cart.inc.php'); ?>
+    <?php include 'app://frontend/partials/box_shopping_cart.inc.php'; ?>
 
     <button type="button" class="btn btn-default navbar-toggler hidden-md hidden-lg hidden-xl hidden-xxl" data-toggle="offcanvas" data-target="#offcanvas">
       <span class="icon-bar"></span>
@@ -54,11 +54,11 @@
         </li>
         <?php } ?>
 
-        <?php if ($manufacturers) { ?>
-        <li class="nav-item manufacturers dropdown">
-          <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></a>
+        <?php if ($brands) { ?>
+        <li class="nav-item brands dropdown">
+          <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_brands', 'Brands'); ?></a>
           <ul class="dropdown-menu">
-            <?php foreach ($manufacturers as $item) { ?>
+            <?php foreach ($brands as $item) { ?>
             <li class="nav-item"><a class="nav-link" href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
             <?php } ?>
           </ul>
@@ -93,27 +93,27 @@
               <li><a class="nav-link" href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
             <?php } else { ?>
               <li class="nav-item">
-                <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form"'); ?>
-                  <?php echo functions::form_draw_hidden_field('redirect_url', document::link()); ?>
+                <?php echo functions::form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form"'); ?>
+                  <?php echo functions::form_hidden_field('redirect_url', document::link()); ?>
 
                   <div class="form-group">
-                    <?php echo functions::form_draw_email_field('email', true, 'required placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
+                    <?php echo functions::form_email_field('email', true, 'required placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
                   </div>
 
                   <div class="form-group">
-                    <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
+                    <?php echo functions::form_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
                   </div>
 
                   <div class="form-group">
                     <div class="checkbox">
-                      <label><?php echo functions::form_draw_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
+                      <label><?php echo functions::form_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
                     </div>
                   </div>
 
                   <div class="btn-group btn-block">
-                    <?php echo functions::form_draw_button('login', language::translate('title_sign_in', 'Sign In')); ?>
+                    <?php echo functions::form_button('login', language::translate('title_sign_in', 'Sign In')); ?>
                   </div>
-                <?php echo functions::form_draw_form_end(); ?>
+                <?php echo functions::form_end(); ?>
               </li>
               <li class="nav-item text-center">
                 <a class="nav-link" href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('text_new_customers_click_here', 'New customers click here'); ?></a>

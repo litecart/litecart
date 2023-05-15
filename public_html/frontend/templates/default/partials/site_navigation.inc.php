@@ -1,9 +1,10 @@
-<div id="site-navigation">
+<div id="site-navigation" class="container">
+
   <div class="navbar wrapper">
 
    <div class="navbar-brand">
      <a href="<?php echo document::href_ilink(''); ?>">
-       <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+       <img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
       </a>
     </div>
 

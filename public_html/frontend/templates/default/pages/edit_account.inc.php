@@ -58,10 +58,10 @@
 
               <?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
               <div class="form-group">
-                <?php echo functions::form_toggle_buttons('type', ['individual' => language::translate('title_individual', 'Individual'), 'business' => language::translate('title_business', 'Business')], empty($_POST['type']) ? 'individual' : true); ?>
+                <?php echo functions::form_toggle_buttons('type', ['individual' => language::translate('title_individual', 'Individual'), 'company' => language::translate('title_company', 'Company')], empty($_POST['type']) ? 'individual' : true); ?>
               </div>
 
-              <div class="business-details" <?php echo (empty($_POST['type']) || $_POST['type'] == 'individual') ? 'style="display: none;"' : ''; ?>>
+              <div class="company-details" <?php echo (empty($_POST['type']) || $_POST['type'] == 'individual') ? 'style="display: none;"' : ''; ?>>
                 <div class="row">
                   <?php if (settings::get('customer_field_company')) { ?>
                   <div class="form-group col-6">
@@ -230,12 +230,12 @@
 
 <script>
   $('input[name="type"]').change(function(){
-    if ($(this).val() == 'business') {
-      $('.business-details :input').prop('disabled', false);
-      $('.business-details').slideDown('fast');
+    if ($(this).val() == 'company') {
+      $('.company-details :input').prop('disabled', false);
+      $('.company-details').slideDown('fast');
     } else {
-      $('.business-details :input').prop('disabled', true);
-      $('.business-details').slideUp('fast');
+      $('.company-details :input').prop('disabled', true);
+      $('.company-details').slideUp('fast');
     }
   }).first().trigger('change');
 
