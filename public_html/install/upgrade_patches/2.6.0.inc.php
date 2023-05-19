@@ -1,5 +1,10 @@
 <?php
 
+// Delete some files
+  perform_action('delete', [
+    FS_DIR_APP . 'ext/jquery/jquery-3.6.4.min.js',
+  ], 'skip');
+
   // Get store timezone
   $setting_query = database::query(
     "SELECT * FROM ". DB_TABLE_PREFIX ."settings

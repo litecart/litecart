@@ -51,7 +51,7 @@
         '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-256x256.png') .'" type="image/png" sizes="255x255" />',
       ]);
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. self::href_rlink(FS_DIR_APP .'ext/fontawesome/font-awesome.min.css') .'" />';
-      self::$snippets['foot_tags']['jquery'] = '<script src="'. self::href_rlink(FS_DIR_APP .'ext/jquery/jquery-3.6.4.min.js') .'"></script>';
+      self::$snippets['foot_tags']['jquery'] = '<script src="'. self::href_rlink(FS_DIR_APP .'ext/jquery/jquery-3.7.0.min.js') .'"></script>';
 
     // Hreflang
       if (!empty(route::$route['page'])) {
