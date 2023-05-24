@@ -1061,6 +1061,9 @@
     var gross_price = Number( parseFloat($(this).val() || 0) * (1 + (get_tax_rate()/100)) ).toFixed(decimals);
 
     if ($(this).val() == 0) {
+      if (currency_code != '<?php echo settings::get('store_currency_code'); ?>') {
+        $(this).val('');
+      }
       $(gross_field).val('');
     } else {
       $(gross_field).val(gross_price);
