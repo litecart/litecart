@@ -44,7 +44,11 @@
 
       if (!empty($_POST['password'])) $user->set_password($_POST['password']);
 
-      $user->data['user_security_timestamp'] = date('Y-m-d H:i:s');
+      $user->data['date_expire_sessions'] = date('Y-m-d H:i:s');
+
+      if ($user->previous['username'] == user::$data['username']) {
+        session::$data['user_security_timestamp'] = strtotime($user->data['date_expire_sessions']);
+      }
 
       $user->save();
 
