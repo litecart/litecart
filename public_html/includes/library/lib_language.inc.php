@@ -136,7 +136,7 @@
 
     // Return language by regional domain
       foreach ($enabled_languages as $language_code) {
-        if (!empty(self::$languages[$language_code]) && self::$languages[$language_code]['url_type'] == 'domain') {
+        if (self::$languages[$language_code]['url_type'] == 'domain') {
           if (!empty(self::$languages[$language_code]['domain_name']) && preg_match('#^'. preg_quote(self::$languages[$language_code]['domain_name'], '#') .'$#', $_SERVER['HTTP_HOST'])) {
             return $language_code;
           }
@@ -151,6 +151,15 @@
     // Return language from URI path
       $code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_APP))));
       if (in_array($code, $all_languages)) return $code;
+
+    // Return language from
+      foreach ($enabled_languages as $language_code) {
+        if (self::$languages[$language_code]['url_type'] == 'none') {
+          if (!preg_match('#^'. preg_quote(WS_DIR_APP, '#') .'[a-z]{2}(/|$)#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
+            return $language_code;
+          }
+        }
+      }
 
     // Return language from session
       if (isset(self::$selected['code']) && in_array(self::$selected['code'], $all_languages)) return self::$selected['code'];
