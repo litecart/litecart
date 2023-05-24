@@ -169,7 +169,7 @@
         return '';
       }
 
-      if (!$path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', '$4', $path)) {
+      if (!$path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')(/|$))?#', '', $path)) {
         return '';
       }
 
@@ -262,6 +262,7 @@
 
     // Detect URL rewrite support
       $use_rewrite = false;
+
       if (isset($_SERVER['HTTP_MOD_REWRITE']) && filter_var($_SERVER['HTTP_MOD_REWRITE'], FILTER_VALIDATE_BOOLEAN)) { // PHP-FPM
         $use_rewrite = true;
 
