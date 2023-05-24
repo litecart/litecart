@@ -57,7 +57,6 @@
       if (!empty(route::$route['page'])) {
         self::$snippets['head_tags']['hreflang'] = '';
         foreach (language::$languages as $language) {
-          if ($language['url_type'] == 'none') continue;
           if ($language['code'] == language::$selected['code']) continue;
           self::$snippets['head_tags']['hreflang'] .= '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. document::href_ilink(route::$route['page'], [], true, ['page', 'sort'], $language['code']) .'" />' . PHP_EOL;
         }
