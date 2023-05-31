@@ -2,7 +2,7 @@
   $draw_branch = function($category, &$category_path) use (&$draw_branch) {
 
     echo '<li class="category-'. $category['id'] . (!empty($category['opened']) ? ' opened' : '') . (!empty($category['active']) ? ' active' : '') .'">' . PHP_EOL
-       . '  <a href="'. functions::escape_html($category['link']) .'">'. functions::draw_fonticon('fa-angle-'. (!empty($category['opened']) ? 'down' : 'right') .' fa-fw float-end') .' '. $category['name'] . ((settings::get('category_tree_product_count') && $category['num_products']) ? ' <small class="float-end">('. $category['num_products'] .')</small>' : '') .'</a>' . PHP_EOL;
+       . '  <a href="'. functions::escape_html($category['link']) .'">'. functions::draw_fonticon('fa-angle-'. (!empty($category['opened']) ? 'down' : ((language::$selected['direction'] == 'rtl') ? 'left' : 'right')) .' fa-fw float-end') .' '. $category['name'] . ((settings::get('category_tree_product_count') && $category['num_products']) ? ' <small class="float-end">('. $category['num_products'] .')</small>' : '') .'</a>' . PHP_EOL;
 
     if (!empty($category['subcategories'])) {
       echo '  <ul class="nav nav-stacked">' . PHP_EOL;
@@ -42,7 +42,7 @@
 <?php if (!empty(document::$settings['compact_category_tree'])) { ?>
 <script>
   $('#box-category-tree > ul.compact').prepend(
-    '<li class="toggle"><a href="#" data-toggle="showall"><?php echo functions::draw_fonticon('fa-caret-left fa-fw'); ?> <?php echo language::translate('title_show_all', 'Show All'); ?></a></li>'
+    '<li class="toggle"><a href="#" data-toggle="showall"><?php echo functions::draw_fonticon(((language::$selected['direction'] == 'rtl') ? 'fa-angle-right' : 'fa-angle-left') .' fa-fw'); ?> <?php echo language::translate('title_show_all', 'Show All'); ?></a></li>'
   );
 
   $('#box-category-tree > ul.compact').on('click', 'a[data-toggle="showall"]', function(e){
