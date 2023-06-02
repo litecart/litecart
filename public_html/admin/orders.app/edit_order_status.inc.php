@@ -73,6 +73,7 @@
   }
 
   $state_options = [
+    ['', ''],
     [language::translate('title_created', 'Created'), 'created'],
     [language::translate('title_on_hold', 'On Hold'), 'on_hold'],
     [language::translate('title_ready', 'Ready'), 'ready'],
