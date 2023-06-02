@@ -37,6 +37,10 @@ html.dark-mode body {
   max-width: 250px;
   max-height: 100px;
 }
+#box-login .card-footer {
+  border-end-start-radius: 2em;
+  border-end-end-radius: 0;
+}
 
 @keyframes bounce-in {
   from, 20%, 40%, 60%, 80%, to {
