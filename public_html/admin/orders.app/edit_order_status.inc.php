@@ -85,6 +85,7 @@
     [language::translate('title_returning', 'Returning'), 'returning'],
     [language::translate('title_returned', 'Returned'), 'returned'],
     [language::translate('title_cancelled', 'Cancelled'), 'cancelled'],
+    [language::translate('title_other', 'Other'), 'other'],
   ];
 
 ?>

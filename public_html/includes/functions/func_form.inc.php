@@ -1250,7 +1250,7 @@
     $query = database::query(
       "select os.id, osi.name from ". DB_TABLE_PREFIX ."order_statuses os
       left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = os.id and osi.language_code = '". database::input(language::$selected['code']) ."')
-      order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, osi.name asc;"
+      order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', 'other', ''), os.priority, osi.name asc;"
     );
 
     $options = [];
