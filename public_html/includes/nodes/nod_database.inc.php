@@ -70,7 +70,6 @@
       return self::$_links[$link];
     }
 
-
     public static function server_info($link='default') {
 
       if (!$result = mysqli_get_server_info(self::$_links[$link])) {

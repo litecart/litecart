@@ -332,8 +332,6 @@
         $webpath = preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', str_replace('\\', '/', $resource));
       }
 
-
-
       return document::link($webpath, ['_' => filemtime($resource)]);
     }
 

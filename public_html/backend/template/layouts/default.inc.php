@@ -32,7 +32,7 @@
       <div class="results"></div>
     </div>
 
-    {{box_apps_menu}}
+    <?php include 'app://backend/partials/box_apps_menu.inc.php'; ?>
 
     <a class="platform text-center" href="<?php echo document::ilink('about'); ?>">
       <span class="name"><?php echo PLATFORM_NAME; ?>®</span>

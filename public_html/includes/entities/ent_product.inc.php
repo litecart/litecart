@@ -170,7 +170,7 @@
           delivery_status_id = ". (int)$this->data['delivery_status_id'] .",
           sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
           default_category_id = ". (int)$this->data['default_category_id'] .",
-        keywords = '". database::input($this->data['keywords']) ."',
+          keywords = '". database::input($this->data['keywords']) ."',
           quantity_min = ". (float)$this->data['quantity_min'] .",
           quantity_max = ". (float)$this->data['quantity_max'] .",
           quantity_step = ". (float)$this->data['quantity_step'] .",
