@@ -124,6 +124,7 @@
     '#^includes/wrappers/wrap_app.inc.php$#',
     '#^includes/wrappers/wrap_storage.inc.php$#',
     '#^install/#',
+    '#^images/#',
     '#^storage/#',
     '#^vendor/#',
     '#^vmods/#',
