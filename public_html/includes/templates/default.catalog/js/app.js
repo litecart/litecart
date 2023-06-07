@@ -175,6 +175,7 @@
   });
 
 // Update cart / Keep alive
+  var num_cart_updates = 0;
   window.updateCart = function(data) {
     $.ajax({
       url: window._env.platform.url + 'ajax/cart.json',
@@ -205,9 +206,12 @@
         $('#cart .formatted_value').html(json['formatted_value']);
       }
     });
+
+    if (++num_cart_updates < 60) { // Stop refreshing cart after 60 cycles
+      var timerCart = setTimeout('updateCart', 60e3); // Keeps session alive
+    }
   }
 
-  var timerCart = setInterval("updateCart()", 60000); // Keeps session alive
 
 /*
  * jQuery Animate From To plugin 1.0
