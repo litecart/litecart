@@ -26,7 +26,6 @@
     }
   }
 
-
   if (isset($_POST['delete'])) {
 
     try {
