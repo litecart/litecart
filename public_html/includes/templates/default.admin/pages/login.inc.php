@@ -37,6 +37,10 @@ html.dark-mode body {
   max-width: 250px;
   max-height: 100px;
 }
+#box-login .card-footer {
+  border-end-start-radius: 2em;
+  border-end-end-radius: 0;
+}
 
 @keyframes bounce-in {
   from, 20%, 40%, 60%, 80%, to {
@@ -104,7 +108,7 @@ html.dark-mode body {
       <div class="row">
         <div class="col-md-6 text-start">
           <a class="btn btn-hover-outline btn-lg" href="<?php echo document::href_ilink(''); ?>">
-            <?php echo functions::draw_fonticon('fa-chevron-left'); ?> <?php echo language::translate('title_go_to_frontend', 'Go To Frontend'); ?>
+            <?php echo functions::draw_fonticon((language::$selected['direction'] == 'rtl') ? 'fa-chevron-right' : 'fa-chevron-left'); ?> <?php echo language::translate('title_go_to_frontend', 'Go To Frontend'); ?>
           </a>
         </div>
         <div class="col-md-6 text-end">

@@ -4,13 +4,13 @@ ADD COLUMN `payment_terms` VARCHAR(8) NOT NULL DEFAULT '' AFTER `payment_receipt
 ADD COLUMN `incoterm` VARCHAR(3) NOT NULL DEFAULT '' AFTER `payment_terms`,
 ADD COLUMN `date_paid` TIMESTAMP NULL DEFAULT NULL AFTER `public_key`,
 ADD COLUMN `date_dispatched` TIMESTAMP NULL DEFAULT NULL AFTER `date_paid`;
- -- --------------------------------------------------------
+-- --------------------------------------------------------
 ALTER TABLE `lc_order_statuses`
 ADD COLUMN `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `is_archived`,
 ADD COLUMN `stock_action` ENUM('none','reserve','commit') NOT NULL DEFAULT 'none' AFTER `is_trackable`,
 ADD COLUMN `state` ENUM('','created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled','fraud') NOT NULL DEFAULT '' AFTER `id`,
 DROP COLUMN `keywords`;
- -- --------------------------------------------------------
+-- --------------------------------------------------------
 UPDATE `lc_order_statuses`
 SET stock_action = 'commit'
 WHERE is_sale = 1;

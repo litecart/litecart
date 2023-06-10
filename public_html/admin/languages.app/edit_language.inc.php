@@ -31,6 +31,12 @@
         }
       }
 
+      if (!empty($_POST['url_type']) && $_POST['url_type'] == 'none') {
+        if (!empty($language->data['id']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."languages where url_type = 'none' and id != ". (int)$language->data['id'] ." limit 1;"))) {
+          throw new Exception(language::translate('error_another_language_uses_url_type_none', 'Another language is already using URL type \'None\' and there can only be one.'));
+        }
+      }
+
       if (empty($_POST['set_default']) && isset($language->data['code']) && $language->data['code'] == settings::get('default_language_code') && $language->data['code'] != $_POST['code']) {
         throw new Exception(language::translate('error_cannot_rename_default_language', 'You must change the default language before renaming it.'));
       }

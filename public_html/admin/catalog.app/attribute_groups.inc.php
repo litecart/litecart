@@ -49,7 +49,7 @@
         <tr>
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th class="text-center"><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th class="text-center"><?php echo language::translate('title_code', 'Code'); ?></th>
+          <th><?php echo language::translate('title_code', 'Code'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_values', 'Values'); ?></th>
           <th></th>

@@ -66,13 +66,13 @@
   perform_action('modify', [
     FS_DIR_APP . 'includes/config.inc.php' => [
       [
-        'search'  => "  define('WS_DIR_INCLUDES',    WS_DIR_APP . 'includes/');" . PHP_EOL,
-        'replace' => "  define('WS_DIR_INCLUDES',    WS_DIR_APP . 'includes/');" . PHP_EOL
-                   . "  define('WS_DIR_LOGS',        WS_DIR_APP . 'logs/');" . PHP_EOL,
+        'search'  => "  define('WS_DIR_INCLUDES',    WS_DIR_HTTP_HOME . 'includes/');" . PHP_EOL,
+        'replace' => "  define('WS_DIR_INCLUDES',    WS_DIR_HTTP_HOME . 'includes/');" . PHP_EOL
+                   . "  define('WS_DIR_LOGS',        WS_DIR_HTTP_HOME . 'logs/');" . PHP_EOL,
       ],
       [
-      'search'  => "  ini_set('error_log', FS_DIR_STORAGE . 'data/errors.log');" . PHP_EOL,
-      'replace' => "  ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');" . PHP_EOL,
+      'search'  => "  ini_set('error_log', FS_DIR_HTTP_ROOT . WS_DIR_DATA . 'errors.log');" . PHP_EOL,
+      'replace' => "  ini_set('error_log', FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'errors.log');" . PHP_EOL,
       ],
       [
         'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'manufacturers_info`');",
@@ -85,6 +85,9 @@
                    . "  define('DB_TABLE_SLIDES_INFO',                       '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'slides_info`');",
       ],
     ],
+  ], 'abort');
+
+  perform_action('modify', [
     FS_DIR_APP . '.htaccess' => [
       [
         'search'  => '<FilesMatch "\.(css|js)$">',
@@ -95,7 +98,7 @@
         'replace' => '<FilesMatch "\.(css|gif|ico|jpg|jpeg|js|pdf|png|svg|ttf)$">',
       ],
     ],
-  ], 'abort');
+  ]);
 
 // Delete Deprecated Modules
   $module_types_query = database::query(

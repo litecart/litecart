@@ -10,6 +10,13 @@
 
     try {
 
+      if (!empty($_GET['redirect_url']) && (empty($_POST['language_code']) || $_POST['language_code'] == language::$selected['code'])) {
+        $redirect_url = new ent_link($_GET['redirect_url']);
+        $redirect_url->host = '';
+      } else {
+        $redirect_url = document::ilink('', [], null, [], !empty($_POST['language_code']) ? $_POST['language_code'] : '');
+      }
+
       if (!empty($_POST['language_code'])) {
         language::set($_POST['language_code']);
       }
@@ -39,13 +46,6 @@
         if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
           header('Set-Cookie: display_prices_including_tax='. (int)customer::$data['display_prices_including_tax'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
         }
-      }
-
-      if (!empty($_GET['redirect_url'])) {
-        $redirect_url = new ent_link($_GET['redirect_url']);
-        $redirect_url->host = '';
-      } else {
-        $redirect_url = document::ilink('', [], null, [], !empty($_POST['language_code']) ? $_POST['language_code'] : '');
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));

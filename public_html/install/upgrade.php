@@ -20,7 +20,9 @@
     }
 
     $options = [
-      'from_version::', 'development_type:: cleanup'
+      'from_version::',
+      'development_type::',
+      'cleanup::',
     ];
 
     $_REQUEST = getopt('', $options);

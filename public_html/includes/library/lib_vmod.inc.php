@@ -182,9 +182,9 @@
 
     // Modify file
       if (is_file($file)) {
-        $original = $buffer = file_get_contents($file);
+        $original = $buffer = preg_replace('#\r\n?|\n#', PHP_EOL, file_get_contents($file));
       } else {
-        $original = $buffer = null;
+        $original = $buffer = '';
       }
 
       foreach ($queue as $modification) {
@@ -281,7 +281,7 @@
         }
 
       // Normalize line endings
-        $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
+        $xml = preg_replace('#\r\n?|\n#', PHP_EOL, $xml);
 
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->preserveWhiteSpace = false;
@@ -333,7 +333,7 @@
           if (!empty($vmod['install'])) {
 
             $tmp_file = stream_get_meta_data(tmpfile())['uri'];
-            file_put_contents($tmp_file, "<?php\r\n" . $vmod['install']);
+            file_put_contents($tmp_file, "<?php" . PHP_EOL . $vmod['install']);
 
             (function() {
               include func_get_arg(0);
@@ -358,7 +358,7 @@
 
             // Exceute upgrade in an isolated scope
               $tmp_file = stream_get_meta_data(tmpfile())['uri'];
-              file_put_contents($tmp_file, "<?php\r\n" . $upgrade['script']);
+              file_put_contents($tmp_file, "<?php" . PHP_EOL . $upgrade['script']);
 
               (function() {
                 include func_get_arg(0);
@@ -677,7 +677,7 @@
 
           // Whitespace
             if (!in_array($search_node->getAttribute('position'), ['ibefore', 'iafter'])) {
-              $search = preg_split('#(\r\n?|\n)#', $search);
+              $search = preg_split('#\r\n?|\n#', $search);
               for ($i=0; $i<count($search); $i++) {
                 if ($search[$i] = trim($search[$i])) {
                   $search[$i] = '[ \\t]*' . preg_quote($search[$i], '#') . '[ \\t]*(?:\r\n?|\n|$)';

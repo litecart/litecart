@@ -109,7 +109,7 @@
           if (!isset(session::$data['user_security_timestamp']) || session::$data['user_security_timestamp'] < strtotime($user['date_expire_sessions'])) {
             self::reset();
             notices::add('errors', language::translate('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
-            header('Location: '. document::ilink('login'));
+            header('Location: '. document::link(WS_DIR_ADMIN . 'login.php'));
             exit;
           }
         }

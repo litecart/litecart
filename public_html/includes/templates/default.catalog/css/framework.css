@@ -746,7 +746,7 @@ ul.breadcrumb li a {
   margin: 0;
   padding: 0;
   list-style: none;
-  text-align: left;
+  text-align: start;
   background-color: var(--dropdown-menu-background-color);
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
@@ -827,10 +827,14 @@ ul.breadcrumb li a {
 html[dir="rtl"] .dropdown [data-toggle="dropdown"] {
   background-position: left 1em center;
 }
+html[dir="rtl"] .dropdown-menu {
+  left: auto !important;
+  right: 0 !important;
+}
 @media (min-width: 768px) {
-  html[dir="rtl"] .dropdown-menu-end {
-    left: 0;
-    right: auto;
+  html[dir="rtl"] .dropdown-menu.dropdown-menu-end {
+    left: 0 !important;
+    right: auto !important;
   }
 }
 .dropdown-backdrop {
@@ -1327,6 +1331,9 @@ select.form-control.multiple {
 select.form-control.multiple option {
   padding: var(--input-padding-y) var(--input-padding-x);
 }
+html[dir="rtl"] select.form-control {
+  background-position: left 1em center !important;
+}
 .form-control .dropdown-menu {
   user-select: none;
 }
@@ -1396,14 +1403,15 @@ select.form-control.multiple option {
 .input-group .btn:first-child,
 .input-group .input-group-btn:first-child .btn,
 .input-group .input-group-text:first-child {
-  border-radius: var(--input-border-radius) 0 0 var(--input-border-radius);
+  border-start-start-radius: var(--input-border-radius);
+  border-end-start-radius: var(--input-border-radius);
 }
 .input-group .form-control:last-child,
 .input-group .input-group-btn:last-child .btn,
 .input-group .input-group-text:last-child {
   margin-inline-end: -1px;
-  border-end-end-radius: var(--input-border-radius);
   border-start-end-radius: var(--input-border-radius);
+  border-end-end-radius: var(--input-border-radius);
 }
 [data-toggle="buttons"] input[type="checbox"],
 [data-toggle="buttons"] input[type="radio"] {
@@ -1684,7 +1692,7 @@ ul.list-inline li {
 html[dir="rtl"] .offcanvas {
   left: auto;
   right: 0;
-  transform: translateX(100%);
+  transform: translateX(0%);
 }
 /* Navbar - Bootstrap Compatible */
 .navbar {
@@ -1756,7 +1764,7 @@ html[dir="rtl"] .offcanvas {
 .navbar-nav {
   display: flex;
   flex-direction: column;
-  padding-left: 0;
+  padding-inline-start: 0;
   margin-top: 0;
   margin-bottom: 0;
   list-style: none;
@@ -2034,10 +2042,10 @@ html[dir="rtl"] .offcanvas {
 }
 /* Typography - Bootstrap Compatible */
 .text-start {
-  text-align: left !important;
+  text-align: start !important;
 }
 .text-left {
-  text-align: start !important;
+  text-align: left !important;
 }
 .text-center {
   text-align: center !important;
@@ -2049,11 +2057,11 @@ html[dir="rtl"] .offcanvas {
   text-align: end !important;
 }
 @media (min-width: 768px) {
-  .text-sm-left {
-    text-align: left !important;
-  }
   .text-sm-start {
     text-align: start !important;
+  }
+  .text-sm-left {
+    text-align: left !important;
   }
   .text-sm-center {
     text-align: center !important;

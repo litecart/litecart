@@ -171,7 +171,7 @@
           'Content-Disposition' => 'attachment; filename="'. basename($filename) . '"',
           'Content-Transfer-Encoding' => 'base64',
         ],
-        'body' => chunk_split(base64_encode($data)) . "\r\n\r\n",
+        'body' => chunk_split(base64_encode($data)),
       ];
 
       return $this;
@@ -313,7 +313,7 @@
       if (count($this->data['multiparts']) > 1) {
         foreach ($this->data['multiparts'] as $multipart) {
           $body .= '--'. $multipart_boundary_string . "\r\n"
-                 . implode("\r\n", array_map(function($v, $k) { return $k.':'.$v; }, $multipart['headers'], array_keys($multipart['headers']))) . "\r\n"
+                 . implode("\r\n", array_map(function($v, $k) { return $k.':'.$v; }, $multipart['headers'], array_keys($multipart['headers']))) . "\r\n\r\n"
                  . $multipart['body'] . "\r\n\r\n";
         }
 

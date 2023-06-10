@@ -14,7 +14,7 @@
       <?php foreach ($app['menu'] as $item) { ?>
       <li class="doc<?php echo $item['active'] ? ' active' : ''; ?>" data-id="<?php echo $item['doc']; ?>">
         <a href="<?php echo functions::escape_html($item['link']); ?>" data-toggle="ajax-load">
-          <?php echo functions::draw_fonticon('fa-angle-right'); ?> <span class="name"><?php echo $item['title']; ?></span>
+          <?php echo functions::draw_fonticon((language::$selected['direction'] == 'rtl') ? 'fa-angle-left' : 'fa-angle-right'); ?> <span class="name"><?php echo $item['title']; ?></span>
         </a>
       </li>
       <?php } ?>

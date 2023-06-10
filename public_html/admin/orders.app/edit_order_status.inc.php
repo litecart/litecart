@@ -73,17 +73,20 @@
   }
 
   $state_options = [
+    ['', ''],
     [language::translate('title_created', 'Created'), 'created'],
     [language::translate('title_on_hold', 'On Hold'), 'on_hold'],
     [language::translate('title_ready', 'Ready'), 'ready'],
     [language::translate('title_delayed', 'Delayed'), 'delayed'],
     [language::translate('title_processing', 'Processing'), 'processing'],
+    [language::translate('title_completed', 'Completed'), 'completed'],
     [language::translate('title_dispatched', 'Dispatched'), 'dispatched'],
     [language::translate('title_in_transit', 'In Transit'), 'in_transit'],
     [language::translate('title_delivered', 'Delivered'), 'delivered'],
     [language::translate('title_returning', 'Returning'), 'returning'],
     [language::translate('title_returned', 'Returned'), 'returned'],
     [language::translate('title_cancelled', 'Cancelled'), 'cancelled'],
+    [language::translate('title_other', 'Other'), 'other'],
   ];
 
 ?>
@@ -111,12 +114,12 @@
               <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true); ?>
             </div>
 
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-4">
               <label><?php echo language::translate('title_order_state', 'State'); ?></label>
               <?php echo functions::form_draw_select_field('state', $state_options, true); ?>
             </div>
 
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
               <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
               <?php echo functions::form_draw_number_field('priority', true); ?>
             </div>
