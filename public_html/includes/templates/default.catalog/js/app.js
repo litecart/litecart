@@ -42,25 +42,6 @@
     }
   }
 
-// Add to cart animation
-  $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
-    e.preventDefault();
-    var form = $(this);
-    $(this).find('button[name="add_cart_product"]').animate_from_to('#cart', {
-      pixels_per_second: 2000,
-      initial_css: {
-        'border': '1px rgba(0,136,204,1) solid',
-        'background-color': 'rgba(0,136,204,0.5)',
-        'z-index': '999999',
-        'border-radius': '3px',
-        'padding': '5px'
-      },
-      callback: function() {
-        updateCart($(form).serialize() + '&add_cart_product=true');
-      }
-    });
-  });
-
 // Tabs (data-toggle="tab")
   $('.nav-tabs').each(function(){
     if (!$(this).find('.active').length) {
@@ -212,6 +193,24 @@
     }
   }
 
+// Add to cart animation
+  $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
+    e.preventDefault();
+    var form = $(this);
+    $(this).find('button[name="add_cart_product"]').animate_from_to('#cart', {
+      pixels_per_second: 2000,
+      initial_css: {
+        'border': '1px rgba(0,136,204,1) solid',
+        'background-color': 'rgba(0,136,204,0.5)',
+        'z-index': '999999',
+        'border-radius': '3px',
+        'padding': '5px'
+      },
+      callback: function() {
+        updateCart($(form).serialize() + '&add_cart_product=true');
+      }
+    });
+  });
 
 /*
  * jQuery Animate From To plugin 1.0
