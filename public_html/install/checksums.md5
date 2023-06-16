@@ -77,7 +77,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/modules.app/index.html
 4afe69fddc51b6e793c1f31fb2eec6f3	admin/orders.app/edit_order_status.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.app/index.html
 8c4b4987a199c6e83d083bd257b33ffd	admin/orders.app/order_statuses.inc.php
-616de017e990c6fddf6fbff123644753	admin/orders.app/orders.inc.php
+724b225fe4b8d70630f5d4de3b5283a8	admin/orders.app/orders.inc.php
 54223f4dcd61dbdfaf465bc3c26f861d	admin/orders.app/product_picker.inc.php
 1133a502b6a64250fc3a847b3bbd9863	admin/orders.widget/config.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.widget/index.html
