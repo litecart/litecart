@@ -36,6 +36,8 @@
         }
       }
 
+      ini_set('memory_limit', -1);
+
       $log_file = ini_get('error_log');
 
       if (!is_file($log_file)) return;
