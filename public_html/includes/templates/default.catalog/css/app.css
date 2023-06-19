@@ -309,7 +309,7 @@ body.scrolling-down #site-menu {
 }
 #box-filter .tokens .token {
   padding: 0.5em 1em;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   cursor: default;
   margin-inline-end: 0.5em;
 }
