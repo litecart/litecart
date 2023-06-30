@@ -8,7 +8,7 @@
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
       . "Options:\n"
-      . "  --db_server          Set database hostname (Default: 127.0.0.1)\n"
+      . "  --db_server          Set database hostname (Default: ". ini_get('mysqli.default_host') .")\n"
       . "  --db_username        Set database username\n"
       . "  --db_password        Set database user password\n\n"
       . "  --db_database        Set database name\n"
@@ -96,7 +96,7 @@
     }
 
     if (empty($_REQUEST['db_server'])) {
-      $_REQUEST['db_server'] = '127.0.0.1';
+      $_REQUEST['db_server'] = ini_get('mysqli.default_host');
     }
 
     if (empty($_REQUEST['db_username'])) {

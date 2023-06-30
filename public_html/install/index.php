@@ -416,7 +416,7 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label>Hostname</label>
-      <input class="form-control" name="db_server" type="text" placeholder="localhost" />
+      <input class="form-control" name="db_server" type="text" placeholder="<?php echo ini_get('mysqli.default_host'); ?>" />
     </div>
 
     <div class="form-group col-md-6">
