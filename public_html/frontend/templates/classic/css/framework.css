@@ -216,7 +216,7 @@ h2,
 h3,
 h4 {
   color: var(--default-text-color);
-  margin: 0;
+  margin-top: 1rem;
   margin-bottom: 1rem;
 }
 a:link,
@@ -446,17 +446,18 @@ ul.breadcrumb li a {
   position: relative;
   border-radius: var(--border-radius);
   overflow: hidden;
-}
-.carousel .carousel-control,
-.carousel .carousel-indicators {
-  opacity: 0;
-  transition: opacity 200ms;
+  margin-bottom: var(--gutter-y);
 }
 .carousel:hover .carousel-control {
   opacity: 0.5;
 }
 .carousel:hover .carousel-indicators {
   opacity: 1;
+}
+.carousel .carousel-control,
+.carousel .carousel-indicators {
+  opacity: 0;
+  transition: opacity 200ms;
 }
 .carousel-inner {
   position: relative;

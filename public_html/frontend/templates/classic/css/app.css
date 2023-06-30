@@ -254,6 +254,12 @@ body.scrolling-down #site-navigation {
 }
 #footer .social-bookmarks a {
   display: inline-block;
+  padding: 0.25em;
+  font-size: 1.25em;
+  transition: filter 150ms linear;
+}
+#footer .social-bookmarks a:hover {
+  filter: brightness(0.85);
 }
 #copyright {
   background: var(--copyright-background-color);
@@ -277,6 +283,10 @@ body.scrolling-down #site-navigation {
   position: fixed;
   right: 30px;
   width: 48px;
+}
+#box-brand-logotypes li {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 #box-filter .filters {
   display: flex;

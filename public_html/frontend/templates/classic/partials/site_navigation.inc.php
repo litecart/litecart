@@ -80,7 +80,7 @@
       <ul class="navbar-nav">
 
         <li class="nav-item customer-service">
-          <a class="nav-link" href="<?php echo document::href_ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a>
+          <a class="nav-link" href="<?php echo document::href_ilink('contact'); ?>"><?php echo language::translate('title_contact_us', 'Contact Us'); ?></a>
         </li>
 
         <?php if (settings::get('accounts_enabled')) { ?>

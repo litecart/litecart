@@ -1,14 +1,21 @@
 <main id="main" class="container">
-  <div id="sidebar">
-    <?php include 'app://frontend/partials/box_information_links.inc.php'; ?>
-  </div>
+  <div class="layout row">
 
-  <div id="content">
-    {{breadcrumbs}}
-    {{notices}}
+    <div class="hidden-xs hidden-sm col-md-3">
+      <div id="sidebar">
+        <?php include 'app://frontend/partials/box_information_links.inc.php'; ?>
+      </div>
+    </div>
 
-    <section id="box-information">
-      <?php echo $content; ?>
-    </section>
+    <div class="col-md-9">
+      <div id="content">
+        {{breadcrumbs}}
+        {{notices}}
+
+        <section id="box-information">
+          <?php echo $content; ?>
+        </section>
+      </div>
+    </div>
   </div>
 </main>

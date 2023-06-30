@@ -4,11 +4,8 @@
   position: relative;
   border-radius: var(--border-radius);
   overflow: hidden;
-  .carousel-control,
-  .carousel-indicators {
-    opacity: 0;
-    transition: opacity 200ms;
-  }
+  margin-bottom: var(--gutter-y);
+
   &:hover {
     .carousel-control{
       opacity: 0.5;
@@ -16,6 +13,12 @@
     .carousel-indicators {
       opacity: 1;
     }
+  }
+
+  .carousel-control,
+  .carousel-indicators {
+    opacity: 0;
+    transition: opacity 200ms;
   }
 }
 
