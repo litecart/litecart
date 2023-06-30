@@ -191,7 +191,7 @@
       from ". DB_TABLE_PREFIX ."orders
       group by order_status_id
     ) o on (o.order_status_id = os.id)
-    order by field(state,'created','on_hold','ready','delayed','processing','completed','dispatched','in_transit','delivered','returning','returned','cancelled','other',''), osi.name asc;"
+    order by field(state,'created','on_hold','ready','delayed','processing','completed','dispatched','in_transit','delivered','returning','returned','cancelled','other',''), os.priority, osi.name asc;"
   );
 
   while ($order_status = database::fetch($order_statuses_query)) {
