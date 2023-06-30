@@ -125,7 +125,7 @@
         ],
       ];
 
-      //document::$snippets['help_link'] = document::link('https://wiki.litecart.net/', array('id' => 'Admin:'. $_GET['app'] . (!empty($_GET['doc']) ? '/' . $_GET['doc'] : '')));
+      //document::$snippets['help_link'] = document::link('https://wiki.litecart.net/', ['id' => 'Admin:'. $_GET['app'] . (!empty($_GET['doc']) ? '/' . $_GET['doc'] : '')]);
       document::$snippets['help_link'] = document::link('https://wiki.litecart.net/');
 
       $app_icon = '<span class="app-icon">' . PHP_EOL
