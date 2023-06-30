@@ -527,7 +527,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
 b0a306bc6569442f90c793ac3be2dc59	includes/wrappers/wrap_smtp.inc.php
 b123b0a12e7ca30064c2aa739b12c750	index.php
 0016b8b6a91d572e9f4c9a8a9099f522	install/clean.sql
-57081e683a7e6a590a3f278735031663	install/config
+8c121116567ec547ab378cc7576679a2	install/config
 acc5da3501f67c23827349e9297dd077	install/data.sql
 f304e1b351dac187ad94acf3d855dd16	install/data/AU/AU.sql
 34cdc6f63a349b98d8badd124553bf61	install/data/CA/CA.sql
