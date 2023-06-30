@@ -7,9 +7,9 @@
   define('BACKEND_ALIAS', '{ADMIN_FOLDER}');
 
 // File System
-  define('DOCUMENT_ROOT',      str_replace('\\', '/', rtrim(realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/')));
+  define('DOCUMENT_ROOT',      rtrim(str_replace('\\', '/', realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'))), '/');
 
-  define('FS_DIR_APP',         str_replace('\\', '/', rtrim(realpath(__DIR__.'/..'), '/')) . '/');
+  define('FS_DIR_APP',         rtrim(str_replace('\\', '/', realpath(__DIR__.'/..')), '/') . '/');
   define('FS_DIR_STORAGE',     FS_DIR_APP);
   define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');
 
