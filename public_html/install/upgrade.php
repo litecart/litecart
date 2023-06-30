@@ -8,7 +8,7 @@
   if (php_sapi_name() == 'cli') {
 
     if (!isset($argv[1]) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
-      echo "\nLiteCart® 2.5.3\n"
+      echo "\nLiteCart® 2.5.4\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -20,7 +20,9 @@
     }
 
     $options = [
-      'from_version::', 'development_type:: cleanup'
+      'from_version::',
+      'development_type::',
+      'cleanup::',
     ];
 
     $_REQUEST = getopt('', $options);

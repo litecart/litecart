@@ -50,7 +50,6 @@
     FS_DIR_APP . 'includes/library/lib_security.inc.php',
     FS_DIR_STORAGE . 'logs/http_request_last.log',
     FS_DIR_APP . 'includes/templates/default.catalog/views/column_left.inc.php',
-    FS_DIR_APP . 'includes/templates/default.catalog/views/listing_product.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/site_cookie_notice.inc.php',
     FS_DIR_APP . 'pages/ajax/checkout_cart.html.inc.php',
     FS_DIR_APP . 'pages/ajax/checkout_customer.html.inc.php',

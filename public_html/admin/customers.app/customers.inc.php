@@ -26,6 +26,29 @@
     }
   }
 
+  if (isset($_POST['delete'])) {
+
+    try {
+
+      if (empty($_POST['customers'])) {
+        throw new Exception(language::translate('error_must_select_customers', 'You must select customers'));
+      }
+
+      foreach ($_POST['customers'] as $customer_id) {
+        $customer = new ent_customer($customer_id);
+        $customer->delete();
+      }
+
+      notices::add('success', strtr(language::translate('success_deleted_n_customers', 'Deleted %n customers'), ['%n' => count($_POST['customers'])]));
+
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
 // Table Rows
   $customers = [];
 

@@ -132,6 +132,10 @@ select.form-control {
   }
 }
 
+html[dir="rtl"] select.form-control {
+  background-position: left 1em center !important;
+}
+
 .form-control .dropdown-menu {
   user-select: none;
   li > label {
@@ -196,13 +200,14 @@ select.form-control {
   }
   .form-control:first-child, .btn:first-child, .input-group-btn:first-child .btn,
   .input-group-text:first-child {
-    border-radius: var(--input-border-radius) 0 0 var(--input-border-radius);
+    border-start-start-radius: var(--input-border-radius);
+    border-end-start-radius: var(--input-border-radius);
   }
   .form-control:last-child, .input-group-btn:last-child .btn,
   .input-group-text:last-child {
     margin-inline-end: -1px;
-    border-end-end-radius: var(--input-border-radius);
     border-start-end-radius: var(--input-border-radius);
+    border-end-end-radius: var(--input-border-radius);
   }
 }
 

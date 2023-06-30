@@ -213,7 +213,7 @@
           throw new Exception(strtr(language::translate('error_cannot_purchase_more_than_max_items', 'You cannot purchase more than %num of this item'), ['%num' => (float)$product->quantity_max]));
         }
 
-        if ($product->quantity_step > 0 && ($quantity/$product->quantity_step) != abs($quantity/$product->quantity_step)) {
+        if ($product->quantity_step > 0 && ($quantity % $product->quantity_step) != 0) {
           throw new Exception(strtr(language::translate('error_can_only_purchase_sets_for_item', 'You can only purchase sets by %num for this item'), ['%num' => (float)$product->quantity_step]));
         }
 

@@ -156,7 +156,7 @@
               <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
               <div style="display: flex">
                 <div class="input-group">
-                  <?php echo (!empty($quantity_unit['decimals'])) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : $quantity_min, $quantity_unit['decimals'], $quantity_min, $quantity_max, 'step="'. ($quantity_step ? $quantity_step : 1) .'"') : functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : $quantity_min, $quantity_min, $quantity_max, 'step="'. ($quantity_step ? $quantity_step : 'step="any"') .'" style="width: 100px;"'); ?>
+                  <?php echo !empty($quantity_unit['decimals']) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : $quantity_min, $quantity_unit['decimals'], $quantity_min , $quantity_max, ($quantity_step ? 'step="'. $quantity_step .'"' : '')) : functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : $quantity_min, $quantity_min , $quantity_max, ($quantity_step ? 'step="'. $quantity_step .'" ' : '') . 'style="width: 100px;"'); ?>
                   <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-text">'. $quantity_unit['name'] .'</div>' : ''; ?>
                 </div>
 
@@ -212,7 +212,7 @@
 <?php
   foreach ($technical_data as $line) {
     if (preg_match('#[:\t]#', $line)) {
-      list($key, $value) = preg_split('# *[:\t]+ *#', $line, 2);
+      @list($key, $value) = preg_split('# *[:\t]+ *#', $line, 2);
       echo '  <tr>' . PHP_EOL
          . '    <td>'. trim($key) .'</td>' . PHP_EOL
          . '    <td>'. trim($value) .'</td>' . PHP_EOL

@@ -136,7 +136,7 @@
 
     // Return language by regional domain
       foreach ($enabled_languages as $language_code) {
-        if (!empty(self::$languages[$language_code]) && self::$languages[$language_code]['url_type'] == 'domain') {
+        if (self::$languages[$language_code]['url_type'] == 'domain') {
           if (!empty(self::$languages[$language_code]['domain_name']) && preg_match('#^'. preg_quote(self::$languages[$language_code]['domain_name'], '#') .'$#', $_SERVER['HTTP_HOST'])) {
             return $language_code;
           }
@@ -151,6 +151,15 @@
     // Return language from URI path
       $code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_APP))));
       if (in_array($code, $all_languages)) return $code;
+
+    // Return language from
+      foreach ($enabled_languages as $language_code) {
+        if (self::$languages[$language_code]['url_type'] == 'none') {
+          if (!preg_match('#^'. preg_quote(WS_DIR_APP, '#') .'[a-z]{2}(/|$)#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
+            return $language_code;
+          }
+        }
+      }
 
     // Return language from session
       if (isset(self::$selected['code']) && in_array(self::$selected['code'], $all_languages)) return self::$selected['code'];
@@ -311,49 +320,54 @@
 
         // %c = Preferred date and time stamp based on locale
         // Example: Tue Feb 5 00:45:10 2009 for February 5, 2009 at 12:45:10 AM
-        if ($format == '%c') {
-          $date_type = IntlDateFormatter::LONG;
-          $time_type = IntlDateFormatter::SHORT;
-        }
-        // %x = Preferred date representation based on locale, without the time
-        // Example: 02/05/09 for February 5, 2009
-        elseif ($format == '%x') {
-          $date_type = IntlDateFormatter::SHORT;
-          $time_type = IntlDateFormatter::NONE;
-        }
-        // Localized time format
-        elseif ($format == '%X') {
-          $date_type = IntlDateFormatter::NONE;
-          $time_type = IntlDateFormatter::MEDIUM;
-        }
-        else {
-          $pattern = $intl_formats[$format];
+        switch ($format) {
+
+          case '%c':
+            $date_type = IntlDateFormatter::LONG;
+            $time_type = IntlDateFormatter::SHORT;
+            break;
+
+          // %x = Preferred date representation based on locale, without the time
+          // Example: 02/05/09 for February 5, 2009
+          case '%x':
+            $date_type = IntlDateFormatter::SHORT;
+            $time_type = IntlDateFormatter::NONE;
+            break;
+
+          // Localized time format
+          case '%X':
+            $date_type = IntlDateFormatter::NONE;
+            $time_type = IntlDateFormatter::MEDIUM;
+            break;
+
+          default:
+            $pattern = $intl_formats[$format];
+            break;
         }
 
         return (new IntlDateFormatter(self::$selected['code'], $date_type, $time_type, $tz, null, $pattern))->format($timestamp);
       };
 
-      $translation_table = [
+      $mappings = [
       // Day
         '%a' => $intl_formatter,
         '%A' => $intl_formatter,
         '%d' => 'd',
         '%e' => 'j',
-      // Day number in year, 001 to 366
-        '%j' => function ($timestamp) {
+
+        '%j' => function ($timestamp) { // Day number in year, 001 to 366
           return sprintf('%03d', $timestamp->format('z')+1);
         },
         '%u' => 'N',
         '%w' => 'w',
 
       // Week
-        '%U' => function ($timestamp) {
-          // Number of weeks between date and first Sunday of year
+        '%U' => function ($timestamp) { // Number of weeks between date and first Sunday of year
           $day = new \DateTime(sprintf('%d-01 Sunday', $timestamp->format('Y')));
           return intval(($timestamp->format('z') - $day->format('z')) / 7);
         },
-      // Number of weeks between date and first Monday of year
-        '%W' => function ($timestamp) {
+
+        '%W' => function ($timestamp) { // Number of weeks between date and first Monday of year
           $day = new \DateTime(sprintf('%d-01 Monday', $timestamp->format('Y')));
           return intval(($timestamp->format('z') - $day->format('z')) / 7);
         },
@@ -366,8 +380,7 @@
         '%m' => 'm',
 
       // Year
-        '%C' => function ($timestamp) {
-          // Century (-1): 19 for 20th century
+        '%C' => function ($timestamp) { // Century (-1): 19 for 20th century
           return (int) $timestamp->format('Y') / 100;
         },
         '%g' => function ($timestamp) {
@@ -388,7 +401,7 @@
         '%r' => 'G:i:s A', // %I:%M:%S %p
         '%R' => 'H:i', // %H:%M
         '%S' => 's',
-        '%X' => $intl_formatter,// Preferred time representation based on locale, without the date
+        '%X' => $intl_formatter, // Preferred time representation based on locale, without the date
 
       // Timezone
         '%z' => 'O',
@@ -402,7 +415,7 @@
         '%x' => $intl_formatter,
       ];
 
-      $out = preg_replace_callback('/(?<!%)(%[a-zA-Z])/', function ($match) use ($translation_table, $timestamp) {
+      $out = preg_replace_callback('/(?<!%)(%[a-zA-Z])/', function ($match) use ($mappings, $timestamp) {
         if ($match[1] == '%n') {
           return "\n";
         }
@@ -410,11 +423,11 @@
           return "\t";
         }
 
-        if (!isset($translation_table[$match[1]])) {
+        if (!isset($mappings[$match[1]])) {
           throw new \InvalidArgumentException(sprintf('Format "%s" is unknown in time format', $match[1]));
         }
 
-        $replace = $translation_table[$match[1]];
+        $replace = $mappings[$match[1]];
 
         if (is_string($replace)) {
           return $timestamp->format($replace);

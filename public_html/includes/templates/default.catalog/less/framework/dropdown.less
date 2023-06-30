@@ -31,7 +31,7 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    text-align: left;
+    text-align: start;
     background-color: var(--dropdown-menu-background-color);
     border: 1px solid var(--default-border-color);
     border-radius: var(--border-radius);
@@ -126,10 +126,14 @@ html[dir="rtl"] {
   .dropdown [data-toggle="dropdown"] {
     background-position: left 1em center;
   }
-  @media (min-width: @media-breakpoint-sm) {
-    .dropdown-menu-end {
-      left: 0;
-      right: auto;
+  .dropdown-menu {
+    left: auto !important;
+    right: 0 !important;
+    @media (min-width: @media-breakpoint-sm) {
+      &.dropdown-menu-end {
+        left: 0 !important;
+        right: auto !important;
+      }
     }
   }
 }

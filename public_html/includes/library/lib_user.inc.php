@@ -109,7 +109,7 @@
           if (!isset(session::$data['user_security_timestamp']) || session::$data['user_security_timestamp'] < strtotime($user['date_expire_sessions'])) {
             self::reset();
             notices::add('errors', language::translate('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
-            header('Location: '. document::ilink('login'));
+            header('Location: '. document::link(WS_DIR_ADMIN . 'login.php'));
             exit;
           }
         }
@@ -157,7 +157,7 @@
       if (!self::check_login()) {
         //notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
         $redirect_url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
-        header('Location: ' . document::link(WS_DIR_ADMIN . 'login.php', array('redirect_url' => $_SERVER['REQUEST_URI'])));
+        header('Location: ' . document::link(WS_DIR_ADMIN . 'login.php', ['redirect_url' => $_SERVER['REQUEST_URI']]));
         exit;
       }
     }

@@ -113,7 +113,7 @@
       if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
         if (settings::get('regional_settings_screen')) {
           if (empty(customer::$data['id']) && empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
-            functions::draw_lightbox(document::ilink('regional_settings'));
+            functions::draw_lightbox(document::ilink('regional_settings'), ['seamless' => true]);
           }
         }
       }
@@ -309,7 +309,7 @@
       if (!self::check_login()) {
         notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
         $redirect_url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
-        header('Location: ' . document::ilink('login', array('redirect_url' => $redirect_url)));
+        header('Location: ' . document::ilink('login', ['redirect_url' => $redirect_url]));
         exit;
       }
     }
