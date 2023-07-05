@@ -57,34 +57,31 @@
 
             case 'attributes':
 
-              database::multi_query(
-                "truncate ". DB_TABLE_PREFIX ."attribute_groups;
-                truncate ". DB_TABLE_PREFIX ."attribute_groups_info;
-                truncate ". DB_TABLE_PREFIX ."attribute_values;
-                truncate ". DB_TABLE_PREFIX ."attribute_values_info;
-                truncate ". DB_TABLE_PREFIX ."products_options;
-                truncate ". DB_TABLE_PREFIX ."products_options_stock;
-                truncate ". DB_TABLE_PREFIX ."products_options_values;"
-              );
+              database::multi_query(implode(PHP_EOL, [
+                "truncate ". DB_TABLE_PREFIX ."attribute_groups;",
+                "truncate ". DB_TABLE_PREFIX ."attribute_groups_info;",
+                "truncate ". DB_TABLE_PREFIX ."attribute_values;",
+                "truncate ". DB_TABLE_PREFIX ."attribute_values_info;",
+              ]));
 
               break;
 
             case 'campaigns':
 
-              database::multi_query(
-                "truncate ". DB_TABLE_PREFIX ."products_campaigns;"
-              );
+              database::multi_query(implode(PHP_EOL, [
+                "truncate ". DB_TABLE_PREFIX ."products_campaigns;",
+              ]));
 
               break;
 
             case 'categories':
 
-              database::multi_query(
-                "truncate ". DB_TABLE_PREFIX ."categories;
-                truncate ". DB_TABLE_PREFIX ."categories_filters;
-                truncate ". DB_TABLE_PREFIX ."categories_info;
-                truncate ". DB_TABLE_PREFIX ."products_to_categories;"
-              );
+              database::multi_query(implode(PHP_EOL, [
+                "truncate ". DB_TABLE_PREFIX ."categories;",
+                "truncate ". DB_TABLE_PREFIX ."categories_filters;",
+                "truncate ". DB_TABLE_PREFIX ."categories_info;",
+                "truncate ". DB_TABLE_PREFIX ."products_to_categories;",
+              ]));
 
               foreach (functions::file_search('storage://images/categories/*') as $file) {
                 if (preg_match('#index\.html$#', $file)) continue;
@@ -95,10 +92,10 @@
 
             case 'brands':
 
-              database::multi_query(
-                "truncate ". DB_TABLE_PREFIX ."brands`;
-                truncate ". DB_TABLE_PREFIX ."brands_info;"
-              );
+              database::multi_query(implode(PHP_EOL, [
+                "truncate ". DB_TABLE_PREFIX ."brands`;",
+                "truncate ". DB_TABLE_PREFIX ."brands_info;",
+              ]));
 
               foreach (functions::file_search('storage://images/brands/*') as $file) {
                 if (preg_match('#index\.html$#', $file)) continue;
@@ -109,19 +106,19 @@
 
             case 'products':
 
-              database::multi_query(
-                "truncate ". DB_TABLE_PREFIX ."cart_items;
-                truncate ". DB_TABLE_PREFIX ."products;
-                truncate ". DB_TABLE_PREFIX ."products_attributes;
-                truncate ". DB_TABLE_PREFIX ."products_campaigns;
-                truncate ". DB_TABLE_PREFIX ."products_downloads;
-                truncate ". DB_TABLE_PREFIX ."products_images;
-                truncate ". DB_TABLE_PREFIX ."products_info;
-                truncate ". DB_TABLE_PREFIX ."products_prices;
-                truncate ". DB_TABLE_PREFIX ."products_to_categories;
-                truncate ". DB_TABLE_PREFIX ."products_stock_items;
-                update ". DB_TABLE_PREFIX ."orders_items set product_id = 0;"
-              );
+              database::multi_query(implode(PHP_EOL, [
+                "truncate ". DB_TABLE_PREFIX ."cart_items;",
+                "truncate ". DB_TABLE_PREFIX ."products;",
+                "truncate ". DB_TABLE_PREFIX ."products_attributes;",
+                "truncate ". DB_TABLE_PREFIX ."products_campaigns;",
+                "truncate ". DB_TABLE_PREFIX ."products_images;",
+                "truncate ". DB_TABLE_PREFIX ."products_info;",
+                "truncate ". DB_TABLE_PREFIX ."products_prices;",
+                "truncate ". DB_TABLE_PREFIX ."products_to_categories;",
+                "truncate ". DB_TABLE_PREFIX ."products_references;",
+                "truncate ". DB_TABLE_PREFIX ."products_stock_options;",
+                "update ". DB_TABLE_PREFIX ."orders_items set product_id = 0;",
+              ]));
 
               foreach (functions::file_search('storage://images/products/*') as $file) {
                 if (preg_match('#index\.html$#', $file)) continue;
@@ -130,28 +127,21 @@
 
               break;
 
-            case 'stock_items':
+            case 'suppliers':
 
-              database::multi_query(
-                "truncate ". DB_TABLE_PREFIX ."stock_items;
-                truncate ". DB_TABLE_PREFIX ."stock_items_info;
-                truncate ". DB_TABLE_PREFIX ."stock_transactions;
-                truncate ". DB_TABLE_PREFIX ."stock_transactions_contents;
-                update ". DB_TABLE_PREFIX ."orders_items set stock_item_id = 0;"
-              );
-
-              foreach (functions::file_search('storage://images/stock_items/*') as $file) {
-                if (preg_match('#index\.html$#', $file)) continue;
-                functions::file_delete($file);
-              }
+              database::multi_query(implode(PHP_EOL, [
+                "truncate ". DB_TABLE_PREFIX ."suppliers;",
+              ]));
 
               break;
 
-            case 'suppliers':
+            case 'stock_items':
 
-              database::multi_query(
-                "truncate ". DB_TABLE_PREFIX ."suppliers;"
-              );
+              database::multi_query(implode(PHP_EOL, [
+                "truncate ". DB_TABLE_PREFIX ."products_stock_options;",
+                "truncate ". DB_TABLE_PREFIX ."stock_items;",
+                "truncate ". DB_TABLE_PREFIX ."stock_items_info;",
+              ]));
 
               break;
           }
