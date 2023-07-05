@@ -253,7 +253,7 @@ e22b8bfe3b82a002df0d30d13e64bd6d	includes/entities/ent_slide.inc.php
 62c0986bd5b78a9b1b1136ae9ba82ded	includes/entities/ent_supplier.inc.php
 3a55f72d7ae067945305720d8f49ef37	includes/entities/ent_tax_class.inc.php
 86801d53d26a7db2b1e007ea6caf5671	includes/entities/ent_tax_rate.inc.php
-08d492f63d092b97c8b620a7be4c43b1	includes/entities/ent_user.inc.php
+e82749e5905672da9db4bd6179c07c18	includes/entities/ent_user.inc.php
 5002e3b0802c3b536a756178a3224c6a	includes/entities/ent_view.inc.php
 9380604538a90116f387aaa89c3cf451	includes/entities/ent_vmod.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
