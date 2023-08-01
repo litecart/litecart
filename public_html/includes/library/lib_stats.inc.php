@@ -10,6 +10,7 @@
       self::$_data = [
         'page_parse_time' => 0, // s
         'page_capture_time' => 0, // s
+        'view_stitching' => 0, // s
         'memory_peak_usage' => 0, // percent
         'database_queries' => 0, // qty
         'database_execution_time' => 0, // s
@@ -71,6 +72,7 @@
              . '  - Page Capture Time: ' . number_format(self::get('page_capture_time')*1000, 0, '.', ' ') . ' ms' . PHP_EOL
              . '  - Included Files: ' . count(get_included_files()) . PHP_EOL
              . '  - Memory Peak: ' . number_format(self::get('memory_peak_usage'), 2, '.', ' ') . ' MB / '. ini_get('memory_limit') . PHP_EOL
+             . '  - Rendering: ' . number_format(ent_view::$time_elapsed*1000, 0, '.', ' ') . ' ms' . PHP_EOL
              . '  - Database Queries: ' . number_format(self::get('database_queries'), 0, '.', ' ') . PHP_EOL
              . '  - Database Parse Time: ' . number_format(self::get('database_execution_time')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('database_execution_time')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
              . '  - Network Requests: ' . self::get('http_requests') . PHP_EOL
