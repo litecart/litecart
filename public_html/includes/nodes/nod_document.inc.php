@@ -110,7 +110,7 @@
         ];
       }
 
-      self::$snippets['head_tags'][] = "<script>window._env = ". json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .";</script>";
+      self::$snippets['head_tags'][] = '<script>window._env = '. json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .';</script>';
     }
 
     public static function prepare_output() {
@@ -150,46 +150,53 @@
 
     public static function before_output() {
 
-    // Extract stylesheets and on page styling
+    // Extract styling
       $GLOBALS['output'] = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function($matches) use (&$stylesheets, &$styles, &$javascripts, &$javascript) {
 
+      // Extract stylesheets
         $stylesheets = [];
-        $styles = [];
 
-        $matches[2] = preg_replace_callback('#(<link\s(?:[^>]*rel="stylesheet")[^>]*>)\R?#is', function($match) use (&$stylesheets, &$styles) {
-          $stylesheets[] = trim($match[1]);
+        $matches[2] = preg_replace_callback('#<link([^>]*rel="stylesheet"[^>]*)>\R?#is', function($match) use (&$stylesheets) {
+          $stylesheets[] = '<link'. rtrim($match[1], ' /') .' />';
         }, $matches[2]);
 
-        $matches[2] = preg_replace_callback('#<style>(.*?)</style>\R?#is', function($match) use (&$stylesheets, &$styles) {
+      // Extract inline styling
+        $styles = [];
+
+        $matches[2] = preg_replace_callback('#<style[^>]*>(.+?)</style>\R?#is', function($match) use (&$styles) {
           $styles[] = trim($match[1]);
         }, $matches[2]);
 
         return $matches[1] . $matches[2] . $matches[3];
       }, $GLOBALS['output']);
 
-    // Extract javascripts and on page javascripting
+    // Extract javascripts
       $GLOBALS['output'] = preg_replace_callback('#(<body[^>]*>)(.*)(</body>)#is', function($matches) use (&$javascripts, &$javascript) {
 
+      // Extract javascript resources
         $javascripts = [];
-        $javascript = [];
 
-        $matches[2] = preg_replace_callback('#\R?(<script[^>]+></script>)\R?#is', function($match) use (&$javascripts, &$javascript) {
-           $javascripts[] = trim($match[1]);
+        $matches[2] = preg_replace_callback('#\R?<script([^>]+src="[^"]+"[^>]*)></script>\R?#is', function($match) use (&$javascripts) {
+          $javascripts[] = '<script'. $match[1] .'></script>';
         }, $matches[2]);
 
-        $matches[2] = preg_replace_callback('#<script(?:[^>]*\stype="(?:application|text)/javascript")?>(?!</script>)(.*?)</script>\R?#is', function($match) use (&$javascripts, &$javascript) {
+      // Extract inline scripts
+        $javascript = [];
+
+        $matches[2] = preg_replace_callback('#<script[^>]*(?!src="[^"]+")[^>]*>(.+?)</script>\R?#is', function($match) use (&$javascript) {
            $javascript[] = trim($match[1], "\r\n");
         }, $matches[2]);
 
         return $matches[1] . $matches[2] . $matches[3];
       }, $GLOBALS['output']);
 
-    // Reinsert extracted content
+    // Reinsert extracted stylesheets
       if (!empty($stylesheets)) {
         $stylesheets = implode(PHP_EOL, $stylesheets) . PHP_EOL;
         $GLOBALS['output'] = preg_replace('#</head>#', addcslashes($stylesheets . '</head>', '\\$'), $GLOBALS['output'], 1);
       }
 
+    // Reinsert inline styles
       if (!empty($styles)) {
 
       // Minify Inline CSS
@@ -209,11 +216,13 @@
         $GLOBALS['output'] = preg_replace('#</head>#', addcslashes($styles . '</head>', '\\$'), $GLOBALS['output'], 1);
       }
 
+    // Reinsert javascript resources
       if (!empty($javascripts)) {
         $javascripts = implode(PHP_EOL, $javascripts) . PHP_EOL;
         $GLOBALS['output'] = preg_replace('#</body>#is', addcslashes($javascripts .'</body>', '\\$'), $GLOBALS['output'], 1);
       }
 
+    // Reinsert inline javascripts
       if (!empty($javascript)) {
         $javascript = '<script>' . PHP_EOL
                     . implode(PHP_EOL . PHP_EOL, $javascript) . PHP_EOL
