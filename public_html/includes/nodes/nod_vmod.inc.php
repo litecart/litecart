@@ -296,225 +296,7 @@
 
       try {
 
-        if (!$xml = file_get_contents($file)) {
-          throw new \Exception('Could not read file', E_USER_ERROR);
-        }
-
-      // Normalize line endings
-        $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
-
-        $dom = new \DOMDocument('1.0', 'UTF-8');
-        $dom->preserveWhiteSpace = false;
-
-        if (!$dom->loadXml($xml)) {
-          throw new \Exception(libxml_get_last_error()->message);
-        }
-
-        if ($dom->documentElement->tagName != 'vmod') {
-          throw new \Exception("File ($file) is not a valid vmod or vQmod");
-        }
-
-        if (empty($dom->getElementsByTagName('name')->item(0))) {
-          throw new \Exception('File is missing the name element');
-        }
-
-        $id = preg_replace('#\.disabled$#', '', basename(dirname($file)));
-        if ($id == 'vmods') $id = preg_replace('#\.(disabled|xml)$#', '', basename($file));
-
-        $vmod = [
-          'type' => 'vmod',
-          'id' => $id,
-          'name' => $dom->getElementsByTagName('name')->item(0)->textContent,
-          'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
-          'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
-          'date_modified' => date('Y-m-d H:i:s', filemtime($file)),
-          'aliases' => [],
-          'settings' => [],
-          'files' => [],
-          'install' => null,
-          'upgrades' => [],
-        ];
-
-        if (empty($vmod['version'])) {
-          $vmod['version'] = date('Y-m-d', filemtime($file));
-        }
-
-        if (!$installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
-
-          if ($dom->getElementsByTagName('install')->length > 0) {
-            $vmod['install'] = $dom->getElementsByTagName('install')->item(0)->textContent;
-          }
-
-        } else {
-
-          if (!empty($dom->getElementsByTagName('upgrade'))) {
-            foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
-
-              $upgrade_version = $upgrade_node->getAttribute('version');
-
-              if (version_compare($vmod['version'], $upgrade_version, '<=')) {
-                $vmod['upgrades'][] = [
-                  'version' => $upgrade_version,
-                  'script' => $upgrade_node->textContent,
-                ];
-              }
-            }
-          }
-
-          uasort($vmod['upgrades'], function($a, $b){
-            return version_compare($a['version'], $b['version']);
-          });
-        }
-
-        $aliases = [];
-        foreach ($dom->getElementsByTagName('alias') as $alias_node) {
-          $aliases[$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
-        }
-
-        foreach ($dom->getElementsByTagName('setting') as $setting_node) {
-          $key = $setting_node->getElementsByTagName('key')->item(0)->textContent;
-          $default_value = $setting_node->getElementsByTagName('default_value')->item(0)->textContent;
-          $vmod['settings'][$key] = isset(self::$_settings[$vmod['id']][$key]) ? self::$_settings[$vmod['id']][$key] : $default_value;
-        }
-
-        if (empty($dom->getElementsByTagName('file'))) {
-          throw new \Exception('File has no defined files to modify');
-        }
-
-        foreach ($dom->getElementsByTagName('file') as $file_node) {
-
-          $vmod_file = [
-            'name' => $file_node->getAttribute('name'),
-            'operations' => [],
-          ];
-
-          foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
-
-          // On Error
-            $onerror = $operation_node->getAttribute('onerror');
-
-          // Find
-            if (!in_array($operation_node->getAttribute('method'), ['top', 'bottom'])) {
-
-              $find_node = $operation_node->getElementsByTagName('find')->item(0);
-              $find = strtr($find_node->textContent, $aliases);
-
-            // Trim
-              if (in_array($operation_node->getAttribute('type'), ['inline', 'regex'])) {
-                $find = trim($find);
-
-              } else if (in_array($operation_node->getAttribute('type'), ['multiline', ''])) {
-                $find = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $find); // Trim beginning of CDATA
-                $find = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $find); // Trim end of CDATA
-              }
-
-            // Cook the regex pattern
-              if ($operation_node->getAttribute('type') != 'regex') {
-
-                if ($operation_node->getAttribute('type') == 'inline') {
-                  $find = preg_quote($find, '#');
-
-                } else {
-
-                // Whitespace
-                  $find = preg_split('#(\r\n?|\n)#', $find);
-                  for ($i=0; $i<count($find); $i++) {
-                    if ($find[$i] = trim($find[$i])) {
-                      $find[$i] = '[ \\t]*' . preg_quote($find[$i], '#') . '[ \\t]*(?:\r\n?|\n|$)';
-                    } else if ($i != count($find)-1) {
-                      $find[$i] = '[ \\t]*(?:\r\n?|\n)';
-                    }
-                  }
-                  $find = implode($find);
-
-                // Offset
-                  if ($find_node->getAttribute('offset-before') != '') {
-                    $find = '(?:.*?(?:\r\n?|\n)){'. (int)$find_node->getAttribute('offset-before') .'}' . $find;
-                  }
-
-                  if ($find_node->getAttribute('offset-after') != '') {
-                    $find = $find . '(?:.*?(?:\r\n?|\n|$)){0,'. (int)$find_node->getAttribute('offset-after') .'}';
-                  }
-                }
-
-              // Encapsulate regex
-                $find = '#'. $find .'#';
-              }
-
-            // Indexes
-              if ($indexes = $find_node->getAttribute('index')) {
-                $indexes = preg_split('#\s*,\s*#', $indexes, -1, PREG_SPLIT_NO_EMPTY);
-              }
-            }
-
-          // Insert
-            $insert_node = $operation_node->getElementsByTagName('insert')->item(0);
-            $insert = strtr($insert_node->textContent, $aliases);
-
-            if (!empty($vmod['aliases'])) {
-              foreach ($vmod['aliases'] as $key => $value) {
-                $insert = str_replace('{alias:'. $key .'}', $value, $insert);
-              }
-            }
-
-            if (!empty($vmod['settings'])) {
-              foreach ($vmod['settings'] as $key => $value) {
-                $insert = str_replace('{setting:'. $key .'}', $value, $insert);
-              }
-            }
-
-            if ($operation_node->getAttribute('type') != 'regex') {
-
-              if (in_array($operation_node->getAttribute('type'), ['multiline', ''])) {
-                $insert = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $insert); // Trim beginning of CDATA
-                $insert = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $insert); // Trim end of CDATA
-              }
-
-              switch ($method = $operation_node->getAttribute('method')) {
-
-                case 'before':
-                  $insert = addcslashes($insert, '\\$').'$0';
-                  break;
-
-                case 'after':
-                  $insert = '$0'. addcslashes($insert, '\\$');
-                  break;
-
-                case 'top':
-                  $find = '#^#s';
-                  $indexes = '';
-                  $insert = addcslashes($insert, '\\$').'$0';
-                  break;
-
-                case 'bottom':
-                  $find = '#$#s';
-                  $indexes = '';
-                  $insert = '$0'.addcslashes($insert, '\\$');
-                  break;
-
-                case 'replace':
-                  $insert = addcslashes($insert, '\\$');
-                  break;
-
-                default:
-                  throw new \Exception("Unknown value \"$method\" for operation method (before|after|replace|bottom|top)");
-                  continue 2;
-              }
-            }
-
-          // Gather
-            $vmod_file['operations'][] = [
-              'onerror' => $onerror,
-              'find' => [
-                'pattern' => $find,
-                'indexes' => $indexes,
-              ],
-              'insert' => $insert,
-            ];
-          }
-
-          $vmod['files'][$vmod_file['name']] = $vmod_file;
-        }
+        $vmod = self::parse($file);
 
         self::$_modifications[$vmod['id']] = $vmod;
 
@@ -595,5 +377,230 @@
       } catch (\Exception $e) {
         trigger_error("Could not load vMod ($file): " . $e->getMessage(), E_USER_WARNING);
       }
+    }
+
+    public static function parse($file) {
+
+      if (!$xml = file_get_contents($file)) {
+        throw new \Exception('Could not read file', E_USER_ERROR);
+      }
+
+    // Normalize line endings
+      $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
+
+      $dom = new \DOMDocument('1.0', 'UTF-8');
+      $dom->preserveWhiteSpace = false;
+
+      if (!$dom->loadXml($xml)) {
+        throw new \Exception(libxml_get_last_error()->message);
+      }
+
+      if ($dom->documentElement->tagName != 'vmod') {
+        throw new \Exception("File ($file) is not a valid vmod or vQmod");
+      }
+
+      if (empty($dom->getElementsByTagName('name')->item(0))) {
+        throw new \Exception('File is missing the name element');
+      }
+
+      $id = preg_replace('#\.disabled$#', '', basename(dirname($file)));
+      if ($id == 'vmods') $id = preg_replace('#\.(disabled|xml)$#', '', basename($file));
+
+      $vmod = [
+        'type' => 'vmod',
+        'id' => $id,
+        'name' => $dom->getElementsByTagName('name')->item(0)->textContent,
+        'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
+        'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
+        'date_modified' => date('Y-m-d H:i:s', filemtime($file)),
+        'aliases' => [],
+        'settings' => [],
+        'files' => [],
+        'install' => null,
+        'upgrades' => [],
+      ];
+
+      if (empty($vmod['version'])) {
+        $vmod['version'] = date('Y-m-d', filemtime($file));
+      }
+
+      if (!$installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
+
+        if ($dom->getElementsByTagName('install')->length > 0) {
+          $vmod['install'] = $dom->getElementsByTagName('install')->item(0)->textContent;
+        }
+
+      } else {
+
+        if (!empty($dom->getElementsByTagName('upgrade'))) {
+          foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
+
+            $upgrade_version = $upgrade_node->getAttribute('version');
+
+            if (version_compare($vmod['version'], $upgrade_version, '<=')) {
+              $vmod['upgrades'][] = [
+                'version' => $upgrade_version,
+                'script' => $upgrade_node->textContent,
+              ];
+            }
+          }
+        }
+
+        uasort($vmod['upgrades'], function($a, $b){
+          return version_compare($a['version'], $b['version']);
+        });
+      }
+
+      $aliases = [];
+      foreach ($dom->getElementsByTagName('alias') as $alias_node) {
+        $aliases[$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
+      }
+
+      foreach ($dom->getElementsByTagName('setting') as $setting_node) {
+        $key = $setting_node->getElementsByTagName('key')->item(0)->textContent;
+        $default_value = $setting_node->getElementsByTagName('default_value')->item(0)->textContent;
+        $vmod['settings'][$key] = isset(self::$_settings[$vmod['id']][$key]) ? self::$_settings[$vmod['id']][$key] : $default_value;
+      }
+
+      if (empty($dom->getElementsByTagName('file'))) {
+        throw new \Exception('File has no defined files to modify');
+      }
+
+      foreach ($dom->getElementsByTagName('file') as $file_node) {
+
+        $vmod_file = [
+          'name' => $file_node->getAttribute('name'),
+          'operations' => [],
+        ];
+
+        foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
+
+        // On Error
+          $onerror = $operation_node->getAttribute('onerror');
+
+        // Find
+          if (!in_array($operation_node->getAttribute('method'), ['top', 'bottom'])) {
+
+            $find_node = $operation_node->getElementsByTagName('find')->item(0);
+            $find = strtr($find_node->textContent, $aliases);
+
+          // Trim
+            if (in_array($operation_node->getAttribute('type'), ['inline', 'regex'])) {
+              $find = trim($find);
+
+            } else if (in_array($operation_node->getAttribute('type'), ['multiline', ''])) {
+              $find = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $find); // Trim beginning of CDATA
+              $find = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $find); // Trim end of CDATA
+            }
+
+          // Cook the regex pattern
+            if ($operation_node->getAttribute('type') != 'regex') {
+
+              if ($operation_node->getAttribute('type') == 'inline') {
+                $find = preg_quote($find, '#');
+
+              } else {
+
+              // Whitespace
+                $find = preg_split('#(\r\n?|\n)#', $find);
+                for ($i=0; $i<count($find); $i++) {
+                  if ($find[$i] = trim($find[$i])) {
+                    $find[$i] = '[ \\t]*' . preg_quote($find[$i], '#') . '[ \\t]*(?:\r\n?|\n|$)';
+                  } else if ($i != count($find)-1) {
+                    $find[$i] = '[ \\t]*(?:\r\n?|\n)';
+                  }
+                }
+                $find = implode($find);
+
+              // Offset
+                if ($find_node->getAttribute('offset-before') != '') {
+                  $find = '(?:.*?(?:\r\n?|\n)){'. (int)$find_node->getAttribute('offset-before') .'}' . $find;
+                }
+
+                if ($find_node->getAttribute('offset-after') != '') {
+                  $find = $find . '(?:.*?(?:\r\n?|\n|$)){0,'. (int)$find_node->getAttribute('offset-after') .'}';
+                }
+              }
+
+            // Encapsulate regex
+              $find = '#'. $find .'#';
+            }
+
+          // Indexes
+            if ($indexes = $find_node->getAttribute('index')) {
+              $indexes = preg_split('#\s*,\s*#', $indexes, -1, PREG_SPLIT_NO_EMPTY);
+            }
+          }
+
+        // Insert
+          $insert_node = $operation_node->getElementsByTagName('insert')->item(0);
+          $insert = strtr($insert_node->textContent, $aliases);
+
+          if (!empty($vmod['aliases'])) {
+            foreach ($vmod['aliases'] as $key => $value) {
+              $insert = str_replace('{alias:'. $key .'}', $value, $insert);
+            }
+          }
+
+          if (!empty($vmod['settings'])) {
+            foreach ($vmod['settings'] as $key => $value) {
+              $insert = str_replace('{setting:'. $key .'}', $value, $insert);
+            }
+          }
+
+          if ($operation_node->getAttribute('type') != 'regex') {
+
+            if (in_array($operation_node->getAttribute('type'), ['multiline', ''])) {
+              $insert = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $insert); // Trim beginning of CDATA
+              $insert = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $insert); // Trim end of CDATA
+            }
+
+            switch ($method = $operation_node->getAttribute('method')) {
+
+              case 'before':
+                $insert = addcslashes($insert, '\\$').'$0';
+                break;
+
+              case 'after':
+                $insert = '$0'. addcslashes($insert, '\\$');
+                break;
+
+              case 'top':
+                $find = '#^#s';
+                $indexes = '';
+                $insert = addcslashes($insert, '\\$').'$0';
+                break;
+
+              case 'bottom':
+                $find = '#$#s';
+                $indexes = '';
+                $insert = '$0'.addcslashes($insert, '\\$');
+                break;
+
+              case 'replace':
+                $insert = addcslashes($insert, '\\$');
+                break;
+
+              default:
+                throw new \Exception("Unknown value \"$method\" for operation method (before|after|replace|bottom|top)");
+                continue 2;
+            }
+          }
+
+        // Gather
+          $vmod_file['operations'][] = [
+            'onerror' => $onerror,
+            'find' => [
+              'pattern' => $find,
+              'indexes' => $indexes,
+            ],
+            'insert' => $insert,
+          ];
+        }
+
+        $vmod['files'][$vmod_file['name']] = $vmod_file;
+      }
+
+      return $vmod;
     }
   }
