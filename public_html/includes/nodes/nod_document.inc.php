@@ -203,9 +203,7 @@
         ];
 
         $styles = '<style>' . PHP_EOL
-               //. '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
                . preg_replace(array_keys($search_replace), array_values($search_replace), implode(PHP_EOL . PHP_EOL, $styles)) . PHP_EOL
-               //. '/*]]>*/-->' . PHP_EOL
                . '</style>' . PHP_EOL;
 
         $GLOBALS['output'] = preg_replace('#</head>#', addcslashes($styles . '</head>', '\\$'), $GLOBALS['output'], 1);
@@ -218,9 +216,7 @@
 
       if (!empty($javascript)) {
         $javascript = '<script>' . PHP_EOL
-                    //. '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
                     . implode(PHP_EOL . PHP_EOL, $javascript) . PHP_EOL
-                    //. '/*]]>*/-->' . PHP_EOL
                     . '</script>' . PHP_EOL;
 
         $GLOBALS['output'] = preg_replace('#</body>#is', addcslashes($javascript . '</body>', '\\$'), $GLOBALS['output'], 1);
