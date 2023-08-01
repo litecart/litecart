@@ -17,7 +17,7 @@
     $categories_query = functions::catalog_categories_query(0);
 
     while ($category = database::fetch($categories_query)) {
-      $site_navigation->snippets['categories'][$category['id']] = [
+      $site_navigation->snippets['categories'][] = [
         'type' => 'category',
         'id' => $category['id'],
         'title' => $category['name'],
@@ -36,7 +36,7 @@
     );
 
     while ($brand = database::fetch($pages_query)) {
-      $site_navigation->snippets['brands'][$brand['id']] = [
+      $site_navigation->snippets['brands'][] = [
         'type' => 'brand',
         'id' => $brand['id'],
         'title' => $brand['name'],
@@ -56,7 +56,7 @@
     );
 
     while ($page = database::fetch($pages_query)) {
-      $site_navigation->snippets['pages'][$page['id']] = [
+      $site_navigation->snippets['pages'][] = [
         'type' => 'page',
         'id' => $page['id'],
         'title' => $page['title'],
@@ -76,7 +76,7 @@
     );
 
     while ($page = database::fetch($pages_query)) {
-      $site_navigation->snippets['information'][$page['id']] = [
+      $site_navigation->snippets['information'][] = [
         'type' => 'page',
         'id' => $page['id'],
         'title' => $page['title'],

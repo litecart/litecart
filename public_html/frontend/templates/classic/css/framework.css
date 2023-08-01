@@ -259,7 +259,6 @@ p + p {
 }
 .box > .title {
   margin-top: 0;
-  padding: 0.5em 1em;
 }
 /* Breadcrumbs - Bootstrap Compatible */
 ul.breadcrumb {

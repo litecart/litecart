@@ -612,7 +612,8 @@
             $fields = [
               'status',
               'brand_id',
-              'default_catgeory_id',              'supplier_id',
+              'default_catgeory_id',
+              'supplier_id',
               'code',
               'tax_class_id',
               'quantity',

@@ -202,9 +202,9 @@ module.exports = function(grunt) {
       javascripts: {
         files: [
           'public_html/assets/featherlight/featherlight.js',
-          'public_html/backend/template/**/js/*.js',
-          'public_html/frontend/templates/**/js/*.js',
-          '!public_html/frontend/templates/**/js/*.min.js',
+          'public_html/backend/template/**/*.js',
+          'public_html/frontend/templates/**/*.js',
+          '!public_html/frontend/templates/**/*.min.js',
         ],
         tasks: ['uglify']
       },
