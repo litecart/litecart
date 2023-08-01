@@ -4,5 +4,5 @@
 
   breadcrumbs::add(language::translate('title_categories', 'Categories'));
 
-  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/categories.inc.php');
-  echo $_page;
+  $_page = new ent_view();
+  echo $_page->render(FS_DIR_TEMPLATE . 'pages/categories.inc.php');

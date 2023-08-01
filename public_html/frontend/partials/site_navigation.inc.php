@@ -1,6 +1,6 @@
 <?php
 
-  $site_navigation = new ent_view(FS_DIR_TEMPLATE . 'partials/site_navigation.inc.php');
+  $site_navigation = new ent_view();
 
   $site_navigation_cache_token = cache::token('site_navigation', ['language']);
   if (!$site_navigation->snippets = cache::get($site_navigation_cache_token)) {
@@ -110,4 +110,4 @@
 
   functions::draw_lightbox();
 
-  echo $site_navigation;
+  echo $site_navigation->render(FS_DIR_TEMPLATE . 'partials/site_navigation.inc.php');

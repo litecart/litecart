@@ -24,9 +24,9 @@
       notices::$data = array_filter(notices::$data);
 
       if (!empty(notices::$data)) {
-        $notices = new ent_view(FS_DIR_TEMPLATE . 'partials/notices.inc.php');
+        $notices = new ent_view();
         $notices->snippets['notices'] = notices::$data;
-        document::$snippets['notices'] = $notices;
+        document::$snippets['notices'] = $notices->render(FS_DIR_TEMPLATE . 'partials/notices.inc.php');
         self::reset();
       }
     }

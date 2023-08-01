@@ -45,7 +45,7 @@
     $session_language = language::$selected['code'];
     language::set($order->data['language_code']);
 
-    $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/order.inc.php');
+    $_page = new ent_view();
     $_page->snippets = [
       'text_direction' => !empty(language::$languages[$order->data['language_code']]['direction']) ? language::$languages[$order->data['language_code']]['direction'] : 'ltr',
       'order' => $order->data,
@@ -70,7 +70,7 @@
       $_page->snippets['comments'][] = $comment;
     }
 
-    echo $_page;
+    echo $_page->render(FS_DIR_TEMPLATE . 'pages/order.inc.php');
 
     language::set($session_language);
 

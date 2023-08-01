@@ -62,6 +62,6 @@
     }
   }
 
-  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/contact.inc.php');
+  $_page = new ent_view();
 
-  echo $_page;
+  echo $_page->render(FS_DIR_TEMPLATE . 'pages/contact.inc.php');

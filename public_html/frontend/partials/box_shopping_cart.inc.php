@@ -1,7 +1,7 @@
 <?php
   if (settings::get('catalog_only_mode')) return;
 
-  $box_shopping_cart = new ent_view(FS_DIR_TEMPLATE . 'partials/box_shopping_cart.inc.php');
+  $box_shopping_cart = new ent_view();
   $box_shopping_cart->snippets = [
     'items' => [],
     'link' => document::ilink('shopping_cart'),
@@ -20,4 +20,4 @@
     $box_shopping_cart->snippets['subtotal'] = currency::format(cart::$cart->data['subtotal']);
   }
 
-  echo $box_shopping_cart;
+  echo $box_shopping_cart->render(FS_DIR_TEMPLATE . 'partials/box_shopping_cart.inc.php');

@@ -17,7 +17,7 @@
     return;
   }
 
-  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/shopping_cart.inc.php');
+  $_page = new ent_view();
 
   $_page->snippets = [
     'items' => [],
@@ -71,4 +71,4 @@
     ];
   }
 
-  echo $_page;
+  echo $_page->render(FS_DIR_TEMPLATE . 'pages/shopping_cart.inc.php');

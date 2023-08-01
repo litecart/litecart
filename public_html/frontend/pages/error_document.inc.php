@@ -9,7 +9,7 @@
     exit;
   }
 
-  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/error_document.inc.php');
+  $_page = new ent_view();
 
   switch (http_response_code()) {
 
@@ -47,4 +47,4 @@
 
   $_page->snippets['code'] = http_response_code();
 
-  echo $_page;
+  echo $_page->render(FS_DIR_TEMPLATE . 'pages/error_document.inc.php');

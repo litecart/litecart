@@ -17,7 +17,8 @@
 
   functions::draw_lightbox();
 
-  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/search_results.inc.php');
+  $_page = new ent_view();
+
   $_page->snippets = [
     'title' => sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])),
     'products' => [],
@@ -45,4 +46,4 @@
   $_page->snippets['products'] = $products;
   $_page->snippets['pagination'] = functions::draw_pagination($num_pages);
 
-  echo $_page;
+  echo $_page->render(FS_DIR_TEMPLATE . 'pages/search_results.inc.php');

@@ -11,7 +11,7 @@
 
     if (database::num_rows($brands_query)) {
 
-      $box_brand_links = new ent_view(FS_DIR_TEMPLATE . 'partials/box_brand_links.inc.php');
+      $box_brand_links = new ent_view();
 
       $box_brand_links->snippets['brands'] = [];
 
@@ -25,7 +25,7 @@
         ];
       }
 
-      echo $box_brand_links;
+      echo $box_brand_links->render(FS_DIR_TEMPLATE . 'partials/box_brand_links.inc.php');
     }
 
     cache::end_capture($box_brand_links_cache_token);

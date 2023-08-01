@@ -33,11 +33,11 @@
     }
   }
 
-  $box_checkout_payment = new ent_view(FS_DIR_TEMPLATE . 'partials/box_checkout_payment.inc.php');
+  $box_checkout_payment = new ent_view();
 
   $box_checkout_payment->snippets = [
     'selected' => $shopping_cart->payment->selected,
     'options' => $options,
   ];
 
-  echo $box_checkout_payment;
+  echo $box_checkout_payment->render(FS_DIR_TEMPLATE . 'partials/box_checkout_payment.inc.php');

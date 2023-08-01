@@ -129,11 +129,5 @@
     }
   }
 
-
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/login.ajax.inc.php');
-  } else {
-    $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/login.inc.php');
-  }
-
-  echo $_page;
+  $_page = new ent_view();
+  echo $_page->render(FS_DIR_TEMPLATE . 'pages/login.inc.php');

@@ -79,11 +79,7 @@
   ];
 
 // Page
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/product.ajax.inc.php');
-  } else {
-    $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/product.inc.php');
-  }
+  $_page = new ent_view();
 
   $schema_json = [
     '@context' => 'http://schema.org/',
@@ -324,6 +320,10 @@
     }
   }
 
-  echo $_page;
+  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    echo $_page->render(FS_DIR_TEMPLATE . 'pages/product.ajax.inc.php');
+  } else {
+    echo $_page->render(FS_DIR_TEMPLATE . 'pages/product.inc.php');
+  }
 
   document::$snippets['head_tags']['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json, JSON_UNESCAPED_SLASHES) .'</script>';

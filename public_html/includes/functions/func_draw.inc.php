@@ -132,7 +132,7 @@
 
   function draw_listing_category($category, $view='views/listing_category') {
 
-    $listing_category = new ent_view(FS_DIR_TEMPLATE . 'partials/listing_category.inc.php');
+    $listing_category = new ent_view();
 
     list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
 
@@ -154,12 +154,12 @@
       'short_description' => $category['short_description'],
     ];
 
-    return (string)$listing_category;
+    return $listing_category->render(FS_DIR_TEMPLATE . 'partials/listing_category.inc.php');
   }
 
   function draw_listing_product($product, $inherit_params=[], $view='views/listing_product') {
 
-    $listing_product = new ent_view(FS_DIR_TEMPLATE . 'partials/listing_product.inc.php');
+    $listing_product = new ent_view();
 
     $sticker = '';
     if ($product['campaign_price']) {
@@ -213,7 +213,7 @@
       $listing_product->snippets['image']['original'] = functions::image_process(FS_DIR_APP . $listing_product->snippets['image']['original'], ['watermark' => true]);
     }
 
-    return (string)$listing_product;
+    return $listing_product->render(FS_DIR_TEMPLATE . 'partials/listing_product.inc.php');
   }
 
   function draw_lightbox($selector='', $parameters=[]) {
@@ -282,7 +282,7 @@
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]) .'" />';
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]) .'" />';
 
-    $pagination = new ent_view(FS_DIR_TEMPLATE . 'partials/pagination.inc.php');
+    $pagination = new ent_view();
 
     $pagination->snippets['items'][] = [
       'page' => $_GET['page']-1,
@@ -340,5 +340,5 @@
       'active' => false,
     ];
 
-    return (string)$pagination;
+    return $pagination->render(FS_DIR_TEMPLATE . 'partials/pagination.inc.php');
   }

@@ -65,7 +65,7 @@
     }
   }
 
-  $box_newsletter_subscribe = new ent_view(FS_DIR_TEMPLATE . 'partials/box_newsletter_subscribe.inc.php');
+  $box_newsletter_subscribe = new ent_view();
 
   $box_newsletter_subscribe->snippets = [
     'privacy_policy_link' => null,
@@ -75,4 +75,4 @@
       $box_newsletter_subscribe->snippets['privacy_policy_link'] = document::href_ilink('information', ['page_id' => $privacy_policy_id]);
   }
 
-  echo $box_newsletter_subscribe;
+  echo $box_newsletter_subscribe->render(FS_DIR_TEMPLATE . 'partials/box_newsletter_subscribe.inc.php');

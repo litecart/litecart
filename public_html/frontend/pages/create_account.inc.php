@@ -128,7 +128,7 @@
     }
   }
 
-  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/create_account.inc.php');
+  $_page = new ent_view();
 
   $_page->snippets = [
     'consent' => null,
@@ -143,4 +143,4 @@
       $_page->snippets['consent'] = strtr(language::translate('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
   }
 
-  echo $_page;
+  echo $_page->render(FS_DIR_TEMPLATE . 'pages/create_account.inc.php');

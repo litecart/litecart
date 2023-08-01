@@ -14,7 +14,7 @@
     public static function after_capture() {
 
       if (count(self::$data) > 1) {
-        $breadcrumbs = new ent_view(FS_DIR_TEMPLATE . 'partials/breadcrumbs.inc.php');
+        $breadcrumbs = new ent_view();
 
         $breadcrumbs->snippets['breadcrumbs'] = [];
         foreach (self::$data as $breadcrumb) {
@@ -24,7 +24,7 @@
           ];
         }
 
-        document::$snippets['breadcrumbs'] = $breadcrumbs;
+        document::$snippets['breadcrumbs'] = $breadcrumbs->render(FS_DIR_TEMPLATE . 'partials/breadcrumbs.inc.php');
       }
     }
 

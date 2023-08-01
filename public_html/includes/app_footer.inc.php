@@ -8,12 +8,14 @@
   event::fire('after_capture');
 
 // Stitch content with layout
-  $_page = new ent_view(FS_DIR_TEMPLATE . 'layouts/'.document::$layout.'.inc.php');
+  $_page = new ent_view();
+
   $_page->snippets = [
     'important_notice' => settings::get('important_notice'),
     'content' => $content,
   ];
-  $output = (string)$_page;
+
+  $output = $_page->render(FS_DIR_TEMPLATE . 'layouts/'.document::$layout.'.inc.php');
 
 // Run prepare output processes
   event::fire('prepare_output');
@@ -22,8 +24,7 @@
   $_page = new ent_view();
   $_page->html = $output;
   $_page->snippets = &document::$snippets;
-  $_page->cleanup = true;
-  $GLOBALS['output'] = (string)$_page;
+  $output = $_page->render(null, true);
 
 // Run before output processes
   event::fire('before_output');

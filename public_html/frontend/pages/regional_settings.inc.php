@@ -56,7 +56,7 @@
     }
   }
 
-  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/regional_settings.inc.php');
+  $_page = new ent_view();
 
   $_page->snippets = [
     'currencies' => [],
@@ -74,4 +74,4 @@
   if (!in_array(currency::$selected, $_page->snippets['currencies'])) $_page->snippets['currencies'][] = currency::$selected;
   if (!in_array(language::$selected, $_page->snippets['languages'])) $_page->snippets['languages'][] = language::$selected;
 
-  echo $_page;
+  echo $_page->render(FS_DIR_TEMPLATE . 'pages/regional_settings.inc.php');

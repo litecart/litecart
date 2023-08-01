@@ -29,7 +29,7 @@
     breadcrumbs::add($app_config['name'], document::ilink(__APP__ .'/'. $app_config['default']));
 
   // Render the app document
-    $_content = new ent_view('app://backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__]);
+    $_content = new ent_view();
 
     $_content->snippets = [
       'app_icon' => '<span class="app-icon">' . PHP_EOL
@@ -38,7 +38,7 @@
     ];
 
   // Render the page
-    $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/doc.inc.php');
+    $_page = new ent_view();
 
     $_page->snippets = [
       'app' => __APP__,
@@ -47,10 +47,10 @@
         'icon' => fallback($app_config['theme']['icon'], 'fa-plus'),
         'color' => fallback($app_config['theme']['color'], '#97a3b5'),
       ],
-      'content' => (string)$_content,
+      'content' => $_content->render('app://backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__]),
     ];
 
-    echo $_page;
+    echo $_page->render(FS_DIR_TEMPLATE . 'pages/doc.inc.php');
 
 // Display the start page
   } else {
@@ -67,7 +67,7 @@
 
   // Widgets
 
-    $box_widgets = new ent_view(FS_DIR_TEMPLATE . 'partials/box_widgets.inc.php');
+    $box_widgets = new ent_view();
     $box_widgets->snippets['widgets'] = [];
 
     $widgets = functions::admin_get_widgets();
@@ -84,5 +84,5 @@
       ];
     }
 
-    echo $box_widgets;
+    echo $box_widgets->render(FS_DIR_TEMPLATE . 'partials/box_widgets.inc.php');
   }

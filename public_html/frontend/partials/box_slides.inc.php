@@ -15,7 +15,7 @@
 
     if (database::num_rows($slides_query)) {
 
-      $box_slides = new ent_view(FS_DIR_TEMPLATE . 'partials/box_slides.inc.php');
+      $box_slides = new ent_view();
 
       $box_slides->snippets['slides'] = [];
 
@@ -29,7 +29,7 @@
         ];
       }
 
-      echo $box_slides;
+      echo $box_slides->render(FS_DIR_TEMPLATE . 'partials/box_slides.inc.php');
     }
 
     cache::end_capture($box_slides_cache_token);

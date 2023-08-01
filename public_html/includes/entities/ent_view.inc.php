@@ -22,7 +22,10 @@
       // Relative path
         } else {
           $this->view = FS_DIR_TEMPLATE . $view;
-          if (!is_file($this->view)) $this->view = 'app://frontend/templates/default/'. $view;
+        }
+
+        if (!is_file($this->view)) {
+          $this->view = preg_replace('#app://frontend/templates/[^/]+/#', 'app://frontend/templates/default/', $this->view);
         }
       }
 
@@ -38,6 +41,7 @@
         if (empty($matches[2])) return $this->snippets[$matches[1]];
 
         $output = $this->snippets[$matches[1]];
+
         $modifiers = !empty($matches[2]) ? preg_split('#\|#', $matches[2], -1, PREG_SPLIT_NO_EMPTY) : [];
 
         if (in_array('title', $modifiers)) {
@@ -104,9 +108,7 @@
       return $this->html;
     }
 
-    public function stitch($view=null, $cleanup=false) {
-
-      //trigger_error('ent_view->stitch() is deprecated. Instead set the view file when constructing view object and use echo to output the rendered view.', E_USER_DEPRECATED);
+    public function render($view=null, $cleanup=false) {
 
       if ($cleanup) {
         $this->cleanup = true;
@@ -116,7 +118,7 @@
         $view = preg_replace('#^(.*?)(\.inc\.php)?$#', '$1.inc.php', $view);
 
       // Absolute path
-        if (preg_match('#^([a-zA-Z]:)?/#', $view)) {
+        if (preg_match('#^([a-zA-Z]+:)?/#', $view)) {
           $this->view = $view;
 
       // Relative path
@@ -127,5 +129,10 @@
       }
 
       return $this->__toString();
+    }
+
+    public function stitch($view=null, $cleanup=false) {
+      //trigger_error('ent_view->stitch() is deprecated. Instead set the view file when constructing view object and use echo to output the rendered view.', E_USER_DEPRECATED);
+      return $this->render($view, $cleanup);
     }
   }

@@ -8,7 +8,7 @@
     $trail = [];
   }
 
-  $box_category_tree = new ent_view(FS_DIR_TEMPLATE . 'partials/box_category_tree.inc.php');
+  $box_category_tree = new ent_view();
   $box_category_tree->snippets = [
     'title' => $main_category ? $main_category->name : language::translate('title_categories', 'Categories'),
     'main_category' => $main_category ? $main_category->id : 0,
@@ -58,4 +58,4 @@
 
   $box_category_tree->snippets['categories'] = $iterator($main_category ? $main_category->id : 0);
 
-  echo $box_category_tree;
+  echo $box_category_tree->render(FS_DIR_TEMPLATE . 'partials/box_category_tree.inc.php');
