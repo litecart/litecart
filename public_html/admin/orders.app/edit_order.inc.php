@@ -759,7 +759,7 @@
             <div class="input-group">
               <span class="input-group-text"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'disabled title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')).'"'); ?></span>
               <?php echo functions::form_draw_decimal_field('order_total['. $key .'][value]', true, !empty(currency::$currencies[$_POST['currency_code']]) ? currency::$currencies[$_POST['currency_code']]['decimals'] : 2, null, null, 'style="text-align: end;"'); ?>
-              <span class="input-group-text"><?php echo $_POST['currency_code']; ?></span>
+              <span class="input-group-text"><?php echo functions::escape_html($_POST['currency_code']); ?></span>
             </div>
           </td>
           <td class="text-end"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][tax]', true, 'style="text-align: end;"'); ?></td>
@@ -777,7 +777,7 @@
             <div class="input-group">
             <span class="input-group-text"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
             <?php echo functions::form_draw_decimal_field('order_total['. $key .'][value]', true, !empty(currency::$currencies[$_POST['currency_code']]) ? currency::$currencies[$_POST['currency_code']]['decimals'] : 2, null, null, 'style="text-align: end;"'); ?>
-            <span class="input-group-text"><?php echo $_POST['currency_code']; ?></span>
+            <span class="input-group-text"><?php echo functions::escape_html($_POST['currency_code']); ?></span>
             </div>
           </td>
           <td class="text-end"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][tax]', true, 'style="text-align: end;"'); ?></td>
@@ -1441,7 +1441,7 @@
                + '      <div class="input-group">'
                + '        <span class="input-group-text"><?php echo functions::escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>'
                + '        <?php echo functions::form_draw_decimal_field('order_total[new_ot_row_index][value]', true, !empty(currency::$currencies[$_POST['currency_code']]) ? currency::$currencies[$_POST['currency_code']]['decimals'] : 2, null, null, 'style="text-align: end;"'); ?>'
-               + '        <span class="input-group-text"><?php echo $_POST['currency_code']; ?></span>'
+               + '        <span class="input-group-text"><?php echo functions::escape_js($_POST['currency_code']); ?></span>'
                + '      </div>'
                + '    </td>'
                + '    <td class="text-end"><?php echo functions::escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][tax]', currency::format_raw(0), 'style="text-align: end;"')); ?></td>'
