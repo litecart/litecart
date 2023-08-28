@@ -121,7 +121,7 @@
           }
 
           $query = database::query(
-            "select count(id) as num_subcategories from ". DB_PREFIX ."categories
+            "select count(id) as num_subcategories from ". DB_TABLE_PREFIX ."categories
             where status
             and parent_id ". (int)$this->_data['id'] .";"
           );
