@@ -217,9 +217,10 @@
           throw new Exception(strtr(language::translate('error_can_only_purchase_sets_for_item', 'You can only purchase sets by %num for this item'), ['%num' => (float)$product->quantity_step]));
         }
 
-        //if (($product->quantity - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
-        if (empty($product->sold_out_status['orderable']) && ($product->quantity_available - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0) {
-          throw new Exception(strtr(language::translate('error_only_n_remaining_products_available_for_purchase', 'There are only %quantity remaining products available for purchase'), ['%quantity' => round((float)$product->quantity_available, isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0)]));
+        if (empty($product->sold_out_status['orderable']) && empty($product->options_stock)) {
+          if (($product->quantity_available - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0) {
+            throw new Exception(strtr(language::translate('error_only_n_remaining_products_available_for_purchase', 'There are only %quantity remaining products available for purchase'), ['%quantity' => round((float)$product->quantity_available, isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0)]));
+          }
         }
 
       // Remove empty options
@@ -350,7 +351,6 @@
           }
 
           if ($option_match) {
-            //if (($option_stock['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
             if (empty($product->sold_out_status['orderable']) && ($option_stock['quantity_available'] - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0) {
               throw new Exception(language::translate('error_not_enough_products_in_stock_available_for_option', 'Not enough products in stock available for the selected option') . ' ('. round((float)$option_stock['quantity_available'], isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0) .')');
             }
