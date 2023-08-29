@@ -214,6 +214,7 @@ c0796ae3a1f04a7e266a05992b0c82f6	includes/boxes/box_campaign_products.inc.php
 7ccc97e3a337c847bac3b2d832e859a3	includes/boxes/box_categories.inc.php
 e82f3bcc39c8805e6fcf1bc24c42322b	includes/boxes/box_category_tree.inc.php
 05c34150b55c5fa846daf405bc9e836e	includes/boxes/box_contact_us.inc.php
+cdbd33f68cddae7b8ccea67f8ed66860	includes/boxes/box_cookie_notice.inc.php
 06fa66d5478ca2986cbb4de32278d858	includes/boxes/box_customer_service_links.inc.php
 e448f0eb71bf9b6f04313769823dea28	includes/boxes/box_filter.inc.php
 6d9443858be3f011ec96081e3eb81f0e	includes/boxes/box_information_links.inc.php
@@ -423,7 +424,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/js/index.htm
 06037af6e6e1dc266fee3de3495281a3	includes/templates/default.catalog/layouts/ajax.inc.php
 2dfd5350447b0ee662f2d04f50bfd7ad	includes/templates/default.catalog/layouts/blank.inc.php
 694fbec70919cc7c292f029c668c777d	includes/templates/default.catalog/layouts/checkout.inc.php
-8d7c1f86ae206702c0109394a9591a9e	includes/templates/default.catalog/layouts/default.inc.php
+4604ffe8d1ffe1c638b9687111920dcc	includes/templates/default.catalog/layouts/default.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/layouts/index.html
 c493814150509b7be90c66e6bf0efe3c	includes/templates/default.catalog/layouts/printable.inc.php
 58c63fcc015b20d8a56b7b820dd5e545	includes/templates/default.catalog/less/app.less
@@ -499,7 +500,7 @@ d17c49e6048668a291ec4713794e1d23	includes/templates/default.catalog/views/box_ch
 87707880150a42c29afff2eee24000e3	includes/templates/default.catalog/views/box_checkout_shipping.inc.php
 f5874d6737d1484697bd147fc83911bc	includes/templates/default.catalog/views/box_checkout_summary.inc.php
 2e9b70e817106eb4e0245df6d2464506	includes/templates/default.catalog/views/box_contact_us.inc.php
-51dc8dd1a9ee76265c418bec5fc844fd	includes/templates/default.catalog/views/box_cookie_notice.inc.php
+b0dcebd357a970f318bde1282e4e8598	includes/templates/default.catalog/views/box_cookie_notice.inc.php
 8af0371f5a33d2611b96867767039db0	includes/templates/default.catalog/views/box_customer_service_links.inc.php
 5a2f94f613dc59755cde82b3ae6ad1f7	includes/templates/default.catalog/views/box_filter.inc.php
 b5f3674d7a7331948622378b84aae4c0	includes/templates/default.catalog/views/box_information_links.inc.php
