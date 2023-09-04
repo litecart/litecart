@@ -16,7 +16,7 @@ b30f270000d36cfb8f76bf57063935b4	admin/catalog.app/categories.json.inc.php
 641e19cc75c37392ee1f44f773262184	admin/catalog.app/config.inc.php
 835843132276efb7d462cec48f924c0f	admin/catalog.app/csv.inc.php
 fb30c89488d320d955612c6dee76862b	admin/catalog.app/delivery_statuses.inc.php
-10d89c03190877e853cd2d900d48ecf5	admin/catalog.app/edit_attribute_group.inc.php
+9d56df977bdf387490a0319f7e6894a3	admin/catalog.app/edit_attribute_group.inc.php
 e5180be94cc412741969a6e8a8c9d127	admin/catalog.app/edit_category.inc.php
 d533cb0cc85920b7cfc97c8b4001a3ed	admin/catalog.app/edit_delivery_status.inc.php
 b3489f4685583e25b933ba0eaa2d7581	admin/catalog.app/edit_manufacturer.inc.php
