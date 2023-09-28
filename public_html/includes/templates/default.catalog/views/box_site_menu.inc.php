@@ -74,14 +74,20 @@
         </li>
         <?php } ?>
 
-        <?php if ($pages) { ?>
+        <?php if ($information) { ?>
         <li class="nav-item information dropdown">
           <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?></a>
           <ul class="dropdown-menu">
-            <?php foreach ($pages as $item) { ?>
+            <?php foreach ($information as $item) { ?>
             <li class="nav-item"><a class="nav-link" href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
             <?php } ?>
           </ul>
+        </li>
+        <?php } ?>
+
+        <?php foreach ($pages as $item) { ?>
+        <li class="nav-item page">
+          <a class="nav-link" href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a>
         </li>
         <?php } ?>
       </ul>

@@ -21,14 +21,14 @@
       return;
     }
 
-    if (empty($page->status) || !in_array('customer_service', $page->dock)) {
+    if (empty($page->status) || $page->dock != 'customer_service') {
       http_response_code(404);
       include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
       return;
     }
 
     $mother_page = array_values($page->path)[0];
-    if (!in_array('customer_service', $page->dock) && !in_array('customer_service', $mother_page->dock)) {
+    if ($mother_page->dock != 'customer_service') {
       http_response_code(301);
       header('Location: '. document::ilink('information', ['page_id' => $page->id]));
       exit;

@@ -73,8 +73,6 @@
           }
         }
 
-        $row['dock'] = preg_split('#\s*,\s*#', $row['dock'], -1, PREG_SPLIT_NO_EMPTY);
-
       // Set page data
         $fields = [
           'parent_id',
@@ -122,7 +120,7 @@
           'id' => $page->id,
           'parent_id' => $page->parent_id,
           'status' => $page->status,
-          'dock' => implode(',', $page->dock),
+          'dock' => $page->dock,
           'title' => $page->title,
           'content' => $page->content,
           'head_title' => $page->head_title,

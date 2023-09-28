@@ -65,13 +65,15 @@
       }
     }
 
+  // Information Pages
     $pages_query = database::query(
       "select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
       left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
       where status
-      and find_in_set('information', dock)
+      and dock = 'information'
       order by p.priority, pi.title;"
     );
+
     while ($page = database::fetch($pages_query)) {
       $box_site_footer->snippets['pages'][$page['id']] = [
         'id' => $page['id'],
@@ -80,13 +82,15 @@
       ];
     }
 
+ // Customer Service Pages
     $pages_query = database::query(
       "select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
       left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
       where status
-      and find_in_set('customer_service', dock)
+      and dock = 'customer_service'
       order by p.priority, pi.title;"
     );
+
     while ($page = database::fetch($pages_query)) {
       $box_site_footer->snippets['customer_service_pages'][$page['id']] = [
         'id' => $page['id'],
