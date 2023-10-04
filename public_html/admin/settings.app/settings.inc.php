@@ -150,7 +150,7 @@
         <?php if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) { ?>
         <tr>
           <td>
-            <strong><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></strong><br />
+            <strong><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></strong><br>
             <?php echo language::translate('settings_key:description_'.$setting['key'], $setting['description']); ?>
           </td>
           <td><?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true); ?></td>

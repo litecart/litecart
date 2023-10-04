@@ -125,7 +125,7 @@ th:not(:last-child) {
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
       <div><?php echo functions::form_draw_select_field('endpoint', [['-- '. language::translate('title_all', 'All') .' --', ''], [language::translate('title_frontend', 'Frontend'), 'frontend'], [language::translate('title_backend', 'Backend'), 'backend']]); ?></div>
       <div>
-        <label><?php echo functions::form_draw_checkbox('modules', 'true'); ?> <?php echo language::translate('text_inlcude_modules', 'Include modules'); ?></label><br />
+        <label><?php echo functions::form_draw_checkbox('modules', 'true'); ?> <?php echo language::translate('text_inlcude_modules', 'Include modules'); ?></label><br>
         <label><?php echo functions::form_draw_checkbox('untranslated', 'true'); ?> <?php echo language::translate('text_only_untranslated', 'Only untranslated'); ?></label>
       </div>
       <div>
@@ -150,7 +150,7 @@ th:not(:last-child) {
       <tbody>
         <?php foreach ($translations as $translation) { ?>
         <tr>
-          <td><?php echo $translation['code']; ?><br />
+          <td><?php echo $translation['code']; ?><br>
             <small style="color: #999;"><?php echo functions::form_draw_checkbox('translations['. $translation['code'] .'][html]', '1', (isset($_POST['translations'][$translation['code']]['html']) ? $_POST['translations'][$translation['code']]['html'] : $translation['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
           </td>
           <?php foreach ($_GET['languages'] as $key => $language_code) { ?>

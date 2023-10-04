@@ -719,12 +719,12 @@ textarea.warning {
 
         case 'inline':
         case 'regex':
-          var $newfield = $('<input class="form-code" name="'+ $(field).attr('name') +'" type="text" />').val($(field).val());
+          var $newfield = $('<input class="form-code" name="'+ $(field).attr('name') +'" type="text">').val($(field).val());
           $(field).replaceWith($newfield);
           break;
 
         default:
-          var $newfield = $('<textarea class="form-code" name="'+ $(field).attr('name') +'" /></textarea>').val($(field).val());
+          var $newfield = $('<textarea class="form-code" name="'+ $(field).attr('name') +'"></textarea>').val($(field).val());
           $(field).replaceWith($newfield);
           break;
       }

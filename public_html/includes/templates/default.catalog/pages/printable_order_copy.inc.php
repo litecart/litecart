@@ -48,7 +48,7 @@ table.items tbody tr:nth-child(11) {
   <header class="header">
     <div class="row">
       <div class="col-xs-6">
-        <img class="logotype" src="<?php echo document::link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
+        <img class="logotype" src="<?php echo document::link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>">
       </div>
 
       <div class="col-xs-6 text-end">
@@ -125,7 +125,7 @@ table.items tbody tr:nth-child(11) {
     if (!empty($item['options'])) {
       foreach ($item['options'] as $key => $value) {
         if (is_array($value)) {
-          echo '<br />- '.$key .': ';
+          echo '<br>- '.$key .': ';
           $use_comma = false;
           foreach ($value as $v) {
             if ($use_comma) echo ', ';
@@ -133,7 +133,7 @@ table.items tbody tr:nth-child(11) {
             $use_comma = true;
           }
         } else {
-          echo '<br />- '.$key .': '. $value;
+          echo '<br>- '.$key .': '. $value;
         }
       }
     }
@@ -177,7 +177,7 @@ table.items tbody tr:nth-child(11) {
   <?php if (count($order['items']) <= 10) { ?>
   <footer class="footer">
 
-    <hr />
+    <hr>
 
     <div class="row">
       <div class="col-xs-3">

@@ -819,10 +819,10 @@
             }
           }
 
-          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "<br />\r\n";
+          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "<br>\r\n";
 
         } else {
-          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "<br />\r\n";
+          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "<br>\r\n";
         }
       }
 

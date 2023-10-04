@@ -139,7 +139,7 @@
           <?php if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) { ?>
           <tr>
             <td style="white-space: normal;">
-              <u><?php echo language::translate(settings::get('store_template_catalog').':title_'.$setting['key'], $setting['title']); ?></u><br />
+              <u><?php echo language::translate(settings::get('store_template_catalog').':title_'.$setting['key'], $setting['title']); ?></u><br>
               <?php echo language::translate(settings::get('store_template_catalog').':description_'.$setting['key'], $setting['description']); ?>
             </td>
             <td>

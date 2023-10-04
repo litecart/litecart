@@ -49,7 +49,7 @@
         <div class="thumbnail">
 <?php
   list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
-  echo '<img src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width, $height, settings::get('product_image_clipping'))) .'" />';
+  echo '<img src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width, $height, settings::get('product_image_clipping'))) .'">';
 ?>
         </div>
       </div>
@@ -165,7 +165,7 @@
           if ($value['price_adjust']) {
             $price_adjust_text = currency::format($value['price_adjust'], false, $_GET['currency_code'], $_GET['currency_value']);
             if ($value['price_adjust'] > 0) {
-              $price_adjust_text = ' <br />+'. $price_adjust;
+              $price_adjust_text = ' <br>+'. $price_adjust;
             }
           }
 

@@ -8,7 +8,7 @@
       <?php echo functions::form_draw_radio_button('shipping[option_id]', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled' : '')); ?>
       <div class="header row" style="margin: 0;">
         <div class="col-xs-3 thumbnail" style="margin: 0;">
-          <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . $option['icon'], 140, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING')); ?>" />
+          <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . $option['icon'], 140, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING')); ?>">
         </div>
 
         <div class="col-xs-9 text-start">
@@ -21,7 +21,7 @@
 
       <?php if (empty($option['error']) && (!empty($option['description']) || !empty($option['fields']))) { ?>
       <div class="content">
-        <hr />
+        <hr>
         <?php if (!empty($option['description'])) { ?><p class="description text-start"><?php echo $option['description']; ?></p><?php } ?>
         <?php if (!empty($option['fields'])) { ?><div class="fields text-start"><?php echo $option['fields']; ?></div><?php } ?>
       </div>

@@ -270,7 +270,7 @@
     if (version_compare($version['VERSION()'], '5.5', '<')) {
       throw new Exception($version['VERSION()'] . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
     } else if (version_compare($version['VERSION()'], '5.7', '<')) {
-      echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
+      echo PHP_VERSION .' <span class="ok">[OK]</span><br>'
          . '<span class="warning">MySQL 5.7+ recommended</span></span></p>';
     } else {
       echo $version['VERSION()'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
@@ -538,7 +538,7 @@
 
     ### Files > Development Type ##################################
 
-    echo '<p>Preparing CSS files...<br />' . PHP_EOL;
+    echo '<p>Preparing CSS files...<br>' . PHP_EOL;
 
     $files_to_delete = [
       '../includes/templates/default.admin/less/',
@@ -580,7 +580,7 @@
       }
 
       foreach (glob('../includes/templates/default.catalog/layouts/*.inc.php') as $file) {
-        echo 'Modify '. $file .'<br />'. PHP_EOL;
+        echo 'Modify '. $file .'<br>'. PHP_EOL;
         $contents = file_get_contents($file);
         $search_replace = [
           'app.min.css' => 'app.css',
@@ -684,10 +684,10 @@
 
     if (php_sapi_name() != 'cli') {
       echo '<form method="get" action="http://twitter.com/intent/tweet" target="_blank">' . PHP_EOL
-         . '  <input type="hidden" value="https://www.litecart.net/" />' . PHP_EOL
+         . '  <input type="hidden" value="https://www.litecart.net/">' . PHP_EOL
          . '  <div class="form-group">' . PHP_EOL
          . '    <div class="input-group">' . PHP_EOL
-         . '      <input type="text" class="form-control" name="text" value="Woohoo! I just installed #LiteCart and I am super excited! :)" />' . PHP_EOL
+         . '      <input type="text" class="form-control" name="text" value="Woohoo! I just installed #LiteCart and I am super excited! :)">' . PHP_EOL
          . '      <button class="btn btn-primary" type="submit">Tweet!</button>' . PHP_EOL
          . '    </div>' . PHP_EOL
          . '  </div>' . PHP_EOL

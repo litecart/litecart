@@ -181,13 +181,13 @@
             <div class="col-md-4">
               <div id="image">
                 <div style="margin-bottom: 15px;">
-                  <img class="thumbnail" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $thumbnail); ?>" alt="" />
+                  <img class="thumbnail" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $thumbnail); ?>" alt="">
                 </div>
 
                 <div class="form-group">
                   <label><?php echo ((isset($category->data['image']) && $category->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></label>
                   <?php echo functions::form_draw_file_field('image', ''); ?>
-                  <?php if (!empty($category->data['image'])) { ?><br />
+                  <?php if (!empty($category->data['image'])) { ?><br>
                   <div><?php echo $category->data['image']; ?></div>
                   <div><?php echo functions::form_draw_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></div>
                   <?php } ?>

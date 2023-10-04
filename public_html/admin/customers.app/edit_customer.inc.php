@@ -357,10 +357,10 @@
           <?php if (!empty($customer->data['id'])) { ?>
           <table class="table table-striped table-hover data-table">
             <tr>
-              <td class="col-md-6"><?php echo language::translate('title_orders', 'Orders'); ?><br />
+              <td class="col-md-6"><?php echo language::translate('title_orders', 'Orders'); ?><br>
                 <?php echo !empty($orders['total_count']) ? (int)$orders['total_count'] : '0'; ?>
               </td>
-              <td class="col-md-6"><?php echo language::translate('title_total_sales', 'Total Sales'); ?><br />
+              <td class="col-md-6"><?php echo language::translate('title_total_sales', 'Total Sales'); ?><br>
                 <?php echo currency::format(!empty($orders['total_sales']) ? $orders['total_sales'] : 0, false, settings::get('store_currency_code')); ?>
               </td>
             </tr>

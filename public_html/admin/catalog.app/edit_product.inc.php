@@ -312,10 +312,10 @@
 <?php
   if (isset($product->data['id']) && !empty($product->data['images'])) {
     $image = current($product->data['images']);
-    echo '<img class="thumbnail main-image" src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping'))) .'" alt="" />';
+    echo '<img class="thumbnail main-image" src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping'))) .'" alt="">';
     reset($product->data['images']);
   } else {
-    echo '<img class="thumbnail main-image" src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))) .'" alt="" />';
+    echo '<img class="thumbnail main-image" src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))) .'" alt="">';
   }
 ?>
                 </div>
@@ -330,7 +330,7 @@
                     <?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
 
                     <div class="thumbnail float-start">
-                      <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->data['images'][$key]['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />
+                      <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->data['images'][$key]['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="">
                     </div>
 
                     <div class="input-group">
@@ -513,23 +513,23 @@
               <tbody>
                 <?php if (!empty($_POST['campaigns'])) foreach (array_keys($_POST['campaigns']) as $key) { ?>
                 <tr>
-                  <td><?php echo language::translate('title_start_date', 'Start Date'); ?><br />
+                  <td><?php echo language::translate('title_start_date', 'Start Date'); ?><br>
                     <?php echo functions::form_draw_hidden_field('campaigns['.$key.'][id]', true) . functions::form_draw_datetime_field('campaigns['.$key.'][start_date]', true); ?>
                   </td>
-                  <td><?php echo language::translate('title_end_date', 'End Date'); ?><br />
+                  <td><?php echo language::translate('title_end_date', 'End Date'); ?><br>
                     <?php echo functions::form_draw_datetime_field('campaigns['.$key.'][end_date]', true); ?>
                   </td>
-                  <td>- %<br />
+                  <td>- %<br>
                     <?php echo functions::form_draw_decimal_field('campaigns['.$key.'][percentage]', '', 2, 0, null); ?>
                   </td>
 
                   <?php foreach ($currency_codes as $currency_code) { ?>
-                  <td><?php echo $currency_code; ?><br />
+                  <td><?php echo $currency_code; ?><br>
                     <?php echo functions::form_draw_currency_field($currency_code, 'campaigns['.$key.']['. $currency_code. ']', isset($_POST['campaigns'][$key][$currency_code]) ? number_format((float)$_POST['campaigns'][$key][$currency_code], 4, '.', '') : ''); ?>
                   </td>
                   <?php } ?>
 
-                  <td><br /><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+                  <td><br><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
                 </tr>
               <?php } ?>
               </tbody>
@@ -797,7 +797,8 @@
                   <th style="width: 50%;"><?php echo language::translate('title_value', 'Value'); ?></th>
                 </tr>
               </thead>
-              <tbody />
+              <tbody>
+              </tbody>
             </table>
 
             <button type="button" class="btn btn-default" name="add_stock_option"><?php echo language::translate('title_add_stock_option', 'Add Stock Option'); ?></button>
@@ -886,7 +887,7 @@
     e.preventDefault();
     var output = '<div class="image form-group">'
                + '  <div class="thumbnail float-start">'
-               + '    <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />'
+               + '    <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="">'
                + '  </div>'
                + '  '
                + '  <div class="input-group">'
@@ -1160,21 +1161,21 @@
   $('#table-campaigns').on('click', '.add', function(e) {
     e.preventDefault();
     var output = '<tr>'
-               + '  <td><?php echo functions::escape_js(language::translate('title_start_date', 'Start Date')); ?><br />'
+               + '  <td><?php echo functions::escape_js(language::translate('title_start_date', 'Start Date')); ?><br>'
                + '    <?php echo functions::escape_js(functions::form_draw_hidden_field('campaigns[new_campaign_i][id]', '') . functions::form_draw_datetime_field('campaigns[new_campaign_i][start_date]', '')); ?>'
                + '  </td>'
-               + '  <td><?php echo functions::escape_js(language::translate('title_end_date', 'End Date')); ?><br />'
+               + '  <td><?php echo functions::escape_js(language::translate('title_end_date', 'End Date')); ?><br>'
                + '    <?php echo functions::escape_js(functions::form_draw_datetime_field('campaigns[new_campaign_i][end_date]', '')); ?>'
                + '  </td>'
-               + '  <td>- %<br />'
+               + '  <td>- %<br>'
                + '    <?php echo functions::escape_js(functions::form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '', 2, 0, null)); ?>'
                + '  </td>'
                <?php foreach ($currency_codes as $currency_code) { ?>
-               + '  <td><?php echo functions::escape_js($currency_code); ?><br />'
+               + '  <td><?php echo functions::escape_js($currency_code); ?><br>'
                + '    <?php echo functions::escape_js(functions::form_draw_currency_field($currency_code, 'campaigns[new_campaign_i]['. $currency_code .']', '')); ?>'
                + '  </td>'
                <?php } ?>
-               + '  <td><br /><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>'
+               + '  <td><br><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>'
                + '</tr>';
     while ($('input[name="campaigns[new_'+new_campaign_i+']"]').length) new_campaign_i++;
     output = output.replace(/new_campaign_i/g, 'new_' + new_campaign_i);
@@ -1549,7 +1550,7 @@
           combination = group_id + '-' + ((value_id != 0) ? value_id : '0:"' + value_name +'"');
 
         output += '<tr data-group-id="'+ escapeHTML(group_id) +'" data-group-name="'+ escapeHTML(group_name) +'" data-value-id="'+ escapeHTML(value_id) +'" data-value-name="'+ escapeHTML(value_name) +'">'
-                + '  <td><span class="form-check"><input type="checkbox" name="combination[]" value="'+ escapeHTML(combination) +'" /></span></td>'
+                + '  <td><span class="form-check"><input type="checkbox" name="combination[]" value="'+ escapeHTML(combination) +'"></span></td>'
                 + '  <td>'+ group_name +'</td>'
                 + '  <td>'+ value_name +'</td>'
                 + '</tr>';

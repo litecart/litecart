@@ -316,7 +316,7 @@
 
         $(self).find('.categories').append(
           '<li class="list-item" style="display: flex;">' +
-          '  <input type="hidden" name="'+ self.config.inputName +'" value="'+ $(category).data('id') +'" data-name="'+ escape($(category).data('name')) +'" />' +
+          '  <input type="hidden" name="'+ self.config.inputName +'" value="'+ $(category).data('id') +'" data-name="'+ escape($(category).data('name')) +'">' +
           '  <div style="flex-grow: 1;">' + self.config.icons.folder +' '+ $(category).data('name') +'</div>' +
           '  <button class="remove btn btn-default btn-sm" type="button">'+ self.config.translations.remove +'</button>' +
           '</li>'
@@ -521,7 +521,7 @@ function escapeHTML(string) {
 
         $(self).find('.categories').append(
           '<li class="list-item" style="display: flex; align-items: center;">' +
-          '  <input type="hidden" name="'+ self.config.inputName +'" value="'+ $(category).data('id') +'" data-name="'+ $(category).data('name').replace(/"/, '&quote;') +'" />' +
+          '  <input type="hidden" name="'+ self.config.inputName +'" value="'+ $(category).data('id') +'" data-name="'+ $(category).data('name').replace(/"/, '&quote;') +'">' +
           '  <div style="flex-grow: 1;">' + self.config.icons.folder +' '+ $(category).data('name') +'</div>' +
           '  <div><button class="remove btn btn-default btn-sm" type="button">'+ self.config.translations.remove +'</button></div>' +
           '</li>'

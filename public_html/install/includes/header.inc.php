@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>LiteCart Installer</title>
-<link rel="stylesheet" href="../includes/templates/default.catalog/css/variables.css" />
+<link rel="stylesheet" href="../includes/templates/default.catalog/css/variables.css">
 <?php if (is_file(__DIR__.'/../../includes/templates/default.catalog/css/framework.css')) { ?>
-<link rel="stylesheet" href="../includes/templates/default.catalog/css/framework.css" />
+<link rel="stylesheet" href="../includes/templates/default.catalog/css/framework.css">
 <?php } else { ?>
-<link rel="stylesheet" href="../includes/templates/default.catalog/css/framework.min.css" />
+<link rel="stylesheet" href="../includes/templates/default.catalog/css/framework.min.css">
 <?php } ?>
 <style>
 html {
@@ -54,5 +54,5 @@ span.warning {
 <div class="glass-edges">
   <main id="content">
     <header class="text-center">
-      <img src="../includes/templates/default.admin/images/logotype.svg" alt="LiteCart" style="max-width: 300px; max-height: 100px;" />
+      <img src="../includes/templates/default.admin/images/logotype.svg" alt="LiteCart" style="max-width: 300px; max-height: 100px;">
     </header>

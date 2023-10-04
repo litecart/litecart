@@ -43,14 +43,14 @@
       self::$snippets['home_path'] = WS_DIR_APP;
       self::$snippets['template_path'] = WS_DIR_TEMPLATE;
       self::$snippets['title'] = [settings::get('store_name')];
-      self::$snippets['head_tags']['manifest'] = '<link rel="manifest" href="'. document::href_ilink('manifest.json') .'" />';
+      self::$snippets['head_tags']['manifest'] = '<link rel="manifest" href="'. document::href_ilink('manifest.json') .'">';
       self::$snippets['head_tags']['favicon'] = implode(PHP_EOL, [
-        '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon.ico') .'" type="image/x-icon" sizes="32x32 48x48 64x64 96x96" />',
-        '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-128x128.png') .'" type="image/png" sizes="128x128" />',
-        '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-192x192.png') .'" type="image/png" sizes="192x192" />',
-        '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-256x256.png') .'" type="image/png" sizes="255x255" />',
+        '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon.ico') .'" type="image/x-icon" sizes="32x32 48x48 64x64 96x96">',
+        '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-128x128.png') .'" type="image/png" sizes="128x128">',
+        '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-192x192.png') .'" type="image/png" sizes="192x192">',
+        '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-256x256.png') .'" type="image/png" sizes="255x255">',
       ]);
-      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. self::href_rlink(FS_DIR_APP .'ext/fontawesome/font-awesome.min.css') .'" />';
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. self::href_rlink(FS_DIR_APP .'ext/fontawesome/font-awesome.min.css') .'">';
       self::$snippets['foot_tags']['jquery'] = '<script src="'. self::href_rlink(FS_DIR_APP .'ext/jquery/jquery-3.7.1.min.js') .'"></script>';
 
     // Hreflang
@@ -58,7 +58,7 @@
         self::$snippets['head_tags']['hreflang'] = '';
         foreach (language::$languages as $language) {
           if ($language['code'] == language::$selected['code']) continue;
-          self::$snippets['head_tags']['hreflang'] .= '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. self::href_ilink(route::$route['page'], [], true, ['page', 'sort'], $language['code']) .'" />' . PHP_EOL;
+          self::$snippets['head_tags']['hreflang'] .= '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. self::href_ilink(route::$route['page'], [], true, ['page', 'sort'], $language['code']) .'">' . PHP_EOL;
         }
         self::$snippets['head_tags']['hreflang'] = trim(self::$snippets['head_tags']['hreflang']);
       }
@@ -113,7 +113,7 @@
 
     // Add meta description
       if (!empty(self::$snippets['description'])) {
-        self::$snippets['head_tags'][] = '<meta name="description" content="'. functions::escape_html(self::$snippets['description']) .'" />';
+        self::$snippets['head_tags'][] = '<meta name="description" content="'. functions::escape_html(self::$snippets['description']) .'">';
         unset(self::$snippets['description']);
       }
 

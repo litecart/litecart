@@ -1,6 +1,6 @@
 <?php
 
-  document::$snippets['head_tags']['chartist'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'ext/chartist/chartist.min.css') .'" />';
+  document::$snippets['head_tags']['chartist'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'ext/chartist/chartist.min.css') .'">';
   document::$snippets['foot_tags']['chartist'] = '<script src="'. document::href_rlink(FS_DIR_APP .'ext/chartist/chartist.min.js') .'"></script>';
 
   $widget_graphs_cache_token = cache::token('widget_graphs', ['site', 'language'], 'file', 300);

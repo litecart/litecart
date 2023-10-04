@@ -1,6 +1,6 @@
 <?php
   header('X-Robots-Tag: noindex');
-  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex">';
 
   cart::reset();
   customer::reset();

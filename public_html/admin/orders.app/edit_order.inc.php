@@ -1429,11 +1429,11 @@
                          + '  - '+ group +': ';
         if ($.isArray(value)) {
           $.each(value, function(i, array_value) {
-            product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +'][]" value="'+ array_value +'" />' + array_value +', ';
+            product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +'][]" value="'+ array_value +'">' + array_value +', ';
           });
           product_options = product_options.substring(0, product_options.length - 2);
         } else {
-          product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +']" value="'+ value +'" />' + value;
+          product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +']" value="'+ value +'">' + value;
         }
         product_options += '</div>';
       });

@@ -9,7 +9,7 @@
   }
 
   header('X-Robots-Tag: noindex');
-  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex">';
 
   if (!empty(user::$data['id'])) notices::add('notices', language::translate('text_already_logged_in', 'You are already logged in'));
 

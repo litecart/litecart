@@ -92,8 +92,8 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
           <div class="checkbox">
-            <label><?php echo functions::form_draw_radio_button('dock', 'menu', true); ?> <?php echo language::translate('text_dock_in_site_menu', 'Dock in site menu'); ?></label><br />
-            <label><?php echo functions::form_draw_radio_button('dock', 'customer_service', true); ?> <?php echo language::translate('text_dock_in_customer_service', 'Dock in customer service'); ?></label><br />
+            <label><?php echo functions::form_draw_radio_button('dock', 'menu', true); ?> <?php echo language::translate('text_dock_in_site_menu', 'Dock in site menu'); ?></label><br>
+            <label><?php echo functions::form_draw_radio_button('dock', 'customer_service', true); ?> <?php echo language::translate('text_dock_in_customer_service', 'Dock in customer service'); ?></label><br>
             <label><?php echo functions::form_draw_radio_button('dock', 'information', true); ?> <?php echo language::translate('text_dock_in_information', 'Dock in information'); ?></label>
           </div>
         </div>

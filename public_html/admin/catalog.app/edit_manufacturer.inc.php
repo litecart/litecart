@@ -146,7 +146,7 @@
             <div class="col-md-4">
               <div id="image">
                 <div class="thumbnail" style="margin-bottom: 15px;">
-                  <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $manufacturer->data['image'], 400, 100)); ?>" alt="" />
+                  <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $manufacturer->data['image'], 400, 100)); ?>" alt="">
                 </div>
 
                 <div class="form-group">

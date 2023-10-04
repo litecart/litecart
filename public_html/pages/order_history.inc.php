@@ -1,6 +1,6 @@
 <?php
   header('X-Robots-Tag: noindex');
-  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex">';
   document::$snippets['title'][] = language::translate('order_history:head_title', 'Order History');
 
   customer::require_login();

@@ -21,7 +21,7 @@
     return;
   }
 
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('manufacturer', ['manufacturer_id' => (int)$manufacturer->id], false) .'" />';
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('manufacturer', ['manufacturer_id' => (int)$manufacturer->id], false) .'">';
   document::$snippets['title'][] = $manufacturer->head_title ? $manufacturer->head_title : $manufacturer->name;
   document::$snippets['description'] = $manufacturer->meta_description ? $manufacturer->meta_description : strip_tags($manufacturer->short_description);
 
