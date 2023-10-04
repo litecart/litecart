@@ -246,7 +246,9 @@
       $link->path = self::strip_url_logic($link->path);
 
     // Don't rewrite links in the admin folder
-      if (preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'.*#', $link->path)) return;
+      if (preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'/.*#', $link->path)) {
+        return $link;
+      }
 
     // Set route name
       $route_name = str_replace('/', '_', trim($link->path, '/'));
