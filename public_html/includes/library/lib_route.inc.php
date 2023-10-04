@@ -226,7 +226,9 @@
 
     public static function rewrite(ent_link $link, $language_code=null) {
 
-      if ($link->host != $_SERVER['HTTP_HOST']) return $link;
+      if ($link->host != $_SERVER['HTTP_HOST']) {
+        return $link;
+      }
 
       if (empty($language_code)) {
         $language_code = language::$selected['code'];
@@ -240,7 +242,9 @@
         $language_code = language::identify();
       }
 
-      if (isset(self::$_links_cache[$language_code][(string)$link])) return self::$_links_cache[$language_code][(string)$link];
+      if (isset(self::$_links_cache[$language_code][(string)$link])) {
+        return self::$_links_cache[$language_code][(string)$link];
+      }
 
     // Strip logic from string
       $link->path = self::strip_url_logic($link->path);

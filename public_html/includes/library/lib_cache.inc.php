@@ -314,7 +314,9 @@
         return;
       }
 
-      if (isset(self::$_recorders[$token['id']])) trigger_error('Cache recorder already initiated ('. $token['id'] .')', E_USER_ERROR);
+      if (isset(self::$_recorders[$token['id']])) {
+        trigger_error('Cache recorder already initiated ('. $token['id'] .')', E_USER_ERROR);
+      }
 
       $_data = self::get($token, $max_age, $force_cache);
 
