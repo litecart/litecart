@@ -64,7 +64,7 @@ table.items tbody tr:nth-child(11) {
       <div class="row">
         <div class="col-xs-3 shipping-address">
           <div class="label"><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></div>
-          <div class="value"><?php echo nl2br(functions::escape_html(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address']))); ?></div>
+          <div class="value"><?php echo nl2br(functions::escape_html(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])), false); ?></div>
         </div>
 
         <div class="col-xs-3">
@@ -78,7 +78,7 @@ table.items tbody tr:nth-child(11) {
         <div class="col-xs-6 billing-address">
           <div class="rounded-rectangle">
             <div class="label"><?php echo language::translate('title_billing_address', 'Billing Address'); ?></div>
-            <div class="value"><?php echo nl2br(functions::escape_html(reference::country($order['customer']['country_code'])->format_address($order['customer']))); ?></div>
+            <div class="value"><?php echo nl2br(functions::escape_html(reference::country($order['customer']['country_code'])->format_address($order['customer'])), false); ?></div>
           </div>
         </div>
       </div>
@@ -182,7 +182,7 @@ table.items tbody tr:nth-child(11) {
     <div class="row">
       <div class="col-xs-3">
         <div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
-        <div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
+        <div class="value"><?php echo nl2br(settings::get('store_postal_address'), false); ?></div>
       </div>
 
       <div class="col-xs-3">

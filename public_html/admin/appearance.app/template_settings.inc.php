@@ -163,9 +163,9 @@
               <div style="max-height: 200px; overflow-y: auto;">
                 <?php
                   if (!empty($setting['multiple'])) {
-                    echo nl2br(implode(PHP_EOL, $setting['value']));
+                    echo nl2br(implode(PHP_EOL, $setting['value']), false);
                   } else {
-                    echo nl2br($setting['value']);
+                    echo nl2br($setting['value'], false);
                   }
                 ?>
               </div>

@@ -612,7 +612,7 @@
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][author]', true); ?>
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][text]', true); ?>
 
-                <div class="text"><?php echo nl2br(functions::escape_html($comment['text'])); ?></div>
+                <div class="text"><?php echo nl2br(functions::escape_html($comment['text']), false); ?></div>
 
               <div class="date"><?php echo strtr(language::translate('description_by_author_on_datetime', 'By %author on %datetime'), $aliases); ?></div>
 

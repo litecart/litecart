@@ -52,7 +52,7 @@
       <div class="col-md-4">
         <h2><?php echo language::translate('title_contact_details', 'Contact Details'); ?></h2>
 
-        <p class="address"><?php echo nl2br(settings::get('store_postal_address')); ?></p>
+        <p class="address"><?php echo nl2br(settings::get('store_postal_address'), false); ?></p>
 
         <?php if (settings::get('store_phone')) { ?><p class="phone"><?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a></p><?php } ?>
 
