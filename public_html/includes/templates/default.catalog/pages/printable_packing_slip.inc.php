@@ -197,11 +197,12 @@ table.items tbody tr:nth-child(11) {
   <?php } ?>
 </section>
 
-<?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
-<button name="print" class="btn btn-default btn-lg"><?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?></button>
+<button name="print" class="btn btn-default btn-lg">
+  <?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
+</button>
+
 <script>
   $('button[name="print"]').click(function(){
     window.print();
   });
 </script>
-<?php } ?>

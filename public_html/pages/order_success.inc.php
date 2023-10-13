@@ -30,7 +30,7 @@
   $_page = new ent_view();
   $_page->snippets = [
     'order' => $order->data,
-    'printable_link' => document::ilink('printable_order_copy', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key'], 'media' => 'print']),
+    'printable_link' => document::ilink('printable_order_copy', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]),
     'payment_receipt' => $payment->receipt($order),
     'order_success_modules_output' => $order_module->success($order),
   ];
