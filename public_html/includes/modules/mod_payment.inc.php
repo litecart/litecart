@@ -32,11 +32,10 @@
     public function options($items=null, $currency_code=null, $customer=null) {
 
       if (empty($items)) return [];
+      if (empty($this->modules)) return [];
 
       if ($currency_code === null) $currency_code = currency::$selected['code'];
       if ($customer === null) $customer = customer::$data;
-
-      if (empty($this->modules)) return [];
 
       $this->data['options'] = [];
 
@@ -157,42 +156,48 @@
 
     public function pre_check($order) {
 
-      if (empty($this->data['selected']['id'])) return;
-
-      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
+      if (empty($order->data['payment_option']['id'])) return;
+      list($module_id, $option_id) = explode(':', $order->data['payment_option']['id']);
 
       if (!method_exists($this->modules[$module_id], 'pre_check')) return;
 
       return $this->modules[$module_id]->pre_check($order);
     }
 
-    public function transfer($order) {
+    public function transfer($order, $module_id='', $success_url='', $cancel_url='') {
 
-      if (empty($this->data['selected']['id'])) return;
-
-      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
+      if (empty($order->data['payment_option']['id'])) return;
+      list($module_id, $option_id) = explode(':', $order->data['payment_option']['id']);
 
       if (!method_exists($this->modules[$module_id], 'transfer')) return;
 
-      return $this->modules[$module_id]->transfer($order);
+      if (!$success_url) {
+        $success_url = (string)document::ilink('order_process');
+      }
+
+      if (!$cancel_url) {
+      	$cancel_url = (string)document::ilink('checkout');
+      }
+
+      return $this->modules[$module_id]->transfer($order, $success_url, $cancel_url);
     }
 
     public function verify($order) {
 
-      if (empty($this->data['selected']['id'])) return;
-
-      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
+      if (empty($order->data['payment_option']['id'])) return;
+      list($module_id, $option_id) = explode(':', $order->data['payment_option']['id']);
 
       if (!method_exists($this->modules[$module_id], 'verify')) return;
+
+      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
 
       return $this->modules[$module_id]->verify($order);
     }
 
     public function after_process($order) {
 
-      if (empty($this->data['selected']['id'])) return;
-
-      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
+      if (empty($order->data['payment_option']['id'])) return;
+      list($module_id, $option_id) = explode(':', $order->data['payment_option']['id']);
 
       if (!method_exists($this->modules[$module_id], 'after_process')) return;
 
@@ -201,9 +206,8 @@
 
     public function receipt($order) {
 
-      if (empty($this->data['selected']['id'])) return;
-
-      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
+      if (empty($order->data['payment_option']['id'])) return;
+      list($module_id, $option_id) = explode(':', $order->data['payment_option']['id']);
 
       if (!method_exists($this->modules[$module_id], 'receipt')) return;
 
