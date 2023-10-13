@@ -42,6 +42,29 @@ h1 {
 table.items tbody tr:nth-child(11) {
   page-break-before: always;
 }
+*/
+
+@media print {
+  button[name="print"] {
+    display: none;
+  }
+}
+
+@media screen {
+  button[name="print"] {
+    display: none;
+  }
+
+  html:hover button[name="print"] {
+    position: fixed;
+    top: 0cm;
+    right: 1cm;
+    display: block;
+    margin: 5mm auto;
+    z-index: 999999;
+    border-radius: 0.25em;
+  }
+}
 </style>
 
 <section class="page" data-size="A4" dir="<?php echo $text_direction; ?>">
@@ -211,3 +234,12 @@ table.items tbody tr:nth-child(11) {
   </footer>
   <?php } ?>
 </section>
+
+<?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
+<button name="print" class="btn btn-default btn-lg"><?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?></button>
+<script>
+  $('button[name="print"]').click(function(){
+    window.print();
+  });
+</script>
+<?php } ?>

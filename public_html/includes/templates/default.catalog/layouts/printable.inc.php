@@ -11,21 +11,10 @@
 </head>
 <body>
 
-<?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
-<button name="print" class="btn btn-default"><?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?></button>
-<?php } ?>
-
 {snippet:content}
 
 {snippet:foot_tags}
 {snippet:javascript}
 
-<?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
-<script>
-  $('button[name="print"]').click(function(){
-    window.print();
-  });
-</script>
-<?php } ?>
 </body>
 </html>

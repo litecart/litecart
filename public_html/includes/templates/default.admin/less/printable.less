@@ -53,10 +53,6 @@ hr {
   .page-break  {
     page-break-before: always;
   }
-
-  button[name="print"] {
-    display: none;
-  }
 }
 
 @media screen {
@@ -90,21 +86,5 @@ hr {
     border-bottom: 1px #ccc dashed;
     margin: @page-margin -@page-margin;
     line-height: 0;
-  }
-
-  button[name="print"] {
-    display: none;
-  }
-
-  html:hover button[name="print"] {
-    position: fixed;
-    top: 0cm;
-    right: 1cm;
-    padding: 0.5em;
-    font-size: 8mm;
-    display: block;
-    margin: 5mm auto;
-    z-index: 999999;
-    border-radius: 0.25em;
   }
 }
