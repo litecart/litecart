@@ -12,7 +12,7 @@
 
   breadcrumbs::add(!empty($vmod->data['id']) ? language::translate('title_edit_vmod', 'Edit vMod') : language::translate('title_create_new_vmod', 'Create New vMod'));
 
-  if (isset($_POST['save'])) {
+  if (isset($_POST['save']) || isset($_POST['quicksave'])) {
 
     try {
 
@@ -49,7 +49,13 @@
       $vmod->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
+
+      if (isset($_POST['quicksave'])) {
+        header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'edit_vmod', 'vmod' => $vmod->data['filename']], ['app']));
+      } else {
+        header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
+      }
+
       exit;
 
     } catch (Exception $e) {
@@ -544,7 +550,10 @@ textarea.warning {
       </div>
 
       <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <div class="btn-group">
+          <?php echo functions::form_draw_button('quicksave', ['true', ''], 'submit', 'class="btn btn-success btn-icon" title="'. functions::escape_html(language::translate('title_quicksave', 'Quicksave')) .'"', 'save'); ?>
+          <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"'); ?>
+        </div>
         <?php echo (!empty($vmod->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'button', 'class="btn btn-danger"', 'delete') : ''; ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
