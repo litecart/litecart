@@ -158,6 +158,7 @@
 // Update cart / Keep alive
   var num_cart_updates = 0;
   window.updateCart = function(data) {
+
     $.ajax({
       url: window._env.platform.url + 'ajax/cart.json',
       type: data ? 'post' : 'get',
@@ -170,8 +171,6 @@
       },
       error: function(jqXHR, textStatus, errorThrown) {
         if (data) alert('Error while updating cart');
-        console.error('Error while updating cart');
-        console.debug(jqXHR.responseText);
       },
       success: function(json) {
         if (json['alert']) alert(json['alert']);
