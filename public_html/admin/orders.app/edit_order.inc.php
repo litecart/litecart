@@ -302,8 +302,8 @@
               <div class="form-group col-md-3">
                 <label><?php echo language::translate('title_order_copy', 'Order Copy'); ?></label>
                 <div class="btn-group btn-block" data-toggle="buttons">
-                  <label class="btn btn-default<?php echo !empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="1"<?php echo !empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
-                  <label class="btn btn-default<?php echo empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="0"<?php echo empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
+                  <label class="btn btn-default<?php echo !empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="1"<?php echo !empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?>><?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
+                  <label class="btn btn-default<?php echo empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="0"<?php echo empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?>><?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
                 </div>
               </div>
             </div>
@@ -820,8 +820,6 @@
       </tfoot>
     </table>
 
-
-
   </div>
 <?php echo functions::form_draw_form_end(); ?>
 
@@ -844,7 +842,8 @@
             <th><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
           </tr>
         </thead>
-        <tbody />
+        <tbody>
+        </tbody>
       </table>
 
       <p class="text-center"><button class="set-guest btn btn-default" type="button"><?php echo language::translate('text_set_as_guest', 'Set As Guest'); ?></button></p>

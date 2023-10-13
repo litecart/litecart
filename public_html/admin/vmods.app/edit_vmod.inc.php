@@ -859,17 +859,14 @@ textarea.warning {
       switch (method) {
 
         case 'top':
-
           find = '^';
           break;
 
         case 'bottom':
-
           find = '$';
           break;
 
         case 'all':
-
           find = '^.*$';
           break;
 
