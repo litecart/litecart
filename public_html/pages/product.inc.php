@@ -79,7 +79,7 @@
 // Page
   $_page = new ent_view();
 
-  $schema_json = [
+  document::$schema += [
     '@context' => 'http://schema.org/',
     '@type' => 'Product',
     'productID' => $product->id,
@@ -372,5 +372,3 @@
   } else {
     echo $_page->stitch('pages/product');
   }
-
-  document::$snippets['head_tags']['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json, JSON_UNESCAPED_SLASHES) .'</script>';
