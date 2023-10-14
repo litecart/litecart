@@ -125,6 +125,7 @@
           <th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
           <th><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_client_ip', 'Client IP'); ?></th>
+          <th><?php echo language::translate('title_hostname', 'Hostname'); ?></th>
           <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
         </tr>
       </thead>
@@ -137,6 +138,7 @@
           <td><?php echo $recipient['email']; ?></td>
           <td><?php echo $recipient['name']; ?></td>
           <td><?php echo $recipient['client_ip']; ?></td>
+          <td><?php echo $recipient['hostname']; ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
         </tr>
         <?php } ?>
