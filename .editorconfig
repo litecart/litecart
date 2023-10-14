@@ -6,11 +6,11 @@
 
 root = true
 
-[*.{css,html,js,json,less,md,php,scss,xml}]
+[*.{css,html,js,json,less,md,php,scss,sql,xml}]
 charset = utf-8
 indent_style = space
 indent_size = 2
 trim_trailing_whitespace = true
 
-[*.{css,js,less,md,scss}]
+[*.{css,js,less,md,scss,sql}]
 insert_final_newline = true

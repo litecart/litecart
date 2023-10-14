@@ -28,7 +28,9 @@
 
       if (settings::get('captcha_enabled')) {
         $captcha = functions::captcha_get('create_account');
-        if (empty($captcha) || $captcha != $_POST['captcha']) throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
+        if (!$captcha || empty($_POST['captcha']) || $captcha != $_POST['captcha']) {
+          throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
+        }
       }
 
       if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter an email address.'));
