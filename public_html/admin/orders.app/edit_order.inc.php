@@ -132,14 +132,14 @@
 
       $order->save();
 
-      if (!empty($_POST['email_order_copy'])) {
+      if (!empty($_POST['send_order_copy'])) {
 
         $bccs = [];
-        foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy'), -1, PREG_SPLIT_NO_EMPTY) as $email) {
+        foreach (preg_split('#[\s;,]+#', settings::get('send_order_copy'), -1, PREG_SPLIT_NO_EMPTY) as $email) {
           $bccs[] = $email;
         }
 
-        $order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['language_code']);
+        $order->send_order_copy($order->data['customer']['email'], [], $bccs, $order->data['language_code']);
       }
 
       if (!empty($_GET['redirect_url'])) {
@@ -634,7 +634,7 @@
       <ul class="list-inline">
         <li>
           <div class="checkbox">
-            <label><?php echo functions::form_draw_checkbox('email_order_copy', '1', true); ?> <?php echo language::translate('text_send_order_copy_email', 'Send order copy email'); ?></label>
+            <label><?php echo functions::form_draw_checkbox('send_order_copy', '1', true); ?> <?php echo language::translate('text_send_order_copy_email', 'Send order copy email'); ?></label>
           </div>
         </li>
         <li>

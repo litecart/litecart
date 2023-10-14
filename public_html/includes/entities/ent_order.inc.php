@@ -707,7 +707,7 @@
       return false;
     }
 
-    public function email_order_copy($recipient, $bccs=[], $language_code='') {
+    public function send_order_copy($recipient, $ccs=[], $bccs=[], $language_code='') {
 
       if (empty($recipient)) return;
       if (empty($language_code)) $language_code = $this->data['language_code'];
@@ -770,6 +770,12 @@
       }
 
       $email = new ent_email();
+
+      if (!empty($ccs)) {
+        foreach ($ccs as $cc) {
+          $email->add_cc($cc);
+        }
+      }
 
       if (!empty($bccs)) {
         foreach ($bccs as $bcc) {
