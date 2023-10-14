@@ -96,7 +96,7 @@
     }
 
     if (empty($_REQUEST['db_server'])) {
-      $_REQUEST['db_server'] = ini_get('mysqli.default_host');
+      $_REQUEST['db_server'] = '127.0.0.1';
     }
 
     if (empty($_REQUEST['db_username'])) {
