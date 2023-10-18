@@ -6,3 +6,4 @@ SET dock = CAST(REGEXP_REPLACE(dock, ',.*$', '') AS CHAR);
 -- --------------------------------------------------------
 INSERT INTO `lc_settings`
 (`setting_group_key`, `key`, `title`, `description`, `value`, `function`, `priority`, `date_updated`, `date_created`)
+VALUES ('images', 'image_lazyload', 'Image Lazy Loading', 'Tells the browser to load images on the pages first when they are scrolled down to.', '0', 'toggle("e/d")', 45, NOW(), NOW());
