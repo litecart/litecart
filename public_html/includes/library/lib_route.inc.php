@@ -165,7 +165,13 @@
 
       if (empty($path)) return '';
 
-      if (!$path = urldecode(parse_url($path, PHP_URL_PATH))) {
+      $path = str_replace('//', '/', $path); // Bad bot nonsense
+
+      if (!$path = parse_url($path, PHP_URL_PATH)) {
+        return '';
+      }
+
+      if (!$path = urldecode($path)) {
         return '';
       }
 
