@@ -245,21 +245,6 @@ form[name="buy_now_form"] .dropdown-menu .image {
 </article>
 
 <script>
-  Number.prototype.toMoney = function() {
-    let n = this,
-      c = <?php echo (int)currency::$selected['decimals']; ?>,
-      d = '<?php echo language::$selected['decimal_point']; ?>',
-      t = '<?php echo addslashes(language::$selected['thousands_sep']); ?>',
-      p = '<?php echo currency::$selected['prefix']; ?>',
-      x = '<?php echo currency::$selected['suffix']; ?>',
-      s = n < 0 ? '-' : '',
-      i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
-      f = n - i,
-      j = (j = i.length) > 3 ? j % 3 : 0;
-
-    return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (<?php echo (settings::get('auto_decimals')) ? "(c && f)" : "c"; ?> ? d + Math.abs(f).toFixed(c).slice(2) : '') + x;
-  }
-
   $('#box-product[data-id="<?php echo $product_id; ?>"] form[name=buy_now_form] input[name="stock_option_id"]').on('change', function(e) {
 
     let $selected_option = $(this).closest('.dropdown').find(':input:checked');

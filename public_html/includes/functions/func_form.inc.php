@@ -211,21 +211,23 @@ END;
       list($name, $currency_code) = [$currency_code, $name];
     }
 
-    if ($currency_code == '') $currency_code = settings::get('store_currency_code');
     if ($input === true) $input = form_reinsert_value($name);
 
-  // Format and show an additional two decimals precision if needed
-    if ($input != '') {
-      $input = number_format((float)$input, currency::$currencies[$currency_code]['decimals'] + 2, '.', '');
-      $input = preg_replace('#(\.'. str_repeat('\d', 2) .')0{1,2}$#', '$1', $input);
-      $input = rtrim($input, '.');
+    if (empty($currency_code)) {
+      $currency_code = settings::get('store_currency_code');
     }
 
-    if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
+    $currency = currency::$currencies[$currency_code];
+
+    if ($input != '') {
+      $input = number_format((float)$input, $currency['decimals'], '.', '');
+      //$input = rtrim(preg_replace('#(\.'. str_repeat('\d', 2) .')0{1,2}$#', '$1', $input), '.'); // Auto decimals
+    }
+
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" step="any" name="'. functions::escape_html($name) .'" value="'. (($input != 0) ? $input : '') .'"'. (($parameters) ? ' '. $parameters : '') .' />' . PHP_EOL
-         . '  <strong class="input-group-text" style="opacity: 0.75; font-family: monospace;">'. functions::escape_html($currency_code) .'</strong>' . PHP_EOL
+         . '  ' . form_decimal_field($name, $input, $currency['decimals'], 'step="any" data-type="currency"') . PHP_EOL
+         . '  <strong class="input-group-text" style="opacity: 0.75; font-family: monospace;">'. functions::escape_html($currency['code']) .'</strong>' . PHP_EOL
          . '</div>';
   }
 
@@ -291,10 +293,10 @@ END;
     if ($input === true) $input = form_reinsert_value($name);
 
     if ($input != '') {
-      $input = round($input, (int)$decimals);
+      $input = number_format((float)$input, (int)$decimals, '.', '');
     }
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'" '. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'" data-decimals="'. $decimals .'"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_dropdown_field($name, $options=[], $input=true, $parameters='') {
@@ -1231,7 +1233,6 @@ END;
       case 'default_country_code':
         $input = settings::get('default_country_code');
         break;
-      case 'store_country_code':
       case 'store_country_code':
         $input = settings::get('store_country_code');
         break;

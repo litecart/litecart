@@ -1073,6 +1073,9 @@
 
 <script>
 
+  _env.session.currency.code = $('select[name="currency_code"] option:selected').val();
+  _env.session.currency.decimals = $('select[name="currency_code"] option:selected').data('decimals');
+
 // Order
 
   $('select[name="order_status_id"]').change(function(e){
@@ -1081,6 +1084,7 @@
   }).trigger('change');
 
   $('select[name="currency_code"]').change(function(e){
+    $('input[type="number"][data-type="currency"]').data('decimals', $(this).find('option:selected').data('decimals'));
     $('input[name="currency_value"]').val($(this).find('option:selected').data('value'));
     $('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text($(this).val());
     calculate_total();
@@ -1637,10 +1641,10 @@
       total_tax += tax;
     });
 
-    $('#order-total :input[name="subtotal"]').val(subtotal.toFixed(decimals)).trigger('change');
-    $('#order-total :input[name="subtotal_tax"]').val(subtotal_tax.toFixed(decimals)).trigger('change');
-    $('#order-total .total').text(prefix + total.toFixed(decimals) + suffix);
-    $('#order-total .total-tax').text(prefix + total_tax.toFixed(decimals) + suffix);
+    $('#order-total :input[name="subtotal"]').val(subtotal.toFixed(decimals));
+    $('#order-total :input[name="subtotal_tax"]').val(subtotal_tax.toFixed(decimals));
+    $('#order-total .total').text(total.toMoney());
+    $('#order-total .total-tax').text(total_tax.toMoney());
   }
 
   $('body').on('input change', '#order-items :input[name$="[sum]"], #order-items :input[name$="[tax]"], #order-items a.remove, #order-total :input[name$="[amount]"], #order-total :input[name$="[tax]"], #order-total [name$="[calculate]"], #order-total a.remove', function() {
