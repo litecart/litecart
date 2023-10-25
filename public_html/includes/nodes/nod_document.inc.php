@@ -86,9 +86,20 @@
 
       self::$jsenv['session'] = [
         'id' => session::get_id(),
-        'language_code' => language::$selected['code'],
-        'country_code' => customer::$data['country_code'],
-        'currency_code' => currency::$selected['code'],
+        'language' => [
+          'code' => language::$selected['code'],
+          'name' => language::$selected['name'],
+          'decimal_point' => language::$selected['decimal_point'],
+          'thousands_separator' => language::$selected['thousands_separator'],
+        ],
+        'country' => [
+          'code' => customer::$data['country_code'],
+        ],
+        'currency' => [
+          'code' => currency::$selected['code'],
+          'name' => currency::$selected['name'],
+          'decimals' => currency::$selected['decimals'],
+        ],
       ];
 
       self::$jsenv['template'] = [
