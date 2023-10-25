@@ -165,7 +165,7 @@
 
       if (empty($path)) return '';
 
-      $path = str_replace('//', '/', $path); // Bad bot nonsense
+      $path = preg_replace('#/+#', '/', $path); // Bad bot nonsense
 
       if (!$path = parse_url($path, PHP_URL_PATH)) {
         return '';
