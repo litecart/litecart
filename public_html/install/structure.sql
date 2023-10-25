@@ -318,6 +318,8 @@ CREATE TABLE `lc_newsletter_recipients` (
   `firstname` VARCHAR(64) NOT NULL DEFAULT '',
   `email` VARCHAR(128) NOT NULL DEFAULT '',
   `client_ip` VARCHAR(64) NOT NULL DEFAULT '',
+  `hostname` VARCHAR(128) NOT NULL DEFAULT '',
+  `user_agent` VARCHAR(256) NOT NULL DEFAULT '',
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email` (`email`)
