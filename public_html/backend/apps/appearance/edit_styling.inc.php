@@ -50,7 +50,7 @@
 
       <div class="form-group" style="max-width: 640px;">
           <label><?php echo language::translate('title_file', 'File'); ?></label>
-          <div class="form-input" readonly><?php echo parse_url($css_file, PHP_URL_PATH); ?></div>
+          <div class="form-input" readonly><?php echo parse_url($stylesheet, PHP_URL_PATH); ?></div>
         </div>
 
       <div class="form-group">

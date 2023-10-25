@@ -8,13 +8,14 @@
   <div id="content">
     {{notices}}
 
-    <section id="box-order-history" class="box">
+    <section id="box-order-history" class="card">
 
-      <h1 class="title"><?php echo language::translate('title_order_history', 'Order History'); ?></h1>
+      <div class="card-header">
+        <h1 class="card-title"><?php echo language::translate('title_order_history', 'Order History'); ?></h1>
+      </div>
 
-      <div class="table-responsive">
-        <table class="table table-striped table-hover data-table">
-          <thead>
+      <table class="table table-striped table-hover data-table">
+        <thead>
           <tr>
             <th class="main"><?php echo language::translate('title_order', 'Order'); ?></th>
             <th class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
@@ -22,9 +23,9 @@
             <th class="text-end"><?php echo language::translate('title_date', 'Date'); ?></th>
             <th></th>
           </tr>
-          </thead>
-          <tbody>
-          <?php if ($orders) foreach ($orders as $order) { ?>
+        </thead>
+        <tbody>
+        <?php if ($orders) foreach ($orders as $order) { ?>
           <tr>
             <td><a href="<?php echo functions::escape_html($order['link']); ?>" class="lightbox-iframe"><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></a></td>
             <td class="text-center"><?php echo $order['order_status']; ?></td>
@@ -33,11 +34,14 @@
             <td class="text-end"><a href="<?php echo functions::escape_html($order['printable_link']); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-print'); ?></a></td>
           </tr>
           <?php } ?>
-          </tbody>
-        </table>
-      </div>
+        </tbody>
+      </table>
 
-      <?php echo $pagination; ?>
+      <?php if ($pagination) { ?>
+      <div class="card-footer">
+        <?php echo $pagination; ?>
+      </div>
+      <?php } ?>
     </section>
   </div>
 </main>

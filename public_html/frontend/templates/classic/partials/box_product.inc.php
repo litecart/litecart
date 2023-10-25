@@ -210,7 +210,7 @@
 <?php
   foreach ($technical_data as $line) {
     if (preg_match('#[:\t]#', $line)) {
-      list($key, $value) = preg_split('# *[:\t]+ *#', $line, 2);
+      @list($key, $value) = preg_split('# *[:\t]+ *#', $line, 2);
       echo '  <tr>' . PHP_EOL
          . '    <td>'. trim($key) .'</td>' . PHP_EOL
          . '    <td>'. trim($value) .'</td>' . PHP_EOL
