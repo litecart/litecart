@@ -21,6 +21,7 @@
 
   $_page->snippets = [
     'title' => sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])),
+    'categories' => [],
     'products' => [],
     'sort_alternatives' => [
       'relevance' => language::translate('title_relevance', 'Relevance'),
@@ -31,6 +32,13 @@
     ],
     'pagination' => null,
   ];
+
+  $categories = functions::catalog_categories_search_query([
+    'query' => $_GET['query'],
+    'limit' => 5,
+  ])->fetch_all();
+
+  $_page->snippets['categories'] = $categories;
 
   $products = functions::catalog_products_search_query([
     'query' => $_GET['query'],

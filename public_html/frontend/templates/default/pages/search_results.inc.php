@@ -18,74 +18,71 @@
 }
 </style>
 <main id="main" class="container">
-  <div class="row layout">
-    <div class="col-md-3">
-      <div id="sidebar">
-        <?php include 'app://frontend/partials/box_category_tree.inc.php'; ?>
-        <?php include 'app://frontend/partials/box_recently_viewed_products.inc.php'; ?>
+  <div id="content">
+    {{notices}}
+    {{breadcrumbs}}
+
+    <section id="box-search-results" class="card">
+      <div class="card-header">
+        <h1 class="card-title">{{title}}</h1>
       </div>
-    </div>
 
-    <div class="col-md-9">
-      <div id="content">
-        {{notices}}
-        {{breadcrumbs}}
+      <div class="card-body">
+        <?php if ($products) { ?>
 
-        <section id="box-search-results" class="card">
-          <div class="card-header">
-            <h1 class="card-title">{{title}}</h1>
-          </div>
+          <section id="box-filter">
+          <?php echo functions::form_begin('filter_form', 'get'); ?>
 
-          <div class="card-body">
-            <?php if ($products) { ?>
+            <div class="filter">
+              <div>
+                <?php echo functions::form_search_field('query', true, 'autocomplete="off" placeholder="'. functions::escape_html(language::translate('text_search_products', 'Search products')) .' ..."'); ?>
+              </div>
 
-              <section id="box-filter">
-              <?php echo functions::form_begin('filter_form', 'get'); ?>
-
-                <div class="filter">
-                  <div>
-                    <?php echo functions::form_search_field('query', true, 'autocomplete="off" placeholder="'. functions::escape_html(language::translate('text_search_products', 'Search products')) .' ..."'); ?>
+              <div>
+                <div class="dropdown">
+                  <div class="form-select" data-toggle="dropdown">
+                    <?php echo language::translate('title_sort_by', 'Sort By'); ?>
                   </div>
-
-                  <div>
-                    <div class="dropdown">
-                      <div class="form-select" data-toggle="dropdown">
-                        <?php echo language::translate('title_sort_by', 'Sort By'); ?>
-                      </div>
-                      <ul class="dropdown-menu">
-                        <?php foreach ($sort_alternatives as $key => $title) { ?>
-                        <li>
-                          <?php echo functions::form_radio_button('sort', [$key, $title], true); ?>
-                        </li>
-                        <?php } ?>
-                      </ul>
-                    </div>
-                  </div>
+                  <ul class="dropdown-menu">
+                    <?php foreach ($sort_alternatives as $key => $title) { ?>
+                    <li>
+                      <?php echo functions::form_radio_button('sort', [$key, $title], true); ?>
+                    </li>
+                    <?php } ?>
+                  </ul>
                 </div>
+              </div>
+            </div>
 
-              <?php echo functions::form_end(); ?>
-            </section>
-            <?php } ?>
-
-
-            <?php if ($products) { ?>
-            <section class="listing products columns">
-              <?php foreach ($products as $product) echo functions::draw_listing_product($product, null); ?>
-            </section>
-            <?php } else { ?>
-            <div><em><?php echo language::translate('text_no_matching_results', 'No matching results'); ?></em></div>
-            <?php } ?>
-
-          </div>
-
-          <?php if ($pagination) { ?>
-          <div class="card-footer">
-            {{pagination}}
-          </div>
-          <?php } ?>
+          <?php echo functions::form_end(); ?>
         </section>
+        <?php } ?>
+
+        <?php if ($categories) { ?>
+        <nav class="nav nav-pills" style="margin-bottom: 1em;">
+          <a class="nav-item" href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('fa-angle-left'); ?> <?php echo language::translate('title_back', 'Back'); ?></a>
+          <?php foreach ($subcategories as $subcategory) { ?><a class="nav-item" href="<?php echo document::href_ilink('category', ['category_id' => $subcategory['id']]); ?>"><?php echo $subcategory['name']; ?></a><?php } ?>
+        </nav>
+        <?php } ?>
+
+        <?php if ($products) { ?>
+        <section class="listing products columns">
+          <?php foreach ($products as $product) echo functions::draw_listing_product($product, null); ?>
+        </section>
+        <?php } ?>
+
+        <?php if (!$categories && !$products) { ?>
+        <div><em><?php echo language::translate('text_no_matching_results', 'No matching results'); ?></em></div>
+        <?php } ?>
 
       </div>
-    </div>
+
+      <?php if ($pagination) { ?>
+      <div class="card-footer">
+        {{pagination}}
+      </div>
+      <?php } ?>
+    </section>
+
   </div>
 </main>

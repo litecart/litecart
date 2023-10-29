@@ -58,6 +58,94 @@
     return $categories_query;
   }
 
+  function catalog_categories_search_query($filter=[]) {
+
+    if (!empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
+
+    $sql_select_relevance = [];
+    $sql_where = [];
+
+    if (!empty($filter['query'])) {
+
+      $code_regex = functions::format_regex_code($_GET['query']);
+      $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
+
+      $sql_select_relevance[] = (
+        "if(c.id in (
+          select distinct category_id from ". DB_TABLE_PREFIX ."categories_info
+          where match(name) against ('". database::input($query_fulltext) ."' in boolean mode)
+        ), 10, 0)"
+      );
+
+      $sql_select_relevance[] = (
+        "if(c.id in (
+          select distinct category_id from ". DB_TABLE_PREFIX ."categories_info
+          where match(synonyms) against ('". database::input($query_fulltext) ."' in boolean mode)
+        ), 10, 0)"
+      );
+
+      $sql_select_relevance[] = (
+        "if(c.id in (
+          select distinct category_id from ". DB_TABLE_PREFIX ."categories_info
+          where match(short_description) against ('". database::input($query_fulltext) ."' in boolean mode)
+        ), 5, 0)"
+      );
+
+      $sql_select_relevance[] = (
+        "if(c.id in (
+          select distinct category_id from ". DB_TABLE_PREFIX ."categories_info
+          where match(description) against ('". database::input($query_fulltext) ."' in boolean mode)
+        ), 5, 0)"
+      );
+    }
+
+
+    if (!empty($filter['keywords'])) {
+      $sql_select_relevance['keywords'] = (
+        "if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", database::input($filter['keywords'])) ."', p.keywords), 1, 0)"
+      );
+    }
+
+    if (!empty($filter['exclude_categories'])) {
+      $sql_where['exclude_categories'] = (
+        "and c.id not in ('". implode("', '", database::input($filter['exclude_categories'])) ."')"
+      );
+    }
+
+    $categories_query = database::query(
+      "select c.id, c.parent_id, c.image, ci.name, ci.short_description, c.priority, c.date_updated,
+      (". implode(" + ", $sql_select_relevance) .") as relevance
+
+      from ". DB_TABLE_PREFIX ."categories c
+
+      left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
+
+      left join (
+        select category_id, count(product_id) as num_products
+        from lc_products_to_categories
+        group by category_id
+      ) p2c on (p2c.category_id = c.id)
+
+      left join (
+        select parent_id, count(id) as num_subcategories
+        from lc_categories
+        where status
+        group by parent_id
+      ) c2 on (c2.parent_id = c.id)
+
+      where c.status
+      and (p2c.num_products > 0 or c2.num_subcategories > 0)
+      ". (!empty($sql_where) ? implode(" and ", $sql_where) : "") ."
+
+      having relevance > 0
+
+      order by relevance desc
+      ". (!empty($filter['limit']) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") .";"
+    );
+
+    return $categories_query;
+  }
+
 // Filter function using AND syntax
   function catalog_products_query($filter=[]) {
 
