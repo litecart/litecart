@@ -47,6 +47,7 @@
         case 'head_title':
         case 'meta_description':
         case 'h1_title':
+        case 'synonyms':
 
           $this->_data['info'] = [];
 

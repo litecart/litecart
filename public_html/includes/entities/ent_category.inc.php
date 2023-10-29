@@ -157,7 +157,8 @@
             description = '". database::input($this->data['description'][$language_code], true) ."',
             head_title = '". database::input($this->data['head_title'][$language_code]) ."',
             h1_title = '". database::input($this->data['h1_title'][$language_code]) ."',
-            meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
+            meta_description = '". database::input($this->data['meta_description'][$language_code]) ."',
+            synonyms = '". database::input($this->data['synonyms'][$language_code]) ."'
             where category_id = ". (int)$this->data['id'] ."
             and language_code = '". database::input($language_code) ."'
           limit 1;"

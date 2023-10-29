@@ -134,6 +134,7 @@ CREATE TABLE `lc_categories_info` (
   `head_title` VARCHAR(128) NOT NULL DEFAULT '',
   `h1_title` VARCHAR(128) NOT NULL DEFAULT '',
   `meta_description` VARCHAR(512) NOT NULL DEFAULT '',
+  `synonyms` VARCHAR(256) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `category` (`category_id`, `language_code`),
   KEY `category_id` (`category_id`),

@@ -113,6 +113,9 @@ CREATE TABLE `lc_stock_transactions_contents` (
 -- --------------------------------------------------------
 RENAME TABLE `lc_cart_items` TO `lc_shopping_carts_items`;
 -- --------------------------------------------------------
+ALTER TABLE `lc_categories_info`
+ADD COLUMN `synonyms` VARCHAR(256) NOT NULL DEFAULT '' AFTER `meta_description`;
+-- --------------------------------------------------------
 RENAME TABLE `lc_manufacturers` TO `lc_brands`;
 -- --------------------------------------------------------
 UPDATE `lc_brands` SET image = REPLACE(image, 'manufacturers/', 'brands/');

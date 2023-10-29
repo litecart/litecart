@@ -49,6 +49,7 @@
         'head_title',
         'h1_title',
         'meta_description',
+        'synonyms',
         'filters',
         'priority',
       ];
@@ -245,6 +246,10 @@
                 </div>
               </div>
 
+              <div class="form-group">
+                <label><?php echo language::translate('title_synonyms', 'Synonyms'); ?></label>
+                <?php echo functions::form_regional_input_field('synonyms['. $language_code .']', $language_code, true); ?>
+              </div>
             </div>
             <?php } ?>
 
