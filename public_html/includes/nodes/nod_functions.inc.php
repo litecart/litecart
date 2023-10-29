@@ -6,6 +6,9 @@
 
       $search_replace = [
         '#^form_draw_users_list#' => 'form_administrators_list',
+        '#^form_draw_weight_classes_list#' => 'form_weight_units',
+        '#^form_draw_length_classes_list#' => 'form_length_units',
+        '#^form_draw_order_status_list#' => 'form_order_statuses',
         '#^form_draw_(form_)?(.*)#' => 'form_$2',
       ];
 

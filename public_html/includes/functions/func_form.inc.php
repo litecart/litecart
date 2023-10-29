@@ -1513,11 +1513,6 @@ END;
     }
   }
 
-  function form_length_classes_list($name, $input=true, $multiple=false, $parameters='') {
-    trigger_error('form_length_classes_list() is deprecated. Instead, use form_length_units_list()', E_USER_DEPRECATED);
-    return form_length_units_list($name, $input, $parameters);
-  }
-
   function form_length_units_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
@@ -1567,11 +1562,6 @@ END;
       array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
       return form_select_field($name, $options, $input, $parameters);
     }
-  }
-
-  function form_order_status_list($name, $input=true, $parameters='') {
-    trigger_error('The function form_order_status_list() has been renamed to form_order_statuses_list()', E_USER_DEPRECATED);
-    return call_user_func_array('form_order_statuses_list', func_get_args());
   }
 
   function form_order_statuses_list($name, $input=true, $parameters='') {
