@@ -77,7 +77,7 @@
         'url' => document::ilink('f:'),
       ];
 
-      if (!empty(user::$data['id'])) {
+      if (!empty(administrator::$data['id'])) {
         self::$jsenv['backend'] = [
           'path' => WS_DIR_APP . BACKEND_ALIAS .'/',
           'url' => document::ilink('b:'),
@@ -113,11 +113,11 @@
         'email' => !empty(customer::$data['email']) ? customer::$data['email'] : null,
       ];
 
-      if (!empty(user::$data['id'])) {
-        self::$jsenv['user'] = [
-          'id' => user::$data['id'],
-          'username' => user::$data['username'],
-          'email' => !empty(user::$data['email']) ? user::$data['email'] : null,
+      if (!empty(administrator::$data['id'])) {
+        self::$jsenv['administrator'] = [
+          'id' => administrator::$data['id'],
+          'username' => administrator::$data['username'],
+          'email' => !empty(administrator::$data['email']) ? administrator::$data['email'] : null,
         ];
       }
 

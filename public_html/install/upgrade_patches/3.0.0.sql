@@ -130,6 +130,8 @@ RENAME TABLE `lc_products_options_stock` TO `lc_stock_items`;
 ALTER TABLE `lc_attribute_groups_info`
 CHANGE COLUMN `group_id` `group_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
 -- --------------------------------------------------------
+RENAME TABLE `lc_users` TO `lc_administrators`;
+-- --------------------------------------------------------
 ALTER TABLE `lc_attribute_values_info`
 CHANGE COLUMN `value_id` `value_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
 -- --------------------------------------------------------

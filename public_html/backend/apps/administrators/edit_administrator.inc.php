@@ -1,26 +1,26 @@
 <?php
 
-  if (!empty($_GET['user_id'])) {
-    $user = new ent_user($_GET['user_id']);
+  if (!empty($_GET['administrator_id'])) {
+    $administrator = new ent_administrator($_GET['administrator_id']);
   } else {
-    $user = new ent_user();
+    $administrator = new ent_administrator();
   }
 
   if (!$_POST) {
-    $_POST = $user->data;
+    $_POST = $administrator->data;
   }
 
-  document::$snippets['title'][] = !empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User');
+  document::$snippets['title'][] = !empty($administrator->data['username']) ? language::translate('title_edit_administrator', 'Edit Administrator') : language::translate('title_create_new_administrator', 'Create New Administrator');
 
-  breadcrumbs::add(language::translate('title_users', 'Users'), document::href_ilink(__APP__.'/users'));
-  breadcrumbs::add(!empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'));
+  breadcrumbs::add(language::translate('title_administrators', 'Administrators'), document::href_ilink(__APP__.'/administrators'));
+  breadcrumbs::add(!empty($administrator->data['username']) ? language::translate('title_edit_administrator', 'Edit Administrator') : language::translate('title_create_new_administrator', 'Create New Administrator'));
 
   if (isset($_POST['save'])) {
 
     try {
 
       if (empty($_POST['username'])) throw new Exception(language::translate('error_must_enter_username', 'You must enter a username'));
-      if (empty($user->data['id']) && empty($_POST['password'])) throw new Exception(language::translate('error_must_enter_password', 'You must enter a password'));
+      if (empty($administrator->data['id']) && empty($_POST['password'])) throw new Exception(language::translate('error_must_enter_password', 'You must enter a password'));
       if (!empty($_POST['password']) && empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_must_enter_confirmed_password', 'You must confirm the password'));
       if (!empty($_POST['password']) && $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
 
@@ -39,17 +39,17 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $user->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) $administrator->data[$field] = $_POST[$field];
       }
 
-      if (!empty($_POST['password'])) $user->set_password($_POST['password']);
+      if (!empty($_POST['password'])) $administrator->set_password($_POST['password']);
 
-      $user->data['user_security_timestamp'] = date('Y-m-d H:i:s');
+      $administrator->data['administrator_security_timestamp'] = date('Y-m-d H:i:s');
 
-      $user->save();
+      $administrator->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink(__APP__.'/users'));
+      header('Location: '. document::ilink(__APP__.'/administrators'));
       exit;
 
     } catch (Exception $e) {
@@ -60,12 +60,12 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($user->data['id'])) throw new Exception(language::translate('error_must_provide_user', 'You must provide a user'));
+      if (empty($administrator->data['id'])) throw new Exception(language::translate('error_must_provide_administrator', 'You must provide a administrator'));
 
-      $user->delete();
+      $administrator->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink(__APP__.'/users'));
+      header('Location: '. document::ilink(__APP__.'/administrators'));
       exit;
 
     } catch (Exception $e) {
@@ -83,12 +83,12 @@
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo !empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'); ?>
+      <?php echo $app_icon; ?> <?php echo !empty($administrator->data['username']) ? language::translate('title_edit_administrator', 'Edit Administrator') : language::translate('title_create_new_administrator', 'Create New Administrator'); ?>
     </div>
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_begin('user_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
+    <?php echo functions::form_begin('administrator_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
 
       <div class="row">
 
@@ -102,7 +102,7 @@
 
           <div class="row">
             <div class="form-group col-sm-6">
-              <label><?php echo language::translate('title_username', 'Username'); ?></label>
+              <label><?php echo language::translate('title_username', 'Administratorname'); ?></label>
               <?php echo functions::form_text_field('username', true, 'autocomplete="off" required'); ?>
             </div>
 
@@ -136,7 +136,7 @@
             </div>
           </div>
 
-          <?php if (!empty($user->data['id'])) { ?>
+          <?php if (!empty($administrator->data['id'])) { ?>
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_ip_address', 'Last IP Address'); ?></label>
@@ -207,7 +207,7 @@
 
       <div class="card-action">
         <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo !empty($user->data['id']) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo !empty($administrator->data['id']) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
         <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 

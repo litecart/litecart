@@ -1,6 +1,6 @@
 <?php
 
-  user::require_login();
+  administrator::require_login();
 
   breadcrumbs::reset();
   breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), document::ilink(''));
@@ -14,8 +14,8 @@
   // Set default document if missing
     if (!defined('__DOC__')) define('__DOC__', $app_config['default']);
 
-  // Check if user is permitted to access document
-    if (!empty(user::$data['apps'][__APP__]['status']) && !in_array(__DOC__, user::$data['apps'][__APP__]['docs'])) {
+  // Check if administrator is permitted to access document
+    if (!empty(administrator::$data['apps'][__APP__]['status']) && !in_array(__DOC__, administrator::$data['apps'][__APP__]['docs'])) {
       notices::add('errors', language::translate('title_access_denied', 'Access Denied'));
       return;
     }
@@ -73,7 +73,7 @@
     $widgets = functions::admin_get_widgets();
 
     foreach ($widgets as $widget) {
-      if (!empty(user::$data['widgets']) && empty(user::$data['widgets'][$widget['id']])) continue;
+      if (!empty(administrator::$data['widgets']) && empty(administrator::$data['widgets'][$widget['id']])) continue;
 
       ob_start();
       include $widget['directory'] . $widget['file'];

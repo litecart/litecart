@@ -1,27 +1,27 @@
 <?php
 
-  class user {
+  class administrator {
 
     public static $data;
 
     public static function init() {
 
-      if (empty(session::$data['user']) || !is_array(session::$data['user'])) {
+      if (empty(session::$data['administrator']) || !is_array(session::$data['administrator'])) {
         self::reset();
       }
 
-    // Bind user to session
-      self::$data = &session::$data['user'];
+    // Bind administrator to session
+      self::$data = &session::$data['administrator'];
 
-    // Login remembered user automatically
+    // Login remembered administrator automatically
       if (empty(self::$data['id']) && !empty($_COOKIE['remember_me']) && empty($_POST)) {
 
         try {
 
           list($username, $key) = explode(':', $_COOKIE['remember_me']);
 
-          $user = database::query(
-            "select * from ". DB_TABLE_PREFIX ."users
+          $administrator = database::query(
+            "select * from ". DB_TABLE_PREFIX ."administrators
             where lower(username) = lower('". database::input($username) ."')
             and status
             and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
@@ -29,27 +29,27 @@
             limit 1;"
           )->fetch();
 
-          if (!$user) {
+          if (!$administrator) {
             throw new Exception('Invalid email or the account has been removed');
           }
 
-          $checksum = sha1($user['username'] . $user['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+          $checksum = sha1($administrator['username'] . $administrator['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
 
           if ($checksum != $key) {
 
-            if (++$user['login_attempts'] < 3) {
+            if (++$administrator['login_attempts'] < 3) {
               database::query(
-                "update ". DB_TABLE_PREFIX ."users
+                "update ". DB_TABLE_PREFIX ."administrators
                 set login_attempts = login_attempts + 1
-                where id = ". (int)$user['id'] ."
+                where id = ". (int)$administrator['id'] ."
                 limit 1;"
               );
             } else {
               database::query(
-                "update ". DB_TABLE_PREFIX ."users
+                "update ". DB_TABLE_PREFIX ."administrators
                 set login_attempts = 0,
                 date_valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
-                where id = ". (int)$user['id'] ."
+                where id = ". (int)$administrator['id'] ."
                 limit 1;"
               );
             }
@@ -57,17 +57,17 @@
             throw new Exception('Invalid checksum for cookie');
           }
 
-          self::load($user['id']);
+          self::load($administrator['id']);
 
           database::query(
-            "update ". DB_TABLE_PREFIX ."users
+            "update ". DB_TABLE_PREFIX ."administrators
             set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
               last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
-              last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
+              last_administrator_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
               login_attempts = 0,
               total_logins = total_logins + 1,
               date_login = '". date('Y-m-d H:i:s') ."'
-            where id = ". (int)$user['id'] ."
+            where id = ". (int)$administrator['id'] ."
             limit 1;"
           );
 
@@ -78,17 +78,17 @@
 
       if (!empty(self::$data['id'])) {
 
-        $user = database::query(
-          "select * from ". DB_TABLE_PREFIX ."users
+        $administrator = database::query(
+          "select * from ". DB_TABLE_PREFIX ."administrators
           where id = ". (int)self::$data['id'] ."
           limit 1;"
         )->fetch();
 
-        if (!$user) {
+        if (!$administrator) {
           die('The account has been removed');
         }
 
-        if (!$user['status']) {
+        if (!$administrator['status']) {
           if (!empty($_COOKIE['remember_me'])) {
             header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax');
           }
@@ -99,14 +99,14 @@
         ini_set('display_errors', 'On');
 
         database::query(
-          "update ". DB_TABLE_PREFIX ."users
+          "update ". DB_TABLE_PREFIX ."administrators
           set date_active = '". date('Y-m-d H:i:s') ."'
           where id = ". (int)self::$data['id'] ."
           limit 1;"
         );
 
-        if (!empty($user['date_expire_sessions'])) {
-          if (!isset(session::$data['user_security_timestamp']) || session::$data['user_security_timestamp'] < strtotime($user['date_expire_sessions'])) {
+        if (!empty($administrator['date_expire_sessions'])) {
+          if (!isset(session::$data['administrator_security_timestamp']) || session::$data['administrator_security_timestamp'] < strtotime($administrator['date_expire_sessions'])) {
             self::reset();
             notices::add('errors', language::translate('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
             header('Location: '. document::ilink('login'));
@@ -120,37 +120,37 @@
 
     public static function reset() {
 
-      session::$data['user'] = [];
+      session::$data['administrator'] = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_PREFIX ."users;"
+        "show fields from ". DB_TABLE_PREFIX ."administrators;"
       );
       while ($field = database::fetch($fields_query)) {
-        session::$data['user'][$field['Field']] = null;
+        session::$data['administrator'][$field['Field']] = null;
       }
 
-      session::$data['user']['apps'] = [];
-      session::$data['user']['widgets'] = [];
+      session::$data['administrator']['apps'] = [];
+      session::$data['administrator']['widgets'] = [];
     }
 
-    public static function load($user_id) {
+    public static function load($administrator_id) {
 
       self::reset();
 
-      $user = database::query(
-        "select * from ". DB_TABLE_PREFIX ."users
-        where id = ". (int)$user_id ."
+      $administrator = database::query(
+        "select * from ". DB_TABLE_PREFIX ."administrators
+        where id = ". (int)$administrator_id ."
         limit 1;"
       )->fetch();
 
-      if (!$user) {
-        throw new Exception('No user found');
+      if (!$administrator) {
+        throw new Exception('No administrator found');
       }
 
-      $user['apps'] = $user['apps'] ? json_decode($user['apps'], true) : [];
-      $user['widgets'] = $user['widgets'] ? json_decode($user['widgets'], true) : [];
+      $administrator['apps'] = $administrator['apps'] ? json_decode($administrator['apps'], true) : [];
+      $administrator['widgets'] = $administrator['widgets'] ? json_decode($administrator['widgets'], true) : [];
 
-      session::$data['user'] = $user;
+      session::$data['administrator'] = $administrator;
     }
 
     public static function require_login() {

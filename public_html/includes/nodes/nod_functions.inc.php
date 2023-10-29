@@ -5,6 +5,7 @@
     public static function __callstatic($function, $arguments) {
 
       $search_replace = [
+        '#^form_draw_users_list#' => 'form_administrators_list',
         '#^form_draw_(form_)?(.*)#' => 'form_$2',
       ];
 

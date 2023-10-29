@@ -1,6 +1,6 @@
 <?php
 
-  user::require_login();
+  administrator::require_login();
 
   document::$layout = 'ajax';
 

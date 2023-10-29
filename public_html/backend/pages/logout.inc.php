@@ -2,7 +2,7 @@
 
   header('X-Robots-Tag: noindex');
 
-  user::reset();
+  administrator::reset();
 
   session::regenerate_id();
 

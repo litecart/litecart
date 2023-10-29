@@ -23,7 +23,7 @@
           limit 1;"
         );
 
-        if (user::check_login()) {
+        if (administrator::check_login()) {
           notices::add('success', 'Cache cleared');
         }
       }
@@ -51,7 +51,7 @@
 
         self::clear_cache('settings');
 
-        if (user::check_login()) {
+        if (administrator::check_login()) {
           notices::add('success', 'Image thumbnails cache cleared');
         }
       }
@@ -149,8 +149,8 @@
             $hash_string .= document::link();
             break;
 
-          case 'user':
-            $hash_string .= user::$data['id'];
+          case 'administrator':
+            $hash_string .= administrator::$data['id'];
             break;
 
           case 'webp':

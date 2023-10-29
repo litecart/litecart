@@ -64,11 +64,11 @@
   ];
 
   foreach (currency::$currencies as $currency) {
-    if (!empty(user::$data['id']) || $currency['status'] == 1) $_page->snippets['currencies'][] = $currency;
+    if (!empty(administrator::$data['id']) || $currency['status'] == 1) $_page->snippets['currencies'][] = $currency;
   }
 
   foreach (language::$languages as $language) {
-    if (!empty(user::$data['id']) || $language['status'] == 1) $_page->snippets['languages'][] = $language;
+    if (!empty(administrator::$data['id']) || $language['status'] == 1) $_page->snippets['languages'][] = $language;
   }
 
   if (!in_array(currency::$selected, $_page->snippets['currencies'])) $_page->snippets['currencies'][] = currency::$selected;

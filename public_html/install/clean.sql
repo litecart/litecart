@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS `lc_administrators`;
+-- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_attribute_groups`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_attribute_groups_info`;
@@ -115,8 +117,6 @@ DROP TABLE IF EXISTS `lc_tax_classes`;
 DROP TABLE IF EXISTS `lc_tax_rates`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_translations`;
--- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_users`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_zones`;
 -- --------------------------------------------------------

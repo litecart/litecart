@@ -7,7 +7,7 @@
 
   foreach ($apps as $app) {
 
-    if (!empty(user::$data['apps']) && empty(user::$data['apps'][$app['id']]['status'])) continue;
+    if (!empty(administrator::$data['apps']) && empty(administrator::$data['apps'][$app['id']]['status'])) continue;
 
     $box_apps_menu->snippets['apps'][$app['id']] = [
       'id' => $app['id'],
@@ -24,7 +24,7 @@
     if (!empty($app['menu'])) {
       foreach ($app['menu'] as $item) {
 
-        if (!empty(user::$data['apps']) && (empty(user::$data['apps'][$app['id']]['status']) || !in_array($item['doc'], user::$data['apps'][$app['id']]['docs']))) continue;
+        if (!empty(administrator::$data['apps']) && (empty(administrator::$data['apps'][$app['id']]['status']) || !in_array($item['doc'], administrator::$data['apps'][$app['id']]['docs']))) continue;
 
         $params = !empty($item['params']) ? array_merge(['app' => $app['id'], 'doc' => $item['doc']], $item['params']) : ['app' => $app['id'], 'doc' => $item['doc']];
 

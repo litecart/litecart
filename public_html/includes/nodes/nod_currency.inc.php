@@ -62,7 +62,7 @@
 
       $enabled_currencies = [];
       foreach (self::$currencies as $currency) {
-        if (!empty(user::$data['id']) || $currency['status'] == 1) $enabled_currencies[] = $currency['code'];
+        if (!empty(administrator::$data['id']) || $currency['status'] == 1) $enabled_currencies[] = $currency['code'];
       }
 
     // Return chained currency with language

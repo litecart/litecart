@@ -1,3 +1,28 @@
+CREATE TABLE IF NOT EXISTS `lc_administrators` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `status` TINYINT(1) NOT NULL DEFAULT '0',
+  `username` VARCHAR(32) NOT NULL DEFAULT '',
+  `email` VARCHAR(128) NOT NULL DEFAULT '',
+  `password_hash` VARCHAR(255) NOT NULL DEFAULT '',
+  `apps` VARCHAR(4096) NOT NULL DEFAULT '',
+  `widgets` VARCHAR(512) NOT NULL DEFAULT '',
+  `login_attempts` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `total_logins` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
+  `last_hostname` VARCHAR(128) NOT NULL DEFAULT '',
+  `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '',
+  `date_valid_from` TIMESTAMP NULL DEFAULT NULL,
+  `date_valid_to` TIMESTAMP NULL DEFAULT NULL,
+  `date_active` TIMESTAMP NULL DEFAULT NULL,
+  `date_login` TIMESTAMP NULL DEFAULT NULL,
+  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `status` (`status`),
+  KEY `username` (`username`),
+  KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+-- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(32) NOT NULL DEFAULT '',
@@ -950,31 +975,6 @@ CREATE TABLE `lc_translations` (
   KEY `frontend` (`frontend`),
   KEY `backend` (`backend`),
   KEY `date_created` (`date_created`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
--- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lc_users` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `status` TINYINT(1) NOT NULL DEFAULT '0',
-  `username` VARCHAR(32) NOT NULL DEFAULT '',
-  `email` VARCHAR(128) NOT NULL DEFAULT '',
-  `password_hash` VARCHAR(255) NOT NULL DEFAULT '',
-  `apps` VARCHAR(4096) NOT NULL DEFAULT '',
-  `widgets` VARCHAR(512) NOT NULL DEFAULT '',
-  `login_attempts` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `total_logins` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
-  `last_hostname` VARCHAR(128) NOT NULL DEFAULT '',
-  `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '',
-  `date_valid_from` TIMESTAMP NULL DEFAULT NULL,
-  `date_valid_to` TIMESTAMP NULL DEFAULT NULL,
-  `date_active` TIMESTAMP NULL DEFAULT NULL,
-  `date_login` TIMESTAMP NULL DEFAULT NULL,
-  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `status` (`status`),
-  KEY `username` (`username`),
-  KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_zones` (

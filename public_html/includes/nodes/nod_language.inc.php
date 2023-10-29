@@ -112,7 +112,7 @@
 
       $enabled_languages = [];
       foreach (self::$languages as $language) {
-        if (!empty(user::$data['id']) || $language['status'] == 1) $enabled_languages[] = $language['code'];
+        if (!empty(administrator::$data['id']) || $language['status'] == 1) $enabled_languages[] = $language['code'];
       }
 
     // Return language by regional domain

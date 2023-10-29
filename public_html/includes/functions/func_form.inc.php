@@ -1057,6 +1057,31 @@ END;
     }
   }
 
+  function form_administrators_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_users_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
+
+    $administrators_query = database::query(
+      "select id, username from ". DB_TABLE_PREFIX ."administrator
+      order by username;"
+    );
+
+    $options = [];
+    while ($administrator = database::fetch($administrators_query)) {
+      $options[] = [$administrator['id'], $administrator['username']];
+    }
+
+    if (preg_match('#\[\]$#', $name)) {
+      return form_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
+      return form_select_field($name, $options, $input, $parameters);
+    }
+  }
+
   function form_attribute_groups_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
@@ -1279,7 +1304,7 @@ END;
 
   function form_customers_list($name, $input=true, $parameters='') {
 
-    if (empty(user::$data['id'])) trigger_error('Must be logged in to use form_customers_list()', E_USER_ERROR);
+    if (empty(administrator::$data['id'])) trigger_error('Must be logged in to use form_customers_list()', E_USER_ERROR);
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
       trigger_error('Passing $multiple as 3rd parameter in form_customers_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -1930,36 +1955,6 @@ END;
       array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
       return form_select_field($name, $options, $input, $parameters);
     }
-  }
-
-  function form_users_list($name, $input=true, $parameters='') {
-
-    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_users_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
-      if (isset($args[3])) $parameters = $args[2];
-    }
-
-    $users_query = database::query(
-      "select id, username from ". DB_TABLE_PREFIX ."users
-      order by username;"
-    );
-
-    $options = [];
-    while ($user = database::fetch($users_query)) {
-      $options[] = [$user['id'], $user['username']];
-    }
-
-    if (preg_match('#\[\]$#', $name)) {
-      return form_select_multiple_field($name, $options, $input, $parameters);
-    } else {
-      array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
-      return form_select_field($name, $options, $input, $parameters);
-    }
-  }
-
-  function form_weight_classes_list($name, $input=true, $multiple=false, $parameters='') {
-    trigger_error('form_weight_classes_list() is deprecated. Instead, use form_weight_units_list()', E_USER_DEPRECATED);
-    return form_weight_units_list($name, $input, $parameters);
   }
 
   function form_weight_units_list($name, $input=true, $parameters='') {
