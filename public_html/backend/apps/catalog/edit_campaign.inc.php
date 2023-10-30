@@ -79,7 +79,7 @@
 
       <div class="form-group">
         <label><?php echo language::translate('title_product', 'Product'); ?></label>
-        <?php echo functions::form_product_field('product_id', true, false); ?>
+        <?php echo functions::form_select_product('product_id', true, false); ?>
       </div>
 
       <div class="row">

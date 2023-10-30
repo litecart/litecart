@@ -81,13 +81,13 @@
       <div class="row">
         <div class="form-group col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
           <label><?php echo language::translate('title_country', 'Country'); ?></label>
-          <?php echo functions::form_countries_list('customer[country_code]', true); ?>
+          <?php echo functions::form_select_country('customer[country_code]', true); ?>
         </div>
 
         <?php if (settings::get('customer_field_zone')) { ?>
         <div class="form-group col-6">
           <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-          <?php echo functions::form_zones_list('customer[zone_code]', fallback($_POST['customer']['country_code']), true); ?>
+          <?php echo functions::form_select_zone('customer[zone_code]', fallback($_POST['customer']['country_code']), true); ?>
         </div>
         <?php } ?>
       </div>
@@ -166,13 +166,13 @@
         <div class="row">
           <div class="form-group col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
             <label><?php echo language::translate('title_country', 'Country'); ?></label>
-            <?php echo functions::form_countries_list('customer[shipping_address][country_code]', true); ?>
+            <?php echo functions::form_select_country('customer[shipping_address][country_code]', true); ?>
           </div>
 
           <?php if (settings::get('customer_field_zone')) { ?>
           <div class="form-group col-6">
             <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-            <?php echo functions::form_zones_list('customer[shipping_address][zone_code]', fallback($_POST['customer']['shipping_address']['country_code'], $_POST['customer']['country_code']), true); ?>
+            <?php echo functions::form_select_zone('customer[shipping_address][zone_code]', fallback($_POST['customer']['shipping_address']['country_code'], $_POST['customer']['country_code']), true); ?>
           </div>
           <?php } ?>
         </div>

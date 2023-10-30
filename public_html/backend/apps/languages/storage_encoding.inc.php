@@ -111,7 +111,7 @@
       <div style="width: 640px;">
         <div class="form-group">
           <label><?php echo language::translate('title_collation', 'Collation'); ?></label>
-          <?php echo functions::form_mysql_collations_list('collation'); ?>
+          <?php echo functions::form_select_mysql_collation('collation'); ?>
         </div>
 
         <div class="form-group">

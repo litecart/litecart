@@ -182,12 +182,12 @@
         <div class="row">
           <div class="form-group col-md-3">
             <label><?php echo language::translate('title_language', 'Language'); ?></label>
-            <?php echo functions::form_languages_list('language_code', true); ?>
+            <?php echo functions::form_select_language('language_code', true); ?>
           </div>
 
           <div class="form-group col-md-3">
             <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
-            <?php echo functions::form_currencies_list('currency_code', true); ?>
+            <?php echo functions::form_select_currency('currency_code', true); ?>
           </div>
 
           <div class="form-group col-md-3">
@@ -282,12 +282,12 @@
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_country', 'Country'); ?></label>
-                <?php echo functions::form_countries_list('customer[country_code]', true); ?>
+                <?php echo functions::form_select_country('customer[country_code]', true); ?>
               </div>
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-                <?php echo form_zones_list('customer[zone_code]', fallback($_POST['customer']['country_code']), true); ?>
+                <?php echo form_select_zone('customer[zone_code]', fallback($_POST['customer']['country_code']), true); ?>
               </div>
             </div>
 
@@ -357,12 +357,12 @@
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_country', 'Country'); ?></label>
-                <?php echo functions::form_countries_list('customer[shipping_address][country_code]', true); ?>
+                <?php echo functions::form_select_country('customer[shipping_address][country_code]', true); ?>
               </div>
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-                <?php echo form_zones_list('customer[shipping_address][zone_code]', fallback($_POST['customer']['shipping_address']['country_code']), true); ?>
+                <?php echo form_select_zone('customer[shipping_address][zone_code]', fallback($_POST['customer']['shipping_address']['country_code']), true); ?>
               </div>
             </div>
 

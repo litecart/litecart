@@ -35,12 +35,12 @@
 
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_country', 'Country'); ?></label>
-            <?php echo functions::form_countries_list('country_code', customer::$data['country_code']); ?>
+            <?php echo functions::form_select_country('country_code', customer::$data['country_code']); ?>
           </div>
 
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-            <?php echo functions::form_zones_list('zone_code', customer::$data['country_code'], customer::$data['zone_code']); ?>
+            <?php echo functions::form_select_zone('zone_code', customer::$data['country_code'], customer::$data['zone_code']); ?>
           </div>
 
           <div class="form-group col-md-6">

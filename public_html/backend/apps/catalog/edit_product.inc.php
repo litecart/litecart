@@ -204,7 +204,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_categories', 'Categories'); ?></label>
-                <?php echo functions::form_categories_list('categories[]', true, 'style="max-height: 480px;"'); ?>
+                <?php echo functions::form_select_category('categories[]', true, 'style="max-height: 480px;"'); ?>
               </div>
 
               <div class="form-group">
@@ -256,12 +256,12 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_brand', 'Brand'); ?></label>
-                <?php echo functions::form_brands_list('brand_id', true); ?>
+                <?php echo functions::form_select_brand('brand_id', true); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_supplier', 'Supplier'); ?></label>
-                <?php echo functions::form_suppliers_list('supplier_id', true); ?>
+                <?php echo functions::form_select_supplier('supplier_id', true); ?>
               </div>
 
               <div class="form-group">
@@ -398,7 +398,7 @@
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
-                <?php echo functions::form_tax_classes_list('tax_class_id', true); ?>
+                <?php echo functions::form_select_tax_class('tax_class_id', true); ?>
               </div>
 
               <div class="form-group col-md-6">
@@ -488,7 +488,7 @@
             </tbody>
             <tfoot>
               <tr>
-                <td><?php echo functions::form_attribute_groups_list('new_attribute[group_id]', ''); ?></td>
+                <td><?php echo functions::form_select_attribute_group('new_attribute[group_id]', ''); ?></td>
                 <td><?php echo functions::form_select_field('new_attribute[value_id]', [], ''); ?></td>
                 <td><?php echo functions::form_text_field('new_attribute[custom_value]', ''); ?></td>
                 <td><?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>

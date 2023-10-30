@@ -147,12 +147,12 @@
         <div class="row">
           <div class="col-md-2">
             <label><?php echo language::translate('title_from_order_status', 'From Order Status'); ?></label>
-            <?php echo functions::form_order_statuses_list('from_order_status_id', true); ?>
+            <?php echo functions::form_select_order_status('from_order_status_id', true); ?>
           </div>
 
           <div class="col-md-2">
             <label><?php echo language::translate('title_to_order_status', 'To Order Status'); ?></label>
-            <?php echo functions::form_order_statuses_list('to_order_status_id', true); ?>
+            <?php echo functions::form_select_order_status('to_order_status_id', true); ?>
           </div>
 
           <div class="col-md-1">

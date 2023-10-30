@@ -115,8 +115,8 @@
       <tfoot>
         <tr>
           <td><?php echo functions::form_hidden_field('new_zone[id]', ''); ?></td>
-          <td><?php echo functions::form_countries_list('new_zone[country_code]', ''); ?></td>
-          <td><?php echo functions::form_zones_list('', 'new_zone[zone_code]', '', '', 'all'); ?></td>
+          <td><?php echo functions::form_select_country('new_zone[country_code]', ''); ?></td>
+          <td><?php echo functions::form_select_zone('', 'new_zone[zone_code]', '', '', 'all'); ?></td>
           <td><?php echo functions::form_text_field('new_zone[city]', '', 'placeholder="-- '. language::translate('text_all_cities', 'All cities') .' --"'); ?></td>
           <td><?php echo functions::form_button('add', ['', language::translate('title_add', 'Add')], 'button'); ?></td>
         </tr>

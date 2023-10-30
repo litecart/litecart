@@ -133,7 +133,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
         <?php if (count($stock_options) > 1) { ?>
         <div class="form-group">
           <label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
-          <?php echo form_product_stock_options_list('stock_option_id', $product_id, true); ?>
+          <?php echo form_select_product_stock_option('stock_option_id', $product_id, true); ?>
         </div>
         <?php } else if (count($stock_options) == 1) { ?>
         <?php echo functions::form_hidden_field('stock_option_id', $stock_options[0]['stock_option_id']); ?>

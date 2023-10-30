@@ -231,32 +231,6 @@ END;
          . '</div>';
   }
 
-  function form_customer_field($name, $input=true, $parameters='') {
-
-    if ($input === true) $input = form_reinsert_value($name);
-
-    $account_name = language::translate('title_guest', 'Guest');
-
-    if (!empty($input)) {
-      $customer_query = database::query(
-        "select * from ". DB_TABLE_PREFIX ."customers
-        where id = ". (int)$input ."
-        limit 1;"
-      );
-
-      if ($customer = database::fetch($customer_query)) {
-        $account_name = $customer['company'] ? $customer['company'] : $customer['firstname'] .' '. $customer['lastname'];
-      } else {
-        $account_name = '<em>'. language::translate('title_unknown', 'Unknown') .'</em>';
-      }
-    }
-
-    return '<div class="form-input"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
-         . '  ' . form_hidden_field($name, true) . PHP_EOL
-         . '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$input .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_ilink('b:customers/customer_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
-         . '</div>';
-  }
-
   function form_date_field($name, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
@@ -345,19 +319,6 @@ END;
     return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="file" name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
-  function form_file2_field($name, $parameters='') {
-
-
-    if ($input === true) $input = form_reinsert_value($name);
-
-    return '<div class="form-input"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
-         . '  ' . form_hidden_field($name, true) . PHP_EOL
-         . '  <span class="value">'. (!empty($input) ? $input : '('. language::translate('title_none', 'None') .')') .'</span> <a href="'. document::href_ilink('b:files/file_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
-         . '</div>';
-
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="file" name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
-  }
-
   function form_fonticon_field($name, $input=true, $type='text', $icon='', $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
@@ -426,42 +387,6 @@ END;
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-icon">'. functions::draw_fonticon('fa-phone fa-fw') .'</span>' . PHP_EOL
          . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="tel" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'" pattern="^\+?([0-9]|-| )+$"'. (($parameters) ? ' '.$parameters : '') .' />'
-         . '</div>';
-  }
-
-  function form_product_field($name, $input=true, $parameters='') {
-
-    if ($input === true) $input = form_reinsert_value($name);
-
-    $product_name = '('. language::translate('title_no_product', 'No Product') .')';
-
-    if (!empty($value)) {
-      $product_query = database::query(
-        "select p.id, p.sku, pp.price, pi.name
-        from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
-        left join (
-          select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
-          from ". DB_TABLE_PREFIX ."products_prices
-        ) pp on (pp.product_id = p.id)
-        where p.id = ". (int)$value ."
-        limit 1;"
-      );
-
-      $product = database::fetch($product_query);
-    }
-
-    functions::draw_lightbox();
-
-    return '<div class="input-group"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
-         . '  <div class="form-input">' . PHP_EOL
-         . '    ' . form_hidden_field($name, true, !empty($product) ? 'data-sku="'. $product['sku'] .'" data-price="'. $product['price'] .'"' : '') . PHP_EOL
-         . '    <span class="name" style="display: inline-block;">'. $product_name .'</span>' . PHP_EOL
-         . '    [<span class="id" style="display: inline-block;">'. (int)$input .'</span>]' . PHP_EOL
-         . '  </div>' . PHP_EOL
-         . '  <div style="align-self: center;">' . PHP_EOL
-         . '    <a href="'. document::href_ilink('b:catalog/product_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
-         . '  </div>' . PHP_EOL
          . '</div>';
   }
 
@@ -809,7 +734,9 @@ END;
     return '<textarea name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. functions::escape_html($input) .'</textarea>';
   }
 
-  ######################################################################
+  ##################################
+  # Platform specific form helpers #
+  ##################################
 
   function form_function($name, $function, $input=true, $parameters='') {
 
@@ -819,7 +746,7 @@ END;
     }
 
     if (!preg_match('#(\w*)\((.*?)\)$#i', $function, $matches)) {
-      trigger_error('Invalid function name ('. $function .')', E_USER_WARNING);
+      trigger_error('Invalid form function ('. $function .')', E_USER_WARNING);
     }
 
     $options = [];
@@ -874,79 +801,79 @@ END;
         return form_draw_category_field($name, $input, $parameters);
 
       case 'categories':
-        return form_categories_list($name, $input, $parameters);
+        return form_select_category($name, $input, $parameters);
 
       case 'customer':
       case 'customers':
-        return form_customers_list($name, $input, $parameters);
+        return form_select_customer($name, $input, $parameters);
 
       case 'country':
       case 'countries':
-        return form_countries_list($name, $input, $parameters);
+        return form_select_country($name, $input, $parameters);
 
       case 'currency':
       case 'currencies':
-        return form_currencies_list($name, $input, $parameters);
+        return form_select_currency($name, $input, $parameters);
 
       case 'csv':
         return form_textarea($name, $input, true, $parameters);
 
       case 'delivery_status':
       case 'delivery_statuses':
-        return form_delivery_statuses_list($name, $input, $parameters);
+        return form_select_delivery_status($name, $input, $parameters);
 
       case 'email':
         return form_email_field($name, $input, $parameters);
 
       case 'file':
       case 'files':
-        return form_files_list($name, $options[0], $input, $parameters);
+        return form_select_file($name, $options[0], $input, $parameters);
 
       case 'geo_zone':
       case 'geo_zones':
-        return form_geo_zones_list($name, $input, $parameters);
+        return form_select_geo_zone($name, $input, $parameters);
 
       case 'incoterm':
       case 'incoterms':
-        return form_incoterms_list($name, $input, false, $parameters);
+        return form_select_incoterm($name, $input, false, $parameters);
 
       case 'language':
       case 'languages':
-        return form_languages_list($name, $input, $parameters);
+        return form_select_language($name, $input, $parameters);
 
       case 'length_class': // Deprecated
       case 'length_classes': // Deprecated
       case 'length_unit':
       case 'length_units':
-        return form_length_units_list($name, $input, $parameters);
+        return form_select_length_unit($name, $input, $parameters);
 
       case 'payment_term':
       case 'payment_terms':
-        return form_draw_payment_terms_list($name, $input, $parameters);
+        return form_select_draw_payment_term($name, $input, $parameters);
 
       case 'product':
       case 'products':
-        return form_products_list($name, $input, $parameters);
+        return form_select_product($name, $input, $parameters);
 
       case 'payment_term':
       case 'payment_terms':
-        return form_payment_terms_list($name, $input, false, $parameters);
+        return form_select_payment_term($name, $input, false, $parameters);
 
       case 'quantity_unit':
       case 'quantity_units':
-        return form_quantity_units_list($name, $input, $parameters);
+        return form_select_quantity_unit($name, $input, $parameters);
 
       case 'stock_option':
       case 'stock_options':
-        return form_stock_options_list($name, $input, $parameters);
+        return form_select_stock_option($name, $input, $parameters);
 
       case 'order_status':
       case 'order_statuses':
-        return form_order_statuses_list($name, $input, $parameters);
+        return form_select_order_status($name, $input, $parameters);
 
       case 'page':
       case 'pages':
-        return form_pages_list($name, $input, $parameters);
+        return form_select_page($name, $input, $parameters);
 
       case 'password':
         return functions::form_password_field($name, $input);
@@ -985,7 +912,7 @@ END;
 
       case 'page':
       case 'pages':
-        return form_pages_list($name, $input, $parameters);
+        return form_select_page($name, $input, $parameters);
 
       case 'radio':
         $html = '';
@@ -1001,11 +928,11 @@ END;
 
       case 'timezone':
       case 'timezones':
-        return form_timezones_list($name, $input, $parameters);
+        return form_select_timezone($name, $input, $parameters);
 
       case 'template':
       case 'templates':
-        return form_templates_list($name, $input, $parameters);
+        return form_select_template($name, $input, $parameters);
 
       case 'time':
         return form_time_field($name, $input, $parameters);
@@ -1015,11 +942,11 @@ END;
 
       case 'sold_out_status':
       case 'sold_out_statuses':
-        return form_sold_out_statuses_list($name, $input, $parameters);
+        return form_select_sold_out_status($name, $input, $parameters);
 
       case 'tax_class':
       case 'tax_classes':
-        return form_tax_classes_list($name, $input, $parameters);
+        return form_select_tax_class($name, $input, $parameters);
 
       case 'upload':
         return form_file_field($name, $parameters);
@@ -1029,17 +956,17 @@ END;
 
       case 'user':
       case 'users':
-        return form_users_list($name, $input, $parameters);
+        return form_select_uer($name, $input, $parameters);
 
       case 'weight_class': // Deprecated
       case 'weight_classes': // Deprecated
       case 'weight_unit':
       case 'weight_units':
-        return form_weight_units_list($name, $input, $parameters);
+        return form_select_weight_unit($name, $input, $parameters);
 
       case 'volume_unit':
       case 'volume_units':
-        return form_volume_units_list($name, $input, $parameters);
+        return form_select_volume_unit($name, $input, $parameters);
 
       case 'wysiwyg':
         return form_regional_wysiwyg_field($input, $name, $parameters);
@@ -1048,7 +975,7 @@ END;
       case 'zones':
         $option = !empty($options) ? $options[0] : '';
         //if (empty($option)) $option = settings::get('store_country_code');
-        return form_zones_list($name, $option, $input, $parameters);
+        return form_select_zone($name, $option, $input, $parameters);
 
       default:
         trigger_error('Unknown function name ('. $function .')', E_USER_WARNING);
@@ -1057,10 +984,10 @@ END;
     }
   }
 
-  function form_administrators_list($name, $input=true, $parameters='') {
+  function form_select_adminitrator($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_users_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_uer() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1082,10 +1009,10 @@ END;
     }
   }
 
-  function form_attribute_groups_list($name, $input=true, $parameters='') {
+  function form_select_attribute_group($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_attribute_groups_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_attribute_group() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1108,15 +1035,15 @@ END;
     }
   }
 
-  function form_attribute_values_list($name, $group_id, $input=true, $parameters='') {
+  function form_select_attribute_value($name, $group_id, $input=true, $parameters='') {
 
     if (is_numeric($name)) {
-      trigger_error('form_attribute_values_list() no longer takes group ID as 1st parameter. Instead, use form_attribute_values_list($name, $group_id, $input, $parameters)', E_USER_DEPRECATED);
+      trigger_error('form_select_attribute_value_lit() no longer takes group ID as 1st parameter. Instead, use form_attribute_values($name, $group_id, $input, $parameters)', E_USER_DEPRECATED);
       list($name, $group_id) = [$group_id, $name];
     }
 
     if (count($args = func_get_args()) > 3 && is_bool($args[3])) {
-      trigger_error('Passing $multiple as 4th parameter in form_attribute_values_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 4th parameter in form_select_attribute_value() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[4])) $parameters = $args[3];
     }
 
@@ -1140,10 +1067,35 @@ END;
     }
   }
 
-  function form_categories_list($name, $input=true, $parameters='') {
+  function form_select_brand($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_categories_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_brand() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
+
+    $brands_query = database::query(
+      "select id, name from ". DB_TABLE_PREFIX ."brands
+      order by name asc;"
+    );
+
+    $options = [];
+    while ($brand = database::fetch($brands_query)) {
+      $options[] = [$brand['id'], $brand['name']];
+    }
+
+    if (preg_match('#\[\]$#', $name)) {
+      return form_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
+      return form_select_field($name, $options, $input, $parameters);
+    }
+  }
+
+  function form_select_category($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_select_category() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1214,35 +1166,10 @@ END;
     return $html;
   }
 
-  function form_brands_list($name, $input=true, $parameters='') {
+  function form_select_country($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_brands_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
-      if (isset($args[3])) $parameters = $args[2];
-    }
-
-    $brands_query = database::query(
-      "select id, name from ". DB_TABLE_PREFIX ."brands
-      order by name asc;"
-    );
-
-    $options = [];
-    while ($brand = database::fetch($brands_query)) {
-      $options[] = [$brand['id'], $brand['name']];
-    }
-
-    if (preg_match('#\[\]$#', $name)) {
-      return form_select_multiple_field($name, $options, $input, $parameters);
-    } else {
-      array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
-      return form_select_field($name, $options, $input, $parameters);
-    }
-  }
-
-  function form_countries_list($name, $input=true, $parameters='') {
-
-    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_countries_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_country() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1282,10 +1209,10 @@ END;
     }
   }
 
-  function form_currencies_list($name, $input=true, $parameters='') {
+  function form_select_currency($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_currencies_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_currency() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1302,13 +1229,54 @@ END;
     }
   }
 
-  function form_customers_list($name, $input=true, $parameters='') {
-
-    if (empty(administrator::$data['id'])) trigger_error('Must be logged in to use form_customers_list()', E_USER_ERROR);
+  function form_select_customer($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_customers_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_customer() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
+    }
+
+    if (!preg_match('#\[\]$#', $name)) {
+      return form_select_multiple_customers($name, $input, $parameters);
+    }
+
+    if ($input === true) $input = form_reinsert_value($name);
+
+    $account_name = language::translate('title_guest', 'Guest');
+
+    if (!empty($input)) {
+      $customer_query = database::query(
+        "select * from ". DB_TABLE_PREFIX ."customers
+        where id = ". (int)$input ."
+        limit 1;"
+      );
+
+      if ($customer = database::fetch($customer_query)) {
+        $account_name = $customer['company'] ? $customer['company'] : $customer['firstname'] .' '. $customer['lastname'];
+      } else {
+        $account_name = '<em>'. language::translate('title_unknown', 'Unknown') .'</em>';
+      }
+    }
+
+    return '<div class="form-input"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
+         . '  ' . form_hidden_field($name, true) . PHP_EOL
+         . '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$input .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_ilink('b:customers/customer_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '</div>';
+  }
+
+  function form_select_multiple_customers($name, $input=true, $parameters='') {
+
+    if (empty(administrator::$data['id'])) {
+      trigger_error('Must be logged in to use form_select_customer()', E_USER_ERROR);
+    }
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_select_customer() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
+
+    if (!preg_match('#\[\]$#', $name)) {
+      return form_select_customer($name, $input, $parameters);
     }
 
     $options = [];
@@ -1330,10 +1298,10 @@ END;
     }
   }
 
-  function form_delivery_statuses_list($name, $input=true, $parameters='') {
+  function form_select_delivery_status($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_delivery_statuses_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_delivery_status() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1361,10 +1329,10 @@ END;
     }
   }
 
-  function form_encodings_list($name, $input=true, $parameters='') {
+  function form_select_encoding($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_encodings_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_encoding() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1418,7 +1386,27 @@ END;
     }
   }
 
-  function form_files_list($name, $glob, $input=true, $parameters='') {
+  function form_select_file($name, $parameters='') {
+
+    if (preg_match('#\[\]$#', $name)) {
+      return form_select_multiple_files($name, $options, $input, $parameters);
+    }
+
+    if ($input === true) $input = form_reinsert_value($name);
+
+    return '<div class="form-input"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
+         . '  ' . form_hidden_field($name, true) . PHP_EOL
+         . '  <span class="value">'. (!empty($input) ? $input : '('. language::translate('title_none', 'None') .')') .'</span> <a href="'. document::href_ilink('b:files/file_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '</div>';
+
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="file" name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
+  }
+
+  function form_select_multiple_files($name, $glob, $input=true, $parameters='') {
+
+    if (!preg_match('#\[\]$#', $name)) {
+      return form_select_file($name, $options, $input, $parameters);
+    }
 
     $options = [];
 
@@ -1439,10 +1427,10 @@ END;
     }
   }
 
-  function form_geo_zones_list($name, $input=true, $parameters='') {
+  function form_select_geo_zone($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_geo_zones_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_geo_zone() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1468,7 +1456,7 @@ END;
     }
   }
 
-  function form_incoterms_list($name, $input=true, $parameters='') {
+  function form_select_incoterm($name, $input=true, $parameters='') {
 
     $options = [
       ['EXW', 'EXW &ndash; '. language::translate('title_incoterm_exw', 'Ex Works')],
@@ -1492,10 +1480,10 @@ END;
     }
   }
 
-  function form_languages_list($name, $input=true, $parameters='') {
+  function form_select_language($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_languages_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_language() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1513,10 +1501,10 @@ END;
     }
   }
 
-  function form_length_units_list($name, $input=true, $parameters='') {
+  function form_select_length_unit($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_length_units_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_length_unit() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1538,10 +1526,10 @@ END;
     }
   }
 
-  function form_mysql_collations_list($name, $input=true, $parameters='') {
+  function form_select_myql_collation($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_mysql_collations_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_myql_collation() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1564,10 +1552,10 @@ END;
     }
   }
 
-  function form_order_statuses_list($name, $input=true, $parameters='') {
+  function form_select_order_status($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_order_statuses_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_order_status() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1589,10 +1577,10 @@ END;
     return form_dropdown_field($name, $options, $input, $parameters);
   }
 
-  function form_pages_list($name, $input=true, $parameters='') {
+  function form_select_page($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_pages_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_page() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1637,10 +1625,10 @@ END;
     }
   }
 
-  function form_payment_modules_list($name, $input=true, $parameters='') {
+  function form_select_payment_module($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_payment_modules_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_payment_module() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1664,7 +1652,7 @@ END;
     }
   }
 
-  function form_payment_terms_list($name, $input=true, $parameters='') {
+  function form_select_payment_term($name, $input=true, $parameters='') {
 
     $options = [
       ['PIA', 'PIA &ndash; '. language::translate('title_payment_terms_pia', 'Payment In Advance')],
@@ -1685,11 +1673,55 @@ END;
     }
   }
 
-  function form_products_list($name, $input=true, $parameters='') {
+  function form_select_product($name, $input=true, $parameters='') {
+
+    if (preg_match('#\[\]$#', $name)) {
+      return form_select_multiple_products($name, $input, $parameters);
+    }
+
+    if ($input === true) $input = form_reinsert_value($name);
+
+    $product_name = '('. language::translate('title_no_product', 'No Product') .')';
+
+    if (!empty($value)) {
+      $product_query = database::query(
+        "select p.id, p.sku, pp.price, pi.name
+        from ". DB_TABLE_PRODUCTS ." p
+        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        left join (
+          select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
+          from ". DB_TABLE_PREFIX ."products_prices
+        ) pp on (pp.product_id = p.id)
+        where p.id = ". (int)$value ."
+        limit 1;"
+      );
+
+      $product = database::fetch($product_query);
+    }
+
+    functions::draw_lightbox();
+
+    return '<div class="input-group"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
+         . '  <div class="form-input">' . PHP_EOL
+         . '    ' . form_hidden_field($name, true, !empty($product) ? 'data-sku="'. $product['sku'] .'" data-price="'. $product['price'] .'"' : '') . PHP_EOL
+         . '    <span class="name" style="display: inline-block;">'. $product_name .'</span>' . PHP_EOL
+         . '    [<span class="id" style="display: inline-block;">'. (int)$input .'</span>]' . PHP_EOL
+         . '  </div>' . PHP_EOL
+         . '  <div style="align-self: center;">' . PHP_EOL
+         . '    <a href="'. document::href_ilink('b:catalog/product_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '  </div>' . PHP_EOL
+         . '</div>';
+  }
+
+  function form_select_multiple_products($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_products_list() is deprecated.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_product() is deprecated.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
+    }
+
+    if (!preg_match('#\[\]$#', $name)) {
+      return form_select_product($name, $input, $parameters);
     }
 
     $products_query = database::query(
@@ -1711,7 +1743,7 @@ END;
     }
   }
 
-  function form_product_stock_options_list($name, $product_id, $input=true, $parameters='') {
+  function form_select_product_stock_option($name, $product_id, $input=true, $parameters='') {
 
     $product = reference::product($product_id);
 
@@ -1755,10 +1787,10 @@ END;
     }
   }
 
-  function form_quantity_units_list($name, $input=true, $parameters='') {
+  function form_select_quantity_unit($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_quantity_units_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_quantity_unit() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1786,10 +1818,10 @@ END;
     }
   }
 
-  function form_shipping_modules_list($name, $input=true, $parameters='') {
+  function form_select_shipping_module($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_shipping_modules_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_shipping_module() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1813,10 +1845,10 @@ END;
     }
   }
 
-  function form_sold_out_statuses_list($name, $input=true, $parameters='') {
+  function form_select_sold_out_status($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_sold_out_statuses_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_sold_out_status() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1844,10 +1876,10 @@ END;
     }
   }
 
-  function form_suppliers_list($name, $input=true, $parameters='') {
+  function form_select_supplier($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_suppliers_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_supplier() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1869,10 +1901,10 @@ END;
     }
   }
 
-  function form_tax_classes_list($name, $input=true, $parameters='') {
+  function form_select_tax_class($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_tax_classes_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_tax_class() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1899,10 +1931,10 @@ END;
     }
   }
 
-  function form_templates_list($name, $input=true, $parameters='') {
+  function form_select_template($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_templates_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_template() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1921,10 +1953,10 @@ END;
     }
   }
 
-  function form_timezones_list($name, $input=true, $parameters='') {
+  function form_select_timezone($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_timezones_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_timezone() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1947,10 +1979,10 @@ END;
     }
   }
 
-  function form_weight_units_list($name, $input=true, $parameters='') {
+  function form_select_weight_unit($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_weight_units_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_weight_unit() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1972,7 +2004,7 @@ END;
     }
   }
 
-  function form_volume_units_list($name, $input=true, $parameters='') {
+  function form_select_volume_unit($name, $input=true, $parameters='') {
 
     if ($input === true) {
       $input = form_reinsert_value($name);
@@ -1991,15 +2023,15 @@ END;
     }
   }
 
-  function form_zones_list($name, $country_code='', $input=true, $parameters='', $preamble='none') {
+  function form_select_zone($name, $country_code='', $input=true, $parameters='', $preamble='none') {
 
     if (preg_match('#^([A-Z]{2}|default_country_code|store_country_code)$#', $name)) {
-      trigger_error('form_zones_list() no longer takes country code as 1st parameter. Instead, use form_zones_list($name, $country_code, $input)', E_USER_DEPRECATED);
+      trigger_error('form_select_zone() no longer takes country code as 1st parameter. Instead, use form_zones($name, $country_code, $input)', E_USER_DEPRECATED);
       list($name, $country_code) = [$country_code, $name];
     }
 
     if (count($args = func_get_args()) > 3 && is_bool($args[3])) {
-      trigger_error('Passing $multiple as 4th parameter in form_zones_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 4th parameter in form_select_zone() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[4])) $parameters = $args[3];
     }
 

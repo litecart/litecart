@@ -288,7 +288,7 @@
 
             <tfoot>
               <tr>
-                <td><?php echo functions::form_attribute_groups_list('new_attribute_group', true); ?></td>
+                <td><?php echo functions::form_select_attribute_group('new_attribute_group', true); ?></td>
                 <td><?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
                 <td></td>
               </tr>

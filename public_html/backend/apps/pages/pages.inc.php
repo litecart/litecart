@@ -247,7 +247,7 @@ table tbody .toggle {
             </div>
           </li>
           <li>
-            <?php echo functions::form_pages_list('page_id', true); ?>
+            <?php echo functions::form_select_page('page_id', true); ?>
           </li>
           <li>
             <?php echo functions::form_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>

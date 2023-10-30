@@ -185,7 +185,7 @@
                 <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
                 <div class="input-group">
                   <?php echo functions::form_decimal_field('purchase_price', true, 2, 'min="0"'); ?>
-                  <?php echo functions::form_currencies_list('purchase_price_currency_code', true); ?>
+                  <?php echo functions::form_select_currency('purchase_price_currency_code', true); ?>
                 </div>
               </div>
             </div>
@@ -203,7 +203,7 @@
               <label><?php echo language::translate('title_stock_quantity', 'Stock Quantity'); ?></label>
               <div class="input-group">
                 <?php echo functions::form_decimal_field('quantity', true, 2, 'data-quantity="'. (!empty($stock_item->data['id']) ? (float)$stock_item->data['quantity'] : '0') .'"'); ?>
-                <?php echo functions::form_quantity_units_list('quantity_unit_id', true); ?>
+                <?php echo functions::form_select_quantity_unit('quantity_unit_id', true); ?>
               </div>
             </div>
 
@@ -229,7 +229,7 @@
               <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
               <div class="input-group">
                 <?php echo functions::form_decimal_field('weight', true, 3, 'min="0"'); ?>
-                <?php echo functions::form_weight_units_list('weight_unit', true); ?>
+                <?php echo functions::form_select_weight_unit('weight_unit', true); ?>
               </div>
             </div>
 
@@ -241,7 +241,7 @@
                 <?php echo functions::form_decimal_field('width', true, 3, 'min="0"'); ?>
                 <span class="input-group-text">x</span>
                 <?php echo functions::form_decimal_field('height', true, 3, 'min="0"'); ?>
-                <?php echo functions::form_length_units_list('length_unit', true); ?>
+                <?php echo functions::form_select_length_unit('length_unit', true); ?>
               </div>
             </div>
           </div>
@@ -280,8 +280,8 @@
                     <?php echo functions::form_hidden_field('references['.$key.'][id]', true); ?>
                     <div class="input-group">
                       <?php echo functions::form_select_field('references['.$key.'][source_type]', ['brand' => language::translate('title_brand', 'Brand'), 'supplier' => language::translate('title_supplier', 'Supplier')], true); ?>
-                      <?php echo functions::form_brands_list('references['.$key.'][source]', true); ?>
-                      <?php echo functions::form_suppliers_list('references['.$key.'][source]', true); ?>
+                      <?php echo functions::form_select_brand('references['.$key.'][source]', true); ?>
+                      <?php echo functions::form_select_supplier('references['.$key.'][source]', true); ?>
                     </div>
                   </td>
                   <td>
@@ -395,8 +395,8 @@
                + '     <?php echo functions::escape_js(functions::form_hidden_field('references[new_reference_i][id]', true)); ?>'
                + '     <div class="input-group">'
                + '       <?php echo functions::escape_js(functions::form_select_field('references[new_reference_i][source_type]', ['brand' => language::translate('title_brand', 'Brand'), 'supplier' => language::translate('title_supplier', 'Supplier')], true)); ?>'
-               + '       <?php echo functions::escape_js(functions::form_brands_list('references[new_reference_i][source]', true)); ?>'
-               + '       <?php echo functions::escape_js(functions::form_suppliers_list('references[new_reference_i][source]', true)); ?>'
+               + '       <?php echo functions::escape_js(functions::form_select_brand('references[new_reference_i][source]', true)); ?>'
+               + '       <?php echo functions::escape_js(functions::form_select_supplier('references[new_reference_i][source]', true)); ?>'
                + '     </div>'
                + '   </td>'
                + '   <td>'

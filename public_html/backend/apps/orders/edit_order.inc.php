@@ -371,7 +371,7 @@
           <div class="row">
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_order_status', 'Order Status'); ?></label>
-              <?php echo functions::form_order_statuses_list('order_status_id', true); ?>
+              <?php echo functions::form_select_order_status('order_status_id', true); ?>
             </div>
 
             <div class="form-group col-md-3">
@@ -381,7 +381,7 @@
 
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_language', 'Language'); ?></label>
-              <?php echo functions::form_languages_list('language_code', true); ?>
+              <?php echo functions::form_select_language('language_code', true); ?>
             </div>
 
             <div class="form-group col-md-3">
@@ -394,7 +394,7 @@
 
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
-              <?php echo functions::form_currencies_list('currency_code', true); ?>
+              <?php echo functions::form_select_currency('currency_code', true); ?>
             </div>
 
             <div class="form-group col-md-3">
@@ -481,12 +481,12 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label><?php echo language::translate('title_country', 'Country'); ?></label>
-                    <?php echo functions::form_countries_list('customer[country_code]', true); ?>
+                    <?php echo functions::form_select_country('customer[country_code]', true); ?>
                   </div>
 
                   <div class="form-group col-md-6">
                     <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-                    <?php echo form_zones_list('customer[zone_code]', fallback($_POST['customer']['country_code']), true); ?>
+                    <?php echo form_select_zone('customer[zone_code]', fallback($_POST['customer']['country_code']), true); ?>
                   </div>
                 </div>
 
@@ -556,12 +556,12 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label><?php echo language::translate('title_country', 'Country'); ?></label>
-                    <?php echo functions::form_countries_list('customer[shipping_address][country_code]', true); ?>
+                    <?php echo functions::form_select_country('customer[shipping_address][country_code]', true); ?>
                   </div>
 
                   <div class="form-group col-md-6">
                     <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-                    <?php echo form_zones_list('customer[shipping_address][zone_code]', fallback($_POST['customer']['shipping_address']['country_code']), true); ?>
+                    <?php echo form_select_zone('customer[shipping_address][zone_code]', fallback($_POST['customer']['shipping_address']['country_code']), true); ?>
                   </div>
                 </div>
 
@@ -604,7 +604,7 @@
               <div class="row">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_payment_terms', 'Payment Terms'); ?></label>
-                  <?php echo functions::form_payment_terms_list('payment_terms', true); ?>
+                  <?php echo functions::form_select_payment_term('payment_terms', true); ?>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -649,7 +649,7 @@
               <div class="row">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_incoterm', 'Incoterm'); ?></label>
-                  <?php echo functions::form_incoterms_list('incoterm', true); ?>
+                  <?php echo functions::form_select_incoterm('incoterm', true); ?>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -944,7 +944,7 @@
         <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
         <div class="input-group">
           <?php echo functions::form_decimal_field('weight', true, 3, 'min="0"'); ?>
-          <?php echo functions::form_weight_units_list('weight_unit', true); ?>
+          <?php echo functions::form_select_weight_unit('weight_unit', true); ?>
         </div>
       </div>
 
@@ -956,7 +956,7 @@
           <?php echo functions::form_decimal_field('width', true, 3, 'min="0"'); ?>
           <span class="input-group-text">x</span>
           <?php echo functions::form_decimal_field('height', true, 3, 'min="0"'); ?>
-          <?php echo functions::form_length_units_list('length_unit', true); ?>
+          <?php echo functions::form_select_length_unit('length_unit', true); ?>
         </div>
       </div>
     </div>
@@ -979,7 +979,7 @@
 
       <div class="form-group col-md-4">
         <label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
-        <?php echo functions::form_tax_classes_list('tax_class_id', ''); ?>
+        <?php echo functions::form_select_tax_class('tax_class_id', ''); ?>
       </div>
     </div>
 
@@ -1030,7 +1030,7 @@
         <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
         <div class="input-group">
           <?php echo functions::form_decimal_field('weight', '', 3, 'min="0"'); ?>
-          <?php echo functions::form_weight_units_list('weight_unit', ''); ?>
+          <?php echo functions::form_select_weight_unit('weight_unit', ''); ?>
         </div>
       </div>
 
@@ -1042,7 +1042,7 @@
           <?php echo functions::form_decimal_field('width', '', 3, 'min="0"'); ?>
           <span class="input-group-text">x</span>
           <?php echo functions::form_decimal_field('height', '', 3, 'min="0"'); ?>
-          <?php echo functions::form_length_units_list('length_unit', ''); ?>
+          <?php echo functions::form_select_length_unit('length_unit', ''); ?>
         </div>
       </div>
     </div>

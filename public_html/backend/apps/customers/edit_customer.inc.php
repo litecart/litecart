@@ -226,12 +226,12 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_country', 'Country'); ?></label>
-              <?php echo functions::form_countries_list('country_code', true); ?>
+              <?php echo functions::form_select_country('country_code', true); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_zone', 'Zone'); ?></label>
-              <?php echo functions::form_zones_list('zone_code', fallback($_POST['country_code']), true); ?>
+              <?php echo functions::form_select_zone('zone_code', fallback($_POST['country_code']), true); ?>
             </div>
           </div>
 
@@ -318,12 +318,12 @@
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_country', 'Country'); ?></label>
-                <?php echo functions::form_countries_list('shipping_address[country_code]', true); ?>
+                <?php echo functions::form_select_country('shipping_address[country_code]', true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-                <?php echo functions::form_zones_list('shipping_address[zone_code]', fallback($_POST['shipping_address']['country_code'], $_POST['country_code']), true); ?>
+                <?php echo functions::form_select_zone('shipping_address[zone_code]', fallback($_POST['shipping_address']['country_code'], $_POST['country_code']), true); ?>
               </div>
             </div>
 

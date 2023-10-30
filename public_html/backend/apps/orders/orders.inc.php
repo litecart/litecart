@@ -342,7 +342,7 @@ table .fa-star:hover {
             <legend><?php echo language::translate('title_set_order_status', 'Set Order Status'); ?></legend>
             <div class="form-group">
               <div class="input-group">
-                <?php echo functions::form_order_statuses_list('order_status_id', true); ?>
+                <?php echo functions::form_select_order_status('order_status_id', true); ?>
                 <button class="btn btn-default" name="set_order_status" value="true" type="submit" formtarget="_self"><?php echo language::translate('title_set', 'Set'); ?></button>
               </div>
             </div>

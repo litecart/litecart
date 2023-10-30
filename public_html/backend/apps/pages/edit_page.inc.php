@@ -97,7 +97,7 @@
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_parent', 'Parent'); ?></label>
-          <?php echo functions::form_pages_list('parent_id', true); ?>
+          <?php echo functions::form_select_page('parent_id', true); ?>
         </div>
       </div>
 

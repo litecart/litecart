@@ -94,7 +94,7 @@
 
       <div class="form-group">
         <label><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></label>
-        <div><?php echo functions::form_languages_list('languages[]', true); ?></div>
+        <div><?php echo functions::form_select_language('languages[]', true); ?></div>
       </div>
 
       <div class="row">

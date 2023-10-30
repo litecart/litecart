@@ -195,7 +195,7 @@
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-                <?php echo functions::form_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+                <?php echo functions::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
               </div>
             </div>
 
@@ -221,7 +221,7 @@
 
             <div class="form-group">
               <label><?php echo language::translate('title_languages', 'Languages'); ?></label>
-              <?php echo functions::form_languages_list('language_codes[]', true); ?></td>
+              <?php echo functions::form_select_language('language_codes[]', true); ?></td>
             </div>
 
             <div class="row">
@@ -244,7 +244,7 @@
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-                <?php echo functions::form_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+                <?php echo functions::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
               </div>
             </div>
 
