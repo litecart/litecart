@@ -1,13 +1,13 @@
 <?php
 
-  class ent_user {
+  class ent_administrator {
     public $data;
     public $previous;
 
-    public function __construct($user_id=null) {
+    public function __construct($administrator_id=null) {
 
-      if (!empty($user_id)) {
-        $this->load($user_id);
+      if (!empty($administrator_id)) {
+        $this->load($administrator_id);
       } else {
         $this->reset();
       }
@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_PREFIX ."users;"
+        "show fields from ". DB_TABLE_PREFIX ."administrators;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -31,24 +31,24 @@
       $this->previous = $this->data;
     }
 
-    public function load($user_id) {
+    public function load($administrator_id) {
 
-      if (!preg_match('#(^[0-9]+$|^[0-9a-zA-Z_]$|@)#', $user_id)) throw new Exception('Invalid user (ID: '. $user_id .')');
+      if (!preg_match('#(^[0-9]+$|^[0-9a-zA-Z_]$|@)#', $administrator_id)) throw new Exception('Invalid administrator (ID: '. $administrator_id .')');
 
       $this->reset();
 
-      $user = database::query(
-        "select * from ". DB_TABLE_PREFIX ."users
-        ". (preg_match('#^[0-9]+$#', $user_id) ? "where id = '". (int)$user_id ."'" : "") ."
-        ". (!preg_match('#^[0-9]+$#', $user_id) ? "where lower(username) = '". database::input(strtolower($user_id)) ."'" : "") ."
-        ". (preg_match('#@#', $user_id) ? "where lower(email) = '". database::input(strtolower($user_id)) ."'" : "") ."
+      $administrator = database::query(
+        "select * from ". DB_TABLE_PREFIX ."administrators
+        ". (preg_match('#^[0-9]+$#', $administrator_id) ? "where id = '". (int)$administrator_id ."'" : "") ."
+        ". (!preg_match('#^[0-9]+$#', $administrator_id) ? "where lower(username) = '". database::input(strtolower($administrator_id)) ."'" : "") ."
+        ". (preg_match('#@#', $administrator_id) ? "where lower(email) = '". database::input(strtolower($administrator_id)) ."'" : "") ."
         limit 1;"
       )->fetch();
 
-      if ($user) {
-        $this->data = array_replace($this->data, array_intersect_key($user, $this->data));
+      if ($administrator) {
+        $this->data = array_replace($this->data, array_intersect_key($administrator, $this->data));
       } else {
-        throw new Exception('Could not find user (ID: '. (int)$user_id .') in database.');
+        throw new Exception('Could not find administrator (ID: '. (int)$administrator_id .') in database.');
       }
 
       $this->data['apps'] = !empty($this->data['apps']) ? json_decode($this->data['apps'], true) : [];
@@ -59,8 +59,8 @@
 
     public function save() {
 
-      $user_query = database::query(
-        "select id from ". DB_TABLE_PREFIX ."users
+      $administrator_query = database::query(
+        "select id from ". DB_TABLE_PREFIX ."administrators
         where (
           lower(username) = '". database::input(strtolower($this->data['username'])) ."'
           ". (!empty($this->data['email']) ? "or lower(email) = '". database::input(strtolower($this->data['email'])) ."'" : "") ."
@@ -69,13 +69,13 @@
         limit 1;"
       );
 
-      if (database::num_rows($user_query)) {
-        throw new Exception(language::translate('error_user_conflict', 'The user conflicts another user in the database'));
+      if (database::num_rows($administrator_query)) {
+        throw new Exception(language::translate('error_administrator_conflict', 'The administrator conflicts another administrator in the database'));
       }
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_PREFIX ."users
+          "insert into ". DB_TABLE_PREFIX ."administrators
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -84,7 +84,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_PREFIX ."users
+        "update ". DB_TABLE_PREFIX ."administrators
         set status = '". (empty($this->data['status']) ? 0 : 1) ."',
           username = '". database::input(strtolower($this->data['username'])) ."',
           email = '". database::input(strtolower($this->data['email'])) ."',
@@ -99,7 +99,7 @@
 
       $this->previous = $this->data;
 
-      cache::clear_cache('users');
+      cache::clear_cache('administrators');
     }
 
     public function set_password($password) {
@@ -109,7 +109,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_PREFIX ."users
+        "update ". DB_TABLE_PREFIX ."administrators
         set password_hash = '". database::input($this->data['password_hash'] = password_hash($password, PASSWORD_DEFAULT)) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
@@ -121,13 +121,13 @@
     public function delete() {
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."users
+        "delete from ". DB_TABLE_PREFIX ."administrators
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       $this->reset();
 
-      cache::clear_cache('users');
+      cache::clear_cache('administrators');
     }
   }
