@@ -37,7 +37,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $attribute_group->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $attribute_group->data[$field] = $_POST[$field];
+        }
       }
 
       $attribute_group->save();
@@ -54,7 +56,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($attribute_group->data['id'])) throw new Exception(language::translate('error_must_provide_attribute', 'You must provide an attribute'));
+
+      if (empty($attribute_group->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_attribute', 'You must provide an attribute'));
+      }
 
       $attribute_group->delete();
 

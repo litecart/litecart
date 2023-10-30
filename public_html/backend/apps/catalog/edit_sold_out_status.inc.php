@@ -19,7 +19,10 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+
+      if (empty($_POST['name'])) {
+        throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+      }
 
       if (empty($_POST['hidden'])) $_POST['hidden'] = 0;
       if (empty($_POST['orderable'])) $_POST['orderable'] = 0;
@@ -32,7 +35,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $sold_out_status->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $sold_out_status->data[$field] = $_POST[$field];
+        }
       }
 
       $sold_out_status->save();
@@ -49,7 +54,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($sold_out_status->data['id'])) throw new Exception(language::translate('error_must_provide_sold_out_status', 'You must provide a sold out status'));
+
+      if (empty($sold_out_status->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_sold_out_status', 'You must provide a sold out status'));
+      }
 
       $sold_out_status->delete();
 

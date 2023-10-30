@@ -16,9 +16,18 @@
 
     try {
 
-      if (empty($_POST['id'])) throw new Exception(language::translate('error_must_enter_id', 'You must enter an ID'));
-      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
-      if (empty($_POST['files'])) throw new Exception(language::translate('error_must_define_files', 'You must define files'));
+
+      if (empty($_POST['id'])) {
+        throw new Exception(language::translate('error_must_enter_id', 'You must enter an ID'));
+      }
+
+      if (empty($_POST['name'])) {
+        throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+      }
+
+      if (empty($_POST['files'])) {
+        throw new Exception(language::translate('error_must_define_files', 'You must define files'));
+      }
 
       if (empty($_POST['install'])) $_POST['install'] = '';
       if (empty($_POST['uninstall'])) $_POST['uninstall'] = '';
@@ -43,7 +52,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $vmod->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $vmod->data[$field] = $_POST[$field];
+        }
       }
 
       $vmod->save();

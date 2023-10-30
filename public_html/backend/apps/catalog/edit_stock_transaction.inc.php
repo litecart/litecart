@@ -16,10 +16,14 @@
 
     try {
 
-      if (empty($_POST['contents'])) $_POST['contents'] = [];
+      if (empty($_POST['contents'])) {
+        $_POST['contents'] = [];
+      }
 
       foreach (array_keys($_POST['contents']) as $key) {
-        if (empty($_POST['contents'][$key]['quantity_adjustment'])) throw new Exception(language::translate('error_quantity_cannot_be_empty', 'Quantity cannot be empty'));
+        if (empty($_POST['contents'][$key]['quantity_adjustment'])) {
+          throw new Exception(language::translate('error_quantity_cannot_be_empty', 'Quantity cannot be empty'));
+        }
       }
 
       $fields = [
@@ -44,10 +48,18 @@
   }
 
   if (isset($_POST['delete']) && !empty($stock_transaction->data['id'])) {
-    $stock_transaction->delete();
-    notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-    header('Location: '. document::ilink(__APP__.'/stock_transactions'));
-    exit;
+
+    try {
+
+      $stock_transaction->delete();
+
+      notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
+      header('Location: '. document::ilink(__APP__.'/stock_transactions'));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 
   $available_stock_items = database::query(

@@ -18,11 +18,20 @@
   if (isset($_POST['save'])) {
 
     try {
+
       $_POST['code'] = strtoupper($_POST['code']);
 
-      if (empty($_POST['code'])) throw new Exception(language::translate('error_must_enter_code', 'You must enter a code'));
-      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
-      if (empty($_POST['value'])) throw new Exception(language::translate('error_must_enter_value', 'You must enter a value'));
+      if (empty($_POST['code'])) {
+        throw new Exception(language::translate('error_must_enter_code', 'You must enter a code'));
+      }
+
+      if (empty($_POST['name'])) {
+        throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+      }
+
+      if (empty($_POST['value'])) {
+        throw new Exception(language::translate('error_must_enter_value', 'You must enter a value'));
+      }
 
       if ((!empty($_POST['set_store']) || $_POST['code'] == settings::get('store_currency_code')) && (float)$_POST['value'] != 1) {
         throw new Exception(language::translate('error_store_currency_must_have_value_1', 'The store currency must always have the currency value 1.0.'));
@@ -57,7 +66,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $currency->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $currency->data[$field] = $_POST[$field];
+        }
       }
 
       $currency->save();
@@ -82,7 +93,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($currency->data['id'])) throw new Exception(language::translate('error_must_provide_currency', 'You must provide a currency'));
+
+      if (empty($currency->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_currency', 'You must provide a currency'));
+      }
 
       $currency->delete();
 

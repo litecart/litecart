@@ -1,7 +1,16 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['parent_id']) || !is_numeric($_GET['parent_id'])) $_GET['parent_id'] = 0;
-  if (empty($_GET['expanded'])) $_GET['expanded'] = [];
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
+
+  if (empty($_GET['parent_id']) || !is_numeric($_GET['parent_id'])) {
+    $_GET['parent_id'] = 0;
+  }
+
+  if (empty($_GET['expanded'])) {
+    $_GET['expanded'] = [];
+  }
 
   document::$snippets['title'][] = language::translate('title_pages', 'Pages');
 
@@ -10,7 +19,10 @@
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {
-      if (empty($_POST['pages'])) throw new Exception(language::translate('error_must_select_pages', 'You must select pages'));
+
+      if (empty($_POST['pages'])) {
+        throw new Exception(language::translate('error_must_select_pages', 'You must select pages'));
+      }
 
       foreach ($_POST['pages'] as $page_id) {
         $page = new ent_page($page_id);
@@ -30,9 +42,17 @@
   if (isset($_POST['move'])) {
 
     try {
-      if (empty($_POST['pages']) && empty($_POST['pages'])) throw new Exception(language::translate('error_must_select_pages', 'You must select pages'));
-      if (isset($_POST['page_id']) && $_POST['page_id'] == '') throw new Exception(language::translate('error_must_select_destination', 'You must select a destination'));
-      if (isset($_POST['page_id']) && isset($_POST['pages']) && in_array($_POST['page_id'], $_POST['pages'])) throw new Exception(language::translate('error_cant_move_page_to_itself', 'You can\'t move a page to itself'));
+
+      if (empty($_POST['pages']) && empty($_POST['pages'])) {
+        throw new Exception(language::translate('error_must_select_pages', 'You must select pages'));
+      }
+
+      if (isset($_POST['page_id']) && $_POST['page_id'] == '') {
+        throw new Exception(language::translate('error_must_select_destination', 'You must select a destination'));
+      }
+      if (isset($_POST['page_id']) && isset($_POST['pages']) && in_array($_POST['page_id'], $_POST['pages'])) {
+        throw new Exception(language::translate('error_cant_move_page_to_itself', 'You can\'t move a page to itself'));
+      }
 
       if (!empty($_POST['pages'])) {
         foreach ($_POST['pages'] as $page_id) {
@@ -54,7 +74,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($_POST['pages'])) throw new Exception(language::translate('error_must_select_pages', 'You must select pages'));
+
+      if (empty($_POST['pages'])) {
+        throw new Exception(language::translate('error_must_select_pages', 'You must select pages'));
+      }
 
       foreach ($_POST['pages'] as $page_id) {
         $page = new ent_page($page_id);

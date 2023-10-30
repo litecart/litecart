@@ -1,8 +1,12 @@
 <?php
-  ob_end_clean();
 
-  if (empty($_REQUEST['page'])) $_REQUEST['page'] = 1;
-  if (empty($_GET['language_code'])) $_GET['language_code'] = language::$selected['code'];
+  if (empty($_REQUEST['page']) || !is_numeric($_REQUEST['page'])) {
+    $_REQUEST['page'] = 1;
+  }
+
+  if (empty($_GET['language_code'])) {
+    $_GET['language_code'] = language::$selected['code'];
+  }
 
   if (!empty($_REQUEST['query'])) {
     $sql_find = [
@@ -30,6 +34,7 @@
     $stock_items[$i] = $stock_item;
   }
 
+  ob_end_clean();
   header('Content-Type: application/json');
   echo json_encode($stock_items, JSON_UNESCAPED_SLASHES);
   exit;

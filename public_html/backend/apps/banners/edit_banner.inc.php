@@ -19,14 +19,23 @@
 
     try {
 
-      if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
-
-      if (empty($banner->data['id'])) {
-        if (empty($_POST['html']) && empty($_FILES['image'])) throw new Exception(language::translate('error_must_upload_image_or_enter_html', 'You must upload an image or enter HTML'));
-        if (!empty($_POST['image']) && empty($_POST['link'])) throw new Exception(language::translate('error_must_enter_link', 'You must enter a target link'));
+      if (empty($_POST['name'])) {
+        throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
       }
 
-      if (empty($_POST['languages'])) $_POST['languages'] = [];
+      if (empty($banner->data['id'])) {
+        if (empty($_POST['html']) && empty($_FILES['image'])) {
+          throw new Exception(language::translate('error_must_upload_image_or_enter_html', 'You must upload an image or enter HTML'));
+        }
+
+        if (!empty($_POST['image']) && empty($_POST['link'])) {
+          throw new Exception(language::translate('error_must_enter_link', 'You must enter a target link'));
+        }
+      }
+
+      if (empty($_POST['languages'])) {
+        $_POST['languages'] = [];
+      }
 
       $fields = [
         'status',
@@ -40,10 +49,14 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $banner->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $banner->data[$field] = $_POST[$field];
+        }
       }
 
-      if (is_uploaded_file($_FILES['image']['tmp_name'])) $banner->save_image($_FILES['image']['tmp_name']);
+      if (is_uploaded_file($_FILES['image']['tmp_name'])) {
+        $banner->save_image($_FILES['image']['tmp_name']);
+      }
 
       $banner->save();
 

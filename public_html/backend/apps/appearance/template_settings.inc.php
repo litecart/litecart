@@ -58,7 +58,9 @@
       }
 
       foreach (array_keys($_POST['settings']) as $key) {
-        if (isset($new_settings[$key])) $new_settings[$key] = $_POST['settings'][$key];
+        if (isset($new_settings[$key])) {
+          $new_settings[$key] = $_POST['settings'][$key];
+        }
       }
 
       database::query(

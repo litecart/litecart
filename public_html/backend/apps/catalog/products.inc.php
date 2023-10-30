@@ -1,5 +1,8 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
 
   document::$snippets['title'][] = language::translate('title_products', 'Products');
 
@@ -8,7 +11,10 @@
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {
-      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+
+      if (empty($_POST['products'])) {
+        throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+      }
 
       foreach ($_POST['products'] as $product_id) {
         $product = new ent_product($product_id);
@@ -28,8 +34,13 @@
   if (isset($_POST['clone'])) {
 
     try {
-      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
-      if (empty($_POST['category_id'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
+      if (empty($_POST['products'])) {
+        throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+      }
+
+      if (empty($_POST['category_id'])) {
+        throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
+      }
 
       foreach ($_POST['products'] as $product_id) {
         $original = new ent_product($product_id);
@@ -80,7 +91,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+
+      if (empty($_POST['products'])) {
+        throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+      }
 
       foreach ($_POST['products'] as $product_id) {
         $product = new ent_product($product_id);

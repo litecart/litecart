@@ -37,6 +37,10 @@
     }
   }
 
+  if (!empty($shopping_cart->shipping->selected)) {
+    $_POST['shipping_option'] = $shopping_cart->shipping->selected;
+  }
+
   $box_checkout_shipping = new ent_view();
 
   $box_checkout_shipping->snippets = [

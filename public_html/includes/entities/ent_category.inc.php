@@ -46,7 +46,9 @@
 
     public function load($category_id) {
 
-      if (!preg_match('#^[0-9]+$#', $category_id)) throw new Exception('Invalid category (ID: '. $category_id .')');
+      if (!preg_match('#^[0-9]+$#', $category_id)) {
+        throw new Exception('Invalid category (ID: '. $category_id .')');
+      }
 
       $this->reset();
 

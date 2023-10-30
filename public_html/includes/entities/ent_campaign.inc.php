@@ -30,7 +30,9 @@
 
     public function load($campaign_id) {
 
-      if (preg_match('#[^0-9]#', $campaign_id)) throw new Exception('Invalid campaign id ('. $campaign_id .')');
+      if (preg_match('#[^0-9]#', $campaign_id)) {
+        throw new Exception('Invalid campaign id ('. $campaign_id .')');
+      }
 
       $this->reset();
 

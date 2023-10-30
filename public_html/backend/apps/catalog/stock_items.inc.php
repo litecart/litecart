@@ -1,5 +1,8 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
 
   document::$snippets['title'][] = language::translate('title_stock_items', 'Stock Items');
 
@@ -8,7 +11,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($_POST['stock_items'])) throw new Exception(language::translate('error_must_select_stock_items', 'You must select stock items'));
+
+      if (empty($_POST['stock_items'])) {
+        throw new Exception(language::translate('error_must_select_stock_items', 'You must select stock items'));
+      }
 
       foreach ($_POST['stock_items'] as $stock_item_id) {
         $stock_item = new ent_stock_item($stock_item_id);

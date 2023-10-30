@@ -30,7 +30,9 @@
 
     public function load($supplier_id) {
 
-      if (!preg_match('#^[0-9]+$#', $supplier_id)) throw new Exception('Invalid supplier (ID: '. $supplier_id .')');
+      if (!preg_match('#^[0-9]+$#', $supplier_id)) {
+        throw new Exception('Invalid supplier (ID: '. $supplier_id .')');
+      }
 
       $this->reset();
 

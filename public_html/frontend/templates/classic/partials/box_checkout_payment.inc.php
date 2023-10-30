@@ -15,15 +15,23 @@
           <div class="title"><?php echo $module['title']; ?></div>
           <div class="name"><?php echo $option['name']; ?></div>
           <div class="price"><?php echo (empty($option['error']) && (float)$option['cost'] != 0) ? '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])) : ''; ?></div>
-          <?php if (!empty($option['error'])) { ?><div class="error"><?php echo $option['error']; ?></div><?php } ?>
+          <?php if (!empty($option['error'])) { ?>
+          <div class="error"><?php echo $option['error']; ?></div>
+          <?php } ?>
         </div>
       </div>
 
       <?php if (empty($option['error']) && (!empty($option['description']) || !empty($option['fields']))) { ?>
       <div class="content">
         <hr />
-        <?php if (!empty($option['description'])) { ?><p class="description text-start"><?php echo $option['description']; ?></p><?php } ?>
-        <?php if (!empty($option['fields'])) { ?><div class="fields text-start"><?php echo $option['fields']; ?></div><?php } ?>
+
+        <?php if (!empty($option['description'])) { ?>
+        <p class="description text-start"><?php echo $option['description']; ?></p>
+        <?php } ?>
+
+        <?php if (!empty($option['fields'])) { ?>
+        <div class="fields text-start"><?php echo $option['fields']; ?></div>
+        <?php } ?>
       </div>
       <?php } ?>
     </label>

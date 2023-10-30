@@ -26,8 +26,14 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['name'][language::$selected['code']])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
-      if (empty($_POST['categories'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
+
+      if (empty($_POST['name'][language::$selected['code']])) {
+        throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+      }
+
+      if (empty($_POST['categories'])) {
+        throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
+      }
 
       if (!empty($_POST['code']) && database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and code = '". database::input($_POST['code']) ."' limit 1;")->num_rows) {
         throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
@@ -43,13 +49,12 @@
 
       if (empty($_POST['categories'])) $_POST['categories'] = [];
       if (empty($_POST['images'])) $_POST['images'] = [];
-      if (empty($_POST['attributes'])) $_POST['attributes'] = [];
       if (empty($_POST['campaigns'])) $_POST['campaigns'] = [];
+      if (empty($_POST['attributes'])) $_POST['attributes'] = [];
       if (empty($_POST['stock_options'])) $_POST['stock_options'] = [];
       if (empty($_POST['autofill_technical_data'])) $_POST['autofill_technical_data'] = '';
 
       $fields = [
-        'code',
         'status',
         'brand_id',
         'supplier_id',
@@ -83,7 +88,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $product->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $product->data[$field] = $_POST[$field];
+        }
       }
 
       if (!empty($_FILES['new_images']['tmp_name'])) {
@@ -115,7 +122,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($product->data['id'])) throw new Exception(language::translate('error_must_provide_product', 'You must provide a product'));
+
+      if (empty($product->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_product', 'You must provide a product'));
+      }
 
       $product->delete();
 

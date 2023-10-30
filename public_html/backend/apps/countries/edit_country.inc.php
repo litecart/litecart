@@ -19,15 +19,28 @@
 
     try {
 
-      if (empty($_POST['iso_code_1'])) throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
-      if (empty($_POST['iso_code_2'])) throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
-      if (empty($_POST['iso_code_3'])) throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
-      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+      if (empty($_POST['iso_code_1'])) {
+        throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
+      }
+
+      if (empty($_POST['iso_code_2'])) {
+        throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
+      }
+
+      if (empty($_POST['iso_code_3'])) {
+        throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
+      }
+
+      if (empty($_POST['name'])) {
+        throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+      }
 
       if (empty($_POST['zones'])) $_POST['zones'] = [];
 
       foreach ($_POST['zones'] as $zone) {
-        if (empty($zone['code']) || empty($zone['name'])) throw new Exception(language::translate('error_zone_must_have_name_and_code', 'A zone/state/province must have a name and code'));
+        if (empty($zone['code']) || empty($zone['name'])) {
+          throw new Exception(language::translate('error_zone_must_have_name_and_code', 'A zone/state/province must have a name and code'));
+        }
       }
 
       $_POST['iso_code_2'] = strtoupper($_POST['iso_code_2']);
@@ -50,7 +63,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $country->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $country->data[$field] = $_POST[$field];
+        }
       }
 
       $country->save();
@@ -67,7 +82,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($country->data['id'])) throw new Exception(language::translate('error_must_provide_country', 'You must provide a country'));
+
+      if (empty($country->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_country', 'You must provide a country'));
+      }
 
       $country->delete();
 

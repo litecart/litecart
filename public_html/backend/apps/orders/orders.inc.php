@@ -1,9 +1,11 @@
 <?php
 
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
+
   if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
   if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
-
   if (!empty($_GET['date_from'])) $_GET['date_from'] = date('Y-m-d', strtotime($_GET['date_from']));
   if (!empty($_GET['date_to'])) $_GET['date_to'] = date('Y-m-d', strtotime($_GET['date_to']));
 
@@ -45,8 +47,10 @@
 
   if (!empty($_POST['set_order_status'])) {
     try {
-      if (empty($_POST['orders'])) throw new Exception(language::translate('error_must_select_orders', 'You must select orders to perform the operation'));
 
+      if (empty($_POST['orders'])) {
+        throw new Exception(language::translate('error_must_select_orders', 'You must select orders to perform the operation'));
+      }
       foreach ($_POST['orders'] as $order_id) {
         $order = new ent_order($order_id);
         $order->data['order_status_id'] = $_POST['order_status_id'];
@@ -67,7 +71,9 @@
 
     try {
 
-      if (empty($_POST['orders'])) throw new Exception(language::translate('error_must_select_orders', 'You must select orders to perform the operation'));
+      if (empty($_POST['orders'])) {
+        throw new Exception(language::translate('error_must_select_orders', 'You must select orders to perform the operation'));
+      }
 
       list($module_id, $action_id) = explode(':', $_POST['order_action']);
 

@@ -1,5 +1,8 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
 
   document::$snippets['title'][] = language::translate('title_order_statuses', 'Order Statuses');
 
@@ -10,8 +13,13 @@
 
     try {
 
-      if (empty($_POST['from_order_status_id'])) throw new Exception(language::translate('error_missing_from_order_status', 'Please select a from order status'));
-      if (empty($_POST['to_order_status_id'])) throw new Exception(language::translate('error_missing_to_order_status', 'Please select a to order status'));
+      if (empty($_POST['from_order_status_id'])) {
+        throw new Exception(language::translate('error_missing_from_order_status', 'Please select a from order status'));
+      }
+
+      if (empty($_POST['to_order_status_id'])) {
+        throw new Exception(language::translate('error_missing_to_order_status', 'Please select a to order status'));
+      }
 
       database::query(
         "update ". DB_TABLE_PREFIX ."orders

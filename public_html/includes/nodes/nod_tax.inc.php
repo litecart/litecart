@@ -7,7 +7,10 @@
     ######################################################################
 
     public static function get_price($value, $tax_class_id, $calculate_tax=null, $customer=null) {
-      if ($calculate_tax === null) $calculate_tax = !empty(customer::$data['display_prices_including_tax']) ? true : false;
+
+      if ($calculate_tax === null) {
+        $calculate_tax = !empty(customer::$data['display_prices_including_tax']) ? true : false;
+      }
 
       if ($calculate_tax) {
         return $value + self::get_tax($value, $tax_class_id, $customer);
@@ -100,9 +103,17 @@
         }
       }
 
-      if (!isset($customer['city'])) $customer['city'] = '';
-      if (!isset($customer['shipping_address'])) $customer['shipping_address'] = $customer;
-      if (!isset($customer['shipping_address']['city'])) $customer['shipping_address']['city'] = '';
+      if (!isset($customer['city'])){
+        $customer['city'] = '';
+      }
+
+      if (!isset($customer['shipping_address'])) {
+        $customer['shipping_address'] = $customer;
+      }
+
+      if (!isset($customer['shipping_address']['city'])){
+        $customer['shipping_address']['city'] = '';
+      }
 
       $checksum = crc32(http_build_query($customer));
 

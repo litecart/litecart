@@ -32,7 +32,9 @@
 
       } else {
 
-        if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
+        if (empty($_POST['type'])) {
+          throw new Exception(language::translate('error_must_select_type', 'You must select type'));
+        }
 
         if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
           throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
@@ -235,9 +237,17 @@
             }
 
           // Set attribute data
-            if (isset($row['group_code'])) $attribute_group->data['code'] = $row['group_code'];
-            if (isset($row['group_name'])) $attribute_group->data['name'][$row['language_code']] = $row['group_name'];
-            if (isset($row['sort'])) $attribute_group->data['sort'] = $row['sort'];
+            if (isset($row['group_code'])) {
+              $attribute_group->data['code'] = $row['group_code'];
+            }
+
+            if (isset($row['group_name'])) {
+              $attribute_group->data['name'][$row['language_code']] = $row['group_name'];
+            }
+
+            if (isset($row['sort'])) {
+              $attribute_group->data['sort'] = $row['sort'];
+            }
 
             foreach ($attribute_group->data['values'] as $key => $value) {
               if (!empty($row['value_id']) && $value['id'] == $row['value_id']) {
@@ -397,7 +407,9 @@
             ];
 
             foreach ($fields as $field) {
-              if (isset($row[$field])) $category->data[$field] = $row[$field];
+              if (isset($row[$field])) {
+                $category->data[$field] = $row[$field];
+              }
             }
 
           // Set category info data
@@ -412,7 +424,9 @@
               ];
 
               foreach ($fields as $field) {
-                if (isset($row[$field])) $category->data[$field][$row['language_code']] = $row[$field];
+                if (isset($row[$field])) {
+                  $category->data[$field][$row['language_code']] = $row[$field];
+                }
               }
             }
 
@@ -488,7 +502,9 @@
             ];
 
             foreach ($fields as $field) {
-              if (isset($row[$field])) $brand->data[$field] = $row[$field];
+              if (isset($row[$field])) {
+                $brand->data[$field] = $row[$field];
+              }
             }
 
           // Set brand info data
@@ -502,7 +518,9 @@
               ];
 
               foreach ($fields as $field) {
-                if (isset($row[$field])) $brand->data[$field][$row['language_code']] = $row[$field];
+                if (isset($row[$field])) {
+                  $brand->data[$field][$row['language_code']] = $row[$field];
+                }
               }
             }
 
@@ -627,7 +645,9 @@
 
           // Set new product data
             foreach ($fields as $field) {
-              if (isset($row[$field])) $product->data[$field] = $row[$field];
+              if (isset($row[$field])) {
+                $product->data[$field] = $row[$field];
+              }
             }
 
             if (isset($row['categories'])) {
@@ -636,7 +656,9 @@
 
           // Set price
             if (!empty($row['currency_code'])) {
-              if (isset($row['price'])) $product->data['prices'][$row['currency_code']] = $row['price'];
+              if (isset($row['price'])) {
+                $product->data['prices'][$row['currency_code']] = $row['price'];
+              }
             }
 
           // Set product info data
@@ -652,7 +674,9 @@
               ];
 
               foreach ($fields as $field) {
-                if (isset($row[$field])) $product->data[$field][$row['language_code']] = $row[$field];
+                if (isset($row[$field])) {
+                  $product->data[$field][$row['language_code']] = $row[$field];
+                }
               }
             }
 
@@ -973,7 +997,9 @@
 
       ini_set('memory_limit', -1);
 
-      if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
+      if (empty($_POST['type'])) {
+        throw new Exception(language::translate('error_must_select_type', 'You must select type'));
+      }
 
       $csv = [];
 
@@ -981,7 +1007,9 @@
 
         case 'attributes':
 
-          if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+          if (empty($_POST['language_code'])) {
+            throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+          }
 
           $csv = database::query(
             "select ag.id as group_id, ag.code as group_code, agi.name as group_name, av.id as value_id, avi.name as value_name, avi.language_code, av.priority, '". database::input($_POST['language_code']) ."' as language_code
@@ -1000,7 +1028,9 @@
 
         case 'brands':
 
-          if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+          if (empty($_POST['language_code'])) {
+            throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+          }
 
           $csv = database::query(
             "select m.*, '' as new_image, mi.name, mi.short_description, mi.description, mi.meta_description, mi.head_title, mi.h1_title, '". database::input($_POST['language_code']) ."' as language_code
@@ -1030,7 +1060,9 @@
 
         case 'categories':
 
-          if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+          if (empty($_POST['language_code'])) {
+            throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+          }
 
           $csv = database::query(
             "select c.*, c2.code as parent_code, ci.name, '' as new_image, ci.short_description, ci.description, ci.meta_description, ci.head_title, ci.h1_title, '". database::input($_POST['language_code']) ."' as language_code
@@ -1048,8 +1080,13 @@
 
         case 'products':
 
-          if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
-          if (empty($_POST['currency_code'])) throw new Exception(language::translate('error_must_select_a_currency', 'You must select a currency'));
+          if (empty($_POST['language_code'])) {
+            throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+          }
+
+          if (empty($_POST['currency_code'])) {
+            throw new Exception(language::translate('error_must_select_a_currency', 'You must select a currency'));
+          }
 
           $csv = database::query(
             "select p.*, '". database::input($_POST['currency_code']) ."' as currency_code, pi.name, pi.description, pi.short_description, pi.technical_data, pi.meta_description, pi.head_title, '". database::input($_POST['language_code']) ."' as language_code, p2c.categories, pp.price, pim.images, '' as new_image, pa.attributes

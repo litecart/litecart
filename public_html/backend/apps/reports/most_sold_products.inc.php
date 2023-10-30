@@ -5,15 +5,24 @@
   breadcrumbs::add(language::translate('title_reports', 'Reports'));
   breadcrumbs::add(language::translate('title_most_sold_products', 'Most Sold Products'));
 
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
+
   $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : date('Y-01-01 00:00:00');
   $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 
-  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
+  if ($_GET['date_from'] > $_GET['date_to']) {
+    list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
+  }
 
-  if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
-  if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
+  if ($_GET['date_from'] > date('Y-m-d')) {
+    $_GET['date_from'] = date('Y-m-d');
+  }
 
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+  if ($_GET['date_to'] > date('Y-m-d')) {
+    $_GET['date_to'] = date('Y-m-d');
+  }
 
 // Table Rows
   $rows = [];
@@ -44,7 +53,9 @@
     order by total_quantity desc;"
   );
 
-  if (!isset($_GET['download']) && $_GET['page'] > 1) database::seek($order_items_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
+  if (!isset($_GET['download']) && $_GET['page'] > 1) {
+    database::seek($order_items_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
+  }
 
   $page_items = 0;
   while ($order_item = database::fetch($order_items_query)) {

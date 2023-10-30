@@ -60,7 +60,9 @@
 
   function catalog_categories_search_query($filter=[]) {
 
-    if (!empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
+    if (!empty($filter['categories'])) {
+      $filter['categories'] = array_filter($filter['categories']);
+    }
 
     $sql_select_relevance = [];
     $sql_where = [];
@@ -149,7 +151,9 @@
 // Filter function using AND syntax
   function catalog_products_query($filter=[]) {
 
-    if (!is_array($filter)) trigger_error('Invalid array filter for products query', E_USER_ERROR);
+    if (!is_array($filter)) {
+      trigger_error('Invalid array filter for products query', E_USER_ERROR);
+    }
 
     if (!empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
     if (!empty($filter['brands'])) $filter['brands'] = array_filter($filter['brands']);

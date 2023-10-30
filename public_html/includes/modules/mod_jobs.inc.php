@@ -10,8 +10,13 @@
 
       if (empty($this->modules)) return;
 
-      if (empty($modules)) $modules = array_keys($this->modules);
-      if (!is_array($modules)) $modules = [$modules];
+      if (empty($modules)) {
+        $modules = array_keys($this->modules);
+      }
+
+      if (!is_array($modules)) {
+        $modules = [$modules];
+      }
 
       $output = '';
 

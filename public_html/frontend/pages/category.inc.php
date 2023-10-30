@@ -1,5 +1,9 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
+
   if (empty($_GET['sort'])) $_GET['sort'] = 'price';
   if (empty($_GET['list_style'])) $_GET['list_style'] = 'columns';
 
@@ -15,7 +19,9 @@
 
   $category = reference::category($_GET['category_id']);
 
-  if (empty($_GET['list_style'])) $_GET['list_style'] = !empty($category->list_style) ? $category->list_style : 'columns';
+  if (empty($_GET['list_style'])) {
+    $_GET['list_style'] = !empty($category->list_style) ? $category->list_style : 'columns';
+  }
 
   if (empty($category->id)) {
     http_response_code(410);

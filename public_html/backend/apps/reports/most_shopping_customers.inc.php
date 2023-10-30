@@ -5,20 +5,35 @@
   breadcrumbs::add(language::translate('title_reports', 'Reports'));
   breadcrumbs::add(language::translate('title_most_shopping_customers', 'Most Shopping Customers'));
 
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
+
   $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
   $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 
-  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
+  if ($_GET['date_from'] > $_GET['date_to']) {
+    list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
+  }
 
   $date_first_order = database::query("select min(date_created) from ". DB_TABLE_PREFIX ."orders limit 1;")->fetch();
   $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
-  if (empty($date_first_order)) $date_first_order = date('Y-m-d');
-  if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
 
-  if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
-  if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
+  if (empty($date_first_order)) {
+    $date_first_order = date('Y-m-d');
+  }
 
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+  if ($_GET['date_from'] < $date_first_order) {
+    $_GET['date_from'] = $date_first_order;
+  }
+
+  if ($_GET['date_from'] > date('Y-m-d')) {
+    $_GET['date_from'] = date('Y-m-d');
+  }
+
+  if ($_GET['date_to'] > date('Y-m-d')) {
+    $_GET['date_to'] = date('Y-m-d');
+  }
 
 // Table Rows
   $customers = [];
@@ -40,7 +55,9 @@
     order by total_amount desc;"
   );
 
-  if (!isset($_GET['download']) && $_GET['page'] > 1) database::seek($customers_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
+  if (!isset($_GET['download']) && $_GET['page'] > 1) {
+    database::seek($customers_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
+  }
 
   $page_items = 0;
   while ($customer = database::fetch($customers_query)) {

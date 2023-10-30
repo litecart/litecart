@@ -4,7 +4,9 @@
 
   header('X-Robots-Tag: noindex');
 
-  if (!empty(administrator::$data['id'])) notices::add('notices', language::translate('text_already_logged_in', 'You are already logged in'));
+  if (!empty(administrator::$data['id'])) {
+    notices::add('notices', language::translate('text_already_logged_in', 'You are already logged in'));
+  }
 
   if (empty($_COOKIE[session_name()])) {
     notices::add('notices', language::translate('error_missing_session_cookie', 'We failed to identify your browser session. Make sure your browser has cookies enabled or try another browser.'));
@@ -18,8 +20,13 @@
         header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
       }
 
-      if (empty($_POST['username'])) throw new Exception(language::translate('error_must_enter_your_username_or_email', 'You must enter your username or email address'));
-      if (empty($_POST['password'])) throw new Exception(language::translate('error_must_enter_your_password', 'You must enter your password'));
+      if (empty($_POST['username'])) {
+        throw new Exception(language::translate('error_must_enter_your_username_or_email', 'You must enter your username or email address'));
+      }
+
+      if (empty($_POST['password'])) {
+        throw new Exception(language::translate('error_must_enter_your_password', 'You must enter your password'));
+      }
 
       $administrator = database::query(
         "select * from ". DB_TABLE_PREFIX ."administrators
@@ -32,7 +39,10 @@
         throw new Exception(language::translate('error_administrator_not_found', 'The administrator could not be found in our database'));
       }
 
-      if (empty($administrator['status'])) throw new Exception(language::translate('error_administrator_account_disabled', 'The administrator account is disabled'));
+
+      if (empty($administrator['status'])) {
+        throw new Exception(language::translate('error_administrator_account_disabled', 'The administrator account is disabled'));
+      }
 
       if (!empty($administrator['date_valid_from']) && date('Y-m-d H:i:s') < $administrator['date_valid_from']) {
         throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime(language::$selected['format_datetime'], strtotime($administrator['date_valid_from']))));
@@ -78,15 +88,15 @@
             ];
 
             $subject = language::translate('administrator_account_blocked:email_subject', 'Administrator Account Blocked');
-            $message = strtr(language::translate('administrator_account_blocked:email_body',
-              "Your administrator account %username has been blocked until %expires because of too many invalid attempts.\r\n"
-            . "\r\n"
-            . "Client: %hostname (%ip_address)\r\n"
-            . "%user_agent\r\n"
-            . "\r\n"
-            . "%store_name\r\n"
-            . "%store_link"
-            ), $aliases);
+            $message = strtr(language::translate('administrator_account_blocked:email_body', implode("\r\n", [
+              'Your administrator account %username has been blocked until %expires because of too many invalid attempts.',
+              '',
+              'Client: %hostname (%ip_address)',
+              '%user_agent',
+              '',
+              '%store_name',
+              '%store_link',
+            ])), $aliases);
 
             $email = new ent_email();
             $email->add_recipient($administrator['email'], $administrator['username'])

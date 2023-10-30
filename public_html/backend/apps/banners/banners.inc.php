@@ -8,7 +8,10 @@
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {
-      if (empty($_POST['banners'])) throw new Exception(language::translate('error_must_select_banners', 'You must select banners'));
+
+      if (empty($_POST['banners'])) {
+        throw new Exception(language::translate('error_must_select_banners', 'You must select banners'));
+      }
 
       foreach (array_keys($_POST['banners']) as $banner_id) {
 

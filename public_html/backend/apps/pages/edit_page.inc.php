@@ -18,7 +18,10 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['title'])) throw new Exception(language::translate('error_missing_title', 'You must enter a title.'));
+
+      if (empty($_POST['title'])) {
+        throw new Exception(language::translate('error_missing_title', 'You must enter a title.'));
+      }
 
       if (empty($_POST['status'])) $_POST['status'] = 0;
       if (empty($_POST['dock'])) $_POST['dock'] = [];

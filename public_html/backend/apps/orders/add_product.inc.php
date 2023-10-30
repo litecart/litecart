@@ -17,7 +17,9 @@
     ];
 
     foreach ($fields as $field) {
-      if (isset($product->$field)) $_POST[$field] = $product->$field;
+      if (isset($product->$field)) {
+        $_POST[$field] = $product->$field;
+      }
     }
 
     $price = !empty($product->campaign['price']) ? $product->campaign['price'] : $product->price;

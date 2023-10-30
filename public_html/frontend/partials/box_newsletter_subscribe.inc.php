@@ -4,7 +4,9 @@
 
     try {
 
-      if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
+      if (empty($_POST['email'])) {
+        throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
+      }
 
       $_POST['email'] = strtolower($_POST['email']);
 
@@ -47,7 +49,9 @@
 
     try {
 
-      if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
+      if (empty($_POST['email'])) {
+        throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
+      }
 
       $_POST['email'] = strtolower($_POST['email']);
 

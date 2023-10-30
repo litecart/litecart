@@ -5,7 +5,9 @@
 
   customer::require_login();
 
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
 
   breadcrumbs::add(language::translate('title_account', 'Account'));
   breadcrumbs::add(language::translate('title_order_history', 'Order History'));

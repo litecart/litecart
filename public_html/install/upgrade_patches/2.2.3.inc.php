@@ -97,7 +97,9 @@
 
     if ($option_group = database::fetch($option_groups_query)) {
 
-      if ($option_group['function'] == 'input') $option_group['function'] = 'text';
+      if ($option_group['function'] == 'input') {
+        $option_group['function'] = 'text';
+      }
 
       database::query(
         "update ". DB_TABLE_PREFIX ."products_options

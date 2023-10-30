@@ -73,7 +73,9 @@
         $to = settings::get('store_length_unit');
       }
 
-      if ((float)self::$units[$from]['value'] == 0 || (float)self::$units[$to]['value'] == 0) return 0;
+      if ((float)self::$units[$from]['value'] == 0 || (float)self::$units[$to]['value'] == 0){
+        return 0;
+      }
 
       return $value * (self::$units[$to]['value'] / self::$units[$from]['value']);
     }

@@ -12,7 +12,9 @@
     $app_config = require 'app://backend/apps/'. __APP__ .'/config.inc.php';
 
   // Set default document if missing
-    if (!defined('__DOC__')) define('__DOC__', $app_config['default']);
+    if (!defined('__DOC__')) {
+      define('__DOC__', $app_config['default']);
+    }
 
   // Check if administrator is permitted to access document
     if (!empty(administrator::$data['apps'][__APP__]['status']) && !in_array(__DOC__, administrator::$data['apps'][__APP__]['docs'])) {

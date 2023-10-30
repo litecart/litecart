@@ -7,11 +7,16 @@
   document::$snippets['title'][] = language::translate('title_view_vmod', 'View vMod');
 
   try {
-    if (empty($_GET['vmod'])) throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
+
+    if (empty($_GET['vmod'])) {
+      throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
+    }
 
     $file = 'storage://vmods/' . basename($_GET['vmod']);
 
-    if (!is_file($file)) throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
+    if (!is_file($file)) {
+      throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
+    }
 
     $directives = [];
 
@@ -90,13 +95,16 @@ pre {
           <div class="insert">
 <?php
   switch($operation->insert->attributes()['position']) {
+
     case 'replace':
       echo '** Replace with **';
       break;
+
     case 'before':
     case 'ibefore':
       echo '** Before that, add **';
       break;
+
     case 'after':
     case 'iafter':
       echo '** After that, add **';

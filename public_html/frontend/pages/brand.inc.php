@@ -1,5 +1,9 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
+
   if (empty($_GET['sort'])) $_GET['sort'] = 'price';
   if (empty($_GET['list_style'])) $_GET['list_style'] = 'columns';
 

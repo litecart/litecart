@@ -29,7 +29,9 @@ input[name="shipping_option[id]"]:checked + .option::after {
               <?php } ?>
 
               <div class="price"><?php echo (empty($option['error']) && $option['fee'] != 0) ? '+ ' . currency::format(tax::get_price($option['fee'], $option['tax_class_id'])) : language::translate('text_no_fee', 'No fee'); ?></div>
-              <?php if (!empty($option['error'])) { ?><div class="error"><?php echo $option['error']; ?></div><?php } ?>
+              <?php if (!empty($option['error'])) { ?>
+              <div class="error"><?php echo $option['error']; ?></div>
+              <?php } ?>
             </div>
           </div>
 

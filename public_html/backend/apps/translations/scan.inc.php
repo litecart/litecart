@@ -129,16 +129,24 @@
     cache::clear_cache('translations');
 
     notices::add('notices', sprintf(language::translate('text_found_d_translations', 'Found %d translations in %d files'), $found, $files));
-    if ($new_translations) notices::add('notices', sprintf(language::translate('text_added_d_new_translations', 'Added %d new translations'), $new_translations));
-    if ($updated) notices::add('notices', sprintf(language::translate('text_updated_d_translations', 'Updated %d translations'), $updated));
 
+    if ($new_translations) {
+      notices::add('notices', sprintf(language::translate('text_added_d_new_translations', 'Added %d new translations'), $new_translations));
+    }
+
+    if ($updated) {
+      notices::add('notices', sprintf(language::translate('text_updated_d_translations', 'Updated %d translations'), $updated));
+    }
   }
 
   if (!empty($_POST['delete'])) {
 
     try {
 
-      if (empty($_POST['translations'])) throw new Exception(language::translate('error_must_select_translations', 'You must select translations'));
+
+      if (empty($_POST['translations'])) {
+        throw new Exception(language::translate('error_must_select_translations', 'You must select translations'));
+      }
 
       foreach ($_POST['translations'] as $code) {
         database::query(

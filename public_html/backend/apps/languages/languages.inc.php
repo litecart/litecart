@@ -1,5 +1,8 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
 
   document::$snippets['title'][] = language::translate('title_languages', 'Languages');
 
@@ -8,7 +11,10 @@
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {
-      if (empty($_POST['languages'])) throw new Exception(language::translate('error_must_select_languages', 'You must select languages'));
+
+      if (empty($_POST['languages'])) {
+        throw new Exception(language::translate('error_must_select_languages', 'You must select languages'));
+      }
 
       foreach (array_keys($_POST['languages']) as $language_code) {
 

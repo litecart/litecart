@@ -230,14 +230,18 @@
         $this->save();
       }
 
-      if (!is_dir('storage://images/stock_items/')) mkdir('storage://images/stock_items/', 0777);
+      if (!is_dir('storage://images/stock_items/')){
+        mkdir('storage://images/stock_items/', 0777);
+      }
 
       $image = new ent_image($file);
 
     // 456-12345_Fancy-title.jpg
       $filename = 'stock_items/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'], settings::get('store_language_code')) .'.'. $image->type();
 
-      if (is_file('storage://images/' . $this->data['image'])) unlink('storage://images/' . $this->data['image']);
+      if (is_file('storage://images/' . $this->data['image'])) {
+        unlink('storage://images/' . $this->data['image']);
+      }
 
       functions::image_delete_cache('storage://images/' . $filename);
 
@@ -261,7 +265,9 @@
 
       if (empty($this->data['id'])) return;
 
-      if (is_file('storage://images/' . $this->data['image'])) unlink('storage://images/' . $this->data['image']);
+      if (is_file('storage://images/' . $this->data['image'])){
+        unlink('storage://images/' . $this->data['image']);
+      }
 
       functions::image_delete_cache('storage://images/' . $this->data['image']);
 
@@ -282,7 +288,9 @@
         $this->save();
       }
 
-      if (!is_dir('storage://files/')) mkdir('storage://files/', 0777);
+      if (!is_dir('storage://files/')){
+        mkdir('storage://files/', 0777);
+      }
 
       if (is_file($this->data['file'])) {
         unlink($this->data['file']);

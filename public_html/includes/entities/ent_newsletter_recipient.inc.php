@@ -30,7 +30,9 @@
 
     public function load($recipient_id) {
 
-      if (!preg_match('#(^[0-9]+$|@)#', $recipient_id)) throw new Exception('Invalid newsletter recipient (ID: '. $recipient_id .')');
+      if (!preg_match('#(^[0-9]+$|@)#', $recipient_id)) {
+        throw new Exception('Invalid newsletter recipient (ID: '. $recipient_id .')');
+      }
 
       $this->reset();
 

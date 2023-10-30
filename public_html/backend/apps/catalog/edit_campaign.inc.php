@@ -18,8 +18,14 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['product_id'])) throw new Exception(language::translate('error_must_select_product', 'You must select a product'));
-      if ($_POST['start_date'] > $_POST['end_date']) throw new Exception(language::translate('error_start_date_cannot_be_greater_than_end_date', 'The start date cannot be greater than the end date'));
+
+      if (empty($_POST['product_id'])) {
+        throw new Exception(language::translate('error_must_select_product', 'You must select a product'));
+      }
+
+      if ($_POST['start_date'] > $_POST['end_date']) {
+        throw new Exception(language::translate('error_start_date_cannot_be_greater_than_end_date', 'The start date cannot be greater than the end date'));
+      }
 
       $fields = [
         'product_id',
@@ -32,7 +38,9 @@
       }
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $campaign->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $campaign->data[$field] = $_POST[$field];
+        }
       }
 
       $campaign->save();
@@ -49,7 +57,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($campaign->data['id'])) throw new Exception(language::translate('error_must_provide_campaign', 'You must provide a campaign'));
+
+      if (empty($campaign->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_campaign', 'You must provide a campaign'));
+      }
 
       $campaign->delete();
 

@@ -7,7 +7,9 @@
 
     function __construct($brand_id, $language_code=null) {
 
-      if (empty($language_code)) $language_code = language::$selected['code'];
+      if (empty($language_code)){
+        $language_code = language::$selected['code'];
+      }
 
       $this->_data['id'] = (int)$brand_id;
       $this->_language_codes = array_unique([
@@ -59,8 +61,12 @@
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
+
               if (in_array($key, ['id', 'brand_id', 'language_code'])) continue;
-              if (empty($this->_data[$key])) $this->_data[$key] = $value;
+
+              if (empty($this->_data[$key])) {
+                $this->_data[$key] = $value;
+              }
             }
           }
 

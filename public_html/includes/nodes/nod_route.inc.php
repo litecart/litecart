@@ -118,7 +118,9 @@
           if (file_get_contents('php://input') != '') $do_redirect = false;
 
         // Don't forward if requested not to
-          if (isset(self::$selected['options']['redirect']) && self::$selected['options']['redirect'] != true) $do_redirect = false;
+          if (isset(self::$selected['options']['redirect']) && self::$selected['options']['redirect'] != true){
+            $do_redirect = false;
+          }
 
         // Don't forward if there are notices in stack
           if (!empty(notices::$data)) {
@@ -212,7 +214,9 @@
 
     public static function create_link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null, $rewrite=false) {
 
-      if (empty($language_code)) $language_code = language::$selected['code'];
+      if (empty($language_code)){
+        $language_code = language::$selected['code'];
+      }
 
       $link = new ent_link((string)$path);
 
@@ -262,7 +266,9 @@
 
     public static function rewrite(ent_link $link, $language_code=null) {
 
-      if ($link->host != $_SERVER['HTTP_HOST']) return $link;
+      if ($link->host != $_SERVER['HTTP_HOST']) {
+        return $link;
+      }
 
       if (empty($language_code)) {
         $language_code = language::$selected['code'];
@@ -276,7 +282,9 @@
         $language_code = language::identify();
       }
 
-      if (isset(self::$_links_cache[$language_code][(string)$link])) return self::$_links_cache[$language_code][(string)$link];
+      if (isset(self::$_links_cache[$language_code][(string)$link])) {
+        return self::$_links_cache[$language_code][(string)$link];
+      }
 
     // Strip logic from string
       $link->path = self::strip_url_logic($link->path);

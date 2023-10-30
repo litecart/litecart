@@ -8,7 +8,9 @@
 
     try {
 
-      if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
+      if (empty($_POST['type'])) {
+        throw new Exception(language::translate('error_must_select_type', 'You must select type'));
+      }
 
       if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
         throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
@@ -119,7 +121,9 @@
             ];
 
             foreach ($fields as $field) {
-              if (isset($row[$field])) $customer->data[$field] = $row[$field];
+              if (isset($row[$field])) {
+                $customer->data[$field] = $row[$field];
+              }
             }
 
           // Set customer data
@@ -137,10 +141,14 @@
             ];
 
             foreach ($fields as $field) {
-              if (isset($row[$field])) $customer->data['shipping_address'][$field] = $row[$field];
+              if (isset($row[$field])) {
+                $customer->data['shipping_address'][$field] = $row[$field];
+              }
             }
 
-            if (!empty($row['new_password'])) $customer->set_password($row['new_password']);
+            if (!empty($row['new_password'])) {
+              $customer->set_password($row['new_password']);
+            }
 
             $customer->save();
 
@@ -194,7 +202,9 @@
             ];
 
             foreach ($fields as $field) {
-              if (isset($row[$field])) $recipient->data[$field] = $row[$field];
+              if (isset($row[$field])) {
+                $recipient->data[$field] = $row[$field];
+              }
             }
 
             $recipient->save();
@@ -218,7 +228,9 @@
 
     try {
 
-      if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
+      if (empty($_POST['type'])) {
+        throw new Exception(language::translate('error_must_select_type', 'You must select type'));
+      }
 
       switch ($_POST['type']) {
 

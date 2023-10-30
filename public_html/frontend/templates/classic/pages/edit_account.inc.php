@@ -152,7 +152,9 @@
         }
         $.each(data, function(key, value) {
           console.log(key +' '+ value);
-          if ($('input[name="'+key+'"]').length && $('input[name="'+key+'"]').val() == '') $('input[name="'+key+'"]').val(data[key]);
+          if ($('input[name="'+key+'"]').length && $('input[name="'+key+'"]').val() == '') {
+            $('input[name="'+key+'"]').val(data[key]);
+          }
         });
       },
       complete: function() {

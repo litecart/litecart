@@ -61,7 +61,10 @@
           echo 'Tracking order '. $order->data['id'] .' with tracking no '. $order->data['shipping_tracking_id'] . '...';
 
           list($module_id, $option_id) = explode(':', $order->data['shipping_option']['id']);
-          if (empty($module_id)) throw new Exception('No module ID');
+
+          if (empty($module_id)) {
+            throw new Exception('No module ID');
+          }
 
           if (!$result = $order->shipping->run('track', $module_id, $order)) {
             throw new Exception('Nothing returned, skipping.');

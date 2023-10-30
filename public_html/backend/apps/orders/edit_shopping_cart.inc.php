@@ -48,7 +48,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $shopping_cart->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $shopping_cart->data[$field] = $_POST[$field];
+        }
       }
 
       $fields = [
@@ -68,7 +70,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST['customer'][$field])) $shopping_cart->data['customer'][$field] = $_POST['customer'][$field];
+        if (isset($_POST['customer'][$field])) {
+          $shopping_cart->data['customer'][$field] = $_POST['customer'][$field];
+        }
       }
 
       $fields = [
@@ -85,7 +89,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST['customer']['shipping_address'][$field])) $shopping_cart->data['customer']['shipping_address'][$field] = $_POST['customer']['shipping_address'][$field];
+        if (isset($_POST['customer']['shipping_address'][$field])) {
+          $shopping_cart->data['customer']['shipping_address'][$field] = $_POST['customer']['shipping_address'][$field];
+        }
       }
 
       $shopping_cart->save();
@@ -118,7 +124,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($shopping_cart->data['id'])) throw new Exception(language::translate('error_must_provide_shopping_cart', 'You must provide a shopping cart'));
+
+      if (empty($shopping_cart->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_shopping_cart', 'You must provide a shopping cart'));
+      }
 
       $shopping_cart->delete();
 

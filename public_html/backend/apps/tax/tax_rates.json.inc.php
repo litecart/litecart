@@ -25,13 +25,30 @@
         ],
       ];
 
-      if (empty($_REQUEST['customer']['country_code'])) $_REQUEST['customer']['country_code'] = settings::get('store_country_code');
-      if (empty($_REQUEST['customer']['zone_code'])) $_REQUEST['customer']['zone_code'] = settings::get('store_zone_code');
-      if (!isset($_REQUEST['customer']['city'])) $_REQUEST['customer']['city'] = '';
 
-      if (empty($_REQUEST['customer']['shipping_address']['country_code'])) $_REQUEST['customer']['shipping_address']['country_code'] = settings::get('store_country_code');
-      if (empty($_REQUEST['customer']['shipping_address']['zone_code'])) $_REQUEST['customer']['shipping_address']['zone_code'] = settings::get('store_zone_code');
-      if (!isset($_REQUEST['customer']['shipping_address']['city'])) $_REQUEST['customer']['shipping_address']['city'] = '';
+      if (empty($_REQUEST['customer']['country_code'])) {
+        $_REQUEST['customer']['country_code'] = settings::get('store_country_code');
+      }
+
+      if (empty($_REQUEST['customer']['zone_code'])) {
+        $_REQUEST['customer']['zone_code'] = settings::get('store_zone_code');
+      }
+
+      if (!isset($_REQUEST['customer']['city'])) {
+        $_REQUEST['customer']['city'] = '';
+      }
+
+      if (empty($_REQUEST['customer']['shipping_address']['country_code'])) {
+        $_REQUEST['customer']['shipping_address']['country_code'] = settings::get('store_country_code');
+      }
+
+      if (empty($_REQUEST['customer']['shipping_address']['zone_code'])) {
+        $_REQUEST['customer']['shipping_address']['zone_code'] = settings::get('store_zone_code');
+      }
+
+      if (!isset($_REQUEST['customer']['shipping_address']['city'])) {
+        $_REQUEST['customer']['shipping_address']['city'] = '';
+      }
 
       $tax_rates_query = database::query(
         "select code, name, rate from ". DB_TABLE_PREFIX ."tax_rates

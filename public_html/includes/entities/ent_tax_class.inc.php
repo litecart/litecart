@@ -30,7 +30,9 @@
 
     public function load($tax_class_id) {
 
-      if (!preg_match('#^[0-9]+$#', $tax_class_id)) throw new Exception('Invalid tax class (ID: '. $tax_class_id .')');
+      if (!preg_match('#^[0-9]+$#', $tax_class_id)) {
+        throw new Exception('Invalid tax class (ID: '. $tax_class_id .')');
+      }
 
       $this->reset();
 

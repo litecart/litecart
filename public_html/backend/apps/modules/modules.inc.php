@@ -58,7 +58,9 @@
 
     try {
 
-      if (empty($_POST['modules'])) throw new Exception(language::translate('error_must_select_modules', 'You must select modules'));
+      if (empty($_POST['modules'])) {
+        throw new Exception(language::translate('error_must_select_modules', 'You must select modules'));
+      }
 
       foreach ($_POST['modules'] as $module_id) {
         $module = new ent_module($module_id);

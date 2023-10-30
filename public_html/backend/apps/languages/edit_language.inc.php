@@ -20,8 +20,14 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['code'])) throw new Exception(language::translate('error_must_enter_code', 'You must enter a code'));
-      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+
+      if (empty($_POST['code'])) {
+        throw new Exception(language::translate('error_must_enter_code', 'You must enter a code'));
+      }
+
+      if (empty($_POST['name'])) {
+        throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+      }
 
       if (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain' && empty($_POST['domain_name'])) {
         throw new Exception(language::translate('error_must_provide_domain', 'You must provide a domain name'));
@@ -90,7 +96,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $language->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $language->data[$field] = $_POST[$field];
+        }
       }
 
       $language->save();
@@ -115,7 +123,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($language->data['id'])) throw new Exception(language::translate('error_must_provide_language', 'You must provide a language'));
+
+      if (empty($language->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_language', 'You must provide a language'));
+      }
 
       $language->delete();
 

@@ -18,7 +18,10 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+
+      if (empty($_POST['name'])) {
+        throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+      }
 
       $fields = [
         'code',
@@ -27,7 +30,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $tax_class->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $tax_class->data[$field] = $_POST[$field];
+        }
       }
 
       $tax_class->save();
@@ -44,7 +49,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($tax_class->data['id'])) throw new Exception(language::translate('error_must_provide_tax_class', 'You must provide a tax class'));
+
+      if (empty($tax_class->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_tax_class', 'You must provide a tax class'));
+      }
 
       $tax_class->delete();
 

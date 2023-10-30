@@ -13,11 +13,17 @@
       }
 
       $image = new ent_image($_FILES['image']['tmp_name']);
-      if (!$image->width()) throw new Exception(language::translate('error_invalid_image', 'The image is invalid'));
+
+      if (!$image->width()) {
+        throw new Exception(language::translate('error_invalid_image', 'The image is invalid'));
+      }
 
       $filename = 'logotype.png';
 
-      if (is_file('storage://images/' . $filename)) unlink('storage://images/' . $filename);
+      if (is_file('storage://images/' . $filename)) {
+        unlink('storage://images/' . $filename);
+      }
+
       functions::image_delete_cache('storage://images/' . $filename);
 
       if (settings::get('image_downsample_size')) {

@@ -41,8 +41,14 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['newsletter'])) $_POST['newsletter'] = 0;
-      if (empty($_POST['different_shipping_address'])) $_POST['different_shipping_address'] = 0;
+
+      if (empty($_POST['newsletter'])) {
+        $_POST['newsletter'] = 0;
+      }
+
+      if (empty($_POST['different_shipping_address'])) {
+        $_POST['different_shipping_address'] = 0;
+      }
 
       $fields = [
         'code',
@@ -66,7 +72,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $customer->data[$field] = $_POST[$field];
+        }
       }
 
       $fields = [
@@ -88,7 +96,9 @@
 
       $customer->save();
 
-      if (!empty($_POST['new_password'])) $customer->set_password($_POST['new_password']);
+      if (!empty($_POST['new_password'])) {
+        $customer->set_password($_POST['new_password']);
+      }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink(__APP__.'/customers'));
@@ -102,7 +112,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($customer->data['id'])) throw new Exception(language::translate('error_must_provide_customer', 'You must provide a customer'));
+
+      if (empty($customer->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_customer', 'You must provide a customer'));
+      }
 
       $customer->delete();
 

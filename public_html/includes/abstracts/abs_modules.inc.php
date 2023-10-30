@@ -13,7 +13,9 @@
 
       $type = preg_replace('#mod_(.*)$#', '$1', get_called_class());
 
-      if (!empty($filter) && !is_array($filter)) $filter = [$filter];
+      if (!empty($filter) && !is_array($filter)) {
+        $filter = [$filter];
+      }
 
       $modules_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."modules

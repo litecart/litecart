@@ -33,7 +33,9 @@
 
     public function load($administrator_id) {
 
-      if (!preg_match('#(^[0-9]+$|^[0-9a-zA-Z_]$|@)#', $administrator_id)) throw new Exception('Invalid administrator (ID: '. $administrator_id .')');
+      if (!preg_match('#(^[0-9]+$|^[0-9a-zA-Z_]$|@)#', $administrator_id)){
+        throw new Exception('Invalid administrator (ID: '. $administrator_id .')');
+      }
 
       $this->reset();
 

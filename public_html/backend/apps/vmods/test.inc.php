@@ -6,7 +6,9 @@
 
   try {
 
-    if (empty($_GET['vmod'])) throw new Exception('No vmod provided');
+    if (empty($_GET['vmod'])) {
+      throw new Exception('No vmod provided');
+    }
 
     $file = 'storage://vmods/' . $_GET['vmod'];
 

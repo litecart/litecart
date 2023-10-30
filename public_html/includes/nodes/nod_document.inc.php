@@ -128,7 +128,11 @@
 
     // Prepare title
       if (!empty(self::$snippets['title'])) {
-        if (!is_array(self::$snippets['title'])) self::$snippets['title'] = [self::$snippets['title']];
+
+        if (!is_array(self::$snippets['title'])) {
+          self::$snippets['title'] = [self::$snippets['title']];
+        }
+
         self::$snippets['title'] = array_filter(self::$snippets['title']);
         self::$snippets['title'] = implode(' | ', array_reverse(self::$snippets['title']));
       }
@@ -304,7 +308,10 @@
 
       } else {
         $route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        if ($inherit_params === null) $inherit_params = true;
+
+        if ($inherit_params === null){
+          $inherit_params = true;
+        }
       }
 
       return (string)route::create_link($route, $new_params, $inherit_params, $skip_params, $language_code, true);
@@ -318,7 +325,10 @@
 
       if (empty($path)) {
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        if ($inherit_params === null) $inherit_params = true;
+
+        if ($inherit_params === null) {
+          $inherit_params = true;
+        }
       }
 
       if (preg_match('#^(app://|storage://|'. preg_quote(DOCUMENT_ROOT, '#') .')#', $path)) {

@@ -189,15 +189,21 @@
 
     // Return original file if nothing to modify
       if (empty($queue)) {
-        if (is_file(FS_DIR_STORAGE . $modified_file)) unlink(FS_DIR_STORAGE . $modified_file);
+
+        if (is_file(FS_DIR_STORAGE . $modified_file)) {
+          unlink(FS_DIR_STORAGE . $modified_file);
+        }
+
         self::$time_elapsed += microtime(true) - $timestamp;
         return FS_DIR_STORAGE . (self::$_checked[$original_file] = $modified_file);
       }
 
     // Return modified file if checksum matches
-      if (!empty(self::$_checksums[$original_file]) && !empty(self::$_checked[$original_file]) && file_exists(FS_DIR_APP . self::$_checked[$original_file]) && self::$_checksums[$original_file] == $checksum) {
-        self::$time_elapsed += microtime(true) - $timestamp;
-        return FS_DIR_STORAGE . (self::$_checked[$original_file] = $modified_file);
+      if (!empty(self::$_checksums[$original_file]) && self::$_checksums[$original_file] == $checksum) {
+        if (!empty(self::$_checked[$original_file]) && file_exists(FS_DIR_APP . self::$_checked[$original_file])) {
+          self::$time_elapsed += microtime(true) - $timestamp;
+          return FS_DIR_STORAGE . (self::$_checked[$original_file] = $modified_file);
+        }
       }
 
     // Modify file
@@ -404,7 +410,10 @@
       }
 
       $id = preg_replace('#\.disabled$#', '', basename(dirname($file)));
-      if ($id == 'vmods') $id = preg_replace('#\.(disabled|xml)$#', '', basename($file));
+
+      if ($id == 'vmods') {
+        $id = preg_replace('#\.(disabled|xml)$#', '', basename($file));
+      }
 
       $vmod = [
         'type' => 'vmod',

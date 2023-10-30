@@ -82,7 +82,9 @@
       },
       success: function(data) {
         $('select[name="zone_code"]').html('');
-        if ($('select[name="zone_code"]').attr('disabled')) $('select[name="zone_code"]').removeAttr('disabled');
+        if ($('select[name="zone_code"]').attr('disabled')) {
+          $('select[name="zone_code"]').removeAttr('disabled');
+        }
         if (data) {
           $.each(data, function(i, zone) {
             $('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');

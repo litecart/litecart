@@ -11,10 +11,19 @@
 
     // Bind selected language to session
       if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'])) {
-        if (empty(session::$data['backend']['language'])) session::$data['backend']['language'] = [];
+
+        if (empty(session::$data['backend']['language'])) {
+          session::$data['backend']['language'] = [];
+        }
+
         self::$selected = &session::$data['backend']['language'];
+
       } else {
-        if (!isset(session::$data['language'])) session::$data['language'] = [];
+
+        if (!isset(session::$data['language'])) {
+          session::$data['language'] = [];
+        }
+
         self::$selected = &session::$data['language'];
       }
 
@@ -112,7 +121,10 @@
 
       $enabled_languages = [];
       foreach (self::$languages as $language) {
-        if (!empty(administrator::$data['id']) || $language['status'] == 1) $enabled_languages[] = $language['code'];
+
+        if (!empty(administrator::$data['id']) || $language['status'] == 1) {
+          $enabled_languages[] = $language['code'];
+        }
       }
 
     // Return language by regional domain
@@ -126,7 +138,9 @@
 
     // Return language from URI query
       if (!empty($_GET['language'])) {
-        if (in_array($_GET['language'], $all_languages)) return $_GET['language'];
+        if (in_array($_GET['language'], $all_languages)) {
+          return $_GET['language'];
+        }
       }
 
     // Return language from URI path
@@ -134,19 +148,27 @@
       if (in_array($code, $all_languages)) return $code;
 
     // Return language from session
-      if (isset(self::$selected['code']) && in_array(self::$selected['code'], $all_languages)) return self::$selected['code'];
+      if (isset(self::$selected['code']) && in_array(self::$selected['code'], $all_languages)){
+        return self::$selected['code'];
+      }
 
     // Return language from cookie
-      if (isset($_COOKIE['language_code']) && in_array($_COOKIE['language_code'], $all_languages)) return $_COOKIE['language_code'];
+      if (isset($_COOKIE['language_code']) && in_array($_COOKIE['language_code'], $all_languages)){
+        return $_COOKIE['language_code'];
+      }
 
     // Return language from country (TLD)
       if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
+
         $country = database::query(
           "select * from ". DB_TABLE_PREFIX ."countries
           where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
           limit 1;"
         )->fetch();
-        if (!empty($country['language_code']) && in_array($country['language_code'], $enabled_languages)) return $country['language_code'];
+
+        if (!empty($country['language_code']) && in_array($country['language_code'], $enabled_languages)){
+          return $country['language_code'];
+        }
       }
 
     // Return language from browser request headers
@@ -157,17 +179,24 @@
       } else {
         $browser_locales = [];
       }
+
       foreach ($browser_locales as $browser_locale) {
         if (preg_match('#('. implode('|', array_keys(self::$languages)) .')-?.*#', $browser_locale, $reg)) {
-          if (!empty($reg[1]) && in_array($reg[1], $enabled_languages)) return $reg[1];
+          if (!empty($reg[1]) && in_array($reg[1], $enabled_languages)) {
+            return $reg[1];
+          }
         }
       }
 
     // Return default language
-      if (in_array(settings::get('default_language_code'), $all_languages)) return settings::get('default_language_code');
+      if (in_array(settings::get('default_language_code'), $all_languages)){
+        return settings::get('default_language_code');
+      }
 
     // Return system language
-      if (in_array(settings::get('store_language_code'), $all_languages)) return settings::get('store_language_code');
+      if (in_array(settings::get('store_language_code'), $all_languages)){
+        return settings::get('store_language_code');
+      }
 
     // Return first language
       return (!empty($enabled_languages)) ? $enabled_languages[0] : $all_languages[0];

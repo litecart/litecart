@@ -145,12 +145,19 @@
       )->fetch_all('iso_code_2');
 
     // Unset non supported country
-      if (!in_array(self::$data['country_code'], $countries)) self::$data['country_code'] = '';
-      if (!in_array(self::$data['shipping_address']['country_code'], $countries)) self::$data['shipping_address']['country_code'] = '';
+      if (!in_array(self::$data['country_code'], $countries)){
+        self::$data['country_code'] = '';
+      }
+
+      if (!in_array(self::$data['shipping_address']['country_code'], $countries)) {
+        self::$data['shipping_address']['country_code'] = '';
+      }
 
     // Set country from URI
       if (!empty($_GET['country'])) {
-        if (in_array($_GET['country'], $countries)) self::$data['country_code'] = $_GET['country'];
+        if (in_array($_GET['country'], $countries)) {
+          self::$data['country_code'] = $_GET['country'];
+        }
       }
 
     // Set country from cookie
@@ -176,7 +183,9 @@
             limit 1;"
           )->fetch();
 
-          if (!empty($country['iso_code_2'])) self::$data['country_code'] = $country['iso_code_2'];
+          if (!empty($country['iso_code_2'])){
+            self::$data['country_code'] = $country['iso_code_2'];
+          }
         }
       }
 
@@ -190,7 +199,9 @@
     // Get country from browser locale
       if (empty(self::$data['country_code'])) {
         if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('#(^[a-z]{2}-([a-z]{2}))#i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
-          if (!empty($matches[2]) && in_array(strtoupper($matches[2]), $countries)) self::$data['country_code'] = strtoupper($matches[2]);
+          if (!empty($matches[2]) && in_array(strtoupper($matches[2]), $countries)) {
+            self::$data['country_code'] = strtoupper($matches[2]);
+          }
         }
       }
 
@@ -249,7 +260,9 @@
 
     // Set tax from cookie
       if (!isset(self::$data['display_prices_including_tax']) || self::$data['display_prices_including_tax'] === null) {
-        if (isset($_COOKIE['display_prices_including_tax'])) self::$data['display_prices_including_tax'] = !empty($_COOKIE['display_prices_including_tax']) ? 1 : 0;
+        if (isset($_COOKIE['display_prices_including_tax'])) {
+          self::$data['display_prices_including_tax'] = !empty($_COOKIE['display_prices_including_tax']) ? 1 : 0;
+        }
       }
 
     // Set default tax

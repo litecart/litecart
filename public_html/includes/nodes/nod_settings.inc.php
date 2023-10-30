@@ -62,7 +62,11 @@
       );
 
       if (!database::num_rows($settings_query)) {
-        if ($fallback === null) trigger_error('Unsupported settings key ('. $key .')', E_USER_WARNING);
+
+        if ($fallback === null) {
+          trigger_error('Unsupported settings key ('. $key .')', E_USER_WARNING);
+        }
+
         return $fallback;
       }
 

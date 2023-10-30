@@ -1,5 +1,8 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
   if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
 
   document::$snippets['title'][] = language::translate('title_customers', 'Customers');
@@ -9,7 +12,10 @@
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {
-      if (empty($_POST['customers'])) throw new Exception(language::translate('error_must_select_customers', 'You must select customers'));
+
+      if (empty($_POST['customers'])) {
+        throw new Exception(language::translate('error_must_select_customers', 'You must select customers'));
+      }
 
       foreach ($_POST['customers'] as $customer_id) {
         $customer = new ent_customer($customer_id);

@@ -14,10 +14,21 @@
 
   if (!empty($_POST['autosave']) || !empty($_POST['save_customer_details'])) {
 
-    if (isset($_POST['customer']['email'])) $_POST['customer']['email'] = strtolower($_POST['customer']['email']);
-    if (!isset($_POST['customer']['different_shipping_address'])) $_POST['customer']['different_shipping_address'] = 0;
-    if (!isset($_POST['customer']['zone_code'])) $_POST['customer']['zone_code'] = '';
-    if (!isset($_POST['customer']['shipping_address']['zone_code'])) $_POST['customer']['shipping_address']['zone_code'] = '';
+    if (isset($_POST['customer']['email'])) {
+      $_POST['customer']['email'] = strtolower($_POST['customer']['email']);
+    }
+
+    if (!isset($_POST['customer']['different_shipping_address'])) {
+      $_POST['customer']['different_shipping_address'] = 0;
+    }
+
+    if (!isset($_POST['customer']['zone_code'])) {
+      $_POST['customer']['zone_code'] = '';
+    }
+
+    if (!isset($_POST['customer']['shipping_address']['zone_code'])) {
+      $_POST['customer']['shipping_address']['zone_code'] = '';
+    }
 
     if (empty($_POST['customer']['type']) || $_POST['customer']['type'] == 'individual') {
       $_POST['customer']['company'] = '';
@@ -30,13 +41,25 @@
 
         try {
 
-          if (empty($_POST['customer']['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter an email address'));
 
-          if (!functions::validate_email($_POST['customer']['email'])) throw new Exception(language::translate('error_invalid_email', 'The email address is invalid'));
+          if (empty($_POST['customer']['email'])) {
+            throw new Exception(language::translate('error_missing_email', 'You must enter an email address'));
+          }
+
+
+          if (!functions::validate_email($_POST['customer']['email'])) {
+            throw new Exception(language::translate('error_invalid_email', 'The email address is invalid'));
+          }
 
           if (!database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['customer']['email']) ."' limit 1;")->num_rows) {
-            if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password'));
-            if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
+
+            if (empty($_POST['password'])) {
+              throw new Exception(language::translate('error_missing_password', 'You must enter a password'));
+            }
+
+            if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']){
+              throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
+            }
           }
 
           $mod_customer = new mod_customer();
@@ -67,7 +90,9 @@
     ];
 
     foreach ($fields as $field) {
-      if (isset($_POST['customer'][$field])) $shopping_cart->data['customer'][$field] = $_POST['customer'][$field];
+      if (isset($_POST['customer'][$field])) {
+        $shopping_cart->data['customer'][$field] = $_POST['customer'][$field];
+      }
     }
 
   // Shipping address
@@ -170,14 +195,20 @@
 
   $account_exists = false;
   if (settings::get('accounts_enabled')) {
-    if (empty($shopping_cart->data['customer']['id']) && !empty($shopping_cart->data['customer']['email']) && database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($shopping_cart->data['customer']['email']) ."' limit 1;")->num_rows) {
-      $account_exists = true;
+    if (empty($shopping_cart->data['customer']['id'])){
+      if (!empty($shopping_cart->data['customer']['email'])) {
+        if (database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($shopping_cart->data['customer']['email']) ."' limit 1;")->num_rows) {
+          $account_exists = true;
+        }
+      }
     }
   }
 
   $subscribed_to_newsletter = false;
-  if (!empty($shopping_cart->data['customer']['email']) && database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where lower(email) = lower('". database::input($shopping_cart->data['customer']['email']) ."');")->num_rows) {
-    $subscribed_to_newsletter = true;
+  if (!empty($shopping_cart->data['customer']['email'])) {
+    if (database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where lower(email) = lower('". database::input($shopping_cart->data['customer']['email']) ."');")->num_rows) {
+      $subscribed_to_newsletter = true;
+    }
   }
 
   functions::draw_lightbox();

@@ -42,18 +42,23 @@
       $this->data['purchase_price_currency_code'] = settings::get('store_currency_code');
 
       $this->data['categories'] = [];
-      $this->data['attributes'] = [];
       $this->data['images'] = [];
       $this->data['prices'] = [];
       $this->data['campaigns'] = [];
+      $this->data['attributes'] = [];
       $this->data['stock_options'] = [];
+
+      $this->data['quantity_available'] = 0;
+      $this->data['quantity_reserved'] = 0;
 
       $this->previous = $this->data;
     }
 
     public function load($product_id) {
 
-      if (empty($product_id)) throw new Exception('Invalid product (ID: n/a)');
+      if (empty($product_id)) {
+        throw new Exception('Invalid product (ID: n/a)');
+      }
 
       $this->reset();
 
@@ -89,16 +94,6 @@
         }
       }
 
-    // Attributes
-      $this->data['attributes'] = database::query(
-        "select pa.*, agi.name as group_name, avi.name as value_name
-        from ". DB_TABLE_PREFIX ."products_attributes pa
-        left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
-        left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
-        where product_id = ". (int)$product_id ."
-        order by priority, group_name, value_name, custom_value;"
-      )->fetch_all();
-
     // Prices
       $products_prices_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."products_prices
@@ -132,6 +127,16 @@
         "select * from ". DB_TABLE_PREFIX ."products_images
         where product_id = ". (int)$this->data['id'] ."
         order by priority asc, id asc;"
+      )->fetch_all();
+
+    // Attributes
+      $this->data['attributes'] = database::query(
+        "select pa.*, agi.name as group_name, avi.name as value_name
+        from ". DB_TABLE_PREFIX ."products_attributes pa
+        left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
+        left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
+        where product_id = ". (int)$product_id ."
+        order by priority, group_name, value_name, custom_value;"
       )->fetch_all();
 
       $this->previous = $this->data;
@@ -436,7 +441,7 @@
 
       $this->previous = $this->data;
 
-      cache::clear_cache('category');
+      cache::clear_cache('categories');
       cache::clear_cache('brands');
       cache::clear_cache('products');
     }
@@ -450,7 +455,9 @@
       $checksum = md5_file($file);
       if (in_array($checksum, array_column($this->data['images'], 'checksum'))) return false;
 
-      if (!empty($filename)) $filename = 'products/' . $filename;
+      if (!empty($filename)) {
+        $filename = 'products/' . $filename;
+      }
 
       if (empty($this->data['id'])) {
         $this->save();
@@ -496,8 +503,8 @@
         'priority' => $priority,
       ];
 
-      $this->previous['images'][] = $row;
       $this->data['images'][] = $row;
+      $this->previous['images'][] = $row;
     }
 
     public function delete() {

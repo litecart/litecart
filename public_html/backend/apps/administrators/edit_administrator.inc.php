@@ -19,10 +19,21 @@
 
     try {
 
-      if (empty($_POST['username'])) throw new Exception(language::translate('error_must_enter_username', 'You must enter a username'));
-      if (empty($administrator->data['id']) && empty($_POST['password'])) throw new Exception(language::translate('error_must_enter_password', 'You must enter a password'));
-      if (!empty($_POST['password']) && empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_must_enter_confirmed_password', 'You must confirm the password'));
-      if (!empty($_POST['password']) && $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
+      if (empty($_POST['username'])) {
+        throw new Exception(language::translate('error_must_enter_username', 'You must enter a username'));
+      }
+
+      if (empty($administrator->data['id']) && empty($_POST['password'])) {
+        throw new Exception(language::translate('error_must_enter_password', 'You must enter a password'));
+      }
+
+      if (!empty($_POST['password']) && empty($_POST['confirmed_password'])) {
+        throw new Exception(language::translate('error_must_enter_confirmed_password', 'You must confirm the password'));
+      }
+
+      if (!empty($_POST['password']) && $_POST['password'] != $_POST['confirmed_password']) {
+        throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
+      }
 
       if (empty($_POST['apps'])) $_POST['apps'] = [];
       if (empty($_POST['widgets'])) $_POST['widgets'] = [];
@@ -39,7 +50,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $administrator->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $administrator->data[$field] = $_POST[$field];
+        }
       }
 
       if (!empty($_POST['password'])) $administrator->set_password($_POST['password']);
@@ -60,7 +73,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($administrator->data['id'])) throw new Exception(language::translate('error_must_provide_administrator', 'You must provide a administrator'));
+
+      if (empty($administrator->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_administrator', 'You must provide a administrator'));
+      }
 
       $administrator->delete();
 

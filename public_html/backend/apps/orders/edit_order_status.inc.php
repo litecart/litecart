@@ -18,7 +18,10 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+
+      if (empty($_POST['name'])) {
+        throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+      }
 
       if (empty($_POST['notify'])) $_POST['notify'] = 0;
       if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
@@ -42,7 +45,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $order_status->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $order_status->data[$field] = $_POST[$field];
+        }
       }
 
       $order_status->save();
@@ -59,7 +64,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($order_status->data['id'])) throw new Exception(language::translate('error_must_provide_order_status', 'You must provide an order status'));
+
+      if (empty($order_status->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_order_status', 'You must provide an order status'));
+      }
 
       $order_status->delete();
 

@@ -1,5 +1,8 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
 
   document::$snippets['title'][] = language::translate('title_geo_zones', 'Geo Zones');
 
@@ -8,7 +11,10 @@
   if (isset($_POST['clone'])) {
 
     try {
-      if (empty($_POST['geo_zones'])) throw new Exception(language::translate('error_must_select_geo_zones', 'You must select geo zones'));
+
+      if (empty($_POST['geo_zones'])) {
+        throw new Exception(language::translate('error_must_select_geo_zones', 'You must select geo zones'));
+      }
 
       foreach ($_POST['geo_zones'] as $geo_zone_id) {
         $original = new ent_geo_zone($geo_zone_id);

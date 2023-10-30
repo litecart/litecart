@@ -19,7 +19,10 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['name'])) throw new Exception(language::translate('error_name_missing', 'You must enter a name.'));
+
+      if (empty($_POST['name'])) {
+        throw new Exception(language::translate('error_name_missing', 'You must enter a name.'));
+      }
 
       if (!empty($_POST['code']) && database::query("select id from ". DB_TABLE_PREFIX ."brands where id != '". (isset($_GET['brand_id']) ? (int)$_GET['brand_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;")->num_rows) {
         throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
@@ -40,7 +43,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $brand->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $brand->data[$field] = $_POST[$field];
+        }
       }
 
       $brand->save();
@@ -63,7 +68,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($brand->data['id'])) throw new Exception(language::translate('error_must_provide_brand', 'You must provide a brand'));
+
+      if (empty($brand->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_brand', 'You must provide a brand'));
+      }
 
       $brand->delete();
 

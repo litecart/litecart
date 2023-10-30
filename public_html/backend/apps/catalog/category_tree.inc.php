@@ -113,9 +113,18 @@
   if (isset($_POST['copy'])) {
 
     try {
-      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_cant_copy_category', 'You can\'t copy a category'));
-      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
-      if (isset($_POST['category_id']) && $_POST['category_id'] == '') throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
+
+      if (!empty($_POST['categories'])) {
+        throw new Exception(language::translate('error_cant_copy_category', 'You can\'t copy a category'));
+      }
+
+      if (empty($_POST['products'])) {
+        throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+      }
+
+      if (isset($_POST['category_id']) && $_POST['category_id'] == '') {
+        throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
+      }
 
       if (!empty($_POST['products'])) {
         foreach ($_POST['products'] as $product_id) {
@@ -137,9 +146,17 @@
   if (isset($_POST['move'])) {
 
     try {
-      if (empty($_POST['categories']) && empty($_POST['products'])) throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
-      if (isset($_POST['category_id']) && $_POST['category_id'] == '') throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
-      if (isset($_POST['category_id']) && isset($_POST['categories']) && in_array($_POST['category_id'], $_POST['categories'])) throw new Exception(language::translate('error_cant_move_category_to_itself', 'You can\'t move a category to itself'));
+      if (empty($_POST['categories']) && empty($_POST['products'])) {
+        throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
+      }
+
+      if (isset($_POST['category_id']) && $_POST['category_id'] == '') {
+        throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
+      }
+
+      if (isset($_POST['category_id']) && isset($_POST['categories']) && in_array($_POST['category_id'], $_POST['categories'])) {
+        throw new Exception(language::translate('error_cant_move_category_to_itself', 'You can\'t move a category to itself'));
+      }
 
       if (isset($_POST['category_id']) && isset($_POST['categories'])) {
         foreach ($_POST['categories'] as $category_id) {
@@ -183,7 +200,9 @@
         throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
       }
 
-      if (empty($_GET['category_id'])) throw new Exception(language::translate('error_category_must_be_nested_in_another_category_to_unmount', 'A category must be nested in another category to be unmounted'));
+      if (empty($_GET['category_id'])) {
+        throw new Exception(language::translate('error_category_must_be_nested_in_another_category_to_unmount', 'A category must be nested in another category to be unmounted'));
+      }
 
       if (!empty($_POST['categories'])) {
         foreach ($_POST['categories'] as $category_id) {
@@ -207,7 +226,9 @@
         }
       }
 
-      if (isset($_POST['categories']) && in_array($_GET['category_id'], $_POST['categories'])) unset($_GET['category_id']);
+      if (isset($_POST['categories']) && in_array($_GET['category_id'], $_POST['categories'])) {
+        unset($_GET['category_id']);
+      }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink());

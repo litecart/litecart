@@ -49,7 +49,9 @@
 
     try {
 
-      if (empty($_POST['selected_items'])) throw new Exception(language::translate('error_must_select_items', 'You must select items'));
+      if (empty($_POST['selected_items'])) {
+        throw new Exception(language::translate('error_must_select_items', 'You must select items'));
+      }
 
       $return_order = new ent_order();
 
@@ -91,7 +93,9 @@
 
     try {
 
-      if (empty($_POST['selected_items'])) throw new Exception(language::translate('error_must_select_items', 'You must select items'));
+      if (empty($_POST['selected_items'])) {
+        throw new Exception(language::translate('error_must_select_items', 'You must select items'));
+      }
 
       $split_order = new ent_order();
 
@@ -155,7 +159,9 @@
         }
 
         foreach (array_keys($_POST['order_total']) as $key) {
-          if (empty($_POST['order_total'][$key]['calculate'])) $_POST['order_total'][$key]['calculate'] = false;
+          if (empty($_POST['order_total'][$key]['calculate'])) {
+            $_POST['order_total'][$key]['calculate'] = false;
+          }
           $_POST['order_total'][$key]['amount'] = $_POST['order_total'][$key]['amount'] * $_POST['currency_value'];
           $_POST['order_total'][$key]['tax'] = $_POST['order_total'][$key]['tax'] * $_POST['currency_value'];
         }
@@ -182,7 +188,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $order->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $order->data[$field] = $_POST[$field];
+        }
       }
 
       $fields = [
@@ -202,7 +210,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST['customer'][$field])) $order->data['customer'][$field] = $_POST['customer'][$field];
+        if (isset($_POST['customer'][$field])) {
+          $order->data['customer'][$field] = $_POST['customer'][$field];
+        }
       }
 
       $fields = [
@@ -219,7 +229,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST['customer']['shipping_address'][$field])) $order->data['customer']['shipping_address'][$field] = $_POST['customer']['shipping_address'][$field];
+        if (isset($_POST['customer']['shipping_address'][$field])) {
+          $order->data['customer']['shipping_address'][$field] = $_POST['customer']['shipping_address'][$field];
+        }
       }
 
       $order->shipping->selected = $_POST['shipping_option'];
@@ -257,7 +269,9 @@
 
     try {
 
-      if (empty($order->data['id'])) throw new Exception(language::translate('error_must_provide_order', 'You must provide an order'));
+      if (empty($order->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_order', 'You must provide an order'));
+      }
 
       $order->delete();
 

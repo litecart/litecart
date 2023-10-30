@@ -55,7 +55,9 @@
         $to = settings::get('store_weight_unit');
       }
 
-      if (self::$units[$from]['value'] == 0 || self::$units[$to]['value'] == 0) return 0;
+      if (self::$units[$from]['value'] == 0 || self::$units[$to]['value'] == 0) {
+        return 0;
+      }
 
       return $value * (self::$units[$to]['value'] / self::$units[$from]['value']);
     }

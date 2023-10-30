@@ -84,8 +84,13 @@
 
         foreach ($options as $option) {
 
-          if (empty($option['title']) && isset($option['name'])) $option['title'] = $option['name']; // Backwards compatibility LiteCart <3.0.0
-          if (empty($option['fee']) && isset($option['cost'])) $option['fee'] = $option['cost']; // Backwards compatibility LiteCart <3.0.0
+          if (empty($option['title']) && isset($option['name'])) {
+            $option['title'] = $option['name']; // Backwards compatibility LiteCart <3.0.0
+          }
+
+          if (empty($option['fee']) && isset($option['cost'])) {
+            $option['fee'] = $option['cost']; // Backwards compatibility LiteCart <3.0.0
+          }
 
           $this->_cache[$checksum]['options'][] = [
             'id' => $module->id.':'.$option['id'],

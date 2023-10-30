@@ -2,7 +2,9 @@
 
   document::$layout = 'blank';
 
-  if (!empty($_GET['code'])) http_response_code($_GET['code']);
+  if (!empty($_GET['code'])) {
+    http_response_code($_GET['code']);
+  }
 
   if (preg_match('#\.(jpg|png|gif|webp)$#', route::$request)) {
     echo file_get_contents('images/no_image.png');

@@ -2,7 +2,9 @@
 
   try {
 
-    if (!isset($_GET['group_id'])) throw new Exception('Missing group_id');
+    if (!isset($_GET['group_id'])) {
+      throw new Exception('Missing group_id');
+    }
 
     $attribute_group = database::query(
       "select * from ". DB_TABLE_PREFIX ."attribute_groups

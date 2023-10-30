@@ -33,6 +33,10 @@
     }
   }
 
+  if (!empty($shopping_cart->payment->selected)) {
+    $_POST['payment_option'] = $shopping_cart->payment->selected;
+  }
+
   $box_checkout_payment = new ent_view();
 
   $box_checkout_payment->snippets = [

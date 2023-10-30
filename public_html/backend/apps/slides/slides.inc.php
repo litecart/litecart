@@ -1,5 +1,8 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
 
   document::$snippets['title'][] = language::translate('title_slides', 'Slides');
 
@@ -8,7 +11,10 @@
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {
-      if (empty($_POST['slides'])) throw new Exception(language::translate('error_must_select_slides', 'You must select slides'));
+
+      if (empty($_POST['slides'])) {
+        throw new Exception(language::translate('error_must_select_slides', 'You must select slides'));
+      }
 
       foreach ($_POST['slides'] as $slide_id) {
         $slide = new ent_slide($slide_id);

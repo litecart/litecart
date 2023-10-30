@@ -80,7 +80,11 @@
       }
 
       if (!empty($options['watermark'])) {
-        if ($options['watermark'] === true) $options['watermark'] = 'storage://images/logotype.png';
+
+        if ($options['watermark'] === true) {
+          $options['watermark'] = 'storage://images/logotype.png';
+        }
+
         if (!$image->watermark($options['watermark'], 'RIGHT', 'BOTTOM')) return;
       }
 
@@ -119,7 +123,9 @@
 
   function image_thumbnail($source, $width=0, $height=0, $trim=false) {
 
-    if (!is_file($source)) $source = 'storage://images/no_image.png';
+    if (!is_file($source)) {
+      $source = 'storage://images/no_image.png';
+    }
 
     if (pathinfo($source, PATHINFO_EXTENSION) == 'svg') {
       return $source;

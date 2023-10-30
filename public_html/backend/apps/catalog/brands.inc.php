@@ -1,5 +1,8 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
 
   document::$snippets['title'][] = language::translate('title_brands', 'Brands');
 
@@ -8,7 +11,10 @@
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {
-      if (empty($_POST['brands'])) throw new Exception(language::translate('error_must_select_brands', 'You must select brands'));
+
+      if (empty($_POST['brands'])) {
+        throw new Exception(language::translate('error_must_select_brands', 'You must select brands'));
+      }
 
       foreach ($_POST['brands'] as $brand_id) {
         $brand = new ent_brand($brand_id);

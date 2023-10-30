@@ -14,7 +14,9 @@
 
     try {
 
-      if (empty($_POST['name'][settings::get('store_language_code')])) throw new Exception(language::translate('error_name_missing', 'You must provide a name'));
+      if (empty($_POST['name'][settings::get('store_language_code')])) {
+        throw new Exception(language::translate('error_name_missing', 'You must provide a name'));
+      }
 
       if (!empty($_POST['sku']) && database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and sku = '". database::input($_POST['sku']) ."' limit 1;")->num_rows) {
         throw new Exception(language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
@@ -26,6 +28,10 @@
 
       if (!empty($_POST['gtin']) && database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and gtin = '". database::input($_POST['gtin']) ."' limit 1;")->num_rows) {
         throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
+      }
+
+      foreach (['sku', 'mpn', 'gtin', 'taric'] as $field) {
+        $_POST[$field] = trim($_POST[$field]);
       }
 
       $fields = [
@@ -50,18 +56,25 @@
       ];
 
       foreach ($fields as $field) {
-        if (in_array($field, ['sku', 'mpn', 'gtin', 'taric',])) $_POST[$field] = trim($_POST[$field]);
-        if (isset($_POST[$field])) $stock_item->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $stock_item->data[$field] = $_POST[$field];
+        }
       }
 
       $stock_item->save();
 
-      if (!empty($_POST['delete_image'])) $stock_item->delete_image();
+      if (!empty($_POST['delete_image'])) {
+        $stock_item->delete_image();
+      }
+
       if (!empty($_FILES['image']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
         $stock_item->save_file($_FILES['image']['tmp_name']);
       }
 
-      if (!empty($_POST['delete_file'])) $stock_item->delete_file();
+      if (!empty($_POST['delete_file'])) {
+        $stock_item->delete_file();
+      }
+
       if (!empty($_FILES['file']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
         $stock_item->save_file($_FILES['file']['tmp_name'], $_FILES['file']['name'], $_FILES['file']['type']);
       }

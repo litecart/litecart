@@ -10,9 +10,11 @@
 
   try {
 
-    if (empty($_GET['query'])) throw new Exception('Nothing to search for');
+      if (empty($_GET['query'])) {
+        throw new Exception('Nothing to search for');
+      }
 
-    $apps = admin_get_apps();
+    $apps = functions::admin_get_apps();
 
     $search_results = [];
 

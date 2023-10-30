@@ -22,10 +22,22 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
-      if (empty($_POST['geo_zone_id'])) throw new Exception(language::translate('error_must_select_geo_zone', 'You must select a geo zone'));
-      if (empty($_POST['tax_class_id'])) throw new Exception(language::translate('error_must_select_tax_class', 'You must select a tax class'));
-      if (empty($_POST['rate'])) throw new Exception(language::translate('error_must_enter_rate', 'You must enter a rate'));
+
+      if (empty($_POST['name'])) {
+        throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+      }
+
+      if (empty($_POST['geo_zone_id'])) {
+        throw new Exception(language::translate('error_must_select_geo_zone', 'You must select a geo zone'));
+      }
+
+      if (empty($_POST['tax_class_id'])) {
+        throw new Exception(language::translate('error_must_select_tax_class', 'You must select a tax class'));
+      }
+
+      if (empty($_POST['rate'])) {
+        throw new Exception(language::translate('error_must_enter_rate', 'You must enter a rate'));
+      }
 
       if (empty($_POST['rule_companies_with_tax_id'])) $_POST['rule_companies_with_tax_id'] = 0;
       if (empty($_POST['rule_companies_without_tax_id'])) $_POST['rule_companies_without_tax_id'] = 0;
@@ -47,7 +59,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $tax_rate->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $tax_rate->data[$field] = $_POST[$field];
+        }
       }
 
       $tax_rate->save();
@@ -64,7 +78,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($tax_rate->data['id'])) throw new Exception(language::translate('error_must_provide_tax_rate', 'You must provide a tax rate'));
+
+      if (empty($tax_rate->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_tax_rate', 'You must provide a tax rate'));
+      }
 
       $tax_rate->delete();
 

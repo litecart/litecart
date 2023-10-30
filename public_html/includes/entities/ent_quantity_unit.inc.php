@@ -43,7 +43,9 @@
 
     public function load($quantity_unit_id) {
 
-      if (!preg_match('#^[0-9]+$#', $quantity_unit_id)) throw new Exception('Invalid quantity unit (ID: '. $quantity_unit_id .')');
+      if (!preg_match('#^[0-9]+$#', $quantity_unit_id)) {
+        throw new Exception('Invalid quantity unit (ID: '. $quantity_unit_id .')');
+      }
 
       $this->reset();
 

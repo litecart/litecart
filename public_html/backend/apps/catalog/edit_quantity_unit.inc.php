@@ -19,7 +19,10 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+
+      if (empty($_POST['name'])) {
+        throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+      }
 
       if (empty($_POST['separate'])) $_POST['separate'] = 0;
 
@@ -32,7 +35,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $quantity_unit->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $quantity_unit->data[$field] = $_POST[$field];
+        }
       }
 
       $quantity_unit->save();
@@ -49,7 +54,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($quantity_unit->data['id'])) throw new Exception(language::translate('error_must_provide_quantity_unit', 'You must provide a quantity unit'));
+
+      if (empty($quantity_unit->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_quantity_unit', 'You must provide a quantity unit'));
+      }
 
       $quantity_unit->delete();
 

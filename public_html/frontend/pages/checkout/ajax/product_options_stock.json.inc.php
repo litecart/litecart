@@ -69,7 +69,9 @@
 
     if (!empty($item['options'])) {
       foreach (array_keys($item['options']) as $key) {
-        if (is_array($item['options'][$key])) $item['options'][$key] = implode(', ', $item['options'][$key]);
+        if (is_array($item['options'][$key])) {
+          $item['options'][$key] = implode(', ', $item['options'][$key]);
+        }
       }
     }
 

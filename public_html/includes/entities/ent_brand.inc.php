@@ -28,6 +28,7 @@
       $brand_info_query = database::query(
         "show fields from ". DB_TABLE_PREFIX ."brands_info;"
       );
+
       while ($field = database::fetch($brand_info_query)) {
         if (in_array($field['Field'], ['id', 'brand_id', 'language_code'])) continue;
 
@@ -42,7 +43,9 @@
 
     public function load($brand_id) {
 
-      if (!preg_match('#^[0-9]+$#', $brand_id)) throw new Exception('Invalid brand (ID: '. $brand_id .')');
+      if (!preg_match('#^[0-9]+$#', $brand_id)) {
+        throw new Exception('Invalid brand (ID: '. $brand_id .')');
+      }
 
       $this->reset();
 
@@ -151,7 +154,9 @@
     // 456-12345_Fancy-title.jpg
       $filename = 'brands/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'], settings::get('store_language_code')) .'.'. $image->type;
 
-      if (is_file('storage://images/' . $this->data['image'])) unlink('storage://images/' . $this->data['image']);
+      if (is_file('storage://images/' . $this->data['image'])) {
+        unlink('storage://images/' . $this->data['image']);
+      }
 
       functions::image_delete_cache('storage://images/' . $filename);
 
@@ -175,7 +180,9 @@
 
       if (empty($this->data['id'])) return;
 
-      if (is_file('storage://images/' . $this->data['image'])) unlink('storage://images/' . $this->data['image']);
+      if (is_file('storage://images/' . $this->data['image'])) {
+        unlink('storage://images/' . $this->data['image']);
+      }
 
       functions::image_delete_cache('storage://images/' . $this->data['image']);
 

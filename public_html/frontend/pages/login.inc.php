@@ -15,15 +15,19 @@
     $_POST['email'] = customer::$data['email'];
   }
 
-  if (empty($_POST['remember_me'])) $_POST['remember_me'] = false;
+  if (empty($_POST['remember_me'])) {
+    $_POST['remember_me'] = 0;
+  }
 
-  if (!empty(customer::$data['id'])) notices::add('notices', language::translate('text_already_logged_in', 'You are already logged in'));
+  if (!empty(customer::$data['id'])) {
+    notices::add('notices', language::translate('text_already_logged_in', 'You are already logged in'));
+  }
 
   if (!empty($_POST['login'])) {
 
     try {
 
-      if (!empty($_COOKIE['customer_remember_me'])) {
+      if (!empty($_POST['customer_remember_me'])) {
         header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
       }
 

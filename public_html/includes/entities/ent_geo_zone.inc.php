@@ -32,7 +32,9 @@
 
     public function load($geo_zone_id) {
 
-      if (!preg_match('#^[0-9]+$#', $geo_zone_id)) throw new Exception('Invalid geo zone (ID: '. $geo_zone_id .')');
+      if (!preg_match('#^[0-9]+$#', $geo_zone_id)) {
+        throw new Exception('Invalid geo zone (ID: '. $geo_zone_id .')');
+      }
 
       $this->reset();
 

@@ -29,7 +29,9 @@
         if ($result = $module->get_address($fields)) {
           if (is_array($result) && empty($result['error'])) {
             foreach ($result as $key => $value) {
-              if (!empty($result[$key])) $this->_cache[$checksum][$key] = $result[$key];
+              if (!empty($result[$key])) {
+                $this->_cache[$checksum][$key] = $result[$key];
+              }
             }
           }
         }

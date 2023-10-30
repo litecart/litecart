@@ -38,7 +38,9 @@
           $this->snippets[$matches[1]] = (string)$this->snippets[$matches[1]];
         }
 
-        if (empty($matches[2])) return $this->snippets[$matches[1]];
+        if (empty($matches[2])){
+          return $this->snippets[$matches[1]];
+        }
 
         $output = $this->snippets[$matches[1]];
 
@@ -124,7 +126,9 @@
       // Relative path
         } else {
           $this->view = FS_DIR_TEMPLATE . $view;
-          if (!is_file($this->view)) $this->view = 'app://frontend/templates/default/'. $view;
+          if (!is_file($this->view)){
+            $this->view = 'app://frontend/templates/default/'. $view;
+          }
         }
       }
 

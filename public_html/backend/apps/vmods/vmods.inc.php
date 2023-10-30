@@ -213,8 +213,16 @@
               <?php } ?>
             </a>
           </td>
-          <td><?php if (!empty($vmod['settings'])) { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a><?php } ?></td>
-          <td><?php if ($vmod['type'] == 'vMod') { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a><?php } ?></td>
+          <td>
+            <?php if (!empty($vmod['settings'])) { ?>
+            <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a>
+            <?php } ?>
+          </td>
+          <td>
+            <?php if ($vmod['type'] == 'vMod') { ?>
+            <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a>
+            <?php } ?>
+          </td>
           <td>
             <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/download', ['vmod' => $vmod['id']]); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a>
             <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>

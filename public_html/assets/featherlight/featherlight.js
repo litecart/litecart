@@ -394,7 +394,9 @@
 				functionAttributes = ['beforeOpen', 'afterOpen', 'beforeContent', 'afterContent', 'beforeClose', 'afterClose'];
 
 			$.each(functionAttributes, function(i, e){
-				if (config[e] !== undefined) config[e] = new Function(config[e]);
+				if (config[e] !== undefined) {
+					config[e] = new Function(config[e]);
+				}
 			});
 
 			return config;

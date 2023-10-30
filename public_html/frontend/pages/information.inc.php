@@ -2,7 +2,9 @@
 
   try {
 
-    if (empty($_GET['page_id'])) throw new Exception('Missing page_id', 400);
+    if (empty($_GET['page_id'])) {
+      throw new Exception('Missing page_id', 400);
+    }
 
     $page = reference::page($_GET['page_id']);
 

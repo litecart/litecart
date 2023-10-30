@@ -64,14 +64,23 @@
   ];
 
   foreach (currency::$currencies as $currency) {
-    if (!empty(administrator::$data['id']) || $currency['status'] == 1) $_page->snippets['currencies'][] = $currency;
+    if (!empty(administrator::$data['id']) || $currency['status'] == 1) {
+      $_page->snippets['currencies'][] = $currency;
+    }
   }
 
   foreach (language::$languages as $language) {
-    if (!empty(administrator::$data['id']) || $language['status'] == 1) $_page->snippets['languages'][] = $language;
+    if (!empty(administrator::$data['id']) || $language['status'] == 1) {
+      $_page->snippets['languages'][] = $language;
+    }
   }
 
-  if (!in_array(currency::$selected, $_page->snippets['currencies'])) $_page->snippets['currencies'][] = currency::$selected;
-  if (!in_array(language::$selected, $_page->snippets['languages'])) $_page->snippets['languages'][] = language::$selected;
+  if (!in_array(currency::$selected, $_page->snippets['currencies'])) {
+    $_page->snippets['currencies'][] = currency::$selected;
+  }
+
+  if (!in_array(language::$selected, $_page->snippets['languages'])) {
+    $_page->snippets['languages'][] = language::$selected;
+  }
 
   echo $_page->render(FS_DIR_TEMPLATE . 'pages/regional_settings.inc.php');

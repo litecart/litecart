@@ -2,8 +2,13 @@
 
   try {
 
-    if (empty($_GET['parent_id'])) $_GET['parent_id'] = 0;
-    if (empty($_GET['language_code'])) $_GET['language_code'] = language::$selected['code'];
+    if (empty($_GET['parent_id'])) {
+      $_GET['parent_id'] = 0;
+    }
+
+    if (empty($_GET['language_code'])) {
+      $_GET['language_code'] = language::$selected['code'];
+    }
 
     if (!empty($_GET['query'])) {
       $sql_find = [

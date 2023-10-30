@@ -37,7 +37,9 @@
 
     public function load($customer_id) {
 
-      if (!preg_match('#(^[0-9]+$|@)#', $customer_id)) throw new Exception('Invalid customer (ID: '. $customer_id .')');
+      if (!preg_match('#(^[0-9]+$|@)#', $customer_id)) {
+        throw new Exception('Invalid customer (ID: '. $customer_id .')');
+      }
 
       $this->reset();
 

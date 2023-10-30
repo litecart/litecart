@@ -626,7 +626,7 @@
 
       $pattern = '#'. implode(['language::translate\((?:(?!\$)', '(?:(__CLASS__)?\.)?', '(?:[\'"])([^\'"]+)(?:[\'"])', '(?:,?\s+(?:[\'"])([^\'"]+)?(?:[\'"]))?', '(?:,?\s+?(?:[\'"])([^\'"]+)?(?:[\'"]))?', ')\)']) .'#';
 
-      if (!preg_match_all($pattern, file_get_contents($file), $matches)) continue;;
+      if (!preg_match_all($pattern, file_get_contents($file), $matches)) continue;
 
       for ($i=0; $i<count($matches[0]); $i++) {
         if ($matches[1][$i]) {

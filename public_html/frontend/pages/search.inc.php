@@ -1,6 +1,8 @@
 <?php
   if (empty($_GET['query'])) $_GET['query'] = '';
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
   if (empty($_GET['sort'])) $_GET['sort'] = 'relevance';
 
   $_GET['query'] = trim($_GET['query']);

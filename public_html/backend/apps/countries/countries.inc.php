@@ -6,7 +6,9 @@
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {
-      if (empty($_POST['countries'])) throw new Exception(language::translate('error_must_select_countries', 'You must select countries'));
+      if (empty($_POST['countries'])) {
+        throw new Exception(language::translate('error_must_select_countries', 'You must select countries'));
+      }
 
       foreach ($_POST['countries'] as $country_code) {
 

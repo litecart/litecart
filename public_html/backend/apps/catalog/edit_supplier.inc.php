@@ -19,7 +19,10 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['name'])) throw new Exception(language::translate('error_name_missing', 'You must enter a name.'));
+
+      if (empty($_POST['name'])) {
+        throw new Exception(language::translate('error_name_missing', 'You must enter a name.'));
+      }
 
       if (!isset($_POST['status'])) $_POST['status'] = '0';
 
@@ -33,7 +36,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $supplier->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $supplier->data[$field] = $_POST[$field];
+        }
       }
 
       $supplier->save();
@@ -50,7 +55,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($supplier->data['id'])) throw new Exception(language::translate('error_must_provide_supplier', 'You must provide a supplier'));
+
+      if (empty($supplier->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_supplier', 'You must provide a supplier'));
+      }
 
       $supplier->delete();
 

@@ -10,7 +10,10 @@
 
     try {
 
-      if (empty($_REQUEST['email'])) throw new Exception(language::translate('error_must_provide_email_address', 'You must provide an email address'));
+
+      if (empty($_REQUEST['email'])) {
+        throw new Exception(language::translate('error_must_provide_email_address', 'You must provide an email address'));
+      }
 
       $customer_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."customers
@@ -22,30 +25,48 @@
         throw new Exception(language::translate('error_email_not_in_database', 'The email address does not exist in our database.'));
       }
 
-      if (empty($customer['status'])) throw new Exception(language::translate('error_account_inactive', 'Your account is inactive, contact customer support'));
+      if (empty($customer['status'])) {
+        throw new Exception(language::translate('error_account_inactive', 'Your account is inactive, contact customer support'));
+      }
 
       if (!empty($_REQUEST['reset_token'])) {
 
-        if (!$reset_token = json_decode($customer['password_reset_token'], true)) throw new Exception(language::translate('error_invalid_reset_token', 'Invalid reset token'));
+        if (!$reset_token = json_decode($customer['password_reset_token'], true)) {
+          throw new Exception(language::translate('error_invalid_reset_token', 'Invalid reset token'));
+        }
 
-        if ($_REQUEST['reset_token'] != $reset_token['token']) throw new Exception(language::translate('error_incorrect_reset_token', 'Incorrect reset token'));
 
-        if (strtotime($reset_token['expires']) < time()) throw new Exception(language::translate('error_reset_token_expired', 'The reset token has expired'));
+        if ($_REQUEST['reset_token'] != $reset_token['token']) {
+          throw new Exception(language::translate('error_incorrect_reset_token', 'Incorrect reset token'));
+        }
 
-        if (empty($_POST['new_password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password.'));
+        if (strtotime($reset_token['expires']) < time()) {
+          throw new Exception(language::translate('error_reset_token_expired', 'The reset token has expired'));
+        }
 
-        if (empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password.'));
+        if (empty($_POST['new_password'])){
+          throw new Exception(language::translate('error_missing_password', 'You must enter a password.'));
+        }
+
+        if (empty($_POST['confirmed_password'])) {
+          throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password.'));
+        }
 
         if ($_POST['new_password'] != $_POST['confirmed_password']) {
           throw new Exception(language::translate('error_passwords_did_not_match', 'Passwords did not match'));
         }
 
-        if (!functions::password_check_strength($_POST['new_password'], 6)) throw new Exception(language::translate('error_password_not_strong_enough', 'The password is not strong enough'));
+        if (!functions::password_check_strength($_POST['new_password'], 6)){
+          throw new Exception(language::translate('error_password_not_strong_enough', 'The password is not strong enough'));
+        }
       }
 
       if (settings::get('captcha_enabled')) {
         $captcha = functions::captcha_get('reset_password');
-        if (empty($captcha) || $captcha != $_POST['captcha']) throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
+
+        if (empty($captcha) || $captcha != $_POST['captcha']) {
+          throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
+        }
       }
 
     // Process

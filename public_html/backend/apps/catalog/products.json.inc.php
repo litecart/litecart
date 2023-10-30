@@ -1,9 +1,20 @@
 <?php
 
-  if (empty($_REQUEST['page'])) $_REQUEST['page'] = 1;
-  if (empty($_GET['language_code'])) $_GET['language_code'] = language::$selected['code'];
-  if (empty($_GET['currency_code'])) $_GET['currency_code'] = currency::$selected['code'];
-  if (empty($_GET['currency_value'])) $_GET['currency_value'] = currency::$currencies[$_GET['currency_code']]['value'];
+  if (empty($_REQUEST['page']) || !is_numeric($_REQUEST['page'])) {
+    $_REQUEST['page'] = 1;
+  }
+
+  if (empty($_GET['language_code'])) {
+    $_GET['language_code'] = language::$selected['code'];
+  }
+
+  if (empty($_GET['currency_code'])){
+    $_GET['currency_code'] = currency::$selected['code'];
+  }
+
+  if (empty($_GET['currency_value'])) {
+    $_GET['currency_value'] = currency::$currencies[$_GET['currency_code']]['value'];
+  }
 
   $products = [];
 

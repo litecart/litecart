@@ -26,7 +26,9 @@
             $row['amount'] = currency::round($row['amount'], $this->_shopping_cart->data['currency_code']);
             $row['tax'] = currency::round($row['tax'], $this->_shopping_cart->data['currency_code']);
 
-            if (empty($row['amount']) && isset($row['value'])) $row['amount'] = $row['value']; // Backwards compatibility LiteCart <3.0
+            if (empty($row['amount']) && isset($row['value'])){
+              $row['amount'] = $row['value']; // Backwards compatibility LiteCart <3.0
+            }
 
             $output[] = [
               'module_id' => $module_id,

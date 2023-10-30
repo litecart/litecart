@@ -45,7 +45,9 @@
 
     public function load($slide_id) {
 
-      if (!preg_match('#^[0-9]+$#', $slide_id)) throw new Exception('Invalid slide (ID: '. $slide_id .')');
+      if (!preg_match('#^[0-9]+$#', $slide_id)) {
+        throw new Exception('Invalid slide (ID: '. $slide_id .')');
+      }
 
       $this->reset();
 

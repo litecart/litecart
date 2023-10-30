@@ -45,7 +45,9 @@
 
     public function load($order_status_id) {
 
-      if (!preg_match('#^[0-9]+$#', $order_status_id)) throw new Exception('Invalid order status (ID: '. $order_status_id .')');
+      if (!preg_match('#^[0-9]+$#', $order_status_id)) {
+        throw new Exception('Invalid order status (ID: '. $order_status_id .')');
+      }
 
       $this->reset();
 

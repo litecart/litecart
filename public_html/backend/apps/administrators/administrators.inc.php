@@ -1,5 +1,8 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
 
   document::$snippets['title'][] = language::translate('title_administrators', 'Administrators');
 
@@ -8,7 +11,10 @@
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {
-      if (empty($_POST['administrators'])) throw new Exception(language::translate('error_must_select_administrators', 'You must select administrators'));
+
+      if (empty($_POST['administrators'])) {
+        throw new Exception(language::translate('error_must_select_administrators', 'You must select administrators'));
+      }
 
       foreach ($_POST['administrators'] as $administrator_id) {
 

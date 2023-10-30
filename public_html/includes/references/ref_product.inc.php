@@ -9,9 +9,17 @@
 
     function __construct($product_id, $language_code=null, $currency_code=null, $customer_id=null) {
 
-      if (empty($language_code)) $language_code = language::$selected['code'];
-      if (empty($currency_code)) $currency_code = currency::$selected['code'];
-      if (empty($customer_id)) $customer_id = customer::$data['id'];
+      if (empty($language_code)) {
+        $language_code = language::$selected['code'];
+      }
+
+      if (empty($currency_code)) {
+        $currency_code = currency::$selected['code'];
+      }
+
+      if (empty($customer_id)) {
+        $customer_id = customer::$data['id'];
+      }
 
       $this->_data['id'] = (int)$product_id;
 
@@ -161,8 +169,12 @@
 
             while ($row = database::fetch($categories_info_query)) {
               foreach ($row as $key => $value) {
+
                 if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
-                if (empty($this->_data['categories'][$product_to_category['category_id']])) $this->_data['categories'][$product_to_category['category_id']] = $value;
+
+                if (empty($this->_data['categories'][$product_to_category['category_id']])) {
+                  $this->_data['categories'][$product_to_category['category_id']] = $value;
+                }
               }
             }
           }
@@ -192,8 +204,12 @@
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
+
               if (in_array($key, ['id', 'delivery_status_id', 'language_code'])) continue;
-              if (empty($this->_data['delivery_status'][$key])) $this->_data['delivery_status'][$key] = $value;
+
+              if (empty($this->_data['delivery_status'][$key])) {
+                $this->_data['delivery_status'][$key] = $value;
+              }
             }
           }
 
@@ -356,8 +372,12 @@
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
+
               if (in_array($key, ['id', 'quantity_unit_id', 'language_code'])) continue;
-              if (empty($this->_data['quantity_unit'][$key])) $this->_data['quantity_unit'][$key] = $value;
+
+              if (empty($this->_data['quantity_unit'][$key])) {
+                $this->_data['quantity_unit'][$key] = $value;
+              }
             }
           }
 
@@ -417,8 +437,12 @@
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
+
               if (in_array($key, ['id', 'sold_out_status_id', 'language_code'])) continue;
-              if (empty($this->_data['sold_out_status'][$key])) $this->_data['sold_out_status'][$key] = $value;
+
+              if (empty($this->_data['sold_out_status'][$key])) {
+                $this->_data['sold_out_status'][$key] = $value;
+              }
             }
           }
 

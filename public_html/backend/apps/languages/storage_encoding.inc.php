@@ -29,13 +29,21 @@
   if (isset($_POST['convert'])) {
 
     try {
-      if (empty($_POST['tables'])) throw new Exception(language::translate('error_must_select_tables', 'You must select tables'));
-      if (empty($_POST['collation']) && empty($_POST['engine'])) throw new Exception(language::translate('error_must_select_action_to_perform', 'You must select an action to perform'));
+
+      if (empty($_POST['tables'])) {
+        throw new Exception(language::translate('error_must_select_tables', 'You must select tables'));
+      }
+
+      if (empty($_POST['collation']) && empty($_POST['engine'])) {
+        throw new Exception(language::translate('error_must_select_action_to_perform', 'You must select an action to perform'));
+      }
 
       $table_names = array_column($tables, 'TABLE_NAME');
 
       foreach ($_POST['tables'] as $table) {
-        if (!in_array($table, $table_names)) throw new Exception(strtr(language::translate('error_unknown_table_x', 'Unknown table (%table)'), ['%table' => $table]));
+        if (!in_array($table, $table_names)) {
+          throw new Exception(strtr(language::translate('error_unknown_table_x', 'Unknown table (%table)'), ['%table' => $table]));
+        }
       }
 
       $_POST['collation'] = preg_replace('#[^a-z0-9_]#', '', $_POST['collation']);

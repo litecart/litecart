@@ -30,7 +30,9 @@
 
     public function load($tax_rate_id) {
 
-      if (!preg_match('#^[0-9]+$#', $tax_rate_id)) throw new Exception('Invalid tax rate (ID: '. $tax_rate_id .')');
+      if (!preg_match('#^[0-9]+$#', $tax_rate_id)) {
+        throw new Exception('Invalid tax rate (ID: '. $tax_rate_id .')');
+      }
 
       $this->reset();
 

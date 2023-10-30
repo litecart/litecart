@@ -75,7 +75,9 @@
 
     public function load($order_id) {
 
-      if (!preg_match('#^[0-9]+$#', $order_id)) throw new Exception('Invalid order (ID: '. $order_id .')');
+      if (!preg_match('#^[0-9]+$#', $order_id)) {
+        throw new Exception('Invalid order (ID: '. $order_id .')');
+      }
 
       $this->reset();
 
@@ -553,7 +555,10 @@
     public function email_order_copy($recipient, $bccs=[], $language_code='') {
 
       if (empty($recipient)) return;
-      if (empty($language_code)) $language_code = $this->data['language_code'];
+
+      if (empty($language_code)) {
+        $language_code = $this->data['language_code'];
+      }
 
       $order_status = $this->data['order_status_id'] ? reference::order_status($this->data['order_status_id'], $language_code) : '';
 
@@ -676,8 +681,13 @@
       $subject = strtr($order_status->email_subject, $aliases);
       $message = strtr($order_status->email_message, $aliases);
 
-      if (empty($subject)) $subject = '['. language::translate('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['no'] .'] '. $order_status->name;
-      if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), $aliases);
+      if (empty($subject)) {
+        $subject = '['. language::translate('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['no'] .'] '. $order_status->name;
+      }
+
+      if (empty($message)) {
+        $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), $aliases);
+      }
 
       if (!empty(language::$languages[$this->data['language_code']]) && language::$languages[$this->data['language_code']]['direction'] == 'rtl') {
         $message = '<div dir="rtl">' . PHP_EOL

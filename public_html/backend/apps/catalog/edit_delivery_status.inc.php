@@ -19,7 +19,10 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+
+      if (empty($_POST['name'])) {
+        throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+      }
 
       $fields = [
         'name',
@@ -27,7 +30,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $delivery_status->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $delivery_status->data[$field] = $_POST[$field];
+        }
       }
 
       $delivery_status->save();
@@ -44,7 +49,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($delivery_status->data['id'])) throw new Exception(language::translate('error_must_provide_delivery_status', 'You must provide a delivery status'));
+
+      if (empty($delivery_status->data['id'])) {
+        throw new Exception(language::translate('error_must_provide_delivery_status', 'You must provide a delivery status'));
+      }
 
       $delivery_status->delete();
 

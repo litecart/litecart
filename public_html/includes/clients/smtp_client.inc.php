@@ -40,8 +40,13 @@
       fwrite($this->_log_handle, "Connecting to $this->_host ...\r\n");
       $this->_socket = stream_socket_client($this->_host, $errno, $errstr, 3, STREAM_CLIENT_CONNECT, $stream_context);
 
-      if ($errno) throw new Exception('Could not connect to socket '. $this->_host .': '. $errstr);
-      if (empty($this->_socket)) throw new Exception('Failed opening socket connection to '. $this->_host);
+      if ($errno) {
+        throw new Exception('Could not connect to socket '. $this->_host .': '. $errstr);
+      }
+
+      if (empty($this->_socket)) {
+        throw new Exception('Failed opening socket connection to '. $this->_host);
+      }
 
       stream_set_blocking($this->_socket, true);
       stream_set_timeout($this->_socket, 6);

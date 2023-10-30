@@ -1,10 +1,16 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+    $_GET['page'] = 1;
+  }
 
   if (isset($_POST['add'])) {
 
     try {
-      if (empty($_POST['recipients'])) throw new Exception(language::translate('error_must_provide_recipients', 'You must provide recipients'));
+
+      if (empty($_POST['recipients'])) {
+        throw new Exception(language::translate('error_must_provide_recipients', 'You must provide recipients'));
+      }
 
       $added = 0;
       foreach (preg_split('#\R+#', $_POST['recipients']) as $recipient) {
@@ -31,7 +37,10 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($_POST['recipients'])) throw new Exception(language::translate('error_must_select_recipients', 'You must select recipients'));
+
+      if (empty($_POST['recipients'])) {
+        throw new Exception(language::translate('error_must_select_recipients', 'You must select recipients'));
+      }
 
       database::query(
         "delete from ". DB_TABLE_PREFIX ."newsletter_recipients

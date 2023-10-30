@@ -55,9 +55,17 @@
     return;
   }
 
-  if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME); // Prior to 2.2.x
-  if (!defined('FS_DIR_STORAGE')) define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/'); // Prior to 3.0.0
-  if (!defined('WS_DIR_STORAGE')) define('WS_DIR_STORAGE', WS_DIR_APP); // Prior to 2.5.x
+  if (!defined('FS_DIR_APP')) {
+    define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME); // Prior to 2.2.x
+  }
+
+  if (!defined('FS_DIR_STORAGE')) {
+    define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/'); // Prior to 3.0.0
+  }
+
+  if (!defined('WS_DIR_STORAGE')) {
+    define('WS_DIR_STORAGE', WS_DIR_APP); // Prior to 2.5.x
+  }
 
   error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
   ini_set('ignore_repeated_errors', 'On');

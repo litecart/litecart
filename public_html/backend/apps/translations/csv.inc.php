@@ -22,7 +22,10 @@
         throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
       }
 
-      if (empty($csv[0]['code'])) throw new Exception(language::translate('error_missing_code_column', 'Missing column for code'));
+
+      if (empty($csv[0]['code'])) {
+        throw new Exception(language::translate('error_missing_code_column', 'Missing column for code'));
+      }
 
       $language_codes = array_diff(array_keys($csv[0]), ['code']);
 
@@ -47,7 +50,6 @@
             if (empty($_POST['overwrite']) && empty($_POST['append'])) continue;
             if (empty($translation['text_'.$language_code]) && empty($_POST['append'])) continue;
             if (!empty($translation['text_'.$language_code]) && empty($_POST['overwrite'])) continue;
-
             if (!in_array($language_code, array_keys(language::$languages))) continue;
 
             database::query(
@@ -72,7 +74,6 @@
           foreach ($language_codes as $language_code) {
 
             if (empty($row[$language_code])) continue;
-
             if (!in_array($language_code, array_keys(language::$languages))) continue;
 
             database::query(
@@ -103,7 +104,10 @@
   if (isset($_POST['export'])) {
 
     try {
-      if (empty($_POST['language_codes'])) throw new Exception(language::translate('error_must_select_at_least_one_language', 'You must select at least one language'));
+
+      if (empty($_POST['language_codes'])) {
+        throw new Exception(language::translate('error_must_select_at_least_one_language', 'You must select at least one language'));
+      }
 
       $csv = [];
 

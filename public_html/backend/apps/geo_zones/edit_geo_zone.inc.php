@@ -29,7 +29,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $geo_zone->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $geo_zone->data[$field] = $_POST[$field];
+        }
       }
 
       $geo_zone->save();

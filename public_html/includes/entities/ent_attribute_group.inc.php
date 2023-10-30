@@ -167,7 +167,9 @@
           limit 1;"
         );
 
-        if (database::num_rows($products_attributes_query)) throw new Exception('Cannot delete value linked to product attributes');
+        if (database::num_rows($products_attributes_query)) {
+          throw new Exception('Cannot delete value linked to product attributes');
+        }
 
         database::query(
           "delete from ". DB_TABLE_PREFIX ."attribute_values
@@ -247,7 +249,9 @@
         where group_id = ". (int)$this->data['id'] .";"
       );
 
-      if (database::num_rows($category_filters_query)) throw new Exception('Cannot delete group linked to products');
+      if (database::num_rows($category_filters_query)) {
+        throw new Exception('Cannot delete group linked to products');
+      }
 
     // Check products for attribute
       $product_attributes_query = database::query(
@@ -255,7 +259,9 @@
         where group_id = ". (int)$this->data['id'] .";"
       );
 
-      if (database::num_rows($product_attributes_query)) throw new Exception('Cannot delete group linked to products');
+      if (database::num_rows($product_attributes_query)) {
+        throw new Exception('Cannot delete group linked to products');
+      }
 
       $this->data['values'] = [];
       $this->save();

@@ -21,30 +21,73 @@
   if (!empty($_POST['create_account'])) {
 
     try {
-      if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
+
+      if (isset($_POST['email'])) {
+        $_POST['email'] = strtolower($_POST['email']);
+      }
 
       if (empty($_POST['newsletter'])) $_POST['newsletter'] = 0;
 
       if (settings::get('captcha_enabled')) {
         $captcha = functions::captcha_get('create_account');
-        if (empty($captcha) || $captcha != $_POST['captcha']) throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
+
+        if (empty($captcha) || $captcha != $_POST['captcha']) {
+          throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
+        }
       }
 
-      if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter an email address.'));
-      if (database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;")->num_rows) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database. Please login or select a different email address.'));
+      if (empty($_POST['email'])) {
+        throw new Exception(language::translate('error_missing_email', 'You must enter an email address.'));
+      }
 
-      if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password.'));
-      if (!functions::password_check_strength($_POST['password'])) throw new Exception(language::translate('error_password_not_strong_enough', 'The password is not strong enough'));
-      if (empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password'));
-      if ($_POST['confirmed_password'] != $_POST['password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
+      if (database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;")->num_rows) {
+        throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database. Please login or select a different email address.'));
+      }
 
-      if (empty($_POST['firstname'])) throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
-      if (empty($_POST['lastname'])) throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
-      //if (empty($_POST['address1'])) throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
-      //if (empty($_POST['city'])) throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
-      //if (empty($_POST['postcode']) && !empty($_POST['country_code']) && reference::country($_POST['country_code'])->postcode_format) throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
-      if (empty($_POST['country_code'])) throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
-      if (empty($_POST['zone_code']) && settings::get('customer_field_zone') && reference::country($_POST['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
+      if (empty($_POST['password'])) {
+        throw new Exception(language::translate('error_missing_password', 'You must enter a password.'));
+      }
+
+      if (!functions::password_check_strength($_POST['password'])) {
+        throw new Exception(language::translate('error_password_not_strong_enough', 'The password is not strong enough'));
+      }
+
+      if (empty($_POST['confirmed_password'])) {
+        throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password'));
+      }
+
+      if ($_POST['confirmed_password'] != $_POST['password']) {
+        throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
+      }
+
+
+      if (empty($_POST['firstname'])) {
+        throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
+      }
+
+      if (empty($_POST['lastname'])) {
+        throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
+      }
+
+      //if (empty($_POST['address1'])) {
+      //  throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
+      //}
+
+      //if (empty($_POST['city'])) {
+      //  throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
+      //}
+
+      //if (empty($_POST['postcode']) && !empty($_POST['country_code']) && reference::country($_POST['country_code'])->postcode_format){
+      //  throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
+      //}
+
+      if (empty($_POST['country_code'])) {
+        throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
+      }
+
+      if (empty($_POST['zone_code']) && settings::get('customer_field_zone') && reference::country($_POST['country_code'])->zones) {
+        throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
+      }
 
       if (!empty($_POST['tax_id']) && reference::country($_POST['country_code'])->postcode_format) {
         if (!preg_match('#'. reference::country($_POST['country_code'])->tax_id_format .'#i', $_POST['tax_id'])) {
@@ -83,7 +126,9 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) {
+          $customer->data[$field] = $_POST[$field];
+        }
       }
 
       $customer->set_password($_POST['password']);
@@ -136,11 +181,11 @@
 
   if ($privacy_policy_id = settings::get('privacy_policy')) {
 
-      $aliases = [
-        '%privacy_policy_link' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
-      ];
+    $aliases = [
+      '%privacy_policy_link' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
+    ];
 
-      $_page->snippets['consent'] = strtr(language::translate('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
+    $_page->snippets['consent'] = strtr(language::translate('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
   }
 
   echo $_page->render(FS_DIR_TEMPLATE . 'pages/create_account.inc.php');

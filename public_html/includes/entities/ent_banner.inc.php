@@ -108,8 +108,13 @@
 
       $filename = 'banners/' . functions::format_path_friendly($this->data['id'] .'-'. $this->data['name']) .'.'. $image->type();
 
-      if (!file_exists('storage://images/banners/')) mkdir('storage://images/banners/', 0777);
-      if (file_exists('storage://images/' . $filename)) unlink('storage://images/' . $filename);
+      if (!file_exists('storage://images/banners/')) {
+        mkdir('storage://images/banners/', 0777);
+      }
+
+      if (file_exists('storage://images/' . $filename)) {
+        unlink('storage://images/' . $filename);
+      }
 
       $image->write('storage://images/' . $filename, $image->type());
 
