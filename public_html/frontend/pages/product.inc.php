@@ -42,10 +42,11 @@
 
   document::$snippets['title'][] = $product->head_title ? $product->head_title : $product->name;
   document::$snippets['description'] = $product->meta_description ? $product->meta_description : strip_tags($product->short_description);
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'" />';
+
+  document::add_head_tags('<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'" />', 'canonical');
 
   if (!empty($product->image)) {
-    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink('storage://images/' . $product->image) .'"/>';
+    document::add_head_tags('<meta property="og:image" content="'. document::href_rlink('storage://images/' . $product->image) .'"/>');
   }
 
   if (!empty($_GET['category_id'])) {

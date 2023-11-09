@@ -171,48 +171,47 @@
            . PHP_EOL
            . form_textarea($name, $input, 'style="display: none;"');
 
-    document::$snippets['javascript']['table2csv'] =
-<<<END
-$('table[data-toggle="csv"]').on('click', '.remove', function(e) {
-  e.preventDefault();
-  let parent = $(this).closest('tbody');
-  $(this).closest('tr').remove();
-  $(parent).trigger('keyup');
-});
-
-$('table[data-toggle="csv"] .add-row').click(function(e) {
-  e.preventDefault();
-  let n = $(this).closest('table').find('thead th:not(:last-child)').length;
-  $(this).closest('table').find('tbody').append(
-    '<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class="remove" href="#"><i class="fa fa-times-circle" style="color: #d33;"></i></a></td>' +'</tr>'
-  ).trigger('keyup');
-});
-
-$('table[data-toggle="csv"] .add-column').click(function(e) {
-  e.preventDefault();
-  let table = $(this).closest('table');
-  let title = prompt("<?php echo language::translate('title_column_title', 'Column Title'); ?>");
-  if (!title) return;
-  $(table).find('thead tr th:last-child:last-child').before('<th>'+ title +'</th>');
-  $(table).find('tbody tr td:last-child:last-child').before('<td contenteditable></td>');
-  $(table).find('tfoot tr td').attr('colspan', $(this).closest('table').find('tfoot tr td').attr('colspan') + 1);
-  $(this).trigger('keyup');
-});
-
-$('table[data-toggle="csv"]').keyup(function(e) {
-   let csv = $(this).find('thead tr, tbody tr').map(function (i, row) {
-      return $(row).find('th:not(:last-child),td:not(:last-child)').map(function (j, col) {
-        let text = \$(col).text();
-        if (/("|,)/.test(text)) {
-          return '"'+ text.replace(/"/g, '""') +'"';
-        } else {
-          return text;
-        }
-      }).get().join(',');
-    }).get().join("\\r\\n");
-  $(this).next('textarea').val(csv);
-});
-END;
+    document::add_javascript([
+      "$('table[data-toggle=\"csv\"]').on('click', '.remove', function(e) {",
+      "  e.preventDefault();",
+      "  var parent = $(this).closest('tbody');",
+      "  $(this).closest('tr').remove();",
+      "  $(parent).trigger('keyup');",
+      "});",
+      "",
+      "$('table[data-toggle=\"csv\"] .add-row').click(function(e) {",
+      "  e.preventDefault();",
+      "  var n = $(this).closest('table').find('thead th:not(:last-child)').length;",
+      "  $(this).closest('table').find('tbody').append(",
+      "    '<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class=\"remove\" href=\"#\"><i class=\"fa fa-times-circle\" style=\"color: #d33;\"></i></a></td>' +'</tr>'",
+      "  ).trigger('keyup');",
+      "});",
+      "",
+      "$('table[data-toggle=\"csv\"] .add-column').click(function(e) {",
+      "  e.preventDefault();",
+      "  var table = $(this).closest('table');",
+      "  var title = prompt(\"<?php echo language::translate('title_column_title', 'Column Title'); ?>\");",
+      "  if (!title) return;",
+      "  $(table).find('thead tr th:last-child:last-child').before('<th>'+ title +'</th>');",
+      "  $(table).find('tbody tr td:last-child:last-child').before('<td contenteditable></td>');",
+      "  $(table).find('tfoot tr td').attr('colspan', $(this).closest('table').find('tfoot tr td').attr('colspan') + 1);",
+      "  $(this).trigger('keyup');",
+      "});",
+      "",
+      "$('table[data-toggle=\"csv\"]').keyup(function(e) {",
+      "   var csv = $(this).find('thead tr, tbody tr').map(function (i, row) {",
+      "      return $(row).find('th:not(:last-child),td:not(:last-child)').map(function (j, col) {",
+      "        var text = \$(col).text();",
+      "        if (/('|,)/.test(text)) {",
+      "          return '\"'+ text.replace(/\"/g, '\"\"') +'\"';",
+      "        } else {",
+      "          return text;",
+      "        }",
+      "      }).get().join(',');",
+      "    }).get().join('\\r\\n');',
+      '  $(this).next('textarea').val(csv);",
+      "});",
+    ], 'table2csv');
 
     return $html;
   }
@@ -789,36 +788,42 @@ END;
       $input = form_reinsert_value($name);
     }
 
-    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. document::href_rlink('app://assets/trumbowyg/ui/trumbowyg.min.css') .'" rel="stylesheet" />' . PHP_EOL
-                                                  . '<link href="'. document::href_rlink('app://assets/trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css') .'" rel="stylesheet" />'
-                                                  . '<link href="'. document::href_rlink('app://assets/trumbowyg/plugins/table/ui/trumbowyg.table.min.css') .'" rel="stylesheet" />';
+    document::load_style([
+      'app://assets/trumbowyg/ui/trumbowyg.min.css',
+      'app://assets/trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css',
+      'app://assets/trumbowyg/plugins/table/ui/trumbowyg.table.min.css',
+    ], 'trumbowyg');
 
-    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. document::href_rlink('app://assets/trumbowyg/trumbowyg.min.js') .'"></script>' . PHP_EOL
-                                                  . ((language::$selected['code'] != 'en') ? '<script src="'. document::href_rlink('app://assets/trumbowyg/langs/'. language::$selected['code'] .'.min.js') .'"></script>' . PHP_EOL : '')
-                                                  . '<script src="'. document::href_rlink('app://assets/trumbowyg/plugins/colors/trumbowyg.colors.min.js') .'"></script>' . PHP_EOL
-                                                  . '<script src="'. document::href_rlink('app://assets/trumbowyg/plugins/upload/trumbowyg.upload.min.js') .'"></script>' . PHP_EOL
-                                                  . '<script src="'. document::href_rlink('app://assets/trumbowyg/plugins/table/trumbowyg.table.min.js') .'"></script>';
+    document::load_script([
+      'app://assets/trumbowyg/trumbowyg.min.js',
+      (language::$selected['code'] != 'en') ? 'app://assets/trumbowyg/langs/'. language::$selected['code'] .'.min.js' : '',
+      'app://assets/trumbowyg/plugins/colors/trumbowyg.colors.min.js',
+      'app://assets/trumbowyg/plugins/upload/trumbowyg.upload.min.js',
+      'app://assets/trumbowyg/plugins/table/trumbowyg.table.min.js',
+    ], 'trumbowyg');
 
-    document::$snippets['javascript'][] = '  $(\'textarea[name="'. $name .'"]\').trumbowyg({' . PHP_EOL
-                                        . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["foreColor", "backColor"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],' . PHP_EOL
-                                        . '    btnsDef: {' . PHP_EOL
-                                        . '      lists: {' . PHP_EOL
-                                        . '        dropdown: ["unorderedList", "orderedList"],' . PHP_EOL
-                                        . '        title: "Lists",' . PHP_EOL
-                                        . '        ico: "unorderedList",' . PHP_EOL
-                                        . '      }' . PHP_EOL
-                                        . '    },' . PHP_EOL
-                                        . '    plugins: {' . PHP_EOL
-                                        . '      upload: {' . PHP_EOL
-                                        . '        serverPath: "'. document::href_rlink('app://assets/trumbowyg/plugins/upload/trumbowyg.upload.php') .'",' . PHP_EOL
-                                        . '      }' . PHP_EOL
-                                        . '    },' . PHP_EOL
-                                        . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
-                                        . '    autogrowOnEnter: true,' . PHP_EOL
-                                        . '    imageWidthModalEdit: true,' . PHP_EOL
-                                        . '    removeformatPasted: true,' . PHP_EOL
-                                        . '    semantic: false' . PHP_EOL
-                                        . '  });';
+    document::add_script([
+      "$('textarea[name=\"'. $name .'\"]').trumbowyg({",
+      "  btns: [['viewHTML'], ['formatting'], ['strong', 'em', 'underline', 'del'], ['foreColor', 'backColor'], ['link'], ['insertImage'], ['table'], ['justifyLeft', 'justifyCenter', 'justifyRight'], ['lists'], ['preformatted'], ['horizontalRule'], ['removeformat'], ['fullscreen']],",
+      "  btnsDef: {",
+      "    lists: {",
+      "      dropdown: ['unorderedList', 'orderedList'],",
+      "      title: 'Lists',",
+      "      ico: 'unorderedList',",
+      "    }",
+      "  },",
+      "  plugins: {",
+      "    upload: {",
+      "      serverPath: '". document::href_rlink('app://assets/trumbowyg/plugins/upload/trumbowyg.upload.php') ."',",
+      "    }",
+      "  },",
+      "  lang: '". language::$selected['code'] ."',",
+      "  autogrowOnEnter: true,",
+      "  imageWidthModalEdit: true,",
+      "  removeformatPasted: true,",
+      "  semantic: false",
+      '});',
+    ]);
 
     return '<textarea name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. functions::escape_html($input) .'</textarea>';
   }
@@ -1238,21 +1243,23 @@ END;
            . '  </div>' . PHP_EOL
            . '</div>';
 
-    document::$snippets['javascript']['category-picker'] = '$(\'[data-toggle="category-picker"]\').categoryPicker({' . PHP_EOL
-                                                         . '  inputName: "'. $name .'",' . PHP_EOL
-                                                         . '  link: "'. document::ilink('b:catalog/categories.json') .'",' . PHP_EOL
-                                                         . '  icons: {' . PHP_EOL
-                                                         . '    folder: \''. functions::draw_fonticon('folder') .'\',' . PHP_EOL
-                                                         . '    back: \''. functions::draw_fonticon('fa-arrow-left') .'\'' . PHP_EOL
-                                                         . '  },' . PHP_EOL
-                                                         . '  translations: {' . PHP_EOL
-                                                         . '    search_results: "'. language::translate('title_search_results', 'Search Results') .'",' . PHP_EOL
-                                                         . '    root: "'. language::translate('title_root', 'Root') .'",' . PHP_EOL
-                                                         . '    add: "'. language::translate('title_add', 'Add') .'",' . PHP_EOL
-                                                         . '    remove: "'. language::translate('title_remove', 'Remove') .'",' . PHP_EOL
-                                                         . '    root: "'. language::translate('title_root', 'Root') .'"' . PHP_EOL
-                                                         . '  }' . PHP_EOL
-                                                         . '});';
+    document::add_javascript([
+      '$(\'[data-toggle="category-picker"]\').categoryPicker({',
+      '  inputName: "'. $name .'",',
+      '  link: "'. document::ilink('b:catalog/categories.json') .'",',
+      '  icons: {',
+      '    folder: \''. functions::draw_fonticon('folder') .'\',',
+      '    back: \''. functions::draw_fonticon('fa-arrow-left') .'\'',
+      '  },',
+      '  translations: {',
+      '    search_results: "'. language::translate('title_search_results', 'Search Results') .'",',
+      '    root: "'. language::translate('title_root', 'Root') .'",',
+      '    add: "'. language::translate('title_add', 'Add') .'",',
+      '    remove: "'. language::translate('title_remove', 'Remove') .'",',
+      '    root: "'. language::translate('title_root', 'Root') .'"',
+      '  }',
+      '});',
+    ], 'category-picker');
 
     return $html;
   }

@@ -35,9 +35,10 @@
     return;
   }
 
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', ['category_id' => $category->id], false) .'" />';
   document::$snippets['title'][] = $category->head_title ? $category->head_title : $category->name;
   document::$snippets['description'] = $category->meta_description ? $category->meta_description : strip_tags($category->short_description);
+
+  document::add_head_tags('<link rel="canonical" href="'. document::href_ilink('category', ['category_id' => $category->id], false) .'" />', 'canonical');
 
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
   foreach (array_slice($category->path, 0, -1, true) as $category_crumb) {

@@ -30,4 +30,4 @@
     }
   }
 
-  self::$snippets['head_tags']['manifest'] = '<link rel="manifest" href="'. document::href_ilink('webmanifest.json') .'">';
+  document::add_head_tags('<link rel="manifest" href="'. document::href_ilink('webmanifest.json') .'">', 'manifest');

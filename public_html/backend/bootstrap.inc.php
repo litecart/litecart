@@ -4,7 +4,7 @@
   define('FS_DIR_TEMPLATE', 'app://backend/template/');
   define('WS_DIR_TEMPLATE', WS_DIR_APP . 'backend/template/');
 
-  self::$snippets['head_tags']['manifest'] = '<link rel="manifest" href="'. document::href_ilink('webmanifest.json') .'">';
+  document::add_head_tags('<link rel="manifest" href="'. document::href_ilink('webmanifest.json') .'">', 'manifest');
 
 // Fetch apps
   $apps = functions::admin_get_apps();
