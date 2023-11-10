@@ -147,7 +147,7 @@
                 <?php echo functions::form_decimal_field('contents['. $key .'][backordered]', true, 2); ?>
               </div>
             </td>
-            <td><a class="btn btn-default remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+            <td class="text-center"><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>
@@ -174,23 +174,23 @@
         </tfoot>
       </table>
 
-      <datalist id="available-stock-items">
-        <?php foreach ($available_stock_items as $stock_item) { ?>
-        <option value="<?php echo functions::escape_html($stock_item['sku']); ?>" data-name="<?php echo functions::escape_html($stock_item['name']); ?>" data-quantity="<?php echo (float)$stock_item['quantity']; ?>" data-backordered="<?php echo (float)$stock_item['backordered']; ?>">
-          <?php echo htmlspecialchars($stock_item['name']); ?> &ndash; (<?php echo language::translate('title_in_stock', 'In Stock'); ?>: <?php echo (float)$stock_item['quantity']; ?>)
-        </option>
-        <?php } ?>
-      </datalist>
-
       <div class="card-action">
         <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($stock_transaction->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo !empty($stock_transaction->data['id']) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
         <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
     <?php echo functions::form_end(); ?>
   </div>
 </div>
+
+<datalist id="available-stock-items">
+  <?php foreach ($available_stock_items as $stock_item) { ?>
+  <option value="<?php echo functions::escape_html($stock_item['sku']); ?>" data-product-id="<?php echo functions::escape_html($stock_item['product_id']); ?>" data-stock-option-id="<?php echo functions::escape_html($stock_item['stock_option_id']); ?>" data-sku="<?php echo functions::escape_html($stock_item['sku']); ?>"  data-name="<?php echo functions::escape_html($stock_item['name']); ?>" data-quantity="<?php echo (float)$stock_item['quantity']; ?>" data-backordered="<?php echo (float)$stock_item['backordered']; ?>">
+    <?php echo functions::escape_html($stock_item['name']); ?> &ndash; (<?php echo language::translate('title_in_stock', 'In Stock'); ?>: <?php echo (float)$stock_item['quantity']; ?>)
+  </option>
+  <?php } ?>
+</datalist>
 
 <script>
   $('input[name="new[sku]"]').on('input', function(e) {
@@ -226,6 +226,8 @@
   });
 
   let new_item_index = 0;
+  while ($(':input[name^="contents['+new_item_index+']"]').length) new_item_index++;
+
   $('table tfoot button[name="add"]').click(function(e) {
     e.preventDefault();
 
@@ -236,7 +238,7 @@
       return;
     }
 
-    let option = $('datalist#available-stock-items option[value="'+ $('input[name="new[sku]"]').val() +'"]:first');
+    let $option = $('datalist#available-stock-items option[value="'+ $('input[name="new[sku]"]').val() +'"]:first');
 
     let output = [
       '  <tr class="item">',
@@ -244,9 +246,9 @@
       '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][id]', '')); ?>',
       '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][item_id]', '')); ?>',
       '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][sku]', '')); ?>',
-      '       ' + $(option).attr('value'),
+      '       ' + $option.attr('value'),
       '    </td>',
-      '    <td><?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][name]', '')); ?>'+ $(option).data('name') +'</td>',
+      '    <td><?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][name]', '')); ?>'+ $option.data('name') +'</td>',
       '    <td><?php echo functions::escape_js(functions::form_decimal_field('contents[new_item_index][quantity]', '', 2, 'readonly')); ?></td>',
       '    <td>',
       '      <div class="input-group">',
@@ -260,7 +262,7 @@
       '        <?php echo functions::escape_js(functions::form_decimal_field('contents[new_item_index][backordered]', true, 2)); ?>',
       '      </div>',
       '    </td>',
-      '    <td><a class="remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle', 'style="color: #c33;"')); ?></a></td>',
+      '    <td class="text-center"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times', 'style="color: #c33;"')); ?></a></td>',
       '  </tr>'
     ].join('')
     .replace(/new_item_index/g, 'new_' + new_item_index++);
@@ -282,5 +284,11 @@
     $('input[name="new[quantity]"]').val('');
     $('input[name="new[quantity_adjustment]"]').val('');
     $('input[name="new[sku]"]').focus();
+  });
+
+  $('button[name="save"]').click(function(){
+    if ($('input[name="new[sku]"]').val() != '' && $('input[name="new[quantity_adjustment]"]').val() != '') {
+      $('button[name="add"]').click();
+    }
   });
 </script>

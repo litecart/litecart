@@ -4,10 +4,13 @@
 
     <div class="row">
       <div class="col-md-6">
-        <section id="box-order-success" data-id="<?php echo $order['id']; ?>" data-total="<?php echo currency::format_raw($order['total'], $order['currency_code']); ?>" data-total-tax="<?php echo currency::format_raw($order['total_tax'], $order['currency_code']); ?>" data-currency-code="<?php echo $order['currency_code']; ?>" data-transaction-id="<?php echo $order['payment_transaction_id']; ?>">
+        <section id="box-order-success" class="card" data-id="<?php echo $order['id']; ?>" data-total="<?php echo currency::format_raw($order['total'], $order['currency_code']); ?>" data-total-tax="<?php echo currency::format_raw($order['total_tax'], $order['currency_code']); ?>" data-currency-code="<?php echo $order['currency_code']; ?>" data-transaction-id="<?php echo $order['payment_transaction_id']; ?>">
 
-          <h1 class="title"><?php echo strtr(language::translate('title_order_completed', 'Your order #%order_id was completed successfully!'), ['%order_id' => $order['id']]); ?></h1>
+        <div class="card-header">
+          <h1 class="card-title"><?php echo strtr(language::translate('title_order_completed', 'Your order #%order_id was completed successfully!'), ['%order_id' => $order['id']]); ?></h1>
+        </div>
 
+        <div class="card-body">
           <p><?php echo language::translate('description_order_completed', 'Thank you for your purchase. An order confirmation email has been sent. We will process your order shortly.'); ?></p>
 
           <ul class="items list-unstyled">

@@ -7,19 +7,19 @@
     'background_color' => '#e6e8ec',
     'icons' => [
       [
-        'src' => document::link('storage://images/favicons/favicon.ico'),
+        'src' => document::rlink('storage://images/favicons/favicon.ico'),
         'sizes' => '32x32 48x48 64x64 96x96',
       ],
       [
-        'src' => document::link('storage://images/favicons/favicon-128x128.png'),
+        'src' => document::rlink('storage://images/favicons/favicon-128x128.png'),
         'sizes' => '128x128',
       ],
       [
-        'src' => document::link('storage://images/favicons/favicon-192x192.png'),
+        'src' => document::rlink('storage://images/favicons/favicon-192x192.png'),
         'sizes' => '192x192',
       ],
       [
-        'src' => document::link('storage://images/favicons/favicon-256x256.png'),
+        'src' => document::rlink('storage://images/favicons/favicon-256x256.png'),
         'sizes' => '256x256',
       ]
     ],

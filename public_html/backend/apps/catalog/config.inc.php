@@ -8,6 +8,7 @@
       'color' => '#d4ce12',
       'icon' => 'fa-th',
     ],
+    'search_results' => 'search_results.inc.php',
     'menu' => [
       [
         'title' => language::translate('title_category_tree', 'Category Tree'),
@@ -102,6 +103,4 @@
       'stock_transactions' => 'stock_transactions.inc.php',
       'edit_stock_transaction' => 'edit_stock_transaction.inc.php',
     ],
-
-    'search_results' => 'search_results.inc.php',
   ];

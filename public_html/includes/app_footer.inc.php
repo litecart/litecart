@@ -8,14 +8,14 @@
   event::fire('after_capture');
 
 // Stitch content with layout
-  $_page = new ent_view();
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'layouts/'.document::$layout.'.inc.php');
 
   $_page->snippets = [
     'important_notice' => settings::get('important_notice'),
     'content' => $content,
   ];
 
-  $output = $_page->render(FS_DIR_TEMPLATE . 'layouts/'.document::$layout.'.inc.php');
+  $output = $_page->render();
 
 // Run prepare output processes
   event::fire('prepare_output');

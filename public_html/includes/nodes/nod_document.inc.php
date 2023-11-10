@@ -91,7 +91,7 @@
           'code' => language::$selected['code'],
           'name' => language::$selected['name'],
           'decimal_point' => language::$selected['decimal_point'],
-          'thousands_separator' => language::$selected['thousands_separator'],
+          'thousands_separator' => language::$selected['thousands_sep'],
         ],
         'country' => [
           'code' => customer::$data['country_code'],
@@ -164,7 +164,9 @@
 
     // Prepare snippets
       foreach (array_keys(self::$snippets) as $snippet) {
-        if (is_array(self::$snippets[$snippet])) self::$snippets[$snippet] = implode(PHP_EOL, self::$snippets[$snippet]);
+        if (is_array(self::$snippets[$snippet])) {
+          self::$snippets[$snippet] = implode(PHP_EOL, self::$snippets[$snippet]);
+        }
       }
     }
 

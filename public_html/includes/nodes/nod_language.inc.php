@@ -320,23 +320,29 @@
 
         // %c = Preferred date and time stamp based on locale
         // Example: Tue Feb 5 00:45:10 2009 for February 5, 2009 at 12:45:10 AM
-        if ($format == '%c') {
-          $date_type = IntlDateFormatter::LONG;
-          $time_type = IntlDateFormatter::SHORT;
-        }
-        // %x = Preferred date representation based on locale, without the time
-        // Example: 02/05/09 for February 5, 2009
-        elseif ($format == '%x') {
-          $date_type = IntlDateFormatter::SHORT;
-          $time_type = IntlDateFormatter::NONE;
-        }
-        // Localized time format
-        elseif ($format == '%X') {
-          $date_type = IntlDateFormatter::NONE;
-          $time_type = IntlDateFormatter::MEDIUM;
-        }
-        else {
-          $pattern = $intl_formats[$format];
+        switch ($format) {
+
+          case '%c':
+            $date_type = IntlDateFormatter::LONG;
+            $time_type = IntlDateFormatter::SHORT;
+            break;
+
+          // %x = Preferred date representation based on locale, without the time
+          // Example: 02/05/09 for February 5, 2009
+          case '%x':
+            $date_type = IntlDateFormatter::SHORT;
+            $time_type = IntlDateFormatter::NONE;
+            break;
+
+          // Localized time format
+          case '%X':
+            $date_type = IntlDateFormatter::NONE;
+            $time_type = IntlDateFormatter::MEDIUM;
+            break;
+
+          default:
+            $pattern = $intl_formats[$format];
+            break;
         }
 
         return (new IntlDateFormatter(self::$selected['code'], $date_type, $time_type, $tz, null, $pattern))->format($timestamp);
@@ -397,7 +403,7 @@
         '%r' => 'G:i:s A', // %I:%M:%S %p
         '%R' => 'H:i', // %H:%M
         '%S' => 's',
-        '%X' => $intl_formatter,// Preferred time representation based on locale, without the date
+        '%X' => $intl_formatter, // Preferred time representation based on locale, without the date
 
       // Timezone
         '%z' => 'O',
