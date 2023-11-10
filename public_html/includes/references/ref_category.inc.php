@@ -1,9 +1,8 @@
 <?php
 
-  class ref_category {
+  class ref_category extends abs_reference_entity {
 
-    private $_language_codes;
-    private $_data = [];
+    protected $_language_codes;
 
     function __construct($category_id, $language_code=null) {
 
@@ -19,27 +18,7 @@
       ]);
     }
 
-    public function &__get($name) {
-
-      if (array_key_exists($name, $this->_data)) {
-        return $this->_data[$name];
-      }
-
-      $this->_data[$name] = null;
-      $this->_load($name);
-
-      return $this->_data[$name];
-    }
-
-    public function &__isset($name) {
-      return $this->__get($name);
-    }
-
-    public function __set($name, $value) {
-      trigger_error('Setting data is prohibited ('.$name.')', E_USER_WARNING);
-    }
-
-    private function _load($field) {
+    protected function _load($field) {
 
       switch($field) {
 
@@ -83,8 +62,8 @@
 
           break;
 
-        case 'ancestor':
         case 'main_category':
+        case 'ancestor':
 
           $this->_data['ancestor'] = $this;
 
@@ -98,7 +77,7 @@
 
         case 'path':
 
-          $this->_data['path'] = [$this->id => $this];
+          $this->_data['path'] = [$this->_data['id'] => $this];
 
           $current = $this;
           while ($current->parent_id) {

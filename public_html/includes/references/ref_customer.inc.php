@@ -1,6 +1,6 @@
 <?php
 
-  class ref_customer {
+  class ref_customer extends abs_reference_entity {
 
     private $_data = [];
 
@@ -8,27 +8,7 @@
       $this->_data['id'] = (int)$customer_id;
     }
 
-    public function &__get($name) {
-
-      if (array_key_exists($name, $this->_data)) {
-        return $this->_data[$name];
-      }
-
-      $this->_data[$name] = null;
-      $this->_load($name);
-
-      return $this->_data[$name];
-    }
-
-    public function &__isset($name) {
-      return $this->__get($name);
-    }
-
-    public function __set($name, $value) {
-      trigger_error('Setting data is prohibited', E_USER_WARNING);
-    }
-
-    private function _load($field) {
+    protected function _load($field) {
 
       switch($field) {
 

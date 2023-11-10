@@ -1,11 +1,10 @@
 <?php
 
-  class ref_product {
+  class ref_product extends abs_reference_entity {
 
-    private $_language_codes;
-    private $_currency_codes;
-    private $_customer_id;
-    private $_data = [];
+    protected $_language_codes;
+    protected $_currency_codes;
+    protected $_customer_id;
 
     function __construct($product_id, $language_code=null, $currency_code=null, $customer_id=null) {
 
@@ -37,27 +36,7 @@
       ]);
     }
 
-    public function &__get($name) {
-
-      if (array_key_exists($name, $this->_data)) {
-        return $this->_data[$name];
-      }
-
-      $this->_data[$name] = null;
-      $this->_load($name);
-
-      return $this->_data[$name];
-    }
-
-    public function &__isset($name) {
-      return $this->__get($name);
-    }
-
-    public function __set($name, $value) {
-      trigger_error('Setting data is prohibited ('.$name.')', E_USER_ERROR);
-    }
-
-    private function _load($field) {
+    protected function _load($field) {
 
       switch($field) {
 

@@ -1,9 +1,8 @@
 <?php
 
-  class ref_order_status {
+  class ref_order_status extends abs_reference_entity {
 
-    private $_language_codes;
-    private $_data = [];
+    protected $_language_codes;
 
     function __construct($order_status_id, $language_code=null) {
 
@@ -17,27 +16,7 @@
       ]);
     }
 
-    public function &__get($name) {
-
-      if (array_key_exists($name, $this->_data)) {
-        return $this->_data[$name];
-      }
-
-      $this->_data[$name] = null;
-      $this->_load($name);
-
-      return $this->_data[$name];
-    }
-
-    public function &__isset($name) {
-      return $this->__get($name);
-    }
-
-    public function __set($name, $value) {
-      trigger_error('Setting data ('. $name .') is prohibited', E_USER_ERROR);
-    }
-
-    private function _load($field) {
+    protected function _load($field) {
 
       switch($field) {
 

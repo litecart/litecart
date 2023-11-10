@@ -1,10 +1,9 @@
 <?php
 
-  class ref_country {
+  class ref_country extends abs_reference_entity {
 
-    private $_country_code;
-    private $_language_codes;
-    private $_data = [];
+    protected $_country_code;
+    protected $_language_codes;
 
     function __construct($country_code) {
 
@@ -15,27 +14,7 @@
       $this->_country_code = $country_code;
     }
 
-    public function &__get($name) {
-
-      if (array_key_exists($name, $this->_data)) {
-        return $this->_data[$name];
-      }
-
-      $this->_data[$name] = null;
-      $this->_load($name);
-
-      return $this->_data[$name];
-    }
-
-    public function &__isset($name) {
-      return $this->__get($name);
-    }
-
-    public function __set($name, $value) {
-      trigger_error('Setting data is prohibited ('.$name.')', E_USER_WARNING);
-    }
-
-    private function _load($field) {
+    protected function _load($field) {
 
       switch($field) {
 
