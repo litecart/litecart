@@ -126,7 +126,7 @@ CREATE TABLE `lc_countries` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_currencies` (
   `id` TINYINT(2) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `status` TINYINT(1) NOT NULL DEFAULT '0',
   `code` VARCHAR(3) NOT NULL DEFAULT '',
   `number` VARCHAR(3) NOT NULL DEFAULT '',
   `name` VARCHAR(32) NOT NULL DEFAULT '',

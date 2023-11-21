@@ -1,3 +1,6 @@
+ALTER TABLE `lc_currencies`
+CHANGE COLUMN `status` `status` TINYINT(1) NOT NULL DEFAULT 0;
+-- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
 ADD COLUMN `priority` INT(11) NOT NULL DEFAULT 0 AFTER `dim_class`;
 -- --------------------------------------------------------
