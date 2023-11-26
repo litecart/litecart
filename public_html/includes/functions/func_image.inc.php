@@ -22,7 +22,7 @@
         'height' => fallback($options['height'], 0),
         'quality' => fallback($options['quality'], settings::get('image_quality')),
         'trim' => fallback($options['trim'], false),
-        'interlaced' => !empty($options['interlaced']) ? true : false,
+        'interlaced' => !empty($options['interlaced']),
         'overwrite' => fallback($options['overwrite'], false),
         'watermark' => fallback($options['watermark'], false),
       ];

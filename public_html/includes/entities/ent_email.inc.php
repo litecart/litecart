@@ -420,7 +420,7 @@
 
       $this->save();
 
-      return !empty($result) ? true : false;
+      return !empty($result);
     }
 
     public function delete() {

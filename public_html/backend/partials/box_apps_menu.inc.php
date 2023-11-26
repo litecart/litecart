@@ -17,7 +17,7 @@
         'icon' => !(empty($app['theme']['icon'])) ? $app['theme']['icon'] : 'fa-plus',
         'color' => !(empty($app['theme']['color'])) ? $app['theme']['color'] : '#97a3b5',
       ],
-      'active' => (defined('__APP__') && __APP__ == $app['id']) ? true : false,
+      'active' => (defined('__APP__') && __APP__ == $app['id']),
       'menu' => [],
     ];
 
@@ -46,7 +46,7 @@
           'title' => $item['title'],
           'doc' => $item['doc'],
           'link' => document::ilink($app['id'] .'/'. $item['doc'], fallback($item['params'], [])),
-          'active' => $selected ? true : false,
+          'active' => $selected,
         ];
       }
     }

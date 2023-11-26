@@ -37,8 +37,8 @@
           'parent_id' => $page['parent_id'],
           'title' => $page['title'],
           'link' => document::ilink('information', ['page_id' => $page['id']], false),
-          'active' => (!empty($_GET['page_id']) && $page['id'] == $_GET['page_id']) ? true : false,
-          'opened' => (!empty($current_page_path) && in_array($page['id'], $current_page_path)) ? true : false,
+          'active' => (!empty($_GET['page_id']) && $page['id'] == $_GET['page_id']),
+          'opened' => (!empty($current_page_path) && in_array($page['id'], $current_page_path)),
           'subpages' => [],
         ];
 

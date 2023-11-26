@@ -190,7 +190,7 @@
       }
 
       $installed_addons = preg_split('#[\r\n]+#', file_get_contents('storage://addons/.installed'), -1, PREG_SPLIT_NO_EMPTY);
-      $this->data['installed'] = in_array($this->data['id'], $installed_addons) ? true : false;
+      $this->data['installed'] = in_array($this->data['id'], $installed_addons);
 
       $this->previous = $this->data;
     }

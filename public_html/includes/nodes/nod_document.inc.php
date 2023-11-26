@@ -46,12 +46,15 @@
 
     // Hreflang
       if (!empty(route::$selected['controller'])) {
+
         $hreflang = [];
+
         foreach (language::$languages as $language) {
           if ($language['url_type'] == 'none') continue;
           if ($language['code'] == language::$selected['code']) continue;
           $hreflang[] = '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. document::href_ilink(route::$selected['controller'], [], true, ['page', 'sort'], $language['code']) .'">';
         }
+
         self::add_head_tags($hreflang, 'hreflang');
       }
 
@@ -172,19 +175,20 @@
 
     public static function before_output() {
 
+      $stylesheets = [];
+      $styles = [];
+      $javascripts = [];
+      $javascript = [];
+
     // Extract styling
       $GLOBALS['output'] = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function($matches) use (&$stylesheets, &$styles, &$javascripts, &$javascript) {
 
       // Extract stylesheets
-        $stylesheets = [];
-
         $matches[2] = preg_replace_callback('#<link([^>]*rel="stylesheet"[^>]*)>\R?#is', function($match) use (&$stylesheets) {
           $stylesheets[] = '<link'. rtrim($match[1], ' /') .' />';
         }, $matches[2]);
 
       // Extract inline styling
-        $styles = [];
-
         $matches[2] = preg_replace_callback('#<style[^>]*>(.+?)</style>\R?#is', function($match) use (&$styles) {
           $styles[] = trim($match[1]);
         }, $matches[2]);
@@ -196,15 +200,11 @@
       $GLOBALS['output'] = preg_replace_callback('#(<body[^>]*>)(.*)(</body>)#is', function($matches) use (&$javascripts, &$javascript) {
 
       // Extract javascript resources
-        $javascripts = [];
-
         $matches[2] = preg_replace_callback('#\R?<script([^>]+src="[^"]+"[^>]*)></script>\R?#is', function($match) use (&$javascripts) {
           $javascripts[] = '<script'. $match[1] .'></script>';
         }, $matches[2]);
 
       // Extract inline scripts
-        $javascript = [];
-
         $matches[2] = preg_replace_callback('#<script[^>]*(?!src="[^"]+")[^>]*>(.+?)</script>\R?#is', function($match) use (&$javascript) {
            $javascript[] = trim($match[1], "\r\n");
         }, $matches[2]);
@@ -325,7 +325,7 @@
       }
 
       self::$snippets['foot_tags'][$key] = implode(PHP_EOL, array_map(function($url){
-        return '<script href="'. document::href_rlink($url) .'"></script>';
+        return '<script src="'. document::href_rlink($url) .'"></script>';
       }, $urls));
     }
 

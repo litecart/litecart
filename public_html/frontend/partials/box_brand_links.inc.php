@@ -21,7 +21,7 @@
           'name' => $brand['name'],
           'link' => document::ilink('brand', ['brand_id' => $brand['id']]),
           'date_created' => $brand['date_created'],
-          'active' => (isset($_GET['brand_id']) && $_GET['brand_id'] == $brand['id']) ? true : false,
+          'active' => (isset($_GET['brand_id']) && $_GET['brand_id'] == $brand['id']),
         ];
       }
 

@@ -36,5 +36,5 @@
     $score = ($numbers * 9) + ($lowercases * 11.25) + ($uppercases * 11.25) + ($symbols * 15)
            + ($numbers ? 10 : 0) + ($lowercases ? 10 : 0) + ($uppercases ? 10 : 0) + ($symbols ? 10 : 0);
 
-    return ($score >= 80) ? true : false;
+    return ($score >= 80);
   }

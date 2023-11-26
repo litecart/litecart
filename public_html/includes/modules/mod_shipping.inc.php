@@ -105,7 +105,7 @@
             'fee' => (float)$option['fee'],
             'tax_class_id' => (int)$option['tax_class_id'],
             'incoterm' => fallback($option['incoterm'], settings::get('default_incoterm')),
-            'exclude_cheapest' => !empty($option['exclude_cheapest']) ? true : false,
+            'exclude_cheapest' => !empty($option['exclude_cheapest']),
             'error' => fallback($option['error'], false),
           ];
         }

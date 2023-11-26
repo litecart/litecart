@@ -28,7 +28,7 @@
             </tr>
             </thead>
             <tbody>
-            <?php if ($orders) foreach ($orders as $order) { ?>
+            <?php foreach ($orders as $order) { ?>
             <tr>
               <td><a href="<?php echo functions::escape_html($order['link']); ?>" class="lightbox-iframe"><?php echo $order['no']; ?></a></td>
               <td class="text-center"><?php echo $order['num_downloads'] ? '<a href="'. document::href_ilink('downloads') .'">'. language::translate('title_downloads', 'Downloads') .'</a>' : ''; ?></td>

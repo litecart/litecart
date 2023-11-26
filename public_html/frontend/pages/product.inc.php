@@ -143,7 +143,7 @@
     'campaign_price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : null,
     'final_price' => tax::get_price($product->final_price, $product->tax_class_id),
     'tax_class_id' => $product->tax_class_id,
-    'including_tax' => !empty(customer::$data['display_prices_including_tax']) ? true : false,
+    'including_tax' => !empty(customer::$data['display_prices_including_tax']),
     'total_tax' => $product->tax,
     'tax_rates' => [],
     'quantity' => $product->quantity,

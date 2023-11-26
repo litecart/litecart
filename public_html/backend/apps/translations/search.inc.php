@@ -28,7 +28,7 @@
     foreach ($_POST['translations'] as $translation) {
       $sql_update_fields = '';
       foreach ($_GET['languages'] as $language_code) {
-        $sql_update_fields .= "text_".database::input($language_code) ." = '". database::input(trim($translation['text_'.database::input($language_code)]), !empty($translation['html']) ? true : false) ."', " . PHP_EOL;
+        $sql_update_fields .= "text_".database::input($language_code) ." = '". database::input(trim($translation['text_'.database::input($language_code)]), !empty($translation['html'])) ."', " . PHP_EOL;
       }
       database::query(
         "update ". DB_TABLE_PREFIX ."translations

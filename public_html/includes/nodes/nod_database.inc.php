@@ -116,7 +116,7 @@
         }
       }
 
-      return $errors ? true : false;
+      return $errors;
     }
 
     public static function query($sql, $link='default') {

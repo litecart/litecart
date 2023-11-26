@@ -173,6 +173,9 @@
     $listing_product->snippets = [
       'product_id' => $product['id'],
       'code' => $product['code'],
+      'sku' => fallback($product['sku'], ''),
+      'gtin' => fallback($product['gtin'], ''),
+      'mpn' => fallback($product['mpn'], ''),
       'name' => $product['name'],
       'link' => document::ilink('product', ['product_id' => $product['id']], $inherit_params),
       'image' => [
@@ -290,7 +293,7 @@
       'page' => $_GET['page']-1,
       'title' => language::translate('title_previous', 'Previous'),
       'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']-1]),
-      'disabled' => ($_GET['page'] <= 1) ? true : false,
+      'disabled' => ($_GET['page'] <= 1),
       'active' => false,
     ];
 
@@ -330,7 +333,7 @@
         'title' => $i,
         'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $i]),
         'disabled' => false,
-        'active' => ($i == $_GET['page']) ? true : false,
+        'active' => ($i == $_GET['page']),
       ];
     }
 

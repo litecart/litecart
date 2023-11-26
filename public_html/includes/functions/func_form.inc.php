@@ -1048,10 +1048,6 @@
       case 'url':
         return form_url_field($name, $input, $parameters);
 
-      case 'user':
-      case 'users':
-        return form_select_uer($name, $input, $parameters);
-
       case 'weight_class': // Deprecated
       case 'weight_classes': // Deprecated
       case 'weight_unit':
@@ -1637,10 +1633,10 @@
     }
   }
 
-  function form_select_myql_collation($name, $input=true, $parameters='') {
+  function form_select_mysql_collation($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_select_myql_collation() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_select_mysql_collation() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 

@@ -8,7 +8,7 @@
 
     public static function init() {
 
-      self::$enabled = settings::get('cache_enabled') ? true : false;
+      self::$enabled = settings::get('cache_enabled');
 
       if (!isset(session::$data['cache'])) session::$data['cache'] = [];
       self::$_data = &session::$data['cache'];

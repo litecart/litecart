@@ -102,12 +102,17 @@
             'fields' => fallback($option['fields']),
             'fee' => (float)$option['fee'],
             'tax_class_id' => (int)$option['tax_class_id'],
-            'exclude_cheapest' => !empty($option['exclude_cheapest']) ? true : false,
+            'exclude_cheapest' => !empty($option['exclude_cheapest']),
             'confirm' => fallback($option['confirm']),
             'error' => fallback($option['error'], false),
           ];
         }
       }
+
+    // Sort options by fee
+      uasort($this->_cache[$checksum]['options'], function($a, $b) {
+        return ($a['cost'] > $b['cost']) ? 1 : -1;
+      });
 
       return $this->_cache[$checksum]['options'];
     }
