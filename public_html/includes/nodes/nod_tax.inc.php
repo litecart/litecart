@@ -9,7 +9,7 @@
     public static function get_price($value, $tax_class_id, $calculate_tax=null, $customer=null) {
 
       if ($calculate_tax === null) {
-        $calculate_tax = !empty(customer::$data['display_prices_including_tax']) ? true : false;
+        $calculate_tax = !empty(customer::$data['display_prices_including_tax']);
       }
 
       if ($calculate_tax) {
@@ -37,7 +37,9 @@
 
       if (empty($tax_class_id)) return [];
 
-      if (empty($customer)) $customer = 'customer';
+      if (empty($customer)) {
+        $customer = 'customer';
+      }
 
     // Presets
       if (is_string($customer)) {

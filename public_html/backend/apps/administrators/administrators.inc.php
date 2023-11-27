@@ -58,7 +58,7 @@
         <tr>
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
-          <th class="main"><?php echo language::translate('title_username', 'Administratorname'); ?></th>
+          <th class="main"><?php echo language::translate('title_username', 'Username'); ?></th>
           <th></th>
         </tr>
       </thead>
@@ -71,7 +71,7 @@
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>"><?php echo $administrator['username']; ?></a></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
-        <?php }?>
+        <?php } ?>
       </tbody>
 
       <tfoot>

@@ -17,21 +17,27 @@
         case 'cm':
           $type = 'customer';
           break;
+
         case 'sm':
           $type = 'shipping';
           break;
+
         case 'pm':
           $type = 'payment';
           break;
+
         case 'om':
           $type = 'order';
           break;
+
         case 'ot':
           $type = 'order_total';
           break;
+
         case 'job':
           $type = 'job';
           break;
+
         default:
           throw new Exception('Unknown module type for module '. $module_id);
       }

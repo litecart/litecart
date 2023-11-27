@@ -100,7 +100,7 @@
             'option_id' => $option['id'],
             'icon' => $option['icon'],
             'name' => $option['name'],
-            'description' => !empty($option['fields']) ? $option['description'] : '',
+            'description' => fallback($option['description'], ''),
             'fields' => fallback($option['fields']),
             'fee' => (float)$option['fee'],
             'tax_class_id' => (int)$option['tax_class_id'],

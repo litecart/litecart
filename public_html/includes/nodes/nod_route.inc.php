@@ -74,16 +74,20 @@
         'controller' => fallback($route['controller']),
         'params' => fallback($route['params'], []),
         'options' => fallback($route['options'], []),
-        'rewrite' => fallback($route['rewrite']),
+        'rewrite' => fallback($route['rewrite'], ''),
       ];
     }
 
-    public static function identify() {
+    public static function identify($request='') {
+
+      if (!$request) {
+        $request = self::$request;
+      }
 
     // Find a target route for requested URL
       foreach (self::$_routes as $route) {
 
-        if (!preg_match($route['pattern'], self::$request)) continue;
+        if (!preg_match($route['pattern'], $request)) continue;
 
         if (is_string($route['controller'])) {
           $route['controller'] = preg_replace($route['pattern'], $route['controller'], self::$request);
@@ -95,16 +99,18 @@
         }
 
         if (preg_match('#:\*$#', $route['resource'])) {
-          return self::$selected = array_merge(['route' => route::$request], $route);
+          return array_merge(['route' => route::$request], $route);
         } else {
-          return self::$selected = array_merge(['route' => $route['resource']], $route);
+          return array_merge(['route' => $route['resource']], $route);
         }
       }
     }
 
     public static function process() {
 
-      if (empty(self::$selected)) self::identify();
+      if (empty(self::$selected)) {
+        self::$selected = self::identify();
+      }
 
     // Forward to rewritten URL (if necessary)
       if (!empty($selected)) {
@@ -241,10 +247,14 @@
       }
 
     // Unset params that are to be skipped from the link
-      if (is_string($skip_params)) $skip_params = [$skip_params];
+      if (is_string($skip_params)) {
+      	$skip_params = [$skip_params];
+      }
 
       foreach ($skip_params as $key) {
-        if (isset($link->query[$key])) $link->unset_query($key);
+        if (isset($link->query[$key])) {
+          $link->unset_query($key);
+        }
       }
 
     // Set new params (overwrites any existing inherited params)
@@ -282,20 +292,22 @@
         $language_code = language::identify();
       }
 
-      if (isset(self::$_links_cache[$language_code][(string)$link])) {
-        return self::$_links_cache[$language_code][(string)$link];
+      $checksum = crc32((string)$link);
+
+      if (isset(self::$_links_cache[$language_code][$checksum])) {
+		return self::$_links_cache[$language_code][$checksum];
       }
 
     // Strip logic from string
-      $link->path = self::strip_url_logic($link->path);
+      $ipath = self::strip_url_logic($link->path);
 
       if (!preg_match('#^(f|b):#', $link->path)) {
-        $path = 'f:'.$link->path;
+        $ipath = 'f:'.$link->path;
       }
 
     // Rewrite link
       foreach (self::$_routes as $ilink => $route) {
-        if (preg_match('#^'. strtr(preg_quote($ilink, '#'), ['\\*' => '.*', '\\?' => '.', '\\{' => '(', '\\}' => ')', ',' => '|']) .'$#i', $path)) { // Use preg_match() as fnmatch() does not support GLOB_BRACE
+        if (preg_match('#^'. preg_quote(strtr($ilink, ['\\*' => '.*', '\\?' => '.', '\\{' => '(', '\\}' => ')', ',' => '|']), '#') .'$#i', $ipath)) { // Use preg_match() as fnmatch() does not support GLOB_BRACE
           if (isset($route['rewrite']) && is_callable($route['rewrite'])) {
             if ($rewritten_link = call_user_func_array($route['rewrite'], [$link, $language_code])) {
               $link = $rewritten_link;
@@ -305,7 +317,6 @@
       }
 
     // Detect URL rewrite support
-      $use_rewrite = false;
       if (isset($_SERVER['HTTP_MOD_REWRITE']) && filter_var($_SERVER['HTTP_MOD_REWRITE'], FILTER_VALIDATE_BOOLEAN)) { // PHP-FPM
         $use_rewrite = true;
 
@@ -317,6 +328,9 @@
 
       } else if (preg_match('#(apache)#i', $_SERVER['SERVER_SOFTWARE'])) {
         $use_rewrite = true;
+
+      } else {
+        $use_rewrite = false;
       }
 
     // Set language to URL
@@ -340,8 +354,6 @@
         $link->path = WS_DIR_APP . 'index.php/' . ltrim($link->path, '/');
       }
 
-      self::$_links_cache[$language_code][(string)$link] = $link;
-
-      return self::$_links_cache[$language_code][(string)$link];
+      return self::$_links_cache[$language_code][$checksum] = (string)$link;
     }
   }

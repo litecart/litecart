@@ -269,7 +269,7 @@
 
   // Step through each file in directory
     while ($file = readdir($dh)) {
-      if (in_array($file, ['.', '..'])) continue;
+      if (preg_match('#\.{1,2}/?$#', $file)) continue;
 
     // Prepend path
       $file = $basedir . $file;

@@ -8,7 +8,7 @@
 
     ob_start();
 
-    $dir_iterator = new RecursiveDirectoryIterator('app://');
+    $dir_iterator = new RecursiveDirectoryIterator('app:///'); // Root needs an additional / with RecursiveDirectoryIterator
     $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
 
     $files = 0;
@@ -19,6 +19,7 @@
     $orphan = [];
 
     foreach ($iterator as $file) {
+
       if (!preg_match('#\.php$#', $file)) continue;
 
       $files++;
@@ -41,11 +42,13 @@
 
       if (!empty($matches)) {
         for ($i=0; $i<count($matches[1]); $i++) {
+
           if ($matches[1][$i]) {
             $key = substr(pathinfo($file, PATHINFO_BASENAME), 0, strpos(pathinfo($file, PATHINFO_BASENAME), '.')) . $matches[2][$i];
           } else {
             $key = $matches[2][$i];
           }
+
           $translations[$key] = str_replace(["\\r", "\\n"], ["\r", "\n"], $matches[3][$i]);
           $translation_keys[] = $key;
         }
@@ -118,7 +121,7 @@
     while ($translation = database::fetch($translations_query)) {
       if (empty($translation['date_accessed']) || strtotime($translation['date_accessed']) < strtotime('-12 months')) {
         if (mb_strlen($translation['text_'.language::$selected['code']]) > 100) {
-          $translation['text_'.language::$selected['code']] = mb_substr($row['text_'.language::$selected['code']], 0, 100) . '...';
+          $translation['text_'.language::$selected['code']] = mb_substr($translation['text_'.language::$selected['code']], 0, 100) . '...';
         }
         $orphan[] = $translation;
       }
@@ -142,7 +145,6 @@
   if (!empty($_POST['delete'])) {
 
     try {
-
 
       if (empty($_POST['translations'])) {
         throw new Exception(language::translate('error_must_select_translations', 'You must select translations'));

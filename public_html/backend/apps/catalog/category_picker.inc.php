@@ -1,5 +1,5 @@
 <?php
-	document::$layout = 'ajax';
+  document::$layout = 'ajax';
 
   $breadcrumbs = [];
   if (!empty($_GET['parent_id'])) {
@@ -21,7 +21,7 @@
 ?>
 <div id="modal-category-picker" class="modal fade" style="width: 640px;">
 
-	<div class="modal-body">
+  <div class="modal-body">
 
     <button class="btn btn-default" name="select" type="button" data-id="<?php echo !empty($_GET['parent_id']) ? (int)$_GET['parent_id'] : '0'; ?>" data-name="<?php echo !empty($_GET['parent_id']) ? reference::category($_GET['parent_id'])->name : language::translate('title_root', 'Root'); ?>" style="position: absolute; right: 1.5em; margin-inline-start: 1em;">
       <?php echo language::translate('title_select', 'Select'); ?>
@@ -38,7 +38,7 @@
       <?php } ?>
     </nav>
 
-		<nav class="nav nav-pills nav-stacked">
+    <nav class="nav nav-pills nav-stacked">
       <?php if (!empty($_GET['parent_id'])) { ?>
       <a class="nav-link" href="<?php echo document::href_ilink(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id]); ?>">
         <?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back', 'Back'); ?>
@@ -49,18 +49,18 @@
         <?php echo functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"'); ?> <?php echo fallback($category['name'], '[untitled]'); ?>
       </a>
       <?php } ?>
-		</nav>
-	</div>
+    </nav>
+  </div>
 
 </div>
 
 <script>
-	$('#modal-category-picker').on('click', 'a', function(e){
+  $('#modal-category-picker').on('click', 'a', function(e){
     e.preventDefault();
     $('.modal-body').load($(this).attr('href')+' .modal-body');
   });
 
-	$('#modal-category-picker').on('click', 'button[name="select"]', function() {
+  $('#modal-category-picker').on('click', 'button[name="select"]', function() {
     let field = $.featherlight.current().$currentTarget.closest('.input-group'),
       id = $(this).data('id'), name = $(this).data('name');
 
@@ -68,5 +68,5 @@
     $(field).find('.name').text(name);
     $(field).find('a').attr('href', $(field).find('a').attr('href').replace(/(parent_id)=\d*/, '$1='+id));
     $.featherlight.close();
-	});
+  });
 </script>

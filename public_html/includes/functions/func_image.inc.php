@@ -28,7 +28,7 @@
       ];
 
       if (is_dir($options['destination']) || substr($options['destination'], -1) == '/') {
-        if (preg_match('#^storage://cache/$#', $options['destination'])) {
+        if (preg_match('#^'. preg_quote('storage://cache/', '#') .'$#', $options['destination'])) {
 
           if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
             $extension = 'webp';

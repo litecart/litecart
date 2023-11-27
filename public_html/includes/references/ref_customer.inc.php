@@ -2,7 +2,7 @@
 
   class ref_customer extends abs_reference_entity {
 
-    private $_data = [];
+    protected $_data = [];
 
     function __construct($customer_id) {
       $this->_data['id'] = (int)$customer_id;

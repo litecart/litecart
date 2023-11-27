@@ -200,7 +200,7 @@
 
     // Return modified file if checksum matches
       if (!empty(self::$_checksums[$original_file]) && self::$_checksums[$original_file] == $checksum) {
-        if (!empty(self::$_checked[$original_file]) && file_exists(FS_DIR_APP . self::$_checked[$original_file])) {
+        if (!empty(self::$_checked[$original_file]) && file_exists(FS_DIR_STORAGE . self::$_checked[$original_file])) {
           self::$time_elapsed += microtime(true) - $timestamp;
           return FS_DIR_STORAGE . (self::$_checked[$original_file] = $modified_file);
         }
@@ -333,7 +333,7 @@
           if (!empty($vmod['install'])) {
 
             $tmp_file = stream_get_meta_data(tmpfile())['uri'];
-            file_put_contents($tmp_file, "<?php\r\n" . $vmod['install']);
+            file_put_contents($tmp_file, "<?php" . PHP_EOL . $vmod['install']);
 
             (function() {
               include func_get_arg(0);
@@ -358,7 +358,7 @@
 
             // Exceute upgrade in an isolated scope
               $tmp_file = stream_get_meta_data(tmpfile())['uri'];
-              file_put_contents($tmp_file, "<?php\r\n" . $upgrade['script']);
+              file_put_contents($tmp_file, "<?php" . PHP_EOL . $upgrade['script']);
 
               (function() {
                 include func_get_arg(0);
@@ -422,7 +422,6 @@
         'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
         'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
         'date_modified' => date('Y-m-d H:i:s', filemtime($file)),
-        'aliases' => [],
         'settings' => [],
         'files' => [],
         'install' => null,
@@ -488,10 +487,21 @@
           $onerror = $operation_node->getAttribute('onerror');
 
         // Find
-          if (!in_array($operation_node->getAttribute('method'), ['top', 'bottom'])) {
+          if (in_array($operation_node->getAttribute('method'), ['top', 'bottom', 'all'])) {
+
+            $find = '';
+            $indexes = '';
+
+          } else {
 
             $find_node = $operation_node->getElementsByTagName('find')->item(0);
-            $find = strtr($find_node->textContent, $aliases);
+            $find = $find_node->textContent;
+
+            if (!empty($aliases)) {
+              foreach ($aliases as $key => $value) {
+                $find = str_replace('{alias:'. $key .'}', $value, $insert);
+              }
+            }
 
           // Trim
             if (in_array($operation_node->getAttribute('type'), ['inline', 'regex'])) {
@@ -543,10 +553,10 @@
 
         // Insert
           $insert_node = $operation_node->getElementsByTagName('insert')->item(0);
-          $insert = strtr($insert_node->textContent, $aliases);
+          $insert = $insert_node->textContent;
 
-          if (!empty($vmod['aliases'])) {
-            foreach ($vmod['aliases'] as $key => $value) {
+          if (!empty($aliases)) {
+            foreach ($aliases as $key => $value) {
               $insert = str_replace('{alias:'. $key .'}', $value, $insert);
             }
           }
@@ -588,6 +598,11 @@
 
               case 'replace':
                 $insert = addcslashes($insert, '\\$');
+                break;
+
+              case 'all':
+                $find = '#^.*$#s';
+                $add = addcslashes($insert, '\\$');
                 break;
 
               default:

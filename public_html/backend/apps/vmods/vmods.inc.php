@@ -96,7 +96,7 @@
 
 		$vmod = array_merge($vmod, [
       'filename' => pathinfo($file, PATHINFO_BASENAME),
-      'status' => preg_match('#\.xml$#', $file) ? true : false,
+      'status' => preg_match('#\.xml$#', $file),
       'errors' => null,
     ]);
 

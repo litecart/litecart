@@ -816,7 +816,7 @@
                 );
                 $stock_item = new ent_stock_item($row['id']);
               } else {
-                $stock_items = new ent_stock_item();
+                $stock_item = new ent_stock_item();
               }
             }
 
@@ -877,15 +877,23 @@
             ];
 
             foreach ($fields as $field) {
-              if (isset($row[$field])) $stock_item->data[$field] = $row[$field];
+              if (isset($row[$field])) {
+                $stock_item->data[$field] = $row[$field];
+              }
             }
 
-            $fields = [
-              'name',
-            ];
+          // Set info
+            if (!empty($row['language_code'])) {
 
-            foreach ($fields as $field) {
-              if (isset($row[$field])) $stock_item->data[$field][[$row['language_code']]] = $row[$field];
+              $fields = [
+                'name',
+              ];
+
+              foreach ($fields as $field) {
+                if (isset($row[$field])) {
+                  $product->data[$field][$row['language_code']] = $row[$field];
+                }
+              }
             }
 
             $stock_item->save();
@@ -979,14 +987,14 @@
 
       notices::add('success', language::translate('success_import_completed', 'Import completed'));
 
-      header('Refresh: 5; url='. document::link(null, [], ['app', 'doc'], 'resume'));
+      header('Refresh: 5; url='. document::ilink(__APP__.'/csv'));
       exit;
 
     } catch (Exception $e) {
       unset(session::$data['csv_batch']);
       notices::add('errors', $e->getMessage());
       echo 'Error: ' . $e->getMessage();
-      header('Refresh: 5; url='. document::link(null, [], ['app', 'doc'], 'resume'));
+      header('Refresh: 5; url='. document::ilink(__APP__.'/csv'));
       exit;
     }
   }
