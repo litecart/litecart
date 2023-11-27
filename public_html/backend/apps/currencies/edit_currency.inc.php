@@ -110,6 +110,46 @@
   }
 
   $store_currency = reference::currency(settings::get('store_currency_code'));
+
+// Prefillable currencies
+  $prefillable_currency_options = [];
+
+  if (empty($currency->data['id'])) {
+
+    $prefillable_currency_options[] = ['', '-- '. language::translate('title_select', 'Select') .' --'];
+
+  // Get all existing currencies
+    $existing_currencies = database::query(
+      "select code from ". DB_TABLE_PREFIX ."currencies;"
+    )->fetch_all('code');
+
+  // Get currencies from i18n repository
+    $client = new http_client();
+    $result = $client->call('GET', 'https://raw.githubusercontent.com/litecart/i18n/master/currencies.csv');
+    $available_currencies = functions::csv_decode($result);
+
+  // Filter already added
+    $available_currencies = array_filter($available_currencies, function($a) use ($existing_currencies) {
+      return !in_array($a['code'], $existing_currencies);
+    });
+
+  // Sort by native name
+    uasort($available_currencies, function($a, $b){
+      return ($a['code'] < $b['code']) ? -1 : 1;
+    });
+
+  // Append to array of options
+    foreach ($available_currencies as $available_currency) {
+      $prefillable_currency_options[] = [
+        $available_currency['code'],
+        $available_currency['code'] .' &ndash; '. $available_currency['name'],
+        implode(' ', array_map(function($k, $v){
+          return 'data-'. str_replace('_', '-', $k) .'="'. functions::escape_html($v) .'"';
+        }, array_keys($available_currency), array_values($available_currency))),
+      ];
+    }
+  }
+
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -120,6 +160,13 @@
 
   <div class="card-body">
     <?php echo functions::form_begin('currency_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+
+      <?php if (!empty($available_currencies)) { ?>
+      <div class="form-group col-md-6">
+        <label><?php echo language::translate('text_prefill_from_the_web', 'Prefill from the web'); ?></label>
+        <?php echo functions::form_select_field('prefill', $prefillable_currency_options, ''); ?>
+      </div>
+      <?php } ?>
 
       <div class="row">
         <div class="form-group col-md-6">
@@ -197,3 +244,14 @@
     <?php echo functions::form_end(); ?>
   </div>
 </div>
+
+<?php if (!empty($available_currencies)) { ?>
+<script>
+  $('select[name="prefill"]').on('change', function() {
+    $.each($(this).find('option:selected').data(), function(key, value) {
+      var field_name = key.replace(/([A-Z])/, '_$1').toLowerCase()
+      $(':input[name="'+field_name+'"]').val(value);
+    });
+  });
+</script>
+<?php } ?>
