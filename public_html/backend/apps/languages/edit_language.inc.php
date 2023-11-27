@@ -211,6 +211,46 @@
     ' ' => language::translate('char_nonbreaking_space', 'Non-Breaking Space'),
     '\'' => language::translate('char_single_quote', 'Single quote'),
   ];
+
+// Prefillable currencies
+  $prefillable_language_options = [];
+
+  if (empty($currency->data['id'])) {
+
+    $prefillable_language_options[] = ['', '-- '. language::translate('title_select', 'Select') .' --'];
+
+  // Get all existing languages
+    $existing_languages = database::query(
+      "select code from ". DB_TABLE_PREFIX ."languages;"
+    )->fetch_all('code');
+
+  // Get languages from i18n repository
+    $client = new http_client();
+    $result = $client->call('GET', 'https://raw.githubusercontent.com/litecart/i18n/master/languages.csv');
+    $available_languages = functions::csv_decode($result);
+
+  // Filter already added
+    $available_languages = array_filter($available_languages, function($a) use ($existing_languages) {
+      return !in_array($a['code'], $existing_languages);
+    });
+
+  // Sort by native name
+    uasort($available_languages, function($a, $b){
+      return ($a['code'] < $b['code']) ? -1 : 1;
+    });
+
+  // Append to array of options
+    foreach ($available_languages as $available_language) {
+      $prefillable_language_options[] = [
+        $available_language['code'],
+        $available_language['code'] .' &ndash; '. $available_language['native'],
+        implode(' ', array_map(function($k, $v){
+          return 'data-'. str_replace('_', '-', $k) .'="'. functions::escape_html($v) .'"';
+        }, array_keys($available_language), array_values($available_language))),
+      ];
+    }
+  }
+
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -221,6 +261,13 @@
 
   <div class="card-body">
     <?php echo functions::form_begin('language_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+
+      <?php if (!empty($available_languages)) { ?>
+      <div class="form-group col-md-6">
+        <label><?php echo language::translate('text_prefill_from_the_web', 'Prefill from the web'); ?></label>
+        <?php echo functions::form_select_field('prefill', $prefillable_language_options, ''); ?>
+      </div>
+      <?php } ?>
 
       <div class="row">
         <div class="form-group col-md-6">
@@ -236,7 +283,7 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php echo functions::form_text_field('name', true); ?>
+          <?php echo functions::form_text_field('name', true, 'list="available-languages"'); ?>
         </div>
 
         <div class="form-group col-md-6">
@@ -346,12 +393,29 @@
   </div>
 </div>
 
+<datalist id="available-languages"></datalist>
+
 <script>
-$('input[name="url_type"]').change(function(){
-  if ($('input[name="url_type"][value="domain"]:checked').length) {
-    $('input[name="domain_name"]').prop('disabled', false);
-  } else {
-    $('input[name="domain_name"]').prop('disabled', true);
-  }
-}).first().trigger('change');
+  $('input[name="url_type"]').change(function(){
+    if ($('input[name="url_type"][value="domain"]:checked').length) {
+      $('input[name="domain_name"]').prop('disabled', false);
+    } else {
+      $('input[name="domain_name"]').prop('disabled', true);
+    }
+  }).first().trigger('change');
+
+  <?php if (!empty($available_languages)) { ?>
+  $('select[name="prefill"]').on('change', function() {
+    $.each($(this).find('option:selected').data(), function(key, value) {
+      var field_name = key.replace(/([A-Z])/, '_$1').toLowerCase()
+                          .replace(/^date_format$/, 'format_date')
+                          .replace(/^time_format$/, 'format_time');
+      $(':input[name="'+field_name+'"]').not('[type="checkbox"]').not('[type="radio"]').val(value);
+      $('input[name="'+field_name+'"][type="checkbox"][value="'+value+'"], input[name="'+field_name+'"][type="radio"][value="'+value+'"]').prop('checked', true);
+      if (key == 'direction') {
+        $('input[name="'+field_name+'"]:checked').parent('.btn').addClass('active').siblings().removeClass('active');
+      }
+    });
+  });
+  <?php } ?>
 </script>
