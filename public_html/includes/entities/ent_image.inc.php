@@ -126,6 +126,11 @@
 
           switch(strtolower(pathinfo($this->_src, PATHINFO_EXTENSION))) {
 
+            case 'avif':
+              $this->_type = 'avif';
+              $this->_image = ImageCreateFromAVIF($this->_src);
+              break;
+
             case 'gif':
               $this->_type = 'gif';
               $this->_image = ImageCreateFromGIF($this->_src);
@@ -189,15 +194,23 @@
           $this->_height = $info[1];
 
           switch($info[2]) {
+
+            case 19:
+              $this->_type = 'avif';
+              break;
+
             case 1:
               $this->_type = 'gif';
               break;
+
             case 2:
               $this->_type = 'jpg';
               break;
+
             case 18:
               $this->_type = 'webp';
               break;
+
             case 3:
             default:
               $this->_type = 'png';
@@ -754,7 +767,7 @@
 
       $type = strtolower(pathinfo($destination, PATHINFO_EXTENSION));
 
-      if (!preg_match('#^(gif|jpe?g|png|webp)$#i', $type)) {
+      if (!preg_match('#^(avif|gif|jpe?g|png|webp)$#i', $type)) {
         throw new Exception("Unknown image output format ($type)");
       }
 
@@ -773,10 +786,12 @@
           }
 
           switch(strtolower($type)) {
+
             case 'jpeg':
             case 'jpg':
                $this->_image->setImageCompression(Imagick::COMPRESSION_JPEG);
                break;
+
             default:
                $this->_image->setImageCompression(Imagick::COMPRESSION_ZIP);
                break;
@@ -799,6 +814,16 @@
           if ($interlaced) ImageInterlace($this->_image, true);
 
           switch(strtolower($type)) {
+
+            case 'avif':
+              if (!function_exists('ImageAVIF')) {
+                return $this->write(preg_replace('#\.avif$#', '.jpg', $destination), $quality, $interlaced);
+              }
+              ImageSaveAlpha($this->_image, true);
+              $result = ImageAVIF($this->_image, $destination, $quality);
+              ImageDestroy($this->_image);
+              return $result;
+
             case 'gif':
               $_background = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, true);
@@ -858,6 +883,7 @@
 
           $this->_image->setImageFormat($type);
           $this->_image->setImageCompressionQuality((int)$quality);
+
           return $this->_image->getImageBlob();
 
         case 'gd':
@@ -869,6 +895,16 @@
           }
 
           switch(strtolower($type)) {
+
+            case 'avif':
+              if (!function_exists('ImageAVIF')) {
+                return $this->output('jpg', $quality, $interlaced);
+              }
+              ImageSaveAlpha($this->_image, true);
+              $result = ImageAVIF($this->_image, false, $quality);
+              ImageDestroy($this->_image);
+              return $result;
+
             case 'gif':
               $_background = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, true);
@@ -901,7 +937,7 @@
 
             case 'webp':
               if (!function_exists('ImageWebP')) {
-                return $this->output($type, $quality, $interlaced);
+                return $this->output('jpg', $quality, $interlaced);
               }
               ImageSaveAlpha($this->_image, true);
               $result = ImageWebP($this->_image, false, $quality);
@@ -1006,15 +1042,23 @@
 
         if (!empty($image_type)) {
           switch($image_type) {
+
+            case 19:
+              $this->_type = 'avif';
+              break;
+
             case 1:
               $this->_type = 'gif';
               break;
+
             case 2:
               $this->_type = 'jpg';
               break;
+
             case 18:
               $this->_type = 'webp';
               break;
+
             case 3:
             default:
               $this->_type = 'png';

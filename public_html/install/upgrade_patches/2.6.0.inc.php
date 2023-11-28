@@ -5,7 +5,17 @@
     FS_DIR_APP . 'ext/jquery/jquery-3.6.4.min.js',
   ], 'skip');
 
-  // Get store timezone
+  perform_action('modify', [
+    FS_DIR_APP . '.htaccess' => [
+      [
+        'file'    => FS_DIR_APP . '.htaccess',
+        'search'  => '  <FilesMatch "\.(a?png|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">',
+        'replace' => '  <FilesMatch "\.(a?png|avif|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">',
+      ],
+    ],
+  ]);
+
+// Get store timezone
   $setting_query = database::query(
     "SELECT * FROM ". DB_TABLE_PREFIX ."settings
     WHERE `key` = 'store_timezone'

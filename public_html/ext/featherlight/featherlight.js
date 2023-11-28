@@ -349,7 +349,7 @@
 			},
 
 			image: {
-				regex: /\.(a?png|bmp|gif|ico|jpe?g|jp2|svg|tiff?|webp)(\?\S*)?$/i,
+				regex: /\.(a?png|avif|bmp|gif|ico|jpe?g|jp2|svg|tiff?|webp)(\?\S*)?$/i,
 				process: function(url) {
 					var self = this,
 						deferred = $.Deferred(),
