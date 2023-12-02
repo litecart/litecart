@@ -1,7 +1,6 @@
 <div id="box-filter" class="box">
   <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
 
-
     <div class="filters">
 
       <?php echo functions::form_draw_search_field('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. language::translate('title_name', 'Name') .'" placeholder="'. functions::escape_html(language::translate('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>

@@ -67,7 +67,7 @@
               break;
 
             default:
-              trigger_error("Unknown image clipping method ($clipping)", E_USER_WARNING);
+              trigger_error("Unknown image clipping method (". $options['clipping'] .")", E_USER_WARNING);
               return;
           }
 

@@ -10,6 +10,7 @@
       self::$_data = [
         'page_parse_time' => 0, // s
         'page_capture_time' => 0, // s
+        'view_stitching' => 0, // s
         'memory_peak_usage' => 0, // percent
         'database_queries' => 0, // qty
         'database_execution_time' => 0, // s
@@ -65,18 +66,19 @@
 
     // Output stats
       $stats = '<!--' . PHP_EOL
-             . '  Application Statistics:' . PHP_EOL
+             . '  Stats:' . PHP_EOL
              . '  - Using Cache: ' . ($cache ? 'Yes' : 'No') . PHP_EOL
-             . '  - Page Parse Time: ' . number_format(self::get('page_parse_time')*1000, 0, '.', ' ') . ' ms' . PHP_EOL
-             . '  - Page Capture Time: ' . number_format(self::get('page_capture_time')*1000, 0, '.', ' ') . ' ms' . PHP_EOL
-             . '  - Included Files: ' . count(get_included_files()) . PHP_EOL
-             . '  - Memory Peak: ' . number_format(self::get('memory_peak_usage'), 2, '.', ' ') . ' MB / '. ini_get('memory_limit') . PHP_EOL
-             . '  - Database Queries: ' . number_format(self::get('database_queries'), 0, '.', ' ') . PHP_EOL
-             . '  - Database Parse Time: ' . number_format(self::get('database_execution_time')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('database_execution_time')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
-             . '  - Network Requests: ' . self::get('http_requests') . PHP_EOL
-             . '  - Network Requests Duration: ' . number_format(self::get('http_duration')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('http_duration')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
-             . '  - Output Optimization: ' . number_format(self::get('output_optimization')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('output_optimization')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
+             . '  - Page Load: ' . number_format(self::get('page_parse_time')*1000, 0, '.', ' ') . ' ms' . PHP_EOL
+             . '  - Content Capturing: ' . number_format(self::get('page_capture_time')*1000, 0, '.', ' ') . ' ms' . PHP_EOL
+             . '  - Rendering: ' . number_format(ent_view::$time_elapsed*1000, 0, '.', ' ') . ' ms' . PHP_EOL
              . '  - vMod: ' . number_format(vmod::$time_elapsed*1000, 0, '.', ' ') . ' ms (' . number_format(vmod::$time_elapsed/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
+             . '  - Output Optimizations: ' . number_format(self::get('output_optimization')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('output_optimization')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
+             . '  - Database Duration: ' . number_format(self::get('database_execution_time')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('database_execution_time')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
+             . '  - Database Queries: ' . number_format(self::get('database_queries'), 0, '.', ' ') . PHP_EOL
+             . '  - Network Requests: ' . self::get('http_requests') . PHP_EOL
+             . '  - Network Duration: ' . number_format(self::get('http_duration')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('http_duration')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
+             . '  - Included Files: ' . count(get_included_files()) . PHP_EOL
+             . '  - Memory Peak: ' . number_format(self::get('memory_peak_usage'), 2, '.', ' ') . ' MB' . PHP_EOL
              . '-->';
 
       $GLOBALS['output'] = preg_replace('#</html>$#', '</html>' . PHP_EOL . $stats, $GLOBALS['output']);

@@ -158,6 +158,7 @@
 // Update cart / Keep alive
   var num_cart_updates = 0;
   window.updateCart = function(data) {
+
     $.ajax({
       url: window._env.platform.url + 'ajax/cart.json',
       type: data ? 'post' : 'get',
@@ -170,8 +171,6 @@
       },
       error: function(jqXHR, textStatus, errorThrown) {
         if (data) alert('Error while updating cart');
-        console.error('Error while updating cart');
-        console.debug(jqXHR.responseText);
       },
       success: function(json) {
         if (json['alert']) alert(json['alert']);
@@ -188,10 +187,12 @@
       }
     });
 
-    if (++num_cart_updates < 60) { // Stop refreshing cart after 60 cycles
-      var timerCart = setTimeout('updateCart', 60e3); // Keeps session alive
+    if (++num_cart_updates < 60) { // Continue refreshing up to 60 cycles
+      setTimeout('updateCart', 60e3);
     }
   }
+
+  setTimeout('updateCart', 60e3); // Keeps session alive
 
 // Add to cart animation
   $('body').on('submit', 'form[name="buy_now_form"]', function(e) {

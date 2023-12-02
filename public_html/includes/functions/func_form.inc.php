@@ -134,18 +134,21 @@
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-  // Format and show an additional two decimals precision if needed
-    if ($value != '') {
-      $value = number_format((float)$value, currency::$currencies[$currency_code]['decimals'] + 2, '.', '');
-      $value = preg_replace('#(\.'. str_repeat('\d', 2) .')0{1,2}$#', '$1', $value);
-      $value = rtrim($value, '.');
+    if (empty($currency_code)) {
+      $currency_code = settings::get('store_currency_code');
     }
 
-    if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
+    $currency = currency::$currencies[$currency_code];
+
+  // Format and show an additional two decimals precision if needed
+    if ($value != '') {
+      $value = number_format((float)$value, $currency['decimals'], '.', '');
+      //$value = preg_replace('#\.00$#', '', $value); // Auto decimals
+    }
 
     return '<div class="input-group">' . PHP_EOL
          . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" step="any" data-type="currency"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
-         . '  <strong class="input-group-text" style="opacity: 0.75;">'. functions::escape_html($currency_code) .'</strong>' . PHP_EOL
+         . '  <strong class="input-group-text" style="opacity: 0.75;">'. functions::escape_html($currency['code']) .'</strong>' . PHP_EOL
          . '</div>';
   }
 
@@ -206,7 +209,7 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     if ($value != '') {
-      $value = round((float)$value, $decimals);
+      $value = number_format((float)$value, (int)$decimals, '.', '');
     }
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="decimal" '. (($min != '') ? 'min="'. (float)$min .'"' : '') . (($max != '') ? ' max="'. (float)$max .'"' : '') . (($parameters) ? ' ' . $parameters : '') . (!preg_match('#step="([^"]+)?"#', $parameters) ? ' step="any"' : '') .'>';
@@ -432,12 +435,15 @@
 
     foreach ($groups as $group) {
       $html .= '    <optgroup label="'. $group['label'] .'">' . PHP_EOL;
+
       foreach ($group['options'] as $option) {
+
         if ($input === true) {
           $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
         } else {
           $option_input = $input;
         }
+
         $html .= '    <option value="'. functions::escape_html(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : '') : (($option[0] == $option_input) ? ' selected="selected"' : '')) . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. $option[0] .'</option>' . PHP_EOL;
       }
       $html .= '  </optgroup>' . PHP_EOL;
@@ -929,7 +935,7 @@
     $html .= '    </ul>' . PHP_EOL
            . '  </div>' . PHP_EOL
            . '  <div class="dropdown">' . PHP_EOL
-           . '  '. form_draw_search_field('', '', 'autocomplete="off" placeholder="'. functions::escape_html(language::translate('text_search_categories', 'Search categories')) .'&hellip;"') . PHP_EOL
+           . '    '. form_draw_search_field('', '', 'autocomplete="off" placeholder="'. functions::escape_html(language::translate('text_search_categories', 'Search categories')) .'&hellip;"') . PHP_EOL
            . '    <ul class="dropdown-menu" style="padding: 1em; right: 0; max-height: 480px; overflow-y: auto;"></ul>' . PHP_EOL
            . '  </div>' . PHP_EOL
            . '</div>';

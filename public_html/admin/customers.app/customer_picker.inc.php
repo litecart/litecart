@@ -9,7 +9,7 @@
 
 <div id="modal-customer-picker" class="modal fade" style="max-width: 720px; display: none;">
 
-  <button class="set-guest btn btn-default float-end" type="button"><?php echo language::translate('text_set_as_guest', 'Set As Guest'); ?></button>
+  <button class="set-guest btn btn-default btn-sm float-end" type="button"><?php echo language::translate('text_set_as_guest', 'Set As Guest'); ?></button>
 
   <h2 style="margin-top: 0;"><?php echo language::translate('title_customers', 'Customers'); ?></h2>
 

@@ -1172,7 +1172,7 @@
                + '  </td>'
                <?php foreach ($currency_codes as $currency_code) { ?>
                + '  <td><?php echo functions::escape_js($currency_code); ?><br>'
-               + '    <?php echo functions::escape_js(functions::form_draw_currency_field($currency_code, 'campaigns[new_campaign_i]['. $currency_code .']', '')); ?>'
+               + '    <?php echo functions::escape_js(functions::form_draw_currency_field($currency_code, 'campaigns[new_campaign_i]['. $currency_code .']', '', 'required')); ?>'
                + '  </td>'
                <?php } ?>
                + '  <td><br><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>'

@@ -142,6 +142,7 @@
           'city',
           'country_code',
           'zone_code',
+          'phone',
         ];
 
         foreach ($fields as $key) {

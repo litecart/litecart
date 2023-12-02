@@ -126,7 +126,7 @@ CREATE TABLE `lc_countries` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_currencies` (
   `id` TINYINT(2) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `status` TINYINT(1) NOT NULL DEFAULT '0',
   `code` VARCHAR(3) NOT NULL DEFAULT '',
   `number` VARCHAR(3) NOT NULL DEFAULT '',
   `name` VARCHAR(32) NOT NULL DEFAULT '',
@@ -318,6 +318,8 @@ CREATE TABLE `lc_newsletter_recipients` (
   `firstname` VARCHAR(64) NOT NULL DEFAULT '',
   `email` VARCHAR(128) NOT NULL DEFAULT '',
   `client_ip` VARCHAR(64) NOT NULL DEFAULT '',
+  `hostname` VARCHAR(128) NOT NULL DEFAULT '',
+  `user_agent` VARCHAR(256) NOT NULL DEFAULT '',
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email` (`email`)
@@ -416,6 +418,7 @@ CREATE TABLE `lc_orders_items` (
   `dim_y` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
   `dim_z` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
   `dim_class` VARCHAR(2) NOT NULL DEFAULT '',
+  `priority` INT(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
@@ -430,7 +433,7 @@ CREATE TABLE `lc_order_statuses` (
   `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `stock_action` ENUM('none','reserve','commit') NOT NULL DEFAULT 'none',
   `notify` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-  `priority` TINYINT(11) NOT NULL DEFAULT '0',
+  `priority` INT(11) NOT NULL DEFAULT '0',
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),

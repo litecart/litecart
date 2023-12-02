@@ -779,7 +779,7 @@
             <div class="input-group">
               <span class="input-group-text"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'disabled title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')).'"'); ?></span>
               <?php echo functions::form_draw_decimal_field('order_total['. $key .'][value]', true, !empty(currency::$currencies[$_POST['currency_code']]) ? currency::$currencies[$_POST['currency_code']]['decimals'] : 2, null, null, 'style="text-align: end;"'); ?>
-              <span class="input-group-text"><?php echo $_POST['currency_code']; ?></span>
+              <span class="input-group-text"><?php echo functions::escape_html($_POST['currency_code']); ?></span>
             </div>
           </td>
           <td class="text-end"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][tax]', true, 'style="text-align: end;"'); ?></td>
@@ -797,7 +797,7 @@
             <div class="input-group">
             <span class="input-group-text"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
             <?php echo functions::form_draw_decimal_field('order_total['. $key .'][value]', true, !empty(currency::$currencies[$_POST['currency_code']]) ? currency::$currencies[$_POST['currency_code']]['decimals'] : 2, null, null, 'style="text-align: end;"'); ?>
-            <span class="input-group-text"><?php echo $_POST['currency_code']; ?></span>
+            <span class="input-group-text"><?php echo functions::escape_html($_POST['currency_code']); ?></span>
             </div>
           </td>
           <td class="text-end"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][tax]', true, 'style="text-align: end;"'); ?></td>
@@ -1014,6 +1014,21 @@
 </div>
 
 <script>
+  Number.prototype.toMoney = function() {
+    var n = this,
+      c = $('select[name="currency_code"] option:selected').data('decimals'),
+      d = '<?php echo language::$selected['decimal_point']; ?>',
+      t = '<?php echo addslashes(language::$selected['thousands_sep']); ?>',
+      p = $('select[name="currency_code"] option:selected').data('prefix'),
+      x = $('select[name="currency_code"] option:selected').data('suffix'),
+      s = n < 0 ? '-' : '',
+      i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
+      f = n - i,
+      j = (j = i.length) > 3 ? j % 3 : 0;
+
+    return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x;
+  }
+
 // Order
 
   $('select[name="currency_code"]').change(function(e){
@@ -1131,6 +1146,7 @@
       dataType: 'json',
       error: function(jqXHR, textStatus, errorThrown) {
         //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+        console.error(errorThrown.message);
       },
       success: function(data) {
         $('select[name="customer[shipping_address][zone_code]"]').html('');
@@ -1258,6 +1274,11 @@
   });
 
 // Order items
+  $('#order-items').on('change', 'input[name$="[price]"], input[name$="[tax]"]', function(e) {
+    var decimals = $('select[name="currency_code"] option:selected').data('decimals'),
+      value = parseFloat($(this).val());
+    $(this).val(value.toFixed(decimals));
+  });
 
   $('#order-items').on('click', '.edit', function(){
     $.featherlight('#modal-edit-order-item');
@@ -1267,7 +1288,7 @@
 
     $(modal).data('row', row);
 
-    $.each($(modal).find(':input'), function(i,element){
+    $.each($(modal).find(':input'), function(i, element){
       var field = $(element).attr('name');
       var value = $(row).find(':input[name$="['+field+']"]').val();
       if ($(modal).find(':input[name="'+field+'"]').attr('type') == 'number') value = parseFloat(value || 0);
@@ -1305,7 +1326,7 @@
 
     if (row == '') {
       var item = {};
-      $.each($(modal).find(':input'), function(i,element){
+      $.each($(modal).find(':input'), function(i, element){
         var field = $(element).attr('name');
         item[field] = $(modal).find(':input[name="'+field+'"]').val();
       });
@@ -1396,7 +1417,9 @@
     output = output.replace(/new_item_index/g, 'new_' + new_item_index);
     $('#order-items tbody').append(output);
 
-    var row = $('#order-items tbody tr.item').last();
+    var decimals = $('select[name="currency_code"] option:selected').data('decimals'),
+      row = $('#order-items tbody tr.item').last();
+
     $(row).find('*[name$="[product_id]"]').val(item.product_id);
     $(row).find('*[name$="[sku]"]').val(item.sku);
     $(row).find('*[name$="[option_stock_combination]"]').val(item.option_stock_combination);
@@ -1410,8 +1433,8 @@
     $(row).find('*[name$="[dim_z]"]').val(item.dim_z);
     $(row).find('*[name$="[dim_class]"]').val(item.dim_class);
     $(row).find('*[name$="[quantity]"]').val(item.quantity);
-    $(row).find('*[name$="[price]"]').val(item.price);
-    $(row).find('*[name$="[tax]"]').val(item.tax);
+    $(row).find('*[name$="[price]"]').val(item.price.toFixed(decimals));
+    $(row).find('*[name$="[tax]"]').val(item.tax.toFixed(decimals));
 
     $(row).find('[data-type="currency"]').parent().find('.input-group-text').text($(':input[name="currency_code"]').val());
     $(row).find('.weight').text(String(item.weight).trim('.0'));
@@ -1448,6 +1471,11 @@
   });
 
 // Order Total
+  $('#order-total').on('change', 'input[name$="[value]"], input[name$="[tax]"]', function(e) {
+    var decimals = $('select[name="currency_code"] option:selected').data('decimals'),
+      value = parseFloat($(this).val());
+    $(this).val(value.toFixed(decimals));
+  });
 
   var new_ot_row_index = 0;
   $('#order-total').on('click', '.add', function(e) {
@@ -1461,7 +1489,7 @@
                + '      <div class="input-group">'
                + '        <span class="input-group-text"><?php echo functions::escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>'
                + '        <?php echo functions::form_draw_decimal_field('order_total[new_ot_row_index][value]', true, !empty(currency::$currencies[$_POST['currency_code']]) ? currency::$currencies[$_POST['currency_code']]['decimals'] : 2, null, null, 'style="text-align: end;"'); ?>'
-               + '        <span class="input-group-text"><?php echo $_POST['currency_code']; ?></span>'
+               + '        <span class="input-group-text"><?php echo functions::escape_js($_POST['currency_code']); ?></span>'
                + '      </div>'
                + '    </td>'
                + '    <td class="text-end"><?php echo functions::escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][tax]', currency::format_raw(0), 'style="text-align: end;"')); ?></td>'
@@ -1479,21 +1507,25 @@
 
   function calculate_total() {
 
-    var subtotal = 0;
+    var decimals = $('select[name="currency_code"] option:selected').data('decimals') || 0,
+     subtotal = 0,
+     subtotal_tax = 0;
+
     $('input[name^="items["][name$="[price]"]').each(function() {
       subtotal += parseFloat($(this).val() || 0) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val() || 0);
     });
-    subtotal = parseFloat(subtotal.toFixed($('select[name="currency_code"] option:selected').data('decimals')) || 0);
-    $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[value]"]').val(subtotal);
-
-    var subtotal_tax = 0;
     $('input[name^="items["][name$="[tax]"]').each(function() {
       subtotal_tax += parseFloat($(this).val() || 0) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val() || 0);
     });
-    subtotal_tax = parseFloat(subtotal_tax.toFixed($('select[name="currency_code"] option:selected').data('decimals')) || 0);
-    $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[tax]"]').val(subtotal_tax);
+
+    subtotal = parseFloat(subtotal.toFixed(decimals) || 0);
+    subtotal_tax = parseFloat(subtotal_tax.toFixed(decimals) || 0);
+
+    $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[value]"]').val(subtotal.toFixed(decimals));
+    $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[tax]"]').val(subtotal_tax.toFixed(decimals));
 
     var order_total = subtotal + subtotal_tax;
+
     $('input[name^="order_total["][name$="[value]"]').each(function() {
       if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
         order_total += parseFloat($(this).val() || 0);
@@ -1506,8 +1538,7 @@
       }
     });
 
-    order_total = parseFloat(order_total.toFixed($('select[name="currency_code"] option:selected').data('decimals')) || 0);
-    $('#order-total .total').text($('select[name="currency_code"] option:selected').data('prefix') + order_total + $('select[name="currency_code"] option:selected').data('suffix'));
+    $('#order-total .total').text(order_total.toMoney());
   }
 
   $('body').on('click keyup', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="order_total"][name$="[value]"], input[name^="order_total"][name$="[tax]"], input[name^="order_total"][name$="[calculate]"], #order-items a.remove, #order-total a.remove', function() {

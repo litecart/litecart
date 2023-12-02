@@ -11,8 +11,17 @@
 
     // Bind selected language to session
       if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'])) {
-        if (!isset(session::$data['backend']['language'])) session::$data['backend']['language'] = [];
+
+        if (!isset(session::$data['backend'])) {
+          session::$data['backend'] = [];
+        }
+
+        if (!isset(session::$data['backend']['language'])) {
+          session::$data['backend']['language'] = [];
+        }
+
         self::$selected = &session::$data['backend']['language'];
+
       } else {
         if (!isset(session::$data['language'])) session::$data['language'] = [];
         self::$selected = &session::$data['language'];
@@ -155,7 +164,8 @@
     // Return language from
       foreach ($enabled_languages as $language_code) {
         if (self::$languages[$language_code]['url_type'] == 'none') {
-          if (!preg_match('#^'. preg_quote(WS_DIR_APP, '#') .'[a-z]{2}(/|$)#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
+          $webpath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+          if (!$webpath || !preg_match('#^'. preg_quote(WS_DIR_APP, '#') .'[a-z]{2}(/|$)#', $webpath)) {
             return $language_code;
           }
         }
