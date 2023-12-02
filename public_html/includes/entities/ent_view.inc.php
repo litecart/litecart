@@ -4,7 +4,11 @@
     public $snippets = [];
     public $html = '';
 
+    public static $time_elapsed = 0;
+
     public function stitch($view=null, $cleanup=false) {
+
+      $timestamp_start = microtime(true);
 
       if (!empty($view)) {
 
@@ -56,6 +60,8 @@
 
         $this->html = preg_replace($search, '', $this->html);
       }
+
+      self::$time_elapsed += microtime(true) - $timestamp_start;
 
       return $this->html;
     }

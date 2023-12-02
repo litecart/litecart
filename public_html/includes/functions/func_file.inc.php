@@ -1,9 +1,11 @@
 <?php
 
 // PHP doesn't always clean up temp files, so let's create a function that does
-  function file_create_tempfile() {
+  function file_create_tempfile($data='') {
 
     $tmp_file = stream_get_meta_data(tmpfile())['uri'];
+
+    if ($data) file_put_contents($tmp_file, $data);
 
     register_shutdown_function(function($f){
       is_file($f) && unlink($f);

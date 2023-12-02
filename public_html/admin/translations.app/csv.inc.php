@@ -26,6 +26,12 @@
 
       $language_codes = array_diff(array_keys($csv[0]), ['code']);
 
+      foreach ($language_codes as $language_code) {
+        if (!in_array($language_code, array_keys(language::$languages))) {
+          throw new Exception('Skipping unknown language ('. $language_code .') which is either missing or disabled');
+        }
+      }
+
       $updated = 0;
       $inserted = 0;
       $line = 0;
@@ -47,7 +53,6 @@
             if (empty($_POST['update']) && empty($_POST['append'])) continue;
             if (empty($translation['text_'.$language_code]) && empty($_POST['append'])) continue;
             if (!empty($translation['text_'.$language_code]) && empty($_POST['update'])) continue;
-
             if (!in_array($language_code, array_keys(language::$languages))) continue;
 
             database::query(

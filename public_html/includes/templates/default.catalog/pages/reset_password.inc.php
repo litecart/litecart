@@ -19,7 +19,7 @@
           </div>
 
           <div class="card-body">
-            <?php echo functions::form_draw_form_begin('reset_password_form', 'post', null, false, 'style="width: 320px;"'); ?>
+            <?php echo functions::form_draw_form_begin('reset_password_form', 'post', null, false, 'style="max-width: 480px;"'); ?>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>

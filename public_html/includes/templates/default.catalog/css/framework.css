@@ -920,42 +920,6 @@ html[dir="rtl"] .float-end {
 .row [class*="col-"] {
   grid-column: span 12;
 }
-.col--1 {
-  grid-column: span 1 !important;
-}
-.col--2 {
-  grid-column: span 2 !important;
-}
-.col--3 {
-  grid-column: span 3 !important;
-}
-.col--4 {
-  grid-column: span 4 !important;
-}
-.col--5 {
-  grid-column: span 5 !important;
-}
-.col--6 {
-  grid-column: span 6 !important;
-}
-.col--7 {
-  grid-column: span 7 !important;
-}
-.col--8 {
-  grid-column: span 8 !important;
-}
-.col--9 {
-  grid-column: span 9 !important;
-}
-.col--10 {
-  grid-column: span 10 !important;
-}
-.col--11 {
-  grid-column: span 11 !important;
-}
-.col--12 {
-  grid-column: span 12 !important;
-}
 .col-xs-1 {
   grid-column: span 1 !important;
 }

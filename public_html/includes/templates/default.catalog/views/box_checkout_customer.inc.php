@@ -153,7 +153,7 @@
           <?php if (settings::get('customer_field_zone')) { ?>
           <div class="form-group col-xs-6">
             <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-            <?php echo functions::form_draw_zones_list(isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : $_POST['country_code'], 'shipping_address[zone_code]', true); ?>
+            <?php echo functions::form_draw_zones_list(isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : @$_POST['country_code'], 'shipping_address[zone_code]', true); ?>
           </div>
           <?php } ?>
         </div>

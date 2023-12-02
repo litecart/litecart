@@ -165,7 +165,13 @@
 
       if (empty($path)) return '';
 
-      if (!$path = urldecode(parse_url($path, PHP_URL_PATH))) {
+      $path = preg_replace('#/+#', '/', $path); // Bad bot nonsense
+
+      if (!$path = parse_url($path, PHP_URL_PATH)) {
+        return '';
+      }
+
+      if (!$path = urldecode($path)) {
         return '';
       }
 
@@ -246,7 +252,9 @@
       $link->path = self::strip_url_logic($link->path);
 
     // Don't rewrite links in the admin folder
-      if (preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'.*#', $link->path)) return;
+      if (preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'/.*#', $link->path)) {
+        return $link;
+      }
 
     // Set route name
       $route_name = str_replace('/', '_', trim($link->path, '/'));

@@ -90,8 +90,10 @@
 
         // Pop path
           if (strpos($value, '..') !== false) {
+
             $parts = array_filter(explode('/', $value), 'strlen');
             $absolutes = [];
+
             foreach ($parts as $part) {
               if ('.' == $part) continue;
               if ('..' == $part) {
@@ -100,6 +102,7 @@
                 $absolutes[] = $part;
               }
             }
+
             $value = '/' . implode('/', $absolutes);
           }
 

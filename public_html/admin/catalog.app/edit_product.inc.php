@@ -523,7 +523,7 @@
                     <?php echo functions::form_draw_decimal_field('campaigns['.$key.'][percentage]', '', 2, 0, null); ?>
                   </td>
                   <td><?php echo settings::get('store_currency_code'); ?><br />
-                    <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'campaigns['.$key.']['. settings::get('store_currency_code') .']', true); ?>
+                    <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'campaigns['.$key.']['. settings::get('store_currency_code') .']', true, 'required'); ?>
                   </td>
 <?php
   foreach (array_keys(currency::$currencies) as $currency_code) {
@@ -1183,7 +1183,7 @@
     if ($currency_code == settings::get('store_currency_code')) continue;
 ?>
                + '  <td><?php echo functions::escape_js($currency_code); ?><br />'
-               + '    <?php echo functions::escape_js(functions::form_draw_currency_field($currency_code, 'campaigns[new_campaign_i]['. $currency_code .']', '')); ?>'
+               + '    <?php echo functions::escape_js(functions::form_draw_currency_field($currency_code, 'campaigns[new_campaign_i]['. $currency_code .']', '', 'required')); ?>'
                + '  </td>'
 <?php
   }
