@@ -539,9 +539,9 @@ textarea.warning {
       </div>
 
       <div class="card-action">
-        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo !empty($vmod->data['id']) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'button', 'class="btn btn-danger"', 'delete') : ''; ?>
-        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo functions::form_button_predefined('save'); ?>
+        <?php if (!empty($vmod->data['id'])) echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'button', 'class="btn btn-danger"', 'delete'); ?>
+        <?php echo functions::form_button_predefined('cancel'); ?>
       </div>
     </div>
   <?php echo functions::form_end(); ?>

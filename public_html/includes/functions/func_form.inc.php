@@ -55,36 +55,38 @@
     return '<button'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="btn btn-default"' : '') .' type="'. functions::escape_html($type) .'" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. ((!empty($fonticon)) ? functions::draw_fonticon($fonticon) . ' ' : '') . (isset($value[1]) ? $value[1] : $value[0]) .'</button>';
   }
 
+  function form_button_save($name, $value, $type='submit', $parameters='', $fonticon='') {
+
+    if (!is_array($value)) {
+      $value = [$value, $value];
+    }
+
+    return '<button'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="btn btn-default"' : '') .' type="'. functions::escape_html($type) .'" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. ((!empty($fonticon)) ? functions::draw_fonticon($fonticon) . ' ' : '') . (isset($value[1]) ? $value[1] : $value[0]) .'</button>';
+  }
+
+  function form_button_predefined($name, $parameters='') {
+
+    switch($name) {
+      case 'save':
+        return functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"' . (!empty($parameters) ? ' '. $parameters : ''), 'save');
+
+      case 'delete':
+        return functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(&quot;'. language::translate('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"' . (!empty($parameters) ? ' '. $parameters : ''), 'delete');
+
+      case 'cancel':
+        return functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"' . (!empty($parameters) ? ' '. $parameters : ''), 'cancel');
+    }
+
+    trigger_error('Unknown predefined button ('. functions::escape_html($name) .')', E_USER_WARNING);
+
+    return form_button_save($name, $value, 'submit', $parameters, $fonticon);
+  }
+
   function form_captcha_field($name, $id, $parameters='') {
 
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-text" style="padding: 0;">'. functions::captcha_generate(100, 40, 4, $id, 'numbers', 'align="absbottom"') .'</span>' . PHP_EOL
          . '  ' . form_text_field('captcha', '', $parameters . ' autocomplete="off" style="font-size: 24px; padding: 0; text-align: center;"') . PHP_EOL
-         . '</div>';
-  }
-
-  function form_category_field($name, $input=true, $parameters='') {
-
-    if ($input === true) {
-      $input = form_reinsert_value($name);
-    }
-
-    if (!empty($input)) {
-      $category_name = reference::category($input)->name;
-    } else {
-      $category_name = language::translate('title_root', 'Root');
-    }
-
-    functions::draw_lightbox();
-
-    return '<div class="input-group"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
-         . '  <div class="form-input">' . PHP_EOL
-         . '    ' . form_hidden_field($name, true) . PHP_EOL
-         . '    '. functions::draw_fonticon('folder') .' <span class="name" style="display: inline-block;">'. $category_name .'</span>' . PHP_EOL
-         . '  </div>' . PHP_EOL
-         . '  <div style="align-self: center;">' . PHP_EOL
-         . '    <a href="'. document::href_ilink('b:catalog/category_picker', ['parent_id' => $input]) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
-         . '  </div>' . PHP_EOL
          . '</div>';
   }
 

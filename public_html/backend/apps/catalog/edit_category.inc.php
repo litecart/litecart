@@ -308,9 +308,9 @@
       </div>
 
       <div class="card-action">
-        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo !empty($category->data['id']) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(&quot;'. language::translate('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"', 'delete') : ''; ?>
-        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo functions::form_button_predefined('save'); ?>
+        <?php if (!empty($category->data['id'])) echo functions::form_button_predefined('delete'); ?>
+        <?php echo functions::form_button_predefined('cancel'); ?>
       </div>
 
     <?php echo functions::form_end(); ?>
