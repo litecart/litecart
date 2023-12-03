@@ -73,12 +73,15 @@
           </div>
           <?php } ?>
 
+          <?php if (isset($quantity_available)) { ?>
           <div class="stock-status" style="margin: 1em 0;">
-           <?php if ($quantity > 0) { ?>
+
+           <?php if ($quantity_available) { ?>
             <div class="stock-available">
               <?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
               <span class="value"><?php echo $stock_status; ?></span>
             </div>
+
             <?php if ($delivery_status) { ?>
             <div class="stock-delivery">
               <?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>: <span class="value"><?php echo $delivery_status['name']; ?></span>
@@ -87,6 +90,7 @@
               <?php } ?>
             </div>
             <?php } ?>
+
            <?php } else { ?>
             <?php if ($sold_out_status) { ?>
               <div class="<?php echo empty($sold_out_status['orderable']) ? 'stock-partly-available' : 'stock-unavailable'; ?>">
@@ -104,7 +108,9 @@
               </div>
             <?php } ?>
            <?php } ?>
+
           </div>
+          <?php } ?>
 
           <?php if ($recommended_price) { ?>
           <div class="recommended-price" style="margin: 1em 0;">
@@ -149,17 +155,17 @@
             </div>
             <?php } ?>
 
-            <?php if (!settings::get('catalog_only_mode') && ($quantity > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>
+            <?php if (!settings::get('catalog_only_mode') && (!isset($quantity_available) || $quantity_available > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>
             <div class="form-group" style="margin-bottom: 0;">
-              <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
+              <label><?php echo language::translate('title_quantity_available', 'Quantity Available'); ?></label>
               <div style="display: flex">
             <div class="input-group" style="flex: 0 1 150px;">
-              <?php echo !empty($quantity_unit['decimals']) ? functions::form_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. (1 / intval('1'.str_repeat('0', $quantity_unit['decimals']))) .'"') : functions::form_number_field('quantity', isset($_POST['quantity']) ? true : 1, 'min="1"'); ?>
+              <?php echo !empty($quantity_unit['decimals']) ? functions::form_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. (float)$quantity_min .'"' . ($quantity_max ? 'max="'. (float)$quantity_max .'"' : '') . ($quantity_step ? 'step="'. (float)$quantity_step .'"' : '')) : functions::form_number_field('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. (int)$quantity_min .'"'. ($quantity_max ? 'max="'. (int)$quantity_max .'"' : '') . ($quantity_step ? 'step="'. (int)$quantity_step .'"' : '')); ?>
                   <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-text">'. $quantity_unit['name'] .'</div>' : ''; ?>
                 </div>
 
                 <div style="padding-inline-start: 1em;">
-                  <?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity <= 0 && !$orderable) ? ' disabled' : '') .'>'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
+                  <?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity_available <= 0 && !$orderable) ? ' disabled' : '') .'>'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
                 </div>
               </div>
             </div>
@@ -170,7 +176,7 @@
             <?php echo functions::form_end(); ?>
           </div>
 
-          <?php if ($quantity <= 0 && !empty($sold_out_status) && empty($sold_out_status['orderable'])) { ?>
+          <?php if (isset($quantity_available) && $quantity_available <= 0 && !empty($sold_out_status) && empty($sold_out_status['orderable'])) { ?>
           <div class="out-of-stock-notice">
             <?php echo language::translate('description_item_is_out_of_stock', 'This item is currently out of stock and cannot be purchased.'); ?>
           </div>
