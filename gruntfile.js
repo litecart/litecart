@@ -124,7 +124,7 @@ module.exports = function(grunt) {
           relativeUrls: true
         },
         files: {
-          'public_html/assets/featherlight/featherlight.min.css'       : 'public_html/assets/featherlight/featherlight.less',
+          'public_html/assets/featherlight/featherlight.min.css': 'public_html/assets/featherlight/featherlight.less',
         }
       },
     },
@@ -152,13 +152,32 @@ module.exports = function(grunt) {
       }
     },
 
+    concat: {
+      backend: {
+        //options: {
+        //  stripBanners: true,
+        //  banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+        //    '<%= grunt.template.today("yyyy-mm-dd") %> */',
+        //},
+        files: {
+          'src/project.js': ['public_html/frontend/templates/classic/js/app.min.js']
+        },
+      },
+      frontend: {
+        files: {
+          //'public_html/frontend/templates/classic/js/app.js': ['public_html/frontend/templates/classic/js/components/*.js'],
+          'public_html/frontend/templates/default/js/app.js': ['public_html/frontend/templates/default/js/components/*.js']
+        },
+      }
+    },
+
     uglify: {
       featherlight: {
         options: {
           sourceMap: false,
         },
         files: {
-          'public_html/assets/featherlight/featherlight.min.js'   : ['public_html/assets/featherlight/featherlight.js'],
+          'public_html/assets/featherlight/featherlight.min.js': ['public_html/assets/featherlight/featherlight.js'],
         }
       },
       litecart: {
@@ -166,9 +185,9 @@ module.exports = function(grunt) {
           sourceMap: true,
         },
         files: {
-          'public_html/backend/template/js/app.min.js'   : ['public_html/backend/template/js/app.js'],
-          'public_html/frontend/templates/classic/js/app.min.js' : ['public_html/frontend/templates/classic/js/app.js'],
-          'public_html/frontend/templates/default/js/app.min.js' : ['public_html/frontend/templates/default/js/app.js'],
+          'public_html/backend/template/js/app.min.js':           ['public_html/backend/template/js/app.js'],
+          'public_html/frontend/templates/classic/js/app.min.js': ['public_html/frontend/templates/classic/js/app.js'],
+          'public_html/frontend/templates/default/js/app.min.js': ['public_html/frontend/templates/default/js/app.js'],
         }
       },
     },
@@ -219,13 +238,14 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-dart-sass');
   grunt.loadNpmTasks('grunt-text-replace');
 
-  grunt.registerTask('default', ['replace', 'less', 'dart-sass', 'uglify']);
-  grunt.registerTask('compile', ['less', 'dart-sass', 'uglify']);
+  grunt.registerTask('default', ['replace', 'less', 'dart-sass', 'concat', 'uglify']);
+  grunt.registerTask('compile', ['less', 'dart-sass', 'concat', 'uglify']);
 
   require('phplint').gruntPlugin(grunt);
   grunt.registerTask('test', ['phplint']);
