@@ -54,8 +54,6 @@
         'STRICT_ALL_TABLES',   // Strict mode [MySQL 5.7+, MariaDB 10.2.4+]
         'STRICT_TRANS_TABLES', // Strict mode [MySQL 5.7+, MariaDB 10.2.4+]
         'ONLY_FULL_GROUP_BY',  // Requiring an undesired amount of columns in group by clause [MySQL 5.7+]
-        'NO_ZERO_DATE',        // Prevents us from sending in empty dates [MySQL 5.7+]
-        'NO_ZERO_IN_DATE',     // Prevents us from sending in a zero date 0000-00-00 [MySQL 5.7+]
       ];
 
       foreach ($undesired_modes as $mode) {
