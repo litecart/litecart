@@ -1,7 +1,7 @@
 <?php
 
   #[AllowDynamicProperties]
-  class pm_cod {
+  class pm_cod extends abs_module {
     public $name = 'Cash on Delivery';
     public $description = '';
     public $author = 'LiteCart Dev Team';

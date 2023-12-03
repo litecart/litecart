@@ -1,7 +1,7 @@
 <?php
 
   #[AllowDynamicProperties]
-  class ot_payment_fee {
+  class ot_payment_fee extends abs_module {
     public $name = 'Payment Fee';
     public $description = '';
     public $author = 'LiteCart Dev Team';

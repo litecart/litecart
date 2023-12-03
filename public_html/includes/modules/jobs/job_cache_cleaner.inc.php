@@ -1,7 +1,7 @@
 <?php
 
   #[AllowDynamicProperties]
-  class job_cache_cleaner {
+  class job_cache_cleaner extends abs_module {
     public $name = 'Cache Cleaner';
     public $description = 'Wipe out old cache files that are starting to collect dust.';
     public $author = 'LiteCart Dev Team';

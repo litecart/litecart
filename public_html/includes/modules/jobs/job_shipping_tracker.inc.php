@@ -1,6 +1,7 @@
 <?php
 
-  class job_shipping_tracker {
+  #[AllowDynamicProperties]
+  class job_shipping_tracker extends abs_module {
 
     public $id = __CLASS__;
     public $name = 'Shipping Tracker';
