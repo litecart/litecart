@@ -111,6 +111,12 @@
         }
       }
 
+    // Sort options by fee
+      uasort($this->_cache[$checksum]['options'], function($a, $b) {
+        if ($a['cost'] == $b['cost']) return;
+        return ($a['cost'] > $b['cost']) ? 1 : -1;
+      });
+
       return $this->_cache[$checksum]['options'];
     }
 
