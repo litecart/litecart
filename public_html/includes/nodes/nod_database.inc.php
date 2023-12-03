@@ -119,7 +119,9 @@
 
     public static function query($sql, $link='default') {
 
-      if (!isset(self::$_links[$link])) self::connect($link);
+      if (!isset(self::$_links[$link])) {
+        self::connect($link);
+      }
 
       $timestamp = microtime(true);
 
@@ -143,7 +145,9 @@
 
     public static function multi_query($query, $link='default') {
 
-      if (!isset(self::$_links[$link])) self::connect($link);
+      if (!isset(self::$_links[$link])) {
+        self::connect($link);
+      }
 
       $timestamp = microtime(true);
 
@@ -198,7 +202,9 @@
 
     public static function create_variable($field, $value=null) {
 
-      if (empty($field)) return null;
+      if (empty($field)) {
+        return null;
+      }
 
       if (is_string($field)) {
         $field = [

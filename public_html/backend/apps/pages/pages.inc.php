@@ -50,6 +50,7 @@
       if (isset($_POST['page_id']) && $_POST['page_id'] == '') {
         throw new Exception(language::translate('error_must_select_destination', 'You must select a destination'));
       }
+
       if (isset($_POST['page_id']) && isset($_POST['pages']) && in_array($_POST['page_id'], $_POST['pages'])) {
         throw new Exception(language::translate('error_cant_move_page_to_itself', 'You can\'t move a page to itself'));
       }

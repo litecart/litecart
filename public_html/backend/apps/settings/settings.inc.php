@@ -1,12 +1,12 @@
 <?php
 
-  document::$snippets['title'][] = language::translate('title_settings', 'Settings');
-
-  breadcrumbs::add(language::translate('title_settings', 'Settings'));
-
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
     $_GET['page'] = 1;
   }
+
+  document::$snippets['title'][] = language::translate('title_settings', 'Settings');
+
+  breadcrumbs::add(language::translate('title_settings', 'Settings'));
 
   if (isset($_POST['save'])) {
 

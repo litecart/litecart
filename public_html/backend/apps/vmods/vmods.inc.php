@@ -92,9 +92,9 @@
 
   foreach (functions::file_search('storage://vmods/*.{xml,disabled}', GLOB_BRACE) as $file) {
 
-		$vmod = vmod::parse($file);
+    $vmod = vmod::parse($file);
 
-		$vmod = array_merge($vmod, [
+    $vmod = array_merge($vmod, [
       'filename' => pathinfo($file, PATHINFO_BASENAME),
       'status' => preg_match('#\.xml$#', $file),
       'errors' => null,
@@ -104,7 +104,7 @@
       $vmod['version'] = date('Y-m-d', filemtime($file));
     }
 
-	// Check for errors
+  // Check for errors
     try {
 
       foreach (array_keys($vmod['files']) as $key) {
@@ -156,7 +156,7 @@
       $vmod['errors'] = $e->getMessage();
     }
 
-		$vmods[] = $vmod;
+    $vmods[] = $vmod;
   }
 
 // Number of Rows

@@ -154,6 +154,7 @@
           implode(PHP_EOL . PHP_EOL, self::$snippets['style']),
           '</style>',
         ]);
+        self::$snippets['style'] = [];
       }
 
     // Prepare javascript
@@ -163,6 +164,7 @@
           implode(PHP_EOL . PHP_EOL, self::$snippets['javascript']),
           '</script>',
         ]);
+        self::$snippets['javascript'] = [];
       }
 
     // Prepare snippets
@@ -261,6 +263,8 @@
 
           if (!preg_match('#(?<==")(https?:)?//[^"]+(?=")#is', $match, $m)) continue;
 
+          $m[0] = html_entity_decode($m[0]);
+
           switch ($matches[1][$key]) {
             case 'link':
               if (!preg_match('#stylesheet#', $m[0])) continue 2;
@@ -314,6 +318,7 @@
       }
 
       self::$snippets['head_tags'][$key] = implode(PHP_EOL, array_map(function($url){
+        if (!$url) return;
         return '<link rel="stylesheet" href="'. document::href_rlink($url) .'">';
       }, $urls));
     }
@@ -325,6 +330,7 @@
       }
 
       self::$snippets['foot_tags'][$key] = implode(PHP_EOL, array_map(function($url){
+        if (!$url) return;
         return '<script src="'. document::href_rlink($url) .'"></script>';
       }, $urls));
     }

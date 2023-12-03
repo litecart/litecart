@@ -22,7 +22,6 @@
         throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
       }
 
-
       if (empty($csv[0]['code'])) {
         throw new Exception(language::translate('error_missing_code_column', 'Missing column for code'));
       }
