@@ -273,9 +273,9 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_status', 'Status'); ?></label>
           <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
-            <label class="btn btn-default<?php echo (isset($_POST['status']) && $_POST['status'] == 1) ? ' active' : ''; ?>"><?php echo functions::form_radio_button('status', '1', true); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
-            <label class="btn btn-default<?php echo (isset($_POST['status']) && $_POST['status']  == -1) ? ' active' : ''; ?>"><?php echo functions::form_radio_button('status', '-1', true); ?><?php echo language::translate('title_hidden', 'Hidden'); ?></label>
-            <label class="btn btn-default<?php echo empty($_POST['status']) ? ' active' : ''; ?>"><?php echo functions::form_radio_button('status', '0', true); ?><?php echo language::translate('title_disabled', 'Disabled'); ?></label>
+            <label class="btn btn-default<?php if (isset($_POST['status']) && $_POST['status'] == 1) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '1', true); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
+            <label class="btn btn-default<?php if (isset($_POST['status']) && $_POST['status']  == -1) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '-1', true); ?><?php echo language::translate('title_hidden', 'Hidden'); ?></label>
+            <label class="btn btn-default<?php if (empty($_POST['status'])) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '0', true); ?><?php echo language::translate('title_disabled', 'Disabled'); ?></label>
           </div>
         </div>
       </div>
@@ -289,8 +289,8 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_text_direction', 'Text Direction'); ?></label>
           <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
-          <label class="btn btn-default<?php echo (!isset($_POST['direction']) || $_POST['direction'] == 'ltr') ? ' active' : ''; ?>" style="text-align: left;"><?php echo functions::form_radio_button('direction', 'ltr', true); ?> <?php echo language::translate('title_left_to_right', 'Left To Right'); ?></label>
-          <label class="btn btn-default<?php echo (isset($_POST['direction']) && $_POST['direction'] == 'rtl') ? ' active' : ''; ?>" style="text-align: right;"><?php echo functions::form_radio_button('direction', 'rtl', true); ?><?php echo language::translate('title_right_to_left', 'Right To Left'); ?></label>
+          <label class="btn btn-default<?php if (!isset($_POST['direction']) || $_POST['direction'] == 'ltr') echo ' active'; ?>" style="text-align: left;"><?php echo functions::form_radio_button('direction', 'ltr', true); ?> <?php echo language::translate('title_left_to_right', 'Left To Right'); ?></label>
+          <label class="btn btn-default<?php if (isset($_POST['direction']) && $_POST['direction'] == 'rtl') echo ' active'; ?>" style="text-align: right;"><?php echo functions::form_radio_button('direction', 'rtl', true); ?><?php echo language::translate('title_right_to_left', 'Right To Left'); ?></label>
           </div>
         </div>
       </div>
@@ -316,9 +316,9 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_url_type', 'URL Type'); ?></label>
           <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
-          <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'none') ? ' active' : ''; ?>"><?php echo functions::form_radio_button('url_type', 'none', !empty($_POST['url_type']) ? true : 'none'); ?> <?php echo language::translate('title_none', 'None'); ?></label>
-          <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'path') ? ' active' : ''; ?>"><?php echo functions::form_radio_button('url_type', 'path', true); ?> <?php echo language::translate('title_path_prefix', 'Path Prefix'); ?></label>
-          <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain') ? ' active' : ''; ?>"><?php echo functions::form_radio_button('url_type', 'domain', true); ?> <?php echo language::translate('title_domain', 'Domain'); ?></label>
+          <label class="btn btn-default<?php if (!empty($_POST['url_type']) && $_POST['url_type'] == 'none') echo ' active'; ?>"><?php echo functions::form_radio_button('url_type', 'none', !empty($_POST['url_type']) ? true : 'none'); ?> <?php echo language::translate('title_none', 'None'); ?></label>
+          <label class="btn btn-default<?php if (!empty($_POST['url_type']) && $_POST['url_type'] == 'path') echo ' active'; ?>"><?php echo functions::form_radio_button('url_type', 'path', true); ?> <?php echo language::translate('title_path_prefix', 'Path Prefix'); ?></label>
+          <label class="btn btn-default<?php if (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain') echo ' active'; ?>"><?php echo functions::form_radio_button('url_type', 'domain', true); ?> <?php echo language::translate('title_domain', 'Domain'); ?></label>
           </div>
         </div>
 

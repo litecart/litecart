@@ -126,7 +126,7 @@ table th:last-child {
       <div class="form-group">
         <label><?php echo language::translate('title_image', 'Image'); ?></label>
         <?php echo functions::form_file_field('image', 'accept="image/*"'); ?>
-        <?php echo !empty($banner->data['image']) ? '<div>' . $banner->data['image'] .'</div>' : ''; ?>
+        <?php if (!empty($banner->data['image'])) echo '<div>' . $banner->data['image'] .'</div>'; ?>
       </div>
 
       <div class="form-group">

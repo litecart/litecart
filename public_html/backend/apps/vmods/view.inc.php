@@ -76,17 +76,17 @@ pre {
     <ul class="list-unstyled">
       <?php foreach ($xml->file as $file) { ?>
       <li>
-        <h2>In <strong><?php echo (!empty($file->attributes()['path']) ? $file->attributes()['path'] : '') . $file->attributes()['name']; ?></strong>:</h2>
+        <h2>In <strong><?php if (!empty($file->attributes()['path'])) echo $file->attributes()['path']; ?><?php echo $file->attributes()['name']; ?></strong>:</h2>
 
         <?php foreach ($file->operation as $operation) { ?>
         <div class="operation">
           <div class="find">
             ** Find **
 
-          <?php echo !empty($operation->attributes()['index']) ? ' (The following matches: '. $operation->attributes()['index'] .')' : ''; ?>
+          <?php if (!empty($operation->attributes()['index'])) echo ' (The following matches: '. $operation->attributes()['index'] .')'; ?>
 
-          <?php echo !empty($operation->find->attributes()['offset-before']) ? ' (Offset Before: '. $operation->find->attributes()['offset-before'] .')' : ''; ?>
-          <?php echo !empty($operation->find->attributes()['offset-after']) ? ' (Offset After: '. $operation->find->attributes()['offset-after'] .')' : ''; ?>
+          <?php if (!empty($operation->find->attributes()['offset-before'])) echo ' (Offset Before: '. $operation->find->attributes()['offset-before'] .')'; ?>
+          <?php if (!empty($operation->find->attributes()['offset-after'])) echo ' (Offset After: '. $operation->find->attributes()['offset-after'] .')'; ?>
 
             <pre><code><?php echo functions::escape_html($operation->find); ?></code></pre>
           </div>

@@ -2,5 +2,5 @@
   <!--<img class="image" src="{snippet:template_path}images/<?php echo !empty($num_items) ? 'cart_filled.svg' : 'cart.svg'; ?>" alt="" />-->
   <div class="navbar-icon"><?php echo functions::draw_fonticon('fa-shopping-basket'); ?></div>
   <small class="hidden-xs"><?php echo language::translate('title_cart', 'Cart'); ?></small>
-  <div class="badge quantity"><?php echo $num_items ? $num_items : ''; ?></div>
+  <div class="badge quantity"><?php if ($num_items) echo $num_items; ?></div>
 </a>

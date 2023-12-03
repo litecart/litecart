@@ -82,7 +82,7 @@
     <?php } ?>
 
     <?php if (!$error) { ?>
-    <button class="btn btn-block btn-lg btn-success" type="submit" name="confirm" value="true"<?php echo !empty($error) ? ' disabled' : ''; ?>>{{confirm}}</button>
+    <button class="btn btn-block btn-lg btn-success" type="submit" name="confirm" value="true"<?php if (!empty($error)) echo ' disabled'; ?>>{{confirm}}</button>
     <?php } ?>
   </div>
 

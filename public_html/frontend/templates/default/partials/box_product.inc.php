@@ -162,7 +162,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
           <div style="display: flex">
             <div class="input-group" style="flex: 0 1 150px;">
               <?php echo !empty($quantity_unit['decimals']) ? functions::form_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ? $quantity_min : '1') .'" max="'. ($quantity_max ? $quantity_max : '') .'" step="'. ($quantity_step ? $quantity_step : '') .'"') : functions::form_number_field('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ? $quantity_min : '1') .'" max="'. ($quantity_max ? $quantity_max : '') .'" step="'. ($quantity_step ? $quantity_step : '') .'"'); ?>
-              <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-text">'. $quantity_unit['name'] .'</div>' : ''; ?>
+              <?php if (!empty($quantity_unit['name'])) echo '<div class="input-group-text">'. $quantity_unit['name'] .'</div>'; ?>
             </div>
 
             <div style="flex: 1 0 auto; padding-inline-start: 1em;">
@@ -207,7 +207,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
         <div class="col-md-<?php echo ($description) ? 6 : 12; ?>">
           <h2 style="margin-top: 0;"><?php echo language::translate('title_technical_data', 'Technical Data'); ?></h2>
 
-          <div class="technical-data" <?php echo (!$description) ? 'style="columns: 2 auto;"' : ''; ?>>
+          <div class="technical-data" <?php if (!$description) echo 'style="columns: 2 auto;"'; ?>>
             <table class="table table-striped table-hover">
 <?php
   foreach ($technical_data as $line) {

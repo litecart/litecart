@@ -113,20 +113,20 @@
       <div class="form-group">
         <label><?php echo language::translate('title_image', 'Image'); ?></label>
         <?php echo functions::form_file_field('image', 'accept="image/*,.svg"'); ?>
-        <?php echo !empty($slide->data['image']) ? '</label>' . $slide->data['image'] : ''; ?>
+        <?php if (!empty($slide->data['image'])) echo '</label>' . $slide->data['image']; ?>
       </div>
 
       <?php if (count(language::$languages) > 1) { ?>
       <nav class="nav nav-tabs">
         <?php foreach (language::$languages as $language) { ?>
-        <a class="nav-link<?php echo ($language['code'] == language::$selected['code']) ? ' active' : ''; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
+        <a class="nav-link<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
         <?php } ?>
       </nav>
       <?php } ?>
 
       <div class="tab-content">
         <?php foreach (array_keys(language::$languages) as $language_code) { ?>
-        <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
+        <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
           <div class="form-group">
             <label><?php echo language::translate('title_caption', 'Caption'); ?></label>
             <?php echo functions::form_regional_wysiwyg_field('caption['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>

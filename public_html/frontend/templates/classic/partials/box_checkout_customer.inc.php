@@ -95,7 +95,7 @@
 
     <h3><?php echo functions::form_checkbox('different_shipping_address', '1', !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
 
-    <fieldset<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : false; ?>>
+    <fieldset<?php if (empty($_POST['different_shipping_address'])) echo ' style="display: none;" disabled'; ?>>
 
       <?php if (settings::get('customer_field_company')) { ?>
       <div class="row">
@@ -192,7 +192,7 @@
 
     <h3><?php echo functions::form_checkbox('create_account', '1', true, 'style="margin: 0px;"'); ?> <?php echo language::translate('title_create_account', 'Create Account'); ?></h3>
 
-    <fieldset<?php echo (empty($_POST['create_account'])) ? ' style="display: none;" disabled' : false; ?>>
+    <fieldset<?php if (empty($_POST['create_account'])) echo ' style="display: none;" disabled'; ?>>
 
       <div class="row">
         <div class="col-sm-6">

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{language}}" dir="{{text_direction}}"<?php echo !empty($_COOKIE['dark_mode']) ? ' class="dark-mode"' : ''; ?>>
+<html lang="{{language}}" dir="{{text_direction}}"<?php if (!empty($_COOKIE['dark_mode'])) echo ' class="dark-mode"'; ?>>
 <head>
 <title>{{title}}</title>
 <meta charset="{{charset}}" />

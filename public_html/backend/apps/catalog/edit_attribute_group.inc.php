@@ -122,7 +122,7 @@
           <td class="grabable"><?php echo $group_value['id']; ?><?php echo functions::form_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
           <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text_field( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
           <td class="text-center"><?php echo !empty($group_value['in_use']) ? language::translate('title_yes', 'Yes') : language::translate('title_no', 'No'); ?></td>
-          <td class="text-end"><?php echo empty($group_value['in_use']) ? '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"') .'</a>' : false; ?></td>
+          <td class="text-end"><?php if (empty($group_value['in_use'])) echo '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"') .'</a>'; ?></td>
         </tr>
         <?php } ?>
       </tbody>

@@ -68,7 +68,7 @@
 
       <tbody>
         <?php foreach ($slides as $slide) { ?>
-        <tr class="<?php echo empty($slide['status']) ? 'semi-transparent' : ''; ?>">
+        <tr class="<?php if (empty($slide['status'])) echo 'semi-transparent'; ?>">
           <td><?php echo functions::form_checkbox('slides[]', $slide['id']); ?></td>
           <td><?php echo functions::draw_fonticon($slide['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $slide['id']; ?></td>

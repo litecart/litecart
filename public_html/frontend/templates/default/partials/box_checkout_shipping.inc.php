@@ -14,7 +14,7 @@ input[name="shipping_option[id]"]:checked + .option::after {
 
       <?php foreach ($options as $option) { ?>
       <label class="option-wrapper">
-        <input name="shipping_option[id]" value="<?php echo $option['id']; ?>" type="radio" hidden <?php echo (!empty($selected) && $selected['id'] == $option['id']) ? ' checked' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?> />
+        <input name="shipping_option[id]" value="<?php echo $option['id']; ?>" type="radio" hidden <?php if (!empty($selected) && $selected['id'] == $option['id']) echo ' checked'; ?><?php if (!empty($option['error'])) echo ' disabled'; ?> />
         <div class="option">
           <div class="header row" style="margin: 0;">
             <div class="col-3">

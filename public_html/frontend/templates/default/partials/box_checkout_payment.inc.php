@@ -14,7 +14,7 @@ input[name="payment_option[id]"]:checked + .option::after {
 
       <?php foreach ($options as $option) { ?>
       <label class="option-wrapper">
-        <input name="payment_option[id]" value="<?php echo $option['id']; ?>" type="radio" hidden <?php echo (!empty($selected) && $selected['id'] == $option['id']) ? ' checked' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?> />
+        <input name="payment_option[id]" value="<?php echo $option['id']; ?>" type="radio" hidden <?php if (!empty($selected) && $selected['id'] == $option['id']) echo ' checked'; ?><?php if (!empty($option['error'])) echo ' disabled'; ?> />
         <div class="option">
           <div class="header row" style="margin: 0;">
             <div class="col-3" style="margin: 0;">
@@ -28,7 +28,7 @@ input[name="payment_option[id]"]:checked + .option::after {
               <div class="description"><?php echo $option['description']; ?></div>
               <?php } ?>
 
-              <div class="price"><?php echo (empty($option['error']) && $option['fee'] != 0) ? '+ ' . currency::format(tax::get_price($option['fee'], $option['tax_class_id'])) : ''; ?></div>
+              <div class="price"><?php if (empty($option['error']) && $option['fee'] != 0) echo '+ ' . currency::format(tax::get_price($option['fee'], $option['tax_class_id'])); ?></div>
               <?php if (!empty($option['error'])) { ?>
               <div class="error"><?php echo $option['error']; ?></div>
               <?php } ?>

@@ -72,11 +72,11 @@
 
       <tbody>
         <?php foreach ($brands as $brand) { ?>
-        <tr class="<?php echo empty($brand['status']) ? 'semi-transparent' : ''; ?>">
+        <tr class="<?php if (empty($brand['status'])) echo 'semi-transparent'; ?>">
           <td><?php echo functions::form_checkbox('brands[]', $brand['id']); ?></td>
           <td><?php echo functions::draw_fonticon($brand['status'] ? 'on' : 'off'); ?></td>
-          <td><?php echo $brand['featured'] ? functions::draw_fonticon('fa-star', 'style="color: #ffd700;"') : ''; ?></td>
-          <td><img class="thumbnail fit" src="<?php echo document::href_rlink($brand['image'] ? functions::image_thumbnail('storage://images/' . $brand['image'], 16, 16) : ''); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /></td>
+          <td><?php if ($brand['featured']) echo functions::draw_fonticon('fa-star', 'style="color: #ffd700;"'); ?></td>
+          <td><img class="thumbnail fit" src="<?php echo document::href_rlink(functions::image_thumbnail('storage://images/' . ($brand['image'] ? $brand['image'] : 'no_image.png'), 16, 16)); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_brand', ['brand_id' => $brand['id']]); ?>"><?php echo $brand['name']; ?></a></td>
           <td class="text-center"><?php echo (int)$brand['num_products']; ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_brand', ['brand_id' => $brand['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>

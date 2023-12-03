@@ -106,9 +106,9 @@
   <div class="card-body">
     <h2><?php echo $object->name; ?></h2>
 
-    <?php echo !empty($object->author) ? '<p><strong>'. language::translate('title_developed_by', 'Developed by') .'</strong> <a href="'. $object->website .'" target="_blank">'. $object->author .'</a></p>' : false; ?>
+    <?php if (!empty($object->author)) echo '<p><strong>'. language::translate('title_developed_by', 'Developed by') .'</strong> <a href="'. $object->website .'" target="_blank">'. $object->author .'</a></p>'; ?>
 
-    <?php echo !empty($object->description) ? '<p style="max-width: 960px;">'. $object->description .'</p>' : ''; ?>
+    <?php if (!empty($object->description)) echo '<p style="max-width: 960px;">'. $object->description .'</p>'; ?>
 
     <?php echo functions::form_begin('module_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
 
@@ -118,7 +118,7 @@
           <tr>
             <td style="width: 50%">
               <strong><?php echo $setting['title']; ?></strong>
-              <?php echo !empty($setting['description']) ? '<div>'. $setting['description'] .'</div>' : ''; ?>
+              <?php if (!empty($setting['description'])) echo '<div>'. $setting['description'] .'</div>'; ?>
             </td>
             <td style="width: 50%">
               <?php

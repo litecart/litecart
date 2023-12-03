@@ -144,14 +144,14 @@
 
           <nav class="nav nav-tabs">
             <?php foreach (language::$languages as $language) { ?>
-            <a class="nav-link<?php echo ($language['code'] == language::$selected['code']) ? ' active' : ''; ?>"" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
+            <a class="nav-link<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>"" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
             <?php } ?>
           </nav>
 
           <div class="tab-content">
 
             <?php foreach (array_keys(language::$languages) as $language_code) { ?>
-            <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
+            <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 
               <div class="form-group">
                 <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>

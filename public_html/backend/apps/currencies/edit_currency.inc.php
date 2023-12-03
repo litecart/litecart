@@ -172,9 +172,9 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_status', 'Status'); ?></label>
           <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
-            <label class="btn btn-default<?php echo (isset($_POST['status']) && $_POST['status'] == 1) ? ' active' : ''; ?>"><?php echo functions::form_radio_button('status', '1', true); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
-            <label class="btn btn-default<?php echo (isset($_POST['status']) && $_POST['status'] == -1) ? ' active' : ''; ?>"><?php echo functions::form_radio_button('status', '-1', true); ?><?php echo language::translate('title_hidden', 'Hidden'); ?></label>
-            <label class="btn btn-default<?php echo empty($_POST['status']) ? ' active' : ''; ?>"><?php echo functions::form_radio_button('status', '0', true); ?><?php echo language::translate('title_disabled', 'Disabled'); ?></label>
+            <label class="btn btn-default<?php if (isset($_POST['status']) && $_POST['status'] == 1) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '1', true); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
+            <label class="btn btn-default<?php if (isset($_POST['status']) && $_POST['status'] == -1) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '-1', true); ?><?php echo language::translate('title_hidden', 'Hidden'); ?></label>
+            <label class="btn btn-default<?php if (empty($_POST['status'])) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '0', true); ?><?php echo language::translate('title_disabled', 'Disabled'); ?></label>
           </div>
         </div>
 

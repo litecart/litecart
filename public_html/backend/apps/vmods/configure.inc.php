@@ -105,7 +105,7 @@ pre {
           <tr>
             <td style="width: 50%">
               <strong><?php echo $setting->title; ?></strong>
-              <?php echo !empty($setting->description) ? '<div>'. $setting->description .'</div>' : ''; ?>
+              <?php if (!empty($setting->description)) echo '<div>'. $setting->description .'</div>'; ?>
             </td>
             <td style="width: 50%">
               <?php echo functions::form_function($setting->function, 'settings['.$setting->key.']', true); ?>

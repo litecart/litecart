@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{language}}" dir="{{text_direction}}"<?php echo !empty($_COOKIE['dark_mode']) ? ' class="dark-mode"' : ''; ?>>
+<html lang="{{language}}" dir="{{text_direction}}"<?php if (!empty($_COOKIE['dark_mode'])) echo ' class="dark-mode"'; ?>>
 <head>
 <title>{{title}}</title>
 <meta charset="{{charset}}" />
@@ -69,8 +69,8 @@
 
       <li>
         <div class="btn-group btn-group-inline" data-toggle="buttons">
-          <label class="btn btn-default btn-sm<?php echo empty($_COOKIE['dark_mode']) ? ' active' : ''; ?>" title="<?php echo functions::escape_html(language::translate('title_light', 'Light')); ?>"><input type="radio" name="dark_mode" value="0"<?php echo empty($_COOKIE['dark_mode']) ? ' checked' : ''; ?> /> <?php echo functions::draw_fonticon('fa-sun-o'); ?></label>
-          <label class="btn btn-default btn-sm<?php echo !empty($_COOKIE['dark_mode']) ? ' active' : ''; ?>" title="<?php echo functions::escape_html(language::translate('title_dark', 'Dark')); ?>"><input type="radio" name="dark_mode" value="1"<?php echo !empty($_COOKIE['dark_mode']) ? ' checked' : ''; ?> /> <?php echo functions::draw_fonticon('fa-moon-o'); ?></label>
+          <label class="btn btn-default btn-sm<?php if (empty($_COOKIE['dark_mode'])) echo ' active'; ?>" title="<?php echo functions::escape_html(language::translate('title_light', 'Light')); ?>"><input type="radio" name="dark_mode" value="0"<?php if (empty($_COOKIE['dark_mode'])) echo ' checked'; ?> /> <?php echo functions::draw_fonticon('fa-sun-o'); ?></label>
+          <label class="btn btn-default btn-sm<?php if (!empty($_COOKIE['dark_mode'])) echo ' active'; ?>" title="<?php echo functions::escape_html(language::translate('title_dark', 'Dark')); ?>"><input type="radio" name="dark_mode" value="1"<?php if (!empty($_COOKIE['dark_mode'])) echo ' checked'; ?> /> <?php echo functions::draw_fonticon('fa-moon-o'); ?></label>
         </div>
       </li>
 

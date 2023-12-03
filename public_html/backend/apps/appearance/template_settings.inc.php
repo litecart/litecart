@@ -146,7 +146,7 @@
           <td><?php echo functions::form_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
           <td class="text-end">
             <?php echo functions::form_button_predefined('save'); ?>
-            <?php echo functions::form_button_predefined('cancel') : ''; ?>
+            <?php echo functions::form_button_predefined('cancel'); ?>
           </td>
         </tr>
         <?php } else { ?>

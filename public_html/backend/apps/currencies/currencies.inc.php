@@ -79,7 +79,7 @@
 
       <tbody>
         <?php foreach ($currencies as $currency) { ?>
-        <tr class="<?php echo empty($currency['status']) ? 'semi-transparent' : ''; ?>">
+        <tr class="<?php if (empty($currency['status'])) echo 'semi-transparent'; ?>">
           <td><?php echo functions::form_checkbox('currencies[]', $currency['code']); ?></td>
           <td><?php echo functions::draw_fonticon(($currency['status'] == 1) ? 'on' : (($currency['status'] == -1) ? 'semi-off' : 'off')); ?></td>
           <td><?php echo $currency['id']; ?></td>
@@ -87,8 +87,8 @@
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_currency', ['currency_code' => $currency['code']]); ?>"><?php echo $currency['name']; ?></a></td>
           <td class="text-end"><?php echo language::number_format($currency['value'], 4); ?></td>
           <td class="text-center"><?php echo currency::format_html(1234.56, false, $currency['code'], 1); ?></td>
-          <td class="text-center"><?php echo ($currency['code'] == settings::get('default_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td class="text-center"><?php echo ($currency['code'] == settings::get('store_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td class="text-center"><?php if ($currency['code'] == settings::get('default_currency_code')) echo functions::draw_fonticon('fa-check'); ?></td>
+          <td class="text-center"><?php if ($currency['code'] == settings::get('store_currency_code')) echo functions::draw_fonticon('fa-check'); ?></td>
           <td class="text-center"><?php echo $currency['priority']; ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_currency', ['currency_code' => $currency['code']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>

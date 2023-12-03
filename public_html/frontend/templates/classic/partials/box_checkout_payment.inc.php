@@ -4,8 +4,8 @@
   <div class="options btn-group-vertical">
 
     <?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
-    <label class="option btn btn-default btn-block<?php echo (!empty($selected['id']) && $selected['id'] == $module['id'].':'.$option['id']) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
-      <?php echo functions::form_radio_button('payment[option_id]', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled' : '')); ?>
+    <label class="option btn btn-default btn-block<?php if (!empty($selected['id']) && $selected['id'] == $module['id'].':'.$option['id']) echo ' active'; ?><?php if (!empty($option['error'])) echo ' disabled'; ?>">
+      <?php echo functions::form_radio_button('payment[option_id]', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"'. (!empty($option['error'])) ? ' disabled' : ''); ?>
       <div class="header row" style="margin: 0;">
         <div class="col-xs-3 thumbnail" style="margin: 0;">
           <img src="<?php echo document::href_rlink(functions::image_thumbnail($option['icon'], 140, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING')); ?>" />
@@ -14,7 +14,7 @@
         <div class="col-xs-9 text-start" style="padding-bottom: 0;">
           <div class="title"><?php echo $module['title']; ?></div>
           <div class="name"><?php echo $option['name']; ?></div>
-          <div class="price"><?php echo (empty($option['error']) && (float)$option['cost'] != 0) ? '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])) : ''; ?></div>
+          <div class="price"><?php if (empty($option['error']) && (float)$option['cost'] != 0) echo '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])); ?></div>
           <?php if (!empty($option['error'])) { ?>
           <div class="error"><?php echo $option['error']; ?></div>
           <?php } ?>

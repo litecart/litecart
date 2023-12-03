@@ -65,7 +65,7 @@
 
       <tbody>
         <?php foreach ($administrators as $administrator) { ?>
-        <tr class="<?php echo empty($administrator['status']) ? 'semi-transparent' : ''; ?>">
+        <tr class="<?php if (empty($administrator['status'])) echo 'semi-transparent'; ?>">
           <td><?php echo functions::form_checkbox('administrators[]', $administrator['id']); ?></td>
           <td><?php echo functions::draw_fonticon($administrator['status'] ? 'on' : 'off'); ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>"><?php echo $administrator['username']; ?></a></td>

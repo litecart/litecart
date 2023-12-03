@@ -93,8 +93,8 @@
 
       <div>
         <div class="btn-group btn-group-inline float-end" data-toggle="buttons">
-          <label class="btn btn-default<?php echo ($_GET['list_style'] == 'columns') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="columns"<?php echo ($_GET['list_style'] == 'columns') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-th-large'); ?></label>
-          <label class="btn btn-default<?php echo ($_GET['list_style'] == 'rows') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="rows"<?php echo ($_GET['list_style'] == 'rows') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-bars'); ?></label>
+          <label class="btn btn-default<?php if ($_GET['list_style'] == 'columns') echo ' active'; ?>"><input type="radio" name="list_style" value="columns"<?php if ($_GET['list_style'] == 'columns') echo ' checked'; ?> /><?php echo functions::draw_fonticon('fa-th-large'); ?></label>
+          <label class="btn btn-default<?php if ($_GET['list_style'] == 'rows') echo ' active'; ?>"><input type="radio" name="list_style" value="rows"<?php if ($_GET['list_style'] == 'rows') echo ' checked'; ?> /><?php echo functions::draw_fonticon('fa-bars'); ?></label>
         </div>
       </div>
 

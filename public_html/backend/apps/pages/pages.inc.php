@@ -169,13 +169,13 @@ table tbody .toggle {
       $page['dock'] = explode(',', $page['dock']);
 
 ?>
-        <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : ''; ?>">
+        <tr class="<?php if (empty($page['status'])) echo 'semi-transparent'; ?>">
           <td><?php echo functions::form_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $page['id']; ?></td>
           <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
-          <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td class="text-center"><?php if (in_array('menu', $page['dock'])) echo functions::draw_fonticon('fa-check'); ?></td>
+          <td class="text-center"><?php if (in_array('information', $page['dock'])) echo functions::draw_fonticon('fa-check'); ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
 <?php
@@ -221,7 +221,7 @@ table tbody .toggle {
           $icon = '<span class="toggle"></span>';
         }
 ?>
-        <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : ''; ?>">
+        <tr class="<?php if (empty($page['status'])) echo 'semi-transparent'; ?>">
           <td><?php echo functions::form_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $page['id']; ?></td>
@@ -229,8 +229,8 @@ table tbody .toggle {
             <?php echo $icon; ?>
             <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a>
           </td>
-          <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td class="text-center"><?php if (in_array('menu', $page['dock'])) echo functions::draw_fonticon('fa-check'); ?></td>
+          <td class="text-center"><?php if (in_array('information', $page['dock'])) echo functions::draw_fonticon('fa-check'); ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
 <?php

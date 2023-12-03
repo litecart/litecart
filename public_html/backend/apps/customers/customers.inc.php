@@ -119,7 +119,7 @@
 
       <tbody>
         <?php foreach ($customers as $customer) { ?>
-        <tr class="<?php echo empty($customer['status']) ? 'semi-transparent' : ''; ?>">
+        <tr class="<?php if (empty($customer['status'])) echo 'semi-transparent'; ?>">
           <td><?php echo functions::form_checkbox('customers[]', $customer['id']); ?></td>
           <td><?php echo functions::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $customer['id']; ?></td>

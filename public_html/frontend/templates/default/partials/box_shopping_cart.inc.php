@@ -1,7 +1,7 @@
 <div id="cart" class="dropdown">
   <a href="{{link|escape}}">
     <img class="image" src="{{template_path}}images/<?php echo !empty($num_items) ? 'cart_filled.svg' : 'cart.svg'; ?>" alt="" />
-    <div class="badge quantity"><?php echo $num_items ? $num_items : ''; ?></div>
+    <div class="badge quantity"><?php if ($num_items) echo $num_items; ?></div>
   </a>
   <ul class="dropdown-menu dropdown-menu-right">
     <li><h2><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></li>
