@@ -35,6 +35,42 @@
 
         break;
 
+      case 'custom':
+
+        foreach ($payload as $source => $operations) {
+
+          if (defined('DISABLE_FILE_MIGRATIONS') && filter_var(DISABLE_FILE_MIGRATIONS, FILTER_VALIDATE_BOOLEAN)) {
+            if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) continue;
+          }
+
+          echo 'Performing custom actions on ' . preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source);
+
+          $results = [];
+
+          if (!$files = file_search($source)) {
+            $results[] = false;
+          }
+
+          foreach ($files as $file) {
+
+            foreach ($operations as $operation) {
+              $results[] = $operation($file);
+            }
+
+            $results[] = file_put_contents($file, $contents);
+          }
+
+          if (!in_array(false, $results)) {
+            echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else if ($on_error == 'skip') {
+            echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else {
+            die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
+          }
+        }
+
+        break;
+
       case 'delete':
 
         foreach ($payload as $source) {
