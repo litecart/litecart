@@ -1,6 +1,6 @@
 <?php
 
-  document::$layout = 'login';
+  document::$layout = 'blank';
 
   header('X-Robots-Tag: noindex');
 
