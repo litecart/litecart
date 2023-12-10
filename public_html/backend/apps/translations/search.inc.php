@@ -157,7 +157,7 @@ th:not(:last-child) {
       <?php if (count($_GET['languages']) > 1) { ?>
       <button type="button" class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#modal-translator-tool" data-width="980px"><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></button>
       <?php } ?>
-      <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+      <?php echo functions::form_button_predefined('save'); ?>
     </div>
 
   <?php echo functions::form_end(); ?>

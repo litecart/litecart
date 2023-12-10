@@ -493,7 +493,7 @@ body main {
   position: initial;
 }
 .listing.rows .product {
-  grid-column: -1;
+  grid-column: 1/-1;
   min-height: 175px;
 }
 .listing.rows .product .info {

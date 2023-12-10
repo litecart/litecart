@@ -94,8 +94,9 @@ form[name="buy_now_form"] .dropdown-menu .image {
       </div>
       <?php } ?>
 
+      <?php if (isset($quantity_available)) { ?>
       <div class="stock-status" style="margin: 1em 0;">
-       <?php if ($quantity > 0) { ?>
+       <?php if ($quantity_available > 0) { ?>
         <div class="stock-available">
           <?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
           <span class="value">{{stock_status}}</span>
@@ -123,6 +124,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
         <?php } ?>
        <?php } ?>
       </div>
+     <?php } ?>
 
       <hr />
 

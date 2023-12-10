@@ -26,6 +26,7 @@
 }
 /* Variables */
 :root {
+  /* General */
   --border-radius: 10px;
   --gutter-size: 1rem;
   --link-text-color: #5292b1;
@@ -35,6 +36,12 @@
   --site-background-color: #f2f2f7;
   --header-background-color: #fff;
   --sidebar-width: 320px;
+  /* Important Notice */
+  --important-notice-background-color: #222;
+  --important-notice-text-color: #fff;
+  /* Cookie Notice */
+  --cookie-notice-background-color: rgba(45, 45, 56, 0.75);
+  /* Defaults */
   --default-text-font: 'Fira Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #444;
   --default-text-size: 15px;
@@ -57,6 +64,22 @@
   --primary-background-color-hover: #4aaac7;
   --primary-background-color-active: #3596b3;
   --primary-text-color: #fff;
+  /* Notices */
+  --default-notice-background-color: #f0f0f0;
+  --default-notice-text-color: #333;
+  --primary-notice-background-color: #5bc0de;
+  --primary-notice-text-color: #000;
+  --success-notice-background-color: #d6eca6;
+  --success-notice-text-color: #567d00;
+  --warning-notice-background-color: #ffcc66;
+  --warning-notice-text-color: #aa0000;
+  --danger-notice-background-color: #fcc;
+  --danger-notice-text-color: #c44;
+  --breadcrumbs-background-color: #fff;
+  --breadcrumbs-background-color-hover: #efefef;
+  --breadcrumbs-text-color: #000;
+  --breadcrumbs-border-color: #e7e7e7;
+  /* Buttons */
   --button-default-background-color: #d3d3e1;
   --button-default-background-color-hover: #e5e5ed;
   --button-default-background-color-active: #dddde9;
@@ -74,26 +97,14 @@
   --button-danger-background-color-active: #db5d59;
   --button-danger-border-color: rgba(0, 0, 0, 0.1);
   --button-danger-text-color: #fff;
-  --default-notice-background-color: #f0f0f0;
-  --default-notice-text-color: #333;
-  --primary-notice-background-color: #5bc0de;
-  --primary-notice-text-color: #000;
-  --success-notice-background-color: #d6eca6;
-  --success-notice-text-color: #567d00;
-  --warning-notice-background-color: #ffcc66;
-  --warning-notice-text-color: #aa0000;
-  --danger-notice-background-color: #fcc;
-  --danger-notice-text-color: #c44;
-  --breadcrumbs-background-color: #fff;
-  --breadcrumbs-background-color-hover: #efefef;
-  --breadcrumbs-text-color: #000;
-  --breadcrumbs-border-color: #e7e7e7;
+  /* Forms */
   --input-background-color: #ececf1;
   --input-border-color: #ebebee;
   --input-border-size: 0px;
   --input-padding-x: 1em;
   --input-padding-y: 0.5em;
   --input-text-color: #444;
+  /* Pills */
   --pills-background-color: #fff;
   --pills-background-color-hover: #ebebee;
   --pills-background-color-active: #c7c7cf;
@@ -102,13 +113,16 @@
   --pills-border-color-active: #bbbbbb;
   --pills-text-color: #333;
   --pills-text-color-active: var(--pills-text-color);
+  /* Tabs */
   --tabs-background-color: #e5e5ea;
   --tabs-background-color-active: #fff;
   --tabs-text-color: #333;
   --tabs-text-color-active: var(--tabs-text-color);
+  /* Tables */
   --table-striped-row-background-odd: #f9f9f9;
   --table-striped-row-background-even: #fff;
   --table-row-hover-background: #ececec;
+  /* Paginations */
   --pagination-background-color: var(--default-background-color);
   --pagination-text-color: var(--default-text-color);
   --pagination-border-color: var(--default-border-color);
@@ -116,26 +130,28 @@
   --pagination-active-text-color: #fff;
   --pagination-hover-background-color: var(--primary-background-color);
   --pagination-hover-text-color: #fff;
+  /* Footer */
   --footer-background-color: #e6e6ef;
   --footer-title-color: #333;
   --footer-text-color: #333;
+  /* Copyright */
   --copyright-background-color: #d2d2df;
   --copyright-text-color: var(--footer-text-color);
   --cookie-notice-background-color: #334c;
   --cookie-notice-text-color: #fff;
 }
 @media (min-width: 576px) {
-  :root {
+  :root :root {
     --gutter-size: 1.25rem;
   }
 }
 @media (min-width: 768px) {
-  :root {
+  :root :root {
     --gutter-size: 1.5rem;
   }
 }
 @media (min-width: 992px) {
-  :root {
+  :root :root {
     --gutter-size: 2rem;
   }
 }

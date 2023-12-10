@@ -20,13 +20,6 @@
       return;
     }
 
-    $mother_page = array_values($page->path)[0];
-    if (in_array('customer_service', $page->dock) || in_array('customer_service', $mother_page->dock)) {
-      http_response_code(301);
-      header('Location: '. document::ilink('customer_service', ['page_id' => $page->id]));
-      exit;
-    }
-
     document::$snippets['title'][] = !empty($page->head_title) ? $page->head_title : $page->title;
     document::$snippets['description'] = !empty($page->meta_description) ? $page->meta_description : '';
 

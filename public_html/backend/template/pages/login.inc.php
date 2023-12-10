@@ -27,7 +27,7 @@ html.dark-mode body {
   width: 360px;
   margin: auto;
   border-radius: 0px 25px 0px 25px;
-  box-shadow: 0px 0px 60px rgba(0,0,0,0.25);
+  /*box-shadow: 0px 0px 60px rgba(0,0,0,0.25);*/
 }
 #box-login .card-header a {
   display: block;

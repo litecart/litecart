@@ -1325,7 +1325,11 @@ tr.semi-transparent td {
     display: none !important;
   }
 }
-/* Input Fields & Input Groups - Bootstrap Compatible */
+/* Forms & Input Fields */
+fieldset {
+  border: 1px solid var(--default-border-color);
+  border-radius: var(--border-radius);
+}
 input,
 button,
 select,

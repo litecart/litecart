@@ -26,13 +26,14 @@
     'controller' => 'app://frontend/pages/$1.inc.php',
   ]);
 
-  route::identify();
-
 // Initialize endpoint
-  if (!empty(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend') {
-    require 'app://backend/bootstrap.inc.php';
-  } else {
-    require 'app://frontend/bootstrap.inc.php';
+  if ($route = route::identify()) {
+    route::$selected = $route;
+    if (!empty($route['endpoint']) && $route['endpoint'] == 'backend') {
+      require 'app://backend/bootstrap.inc.php';
+    } else {
+      require 'app://frontend/bootstrap.inc.php';
+    }
   }
 
 // Run operations before processing the route
