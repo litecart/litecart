@@ -106,11 +106,11 @@ INSERT INTO `lc_products_campaigns` (`id`, `product_id`, `start_date`, `end_date
 (1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 18.00);
 -- --------------------------------------------------------
 INSERT INTO `lc_products_images` (`id`, `product_id`, `filename`, `priority`) VALUES
-(1, 1, 'products/1-yellow-duck-1.jpg', 1),
-(2, 2, 'products/2-green-duck-1.jpg', 1),
-(3, 3, 'products/3-red-duck-1.jpg', 1),
-(4, 4, 'products/4-blue-duck-1.jpg', 1),
-(5, 5, 'products/5-purple-duck-1.jpg', 1);
+(1, 1, 'products/1-yellow-duck-1.webp', 1),
+(2, 2, 'products/2-green-duck-1.webp', 1),
+(3, 3, 'products/3-red-duck-1.webp', 1),
+(4, 4, 'products/4-blue-duck-1.webp', 1),
+(5, 5, 'products/5-purple-duck-1.webp', 1);
 -- --------------------------------------------------------
 INSERT INTO `lc_products_info` (`id`, `product_id`, `language_code`, `name`, `short_description`, `description`, `head_title`, `meta_description`, `technical_data`) VALUES
 (1, 1, 'en', 'Yellow Duck', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue.', '<p>\r\n	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue. Cras scelerisque dui non consequat sollicitudin. Sed pretium tortor ac auctor molestie. Nulla facilisi. Maecenas pulvinar nibh vitae lectus vehicula semper. Donec et aliquet velit. Curabitur non ullamcorper mauris. In hac habitasse platea dictumst. Phasellus ut pretium justo, sit amet bibendum urna. Maecenas sit amet arcu pulvinar, facilisis quam at, viverra nisi. Morbi sit amet adipiscing ante. Integer imperdiet volutpat ante, sed venenatis urna volutpat a. Proin justo massa, convallis vitae consectetur sit amet, facilisis id libero. \r\n</p>', '', '', 'Colors\r\nBody: Yellow\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic'),
@@ -120,9 +120,9 @@ INSERT INTO `lc_products_info` (`id`, `product_id`, `language_code`, `name`, `sh
 (5, 5, 'en', 'Purple Duck', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue.', '<p>\r\n	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue. Cras scelerisque dui non consequat sollicitudin. Sed pretium tortor ac auctor molestie. Nulla facilisi. Maecenas pulvinar nibh vitae lectus vehicula semper. Donec et aliquet velit. Curabitur non ullamcorper mauris. In hac habitasse platea dictumst. Phasellus ut pretium justo, sit amet bibendum urna. Maecenas sit amet arcu pulvinar, facilisis quam at, viverra nisi. Morbi sit amet adipiscing ante. Integer imperdiet volutpat ante, sed venenatis urna volutpat a. Proin justo massa, convallis vitae consectetur sit amet, facilisis id libero. \r\n</p>', '', '', 'Colors\r\nBody: Purple\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic');
 -- --------------------------------------------------------
 INSERT INTO `lc_products_stock_options` (`id`, `product_id`, `sku`, `mpn`, `gtin`, `taric`, `image`,  `quantity`, `quantity_unit_id`, `weight`, `weight_unit`, `length`, `width`, `height`, `length_unit`, `purchase_price`, `purchase_price_currency_code`, `date_updated`, `date_created`) VALUES
-(1, 1, 'RD001-S', '', '', '', 'products/1-yellow-duck-1.png', 0.00, '1', 0.00, 'kg', 0.00, 0.00, 0.00, 'cm', 0.00, 0.00, NOW(), NOW()),
-(2, 1, 'RD001-M', '', '', '', 'products/1-yellow-duck-1.png', 0.00, '1', 0.00, 'kg', 0.00, 0.00, 0.00, 'cm', 0.00, 0.00, NOW(), NOW()),
-(3 1,, 'RD001-L', '', '', '', 'products/1-yellow-duck-1.png', 0.00, '1', 0.00, 'kg', 0.00, 0.00, 0.00, 'cm', 0.00, 0.00, NOW(), NOW());
+(1, 1, 'RD001-S', '', '', '', 'products/1-yellow-duck-1.webp', 0.00, '1', 0.00, 'kg', 0.00, 0.00, 0.00, 'cm', 0.00, 0.00, NOW(), NOW()),
+(2, 1, 'RD001-M', '', '', '', 'products/1-yellow-duck-1.webp', 0.00, '1', 0.00, 'kg', 0.00, 0.00, 0.00, 'cm', 0.00, 0.00, NOW(), NOW()),
+(3 1,, 'RD001-L', '', '', '', 'products/1-yellow-duck-1.webp', 0.00, '1', 0.00, 'kg', 0.00, 0.00, 0.00, 'cm', 0.00, 0.00, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_lc_products_stock_options_info` (`id`, `stock_option_id`, `name`, `language_code`) VALUES
 (1, 1, 'Yellow Duck (Small)', 'en'),
@@ -143,9 +143,9 @@ UPDATE `lc_settings` SET `value` = 3 WHERE `key` = 'privacy_policy';
 UPDATE `lc_settings` SET `value` = 4 WHERE `key` = 'terms_of_purchase';
 -- --------------------------------------------------------
 INSERT INTO `lc_stock_items` (`id`, `sku`, `mpn`, `gtin`, `taric`, `image`, `file`, `filename`, `mime_type`, `downloads`, `quantity`, `quantity_unit_id`, `weight`, `weight_unit`, `length`, `width`, `height`, `length_unit`, `purchase_price`, `purchase_price_currency_code`, `date_updated`, `date_created`) VALUES
-(1, 'RD001-S', '', '', '', 'products/1-yellow-duck-1.png', '', '', '', 0, 0.0000, '1', 0.0000, 'kg', 0.0000, 0.0000, 0.0000, 'cm', 0.0000, 0.0000, NOW(), NOW()),
-(2, 'RD001-M', '', '', '', 'products/1-yellow-duck-1.png', '', '', '', 0, 0.0000, '1', 0.0000, 'kg', 0.0000, 0.0000, 0.0000, 'cm', 0.0000, 0.0000, NOW(), NOW()),
-(3, 'RD001-L', '', '', '', 'products/1-yellow-duck-1.png', '', '', '', 0, 0.0000, '1', 0.0000, 'kg', 0.0000, 0.0000, 0.0000, 'cm', 0.0000, 0.0000, NOW(), NOW()),
+(1, 'RD001-S', '', '', '', 'products/1-yellow-duck-1.webp', '', '', '', 0, 0.0000, '1', 0.0000, 'kg', 0.0000, 0.0000, 0.0000, 'cm', 0.0000, 0.0000, NOW(), NOW()),
+(2, 'RD001-M', '', '', '', 'products/1-yellow-duck-1.webp', '', '', '', 0, 0.0000, '1', 0.0000, 'kg', 0.0000, 0.0000, 0.0000, 'cm', 0.0000, 0.0000, NOW(), NOW()),
+(3, 'RD001-L', '', '', '', 'products/1-yellow-duck-1.webp', '', '', '', 0, 0.0000, '1', 0.0000, 'kg', 0.0000, 0.0000, 0.0000, 'cm', 0.0000, 0.0000, NOW(), NOW()),
 (4, 'RD002', '', '', '', '', '', '', '', 0, 0.0000, '1', 0.0000, 'kg', 0.0000, 0.0000, 0.0000, 'cm', 0.0000, 0.0000, NOW(), NOW()),
 (5, 'RD003', '', '', '', '', '', '', '', 0, 0.0000, '1', 0.0000, 'kg', 0.0000, 0.0000, 0.0000, 'cm', 0.0000, 0.0000, NOW(), NOW()),
 (6, 'RD004', '', '', '', '', '', '', '', 0, 100.0000, '1', 0.0000, 'kg', 0.0000, 0.0000, 0.0000, 'cm', 0.0000, 0.0000, NOW(), NOW()),
