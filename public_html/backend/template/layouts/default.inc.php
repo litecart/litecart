@@ -24,7 +24,7 @@
   <div id="sidebar" class="hidden-print">
 
     <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-        <img class="center-block responsive" src="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
+        <img class="center-block responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
       </a>
 
     <div id="search">
