@@ -633,6 +633,7 @@
               'default_catgeory_id',
               'supplier_id',
               'code',
+              'synonyms',
               'tax_class_id',
               'quantity',
               'quantity_unit_id',

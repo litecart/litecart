@@ -242,6 +242,7 @@ ALTER TABLE `lc_pages_info`
 CHANGE COLUMN `page_id` `page_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products`
+ADD COLUMN `synonyms` VARCHAR(256) NOT NULL DEFAULT '' AFTER `keywords`,
 ADD COLUMN `autofill_technical_data` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `image`,
 CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
@@ -252,7 +253,8 @@ CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 DROP COLUMN `upc`,
 DROP INDEX `manufacturer_id`,
 ADD INDEX `type` (`type`),
-ADD INDEX `brand_id` (`brand_id`);
+ADD INDEX `brand_id` (`brand_id`),
+ADD INDEX `synonyms` (`synonyms`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_attributes`
 CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,

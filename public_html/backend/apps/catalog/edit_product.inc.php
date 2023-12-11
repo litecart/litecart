@@ -64,6 +64,7 @@
         'categories',
         'attributes',
         'keywords',
+        'synonyms',
         'date_valid_from',
         'date_valid_to',
         'quantity',
@@ -278,6 +279,12 @@
                 <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
                 <?php echo functions::form_text_field('keywords', true); ?>
               </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_synonyms', 'Synonyms'); ?></label>
+                <?php echo functions::form_text_field('synonyms', true); ?>
+              </div>
+
             </div>
 
             <div class="col-md-4">

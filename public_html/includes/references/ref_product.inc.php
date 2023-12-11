@@ -447,11 +447,8 @@
             $this->_data = array_fill_keys($result->fields(), null);
           }
 
-          if (!empty($this->_data['keywords'])){
-            $this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
-          } else {
-            $this->_data['keywords'] = [];
-          }
+          $this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+          $this->_data['synonyms'] = preg_split('#\s*,\s*#', $this->_data['synonyms'], -1, PREG_SPLIT_NO_EMPTY);
 
           break;
       }

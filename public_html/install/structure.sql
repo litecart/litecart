@@ -156,6 +156,7 @@ CREATE TABLE `lc_categories_info` (
   `name` VARCHAR(128) NOT NULL DEFAULT '',
   `short_description` VARCHAR(255) NOT NULL DEFAULT '',
   `description` TEXT NOT NULL DEFAULT '',
+  `synonyms` VARCHAR(256) NOT NULL DEFAULT '',
   `head_title` VARCHAR(128) NOT NULL DEFAULT '',
   `h1_title` VARCHAR(128) NOT NULL DEFAULT '',
   `meta_description` VARCHAR(512) NOT NULL DEFAULT '',
@@ -164,6 +165,7 @@ CREATE TABLE `lc_categories_info` (
   UNIQUE KEY `category` (`category_id`, `language_code`),
   KEY `category_id` (`category_id`),
   KEY `language_code` (`language_code`),
+  FULLTEXT INDEX `synonyms` (`synonyms`);
   CONSTRAINT `category_info_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
   CONSTRAINT `category_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;

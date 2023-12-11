@@ -163,6 +163,12 @@
       $this->data['keywords'] = array_unique($this->data['keywords']);
       $this->data['keywords'] = implode(',', $this->data['keywords']);
 
+      $this->data['synonyms'] = preg_split('#\s*,\s*#', $this->data['synonyms'], -1, PREG_SPLIT_NO_EMPTY);
+      $this->data['synonyms'] = array_map('trim', $this->data['synonyms']);
+      $this->data['synonyms'] = array_filter($this->data['synonyms']);
+      $this->data['synonyms'] = array_unique($this->data['synonyms']);
+      $this->data['synonyms'] = implode(',', $this->data['synonyms']);
+
       if (empty($this->data['default_category_id']) || !in_array($this->data['default_category_id'], $this->data['categories'])) {
         $this->data['default_category_id'] = reset($this->data['categories']);
       }
@@ -176,6 +182,7 @@
           sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
           default_category_id = ". (int)$this->data['default_category_id'] .",
           keywords = '". database::input($this->data['keywords']) ."',
+          synonyms = '". database::input($this->data['synonyms']) ."',
           quantity_min = ". (float)$this->data['quantity_min'] .",
           quantity_max = ". (float)$this->data['quantity_max'] .",
           quantity_step = ". (float)$this->data['quantity_step'] .",

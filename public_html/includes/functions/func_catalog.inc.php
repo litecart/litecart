@@ -99,8 +99,11 @@
           where match(description) against ('". database::input($query_fulltext) ."' in boolean mode)
         ), 5, 0)"
       );
-    }
 
+      $sql_select_relevance[] = (
+        "if(match(synonyms) against ('". database::input($query_fulltext) ."' in boolean mode), 10, 0)"
+      );
+    }
 
     if (!empty($filter['keywords'])) {
       $sql_select_relevance['keywords'] = (
