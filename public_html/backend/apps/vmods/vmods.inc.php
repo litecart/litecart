@@ -171,8 +171,8 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink('settings/advanced', ['action' => 'edit', 'key' => 'cache_clear']), language::translate('title_clear_cache', 'Clear Cache'), '', 'fa-external-link'); ?>
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_vmod'), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink('settings/advanced', ['action' => 'edit', 'key' => 'cache_clear']), language::translate('title_clear_cache', 'Clear Cache'), '', 'fa-external-link'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_vmod'), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('vmod_form', 'post', '', true); ?>
@@ -197,7 +197,7 @@
       <tbody>
         <?php foreach ($vmods as $vmod) { ?>
         <tr class="<?php echo $vmod['status'] ? null : 'semi-transparent'; ?>">
-          <td><?php echo functions::form_checkbox('vmods[]', $vmod['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('vmods[]', $vmod['id']); ?></td>
           <td><?php echo functions::draw_fonticon($vmod['status'] ? 'on' : 'off'); ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['id']]); ?>"><?php echo $vmod['name']; ?></a></td>
           <td class="text-center"><?php echo $vmod['version']; ?></td>
@@ -263,7 +263,7 @@
           <legend><?php echo language::translate('title_upload_new_vmod', 'Upload a New vMod'); ?>:</legend>
 
           <div class="input-group">
-            <?php echo functions::form_file_field('vmod', 'accept="application/zip"'); ?>
+            <?php echo functions::form_input_file('vmod', 'accept="application/zip"'); ?>
             <?php echo functions::form_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
           </div>
         </fieldset>

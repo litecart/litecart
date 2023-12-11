@@ -48,7 +48,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_administrator'), language::translate('title_create_new_administrator', 'Create New Administrator'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_administrator'), language::translate('title_create_new_administrator', 'Create New Administrator'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('administrators_form', 'post'); ?>
@@ -66,7 +66,7 @@
       <tbody>
         <?php foreach ($administrators as $administrator) { ?>
         <tr class="<?php if (empty($administrator['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_checkbox('administrators[]', $administrator['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('administrators[]', $administrator['id']); ?></td>
           <td><?php echo functions::draw_fonticon($administrator['status'] ? 'on' : 'off'); ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>"><?php echo $administrator['username']; ?></a></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>

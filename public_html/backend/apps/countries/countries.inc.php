@@ -55,7 +55,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_country'), language::translate('title_create_new_country', 'Create New Country'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_country'), language::translate('title_create_new_country', 'Create New Country'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('countries_form', 'post'); ?>
@@ -78,7 +78,7 @@
       <tbody>
         <?php foreach ($countries as $country) { ?>
         <tr class="<?php if (empty($country['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_checkbox('countries['. $country['iso_code_2'] .']', $country['iso_code_2']); ?></td>
+          <td><?php echo functions::form_input_checkbox('countries['. $country['iso_code_2'] .']', $country['iso_code_2']); ?></td>
           <td><?php echo functions::draw_fonticon($country['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $country['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_country', ['country_code' => $country['iso_code_2']]); ?>"><?php echo $country['name']; ?></a></td>

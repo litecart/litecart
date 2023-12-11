@@ -104,7 +104,7 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php echo functions::form_text_field('name', true); ?>
+          <?php echo functions::form_input_text('name', true); ?>
         </div>
       </div>
 
@@ -112,7 +112,7 @@
 
       <div class="form-group">
         <label><?php echo language::translate('title_image', 'Image'); ?></label>
-        <?php echo functions::form_file_field('image', 'accept="image/*,.svg"'); ?>
+        <?php echo functions::form_input_file('image', 'accept="image/*,.svg"'); ?>
         <?php if (!empty($slide->data['image'])) echo '</label>' . $slide->data['image']; ?>
       </div>
 
@@ -129,12 +129,12 @@
         <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
           <div class="form-group">
             <label><?php echo language::translate('title_caption', 'Caption'); ?></label>
-            <?php echo functions::form_regional_wysiwyg_field('caption['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
+            <?php echo functions::form_regional_wysiwyg('caption['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_link', 'Link'); ?></label>
-            <?php echo functions::form_regional_text_field('link['. $language_code .']', $language_code, true, ''); ?>
+            <?php echo functions::form_regional_text('link['. $language_code .']', $language_code, true, ''); ?>
           </div>
         </div>
         <?php } ?>
@@ -143,19 +143,19 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></label>
-          <?php echo functions::form_datetime_field('date_valid_from', true); ?>
+          <?php echo functions::form_input_datetime('date_valid_from', true); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></label>
-          <?php echo functions::form_datetime_field('date_valid_to', true); ?>
+          <?php echo functions::form_input_datetime('date_valid_to', true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-3">
           <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-          <?php echo functions::form_number_field('priority', true); ?>
+          <?php echo functions::form_input_number('priority', true); ?>
         </div>
       </div>
 

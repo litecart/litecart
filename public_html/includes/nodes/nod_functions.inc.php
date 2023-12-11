@@ -4,12 +4,23 @@
 
     public static function __callstatic($function, $arguments) {
 
+    // Renamed functions
       $search_replace = [
-        '#^form_draw_users_list#' => 'form_administrators_list',
-        '#^form_draw_weight_classes_list#' => 'form_weight_units',
-        '#^form_draw_length_classes_list#' => 'form_length_units',
-        '#^form_draw_order_status_list#' => 'form_order_statuses',
-        '#^form_draw_(form_)?(.*)#' => 'form_$2',
+        '#^form_draw_customer_field$#' => 'form_select_customer',
+        '#^form_draw_product_field$#' => 'form_select_product',
+        '#^form_draw_users_list$#' => 'form_select_administrator',
+        '#^form_draw_weight_classes_list$#' => 'form_select_weight_unit',
+        '#^form_draw_length_classes_list$#' => 'form_select_length_unit',
+        '#^form_draw_volume_classes_list$#' => 'form_select_volume_unit',
+        '#^form_draw_order_status_list$#' => 'form_select_order_status',
+        '#^form_draw_(.*?)ies_list$#' => 'form_select_$y',
+        '#^form_draw_(.*?)ses_list$#' => 'form_select_$s',
+        '#^form_draw_(.*?)s_list$#' => 'form_select_$1',
+        '#^form_draw_form_(.*?)$#' => 'form_$2',
+        '#^form_draw_(.*?)_field$#' => 'form_input_$2',
+        '#^form_draw_checkbox$#' => 'form_input_checkbox',
+        '#^form_draw_radio_button$#' => 'form_input_radio_button',
+        '#^form_draw_textarea$#' => 'form_input_textarea',
       ];
 
       foreach ($search_replace as $search => $replace) {

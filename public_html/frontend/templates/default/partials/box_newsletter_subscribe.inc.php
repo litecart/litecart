@@ -29,7 +29,7 @@
 
         <div class="form-group">
           <div style="display: flex; flex-direction: row; gap: 1em">
-            <?php echo functions::form_email_field('email', true, 'placeholder="your@email.com" required'); ?>
+            <?php echo functions::form_input_email('email', true, 'placeholder="your@email.com" required'); ?>
             <?php echo functions::form_button('subscribe', language::translate('title_subscribe', 'Subscribe')); ?>
           </div>
         </div>

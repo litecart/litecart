@@ -16,24 +16,24 @@
         <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-            <?php echo functions::form_email_field('email', true, 'required'); ?>
+            <?php echo functions::form_input_email('email', true, 'required'); ?>
           </div>
 
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_password', 'Password'); ?></label>
-            <?php echo functions::form_password_field('password', '', 'required'); ?>
+            <?php echo functions::form_input_password('password', '', 'required'); ?>
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_new_password', 'New Password'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
-            <?php echo functions::form_password_field('new_password', ''); ?>
+            <?php echo functions::form_input_password('new_password', ''); ?>
           </div>
 
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_confirm_new_password', 'Confirm New Password'); ?></label>
-            <?php echo functions::form_password_field('confirmed_password', ''); ?>
+            <?php echo functions::form_input_password('confirmed_password', ''); ?>
           </div>
         </div>
 
@@ -52,14 +52,14 @@
           <?php if (settings::get('customer_field_company')) { ?>
           <div class="form-group col-6">
             <label><?php echo language::translate('title_company_name', 'Company Name'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
-            <?php echo functions::form_text_field('company', true); ?>
+            <?php echo functions::form_input_text('company', true); ?>
           </div>
           <?php } ?>
 
           <?php if (settings::get('customer_field_tax_id')) { ?>
           <div class="form-group col-6">
             <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
-            <?php echo functions::form_text_field('tax_id', true); ?>
+            <?php echo functions::form_input_text('tax_id', true); ?>
           </div>
           <?php } ?>
         </div>
@@ -68,36 +68,36 @@
         <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-            <?php echo functions::form_text_field('firstname', true, 'required'); ?>
+            <?php echo functions::form_input_text('firstname', true, 'required'); ?>
           </div>
 
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-            <?php echo functions::form_text_field('lastname', true, 'required'); ?>
+            <?php echo functions::form_input_text('lastname', true, 'required'); ?>
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-            <?php echo functions::form_text_field('address1', true, 'required'); ?>
+            <?php echo functions::form_input_text('address1', true, 'required'); ?>
           </div>
 
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-            <?php echo functions::form_text_field('address2', true); ?>
+            <?php echo functions::form_input_text('address2', true); ?>
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-            <?php echo functions::form_text_field('postcode', true); ?>
+            <?php echo functions::form_input_text('postcode', true); ?>
           </div>
 
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_city', 'City'); ?></label>
-            <?php echo functions::form_text_field('city', true, 'required'); ?>
+            <?php echo functions::form_input_text('city', true, 'required'); ?>
           </div>
         </div>
 
@@ -116,12 +116,12 @@
         <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
-            <?php echo functions::form_phone_field('phone', true, 'required placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
+            <?php echo functions::form_input_phone('phone', true, 'required placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
           </div>
         </div>
 
         <div class="form-group">
-          <?php echo functions::form_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
+          <?php echo functions::form_input_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
         </div>
 
         <p><?php echo functions::form_button('save_details', language::translate('title_save', 'Save')); ?></p>

@@ -26,14 +26,14 @@
             <?php if (count($languages) > 1) { ?>
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_language', 'Language'); ?></label>
-              <?php echo functions::form_select_field('language_code', $language_options, language::$selected['code']); ?>
+              <?php echo functions::form_select('language_code', $language_options, language::$selected['code']); ?>
             </div>
             <?php } ?>
 
             <?php if (count($currencies) > 1) { ?>
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
-              <?php echo functions::form_select_field('currency_code', $currency_options, currency::$selected['code']); ?>
+              <?php echo functions::form_select('currency_code', $currency_options, currency::$selected['code']); ?>
             </div>
             <?php } ?>
 
@@ -49,7 +49,7 @@
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
-              <?php echo functions::form_text_field('postcode', customer::$data['postcode']); ?>
+              <?php echo functions::form_input_text('postcode', customer::$data['postcode']); ?>
             </div>
 
             <div class="form-group col-md-6">

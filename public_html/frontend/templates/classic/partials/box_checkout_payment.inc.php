@@ -5,7 +5,7 @@
 
     <?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
     <label class="option btn btn-default btn-block<?php if (!empty($selected['id']) && $selected['id'] == $module['id'].':'.$option['id']) echo ' active'; ?><?php if (!empty($option['error'])) echo ' disabled'; ?>">
-      <?php echo functions::form_radio_button('payment[option_id]', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"'. (!empty($option['error'])) ? ' disabled' : ''); ?>
+      <?php echo functions::form_input_radio_button('payment[option_id]', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"'. (!empty($option['error'])) ? ' disabled' : ''); ?>
       <div class="header row" style="margin: 0;">
         <div class="col-xs-3 thumbnail" style="margin: 0;">
           <img src="<?php echo document::href_rlink(functions::image_thumbnail($option['icon'], 140, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING')); ?>" />

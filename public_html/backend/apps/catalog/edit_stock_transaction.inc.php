@@ -86,7 +86,7 @@
       <div class="row">
         <div class="form-group col-md-3">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php echo functions::form_text_field('name', true); ?>
+          <?php echo functions::form_input_text('name', true); ?>
         </div>
 
         <?php if (!empty($stock_transaction->data['id'])) { ?>
@@ -105,7 +105,7 @@
       <div class="row">
         <div class="form-group col-md-7">
           <label><?php echo language::translate('title_description', 'Description'); ?></label>
-          <?php echo functions::form_textarea('description', true, 'style="height: 100px;"'); ?>
+          <?php echo functions::form_input_textarea('description', true, 'style="height: 100px;"'); ?>
         </div>
       </div>
 
@@ -127,24 +127,24 @@
           <?php if (!empty($_POST['contents'])) foreach (array_keys($_POST['contents']) as $key) { ?>
           <tr class="item">
             <td>
-              <?php echo functions::form_hidden_field('contents['.$key.'][id]', true); ?>
-              <?php echo functions::form_hidden_field('contents['.$key.'][stock_item_id]', true); ?>
-              <?php echo functions::form_hidden_field('contents['. $key .'][sku]', true); ?>
-              <?php echo functions::form_hidden_field('contents['. $key .'][name]', true); ?>
+              <?php echo functions::form_input_hidden('contents['.$key.'][id]', true); ?>
+              <?php echo functions::form_input_hidden('contents['.$key.'][stock_item_id]', true); ?>
+              <?php echo functions::form_input_hidden('contents['. $key .'][sku]', true); ?>
+              <?php echo functions::form_input_hidden('contents['. $key .'][name]', true); ?>
               <?php echo functions::escape_html($_POST['contents'][$key]['sku']); ?>
             </td>
             <td><?php echo functions::escape_html($_POST['contents'][$key]['name']); ?></td>
-            <td><?php echo functions::form_decimal_field('contents['. $key .'][quantity]', true, 2, 'readonly'); ?></td>
+            <td><?php echo functions::form_input_decimal('contents['. $key .'][quantity]', true, 2, 'readonly'); ?></td>
             <td class="text-center">
               <div class="input-group">
                 <span class="input-group-text">&plusmn;</span>
-                <?php echo functions::form_decimal_field('contents['. $key .'][quantity_adjustment]', true, 2); ?>
+                <?php echo functions::form_input_decimal('contents['. $key .'][quantity_adjustment]', true, 2); ?>
               </div>
             </td>
             <td class="text-center">
               <div class="input-group">
                 <?php echo functions::form_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
-                <?php echo functions::form_decimal_field('contents['. $key .'][backordered]', true, 2); ?>
+                <?php echo functions::form_input_decimal('contents['. $key .'][backordered]', true, 2); ?>
               </div>
             </td>
             <td class="text-center"><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
@@ -154,19 +154,19 @@
 
         <tfoot>
           <tr>
-            <td><?php echo functions::form_text_field('new[sku]', true, 'list="available-stock-items"'); ?></td>
-            <td><?php echo functions::form_text_field('new[name]', true, 'tabindex="-1"'); ?></td>
-            <td><?php echo functions::form_decimal_field('new[quantity]', true, 2, 'tabindex="-1" readonly'); ?></td>
+            <td><?php echo functions::form_input_text('new[sku]', true, 'list="available-stock-items"'); ?></td>
+            <td><?php echo functions::form_input_text('new[name]', true, 'tabindex="-1"'); ?></td>
+            <td><?php echo functions::form_input_decimal('new[quantity]', true, 2, 'tabindex="-1" readonly'); ?></td>
             <td>
               <div class="input-group">
                 <span class="input-group-text">&plusmn;</span>
-                <?php echo functions::form_decimal_field('new[quantity_adjustment]', true, 2); ?>
+                <?php echo functions::form_input_decimal('new[quantity_adjustment]', true, 2); ?>
               </div>
             </td>
             <td class="text-center">
               <div class="input-group">
                 <?php echo functions::form_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button', 'tabindex="-1"'); ?>
-                <?php echo functions::form_decimal_field('new[backordered]', true, 2); ?>
+                <?php echo functions::form_input_decimal('new[backordered]', true, 2); ?>
               </div>
             </td>
             <td><?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
@@ -243,23 +243,23 @@
     let output = [
       '  <tr class="item">',
       '    <td>',
-      '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][id]', '')); ?>',
-      '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][item_id]', '')); ?>',
-      '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][sku]', '')); ?>',
+      '       <?php echo functions::escape_js(functions::form_input_hidden('contents[new_item_index][id]', '')); ?>',
+      '       <?php echo functions::escape_js(functions::form_input_hidden('contents[new_item_index][item_id]', '')); ?>',
+      '       <?php echo functions::escape_js(functions::form_input_hidden('contents[new_item_index][sku]', '')); ?>',
       '       ' + $option.attr('value'),
       '    </td>',
-      '    <td><?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][name]', '')); ?>'+ $option.data('name') +'</td>',
-      '    <td><?php echo functions::escape_js(functions::form_decimal_field('contents[new_item_index][quantity]', '', 2, 'readonly')); ?></td>',
+      '    <td><?php echo functions::escape_js(functions::form_input_hidden('contents[new_item_index][name]', '')); ?>'+ $option.data('name') +'</td>',
+      '    <td><?php echo functions::escape_js(functions::form_input_decimal('contents[new_item_index][quantity]', '', 2, 'readonly')); ?></td>',
       '    <td>',
       '      <div class="input-group">',
       '        <span class="input-group-text">&plusmn;</span>',
-      '        <?php echo functions::form_decimal_field('contents[new_item_index][quantity_adjustment]', true, 2, !empty($_POST['options_stock']) ? 'readonly' : ''); ?>',
+      '        <?php echo functions::form_input_decimal('contents[new_item_index][quantity_adjustment]', true, 2, !empty($_POST['options_stock']) ? 'readonly' : ''); ?>',
       '      </div>',
       '    </td>',
       '    <td class="text-center">',
       '      <div class="input-group">',
       '        <?php echo functions::escape_js(functions::form_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>',
-      '        <?php echo functions::escape_js(functions::form_decimal_field('contents[new_item_index][backordered]', true, 2)); ?>',
+      '        <?php echo functions::escape_js(functions::form_input_decimal('contents[new_item_index][backordered]', true, 2)); ?>',
       '      </div>',
       '    </td>',
       '    <td class="text-center"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times', 'style="color: #c33;"')); ?></a></td>',

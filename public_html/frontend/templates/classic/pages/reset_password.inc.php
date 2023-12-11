@@ -23,30 +23,30 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-                <?php echo functions::form_email_field('email', true); ?>
+                <?php echo functions::form_input_email('email', true); ?>
               </div>
 
               <?php if (isset($_REQUEST['reset_token'])) { ?>
               <div class="form-group">
                 <label><?php echo language::translate('title_reset_token', 'Reset Token'); ?></label>
-                <?php echo functions::form_text_field('reset_token', true); ?>
+                <?php echo functions::form_input_text('reset_token', true); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
-                <?php echo functions::form_password_field('new_password', '', 'required autocomplete="new-password" data-toggle="password-strength"'); ?>
+                <?php echo functions::form_input_password('new_password', '', 'required autocomplete="new-password" data-toggle="password-strength"'); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_confirmed_password', 'Confirmed Password'); ?></label>
-                <?php echo functions::form_password_field('confirmed_password', '', 'required autocomplete="off"'); ?>
+                <?php echo functions::form_input_password('confirmed_password', '', 'required autocomplete="off"'); ?>
               </div>
               <?php } ?>
 
               <?php if (settings::get('captcha_enabled')) { ?>
               <div class="form-group">
                 <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-                <?php echo functions::form_captcha_field('captcha', 'reset_password', 'required'); ?>
+                <?php echo functions::form_input_captcha('captcha', 'reset_password', 'required'); ?>
               </div>
               <?php } ?>
 

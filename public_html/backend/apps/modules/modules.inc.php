@@ -135,7 +135,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button('https://www.litecart.net/addons/', 'LiteCart Add-Ons', 'target="_blank"', 'fa-globe'); ?>
+    <?php echo functions::form_button_link('https://www.litecart.net/addons/', 'LiteCart Add-Ons', 'target="_blank"', 'fa-globe'); ?>
   </div>
 
   <?php echo functions::form_begin('modules_form', 'post'); ?>
@@ -159,7 +159,7 @@
         <?php foreach ($modules as $module) { ?>
         <?php if (!empty($module['installed'])) { ?>
         <tr class="<?php if (empty($module['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_checkbox('modules[]', $module['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('modules[]', $module['id']); ?></td>
           <td><?php echo functions::draw_fonticon($module['status'] ? 'on' : 'off'); ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo $module['name']; ?></a></td>
           <?php if (__DOC__ == 'jobs' && !empty($module['status'])) { ?>

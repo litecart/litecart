@@ -84,30 +84,30 @@
       <div class="row">
         <div class="form-group col-md-8">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text_field('name['. $language_code .']', $language_code, true); ?>
+          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true); ?>
         </div>
 
         <div class="form-group col-md-4">
           <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-          <?php echo functions::form_number_field('priority', true); ?>
+          <?php echo functions::form_input_number('priority', true); ?>
         </div>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_description', 'Description'); ?></label>
-        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text_field('description['. $language_code .']', $language_code, true); ?>
+        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text('description['. $language_code .']', $language_code, true); ?>
       </div>
 
       <div class="row">
         <div class="form-group col-md-4">
           <label><?php echo language::translate('title_decimals', 'Decimals'); ?></label>
-          <?php echo functions::form_number_field('decimals', true); ?>
+          <?php echo functions::form_input_number('decimals', true); ?>
         </div>
 
         <div class="form-group col-md-8">
           <br />
           <div class="checkbox">
-            <label><?php echo functions::form_checkbox('separate', '1', true); ?> <?php echo language::translate('text_separate_added_cart_items', 'Separate added cart items'); ?></label>
+            <label><?php echo functions::form_input_checkbox('separate', '1', true); ?> <?php echo language::translate('text_separate_added_cart_items', 'Separate added cart items'); ?></label>
           </div>
         </div>
       </div>
@@ -115,7 +115,7 @@
       <div class="row">
         <div class="form-group col-md-4">
           <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-          <?php echo functions::form_number_field('priority', true); ?>
+          <?php echo functions::form_input_number('priority', true); ?>
         </div>
       </div>
 

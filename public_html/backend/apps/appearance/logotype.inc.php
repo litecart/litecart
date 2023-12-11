@@ -61,7 +61,7 @@
       <div class="form-group" style="max-width: 480px;">
         <label><?php echo language::translate('title_new_image', 'New Image'); ?></label>
         <div class="input-group">
-          <?php echo functions::form_file_field('image', 'accept="image/*"'); ?>
+          <?php echo functions::form_input_file('image', 'accept="image/*"'); ?>
           <?php echo functions::form_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
         </div>
       </div>

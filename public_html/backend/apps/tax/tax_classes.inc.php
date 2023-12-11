@@ -23,7 +23,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_tax_class'), language::translate('title_create_new_tax_class', 'Create New Tax Class'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_tax_class'), language::translate('title_create_new_tax_class', 'Create New Tax Class'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('tax_classs_form', 'post'); ?>
@@ -42,7 +42,7 @@
       <tbody>
         <?php foreach ($tax_classes as $tax_class) { ?>
         <tr>
-          <td><?php echo functions::form_checkbox('tax_classes[]', $tax_class['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('tax_classes[]', $tax_class['id']); ?></td>
           <td><?php echo $tax_class['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>"><?php echo $tax_class['name']; ?></a></td>
           <td style="color: #999;"><?php echo $tax_class['description']; ?></td>

@@ -49,10 +49,10 @@
               <div style="display: inline-flex;">
                 <div class="input-group" style="max-width: 150px;">
                 <?php if (!empty($item['quantity_unit']['name'])) { ?>
-                  <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0"'); ?>
+                  <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0"'); ?>
                   {{item.quantity_unit.name}}
                 <?php } else { ?>
-                  <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
+                  <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
                 <?php } ?>
                 </div>
                 <?php echo functions::form_button('update_cart_item', array($key, functions::draw_fonticon('fa-refresh')), 'submit', 'title="'. functions::escape_html(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>

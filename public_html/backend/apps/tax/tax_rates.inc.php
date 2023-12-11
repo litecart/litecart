@@ -25,7 +25,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_tax_rate'), language::translate('title_create_new_tax_rate', 'Create New Tax Rate'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_tax_rate'), language::translate('title_create_new_tax_rate', 'Create New Tax Rate'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('tax_rates_form', 'post'); ?>
@@ -47,7 +47,7 @@
       <tbody>
         <?php foreach ($tax_rates as $tax_rate) { ?>
         <tr>
-          <td><?php echo functions::form_checkbox('tax_rates[]', $tax_rate['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('tax_rates[]', $tax_rate['id']); ?></td>
           <td><?php echo $tax_rate['id']; ?></td>
           <td><?php echo $tax_rate['tax_class']; ?></td>
           <td><?php echo $tax_rate['geo_zone']; ?></td>

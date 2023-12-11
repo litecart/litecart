@@ -91,18 +91,18 @@
     <div class="row">
       <div class="form-group col-md-6">
         <label><?php echo language::translate('title_code', 'Code'); ?></label>
-        <?php echo functions::form_text_field('code', true); ?>
+        <?php echo functions::form_input_text('code', true); ?>
       </div>
 
       <div class="form-group col-md-6">
         <label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
-        <?php echo functions::form_select_field('sort', $sort_options, true); ?>
+        <?php echo functions::form_select('sort', $sort_options, true); ?>
       </div>
     </div>
 
     <div class="form-group">
       <label><?php echo language::translate('title_name', 'Name'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text_field('name['. $language_code .']', $language_code, true); ?>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true); ?>
     </div>
 
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
@@ -119,8 +119,8 @@
       <tbody>
         <?php if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) { ?>
         <tr>
-          <td class="grabable"><?php echo $group_value['id']; ?><?php echo functions::form_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
-          <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text_field( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
+          <td class="grabable"><?php echo $group_value['id']; ?><?php echo functions::form_input_hidden('values['. $key .'][id]', $group_value['id']); ?></td>
+          <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
           <td class="text-center"><?php echo !empty($group_value['in_use']) ? language::translate('title_yes', 'Yes') : language::translate('title_no', 'No'); ?></td>
           <td class="text-end"><?php if (empty($group_value['in_use'])) echo '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"') .'</a>'; ?></td>
         </tr>
@@ -153,11 +153,11 @@
 
 <?php
     $name_fields = '';
-    foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_regional_text_field('values[new_value_index][name]['. $language_code .']', $language_code, '', '');
+    foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_regional_text('values[new_value_index][name]['. $language_code .']', $language_code, '', '');
 ?>
     let output = [
       '<tr>'
-      '  <td><?php echo functions::escape_js(functions::form_hidden_field('values[new_value_index][id]', '')); ?></td>',
+      '  <td><?php echo functions::escape_js(functions::form_input_hidden('values[new_value_index][id]', '')); ?></td>',
       '  <td><?php echo functions::escape_js($name_fields); ?></td>',
       '  <td class="text-center"><?php echo language::translate('title_no', 'No'); ?></td>',
       '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"')); ?></a></td>',

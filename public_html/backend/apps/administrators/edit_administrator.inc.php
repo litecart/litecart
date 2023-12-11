@@ -119,36 +119,36 @@
           <div class="row">
             <div class="form-group col-sm-6">
               <label><?php echo language::translate('title_username', 'Administratorname'); ?></label>
-              <?php echo functions::form_text_field('username', true, 'autocomplete="off" required'); ?>
+              <?php echo functions::form_input_text('username', true, 'autocomplete="off" required'); ?>
             </div>
 
             <div class="form-group col-sm-6">
               <label><?php echo language::translate('title_email', 'Email'); ?></label>
-              <?php echo functions::form_email_field('email', true, 'autocomplete="off"'); ?>
+              <?php echo functions::form_input_email('email', true, 'autocomplete="off"'); ?>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
-              <?php echo functions::form_password_field('password', '', 'autocomplete="new-password"'); ?>
+              <?php echo functions::form_input_password('password', '', 'autocomplete="new-password"'); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-              <?php echo functions::form_password_field('confirmed_password', '', 'autocomplete="new-password"'); ?>
+              <?php echo functions::form_input_password('confirmed_password', '', 'autocomplete="new-password"'); ?>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_valid_from', 'Valid From'); ?></label>
-              <?php echo functions::form_datetime_field('date_valid_from', true); ?>
+              <?php echo functions::form_input_datetime('date_valid_from', true); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_valid_to', 'Valid To'); ?></label>
-              <?php echo functions::form_datetime_field('date_valid_to', true); ?>
+              <?php echo functions::form_input_datetime('date_valid_to', true); ?>
             </div>
           </div>
 
@@ -156,24 +156,24 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_ip_address', 'Last IP Address'); ?></label>
-              <?php echo functions::form_text_field('last_ip_address', true, 'readonly'); ?>
+              <?php echo functions::form_input_text('last_ip_address', true, 'readonly'); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></label>
-              <?php echo functions::form_text_field('last_hostname', true, 'readonly'); ?>
+              <?php echo functions::form_input_text('last_hostname', true, 'readonly'); ?>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
-              <?php echo functions::form_text_field('date_login', true, 'readonly'); ?>
+              <?php echo functions::form_input_text('date_login', true, 'readonly'); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_active', 'Last Active'); ?></label>
-              <?php echo functions::form_text_field('date_active', true, 'readonly'); ?>
+              <?php echo functions::form_input_text('date_active', true, 'readonly'); ?>
           </div>
           </div>
           <?php } ?>
@@ -181,18 +181,18 @@
 
         <div class="col-md-4">
           <div id="app-permissions" class="form-group">
-            <?php echo functions::form_checkbox('apps_toggle', ['1', language::translate('title_apps', 'Apps')]); ?>
+            <?php echo functions::form_input_checkbox('apps_toggle', ['1', language::translate('title_apps', 'Apps')]); ?>
             <div class="form-input" style="height: 400px; overflow-y: scroll;">
               <ul class="list-unstyled">
 <?php
   $apps = functions::admin_get_apps();
   foreach ($apps as $app) {
     echo '  <li data-app="'. functions::escape_html($app['id']) .'">' . PHP_EOL
-       . '  '. functions::form_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true) . PHP_EOL;
+       . '  '. functions::form_input_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true) . PHP_EOL;
     if (!empty($app['docs'])) {
       echo '  <ul class="list-unstyled">' . PHP_EOL;
       foreach ($app['docs'] as $doc => $file) {
-        echo '    <li data-doc="'. functions::escape_html($doc) .'"><label>'. functions::form_checkbox('apps['.$app['id'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
+        echo '    <li data-doc="'. functions::escape_html($doc) .'"><label>'. functions::form_input_checkbox('apps['.$app['id'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
       }
       echo '  </ul>' . PHP_EOL;
     }
@@ -204,14 +204,14 @@
           </div>
 
           <div id="widget-permissions" class="form-group">
-            <?php echo functions::form_checkbox('widgets_toggle', ['1', language::translate('title_widgets', 'Widgets')]); ?>
+            <?php echo functions::form_input_checkbox('widgets_toggle', ['1', language::translate('title_widgets', 'Widgets')]); ?>
             <div class="form-input" style="height: 150px; overflow-y: scroll;">
               <ul class="list-unstyled">
 <?php
   $widgets = functions::admin_get_widgets();
   foreach ($widgets as $widget) {
     echo '<li>' . PHP_EOL
-       . '  '. functions::form_checkbox('widgets['.$widget['id'].']', ['1', $widget['name']], true) . PHP_EOL
+       . '  '. functions::form_input_checkbox('widgets['.$widget['id'].']', ['1', $widget['name']], true) . PHP_EOL
        . '</li>' . PHP_EOL;
   }
 ?>

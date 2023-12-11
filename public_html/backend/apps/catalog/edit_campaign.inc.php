@@ -96,25 +96,25 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_start_date', 'Start Date'); ?></label>
-          <?php echo functions::form_datetime_field('start_date', true); ?>
+          <?php echo functions::form_input_datetime('start_date', true); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_end_date', 'End Date'); ?></label>
-          <?php echo functions::form_datetime_field('end_date', true); ?>
+          <?php echo functions::form_input_datetime('end_date', true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-4">
           <label><strong><?php echo settings::get('store_currency_code'); ?></strong></label>
-          <?php echo functions::form_currency_field(settings::get('store_currency_code'), settings::get('store_currency_code'), true); ?>
+          <?php echo functions::form_input_money(settings::get('store_currency_code'), settings::get('store_currency_code'), true); ?>
         </div>
         <?php foreach (array_keys(currency::$currencies) as $currency_code) { ?>
         <?php if ($currency_code == settings::get('store_currency_code')) continue; ?>
         <div class="col-md-4">
           <label><?php echo $currency_code; ?></label>
-          <?php echo functions::form_currency_field($currency_code, $currency_code, true); ?>
+          <?php echo functions::form_input_money($currency_code, $currency_code, true); ?>
         </div>
         <?php } ?>
       </div>

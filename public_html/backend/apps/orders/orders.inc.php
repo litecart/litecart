@@ -275,17 +275,17 @@ table .fa-star:hover {
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_order', ['redirect_url' => $_SERVER['REQUEST_URI']]), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_order', ['redirect_url' => $_SERVER['REQUEST_URI']]), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
-      <div class="expandable"><?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
-      <?php echo functions::form_select_optgroup_field('order_status_id', $order_status_options, true, 'style="width: auto;"'); ?>
+      <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
+      <?php echo functions::form_select_optgroup('order_status_id', $order_status_options, true, 'style="width: auto;"'); ?>
       <div class="input-group" style="max-width: 380px;">
-        <?php echo functions::form_date_field('date_from', true); ?>
+        <?php echo functions::form_input_date('date_from', true); ?>
         <span class="input-group-text"> - </span>
-        <?php echo functions::form_date_field('date_to', true); ?>
+        <?php echo functions::form_input_date('date_to', true); ?>
       </div>
       <?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
     </div>
@@ -314,7 +314,7 @@ table .fa-star:hover {
       <tbody>
         <?php foreach ($orders as $order) { ?>
         <tr class="<?php echo implode(' ', $order['css_classes']); ?>" data-id="<?php echo $order['id']; ?>">
-          <td><?php echo functions::form_checkbox('orders[]', $order['id'], true); ?></td>
+          <td><?php echo functions::form_input_checkbox('orders[]', $order['id'], true); ?></td>
           <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
           <td class="text-end"><?php echo $order['no']; ?></td>
           <td><?php echo !empty($order['starred']) ? functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?></td>

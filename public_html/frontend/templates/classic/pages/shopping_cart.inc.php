@@ -19,14 +19,14 @@
         <?php if (count($languages) > 1) { ?>
         <div class="form-group">
           <label><?php echo language::translate('title_language', 'Language'); ?></label>
-          <?php echo functions::form_select_field('language_code', $language_options, language::$selected['code']); ?>
+          <?php echo functions::form_select('language_code', $language_options, language::$selected['code']); ?>
         </div>
         <?php } ?>
 
         <?php if (count($currencies) > 1) { ?>
         <div class="form-group">
           <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
-          <?php echo functions::form_select_field('currency_code', $currency_options, currency::$selected['code']); ?>
+          <?php echo functions::form_select('currency_code', $currency_options, currency::$selected['code']); ?>
         </div>
         <?php } ?>
 
@@ -42,7 +42,7 @@
 
         <div class="form-group">
           <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
-          <?php echo functions::form_text_field('postcode', customer::$data['postcode']); ?>
+          <?php echo functions::form_input_text('postcode', customer::$data['postcode']); ?>
         </div>
 
         <div class="form-group">
@@ -89,11 +89,11 @@
                         <div style="display: inline-flex;">
                           <?php if (!empty($item['quantity_unit']['name'])) { ?>
                           <div class="input-group" style="max-width: 150px;">
-                            <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0"'); ?>
+                            <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0"'); ?>
                             <?php echo $item['quantity_unit']['name']; ?>
                           </div>
                           <?php } else { ?>
-                            <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
+                            <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
                           <?php } ?>
                           <?php echo functions::form_button('update_cart_item', [$key, functions::draw_fonticon('fa-refresh')], 'submit', 'title="'. functions::escape_html(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
                         </div>

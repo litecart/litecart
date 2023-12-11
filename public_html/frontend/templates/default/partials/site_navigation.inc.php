@@ -32,7 +32,7 @@
       <div class="navbar-search" data-hint="<?php echo functions::escape_html(''); ?>">
         <?php echo functions::form_begin('search_form', 'get', document::ilink('search')); ?>
         <div class="navbar-link dropdown">
-          <?php echo functions::form_search_field('query', true, 'autocomplete="off" placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
+          <?php echo functions::form_input_search('query', true, 'autocomplete="off" placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
           <ul class="dropdown-menu">
           </ul>
         </div>

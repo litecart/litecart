@@ -25,7 +25,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_delivery_status'), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_delivery_status'), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('delivery_statuses_form', 'post'); ?>
@@ -43,7 +43,7 @@
       <tbody>
         <?php foreach ($delivery_statuses as $delivery_status) { ?>
         <tr>
-          <td><?php echo functions::form_checkbox('delivery_statuses[]', $delivery_status['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('delivery_statuses[]', $delivery_status['id']); ?></td>
           <td><?php echo $delivery_status['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]); ?>"><?php echo $delivery_status['name']; ?></a></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>

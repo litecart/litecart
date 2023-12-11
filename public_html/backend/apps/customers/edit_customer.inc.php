@@ -166,7 +166,7 @@
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_code', 'Code'); ?></label>
-              <?php echo functions::form_text_field('code', true); ?>
+              <?php echo functions::form_input_text('code', true); ?>
             </div>
           </div>
 
@@ -179,60 +179,60 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-              <?php echo functions::form_email_field('email', true); ?>
+              <?php echo functions::form_input_email('email', true); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
-              <?php echo functions::form_checkbox('newsletter', ['1', language::translate('title_subscribe', 'Subscribe')], true); ?>
+              <?php echo functions::form_input_checkbox('newsletter', ['1', language::translate('title_subscribe', 'Subscribe')], true); ?>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
-              <?php echo functions::form_text_field('company', true); ?>
+              <?php echo functions::form_input_text('company', true); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
-              <?php echo functions::form_text_field('tax_id', true); ?>
+              <?php echo functions::form_input_text('tax_id', true); ?>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-              <?php echo functions::form_text_field('firstname', true); ?>
+              <?php echo functions::form_input_text('firstname', true); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-              <?php echo functions::form_text_field('lastname', true); ?>
+              <?php echo functions::form_input_text('lastname', true); ?>
             </div>
             </div>
 
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-              <?php echo functions::form_text_field('address1', true); ?>
+              <?php echo functions::form_input_text('address1', true); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-              <?php echo functions::form_text_field('address2', true); ?>
+              <?php echo functions::form_input_text('address2', true); ?>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-              <?php echo functions::form_text_field('postcode', true); ?>
+              <?php echo functions::form_input_text('postcode', true); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_city', 'City'); ?></label>
-              <?php echo functions::form_text_field('city', true); ?>
+              <?php echo functions::form_input_text('city', true); ?>
             </div>
           </div>
 
@@ -251,12 +251,12 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
-              <?php echo functions::form_phone_field('phone', true); ?>
+              <?php echo functions::form_input_phone('phone', true); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo !empty($customer->data['id']) ? language::translate('title_new_password', 'New Password') : language::translate('title_password', 'Password'); ?></label>
-              <?php echo functions::form_password_field('new_password', '', 'autocomplete="new-password"'); ?>
+              <?php echo functions::form_input_password('new_password', '', 'autocomplete="new-password"'); ?>
             </div>
           </div>
 
@@ -264,67 +264,67 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_ip_address', 'Last IP Address'); ?></label>
-              <?php echo functions::form_text_field('last_ip_address', true, 'readonly'); ?>
+              <?php echo functions::form_input_text('last_ip_address', true, 'readonly'); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></label>
-              <?php echo functions::form_text_field('last_hostname', true, 'readonly'); ?>
+              <?php echo functions::form_input_text('last_hostname', true, 'readonly'); ?>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
-              <?php echo functions::form_text_field('date_login', true, 'readonly'); ?>
+              <?php echo functions::form_input_text('date_login', true, 'readonly'); ?>
             </div>
           </div>
           <?php } ?>
 
-          <h3><?php echo functions::form_checkbox('different_shipping_address', ['1', language::translate('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
+          <h3><?php echo functions::form_input_checkbox('different_shipping_address', ['1', language::translate('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
 
           <fieldset class="shipping-address"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : ''; ?>>
 
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
-                <?php echo functions::form_text_field('shipping_address[company]', true); ?>
+                <?php echo functions::form_input_text('shipping_address[company]', true); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-                <?php echo functions::form_text_field('shipping_address[firstname]', true); ?>
+                <?php echo functions::form_input_text('shipping_address[firstname]', true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-                <?php echo functions::form_text_field('shipping_address[lastname]', true); ?>
+                <?php echo functions::form_input_text('shipping_address[lastname]', true); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-                <?php echo functions::form_text_field('shipping_address[address1]', true); ?>
+                <?php echo functions::form_input_text('shipping_address[address1]', true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-                <?php echo functions::form_text_field('shipping_address[address2]', true); ?>
+                <?php echo functions::form_input_text('shipping_address[address2]', true); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-                <?php echo functions::form_text_field('shipping_address[postcode]', true); ?>
+                <?php echo functions::form_input_text('shipping_address[postcode]', true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_city', 'City'); ?></label>
-                <?php echo functions::form_text_field('shipping_address[city]', true); ?>
+                <?php echo functions::form_input_text('shipping_address[city]', true); ?>
               </div>
             </div>
 
@@ -343,7 +343,7 @@
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
-                <?php echo functions::form_phone_field('shipping_address[phone]', true); ?>
+                <?php echo functions::form_input_phone('shipping_address[phone]', true); ?>
               </div>
             </div>
 
@@ -359,7 +359,7 @@
         <div class="col-md-4">
           <div class="form-group">
             <label><?php echo language::translate('title_notes', 'Notes'); ?></label>
-            <?php echo functions::form_textarea('notes', true, 'style="height: 450px;"'); ?>
+            <?php echo functions::form_input_textarea('notes', true, 'style="height: 450px;"'); ?>
           </div>
 
           <?php if (!empty($customer->data['id'])) { ?>

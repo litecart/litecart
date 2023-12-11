@@ -265,7 +265,7 @@
       <?php if (!empty($available_languages)) { ?>
       <div class="form-group col-md-6">
         <label><?php echo language::translate('text_prefill_from_the_web', 'Prefill from the web'); ?></label>
-        <?php echo functions::form_select_field('prefill', $prefillable_language_options, ''); ?>
+        <?php echo functions::form_select('prefill', $prefillable_language_options, ''); ?>
       </div>
       <?php } ?>
 
@@ -273,9 +273,9 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_status', 'Status'); ?></label>
           <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
-            <label class="btn btn-default<?php if (isset($_POST['status']) && $_POST['status'] == 1) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '1', true); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
-            <label class="btn btn-default<?php if (isset($_POST['status']) && $_POST['status']  == -1) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '-1', true); ?><?php echo language::translate('title_hidden', 'Hidden'); ?></label>
-            <label class="btn btn-default<?php if (empty($_POST['status'])) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '0', true); ?><?php echo language::translate('title_disabled', 'Disabled'); ?></label>
+            <label class="btn btn-default<?php if (isset($_POST['status']) && $_POST['status'] == 1) echo ' active'; ?>"><?php echo functions::form_input_radio_button('status', '1', true); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
+            <label class="btn btn-default<?php if (isset($_POST['status']) && $_POST['status']  == -1) echo ' active'; ?>"><?php echo functions::form_input_radio_button('status', '-1', true); ?><?php echo language::translate('title_hidden', 'Hidden'); ?></label>
+            <label class="btn btn-default<?php if (empty($_POST['status'])) echo ' active'; ?>"><?php echo functions::form_input_radio_button('status', '0', true); ?><?php echo language::translate('title_disabled', 'Disabled'); ?></label>
           </div>
         </div>
       </div>
@@ -283,14 +283,14 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php echo functions::form_text_field('name', true, 'list="available-languages"'); ?>
+          <?php echo functions::form_input_text('name', true, 'list="available-languages"'); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_text_direction', 'Text Direction'); ?></label>
           <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
-          <label class="btn btn-default<?php if (!isset($_POST['direction']) || $_POST['direction'] == 'ltr') echo ' active'; ?>" style="text-align: left;"><?php echo functions::form_radio_button('direction', 'ltr', true); ?> <?php echo language::translate('title_left_to_right', 'Left To Right'); ?></label>
-          <label class="btn btn-default<?php if (isset($_POST['direction']) && $_POST['direction'] == 'rtl') echo ' active'; ?>" style="text-align: right;"><?php echo functions::form_radio_button('direction', 'rtl', true); ?><?php echo language::translate('title_right_to_left', 'Right To Left'); ?></label>
+          <label class="btn btn-default<?php if (!isset($_POST['direction']) || $_POST['direction'] == 'ltr') echo ' active'; ?>" style="text-align: left;"><?php echo functions::form_input_radio_button('direction', 'ltr', true); ?> <?php echo language::translate('title_left_to_right', 'Left To Right'); ?></label>
+          <label class="btn btn-default<?php if (isset($_POST['direction']) && $_POST['direction'] == 'rtl') echo ' active'; ?>" style="text-align: right;"><?php echo functions::form_input_radio_button('direction', 'rtl', true); ?><?php echo language::translate('title_right_to_left', 'Right To Left'); ?></label>
           </div>
         </div>
       </div>
@@ -298,88 +298,88 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-          <?php echo functions::form_text_field('code', true, 'required pattern="[a-z]{2}"'); ?>
+          <?php echo functions::form_input_text('code', true, 'required pattern="[a-z]{2}"'); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-          <?php echo functions::form_text_field('code2', true, 'required pattern="[a-z]{3}"'); ?>
+          <?php echo functions::form_input_text('code2', true, 'required pattern="[a-z]{3}"'); ?>
         </div>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_system_locale', 'System Locale'); ?></label>
-        <?php echo functions::form_text_field('locale', true, 'placeholder="en_US.utf8, en-US.UTF-8, english"'); ?>
+        <?php echo functions::form_input_text('locale', true, 'placeholder="en_US.utf8, en-US.UTF-8, english"'); ?>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_url_type', 'URL Type'); ?></label>
           <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
-          <label class="btn btn-default<?php if (!empty($_POST['url_type']) && $_POST['url_type'] == 'none') echo ' active'; ?>"><?php echo functions::form_radio_button('url_type', 'none', !empty($_POST['url_type']) ? true : 'none'); ?> <?php echo language::translate('title_none', 'None'); ?></label>
-          <label class="btn btn-default<?php if (!empty($_POST['url_type']) && $_POST['url_type'] == 'path') echo ' active'; ?>"><?php echo functions::form_radio_button('url_type', 'path', true); ?> <?php echo language::translate('title_path_prefix', 'Path Prefix'); ?></label>
-          <label class="btn btn-default<?php if (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain') echo ' active'; ?>"><?php echo functions::form_radio_button('url_type', 'domain', true); ?> <?php echo language::translate('title_domain', 'Domain'); ?></label>
+          <label class="btn btn-default<?php if (!empty($_POST['url_type']) && $_POST['url_type'] == 'none') echo ' active'; ?>"><?php echo functions::form_input_radio_button('url_type', 'none', !empty($_POST['url_type']) ? true : 'none'); ?> <?php echo language::translate('title_none', 'None'); ?></label>
+          <label class="btn btn-default<?php if (!empty($_POST['url_type']) && $_POST['url_type'] == 'path') echo ' active'; ?>"><?php echo functions::form_input_radio_button('url_type', 'path', true); ?> <?php echo language::translate('title_path_prefix', 'Path Prefix'); ?></label>
+          <label class="btn btn-default<?php if (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain') echo ' active'; ?>"><?php echo functions::form_input_radio_button('url_type', 'domain', true); ?> <?php echo language::translate('title_domain', 'Domain'); ?></label>
           </div>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_domain_name', 'Domain Name'); ?></label>
-          <?php echo functions::form_text_field('domain_name', true); ?>
+          <?php echo functions::form_input_text('domain_name', true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_date_format', 'Date Format'); ?> <a href="https://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-          <?php echo functions::form_select_field('format_date', $date_format_options, true); ?>
+          <?php echo functions::form_select('format_date', $date_format_options, true); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_time_format', 'Time Format'); ?> <a href="https://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-          <?php echo functions::form_select_optgroup_field('format_time', $time_format_options, true); ?>
+          <?php echo functions::form_select_optgroup('format_time', $time_format_options, true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?> <a href="https://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-          <?php echo functions::form_select_optgroup_field('raw_date', $raw_date_options, true); ?>
+          <?php echo functions::form_select_optgroup('raw_date', $raw_date_options, true); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?> <a href="https://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-          <?php echo functions::form_select_optgroup_field('raw_time', $raw_time_options, true); ?>
+          <?php echo functions::form_select_optgroup('raw_time', $raw_time_options, true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_decimal_point', 'Decimal Point'); ?></label>
-          <?php echo functions::form_select_field('decimal_point', $decimal_point_options, true); ?>
+          <?php echo functions::form_select('decimal_point', $decimal_point_options, true); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_thousands_sep', 'Thousands Separator'); ?></label>
-          <?php echo functions::form_select_field('thousands_sep', $thousands_separator_options, true); ?>
+          <?php echo functions::form_select('thousands_sep', $thousands_separator_options, true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_force_currency_code', 'Force Currency Code'); ?></label>
-          <?php echo functions::form_text_field('currency_code', true); ?>
+          <?php echo functions::form_input_text('currency_code', true); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-          <?php echo functions::form_number_field('priority', true); ?>
+          <?php echo functions::form_input_number('priority', true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
-          <?php echo functions::form_checkbox('set_default', ['1', language::translate('description_set_as_default_language', 'Set as default language')], (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('default_language_code')) ? '1' : true); ?>
-          <?php echo functions::form_checkbox('set_store', ['1', language::translate('description_set_as_store_language', 'Set as store language')], (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('store_language_code')) ? '1' : true); ?></label>
+          <?php echo functions::form_input_checkbox('set_default', ['1', language::translate('description_set_as_default_language', 'Set as default language')], (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('default_language_code')) ? '1' : true); ?>
+          <?php echo functions::form_input_checkbox('set_store', ['1', language::translate('description_set_as_store_language', 'Set as store language')], (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('store_language_code')) ? '1' : true); ?></label>
         </div>
       </div>
 

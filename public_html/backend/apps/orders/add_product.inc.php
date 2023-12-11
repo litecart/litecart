@@ -35,7 +35,7 @@
   <div class="modal-body">
 
     <?php echo functions::form_begin('form_add_product', 'post'); ?>
-      <?php echo functions::form_hidden_field('product_id', $product->id); ?>
+      <?php echo functions::form_input_hidden('product_id', $product->id); ?>
 
       <div class="form-group">
         <div class="thumbnail">
@@ -49,29 +49,29 @@
       <div class="row">
         <div class="form-group col-md-9">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php echo functions::form_text_field('name', true); ?>
+          <?php echo functions::form_input_text('name', true); ?>
         </div>
 
         <div class="form-group col-md-3">
           <label><?php echo language::translate('title_product_id', 'Product ID'); ?></label>
-          <?php echo functions::form_number_field('product_id', true, 'readonly'); ?>
+          <?php echo functions::form_input_number('product_id', true, 'readonly'); ?>
         </div>
       </div>
 
       <div class="row">
           <div class="form-group col-md-4">
           <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
-          <?php echo functions::form_decimal_field('quantity', 1); ?>
+          <?php echo functions::form_input_decimal('quantity', 1); ?>
         </div>
 
           <div class="form-group col-md-4">
           <label><?php echo language::translate('title_price', 'Price'); ?></label>
-          <?php echo functions::form_currency_field('price', $_GET['currency_code'], true); ?>
+          <?php echo functions::form_input_money('price', $_GET['currency_code'], true); ?>
         </div>
 
           <div class="form-group col-md-4">
           <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
-          <?php echo functions::form_currency_field('tax', $_GET['currency_code'], true); ?>
+          <?php echo functions::form_input_money('tax', $_GET['currency_code'], true); ?>
         </div>
       </div>
 
@@ -89,7 +89,7 @@
           <tbody>
             <?php foreach ($product->stock_options as $stock_option) { ?>
             <tr>
-              <td><?php echo functions::form_radio_button('stock_item_id', $stock_option['stock_item_id'], true, 'required'); ?></td>
+              <td><?php echo functions::form_input_radio_button('stock_item_id', $stock_option['stock_item_id'], true, 'required'); ?></td>
               <td><?php echo $stock_option['name']; ?></td>
               <td><?php echo $stock_option['sku']; ?></td>
               <td class="text-end"><?php echo (float)$stock_option['quantity']; ?></td>

@@ -46,7 +46,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_slide'), language::translate('title_create_new_slide', 'Create New Slide'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_slide'), language::translate('title_create_new_slide', 'Create New Slide'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('slides_form', 'post'); ?>
@@ -69,7 +69,7 @@
       <tbody>
         <?php foreach ($slides as $slide) { ?>
         <tr class="<?php if (empty($slide['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_checkbox('slides[]', $slide['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('slides[]', $slide['id']); ?></td>
           <td><?php echo functions::draw_fonticon($slide['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $slide['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_slide', ['slide_id' => $slide['id']]); ?>"><?php echo $slide['name']; ?></a></td>

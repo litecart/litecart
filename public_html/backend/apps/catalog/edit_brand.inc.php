@@ -110,7 +110,7 @@
 
           <div class="form-group">
             <label><?php echo language::translate('title_code', 'Code'); ?></label>
-            <?php echo functions::form_text_field('code', true); ?>
+            <?php echo functions::form_input_text('code', true); ?>
           </div>
 
           <div id="image">
@@ -122,16 +122,16 @@
 
             <div class="form-group">
               <label><?php echo !empty($brand->data['image']) ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image'); ?></label>
-              <?php echo functions::form_file_field('image', 'accept="image/*"'); ?>
+              <?php echo functions::form_input_file('image', 'accept="image/*"'); ?>
               <?php if (!empty($brand->data['image'])) { ?>
-              <?php echo functions::form_checkbox('delete_image', ['true', language::translate('title_delete', 'Delete')], true); ?>
+              <?php echo functions::form_input_checkbox('delete_image', ['true', language::translate('title_delete', 'Delete')], true); ?>
               <?php } ?>
             </div>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
-            <?php echo functions::form_text_field('keywords', true); ?>
+            <?php echo functions::form_input_text('keywords', true); ?>
           </div>
         </div>
 
@@ -139,7 +139,7 @@
 
           <div class="form-group">
             <label><?php echo language::translate('title_name', 'Name'); ?></label>
-            <?php echo functions::form_text_field('name', true); ?>
+            <?php echo functions::form_input_text('name', true); ?>
           </div>
 
           <nav class="nav nav-tabs">
@@ -155,33 +155,33 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>
-                <?php echo functions::form_regional_text_field('h1_title['. $language_code .']', $language_code, true, ''); ?>
+                <?php echo functions::form_regional_text('h1_title['. $language_code .']', $language_code, true, ''); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
-                <?php echo functions::form_regional_text_field('short_description['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_regional_text('short_description['. $language_code .']', $language_code, true); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_description', 'Description'); ?></label>
-                <?php echo functions::form_regional_wysiwyg_field('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
+                <?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_link', 'Link'); ?></label>
-                <?php echo functions::form_regional_text_field('link['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_regional_text('link['. $language_code .']', $language_code, true); ?>
               </div>
 
               <div class="row">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-                  <?php echo functions::form_regional_text_field('head_title['. $language_code .']', $language_code, true, ''); ?>
+                  <?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true, ''); ?>
                 </div>
 
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-                  <?php echo functions::form_regional_text_field('meta_description['. $language_code .']', $language_code, true); ?>
+                  <?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
                 </div>
               </div>
             </div>

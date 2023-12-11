@@ -116,13 +116,13 @@ table tbody .toggle {
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_page'), language::translate('title_create_new_page', 'Create New Page'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_page'), language::translate('title_create_new_page', 'Create New Page'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
-      <div class="expandable"><?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
-      <div class="max-width: max-content;"><?php echo functions::form_select_field('dock', $dock_options, true); ?></div>
+      <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
+      <div class="max-width: max-content;"><?php echo functions::form_select('dock', $dock_options, true); ?></div>
       <?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
     </div>
   <?php echo functions::form_end(); ?>
@@ -170,7 +170,7 @@ table tbody .toggle {
 
 ?>
         <tr class="<?php if (empty($page['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_checkbox('pages[]', $page['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $page['id']; ?></td>
           <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
@@ -222,7 +222,7 @@ table tbody .toggle {
         }
 ?>
         <tr class="<?php if (empty($page['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_checkbox('pages[]', $page['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $page['id']; ?></td>
           <td style="padding-inline-start: <?php echo $depth * 30; ?>px">

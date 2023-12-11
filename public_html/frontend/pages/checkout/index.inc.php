@@ -73,7 +73,7 @@
                    . '<form name="gateway_form" method="post" action="'. fallback($gateway['action'], document::ilink('checkout/process')) .'">' . PHP_EOL;
 
                 if (is_array($gateway['fields'])) {
-                  foreach ($gateway['fields'] as $key => $value) echo functions::form_hidden_field($key, $value) . PHP_EOL;
+                  foreach ($gateway['fields'] as $key => $value) echo functions::form_input_hidden($key, $value) . PHP_EOL;
                 } else {
                   echo $gateway['fields'];
                 }

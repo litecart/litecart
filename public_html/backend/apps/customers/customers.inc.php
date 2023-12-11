@@ -91,12 +91,12 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink('customers/edit_customer'), language::translate('title_create_new_customer', 'Create New Customer'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink('customers/edit_customer'), language::translate('title_create_new_customer', 'Create New Customer'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
-      <div class="expandable"><?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+      <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
       <?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
     </div>
   <?php echo functions::form_end(); ?>
@@ -120,7 +120,7 @@
       <tbody>
         <?php foreach ($customers as $customer) { ?>
         <tr class="<?php if (empty($customer['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_checkbox('customers[]', $customer['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('customers[]', $customer['id']); ?></td>
           <td><?php echo functions::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $customer['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>"><?php echo $customer['email']; ?></a></td>

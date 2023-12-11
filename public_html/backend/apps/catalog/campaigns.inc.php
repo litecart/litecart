@@ -51,7 +51,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_campaign'), language::translate('title_create_new_campaign', 'Create New Campaign'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_campaign'), language::translate('title_create_new_campaign', 'Create New Campaign'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('campaigns_form', 'post'); ?>
@@ -71,7 +71,7 @@
       <tbody>
         <?php foreach ($campaigns as $campaign) { ?>
         <tr class="<?php if (!empty($campaign['end_date']) && $campaign['end_date'] < date('Y-m-d H:i:s')) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_checkbox('campaigns[]', $campaign['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('campaigns[]', $campaign['id']); ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>"><?php echo $campaign['product_name']; ?></a></td>
           <td class="text-end"><?php if (!empty($campaign['start_date'])) echo language::strftime(language::$selected['format_date'], strtotime($campaign['start_date'])); ?></td>
           <td class="text-end"><?php if (!empty($campaign['end_date'])) echo language::strftime(language::$selected['format_date'], strtotime($campaign['end_date'])); ?></td>

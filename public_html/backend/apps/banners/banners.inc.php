@@ -49,8 +49,8 @@
   <div class="card-action">
     <?php echo functions::form_begin('filter_form', 'get'); ?>
       <ul class="list-inline">
-        <li><?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
-        <li><?php echo functions::form_link_button(document::ilink(__APP__.'/edit_banner'), language::translate('title_create_new_banner', 'Create New Banner'), '', 'add'); ?></li>
+        <li><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
+        <li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_banner'), language::translate('title_create_new_banner', 'Create New Banner'), '', 'add'); ?></li>
       </ul>
     <?php echo functions::form_end(); ?>
   </div>
@@ -77,7 +77,7 @@
       <tbody>
         <?php foreach ($banners as $banner) { ?>
         <tr class="<?php echo $banner['status'] ? false : ' semi-transparent'; ?>">
-          <td><?php echo functions::form_checkbox('banners[]', $banner['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('banners[]', $banner['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($banner['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
           <td><?php echo $banner['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>"><?php echo $banner['name']; ?></a></td>

@@ -96,13 +96,13 @@
   <div class="card-action">
     <ul class="list-inline">
       <li><?php echo functions::form_button('add_recipient', language::translate('title_create_new_recipient', 'Create New Recipient'), 'button', '', 'add'); ?></li>
-      <li><?php echo functions::form_link_button(document::ilink(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"'); ?></li>
+      <li><?php echo functions::form_button_link(document::ilink(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"'); ?></li>
     </ul>
   </div>
 
   <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
-      <div class="expandable"><?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+      <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
       <div><?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
   <?php echo functions::form_end(); ?>
@@ -124,7 +124,7 @@
       <tbody>
         <?php foreach ($recipients as $recipient) { ?>
         <tr>
-          <td><?php echo functions::form_checkbox('recipients[]', $recipient['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('recipients[]', $recipient['id']); ?></td>
           <td><?php echo $recipient['id']; ?></td>
           <td><?php echo $recipient['email']; ?></td>
           <td><?php echo $recipient['name']; ?></td>
@@ -165,7 +165,7 @@
 
     <div class="form-group">
       <label><?php echo language::translate('title_recipients', 'Recipients'); ?></label>
-      <?php echo functions::form_textarea('recipients', '', 'style="height: 480px;"'); ?>
+      <?php echo functions::form_input_textarea('recipients', '', 'style="height: 480px;"'); ?>
     </div>
 
     <?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'submit', 'class="btn btn-default btn-block"'); ?>

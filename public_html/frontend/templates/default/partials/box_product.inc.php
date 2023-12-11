@@ -130,7 +130,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
       <div class="buy_now" style="margin: 1em 0;">
         <?php echo functions::form_begin('buy_now_form', 'post'); ?>
-        <?php echo functions::form_hidden_field('product_id', $product_id); ?>
+        <?php echo functions::form_input_hidden('product_id', $product_id); ?>
 
         <?php if (count($stock_options) > 1) { ?>
         <div class="form-group">
@@ -138,7 +138,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
           <?php echo form_select_product_stock_option('stock_option_id', $product_id, true); ?>
         </div>
         <?php } else if (count($stock_options) == 1) { ?>
-        <?php echo functions::form_hidden_field('stock_option_id', $stock_options[0]['stock_option_id']); ?>
+        <?php echo functions::form_input_hidden('stock_option_id', $stock_options[0]['stock_option_id']); ?>
         <?php } ?>
 
 
@@ -163,7 +163,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
           <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
           <div style="display: flex">
             <div class="input-group" style="flex: 0 1 150px;">
-              <?php echo !empty($quantity_unit['decimals']) ? functions::form_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ? $quantity_min : '1') .'" max="'. ($quantity_max ? $quantity_max : '') .'" step="'. ($quantity_step ? $quantity_step : '') .'"') : functions::form_number_field('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ? $quantity_min : '1') .'" max="'. ($quantity_max ? $quantity_max : '') .'" step="'. ($quantity_step ? $quantity_step : '') .'"'); ?>
+              <?php echo !empty($quantity_unit['decimals']) ? functions::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ? $quantity_min : '1') .'" max="'. ($quantity_max ? $quantity_max : '') .'" step="'. ($quantity_step ? $quantity_step : '') .'"') : functions::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ? $quantity_min : '1') .'" max="'. ($quantity_max ? $quantity_max : '') .'" step="'. ($quantity_step ? $quantity_step : '') .'"'); ?>
               <?php if (!empty($quantity_unit['name'])) echo '<div class="input-group-text">'. $quantity_unit['name'] .'</div>'; ?>
             </div>
 

@@ -84,35 +84,35 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_text_field('code', true); ?>
+          <?php echo functions::form_input_text('code', true); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php echo functions::form_text_field('name', true); ?>
+          <?php echo functions::form_input_text('name', true); ?>
         </div>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_description', 'Description'); ?></label>
-        <?php echo functions::form_textarea('description', true); ?>
+        <?php echo functions::form_input_textarea('description', true); ?>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-          <?php echo functions::form_email_field('email', true, 'email', ''); ?>
+          <?php echo functions::form_input_email('email', true, 'email', ''); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
-          <?php echo functions::form_text_field('phone', true); ?>
+          <?php echo functions::form_input_text('phone', true); ?>
         </div>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_link', 'Link'); ?></label>
-        <?php echo functions::form_text_field('link', true); ?>
+        <?php echo functions::form_input_text('link', true); ?>
       </div>
 
       <div class="card-action">

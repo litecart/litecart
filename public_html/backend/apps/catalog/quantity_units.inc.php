@@ -25,7 +25,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_quantity_unit'), language::translate('title_create_new_unit', 'Create New Unit'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_quantity_unit'), language::translate('title_create_new_unit', 'Create New Unit'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('quantity_units_form', 'post'); ?>
@@ -44,7 +44,7 @@
       <tbody>
         <?php foreach ($quantity_units as $quantity_unit) { ?>
         <tr>
-          <td><?php echo functions::form_checkbox('quantity_units[]', $quantity_unit['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('quantity_units[]', $quantity_unit['id']); ?></td>
           <td><?php echo $quantity_unit['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_quantity_unit', ['quantity_unit_id' => $quantity_unit['id']]); ?>"><?php echo $quantity_unit['name']; ?></a></td>
           <td><?php echo $quantity_unit['description']; ?></td>

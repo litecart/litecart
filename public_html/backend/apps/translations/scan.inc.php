@@ -188,7 +188,7 @@ table.data-table td {
 
           <p><?php echo language::translate('description_scan_for_translations', 'This will scan your files for translations. New translations will be added to the database.'); ?></p>
 
-          <p><label><?php echo functions::form_checkbox('update', ['1', language::translate('text_update_empty_translations', 'Update empty translations if applicable')]); ?></label></p>
+          <p><label><?php echo functions::form_input_checkbox('update', ['1', language::translate('text_update_empty_translations', 'Update empty translations if applicable')]); ?></label></p>
 
           <p><?php echo functions::form_button('scan', language::translate('title_scan', 'Scan'), 'submit'); ?></p>
 
@@ -219,7 +219,7 @@ table.data-table td {
             <tbody>
               <?php foreach ($orphan as $row) { ?>
               <tr>
-                <td><?php echo functions::form_checkbox('translations[]', $row['code'], true); ?></td>
+                <td><?php echo functions::form_input_checkbox('translations[]', $row['code'], true); ?></td>
                 <td><?php echo $row['code']; ?></td>
                 <td><?php echo (mb_strlen($row['text_'.language::$selected['code']]) > 100) ? mb_substr($row['text_'.language::$selected['code']], 0, 100) . '...' : $row['text_'.language::$selected['code']]; ?></td>
               </tr>

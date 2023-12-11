@@ -126,7 +126,7 @@
       <div class="form-group" style="max-width: 480px;">
         <label><?php echo language::translate('title_new_icon', 'New Icon'); ?></label>
         <div class="input-group">
-          <?php echo functions::form_file_field('image', 'accept=".ico,.png,.svg"'); ?>
+          <?php echo functions::form_input_file('image', 'accept=".ico,.png,.svg"'); ?>
           <?php echo functions::form_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
         </div>
       </div>

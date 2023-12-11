@@ -28,14 +28,14 @@
           <?php if (settings::get('customer_field_company')) { ?>
           <div class="form-group col-6">
             <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
-            <?php echo functions::form_text_field('customer[company]', true); ?>
+            <?php echo functions::form_input_text('customer[company]', true); ?>
           </div>
           <?php } ?>
 
           <?php if (settings::get('customer_field_tax_id')) { ?>
           <div class="form-group col-6">
             <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
-            <?php echo functions::form_text_field('customer[tax_id]', true); ?>
+            <?php echo functions::form_input_text('customer[tax_id]', true); ?>
           </div>
           <?php } ?>
         </div>
@@ -45,36 +45,36 @@
       <div class="row">
         <div class="form-group col-6">
           <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-          <?php echo functions::form_text_field('customer[firstname]', true, 'required'); ?>
+          <?php echo functions::form_input_text('customer[firstname]', true, 'required'); ?>
         </div>
 
         <div class="form-group col-6">
           <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-          <?php echo functions::form_text_field('customer[lastname]', true, 'required'); ?>
+          <?php echo functions::form_input_text('customer[lastname]', true, 'required'); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-6">
           <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-          <?php echo functions::form_text_field('customer[address1]', true, 'required'); ?>
+          <?php echo functions::form_input_text('customer[address1]', true, 'required'); ?>
         </div>
 
         <div class="form-group col-6">
           <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-          <?php echo functions::form_text_field('customer[address2]', true); ?>
+          <?php echo functions::form_input_text('customer[address2]', true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-6">
           <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-          <?php echo functions::form_text_field('customer[postcode]', true); ?>
+          <?php echo functions::form_input_text('customer[postcode]', true); ?>
         </div>
 
         <div class="form-group col-6">
           <label><?php echo language::translate('title_city', 'City'); ?></label>
-          <?php echo functions::form_text_field('customer[city]', true); ?>
+          <?php echo functions::form_input_text('customer[city]', true); ?>
         </div>
       </div>
 
@@ -95,26 +95,26 @@
       <div class="row">
         <div class="form-group col-6">
           <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-          <?php echo functions::form_email_field('customer[email]', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
+          <?php echo functions::form_input_email('customer[email]', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
         </div>
 
         <div class="form-group col-6">
           <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
-          <?php echo functions::form_phone_field('customer[phone]', true, 'required'); ?>
+          <?php echo functions::form_input_phone('customer[phone]', true, 'required'); ?>
         </div>
       </div>
     </div>
 
     <?php if (!$subscribed_to_newsletter) { ?>
     <div class="form-group">
-      <?php echo functions::form_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
+      <?php echo functions::form_input_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
     </div>
     <?php } ?>
 
     <?php if (settings::get('customer_shipping_address')) { ?>
     <div class="address shipping-address">
 
-      <h3><?php echo functions::form_checkbox('different_shipping_address', ['1', language::translate('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['customer']['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
+      <h3><?php echo functions::form_input_checkbox('different_shipping_address', ['1', language::translate('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['customer']['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
 
       <fieldset<?php echo (empty($_POST['customer']['different_shipping_address'])) ? ' style="display: none;" disabled' : false; ?>>
 
@@ -122,7 +122,7 @@
         <div class="row">
           <div class="form-group col-6">
           <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
-            <?php echo functions::form_text_field('customer[shipping_address][company]', true); ?>
+            <?php echo functions::form_input_text('customer[shipping_address][company]', true); ?>
           </div>
         </div>
         <?php } ?>
@@ -130,36 +130,36 @@
         <div class="row">
           <div class="form-group col-6">
             <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-            <?php echo functions::form_text_field('customer[shipping_address][firstname]', true); ?>
+            <?php echo functions::form_input_text('customer[shipping_address][firstname]', true); ?>
           </div>
 
           <div class="form-group col-6">
             <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-            <?php echo functions::form_text_field('customer[shipping_address][lastname]', true); ?>
+            <?php echo functions::form_input_text('customer[shipping_address][lastname]', true); ?>
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col-6">
             <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-            <?php echo functions::form_text_field('customer[shipping_address][address1]', true); ?>
+            <?php echo functions::form_input_text('customer[shipping_address][address1]', true); ?>
           </div>
 
           <div class="form-group col-6">
             <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-            <?php echo functions::form_text_field('customer[shipping_address][address2]', true); ?>
+            <?php echo functions::form_input_text('customer[shipping_address][address2]', true); ?>
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col-6">
             <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-            <?php echo functions::form_text_field('customer[shipping_address][postcode]', true); ?>
+            <?php echo functions::form_input_text('customer[shipping_address][postcode]', true); ?>
           </div>
 
           <div class="form-group col-6">
             <label><?php echo language::translate('title_city', 'City'); ?></label>
-            <?php echo functions::form_text_field('customer[shipping_address][city]', true); ?>
+            <?php echo functions::form_input_text('customer[shipping_address][city]', true); ?>
           </div>
         </div>
 
@@ -180,7 +180,7 @@
         <div class="row">
           <div class="form-group col-6">
             <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
-            <?php echo functions::form_phone_field('customer[shipping_address][phone]', true); ?>
+            <?php echo functions::form_input_phone('customer[shipping_address][phone]', true); ?>
           </div>
         </div>
 
@@ -192,15 +192,15 @@
 
     <?php if (!empty(customer::$data['id'])) { ?>
     <div class="form-group">
-      <?php echo functions::form_checkbox('save_to_account', ['1', language::translate('title_save_details_to_my_account', 'Save details to my account')], true, 'style="margin: 0px;"'); ?>
+      <?php echo functions::form_input_checkbox('save_to_account', ['1', language::translate('title_save_details_to_my_account', 'Save details to my account')], true, 'style="margin: 0px;"'); ?>
     </div>
     <?php } ?>
 
     <div class="account">
 
       <?php if (!$account_exists) { ?>
-      <h3><?php echo functions::form_checkbox('create_account', ['1', language::translate('title_create_account', 'Create Account')], (!empty($_POST['customer']['create_account']) || settings::get('register_guests')) ? '1' : '', 'style="margin: 0px;"' . (settings::get('register_guests') ? ' disabled' : false)); ?></h3>
-      <?php if (settings::get('register_guests')) echo functions::form_hidden_field('create_account', '1'); ?>
+      <h3><?php echo functions::form_input_checkbox('create_account', ['1', language::translate('title_create_account', 'Create Account')], (!empty($_POST['customer']['create_account']) || settings::get('register_guests')) ? '1' : '', 'style="margin: 0px;"' . (settings::get('register_guests') ? ' disabled' : false)); ?></h3>
+      <?php if (settings::get('register_guests')) echo functions::form_input_hidden('create_account', '1'); ?>
 
       <fieldset<?php echo (empty($_POST['customer']['create_account'])) ? ' style="display: none;" disabled' : false; ?>>
 
@@ -208,14 +208,14 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label><?php echo language::translate('title_desired_password', 'Desired Password'); ?></label>
-              <?php echo functions::form_password_field('password', '', 'autocomplete="new-password"'); ?>
+              <?php echo functions::form_input_password('password', '', 'autocomplete="new-password"'); ?>
             </div>
           </div>
 
           <div class="col-sm-6">
             <div class="form-group">
               <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-              <?php echo functions::form_password_field('confirmed_password', '', 'autocomplete="off"'); ?>
+              <?php echo functions::form_input_password('confirmed_password', '', 'autocomplete="off"'); ?>
             </div>
           </div>
         </div>

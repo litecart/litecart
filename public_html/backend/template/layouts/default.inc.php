@@ -28,7 +28,7 @@
       </a>
 
     <div id="search">
-      <?php echo functions::form_search_field('query', false, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'&hellip;" autocomplete="off"'); ?>
+      <?php echo functions::form_input_search('query', false, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'&hellip;" autocomplete="off"'); ?>
       <div class="results"></div>
     </div>
 

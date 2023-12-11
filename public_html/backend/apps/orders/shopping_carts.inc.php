@@ -78,12 +78,12 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_shopping_cart', ['redirect_url' => $_SERVER['REQUEST_URI']]), language::translate('title_create_new_shopping_cart', 'Create New Shopping Cart'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_shopping_cart', ['redirect_url' => $_SERVER['REQUEST_URI']]), language::translate('title_create_new_shopping_cart', 'Create New Shopping Cart'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
-      <div class="expandable"><?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
+      <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
       <?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
     </div>
   <?php echo functions::form_end(); ?>
@@ -107,7 +107,7 @@
       <tbody>
         <?php foreach ($shopping_carts as $shopping_cart) { ?>
         <tr>
-          <td><?php echo functions::form_checkbox('shopping_carts['.$shopping_cart['id'].']', $shopping_cart['id'], true); ?></td>
+          <td><?php echo functions::form_input_checkbox('shopping_carts['.$shopping_cart['id'].']', $shopping_cart['id'], true); ?></td>
           <td><?php echo $shopping_cart['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_shopping_cart', ['cart_id' => $shopping_cart['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo ($shopping_cart['customer_company']) ? $shopping_cart['customer_company'] : $shopping_cart['customer_firstname'] .' '. $shopping_cart['customer_lastname']; ?><?php if (empty($shopping_cart['customer_id'])) echo ' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></a> <span style="opacity: 0.5;"><?php echo $shopping_cart['customer_tax_id']; ?></span></td>
           <td><?php if (!empty($shopping_cart['customer_country_code'])) echo reference::country($shopping_cart['customer_country_code'])->name; ?></td>

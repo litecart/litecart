@@ -6,7 +6,7 @@
     </a>
 
     <?php echo functions::form_begin('search_form', 'get', document::ilink('search'), false, 'class="navbar-search"'); ?>
-      <?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
+      <?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
     <?php echo functions::form_end(); ?>
 
     <a class="regional-setting text-center" href="<?php echo document::href_ilink('regional_settings', ['redirect_url' => document::link()]); ?>#box-regional-settings" data-toggle="lightbox" data-seamless="true">
@@ -94,19 +94,19 @@
             <?php } else { ?>
               <li class="nav-item">
                 <?php echo functions::form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form"'); ?>
-                  <?php echo functions::form_hidden_field('redirect_url', document::link()); ?>
+                  <?php echo functions::form_input_hidden('redirect_url', document::link()); ?>
 
                   <div class="form-group">
-                    <?php echo functions::form_email_field('email', true, 'required placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
+                    <?php echo functions::form_input_email('email', true, 'required placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
                   </div>
 
                   <div class="form-group">
-                    <?php echo functions::form_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
+                    <?php echo functions::form_input_password('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
                   </div>
 
                   <div class="form-group">
                     <div class="checkbox">
-                      <label><?php echo functions::form_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
+                      <label><?php echo functions::form_input_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
                     </div>
                   </div>
 

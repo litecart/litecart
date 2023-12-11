@@ -13,7 +13,7 @@
 
   <div class="modal-body">
     <div class="form-group">
-      <?php echo functions::form_text_field('query', true, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
+      <?php echo functions::form_input_text('query', true, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
     </div>
 
     <div class="form-group table-responsive">

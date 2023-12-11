@@ -106,11 +106,11 @@ th:not(:last-child) {
 
   <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
-      <div class="expandable"><?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
-      <?php echo functions::form_checkbox('untranslated', ['1', language::translate('text_only_untranslated', 'Only untranslated')]); ?>
-      <?php echo functions::form_checkbox('modules', ['1', language::translate('text_inlcude_modules', 'Include modules')]); ?>
-      <?php echo functions::form_dropdown_field('languages[]', $language_options, true); ?>
-      <div style="max-width: max-content;"><?php echo functions::form_select_field('endpoint', ['' => '-- '. language::translate('title_all', 'All') .' --', 'frontend' => language::translate('title_frontend', 'Frontend'), 'backend' => language::translate('title_backend', 'Backend')]); ?></div>
+      <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+      <?php echo functions::form_input_checkbox('untranslated', ['1', language::translate('text_only_untranslated', 'Only untranslated')]); ?>
+      <?php echo functions::form_input_checkbox('modules', ['1', language::translate('text_inlcude_modules', 'Include modules')]); ?>
+      <?php echo functions::form_dropdown('languages[]', $language_options, true); ?>
+      <div style="max-width: max-content;"><?php echo functions::form_select('endpoint', ['' => '-- '. language::translate('title_all', 'All') .' --', 'frontend' => language::translate('title_frontend', 'Frontend'), 'backend' => language::translate('title_backend', 'Backend')]); ?></div>
       <?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
     </div>
   <?php echo functions::form_end(); ?>
@@ -132,12 +132,12 @@ th:not(:last-child) {
           <tr>
             <td>
               <code class="code"><?php echo $translation['code']; ?></code><br />
-              <span style="color: #999;"><?php echo functions::form_checkbox('translations['. $translation['code'] .'][html]', ['1', language::translate('text_enable_html', 'Enable HTML')], (isset($_POST['translations'][$translation['code']]['html']) ? $_POST['translations'][$translation['code']]['html'] : $translation['html'])); ?></span>
+              <span style="color: #999;"><?php echo functions::form_input_checkbox('translations['. $translation['code'] .'][html]', ['1', language::translate('text_enable_html', 'Enable HTML')], (isset($_POST['translations'][$translation['code']]['html']) ? $_POST['translations'][$translation['code']]['html'] : $translation['html'])); ?></span>
             </td>
             <?php foreach ($_GET['languages'] as $key => $language_code) { ?>
             <td>
-              <?php echo functions::form_hidden_field('translations['. $translation['code'] .'][id]', $translation['id']); ?>
-              <?php echo functions::form_textarea('translations['. $translation['code'] .'][text_'.$language_code.']', $translation['text_'.$language_code], 'rows="2" dir="'. language::$languages[$language_code]['direction'] .'" tabindex="'. $key.str_pad(++$tab_index, 2, '0', STR_PAD_LEFT) .'"'); ?>
+              <?php echo functions::form_input_hidden('translations['. $translation['code'] .'][id]', $translation['id']); ?>
+              <?php echo functions::form_input_textarea('translations['. $translation['code'] .'][text_'.$language_code.']', $translation['text_'.$language_code], 'rows="2" dir="'. language::$languages[$language_code]['direction'] .'" tabindex="'. $key.str_pad(++$tab_index, 2, '0', STR_PAD_LEFT) .'"'); ?>
             </td>
             <?php } ?>
             <td class="text-end"><a class="btn btn-danger btn-sm delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-trash'); ?></a></td>
@@ -176,11 +176,11 @@ th:not(:last-child) {
     <div class="col-md-6">
       <div class="form-group">
         <label><?php echo language::translate('title_from_language', 'From Language'); ?></label>
-        <?php echo functions::form_select_field('from_language_code', $language_options, $_GET['languages'][0]); ?>
+        <?php echo functions::form_select('from_language_code', $language_options, $_GET['languages'][0]); ?>
       </div>
       <div class="form-group">
         <label><?php echo language::translate('title_to_language', 'To Language'); ?></label>
-        <?php echo functions::form_select_field('to_language_code', $language_options); ?>
+        <?php echo functions::form_select('to_language_code', $language_options); ?>
       </div>
       <div class="form-group">
         <label><?php echo language::translate('text_copy_below_to_translation_service', 'Copy below to translation service'); ?></label>

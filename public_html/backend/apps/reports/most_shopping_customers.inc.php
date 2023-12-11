@@ -97,9 +97,9 @@ form[name="filter_form"] li {
       <ul class="list-inline">
         <li>
           <div class="input-group" style="max-width: 380px;">
-            <?php echo functions::form_date_field('date_from', true); ?>
+            <?php echo functions::form_input_date('date_from', true); ?>
             <span class="input-group-text"> - </span>
-            <?php echo functions::form_date_field('date_to', true); ?>
+            <?php echo functions::form_input_date('date_to', true); ?>
           </div>
         </li>
         <li><?php echo functions::form_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>

@@ -55,7 +55,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_currency'), language::translate('title_create_new_currency', 'Create New Currency'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_currency'), language::translate('title_create_new_currency', 'Create New Currency'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('currencies_form', 'post'); ?>
@@ -80,7 +80,7 @@
       <tbody>
         <?php foreach ($currencies as $currency) { ?>
         <tr class="<?php if (empty($currency['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_checkbox('currencies[]', $currency['code']); ?></td>
+          <td><?php echo functions::form_input_checkbox('currencies[]', $currency['code']); ?></td>
           <td><?php echo functions::draw_fonticon(($currency['status'] == 1) ? 'on' : (($currency['status'] == -1) ? 'semi-off' : 'off')); ?></td>
           <td><?php echo $currency['id']; ?></td>
           <td><?php echo $currency['code']; ?></td>

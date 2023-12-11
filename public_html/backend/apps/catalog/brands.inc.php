@@ -52,7 +52,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_brand'), language::translate('title_create_new_brand', 'Create New Brand'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_brand'), language::translate('title_create_new_brand', 'Create New Brand'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('brands_form', 'post'); ?>
@@ -73,7 +73,7 @@
       <tbody>
         <?php foreach ($brands as $brand) { ?>
         <tr class="<?php if (empty($brand['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_checkbox('brands[]', $brand['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('brands[]', $brand['id']); ?></td>
           <td><?php echo functions::draw_fonticon($brand['status'] ? 'on' : 'off'); ?></td>
           <td><?php if ($brand['featured']) echo functions::draw_fonticon('fa-star', 'style="color: #ffd700;"'); ?></td>
           <td><img class="thumbnail fit" src="<?php echo document::href_rlink(functions::image_thumbnail('storage://images/' . ($brand['image'] ? $brand['image'] : 'no_image.png'), 16, 16)); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /></td>

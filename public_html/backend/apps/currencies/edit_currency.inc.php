@@ -164,7 +164,7 @@
       <?php if (!empty($available_currencies)) { ?>
       <div class="form-group col-md-6">
         <label><?php echo language::translate('text_prefill_from_the_web', 'Prefill from the web'); ?></label>
-        <?php echo functions::form_select_field('prefill', $prefillable_currency_options, ''); ?>
+        <?php echo functions::form_select('prefill', $prefillable_currency_options, ''); ?>
       </div>
       <?php } ?>
 
@@ -172,27 +172,27 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_status', 'Status'); ?></label>
           <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
-            <label class="btn btn-default<?php if (isset($_POST['status']) && $_POST['status'] == 1) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '1', true); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
-            <label class="btn btn-default<?php if (isset($_POST['status']) && $_POST['status'] == -1) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '-1', true); ?><?php echo language::translate('title_hidden', 'Hidden'); ?></label>
-            <label class="btn btn-default<?php if (empty($_POST['status'])) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '0', true); ?><?php echo language::translate('title_disabled', 'Disabled'); ?></label>
+            <label class="btn btn-default<?php if (isset($_POST['status']) && $_POST['status'] == 1) echo ' active'; ?>"><?php echo functions::form_input_radio_button('status', '1', true); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
+            <label class="btn btn-default<?php if (isset($_POST['status']) && $_POST['status'] == -1) echo ' active'; ?>"><?php echo functions::form_input_radio_button('status', '-1', true); ?><?php echo language::translate('title_hidden', 'Hidden'); ?></label>
+            <label class="btn btn-default<?php if (empty($_POST['status'])) echo ' active'; ?>"><?php echo functions::form_input_radio_button('status', '0', true); ?><?php echo language::translate('title_disabled', 'Disabled'); ?></label>
           </div>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php echo functions::form_text_field('name', true); ?>
+          <?php echo functions::form_input_text('name', true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-          <?php echo functions::form_text_field('code', true, 'required pattern="[A-Z]{3}"'); ?>
+          <?php echo functions::form_input_text('code', true, 'required pattern="[A-Z]{3}"'); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_number', 'Number'); ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-          <?php echo functions::form_text_field('number', true, 'required pattern="[0-9]{3}"'); ?>
+          <?php echo functions::form_input_text('number', true, 'required pattern="[0-9]{3}"'); ?>
         </div>
       </div>
 
@@ -200,38 +200,38 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_value', 'Value'); ?></label>
           <div class="input-group">
-            <?php echo functions::form_decimal_field('value', true, 4); ?>
+            <?php echo functions::form_input_decimal('value', true, 4); ?>
             <span class="input-group-text"><?php echo $store_currency->code; ?></span>
           </div>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_decimals', 'Decimals'); ?></label>
-          <?php echo functions::form_number_field('decimals', true); ?>
+          <?php echo functions::form_input_number('decimals', true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_prefix', 'Prefix'); ?></label>
-          <?php echo functions::form_text_field('prefix', true); ?>
+          <?php echo functions::form_input_text('prefix', true); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_suffix', 'Suffix'); ?></label>
-          <?php echo functions::form_text_field('suffix', true); ?>
+          <?php echo functions::form_input_text('suffix', true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-          <?php echo functions::form_number_field('priority', true); ?>
+          <?php echo functions::form_input_number('priority', true); ?>
         </div>
 
         <div class="form-group col-md-6">
-          <?php echo functions::form_checkbox('set_default', ['1', language::translate('description_set_as_default_currency', 'Set as default currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('default_currency_code')) ? '1' : true); ?>
-          <?php echo functions::form_checkbox('set_store', ['1', language::translate('description_set_as_store_currency', 'Set as store currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('store_currency_code')) ? '1' : true); ?>
+          <?php echo functions::form_input_checkbox('set_default', ['1', language::translate('description_set_as_default_currency', 'Set as default currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('default_currency_code')) ? '1' : true); ?>
+          <?php echo functions::form_input_checkbox('set_store', ['1', language::translate('description_set_as_store_currency', 'Set as store currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('store_currency_code')) ? '1' : true); ?>
         </div>
       </div>
 

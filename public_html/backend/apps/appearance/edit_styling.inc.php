@@ -55,7 +55,7 @@
 
       <div class="form-group">
         <label><?php echo language::translate('title_content', 'Content'); ?></label>
-        <?php echo functions::form_code_field('content', true); ?>
+        <?php echo functions::form_input_code('content', true); ?>
       </div>
 
       <div class="card-action">

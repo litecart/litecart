@@ -85,7 +85,7 @@
         </div>
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-          <?php echo functions::form_number_field('priority', true); ?>
+          <?php echo functions::form_input_number('priority', true); ?>
         </div>
       </div>
 
@@ -93,8 +93,8 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
           <div>
-            <?php echo functions::form_checkbox('dock[]', ['menu', language::translate('text_dock_in_site_menu', 'Dock in site menu')], true); ?>
-            <?php echo functions::form_checkbox('dock[]', ['information', language::translate('text_dock_in_information', 'Dock in information')], true); ?>
+            <?php echo functions::form_input_checkbox('dock[]', ['menu', language::translate('text_dock_in_site_menu', 'Dock in site menu')], true); ?>
+            <?php echo functions::form_input_checkbox('dock[]', ['information', language::translate('text_dock_in_information', 'Dock in information')], true); ?>
           </div>
         </div>
 
@@ -117,22 +117,22 @@
         <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
           <div class="form-group">
             <label><?php echo language::translate('title_title', 'Title'); ?></label>
-            <?php echo functions::form_regional_text_field('title['. $language_code .']', $language_code, true, ''); ?>
+            <?php echo functions::form_regional_text('title['. $language_code .']', $language_code, true, ''); ?>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_content', 'Content'); ?></label>
-            <?php echo functions::form_regional_wysiwyg_field('content['. $language_code .']', $language_code, true, 'style="height: 400px;"'); ?>
+            <?php echo functions::form_regional_wysiwyg('content['. $language_code .']', $language_code, true, 'style="height: 400px;"'); ?>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-            <?php echo functions::form_regional_text_field('head_title['. $language_code .']', $language_code, true); ?>
+            <?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true); ?>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-            <?php echo functions::form_regional_text_field('meta_description['. $language_code .']', $language_code, true); ?>
+            <?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
           </div>
         </div>
         <?php } ?>

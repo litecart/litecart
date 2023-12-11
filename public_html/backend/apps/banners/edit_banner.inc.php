@@ -112,7 +112,7 @@ table th:last-child {
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php echo functions::form_text_field('name', true); ?>
+          <?php echo functions::form_input_text('name', true); ?>
         </div>
       </div>
 
@@ -125,19 +125,19 @@ table th:last-child {
 
       <div class="form-group">
         <label><?php echo language::translate('title_image', 'Image'); ?></label>
-        <?php echo functions::form_file_field('image', 'accept="image/*"'); ?>
+        <?php echo functions::form_input_file('image', 'accept="image/*"'); ?>
         <?php if (!empty($banner->data['image'])) echo '<div>' . $banner->data['image'] .'</div>'; ?>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_link', 'Link'); ?></label>
-        <?php echo functions::form_url_field('link', true); ?>
+        <?php echo functions::form_input_url('link', true); ?>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_html', 'HTML'); ?></label>
         <div class="form-control" style="padding: 0;">
-          <?php echo functions::form_code_field('html', true, 'placeholder="'. functions::escape_html('<a href="$target_url"><img class="responsive" src="$image_url" /></a>') .'" style="height: 150px;"'); ?>
+          <?php echo functions::form_input_code('html', true, 'placeholder="'. functions::escape_html('<a href="$target_url"><img class="responsive" src="$image_url" /></a>') .'" style="height: 150px;"'); ?>
           <div style="padding: 0.5em; background: #efefef;">
             <?php echo language::translate('title_aliases', 'Aliases'); ?>: <em>$uid, $key, $language_code, $image_url, $target_url</em>
           </div>
@@ -146,18 +146,18 @@ table th:last-child {
 
       <div class="form-group">
         <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
-        <?php echo functions::form_text_field('keywords', true, 'placeholder="banner1,banner2,banner3"'); ?>
+        <?php echo functions::form_input_text('keywords', true, 'placeholder="banner1,banner2,banner3"'); ?>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></label>
-          <?php echo functions::form_datetime_field('date_valid_from', true); ?>
+          <?php echo functions::form_input_datetime('date_valid_from', true); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></label>
-          <?php echo functions::form_datetime_field('date_valid_to', true); ?>
+          <?php echo functions::form_input_datetime('date_valid_to', true); ?>
         </div>
       </div>
 
@@ -193,9 +193,9 @@ table th:last-child {
 
     let output = [
       '<tr>',
-      '  <td><?php echo functions::form_text_field('keys[new_key_index]', 'new_key_index', 'required pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>',
+      '  <td><?php echo functions::form_input_text('keys[new_key_index]', 'new_key_index', 'required pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>',
       <?php foreach (language::$languages as $language) { ?>
-      '  <td><?php echo functions::form_text_field('values['. $language['code'] .'][new_key_index]', true); ?></td>',
+      '  <td><?php echo functions::form_input_text('values['. $language['code'] .'][new_key_index]', true); ?></td>',
       <?php } ?>
       '  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>',
       '</tr>'

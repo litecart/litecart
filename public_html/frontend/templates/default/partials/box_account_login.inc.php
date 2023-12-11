@@ -5,14 +5,14 @@
 
   <div class="card-body">
     <?php echo functions::form_begin('login_form', 'post', document::ilink('login')); ?>
-      <?php echo functions::form_hidden_field('redirect_url', fallback($_GET['redirect_url'], document::ilink(''))); ?>
+      <?php echo functions::form_input_hidden('redirect_url', fallback($_GET['redirect_url'], document::ilink(''))); ?>
 
       <div class="form-group">
-        <?php echo functions::form_email_field('email', true, 'required placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
+        <?php echo functions::form_input_email('email', true, 'required placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
       </div>
 
       <div class="form-group">
-        <?php echo functions::form_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
+        <?php echo functions::form_input_password('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
       </div>
 
       <div class="btn-group btn-block">

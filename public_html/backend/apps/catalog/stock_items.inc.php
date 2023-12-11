@@ -106,12 +106,12 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_stock_item'), language::translate('title_create_new_stock_item', 'Create New Stock Item'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_item'), language::translate('title_create_new_stock_item', 'Create New Stock Item'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
-      <div class="expandable"><?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_items', 'Search items').'"'); ?></div>
+      <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_items', 'Search items').'"'); ?></div>
       <?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
     </div>
   <?php echo functions::form_end(); ?>
@@ -137,7 +137,7 @@
       <tbody>
         <?php foreach ($stock_items as $stock_item) { ?>
         <tr>
-          <td><?php echo functions::form_checkbox('stock_items[]', $stock_item['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('stock_items[]', $stock_item['id']); ?></td>
           <td><?php echo $stock_item['id']; ?></td>
           <td><?php echo !empty($stock_item['warning']) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($stock_item['warning']) .'"') : ''; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>

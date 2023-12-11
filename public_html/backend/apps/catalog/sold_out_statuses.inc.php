@@ -24,7 +24,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_sold_out_status'), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?>
+    <?php echo functions::form_button_link(document::ilink(__APP__.'/edit_sold_out_status'), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_begin('sold_out_statuses_form', 'post'); ?>
@@ -44,7 +44,7 @@
       <tbody>
         <?php foreach ($sold_out_statuses as $sold_out_status) { ?>
         <tr>
-          <td><?php echo functions::form_checkbox('delivery_statuses[]', $sold_out_status['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('delivery_statuses[]', $sold_out_status['id']); ?></td>
           <td><?php echo $sold_out_status['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_sold_out_status', ['sold_out_status_id' => $sold_out_status['id']]); ?>"><?php echo $sold_out_status['name']; ?></a></td>
           <td class="text-center"><?php if (!empty($sold_out_status['hidden'])) echo functions::draw_fonticon('fa-check'); ?></td>

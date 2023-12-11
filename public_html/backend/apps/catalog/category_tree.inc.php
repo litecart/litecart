@@ -293,14 +293,14 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_link_button(document::ilink(__APP__.'/edit_category', ['parent_id' => $_GET['category_id']]), language::translate('title_create_new_category', 'Create New Category'), '', 'add'); ?></li>
-      <li><?php echo functions::form_link_button(document::ilink(__APP__.'/edit_product', [], ['category_id']), language::translate('title_create_new_product', 'Create New Product'), '', 'add'); ?></li>
+      <li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_category', ['parent_id' => $_GET['category_id']]), language::translate('title_create_new_category', 'Create New Category'), '', 'add'); ?></li>
+      <li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_product', [], ['category_id']), language::translate('title_create_new_product', 'Create New Product'), '', 'add'); ?></li>
     </ul>
   </div>
 
   <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
-     <div class="expandable"><?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink('', [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
+     <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink('', [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
      <div><?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
   <?php echo functions::form_end(); ?>
@@ -410,7 +410,7 @@
       }
 ?>
         <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : ''; ?>">
-          <td><?php echo functions::form_checkbox('products[]', $product['id']); ?></td>
+          <td><?php echo functions::form_input_checkbox('products[]', $product['id']); ?></td>
           <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
           <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : ''; ?></td>
           <td><?php echo '<img class="thumbnail" src="'. document::href_rlink(functions::image_thumbnail('storage://images/' . $product['image'], 24, 24)) .'" alt="" />'; ?><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"> <?php echo $product['name'] ? $product['name'] : '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
@@ -505,7 +505,7 @@
         }
 
         $output .= '<tr class="'. (!$product['status'] ? ' semi-transparent' : '') .'">' . PHP_EOL
-                 . '  <td>'. functions::form_checkbox('products[]', $product['id'], true) .'</td>' . PHP_EOL
+                 . '  <td>'. functions::form_input_checkbox('products[]', $product['id'], true) .'</td>' . PHP_EOL
                  . '  <td>'. functions::draw_fonticon(!empty($product['status']) ? 'on' : 'off') .'</td>' . PHP_EOL
                  . '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : '') .'</td>' . PHP_EOL;
 
@@ -553,7 +553,7 @@
         $num_category_rows++;
 
         $output .= '<tr class="'. ($category['status'] ? null : ' semi-transparent') .'">' . PHP_EOL
-                 . '  <td>'. functions::form_checkbox('categories[]', $category['id'], true) .'</td>' . PHP_EOL
+                 . '  <td>'. functions::form_input_checkbox('categories[]', $category['id'], true) .'</td>' . PHP_EOL
                  . '  <td>'. functions::draw_fonticon($category['status'] ? 'on' : 'off') .'</td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL;
 
