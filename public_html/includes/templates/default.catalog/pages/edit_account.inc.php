@@ -90,7 +90,7 @@
               <div class="row">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-                  <?php echo functions::form_draw_text_field('address1', true, 'required'); ?>
+                  <?php echo functions::form_draw_text_field('address1', true); ?>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -107,7 +107,7 @@
 
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_city', 'City'); ?></label>
-                  <?php echo functions::form_draw_text_field('city', true, 'required'); ?>
+                  <?php echo functions::form_draw_text_field('city', true); ?>
                 </div>
               </div>
 
@@ -126,7 +126,7 @@
               <div class="row">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
-                  <?php echo functions::form_draw_phone_field('phone', true, 'required placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
+                  <?php echo functions::form_draw_phone_field('phone', true, 'placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
                 </div>
               </div>
 
