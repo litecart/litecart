@@ -13,11 +13,8 @@ For an updated version of the upgrade documentation, visit https://wiki.litecart
 
 What you need:
 
-  * An Apache2 web server running PHP 5.4 or higher. Latest stable PHP release recommended for best performance.
-  * A MySQL 5.5+ account.
-
-If you don't have access to a web server and want to try LiteCart on your local machine, check out [AMPPS](http://www.ampps.com/). AMPPS is an Apache web server suite that offers LiteCart for installation with one click using Softaculous.
-
+  * An Apache2 web server running PHP 5.6 or higher. Latest stable PHP release recommended for best performance.
+  * A MySQL 5.7+ account.
 
 ## Instructions
 
