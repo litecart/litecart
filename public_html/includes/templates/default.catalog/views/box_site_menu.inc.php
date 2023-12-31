@@ -74,17 +74,6 @@
         </li>
         <?php } ?>
 
-        <?php if ($information) { ?>
-        <li class="nav-item information dropdown">
-          <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?></a>
-          <ul class="dropdown-menu">
-            <?php foreach ($information as $item) { ?>
-            <li class="nav-item"><a class="nav-link" href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
-            <?php } ?>
-          </ul>
-        </li>
-        <?php } ?>
-
         <?php foreach ($pages as $item) { ?>
         <li class="nav-item page">
           <a class="nav-link" href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a>
@@ -97,6 +86,17 @@
         <li class="nav-item customer-service">
           <a class="nav-link" href="<?php echo document::href_ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a>
         </li>
+
+        <?php if ($information) { ?>
+        <li class="nav-item information dropdown">
+          <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?></a>
+          <ul class="dropdown-menu">
+            <?php foreach ($information as $item) { ?>
+            <li class="nav-item"><a class="nav-link" href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
+            <?php } ?>
+          </ul>
+        </li>
+        <?php } ?>
 
         <?php if (settings::get('accounts_enabled')) { ?>
         <li class="nav-item account dropdown">

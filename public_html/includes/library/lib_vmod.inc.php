@@ -276,6 +276,7 @@
 
       try {
 
+      // Get XML file contents
         if (!$xml = file_get_contents($file)) {
           throw new \Exception('Could not read file', E_USER_ERROR);
         }
@@ -283,6 +284,7 @@
       // Normalize line endings
         $xml = preg_replace('#\r\n?|\n#', PHP_EOL, $xml);
 
+      // Initiate a Document Object
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->preserveWhiteSpace = false;
 
@@ -376,13 +378,13 @@
                       break;
                     }
                   }
-
-                  $new_contents = implode(PHP_EOL, array_map(function($vmod){
-                    return $vmod['id'] .';'. $vmod['version'];
-                  }, self::$_installed));
-
-                  file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
                 }
+
+                $new_contents = implode(PHP_EOL, array_map(function($vmod){
+                  return $vmod['id'] .';'. $vmod['version'];
+                }, self::$_installed));
+
+                file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
 
                 header('Location: '. $_SERVER['REQUEST_URI']);
                 exit;
