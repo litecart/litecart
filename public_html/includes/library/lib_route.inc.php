@@ -213,6 +213,11 @@
         if (isset($link->query[$key])) $link->unset_query($key);
       }
 
+    // Decode new parameters passed as string
+      if (is_string($new_params)) {
+        parse_str($new_params, $new_params);
+      }
+
     // Set new params (overwrites any existing inherited params)
       foreach ($new_params as $key => $value) {
         $link->set_query($key, $value);
