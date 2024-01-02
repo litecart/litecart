@@ -2,6 +2,10 @@
 
   class database {
     private static $_links = [];
+		public static $stats = [
+			'duration' => 0,
+			'queries' => 0,
+		];
 
     public static function init() {
       event::register('shutdown', [__CLASS__, 'disconnect']);
@@ -33,7 +37,7 @@
         }
 
         if (class_exists('stats', false)) {
-          stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
+          self::$stats['duration'] += $duration;
         }
       }
 
@@ -192,8 +196,8 @@
       }
 
       if (class_exists('stats', false)) {
-        stats::set('database_queries', stats::get('database_queries') + 1);
-        stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
+        self::$stats['queries']++;
+        self::$stats['duration'] += $duration;
       }
 
       return $result;
@@ -220,8 +224,8 @@
       $duration = microtime(true) - $measure_start;
 
       if (class_exists('stats', false)) {
-        stats::set('database_queries', stats::get('database_queries') + $i);
-        stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
+        self::$stats['queries']++;
+        self::$stats['duration'] += $duration;
       }
     }
 
@@ -234,7 +238,7 @@
       $duration = microtime(true) - $measure_start;
 
       if (class_exists('stats', false)) {
-        stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
+        self::$stats['duration'] += $duration;
       }
 
       if ($column) {

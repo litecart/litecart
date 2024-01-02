@@ -1,5 +1,9 @@
 <?php
 
+  stats::stop_watch('content_capture');
+
+  stats::start_watch('after_content');
+
 // Store the captured output buffer
   $GLOBALS['content'] = ob_get_clean();
 
@@ -18,6 +22,10 @@
 // Prepare output
   event::fire('prepare_output');
 
+  stats::stop_watch('after_content');
+
+  stats::start_watch('rendering');
+
 // Stitch global snippets
   $_page->snippets = document::$snippets;
   $_page->html = $GLOBALS['output'];
@@ -35,6 +43,10 @@
 
 // Output page
   echo $GLOBALS['output'];
+
+  stats::stop_watch('rendering');
+
+  echo PHP_EOL . stats::render();
 
 // Run after processes
   event::fire('shutdown');

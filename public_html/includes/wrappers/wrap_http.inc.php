@@ -5,6 +5,10 @@
     public $timeout = 20;
     public $last_request;
     public $last_response;
+    public static $stats = [
+      'duration' => 0,
+      'requests' => 0,
+    ];
 
     public function call($method, $url='', $data=null, $headers=[], $asynchronous=false) {
 
@@ -113,10 +117,8 @@
         $this->last_response['body']
       );
 
-      if (class_exists('stats', false)) {
-        stats::set('http_requests', stats::get('http_requests') + 1);
-        stats::set('http_duration', stats::get('http_duration') + $this->last_response['duration']);
-      }
+      self::$stats['requests']++;
+      self::$stats['duration'] += $this->last_response['duration'];
 
     // Redirect
       if ($status_code == 301) {

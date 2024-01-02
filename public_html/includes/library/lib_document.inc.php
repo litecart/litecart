@@ -158,7 +158,7 @@
 
     public static function before_output() {
 
-      $microtime_start = microtime(true);
+      stats::start_watch('output_optimization');
 
     // Extract stylesheets and on page styling
       $GLOBALS['output'] = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function($matches) use (&$stylesheets, &$styles, &$javascripts, &$javascript) {
@@ -239,7 +239,7 @@
       }
 
       if (class_exists('stats', false)) {
-        stats::set('output_optimization', microtime(true) - $microtime_start);
+        stats::stop_watch('output_optimization');
       }
     }
 

@@ -39,3 +39,7 @@
 
 // Run operations before capture
   event::fire('before_capture');
+
+  stats::$data['before_content'] = microtime(true) - SCRIPT_TIMESTAMP_START;
+
+  stats::start_watch('content_capture');
