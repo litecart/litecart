@@ -6,8 +6,6 @@
   position: relative;
   color: var(--input-text-color);
   background: var(--input-background-color);
-  border: 1px solid var(--input-border-color);
-  //box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 10%);
   border: var(--input-border-size) solid var(--input-border-color);
   border-radius: var(--border-radius);
   &:focus {
@@ -56,7 +54,7 @@ input[type="number"] {
 label.form-check {
   display: block;
   user-select: none;
-  line-height: 250%;
+	line-height: 2.5;
 }
 
 .form-check, label.form-check > input {
@@ -67,8 +65,8 @@ label.form-check {
     background: var(--input-background-color);
     border: 1px solid var(--input-border-color);
     vertical-align: text-bottom;
-    height: 1.25em;
-    width: 1.25em;
+		height: 1.33em;
+		width: 1.33em;
     appearance: none;
 
     &:checked {
@@ -202,6 +200,7 @@ html[dir="rtl"] .form-select {
   overflow-y: auto;
   font-family: Lucida Console, Monospace;
   white-space: pre-wrap;
+	tab-size: 2;
 }
 
 .input-group {
@@ -306,8 +305,14 @@ html[dir="rtl"] .form-select {
   margin-top: .25em;
 }
 
-.table .form-check {
-  line-height: 100%;
+.table {
+  .form-check {
+    line-height: 100%;
+  }
+  &.table-striped .form-input,
+  &.table-striped .form-select {
+    background-color: var(--whitespace-color);
+  }
 }
 
 fieldset[disabled] > :not(legend),
@@ -340,5 +345,38 @@ fieldset[disabled] > :not(legend),
   }
   .trumbowyg-editor, .trumbowyg-textarea {
     border-end-start-radius: 0;
+  }
+}
+
+input[data-toggle="tags"] + .form-input {
+  .tokens {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: ~"calc(0em - var(--input-padding-y))" ~"calc(0em - var(--input-padding-x))"  ;
+    cursor: text;
+  }
+  .tag {
+    background: #ccc;
+    padding: .25em;
+    margin: var(--input-padding-y) var(--input-padding-x);
+    border-radius: .25em;
+    cursor: default;
+    padding: var(--input-padding-y) var(--input-padding-x);
+    .remove {
+      background: #999;
+      border-radius: .25em;
+      padding: 0 .25em;
+      cursor: pointer;
+    }
+  }
+  .input {
+    flex: 1 1 auto;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: var(--input-padding-y) var(--input-padding-x);
   }
 }

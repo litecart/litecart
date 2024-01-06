@@ -289,6 +289,7 @@ e8053019e2d76fbd02d5e748b6417baa	backend/widgets/orders/orders.inc.php
 d41d8cd98f00b204e9800998ecf8427e	backend/widgets/stats/index.html
 9cbdd6bf6b6df1ad181c28ac93f2638f	backend/widgets/stats/stats.inc.php
 d41d8cd98f00b204e9800998ecf8427e	frontend/index.html
+4f2bb7357554a914796254d213eab741	frontend/init.inc.php
 6e853372dd5282cf61539583740bfbc3	frontend/pages/ajax/cart.json.inc.php
 1f4675617b9e8b8ffe00bfb0afe9ba52	frontend/pages/ajax/get_address.json.inc.php
 d41d8cd98f00b204e9800998ecf8427e	frontend/pages/ajax/index.html
@@ -306,8 +307,8 @@ d41d8cd98f00b204e9800998ecf8427e	frontend/pages/checkout/index.html
 d7ed9543c44487b7280a5e9356cf5447	frontend/pages/checkout/shipping.inc.php
 b55635a976207016a8e8ff7d9706cb95	frontend/pages/checkout/success.inc.php
 8972efb4dec7fffa429de2f85be216ba	frontend/pages/checkout/summary.inc.php
-5985559b43baaa76c82712f7dc309168	frontend/pages/contact.inc.php
-1e10c5cf07d1fbfd918dcbe92c51a61b	frontend/pages/create_account.inc.php
+12d7cfab17b7d0621fff32487d94f76c	frontend/pages/contact.inc.php
+e914d1241c8531d2664d86e699843f1a	frontend/pages/create_account.inc.php
 a124c5d91378d935239cebceb84158d6	frontend/pages/download.inc.php
 3aeb4b0615748f99fabafcfbbb6028c3	frontend/pages/edit_account.inc.php
 f149121761ebc6c8ebf5370b3bacdd9c	frontend/pages/error_document.inc.php
@@ -327,7 +328,7 @@ aca5b496acbe881921b0150958d6c50d	frontend/pages/printable_order_copy.inc.php
 fe02c3dc413668cb06d9797933e4dfe4	frontend/pages/product_stock_options.json.inc.php
 494ace917b80f7d96363a0c0d18f818b	frontend/pages/push_jobs.inc.php
 7f6a451167622d40ed1f4c661925a5c7	frontend/pages/regional_settings.inc.php
-b775b8086378b0e564d6ecd11f12c51a	frontend/pages/reset_password.inc.php
+6b7430f3555e4128a0143cac874794ec	frontend/pages/reset_password.inc.php
 67948727b2338ebd05590ac11eff1641	frontend/pages/search.inc.php
 20cbda161efab0b8de3e648924189b7f	frontend/pages/shopping_cart.inc.php
 b3a63de07fd9d5b9c7cf8a445123b5c0	frontend/pages/webmanifest.json.inc.php
@@ -432,8 +433,8 @@ f4daf3a5eb9ca024cddfa9cce8312a4f	frontend/templates/classic/less/printable.less
 74203382d2b3fea3f9e0051758e2a545	frontend/templates/classic/pages/categories.inc.php
 1421defd94a13d0d3ae9799604ce993b	frontend/templates/classic/pages/category.inc.php
 80e38d10eafff0fb11ffb00518c283d3	frontend/templates/classic/pages/checkout.inc.php
-a36c92db9bd2f9f2941c9e9286e75296	frontend/templates/classic/pages/contact.inc.php
-08d005ab38b15db1ab2203dbc4e53e59	frontend/templates/classic/pages/create_account.inc.php
+49e4b86e2d9a4f663b91a11664c1d609	frontend/templates/classic/pages/contact.inc.php
+d398c0c98829c2243da896fa5355a73b	frontend/templates/classic/pages/create_account.inc.php
 42657776db0ba8cbe94078d741b1142d	frontend/templates/classic/pages/development_mode.inc.php
 85db429388f3056bcdb959a06cdbd7a6	frontend/templates/classic/pages/edit_account.inc.php
 d41d8cd98f00b204e9800998ecf8427e	frontend/templates/classic/pages/index.html
@@ -450,7 +451,7 @@ db940bfc5a2af633df0b43ec651d4d20	frontend/templates/classic/pages/printable_pack
 4995255841fd89dd597f0dd65ae0d7ca	frontend/templates/classic/pages/product.ajax.inc.php
 381ea0e5e801448e695f6e362c655bff	frontend/templates/classic/pages/product.inc.php
 18eea28a2460d7601886ff4ff849d1f6	frontend/templates/classic/pages/regional_settings.inc.php
-0ff40db57aa946df960e8a42cf30cdbe	frontend/templates/classic/pages/reset_password.inc.php
+84830136625e8dba6c76496d21297b73	frontend/templates/classic/pages/reset_password.inc.php
 705e9d9a283be894e979c00513c21296	frontend/templates/classic/pages/search_results.inc.php
 52aee9fa7ab9d65bb1389b0f7fd7b8d8	frontend/templates/classic/pages/shopping_cart.inc.php
 984cae4e82e32c584a98bace13df76b1	frontend/templates/classic/partials/box_account_links.inc.php
@@ -574,8 +575,8 @@ cd9131ffeac27d2bef2d7397c88a4c72	frontend/templates/default/pages/brands.inc.php
 4099ca011d5bd5adf88ae456aee72594	frontend/templates/default/pages/categories.inc.php
 92376581cf8aaf36daa27dde7b1ee995	frontend/templates/default/pages/category.inc.php
 f058fabe83ebcc114367f27784983248	frontend/templates/default/pages/checkout.inc.php
-fe18b27d90209de214fc95fb7b22c938	frontend/templates/default/pages/contact.inc.php
-88a255f534819dfa8b9199530fc21f28	frontend/templates/default/pages/create_account.inc.php
+c5434c5bbd053fbad7e42219146c5a3d	frontend/templates/default/pages/contact.inc.php
+0281294a5ac08ee4d433d99b3eba4d75	frontend/templates/default/pages/create_account.inc.php
 9cb64ccb55932028f4795ab187d51c5e	frontend/templates/default/pages/edit_account.inc.php
 a68734c85e12385b6ed72021c875e163	frontend/templates/default/pages/error_document.inc.php
 d41d8cd98f00b204e9800998ecf8427e	frontend/templates/default/pages/index.html
@@ -592,7 +593,7 @@ bd4c8875879a403568d2d03b176b5bcb	frontend/templates/default/pages/printable_orde
 4995255841fd89dd597f0dd65ae0d7ca	frontend/templates/default/pages/product.ajax.inc.php
 c20331cd3774f5c750e4024dac70ac54	frontend/templates/default/pages/product.inc.php
 1c0c56815d4bbac3519b0291743bf681	frontend/templates/default/pages/regional_settings.inc.php
-cd8e518b9f9eddf954c45685ef8f1725	frontend/templates/default/pages/reset_password.inc.php
+cc1ae3bd349516e1319754474cf1b3e3	frontend/templates/default/pages/reset_password.inc.php
 f66b154456360e5fe4e079fc528f0d9e	frontend/templates/default/pages/search_results.inc.php
 e13295ea4aa213872fd306474b27b91f	frontend/templates/default/pages/shopping_cart.inc.php
 4503e9fb38ed7f969142abe220c38b8a	frontend/templates/default/partials/box_account_links.inc.php
@@ -639,7 +640,7 @@ b3f99da1d123328d60c790e49cfa52ff	includes/app_header.inc.php
 dbb6698cda678f501faa652a192da1c6	includes/clients/http_client.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/clients/index.html
 535ab2bdb6133db3314c85e9135122c7	includes/clients/smtp_client.inc.php
-f4cbfcb650e98a1e289ad137f651c619	includes/compatibility.inc.php
+b8851b224641205d749fadef6beb2988	includes/compatibility.inc.php
 65a15563c62ee2bb19a0ba5938941ea2	includes/entities/ent_addon.inc.php
 f5859882344cd8e4ec6570dfe763900f	includes/entities/ent_administrator.inc.php
 5b7079c1d5b5e433771cd203671d5c55	includes/entities/ent_attribute_group.inc.php
@@ -677,13 +678,13 @@ d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
 664809717251ebc3ec0f1ac8c3675077	includes/error_handler.inc.php
 7fc2c5fe7d7749267d56b72be29675b3	includes/functions.inc.php
 d760bbbb8c1edad1d17fb1b97d43d787	includes/functions/func_admin.inc.php
-528283dc577711c67664003ac7b124bd	includes/functions/func_captcha.inc.php
+241c63f06b6c612616e90bc729f5d7e1	includes/functions/func_captcha.inc.php
 4b62dbb0f7a8b5eb8bcea965048d5539	includes/functions/func_catalog.inc.php
 7d08e8861ab8ad6710f051053a7fc70f	includes/functions/func_csv.inc.php
 38ba7d01812bee01b9549e395322d3f8	includes/functions/func_draw.inc.php
 02e39c7a1623dbdc4479c266074e78d4	includes/functions/func_escape.inc.php
 abd5cad56776e84802df18f757164f48	includes/functions/func_file.inc.php
-27ab287a4ec69a2c2cfda5b73fe9ef6a	includes/functions/func_form.inc.php
+a9698b8161daed584865cdcef392034d	includes/functions/func_form.inc.php
 7d9853b7a6c24da5c802ad154ed404f2	includes/functions/func_format.inc.php
 d199295f52dbb2a2f42a921f3599af5d	includes/functions/func_image.inc.php
 a34372495c7d3a0623a5b3b911f4e344	includes/functions/func_password.inc.php
@@ -746,7 +747,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
 1e69ad176f5e264b39d5c9e89a065cb0	includes/wrappers/wrap_stream_storage.inc.php
 235c72a0a905afdf43da2b06f000e6e6	index.php
 e28fe3b753091af6c8e9392170decaf8	install/clean.sql
-fd2e2a35e4308f92d7abe0c8d16b2c8d	install/config
+c5d33eba9a8aa75600ad99f025d7317c	install/config
 569d2a7ae0bc509e3cfe2e5c4e8f5ff7	install/data.sql
 070c81b80402dbe421b1a799317a1339	install/data/AU/AU.sql
 29575aa3fad74b5b75ac4ed43f668067	install/data/CA/CA.sql
@@ -930,7 +931,7 @@ fd11eee50b3585d2c64de0480dcffa9e	install/upgrade_patches/2.4.4.inc.php
 85cfb8a48b15a03d1b3674278122d836	install/upgrade_patches/2.5.2.inc.php
 ab7ba686349fc0fd50570c6e0bf03299	install/upgrade_patches/2.5.2.sql
 1882f2f77f1e050fe9bea6e8fd549c1e	install/upgrade_patches/2.5.3.inc.php
-a42250a80cb136d2440d13a29cfdf5c8	install/upgrade_patches/3.0.0.inc.php
+1ae65284e3c97eab5c300b6ccd573c66	install/upgrade_patches/3.0.0.inc.php
 532f919e8005c4c1c532bfd645ee9da9	install/upgrade_patches/3.0.0.sql
 237d5ee9714918b11ab1ca42554e7c05	storage/cache/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	storage/cache/index.html

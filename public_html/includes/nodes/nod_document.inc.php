@@ -23,10 +23,21 @@
 
     public static function before_capture() {
 
+      //self::$snippets['nonce'] = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(32/62))), 0, 32);
+
       header('Content-Security-Policy: frame-ancestors \'self\';'); // Clickjacking Protection
       header('Access-Control-Allow-Origin: '. self::ilink('')); // Only allow HTTP POST data from own domain
       header('X-Frame-Options: SAMEORIGIN'); // Clickjacking Protection
       header('X-Powered-By: '. PLATFORM_NAME);
+
+      header('Content-Security-Policy: '. implode(';', [
+        "frame-ancestors 'self'", // Clickjacking Protection
+        //"script-src 'nonce-". self::$snippets['nonce'] ."' 'strict-dynamic'",
+        //"img-src 'self'",
+        //"style-src 'self'",
+        //"base-uri 'self'",
+        //"form-action 'self'",
+      ]));
 
     // Default to AJAX layout on AJAX request
       if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
@@ -41,10 +52,10 @@
       self::$snippets['template_path'] = preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'#', route::$request) ? WS_DIR_APP . 'backend/template/' : WS_DIR_APP . 'frontend/templates/'.settings::get('template').'/';
       self::$title = [settings::get('store_name')];
       self::$head_tags['favicon'] = implode(PHP_EOL, [
-        '<link rel="icon" href="'. document::href_rlink('storage://images/favicons/favicon.ico') .'" type="image/x-icon" sizes="32x32 48x48 64x64 96x96">',
-        '<link rel="icon" href="'. document::href_rlink('storage://images/favicons/favicon-128x128.png') .'" type="image/png" sizes="128x128">',
-        '<link rel="icon" href="'. document::href_rlink('storage://images/favicons/favicon-192x192.png') .'" type="image/png" sizes="192x192">',
-        '<link rel="icon" href="'. document::href_rlink('storage://images/favicons/favicon-256x256.png') .'" type="image/png" sizes="255x255">',
+        '<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon.ico') .'" type="image/x-icon" sizes="32x32 48x48 64x64 96x96">',
+        '<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon-128x128.png') .'" type="image/png" sizes="128x128">',
+        '<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon-192x192.png') .'" type="image/png" sizes="192x192">',
+        '<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon-256x256.png') .'" type="image/png" sizes="255x255">',
       ]);
       self::$head_tags['manifest'] = '<link rel="manifest" href="'. self::href_ilink('manifest.json') .'">'; // No namespace as relative to endpoint
       self::$head_tags['fontawesome'] = '<link rel="stylesheet" href="'. self::href_rlink('app://assets/fontawesome/font-awesome.min.css') .'">';
@@ -109,7 +120,7 @@
       ];
 
       self::$jsenv['template'] = [
-        'url' => document::link(preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'#', route::$request) ? 'backend/template' : 'frontend/templates/'. settings::get('template') .'/'),
+        'url' => self::link(preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'#', route::$request) ? 'backend/template' : 'frontend/templates/'. settings::get('template') .'/'),
         'settings' => self::$settings,
       ];
 
@@ -299,19 +310,19 @@
 
       // Prepare styles
       if (!empty(self::$style)) {
-        $_page->snippets['style'] = implode(PHP_EOL, [
+        $_page->snippets['head_tags'][] = implode(PHP_EOL, [
           '<style>',
-           implode(PHP_EOL . PHP_EOL, self::$style),
-           '</style>',
+          implode(PHP_EOL . PHP_EOL, self::$style),
+          '</style>',
         ]);
       }
 
       // Prepare javascript
       if (!empty(self::$javascript)) {
-        $_page->snippets['javascript'] = implode(PHP_EOL, [
+        $_page->snippets['foot_tags'][] = implode(PHP_EOL, [
           '<script>',
-           implode(PHP_EOL . PHP_EOL, self::$javascript),
-           '</script>',
+          implode(PHP_EOL . PHP_EOL, self::$javascript),
+          '</script>',
         ]);
       }
 
@@ -359,7 +370,7 @@
 
       self::$head_tags[$key] = implode(PHP_EOL, array_map(function($url){
         if (!$url) return;
-        return '<link rel="stylesheet" href="'. document::href_rlink($url) .'">';
+        return '<link rel="stylesheet" href="'. self::href_rlink($url) .'">';
       }, $urls));
     }
 
@@ -371,7 +382,7 @@
 
       self::$foot_tags[$key] = implode(PHP_EOL, array_map(function($url){
         if (!$url) return;
-        return '<script src="'. document::href_rlink($url) .'"></script>';
+        return '<script src="'. self::href_rlink($url) .'"></script>';
       }, $urls));
     }
 
@@ -384,10 +395,6 @@
       self::$javascript[$key] = implode(PHP_EOL, array_map(function($line){
         return '  '.$line;
       }, $lines));
-    }
-
-    public static function add_title($title) {
-      self::$title[] = $title;
     }
 
     public static function ilink($resource=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {

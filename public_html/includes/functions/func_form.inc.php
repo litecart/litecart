@@ -520,26 +520,26 @@
     }
 
 		document::$javascript[] = implode(PHP_EOL, [
-			'  $(\'textarea[name="'. $name .'"]\').trumbowyg({',
-			'    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["foreColor", "backColor"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],',
-			'    btnsDef: {',
-			'      lists: {',
-			'        dropdown: ["unorderedList", "orderedList"],',
-			'        title: "Lists",',
-			'        ico: "unorderedList",',
-			'      }',
-			'    },',
-			'    plugins: {',
-			'      upload: {',
-			'        serverPath: "'. document::href_rlink('app://assets/trumbowyg/plugins/upload/trumbowyg.upload.php') .'",',
-			'      }',
-			'    },',
-			'    lang: "'. language::$selected['code'] .'",',
-			'    autogrowOnEnter: true,',
-			'    imageWidthModalEdit: true,',
-			'    removeformatPasted: true,',
-			'    semantic: false',
-			'  });'
+			'$(\'textarea[name="'. $name .'"]\').trumbowyg({',
+			'  btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["foreColor", "backColor"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],',
+			'  btnsDef: {',
+			'    lists: {',
+			'      dropdown: ["unorderedList", "orderedList"],',
+			'      title: "Lists",',
+			'      ico: "unorderedList",',
+			'    }',
+			'  },',
+			'  plugins: {',
+			'    upload: {',
+			'      serverPath: "'. document::href_rlink('app://assets/trumbowyg/plugins/upload/trumbowyg.upload.php') .'",',
+			'    }',
+			'  },',
+			'  lang: "'. language::$selected['code'] .'",',
+			'  autogrowOnEnter: true,',
+			'  imageWidthModalEdit: true,',
+			'  removeformatPasted: true,',
+			'  semantic: false',
+			'});'
 		]);
 
 		return '<textarea name="'. functions::escape_html($name) .'"'. ($parameters ? ' '.$parameters : '') .'>'. functions::escape_html($input) .'</textarea>';

@@ -22,7 +22,7 @@
   }
 
   td, th {
-    line-height: var(--default-line-height);
+    line-height: 1.5;
     color: var(--default-text-color);
 
     &:first-child {
@@ -62,7 +62,7 @@
     color: inherit;
     &.link {
       background: var(--table-link-background-color);
-      padding: 0.25em 1em;
+      padding: 0.33em 1em;
       border-radius: var(--border-radius);
       &:hover {
         text-decoration: none;
@@ -78,6 +78,8 @@
   }
 
   > tfoot {
+    position: sticky;
+    bottom: 0;
     background: var(--table-footer-background-color);
     border-top: 1px solid var(--table-border-color);
     border-bottom: 1px solid var(--table-border-color);
@@ -129,6 +131,21 @@
     cursor: pointer;
     &:hover {
       text-decoration: underline;
+    }
+  }
+
+  &.table-condensed {
+    th {
+      padding: .25em .5em;
+      &:first-child {
+        padding-inline-start: .5em;
+      }
+    }
+    td {
+      padding: .125em .5em;
+      &:last-child {
+        padding-inline-end: .5em;
+      }
     }
   }
 

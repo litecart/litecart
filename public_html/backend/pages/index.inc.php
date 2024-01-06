@@ -57,7 +57,7 @@
       'content' => (string)$_content,
     ];
 
-    echo $_page->render('app://frontend/templates/'.settings::get('template').'/pages/doc.inc.php');
+    echo $_page->render();
 
 // Display the start page
   } else {

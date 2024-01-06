@@ -7,6 +7,7 @@
   if (isset($_POST['save'])) {
 
     try {
+
       if (!is_dir('app://frontend/templates/' . basename($_POST['template']))) {
         throw new Exception(language::translate('error_invalid_template', 'Not a valid template'));
       }

@@ -3,7 +3,7 @@
   return [
     'f:brands' => [
       'pattern' => '#^brands/?$#',
-      'controller' => 'app://frontend/pages/brands.inc.php.inc.php',
+      'controller' => 'app://frontend/pages/brands.inc.php',
       'params' => 'brand_id=$1',
       'endpoint' => 'frontend',
       'options' => [
@@ -17,7 +17,7 @@
 
     'f:brand' => [
       'pattern' => '#^brands/([0-9]+)(/.*|/?$)#',
-      'controller' => 'app://frontend/pages/brand.inc.php.inc.php',
+      'controller' => 'app://frontend/pages/brand.inc.php',
       'params' => 'brand_id=$1',
       'endpoint' => 'frontend',
       'options' => [
@@ -39,7 +39,7 @@
 
     null => [
       'pattern' => '#^.*-m-([0-9]+)/?$#',
-      'controller' => 'app://frontend/pages/brand.inc.php.inc.php',
+      'controller' => 'app://frontend/pages/brand.inc.php',
       'params' => 'brand_id=$1',
       'endpoint' => 'frontend',
       'options' => [

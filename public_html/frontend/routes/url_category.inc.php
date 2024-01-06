@@ -28,7 +28,7 @@
 
     null => [
       'pattern' => '#^.*-c-([0-9]+)/?$#',
-      'controller' => 'app://frontend/pages/category.inc.php.inc.php',
+      'controller' => 'app://frontend/pages/category.inc.php',
       'params' => 'category_id=$1',
       'endpoint' => 'frontend',
       'options' => [

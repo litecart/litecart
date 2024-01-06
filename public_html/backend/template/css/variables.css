@@ -36,7 +36,7 @@
   --sidebar-background-color: #d9dce5;
   --sidebar-border-color: var(--default-border-color);
   --sidebar-text-color: #333;
-  --sidebar-width: 18rem;
+  --sidebar-width: 20rem;
   --navigation-background-color: #3e3e3e;
   --navigation-background-color-active: #bdbdbd;
   --navigation-text-color: #444;
@@ -68,7 +68,7 @@
   --tab-border-color: transparent;
   --tab-content-background-color: #fff;
   --tab-content-text-color: var(--default-text-color);
-  --table-header-background-color: transparent;
+  --table-header-background-color: #fff;
   --table-body-background-color: #fff;
   --table-row-background-color-odd: #f9fafb;
   --table-row-background-color-even: #fff;
@@ -86,9 +86,9 @@
   --pagination-text-color: var(--default-text-color);
   --pagination-text-color-hover: var(--default-text-color);
   --pagination-text-color-active: var(--default-text-color);
-  --button-default-background-color: #e6e8ef;
-  --button-default-background-color-hover: #eeeff3;
-  --button-default-background-color-active: #eaecf3;
+  --button-default-background-color: #f1f2f5;
+  --button-default-background-color-hover: #e3e4e9;
+  --button-default-background-color-active: #eaebef;
   --button-default-border-color: transparent;
   --button-default-text-color: #333;
   --button-danger-background-color: #d9534f;
@@ -102,7 +102,7 @@
   --button-success-border-color: rgba(0, 0, 0, 0.1);
   --button-success-text-color: #fff;
   --input-background-color: #f1f2f5;
-  --input-border-color: #ebebee;
+  --input-border-color: #e8ebf1;
   --input-addon-background-color: #f3f4f7;
   --input-code-background-color: #313b50;
   --input-code-text-color: #fff;

@@ -146,12 +146,24 @@
     ]);
   }
 
+  function image_relative_file($file) {
+
+    $file = str_replace('\\', '/', $file);
+
+    if (preg_match('#^(storage://|'. preg_quote(FS_DIR_STORAGE, '#') .')#', $file)) {
+      return preg_replace('#^(storage://|'. preg_quote(FS_DIR_STORAGE, '#') .')#', '', $file);
+
+    } else if (preg_match('#^(app://|'. preg_quote(FS_DIR_APP, '#') .')#', $file)) {
+      return preg_replace('#^(app://|'. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
+
+    } else {
+      return preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $file);
+    }
+  }
+
   function image_delete_cache($file) {
 
-    $file = preg_replace('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', 'storage://', $file);
-    $file = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', 'app://', $file);
-
-    $cache_name = sha1($file);
+    $cache_name = sha1(image_relative_file($file));
 
     functions::file_delete('storage://cache/'. substr($cache_name, 0, 2) .'/' . $cache_name .'*');
   }

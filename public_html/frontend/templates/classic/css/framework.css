@@ -175,6 +175,9 @@ h3 {
 h4 {
   font-size: 1.25em;
 }
+textarea {
+  tab-size: 2;
+}
 @keyframes flasher {
   0%,
   100% {

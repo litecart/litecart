@@ -1,5 +1,44 @@
 <?php
 
+  function draw_image($image, $width=null, $height=null, $clipping='fit', $parameters='') {
+
+    if ($width && $height) {
+      if (preg_match('#style="#', $parameters)) {
+        $parameters = preg_replace('#style="(.*?)"#', 'style="$1 aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"', $parameters);
+      } else {
+        $parameters .= ' style="aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"';
+      }
+    }
+
+    return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="'. functions::escape_html($clipping) .'"' : '') .' src="'. document::href_rlink($image) .'" '. ($parameters ? ' '. $parameters : '') .'>';
+  }
+
+  function draw_thumbnail($source, $width, $height, $clipping='fit', $trim=false, $parameters='') {
+
+    if (!is_file($source)) {
+      $source = 'storage://images/no_image.png';
+    }
+
+    if (preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) {
+      $storage = WS_DIR_STORAGE;
+    } else {
+      $storage = WS_DIR_APP;
+    }
+
+    $thumbnail = $storage . functions::image_thumbnail($source, $width, $height, settings::get('product_image_trim'));
+    $thumbnail_2x = $storage . functions::image_thumbnail($source, $width*2, $height*2, settings::get('product_image_trim'));
+
+    if ($width && $height) {
+      if (preg_match('#style="#', $parameters)) {
+        $parameters = preg_replace('#style="(.*?)"#', 'style="$1 aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"', $parameters);
+      } else {
+        $parameters .= ' style="aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"';
+      }
+    }
+
+    return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="'. functions::escape_html($clipping) .'"' : '') .' src="'. document::href_link($thumbnail) .'" srcset="1x '. document::href_link($thumbnail) .', 2x '. document::href_link($thumbnail_2x) .'"'. ($parameters ? ' '. $parameters : '') .' />';
+  }
+
   function draw_banner($keywords) {
 
     if (!is_array($keywords)) {
@@ -196,6 +235,7 @@
       'short_description' => $product['short_description'],
       'quantity' => $product['quantity'],
       'quantity_unit_id' => $product['quantity_unit_id'],
+      'quantity_available' => $product['quantity_available'],
       'recommended_price' => tax::get_price($product['recommended_price'], $product['tax_class_id']),
       'regular_price' => tax::get_price($product['price'], $product['tax_class_id']),
       'campaign_price' => $product['campaign_price'] ? tax::get_price($product['campaign_price'], $product['tax_class_id']) : null,

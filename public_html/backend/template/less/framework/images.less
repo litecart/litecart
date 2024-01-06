@@ -4,6 +4,7 @@
   display: inline-block;
   max-width: 100%;
   height: auto;
+  padding: 2.5%;
   line-height: var(--default-line-height);
   background-color: var(--whitespace-color);
   border: 1px solid var(--default-border-color);
@@ -13,23 +14,19 @@
   margin-inline-start: auto;
 }
 
-img.responsive {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin-inline-end: auto;
-  margin-inline-start: auto;
-}
-
 img {
+  &.responsive {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-inline-end: auto;
+    margin-inline-start: auto;
+  }
   &.fit {
-    width: 100%;
-    padding: 10%;
-    object-fit: scale-down;
-    //object-fit: contain;
+    //object-fit: scale-down;
+    object-fit: contain;
   }
   &.crop {
-    width: 100%;
     object-fit: cover;
   }
 }

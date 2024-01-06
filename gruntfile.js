@@ -160,7 +160,7 @@ module.exports = function(grunt) {
         //    '<%= grunt.template.today("yyyy-mm-dd") %> */',
         //},
         files: {
-          'src/project.js': ['public_html/frontend/templates/classic/js/app.min.js']
+          'public_html/backend/template/js/app.js': ['public_html/backend/template/js/components/*.js']
         },
       },
       frontend: {
@@ -225,7 +225,7 @@ module.exports = function(grunt) {
           'public_html/frontend/templates/**/*.js',
           '!public_html/frontend/templates/**/*.min.js',
         ],
-        tasks: ['uglify']
+        tasks: ['concat', 'uglify']
       },
 
       sass: {
