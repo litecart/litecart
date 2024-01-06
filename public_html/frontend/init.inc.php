@@ -1,9 +1,5 @@
 <?php
 
-// Define template paths
-  define('FS_DIR_TEMPLATE', 'app://frontend/templates/'. settings::get('template') .'/');
-  define('WS_DIR_TEMPLATE', WS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/');
-
 // Development Mode
   if (settings::get('development_mode')) {
     if (empty(administrator::$data['id']) && (!isset(route::$selected['endpoint']) || route::$selected['endpoint'] != 'backend')) {
