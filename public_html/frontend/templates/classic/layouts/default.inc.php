@@ -27,7 +27,7 @@
 
   {{content}}
 
-  <?php include 'app://frontend/partials/box_cookie_notice.inc.php'; ?>
+  <?php include 'app://frontend/partials/site_cookie_notice.inc.php'; ?>
 
   <?php include 'app://frontend/partials/site_footer.inc.php'; ?>
 

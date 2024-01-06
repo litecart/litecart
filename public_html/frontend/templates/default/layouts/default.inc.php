@@ -25,7 +25,7 @@
   <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>
 </a>
 
-<?php include 'app://frontend/templates/'.settings::get('template').'/partials/box_cookie_notice.inc.php'; ?>
+<?php include 'app://frontend/templates/'.settings::get('template').'/partials/site_cookie_notice.inc.php'; ?>
 
 {{foot_tags}}
 <script src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/js/app.min.js'); ?>"></script>
