@@ -1,40 +1,38 @@
 <?php
 
-  function captcha_get($id='default') {
+  function captcha_draw($id='default', $config=[], $parameters='') {
 
-    if (!isset(session::$data['captcha'][$id]['expires'])) return false;
-    if (session::$data['captcha'][$id]['expires'] < date('Y-m-d H:i:s')) return false;
-    if (empty(session::$data['captcha'][$id]['value'])) return false;
+    $config = [
+      'width' => fallback($config['width'], 100),
+      'height' => fallback($config['height'], 40),
+      'length' => fallback($config['length'], 4),
+      'set' => fallback($config['set'], 'numbers'),
+      'font' => fallback($config['font'], FS_DIR_STORAGE . 'fonts/captcha.ttf'),
+      'font_size' => fallback($config['height'], $config['height'] * 0.75),
+    ];
 
-    $value = session::$data['captcha'][$id]['value'];
-    unset(session::$data['captcha'][$id]['value']);
+    switch ($config['set']) {
 
-    return $value;
-  }
-
-  function captcha_generate($width, $height, $length=6, $id='default', $set='numbers', $parameters='') {
-
-    $font = FS_DIR_APP . 'assets/fonts/captcha.ttf';
-
-    switch ($set) {
       case 'alphabet':
         $possible = 'abcdefghijklmnopqrstuvwxyz';
         break;
+
       case 'numbers':
         $possible = '1234567890';
         break;
+
       default:
         trigger_error('Unknown captcha set.', E_USER_ERROR);
     }
 
     $code = '';
-    for ($i=0; $i<$length; $i++) {
-      $code .= substr($possible, mt_rand(0, strlen($possible)-1), 1);
+    for ($i=0; $i<$config['length']; $i++) {
+      $code .= substr($possible, mt_rand(0, strlen($possible) -1), 1);
     }
 
-    $font_size = round($height * 0.75); // font size will be 75% of the image height
+    $config['font_size'] = round($config['height'] * 0.75); // font size will be 75% of the image height
 
-    $image = imagecreate($width, $height) or trigger_error('Cannot initialize new GD image stream', E_USER_ERROR);
+    $image = imagecreate($config['width'], $config['height']) or trigger_error('Cannot initialize new GD image stream', E_USER_ERROR);
 
   // Set colors
     $background_color = imagecolorallocate($image, 255, 255, 255);
@@ -42,21 +40,21 @@
     $noise_color = imagecolorallocate($image, 100, 120, 180);
 
   // Generate random dots in background
-    for ($i=0; $i<($width*$height)/3; $i++) {
-      imagefilledellipse($image, mt_rand(0,$width), mt_rand(0,$height), 1, 1, $noise_color);
+    for ($i=0; $i<($config['width'] * $config['height']) / 3; $i++) {
+      imagefilledellipse($image, mt_rand(0, $config['width']), mt_rand(0, $config['height']), 1, 1, $noise_color);
     }
 
   // Generate random lines in background
-    for ($i=0; $i<($width*$height)/150; $i++) {
-      imageline($image, mt_rand(0,$width), mt_rand(0,$height), mt_rand(0,$width), mt_rand(0,$height), $noise_color);
+    for ($i=0; $i<($config['width'] * $config['height']) / 150; $i++) {
+      imageline($image, mt_rand(0, $config['width']), mt_rand(0, $config['height']), mt_rand(0, $config['width']), mt_rand(0, $config['height']), $noise_color);
     }
 
   // Create textbox and add text
-    if (($textbox = imagettfbbox($font_size, 0, $font, $code)) === false) return;
+    if (($textbox = imagettfbbox($config['font_size'], 0, $config['font'], $code)) === false) return;
 
-    $x = round(($width - $textbox[4]) / 2);
-    $y = round(($height - $textbox[5]) / 2);
-    imagettftext($image, $font_size, 0, $x, $y, $text_color, $font , $code) or die('Error in imagettftext function');
+    $x = round(($config['width'] - $textbox[4]) / 2);
+    $y = round(($config['height'] - $textbox[5]) / 2);
+    imagettftext($image, $config['font_size'], 0, $x, $y, $text_color, $config['font'], $code) or die('Error in imagettftext function');
 
   // Generate base64-encoded image data
     ob_start();
@@ -67,19 +65,39 @@
     imagedestroy($image);
 
   // Remove expired captchas
-    if (isset(session::$data['captcha']) && is_array(session::$data['captcha'])) {
-      foreach (session::$data['captcha'] as $key => $captcha) {
-        if ($captcha['expires'] < date('Y-m-d H:i:s')) unset(session::$data['captcha'][$key]);
+    if (isset(session::$data['lc-captcha']) && is_array(session::$data['lc-captcha'])) {
+      foreach (session::$data['lc-captcha'] as $key => $captcha) {
+        if ($captcha['expires'] < date('Y-m-d H:i:s')) unset(session::$data['lc-captcha'][$key]);
       }
     }
 
   // Set captcha value to session
-    session::$data['captcha'][$id] = [
+    session::$data['lc-captcha'][$id] = [
       'value' => $code,
       'expires' => date('Y-m-d H:i:s', strtotime('+5 minutes')),
     ];
 
   // Output key and image
-    return '<input type="hidden" name="captcha_id" value="'. $id .'">' . PHP_EOL
-         . '<img src="data:image/gif;base64,'. $base64_image .'" alt="" style="width: '. $width .'px; height: '. $height .'px"'. (($parameters) ? ' ' . $parameters : '') .' />';
+    return implode(PHP_EOL, [
+      '<div class="input-group" style="width: '. ((int)$config['width'] * 2) .'px;">',
+      '  <input type="hidden" name="lc-captcha-id" value="'. functions::escape_html($id) .'">',
+      '  <span class="input-group-text" style="padding: 0;"><img src="data:image/gif;base64,'. $base64_image .'" alt="" style="width: '. $config['width'] .'px; height: '. $config['height'] .'px"'. ($parameters ? ' ' . $parameters : '') .'></span>',
+      '  ' . form_input_text('lc-captcha-response', '', 'required autocomplete="off" style="font-size: '. (int)$config['font_size'] .'px; padding: 0; text-align: center;"'. ($parameters ? ' '. $parameters : '')),
+      '</div>',
+    ]);
+  }
+
+  function captcha_validate($id='default') {
+
+    if (!isset(session::$data['lc-captcha'][$id]['expires']) || session::$data['lc-captcha'][$id]['expires'] < date('Y-m-d H:i:s')) {
+      return false;
+    }
+
+    if (empty(session::$data['lc-captcha'][$id]['value']) || empty($_POST['lc-captcha-response']) || $_POST['lc-captcha-response'] != session::$data['lc-captcha'][$id]['value']) {
+      return false;
+    }
+
+    unset(session::$data['lc-captcha'][$id]['value']);
+
+    return true;
   }

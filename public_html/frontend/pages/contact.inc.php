@@ -20,15 +20,6 @@
 
     try {
 
-      if (settings::get('captcha_enabled')) {
-        $captcha = functions::captcha_get('contact_us');
-
-        if (empty($captcha) || $captcha != $_POST['captcha']) {
-          throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
-        }
-      }
-
-
       if (empty($_POST['firstname'])) {
         throw new Exception(language::translate('error_missing_firstname', 'You must provide a firstname'));
       }
@@ -47,6 +38,10 @@
 
       if (empty($_POST['message'])) {
         throw new Exception(language::translate('error_missing_message', 'You must provide a message'));
+      }
+
+      if (settings::get('captcha_enabled') && !functions::captcha_validate('contact_us')) {
+        throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
       }
 
     // Collect scraps

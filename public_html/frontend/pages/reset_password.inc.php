@@ -61,12 +61,8 @@
         }
       }
 
-      if (settings::get('captcha_enabled')) {
-        $captcha = functions::captcha_get('reset_password');
-
-        if (empty($captcha) || $captcha != $_POST['captcha']) {
-          throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
-        }
+      if (settings::get('captcha_enabled') && !functions::captcha_validate('reset_password')) {
+        throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
       }
 
     // Process

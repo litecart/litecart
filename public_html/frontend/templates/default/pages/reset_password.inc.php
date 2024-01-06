@@ -45,7 +45,7 @@
               <?php if (settings::get('captcha_enabled')) { ?>
               <div class="form-group">
                 <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-                <?php echo functions::form_input_captcha('captcha', 'reset_password', 'required'); ?>
+                <?php echo functions::form_input_captcha('reset_password'); ?>
               </div>
               <?php } ?>
 

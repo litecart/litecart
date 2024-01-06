@@ -110,12 +110,12 @@
           </div>
 
           <div class="form-group">
-            <?php echo functions::form_input_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
+            <?php echo functions::form_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
           </div>
 
           <?php if ($consent) { ?>
           <p class="consent">
-            <?php echo functions::form_input_checkbox('terms_agreed', ['1', $consent], true, 'required'); ?>
+            <?php echo functions::form_checkbox('terms_agreed', ['1', $consent], true, 'required'); ?>
           </p>
           <?php } ?>
 
@@ -123,7 +123,7 @@
           <div class="row">
             <div class="form-group col-6">
               <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-              <?php echo functions::form_input_captcha('captcha', 'create_account', 'required'); ?>
+              <?php echo functions::form_input_captcha('create_account'); ?>
             </div>
           </div>
           <?php } ?>

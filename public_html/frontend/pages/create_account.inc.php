@@ -28,14 +28,6 @@
 
       if (empty($_POST['newsletter'])) $_POST['newsletter'] = 0;
 
-      if (settings::get('captcha_enabled')) {
-        $captcha = functions::captcha_get('create_account');
-
-        if (empty($captcha) || $captcha != $_POST['captcha']) {
-          throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
-        }
-      }
-
       if (empty($_POST['email'])) {
         throw new Exception(language::translate('error_missing_email', 'You must enter an email address.'));
       }
@@ -59,7 +51,6 @@
       if ($_POST['confirmed_password'] != $_POST['password']) {
         throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
       }
-
 
       if (empty($_POST['firstname'])) {
         throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
@@ -99,6 +90,10 @@
         if (!preg_match('#'. reference::country($_POST['country_code'])->postcode_format .'#i', $_POST['postcode'])) {
           throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format'));
         }
+      }
+
+      if (settings::get('captcha_enabled') && !functions::captcha_validate('create_account')) {
+        throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
       }
 
       $mod_customer = new mod_customer();
