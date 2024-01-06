@@ -357,13 +357,11 @@
     $map = [
       '{STORAGE_FOLDER}' => 'storage',
       '{ADMIN_FOLDER}' => BACKEND_ALIAS,
-      '{DB_TYPE}' => 'mysql',
       '{DB_SERVER}' => DB_SERVER,
       '{DB_USERNAME}' => DB_USERNAME,
       '{DB_PASSWORD}' => DB_PASSWORD,
       '{DB_DATABASE}' => DB_DATABASE,
       '{DB_TABLE_PREFIX}' => $_REQUEST['db_table_prefix'],
-      '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
       '{CLIENT_IP}' => $_REQUEST['client_ip'],
       '{TIMEZONE}' => $_REQUEST['timezone'],
     ];

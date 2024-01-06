@@ -763,6 +763,16 @@
   perform_action('modify', [
     FS_DIR_STORAGE . 'config.inc.php' => [
       [
+        'search'  => "#  define\('DB_TYPE', [^\)]+);(\r\n|\n)#",
+        'replace' => "",
+        'regexp'  => true,
+      ],
+      [
+        'search'  => "#  define\('DB_CONNECTION_CHARSET', [^\)]+);(\r\n|\n)#",
+        'replace' => "",
+        'regexp'  => true,
+      ],
+      [
         'search'  => '#$#',
         'replace' => implode(PHP_EOL, [
           "",

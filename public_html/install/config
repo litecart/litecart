@@ -24,13 +24,11 @@
 ######################################################################
 
 // Database
-  define('DB_TYPE', '{DB_TYPE}');
   define('DB_SERVER', '{DB_SERVER}');
   define('DB_USERNAME', '{DB_USERNAME}');
   define('DB_PASSWORD', '{DB_PASSWORD}');
   define('DB_DATABASE', '{DB_DATABASE}');
   define('DB_TABLE_PREFIX', '{DB_TABLE_PREFIX}');
-  define('DB_CONNECTION_CHARSET', 'utf8mb4');
 
 ######################################################################
 ## Application #######################################################
