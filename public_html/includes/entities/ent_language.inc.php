@@ -30,7 +30,9 @@
 
     public function load($language_code) {
 
-      if (!preg_match('#^([0-9]+|[a-z]{2,3}|[a-z A-Z]{4,})$#', $language_code)) throw new Exception('Invalid language ('. $language_code .')');
+      if (!preg_match('#^([0-9]+|[a-z]{2,3}|[a-z A-Z]{4,})$#', $language_code)) {
+        throw new Exception('Invalid language ('. $language_code .')');
+      }
 
       $this->reset();
 

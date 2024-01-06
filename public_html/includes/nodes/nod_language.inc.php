@@ -158,6 +158,12 @@
       }
 
     // Return language from country (TLD)
+      if (database::query(
+        "select table_name from information_schema.tables
+        where table_schema = '". database::input(DB_DATABASE) ."'
+        and table_name = '". database::input(DB_TABLE_PREFIX .'countries') ."'
+        limit 1;"
+      )->fetch()) {
       if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
 
         $country = database::query(
@@ -169,6 +175,7 @@
         if (!empty($country['language_code']) && in_array($country['language_code'], $enabled_languages)){
           return $country['language_code'];
         }
+      }
       }
 
     // Return language from browser request headers
@@ -420,8 +427,7 @@
       $out = preg_replace_callback('/(?<!%)(%[a-zA-Z])/', function ($match) use ($translation_table, $timestamp) {
         if ($match[1] == '%n') {
           return "\n";
-        }
-        elseif ($match[1] == '%t') {
+        } else if ($match[1] == '%t') {
           return "\t";
         }
 
@@ -433,8 +439,7 @@
 
         if (is_string($replace)) {
           return $timestamp->format($replace);
-        }
-        else {
+        } else {
           return $replace($timestamp, $match[1]);
         }
       }, $format);

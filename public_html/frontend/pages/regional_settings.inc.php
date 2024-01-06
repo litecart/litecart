@@ -56,7 +56,7 @@
     }
   }
 
-  $_page = new ent_view();
+  $_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/regional_settings.inc.php');
 
   $_page->snippets = [
     'currencies' => [],
@@ -83,4 +83,4 @@
     $_page->snippets['languages'][] = language::$selected;
   }
 
-  echo $_page->render(FS_DIR_TEMPLATE . 'pages/regional_settings.inc.php');
+  echo $_page->render();

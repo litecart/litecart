@@ -2,12 +2,12 @@
 <html lang="{{language}}" dir="{{text_direction}}"<?php if (!empty($_COOKIE['dark_mode'])) echo ' class="dark-mode"'; ?>>
 <head>
 <title>{{title}}</title>
-<meta charset="{{charset}}" />
-<meta name="robots" content="noindex, nofollow" />
+<meta charset="{{charset}}">
+<meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=1600">
-<link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/variables.css'); ?>" />
-<link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/framework.min.css'); ?>" />
-<link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/app.min.css'); ?>" />
+<link rel="stylesheet" href="<?php echo document::href_rlink('app://backend/template/css/variables.css'); ?>">
+<link rel="stylesheet" href="<?php echo document::href_rlink('app://backend/template/css/framework.min.css'); ?>">
+<link rel="stylesheet" href="<?php echo document::href_rlink('app://backend/template/css/app.min.css'); ?>">
 {{head_tags}}
 {{style}}
 <style>
@@ -19,12 +19,12 @@
 <body>
 
 <div id="backend-wrapper">
-  <input id="sidebar-compressed" type="checkbox" hidden />
+  <input id="sidebar-compressed" type="checkbox" hidden>
 
   <div id="sidebar" class="hidden-print">
 
     <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-        <img class="center-block responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
+      <img class="center-block responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>">
       </a>
 
     <div id="search">
@@ -39,7 +39,7 @@
       <span class="version"><?php echo PLATFORM_VERSION; ?></span>
     </a>
 
-    <div class="copyright" class="text-center">Copyright &copy; <?php echo date('2012-Y'); ?><br />
+    <div class="copyright" class="text-center">Copyright &copy; <?php echo date('2012-Y'); ?><br>
       <a href="https://www.litecart.net" target="_blank">www.litecart.net</a>
     </div>
   </div>
@@ -131,13 +131,14 @@
     </ul>
 
     <div id="content">
+      {{notices}}
       {{content}}
     </div>
   </main>
 </div>
 
 {{foot_tags}}
-<script src="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'js/app.min.js'); ?>"></script>
+<script src="<?php echo document::href_rlink('app://backend/template/js/app.min.js'); ?>"></script>
 {{javascript}}
 
 <script>

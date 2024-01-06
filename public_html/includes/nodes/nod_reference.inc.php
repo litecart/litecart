@@ -6,7 +6,6 @@
 
     public static function __callStatic($resource, $arguments) {
 
-
       $checksum = crc32(http_build_query($arguments));
 
       if (isset(self::$_cache[$resource][$checksum])) {

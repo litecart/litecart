@@ -22,7 +22,7 @@
   $stock_items = database::query(
     "select si.*, sii.name, b.name as brand_name from ". DB_TABLE_PREFIX ."stock_items si
     left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = si.id and sii.language_code = '". database::input($_GET['language_code']) ."')
-		left join ". DB_TABLE_PREFIX ."brands b on (b.id = si.id)
+    left join ". DB_TABLE_PREFIX ."brands b on (b.id = si.id)
     ". (!empty($sql_find) ? "where (". implode(" or ", $sql_find) .")" : "") ."
     order by si.sku, b.name, sii.name
     limit 15;"

@@ -38,7 +38,7 @@
   document::$title[] = $category->head_title ? $category->head_title : $category->name;
   document::$description = $category->meta_description ? $category->meta_description : strip_tags($category->short_description);
 
-  document::add_head_tags('<link rel="canonical" href="'. document::href_ilink('category', ['category_id' => $category->id], false) .'" />', 'canonical');
+  document::$head_tags['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', ['category_id' => $category->id]) .'">';
 
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
   foreach (array_slice($category->path, 0, -1, true) as $category_crumb) {
@@ -48,7 +48,7 @@
 
   functions::draw_lightbox();
 
-  $_page = new ent_view();
+  $_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/category.inc.php');
 
   $box_category_cache_token = cache::token('box_category', ['get', 'language', 'currency'], 'file');
   if (!$_page->snippets = cache::get($box_category_cache_token, ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
@@ -136,4 +136,4 @@
     cache::set($box_category_cache_token, $_page->snippets);
   }
 
-  echo $_page->render(FS_DIR_TEMPLATE . 'pages/category.inc.php');
+  echo $_page->render();

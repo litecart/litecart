@@ -140,5 +140,5 @@
 
   functions::draw_lightbox();
 
-  $_page = new ent_view();
-  echo $_page->render(FS_DIR_TEMPLATE . 'pages/checkout.inc.php');
+  $_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout.inc.php');
+  echo $_page->render();

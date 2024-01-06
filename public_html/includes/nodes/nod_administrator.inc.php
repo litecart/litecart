@@ -85,6 +85,7 @@
         )->fetch();
 
         if (!$administrator) {
+          self::reset();
           die('The account has been removed');
         }
 

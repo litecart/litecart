@@ -7,7 +7,7 @@
   $brands_cache_token = cache::token('brands', ['get', 'language'], 'file');
   if (cache::capture($brands_cache_token)) {
 
-    $_page = new ent_view();
+    $_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/brands.inc.php');
 
     $brands = database::query(
       "select b.id, b.name, b.image, bi.short_description, bi.link
@@ -32,7 +32,7 @@
       ];
     }
 
-    echo $_page->render(FS_DIR_TEMPLATE . 'pages/brands.inc.php');
+    echo $_page->render();
 
     cache::end_capture($brands_cache_token);
   }

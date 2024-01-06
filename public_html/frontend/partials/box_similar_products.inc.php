@@ -21,7 +21,7 @@
 
     if (database::num_rows($products_query)) {
 
-      $box_similar_products = new ent_view();
+      $box_similar_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_similar_products.inc.php');
 
       $box_similar_products->snippets['products'] = [];
       while ($listing_product = database::fetch($products_query)) {
@@ -29,7 +29,7 @@
       }
 
       if ($box_similar_products->snippets['products']) {
-        echo $box_similar_products->render(FS_DIR_TEMPLATE . 'partials/box_similar_products.inc.php');
+        echo $box_similar_products->render();
       }
     }
 

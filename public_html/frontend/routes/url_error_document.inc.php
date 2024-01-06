@@ -1,12 +1,10 @@
 <?php
 
   return [
-    [
-      'resource' => 'error_document',
+    'f:error_document' => [
       'pattern' => '#^error_document$#',
       'controller' => 'app://frontend/pages/error_document.inc.php',
       'params' => '',
-      'endpoint' => 'frontend',
       'options' => [
         'redirect' => false,
       ],

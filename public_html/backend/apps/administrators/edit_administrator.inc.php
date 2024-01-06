@@ -118,7 +118,7 @@
 
           <div class="row">
             <div class="form-group col-sm-6">
-              <label><?php echo language::translate('title_username', 'Administratorname'); ?></label>
+              <label><?php echo language::translate('title_username', 'Username'); ?></label>
               <?php echo functions::form_input_text('username', true, 'autocomplete="off" required'); ?>
             </div>
 

@@ -13,7 +13,7 @@
 
       $also_purchased_products = array_slice($also_purchased_products, 0, settings::get('box_also_purchased_products_num_items')*3, true);
 
-      $box_also_purchased_products = new ent_view();
+      $box_also_purchased_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_also_purchased_products.inc.php');
 
       $box_also_purchased_products->snippets['products'] = functions::catalog_products_query([
         'products' => array_keys($also_purchased_products),
@@ -22,7 +22,7 @@
       ])->fetch_all();
 
       if ($box_also_purchased_products->snippets['products']) {
-        echo $box_also_purchased_products->render(FS_DIR_TEMPLATE . 'partials/box_also_purchased_products.inc.php');
+        echo $box_also_purchased_products->render();
       }
     }
 

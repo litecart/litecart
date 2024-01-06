@@ -18,6 +18,7 @@
       $this->reset();
 
       if ($link instanceof ent_link) {
+
         foreach (array_keys($this->_components) as $component) {
           $this->$component = $link->$component;
         }

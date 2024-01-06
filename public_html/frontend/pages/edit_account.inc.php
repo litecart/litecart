@@ -1,7 +1,7 @@
 <?php
 
   header('X-Robots-Tag: noindex');
-  document::add_head_tags('<meta name="robots" content="noindex" />', 'noindex');
+  document::$head_tags['noindex'] = '<meta name="robots" content="noindex">';
 
   customer::require_login();
 
@@ -211,5 +211,5 @@
     }
   }
 
-  $_page = new ent_view();
-  echo $_page->render(FS_DIR_TEMPLATE . 'pages/edit_account.inc.php');
+  $_page = new ent_view('app://frontend/templates/'. settings::get('template') .'/pages/edit_account.inc.php');
+  echo $_page->render();

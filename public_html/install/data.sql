@@ -505,12 +505,10 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('advanced', 'local', 'Database Admin Link', 'The URL to your database manager, e.g. phpMyAdmin.', 'database_admin_link', '?app=settings&doc=advanced&action=edit&key=database_admin_link', 'text()', 19, NOW(), NOW()),
 ('advanced', 'local', 'Webmail Link', 'The URL to your webmail client.', 'webmail_link', '?app=settings&doc=advanced&action=edit&key=webmail_link', 'text()', 20, NOW(), NOW()),
 ('security', 'local', 'CAPTCHA', 'Prevent robots from posting form data by enabling CAPTCHA security.', 'captcha_enabled', '1', 'toggle()', 16, NOW(), NOW()),
-('', 'global', 'Catalog Template', '', 'store_template_catalog', 'default.catalog', 'template("catalog")', 0, NOW(), NOW()),
-('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '{"sidebar_parallax_effect":"1","compact_category_tree":"0","cookie_acceptance":"1"}', 'text()', 0, NOW(), NOW()),
-('', 'global', 'Admin Template', '', 'store_template_admin', 'default.admin', 'template("admin")', 0, NOW(), NOW()),
+('', 'global', 'Template', '', 'template', 'default.catalog', 'template()', 0, NOW(), NOW()),
+('', 'global', 'Template Settings', '', 'template_settings', '{"sidebar_parallax_effect":"1","compact_category_tree":"0","cookie_acceptance":"1"}', 'text()', 0, NOW(), NOW()),
 ('', 'global', 'Jobs Last Push', 'Time when background jobs were last pushed for execution.', 'jobs_last_push', NOW(), 'text()', 0, NOW(), NOW()),
 ('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'text()', 0, NOW(), NOW());
->>>>>>> 9dfdc20218adb032ffbb80c70c93f6b5878d214a
 -- --------------------------------------------------------
 INSERT INTO `lc_slides` (`id`, `status`, `languages`, `name`, `image`, `priority`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
 (1, 1, '', 'Rocket Cart', 'slides/1-rocket-cart.svg', 1, NULL, NULL, NOW(), NOW());

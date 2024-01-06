@@ -20,7 +20,7 @@
 
 // Append last destination route
   route::add('*', [
-	'pattern' => '#^(.+)$#',
+  'pattern' => '#^(.+)$#',
     'endpoint' => 'frontend',
     'controller' => 'app://frontend/pages/$1.inc.php',
   ]);

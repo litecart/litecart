@@ -1,12 +1,10 @@
 <?php
 
   return [
-    [
-      'resource' => '',
-      'pattern' => '#^(?:index\.php)?$#',
+    'f:' => [
+      'pattern' => '#^(index)?$#',
       'controller' => 'app://frontend/pages/index.inc.php',
       'params' => '',
-      'endpoint' => 'frontend',
       'options' => [
         'redirect' => true,
       ],

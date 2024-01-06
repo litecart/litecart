@@ -33,12 +33,12 @@
         clearstatcache();
 
         foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
-          foreach (glob($dir.'/*.{jpg,png,webp}', GLOB_BRACE) as $file) {
+          foreach (glob($dir.'/*.{avif,gif,jpg,png,webp}', GLOB_BRACE) as $file) {
             unlink($file);
           }
         }
 
-        foreach (glob(FS_DIR_STORAGE .'cache/*.{jpg,png,webp}', GLOB_BRACE) as $file) {
+        foreach (glob(FS_DIR_STORAGE .'cache/*.{avif,gif,jpg,png,webp}', GLOB_BRACE) as $file) {
           unlink($file);
         }
 
@@ -83,6 +83,16 @@
 
       foreach ($dependencies as $dependency) {
         switch ($dependency) {
+
+          case 'administrator':
+            $hash_string .= administrator::$data['id'];
+            break;
+
+          case 'avif':
+            if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
+              $hash_string .= 'avif';
+            }
+            break;
 
           case 'country':
             $hash_string .= customer::$data['country_code'];
@@ -147,10 +157,6 @@
           case 'uri':
           case 'url':
             $hash_string .= document::link();
-            break;
-
-          case 'administrator':
-            $hash_string .= administrator::$data['id'];
             break;
 
           case 'webp':

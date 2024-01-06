@@ -67,7 +67,9 @@
 
       ##########
 
-      if (empty($_POST['domain_name'])) $_POST['domain_name'] = '';
+      if (empty($_POST['domain_name'])) {
+        $_POST['domain_name'] = '';
+      }
 
       $_POST['code'] = strtolower($_POST['code']);
       $_POST['raw_datetime'] = $_POST['raw_date'] .' '. $_POST['raw_time'];

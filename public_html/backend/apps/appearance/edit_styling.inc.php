@@ -3,8 +3,8 @@
   if (is_file('app://frontend/templates/'. settings::get('template') .'/less/variables.less')) {
     $stylesheet = 'app://frontend/templates/'. settings::get('template') .'/less/variables.less';
 
-  } else if (is_file('app://includes/templates/'. settings::get('store_template_catalog') .'/css/variables.css')) {
-    $stylesheet = 'app://includes/templates/'. settings::get('store_template_catalog') .'/css/variables.css';
+  } else if (is_file('app://includes/templates/'. settings::get('template') .'/css/variables.css')) {
+    $stylesheet = 'app://includes/templates/'. settings::get('template') .'/css/variables.css';
 
   } else {
     notices::add('errors', language::translate('error_template_missing_variables_stylesheet', 'This template does not have an editable stylesheet with variables (e.g. variables.css)'));
@@ -50,7 +50,7 @@
 
       <div class="form-group" style="max-width: 640px;">
           <label><?php echo language::translate('title_file', 'File'); ?></label>
-          <div class="form-input" readonly><?php echo parse_url($stylesheet, PHP_URL_PATH); ?></div>
+          <div class="form-input" readonly><?php echo $stylesheet; ?></div>
         </div>
 
       <div class="form-group">

@@ -140,7 +140,7 @@
         }
       }
 
-      if (isset($this->data['settings']['status']) && preg_match('#^(1|active|enabled|on|true|yes)$#i', $this->data['settings']['status'])) {
+      if (isset($this->data['settings']['status']) && filter_var($this->data['settings']['status'], FILTER_VALIDATE_BOOLEAN)) {
         $this->data['status'] = 1;
       } else {
         $this->data['status'] = 0;

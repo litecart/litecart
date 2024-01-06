@@ -88,10 +88,7 @@
     // Load installed
       foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $installed) {
         list($id, $version) = preg_split('#;#', $installed);
-        self::$_installed[] = [
-          'id' => $id,
-          'version' => $version,
-        ];
+        self::$_installed[$id] = $version;
       }
 
     // Load settings
@@ -208,9 +205,9 @@
 
     // Modify file
       if (is_file($file)) {
-        $original = $buffer = file_get_contents($file);
+        $original = $buffer = preg_replace('#\r\n?|\n#', PHP_EOL, file_get_contents($file));
       } else {
-        $original = $buffer = null;
+        $original = $buffer = '';
       }
 
       foreach ($queue as $modification) {
@@ -302,7 +299,26 @@
 
       try {
 
-        $vmod = self::parse($file);
+        // Get XML file contents
+        if (!$xml = file_get_contents($file)) {
+          throw new \Exception('Could not read file', E_USER_ERROR);
+        }
+
+        // Normalize line endings
+        $xml = preg_replace('#\r\n?|\n#', PHP_EOL, $xml);
+
+        // Initiate a Document Object
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom->preserveWhiteSpace = false;
+
+        if (!$dom->loadXml($xml)) {
+          throw new \Exception(libxml_get_last_error()->message);
+        }
+
+        $vmod = self::parse_xml($dom, $file);
+
+        // Load modification if it is installed
+        if (in_array($vmod['id'], array_keys(self::$_installed))) {
 
         self::$_modifications[$vmod['id']] = $vmod;
 
@@ -326,35 +342,37 @@
           }
         }
 
-      // Run install for previously not installed modifications
-        if (!in_array($vmod['id'], array_column(self::$_installed, 'id'))) {
+          // Run upgrades if a previous version is installed
+          if (self::$_installed[$vmod['id']] < $vmod['version']) {
 
-        // Exceute install
-          if (!empty($vmod['install'])) {
+            if (!empty($dom->getElementsByTagName('upgrade')->length)) {
 
-            $tmp_file = stream_get_meta_data(tmpfile())['uri'];
-            file_put_contents($tmp_file, "<?php" . PHP_EOL . $vmod['install']);
+              // Gather upgrade scripts
+              $upgrades = [];
 
-            (function() {
-              include func_get_arg(0);
-            })($tmp_file);
-          }
+              foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
 
-          file_put_contents(FS_DIR_STORAGE . 'addons/.installed', $vmod['id'] .';'. $vmod['version'] . PHP_EOL, FILE_APPEND | LOCK_EX);
+                $upgrade_version = $upgrade_node->getAttribute('version');
 
-          self::$_installed[] = [
-            'id' => $vmod['id'],
-            'version' => $vmod['version'],
+                if (version_compare($vmod['version'], $upgrade_version, '<=')) {
+                  $upgrades[] = [
+                    'version' => $upgrade_version,
+                    'script' => $upgrade_node->textContent,
           ];
         }
+              }
 
-      // Run upgrades if a previous version is installed
-        if (!empty($vmod['upgrades'])) {
-          if ($installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
+              uasort($upgrades, function($a, $b) {
+                return version_compare($a['version'], $b['version']);
+              });
 
-            foreach ($vmod['upgrades'] as $upgrade) {
+              require_once vmod::check(FS_DIR_APP . 'includes/compatibility.inc.php');
+              require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
 
-              if (version_compare($upgrade['version'], $installed_version, '<=')) continue;
+              // Execute upgrade scripts
+              foreach ($upgrades as $upgrade) {
+
+                if (version_compare($upgrade['version'], self::$_installed[$vmod['id']], '<=')) continue;
 
             // Exceute upgrade in an isolated scope
               $tmp_file = stream_get_meta_data(tmpfile())['uri'];
@@ -364,20 +382,50 @@
                 include func_get_arg(0);
               })($tmp_file);
 
-              foreach (self::$_installed as $key => $installed) {
-                if ($installed['id'] == $vmod['id']) {
-                  self::$_installed[$key]['version'] = $upgrade['version'];
+                foreach (self::$_installed as $id => $version) {
+                  if ($id == $vmod['id']) {
+                    self::$_installed[$id] = $upgrade['version'];
                   break;
                 }
               }
+              }
 
-              $new_contents = implode(PHP_EOL, array_map(function($vmod){
-                return $vmod['id'] .';'. $vmod['version'];
-              }, self::$_installed));
+              $new_contents = implode(PHP_EOL, array_map(function($id, $version) {
+                return $id .';'. $version;
+              }, array_keys(self::$_installed), self::$_installed));
 
               file_put_contents(FS_DIR_STORAGE . 'addons/.installed', $new_contents . PHP_EOL, LOCK_EX);
+
+              if (isset($_SERVER['REQUEST_URI'])) {
+                header('Location: '. $_SERVER['REQUEST_URI']);
+                exit;
             }
           }
+        }
+
+        // Install if this is a new modification
+        } else {
+
+          file_put_contents(FS_DIR_STORAGE . 'addons/.installed', $vmod['id'] .';'. $vmod['version'] . PHP_EOL, FILE_APPEND | LOCK_EX);
+
+          // Exceute install script
+          if ($dom->getElementsByTagName('install')->length) {
+
+            require_once vmod::check(FS_DIR_APP . 'includes/compatibility.inc.php');
+            require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
+
+            $tmp_file = stream_get_meta_data(tmpfile())['uri'];
+            file_put_contents($tmp_file, "<?php\r\n" . $dom->getElementsByTagName('install')->item(0)->textContent);
+
+            (function() {
+              include func_get_arg(0);
+            })($tmp_file);
+
+            header('Location: '. $_SERVER['REQUEST_URI']);
+            exit;
+      }
+
+          self::$_installed[$vmod['id']] = $vmod['version'];
         }
 
       } catch (\Exception $e) {
@@ -385,24 +433,10 @@
       }
     }
 
-    public static function parse($file) {
-
-      if (!$xml = file_get_contents($file)) {
-        throw new \Exception('Could not read file', E_USER_ERROR);
-      }
-
-    // Normalize line endings
-      $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
-
-      $dom = new \DOMDocument('1.0', 'UTF-8');
-      $dom->preserveWhiteSpace = false;
-
-      if (!$dom->loadXml($xml)) {
-        throw new \Exception(libxml_get_last_error()->message);
-      }
+    public static function parse_xml($dom, $file) {
 
       if ($dom->documentElement->tagName != 'vmod') {
-        throw new \Exception("File ($file) is not a valid vmod or vQmod");
+        throw new \Exception("File is not a valid vMod ($file)");
       }
 
       if (empty($dom->getElementsByTagName('name')->item(0))) {
@@ -410,10 +444,7 @@
       }
 
       $id = preg_replace('#\.disabled$#', '', basename(dirname($file)));
-
-      if ($id == 'vmods') {
-        $id = preg_replace('#\.(disabled|xml)$#', '', basename($file));
-      }
+      if ($id == 'vmods') $id = preg_replace('#\.(disabled|xml)$#', '', basename($file));
 
       $vmod = [
         'type' => 'vmod',
@@ -432,7 +463,7 @@
         $vmod['version'] = date('Y-m-d', filemtime($file));
       }
 
-      if (!$installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
+      if (!isset(self::$_installed[$vmod['id']])) {
 
         if ($dom->getElementsByTagName('install')->length > 0) {
           $vmod['install'] = $dom->getElementsByTagName('install')->item(0)->textContent;
@@ -606,7 +637,7 @@
                 break;
 
               default:
-                throw new \Exception("Unknown value \"$method\" for operation method (before|after|replace|bottom|top)");
+                throw new \Exception("Unknown value \"$method\" for operation method (before|after|replace|bottom|top|all)");
                 continue 2;
             }
           }

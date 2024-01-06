@@ -37,11 +37,11 @@
     $_POST['payment_option'] = $shopping_cart->payment->selected;
   }
 
-  $box_checkout_payment = new ent_view();
+  $box_checkout_payment = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_checkout_payment.inc.php');
 
   $box_checkout_payment->snippets = [
     'selected' => $shopping_cart->payment->selected,
     'options' => $options,
   ];
 
-  echo $box_checkout_payment->render(FS_DIR_TEMPLATE . 'partials/box_checkout_payment.inc.php');
+  echo $box_checkout_payment->render();

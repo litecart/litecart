@@ -1,48 +1,40 @@
 <?php
 
-// Store the captured output buffer
-  $content = ob_get_contents();
+  stats::stop_watch('content_capture');
+
+  stats::start_watch('after_content');
+
+  // Site the captured output buffer
+  document::$content = ob_get_contents();
   ob_clean();
 
-// Run after capture processes
+  // Run after capture processes
   event::fire('after_capture');
 
-// Stitch content with layout
-  $_page = new ent_view(FS_DIR_TEMPLATE . 'layouts/'.document::$layout.'.inc.php');
-
-  $_page->snippets = [
-    'important_notice' => settings::get('important_notice'),
-    'content' => $content,
-  ];
-
-  $output = $_page->render();
-
-// Run prepare output processes
+  // Run prepare output processes
   event::fire('prepare_output');
 
-// Output page
-  $_page = new ent_view();
-  $_page->html = $output;
-  $_page->snippets = &document::$snippets;
-  $output = $_page->render(null, true);
-
-// Run before output processes
+  // Run before output processes
   event::fire('before_output');
 
-// Output Compression
+  // Output Compression
   if (filter_var(settings::get('gzip_enabled'), FILTER_VALIDATE_BOOLEAN)) {
+    if (!headers_sent()) {
     ini_set('zlib.output_compression', 1);
+    }
   } else {
     ini_set('zlib.output_compression', 0);
   }
 
-// Output page
-  echo $GLOBALS['output'];
+  stats::stop_watch('after_content');
 
-// Run after processes
+  // Output page
+  echo document::render();
+
+  // Run after processes
   event::fire('shutdown');
 
-// Execute background jobs
+  // Execute background jobs
   if (date('Ymdh', strtotime(settings::get('jobs_last_run'))) != date('Ymdh')) {
     if (strtotime(settings::get('jobs_last_push')) < strtotime('-5 minutes')) {
 

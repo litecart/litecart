@@ -43,10 +43,10 @@
   document::$title[] = $product->head_title ? $product->head_title : $product->name;
   document::$description = $product->meta_description ? $product->meta_description : strip_tags($product->short_description);
 
-  document::add_head_tags('<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'" />', 'canonical');
+  document::$head_tags['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'">';
 
   if (!empty($product->image)) {
-    document::add_head_tags('<meta property="og:image" content="'. document::href_rlink('storage://images/' . $product->image) .'"/>');
+    document::$head_tags[] = '<meta property="og:image" content="'. document::href_rlink('storage://images/' . $product->image) .'">';
   }
 
   if (!empty($_GET['category_id'])) {
@@ -80,7 +80,11 @@
   ];
 
 // Page
-  $_page = new ent_view();
+  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    $_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/product.ajax.inc.php');
+  } else {
+    $_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/product.inc.php');
+  }
 
   $schema_json = [
     '@context' => 'http://schema.org/',
@@ -321,10 +325,6 @@
     }
   }
 
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    echo $_page->render(FS_DIR_TEMPLATE . 'pages/product.ajax.inc.php');
-  } else {
-    echo $_page->render(FS_DIR_TEMPLATE . 'pages/product.inc.php');
-  }
-
   document::$head_tags['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json, JSON_UNESCAPED_SLASHES) .'</script>';
+
+  echo $_page;

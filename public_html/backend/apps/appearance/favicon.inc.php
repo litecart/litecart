@@ -108,7 +108,7 @@
         <?php foreach ($thumbnail_sizes as $size) { ?>
         <?php if (is_file($icon = FS_DIR_STORAGE . 'images/favicons/favicon-'.$size.'x'.$size.'.png')) { ?>
         <div class="icon">
-          <img class="thumbnail" src="<?php echo document::href_rlink($icon); ?>" width="256" height="256" alt="" />
+          <img class="thumbnail" src="<?php echo document::href_rlink($icon); ?>" width="256" height="256" alt="">
           <div><?php echo basename($icon); ?></div>
         </div>
         <?php } ?>
@@ -116,7 +116,7 @@
 
         <?php if (is_file($icon = 'storage://images/favicons/favicon.ico')) { ?>
         <div class="icon">
-          <img class="thumbnail" src="data:image/x-icon;base64,<?php echo base64_encode(file_get_contents($icon)); ?>" width="48" height="48" alt="" />
+          <img class="thumbnail" src="data:image/x-icon;base64,<?php echo base64_encode(file_get_contents($icon)); ?>" width="48" height="48" alt="">
           <div><?php echo basename($icon); ?></div>
         </div>
         <?php } ?>

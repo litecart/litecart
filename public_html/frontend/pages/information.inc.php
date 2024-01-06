@@ -29,14 +29,14 @@
     }
     breadcrumbs::add($page->title);
 
-    $_page = new ent_view();
+    $_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/information.inc.php');
 
     $_page->snippets = [
       'title' => $page->title,
       'content' => $page->content,
     ];
 
-    echo $_page->render(FS_DIR_TEMPLATE . 'pages/information.inc.php');
+    echo $_page->render();
 
   } catch (Exception $e) {
     http_response_code($e->getCode());

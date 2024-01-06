@@ -492,7 +492,7 @@ SELECT transaction_id, stock_item_id, quantity_adjustment FROM (
     SELECT si.id AS stock_item_id, si.quantity FROM `lc_stock_items` si
     UNION
     SELECT oi.stock_item_id, oi.quantity FROM `lc_orders_items` oi
-	 WHERE oi.order_id IN (
+   WHERE oi.order_id IN (
       SELECT id FROM `lc_orders` o
       WHERE o.order_status_id IN (
         SELECT id FROM `lc_order_statuses` os

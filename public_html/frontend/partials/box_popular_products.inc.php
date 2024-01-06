@@ -22,14 +22,14 @@
 
       $listing_products = array_slice($listing_products, 0, settings::get('box_popular_products_num_items'));
 
-      $box_popular_products = new ent_view();
+      $box_popular_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_popular_products.inc.php');
 
       $box_popular_products->snippets['products'] = [];
       foreach ($listing_products as $listing_product) {
         $box_popular_products->snippets['products'][] = $listing_product;
       }
 
-      echo $box_popular_products->render(FS_DIR_TEMPLATE . 'partials/box_popular_products.inc.php');
+      echo $box_popular_products->render();
     }
 
     cache::end_capture($box_popular_products_cache_token);

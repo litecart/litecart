@@ -235,7 +235,7 @@
 // Order Public Key
   database::query(
     "ALTER TABLE `". DB_TABLE_PREFIX ."orders`
-	  ADD COLUMN `public_key` VARCHAR(32) NOT NULL AFTER `domain`;"
+    ADD COLUMN `public_key` VARCHAR(32) NOT NULL AFTER `domain`;"
   );
 
   $orders_query = database::query(

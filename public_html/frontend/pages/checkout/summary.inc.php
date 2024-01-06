@@ -6,7 +6,7 @@
 
   if (empty($shopping_cart->data['items'])) return;
 
-  $box_checkout_summary = new ent_view();
+  $box_checkout_summary = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_checkout_summary.inc.php');
 
   $box_checkout_summary->snippets = [
     'shopping_cart' => $shopping_cart->data,
@@ -35,4 +35,4 @@
     '%terms_of_purchase_link' => document::href_ilink('information', ['page_id' => $terms_of_purchase_id]),
   ]);
 
-  echo $box_checkout_summary->render(FS_DIR_TEMPLATE . 'partials/box_checkout_summary.inc.php');
+  echo $box_checkout_summary->render();

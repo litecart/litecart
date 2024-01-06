@@ -41,11 +41,11 @@
     $_POST['shipping_option'] = $shopping_cart->shipping->selected;
   }
 
-  $box_checkout_shipping = new ent_view();
+  $box_checkout_shipping = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_checkout_shipping.inc.php');
 
   $box_checkout_shipping->snippets = [
     'selected' => $shopping_cart->shipping->selected,
     'options' => $options,
   ];
 
-  echo $box_checkout_shipping->render(FS_DIR_TEMPLATE . 'partials/box_checkout_shipping.inc.php');
+  echo $box_checkout_shipping->render();

@@ -6,12 +6,12 @@
     http_response_code((int)$_GET['code']);
   }
 
-  if (preg_match('#\.(jpg|png|gif)$#', route::$request)) {
+  if (preg_match('#\.(avif|gif|jpg|png|webp)$#', route::$request)) {
     echo file_get_contents('images/no_image.png');
     exit;
   }
 
-  $_page = new ent_view();
+  $_page = new ent_view('app://backend/template/pages/error_document.inc.php');
   $_page->snippets['code'] = http_response_code();
 
   switch (http_response_code()) {
@@ -48,4 +48,4 @@
       break;
   }
 
-  echo $_page->render(FS_DIR_TEMPLATE . 'pages/error_document.inc.php');
+  echo $_page;

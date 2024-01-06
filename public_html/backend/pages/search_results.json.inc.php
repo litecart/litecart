@@ -1,12 +1,6 @@
 <?php
 
-  administrator::require_login();
-
   document::$layout = 'ajax';
-
-  $app_themes = array_column(functions::admin_get_apps(), 'theme', 'code');
-
-  $search_results = [];
 
   try {
 
@@ -15,6 +9,7 @@
       }
 
     $apps = functions::admin_get_apps();
+    $app_themes = array_column($apps, 'theme', 'code');
 
     $search_results = [];
 

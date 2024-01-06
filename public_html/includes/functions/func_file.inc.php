@@ -40,10 +40,16 @@
     return in_array(false, $results) ? false : true;
   }
 
-// PHP doesn't always clean up temp files, so let's create a function that does
-  function file_create_tempfile() {
+  // PHP doesn't always clean up temp files, so let's create a function that does
+  function file_create_tempfile($data='', $extension='') {
 
-    $tmp_file = stream_get_meta_data(tmpfile())['uri'];
+    while (!isset($tmp_file) || is_file($tmp_file)) {
+      $tmp_file = stream_get_meta_data(tmpfile())['uri'].$extension;
+    }
+
+    if ($data !== null) {
+      file_put_contents($tmp_file, $data);
+    }
 
     register_shutdown_function(function($f){
       is_file($f) && unlink($f);
@@ -190,7 +196,7 @@
       else throw new \Exception('Climbing above the root is not permitted.');
     }
 
-    return join('/', $new_path);
+    return implode('/', $new_path);
   }
 
 // PHP glob() does not support stream wrappers, so let's create our own glob.

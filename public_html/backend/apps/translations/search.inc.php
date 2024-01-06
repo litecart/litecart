@@ -14,10 +14,6 @@
     }
   }
 
-  if (!isset($_GET['query'])) {
-    $_GET['query'] = '';
-  }
-
   document::$title[] = language::translate('title_search_translations', 'Search Translations');
 
   breadcrumbs::add(language::translate('title_translations', 'Translations'));
@@ -131,7 +127,7 @@ th:not(:last-child) {
           <?php $tab_index = 0; foreach ($translations as $translation) { ?>
           <tr>
             <td>
-              <code class="code"><?php echo $translation['code']; ?></code><br />
+              <code class="code"><?php echo $translation['code']; ?></code><br>
               <span style="color: #999;"><?php echo functions::form_input_checkbox('translations['. $translation['code'] .'][html]', ['1', language::translate('text_enable_html', 'Enable HTML')], (isset($_POST['translations'][$translation['code']]['html']) ? $_POST['translations'][$translation['code']]['html'] : $translation['html'])); ?></span>
             </td>
             <?php foreach ($_GET['languages'] as $key => $language_code) { ?>

@@ -13,7 +13,7 @@
 
     if (database::num_rows($brands_query)) {
 
-      $box_brand_logotypes = new ent_view();
+      $box_brand_logotypes = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_brand_logotypes.inc.php');
 
       $box_brand_logotypes->snippets['logotypes'] = [];
 
@@ -29,7 +29,7 @@
         ];
       }
 
-      echo $box_brand_logotypes->render(FS_DIR_TEMPLATE . 'partials/box_brand_logotypes.inc.php');
+      echo $box_brand_logotypes->render();
     }
 
     cache::end_capture($box_brand_logotypes_cache_token);

@@ -1,8 +1,7 @@
 <?php
 
   return [
-    [
-      'resource' => 'checkout',
+    'f:checkout' => [
       'pattern' => '#^checkout/(index)?$#',
       'controller' => 'app://frontend/pages/checkout/index.inc.php',
       'params' => '',

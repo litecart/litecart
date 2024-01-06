@@ -40,97 +40,97 @@
               <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
               <?php echo functions::form_input_text('firstname', true, 'required'); ?>
             </div>
-	          <div class="form-group col-6">
-	            <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-	            <?php echo functions::form_input_text('lastname', true, 'required'); ?>
+            <div class="form-group col-6">
+              <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
+              <?php echo functions::form_input_text('lastname', true, 'required'); ?>
               </div>
 
-	        </div>
+          </div>
 
-	        <div class="row">
-	          <div class="form-group col-6">
-	            <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-	            <?php echo functions::form_input_text('address1', true); ?>
-	          </div>
+          <div class="row">
+            <div class="form-group col-6">
+              <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
+              <?php echo functions::form_input_text('address1', true); ?>
+            </div>
 
-	          <div class="form-group col-6">
-	            <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-	            <?php echo functions::form_input_text('address2', true); ?>
-	          </div>
-	        </div>
+            <div class="form-group col-6">
+              <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
+              <?php echo functions::form_input_text('address2', true); ?>
+            </div>
+          </div>
 
-	        <div class="row">
-	          <div class="form-group col-6">
-	            <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-	            <?php echo functions::form_input_text('postcode', true); ?>
-	          </div>
+          <div class="row">
+            <div class="form-group col-6">
+              <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
+              <?php echo functions::form_input_text('postcode', true); ?>
+            </div>
 
-	          <div class="form-group col-6">
-	            <label><?php echo language::translate('title_city', 'City'); ?></label>
-	            <?php echo functions::form_input_text('city', true); ?>
-	          </div>
-	        </div>
+            <div class="form-group col-6">
+              <label><?php echo language::translate('title_city', 'City'); ?></label>
+              <?php echo functions::form_input_text('city', true); ?>
+            </div>
+          </div>
 
-	        <div class="row">
-	          <div class="form-group col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
-	            <label><?php echo language::translate('title_country', 'Country'); ?></label>
-	            <?php echo functions::form_select_country('country_code', true, 'required'); ?>
-	          </div>
+          <div class="row">
+            <div class="form-group col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
+              <label><?php echo language::translate('title_country', 'Country'); ?></label>
+              <?php echo functions::form_select_country('country_code', true, 'required'); ?>
+            </div>
 
-	          <?php if (settings::get('customer_field_zone')) { ?>
-	          <div class="form-group col-6">
-	            <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-	            <?php echo functions::form_select_zone('zone_code', fallback($_POST['country_code']), true, 'required'); ?>
-	          </div>
-	          <?php } ?>
-	        </div>
+            <?php if (settings::get('customer_field_zone')) { ?>
+            <div class="form-group col-6">
+              <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
+              <?php echo functions::form_select_zone('zone_code', fallback($_POST['country_code']), true, 'required'); ?>
+            </div>
+            <?php } ?>
+          </div>
 
-	        <div class="row">
-	          <div class="form-group col-6">
-	            <label><?php echo language::translate('title_email', 'Email'); ?></label>
-	            <?php echo functions::form_input_email('email', true, 'required'); ?>
-	          </div>
+          <div class="row">
+            <div class="form-group col-6">
+              <label><?php echo language::translate('title_email', 'Email'); ?></label>
+              <?php echo functions::form_input_email('email', true, 'required'); ?>
+            </div>
 
-	          <div class="form-group col-6">
-	            <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
-	            <?php echo functions::form_input_phone('phone', true); ?>
-	          </div>
-	        </div>
+            <div class="form-group col-6">
+              <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
+              <?php echo functions::form_input_phone('phone', true); ?>
+            </div>
+          </div>
 
-	        <div class="row">
-	          <div class="form-group col-6">
-	            <label><?php echo language::translate('title_desired_password', 'Desired Password'); ?></label>
-	            <?php echo functions::form_input_password('password', '', 'required'); ?>
-	          </div>
+          <div class="row">
+            <div class="form-group col-6">
+              <label><?php echo language::translate('title_desired_password', 'Desired Password'); ?></label>
+              <?php echo functions::form_input_password('password', '', 'required'); ?>
+            </div>
 
-	          <div class="form-group col-6">
-	            <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-	            <?php echo functions::form_input_password('confirmed_password', '', 'required'); ?>
-	          </div>
-	        </div>
+            <div class="form-group col-6">
+              <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
+              <?php echo functions::form_input_password('confirmed_password', '', 'required'); ?>
+            </div>
+          </div>
 
-	        <div class="form-group">
-	          <?php echo functions::form_input_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
-	        </div>
+          <div class="form-group">
+            <?php echo functions::form_input_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
+          </div>
 
-	        <?php if ($consent) { ?>
-	        <p class="consent">
-	          <?php echo functions::form_input_checkbox('terms_agreed', ['1', $consent], true, 'required'); ?>
-	        </p>
-	        <?php } ?>
+          <?php if ($consent) { ?>
+          <p class="consent">
+            <?php echo functions::form_input_checkbox('terms_agreed', ['1', $consent], true, 'required'); ?>
+          </p>
+          <?php } ?>
 
-	        <?php if (settings::get('captcha_enabled')) { ?>
-	        <div class="row">
-	          <div class="form-group col-6">
-	            <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-	            <?php echo functions::form_input_captcha('captcha', 'create_account', 'required'); ?>
-	          </div>
-	        </div>
-	        <?php } ?>
+          <?php if (settings::get('captcha_enabled')) { ?>
+          <div class="row">
+            <div class="form-group col-6">
+              <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
+              <?php echo functions::form_input_captcha('captcha', 'create_account', 'required'); ?>
+            </div>
+          </div>
+          <?php } ?>
 
-	        <div class="btn-group">
-	          <?php echo functions::form_button('create_account', language::translate('title_create_account', 'Create Account')); ?>
-	        </div>
+          <div class="btn-group">
+            <?php echo functions::form_button('create_account', language::translate('title_create_account', 'Create Account')); ?>
+          </div>
 
         <?php echo functions::form_end(); ?>
       </div>

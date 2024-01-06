@@ -122,5 +122,5 @@
     }
   }
 
-  $_page = new ent_view();
-  echo $_page->render(FS_DIR_TEMPLATE . 'pages/reset_password.inc.php');
+  $_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/reset_password.inc.php');
+  echo $_page->render();

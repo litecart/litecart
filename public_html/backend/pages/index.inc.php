@@ -1,7 +1,5 @@
 <?php
 
-  administrator::require_login();
-
   breadcrumbs::reset();
   breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), document::ilink(''));
 
@@ -15,6 +13,11 @@
     if (!defined('__DOC__')) {
       define('__DOC__', $app_config['default']);
     }
+
+    $app_config['theme'] = [
+      'icon' => fallback($app_config['theme']['icon'], 'fa-plus'),
+      'color' => fallback($app_config['theme']['color'], '#97a3b5'),
+    ];
 
   // Check if administrator is permitted to access document
     if (!empty(administrator::$data['apps'][__APP__]['status']) && !in_array(__DOC__, administrator::$data['apps'][__APP__]['docs'])) {
@@ -31,28 +34,30 @@
     breadcrumbs::add($app_config['name'], document::ilink(__APP__ .'/'. $app_config['default']));
 
   // Render the app document
-    $_content = new ent_view();
+    $_content = new ent_view('app://backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__]);
 
     $_content->snippets = [
-      'app_icon' => '<span class="app-icon">' . PHP_EOL
-                  . '  ' . functions::draw_fonticon($app_config['theme']['icon'] .' fa-fw') . PHP_EOL
-                  . '</span>',
+      'app_icon' => implode(PHP_EOL, [
+        '<span class="app-icon">',
+        '	' . functions::draw_fonticon($app_config['theme']['icon'] .' fa-fw'),
+        '</span>',
+      ]),
     ];
 
   // Render the page
-    $_page = new ent_view();
+    $_page = new ent_view('app://backend/template/pages/doc.inc.php');
 
     $_page->snippets = [
       'app' => __APP__,
       'doc' => __DOC__,
       'theme' => [
-        'icon' => fallback($app_config['theme']['icon'], 'fa-plus'),
-        'color' => fallback($app_config['theme']['color'], '#97a3b5'),
+        'icon' => $app_config['theme']['icon'],
+        'color' => $app_config['theme']['color'],
       ],
-      'content' => $_content->render('app://backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__]),
+      'content' => (string)$_content,
     ];
 
-    echo $_page->render(FS_DIR_TEMPLATE . 'pages/doc.inc.php');
+    echo $_page->render('app://frontend/templates/'.settings::get('template').'/pages/doc.inc.php');
 
 // Display the start page
   } else {
@@ -69,7 +74,7 @@
 
   // Widgets
 
-    $box_widgets = new ent_view();
+    $box_widgets = new ent_view('app://backend/template/partials/box_widgets.inc.php');
     $box_widgets->snippets['widgets'] = [];
 
     $widgets = functions::admin_get_widgets();
@@ -79,12 +84,13 @@
 
       ob_start();
       include $widget['directory'] . $widget['file'];
+      $output = ob_get_clean();
 
       $box_widgets->snippets['widgets'][] = [
         'id' => $widget['id'],
-        'content' => ob_get_clean(),
+        'content' => $output,
       ];
     }
 
-    echo $box_widgets->render(FS_DIR_TEMPLATE . 'partials/box_widgets.inc.php');
+    echo $box_widgets;
   }

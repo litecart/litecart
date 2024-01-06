@@ -8,7 +8,9 @@
 
       register_shutdown_function(['session', 'close']);
 
-      if (!self::start()) trigger_error('Failed to start a session', E_USER_WARNING);
+      if (!self::start()) {
+        trigger_error('Failed to start a session', E_USER_WARNING);
+      }
 
       self::$data = &$_SESSION;
 
@@ -31,8 +33,6 @@
         self::regenerate_id();
       }
     }
-
-    ######################################################################
 
     public static function start() {
       return session_start();

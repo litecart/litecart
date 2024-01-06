@@ -31,12 +31,12 @@
   document::$title[] = $brand->head_title ? $brand->head_title : $brand->name;
   document::$description = $brand->meta_description ? $brand->meta_description : strip_tags($brand->short_description);
 
-  document::add_head_tags('<link rel="canonical" href="'. document::href_ilink('brand', ['brand_id' => (int)$brand->id], false) .'" />', 'canonical');
+  document::$head_tags['canonical'] = '<link rel="canonical" href="'. document::href_ilink('brand', ['brand_id' => (int)$brand->id], false) .'">';
 
   breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
   breadcrumbs::add($brand->name);
 
-  $_page = new ent_view();
+  $_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/brand.inc.php');
 
   $brand_cache_token = cache::token('box_brand', ['get', 'language', 'currency', 'prices'], 'file');
   if (!$_page->snippets = cache::get($brand_cache_token, ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
@@ -75,4 +75,4 @@
     cache::set($brand_cache_token, $_page->snippets);
   }
 
-  echo $_page->render(FS_DIR_TEMPLATE . 'pages/brand.inc.php');
+  echo $_page->render();

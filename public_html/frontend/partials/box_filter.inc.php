@@ -1,5 +1,5 @@
 <?php
-  $box_filter = new ent_view();
+  $box_filter = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_filter.inc.php');
 
   $box_filter->snippets = [
     'brands' => [],
@@ -63,4 +63,4 @@
     }
   }
 
-  echo $box_filter->render(FS_DIR_TEMPLATE . 'partials/box_filter.inc.php');
+  echo $box_filter->render();

@@ -1,8 +1,7 @@
 <?php
 
   return [
-    [
-      'resource' => 'category',
+    'f:category' => [
       'pattern' => '#^categories/([0-9]+)(/.*|/?$)#',
       'controller' => 'app://frontend/pages/category.inc.php',
       'params' => 'category_id=$1',
@@ -27,8 +26,7 @@
       }
     ],
 
-    [
-      'resource' => false,
+    null => [
       'pattern' => '#^.*-c-([0-9]+)/?$#',
       'controller' => 'app://frontend/pages/category.inc.php.inc.php',
       'params' => 'category_id=$1',

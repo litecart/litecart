@@ -1,1 +1,1 @@
-<?php include FS_DIR_TEMPLATE . 'partials/box_product.inc.php'; ?>
+<?php include 'app://frontend/templates/'.settings::get('template').'/partials/box_product.inc.php'; ?>

@@ -2,7 +2,7 @@
 
   document::$layout = 'blank';
 
-  header('X-Robots-Tag: noindex');
+  document::$head_tags[] = '<meta name="viewport" content="width=device-width, initial-scale=1">';
 
   if (!empty(administrator::$data['id'])) {
     notices::add('notices', language::translate('text_already_logged_in', 'You are already logged in'));
@@ -38,7 +38,6 @@
       if (!$administrator) {
         throw new Exception(language::translate('error_administrator_not_found', 'The administrator could not be found in our database'));
       }
-
 
       if (empty($administrator['status'])) {
         throw new Exception(language::translate('error_administrator_account_disabled', 'The administrator account is disabled'));
@@ -165,5 +164,5 @@
     }
   }
 
-  $page_login = new ent_view();
-  echo $page_login->render(FS_DIR_TEMPLATE . 'pages/login.inc.php');
+  $page_login = new ent_view('app://backend/template/pages/login.inc.php');
+  echo $page_login;

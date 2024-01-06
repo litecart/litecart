@@ -47,7 +47,7 @@
     ];
 
   // Banner Click Tracking
-    document::add_javascript([
+    document::$javascript['banner-click-tracking'] = implode(PHP_EOL, [
       '  var mouseOverAd = false;',
       '  $(\'.banner[data-id]\').hover(function(){',
       '    mouseOverAd = $(this).data("id");',
@@ -62,13 +62,15 @@
       '      $.post("'. document::ilink('ajax/bct') .'", "banner_id=" + mouseOverAd);',
       '    }',
       '  });',
-    ], 'banner-click-tracking');
+    ]);
 
     $output = strtr($banner['html'], $aliases);
 
-    $output = '<div class="banner" data-id="'. $banner['id'] .'" data-name="'. $banner['name'] .'">'. PHP_EOL
-             . $output . PHP_EOL
-             . '</div>';
+    $output = implode(PHP_EOL, [
+      '<div class="banner" data-id="'. $banner['id'] .'" data-name="'. $banner['name'] .'">',
+      '  '. $output,
+      '</div>',
+    ]);
 
     return $output;
   }
@@ -79,33 +81,33 @@
 
     // Bootstrap Icons
       case (substr($class, 0, 3) == 'bi-'):
-        document::add_head_tags('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">', 'bootstrap-icons');
-        return '<i class="bi '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
+        document::$head_tags['bootstrap-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">';
+        return '<i class="bi '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : '') .'></i>';
 
     // Fontawesome 4
       case (substr($class, 0, 3) == 'fa-'):
-        //document::add_head_tags('<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">', 'fontawesome'); // Uncomment if removed from lib_document
-        return '<i class="fa '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
+        //document::$head_tags['fontawesome'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">'; // Uncomment if removed from lib_document
+        return '<i class="fa '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : '') .'></i>';
 
     // Foundation
       case (substr($class, 0, 3) == 'fi-'):
-        document::add_head_tags('<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation-icons/latest/foundation-icons.min.css">', 'foundation-icons');
-        return '<i class="'. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
+        document::$head_tags['foundation-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation-icons/latest/foundation-icons.min.css">';
+        return '<i class="'. $class .'"'. (!empty($parameters) ? ' ' . $parameters : '') .'></i>';
 
     // Glyphicon
       case (substr($class, 0, 10) == 'glyphicon-'):
-        //document::add_head_tags('<link rel="stylesheet" href="'/path/to/glyphicon.min.css" />', 'foundation-icons'); // Not embedded in release
-        return '<span class="glyphicon '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></span>';
+        //document::$head_tags['foundation-icons'] = '<link rel="stylesheet" href="'/path/to/glyphicon.min.css">'; // Not embedded in release
+        return '<span class="glyphicon '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : '') .'></span>';
 
     // Ion Icons
       case (substr($class, 0, 4) == 'ion-'):
-        document::add_head_tags('<link rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/latest/css/ionicons.min.css">', 'ionicons');
-        return '<i class="'. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
+        document::$head_tags['ionicons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/latest/css/ionicons.min.css">';
+        return '<i class="'. $class .'"'. (!empty($parameters) ? ' ' . $parameters : '') .'></i>';
 
     // Material Design Icons
       case (substr($class, 0, 4) == 'mdi-'):
-        document::add_head_tags('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" />', 'material-design-icons');
-        return '<i class="mdi '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
+        document::$head_tags['material-design-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">';
+        return '<i class="mdi '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : '') .'></i>';
     }
 
     switch ($class) {
@@ -132,7 +134,7 @@
 
   function draw_listing_category($category, $view='views/listing_category') {
 
-    $listing_category = new ent_view();
+    $listing_category = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/listing_category.inc.php');
 
     list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
 
@@ -154,12 +156,12 @@
       'short_description' => $category['short_description'],
     ];
 
-    return $listing_category->render(FS_DIR_TEMPLATE . 'partials/listing_category.inc.php');
+    return $listing_category->render();
   }
 
   function draw_listing_product($product, $inherit_params=[], $view='views/listing_product') {
 
-    $listing_product = new ent_view();
+    $listing_product = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/listing_product.inc.php');
 
     $sticker = '';
     if ($product['campaign_price']) {
@@ -216,19 +218,19 @@
       $listing_product->snippets['image']['original'] = functions::image_process(FS_DIR_APP . $listing_product->snippets['image']['original'], ['watermark' => true]);
     }
 
-    return $listing_product->render(FS_DIR_TEMPLATE . 'partials/listing_product.inc.php');
+    return $listing_product->render();
   }
 
   function draw_lightbox($selector='', $parameters=[]) {
 
     document::load_style('app://assets/featherlight/featherlight.min.css', 'featherlight');
     document::load_script('app://assets/featherlight/featherlight.min.js', 'featherlight');
-    document::add_script([
+    document::$javascript['featherlight'] = implode(PHP_EOL, [
       "$.featherlight.autoBind = '[data-toggle=\"lightbox\"]';",
       "$.featherlight.defaults.loading = '<div class=\"loader\" style=\"width: 128px; height: 128px; opacity: 0.5;\"></div>';",
       "$.featherlight.defaults.closeIcon = '&#x2716;';",
       "$.featherlight.defaults.targetAttr = 'data-target';",
-    ], 'featherlight');
+    ]);
 
     $selector = str_replace("'", '"', $selector);
 
@@ -272,7 +274,7 @@
     $js = rtrim($js, ",\r\n") . PHP_EOL
         . '  });';
 
-    document::add_javascript($js, 'featherlight-'.$selector);
+    document::$javascript['featherlight-'.$selector] = $js;
   }
 
   function draw_pagination($pages) {
@@ -281,13 +283,23 @@
 
     if ($pages < 2) return false;
 
-    if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) $_GET['page'] = 1;
+    if (!isset($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+       $_GET['page'] = 1;
+    }
 
-    if ($_GET['page'] > 1) document::$head_tags['prev'] = '<link rel="prev" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']-1]) .'" />';
-    if ($_GET['page'] < $pages) document::$head_tags['next'] = '<link rel="next" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]) .'" />';
-    if ($_GET['page'] < $pages) document::$head_tags['prerender'] = '<link rel="prerender" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]) .'" />';
+    if ($_GET['page'] > 1) {
+      document::$head_tags['prev'] = '<link rel="prev" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']-1]) .'">';
+    }
 
-    $pagination = new ent_view();
+    if ($_GET['page'] < $pages) {
+      document::$head_tags['next'] = '<link rel="next" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]) .'">';
+    }
+
+    if ($_GET['page'] < $pages) {
+      document::$head_tags['prerender'] = '<link rel="prerender" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]) .'">';
+    }
+
+    $pagination = new ent_view('app://frontend/templates/'. settings::get('template') .'/partials/pagination.inc.php');
 
     $pagination->snippets['items'][] = [
       'page' => $_GET['page']-1,
@@ -345,5 +357,5 @@
       'active' => false,
     ];
 
-    return $pagination->render(FS_DIR_TEMPLATE . 'partials/pagination.inc.php');
+    return (string)$pagination;
   }

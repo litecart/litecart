@@ -167,7 +167,6 @@
           <?php } else { ?>
           <td class="text-center"></td>
           <?php } ?>
-          <td><?php echo (!empty($module['website'])) ? '<a href="'. document::link($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
           <td><?php echo $module['id']; ?></td>
           <td class="text-end"><?php echo $module['version']; ?></td>
           <td><?php echo !empty($module['website']) ? '<a href="'. functions::escape_html($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
@@ -180,7 +179,6 @@
           <td></td>
           <td><?php echo $module['name']; ?></td>
           <td class="text-center"></td>
-          <td><?php echo (!empty($module['website'])) ? '<a href="'. document::link($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
           <td><?php echo $module['id']; ?></td>
           <td class="text-end"><?php echo $module['version']; ?></td>
           <td><?php echo !empty($module['website']) ? '<a href="'. functions::escape_html($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>

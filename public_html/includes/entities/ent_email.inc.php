@@ -25,9 +25,11 @@
         $this->data[$field['Field']] = database::create_variable($field);
       }
 
+      $this->data['language_code'] = language::$selected['code'];
+
       $this->data['sender'] = [
-        'email' => settings::get('store_email'),
-        'name' => settings::get('store_name'),
+        'email' => settings::get('site_email'),
+        'name' => settings::get('site_name'),
       ];
 
       $this->data['recipients'] = [];
@@ -76,8 +78,8 @@
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."emails
-          (status, code, date_created) values
-          ('". database::input($this->data['status']) ."', '". database::input($this->data['code']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+          (status, code, ip_address, hostname, user_agent, date_created) values
+          ('". database::input($this->data['status']) ."', '". database::input($this->data['code']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
 
         $this->data['id'] = database::insert_id();
@@ -87,12 +89,14 @@
         "update ". DB_TABLE_PREFIX ."emails
         set status = '". (!empty($this->data['status']) ? database::input($this->data['status']) : 'draft') ."',
           code = '". database::input($this->data['code']) ."',
+          reference = '". database::input($this->data['reference']) ."',
           sender = '". database::input(json_encode($this->data['sender'], JSON_UNESCAPED_SLASHES)) ."',
           recipients = '". database::input(json_encode($this->data['recipients'], JSON_UNESCAPED_SLASHES)) ."',
           ccs = '". database::input(json_encode($this->data['ccs'], JSON_UNESCAPED_SLASHES)) ."',
           bccs = '". database::input(json_encode($this->data['bccs'], JSON_UNESCAPED_SLASHES)) ."',
           subject = '". database::input($this->data['subject']) ."',
           multiparts = '". database::input(json_encode($this->data['multiparts'], JSON_UNESCAPED_SLASHES), true) ."',
+          language_code = '". database::input($this->data['language_code']) ."',
           date_scheduled = ". (!empty($this->data['date_scheduled']) ? "'". database::input($this->data['date_scheduled']) ."'" : "null") .",
           date_sent = ". (!empty($this->data['date_sent']) ? "'". database::input($this->data['date_sent']) ."'" : "null") .",
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
@@ -125,9 +129,23 @@
       return $this;
     }
 
+    public function set_language($language_code) {
+
+      $this->data['language_code'] = $language_code;
+
+      return $this;
+    }
+
     public function set_subject($subject) {
 
       $this->data['subject'] = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $subject));
+
+      return $this;
+    }
+
+    public function set_reference($id) {
+
+      $this->data['reference'] = $id;
 
       return $this;
     }
@@ -139,16 +157,20 @@
         return $this;
       }
 
-      if (!$charset) {
-        $charset = $this->data['charset'];
-      }
+      $view = new ent_view('app://frontend/templates/'.settings::get('template').'/layouts/email.inc.php');
+
+      $view->snippets = [
+        'content' => $html ? $content : nl2br($content),
+        'language_code' => $this->data['language_code'],
+      ];
 
       $this->data['multiparts'][] = [
         'headers' => [
-          'Content-Type' => ($html ? 'text/html' : 'text/plain') .'; charset='. mb_http_output(),
+          'Content-Type' => 'text/html; charset='. mb_http_output(),
           'Content-Transfer-Encoding' => '8bit',
+          'Content-Language' => $this->data['language_code'],
         ],
-        'body' => trim($content),
+        'body' => (string)$view,
       ];
 
       return $this;
@@ -172,11 +194,11 @@
 
       $this->data['multiparts'][] = [
         'headers' => [
-          'Content-Type' => $mime_type,
+          'Content-Type' => $mime_type .'; name="'. basename($filename) . '"',
           'Content-Disposition' => 'attachment; filename="'. basename($filename) . '"',
           'Content-Transfer-Encoding' => 'base64',
         ],
-        'body' => chunk_split(base64_encode($data)) . "\r\n\r\n",
+        'body' => chunk_split(base64_encode($data)),
       ];
 
       return $this;
@@ -265,6 +287,18 @@
       cache::clear_cache('email');
     }
 
+    public function queue($scheduled, $code=null) {
+
+      $this->data['status'] = 'scheduled';
+      $this->data['date_scheduled'] = date('Y-m-d H:i:s', strtotime($scheduled));
+      $this->data['code'] = $code;
+      $this->save();
+
+      if (strtotime($scheduled) < time()) {
+        $this->send();
+      }
+    }
+
     public function send() {
 
       if (!settings::get('email_status')) return;
@@ -279,10 +313,10 @@
     // Prepare headers
       $headers = [
         'Date' => date('r'),
-        'From' => $this->format_contact(['name' => settings::get('store_name'), 'email' => settings::get('store_email')]),
+        'From' => $this->format_contact(['name' => settings::get('site_name'), 'email' => settings::get('site_email')]),
         'Sender' => $this->format_contact($this->data['sender']),
         'Reply-To' => $this->format_contact($this->data['sender']),
-        'Return-Path' => settings::get('store_email'),
+        'Return-Path' => settings::get('site_email'),
         'MIME-Version' => '1.0',
         'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
         'X-Sender' => $this->format_contact($this->data['sender']),
@@ -308,6 +342,11 @@
 
     // SMTP does not need a header for BCCs, we will add that for PHP mail() later
 
+      // Add "References"
+      if (!empty($this->data['reference'])) {
+        $headers['References'] = $this->data['reference'];
+      }
+
     // Prepare subject
       $headers['Subject'] = mb_encode_mimeheader($this->data['subject']);
 
@@ -321,9 +360,11 @@
     // Prepare several multiparts
       if (count($this->data['multiparts']) > 1) {
         foreach ($this->data['multiparts'] as $multipart) {
-          $body .= '--'. $multipart_boundary_string . "\r\n"
-                 . implode("\r\n", array_map(function($v, $k) { return $k.':'.$v; }, $multipart['headers'], array_keys($multipart['headers']))) . "\r\n"
-                 . $multipart['body'] . "\r\n\r\n";
+          $body .= implode("\r\n", [
+            '--'. $multipart_boundary_string,
+            implode("\r\n", array_map(function($v, $k) { return $k.':'.$v; }, $multipart['headers'], array_keys($multipart['headers']))) . "\r\n",
+            $multipart['body'],
+          ]) . "\r\n";
         }
 
         $body .= '--'. $multipart_boundary_string .'--';

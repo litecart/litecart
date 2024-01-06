@@ -32,7 +32,9 @@
 
     public function load($country_code) {
 
-      if (!preg_match('#^([0-9]+|[A-Z]{2,3}|[a-z ]{4,})$#i', $country_code)) throw new Exception('Invalid country ('. $country_code .')');
+      if (!preg_match('#^([0-9]+|[A-Z]{2,3}|[a-z ]{4,})$#i', $country_code)) {
+        throw new Exception('Invalid country ('. $country_code .')');
+      }
 
       $this->reset();
 

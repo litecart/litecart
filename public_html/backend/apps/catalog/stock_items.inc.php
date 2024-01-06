@@ -30,19 +30,19 @@
     }
   }
 
-	if (!empty($_GET['query'])) {
-		$sql_where_query = [
-			"si.id = '". database::input($_GET['query']) ."'",
-			"sii.name like '%". database::input($_GET['query']) ."%'",
-			"si.sku regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'",
-			"si.mpn regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'",
-			"si.gtin regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'",
-		];
-	}
+  if (!empty($_GET['query'])) {
+    $sql_where_query = [
+      "si.id = '". database::input($_GET['query']) ."'",
+      "sii.name like '%". database::input($_GET['query']) ."%'",
+      "si.sku regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'",
+      "si.mpn regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'",
+      "si.gtin regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'",
+    ];
+  }
 
 // Table Rows, Total Number of Rows, Total Number of Pages
-	$stock_items = database::query(
-		"select si.*, sii.name, oi.reserved, stt.total_deposited, oit.total_withdrawn from ". DB_TABLE_PREFIX ."stock_items si
+  $stock_items = database::query(
+    "select si.*, sii.name, oi.reserved, stt.total_deposited, oit.total_withdrawn from ". DB_TABLE_PREFIX ."stock_items si
 
     left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
 
@@ -78,16 +78,16 @@
       group by oi.stock_item_id
     ) oit on (oit.stock_item_id = si.id)
 
-		where si.id
-		". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
-		order by si.sku, sii.name;"
-	)->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+    where si.id
+    ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
+    order by si.sku, sii.name;"
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
   foreach ($stock_items as $i => $stock_item) {
     if ($stock_item['quantity'] != $stock_item['total_deposited'] - $stock_item['total_withdrawn']) {
       $stock_items[$i]['warning'] = language::translate('text_stock_inconsistency_detected', 'Stock inconsistency detected');
     }
-	}
+  }
 
 ?>
 <style>

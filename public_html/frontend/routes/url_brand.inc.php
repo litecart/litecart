@@ -1,8 +1,7 @@
 <?php
 
   return [
-    [
-      'resource' => 'brands',
+    'f:brands' => [
       'pattern' => '#^brands/?$#',
       'controller' => 'app://frontend/pages/brands.inc.php.inc.php',
       'params' => 'brand_id=$1',
@@ -16,8 +15,7 @@
       }
     ],
 
-    [
-      'resource' => 'brand',
+    'f:brand' => [
       'pattern' => '#^brands/([0-9]+)(/.*|/?$)#',
       'controller' => 'app://frontend/pages/brand.inc.php.inc.php',
       'params' => 'brand_id=$1',
@@ -39,8 +37,7 @@
       }
     ],
 
-    [
-      'resource' => false,
+    null => [
       'pattern' => '#^.*-m-([0-9]+)/?$#',
       'controller' => 'app://frontend/pages/brand.inc.php.inc.php',
       'params' => 'brand_id=$1',

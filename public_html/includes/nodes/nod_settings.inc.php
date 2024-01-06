@@ -13,17 +13,19 @@
 
       while ($setting = database::fetch($settings_query)) {
 
-        if (substr($setting['function'], 0, 9) == 'regional_') {
+				switch (true) {
 
-          if (!class_exists('langauge', false) || empty(language::$selected)) continue;
+					case (substr($setting['function'], 0, 9) == 'regional_'):
+
+						if (!class_exists('language') || empty(language::$selected)) continue 2;
 
           if ($setting['value']) {
             $setting['value'] = json_decode($setting['value'], true);
 
-            if (isset($setting['value'][language::$selected['code']])) {
+							if (!empty($setting['value'][language::$selected['code']])) {
               $setting['value'] = $setting['value'][language::$selected['code']];
 
-            } else if (isset($value['en'])) {
+							} else if (!empty($setting['value']['en'])) {
               $setting['value'] = $setting['value']['en'];
 
             } else {
@@ -33,18 +35,11 @@
           } else {
             $setting['value'] = '';
           }
+
+						break;
         }
 
-        self::$_cache[$setting['key']] = $setting['value'];
-      }
-
-    // Check version
-      if (settings::get('platform_database_version') != PLATFORM_VERSION) {
-        trigger_error('Platform database version ('. settings::get('platform_database_version') .') does not match platform version ('. PLATFORM_VERSION .'). Did you run /install/upgrade.php?', E_USER_WARNING);
-      }
-
-    // Set time zone
-      if ($timezone = self::get('store_timezone')) {
+				self::$_cache[$setting['key']] = $setting['value'];
       }
     }
 
@@ -54,13 +49,14 @@
 
       if (isset(self::$_cache[$key])) return self::$_cache[$key];
 
-      $settings_query = database::query(
-        "select * from ". DB_TABLE_PREFIX ."settings
+			$setting = database::query(
+				"select `key`, `value`, `function`
+				from ". DB_TABLE_PREFIX ."settings
         where `key` = '". database::input($key) ."'
         limit 1;"
-      );
+			)->fetch();
 
-      if (!database::num_rows($settings_query)) {
+			if (!$setting) {
 
         if ($fallback === null) {
           trigger_error('Unsupported settings key ('. $key .')', E_USER_WARNING);
@@ -69,29 +65,34 @@
         return $fallback;
       }
 
-      while ($setting = database::fetch($settings_query)) {
+			switch (true) {
 
-        if (substr($setting['function'], 0, 9) == 'regional_') {
+				case (substr($setting['function'], 0, 9) == 'regional_'):
+
+					if (!class_exists('language') || empty(language::$selected)) return;
 
           if ($setting['value']) {
             $setting['value'] = json_decode($setting['value'], true);
-          } else {
-            $setting['value'] = [];
-          }
 
-          if (isset($setting['value'][language::$selected['code']])) {
-            return self::$_cache[$key] = $setting['value'][language::$selected['code']];
+						if (!empty($setting['value'][language::$selected['code']])) {
+							$setting['value'] = $setting['value'][language::$selected['code']];
 
-          } else if (isset($value['en'])) {
-            return self::$_cache[$key] = $setting['value']['en'];
+						} else if (!empty($value['en'])) {
+							$setting['value'] = $setting['value']['en'];
 
           } else {
-            return self::$_cache[$key] = '';
+							$setting['value'] = '';
           }
+
+					} else {
+						$setting['value'] = [];
         }
 
-        return self::$_cache[$key] = $setting['value'];
+					break;
+
         }
+
+			return self::$_cache[$key] = $setting['value'];
       }
 
     public static function set($key, $value) {

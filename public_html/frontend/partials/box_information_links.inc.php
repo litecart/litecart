@@ -9,7 +9,7 @@
       $current_page_path = [];
     }
 
-    $box_information_links = new ent_view();
+    $box_information_links = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_information_links.inc.php');
 
     $box_information_links->snippets['pages'] = [];
 
@@ -57,7 +57,7 @@
     };
 
     if ($box_information_links->snippets['pages'] = $iterator(0, 0)) {
-      echo $box_information_links->render(FS_DIR_TEMPLATE . 'partials/box_information_links.inc.php');
+      echo $box_information_links->render();
     }
 
     cache::end_capture($box_information_links_cache_token);

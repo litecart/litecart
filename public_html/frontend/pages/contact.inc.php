@@ -81,6 +81,6 @@
     }
   }
 
-  $_page = new ent_view();
+  $_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/contact.inc.php');
 
-  echo $_page->render(FS_DIR_TEMPLATE . 'pages/contact.inc.php');
+  echo $_page->render();

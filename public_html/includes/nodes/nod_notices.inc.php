@@ -5,7 +5,8 @@
     public static $data;
 
     public static function init() {
-      if (empty(session::$data['notices'])) {
+
+      if (empty(session::$data['notices']) || !is_array(session::$data['notices'])) {
         session::$data['notices'] = [
           'errors' => [],
           'warnings' => [],
@@ -15,23 +16,7 @@
       }
 
       self::$data = &session::$data['notices'];
-
-      event::register('after_capture', [__CLASS__, 'after_capture']);
-    }
-
-    public static function after_capture() {
-
-      notices::$data = array_filter(notices::$data);
-
-      if (!empty(notices::$data)) {
-        $notices = new ent_view();
-        $notices->snippets['notices'] = notices::$data;
-        document::$snippets['notices'] = $notices->render(FS_DIR_TEMPLATE . 'partials/notices.inc.php');
-        self::reset();
       }
-    }
-
-    ######################################################################
 
     public static function reset($type=null) {
 
@@ -65,5 +50,25 @@
       $stack = self::$data[$type];
       self::$data[$type] = [];
       return $stack;
+    }
+
+    public static function render() {
+
+      self::$data = array_filter(self::$data);
+
+      if (empty(self::$data)) return '';
+
+      if (preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'#', route::$request)) {
+        $view = new ent_view('app://backend/template/partials/notices.inc.php');
+      } else {
+        $view = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/notices.inc.php');
+      }
+
+      $view->snippets['notices'] = self::$data;
+      $output = $view->render();
+
+      self::reset();
+
+      return $output;
     }
   }

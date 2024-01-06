@@ -12,8 +12,6 @@
 </style>
 
 <main id="main">
-  {{notices}}
-
   <article class="box text-center">
     <div class="code">HTTP {{code}}</div>
     <div class="title">{{title}}</div>

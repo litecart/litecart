@@ -1,7 +1,5 @@
 <?php
 
-  header('X-Robots-Tag: noindex');
-
   administrator::reset();
 
   session::regenerate_id();
