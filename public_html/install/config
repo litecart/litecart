@@ -50,6 +50,9 @@
     ini_set('display_errors', 'On');
   }
 
+// Float Precision
+  ini_set('serialize_precision', 6);
+
 // Sessions
   ini_set('session.name', 'LCSESSID');
   ini_set('session.use_cookies', 1);

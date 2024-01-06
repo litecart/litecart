@@ -549,17 +549,34 @@
         'search'  => '#'. preg_quote(PHP_EOL, '#') .'// Password Encryption Salt.*?\);'. preg_quote(PHP_EOL, '#') .'#m',
         'replace' => '',
         'regexp'  => true,
-      ],      [
-        'search'  => '#('. preg_quote("    ini_set('display_errors', 'On');". PHP_EOL ."  }", ')#') .'#m',
-        'replace' => '$1' . PHP_EOL
-                   . PHP_EOL
-                   . "// Character Set Encoding" . PHP_EOL
-                   . "  mb_internal_encoding('UTF-8');" . PHP_EOL
-                   . "  mb_regex_encoding('UTF-8');" . PHP_EOL,
-        'regexp'  => true,
       ],
     ],
   ], 'abort');
+
+// Change indentation from spaces to tabs in files
+  $files = [
+    FS_DIR_APP . '**/.htaccess',
+    FS_DIR_STORAGE . 'config.inc.php',
+  ];
+
+  foreach ($files as $file_pattern) {
+
+    perform_action('custom', [
+      $file_pattern => function($file){
+
+        $contents = file_get_contents($file);
+
+        while (true) {
+          $contents = preg_replace('#^(\t*)  #m', "$1\t", $contents, -1, $replacements);
+          if (!$replacements) break;
+        }
+
+        $contents = preg_replace('#^(\t*)//#m', "$1\t//", $contents);
+
+        return (bool)file_put_contents($file, $contents);
+      },
+    ], 'skip');
+  }
 
 // Remove some indexes if they exist
   if (database::query("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'brand' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';")->num_rows) {
@@ -581,17 +598,17 @@
       list($group_id, $value_id) = explode('-', $pair);
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_configurations_values
+        "delete from ". DB_TABLE_PREFIX ."products_customizations_values
         where product_id = ". (int)$stock_item['product_id'] ."
         and (group_id = ". (int)$group_id ." and value_id = ". (int)$value_id .");"
       );
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_configurations
+        "delete from ". DB_TABLE_PREFIX ."products_customizations
         where product_id = ". (int)$stock_item['product_id'] ."
         and group_id = ". (int)$group_id ."
         and product_id not in (
-          select product_id from ". DB_TABLE_PREFIX ."products_configurations_values
+          select product_id from ". DB_TABLE_PREFIX ."products_customizations_values
           where product_id = ". (int)$stock_item['product_id'] ."
           and group_id = ". (int)$group_id ."
         );"
@@ -627,17 +644,17 @@
   }
 
 // Download Product Configurations Add-On
-  if (database::query("select id from ". DB_TABLE_PREFIX ."products_configurations;")->num_rows) {
+  if (database::query("select id from ". DB_TABLE_PREFIX ."products_customizations;")->num_rows) {
 
     // ...
 
 // Remove Product Configurations
   } else {
     database::query(
-      "drop table ". DB_TABLE_PREFIX ."products_configurations;"
+      "drop table ". DB_TABLE_PREFIX ."products_customizations;"
     );
     database::query(
-      "drop table ". DB_TABLE_PREFIX ."products_configurations_values;"
+      "drop table ". DB_TABLE_PREFIX ."products_customizations_values;"
     );
   }
 
@@ -656,15 +673,11 @@
 // Convert Table Charset and Collations
   $collations = [];
 
-  $collations_query = database::query(
+  $collations = database::query(
     "select COLLATION_NAME FROM `information_schema`.`COLLATIONS`
     where CHARACTER_SET_NAME = 'utf8mb4'
     order by COLLATION_NAME;"
-  );
-
-  while ($collation = database::fetch($collations_query, 'COLLATION_NAME')) {
-    $collations[] = $collation;
-  }
+  )->fetch_all('COLLATION_NAME');
 
   $tables_query = database::query(
     "SELECT TABLE_NAME, TABLE_COLLATION FROM information_schema.TABLES
@@ -773,8 +786,23 @@
         'regexp'  => true,
       ],
       [
+        'search'  => '#(\r\n?|\n)// Errors#',
+        'replace' => implode(PHP_EOL, [
+          "",
+          "// Character Set Encoding",
+          "  mb_internal_encoding('UTF-8');",
+          "  mb_regex_encoding('UTF-8');",
+          "",
+          "// Errors",
+        ]),
+        'regexp'  => true,
+      ],
+      [
         'search'  => '#$#',
         'replace' => implode(PHP_EOL, [
+          "",
+          "// Float Precision",
+          "  ini_set('serialize_precision', 6);",
           "",
           "// Sessions",
           "  ini_set('session.name', 'LCSESSID');",
