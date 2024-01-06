@@ -145,8 +145,10 @@
 
     if (empty($_REQUEST['timezone']) && !empty($_REQUEST['store_time_zone'])) {
       $_REQUEST['timezone'] = $_REQUEST['store_time_zone']; // Backwards compatible
+
     } else if (empty($_REQUEST['timezone']) && ini_get('date.timezone')) {
       $_REQUEST['timezone'] = ini_get('date.timezone');
+
     } else if (empty($_REQUEST['timezone'])) {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No time zone provided</p>' . PHP_EOL  . PHP_EOL);
     }
@@ -363,6 +365,7 @@
       '{DB_TABLE_PREFIX}' => $_REQUEST['db_table_prefix'],
       '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
       '{CLIENT_IP}' => $_REQUEST['client_ip'],
+      '{TIMEZONE}' => $_REQUEST['timezone'],
     ];
 
     $config = strtr($config, $map);

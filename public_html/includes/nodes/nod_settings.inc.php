@@ -45,7 +45,6 @@
 
     // Set time zone
       if ($timezone = self::get('store_timezone')) {
-        date_default_timezone_set($timezone);
       }
     }
 

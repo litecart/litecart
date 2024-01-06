@@ -41,6 +41,16 @@
           where `key` = '". database::input($key) ."'
           limit 1;"
         );
+
+      // Specific operations
+        switch ($key) {
+          case 'store_timezone':
+            $file = 'storage://config.inc.php';
+            $contents = file_get_contents($file);
+            $contents = preg_replace('#ini_set\(\'date.timezone\'\, [^\)]+\);#', 'ini_set(\'date.timezone\', \''. addcslashes($value)  .'\');', $contents);
+            file_put_contents($file, $contents);
+            break;
+        }
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));

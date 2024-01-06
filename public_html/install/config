@@ -36,6 +36,10 @@
 ## Application #######################################################
 ######################################################################
 
+// Character Set Encoding
+  mb_internal_encoding('UTF-8');
+  mb_regex_encoding('UTF-8');
+
 // Errors
   error_reporting(E_ALL);
   ini_set('ignore_repeated_errors', 'On');
@@ -48,7 +52,17 @@
     ini_set('display_errors', 'On');
   }
 
-// Character Set Encoding
-  mb_internal_encoding('UTF-8');
-  mb_regex_encoding('UTF-8');
+// Sessions
+  ini_set('session.name', 'LCSESSID');
+  ini_set('session.use_cookies', 1);
+  ini_set('session.use_only_cookies', 1);
+  ini_set('session.use_strict_mode', 1);
+  ini_set('session.use_trans_sid', 0);
+  ini_set('session.cookie_httponly', 1);
+  ini_set('session.cookie_lifetime', 0);
+  ini_set('session.cookie_path', WS_DIR_APP);
+  ini_set('session.cookie_samesite', 'Lax');
+  ini_set('session.gc_maxlifetime', 1440);
 
+// Timezone
+  ini_set('date.timezone', '{TIMEZONE}');

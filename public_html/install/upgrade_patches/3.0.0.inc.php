@@ -751,3 +751,38 @@
       change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` CHAR(3) ". (($column['IS_NULLABLE'] == 'YES') ? "NOT NULL" : "NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
     );
   }
+
+// Update config
+
+  $timezone = database::query(
+    "select `value` from ". DB_TABLE_PREFIX ."settings
+    where key = 'store_timezone'
+    limit 1;"
+  )->fetch('value');
+
+  perform_action('modify', [
+    FS_DIR_STORAGE . 'config.inc.php' => [
+      [
+        'search'  => '#$#',
+        'replace' => implode(PHP_EOL, [
+          "",
+          "// Sessions",
+          "  ini_set('session.name', 'LCSESSID');",
+          "  ini_set('session.use_cookies', 1);",
+          "  ini_set('session.use_only_cookies', 1);",
+          "  ini_set('session.use_strict_mode', 1);",
+          "  ini_set('session.use_trans_sid', 0);",
+          "  ini_set('session.cookie_httponly', 1);",
+          "  ini_set('session.cookie_lifetime', 0);",
+          "  ini_set('session.cookie_path', WS_DIR_APP);",
+          "  ini_set('session.cookie_samesite', 'Lax');'",
+          "  ini_set('session.gc_maxlifetime', 1440);'",
+          "",
+          "// Timezone",
+          "  ini_set('date.timezone', '". $timezone ."');",
+          "",
+        ]),
+        'regexp'  => true,
+      ],
+    ],
+  ]);
