@@ -19,21 +19,20 @@
   route::load('app://backend/routes/url_*.inc.php');
 
 // Append last destination route
-  route::add([
-    'resource' => '*',
-    'pattern' => '#^(.*)$#',
+  route::add('*', [
+	'pattern' => '#^(.+)$#',
     'endpoint' => 'frontend',
     'controller' => 'app://frontend/pages/$1.inc.php',
   ]);
 
+// Identify current route
+  route::identify();
+
 // Initialize endpoint
-  if ($route = route::identify()) {
-    route::$selected = $route;
-    if (!empty($route['endpoint']) && $route['endpoint'] == 'backend') {
-      require 'app://backend/bootstrap.inc.php';
+  if (!empty(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend') {
+    require 'app://backend/init.inc.php';
     } else {
-      require 'app://frontend/bootstrap.inc.php';
-    }
+    require 'app://frontend/init.inc.php';
   }
 
 // Run operations before processing the route

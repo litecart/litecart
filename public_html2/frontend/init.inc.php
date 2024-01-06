@@ -30,4 +30,4 @@
     }
   }
 
-  document::add_head_tags('<link rel="manifest" href="'. document::href_ilink('webmanifest.json') .'">', 'manifest');
+  document::$head_tags['manifest'] = '<link rel="manifest" href="'. document::href_ilink('webmanifest.json') .'">';
