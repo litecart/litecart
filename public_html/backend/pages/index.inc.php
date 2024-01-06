@@ -57,7 +57,7 @@
 // Display the start page
   } else {
 
-    document::$snippets['title'][] = language::translate('title_dashboard', 'Dashboard');
+    document::$title[] = language::translate('title_dashboard', 'Dashboard');
 
     if (file_exists(FS_DIR_APP . 'install/')) {
       notices::add('warnings', language::translate('warning_install_folder_exists', 'Warning: The installation directory is still available and should be deleted.'), 'install_folder');

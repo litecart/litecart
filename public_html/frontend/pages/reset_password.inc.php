@@ -2,7 +2,7 @@
 
   header('X-Robots-Tag: noindex');
 
-  document::$snippets['title'][] = language::translate('title_reset_password', 'Reset Password');
+  document::$title[] = language::translate('title_reset_password', 'Reset Password');
 
   breadcrumbs::add(language::translate('title_reset_password', 'Reset Password'));
 

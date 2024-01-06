@@ -10,7 +10,7 @@
     $_POST = $quantity_unit->data;
   }
 
-  document::$snippets['title'][] = !empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_create_new_quantity_unit', 'Create New Quantity Unit');
+  document::$title[] = !empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_create_new_quantity_unit', 'Create New Quantity Unit');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_quantity_units', 'Quantity Units'), document::ilink(__APP__.'/quantity_units'));

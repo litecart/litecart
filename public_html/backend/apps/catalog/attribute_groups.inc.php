@@ -4,7 +4,7 @@
     $_GET['page'] = 1;
   }
 
-  document::$snippets['title'][] = language::translate('title_attribute_groups', 'Attribute Groups');
+  document::$title[] = language::translate('title_attribute_groups', 'Attribute Groups');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::ilink(__APP__.'/attribute_groups'));

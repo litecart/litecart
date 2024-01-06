@@ -4,7 +4,7 @@
     $_GET['page'] = 1;
   }
 
-  document::$snippets['title'][] = language::translate('title_tax_classes', 'Tax Classes');
+  document::$title[] = language::translate('title_tax_classes', 'Tax Classes');
 
   breadcrumbs::add(language::translate('title_tax_classes', 'Tax Classes'));
 

@@ -35,8 +35,8 @@
     return;
   }
 
-  document::$snippets['title'][] = $category->head_title ? $category->head_title : $category->name;
-  document::$snippets['description'] = $category->meta_description ? $category->meta_description : strip_tags($category->short_description);
+  document::$title[] = $category->head_title ? $category->head_title : $category->name;
+  document::$description = $category->meta_description ? $category->meta_description : strip_tags($category->short_description);
 
   document::add_head_tags('<link rel="canonical" href="'. document::href_ilink('category', ['category_id' => $category->id], false) .'" />', 'canonical');
 

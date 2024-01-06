@@ -21,7 +21,7 @@
     }
   }
 
-  document::$snippets['title'][] = !empty($shopping_cart->data['id']) ? language::translate('title_edit_shopping_cart', 'Edit Shopping Cart') .' #'. $shopping_cart->data['id'] : language::translate('title_create_new_shopping_cart', 'Create New Shopping Cart');
+  document::$title[] = !empty($shopping_cart->data['id']) ? language::translate('title_edit_shopping_cart', 'Edit Shopping Cart') .' #'. $shopping_cart->data['id'] : language::translate('title_create_new_shopping_cart', 'Create New Shopping Cart');
 
   breadcrumbs::add(language::translate('title_shopping_carts', 'Shopping Carts'), document::ilink(__APP__.'/shopping_carts'));
   breadcrumbs::add(!empty($shopping_cart->data['id']) ? language::translate('title_edit_shopping_cart', 'Edit Shopping Cart') .' #'. $shopping_cart->data['id'] : language::translate('title_create_new_shopping_cart', 'Create New Shopping Cart'));

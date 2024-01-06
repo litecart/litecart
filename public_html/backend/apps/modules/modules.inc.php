@@ -77,7 +77,7 @@
     }
   }
 
-  document::$snippets['title'][] = $title;
+  document::$title[] = $title;
 
   breadcrumbs::add(language::translate('title_modules', 'Modules'));
   breadcrumbs::add($title);

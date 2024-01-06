@@ -20,8 +20,8 @@
       return;
     }
 
-    document::$snippets['title'][] = !empty($page->head_title) ? $page->head_title : $page->title;
-    document::$snippets['description'] = !empty($page->meta_description) ? $page->meta_description : '';
+    document::$title[] = !empty($page->head_title) ? $page->head_title : $page->title;
+    document::$description = !empty($page->meta_description) ? $page->meta_description : '';
 
     breadcrumbs::add(language::translate('title_information', 'Information'));
     foreach (array_slice($page->path, 0, -1, true) as $crumb) {

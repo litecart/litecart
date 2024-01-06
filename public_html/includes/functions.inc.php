@@ -7,6 +7,7 @@
       foreach ($var as $node) {
         if (!nil($node)) return !1;
       }
+      return true;
     }
     return (empty($var) || (is_numeric($var) && (float)$var == 0));
   }

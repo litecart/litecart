@@ -11,7 +11,7 @@
     $_POST = $slide->data;
   }
 
-  document::$snippets['title'][] = !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_create_new_slide', 'Create New Slide');
+  document::$title[] = !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_create_new_slide', 'Create New Slide');
 
   breadcrumbs::add(language::translate('title_slides', 'Slides'), document::ilink(__APP__.'/slides'));
   breadcrumbs::add(!empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_create_new_slide', 'Create New Slide'));

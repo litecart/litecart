@@ -2,7 +2,7 @@
 
   header('X-Robots-Tag: noindex');
 
-  document::$snippets['title'][] = language::translate('title_sign_in', 'Sign In');
+  document::$title[] = language::translate('title_sign_in', 'Sign In');
 
   breadcrumbs::add(language::translate('title_sign_in', 'Sign In'));
 

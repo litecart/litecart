@@ -1,6 +1,6 @@
 <?php
 
-  document::$snippets['title'][] = language::translate('title_favicon', 'Favicon');
+  document::$title[] = language::translate('title_favicon', 'Favicon');
 
   breadcrumbs::add(language::translate('title_appearance', 'Appearance'));
   breadcrumbs::add(language::translate('title_favicon', 'Favicon'));

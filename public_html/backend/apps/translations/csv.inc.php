@@ -1,6 +1,6 @@
 <?php
 
-  document::$snippets['title'][] = language::translate('title_import_export_csv', 'Import/Export CSV');
+  document::$title[] = language::translate('title_import_export_csv', 'Import/Export CSV');
 
   breadcrumbs::add(language::translate('title_import_export_csv', 'Import/Export CSV'));
 

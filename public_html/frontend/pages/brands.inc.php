@@ -1,6 +1,6 @@
 <?php
-  document::$snippets['title'][] = language::translate('brands:head_title', 'Brands');
-  document::$snippets['description'] = language::translate('brands:meta_description', '');
+  document::$title[] = language::translate('brands:head_title', 'Brands');
+  document::$description = language::translate('brands:meta_description', '');
 
   breadcrumbs::add(language::translate('title_brands', 'Brands'));
 

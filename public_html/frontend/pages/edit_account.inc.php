@@ -5,7 +5,7 @@
 
   customer::require_login();
 
-  document::$snippets['title'][] = language::translate('title_edit_account', 'Edit Account');
+  document::$title[] = language::translate('title_edit_account', 'Edit Account');
 
   if (!settings::get('accounts_enabled')) {
     echo language::translate('error_accounts_are_disabled', 'Accounts are disabled');

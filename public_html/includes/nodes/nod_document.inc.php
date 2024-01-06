@@ -3,6 +3,14 @@
   class document {
 
     public static $layout = 'default';
+
+    public static $title = [];
+    public static $description = '';
+    public static $head_tags = [];
+    public static $style = [];
+    public static $foot_tags = [];
+    public static $javascript = [];
+
     public static $snippets = [];
     public static $settings = [];
     public static $jsenv = [];
@@ -32,7 +40,7 @@
       self::$snippets['charset'] = mb_http_output();
       self::$snippets['home_path'] = WS_DIR_APP;
       self::$snippets['template_path'] = WS_DIR_TEMPLATE;
-      self::$snippets['title'] = [settings::get('store_name')];
+      self::$title = [settings::get('store_name')];
 
       self::add_head_tags([
         '<link rel="icon" href="'. document::href_rlink('storage://images/favicons/favicon.ico') .'" type="image/x-icon" sizes="32x32 48x48 64x64 96x96" />',
@@ -131,14 +139,14 @@
     public static function prepare_output() {
 
     // Prepare title
-      if (!empty(self::$snippets['title'])) {
+      if (!empty(self::$title)) {
 
-        if (!is_array(self::$snippets['title'])) {
-          self::$snippets['title'] = [self::$snippets['title']];
+        if (!is_array(self::$title)) {
+          self::$title = [self::$title];
         }
 
-        self::$snippets['title'] = array_filter(self::$snippets['title']);
-        self::$snippets['title'] = implode(' | ', array_reverse(self::$snippets['title']));
+        self::$title = array_filter(self::$title);
+        self::$title = implode(' | ', array_reverse(self::$title));
       }
 
     // Add meta description
@@ -158,13 +166,13 @@
       }
 
     // Prepare javascript
-      if (!empty(self::$snippets['javascript'])) {
+      if (!empty(self::$javascript)) {
         self::add_foot_tags([
           '<script>',
-          implode(PHP_EOL . PHP_EOL, self::$snippets['javascript']),
+          implode(PHP_EOL . PHP_EOL, self::$javascript),
           '</script>',
         ]);
-        self::$snippets['javascript'] = [];
+        self::$javascript = [];
       }
 
     // Prepare snippets
@@ -297,17 +305,17 @@
 
     public static function add_head_tags($tags, $key=null) {
       if (is_array($tags)) {
-        self::$snippets['head_tags'][$key] = implode(PHP_EOL, $tags);
+        self::$head_tags[$key] = implode(PHP_EOL, $tags);
       } else{
-        self::$snippets['head_tags'][$key] = $tags;
+        self::$head_tags[$key] = $tags;
       }
     }
 
     public static function add_foot_tags($tags, $key=null) {
       if (is_array($tags)) {
-        self::$snippets['foot_tags'][$key] = implode(PHP_EOL, $tags);
+        self::$foot_tags[$key] = implode(PHP_EOL, $tags);
       } else{
-        self::$snippets['foot_tags'][$key] = $tags;
+        self::$foot_tags[$key] = $tags;
       }
     }
 
@@ -317,7 +325,7 @@
         $urls = [$urls];
       }
 
-      self::$snippets['head_tags'][$key] = implode(PHP_EOL, array_map(function($url){
+      self::$head_tags[$key] = implode(PHP_EOL, array_map(function($url){
         if (!$url) return;
         return '<link rel="stylesheet" href="'. document::href_rlink($url) .'">';
       }, $urls));
@@ -329,7 +337,7 @@
         $urls = [$urls];
       }
 
-      self::$snippets['foot_tags'][$key] = implode(PHP_EOL, array_map(function($url){
+      self::$foot_tags[$key] = implode(PHP_EOL, array_map(function($url){
         if (!$url) return;
         return '<script src="'. document::href_rlink($url) .'"></script>';
       }, $urls));
@@ -341,13 +349,13 @@
         $lines = [$lines];
       }
 
-      self::$snippets['javascript'][$key] = implode(PHP_EOL, array_map(function($line){
+      self::$javascript[$key] = implode(PHP_EOL, array_map(function($line){
         return '  '.$line;
       }, $lines));
     }
 
     public static function add_title($title) {
-      self::$snippets['title'][] = $title;
+      self::$title[] = $title;
     }
 
     public static function ilink($route=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {

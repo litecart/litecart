@@ -4,7 +4,7 @@
     $_GET['page'] = 1;
   }
 
-  document::$snippets['title'][] = language::translate('title_quantity_units', 'Quantity Units');
+  document::$title[] = language::translate('title_quantity_units', 'Quantity Units');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_quantity_units', 'Quantity Units'));

@@ -1,6 +1,6 @@
 <?php
 
-  document::$snippets['title'][] = language::translate('title_category_tree', 'Category Tree');
+  document::$title[] = language::translate('title_category_tree', 'Category Tree');
 
   breadcrumbs::add(language::translate('title_category_tree', 'Category Tree'));
 

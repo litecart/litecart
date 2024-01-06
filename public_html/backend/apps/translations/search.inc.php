@@ -18,7 +18,7 @@
     $_GET['query'] = '';
   }
 
-  document::$snippets['title'][] = language::translate('title_search_translations', 'Search Translations');
+  document::$title[] = language::translate('title_search_translations', 'Search Translations');
 
   breadcrumbs::add(language::translate('title_translations', 'Translations'));
   breadcrumbs::add(language::translate('title_search_translations', 'Search Translations'));

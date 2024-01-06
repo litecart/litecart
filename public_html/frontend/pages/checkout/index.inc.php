@@ -4,7 +4,7 @@
 
   if (settings::get('catalog_only_mode')) return;
 
-  document::$snippets['title'][] = language::translate('checkout:head_title', 'Checkout');
+  document::$title[] = language::translate('checkout:head_title', 'Checkout');
 
   breadcrumbs::add(language::translate('title_checkout', 'Checkout'));
 

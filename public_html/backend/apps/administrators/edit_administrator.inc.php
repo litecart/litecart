@@ -10,7 +10,7 @@
     $_POST = $administrator->data;
   }
 
-  document::$snippets['title'][] = !empty($administrator->data['username']) ? language::translate('title_edit_administrator', 'Edit Administrator') : language::translate('title_create_new_administrator', 'Create New Administrator');
+  document::$title[] = !empty($administrator->data['username']) ? language::translate('title_edit_administrator', 'Edit Administrator') : language::translate('title_create_new_administrator', 'Create New Administrator');
 
   breadcrumbs::add(language::translate('title_administrators', 'Administrators'), document::href_ilink(__APP__.'/administrators'));
   breadcrumbs::add(!empty($administrator->data['username']) ? language::translate('title_edit_administrator', 'Edit Administrator') : language::translate('title_create_new_administrator', 'Create New Administrator'));

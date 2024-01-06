@@ -10,7 +10,7 @@
     $_POST = $order_status->data;
   }
 
-  document::$snippets['title'][] = !empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status');
+  document::$title[] = !empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status');
 
   breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'), document::ilink(__APP__.'/order_statuses'));
   breadcrumbs::add(!empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status'));

@@ -10,7 +10,7 @@
     $_POST = $supplier->data;
   }
 
-  document::$snippets['title'][] = !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_create_new_supplier', 'Create New Supplier');
+  document::$title[] = !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_create_new_supplier', 'Create New Supplier');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_suppliers', 'Suppliers'), document::ilink(__APP__.'/suppliers'));

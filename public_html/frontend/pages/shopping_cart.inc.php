@@ -3,7 +3,7 @@
 
   if (settings::get('catalog_only_mode')) return;
 
-  document::$snippets['title'][] = language::translate('title_shopping_cart', 'Shopping Cart');
+  document::$title[] = language::translate('title_shopping_cart', 'Shopping Cart');
 
   breadcrumbs::add(language::translate('title_shopping_cart', 'Shopping Cart'));
 

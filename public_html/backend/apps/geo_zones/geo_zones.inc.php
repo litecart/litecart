@@ -4,7 +4,7 @@
     $_GET['page'] = 1;
   }
 
-  document::$snippets['title'][] = language::translate('title_geo_zones', 'Geo Zones');
+  document::$title[] = language::translate('title_geo_zones', 'Geo Zones');
 
   breadcrumbs::add(language::translate('title_geo_zones', 'Geo Zones'));
 

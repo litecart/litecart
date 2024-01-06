@@ -4,7 +4,7 @@
     $_GET['page'] = 1;
   }
 
-  document::$snippets['title'][] = language::translate('title_languages', 'Languages');
+  document::$title[] = language::translate('title_languages', 'Languages');
 
   breadcrumbs::add(language::translate('title_languages', 'Languages'));
 

@@ -40,8 +40,8 @@
     limit 1;"
   );
 
-  document::$snippets['title'][] = $product->head_title ? $product->head_title : $product->name;
-  document::$snippets['description'] = $product->meta_description ? $product->meta_description : strip_tags($product->short_description);
+  document::$title[] = $product->head_title ? $product->head_title : $product->name;
+  document::$description = $product->meta_description ? $product->meta_description : strip_tags($product->short_description);
 
   document::add_head_tags('<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'" />', 'canonical');
 
@@ -52,11 +52,11 @@
   if (!empty($_GET['category_id'])) {
     breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
     foreach (reference::category($_GET['category_id'])->path as $category_crumb) {
-      document::$snippets['title'][] = $category_crumb->name;
+      document::$title[] = $category_crumb->name;
       breadcrumbs::add($category_crumb->name, document::ilink('category', ['category_id' => $category_crumb->id]));
     }
   } else if (!empty($product->brand)) {
-    document::$snippets['title'][] = $product->brand->name;
+    document::$title[] = $product->brand->name;
     breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
     breadcrumbs::add($product->brand->name, document::ilink('brand', ['brand_id' => $product->brand->id]));
   }
@@ -327,4 +327,4 @@
     echo $_page->render(FS_DIR_TEMPLATE . 'pages/product.inc.php');
   }
 
-  document::$snippets['head_tags']['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json, JSON_UNESCAPED_SLASHES) .'</script>';
+  document::$head_tags['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json, JSON_UNESCAPED_SLASHES) .'</script>';

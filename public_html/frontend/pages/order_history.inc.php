@@ -1,7 +1,7 @@
 <?php
   header('X-Robots-Tag: noindex');
 
-  document::$snippets['title'][] = language::translate('order_history:head_title', 'Order History');
+  document::$title[] = language::translate('order_history:head_title', 'Order History');
 
   customer::require_login();
 

@@ -1,6 +1,6 @@
 <?php
-  document::$snippets['title'][] = language::translate('contact:head_title', 'Contact');
-  document::$snippets['description'] = language::translate('contact:meta_description', '');
+  document::$title[] = language::translate('contact:head_title', 'Contact');
+  document::$description = language::translate('contact:meta_description', '');
 
   if (!empty($_GET['page_id'])) {
     breadcrumbs::add(language::translate('title_contact', 'Contact'), document::ilink('contact'));

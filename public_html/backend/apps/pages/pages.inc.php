@@ -12,7 +12,7 @@
     $_GET['expanded'] = [];
   }
 
-  document::$snippets['title'][] = language::translate('title_pages', 'Pages');
+  document::$title[] = language::translate('title_pages', 'Pages');
 
   breadcrumbs::add(language::translate('title_pages', 'Pages'));
 

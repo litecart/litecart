@@ -1,7 +1,7 @@
 <?php
 
-  document::$snippets['title'] = [language::translate('index:head_title', 'Online Store'), settings::get('store_name')];
-  document::$snippets['description'] = language::translate('index:meta_description', '');
+  document::$title = [language::translate('index:head_title', 'Online Store'), settings::get('store_name')];
+  document::$description = language::translate('index:meta_description', '');
 
   document::add_head_tags([
     '<link rel="canonical" href="'. document::href_ilink('') .'" />',

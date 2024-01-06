@@ -1,7 +1,7 @@
 <?php
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 
-  document::$snippets['title'][] = language::translate('title_banners', 'Banners');
+  document::$title[] = language::translate('title_banners', 'Banners');
 
   breadcrumbs::add(language::translate('title_banners', 'Banners'));
 

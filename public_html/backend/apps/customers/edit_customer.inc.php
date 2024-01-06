@@ -10,7 +10,7 @@
     $_POST = $customer->data;
   }
 
-  document::$snippets['title'][] = !empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_create_new_customer', 'Create New Customer');
+  document::$title[] = !empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_create_new_customer', 'Create New Customer');
 
   breadcrumbs::add(language::translate('title_customers', 'Customers'), document::ilink(__APP__.'/customers'));
   breadcrumbs::add(!empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_create_new_customer', 'Create New Customer'));

@@ -10,7 +10,7 @@
     $_POST = $campaign->data;
   }
 
-  document::$snippets['title'][] = !empty($campaign->data['id']) ? language::translate('title_edit_campaign', 'Edit Campaign') : language::translate('title_create_new_campaign', 'Create New Campaign');
+  document::$title[] = !empty($campaign->data['id']) ? language::translate('title_edit_campaign', 'Edit Campaign') : language::translate('title_create_new_campaign', 'Create New Campaign');
 
   breadcrumbs::add(language::translate('title_campaigns', 'Campaigns'), document::ilink(__APP__.'/campaigns'));
   breadcrumbs::add(!empty($campaign->data['id']) ? language::translate('title_edit_campaign', 'Edit Campaign') : language::translate('title_create_new_campaign', 'Create New Campaign'));

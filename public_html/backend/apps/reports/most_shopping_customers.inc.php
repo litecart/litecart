@@ -1,6 +1,6 @@
 <?php
 
-  document::$snippets['title'][] = language::translate('title_most_shopping_customers', 'Most Shopping Customers');
+  document::$title[] = language::translate('title_most_shopping_customers', 'Most Shopping Customers');
 
   breadcrumbs::add(language::translate('title_reports', 'Reports'));
   breadcrumbs::add(language::translate('title_most_shopping_customers', 'Most Shopping Customers'));

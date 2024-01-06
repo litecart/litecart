@@ -1,6 +1,6 @@
 <?php
 
-  document::$snippets['title'][] = language::translate('title_storage_encoding', 'Storage Encoding');
+  document::$title[] = language::translate('title_storage_encoding', 'Storage Encoding');
 
   breadcrumbs::add(language::translate('title_languages', 'Languages'), document::ilink(__APP__.'/languages'));
   breadcrumbs::add(language::translate('title_storage_encoding', 'Storage Encoding'));

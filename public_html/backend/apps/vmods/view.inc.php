@@ -4,7 +4,7 @@
   breadcrumbs::add(language::translate('title_vMods', 'vMods'), document::href_ilink(__APP__.'/vmods'));
   breadcrumbs::add(language::translate('title_view_vMod', 'View vMod') .' '. basename($_GET['vmod']));
 
-  document::$snippets['title'][] = language::translate('title_view_vmod', 'View vMod');
+  document::$title[] = language::translate('title_view_vmod', 'View vMod');
 
   try {
 

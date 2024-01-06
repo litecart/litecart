@@ -1,6 +1,6 @@
 <?php
 
-  document::$snippets['title'][] = language::translate('title_template_settings', 'Template Settings');
+  document::$title[] = language::translate('title_template_settings', 'Template Settings');
 
   breadcrumbs::add(language::translate('title_appearance', 'Appearance'));
   breadcrumbs::add(language::translate('title_template', 'Template'), document::ilink('appearance/template'));

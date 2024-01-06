@@ -18,7 +18,7 @@
     }
   }
 
-  document::$snippets['title'][] = !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_create_new_product', 'Create New Product');
+  document::$title[] = !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_create_new_product', 'Create New Product');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'), document::ilink(__APP__.'/category_tree'));
   breadcrumbs::add(!empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_create_new_product', 'Create New Product'));

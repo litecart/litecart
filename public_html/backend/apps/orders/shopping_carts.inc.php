@@ -5,7 +5,7 @@
   }
   if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
 
-  document::$snippets['title'][] = language::translate('title_shopping_carts', 'Shopping Carts');
+  document::$title[] = language::translate('title_shopping_carts', 'Shopping Carts');
 
   breadcrumbs::add(language::translate('title_shopping_carts', 'Shopping Carts'));
 

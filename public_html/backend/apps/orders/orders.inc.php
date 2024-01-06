@@ -31,7 +31,7 @@
   if (!empty($_GET['date_from']) && $_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
   if (!empty($_GET['date_to']) && $_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
 
-  document::$snippets['title'][] = language::translate('title_orders', 'Orders');
+  document::$title[] = language::translate('title_orders', 'Orders');
 
   breadcrumbs::add(language::translate('title_orders', 'Orders'));
 
