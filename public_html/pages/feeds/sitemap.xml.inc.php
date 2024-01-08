@@ -45,7 +45,7 @@
                  . '    <priority>1.0</priority>' . PHP_EOL
                  . '  </url>' . PHP_EOL;
 
-        $category_iterator($category['id']);
+        $output .= $category_iterator($category['id']);
       }
 
       return $output;
