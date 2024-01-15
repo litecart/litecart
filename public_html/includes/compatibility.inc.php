@@ -232,8 +232,6 @@
     }
   }
 
-// Fix Windows paths
-  $_SERVER['SCRIPT_FILENAME'] = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME']);
 
   // Polyfill for some $_SERVER variables in CLI
   if (!isset($_SERVER['REQUEST_METHOD'])) { // Don't rely on php_sapi_name()
@@ -248,6 +246,8 @@
     $_SERVER['SCRIPT_FILENAME'] = isset($argv[0]) ? $argv[0] : 'index.php';
   }
 
+  // Fix Windows paths
+  $_SERVER['SCRIPT_FILENAME'] = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME']);
 
-  if (empty($_SERVER['HTTPS'])) $_SERVER['HTTPS'] = 'off';
+  if (empty($_SERVER['HTTPS'])) $_SERVER['HTTPS'] = ($_SERVER['SERVER_PROTOCOL'] == 'https') ? 'on' : 'off';
   if (empty($_SERVER['HTTP_HOST'])) $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];

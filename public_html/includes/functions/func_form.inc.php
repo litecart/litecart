@@ -125,7 +125,6 @@
 
     $currency = currency::$currencies[$currency_code];
 
-  // Format and show an additional two decimals precision if needed
     if ($value != '') {
       $value = number_format((float)$value, $currency['decimals'], '.', '');
       //$value = preg_replace('#\.00$#', '', $value); // Auto decimals
@@ -157,6 +156,8 @@
       }
     }
 
+    functions::draw_lightbox();
+
     return '<div class="form-control"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
          . '  ' . form_draw_hidden_field($name, true) . PHP_EOL
          . '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$value .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
@@ -166,10 +167,10 @@
   function form_draw_date_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!empty($value) && !in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-00-00', '1970-01-01'])) {
-      $value = date('Y-m-d', strtotime($value));
-    } else {
+    if (empty($value) || in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-00-00', '1970-01-01'])) {
       $value = '';
+    } else {
+      $value = date('Y-m-d', strtotime($value));
     }
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="date" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="date" placeholder="YYYY-MM-DD"'. (($parameters) ? ' ' . $parameters : '') .' />';
@@ -178,10 +179,10 @@
   function form_draw_datetime_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!empty($value) && !in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-00-00', '1970-01-01'])) {
-      $value = date('Y-m-d\TH:i', strtotime($value));
-    } else {
+    if (empty($value) || in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-00-00', '1970-01-01'])) {
       $value = '';
+    } else {
+      $value = date('Y-m-d\TH:i', strtotime($value));
     }
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="datetime-local" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="datetime" placeholder="YYYY-MM-DD [hh:nn]"'. (($parameters) ? ' ' . $parameters : '') .' />';
@@ -919,12 +920,15 @@
     }
 
     switch ($input) {
+
       case 'customer_country_code':
         $input = customer::$data['country_code'];
         break;
+
       case 'default_country_code':
         $input = settings::get('default_country_code');
         break;
+
       case 'store_country_code':
         $input = settings::get('store_country_code');
         break;

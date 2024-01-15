@@ -707,7 +707,7 @@
 
           </div>
 
-          <div class="table-responsive">
+          <div class="table-responsive" style="margin: 0 -2em;">
             <table id="table-stock" class="table table-striped table-hover data-table">
               <thead>
                 <tr>
@@ -717,7 +717,7 @@
                   <th style="width: 400px;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
                   <th class="text-center" style="width: 125px;"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
                   <th class="text-center" style="width: 150px;"><?php echo language::translate('title_adjust', 'Adjust'); ?></th>
-                  <th style="width: 85px;">&nbsp;</th>
+                  <th style="width: 85px;"></th>
                 </tr>
               </thead>
 
@@ -1563,7 +1563,7 @@
           combination = group_id + '-' + ((value_id != 0) ? value_id : '0:"' + value_name +'"');
 
         output += '<tr data-group-id="'+ escapeHTML(group_id) +'" data-group-name="'+ escapeHTML(group_name) +'" data-value-id="'+ escapeHTML(value_id) +'" data-value-name="'+ escapeHTML(value_name) +'">'
-                + '  <td><span class="form-check"><input type="checkbox" name="combination[]" value="'+ escapeHTML(combination) +'" /></span></td>'
+                + '  <td><input class="form-check" type="checkbox" name="combination[]" value="'+ escapeHTML(combination) +'" /></td>'
                 + '  <td>'+ group_name +'</td>'
                 + '  <td>'+ value_name +'</td>'
                 + '</tr>';
