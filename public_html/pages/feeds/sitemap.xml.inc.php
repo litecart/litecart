@@ -8,7 +8,7 @@
     language::set(settings::get('store_language_code'));
 
     $output = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL
-            . '<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="https://www.w3.org/1999/xhtml">' . PHP_EOL;
+            . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">' . PHP_EOL; // Must be non-secure http:// or Google will not accept it
 
     $hreflangs = '';
     foreach (language::$languages as $language) {
