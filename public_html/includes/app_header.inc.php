@@ -16,11 +16,11 @@
   }
 
 // Virtual File System
-  require FS_DIR_APP .'includes/wrappers/wrap_stream_app.inc.php';
-  stream_wrapper_register('app', 'wrap_stream_app');
+  require FS_DIR_APP .'includes/streams/stream_app.inc.php';
+  stream_wrapper_register('app', 'stream_app');
 
-  require FS_DIR_APP .'includes/wrappers/wrap_stream_storage.inc.php';
-  stream_wrapper_register('storage', 'wrap_stream_storage');
+  require FS_DIR_APP .'includes/streams/stream_storage.inc.php';
+  stream_wrapper_register('storage', 'stream_storage');
 
 // Virtual Modification System
   require FS_DIR_APP .'includes/nodes/nod_vmod.inc.php';

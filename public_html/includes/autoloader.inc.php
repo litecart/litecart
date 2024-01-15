@@ -87,8 +87,8 @@
         if (is_file($file = 'app://frontend/routes/' . $class . '.inc.php')) require $file;
         break;
 
-      case (substr($class, 0, 5) == 'wrap_'):
-        require 'app://includes/wrappers/' . $class . '.inc.php';
+      case (substr($class, 0, 5) == 'stream_'):
+        require 'app://includes/streams/' . $class . '.inc.php';
         break;
 
       case (substr($class, -7) == '_client'):

@@ -1,6 +1,6 @@
 <?php
 
-  class wrap_stream_storage {
+  class stream_app {
     private $_directory;
     private $_stream;
     public $context;
@@ -9,7 +9,7 @@
       $path = $this->_resolve_path($path);
       $this->_directory = opendir($path);
       return true;
-    }
+      }
 
     public function dir_readdir() {
 
@@ -33,15 +33,18 @@
     }
 
     public function mkdir(string $path, int $mode, int $options): bool {
-      return mkdir($this->_resolve_path($path), $mode);
+      trigger_error('Creating an app:// directory is prohibited', E_USER_WARNING);
+      return false;
     }
 
     public function rename(string $path_from, string $path_to): bool {
-      return rename($this->_resolve_path($path_from), $this->_resolve_path($path_to));
+      trigger_error('Renaming an app:// resource is prohibited', E_USER_WARNING);
+      return false;
     }
 
     public function rmdir(string $path, int $options): bool {
-      return rmdir($this->_resolve_path($path));
+      trigger_error('Removing an app:// directory is prohibited', E_USER_WARNING);
+      return false;
     }
 
     public function stream_cast(int $cast_as): object {
@@ -94,9 +97,12 @@
     }
 
     public function stream_open(string $path, string $mode, int $options, ?string &$opened_path): bool {
-      $path = $this->_resolve_path($path);
 
-      $this->_stream = fopen($path, $mode);
+      $path = $this->_resolve_path($path);
+      $path = vmod::check($path);
+
+      $this->_stream = fopen($path, $mode, $options, $opened_path);
+
       return (bool)$this->_stream;
     }
 
@@ -121,15 +127,18 @@
     }
 
     public function stream_truncate(int $new_size): bool {
-      return ftruncate($this->_stream, $new_size);
+      trigger_error('Truncating an app:// resource is prohibited', E_USER_WARNING);
+      return false;
     }
 
-    public function stream_write(string $data): int {
-      return fwrite($this->_stream, $data);
+    public function stream_write(string $data): int|bool {
+      trigger_error('Writing to an app:// resource is prohibited', E_USER_WARNING);
+      return false;
     }
 
     public function unlink(string $path): bool {
-      return unlink($this->_resolve_path($path));
+      trigger_error('Removing an app:// resource is prohibited', E_USER_WARNING);
+      return false;
     }
 
     public function url_stat(string $path, int $flags): array|false {
@@ -140,6 +149,6 @@
     ####################################################################
 
     private function _resolve_path($path) {
-      return preg_replace('#^storage://#', FS_DIR_STORAGE, str_replace('\\', '/', $path));
+      return preg_replace('#^app://#', FS_DIR_APP, str_replace('\\', '/', $path));
     }
   }
