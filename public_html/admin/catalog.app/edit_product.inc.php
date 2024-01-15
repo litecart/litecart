@@ -715,6 +715,7 @@
                   <th style="width: 250px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
                   <th style="width: 185px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
                   <th style="width: 400px;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
+                  <th class="text-center"><?php echo language::translate('title_reserved', 'Reserved'); ?></th>
                   <th class="text-center" style="width: 125px;"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
                   <th class="text-center" style="width: 150px;"><?php echo language::translate('title_adjust', 'Adjust'); ?></th>
                   <th style="width: 85px;"></th>
@@ -739,6 +740,7 @@
                       <?php echo functions::form_draw_length_classes_list('dim_class', true); ?>
                     </div>
                   </td>
+                  <td class="text-center"><?php echo language::number_format($product->data['reserved'], 0); ?></td>
                   <td><?php echo functions::form_draw_decimal_field('quantity', true, 2, null, null, 'data-quantity="'. (float)$product->data['quantity'] .'"' . (!empty($_POST['options_stock']) ? ' readonly' : '')); ?></td>
                   <td>
                     <div class="input-group">
@@ -768,6 +770,7 @@
                       <?php echo functions::form_draw_length_classes_list('options_stock['.$key.'][dim_class]', true); ?>
                     </div>
                   </td>
+                  <td class="text-center"><?php echo isset($product->data['options_stock'][$key]['reserved']) ? (float)$product->data['options_stock'][$key]['reserved'] : '0'; ?></td>
                   <td><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][quantity]', true, 2, null, null, 'data-quantity="'. (isset($product->data['options_stock'][$key]['quantity']) ? (float)$product->data['options_stock'][$key]['quantity'] : '0') .'"'); ?></td>
                   <td>
                     <div class="input-group">
@@ -1618,6 +1621,7 @@
                + '      <?php echo functions::escape_js(functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '')); ?>'
                + '    </div>'
                + '  </td>'
+               + '  <td>0</td>'
                + '  <td><?php echo functions::escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][quantity]', '0', 2, null, null, 'data-quantity="0"')); ?></td>'
                + '  <td>'
                + '    <div class="input-group">'
