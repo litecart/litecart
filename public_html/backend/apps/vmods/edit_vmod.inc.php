@@ -76,7 +76,22 @@
          throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vmod'));
       }
 
-      $vmod->delete(!empty($_POST['cleanup']));
+      if (!empty($_POST['cleanup'])) {
+
+        if (!$vmods_settings = @json_decode(file_get_contents('storage://vmods/.settings'), true)) {
+          $vmods_settings = [];
+        }
+
+        if (isset($vmods_settings[$vmod->data['id']])) {
+          unset($vmods_settings[$vmod->data['id']]);
+          file_put_contents('storage://vmods/.settings', json_encode($vmods_settings, JSON_UNESCAPED_SLASHES), LOCK_EX);
+        }
+
+        $vmod->delete(true);
+
+      } else {
+        $vmod->delete();
+      }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink(__APP__.'/vmods'));

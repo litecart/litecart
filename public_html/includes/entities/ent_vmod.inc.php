@@ -24,10 +24,10 @@
         'author' => null,
         'settings' => [],
         'aliases' => [],
+        'files' => [],
         'install' => '',
         'uninstall' => '',
         'upgrades' => [],
-        'files' => [],
         'filename' => null,
         'date_updated' => null,
         'date_created' => null,
@@ -38,13 +38,18 @@
 
     public function load($filename) {
 
-      if (!is_file('storage://vmods/'. $filename)) {
+      $this->reset();
+
+      if (is_file($file = 'storage://vmods/'. $filename.'.xml')) {
+        $xml = file_get_contents($file);
+
+      } else if (is_file($file = 'storage://vmods/'. $filename.'.disabled')) {
+        $xml = file_get_contents($file);
+
+      } else {
         throw new Exception('Invalid vMod ('. $filename .')');
       }
 
-      $this->reset();
-
-      $xml = file_get_contents('storage://vmods/'. $filename);
       $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
 
       $dom = new \DOMDocument('1.0', 'UTF-8');
@@ -57,8 +62,8 @@
       $this->data['id'] = preg_replace('#\.(xml|disabled)?$#', '', $filename);
       $this->data['status'] = !preg_match('#\.disabled$#', $filename) ? '1' : '0';
       $this->data['filename'] = $filename;
-      $this->data['date_created'] = date('Y-m-d H:i:s', filectime('storage://vmods/' . $filename));
-      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime('storage://vmods/' . $filename));
+      $this->data['date_created'] = date('Y-m-d H:i:s', filectime($file));
+      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime($file));
 
 
       $this->data['name'] = !empty($dom->getElementsByTagName('name')->item(0)) ? $dom->getElementsByTagName('name')->item(0)->textContent : '';
@@ -304,60 +309,6 @@
       $this->previous = $this->data;
 
       cache::clear_cache('vmods');
-    }
-
-    public function test() {
-
-      try {
-
-        foreach (array_keys($vmod->data['files']) as $key) {
-
-          foreach (glob(FS_DIR_APP . $vmod->data['files'][$key]['name'], GLOB_BRACE) as $file) {
-
-            $buffer = file_get_contents($file);
-
-            foreach ($vmod->data['files'][$key]['operations'] as $i => $operation) {
-
-              $found = preg_match_all($operation['find']['pattern'], $buffer, $matches, PREG_OFFSET_CAPTURE);
-
-              if (!$found) {
-                switch ($operation['onerror']) {
-                  case 'ignore':
-                    continue 2;
-                  case 'abort':
-                  case 'warning':
-                  default:
-                    throw new Exception('Operation #'. ($i+1) .' failed in '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file), E_USER_WARNING);
-                    continue 2;
-                }
-              }
-
-              if (!empty($operation['find']['indexes'])) {
-                rsort($operation['find']['indexes']);
-
-                foreach ($operation['find']['indexes'] as $index) {
-                  $index = $index - 1; // [0] is the 1st in computer language
-
-                  if ($found > $index) {
-                    $buffer = substr_replace($buffer, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
-                  }
-                }
-
-              } else {
-                $buffer = preg_replace($operation['find']['pattern'], $operation['insert'], $buffer, -1, $count);
-
-                if (!$count && $operation['onerror'] != 'skip') {
-                  throw new Exception("Failed to perform insert");
-                  continue;
-                }
-              }
-            }
-          }
-        }
-
-      } catch (Exception $e) {
-        $vmod->data['errors'] = $e->getMessage();
-      }
     }
 
     public function delete($cleanup=false) {

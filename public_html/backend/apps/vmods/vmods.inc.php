@@ -92,7 +92,15 @@
 
   foreach (functions::file_search('storage://vmods/*.{xml,disabled}', GLOB_BRACE) as $file) {
 
-    $vmod = vmod::parse($file);
+    $dom = new DOMDocument('1.0', 'UTF-8');
+
+    $xml = file_get_contents($file); // DOMDocument::load() does not support Windows paths so we use DOMDocument::loadXML()
+
+    if (!@$dom->loadXML($xml)) {
+      throw new Exception(language::translate('error_invalid_xml_file', 'Invalid XML file'));
+    }
+
+    $vmod = vmod::parse_xml($dom, $file);
 
     $vmod = array_merge($vmod, [
       'filename' => pathinfo($file, PATHINFO_BASENAME),

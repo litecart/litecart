@@ -138,7 +138,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_parent_category', 'Parent Category'); ?></label>
-                <?php echo functions::form_category_field('parent_id', true); ?>
+                <?php echo functions::form_select_category('parent_id', true); ?>
               </div>
 
               <div class="form-group">
@@ -169,7 +169,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                <?php echo functions::form_regional_input('name['. settings::get('store_language_code') .']', settings::get('store_language_code'), true, ''); ?>
+                <?php echo functions::form_regional_text('name['. settings::get('store_language_code') .']', settings::get('store_language_code'), true, ''); ?>
               </div>
 
               <div class="form-group">
@@ -225,17 +225,17 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                <?php echo functions::form_regional_input('name['. $language_code .']', $language_code, true, ''); ?>
+                <?php echo functions::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>
-                <?php echo functions::form_regional_input('h1_title['. $language_code .']', $language_code, true, ''); ?>
+                <?php echo functions::form_regional_text('h1_title['. $language_code .']', $language_code, true, ''); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
-                <?php echo functions::form_regional_input('short_description['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_regional_text('short_description['. $language_code .']', $language_code, true); ?>
               </div>
 
               <div class="form-group">
@@ -246,18 +246,18 @@
               <div class="row">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-                  <?php echo functions::form_regional_input('head_title['. $language_code .']', $language_code, true); ?>
+                  <?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true); ?>
                 </div>
 
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-                  <?php echo functions::form_regional_input('meta_description['. $language_code .']', $language_code, true); ?>
+                  <?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
                 </div>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_synonyms', 'Synonyms'); ?></label>
-                <?php echo functions::form_regional_input('synonyms['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_regional_text('synonyms['. $language_code .']', $language_code, true); ?>
               </div>
             </div>
             <?php } ?>
