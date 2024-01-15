@@ -235,9 +235,9 @@
 // Fix Windows paths
   $_SERVER['SCRIPT_FILENAME'] = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME']);
 
-// Emulate some $_SERVER variables
-  if (php_sapi_name() === 'cli') {
-    $_SERVER['DOCUMENT_ROOT'] = rtrim(FS_DIR_APP, '/');
+  // Polyfill for some $_SERVER variables in CLI
+  if (!isset($_SERVER['REQUEST_METHOD'])) { // Don't rely on php_sapi_name()
+    $_SERVER['DOCUMENT_ROOT'] = realpath(__DIR__.'/..');
     $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
     $_SERVER['SERVER_NAME'] = 'localhost';
     $_SERVER['SERVER_PORT'] = '80';
@@ -245,9 +245,9 @@
     $_SERVER['REQUEST_METHOD'] = 'GET';
     $_SERVER['REQUEST_URI'] = '/';
     $_SERVER['SERVER_SOFTWARE'] = 'CLI';
+    $_SERVER['SCRIPT_FILENAME'] = isset($argv[0]) ? $argv[0] : 'index.php';
   }
 
-  if (!isset($_SERVER['SERVER_SOFTWARE'])) $_SERVER['SERVER_SOFTWARE'] = 'Unknown';
 
   if (empty($_SERVER['HTTPS'])) $_SERVER['HTTPS'] = 'off';
   if (empty($_SERVER['HTTP_HOST'])) $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
