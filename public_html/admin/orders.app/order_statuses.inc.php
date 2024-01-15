@@ -19,6 +19,7 @@
       );
 
       while ($order = database::fetch($orders_query)) {
+        $order = new ent_order($order['id']);
         $order->data['order_status_id'] = (int)$_POST['to_order_status_id'];
         $order->save();
       }
