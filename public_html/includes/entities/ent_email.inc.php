@@ -28,8 +28,8 @@
       $this->data['language_code'] = language::$selected['code'];
 
       $this->data['sender'] = [
-        'email' => settings::get('site_email'),
-        'name' => settings::get('site_name'),
+        'email' => settings::get('store_email'),
+        'name' => settings::get('store_name'),
       ];
 
       $this->data['recipients'] = [];
@@ -313,10 +313,10 @@
     // Prepare headers
       $headers = [
         'Date' => date('r'),
-        'From' => $this->format_contact(['name' => settings::get('site_name'), 'email' => settings::get('site_email')]),
+        'From' => $this->format_contact(['name' => settings::get('store_name'), 'email' => settings::get('store_email')]),
         'Sender' => $this->format_contact($this->data['sender']),
         'Reply-To' => $this->format_contact($this->data['sender']),
-        'Return-Path' => settings::get('site_email'),
+        'Return-Path' => settings::get('store_email'),
         'MIME-Version' => '1.0',
         'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
         'X-Sender' => $this->format_contact($this->data['sender']),
