@@ -22,8 +22,8 @@
   $_page->snippets = [
     'items' => [],
     'subtotal' => [
-      'value' => cart::$cart->data['subtotal'],
-      'tax' => cart::$cart->data['subtotal_tax'],
+      'value' => cart::$total['value'],
+      'tax' => cart::$total['tax'],
     ],
     'display_prices_including_tax' => cart::$cart->data['display_prices_including_tax'],
     'error' => false,
@@ -42,24 +42,13 @@
   }
 
 // Cart
-  list($width, $height) = functions::image_scale_by_width(64, settings::get('product_image_ratio'));
-
   foreach (cart::$items as $key => $item) {
     $_page->snippets['items'][$key] = [
       'product_id' => $item['product_id'],
-      'stock_item_id' => $item['stock_item_id'],
+      'stock_option_id' => $item['stock_option_id'],
       'name' => $item['name'],
       'sku' => $item['sku'],
-      'image' => [
-        'original' => 'storage://images/' . fallback($item['image'], 'no_image.png'),
-        'thumbnail' => functions::image_thumbnail('storage://images/' . fallback($item['image'], 'no_image.png'), $width, $height),
-        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . fallback($item['image'], 'no_image.png'), $width*2, $height*2),
-        'viewport' => [
-          'width' => $width,
-          'height' => $height,
-          'ratio' => str_replace(':', '/', settings::get('category_image_ratio')),
-        ],
-      ],
+      'image' => $item['image'] ? 'storage://images/' . $item['image'] : '',
       'link' => document::ilink('product', ['product_id' => $item['product_id']]),
       'display_price' => customer::$data['display_prices_including_tax'] ? $item['price'] + $item['tax'] : $item['price'],
       'price' => $item['price'],

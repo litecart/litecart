@@ -2,7 +2,7 @@
   <a class="link" href="<?php echo functions::escape_html($link) ?>">
 
     <div class="image-wrapper">
-      <img class="<?php echo $image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink($image['thumbnail']); ?>" srcset="<?php echo document::href_rlink($image['thumbnail']); ?> 1x, <?php echo document::href_rlink($image['thumbnail_2x']); ?> 2x" alt="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
+      <?php echo functions::draw_thumbnail($image, 200, 0, 'product', 'alt="'. functions::escape_html($name) .'"'); ?>
       {{sticker}}
     </div>
 

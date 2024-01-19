@@ -35,11 +35,12 @@
       }
 
       $fields = [
+        'name',
         'sku',
         'mpn',
         'gtin',
         'taric',
-        'name',
+        'shelf',
         'weight',
         'weight_unit',
         'length',
@@ -118,13 +119,6 @@
 
   breadcrumbs::add(!empty($stock_item->data['id']) ? language::translate('title_edit_stock_item', 'Edit Stock Item') : language::translate('title_create_new_stock_item', 'Create New Stock Item'));
 
-  list($image_width, $image_height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
-
-  if (isset($stock_item->data['id']) && !empty($stock_item->data['image'])) {
-    $thummbnail = functions::image_thumbnail('storage://images/' . $stock_item->data['image'], $image_width, $image_height);
-  } else {
-    $thummbnail = functions::image_thumbnail('storage://images/no_image.png', $image_width, $image_height);
-  }
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -153,13 +147,7 @@
                 <label><?php echo language::translate('title_image', 'Image'); ?></label>
 
                 <div class="thumbnail">
-<?php
-  if (isset($stock_item->data['id']) && !empty($stock_item->data['image'])) {
-    echo '<img src="'. document::href_rlink(functions::image_thumbnail('storage://images/' . $stock_item->data['image'], $image_width, $image_height)) .'" alt="" />';
-  } else {
-    echo '<img src="'. document::href_rlink(functions::image_thumbnail('storage://images/no_image.png', $image_width, $image_height)) .'" alt="" />';
-  }
-?>
+                  <?php echo functions::draw_thumbnail('storage://images/' . ($stock_item->data['image'] ? $stock_item->data['image'] : 'no_image.png'), 320, 0, 'product'); ?>
                 </div>
 
                 <?php if (!empty($stock_item->data['image'])) { ?>
@@ -192,6 +180,11 @@
                   <label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_input_text('taric', true); ?>
                 </div>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_shelf_location', 'Shelf Location'); ?></label>
+                <?php echo functions::form_input_text('shelf', true); ?>
               </div>
 
               <div class="form-group">
@@ -275,15 +268,16 @@
           </div>
         </div>
 
+        <?php if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') { ?>
         <div class="col-xl-6">
           <h2><?php echo language::translate('title_references', 'References'); ?></h2>
 
           <div class="table-responsive">
             <table id="table-references" class="table table-striped data-table">
               <thead>
-                <th><?php echo language::translate('title_source', 'Source'); ?></th>
-                <th><?php echo language::translate('title_type', 'Type'); ?></th>
-                <th><?php echo language::translate('title_code', 'Code'); ?></th>
+                <th style="min-width: 200px;"><?php echo language::translate('title_supplier', 'Supplier'); ?></th>
+                <th class="main"><?php echo language::translate('title_code', 'Code'); ?></th>
+                <th></th>
               </thead>
 
               <tbody>
@@ -291,18 +285,9 @@
                 <tr>
                   <td>
                     <?php echo functions::form_input_hidden('references['.$key.'][id]', true); ?>
-                    <div class="input-group">
-                      <?php echo functions::form_select('references['.$key.'][source_type]', ['brand' => language::translate('title_brand', 'Brand'), 'supplier' => language::translate('title_supplier', 'Supplier')], true); ?>
-                      <?php echo functions::form_select_brand('references['.$key.'][source]', true); ?>
-                      <?php echo functions::form_select_supplier('references['.$key.'][source]', true); ?>
-                    </div>
+                    <?php echo functions::form_select_supplier('references['.$key.'][source]', true); ?>
                   </td>
-                  <td>
-                    <div class="input-group">
-                      <?php echo functions::form_select('references['.$key.'][type]', ['sku' => language::translate('title_sku', 'SKU'), 'gtin' => language::translate('title_gtin', 'GTIN'), 'other' => language::translate('title_other', 'Other')], true); ?>
-                      <?php echo functions::form_input_text('references['.$key.'][code]', true); ?>
-                    </div>
-                  </td>
+                  <td><?php echo functions::form_input_text('references['.$key.'][code]', true); ?></td>
                   <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
                 </tr>
               <?php } ?>
@@ -316,6 +301,7 @@
             </table>
           </div>
         </div>
+        <?php } ?>
       </div>
 
       <div class="card-action">
@@ -403,23 +389,16 @@
   var new_reference_i = 1;
   $('#table-references').on('click', '.add', function(e) {
     e.preventDefault();
-    var output = '<tr>'
-               + '  <td>'
-               + '     <?php echo functions::escape_js(functions::form_input_hidden('references[new_reference_i][id]', true)); ?>'
-               + '     <div class="input-group">'
-               + '       <?php echo functions::escape_js(functions::form_select('references[new_reference_i][source_type]', ['brand' => language::translate('title_brand', 'Brand'), 'supplier' => language::translate('title_supplier', 'Supplier')], true)); ?>'
-               + '       <?php echo functions::escape_js(functions::form_select_brand('references[new_reference_i][source]', true)); ?>'
-               + '       <?php echo functions::escape_js(functions::form_select_supplier('references[new_reference_i][source]', true)); ?>'
-               + '     </div>'
-               + '   </td>'
-               + '   <td>'
-               + '     <div class="input-group">'
-               + '       <?php echo functions::escape_js(functions::form_select('references[new_reference_i][type]', ['sku' => language::translate('title_sku', 'SKU'), 'gtin' => language::translate('title_gtin', 'GTIN'), 'other' => language::translate('title_other', 'Other')], true)); ?>'
-               + '       <?php echo functions::escape_js(functions::form_input_text('references[new_reference_i][code]', true)); ?>'
-               + '     </div>'
-               + '   </td>'
-               + '   <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>'
-               + ' </tr>';
+    let output = [
+    ' <tr>',
+    '  <td>',
+    '     <?php echo functions::escape_js(functions::form_input_hidden('references[new_reference_i][id]', true)); ?>',
+    '     <?php echo functions::escape_js(functions::form_select_supplier('references[new_reference_i][source]', true)); ?>',
+    '   </td>',
+    '   <td><?php echo functions::escape_js(functions::form_input_text('references[new_reference_i][code]', true)); ?></td>',
+    '   <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>',
+    ' </tr>',
+    ].join('\n');
     while ($('input[name="references[new_'+new_reference_i+']"]').length) new_reference_i++;
     output = output.replace(/new_reference_i/g, 'new_' + new_reference_i);
     $('#table-references tbody').append(output);

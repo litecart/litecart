@@ -1,7 +1,6 @@
 <article class="category" data-id="{{category_id}}" data-name="{{name|escape}}">
   <a class="link" href="{{link|escape}}">
-    <img class="<?php echo $image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink($image['thumbnail']); ?>" alt="" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
-
+    <?php echo functions::draw_thumbnail($image, 480, 0, 'category', 'alt="'. functions::escape_html($name) .'"'); ?>
     <div class="caption">
       <div>{{name}}</div>
       <div class="short-description">{{short_description}}</div>

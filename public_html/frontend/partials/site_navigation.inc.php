@@ -93,19 +93,19 @@
   $site_navigation->snippets['shopping_cart'] = [
     'items' => [],
     'link' => document::ilink('shopping_cart'),
-    'num_items' => cart::$cart->data['num_items'],
+    'num_items' => cart::$total['items'],
     'total' => null,
   ];
 
   foreach (cart::$items as $key => $item) {
-    $item['thumbnail'] = functions::image_thumbnail('storage://images/' . $item['image'], 64, 64);
+    $item['image'] = 'storage://images/' . $item['image'];
     $site_navigation->snippets['shopping_cart']['items'][$key] = $item;
   }
 
   if (!empty(customer::$data['display_prices_including_tax'])) {
-    $site_navigation->snippets['shopping_cart']['total'] = currency::format(cart::$cart->data['subtotal'] + cart::$cart->data['subtotal_tax']);
+    $site_navigation->snippets['shopping_cart']['total'] = currency::format(cart::$total['value'] + cart::$total['tax']);
   } else {
-    $site_navigation->snippets['shopping_cart']['total'] = currency::format(cart::$cart->data['subtotal']);
+    $site_navigation->snippets['shopping_cart']['total'] = currency::format(cart::$total['value']);
   }
 
   functions::draw_lightbox();

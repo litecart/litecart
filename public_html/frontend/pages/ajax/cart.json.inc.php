@@ -12,10 +12,10 @@
     $json['items'][] = [
       'key' => $key,
       'product_id' => $item['product_id'],
-      'stock_item_id' => $item['stock_item_id'],
+      'stock_option_id' => $item['stock_option_id'],
       'userdata' => $item['userdata'],
       'link' => document::rilink('product', ['product_id' => $item['product_id']]),
-      'thumbnail' => document::rlink(functions::image_thumbnail('storage://images/' . $item['image'], 320, 320)),
+      'image' => $item['image'] ? 'storage://images/' . $item['image'] : 'no_image.png',
       'name' => $item['name'],
       'code' => $item['code'],
       'sku' => $item['sku'],

@@ -13,20 +13,62 @@
     return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="'. functions::escape_html($clipping) .'"' : '') .' src="'. document::href_rlink($image) .'" '. ($parameters ? ' '. $parameters : '') .'>';
   }
 
-  function draw_thumbnail($source, $width, $height, $clipping='fit', $trim=false, $parameters='') {
+  function draw_thumbnail($source, $width, $height, $clipping='fit', $parameters='') {
 
     if (!is_file($source)) {
       $source = 'storage://images/no_image.png';
     }
 
-    if (preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) {
-      $storage = WS_DIR_STORAGE;
-    } else {
-      $storage = WS_DIR_APP;
+    if (!$width) {
+      if ($clipping == 'product') {
+        list($width, $height) = functions::image_scale_by_height($height, settings::get('product_image_ratio'));
+      } else if ($clipping == 'category') {
+        list($width, $height) = functions::image_scale_by_height($height, settings::get('category_image_ratio'));
+      } else {
+        list($width, $height) = functions::image_scale_by_height($height, functions::image_ratio($source));
+      }
     }
 
-    $thumbnail = $storage . functions::image_thumbnail($source, $width, $height, settings::get('product_image_trim'));
-    $thumbnail_2x = $storage . functions::image_thumbnail($source, $width*2, $height*2, settings::get('product_image_trim'));
+    if (!$height) {
+      if ($clipping == 'product') {
+        list($width, $height) = functions::image_scale_by_width($width, settings::get('product_image_ratio'));
+      } else if ($clipping == 'category') {
+        list($width, $height) = functions::image_scale_by_width($width, settings::get('category_image_ratio'));
+      } else {
+        list($width, $height) = functions::image_scale_by_width($width, functions::image_ratio($source));
+      }
+    }
+
+    switch (strtolower($clipping)) {
+
+      case '':
+        $clipping = '';
+        break;
+
+      case 'fit':
+        $clipping = 'fit';
+        break;
+
+      case 'crop':
+        $clipping = 'crop';
+        break;
+
+      case 'product':
+        $clipping = strtolower(settings::get('product_image_clipping'));
+        break;
+
+      case 'category':
+        $clipping = strtolower(settings::get('category_image_clipping'));
+        break;
+
+      default:
+        trigger_error('Invalid clipping mode ('. $clipping .')', E_USER_WARNING);
+        break;
+    }
+
+    $thumbnail = functions::image_thumbnail($source, $width, $height);
+    $thumbnail_2x = functions::image_thumbnail($source, $width*2, $height*2);
+
 
     if ($width && $height) {
       if (preg_match('#style="#', $parameters)) {
@@ -36,7 +78,7 @@
       }
     }
 
-    return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="'. functions::escape_html($clipping) .'"' : '') .' src="'. document::href_link($thumbnail) .'" srcset="1x '. document::href_link($thumbnail) .', 2x '. document::href_link($thumbnail_2x) .'"'. ($parameters ? ' '. $parameters : '') .' />';
+    return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="thumbnail '. functions::escape_html($clipping) .'"' : '') .' src="'. document::href_rlink($thumbnail) .'" srcset="1x '. document::href_rlink($thumbnail) .', 2x '. document::href_rlink($thumbnail_2x) .'"'. ($parameters ? ' '. $parameters : '') .' />';
   }
 
   function draw_banner($keywords) {
@@ -68,10 +110,10 @@
       limit 1;"
     );
 
-    if (empty($banner['html'])) {
+    if (!$banner['html']) {
       $banner['html'] = '<img class="responsive" src="$image_url" alt="" />';
 
-      if (!empty($banner['link'])) {
+      if ($banner['link']) {
         $banner['html'] = '<a href="$target_url" target="_blank">' . PHP_EOL
                         . '  ' . $banner['html'] . PHP_EOL
                         . '</a>';
@@ -81,8 +123,8 @@
     $aliases = [
       '$id' => $banner['id'],
       '$language_code' => language::$selected['code'],
-      '$image_url' => document::link(WS_DIR_STORAGE .'images/' . $banner['image']),
-      '$target_url' => document::href_link($banner['link']),
+      '$image_url' => $banner['image'] ? document::rlink('storage://images/' . $banner['image']) : '',
+      '$target_url' => $banner['link'] ? document::href_link($banner['link']) : '',
     ];
 
   // Banner Click Tracking
@@ -175,23 +217,11 @@
 
     $listing_category = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/listing_category.inc.php');
 
-    list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
-
     $listing_category->snippets = [
       'category_id' => $category['id'],
       'name' => $category['name'],
       'link' => document::ilink('category', ['category_id' => $category['id']]),
-      'image' => [
-        'original' => 'storage://images/' . $category['image'],
-        'thumbnail' => functions::image_thumbnail('storage://images/' . $category['image'], $width, $height),
-        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $category['image'], $width*2, $height*2),
-        'viewport' => [
-          'width' => $width,
-          'height' => $height,
-          'ratio' => str_replace(':', '/', settings::get('category_image_ratio')),
-          'clipping' => strtolower(settings::get('category_image_clipping')),
-        ],
-      ],
+      'image' => $category['image'] ? 'storage://images/' . $category['image'] : '',
       'short_description' => $category['short_description'],
     ];
 
@@ -219,17 +249,7 @@
       'mpn' => fallback($product['mpn'], ''),
       'name' => $product['name'],
       'link' => document::ilink('product', ['product_id' => $product['id']], $inherit_params),
-      'image' => [
-        'original' => $product['image'] ? 'storage://images/' . $product['image'] : '',
-        'thumbnail' => functions::image_thumbnail('storage://images/' . $product['image'], $width, $height, settings::get('product_image_trim')),
-        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $product['image'], $width*2, $height*2, settings::get('product_image_trim')),
-        'viewport' => [
-          'width' => $width,
-          'height' => $height,
-          'ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
-          'clipping' => strtolower(settings::get('product_image_clipping')),
-        ],
-      ],
+      'image' => $product['image'] ? 'storage://images/' . $product['image'] : '',
       'sticker' => $sticker,
       'brand' => [],
       'short_description' => $product['short_description'],

@@ -7,16 +7,16 @@
           <div class="images row">
 
             <div class="col-xs-12">
-              <a class="main-image thumbnail" href="<?php echo document::href_rlink($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-                <img class="<?php echo $image['viewport']['clipping']; ?>" style="aspect-ratio: <?php echo str_replace(':', '/', $image['viewport']['ratio']); ?>;" src="<?php echo document::href_rlink($image['thumbnail']); ?>" srcset="<?php echo document::href_rlink($image['thumbnail']); ?> 1x, <?php echo document::href_rlink($image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
+              <a class="main-image" href="<?php echo document::href_rlink($image); ?>" data-toggle="lightbox" data-gallery="product">
+                <?php echo functions::draw_thumbnail($image, 1024, 0, 'product', 'title="'. functions::escape_html($name) .'"'); ?>
                 <?php echo $sticker; ?>
               </a>
             </div>
 
             <?php foreach ($extra_images as $extra_image) { ?>
             <div class="col-xs-4">
-              <a class="extra-image thumbnail" href="<?php echo document::href_rlink($extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-                <img class="<?php echo $extra_image['viewport']['clipping']; ?>" style="aspect-ratio: <?php echo str_replace(':', '/', $extra_image['viewport']['ratio']); ?>;" src="<?php echo document::href_rlink($extra_image['thumbnail']); ?>" srcset="<?php echo document::href_rlink($extra_image['thumbnail']); ?> 1x, <?php echo document::href_rlink($extra_image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
+              <a class="extra-image" href="<?php echo document::href_rlink($extra_image); ?>" data-toggle="lightbox" data-gallery="product">
+                <?php echo functions::draw_thumbnail($image, 250, 0, 'product', 'title="'. functions::escape_html($name) .'"'); ?>
               </a>
             </div>
             <?php } ?>

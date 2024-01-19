@@ -23,11 +23,7 @@
       $_page->snippets['brands'][] = [
         'id' => $brand['id'],
         'name' => $brand['name'],
-        'image' => [
-          'original' => 'storage://images/' . $brand['image'],
-          'thumbnail' => functions::image_thumbnail('storage://images/' . $brand['image'], 320, 100),
-          'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $brand['image'], 640, 200),
-        ],
+        'image' => $brand['image'] ? 'storage://images/' . $brand['image'] : '',
         'link' => document::ilink('brand', ['brand_id' => $brand['id']]),
       ];
     }

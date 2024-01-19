@@ -18,7 +18,7 @@
           <div class="row">
             <?php if ($_GET['page'] == 1 && $image) { ?>
             <div class="hidden-xs hidden-sm col-md-4">
-              <img class="thumbnail <?php echo $image['viewport']['clipping']; ?>" style="aspect-ratio: <?php echo str_replace(':', '/', $image['viewport']['ratio']); ?>;" src="<?php echo document::href_rlink($image['thumbnail']); ?>" />
+              <?php echo functions::draw_thumbnail($image, 320, 0, 'category'); ?>
             </div>
             <?php } ?>
 

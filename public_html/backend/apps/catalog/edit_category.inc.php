@@ -101,9 +101,6 @@
     }
   }
 
-  list($category_image_width, $category_image_height) = functions::image_scale_by_width(320, settings::get('category_image_ratio'));
-  $thumbnail = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping'));
-
   $list_style_options = [
     [language::translate('title_columns', 'Columns'), 'columns'],
     [language::translate('title_rows', 'Rows'), 'rows'],
@@ -191,7 +188,7 @@
             <div class="col-md-4">
               <div id="image">
                 <div style="margin-bottom: 15px;">
-                  <img class="thumbnail" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $thumbnail); ?>" alt="" />
+                  <?php echo functions::draw_thumbnail($category->data['image'], 480, 0, 'category'); ?>
                 </div>
 
                 <div class="form-group">
@@ -373,18 +370,20 @@
       return;
     }
 
-    var output = '<tr class="grabable">'
-               + '  <?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][id]', '')); ?>'
-               + '  <?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>'
-               + '  <?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>'
-               + '  <td>new_attribute_group_name</td>'
-               + '  <td><?php echo functions::form_input_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>'
-               + '  <td class="text-end">'
-               + '    <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>'
-               + '    <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>'
-               + '    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>'
-               + '  </td>'
-               + '</tr>';
+    let output = [
+      '<tr class="grabable">',
+      '  <?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][id]', '')); ?>',
+      '  <?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>',
+      '  <?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>',
+      '  <td>new_attribute_group_name</td>',
+      '  <td><?php echo functions::form_input_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>',
+      '  <td class="text-end">',
+      '    <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>',
+      '    <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>',
+      '    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>',
+      '  </td>',
+      '</tr>',
+   ].join('\n');
 
     while ($('input[name="filters[new_'+new_attribute_filter_i+']"]').length) new_attribute_filter_i++;
     output = output.replace(/new_attribute_filter_i/g, 'new_' + new_attribute_filter_i);

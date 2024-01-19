@@ -5,10 +5,10 @@
 
         <h1 style="margin-top: 0;"><?php echo $main_category['name']; ?></h1>
 
-        <?php if (!empty($image)) { ?>
+        <?php if ($image) { ?>
         <div style="margin-bottom: 2em;">
           <a href="<?php echo document::href_ilink('category', ['category_id' => $main_category['id']]); ?>">
-            <img class="thumbnail fit" src="<?php echo document::href_rlink($image['thumbnail']); ?>" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
+            <?php echo functions::draw_thumbnail($image, 480, 0, 'category'); ?>
           </a>
         </div>
         <?php } ?>

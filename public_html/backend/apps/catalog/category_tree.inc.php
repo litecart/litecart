@@ -330,7 +330,7 @@
     $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
 
     $products_query = database::query(
-      "select p.id, p.status, p.image, pi.name, p.image, pp.price, ptsi.num_stock_items, ptsi.quantity, ptsi.quantity - oi.total_reserved as quantity_available, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, (
+      "select p.id, p.status, p.image, pi.name, p.image, pp.price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, (
         if(p.id = '". database::input($_GET['query']) ."', 10, 0)
         + (match(pi.name) against ('*". database::input($query_fulltext) ."*'))
         + (match(pi.short_description) against ('*". database::input($query_fulltext) ."*') / 2)
@@ -343,7 +343,7 @@
         + if(pi.description like '%". database::input($_GET['query']) ."%', 1, 0)
         + if(p.code regexp '". database::input($code_regex) ."', 5, 0)
         + if (p.id in (
-          select product_id from ". DB_TABLE_PREFIX ."products_to_stock_items
+          select product_id from ". DB_TABLE_PREFIX ."products_stock_options
           where stock_item_id in (
             select id from ". DB_TABLE_PREFIX ."stock_items
             where sku regexp '". database::input($code_regex) ."'
@@ -366,21 +366,19 @@
       ) pp on (pp.product_id = p.id)
 
       left join (
-        select ptsi.product_id, ptsi.stock_item_id, count(ptsi.stock_item_id) as num_stock_items, sum(si.quantity) as quantity
-        from ". DB_TABLE_PREFIX ."products_to_stock_items ptsi
-        left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = ptsi.stock_item_id)
-        group by ptsi.product_id
-      ) ptsi on (ptsi.product_id = p.id)
+        select product_id, count(id) as num_stock_options from ". DB_TABLE_PREFIX ."products_stock_options
+        group by product_id
+      ) pso on (pso.product_id = p.id)
 
       left join (
-        select oi.stock_item_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
+        select oi.product_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
         left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
         where o.order_status_id in (
           select id from ". DB_TABLE_PREFIX ."order_statuses
           where stock_action = 'reserve'
         )
-        group by oi.stock_item_id
-      ) oi on (oi.stock_item_id = ptsi.stock_item_id)
+        group by oi.product_id
+      ) oi on (oi.product_id = p.id)
 
       group by p.id
       having relevance > 0
@@ -401,7 +399,7 @@
           throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to']))]));
         }
 
-        if ($product['num_stock_items'] && $product['quantity'] <= 0) {
+        if ($product['num_stock_options'] && $product['quantity'] <= 0) {
           throw new Exception(language::translate('text_product_is_out_of_stock', 'The product is out of stock'));
         }
 
@@ -409,11 +407,11 @@
         $warning = $e->getMessage();
       }
 ?>
-        <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : ''; ?>">
+        <tr class="<?php if (empty($product['status'])) echo 'semi-transparent'; ?>">
           <td><?php echo functions::form_input_checkbox('products[]', $product['id']); ?></td>
           <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
-          <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : ''; ?></td>
-          <td><?php echo '<img class="thumbnail" src="'. document::href_rlink(functions::image_thumbnail('storage://images/' . $product['image'], 24, 24)) .'" alt="" />'; ?><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"> <?php echo $product['name'] ? $product['name'] : '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
+          <td class="warning"><?php if (!empty($warning)) echo functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"'); ?></td>
+          <td><?php echo functions::draw_thumbnail('storage://images/' . $product['image'], 24, 24, 'fit'); ?><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"> <?php echo $product['name'] ? $product['name'] : '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
           <td class="text-end"><?php echo currency::format($product['price']); ?></td>
           <td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('f:product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
@@ -431,7 +429,7 @@
 
   } else {
 
-    $category_trail = array_keys(reference::category($_GET['category_id'])->path);
+    $category_trail = !empty($_GET['category_id']) ? array_keys(reference::category($_GET['category_id'])->path) : [];
     $num_category_rows = 0;
     $num_product_rows = 0;
 
@@ -440,7 +438,7 @@
       $output = '';
 
       $products_query = database::query(
-        "select p.id, p.status, p.code, p.sold_out_status_id, p.image, pi.name, pp.price, ptsi.num_stock_items, ptsi.quantity, ptsi.quantity - oi.total_reserved as quantity_available, p.date_valid_from, p.date_valid_to, p2c.category_id
+        "select p.id, p.status, p.code, p.sold_out_status_id, p.image, pi.name, pp.price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.date_valid_from, p.date_valid_to, p2c.category_id
 
         from ". DB_TABLE_PREFIX ."products p
         left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
@@ -452,11 +450,11 @@
         ) pp on (pp.product_id = p.id)
 
         left join (
-        select ptsi.product_id, ptsi.stock_item_id, count(ptsi.stock_item_id) as num_stock_items, sum(si.quantity) as quantity
-        from ". DB_TABLE_PREFIX ."products_to_stock_items ptsi
-        left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = ptsi.stock_item_id)
-        group by ptsi.product_id
-        ) ptsi on (ptsi.product_id = p.id)
+        select pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as quantity
+        from ". DB_TABLE_PREFIX ."products_stock_options pso
+        left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+        group by pso.product_id
+        ) pso on (pso.product_id = p.id)
 
         left join (
           select oi.stock_item_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
@@ -466,7 +464,7 @@
             where stock_action = 'reserve'
           )
           group by oi.stock_item_id
-        ) oi on (oi.stock_item_id = ptsi.stock_item_id)
+        ) oi on (oi.stock_item_id = pso.stock_item_id)
 
         where ". (!empty($category_id) ? "p.id in (
           select product_id from ". DB_TABLE_PREFIX ."products_to_categories ptc
@@ -496,7 +494,7 @@
             throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to']))]));
           }
 
-          if ($product['num_stock_items'] && $product['quantity'] <= 0) {
+          if ($product['num_stock_options'] && $product['quantity'] <= 0) {
             throw new Exception(language::translate('text_product_is_out_of_stock', 'The product is out of stock'));
           }
 
@@ -510,7 +508,7 @@
                  . '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : '') .'</td>' . PHP_EOL;
 
         if ($display_images) {
-          $output .= '  <td><img class="thumbnail" src="'. document::href_rlink(functions::image_thumbnail('storage://images/' . $product['image'], 24, 24)) .'" style="margin-inline-start: '. ($depth*16) .'px;" /> <a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_thumbnail('storage://images/' . $product['image'], 24, 24, 'fit', 'style="margin-inline-start: '. ($depth*16) .'px;"') .' <a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
           $output .= '  <td><span style="margin-inline-start: '. (($depth+1)*16) .'px;">&nbsp;<a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
         }
@@ -630,7 +628,7 @@
           </li>
           <li>
             <div style="min-width: 250px;">
-              <?php echo functions::form_category_field('category_id', true); ?>
+              <?php echo functions::form_select_category('category_id', true); ?>
             </div>
           </li>
           <li>

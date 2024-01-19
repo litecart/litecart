@@ -45,7 +45,7 @@
 
   document::$head_tags['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'">';
 
-  if (!empty($product->image)) {
+  if ($product->image) {
     document::$head_tags[] = '<meta property="og:image" content="'. document::href_rlink('storage://images/' . $product->image) .'">';
   }
 
@@ -55,7 +55,7 @@
       document::$title[] = $category_crumb->name;
       breadcrumbs::add($category_crumb->name, document::ilink('category', ['category_id' => $category_crumb->id]));
     }
-  } else if (!empty($product->brand)) {
+  } else if ($product->brand) {
     document::$title[] = $product->brand->name;
     breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
     breadcrumbs::add($product->brand->name, document::ilink('brand', ['brand_id' => $product->brand->id]));
@@ -76,7 +76,7 @@
   session::$data['recently_viewed_products'][$product->id] = [
     'id' => $product->id,
     'name' => $product->name,
-    'image' => 'storage://images/'.$product->image,
+    'image' => $product->image ? 'storage://images/'.$product->image : '',
   ];
 
 // Page
@@ -94,7 +94,7 @@
     'gtin14' => $product->gtin,
     'mpn' => $product->mpn,
     'name' => $product->name,
-    'image' => document::link(!empty($product->image) ? 'storage://images/' . $product->image : ''),
+    'image' => $product->image ? 'storage://images/' . $product->image : '',
     'description' => (!empty($product->description) && (trim(strip_tags($product->description)) != '')) ? $product->description : '',
     'brand' => [],
     'offers' => [
@@ -103,12 +103,10 @@
       'price' => currency::format_raw(tax::get_price($product->final_price, $product->tax_class_id)),
       'priceValidUntil' => (!empty($product->campaign['end_date']) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
       'itemCondition' => 'https://schema.org/NewCondition', // Or RefurbishedCondition, DamagedCondition, UsedCondition
-      'availability' => ($product->quantity > 0) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      'availability' => ($product->quantity_available > 0) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       'url' => document::link(),
     ],
   ];
-
-  list($width, $height) = functions::image_scale_by_width(480, settings::get('product_image_ratio'));
 
   $_page->snippets = [
     'product_id' => $product->id,
@@ -126,17 +124,7 @@
     'attributes' => $product->attributes,
     'stock_options' => [],
     'keywords' => $product->keywords,
-    'image' => [
-      'original' => ltrim(!empty($product->images) ? 'storage://images/' . $product->image : 'storage://images/no_image.png', '/'),
-      'thumbnail' => functions::image_thumbnail('storage://images/' . $product->image, $width, $height, settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $product->image, $width*2, $height*2, settings::get('product_image_trim')),
-      'viewport' => [
-        'width' => $width,
-        'height' => $height,
-        'ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
-        'clipping' => strtolower(settings::get('product_image_clipping')),
-      ],
-    ],
+    'image' => $product->images ? 'storage://images/' . $product->image : '',
     'sticker' => '',
     'extra_images' => [],
     'main_category' => [],
@@ -150,7 +138,6 @@
     'including_tax' => !empty(customer::$data['display_prices_including_tax']),
     'total_tax' => $product->tax,
     'tax_rates' => [],
-    'quantity' => $product->quantity,
     'quantity_min' => ($product->quantity_min > 0) ? $product->quantity_min : 1,
     'quantity_max' => ($product->quantity_max > 0) ? $product->quantity_max : null,
     'quantity_step' => ($product->quantity_step > 0) ? $product->quantity_step : null,
@@ -165,26 +152,15 @@
   ];
 
 // Extra Images
-  list($width, $height) = functions::image_scale_by_width(480, settings::get('product_image_ratio'));
   foreach (array_slice(array_values($product->images), 1) as $image) {
-    $_page->snippets['extra_images'][] = [
-      'original' => 'storage://images/' . $image,
-      'thumbnail' => functions::image_thumbnail('storage://images/' . $image, $width, $height, settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $image, $width*2, $height*2, settings::get('product_image_trim')),
-      'viewport' => [
-        'width' => $width,
-        'height' => $height,
-        'ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
-        'clipping' => strtolower(settings::get('product_image_clipping')),
-      ],
-    ];
+    $_page->snippets['extra_images'][] = 'storage://images/' . $image;
   }
 
 // Watermark Images
   if (settings::get('product_image_watermark') && $product->image) {
-    $_page->snippets['image']['original'] = functions::image_process('storage://images/' . $product->image, ['watermark' => true]);
+    $_page->snippets['image'] = functions::image_process($product->image, ['watermark' => true]);
     foreach ($_page->snippets['extra_images'] as $image) {
-      $_page->snippets['extra_images'][$key]['original'] = functions::image_process('storage://images/' . $image, ['watermark' => true]);
+      $_page->snippets['extra_images'][$key] = functions::image_process($image, ['watermark' => true]);
     }
   }
 
@@ -201,25 +177,9 @@
     $_page->snippets['main_category'] = [
       'id' => $category->main_category->id,
       'name' => $category->main_category->name,
-      'image' => [],
+      'image' => $category->main_category->image ? 'storage://images/' . $category->main_category->image : '',
       'link' => document::ilink('category', ['category_id' => $category->main_category->id]),
     ];
-
-    list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
-
-    if (!empty($category->main_category->image)) {
-      $_page->snippets['main_category']['image'] = [
-        'original' => 'storage://images/' . $category->main_category->image,
-        'thumbnail' => functions::image_thumbnail('storage://images/' . $category->main_category->image, $width, $height),
-        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $category->main_category->image, $width, $height),
-        'viewport' => [
-          'width' => $width,
-          'height' => $height,
-          'ratio' => str_replace(':', '/', settings::get('category_image_ratio')),
-          'clipping' => strtolower(settings::get('category_image_clipping')),
-        ],
-      ];
-    }
   }
 
 // Category
@@ -228,25 +188,9 @@
     $_page->snippets['category'] = [
       'id' => $category->id,
       'name' => $category->name,
-      'image' => [],
+      'image' => $category->image ? 'storage://images/' . $category->image : '',
       'link' => document::ilink('category', ['category_id' => $category->id]),
     ];
-
-    list($width, $height) = functions::image_scale_by_width(160, settings::get('category_image_ratio'));
-
-    if (!empty($category->image)) {
-      $_page->snippets['category']['image'] = [
-        'original' => 'images/' . $category->image,
-        'thumbnail' => functions::image_thumbnail('storage://images/' . $category->image, $width, $height),
-        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $category->image, $width, $height),
-        'viewport' => [
-          'width' => $width,
-          'height' => $height,
-          'ratio' => str_replace(':', '/', settings::get('category_image_ratio')),
-          'clipping' => strtolower(settings::get('category_image_clipping')),
-        ],
-      ];
-    }
   }
 
 // Brand
@@ -255,39 +199,22 @@
     $_page->snippets['brand'] = [
       'id' => $product->brand->id,
       'name' => $product->brand->name,
-      'image' => [],
+      'image' => $product->brand->image ? 'storage://images/' . $product->brand->image : '',
       'link' => document::ilink('brand', ['brand_id' => $product->brand->id]),
     ];
-
-    if (!empty($product->brand->image)) {
-      $_page->snippets['brand']['image'] = [
-        'original' => 'images/' . $product->brand->image,
-        'thumbnail' => functions::image_thumbnail('storage://images/' . $product->brand->image, 200, 60),
-        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $product->brand->image, 400, 120),
-        'viewport' => [
-          'width' => 200,
-          'height' => 60,
-          'ratio' => '3/1',
-        ],
-      ];
-    }
   }
 
 // Stock Options
   foreach ($product->stock_options as $stock_option) {
-    $stock_option['image'] = [
-      'original' => $stock_option['image'],
-      'thumbnail' => functions::image_thumbnail('storage://images/' . $stock_option['image'], $width, $height, settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $stock_option['image'], $width*2, $height*2, settings::get('product_image_trim')),
-    ];
+    $stock_option['image'] = $stock_option['image'] ? 'storage://images/' . $stock_option['image'] : '';
     $_page->snippets['stock_options'][] = $stock_option;
   }
 
 // Stock Status
   if (!empty($product->quantity_unit['name'])) {
-    $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : language::translate('title_in_stock', 'In Stock');
+    $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity_available, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : language::translate('title_in_stock', 'In Stock');
   } else {
-    $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity) : language::translate('title_in_stock', 'In Stock');
+    $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity_available) : language::translate('title_in_stock', 'In Stock');
   }
 
 // Cheapest shipping

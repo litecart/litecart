@@ -2,7 +2,7 @@
   <a class="link" href="<?php echo functions::escape_html($link) ?>" title="<?php echo functions::escape_html($name); ?>" data-id="<?php echo $product_id; ?>" data-sku="<?php echo functions::escape_html($sku); ?>" data-name="<?php echo functions::escape_html($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>">
 
     <div class="image-wrapper">
-      <img class="image img-responsive <?php echo $image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink($image['thumbnail']); ?>" srcset="<?php echo document::href_rlink($image['thumbnail']); ?> 1x, <?php echo document::href_rlink($image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" alt="<?php echo functions::escape_html($name); ?>" />
+      <?php echo functions::draw_thumbnail($image, 200, 0, 'product', 'alt="'. functions::escape_html($name) .'"'); ?>
       <?php echo $sticker; ?>
     </div>
 

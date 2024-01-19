@@ -7,7 +7,7 @@
     <?php foreach ($products as $product) { ?>
     <div class="product">
       <a class="link" href="<?php echo functions::escape_html($product['link']); ?>" title="<?php echo functions::escape_html($product['name']); ?>">
-        <img class="thumbnail <?php echo $product['image']['viewport']['clipping']; ?> hover-light" src="<?php echo document::href_rlink($product['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink($product['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink($product['image']['thumbnail_2x']); ?> 2x" alt="" style="aspect-ratio: <?php echo $product['image']['viewport']['ratio']; ?>;" />
+        <?php echo functions::draw_thumbnail($product['image'], 64, 0, 'product', 'alt=""'); ?>
       </a>
     </div>
     <?php } ?>

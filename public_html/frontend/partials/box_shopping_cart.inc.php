@@ -10,14 +10,14 @@
   ];
 
   foreach (cart::$items as $key => $item) {
-    $item['thumbnail'] = functions::image_thumbnail('storage://images/' . $item['image'], 64, 64);
+    $item['image'] = 'storage://images/' . fallback($item['image'], 'no_image.png');
     $box_shopping_cart->snippets['items'][$key] = $item;
   }
 
   if (!empty(customer::$data['display_prices_including_tax'])) {
-    $box_shopping_cart->snippets['subtotal'] = currency::format(cart::$cart->data['subtotal'] + cart::$cart->data['subtotal_tax']);
+    $box_shopping_cart->snippets['subtotal'] = currency::format(cart::$total['value'] + cart::$total['tax']);
   } else {
-    $box_shopping_cart->snippets['subtotal'] = currency::format(cart::$cart->data['subtotal']);
+    $box_shopping_cart->snippets['subtotal'] = currency::format(cart::$total['value']);
   }
 
   echo $box_shopping_cart->render();

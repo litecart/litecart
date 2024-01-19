@@ -43,7 +43,7 @@
 
       $site_footer->snippets['modules'][$module['id']] = [
         'id' => $module['id'],
-        'icon' => functions::image_thumbnail($icon, 72, 32),
+        'icon' => $icon,
       ];
     }
 

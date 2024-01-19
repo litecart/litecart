@@ -30,18 +30,7 @@
     $box_recently_viewed_products->snippets['products'][] = [
       'id' => $product['id'],
       'name' => $product['name'],
-      'image' => [
-        'original' => 'storage://images/' . $product['image'],
-        'thumbnail' => functions::image_thumbnail('storage://images/' . $product['image'], $width, $height, settings::get('product_image_trim')),
-        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $product['image'], $width*2, $height*2, settings::get('product_image_trim')),
-        'viewport' => [
-          'width' => $width,
-          'height' => $height,
-          'ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
-          'clipping' => strtolower(settings::get('product_image_clipping')),
-        ],
-      ],
-
+      'image' => $product['image'] ? 'storage://images/' . $product['image'] : '',
       'link' => document::ilink('product', ['product_id' => $product['id']]),
     ];
     if (++$count >= settings::get('box_recently_viewed_products_num_items')) break;

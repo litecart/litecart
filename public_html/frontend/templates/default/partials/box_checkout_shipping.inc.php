@@ -18,7 +18,7 @@ input[name="shipping_option[id]"]:checked + .option::after {
         <div class="option">
           <div class="header row" style="margin: 0;">
             <div class="col-3">
-              <img class="thumbnail fit" src="<?php echo document::href_rlink(functions::image_thumbnail(FS_DIR_STORAGE . $option['icon'], 160, 80)); ?>" style="aspect-ratio: 2/1;" />
+              <?php echo functions::draw_thumbnail($option['icon'], 160, 80, 'fit'); ?>
             </div>
 
             <div class="col-9" style="align-self: center;">

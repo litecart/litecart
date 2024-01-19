@@ -1965,8 +1965,7 @@
       }
 
       if (!empty($stock_option['image'])) {
-        list($width, $height) = functions::image_scale_by_width(48, settings::get('product_image_ratio'));
-        $aliases['%image'] = '<img class="image" src="'. document::href_rlink(functions::image_thumbnail('storage://images/' . $stock_option['image'], $width, $height, 'FIT_USE_WHITESPACING')) .'" />';
+        $aliases['%image'] = functions::draw_thumbnail('storage://images/' . $stock_option['image'], 40, 0, 'product');
       }
 
       if ($stock_option['quantity_available'] > 0) {

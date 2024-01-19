@@ -47,11 +47,7 @@
       'name' => $brand->name,
       'description' => $brand->description,
       'link' => $brand->link,
-      'image' => [
-        'original' => 'storage://images/' . $brand->image,
-        'thumbnail' => functions::image_thumbnail('storage://images/' . $brand->image, 200, 75),
-        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $brand->image, 400, 150),
-      ],
+      'image' => $brand->image ? 'storage://images/' . $brand->image : '',
       'products' => [],
       'sort_alternatives' => [
         'name' => language::translate('title_name', 'Name'),

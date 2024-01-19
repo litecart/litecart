@@ -15,17 +15,13 @@
 
       $box_brand_logotypes = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_brand_logotypes.inc.php');
 
-      $box_brand_logotypes->snippets['logotypes'] = [];
+      $box_brand_logotypes->snippets['brands'] = [];
 
       while ($brand = database::fetch($brands_query)) {
-        $box_brand_logotypes->snippets['logotypes'][] = [
-          'title' => $brand['name'],
+        $box_brand_logotypes->snippets['brands'][] = [
+          'name' => $brand['name'],
           'link' => document::ilink('brand', ['brand_id' => $brand['id']]),
-          'image' => [
-            'original' => 'images/' . $brand['image'],
-            'thumbnail' => functions::image_thumbnail('storage://images/' . $brand['image'], 0, 64),
-            'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $brand['image'], 0, 128),
-          ],
+          'image' => $brand['image'] ? 'storage://images/' . $brand['image'] : '',
         ];
       }
 

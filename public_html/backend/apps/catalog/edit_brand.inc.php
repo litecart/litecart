@@ -116,7 +116,7 @@
           <div id="image">
             <?php if (!empty($brand->data['image'])) { ?>
             <div style="margin-bottom: 15px;">
-              <img class="thumbnail" src="<?php echo document::href_rlink(functions::image_thumbnail('storage://images/' . $brand->data['image'], 400, 100)); ?>" alt="" />
+            <?php echo functions::draw_thumbnail('storage://images/' . $brand->data['image'], 360, 120); ?>
             </div>
             <?php } ?>
 
@@ -215,7 +215,7 @@
         $('#image img').attr('src', e.target.result);
       };
     } else {
-      $('#image img').attr('src', '<?php echo document::href_rlink(functions::image_thumbnail('storage://images/' . $brand->data['image'], 400, 100)); ?>');
+      $('#image img').attr('src', '<?php echo functions::draw_thumbnail('storage://images/' . $brand->data['image'], 400, 100); ?>');
     }
   });
 
