@@ -138,7 +138,12 @@
         return $this;
       }
 
-      if (!$charset) $charset = $this->data['charset'];
+      if (!$charset) {
+        $charset = $this->data['charset'];
+      }
+
+    // Convert all line endings to RFC standard \r\n
+      $content = preg_replace('#\r\n?|\n#', "\r\n", $content);
 
       $this->data['multiparts'][] = [
         'headers' => [
