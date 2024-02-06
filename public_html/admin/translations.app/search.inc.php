@@ -1,11 +1,22 @@
 <?php
-  if (!isset($_GET['query'])) $_GET['query'] = '';
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['languages'])) $_GET['languages'] = array_slice(array_keys(language::$languages), 0, 2);
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+    $_GET['page'] = 1;
+  }
+
+  if (!isset($_GET['query'])) {
+    $_GET['query'] = '';
+  }
+
+  if (empty($_GET['languages'])) {
+    $_GET['languages'] = array_slice(array_keys(language::$languages), 0, 2);
+  }
 
   if (!empty($_GET['languages'])) {
     foreach (array_keys($_GET['languages']) as $key) {
-      if (!in_array($_GET['languages'][$key], array_keys(language::$languages))) unset($_GET['languages'][$key]);
+      if (!in_array($_GET['languages'][$key], array_keys(language::$languages))) {
+        unset($_GET['languages'][$key]);
+      }
     }
   }
 
@@ -80,7 +91,9 @@
     order by date_updated desc;"
   );
 
-  if ($_GET['page'] > 1) database::seek($translations_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
+  if ($_GET['page'] > 1) {
+    database::seek($translations_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
+  }
 
   $page_items = 0;
   while ($translation = database::fetch($translations_query)) {

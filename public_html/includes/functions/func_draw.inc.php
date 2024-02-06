@@ -200,7 +200,9 @@
 
     if ($pages < 2) return false;
 
-    if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) $_GET['page'] = 1;
+    if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+    $_GET['page'] = 1;
+  }
 
     if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']-1]) .'" />';
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]) .'" />';

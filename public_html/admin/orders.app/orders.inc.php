@@ -1,8 +1,16 @@
 <?php
 
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
-  if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
-  if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
+  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+    $_GET['page'] = 1;
+  }
+
+  if (!isset($_GET['order_status_id'])) {
+    $_GET['order_status_id'] = '';
+  }
+
+  if (empty($_GET['sort'])) {
+    $_GET['sort'] = 'date_created';
+  }
 
   document::$snippets['title'][] = language::translate('title_orders', 'Orders');
 

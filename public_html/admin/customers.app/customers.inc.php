@@ -1,6 +1,12 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+    $_GET['page'] = 1;
+  }
+
+  if (empty($_GET['sort'])) {
+    $_GET['sort'] = 'date_created';
+  }
 
   document::$snippets['title'][] = language::translate('title_customers', 'Customers');
 
