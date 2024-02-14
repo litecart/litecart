@@ -19,7 +19,7 @@
 
       header('X-Frame-Options: SAMEORIGIN'); // Clickjacking Protection
       header('Content-Security-Policy: frame-ancestors \'self\';'); // Clickjacking Protection
-      header('Access-Control-Allow-Origin: '. self::ilink('')); // Only allow HTTP POST data data from own domain
+      header('Access-Control-Allow-Origin: '. self::ilink('')); // Only allow HTTP POST data from own domain
       header('X-Powered-By: '. PLATFORM_NAME);
 
     // Set template
@@ -92,9 +92,11 @@
 
     // Schema
       if (!empty(self::$schema)) {
-        self::$snippets['head_tags']['schema_json'] = '<script type="application/ld+json">'
-                                                    . json_encode(self::$schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
-                                                    . '</script>';
+        self::$snippets['head_tags']['schema_json'] = implode(PHP_EOL, [
+          '<script type="application/ld+json">',
+          json_encode(self::$schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+          '</script>',
+        ]);
       }
 
     // JavaScript Environment

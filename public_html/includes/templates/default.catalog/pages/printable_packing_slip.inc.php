@@ -117,7 +117,7 @@ h1 {
       <tbody>
         <?php foreach ($order['items'] as $item) { ?>
         <tr>
-          <td><?php echo (float)$item['quantity']; ?></td>
+          <td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
           <td><?php echo $item['sku']; ?></td>
           <td style="white-space: normal;"><?php echo $item['name']; ?>
 <?php

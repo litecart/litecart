@@ -9,16 +9,18 @@ h1 {
   border: none;
 }
 
-.addresses .row > :not(.billing-address) {
-  margin-top: 4mm;
+.addresses .row {
+  margin-bottom: 8mm;
+}
+.addresses .billing-address {
+  margin-top: -4mm;
 }
 
-.billing-address .rounded-rectangle {
+.rounded-rectangle {
   border: 1px solid #000;
   border-radius: 5mm;
   padding: 4mm;
   margin-inline-start: -15px;
-  margin-bottom: 3mm;
 }
 .billing-address .value {
   margin: 0 !important;
@@ -27,7 +29,9 @@ h1 {
 .items tr th:last-child, .order-total tr td:last-child {
   width: 30mm;
 }
-
+hr {
+  margin: 0 0 2.5mm 0;
+}
 .page .label {
   font-weight: bold;
   margin-bottom: 3pt;
@@ -38,7 +42,6 @@ h1 {
 .page .footer .row {
   margin-bottom: 0;
 }
-*/
 
 @media print {
   button[name="print"] {
@@ -89,9 +92,6 @@ h1 {
         <div class="col-xs-3">
           <div class="label"><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></div>
           <div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_class'])  : '-'; ?></div>
-
-          <div class="label"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></div>
-          <div class="value"><?php echo functions::escape_html($order['customer']['tax_id']); ?></div>
         </div>
 
         <div class="col-xs-6 billing-address">
@@ -103,8 +103,9 @@ h1 {
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-xs-6">
+    <div class="row" style="margin-bottom: 4mm;">
+
+      <div class="col-xs-3">
         <div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
         <div class="value"><?php echo !empty($order['shipping_option']['name']) ? $order['shipping_option']['name'] : '-'; ?></div>
 
@@ -112,12 +113,29 @@ h1 {
         <div class="value"><?php echo !empty($order['shipping_tracking_id']) ? $order['shipping_tracking_id'] : '-'; ?></div>
       </div>
 
-      <div class="col-xs-6">
+      <div class="col-xs-3">
         <div class="label"><?php echo language::translate('title_payment_option', 'Payment Option'); ?></div>
         <div class="value"><?php echo !empty($order['payment_option']['name']) ? $order['payment_option']['name'] : '-'; ?></div>
 
         <div class="label"><?php echo language::translate('title_transaction_number', 'Transaction Number'); ?></div>
         <div class="value"><?php echo !empty($order['payment_transaction_id']) ? $order['payment_transaction_id'] : '-'; ?></div>
+      </div>
+
+      <div class="col-xs-6">
+        <div class="label"><?php echo language::translate('title_email', 'Email Address'); ?></div>
+        <div class="value"><?php echo $order['customer']['email']; ?></div>
+
+        <div class="row" style="margin-bottom: 0;">
+          <div class="col-md-6">
+            <div class="label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
+            <div class="value"><?php echo $order['customer']['phone']; ?></div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="label"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></div>
+            <div class="value"><?php echo !empty($order['customer']['tax_id']) ? functions::escape_html($order['customer']['tax_id']) : '-'; ?></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -158,8 +176,8 @@ h1 {
     }
 ?>
           </td>
-          <td><?php echo (float)$item['quantity']; ?></td>
-          <td class="text-end"><?php echo currency::format($item['price'] + $item['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
+          <td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
+          <td class="text-end"><?php echo currency::format(($order['display_prices_including_tax'] ? $item['price'] + $item['tax'] : $item['price']), false, $order['currency_code'], $order['currency_value']); ?></td>
           <?php if ($order['tax_total']) { ?>
           <td class="text-end"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo ($item['price'] != 0 && $item['tax'] != 0) ? round($item['tax'] / $item['price'] * 100) : '0'; ?> %)</td>
           <?php } ?>
@@ -227,6 +245,7 @@ h1 {
       <div class="col-xs-3">
       </div>
     </div>
+
   </footer>
   <?php } ?>
 </section>
