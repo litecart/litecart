@@ -683,6 +683,10 @@ body.scrolling-down #site-menu {
 #box-product .stock-notice:empty {
   display: none;
 }
+#box-product .stock-notice.notice {
+  color: #e58310;
+  border-color: #e58310;
+}
 #box-product .stock-notice.warning {
   color: #c00;
   border-color: #c00;
