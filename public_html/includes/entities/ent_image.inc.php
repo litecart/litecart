@@ -818,7 +818,7 @@
               ImageFill($_background, 0, 0, ImageColorAllocateAlpha($_background, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 0));
               ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, false);
-              $result = ImageJPEG($_background, $destination, $quality);
+              $result = ImageJPEG($_background, $destination, (int)$quality);
               ImageDestroy($this->_image);
               ImageDestroy($_background);
               return $result;
@@ -834,7 +834,7 @@
                 return $this->write(preg_replace('#\.webp$#', '.jpg', $destination), $quality, $interlaced);
               }
               ImageSaveAlpha($this->_image, true);
-              $result = ImageWebP($this->_image, $destination, $quality);
+              $result = ImageWebP($this->_image, $destination, (int)$quality);
               ImageDestroy($this->_image);
               return $result;
 
@@ -888,7 +888,7 @@
               ImageFill($_background, 0, 0, ImageColorAllocateAlpha($_background, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 0));
               ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, false);
-              $result = ImageJPEG($_background, false, $quality);
+              $result = ImageJPEG($_background, false, (int)$quality);
               ImageDestroy($this->_image);
               ImageDestroy($_background);
               return $result;
@@ -904,7 +904,7 @@
                 return $this->output($type, $quality, $interlaced);
               }
               ImageSaveAlpha($this->_image, true);
-              $result = ImageWebP($this->_image, false, $quality);
+              $result = ImageWebP($this->_image, false, (int)$quality);
               ImageDestroy($this->_image);
               return $result;
 
