@@ -5,7 +5,7 @@
 
   customer::require_login();
 
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
     $_GET['page'] = 1;
   }
 
@@ -28,9 +28,9 @@
     left join (
       select si.id, count(oi.id) as num_downloads
       from ". DB_TABLE_PREFIX ."orders_items oi
-      left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
+      left join ". DB_TABLE_PREFIX ."products_stock_options pso on (pso.id = oi.stock_option_id)
       where si.file
-    ) si on (si.id = oi.stock_item_id)
+    ) si on (pso.id = oi.stock_option_id)
     where o.customer_id = ". (int)customer::$data['id'] ."
     and os.hidden != 0
     order by o.date_created desc;"

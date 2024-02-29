@@ -1,6 +1,6 @@
 <?php
 
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
     $_GET['page'] = 1;
   }
 
@@ -96,7 +96,7 @@
 
   $dock_options = [
     '' => '-- '. language::translate('title_all', 'All') .' --',
-    'menu' => language::translate('title_store_menu', 'Store Menu'),
+    'menu' => language::translate('title_site_menu', 'Site Menu'),
     'information' => language::translate('title_information', 'Information'),
   ];
 ?>

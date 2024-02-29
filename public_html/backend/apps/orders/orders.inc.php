@@ -1,6 +1,6 @@
 <?php
 
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
     $_GET['page'] = 1;
   }
 
@@ -106,11 +106,11 @@
   if (!empty($_GET['query'])) {
     $sql_where_query = [
       "o.id = '". database::input($_GET['query']) ."'",
-      "o.no like '%". database::input($_GET['query']) ."'%",
+      "o.no like '%". database::input($_GET['query']) ."%'",
       "o.reference like '%". database::input($_GET['query']) ."%'",
       "o.customer_email like '%". database::input($_GET['query']) ."%'",
-      "o.customer_tax_id like '%". database::input($_GET['query']) ."%'",
-      "concat(o.customer_company, '\\n', o.customer_firstname, ' ', o.customer_lastname, '\\n', o.customer_address1, '\\n', o.customer_address2, '\\n', o.customer_postcode, '\\n', o.customer_city) like '%". database::input($_GET['query']) ."%'",
+      "o.billing_tax_id like '%". database::input($_GET['query']) ."%'",
+      "concat(o.billing_company, '\\n', o.billing_firstname, ' ', o.billing_lastname, '\\n', o.billing_address1, '\\n', o.billing_address2, '\\n', o.billing_postcode, '\\n', o.billing_city) like '%". database::input($_GET['query']) ."%'",
       "concat(o.shipping_company, '\\n', o.shipping_firstname, ' ', o.shipping_lastname, '\\n', o.shipping_address1, '\\n', o.shipping_address2, '\\n', o.shipping_postcode, '\\n', o.shipping_city) like '%". database::input($_GET['query']) ."%'",
       "o.payment_option_id like '%". database::input($_GET['query']) ."%'",
       "o.payment_option_name like '%". database::input($_GET['query']) ."%'",
@@ -131,10 +131,10 @@
       $sql_sort = "o.starred desc, o.id desc";
       break;
     case 'country':
-      $sql_sort = "o.starred desc, o.customer_country_code";
+      $sql_sort = "o.starred desc, o.billing_country_code";
       break;
     case 'customer':
-      $sql_sort = "o.starred desc, if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) asc";
+      $sql_sort = "o.starred desc, if(o.billing_company, o.billing_company, concat(o.billing_firstname, ' ', o.billing_lastname)) asc";
       break;
     case 'order_status':
       $sql_sort = "o.starred desc, field(os.state,'created','on_hold','ready','delayed','processing','dispatched','in_transit','completed','delivered','returning','returned','cancelled'), osi.name";
@@ -280,8 +280,8 @@ table .fa-star:hover {
 
   <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
-      <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
       <?php echo functions::form_select_optgroup('order_status_id', $order_status_options, true, 'style="width: auto;"'); ?>
+      <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
       <div class="input-group" style="max-width: 380px;">
         <?php echo functions::form_input_date('date_from', true); ?>
         <span class="input-group-text"> - </span>
@@ -304,9 +304,9 @@ table .fa-star:hover {
           <th data-sort="country"><?php echo language::translate('title_country', 'Country'); ?></th>
           <th data-sort="payment_method"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
           <th data-sort="order_status"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
-          <th class="text-center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
           <th><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
-          <th data-sort="date_created"><?php echo language::translate('title_date', 'Date'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
+          <th class="text-end" data-sort="date_created"><?php echo language::translate('title_date', 'Date'); ?></th>
           <th></th>
         </tr>
       </thead>
@@ -322,8 +322,8 @@ table .fa-star:hover {
           <td><?php if (!empty($order['billing_country_code'])) echo reference::country($order['billing_country_code'])->name; ?></td>
           <td><?php echo $order['payment_option_name']; ?></td>
           <td><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
-          <td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
           <td class="text-center"><?php if (!is_null($order['sufficient_stock'])) echo $order['sufficient_stock'] ? functions::draw_fonticon('fa-check', 'style="color: #88cc44;"') : functions::draw_fonticon('fa-times', 'style="color: #ff6644;"'); ?></td>
+          <td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
           <td>
             <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="<?php echo language::translate('title_packing_slip', 'Packing Slip'); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>

@@ -1,6 +1,6 @@
 <?php
 
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
     $_GET['page'] = 1;
   }
   if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
@@ -33,8 +33,8 @@
       "sc.id = '". database::input($_GET['query']) ."'",
       "sc.uid = '". database::input($_GET['query']) ."'",
       "sc.customer_email like '%". database::input($_GET['query']) ."%'",
-      "sc.customer_tax_id like '%". database::input($_GET['query']) ."%'",
-      "concat(sc.customer_company, '\\n', sc.customer_firstname, ' ', sc.customer_lastname, '\\n', sc.customer_address1, '\\n', sc.customer_address2, '\\n', sc.customer_postcode, '\\n', sc.customer_city) like '%". database::input($_GET['query']) ."%'",
+      "sc.billing_tax_id like '%". database::input($_GET['query']) ."%'",
+      "concat(sc.billing_company, '\\n', sc.billing_firstname, ' ', sc.billing_lastname, '\\n', sc.billing_address1, '\\n', sc.billing_address2, '\\n', sc.billing_postcode, '\\n', sc.billing_city) like '%". database::input($_GET['query']) ."%'",
       "concat(sc.shipping_company, '\\n', sc.shipping_firstname, ' ', sc.shipping_lastname, '\\n', sc.shipping_address1, '\\n', sc.shipping_address2, '\\n', sc.shipping_postcode, '\\n', sc.shipping_city) like '%". database::input($_GET['query']) ."%'",
       "sc.id in (
         select cart_id from ". DB_TABLE_PREFIX ."shopping_carts_items
@@ -49,7 +49,7 @@
       $sql_sort = "sc.id desc";
       break;
     case 'country':
-      $sql_sort = "sc.customer_country_code";
+      $sql_sort = "sc.billing_country_code";
       break;
     default:
       $sql_sort = "sc.date_created desc, sc.id desc";
@@ -109,8 +109,8 @@
         <tr>
           <td><?php echo functions::form_input_checkbox('shopping_carts['.$shopping_cart['id'].']', $shopping_cart['id'], true); ?></td>
           <td><?php echo $shopping_cart['id']; ?></td>
-          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_shopping_cart', ['cart_id' => $shopping_cart['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo ($shopping_cart['customer_company']) ? $shopping_cart['customer_company'] : $shopping_cart['customer_firstname'] .' '. $shopping_cart['customer_lastname']; ?><?php if (empty($shopping_cart['customer_id'])) echo ' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></a> <span style="opacity: 0.5;"><?php echo $shopping_cart['customer_tax_id']; ?></span></td>
-          <td><?php if (!empty($shopping_cart['customer_country_code'])) echo reference::country($shopping_cart['customer_country_code'])->name; ?></td>
+          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_shopping_cart', ['cart_id' => $shopping_cart['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo ($shopping_cart['billing_company']) ? $shopping_cart['billing_company'] : $shopping_cart['billing_firstname'] .' '. $shopping_cart['billing_lastname']; ?><?php if (empty($shopping_cart['customer_id'])) echo ' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></a> <span style="opacity: 0.5;"><?php echo $shopping_cart['billing_tax_id']; ?></span></td>
+          <td><?php if (!empty($shopping_cart['billing_country_code'])) echo reference::country($shopping_cart['billing_country_code'])->name; ?></td>
           <td class="text-end"><?php echo $shopping_cart['num_items']; ?></td>
           <td class="text-end"><?php echo currency::format($shopping_cart['subtotal'], false, $shopping_cart['currency_code']); ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($shopping_cart['date_created'])); ?></td>

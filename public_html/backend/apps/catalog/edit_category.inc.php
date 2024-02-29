@@ -106,6 +106,8 @@
     [language::translate('title_rows', 'Rows'), 'rows'],
   ];
 
+  functions::draw_lightbox();
+
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -339,7 +341,7 @@
         $('#image img').attr('src', e.target.result);
       };
     } else {
-      $('#image img').attr('src', '<?php echo document::rlink(FS_DIR_STORAGE . $thumbnail); ?>');
+      $('#image img').attr('src', '<?php echo document::rlink(functions::image_thumbnail(FS_DIR_STORAGE . $category->data['image'], 480, 0)); ?>');
     }
   });
 
