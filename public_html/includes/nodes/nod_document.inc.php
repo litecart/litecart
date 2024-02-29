@@ -59,7 +59,7 @@
       ]);
       self::$head_tags['manifest'] = '<link rel="manifest" href="'. self::href_ilink('manifest.json') .'">'; // No namespace as relative to endpoint
       self::$head_tags['fontawesome'] = '<link rel="stylesheet" href="'. self::href_rlink('app://assets/fontawesome/font-awesome.min.css') .'">';
-      self::$foot_tags['jquery'] = '<script src="'. self::href_rlink('app://assets/jquery/jquery-3.7.1.min.js') .'"></script>';
+      self::$foot_tags['jquery'] = '<script src="'. self::href_rlink('app://assets/jquery/jquery-4.0.0.min.js') .'"></script>';
 
     // Hreflang
       if (!empty(route::$selected['resource']) && !preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'#', route::$request)) {
@@ -223,9 +223,11 @@
       if (!empty($javascript)) {
         $javascript = implode(PHP_EOL, [
           '<script>',
-          //. '<!--/*--><![CDATA[/*><!--*/', // Do we still need bypassing in 2023?
+          //'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from bypassing in 2024?
+          //'$(document).ready(function() {',
           implode(PHP_EOL . PHP_EOL, $javascript),
-          //. '/*]]>*/-->',
+          //'});',
+          //'/*]]>*/-->',
           '</script>',
         ]) . PHP_EOL;
 
@@ -243,10 +245,12 @@
           $m[0] = html_entity_decode($m[0]);
 
           switch ($matches[1][$key]) {
+
             case 'link':
               if (!preg_match('#stylesheet#', $m[0])) continue 2;
               $preloads[$m[0]] = 'style';
               break;
+
             case 'script':
               $preloads[$m[0]] = 'script';
               break;
@@ -283,13 +287,10 @@
 
       $_page->snippets = array_merge(self::$snippets, [
         'head_tags' => self::$head_tags,
-        'style' => self::$style,
         'breadcrumbs' => breadcrumbs::render(),
         'notices' => notices::render(),
         'content' => self::$content,
         'foot_tags' => self::$foot_tags,
-        'javascript' => self::$javascript,
-        'important_notice' => settings::get('important_notice'),
       ]);
 
       // Prepare title
@@ -347,19 +348,21 @@
     }
 
     public static function add_head_tags($tags, $key=null) {
+
       if (is_array($tags)) {
-        self::$head_tags[$key] = implode(PHP_EOL, $tags);
-      } else{
-        self::$head_tags[$key] = $tags;
+        $tags = implode(PHP_EOL, $tags);
       }
+
+      self::$head_tags[$key] = $tags;
     }
 
     public static function add_foot_tags($tags, $key=null) {
+
       if (is_array($tags)) {
-        self::$foot_tags[$key] = implode(PHP_EOL, $tags);
-      } else{
-        self::$foot_tags[$key] = $tags;
+        $tags = implode(PHP_EOL, $tags);
       }
+
+      self::$foot_tags[$key] = $tags;
     }
 
     public static function load_style($urls, $key=null) {
@@ -432,7 +435,7 @@
 
     public static function link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
 
-      if (empty($path)) {
+      if (!$path) {
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
         if ($inherit_params === null) {
@@ -453,7 +456,7 @@
 
     public static function rlink($resource) {
 
-      if (empty($resource) || !is_file($resource)) {
+      if (!$resource || !is_file($resource)) {
         return self::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource));
       }
 
