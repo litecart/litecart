@@ -4,10 +4,17 @@ body {
 body.has-offcanvas {
   overflow: hidden;
 }
-#page-container {
+#page {
   min-height: 100vh;
   display: flex;
   flex-flow: column;
+}
+#page > header,
+#page > footer {
+  flex-shrink: 0;
+}
+#page > main {
+  flex-grow: 1;
 }
 #content-wrapper {
   flex-grow: 1;
@@ -262,7 +269,8 @@ body.scrolling-down #site-navigation {
   filter: brightness(0.85);
 }
 #copyright {
-  background: var(--copyright-background-color);
+  font-size: 0.8em;
+  margin: 2em 0;
   color: var(--copyright-text-color);
 }
 #copyright .container {
@@ -700,7 +708,7 @@ body.scrolling-down #site-navigation {
   margin-top: 1em;
 }
 #box-product .social-bookmarks a {
-  margin: 0 0.25em;
+  margin: 0 0.125em;
 }
 #box-product .description p:first-child {
   margin-top: 0;

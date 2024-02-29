@@ -5,10 +5,16 @@ body {
   }
 }
 
-#page-container {
+#page {
   min-height: 100vh;
   display: flex;
   flex-flow: column;
+  > header, > footer {
+    flex-shrink: 0;
+  }
+  > main {
+    flex-grow: 1;
+  }
 }
 #content-wrapper {
   flex-grow: 1;
@@ -264,7 +270,9 @@ body.scrolling-down #site-navigation {
 }
 
 #copyright {
-  background: var(--copyright-background-color);
+  //background: var(--copyright-background-color);
+  font-size: .8em;
+  margin: 2em 0;
   color: var(--copyright-text-color);
   .container {
     padding: .75em var(--gutter-x);

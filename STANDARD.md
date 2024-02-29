@@ -116,27 +116,21 @@
 
 ## Indentation
 
-  Committed code should use an indentation of 2 blankspace characters. This is supported by .editorconfig.
-  Make sure your code editor has enabled support for .editorconfig. See https://editorconfig.org/
+  Committed code should use an indentation of 1 tab characters. Indentation will be automatically handled if your editor has support for [.editorconfig](https://editorconfig.org/). If you would like to render a different the tab width this can be set in indent_size = 2.
 
-  Incorrect (using TABs):
+  Incorrect (using multiple spaces):
 
     Level 1
     	Level 2
     		Level 3
     			Level 4
 
-  Correct (using spaces):
+  Correct (using TABs):
 
     Level 1
       Level 2
         Level 3
           Level 4
-
-  The indentation of comments is subtracted one level, sticking out like bookmarks in a book:
-
-    // This is a comment
-      echo 'Hello World!';
 
   Code is immediately indented after opening a PHP tag:
 
@@ -144,6 +138,18 @@
       ...
     ?>
 
+## Code Commenting
+
+  We use two types of code commenting. Chapters and line describers.
+
+      # Chapter Comment
+
+      // Line describing comment
+      echo 'Hello World!';
+
+      $array = [
+        'foo' => 'bar', // Describer
+      ];
 
 ## PHP Tags
 

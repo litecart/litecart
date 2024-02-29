@@ -225,7 +225,7 @@
             <tbody>
               <?php foreach ($errors as $error) { ?>
               <tr>
-                <td><?php echo functions::form_checkbox('errors[]', $error['error'], !empty($_POST['parse']) ? 'disabled' : ''); ?></td>
+                <td><?php echo functions::form_input_checkbox('errors[]', $error['error'], !empty($_POST['parse']) ? 'disabled' : ''); ?></td>
                 <td style="white-space: normal;"><?php echo $error['error']; ?><br />
                   <div class="backtrace">
                     <?php echo nl2br(functions::escape_html($error['backtrace'])); ?>

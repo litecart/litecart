@@ -1,8 +1,7 @@
 /* Input Fields & Input Groups - Bootstrap Compatible */
 
 .input-field() {
-  //padding: ~"calc(var(--input-padding-y) + 1px)" ~"calc(var(--input-padding-x) + 1px)";
-  padding: .75em 1.5em;
+  padding: var(--input-padding-y) var(--input-padding-x);
   position: relative;
   color: var(--input-text-color);
   background: var(--input-background-color);
@@ -355,16 +354,16 @@ input[data-toggle="tags"] + .form-input {
     flex-wrap: wrap;
     list-style: none;
     padding: 0;
-    margin: ~"calc(0em - var(--input-padding-y))" ~"calc(0em - var(--input-padding-x))"  ;
+    margin: -.5em;
     cursor: text;
+    font-size: .8em;
   }
   .tag {
-    background: #ccc;
-    padding: .25em;
-    margin: var(--input-padding-y) var(--input-padding-x);
+    background: rgba(0,0,0,.10);
+    padding: 0.25em 0.5em;
+    margin: .25em;
     border-radius: .25em;
     cursor: default;
-    padding: var(--input-padding-y) var(--input-padding-x);
     .remove {
       background: #999;
       border-radius: .25em;
@@ -377,6 +376,6 @@ input[data-toggle="tags"] + .form-input {
     background: transparent;
     border: none;
     outline: none;
-    padding: var(--input-padding-y) var(--input-padding-x);
+    padding: .5em .5em;
   }
 }

@@ -1,6 +1,6 @@
 <?php
 
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) {
+  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
     $_GET['page'] = 1;
   }
 
@@ -132,7 +132,7 @@
         + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
         + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
         + if (p.id in (
-          select product_id from ". DB_TABLE_PREFIX ."products_to_stock_items
+          select product_id from ". DB_TABLE_PREFIX ."products_stock_options
           where stock_item_id in (
             select id from ". DB_TABLE_PREFIX ."stock_items
             where sku regexp '". database::input($code_regex) ."'
@@ -146,7 +146,7 @@
 
 // Table Rows, Total Number of Rows, Total Number of Pages
   $products = database::query(
-    "select p.id, p.status, p.code, pi.name, p.image, pp.price, ptsi.num_stock_items, ptsi.quantity, ptsi.quantity - oi.total_reserved as quantity_available, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, p.date_created". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
+    "select p.id, p.status, p.code, pi.name, p.image, pp.price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, p.date_created". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
 
     from ". DB_TABLE_PREFIX ."products p
     left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
@@ -159,11 +159,11 @@
     ) pp on (pp.product_id = p.id)
 
     left join (
-      select ptsi.product_id, ptsi.stock_item_id, count(ptsi.stock_item_id) as num_stock_items, sum(si.quantity) as quantity
-      from ". DB_TABLE_PREFIX ."products_to_stock_items ptsi
-      left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = ptsi.stock_item_id)
-      group by ptsi.product_id
-    ) ptsi on (ptsi.product_id = p.id)
+      select pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as quantity
+      from ". DB_TABLE_PREFIX ."products_stock_options pso
+      left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+      group by pso.product_id
+    ) pso on (pso.product_id = p.id)
 
     left join (
       select oi.stock_item_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
@@ -173,7 +173,7 @@
         where stock_action = 'reserve'
       )
       group by oi.stock_item_id
-    ) oi on (oi.stock_item_id = ptsi.stock_item_id)
+    ) oi on (oi.stock_item_id = pso.stock_item_id)
 
     where p.id
     ". (!empty($_GET['category_id']) ? "and p.id in (
@@ -198,7 +198,7 @@
         throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to']))]));
       }
 
-      if ($product['num_stock_items'] && $product['quantity'] <= 0) {
+      if ($product['num_stock_options'] && $product['quantity'] <= 0) {
         throw new Exception(language::translate('text_product_is_out_of_stock', 'The product is out of stock'));
       }
 
@@ -233,7 +233,7 @@ table .thumbnail {
   <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
       <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink(null, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
-      <div style="min-width: 300px;"><?php echo functions::form_category_field('category_id', true); ?></div>
+      <div style="min-width: 300px;"><?php echo functions::form_select_category('category_id', true); ?></div>
       <div><?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
   <?php echo functions::form_end(); ?>
@@ -247,9 +247,9 @@ table .thumbnail {
           <th></th>
           <th></th>
           <th class="text-center"><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th style="min-width: 64px;"></th>
-          <th><?php echo language::translate('title_code', 'Code'); ?></th>
+          <th style="min-width: 52px;"></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_code', 'Code'); ?></th>
           <th><?php echo language::translate('title_stock_options', 'Stock Options'); ?></th>
           <th class="text-end"><?php echo language::translate('title_created', 'Created'); ?></th>
           <th></th>
@@ -258,16 +258,14 @@ table .thumbnail {
 
       <tbody>
         <?php foreach ($products as $product) { ?>
-        <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : ''; ?>">
+        <tr class="<?php if (empty($product['status'])) echo 'semi-transparent'; ?>">
           <td><?php echo functions::form_input_checkbox('products[]', $product['id']); ?></td>
           <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
-          <td class="warning"><?php echo !empty($product['warning']) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($product['warning']) .'"') : ''; ?></td>
+          <td class="warning"><?php if (!empty($product['warning'])) echo functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($product['warning']) .'"'); ?></td>
           <td class="text-center"><?php echo $product['id']; ?></td>
-          <td><img class="thumbnail" src="<?php echo document::href_rlink(functions::image_thumbnail('storage://images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, 'FIT_USE_WHITESPACING')); ?>" alt="" /></td>
-          <td><?php echo $product['code']; ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name'] ? $product['name'] : '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
-          <td class="text-center"><?php echo $product['num_stock_items']; ?></td>
+          <td><?php echo functions::draw_thumbnail('storage://images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, settings::get('product_image_clipping')); ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name'] ? $product['name'] : '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
+          <td><?php echo $product['code']; ?></td>
           <td class="text-center"><?php echo $product['num_stock_options']; ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($product['date_created'])); ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id'], 'redirect_url' => document::link()]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>

@@ -78,7 +78,7 @@
       }
     }
 
-    return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="thumbnail '. functions::escape_html($clipping) .'"' : '') .' src="'. document::href_rlink($thumbnail) .'" srcset="1x '. document::href_rlink($thumbnail) .', 2x '. document::href_rlink($thumbnail_2x) .'"'. ($parameters ? ' '. $parameters : '') .' />';
+    return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="thumbnail '. functions::escape_html($clipping) .'"' : '') .' src="'. document::href_rlink($thumbnail) .'" srcset="'. document::href_rlink($thumbnail) .' 1x, '. document::href_rlink($thumbnail_2x) .' 2x"'. ($parameters ? ' '. $parameters : '') .'>';
   }
 
   function draw_banner($keywords) {

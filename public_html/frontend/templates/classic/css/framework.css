@@ -1339,14 +1339,21 @@ textarea.form-input {
   background: var(--default-background-color);
 }
 .form-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  position: relative;
+  color: var(--default-text-color);
+  background: var(--input-background-color);
+  border: 1px solid var(--default-border-color);
+  border-radius: var(--input-border-radius);
+  display: block;
+  width: 100%;
+  min-width: 1px;
+  padding: var(--input-padding-y) var(--input-padding-x);
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 1em center;
   background-size: 0.8em;
   padding-inline-end: 2.5em !important;
+  appearance: none;
 }
 .form-select.multiple {
   padding: 0;

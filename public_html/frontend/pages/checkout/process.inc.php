@@ -114,8 +114,7 @@
   $order->shipping->after_process($order);
   $order->payment->after_process($order);
 
-  $order_process = new mod_order();
-  $order_process->after_process($order);
+  $order_modules->after_process($order);
 
   header('Location: '. document::ilink('checkout/success', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]));
   exit;

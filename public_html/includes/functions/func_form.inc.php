@@ -345,8 +345,8 @@
 
 
     return '<div class="input-group">' . PHP_EOL
-         . '  ' . form_input_decimal($name, $input, $currency['decimals'], 'step="any" data-type="currency"') . PHP_EOL
          . '  <strong class="input-group-text" style="opacity: 0.75; font-family: monospace;">'. functions::escape_html($currency['code']) .'</strong>' . PHP_EOL
+         . '  ' . form_input_decimal($name, $input, $currency['decimals'], 'step="any" data-type="currency"') . PHP_EOL
          . '</div>';
   }
 
@@ -1734,7 +1734,7 @@
 
     $collations_query = database::query(
       "select * from information_schema.COLLATIONS
-      where CHARACTER_SET_NAME = '". database::input(DB_CONNECTION_CHARSET) ."'
+      where CHARACTER_SET_NAME = 'utf8mb4'
       order by COLLATION_NAME;"
     );
 

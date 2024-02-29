@@ -69,8 +69,6 @@
 
   try {
 
-    define('DB_CONNECTION_CHARSET', 'utf8mb4');
-
     register_shutdown_function(function(){
       $buffer = ob_get_clean();
       echo (php_sapi_name() == 'cli') ? strip_tags($buffer) : $buffer;

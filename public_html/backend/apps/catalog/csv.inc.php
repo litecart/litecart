@@ -129,6 +129,14 @@
 
               break;
 
+            case 'product_stock_options':
+
+              database::multi_query(implode(PHP_EOL, [
+                "truncate ". DB_TABLE_PREFIX ."product_stock_options;",
+              ]));
+
+              break;
+
             case 'suppliers':
 
               database::multi_query(implode(PHP_EOL, [
@@ -194,13 +202,26 @@
           case 'attributes':
 
           // Find attribute group
-            if (!empty($row['group_id']) && ($attribute_group = database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where id = ". (int)$row['group_id'] ." limit 1;")->fetch())) {
+            if (!empty($row['group_id']) && $attribute_group = database::query(
+              "select id from ". DB_TABLE_PREFIX ."attribute_groups
+              where id = ". (int)$row['group_id'] ."
+              limit 1;"
+            )->fetch()) {
               $attribute_group = new ent_attribute_group($attribute_group['id']);
 
-            } elseif (!empty($row['code']) && $attribute_group = database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where code = '". database::input($row['code']) ."' limit 1;")->fetch()) {
+            } elseif (!empty($row['code']) && $attribute_group = database::query(
+              "select id from ". DB_TABLE_PREFIX ."attribute_groups
+              where code = '". database::input($row['code']) ."'
+              limit 1;"
+            )->fetch()) {
               $attribute_group = new ent_attribute_group($attribute_group['id']);
 
-            } elseif (!empty($row['group_name']) && $attribute_group = database::query("select group_id as id from ". DB_TABLE_PREFIX ."attribute_groups_info where name = '". database::input($row['group_name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;")->fetch()) {
+            } elseif (!empty($row['group_name']) && $attribute_group = database::query(
+              "select group_id as id from ". DB_TABLE_PREFIX ."attribute_groups_info
+              where name = '". database::input($row['group_name']) ."'
+              and language_code = '". database::input($row['language_code']) ."'
+              limit 1;"
+            )->fetch()) {
               $attribute_group = new ent_attribute_group($attribute_group['id']);
             }
 
@@ -349,10 +370,18 @@
           case 'categories':
 
           // Find category
-            if (!empty($row['id']) && $category = database::query("select id from ". DB_TABLE_PREFIX ."categories where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
+            if (!empty($row['id']) && $category = database::query(
+              "select id from ". DB_TABLE_PREFIX ."categories
+              where id = ". (int)$row['id'] ."
+              limit 1;"
+            )->fetch()) {
               $category = new ent_category($category['id']);
 
-            } elseif (!empty($row['code']) && $category = database::query("select id from ". DB_TABLE_PREFIX ."categories where code = '". database::input($row['code']) ."' limit 1;")->fetch()) {
+            } elseif (!empty($row['code']) && $category = database::query(
+              "select id from ". DB_TABLE_PREFIX ."categories
+              where code = '". database::input($row['code']) ."'
+              limit 1;"
+            )->fetch()) {
               $category = new ent_category($category['id']);
 
             }
@@ -450,13 +479,25 @@
           case 'brands':
 
           // Find brand
-            if (!empty($row['id']) && $brand = database::query("select id from ". DB_TABLE_PREFIX ."brands where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
+            if (!empty($row['id']) && $brand = database::query(
+              "select id from ". DB_TABLE_PREFIX ."brands
+              where id = ". (int)$row['id'] ."
+              limit 1;"
+            )->fetch()) {
               $brand = new ent_brand($brand['id']);
 
-            } else if (!empty($row['code']) && $brand = database::query("select id from ". DB_TABLE_PREFIX ."brands where code = '". database::input($row['code']) ."' limit 1;")->fetch()) {
+            } else if (!empty($row['code']) && $brand = database::query(
+              "select id from ". DB_TABLE_PREFIX ."brands
+              where code = '". database::input($row['code']) ."'
+              limit 1;"
+            )->fetch()) {
               $brand = new ent_brand($brand['id']);
 
-            } else if (!empty($row['name']) && !empty($row['language_code']) && $brand = database::query("select id from ". DB_TABLE_PREFIX ."brands where name = '". database::input($row['name']) ."' limit 1;")->fetch()) {
+            } else if (!empty($row['name']) && !empty($row['language_code']) && $brand = database::query(
+              "select id from ". DB_TABLE_PREFIX ."brands
+              where name = '". database::input($row['name']) ."'
+              limit 1;"
+            )->fetch()) {
               $brand = new ent_brand($brand['id']);
             }
 
@@ -544,19 +585,39 @@
           case 'products':
 
           // Find product
-            if (!empty($row['id']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."products where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
+            if (!empty($row['id']) && $product = database::query(
+              "select id from ". DB_TABLE_PREFIX ."products
+              where id = ". (int)$row['id'] ."
+              limit 1;"
+            )->fetch()) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['code']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."products where code = '". database::input($row['code']) ."' limit 1;")->fetch()) {
+            } elseif (!empty($row['code']) && $product = database::query(
+              "select id from ". DB_TABLE_PREFIX ."products
+              where code = '". database::input($row['code']) ."'
+              limit 1;"
+            )->fetch()) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['sku']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."products where sku = '". database::input($row['sku']) ."' limit 1;")->fetch()) {
+            } elseif (!empty($row['sku']) && $product = database::query(
+              "select id from ". DB_TABLE_PREFIX ."products
+              where sku = '". database::input($row['sku']) ."'
+              limit 1;"
+            )->fetch()) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['mpn']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."products where mpn = '". database::input($row['mpn']) ."' limit 1;")->fetch()) {
+            } elseif (!empty($row['mpn']) && $product = database::query(
+              "select id from ". DB_TABLE_PREFIX ."products
+              where mpn = '". database::input($row['mpn']) ."'
+              limit 1;"
+            )->fetch()) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['gtin']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;")->fetch()) {
+            } elseif (!empty($row['gtin']) && $product = database::query(
+              "select id from ". DB_TABLE_PREFIX ."products
+              where gtin = '". database::input($row['gtin']) ."'
+              limit 1;"
+            )->fetch()) {
               $product = new ent_product($product['id']);
             }
 
@@ -633,9 +694,13 @@
               'default_catgeory_id',
               'supplier_id',
               'code',
+              'keywords',
               'synonyms',
               'tax_class_id',
               'quantity',
+              'quantity_min',
+              'quantity_max',
+              'quantity_step',
               'quantity_unit_id',
               'recommended_price',
               'delivery_status_id',
@@ -776,27 +841,139 @@
 
             break;
 
+          case 'product_stock_options':
+
+            foreach (['product_id', 'stock_item_id'] as $column) {
+              if (empty($row[$column])) {
+                throw new Exception("Missing value for mandatory column $column on line $i");
+              }
+            }
+
+            $product = new ent_product($row['product_id']);
+/*
+          // Find stock option
+            if (!empty($row['id']) && $stock_option = database::query(
+              "select id from ". DB_TABLE_PREFIX ."products_stock_options
+              where id = ". (int)$row['sku'] ."
+              limit 1;"
+            )->fetch()) {
+
+            } else if (!empty($row['sku']) && $stock_item = database::query(
+              "select pso.id from ". DB_TABLE_PREFIX ."products_stock_options pso
+              left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+              where pso.product_id = ". (int)$row['product_id'] ."
+              and si.sku = '". database::input($row['sku']) ."'
+              limit 1;"
+            )->fetch()) {
+              $stock_option = $stock_item;
+
+            } elseif (!empty($row['mpn']) && $product = database::query(
+              "select pso.id from ". DB_TABLE_PREFIX ."products_stock_options pso
+              left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+              where pso.product_id = ". (int)$row['product_id'] ."
+              and si.mpn = '". database::input($row['mpn']) ."'
+              limit 1;"
+            )->fetch()) {
+              $stock_option = $stock_item;
+
+            } elseif (!empty($row['gtin']) && $product = database::query(
+              "select pso.id from ". DB_TABLE_PREFIX ."products_stock_options pso
+              left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+              where pso.product_id = ". (int)$row['product_id'] ."
+              and si.gtin = '". database::input($row['gtin']) ."'
+              limit 1;"
+            )->fetch()) {
+              $stock_option = $stock_item;
+            }
+*/
+            if (($key = array_search($row['id'], array_combine(array_keys($product->data['stock_options']), array_column($product->data['stock_options'], 'id')))) !== false) {
+
+              if (empty($batch['overwrite'])) {
+                echo "Skip updating existing stock option on line $line" . PHP_EOL;
+                continue 2;
+              }
+
+              echo 'Updating existing stock item '. fallback($row['name'][$row['language_code']], "on line $line") . PHP_EOL;
+              $batch['counters']['updated']++;
+
+            } else {
+
+              if (empty($batch['insert'])) {
+                echo "Skip inserting new stock item on line $line" . PHP_EOL;
+                continue 2;
+              }
+
+              echo 'Inserting new stock item '. fallback($row['name'][$row['language_code']], "on line $line") . PHP_EOL;
+              $batch['counters']['inserted']++;
+            }
+
+            $fields = [
+              'product_id',
+              'stock_item_id',
+              'price_operator',
+              'priority',
+            ];
+
+            foreach ($fields as $field) {
+              if (isset($row[$field])) {
+                $stock_option[$field] = $row[$field];
+              } else if (!isset($stock_option[$field])) {
+                $stock_option[$field] = null;
+              }
+            }
+
+            foreach (currency::$currencies as $currency) {
+              if (isset($row[$currency])) {
+                $stock_option[$currency] = $row[$currency];
+              } else if (!isset($stock_option[$currency])) {
+                $stock_option[$currency] = null;
+              }
+            }
+
+            $product->data['stock_options'][$key] = $stock_option;
+            $product->save();
+
+            break;
+
           case 'stock_items':
 
           // Find stock_item
-            if (!empty($row['id']) && $stock_item = database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
+            if (!empty($row['id']) && $stock_item = database::query(
+              "select id from ". DB_TABLE_PREFIX ."stock_items
+              where id = ". (int)$row['id'] ."
+              limit 1;"
+            )->fetch()) {
               $stock_item = new ent_stock_item($stock_item['id']);
 
-            } elseif (!empty($row['sku']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."stock_items where sku = '". database::input($row['sku']) ."' limit 1;")->fetch()) {
+            } elseif (!empty($row['sku']) && $product = database::query(
+              "select id from ". DB_TABLE_PREFIX ."stock_items
+              where sku = '". database::input($row['sku']) ."'
+              limit 1;"
+            )->fetch()) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['mpn']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."stock_items where mpn = '". database::input($row['mpn']) ."' limit 1;")->fetch()) {
+            } elseif (!empty($row['mpn']) && $product = database::query(
+              "select id from ". DB_TABLE_PREFIX ."stock_items
+              where mpn = '". database::input($row['mpn']) ."'
+              limit 1;"
+            )->fetch()) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['gtin']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."stock_items where gtin = '". database::input($row['gtin']) ."' limit 1;")->fetch()) {
+            } elseif (!empty($row['gtin']) && $product = database::query(
+              "select id from ". DB_TABLE_PREFIX ."stock_items
+              where gtin = '". database::input($row['gtin']) ."'
+              limit 1;"
+            )->fetch()) {
               $product = new ent_product($product['id']);
             }
 
             if (!empty($stock_item->data['id'])) {
+
               if (empty($batch['overwrite'])) {
                 echo "Skip updating existing stock item on line $line" . PHP_EOL;
                 continue 2;
               }
+
               echo 'Updating existing stock item '. fallback($row['name'][$row['language_code']], "on line $line") . PHP_EOL;
               $batch['counters']['updated']++;
 
@@ -839,42 +1016,25 @@
               }
             }
 
-            if (empty($row['supplier_id']) && !empty($row['supplier_id'])) {
-
-              $supplier = database::query(
-                "select * from ". DB_TABLE_PREFIX ."suppliers
-                where name = '". database::input($row['supplier_name']) ."'
-                limit 1;"
-              )->fetch();
-
-              if ($supplier) {
-                $row['supplier_id'] = $supplier['id'];
-              } else {
-                $supplier = new ent_supplier();
-                $supplier->data['name'] = $row['supplier_name'];
-                $supplier->save();
-                $row['supplier_id'] = $supplier->data['id'];
-              }
-            }
-
-          // Set new stock item data
+          // Set new stock_item data
             $fields = [
               'brand_id',
-              'supplier_id',
               'status',
+              'code',
               'sku',
               'mpn',
               'gtin',
-              'quantity',
+              'taric',
               'weight',
               'weight_unit',
               'length',
               'width',
               'height',
               'length_unit',
+              'backordered',
               'purchase_price',
               'purchase_price_currency_code',
-              'backordered',
+              'priority',
             ];
 
             foreach ($fields as $field) {
@@ -913,18 +1073,28 @@
           case 'suppliers':
 
           // Find supplier
-            if (!empty($row['id']) && $supplier = database::query("select id from ". DB_TABLE_PREFIX ."suppliers where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
+            if (!empty($row['id']) && $supplier = database::query(
+              "select id from ". DB_TABLE_PREFIX ."suppliers
+              where id = ". (int)$row['id'] ."
+              limit 1;"
+            )->fetch()) {
               $supplier = new ent_supplier($supplier['id']);
 
-            } else if (!empty($row['code']) && $supplier = database::query("select id from ". DB_TABLE_PREFIX ."suppliers where code = '". database::input($row['code']) ."' limit 1;")->fetch()) {
+            } else if (!empty($row['code']) && $supplier = database::query(
+              "select id from ". DB_TABLE_PREFIX ."suppliers
+              where code = '". database::input($row['code']) ."'
+              limit 1;"
+            )->fetch()) {
               $supplier = new ent_supplier($supplier['id']);
             }
 
             if (!empty($supplier->data['id'])) {
+
               if (empty($batch['overwrite'])) {
                 echo 'Skip updating existing supplier on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
+
               echo 'Updating existing supplier '. fallback($row['name'], 'on line '. $batch['counters']['line']) . PHP_EOL;
               $batch['counters']['updated']++;
 
@@ -1130,13 +1300,13 @@
             $csv = [array_fill_keys($result->fields(), '')];
           }
 
-        case 'stock_items':
+          break;
+
+        case 'product_stock_options':
 
           $csv = database::query(
-            "select si.*, sii.name, '". database::input($_POST['language_code']) ."' as language_code
-            from ". DB_TABLE_PREFIX ."stock_items si
-            left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.product_id = s.id and si.language_code = '". database::input($_POST['language_code']) ."')
-            order by s.id;"
+            "select * from ". DB_TABLE_PREFIX ."products_stock_options
+            order by id;"
           )->export($result)->fetch_all();
 
           if (!$csv) {
@@ -1150,6 +1320,20 @@
           $csv = database::query(
             "select * from ". DB_TABLE_PREFIX ."suppliers
             order by id;"
+          )->export($result)->fetch_all();
+
+          if (!$csv) {
+            $csv = [array_fill_keys($result->fields(), '')];
+          }
+
+          break;
+
+        case 'stock_items':
+
+          $csv = database::query(
+            "select si.*, sii.name, '". database::input($_POST['language_code']) ."' as language_code from ". DB_TABLE_PREFIX ."stock_items si
+            left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.product_id = s.id and si.language_code = '". database::input($_POST['language_code']) ."')
+            order by si.id;"
           )->export($result)->fetch_all();
 
           if (!$csv) {

@@ -8,6 +8,8 @@
     public $cleanup = false;
     private $_parsers = [];
 
+    public static $time_elapsed = 0;
+
     public function __construct($view='') {
 
       if ($view) {

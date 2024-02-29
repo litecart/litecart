@@ -51,6 +51,7 @@
       "select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
       left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
       where status
+      and parent_id = 0
       and find_in_set('menu', dock)
       order by p.priority, pi.title;"
     );
@@ -60,12 +61,31 @@
         'type' => 'page',
         'id' => $page['id'],
         'title' => $page['title'],
-        'link' => document::ilink('information', ['page_id' => $page['id']]),
+        'link' => document::ilink('page', ['page_id' => $page['id']]),
         'priority' => $page['priority'],
+        'subitems' => [],
       ];
+
+      $subpages_query = database::query(
+        "select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
+        left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+        where status
+        and parent_id = ". (int)$page['id'] ."
+        order by p.priority, pi.title;"
+      );
+
+      while ($subpage = database::fetch($subpages_query)) {
+        $site_navigation->snippets['pages'][] = [
+          'type' => 'page',
+          'id' => $subpage['id'],
+          'title' => $subpage['title'],
+          'link' => document::ilink('page', ['page_id' => $subpage['id']]),
+          'priority' => $subpage['priority'],
+        ];
+      }
     }
 
-  // Information pages
+  // Information
 
     $pages_query = database::query(
       "select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p

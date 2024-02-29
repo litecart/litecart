@@ -24,7 +24,7 @@
   <div id="sidebar" class="hidden-print">
 
     <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-      <img class="center-block responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>">
+      <img class="center-block responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>">
       </a>
 
     <div id="search">
@@ -64,6 +64,14 @@
         <div class="btn-group btn-group-inline" data-toggle="buttons">
           <button name="font_size" class="btn btn-default btn-sm" type="button" value="decrease"><span style="font-size: .8em;">A</span></button>
           <button name="font_size" class="btn btn-default btn-sm" type="button" value="increase"><span style="font-size: 1.25em;">A</span></button>
+        </div>
+      </li>
+
+      <li>
+        <div class="btn-group btn-group-inline" data-toggle="buttons">
+          <button name="spacing" class="btn btn-default btn-sm" type="button" value="decrease"><?php echo functions::draw_fonticon('fa-expand', 'style="font-size: .6em;"'); ?></button>
+          <button name="spacing" class="btn btn-default btn-sm" type="button" value="increase"><?php echo functions::draw_fonticon('fa-expand', 'style="font-size: .8em;"'); ?></button>
+          <button name="spacing" class="btn btn-default btn-sm" type="button" value="decrease"><?php echo functions::draw_fonticon('fa-expand', 'style="font-size: 1.2em;"'); ?></button>
         </div>
       </li>
 
@@ -139,7 +147,6 @@
 
 {{foot_tags}}
 <script src="<?php echo document::href_rlink('app://backend/template/js/app.min.js'); ?>"></script>
-{{javascript}}
 
 <script>
   $('button[name="font_size"]').click(function(){
