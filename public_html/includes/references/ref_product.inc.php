@@ -370,7 +370,6 @@
           $query = database::query(
             "select * from ". DB_TABLE_PREFIX ."products_options_stock
             where product_id = ". (int)$this->_data['id'] ."
-            ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
             order by priority asc;"
           );
 
