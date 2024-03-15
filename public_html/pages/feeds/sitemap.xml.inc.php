@@ -1,7 +1,9 @@
 <?php
 
-  $sitemap_cache_token = cache::TOKEN('sitemap', ['language'], 'file');
-  if (!$output = cache::get($sitemap_cache_token, 43200)) {
+  $max_age = 60*60*24;
+
+  $sitemap_cache_token = cache::token('sitemap', ['domain', 'language'], 'file', $max_age);
+  if (!$output = cache::get($sitemap_cache_token, $max_age, true)) {
 
     @set_time_limit(300);
 
