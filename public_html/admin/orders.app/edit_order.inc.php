@@ -1093,11 +1093,8 @@
   });
 
   $('#customer-details button[name="copy_billing_address"]').click(function(){
-    console.log('a');
-
     let fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone'];
     $.each(fields, function(key, field){
-          console.log($(':input[name="customer[shipping_address]['+ field +']"]').length);
       $(':input[name="customer[shipping_address]['+ field +']"]').val(
         $(':input[name="customer['+ field +']"]').val()
       ).trigger('change');
@@ -1123,7 +1120,7 @@
       url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
       type: 'get',
       cache: true,
-      async: true,
+      async: false,
       dataType: 'json',
       error: function(jqXHR, textStatus, errorThrown) {
         //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
