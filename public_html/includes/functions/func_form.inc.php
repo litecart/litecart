@@ -282,7 +282,7 @@
 
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-text">'. functions::draw_fonticon('fa-phone fa-fw') .'</span>' . PHP_EOL
-         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="tel" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="phone" pattern="^\+?([0-9]|-| )+$"'. (($parameters) ? ' ' . $parameters : '') .' />'
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="tel" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="phone" pattern="^\+?[0-9\- ]+$"'. (($parameters) ? ' ' . $parameters : '') .' />'
          . '</div>';
   }
 
@@ -634,7 +634,7 @@
         return form_draw_currencies_list($name, $input, true, $parameters);
 
       case 'csv':
-        return form_draw_textarea($name, $input, true, $parameters . ' data-type="csv"');
+        return form_draw_textarea($name, $input, $parameters . 'style="height: 250px;" data-type="csv"');
 
       case 'delivery_status':
         return form_draw_delivery_statuses_list($name, $input, false, $parameters);
