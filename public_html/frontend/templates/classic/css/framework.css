@@ -1321,7 +1321,6 @@ textarea.form-input {
   padding: var(--input-padding-y) var(--input-padding-x);
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: all 50ms;
-  cursor: default;
 }
 .form-input[type="color"] {
   height: 37px;
@@ -1334,6 +1333,9 @@ textarea.form-input {
 }
 .form-input[readonly] {
   color: #999;
+}
+.form-input:not(:input) {
+  cursor: default;
 }
 .form-input .dropdown-menu li label:hover {
   background: var(--default-background-color);

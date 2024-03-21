@@ -20,7 +20,7 @@
     transition: all 150ms linear;
     position: relative;
     display: inline-block;
-    padding: .5em 1.0em .5em 2em;
+    padding: .75em 1.0em .75em 2em;
     color: inherit;
 
     &:is(a) {
@@ -38,8 +38,8 @@
       cursor: default;
     }
 
-    &::after,
-    &::before {
+    &:not(:last-child)::after,
+    &:not(:last-child)::before {
       background: var(--breadcrumbs-background-color);
       bottom: 0;
       clip-path: polygon(50% 50%, -50% -50%, 0 100%);
@@ -52,7 +52,7 @@
       z-index: 1;
     }
 
-    &::before {
+    &:not(:last-child)::before {
       background: var(--breadcrumbs-border-color);
       margin-left: 1px;
     }

@@ -80,11 +80,11 @@ INSERT INTO `lc_pages_info` (`id`, `page_id`, `language_code`, `title`, `content
 (5, 5, 'en', 'Delivery Information', '<h1>Delivery Information</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer fermentum quam eget molestie lacinia. Suspendisse consectetur velit vitae tellus commodo pharetra. Curabitur lobortis turpis tortor, id blandit metus pellentesque sit amet. Etiam cursus dolor purus, sit amet vestibulum ipsum aliquet nec. Nunc sed aliquet eros. Sed at vehicula urna. Aliquam euismod nisl a felis adipiscing tincidunt. Etiam vestibulum arcu sed massa ornare, vitae venenatis odio convallis.\r\n</p>\r\n \r\n<h2>\r\n	 Subheading 2 \r\n</h2>\r\n \r\n<p>\r\n	 Aliquam eget suscipit urna. Fusce sed lorem enim. Praesent dictum sagittis tellus, vel imperdiet urna tristique eu. Morbi sed orci eu odio varius tempor consequat ut lectus. Aliquam sagittis sapien vitae nulla porta adipiscing. Nullam pulvinar interdum malesuada. Ut blandit ligula quam, id luctus risus ultrices eget. Donec mattis turpis vel purus hendrerit, id ornare dui viverra. Donec at aliquet purus. Maecenas ut commodo lorem. Vivamus ornare sem eu convallis ullamcorper. \r\n</p>\r\n \r\n<h3>\r\n	 Subheading 3 \r\n</h3>\r\n \r\n<p>\r\n	 In in massa accumsan augue accumsan facilisis non eget dui. Ut volutpat nisl urna, ac dapibus ipsum fermentum iaculis. Donec sed lorem metus. Donec gravida et risus et consectetur. Proin aliquet, ipsum in faucibus condimentum, orci sapien sollicitudin mi, vitae molestie nunc odio vitae libero. Nullam pretium velit in sem sagittis, et facilisis mi fermentum. Aenean varius sed est et tincidunt. Praesent non imperdiet ligula. \r\n</p>', '', '');
 -- --------------------------------------------------------
 INSERT INTO `lc_products` (`id`, `status`, `brand_id`, `supplier_id`, `delivery_status_id`, `sold_out_status_id`, `default_category_id`, `keywords`, `code`, `quantity_unit_id`, `tax_class_id`, `image`, `views`, `purchases`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
-(1, 1, 1, 0, 1, 2, 2, '', 'rd001', 1, 1, 'products/1-yellow-duck-1.jpg', 0, 0, '0000-00-00', '0000-00-00', NOW(), NOW()),
-(2, 1, 1, 0, 1, 2, 2, '', 'rd002', 1, 1, 'products/2-green-duck-1.jpg', 0, 0, '0000-00-00', '0000-00-00', NOW(), NOW()),
-(3, 1, 1, 0, 1, 2, 1, '', 'rd003', 1, 1, 'products/3-red-duck-1.jpg', 0, 0, '0000-00-00', '0000-00-00', NOW(), NOW()),
-(4, 1, 1, 0, 1, 2, 1, '', 'rd004', 1, 1, 'products/4-blue-duck-1.jpg', 0, 0, '0000-00-00', '0000-00-00', NOW(), NOW()),
-(5, 1, 1, 0, 1, 2, 1, '', 'rd005', 1, 1, 'products/5-purple-duck-1.jpg', 0, 0, '0000-00-00', '0000-00-00', NOW(), NOW());
+(1, 1, 1, 0, 1, 2, 2, '', 'rd001', 1, 1, 'products/1-yellow-duck-1.jpg', 0, 0, NULL, NULL, NOW(), NOW()),
+(2, 1, 1, 0, 1, 2, 2, '', 'rd002', 1, 1, 'products/2-green-duck-1.jpg', 0, 0, NULL, NULL, NOW(), NOW()),
+(3, 1, 1, 0, 1, 2, 1, '', 'rd003', 1, 1, 'products/3-red-duck-1.jpg', 0, 0, NULL, NULL, NOW(), NOW()),
+(4, 1, 1, 0, 1, 2, 1, '', 'rd004', 1, 1, 'products/4-blue-duck-1.jpg', 0, 0, NULL, NULL, NOW(), NOW()),
+(5, 1, 1, 0, 1, 2, 1, '', 'rd005', 1, 1, 'products/5-purple-duck-1.jpg', 0, 0, NULL, NULL, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_products_attributes` (`product_id`, `group_id`, `value_id`) VALUES
 (1, 1, 1),

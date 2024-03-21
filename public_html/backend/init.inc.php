@@ -1,6 +1,10 @@
 <?php
 
-  document::$head_tags['manifest'] = '<link rel="manifest" href="'. document::href_ilink('webmanifest.json') .'">';
+  header('X-Robots-Tag: noindex');
+
+  if (!in_array(route::$selected['resource'], ['b:login', 'b:manifest.json'])) {
+    administrator::require_login();
+  }
 
 // Fetch apps
   $apps = functions::admin_get_apps();

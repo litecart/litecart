@@ -1,4 +1,6 @@
 <main id="main" class="container">
+  {{notices}}
+
   <div class="row layout">
     <div class="col-md-3">
       <div id="sidebar">
@@ -8,8 +10,6 @@
 
     <div class="col-md-9">
       <div id="content">
-        {{notices}}
-        {{breadcrumbs}}
 
         <section id="box-reset-password" class="card">
 
@@ -18,7 +18,7 @@
           </div>
 
           <div class="card-body">
-            <?php echo functions::form_begin('reset_password_form', 'post', null, false, 'style="width: 320px;"'); ?>
+            <?php echo functions::form_begin('reset_password_form', 'post', null, false, 'style="width: 480px;"'); ?>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>

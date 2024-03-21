@@ -5,31 +5,39 @@
       switch ($type) {
 
         case 'errors':
-          echo '<div class="alert alert-danger">' . PHP_EOL
-             . '  <a href="#" class="close" data-dismiss="alert">&times;</a>' . PHP_EOL
-             . '  ' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice . PHP_EOL
-             . '</div>';
+          echo implode(PHP_EOL, [
+            '<div class="alert alert-danger">',
+            '  <a href="#" class="close" data-dismiss="alert">&times;</a>',
+            '  ' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice,
+            '</div>',
+          ]);
           break;
 
         case 'warnings':
-          echo '<div class="alert alert-warning">' . PHP_EOL
-             . '  <a href="#" class="close" data-dismiss="alert">&times;</a>' . PHP_EOL
-             . '  ' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice . PHP_EOL
-             . '</div>';
+          echo implode(PHP_EOL, [
+            '<div class="alert alert-warning">',
+            '  <a href="#" class="close" data-dismiss="alert">&times;</a>',
+            '  ' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice,
+            '</div>',
+          ]);
           break;
 
         case 'notices':
-          echo '<div class="alert alert-default">' . PHP_EOL
-             . '  <a href="#" class="close" data-dismiss="alert">&times;</a>' . PHP_EOL
-             . '  ' . functions::draw_fonticon('fa-info-circle') . ' ' . $notice . PHP_EOL
-             . '</div>';
+          echo implode(PHP_EOL, [
+            '<div class="alert alert-default">',
+            '  <a href="#" class="close" data-dismiss="alert">&times;</a>',
+            '  ' . functions::draw_fonticon('fa-info-circle') . ' ' . $notice,
+            '</div>',
+          ]);
           break;
 
         case 'success':
-          echo '<div class="alert alert-success">' . PHP_EOL
-             . '  <a href="#" class="close" data-dismiss="alert">&times;</a>' . PHP_EOL
-             . '  ' . functions::draw_fonticon('fa-check-circle') . ' ' . $notice . PHP_EOL
-             . '</div>';
+          echo implode(PHP_EOL, [
+            '<div class="alert alert-success">',
+            '  <a href="#" class="close" data-dismiss="alert">&times;</a>',
+            '  ' . functions::draw_fonticon('fa-check-circle') . ' ' . $notice,
+            '</div>',
+          ]);
           break;
       }
     }

@@ -9,17 +9,23 @@
 <link rel="stylesheet" href="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/css/framework.min.css'); ?>" />
 <link rel="stylesheet" href="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/css/app.min.css'); ?>" />
 {{head_tags}}
-{{style}}
 </head>
 <body>
 
-<?php include 'app://frontend/partials/site_top_navigation.inc.php'; ?>
+<div id="page">
+  <header>
+    <?php include 'app://frontend/partials/site_top_navigation.inc.php'; ?>
+    <?php include 'app://frontend/partials/site_navigation.inc.php'; ?>
+  </header>
 
-<?php include 'app://frontend/partials/site_navigation.inc.php'; ?>
+  <main>
+    {{content}}
+  </main>
 
-{{content}}
-
-<?php include 'app://frontend/partials/site_footer.inc.php'; ?>
+  <footer>
+    <?php include 'app://frontend/partials/site_footer.inc.php'; ?>
+  </footer>
+</div>
 
 <a id="scroll-up" class="hidden-print" href="#">
   <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>
@@ -29,7 +35,5 @@
 
 {{foot_tags}}
 <script src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/js/app.min.js'); ?>"></script>
-<script src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/js/3rdparty.js'); ?>"></script>
-{{javascript}}
 </body>
 </html>

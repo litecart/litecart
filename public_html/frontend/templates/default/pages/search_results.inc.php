@@ -18,9 +18,10 @@
 }
 </style>
 <main id="main" class="container">
+  {{breadcrumbs}}
+  {{notices}}
+
   <div id="content">
-    {{notices}}
-    {{breadcrumbs}}
 
     <section id="box-search-results" class="card">
       <div class="card-header">

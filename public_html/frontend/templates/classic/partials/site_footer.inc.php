@@ -66,15 +66,16 @@
           <a class="thumbnail" href="<?php echo functions::escape_html($bookmark['link']); ?>"><?php echo functions::draw_fonticon($bookmark['icon'] .' fa-fw', 'title="'. functions::escape_html($bookmark['title']) .'"'); ?></a>
           <?php } ?>
         </div>
+
+        <div id="copyright">
+          <div class="container notice">
+            <!-- LiteCart is provided free under license CC BY-ND 4.0 - https://creativecommons.org/licenses/by-nd/4.0/. Removing the link back to litecart.net without permission is a violation - https://www.litecart.net/addons/172/removal-of-attribution-link -->
+            Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved <br />
+            Powered by <a href="https://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a>
+          </div>
+          </div>
       </section>
 
     </div>
   </div>
 </footer>
-
-<section id="copyright">
-  <div class="container notice">
-    <!-- LiteCart is provided free under license CC BY-ND 4.0 - https://creativecommons.org/licenses/by-nd/4.0/. Removing the link back to litecart.net without permission is a violation - https://www.litecart.net/addons/172/removal-of-attribution-link -->
-    Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="https://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a>
-  </div>
-</section>

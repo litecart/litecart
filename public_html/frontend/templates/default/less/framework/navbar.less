@@ -24,7 +24,7 @@
     flex: 1 1 auto;
     a {
       display: inline-flex;
-      padding: .5em 1em;
+      padding: .75em 1em;
       font-weight: bold;
       text-decoration: none;
       &:hover {
@@ -101,7 +101,7 @@
 
   .navbar-search {
     order: -1;
-    padding: 1em;
+    padding: .5em;
     @media (min-width: @media-breakpoint-md) {
       flex-grow: 1;
       order: initial;
@@ -113,6 +113,7 @@
     flex-direction: column;
     margin: 0;
     padding: 0;
+    gap: .25em;
     align-content: center;
 
     > li {
@@ -144,7 +145,7 @@
     .navbar-item {
       position: relative;
       display: block;
-      padding: .5em 1.5em;
+      padding: .75em 1em;
       border-radius: var(--border-radius);
       color: inherit;
       text-decoration: none;
@@ -163,7 +164,7 @@
   }
 
   .dropdown-menu {
-    padding: .5em;
+    padding: .75em;
     min-width: fit-content;
     margin-top: -1px;
     border-top: none;
@@ -244,7 +245,7 @@
 
   @media (min-width: @media-breakpoint-md) {
     flex-direction: row;
-    gap: 1em;
+    gap: 2em;
 
     .navbar-toggle {
       display: none;

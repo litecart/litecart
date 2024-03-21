@@ -1,4 +1,7 @@
 <main id="main" class="container">
+  {{breadcrumbs}}
+  {{notices}}
+
   <div class="row layout">
     <div class="col-md-3">
       <div id="sidebar">
@@ -9,7 +12,7 @@
         <?php if (!empty($main_category['image'])) { ?>
         <div style="margin-bottom: 2em;">
           <a href="<?php echo document::href_ilink('category', ['category_id' => $main_category['id']]); ?>">
-            <img class="thumbnail fit" src="<?php echo document::href_rlink($main_category['image']['thumbnail']); ?>" style="aspect-ratio: <?php echo $main_category['image']['viewport']['ratio']; ?>;" />
+            <?php echo functions::draw_thumbnail($main_category['image'], 330, 0, 'category'); ?>
           </a>
         </div>
         <?php } ?>
@@ -22,8 +25,6 @@
 
     <div class="col-md-9">
       <div id="content">
-        {{notices}}
-        {{breadcrumbs}}
 
         <?php include 'app://frontend/templates/'.settings::get('template').'/partials/box_product.inc.php'; ?>
         <?php include 'app://frontend/partials/box_similar_products.inc.php'; ?>

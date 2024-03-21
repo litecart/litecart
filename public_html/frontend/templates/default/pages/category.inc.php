@@ -1,4 +1,7 @@
 <main id="main" class="container">
+  {{breadcrumbs}}
+  {{notices}}
+
   <div class="row layout">
     <div class="col-md-3">
       <div id="sidebar">
@@ -20,8 +23,6 @@
 
     <div class="col-md-9">
       <div id="content">
-        {{notices}}
-        {{breadcrumbs}}
 
         <article id="box-category" class="card">
           <div class="card-header">

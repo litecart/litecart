@@ -46,7 +46,7 @@
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-gap: var(--gutter-size);
+  grid-gap: 1em;
   &:not(last-child){
     margin-bottom: var(--gutter-size);
   }
@@ -74,7 +74,7 @@
     grid-column: span 12;
   }
   @media (min-width: @media-breakpoint-sm) {
-    grid-gap: 1rem;
+    grid-gap: var(--gutter-size);
     margin-bottom: 1rem;
   }
 }

@@ -7,6 +7,17 @@ body {
 body main {
   flex-grow: 1;
 }
+#page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+#page #main {
+  flex-grow: 1;
+}
+#important-message {
+  padding: 0.75em 1em;
+}
 #site-top-navigation {
   background: var(--top-navigation-background-color);
   color: var(--top-navigation-text-color);
@@ -126,11 +137,9 @@ body main {
     flex-grow: 1 !important;
   }
 }
-@media (min-width: 768px) {
-  #site-navigation .search {
-    flex-grow: 1;
-    order: initial;
-  }
+#site-navigation .shopping-cart .search {
+  flex-grow: 1;
+  order: initial;
 }
 #content {
   grid-area: content;
@@ -465,8 +474,9 @@ body main {
   display: none;
   top: 7.5px;
   right: 7.5px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 2px solid #fff;
+  padding: 0.25em;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(3px);
   border-radius: 1em;
   margin: 0 -1px -1px -1px;
   box-shadow: 0 0 0.5em 0 rgba(0, 0, 0, 0.15);

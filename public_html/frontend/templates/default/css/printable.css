@@ -49,6 +49,7 @@ hr {
     padding: 15mm;
     background: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    border-radius: var(--border-radius);
   }
   .page[data-size="A4"] {
     width: 21cm;

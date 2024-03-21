@@ -28,7 +28,7 @@
 :root {
   /* General */
   --border-radius: 10px;
-  --gutter-size: 1rem;
+  --gutter-size: 2rem;
   --link-text-color: #5292b1;
   --whitespace-color: #fff;
   --shadow-color: rgba(0, 0, 0, 0.15);
@@ -76,7 +76,7 @@
   --danger-notice-background-color: #fcc;
   --danger-notice-text-color: #c44;
   --breadcrumbs-background-color: #fff;
-  --breadcrumbs-background-color-hover: #efefef;
+  --breadcrumbs-background-color-hover: #e8e8ed;
   --breadcrumbs-text-color: #000;
   --breadcrumbs-border-color: #e7e7e7;
   /* Buttons */

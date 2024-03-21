@@ -3,7 +3,7 @@
     <div style="display: flex; flex-direction: row; justify-content: space-between">
 
       <?php if ($important_notice = settings::get('important_notice')) { ?>
-      <div id="important-message" style="padding: 0.5em 2em;">
+      <div id="important-message">
         <?php echo $important_notice; ?>
       </div>
       <?php } ?>

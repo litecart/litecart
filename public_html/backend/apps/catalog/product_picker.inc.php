@@ -16,21 +16,20 @@
       <?php echo functions::form_input_text('query', true, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
     </div>
 
-    <div class="form-group table-responsive">
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-            <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-            <th><?php echo language::translate('title_price', 'Price'); ?></th>
-            <th><?php echo language::translate('title_date_created', 'Date Created'); ?></th>
-          </tr>
-        </thead>
-        <tbody />
-      </table>
-    </div>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_stock Options', 'Stock Options'); ?></th>
+          <th><?php echo language::translate('title_price', 'Price'); ?></th>
+          <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
+          <th><?php echo language::translate('title_reserved', 'Reserved'); ?></th>
+          <th><?php echo language::translate('title_date_created', 'Date Created'); ?></th>
+        </tr>
+      </thead>
+      <tbody />
+    </table>
   </div>
 
 </div>
@@ -39,11 +38,15 @@
   var xhr_product_picker = null;
   $('#modal-product-picker input[name="query"]').on('input', function(){
 
+    let $modal = $('#modal-product-picker');
+
+/*
     if ($(this).val() == '') {
-      $('#modal-product-picker tbody').html('');
+      $modal.find('tbody').html('');
       xhr_product_picker = null;
       return;
     }
+*/
 
     xhr_product_picker = $.ajax({
       type: 'get',
@@ -59,10 +62,10 @@
       },
       success: function(json) {
 
-        $('#modal-product-picker tbody').html('');
+        $('tbody', $modal).html('');
 
         if (!json) {
-          $('#modal-product-picker tbody').html(
+          $('tbody', $modal).html(
             '<tr>' +
             '  <td colspan="6"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td>' +
             '</tr>'
@@ -70,40 +73,51 @@
         }
 
         $.each(json, function(i, row){
-          $('#modal-product-picker tbody').append(
-            '<tr>' +
-            '  <td class="id">' + row.id + '</td>' +
-            '  <td class="name">' + row.name + '</td>' +
-            '  <td class="sku">' + row.sku + '</td>' +
-            '  <td class="quantity text-end">' + row.quantity + '</td>' +
-            '  <td class="price text-end">' + row.price.formatted + '</td>' +
-            '  <td class="date-created">' + row.date_created + '</td>' +
+
+          let $row = $([
+            '<tr>',
+            '  <td>' + row.id + '</td>',
+            '  <td>' + row.name + '</td>',
+            '  <td class="text-center">' + (row.num_stock_options ? row.num_stock_options : '-') + '</td>',
+            '  <td class="text-end">' + row.price.formatted + '</td>',
+            '  <td class="text-end">' + row.quantity + '</td>',
+            '  <td class="text-end">' + row.reserved + '</td>',
+            '  <td>' + row.date_created + '</td>',
             '</tr>'
-          );
+          ].join('\n'));
+
+          $row.data(row);
+
+          console.log($modal.find('tbody').length);
+          $modal.find('tbody').append($row);
         });
-        if ($('#modal-product-picker .results tbody').html() == '') {
-          $('#modal-product-picker .results tbody').html('<tr><td colspan="6"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
+
+        if (!$modal.find('tbody tr').length) {
+          $modal.find('tbody').html('<tr><td colspan="6"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
         }
       },
     });
-  }).focus();
+  }).trigger('input').focus();
 
   $('#modal-product-picker tbody').on('click', 'td', function() {
 
-    let callback = $.featherlight.current().$currentTarget.data('callback');
+    var $tr = $(this).closest('tr'),
+      callback = $.featherlight.current().$currentTarget.data('callback'),
+      expand = <?php echo (isset($_GET['collect']) && array_intersect(['price', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
+      product = $tr.data();
 
-    let $tr = $(this).closest('tr');
-
-    let product = {
-      id: $tr.find('.id').text(),
-      name: $tr.find('.name').text(),
-      sku: $tr.find('.sku').text(),
-      quantity: $tr.find('.quantity').text(),
-      price: $tr.find('.price').text(),
+    if (expand || $tr.data('stock_option')) {
+      callback = function(product){
+        $.featherlight('<?php echo document::ilink(__APP__.'/product_picker_configure', ['callback' => @$_GET['callback']]);?>&product_id='+ product.id);
+      }
     }
 
     if (callback) {
-      window[callback](product);
+      if (typeof callback == 'function') {
+        callback(product);
+      } else {
+        window[callback](product);
+      }
     } else if ($.featherlight.current().$currentTarget[0].closest('.input-group')) {
       let field = $.featherlight.current().$currentTarget[0].closest('.input-group');
       $(field).find(':input').val(product.id).trigger('change');
