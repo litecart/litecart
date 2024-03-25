@@ -355,6 +355,10 @@ CHANGE COLUMN `country_code` `country_code` CHAR(2) NOT NULL DEFAULT '';
 ALTER TABLE `lc_zones_to_geo_zones`
 CHANGE COLUMN `geo_zone_id` `geo_zone_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
 -- --------------------------------------------------------
+INSERT IGNORE INTO `lc_banners`
+(`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `date_valid_from`, `date_valid_to`)
+SELECT id, status, name, languages, '', replace(image, 'slides/', 'banners/'), '', 'leaderboard', date_valid_from, date_valid_to FROM `lc_slides`;
+-- --------------------------------------------------------
 UPDATE `lc_modules` SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit') WHERE `module_id` = 'sm_zone_weight' LIMIT 1;
 -- --------------------------------------------------------
 DELETE FROM `lc_modules` WHERE `module_id` = 'ot_subtotal' LIMIT 1;
@@ -637,3 +641,6 @@ ADD CONSTRAINT `tax_rate_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc
 ALTER TABLE `lc_zones_to_geo_zones`
 ADD CONSTRAINT `zone_entry_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc_geo_zones` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
 ADD CONSTRAINT `zone_entry_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+DROP TABLE `lc_slides`;
+DROP TABLE `lc_slides_info`;

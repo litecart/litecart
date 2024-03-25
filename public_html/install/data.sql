@@ -1,10 +1,10 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 INSERT INTO `lc_banners` (`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
-(1, 1, 'Left', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: cornsilk;">Banner 1</div>', '', '', 'left', 2599, 56, NULL, NULL, NOW(), NOW()),
-(2, 1, 'Middle', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Middle</div>', '', '', 'middle', 2597, 44, NULL, NULL, NOW(), NOW()),
-(3, 1, 'Right', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: seashell;">Right</div>', '', '', 'right', 2597, 32, NULL, NULL, NOW(), NOW());
-
+(1, 1, 'Leaderboard', '', '', 'banners/leaderboard.svg', '', 'leaderboard', 0, 0, NULL, NULL, NOW(), NOW()),
+(2, 1, 'Left', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Left</div>', '', '', 'left', 0, 0, NULL, NULL, NOW(), NOW()),
+(3, 1, 'Middle', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Middle</div>', '', '', 'middle', 0, 0, NULL, NULL, NOW(), NOW()),
+(4, 1, 'Right', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: seashell;">Right</div>', '', '', 'right', 0, 0, NULL, NULL, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1`, `iso_code_2`, `iso_code_3`, `tax_id_format`, `address_format`, `postcode_format`, `postcode_required`, `language_code`, `currency_code`, `phone_code`, `date_updated`, `date_created`) VALUES
 (1, 1, 'Afghanistan', '', '004', 'AF', 'AFG', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'fa', 'AFN', '93', NOW(), NOW()),
@@ -509,12 +509,6 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('', 'global', 'Template Settings', '', 'template_settings', '{"sidebar_parallax_effect":"1","compact_category_tree":"0","cookie_acceptance":"1"}', 'text()', 0, NOW(), NOW()),
 ('', 'global', 'Jobs Last Push', 'Time when background jobs were last pushed for execution.', 'jobs_last_push', NOW(), 'text()', 0, NOW(), NOW()),
 ('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'text()', 0, NOW(), NOW());
--- --------------------------------------------------------
-INSERT INTO `lc_slides` (`id`, `status`, `languages`, `name`, `image`, `priority`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
-(1, 1, '', 'Rocket Cart', 'slides/1-rocket-cart.svg', 1, NULL, NULL, NOW(), NOW());
--- --------------------------------------------------------
-INSERT INTO `lc_slides_info` (`id`, `slide_id`, `language_code`, `caption`, `link`) VALUES
-(1, 1, 'en', '', '');
 -- --------------------------------------------------------
 INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `date_updated`, `date_created`) VALUES
 (1, 0, NOW(), NOW()),
