@@ -183,7 +183,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
-                <?php echo functions::form_input_text('keywords', true); ?>
+                <?php echo functions::form_input_tags('keywords', true); ?>
               </div>
             </div>
 
