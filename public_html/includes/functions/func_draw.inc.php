@@ -81,53 +81,60 @@
     return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="thumbnail '. functions::escape_html($clipping) .'"' : '') .' src="'. document::href_rlink($thumbnail) .'" srcset="'. document::href_rlink($thumbnail) .' 1x, '. document::href_rlink($thumbnail_2x) .' 2x"'. ($parameters ? ' '. $parameters : '') .'>';
   }
 
-  function draw_banner($keywords) {
+  function draw_banner($keywords, $limit=0) {
 
     if (!is_array($keywords)) {
-      $keywords = preg_split('#\s*,\s*#', $keywords);
+      $keywords = preg_split('#\s*,\s*#', $keywords, -1, PREG_SPLIT_NO_EMPTY);
     }
 
-  // Add support for Google Analytics campaigns
-    if (isset($_GET['utm_campaign'])) {
-      $keywords[] = $_GET['utm_campaign'];
-    }
-
-    $banner = database::query(
+    $banners = database::query(
       "select * from ". DB_TABLE_PREFIX ."banners
       where status
-      and image != '' or html != ''
+      and (image != '' or html != '')
       and (". implode(" or ", array_map(function($k){ return "find_in_set('". database::input($k) ."', keywords)"; }, $keywords)) .")
       order by rand()
-      limit 1;"
-    )->fetch();
+      ". ($limit ? "limit ". (int)$limit : '') .";"
+    )->fetch_all();
 
-    if (!$banner) return;
+    if (!$banners) return;
 
     database::query(
       "update ". DB_TABLE_PREFIX ."banners
       set total_views = total_views + 1
-      where id = ". (int)$banner['id'] ."
-      limit 1;"
+      where id in ('". implode("', '", array_column($banners, 'id')) ."');"
     );
 
-    if (!$banner['html']) {
-      $banner['html'] = '<img class="responsive" src="$image_url" alt="" />';
+    foreach ($banners as $key => $banner) {
 
-      if ($banner['link']) {
-        $banner['html'] = '<a href="$target_url" target="_blank">' . PHP_EOL
-                        . '  ' . $banner['html'] . PHP_EOL
-                        . '</a>';
+      if (!$banner['html']) {
+        $banner['html'] = '<img src="$image_url" alt="" style="width: 100%; vertical-align: middle;">';
+
+        if ($banner['link']) {
+          $banner['html'] = implode(PHP_EOL, [
+            '<a href="$target_url" target="_blank">',
+            '  ' . $banner['html'],
+            '</a>',
+          ]);
+        }
       }
+
+      $aliases = [
+        '$id' => $banner['id'],
+        '$language_code' => language::$selected['code'],
+        '$image_url' => $banner['image'] ? document::rlink('storage://images/' . $banner['image']) : '',
+        '$target_url' => $banner['link'] ? document::href_link($banner['link']) : '',
+      ];
+
+      $output = implode(PHP_EOL, [
+        '<div class="banner" data-id="'. $banner['id'] .'" data-name="'. $banner['name'] .'">',
+        '  '. strtr($banner['html'], $aliases),
+        '</div>',
+      ]);
+
+      $banners[$key]['output'] = $output;
     }
 
-    $aliases = [
-      '$id' => $banner['id'],
-      '$language_code' => language::$selected['code'],
-      '$image_url' => $banner['image'] ? document::rlink('storage://images/' . $banner['image']) : '',
-      '$target_url' => $banner['link'] ? document::href_link($banner['link']) : '',
-    ];
-
-  // Banner Click Tracking
+    // Banner Click Tracking
     document::$javascript['banner-click-tracking'] = implode(PHP_EOL, [
       '  var mouseOverAd = false;',
       '  $(\'.banner[data-id]\').hover(function(){',
@@ -145,13 +152,14 @@
       '  });',
     ]);
 
-    $output = strtr($banner['html'], $aliases);
+    if (count($banners) == 1) {
+      return $banners[0]['output'];
+    }
 
-    $output = implode(PHP_EOL, [
-      '<div class="banner" data-id="'. $banner['id'] .'" data-name="'. $banner['name'] .'">',
-      '  '. $output,
-      '</div>',
-    ]);
+    $carousel = new ent_view('app://frontend/templates/'. settings::get('template') .'/partials/carousel.inc.php');
+    $carousel->snippets['items'] = array_column($banners, 'output');
+    return $carousel->render();
+
 
     return $output;
   }
@@ -297,44 +305,43 @@
     if (empty($selector)) return;
 
     if (preg_match('#^(https?:)?//#', $selector)) {
-      $js = '  $.featherlight(\''. $selector .'\', {' . PHP_EOL;
+      $js = ['  $.featherlight(\''. $selector .'\', {'];
     } else {
-      $js = '  $(\''. $selector .'\').featherlight({' . PHP_EOL;
+      $js = ['  $(\''. $selector .'\').featherlight({'];
     }
 
     foreach ($parameters as $key => $value) {
       switch (gettype($parameters[$key])) {
 
         case 'NULL':
-          $js .= '    '. $key .': null,' . PHP_EOL;
+          $js[] = '    '. $key .': null,';
           break;
 
         case 'boolean':
-          $js .= '    '. $key .': '. ($value ? 'true' : 'false') .',' . PHP_EOL;
+          $js[] = '    '. $key .': '. ($value ? 'true' : 'false') .',';
           break;
 
         case 'integer':
-          $js .= '    '. $key .': '. $value .',' . PHP_EOL;
+          $js[] = '    '. $key .': '. $value .',';
           break;
 
         case 'string':
           if (preg_match('#^function\s*\(#', $value)) {
-            $js .= '    '. $key .': '. $value .',' . PHP_EOL;
+            $js[] = '    '. $key .': '. $value .',';
           } else {
-            $js .= '    '. $key .': "'. addslashes($value) .'",' . PHP_EOL;
+            $js[] = '    '. $key .': "'. addslashes($value) .'",';
           }
           break;
 
         case 'array':
-          $js .= '    '. $key .': ["'. implode('", "', $value) .'"],' . PHP_EOL;
+          $js[] = '    '. $key .': ["'. implode('", "', $value) .'"],';
           break;
       }
     }
 
-    $js = rtrim($js, ",\r\n") . PHP_EOL
-        . '  });';
+    $js[] = '  });';
 
-    document::$javascript['featherlight-'.$selector] = $js;
+    document::$javascript['featherlight-'.$selector] = implode(PHP_EOL, $js);
   }
 
   function draw_pagination($pages) {
