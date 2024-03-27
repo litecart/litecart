@@ -1111,7 +1111,7 @@
     if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     if (!database::num_rows($geo_zones_query)) {
-      return form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled');
+      return form_draw_select_field($name, $options, $input, $parameters . ' disabled');
     }
 
     while ($geo_zone = database::fetch($geo_zones_query)) {
