@@ -1,7 +1,6 @@
 <?php
 
-  return $app_config = [
-
+  return [
     'name' => language::translate('title_orders', 'Orders'),
     'default' => 'orders',
     'priority' => 0,
@@ -10,7 +9,6 @@
       'color' => '#8fc722',
       'icon' => 'fa-shopping-cart',
     ],
-
     'menu' => [
       [
         'title' => language::translate('title_orders', 'Orders'),

@@ -1,6 +1,6 @@
 <?php
 
-  return $app_config = [
+  return [
     'name' => language::translate('title_reports', 'Reports'),
     'default' => 'monthly_sales',
     'priority' => 0,

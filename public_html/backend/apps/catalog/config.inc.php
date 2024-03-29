@@ -1,14 +1,17 @@
 <?php
 
-  return $app_config = [
+  return [
     'name' => language::translate('title_catalog', 'Catalog'),
     'default' => 'category_tree',
     'priority' => 0,
+
     'theme' => [
       'color' => '#d4ce12',
       'icon' => 'fa-th',
     ],
+
     'search_results' => 'search_results.inc.php',
+
     'menu' => [
       [
         'title' => language::translate('title_category_tree', 'Category Tree'),

@@ -1,6 +1,6 @@
 <?php
 
-  return $app_config = [
+  return [
     'name' => language::translate('title_banners', 'Banners'),
     'default' => 'banners',
     'priority' => 0,

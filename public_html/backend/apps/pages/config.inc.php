@@ -1,6 +1,6 @@
 <?php
 
-  return $app_config = [
+  return [
     'name' => language::translate('title_pages', 'Pages'),
     'default' => 'pages',
     'priority' => 0,

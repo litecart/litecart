@@ -1,6 +1,6 @@
 <?php
 
-  return $widget_config = [
+  return [
     'name' => language::translate('title_statistics', 'Statistics'),
     'file' => 'stats.inc.php',
     'priority' => 2,

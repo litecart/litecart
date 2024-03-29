@@ -1,6 +1,6 @@
 <?php
 
-  return $template_config = [
+  return [
     [
       'key' => 'sidebar_parallax_effect',
       'default_value' => '1',

@@ -1,6 +1,6 @@
 <?php
 
-  return $app_config = [
+  return [
     'name' => language::translate('title_languages', 'Languages'),
     'default' => 'languages',
     'priority' => 0,

@@ -1,7 +1,6 @@
 <?php
 
-  return $app_config = [
-
+  return [
     'name' => language::translate('title_customers', 'Customers'),
     'default' => 'customers',
     'priority' => 0,

@@ -1,6 +1,6 @@
 <?php
 
-  return $app_config = [
+  return [
     'name' => language::translate('title_countries', 'Countries'),
     'default' => 'countries',
     'priority' => 0,
@@ -14,6 +14,7 @@
 
     'docs' => [
       'countries' => 'countries.inc.php',
+      'countries.json' => 'countries.json.inc.php',
       'edit_country' => 'edit_country.inc.php',
       'zones.json' => 'zones.json.inc.php',
     ],

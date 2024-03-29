@@ -1,6 +1,6 @@
 <?php
 
-  return $app_config = [
+  return [
     'name' => language::translate('title_administrators', 'Administrators'),
     'default' => 'administrators',
     'priority' => 0,

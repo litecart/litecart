@@ -1,6 +1,6 @@
 <?php
 
-  return $app_config = [
+  return [
     'name' => language::translate('title_geo_zones', 'Geo Zones'),
     'default' => 'geo_zones',
     'priority' => 0,

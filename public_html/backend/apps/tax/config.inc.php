@@ -1,6 +1,6 @@
 <?php
 
-  return $app_config = [
+  return [
     'name' => language::translate('title_tax', 'Tax'),
     'default' => 'tax_rates',
     'priority' => 0,
