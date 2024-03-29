@@ -30,6 +30,12 @@
       if (is_dir($options['destination']) || substr($options['destination'], -1) == '/') {
         if (preg_match('#^'. preg_quote('storage://cache/', '#') .'$#', $options['destination'])) {
 
+          if (settings::get('avif_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
+            $extension = 'avif';
+          } else {
+            $extension = pathinfo($source, PATHINFO_EXTENSION);
+          }
+
           if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
             $extension = 'webp';
           } else {
@@ -129,6 +135,12 @@
 
     if (pathinfo($source, PATHINFO_EXTENSION) == 'svg') {
       return $source;
+    }
+
+    if (settings::get('avif_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
+      $extension = 'avif';
+    } else {
+      $extension = pathinfo($source, PATHINFO_EXTENSION);
     }
 
     if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {

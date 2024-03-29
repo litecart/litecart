@@ -33,12 +33,12 @@
         clearstatcache();
 
         foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
-          foreach (glob($dir.'/*.{avif,gif,jpg,png,webp}', GLOB_BRACE) as $file) {
+          foreach (glob($dir.'/*.{a?png,avif,gif,jpg,svg,webp}', GLOB_BRACE) as $file) {
             unlink($file);
           }
         }
 
-        foreach (glob(FS_DIR_STORAGE .'cache/*.{avif,gif,jpg,png,webp}', GLOB_BRACE) as $file) {
+        foreach (glob(FS_DIR_STORAGE .'cache/*.{a?png,avif,gif,jpg,svg,webp}', GLOB_BRACE) as $file) {
           unlink($file);
         }
 
