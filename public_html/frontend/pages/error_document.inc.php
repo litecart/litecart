@@ -1,12 +1,19 @@
 <?php
 
+  /*!
+   * This file contains PHP logic that is separated from the HTML view.
+   * Visual changes can be made to the file found in the template folder:
+   *
+   *   ~/frontend/templates/default/pages/error_document.inc.php
+   */
+
   document::$layout = 'blank';
 
   if (!empty($_GET['code'])) {
     http_response_code($_GET['code']);
   }
 
-  if (preg_match('#\.(avif|gif|jpg|png|webp)$#', route::$request)) {
+  if (preg_match('#\.(a?png|avif|gif|jpg|png|svg|webp)$#', route::$request)) {
     echo file_get_contents('images/no_image.png');
     exit;
   }

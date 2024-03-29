@@ -1,5 +1,12 @@
 <?php
 
+  /*!
+   * This file contains PHP logic that is separated from the HTML view.
+   * Visual changes can be made to the file found in the template folder:
+   *
+   *   ~/frontend/templates/default/partials/box_brand_logotypes.inc.php
+   */
+
   $box_brand_logotypes_cache_token = cache::token('box_brand_logotypes', []);
   if (cache::capture($box_brand_logotypes_cache_token)) {
 

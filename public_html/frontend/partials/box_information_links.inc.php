@@ -1,5 +1,12 @@
 <?php
 
+  /*!
+   * This file contains PHP logic that is separated from the HTML view.
+   * Visual changes can be made to the file found in the template folder:
+   *
+   *   ~/frontend/templates/default/partials/box_information_links.inc.php
+   */
+
   $box_information_links_cache_token = cache::token('box_information_links', ['language', fallback($_GET['page_id'])]);
   if (cache::capture($box_information_links_cache_token)) {
 

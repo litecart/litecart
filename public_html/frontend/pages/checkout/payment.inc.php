@@ -1,17 +1,25 @@
 <?php
 
+  /*!
+   * This file contains PHP logic that is separated from the HTML view.
+   * Visual changes can be made to the file found in the template folder:
+   *
+   *   ~/frontend/templates/default/partials/box_checkout_payment.inc.php
+   */
+
   header('X-Robots-Tag: noindex');
 
   $shopping_cart = &session::$data['checkout']['shopping_cart'];
 
   if (empty($shopping_cart->data['items'])) return;
 
-  if (!$options = $shopping_cart->payment->options()) {
+  $payment = new mod_payment();
+  if (!$options = $payment->options($shopping_cart)) {
     return;
   }
 
   if (!empty($_POST['select_shipping'])) {
-    $shopping_cart->payment->select($_POST['payment_option']['id'], $_POST);
+    $payment->select($_POST['payment_option']['id'], $_POST);
 
     if (route::$selected['route'] != 'f:order_process') {
       header('Location: '. $_SERVER['REQUEST_URI']);
@@ -19,28 +27,28 @@
     }
   }
 
-  if (!empty($shopping_cart->payment->selected['id'])) {
-    if (array_search($shopping_cart->payment->selected['id'], array_column($options, 'id')) === false) {
-      $shopping_cart->payment->selected = []; // Clear because option is no longer present
+  if (!empty($payment->selected['id'])) {
+    if (array_search($payment->selected['id'], array_column($options, 'id')) === false) {
+      $payment->selected = []; // Clear because option is no longer present
     } else {
-      $shopping_cart->payment->select($shopping_cart->payment->selected['id'], $shopping_cart->payment->selected['userdata']); // Reinstate a present option
+      $payment->select($payment->selected['id'], $payment->selected['userdata']); // Reinstate a present option
     }
   }
 
-  if (empty($shopping_cart->payment->selected['id'])) {
-    if ($cheapest = $shopping_cart->payment->cheapest($shopping_cart->data['items'], $shopping_cart->data['currency_code'], $shopping_cart->data['customer'])) {
-      $shopping_cart->payment->select($cheapest['id']);
+  if (empty($payment->selected['id'])) {
+    if ($cheapest = $payment->cheapest($shopping_cart)) {
+      $payment->select($cheapest['id']);
     }
   }
 
-  if (!empty($shopping_cart->payment->selected)) {
-    $_POST['payment_option'] = $shopping_cart->payment->selected;
+  if (!empty($payment->selected)) {
+    $_POST['payment_option'] = $payment->selected;
   }
 
   $box_checkout_payment = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_checkout_payment.inc.php');
 
   $box_checkout_payment->snippets = [
-    'selected' => $shopping_cart->payment->selected,
+    'selected' => $payment->selected,
     'options' => $options,
   ];
 

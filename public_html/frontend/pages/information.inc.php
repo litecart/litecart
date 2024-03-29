@@ -1,5 +1,12 @@
 <?php
 
+  /*!
+   * This file contains PHP logic that is separated from the HTML view.
+   * Visual changes can be made to the file found in the template folder:
+   *
+   *   ~/frontend/templates/default/pages/information.inc.php
+   */
+
   try {
 
     if (empty($_GET['page_id'])) {

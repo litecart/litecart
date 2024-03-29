@@ -1,4 +1,12 @@
 <?php
+
+  /*!
+   * This file contains PHP logic that is separated from the HTML view.
+   * Visual changes can be made to the file found in the template folder:
+   *
+   *   ~/frontend/templates/default/pages/order_success.inc.php
+   */
+
   header('X-Robots-Tag: noindex');
   document::$title[] = language::translate('title_order_success', 'Order Success');
 
@@ -30,7 +38,7 @@
   $_page->snippets = [
     'order' => $order->data,
     'printable_link' => document::ilink('printable_order_copy', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]),
-    'payment_receipt' => $order->payment->receipt($order),
+    'payment_receipt' => $payment->receipt($order),
     'order_success_modules_output' => $order_module->success($order),
   ];
 

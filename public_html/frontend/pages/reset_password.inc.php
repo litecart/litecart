@@ -1,5 +1,12 @@
 <?php
 
+  /*!
+   * This file contains PHP logic that is separated from the HTML view.
+   * Visual changes can be made to the file found in the template folder:
+   *
+   *   ~/frontend/templates/default/pages/reset_password.inc.php
+   */
+
   header('X-Robots-Tag: noindex');
 
   document::$title[] = language::translate('title_reset_password', 'Reset Password');

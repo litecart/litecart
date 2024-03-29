@@ -1,5 +1,12 @@
 <?php
 
+  /*!
+   * This file contains PHP logic that is separated from the HTML view.
+   * Visual changes can be made to the file found in the template folder:
+   *
+   *   ~/frontend/templates/default/pages/index.inc.php
+   */
+
   document::$title = [language::translate('index:head_title', 'Online Store'), settings::get('store_name')];
   document::$description = language::translate('index:meta_description', '');
 

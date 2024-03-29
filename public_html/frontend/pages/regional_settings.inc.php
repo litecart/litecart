@@ -1,4 +1,12 @@
 <?php
+
+  /*!
+   * This file contains PHP logic that is separated from the HTML view.
+   * Visual changes can be made to the file found in the template folder:
+   *
+   *   ~/frontend/templates/default/pages/regional_settings.inc.php
+   */
+
   header('X-Robots-Tag: noindex');
 
   document::$title[] = language::translate('regional_settings:head_title', 'Regional Settings');
@@ -20,8 +28,6 @@
       if (!empty($_POST['country_code'])) {
         customer::$data['country_code'] = $_POST['country_code'];
         customer::$data['zone_code'] = fallback($_POST['zone_code']);
-        customer::$data['shipping_address']['country_code'] = $_POST['country_code'];
-        customer::$data['shipping_address']['zone_code'] = fallback($_POST['zone_code']);
         if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
           header('Set-Cookie: country_code='. customer::$data['country_code'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
           header('Set-Cookie: zone_code='. customer::$data['zone_code'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);

@@ -1,5 +1,12 @@
 <?php
 
+  /*!
+   * This file contains PHP logic that is separated from the HTML view.
+   * Visual changes can be made to the file found in the template folder:
+   *
+   *   ~/frontend/templates/default/partials/box_checkout_summary.inc.php
+   */
+
   header('X-Robots-Tag: noindex');
 
   $shopping_cart = &session::$data['checkout']['shopping_cart'];
@@ -12,7 +19,7 @@
     'shopping_cart' => $shopping_cart->data,
     'error' => $shopping_cart->validate(),
     'consent' => null,
-    'confirm' => !empty($shopping_cart->payment->selected['confirm']) ? $shopping_cart->payment->selected['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
+    'confirm' => !empty($payment->selected['confirm']) ? $payment->selected['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
   ];
 
   $privacy_policy_id = settings::get('privacy_policy');

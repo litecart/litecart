@@ -1,4 +1,12 @@
 <?php
+
+  /*!
+   * This file contains PHP logic that is separated from the HTML view.
+   * Visual changes can be made to the file found in the template folder:
+   *
+   *   ~/frontend/templates/default/pages/checkout.inc.php
+   */
+
   header('X-Robots-Tag: noindex');
   document::$layout = 'checkout';
 
@@ -33,15 +41,16 @@
         exit;
       }
 
-      if ($shopping_cart->payment->options()) {
+      $payment = new mod_payment();
+      if ($payment->options($shopping_cart)) {
 
-        if (empty($shopping_cart->payment->selected)) {
+        if (empty($payment->selected)) {
           notices::add('errors', language::translate('error_no_payment_method_selected', 'No payment method selected'));
           header('Location: '. document::ilink('checkout/index'));
           exit;
         }
 
-        if ($payment_error = $shopping_cart->payment->pre_check($shopping_cart)) {
+        if ($payment_error = $payment->pre_check($shopping_cart)) {
           notices::add('errors', $payment_error);
           header('Location: '. document::ilink('checkout/index'));
           exit;
@@ -54,7 +63,7 @@
           ];
         }
 
-        if ($gateway = $shopping_cart->payment->transfer($shopping_cart, (string)document::ilink('checkout/process'))) {
+        if ($gateway = $payment->transfer($shopping_cart, (string)document::ilink('checkout/process'))) {
 
           if (!empty($gateway['error'])) {
             notices::add('errors', $gateway['error']);
@@ -135,8 +144,11 @@
     session::$data['checkout']['shopping_cart'] = &cart::$cart;
   }
 
+  $mod_checkout = new mod_checkout();
+
   $shopping_cart = &session::$data['checkout']['shopping_cart'];
   $shopping_cart->data['processable'] = false; // Whether or not it is allowed to be processed in checkout/process
+  $shopping_cart->data['express_checkout'] = $mod_checkout->options($shopping_cart);
 
   functions::draw_lightbox();
 

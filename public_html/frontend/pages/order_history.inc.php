@@ -1,4 +1,12 @@
 <?php
+
+  /*!
+   * This file contains PHP logic that is separated from the HTML view.
+   * Visual changes can be made to the file found in the template folder:
+   *
+   *   ~/frontend/templates/default/pages/order_history.inc.php
+   */
+
   header('X-Robots-Tag: noindex');
 
   document::$title[] = language::translate('order_history:head_title', 'Order History');

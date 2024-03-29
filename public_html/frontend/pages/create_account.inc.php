@@ -1,5 +1,12 @@
 <?php
 
+  /*!
+   * This file contains PHP logic that is separated from the HTML view.
+   * Visual changes can be made to the file found in the template folder:
+   *
+   *   ~/frontend/templates/default/pages/create_account.inc.php
+   */
+
   header('X-Robots-Tag: noindex');
   document::$title[] = language::translate('title_create_account', 'Create Account');
 

@@ -1,5 +1,12 @@
 <?php
 
+  /*!
+   * This file contains PHP logic that is separated from the HTML view.
+   * Visual changes can be made to the file found in the template folder:
+   *
+   *   ~/frontend/templates/default/pages/product.inc.php
+   */
+
   if (empty($_GET['product_id'])) {
     include 'app://frontend/pages/error_document.inc.php';
     return;
@@ -244,8 +251,8 @@
       ],
     ];
 
-    $shipping = new mod_shipping($tmp_order);
-    $cheapest_shipping = $shipping->cheapest();
+    $shipping = new mod_shipping();
+    $cheapest_shipping = $shipping->cheapest($tmp_order);
 
     if (!empty($cheapest_shipping)) {
       $_page->snippets['cheapest_shipping_fee'] = tax::get_price($cheapest_shipping['fee'], $cheapest_shipping['tax_class_id']);
