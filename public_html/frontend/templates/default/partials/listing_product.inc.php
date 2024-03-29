@@ -2,7 +2,7 @@
   <a class="link" href="<?php echo functions::escape_html($link) ?>">
 
     <div class="image-wrapper">
-      <?php echo functions::draw_thumbnail($image, 200, 0, 'product', 'alt="'. functions::escape_html($name) .'"'); ?>
+      <?php echo functions::draw_thumbnail($image, 200, 0, 'product', 'loading="lazy" alt="'. functions::escape_html($name) .'"'); ?>
       {{sticker}}
     </div>
 
