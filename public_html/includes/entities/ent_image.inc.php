@@ -492,8 +492,8 @@
             $_watermark = new imagick();
             $_watermark->readImage($watermark);
 
-          if ($_watermark->getImageWidth() > ($this->width() / 5) || $_watermark->getImageHeight() > ($this->height() / 5)) {
-            $_watermark->thumbnailImage(round($this->width()/5), round($this->height()/5), true);
+          if ($_watermark->getImageWidth() > ($this->width / 5) || $_watermark->getImageHeight() > ($this->height / 5)) {
+            $_watermark->thumbnailImage(round($this->width/5), round($this->height/5), true);
           }
 
             switch (strtoupper($align_x)) {
@@ -538,7 +538,7 @@
           $_watermark = new ent_image($watermark, $this->_library);
 
         // Return false on no image
-          if (!$_watermark->type()) {
+          if (!$_watermark->type) {
             throw new Exception("Watermark file is not a valid image ($watermark)");
           }
 
@@ -546,12 +546,12 @@
           $_watermark->load();
 
         // Check if watermark is a PNG file
-          if ($_watermark->type() != 'png') {
+          if ($_watermark->type != 'png') {
             trigger_error("Watermark file is not a PNG image ($watermark)", E_USER_NOTICE);
           }
 
         // Shrink a large watermark
-          $_watermark->resample(round($this->width()/5), round($this->height()/5), 'FIT_ONLY_BIGGER');
+          $_watermark->resample(round($this->width/5), round($this->height/5), 'FIT_ONLY_BIGGER');
 
         // Align watermark and set horizontal offset
           switch (strtoupper($align_x)) {
@@ -611,8 +611,12 @@
 
       $type = strtolower(pathinfo($destination, PATHINFO_EXTENSION));
 
-      if (!preg_match('#^(gif|jpe?g|png|webp)$#i', $type)) {
+      if (!preg_match('#^(avif|gif|jpe?g|png|webp|svg)$#i', $type)) {
         throw new Exception("Unknown image format ($type)");
+      }
+
+      if ($this->type == 'svg' && $type == 'svg') {
+        return copy($this->_file, $destination);
       }
 
       switch ($this->_library) {
@@ -624,9 +628,9 @@
           }
 
           if (strtolower($type) == 'jpg') {
-             $this->_image->setImageCompression(Imagick::COMPRESSION_JPEG);
+            $this->_image->setImageCompression(Imagick::COMPRESSION_JPEG);
           } else {
-             $this->_image->setImageCompression(Imagick::COMPRESSION_ZIP);
+            $this->_image->setImageCompression(Imagick::COMPRESSION_ZIP);
           }
 
           $this->_image->setImageCompressionQuality((int)$quality);
@@ -642,11 +646,11 @@
         case 'gd':
 
           if ($this->type == 'svg') {
-            if ($type != 'svg') {
-              throw new Exception("GD2 does not support converting .svg to .$type. Enable Imagick for PHP instead");
-            } else {
-              return copy($this->_file, $destination);
-            }
+            throw new Exception("GD2 does not support converting .svg to .$type. Enable Imagick for PHP instead");
+          }
+
+          if ($type == 'avif' && !function_exists('ImageAVIF')) {
+            return $this->write(preg_replace('#\.avif$#', '.jpg', $destination), $quality, $interlaced);
           }
 
           if ($type == 'webp' && !function_exists('ImageWebP')) {
@@ -673,6 +677,7 @@
           }
 
           switch ($type) {
+            case 'avif': $result = ImageAVIF($new_image, $destination); break;
             case 'gif': $result = ImageGIF($new_image, $destination); break;
             case 'jpg': $result = ImageJPEG($new_image, $destination, $quality); break;
             case 'png': $result = ImagePNG($new_image, $destination); break;

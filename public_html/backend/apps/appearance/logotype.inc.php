@@ -15,7 +15,7 @@
 
       $image = new ent_image($_FILES['image']['tmp_name']);
 
-      if (!$image->width()) {
+      if (!$image->width) {
         throw new Exception(language::translate('error_invalid_image', 'The image is invalid'));
       }
 
