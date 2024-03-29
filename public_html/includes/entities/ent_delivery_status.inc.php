@@ -17,26 +17,18 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."delivery_statuses;"
-      );
-
-      while ($field = database::fetch($fields_query)) {
+      )->each(function($field){
         $this->data[$field['Field']] = database::create_variable($field);
-      }
+      });
 
-      $info_fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."delivery_statuses_info;"
-      );
-
-      while ($field = database::fetch($info_fields_query)) {
-        if (in_array($field['Field'], ['id', 'delivery_status_id', 'language_code'])) continue;
-
-        $this->data[$field['Field']] = [];
-        foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = database::create_variable($field);
-        }
-      }
+      )->each(function($field) {
+        if (in_array($field['Field'], ['id', 'delivery_status_id', 'language_code'])) return;
+        $this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
+      });
 
       $this->previous = $this->data;
     }
@@ -61,24 +53,22 @@
         throw new Exception('Could not find delivery status (ID: '. (int)$delivery_status_id .') in database.');
       }
 
-      $delivery_status_info_query = database::query(
+      database::query(
         "select * from ". DB_TABLE_PREFIX ."delivery_statuses_info
         where delivery_status_id = ". (int)$this->data['id'] .";"
-      );
-
-      while ($delivery_status_info = database::fetch($delivery_status_info_query)) {
-        foreach ($delivery_status_info as $key => $value) {
+      )->each(function($info){
+        foreach ($info as $key => $value) {
           if (in_array($key, ['id', 'delivery_status_id', 'language_code'])) continue;
-          $this->data[$key][$delivery_status_info['language_code']] = $value;
+          $this->data[$key][$info['language_code']] = $value;
         }
-      }
+      });
 
       $this->previous = $this->data;
     }
 
     public function save() {
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."delivery_statuses
           (date_created)

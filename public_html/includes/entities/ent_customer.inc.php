@@ -17,17 +17,11 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."customers;"
-      );
-
-      while ($field = database::fetch($fields_query)) {
-        if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
-          $this->data['shipping_address'][$matches[1]] = database::create_variable($field);
-        } else {
-          $this->data[$field['Field']] = database::create_variable($field);
-        }
-      }
+      )->each(function($field){
+        $this->data[$field['Field']] = database::create_variable($field);
+      });
 
       $this->data['status'] = 1;
       $this->data['newsletter'] = '';
@@ -56,39 +50,18 @@
         throw new Exception('Could not find customer (ID: '. (int)$customer_id .') in database.');
       }
 
-      foreach ($customer as $field => $value) {
-        if (preg_match('#^shipping_(.*)$#', $field, $matches)) {
-          unset($this->data['shipping_'.$matches[1]]);
-          $this->data['shipping_address'][$matches[1]] = $value;
-        }
-      }
-
-      if (empty($this->data['different_shipping_address'])) {
-        foreach (array_keys($this->data['shipping_address']) as $key) {
-          $this->data['shipping_address'][$key] = '';
-        }
-        $this->data['shipping_address']['country_code'] = $this->data['country_code'];
-        $this->data['shipping_address']['zone_code'] = $this->data['zone_code'];
-      }
-
-      $newsletter_recipient_query = database::query(
+      $this->data['newsletter'] = database::query(
         "select id from ". DB_TABLE_PREFIX ."newsletter_recipients
         where email = '". database::input($this->data['email']) ."'
         limit 1;"
-      );
-
-      if (database::num_rows($newsletter_recipient_query)) {
-        $this->data['newsletter'] = 1;
-      } else {
-        $this->data['newsletter'] = 0;
-      }
+      )->num_rows ? 1 : 0;
 
       $this->previous = $this->data;
     }
 
     public function save() {
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."customers
           (email, date_created)
@@ -121,21 +94,12 @@
           country_code = '". database::input($this->data['country_code']) ."',
           zone_code = '". database::input($this->data['zone_code']) ."',
           phone = '". database::input($this->data['phone']) ."',
-          different_shipping_address = '". (!empty($this->data['different_shipping_address']) ? '1' : '0') ."',
-          shipping_company = '". database::input($this->data['shipping_address']['company']) ."',
-          shipping_firstname = '". database::input($this->data['shipping_address']['firstname']) ."',
-          shipping_lastname = '". database::input($this->data['shipping_address']['lastname']) ."',
-          shipping_address1 = '". database::input($this->data['shipping_address']['address1']) ."',
-          shipping_address2 = '". database::input($this->data['shipping_address']['address2']) ."',
-          shipping_postcode = '". database::input($this->data['shipping_address']['postcode']) ."',
-          shipping_city = '". database::input($this->data['shipping_address']['city']) ."',
-          shipping_country_code = '". database::input($this->data['shipping_address']['country_code']) ."',
-          shipping_zone_code = '". database::input($this->data['shipping_address']['zone_code']) ."',
-          shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
+          default_billing_address_id = ". (int)$this->data['default_billing_address_id'] .",
+          default_shipping_address_id = ". (int)$this->data['default_shipping_address_id'] .",
           notes = '". database::input($this->data['notes']) ."',
           password_reset_token = '". database::input($this->data['password_reset_token']) ."',
-          date_blocked_until = ". (!empty($this->data['date_blocked_until']) ? "'". database::input($this->data['date_blocked_until']) ."'" : "NULL") .",
-          date_expire_sessions = ". (!empty($this->data['date_expire_sessions']) ? "'". database::input($this->data['date_expire_sessions']) ."'" : "NULL") .",
+          date_blocked_until = ". (!empty($this->data['date_blocked_until']) ? "'". database::input($this->data['date_blocked_until']) ."'" : "null") .",
+          date_expire_sessions = ". (!empty($this->data['date_expire_sessions']) ? "'". database::input($this->data['date_expire_sessions']) ."'" : "null") .",
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
@@ -179,7 +143,7 @@
 
     public function set_password($password) {
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         $this->save();
       }
 

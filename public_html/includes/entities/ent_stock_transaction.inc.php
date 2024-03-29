@@ -17,13 +17,11 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."stock_transactions;"
-      );
-
-      while ($field = database::fetch($fields_query)) {
+      )->each(function($field){
         $this->data[$field['Field']] = database::create_variable($field);
-      }
+      });
 
       $this->data['contents'] = [];
 
@@ -40,14 +38,14 @@
 
       if ($transaction_id == 'system') {
 
-        $transaction_query = database::query(
+        $transaction = database::query(
           "select * from ". DB_TABLE_PREFIX ."stock_transactions
           where name like 'System Generated%'
           and date(date_created) = '". date('Y-m-d') ."'
           limit 1;"
-        );
+        )->fetch();
 
-        if ($transaction = database::fetch($transaction_query)) {
+        if ($transaction) {
           $this->load($transaction['id']);
         } else {
           $this->data['name'] = 'System Generated '. date('Y-m-d');
@@ -56,22 +54,22 @@
         return;
       }
 
-      $transaction_query = database::query(
+      $transaction = database::query(
         "select * from ". DB_TABLE_PREFIX ."stock_transactions
         where id = ". (int)$transaction_id ."
         limit 1;"
-      );
+      )->fetch();
 
-      if ($transaction = database::fetch($transaction_query)) {
+      if ($transaction) {
         $this->data = array_replace($this->data, array_intersect_key($transaction, $this->data));
       } else {
         trigger_error('Could not find stock transaction (ID: '. (int)$transaction_id .') in database.', E_USER_ERROR);
       }
 
       $this->data['contents'] = database::query(
-        "select stc.*, si.sku, si.quantity, si.backordered, sii.name
+        "select stc.*, sii.name, si.sku, si.quantity, si.backordered
         from ". DB_TABLE_PREFIX ."stock_transactions_contents stc
-        left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = stc.stock_item_id)
+        left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = stc.stock_item_id and si.id = stc.stock_item_id)
         left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = stc.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
         where stc.transaction_id = ". (int)$this->data['id'] .";"
       )->fetch_all();
@@ -82,7 +80,7 @@
     public function save() {
 
     // Insert/update transaction
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."stock_transactions
           (name, date_created)
@@ -102,10 +100,19 @@
 
     // Revert stock changes
       foreach ($this->previous['contents'] as $content) {
+        if (!empty($content['stock_item_id'])) {
+          database::query(
+            "update ". DB_TABLE_PREFIX ."stock_items
+            set quantity = quantity - ". (float)$content['quantity_adjustment'] ."
+            where id = ". (int)$content['stock_item_id'] ."
+            and product_id = ". (int)$content['product_id'] ."
+            limit 1;"
+          );
+        }
         database::query(
-          "update ". DB_TABLE_PREFIX ."stock_items
+          "update ". DB_TABLE_PREFIX ."products
           set quantity = quantity - ". (float)$content['quantity_adjustment'] ."
-          where id = ". (int)$content['stock_item_id'] ."
+          where id = ". (int)$content['product_id'] ."
           limit 1;"
         );
       }
@@ -130,31 +137,55 @@
 
         database::query(
           "update ". DB_TABLE_PREFIX ."stock_transactions_contents
-          set stock_item_id = ". (int)$content['stock_item_id'] .",
+          set product_id = ". (int)$content['product_id'] .",
+            stock_item_id = ". (int)$content['stock_item_id'] .",
             quantity_adjustment = ". (float)$content['quantity_adjustment'] ."
-          where transaction_id = ". (int)$this->data['id'] ."
-          and id = ". (int)$content['id'] ."
+          where id = ". (int)$content['id'] ."
+          and transaction_id = ". (int)$this->data['id'] ."
           limit 1;"
         );
 
       // Commit stock changes
-        database::query(
-          "update ". DB_TABLE_PREFIX ."stock_items
-          set quantity = quantity + ". (float)$content['quantity_adjustment'] ."
-          where id = ". (int)$content['stock_item_id'] ."
-          limit 1;"
-        );
+        if (!empty($content['stock_item_id'])) {
+          database::query(
+            "update ". DB_TABLE_PREFIX ."stock_items
+            set quantity = quantity + ". (float)$content['quantity_adjustment'] .",
+              backordered = ". (float)$content['backordered'] ."
+            where id = ". (int)$content['stock_item_id'] ."
+            and product_id = ". (int)$content['product_id'] ."
+            limit 1;"
+          );
+        }
       }
 
       $this->previous = $this->data;
 
-      cache::clear_cache('stock');
+      cache::clear_cache('stock_option');
       cache::clear_cache('product');
+    }
+
+    public function adjust_quantity($product_id, $stock_item_id, $quantity_adjustment) {
+
+      foreach ($this->data['contents'] as $content) {
+        if ($content['product_id'] == $product_id && $content['stock_item_id'] == $stock_item_id) {
+          $content['quantity_adjustment'] += $quantity_adjustment;
+          return;
+        }
+      }
+
+      $this->data['contents'][] = [
+        'id' => null,
+        'product_id' => $product_id,
+        'stock_item_id' => $stock_item_id,
+        'quantity_adjustment' => $quantity_adjustment,
+      ];
+
+      $this->save();
     }
 
     public function delete() {
 
-      if (empty($this->data['id'])) return;
+      if (!$this->data['id']) return;
 
       database::query(
         "delete st, stc
@@ -165,7 +196,7 @@
 
       $this->reset();
 
-      cache::clear_cache('stock');
+      cache::clear_cache('stock_option');
       cache::clear_cache('product');
     }
   }

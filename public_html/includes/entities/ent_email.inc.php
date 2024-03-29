@@ -17,13 +17,11 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."emails;"
-      );
-
-      while ($field = database::fetch($fields_query)) {
+      )->each(function($field){
         $this->data[$field['Field']] = database::create_variable($field);
-      }
+      });
 
       $this->data['language_code'] = language::$selected['code'];
 
@@ -75,7 +73,7 @@
 
     public function save() {
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."emails
           (status, code, ip_address, hostname, user_agent, date_created) values

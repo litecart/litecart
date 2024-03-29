@@ -60,13 +60,11 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."modules;"
-      );
-
-      while ($field = database::fetch($fields_query)) {
+      )->each(function($field){
         $this->data[$field['Field']] = database::create_variable($field);
-      }
+      });
 
       $this->data['settings'] = [];
     }
@@ -119,7 +117,7 @@
 
     public function save() {
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
 
         database::query(
           "insert into ". DB_TABLE_PREFIX ."modules

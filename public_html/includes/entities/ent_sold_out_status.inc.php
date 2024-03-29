@@ -17,33 +17,27 @@
 
       $this->data = [];
 
-      $sold_out_status_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."sold_out_statuses;"
-      );
-
-      while ($field = database::fetch($sold_out_status_query)) {
+      )->each(function($field){
         $this->data[$field['Field']] = database::create_variable($field);
-      }
+      });
 
-      $sold_out_status_info_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."sold_out_statuses_info;"
-      );
-
-      while ($field = database::fetch($sold_out_status_info_query)) {
-        if (in_array($field['Field'], ['id', 'sold_out_status_id', 'language_code'])) continue;
-
-        $this->data[$field['Field']] = [];
-        foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = database::create_variable($field);
-        }
-      }
+      )->each(function($field) {
+        if (in_array($field['Field'], ['id', 'sold_out_status_id', 'language_code'])) return;
+        $this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
+      });
 
       $this->previous = $this->data;
     }
 
     public function load($sold_out_status_id) {
 
-      if (!preg_match('#^[0-9]+$#', $sold_out_status_id)) throw new Exception('Invalid sold out status (ID: '. $sold_out_status_id .')');
+      if (!preg_match('#^[0-9]+$#', $sold_out_status_id))  {
+        throw new Exception('Invalid sold out status (ID: '. $sold_out_status_id .')');
+      }
 
       $this->reset();
 
@@ -59,24 +53,22 @@
         throw new Exception('Could not find sold out status (ID: '. (int)$sold_out_status_id .') in database.');
       }
 
-      $sold_out_status_info_query = database::query(
+      database::query(
         "select * from ". DB_TABLE_PREFIX ."sold_out_statuses_info
         where sold_out_status_id = ". (int)$this->data['id'] .";"
-      );
-
-      while ($sold_out_status_info = database::fetch($sold_out_status_info_query)) {
-        foreach ($sold_out_status_info as $key => $value) {
+      )->each(function($info){
+        foreach ($info as $key => $value) {
           if (in_array($key, ['id', 'sold_out_status_id', 'language_code'])) continue;
-          $this->data[$key][$sold_out_status_info['language_code']] = $value;
+          $this->data[$key][$info['language_code']] = $value;
         }
-      }
+      });
 
       $this->previous = $this->data;
     }
 
     public function save() {
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."sold_out_statuses
           (date_created)

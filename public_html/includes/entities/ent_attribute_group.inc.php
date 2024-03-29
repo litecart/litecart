@@ -17,26 +17,18 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."attribute_groups;"
-      );
-
-      while ($field = database::fetch($fields_query)) {
+      )->each(function($field){
         $this->data[$field['Field']] = database::create_variable($field);
-      }
+      });
 
-      $info_fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."attribute_groups_info;"
-      );
-
-      while ($field = database::fetch($info_fields_query)) {
-        if (in_array($field['Field'], ['id', 'group_id', 'language_code'])) continue;
-
-        $this->data[$field['Field']] = [];
-        foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = database::create_variable($field);
-        }
-      }
+      )->each(function($field) {
+        if (in_array($field['Field'], ['id', 'group_id', 'language_code'])) return;
+        $this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
+      });
 
       $this->data['values'] = [];
 
@@ -45,7 +37,9 @@
 
     public function load($group_id) {
 
-      if (!preg_match('#^[0-9]+$#', $group_id)) throw new Exception('Invalid attribute (ID: '. $group_id .')');
+      if (!preg_match('#^[0-9]+$#', $group_id)) {
+        throw new Exception('Invalid attribute (ID: '. $group_id .')');
+      }
 
       $this->reset();
 
@@ -61,14 +55,12 @@
         throw new Exception('Could not find attribute (ID: '. (int)$group_id .') in database.');
       }
 
-      $group_info_query = database::query(
+      database::query(
         "select name, language_code from ". DB_TABLE_PREFIX ."attribute_groups_info
         where group_id = ". (int)$group_id .";"
-      );
-
-      while ($group = database::fetch($group_info_query)) {
-        $this->data['name'][$group['language_code']] = $group['name'];
-      }
+      )->each(function($group_info) {
+        $this->data['name'][$info['language_code']] = $info['name'];
+      });
 
       $values_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."attribute_values
@@ -105,7 +97,7 @@
     public function save() {
 
     // Group
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."attribute_groups
           (date_created)
@@ -241,7 +233,7 @@
 
     public function delete() {
 
-      if (empty($this->data['id'])) return;
+      if (!$this->data['id']) return;
 
     // Check category filters for attribute
       $category_filters_query = database::query(

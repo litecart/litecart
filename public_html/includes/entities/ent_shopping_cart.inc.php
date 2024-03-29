@@ -3,6 +3,9 @@
   class ent_shopping_cart {
     public $data;
     public $previous;
+    public $shipping;
+    public $payment;
+    public $order_total;
 
     public function __construct($shopping_cart_id=null) {
 
@@ -17,35 +20,38 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."shopping_carts;"
-      );
-
-      while ($field = database::fetch($fields_query)) {
-
+      )->each(function($field) {
         switch (true) {
+
           case (preg_match('#^customer_#', $field['Field'])):
             $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = database::create_variable($field);
             break;
 
+          case (preg_match('#^billing_#', $field['Field'])):
+            $this->data['billing_address'][preg_replace('#^billing_#', '', $field['Field'])] = database::create_variable($field);
+            break;
+
           case (preg_match('#^shipping_(?!option)#', $field['Field'])):
-            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = database::create_variable($field);
+            $this->data['shipping_address'][preg_replace('#^shipping_#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           case (preg_match('#^payment_option#', $field['Field'])):
-            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = database::create_variable($field);
+            $this->data['payment_option'][preg_replace('#^payment_option_#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           case (preg_match('#^shipping_option#', $field['Field'])):
-            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = database::create_variable($field);
+            $this->data['shipping_option'][preg_replace('#^shipping_option_#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           default:
             $this->data[$field['Field']] = database::create_variable($field);
             break;
         }
-      }
+      });
 
+      // Default values
       $this->data = array_merge($this->data, [
         'uid' => uniqid(),
         'weight_unit' => settings::get('store_weight_unit'),
@@ -65,10 +71,6 @@
 
       $this->data['shipping_option']['userdata'] = [];
       $this->data['payment_option']['userdata'] = [];
-
-      $this->shipping = new mod_shipping($this);
-      $this->payment = new mod_payment($this);
-      $this->order_total = new mod_order_total($this);
 
       $this->previous = $this->data;
     }
@@ -99,7 +101,7 @@
             break;
 
           case (preg_match('#^shipping_(?!option)#', $field)):
-            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field)] = $value;
+            $this->data['shipping_address'][preg_replace('#^(shipping_)#', '', $field)] = $value;
             break;
 
           case (preg_match('#^payment_option#', $field)):
@@ -112,15 +114,13 @@
         }
       }
 
-      $items_query = database::query(
+      database::query(
         "select sci.*, p.quantity_min, p.quantity_max, p.quantity_step, qui.name as quantity_unit_name from ". DB_TABLE_PREFIX ."shopping_carts_items sci
         left join ". DB_TABLE_PREFIX ."products p on (p.id = sci.product_id)
         left join ". DB_TABLE_PREFIX ."quantity_units_info qui on (qui.id = p.quantity_unit_id and qui.language_code = '". database::input(language::$selected['code']) ."')
         where sci.cart_id = ". (int)$this->data['id'] ."
         order by sci.priority, sci.id;"
-      );
-
-      while ($item = database::fetch($items_query)) {
+      )->each(function($item) {
         $item['userdata'] = $item['userdata'] ? json_decode($item['userdata'], true) : '';
 
         try {
@@ -129,12 +129,8 @@
           $item['error'] = $e->getMessage();
         }
 
-        $this->data['items'][$item['key']] = $item;
-      }
-
-      $this->shipping = new mod_shipping($this, $this->data['shipping_option']);
-      $this->payment = new mod_payment($this, $this->data['payment_option']);
-      $this->order_total = new mod_order_total($this);
+        $this->data['items'][] = $item;
+      });
 
       $this->_refresh_total();
 
@@ -147,7 +143,7 @@
         $this->data['public_key'] = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyz', mt_rand(5, 10))), 0, 32);
       }
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."shopping_carts
           (uid, date_created)
@@ -173,22 +169,22 @@
           customer_country_code = '". database::input($this->data['customer']['country_code']) ."',
           customer_zone_code = '". database::input($this->data['customer']['zone_code']) ."',
           customer_phone = '". database::input($this->data['customer']['phone']) ."',
-          shipping_company = '". database::input($this->data['customer']['shipping_address']['company']) ."',
-          shipping_firstname = '". database::input($this->data['customer']['shipping_address']['firstname']) ."',
-          shipping_lastname = '". database::input($this->data['customer']['shipping_address']['lastname']) ."',
-          shipping_address1 = '". database::input($this->data['customer']['shipping_address']['address1']) ."',
-          shipping_address2 = '". database::input($this->data['customer']['shipping_address']['address2']) ."',
-          shipping_city = '". database::input($this->data['customer']['shipping_address']['city']) ."',
-          shipping_postcode = '". database::input($this->data['customer']['shipping_address']['postcode']) ."',
-          shipping_country_code = '". database::input($this->data['customer']['shipping_address']['country_code']) ."',
-          shipping_zone_code = '". database::input($this->data['customer']['shipping_address']['zone_code']) ."',
-          shipping_phone = '". database::input($this->data['customer']['shipping_address']['phone']) ."',
-          shipping_option_id = '". (!empty($this->shipping->selected['id']) ? database::input($this->data['shipping_option']['id']) : '') ."',
-          shipping_option_name = '". (!empty($this->shipping->selected['id']) ? database::input($this->shipping->selected['name']) : '') ."',
-          shipping_option_userdata = '". (!empty($this->shipping->selected['userdata']) ? database::input(json_encode($this->data['shipping_option']['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
+          shipping_company = '". database::input($this->data['shipping_address']['company']) ."',
+          shipping_firstname = '". database::input($this->data['shipping_address']['firstname']) ."',
+          shipping_lastname = '". database::input($this->data['shipping_address']['lastname']) ."',
+          shipping_address1 = '". database::input($this->data['shipping_address']['address1']) ."',
+          shipping_address2 = '". database::input($this->data['shipping_address']['address2']) ."',
+          shipping_city = '". database::input($this->data['shipping_address']['city']) ."',
+          shipping_postcode = '". database::input($this->data['shipping_address']['postcode']) ."',
+          shipping_country_code = '". database::input($this->data['shipping_address']['country_code']) ."',
+          shipping_zone_code = '". database::input($this->data['shipping_address']['zone_code']) ."',
+          shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
+          shipping_option_id = '". (!empty($this->data['shipping_option']['id']) ? database::input($this->data['shipping_option']['id']) : '') ."',
+          shipping_option_name = '". (!empty($this->data['shipping_option']['name']) ? database::input($this->data['shipping_option']['name']) : '') ."',
+          shipping_option_userdata = '". (!empty($this->data['shipping_option']['userdata']) ? database::input(json_encode($this->data['shipping_option']['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
           payment_option_id = '". (!empty($this->data['payment_option']['id']) ? database::input($this->data['payment_option']['id']) : '') ."',
           payment_option_name = '". (!empty($this->data['payment_option']['name']) ? database::input($this->data['payment_option']['name']) : '') ."',
-          payment_option_userdata = '". (!empty($this->payment->selected['userdata']) ? database::input(json_encode($this->data['payment_option']['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
+          payment_option_userdata = '". (!empty($this->data['payment_option']['userdata']) ? database::input(json_encode($this->data['payment_option']['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
           payment_terms = '". database::input($this->data['payment_terms']) ."',
           incoterm = '". database::input($this->data['incoterm']) ."',
           language_code = '". database::input($this->data['language_code']) ."',
@@ -221,7 +217,7 @@
           "update ". DB_TABLE_PREFIX ."shopping_carts_items
           set `key` = '". database::input($item['key']) ."',
             product_id = ". (int)$item['product_id'] .",
-            stock_item_id = ". (int)$item['stock_item_id'] .",
+            stock_option_id = ". (int)$item['stock_option_id'] .",
             name = '". database::input($item['name']) ."',
             userdata = '". (!empty($item['userdata']) ? database::input(json_encode($item['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
             code = '". database::input($item['code']) ."',
@@ -255,7 +251,7 @@
       $this->previous = $this->data;
     }
 
-    public function add_product($product_id, $stock_item_id='', $quantity=1, $halt_on_error=false) {
+    public function add_product($product_id, $stock_option_id='', $quantity=1, $halt_on_error=false) {
 
       $product = reference::product($product_id);
       $quantity = round($quantity, $product->quantity_unit ? (int)$product->quantity_unit['decimals'] : 0, PHP_ROUND_HALF_UP);
@@ -264,13 +260,13 @@
       if (!empty($product->quantity_unit['separate'])) {
         $item_key = uniqid();
       } else {
-        $item_key = crc32(json_encode([$product->id, $stock_item_id]));
+        $item_key = crc32(json_encode([$product->id, $stock_option_id]));
       }
 
       $item = [
         'id' => null,
         'product_id' => (int)$product->id,
-        'stock_item_id' => $stock_item_id,
+        'stock_option_id' => $stock_option_id,
         'key' => $item_key,
         'image' => $product->image,
         'name' => $product->name,
@@ -299,7 +295,7 @@
         'error' => '',
       ];
 
-      if (($stock_option_key = array_search($item['stock_item_id'], array_column($product->stock_options, 'stock_item_id', 'id'))) !== false) {
+      if (($stock_option_key = array_search($item['stock_option_id'], array_column($product->stock_options, 'stock_option_id', 'id'))) !== false) {
         $stock_option = &$product->stock_options[$stock_option_key];
 
         $item['sku'] = fallback($stock_option['sku'], $item['sku']);
@@ -354,16 +350,16 @@
         throw new Exception(language::translate('error_invalid_item_quantity', 'Invalid item quantity'));
       }
 
-      if (empty($item['stock_item_id']) && $product->stock_options) {
+      if (empty($item['stock_option_id']) && $product->stock_options) {
         throw new Exception(language::translate('error_muset_select_stock_option', 'You must select a stock option'));
       }
 
-      if (!empty($item['stock_item_id']) && array_search($item['stock_item_id'], array_column($product->stock_options, 'stock_item_id')) === false) {
+      if (!empty($item['stock_option_id']) && array_search($item['stock_option_id'], array_column($product->stock_options, 'stock_option_id')) === false) {
         throw new Exception(language::translate('error_invalid_stock_option', 'Invalid stock option'));
       }
 
-      if (!empty($item['stock_item_id'])) {
-        if (($stock_option_key = array_search($item['stock_item_id'], array_column($product->stock_options, 'stock_item_id', 'id'))) !== false) {
+      if (!empty($item['stock_option_id'])) {
+        if (($stock_option_key = array_search($item['stock_option_id'], array_column($product->stock_options, 'stock_option_id', 'id'))) !== false) {
           $stock_option = &$product->stock_options[$stock_option_key];
 
           if (!empty($product->sold_out_status) && empty($product->sold_out_status['orderable'])) {
@@ -549,31 +545,31 @@
       }
 
       try {
-        if (!empty($this->data['customer']['different_shipping_address'])) {
+        if (!empty($this->data['different_shipping_address'])) {
 
-          if (empty($this->data['customer']['shipping_address']['firstname'])){
+          if (empty($this->data['shipping_address']['firstname'])){
             throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
           }
 
-          if (empty($this->data['customer']['shipping_address']['lastname'])) {
+          if (empty($this->data['shipping_address']['lastname'])) {
             throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
           }
 
-          if (empty($this->data['customer']['shipping_address']['address1'])){
+          if (empty($this->data['shipping_address']['address1'])){
             throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
           }
 
-          if (empty($this->data['customer']['shipping_address']['city'])){
+          if (empty($this->data['shipping_address']['city'])){
             throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
           }
 
-          if (empty($this->data['customer']['shipping_address']['country_code'])){
+          if (empty($this->data['shipping_address']['country_code'])){
             throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
           }
 
-          if (reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format) {
-            if (!empty($this->data['customer']['shipping_address']['postcode'])) {
-              if (!preg_match('#'. reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format .'#i', $this->data['customer']['shipping_address']['postcode'])) {
+          if (reference::country($this->data['shipping_address']['country_code'])->postcode_format) {
+            if (!empty($this->data['shipping_address']['postcode'])) {
+              if (!preg_match('#'. reference::country($this->data['shipping_address']['country_code'])->postcode_format .'#i', $this->data['shipping_address']['postcode'])) {
                 throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format.'));
               }
             } else {
@@ -581,8 +577,8 @@
             }
           }
 
-          if (settings::get('customer_field_zone') && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) {
-            if (empty($this->data['customer']['shipping_address']['zone_code']) && reference::country($this->data['customer']['shipping_address']['country_code'])->zones){
+          if (settings::get('customer_field_zone') && reference::country($this->data['shipping_address']['country_code'])->zones) {
+            if (empty($this->data['shipping_address']['zone_code']) && reference::country($this->data['shipping_address']['country_code'])->zones){
               return language::translate('error_missing_zone', 'You must select a zone.');
             }
           }
@@ -601,12 +597,13 @@
       }
 
     // Validate shipping option
-      $shipping_options = $this->shipping->options();
-      if (!empty($this->shipping->modules) && count($shipping_options)) {
-        if (empty($this->shipping->selected)) {
+      $shipping = new mod_shipping($this->data['shipping_option']);
+      $shipping_options = $shipping->options();
+      if (!empty($shipping->modules) && count($shipping_options)) {
+        if (empty($shipping->selected)) {
           return language::translate('error_no_shipping_method_selected', 'No shipping method selected');
         } else {
-          if (($key = array_search($this->shipping->selected['id'], array_combine(array_keys($shipping_options), array_column($shipping_options, 'id')))) === false) {
+          if (($key = array_search($shipping->selected['id'], array_combine(array_keys($shipping_options), array_column($shipping_options, 'id')))) === false) {
             return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
           } else if (!empty($shipping_options[$key]['error'])) {
             return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains errors');
@@ -615,12 +612,13 @@
       }
 
     // Validate payment option
-      $payment_options = $this->payment->options();
-      if (!empty($this->payment->modules) && count($payment_options)) {
-        if (empty($this->payment->selected)) {
+      $payment = new mod_payment($this->data['payment_option']);
+      $payment_options = $payment->options();
+      if (!empty($payment->modules) && count($payment_options)) {
+        if (empty($payment->selected)) {
           return language::translate('error_no_payment_method_selected', 'No payment method selected');
         } else {
-          if (($key = array_search($this->payment->selected['id'], array_combine(array_keys($payment_options), array_column($payment_options, 'id')))) === false) {
+          if (($key = array_search($payment->selected['id'], array_combine(array_keys($payment_options), array_column($payment_options, 'id')))) === false) {
             return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
           } else if (!empty($payment_options[$key]['error'])) {
             return language::translate('error_payment_method_contains_error', 'The selected payment method contains errors');
@@ -641,7 +639,7 @@
 
     public function delete() {
 
-      if (empty($this->data['id'])) return;
+      if (!$this->data['id']) return;
 
       database::query(
         "delete sc, sci

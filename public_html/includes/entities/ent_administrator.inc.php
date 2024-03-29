@@ -17,13 +17,11 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."administrators;"
-      );
-
-      while ($field = database::fetch($fields_query)) {
+      )->each(function($field){
         $this->data[$field['Field']] = database::create_variable($field);
-      }
+      });
 
       $this->data['apps'] = [];
       $this->data['widgets'] = [];
@@ -75,7 +73,7 @@
         throw new Exception(language::translate('error_administrator_conflict', 'The administrator conflicts another administrator in the database'));
       }
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."administrators
           (date_created)
@@ -106,7 +104,7 @@
 
     public function set_password($password) {
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         $this->save();
       }
 

@@ -17,13 +17,11 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."countries;"
-      );
-
-      while ($field = database::fetch($fields_query)) {
+      )->each(function($field){
         $this->data[$field['Field']] = database::create_variable($field);
-      }
+      });
 
       $this->data['zones'] = [];
 
@@ -88,7 +86,7 @@
         throw new Exception(language::translate('error_language_conflict', 'The country conflicts another country in the database'));
       }
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."countries
           (date_created)

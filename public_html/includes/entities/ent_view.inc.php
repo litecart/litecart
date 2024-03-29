@@ -71,7 +71,7 @@
 
         return $output;
       });
-      }
+    }
 
     public function register_parser($pattern, $callable) {
       $pattern = '#'. preg_quote($this->wrapper[0], '#') . $pattern . preg_quote($this->wrapper[1], '#') .'#s';
@@ -85,7 +85,7 @@
     // Render and make it stick
     public function stitch($view=null, $cleanup=null) {
       return $this->html = $this->render($view, $cleanup);
-      }
+    }
 
     // Render but don't make it stick
     public function render($view=null, $cleanup=null) {
@@ -106,7 +106,7 @@
 
       } else {
         $view = $this->view;
-        }
+      }
 
       if ($cleanup === null) {
         $cleanup = $this->cleanup;
@@ -140,7 +140,8 @@
       if ($cleanup) {
         //$html = preg_replace('#'. preg_quote($this->wrapper[0], '#') .'(if|each) .*?'. preg_quote($this->wrapper[0], '#') .'\1'. preg_quote($this->wrapper[1], '#') .'#', '', $html);
         $html = preg_replace('#'. preg_quote($this->wrapper[0], '#') .'.*?'. preg_quote($this->wrapper[1], '#') .'#', '', $html);
-    }
+        $html = str_replace(['\\{\\{', '\\}\\}'], ['{{', '}}'], $html); // Unescape escaped wrappers
+      }
 
       return $html;
     }

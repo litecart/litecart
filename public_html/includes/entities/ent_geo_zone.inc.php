@@ -17,13 +17,11 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."geo_zones;"
-      );
-
-      while ($field = database::fetch($fields_query)) {
+      )->each(function($field){
         $this->data[$field['Field']] = database::create_variable($field);
-      }
+      });
 
       $this->data['zones'] = [];
 
@@ -50,28 +48,25 @@
         throw new Exception('Could not find geo zone (ID: '. (int)$geo_zone_id .') in database.');
       }
 
-      $zones_to_geo_zones_query = database::query(
+      $this->data['zones'] = database::query(
         "select z2gz.*, c.name as country_name, z.name as zone_name from ". DB_TABLE_PREFIX ."zones_to_geo_zones z2gz
         left join ". DB_TABLE_PREFIX ."countries c on (c.iso_code_2 = z2gz.country_code)
         left join ". DB_TABLE_PREFIX ."zones z on (z.code = z2gz.zone_code)
         where geo_zone_id = ". (int)$geo_zone_id ."
         order by c.name, z.name;"
-      );
-
-      $this->data['zones'] = [];
-      while ($zone = database::fetch($zones_to_geo_zones_query)) {
-        if (empty($zone['zone_code'])) {
+      )->custom_fetch(function($zone){
+        if (!$zone['zone_code']) {
           $zone['zone_name'] = '-- '. language::translate('title_all_zones', 'All Zones') .' --';
         }
-        $this->data['zones'][] = $zone;
-      }
+        return $zone;
+      });
 
       $this->previous = $this->data;
     }
 
     public function save() {
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."geo_zones
           (date_created)

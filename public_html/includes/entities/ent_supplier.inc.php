@@ -17,13 +17,11 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."suppliers;"
-      );
-
-      while ($field = database::fetch($fields_query)) {
+      )->each(function($field){
         $this->data[$field['Field']] = database::create_variable($field);
-      }
+      });
 
       $this->previous = $this->data;
     }
@@ -53,7 +51,7 @@
 
     public function save() {
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."suppliers
           (date_created)
@@ -82,7 +80,7 @@
 
     public function delete() {
 
-      if (empty($this->data['id'])) return;
+      if (!$this->data['id']) return;
 
       $products_query = database::query(
         "select id from ". DB_TABLE_PREFIX ."products

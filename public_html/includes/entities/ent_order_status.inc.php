@@ -17,26 +17,18 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."order_statuses;"
-      );
-
-      while ($field = database::fetch($fields_query)) {
+      )->each(function($field){
         $this->data[$field['Field']] = database::create_variable($field);
-      }
+      });
 
-      $info_fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."order_statuses_info;"
-      );
-
-      while ($field = database::fetch($info_fields_query)) {
-        if (in_array($field['Field'], ['id', 'order_status_id', 'language_code'])) continue;
-
-        $this->data[$field['Field']] = [];
-        foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = database::create_variable($field);
-        }
-      }
+      )->each(function($field) {
+        if (in_array($field['Field'], ['id', 'order_status_id', 'language_code'])) return;
+        $this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
+      });
 
       $this->data['num_orders'] = 0;
 
@@ -63,25 +55,21 @@
         throw new Exception('Could not find order_status (ID: '. (int)$order_status_id .') in database.');
       }
 
-      $order_status_info_query = database::query(
+      database::query(
         "select * from ". DB_TABLE_PREFIX ."order_statuses_info
         where order_status_id = ". (int)$this->data['id'] .";"
-      );
-
-      while ($order_status_info = database::fetch($order_status_info_query)) {
-        foreach ($order_status_info as $key => $value) {
-          if (in_array($key, ['id', 'order_status_id', 'language_code'])) continue;
-          $this->data[$key][$order_status_info['language_code']] = $value;
+      )->each(function($info){
+        foreach ($info as $key => $value) {
+          if (in_array($key, ['id', 'order_status_id', 'language_code'])) return;
+          $this->data[$key][$info['language_code']] = $value;
         }
-      }
+      });
 
-      $orders_query = database::query(
+      $this->data['num_orders'] = database::query(
         "select count(*) as num_orders
         from ". DB_TABLE_PREFIX ."orders
         where order_status_id = ". (int)$this->data['id'] .";"
-      );
-
-      $this->data['num_orders'] = database::fetch($orders_query, 'num_orders');
+      )->fetch('num_orders');
 
       $this->previous = $this->data;
     }
@@ -92,7 +80,7 @@
         throw new Exception(language::translate('error_cannot_change_stock_action_while_used_by_orders', 'You cannot change stock action while there are orders using this status'));
       }
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."order_statuses
           (date_created)

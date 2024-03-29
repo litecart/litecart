@@ -17,28 +17,20 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."pages;"
-      );
-
-      while ($field = database::fetch($fields_query)) {
+      )->each(function($field){
         $this->data[$field['Field']] = database::create_variable($field);
-      }
+      });
+
+      database::query(
+        "show fields from ". DB_TABLE_PREFIX ."pages_info;"
+      )->each(function($field) {
+        if (in_array($field['Field'], ['id', 'page_id', 'language_code'])) return;
+        $this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
+      });
 
       $this->data['dock'] = [];
-
-      $info_fields_query = database::query(
-        "show fields from ". DB_TABLE_PREFIX ."pages_info;"
-      );
-
-      while ($field = database::fetch($info_fields_query)) {
-        if (in_array($field['Field'], ['id', 'page_id', 'language_code'])) continue;
-
-        $this->data[$field['Field']] = [];
-        foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = database::create_variable($field);
-        }
-      }
 
       $this->previous = $this->data;
     }
@@ -51,11 +43,11 @@
 
       $this->reset();
 
-      $page = database::fetch(database::query(
+      $page = database::query(
         "select * from ". DB_TABLE_PREFIX ."pages
         where id = ". (int)$page_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($page) {
         $this->data = array_replace($this->data, array_intersect_key($page, $this->data));
@@ -65,17 +57,15 @@
 
       $this->data['dock'] = explode(',', $this->data['dock']);
 
-      $page_info_query = database::query(
+      database::query(
         "select * from ". DB_TABLE_PREFIX ."pages_info
         where page_id = ". (int)$this->data['id'] .";"
-      );
-
-      while ($page_info = database::fetch($page_info_query)) {
+      )->each(function($page_info) {
         foreach ($page_info as $key => $value) {
           if (in_array($key, ['id', 'page_id', 'language_code'])) continue;
           $this->data[$key][$page_info['language_code']] = $value;
         }
-      }
+      });
 
       $this->previous = $this->data;
     }
@@ -90,7 +80,7 @@
         throw new Exception(language::translate('error_cannot_attach_page_to_descendant', 'You cannot attach a page to a descendant'));
       }
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."pages
           (date_created)

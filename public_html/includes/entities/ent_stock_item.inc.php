@@ -17,26 +17,18 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."stock_items;"
-      );
+      )->each(function($field){
+        $this->data[$field['Field']] = database::create_variable($field);
+      });
 
-      while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = database::create_variable($field['Type']);
-      }
-
-      $info_fields_query = database::query(
-        "show fields from ". DB_TABLE_PREFIX ."products_info;"
-      );
-
-      while ($field = database::fetch($info_fields_query)) {
-        if (in_array($field['Field'], ['id', 'stock_item_id', 'language_code'])) continue;
-
-        $this->data[$field['Field']] = [];
-        foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = database::create_variable($field['Type']);
-        }
-      }
+      database::query(
+        "show fields from ". DB_TABLE_PREFIX ."stock_items_info;"
+      )->each(function($field) {
+        if (in_array($field['Field'], ['id', 'stock_item_id', 'language_code'])) return;
+        $this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
+      });
 
       $this->data['quantity_reserved'] = 0;
       $this->data['quantity_adjustment'] = 0;
@@ -46,6 +38,10 @@
     }
 
     public function load($stock_item_id) {
+
+      if (!preg_match('#^[0-9]+$#', $stock_item_id)) {
+        throw new Exception('Invalid stock transaction (ID: '. functions::escape_html($stock_item_id) .')');
+      }
 
       $this->reset();
 
@@ -62,17 +58,15 @@
       }
 
     // Info
-      $stock_items_info_query = database::query(
+      database::query(
         "select * from ". DB_TABLE_PREFIX ."stock_items_info
          where stock_item_id = ". (int)$this->data['id'] .";"
-      );
-
-      while ($stock_item_info = database::fetch($stock_items_info_query)) {
-        foreach ($stock_item_info as $key => $value) {
+      )->each(function($info) {
+        foreach ($info as $key => $value) {
           if (in_array($key, ['id', 'stock_item_id', 'language_code'])) continue;
-          $this->data[$key][$stock_item_info['language_code']] = $value;
+          $this->data[$key][$info['language_code']] = $value;
         }
-      }
+      });
 
     // Reserved Quantity
       $this->data['quantity_reserved'] = database::query(
@@ -97,7 +91,7 @@
 
     public function save() {
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."stock_items
           (sku, mpn, gtin, date_created)
@@ -198,17 +192,15 @@
           if (empty($reference['id'])) {
             database::query(
               "insert into ". DB_TABLE_PREFIX ."stock_items_references
-              (stock_item_id, date_created)
-              values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
+              (stock_item_id, supplier_id)
+              values (". (int)$this->data['id'] .", ". (int)$reference['supplier_id'] .");"
             );
             $reference['id'] = $this->data['references'][$key]['id'] = database::insert_id();
           }
 
           database::query(
             "update ". DB_TABLE_PREFIX ."stock_items_references
-            set source_type = '". database::input($reference['source_type']) ."',
-              source = '". database::input($reference['source']) ."',
-              type = '". database::input($reference['type']) ."',
+            set supplier_id = ". (int)$reference['supplier_id'] .",
               code = '". database::input($reference['code']) ."'
             where stock_item_id = ". (int)$this->data['id'] ."
             and id = ". (int)$reference['id'] ."
@@ -226,7 +218,7 @@
 
       if (empty($file)) return;
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         $this->save();
       }
 
@@ -237,7 +229,7 @@
       $image = new ent_image($file);
 
     // 456-12345_Fancy-title.jpg
-      $filename = 'stock_items/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'], settings::get('store_language_code')) .'.'. $image->type();
+      $filename = 'stock_items/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'], settings::get('store_language_code')) .'.'. $image->type;
 
       if (is_file('storage://images/' . $this->data['image'])) {
         unlink('storage://images/' . $this->data['image']);
@@ -263,7 +255,7 @@
 
     public function delete_image() {
 
-      if (empty($this->data['id'])) return;
+      if (!$this->data['id']) return;
 
       if (is_file('storage://images/' . $this->data['image'])){
         unlink('storage://images/' . $this->data['image']);
@@ -284,7 +276,7 @@
 
       if (empty($source)) return;
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         $this->save();
       }
 
@@ -314,7 +306,7 @@
 
     public function delete_file() {
 
-      if (empty($this->data['id'])) return;
+      if (!$this->data['id']) return;
 
       if (is_file(FS_DIR_STORAGE . $this->data['file'])) {
         unlink(FS_DIR_STORAGE . $this->data['file']);
@@ -332,11 +324,11 @@
     public function delete() {
 
       database::query(
-        "delete si, sii, sir, p2si
+        "delete si, sii, sir, pso
         from ". DB_TABLE_PREFIX ."stock_items si
         left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = si.id)
         left join ". DB_TABLE_PREFIX ."stock_items_references sir on (sir.stock_item_id = si.id)
-        left join ". DB_TABLE_PREFIX ."products_to_stock_items p2si on (p2si.stock_item_id = si.id)
+        left join ". DB_TABLE_PREFIX ."products_stock_options pso on (pso.stock_item_id = si.id)
         where si.id = ". (int)$this->data['id'] .";"
       );
 

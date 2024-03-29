@@ -17,26 +17,18 @@
 
       $this->data = [];
 
-      $categories_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."categories;"
-      );
-
-      while ($field = database::fetch($categories_query)) {
+      )->each(function($field){
         $this->data[$field['Field']] = database::create_variable($field);
-      }
+      });
 
-      $categories_info_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."categories_info;"
-      );
-
-      while ($field = database::fetch($categories_info_query)) {
-        if (in_array($field['Field'], ['id', 'category_id', 'language_code'])) continue;
-
-        $this->data[$field['Field']] = [];
-        foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = database::create_variable($field);
-        }
-      }
+      )->each(function($field) {
+        if (in_array($field['Field'], ['id', 'category_id', 'language_code'])) return;
+        $this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
+      });
 
       $this->data['filters'] = [];
       $this->data['products'] = [];
@@ -64,17 +56,15 @@
         throw new Exception('Could not find category (ID: '. (int)$category_id .') in database.');
       }
 
-      $categories_info_query = database::query(
+      database::query(
         "select * from ". DB_TABLE_PREFIX ."categories_info
         where category_id = ". (int)$category_id .";"
-      );
-
-      while ($category_info = database::fetch($categories_info_query)) {
-        foreach ($category_info as $key => $value) {
+      )->each(function($info) {
+        foreach ($info as $key => $value) {
           if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
-          $this->data[$key][$category_info['language_code']] = $value;
+          $this->data[$key][$info['language_code']] = $value;
         }
-      }
+      });
 
     // Filters
       $this->data['filters'] = database::query(
@@ -104,7 +94,7 @@
         throw new Exception(language::translate('error_cannot_attach_category_to_descendant', 'You cannot attach a category to a descendant'));
       }
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."categories
           (date_created)
@@ -230,12 +220,12 @@
       if (!empty($filename)) {
         $filename = 'categories/'. $filename;
       } else {
-        $filename = 'categories/'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type();
+        $filename = 'categories/'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type;
       }
 
       $fullpath = FS_DIR_STORAGE . 'images/' . $filename;
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         $this->save();
       }
 
@@ -295,7 +285,7 @@
 
     public function delete() {
 
-      if (empty($this->data['id'])) return;
+      if (!$this->data['id']) return;
 
     // Delete subcategories
       $subcategories_query = database::query(

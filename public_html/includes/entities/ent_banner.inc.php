@@ -17,13 +17,11 @@
 
       $this->data = [];
 
-      $banners_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."banners;"
-      );
-
-      while ($field = database::fetch($banners_query)) {
+      )->each(function($field){
         $this->data[$field['Field']] = database::create_variable($field);
-      }
+      });
 
       $this->previous = $this->data;
     }
@@ -49,7 +47,6 @@
       }
 
       $this->data['languages'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
-      $this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
     }
 
     public function save() {
@@ -60,7 +57,7 @@
       $this->data['keywords'] = array_unique($this->data['keywords']);
       $this->data['keywords'] = implode(',', $this->data['keywords']);
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."banners
           (date_created)
@@ -100,13 +97,13 @@
         $this->data['image'] = '';
       }
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         $this->save();
       }
 
       $image = new ent_image($file);
 
-      $filename = 'banners/' . functions::format_path_friendly($this->data['id'] .'-'. $this->data['name']) .'.'. $image->type();
+      $filename = 'banners/' . functions::format_path_friendly($this->data['id'] .'-'. $this->data['name']) .'.'. $image->type;
 
       if (!file_exists('storage://images/banners/')) {
         mkdir('storage://images/banners/', 0777);
@@ -116,7 +113,7 @@
         unlink('storage://images/' . $filename);
       }
 
-      $image->write('storage://images/' . $filename, $image->type());
+      $image->write('storage://images/' . $filename, $image->type);
 
       $this->data['image'] = $filename;
       $this->save();
