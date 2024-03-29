@@ -5,42 +5,40 @@
 
     public static function init() {
 
-      $settings_query = database::query(
+      database::query(
         "select `key`, `value`, `function`
         from ". DB_TABLE_PREFIX ."settings
         where `type` = 'global';"
-      );
-
-      while ($setting = database::fetch($settings_query)) {
+      )->each(function($setting) {
 
 				switch (true) {
 
 					case (substr($setting['function'], 0, 9) == 'regional_'):
 
-						if (!class_exists('language') || empty(language::$selected)) continue 2;
+						if (!class_exists('language') || empty(language::$selected)) break;
 
-          if ($setting['value']) {
-            $setting['value'] = json_decode($setting['value'], true);
+            if ($setting['value']) {
+              $setting['value'] = json_decode($setting['value'], true);
 
-							if (!empty($setting['value'][language::$selected['code']])) {
-              $setting['value'] = $setting['value'][language::$selected['code']];
+                if (!empty($setting['value'][language::$selected['code']])) {
+                $setting['value'] = $setting['value'][language::$selected['code']];
 
-							} else if (!empty($setting['value']['en'])) {
-              $setting['value'] = $setting['value']['en'];
+                } else if (!empty($setting['value']['en'])) {
+                $setting['value'] = $setting['value']['en'];
+
+              } else {
+                $setting['value'] = '';
+              }
 
             } else {
               $setting['value'] = '';
             }
 
-          } else {
-            $setting['value'] = '';
-          }
-
-						break;
+            break;
         }
 
-				self::$_cache[$setting['key']] = $setting['value'];
-      }
+        self::$_cache[$setting['key']] = $setting['value'];
+      });
     }
 
     ######################################################################

@@ -8,7 +8,9 @@
 
   // Monthly Sales
 
-    $orders_query = database::query(
+    $monthly_sales = [];
+
+    database::query(
       "select sum(total - total_tax) as total_sales, date_format(date_created, '%Y') as year, date_format(date_created, '%m') as month
       from ". DB_TABLE_PREFIX ."orders
       where order_status_id in (
@@ -18,12 +20,9 @@
       and date_created between '". date('Y-m-01 00:00:00', strtotime('-36 months')) ."' and '". date('Y-m-t 23:59:59') ."'
       group by year, month
       order by year, month asc;"
-    );
-
-    $monthly_sales = [];
-    while ($orders = database::fetch($orders_query)) {
-      $monthly_sales[$orders['year']][$orders['month']] = $orders;
-    }
+    )->each(function($order) use (&$monthly_sales) {
+      $monthly_sales[$order['year']][$order['month']] = $order;
+    });
 
     for ($timestamp = date('Y', strtotime('-36 months')); $timestamp < strtotime('Dec 31'); $timestamp = strtotime('+1 months', $timestamp)) {
       $year = date('Y', $timestamp);
@@ -58,7 +57,7 @@
         break;
     }
 
-    $orders_query = database::query(
+    database::query(
       "select round(sum(total - total_tax) / count(distinct(date(date_created))), 2) as total_sales, total_tax as total_tax, weekday(date_created)+1 as weekday
       from ". DB_TABLE_PREFIX ."orders
       where order_status_id in (
@@ -68,13 +67,11 @@
       and (date_created >= '". date('Y-m-d 00:00:00', strtotime('Monday this week')) ."')
       group by weekday
       order by weekday asc;"
-    );
+    )->each(function($order) use (&$daily_sales) {
+      $daily_sales[$order['weekday']]['total_sales'] = $order['total_sales'];
+    });
 
-    while ($orders = database::fetch($orders_query)) {
-      $daily_sales[$orders['weekday']]['total_sales'] = (int)$orders['total_sales'];
-    }
-
-    $orders_query = database::query(
+    database::query(
       "select round(sum(total - total_tax) / count(distinct(date(date_created))), 2) as average_sales, total_tax as total_tax, weekday(date_created)+1 as weekday, group_concat(total - total_tax)
       from ". DB_TABLE_PREFIX ."orders
       where order_status_id in (
@@ -84,17 +81,16 @@
       and (date_created > '". date('Y-m-d H:i:s', strtotime('-3 months', strtotime('Monday this week'))) ."' and date_created < '". date('Y-m-d 00:00:00', strtotime('Monday this week')) ."')
       group by weekday
       order by weekday asc;"
-    );
-
-    while ($orders = database::fetch($orders_query)) {
-      $daily_sales[$orders['weekday']]['average_sales'] = (int)$orders['average_sales'];
-    }
+    )->each(function($order) use (&$daily_sales) {
+      $daily_sales[$order['weekday']]['average_sales'] = $order['average_sales'];
+    });
 
     for ($timestamp=time(); strtotime('-7 days') < $timestamp; $timestamp = strtotime('-1 day', $timestamp)) {
       $daily_sales[date('N', $timestamp)]['label'] = language::strftime('%a', $timestamp);
       if (!isset($daily_sales[date('N', $timestamp)]['total_sales'])) $daily_sales[date('N', $timestamp)]['total_sales'] = 0;
       if (!isset($daily_sales[date('N', $timestamp)]['average_sales'])) $daily_sales[date('N', $timestamp)]['average_sales'] = 0;
     }
+
 ?>
 <style>
 #widget-graphs .card-body {

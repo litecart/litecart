@@ -89,9 +89,11 @@
 <script>
   $('#box-checkout-cart button[name="remove_cart_item"]').click(function(e){
     e.preventDefault();
-    let data = 'token=' + $(':input[name="token"]').val()
-             + '&' + $(this).closest('td').find(':input').serialize()
-             + '&remove_cart_item=' + $(this).val();
+    let data = [
+      'token=' + $(':input[name="token"]').val(),
+      $(this).closest('td').find(':input').serialize(),
+      'remove_cart_item=' + $(this).val(),
+    ].join('&');
     queueUpdateTask('cart', data, true);
     queueUpdateTask('customer', true, true);
     queueUpdateTask('shipping', true, true);
@@ -101,9 +103,11 @@
 
   $('#box-checkout-cart button[name="update_cart_item"]').click(function(e){
     e.preventDefault();
-    let data = 'token=' + $(':input[name="token"]').val()
-             + '&' + $(this).closest('td').find(':input').serialize()
-             + '&update_cart_item=' + $(this).val();
+    let data = [
+      'token=' + $(':input[name="token"]').val(),
+      $(this).closest('td').find(':input').serialize(),
+      'update_cart_item=' + $(this).val(),
+    ].join('&');
     queueUpdateTask('cart', data, true);
     queueUpdateTask('customer', true, true);
     queueUpdateTask('shipping', true, true);

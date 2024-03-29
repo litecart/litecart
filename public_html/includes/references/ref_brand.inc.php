@@ -53,9 +53,7 @@
 
         case 'products':
 
-          $this->_data['products'] = [];
-
-          $query = database::query(
+          $this->_data['products'] = database::query(
             "select id from ". DB_TABLE_PREFIX ."products
             where status
             and brand_id = ". (int)$this->_data['id'] ."
@@ -65,11 +63,9 @@
             ))
             and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
             and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
-          );
-
-          while ($row = database::fetch($query)) {
-            $this->_data['products'][$row['id']] = reference::product($row['id'], $this->_language_codes[0]);
-          }
+          )->fetch_custom(function($row) {
+            return new ref_product($row['id'], $this->_language_codes[0]);
+          });
 
           break;
 

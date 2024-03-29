@@ -27,9 +27,9 @@
 
     $tree = [];
 
-    $categories_query = functions::catalog_categories_query($parent_id);
+    $categories = functions::catalog_categories_query($parent_id)->fetch_all();
 
-    while ($category = database::fetch($categories_query)) {
+    foreach ($categories as $category) {
 
       $tree[$category['id']] = [
         'id' => $category['id'],

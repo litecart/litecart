@@ -182,7 +182,7 @@
           </div>
           <?php } ?>
 
-          <div class="social-bookmarks text-center">
+          <div class="social-bookmarks">
             <a class="link" href="#"><?php echo functions::draw_fonticon('fa-link', 'style="color: #333;"'); ?></a>
             <a class="twitter" href="<?php echo document::href_link('https://twitter.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>"><?php echo functions::draw_fonticon('fa-twitter-square fa-lg', 'style="color: #55acee;"'); ?></a>
             <a class="facebook" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>"><?php echo functions::draw_fonticon('fa-facebook-square fa-lg', 'style="color: #3b5998;"'); ?></a>
@@ -215,19 +215,34 @@
             <table class="table table-striped table-hover">
 <?php
   foreach ($technical_data as $line) {
+
     if (preg_match('#[:\t]#', $line)) {
-      @list($key, $value) = preg_split('# *[:\t]+ *#', $line, 2);
-      echo '  <tr>' . PHP_EOL
-         . '    <td>'. trim($key) .'</td>' . PHP_EOL
-         . '    <td>'. trim($value) .'</td>' . PHP_EOL
-         . '  </tr>' . PHP_EOL;
-    } else if (trim($line)) {
-      echo '  <tr>' . PHP_EOL
-         . '    <th colspan="2" class="text-start">'. $line .'</th>' . PHP_EOL
-         . '  </tr>' . PHP_EOL;
+
+      @list($key, $value) = preg_split('#([:\t]+)#', $line, -1, PREG_SPLIT_NO_EMPTY);
+
+      echo implode(PHP_EOL, [
+        '  <tr>',
+        '    <td>'. trim($key) .'</td>',
+        '    <td>'. trim($value) .'</td>',
+        '  </tr>',
+      ]);
+
+    } else if (trim($line) != '') {
+      echo implode(PHP_EOL, [
+        '  <thead>',
+        '    <tr>',
+        '      <th colspan="2">'. $line .'</th>',
+        '    </tr>',
+        '  </thead>',
+        '  <tbody>',
+      ]);
+
     } else {
-      echo '</table>' . PHP_EOL
-         . '<table class="table table-striped table-hover">' . PHP_EOL;
+      echo implode(PHP_EOL, [
+        ' </tbody>',
+        '</table>',
+        '<table class="table table-striped table-hover">',
+      ]);
     }
   }
 ?>

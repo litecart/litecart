@@ -41,11 +41,9 @@
 
         try {
 
-
           if (empty($_POST['customer']['email'])) {
             throw new Exception(language::translate('error_missing_email', 'You must enter an email address'));
           }
-
 
           if (!functions::validate_email($_POST['customer']['email'])) {
             throw new Exception(language::translate('error_invalid_email', 'The email address is invalid'));

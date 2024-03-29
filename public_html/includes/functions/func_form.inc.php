@@ -40,7 +40,7 @@
         }
       }
 
-      if (!empty($node) || $node != '') return $node;
+      if ($node || $node != '') return $node;
     }
 
     return '';
@@ -52,24 +52,24 @@
       $value = [$value, $value];
     }
 
-    return '<button'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="btn btn-default"' : '') .' type="'. functions::escape_html($type) .'" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'"'. ($parameters ? ' '.$parameters : '') .'>'. ((!empty($fonticon)) ? functions::draw_fonticon($fonticon) . ' ' : '') . (isset($value[1]) ? $value[1] : $value[0]) .'</button>';
+    return '<button'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="btn btn-default"' : '') .' type="'. functions::escape_html($type) .'" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'"'. ($parameters ? ' '.$parameters : '') .'>'. (($fonticon) ? functions::draw_fonticon($fonticon) . ' ' : '') . (isset($value[1]) ? $value[1] : $value[0]) .'</button>';
   }
 
   function form_button_link($url, $title, $parameters='', $fonticon='') {
-    return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. functions::escape_html($url) .'"'. ($parameters ? ' '.$parameters : '') .'>'. (!empty($fonticon) ? functions::draw_fonticon($fonticon) . ' ' : '') . $title .'</a>';
+    return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. functions::escape_html($url) .'"'. ($parameters ? ' '.$parameters : '') .'>'. ($fonticon ? functions::draw_fonticon($fonticon) . ' ' : '') . $title .'</a>';
   }
 
   function form_button_predefined($name, $parameters='') {
 
     switch($name) {
       case 'save':
-        return functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"' . (!empty($parameters) ? ' '. $parameters : ''), 'save');
+        return functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"' . ($parameters ? ' '. $parameters : ''), 'save');
 
       case 'delete':
-        return functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(&quot;'. language::translate('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"' . (!empty($parameters) ? ' '. $parameters : ''), 'delete');
+        return functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(&quot;'. language::translate('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"' . ($parameters ? ' '. $parameters : ''), 'delete');
 
       case 'cancel':
-        return functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"' . (!empty($parameters) ? ' '. $parameters : ''), 'cancel');
+        return functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"' . ($parameters ? ' '. $parameters : ''), 'cancel');
     }
 
     trigger_error('Unknown predefined button ('. functions::escape_html($name) .')', E_USER_WARNING);
@@ -80,8 +80,8 @@
   function form_input_captcha($id, $config=[], $parameters='') {
 
     $config = [
-      'width' => !empty($config['width']) ? $config['width'] : 100,
-      'height' => !empty($config['height']) ? $config['height'] : 40,
+      //'width' => !empty($config['width']) ? $config['width'] : 125,
+      //'height' => !empty($config['height']) ? $config['height'] : 60,
       'length' => !empty($config['length']) ? $config['length'] : 4,
       'set' => !empty($config['set']) ? $config['set'] : 'numbers',
     ];
@@ -146,84 +146,87 @@
       $input = form_reinsert_value($name);
     }
 
-    if (!$csv = functions::csv_decode($input)) {
-      return form_input_textarea($name, $input, $parameters);
+    if ($input && $csv = functions::csv_decode($input)) {
+      $columns = array_keys($csv[0]);
+    } else {
+      $csv = [];
+      $columns = [];
     }
 
-    $columns = array_keys($csv[0]);
+    $html = implode(PHP_EOL, [
+      '<table class="table table-striped table-hover data-table" data-toggle="csv">',
+      '  <thead>',
+      '    <tr>',
 
-    $html = '<table class="table table-striped table-hover data-table" data-toggle="csv">' . PHP_EOL
-          . '  <thead>' . PHP_EOL
-          . '    <tr>' . PHP_EOL;
+      implode(PHP_EOL, array_map(function($column) {
+        return '      <th>'. $column .'<button name="remove_column" class="btn btn default btn-sm">'. functions::draw_fonticon('remove') .'</button></th>';
+      }, $columns)),
 
-    foreach ($columns as $column) {
-      $html .= '      <th>'. $column .'</th>' . PHP_EOL;
-    }
+      '      <th><button class="btn btn-default btn-sm" name="add_column" type="button">'. functions::draw_fonticon('fa-plus', 'style="color: #6c6;"') .' '.  language::translate('title_add_column', 'Add Column') .'</button></th>',
+      '    </tr>',
+      '  </thead>',
+      '  <tbody>',
+    ]);
 
-    $html .= '      <th><a class="add-column" href="#">'. functions::draw_fonticon('fa-plus', 'style="color: #6c6;"') .'</a></th>' . PHP_EOL
-           . '    </tr>' . PHP_EOL
-           . '  </thead>' . PHP_EOL
-           . '  <tbody>' . PHP_EOL;
-
-    foreach ($csv as $line => $row) {
+    foreach ($csv as $row) {
       $html .= '    <tr>' . PHP_EOL;
       foreach ($columns as $column) {
         $html .= '      <td contenteditable>'. $row[$column] .'</td>' . PHP_EOL;
       }
-      $html .= '      <td><a class="btn btn-default btn-sm remove" href="#">'. functions::draw_fonticon('fa-times', 'style="color: #d33"') .'</a></td>' . PHP_EOL
-             . '    </tr>' . PHP_EOL;
+      $html .= '      <td><button name="remove_row" class="btn btn default btn-sm">'. functions::draw_fonticon('remove') .'</button></td>' . PHP_EOL;
+      $html .= '    </tr>' . PHP_EOL;
     }
 
-    $html .= '  </tbody>' . PHP_EOL
-           . '  <tfoot>' . PHP_EOL
-           . '    <tr>' . PHP_EOL
-           . '      <td colspan="'. (count($columns)+1) .'"><a class="add-row" href="#">'. functions::draw_fonticon('fa-plus', 'style="color: #6c6;"') .'</a></td>' . PHP_EOL
-           . '    </tr>' . PHP_EOL
-           . '  </tfoot>' . PHP_EOL
-           . '</table>' . PHP_EOL
-           . PHP_EOL
-           . form_input_textarea($name, $input, 'style="display: none;"');
+    $html .= implode(PHP_EOL, [
+      '  <tfoot>',
+      '    <tr>',
+      '      <td colspan="'. (count($columns)+1) .'"><button class="btn btn-default btn-sm" name="add_row" type="button">'. functions::draw_fonticon('fa-plus', 'style="color: #6c6;"') .' '.  language::translate('title_add_row', 'Add Row') .'</button></td>',
+      '    </tr>',
+      '  </tfoot>',
+      '</table>',
+      form_input_textarea($name, $input, 'style="display: none;"'),
+    ]);
 
     document::$javascript['table2csv'] = implode(PHP_EOL, [
-      "$('table[data-toggle=\"csv\"]').on('click', '.remove', function(e) {",
-      "  e.preventDefault();",
-      "  var parent = $(this).closest('tbody');",
-      "  $(this).closest('tr').remove();",
-      "  $(parent).trigger('keyup');",
-      "});",
-      "",
-      "$('table[data-toggle=\"csv\"] .add-row').click(function(e) {",
-      "  e.preventDefault();",
-      "  var n = $(this).closest('table').find('thead th:not(:last-child)').length;",
-      "  $(this).closest('table').find('tbody').append(",
-      "    '<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class=\"remove\" href=\"#\"><i class=\"fa fa-times-circle\" style=\"color: #d33;\"></i></a></td>' +'</tr>'",
-      "  ).trigger('keyup');",
-      "});",
-      "",
-      "$('table[data-toggle=\"csv\"] .add-column').click(function(e) {",
-      "  e.preventDefault();",
-      "  var table = $(this).closest('table');",
-      "  var title = prompt(\"<?php echo language::translate('title_column_title', 'Column Title'); ?>\");",
-      "  if (!title) return;",
-      "  $(table).find('thead tr th:last-child:last-child').before('<th>'+ title +'</th>');",
-      "  $(table).find('tbody tr td:last-child:last-child').before('<td contenteditable></td>');",
-      "  $(table).find('tfoot tr td').attr('colspan', $(this).closest('table').find('tfoot tr td').attr('colspan') + 1);",
-      "  $(this).trigger('keyup');",
-      "});",
-      "",
-      "$('table[data-toggle=\"csv\"]').keyup(function(e) {",
-      "   var csv = $(this).find('thead tr, tbody tr').map(function (i, row) {",
-      "      return $(row).find('th:not(:last-child),td:not(:last-child)').map(function (j, col) {",
-      "        var text = \$(col).text();",
-      "        if (/('|,)/.test(text)) {",
-      "          return '\"'+ text.replace(/\"/g, '\"\"') +'\"';",
-      "        } else {",
-      "          return text;",
-      "        }",
-      "      }).get().join(',');",
-      "    }).get().join('\\r\\n');',
-      '  $(this).next('textarea').val(csv);",
-      "});",
+      '$(\'table[data-toggle="csv"]\').on(\'click\', \'button[name="remove_row"]\', function(e) {',
+      '  e.preventDefault();',
+      '  var parent = $(this).closest(\'tbody\');',
+      '  $(this).closest(\'tr\').remove();',
+      '  $(parent).trigger(\'input\');',
+      '});',
+      '',
+      '$(\'table[data-toggle="csv"] button[name="add_row"]\').click(function(e) {',
+      '  e.preventDefault();',
+      '  var n = $(this).closest(\'table\').find(\'thead th:not(:last-child)\').length;',
+      '  $(this).closest(\'table\').find(\'tbody\').append(',
+      '    \'<tr>\' + (\'<td contenteditable></td>\'.repeat(n)) + \'<td><button name="remove_row" class="btn btn default btn-sm">'. functions::draw_fonticon('remove') .'</button></td>\' +\'</tr>\'',
+      '  ).trigger(\'input\');',
+      '});',
+      '',
+      '$(\'table[data-toggle="csv"] button[name="add_column"]\').click(function(e) {',
+      '  e.preventDefault();',
+      '  var $table = $(this).closest(\'table\');',
+      '  var title = prompt("'. functions::escape_js(language::translate('title_column_title', 'Column Title')) .'");',
+      '  if (!title) return;',
+      '  $table.find(\'thead tr th:last-child:last-child\').before(\'<th>\'+ title +\'<button name="remove_column" class="btn btn default btn-sm">'. functions::draw_fonticon('remove') .'</button></th>\');',
+      '  $table.find(\'tbody tr td:last-child:last-child\').before(\'<td contenteditable></td>\');',
+      '  $table.find(\'tfoot tr td\').attr(\'colspan\', $(this).closest(\'table\').find(\'tfoot tr td\').attr(\'colspan\') + 1);',
+      '  $(this).trigger(\'input\');',
+      '});',
+      '',
+      '$(\'table[data-toggle="csv"]\').on(\'input\', function(e) {',
+      '   var csv = $(this).find(\'thead tr, tbody tr\').map(function (i, row) {',
+      '      return $(row).find(\'th:not(:last-child),td:not(:last-child)\').map(function (j, col) {',
+      '        var text = $(col).text();',
+      '        if (/(\'|,)/.test(text)) {',
+      '          return "\\"\'"+ text.replace(/"/g, "\\"\"") +"\\"";',
+      '        } else {',
+      '          return text;',
+      '        }',
+      '      }).get().join(\',\');',
+      '    }).get().join(\'\\r\\n\');',
+      '  $(this).next(\'textarea\').val(csv);',
+      '});',
     ]);
 
     return $html;
@@ -235,7 +238,7 @@
       $input = form_reinsert_value($name);
     }
 
-    if (!empty($input) && !in_array(substr($input, 0, 10), ['0000-00-00', '1970-01-01'])) {
+    if ($input && !in_array(substr($input, 0, 10), ['0000-00-00', '1970-01-01'])) {
       $input = date('Y-m-d', strtotime($input));
     } else {
       $input = '';
@@ -250,7 +253,7 @@
       $input = form_reinsert_value($name);
     }
 
-    if (!empty($input) && !in_array(substr($input, 0, 10), ['0000-00-00', '1970-01-01'])) {
+    if ($input && !in_array(substr($input, 0, 10), ['0000-00-00', '1970-01-01'])) {
       $input = date('Y-m-d\TH:i', strtotime($input));
     } else {
       $input = '';
@@ -343,11 +346,12 @@
       //$input = rtrim(preg_replace('#(\.'. str_repeat('\d', 2) .')0{1,2}$#', '$1', $input), '.'); // Auto decimals
     }
 
-
-    return '<div class="input-group">' . PHP_EOL
-         . '  <strong class="input-group-text" style="opacity: 0.75; font-family: monospace;">'. functions::escape_html($currency['code']) .'</strong>' . PHP_EOL
-         . '  ' . form_input_decimal($name, $input, $currency['decimals'], 'step="any" data-type="currency"') . PHP_EOL
-         . '</div>';
+    return implode(PHP_EOL, [
+      '<div class="input-group">',
+      '  <strong class="input-group-text" style="opacity: 0.75; font-family: monospace;">'. functions::escape_html($currency['code']) .'</strong>',
+      '  ' . form_input_decimal($name, $input, $currency['decimals'], 'step="any" data-type="currency"'),
+      '</div>',
+    ]);
   }
 
   function form_input_number($name, $input=true, $parameters='') {
@@ -656,9 +660,11 @@
 
   function form_select_dropdown($name, $options=[], $input=true, $parameters='') {
 
-    $html = '<div class="dropdown"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
-          . '  <div class="form-select" data-toggle="dropdown">-- '. language::translate('title_select', 'Select') .' --</div>' . PHP_EOL
-          . '  <ul class="dropdown-menu">' . PHP_EOL;
+    $html = implode(PHP_EOL, [
+      '<div class="dropdown"'. ($parameters ? ' ' . $parameters : '') .'>',
+      '  <div class="form-select" data-toggle="dropdown">-- '. language::translate('title_select', 'Select') .' --</div>',
+      '  <ul class="dropdown-menu">',
+    ]);
 
     $is_numerical_index = (array_keys($options) === range(0, count($options) - 1));
 
@@ -679,8 +685,10 @@
       }
     }
 
-    $html .= '  </ul>' . PHP_EOL
-           . '</div>';
+    $html .= implode(PHP_EOL, [
+      '  </ul>',
+      '</div>',
+    ]);
 
     return $html;
   }
@@ -935,7 +943,7 @@
         return form_select_currency($name, $input, $parameters);
 
       case 'csv':
-        return form_input_textarea($name, $input, true, $parameters);
+        return form_input_csv($name, $input, true, $parameters);
 
       case 'delivery_status':
       case 'delivery_statuses':
@@ -1107,18 +1115,14 @@
 
   function form_select_address($name, $input=true, $parameters='') {
 
-
-    $address_query = database::query(
+    $addresses = database::query(
       "select * from ". DB_TABLE_PREFIX ."customers_addresses
       where customer_id = ". (int)customer::$data['id'] ."
       order by id asc;"
-    );
-
-    $options = [];
-    while ($address = database::fetch($address_query)) {
+    )->fetch_custom(function($address){
       $formatted_address = reference::country($address['country_code'])->format_address($address);
-      $options[] = [$address['id'], $formatted_address];
-    }
+      return [$address['id'], $formatted_address];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple_field($name, $options, $input, $parameters);
@@ -1135,15 +1139,12 @@
       if (isset($args[3])) $parameters = $args[2];
     }
 
-    $administrators_query = database::query(
+    $options = database::query(
 			"select id, username from ". DB_TABLE_PREFIX ."administrators
       order by username;"
-    );
-
-    $options = [];
-    while ($administrator = database::fetch($administrators_query)) {
-      $options[] = [$administrator['id'], $administrator['username']];
-    }
+    )->fetch_custom(function($administrator){
+      return [$administrator['id'], $administrator['username']];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -1160,16 +1161,13 @@
       if (isset($args[3])) $parameters = $args[2];
     }
 
-    $query = database::query(
+    $options = database::query(
       "select ag.id, agi.name from ". DB_TABLE_PREFIX ."attribute_groups ag
       left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
       order by name;"
-    );
-
-    $options = [];
-    while ($row = database::fetch($query)) {
-      $options[] = [$row['id'], $row['name']];
-    }
+    )->fetch_custom(function($group){
+      return [$group['id'], $group['name']];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -1191,17 +1189,14 @@
       if (isset($args[4])) $parameters = $args[3];
     }
 
-    $query = database::query(
+    $options = database::query(
       "select av.id, avi.name from ". DB_TABLE_PREFIX ."attribute_values av
       left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id and avi.language_code = '". database::input(language::$selected['code']) ."')
       where group_id = ". (int)$group_id ."
       order by name;"
-    );
-
-    $options = [];
-    while ($row = database::fetch($query)) {
-      $options[] = [$row['id'], $row['name']];
-    }
+    )->fetch_custom(function($value){
+      return [$value['id'], $value['name']];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -1218,15 +1213,12 @@
       if (isset($args[3])) $parameters = $args[2];
     }
 
-    $brands_query = database::query(
+    $options = database::query(
       "select id, name from ". DB_TABLE_PREFIX ."brands
       order by name asc;"
-    );
-
-    $options = [];
-    while ($brand = database::fetch($brands_query)) {
-      $options[] = [$brand['id'], $brand['name']];
-    }
+    )->fetch_custom(function($brand){
+      return [$brand['id'], $brand['name']];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -1246,7 +1238,7 @@
       $input = form_reinsert_value($name);
     }
 
-    if (!empty($input)) {
+    if ($input) {
       $category_name = reference::category($input)->name;
     } else {
       $category_name = language::translate('title_root', 'Root');
@@ -1254,15 +1246,17 @@
 
     functions::draw_lightbox();
 
-    return '<div class="input-group"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
-         . '  <div class="form-input">' . PHP_EOL
-         . '    ' . form_input_hidden($name, true) . PHP_EOL
-         . '    '. functions::draw_fonticon('folder') .' <span class="name" style="display: inline-block;">'. $category_name .'</span>' . PHP_EOL
-         . '  </div>' . PHP_EOL
-         . '  <div style="align-self: center;">' . PHP_EOL
-         . '    <a href="'. document::href_ilink('b:catalog/category_picker', ['parent_id' => $input]) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
-         . '  </div>' . PHP_EOL
-         . '</div>';
+    return implode(PHP_EOL, [
+      '<div class="input-group"'. ($parameters ? ' ' . $parameters : '') .'>',
+      '  <div class="form-input">',
+      '    ' . form_input_hidden($name, true),
+      '    '. functions::draw_fonticon('folder') .' <span class="name" style="display: inline-block;">'. $category_name .'</span>',
+      '  </div>',
+      '  <div style="align-self: center;">',
+      '    <a href="'. document::href_ilink('b:catalog/category_picker', ['parent_id' => $input]) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>',
+      '  </div>',
+      '</div>',
+    ]);
   }
 
   function form_select_multiple_categories($name, $input=true, $parameters='') {
@@ -1284,12 +1278,14 @@
       $input = [$input];
     }
 
-    $html = '<div data-toggle="category-picker"' . (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
-          . '  <div class="form-input" style="overflow-y: auto; min-height: 100px; max-height: 480px;">' . PHP_EOL
-          . '    <ul class="categories list-unstyled">' . PHP_EOL;
+    $html = implode(PHP_EOL, [
+      '<div data-toggle="category-picker"' . ($parameters ? ' ' . $parameters : '') .'>',
+      '  <div class="form-input" style="overflow-y: auto; min-height: 100px; max-height: 480px;">',
+      '    <ul class="categories list-unstyled">',
+    ]);
 
     if (empty($parent_id)) {
-      $options[] = ['0' => functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') . ' ['.language::translate('title_root', 'Root').']', ];
+      $options[] = ['0' => functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') .' ['. language::translate('title_root', 'Root') .']',];
     }
 
     $categories_query = database::query(
@@ -1307,20 +1303,23 @@
         }
       }
 
-      $html .= '<li class="list-item" style="display: flex;">'. PHP_EOL
-             . '  ' . form_input_hidden($name, $category['id'], 'data-name="'. functions::escape_html($category['name']) .'"') . PHP_EOL
-             . '  <div style="flex-grow: 1;">' . functions::draw_fonticon('folder') .' '. implode(' &gt; ', $path) .'</div>'. PHP_EOL
-             . '  <button class="remove btn btn-default btn-sm" type="button">'. language::translate('title_remove', 'Remove') .'</button>' . PHP_EOL
-             .'</li>';
+      $html .= implode(PHP_EOL, [
+        '<li class="list-item" style="display: flex;">',
+        '  ' . form_input_hidden($name, $category['id'], 'data-name="'. functions::escape_html($category['name']) .'"'),
+        '  <div style="flex-grow: 1;">' . functions::draw_fonticon('folder') .' '. implode(' &gt; ', $path) .'</div>',
+        '  <button class="remove btn btn-default btn-sm" type="button">'. language::translate('title_remove', 'Remove') .'</button>',
+        '</li>',
+      ]);
     }
 
-    $html .= '    </ul>' . PHP_EOL
-           . '  </div>' . PHP_EOL
-           . '  <div class="dropdown">' . PHP_EOL
-           . '  '. form_input_search('', '', 'autocomplete="off" placeholder="'. functions::escape_html(language::translate('text_search_categories', 'Search categories')) .'&hellip;"') . PHP_EOL
-           . '    <ul class="dropdown-menu" style="padding: 1em; right: 0; max-height: 480px; overflow-y: auto;"></ul>' . PHP_EOL
-           . '  </div>' . PHP_EOL
-           . '</div>';
+    $html .= implode(PHP_EOL, [
+      '    </ul>',
+      '  </div>',
+      '  <div class="dropdown">',
+      '  '. form_input_search('', '', 'autocomplete="off" placeholder="'. functions::escape_html(language::translate('text_search_categories', 'Search categories')) .'&hellip;"'),
+      '    <ul class="dropdown-menu" style="padding: 1em; right: 0; max-height: 480px; overflow-y: auto;"></ul>',
+      '  </div>',
+    ]);
 
     document::$javascript['category-picker'] = implode(PHP_EOL, [
       '$(\'[data-toggle="category-picker"]\').categoryPicker({',
@@ -1373,16 +1372,13 @@
         break;
     }
 
-    $countries_query = database::query(
+    $options = database::query(
       "select * from ". DB_TABLE_PREFIX ."countries
       where status
       order by name asc;"
-    );
-
-    $options = [];
-    while ($country = database::fetch($countries_query)) {
-      $options[] = [$country['iso_code_2'], $country['name'], 'data-tax-id-format="'. $country['tax_id_format'] .'" data-postcode-format="'. $country['postcode_format'] .'" data-phone-code="'. $country['phone_code'] .'"'];
-    }
+    )->fetch_custom(function($country) {
+      return [$country['iso_code_2'], $country['name'], 'data-tax-id-format="'. $country['tax_id_format'] .'" data-postcode-format="'. $country['postcode_format'] .'" data-phone-code="'. $country['phone_code'] .'"'];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -1433,24 +1429,26 @@
 
     $account_name = language::translate('title_guest', 'Guest');
 
-    if (!empty($input)) {
-      $customer_query = database::query(
+    if ($input) {
+      $customer = database::query(
         "select * from ". DB_TABLE_PREFIX ."customers
         where id = ". (int)$input ."
         limit 1;"
-      );
+      )->fetch();
 
-      if ($customer = database::fetch($customer_query)) {
+      if ($customer) {
         $account_name = $customer['company'] ? $customer['company'] : $customer['firstname'] .' '. $customer['lastname'];
       } else {
         $account_name = '<em>'. language::translate('title_unknown', 'Unknown') .'</em>';
       }
     }
 
-    return '<div class="form-input"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
-         . '  ' . form_input_hidden($name, true) . PHP_EOL
-         . '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$input .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_ilink('b:customers/customer_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
-         . '</div>';
+    return implode(PHP_EOL, [
+      '<div class="form-input"'. ($parameters ? ' ' . $parameters : '') .'>',
+      '  ' . form_input_hidden($name, true),
+      '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$input .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_ilink('b:customers/customer_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>',
+      '</div>',
+    ]);
   }
 
   function form_select_multiple_customers($name, $input=true, $parameters='') {
@@ -1468,16 +1466,12 @@
       return form_select_customer($name, $input, $parameters);
     }
 
-    $options = [];
-
-    $customers_query = database::query(
+    $options = database::query(
       "select id, email, company, firstname, lastname from ". DB_TABLE_PREFIX ."customers
       order by email;"
-    );
-
-    while ($customer = database::fetch($customers_query)) {
-      $options[] = [$customer['id'], $customer['email']];
-    }
+    )->fetch_custom(function($customer) {
+      return [$customer['id'], $customer['email'], 'data-name="'. functions::escape_html($customer['company'] ? $customer['company'] : $customer['firstname'] .' '. $customer['lastname']) .'"'];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -1502,16 +1496,13 @@
       }
     }
 
-    $query = database::query(
+    $options = database::query(
       "select ds.id, dsi.name , dsi.description from ". DB_TABLE_PREFIX ."delivery_statuses ds
       left join ". DB_TABLE_PREFIX ."delivery_statuses_info dsi on (dsi.delivery_status_id = ds.id and dsi.language_code = '". database::input(language::$selected['code']) ."')
       order by dsi.name asc;"
-    );
-
-    $options = [];
-    while ($row = database::fetch($query)) {
-      $options[] = [$row['id'], $row['name'], 'title="'. functions::escape_html($row['description']) .'"'];
-    }
+    )->fetch_custom(function($row) {
+      return [$row['id'], $row['name'], 'title="'. functions::escape_html($row['description']) .'"'];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -1528,7 +1519,7 @@
       if (isset($args[3])) $parameters = $args[2];
     }
 
-    $encodings = [
+    $options = [
       'BIG-5',
       'CP50220',
       'CP50221',
@@ -1565,11 +1556,6 @@
       'Windows-1254',
     ];
 
-    $options = [];
-    foreach ($encodings as $encoding) {
-      $options[] = $encoding;
-    }
-
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
     } else {
@@ -1591,7 +1577,7 @@
 		return implode(PHP_EOL, [
 			'<div class="form-input"'. ($parameters ? ' ' . $parameters : '') .'>',
 			'  ' . form_input_hidden($name, true),
-			'  <span class="value">'. (!empty($input) ? $input : '('. language::translate('title_none', 'None') .')') .'</span> <a href="'. document::href_ilink('b:files/file_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>',
+			'  <span class="value">'. ($input ? $input : '('. language::translate('title_none', 'None') .')') .'</span> <a href="'. document::href_ilink('b:files/file_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>',
 			'</div>',
 		]);
 
@@ -1630,18 +1616,15 @@
       if (isset($args[3])) $parameters = $args[2];
     }
 
-    $geo_zones_query = database::query(
+    $options = database::query(
       "select * from ". DB_TABLE_PREFIX ."geo_zones
       order by name asc;"
-    );
+    )->fetch_custom(function($geo_zone) {
+      return [$geo_zone['id'], $geo_zone['name']];
+    });
 
-    if (!database::num_rows($geo_zones_query)) {
-      return form_select($name, $options, $input, false, false, $parameters . ' disabled');
-    }
-
-    $options = [];
-    while ($geo_zone = database::fetch($geo_zones_query)) {
-      $options[] = [$geo_zone['id'], $geo_zone['name']];
+    if (!$options) {
+      return form_select($name, $options, $input, $parameters . ' disabled');
     }
 
     if (preg_match('#\[\]$#', $name)) {
@@ -1732,16 +1715,11 @@
       if (isset($args[3])) $parameters = $args[2];
     }
 
-    $collations_query = database::query(
-      "select * from information_schema.COLLATIONS
+    $options = database::query(
+      "select COLLATION_NAME from information_schema.COLLATIONS
       where CHARACTER_SET_NAME = 'utf8mb4'
       order by COLLATION_NAME;"
-    );
-
-    $options = [];
-    while ($row = database::fetch($collations_query)) {
-      $options[] = $row['COLLATION_NAME'];
-    }
+    )->fetch_all('COLLATION_NAME');
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -1758,16 +1736,13 @@
       if (isset($args[3])) $parameters = $args[2];
     }
 
-    $query = database::query(
+    $options = database::query(
       "select os.id, os.icon, os.color, osi.name from ". DB_TABLE_PREFIX ."order_statuses os
       left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = os.id and osi.language_code = '". database::input(language::$selected['code']) ."')
       order by field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, osi.name asc;"
-    );
-
-    $options = [];
-    while ($row = database::fetch($query)) {
-      $options[] = [$row['id'], functions::draw_fonticon($row['icon'], 'style="color: '. $row['color'] .';"') .' '. $row['name'], 'data-icon="'. functions::escape_html($row['icon']) .'" data-color="'. functions::escape_html($row['color']) .'"'];
-    }
+    )->fetch_custom(function($row) {
+      return [$row['id'], functions::draw_fonticon($row['icon'], 'style="color: '. $row['color'] .';"') .' '. $row['name'], 'data-icon="'. functions::escape_html($row['icon']) .'" data-color="'. functions::escape_html($row['color']) .'"'];
+    });
 
     if (!preg_match('#\[\]$#', $name)) {
       array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
@@ -1833,17 +1808,14 @@
       if (isset($args[3])) $parameters = $args[2];
     }
 
-    $modules_query = database::query(
+    $options = database::query(
       "select * from ". DB_TABLE_PREFIX ."modules
       where type = 'payment'
       and status;"
-    );
-
-    $options = [];
-    while ($module = database::fetch($modules_query)) {
+    )->fetch_custom(function($module) {
       $module = new $module();
-      $options[] = [$module->id, $module->name];
-    }
+      return [$module['id'], $module['name']];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -1886,8 +1858,8 @@
 
     $product_name = '('. language::translate('title_no_product', 'No Product') .')';
 
-    if (!empty($value)) {
-      $product_query = database::query(
+    if ($input) {
+      $product = database::query(
         "select p.id, p.sku, pp.price, pi.name
         from ". DB_TABLE_PRODUCTS ." p
         left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
@@ -1897,23 +1869,23 @@
         ) pp on (pp.product_id = p.id)
         where p.id = ". (int)$value ."
         limit 1;"
-      );
-
-      $product = database::fetch($product_query);
+      )->fetch();
     }
 
     functions::draw_lightbox();
 
-    return '<div class="input-group"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
-         . '  <div class="form-input">' . PHP_EOL
-         . '    ' . form_input_hidden($name, true, !empty($product) ? 'data-sku="'. $product['sku'] .'" data-price="'. $product['price'] .'"' : '') . PHP_EOL
-         . '    <span class="name" style="display: inline-block;">'. $product_name .'</span>' . PHP_EOL
-         . '    [<span class="id" style="display: inline-block;">'. (int)$input .'</span>]' . PHP_EOL
-         . '  </div>' . PHP_EOL
-         . '  <div style="align-self: center;">' . PHP_EOL
-         . '    <a href="'. document::href_ilink('b:catalog/product_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
-         . '  </div>' . PHP_EOL
-         . '</div>';
+    return implode(PHP_EOL, [
+      '<div class="input-group"' . ($parameters ? ' ' . $parameters : '') . '>',
+      '  <div class="form-input">',
+      '    ' . form_input_hidden($name, true, $product ? 'data-sku="'. $product['sku'] .'" data-price="'. $product['price'] .'"' : ''),
+      '    <span class="name" style="display: inline-block;">'. $product_name .'</span>',
+      '    [<span class="id" style="display: inline-block;">'. (int)$input .'</span>]',
+      '  </div>',
+      '  <div style="align-self: center;">',
+      '    <a href="'. document::href_ilink('b:catalog/product_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>',
+      '  </div>',
+      '</div>',
+    ]);
   }
 
   function form_select_multiple_products($name, $input=true, $parameters='') {
@@ -1927,16 +1899,13 @@
       return form_select_product($name, $input, $parameters);
     }
 
-    $products_query = database::query(
+    $options = database::query(
       "select p.*, pi.name from ". DB_TABLE_PREFIX ."products p
       left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
       order by pi.name"
-    );
-
-    $options = [];
-    while ($product = database::fetch($products_query)) {
-      $options[] = [$product['id'], $product['name'] .' &mdash; '. $product['sku'] . ' ['. (float)$product['quantity'] .']'];
-    }
+    )->fetch_custom(function($product) {
+      return [$product['id'], $product['name'] .' &mdash; '. $product['sku'] . ' ['. (float)$product['quantity'] .']'];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -2004,16 +1973,13 @@
       }
     }
 
-    $quantity_units_query = database::query(
+    $options = database::query(
       "select qu.*, qui.name, qui.description from ". DB_TABLE_PREFIX ."quantity_units qu
       left join ". DB_TABLE_PREFIX ."quantity_units_info qui on (qui.quantity_unit_id = qu.id and language_code = '". database::input(language::$selected['code']) ."')
       order by qu.priority, qui.name asc;"
-    );
-
-    $options = [];
-    while ($quantity_unit = database::fetch($quantity_units_query)) {
-      $options[] = [$quantity_unit['id'], $quantity_unit['name'], 'data-separate="'. (!empty($quantity_unit['separate']) ? 'true' : 'false') .'" data-decimals="'. (int)$quantity_unit['decimals'] .'" title="'. functions::escape_html($quantity_unit['description']) .'"'];
-    }
+    )->fetch_custom(function($quantity_unit) {
+      return [$quantity_unit['id'], $quantity_unit['name'], 'data-separate="'. (!empty($quantity_unit['separate']) ? 'true' : 'false') .'" data-decimals="'. (int)$quantity_unit['decimals'] .'" title="'. functions::escape_html($quantity_unit['description']) .'"'];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -2030,17 +1996,14 @@
       if (isset($args[3])) $parameters = $args[2];
     }
 
-    $modules_query = database::query(
+    $options = database::query(
       "select * from ". DB_TABLE_PREFIX ."modules
       where type = 'shipping'
       and status;"
-    );
-
-    $options = [];
-    while ($module = database::fetch($modules_query)) {
+    )->fetch_custom(function($module) {
       $module = new $module();
-      $options[] = [$module->id, $module->name];
-    }
+      return [$module['id'], $module['name']];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -2065,16 +2028,13 @@
       }
     }
 
-    $query = database::query(
+    $options = database::query(
       "select sos.id, sosi.name, sosi.description from ". DB_TABLE_PREFIX ."sold_out_statuses sos
       left join ". DB_TABLE_PREFIX ."sold_out_statuses_info sosi on (sosi.sold_out_status_id = sos.id and sosi.language_code = '". database::input(language::$selected['code']) ."')
       order by sosi.name asc;"
-    );
-
-    $options = [];
-    while ($row = database::fetch($query)) {
-      $options[] = [$row['id'], $row['name'], 'title="'. functions::escape_html($row['description']) .'"'];
-    }
+    )->fetch_custom(function($row) {
+      return [$row['id'], $row['name'], 'title="'. functions::escape_html($row['description']) .'"'];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -2091,15 +2051,12 @@
       if (isset($args[3])) $parameters = $args[2];
     }
 
-    $suppliers_query = database::query(
+    $options = database::query(
       "select id, name, description from ". DB_TABLE_PREFIX ."suppliers
       order by name;"
-    );
-
-    $options = [];
-    while ($supplier = database::fetch($suppliers_query)) {
-      $options[] = [$supplier['id'], $supplier['name'], 'title="'. functions::escape_html($supplier['description']) .'"'];
-    }
+    )->fetch_custom(function($supplier) {
+      return [$supplier['id'], $supplier['name'], 'title="'. functions::escape_html($supplier['description']) .'"'];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -2124,15 +2081,12 @@
       }
     }
 
-    $tax_classes_query = database::query(
+    $options = database::query(
       "select * from ". DB_TABLE_PREFIX ."tax_classes
       order by name asc;"
-    );
-
-    $options = [];
-    while ($tax_class = database::fetch($tax_classes_query)) {
-      $options[] = [$tax_class['id'], $tax_class['name'], 'title="'. functions::escape_html($tax_class['description']) .'"'];
-    }
+    )->fetch_custom(function($tax_class) {
+      return [$tax_class['id'], $tax_class['name'], 'title="'. functions::escape_html($tax_class['description']) .'"'];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
@@ -2264,21 +2218,13 @@
 			break;
 	}
 
-    $zones_query = database::query(
+    $options = database::query(
       "select * from ". DB_TABLE_PREFIX ."zones
       where country_code = '". database::input($country_code) ."'
       order by name asc;"
-    );
-
-    $options = [];
-
-    if (!database::num_rows($zones_query)) {
-      $parameters .= ' disabled';
-    }
-
-    while ($zone = database::fetch($zones_query)) {
-      $options[] = [$zone['code'], $zone['name']];
-    }
+    )->fetch_custom(function($zone) {
+      return [$zone['code'], $zone['name']];
+    });
 
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);

@@ -62,16 +62,14 @@
 
     header('Content-Type: text/plain; charset='. mb_http_output());
 
-    $recipients_query = database::query(
+    database::query(
       "select email from ". DB_TABLE_PREFIX ."newsletter_recipients
       where id
       ". (!empty($_GET['query']) ? "c.email like '%". database::input($_GET['query']) ."%'" : "") ."
       order by date_created desc;"
-    );
-
-    while ($recipient = database::fetch($recipients_query)) {
+    )->each(function($recipient) {
       echo $recipient['email'] . PHP_EOL;
-    }
+    });
 
     exit;
   }

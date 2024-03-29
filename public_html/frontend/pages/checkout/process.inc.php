@@ -1,4 +1,5 @@
 <?php
+
   header('X-Robots-Tag: noindex');
   document::$layout = 'checkout';
 

@@ -121,17 +121,16 @@
 
     public static function reset() {
 
-      session::$data['administrator'] = [];
-
-      $fields_query = database::query(
+      $administrator = database::query(
         "show fields from ". DB_TABLE_PREFIX ."administrators;"
-      );
-      while ($field = database::fetch($fields_query)) {
-        session::$data['administrator'][$field['Field']] = null;
-      }
+      )->each(function($field) use ($administrator) {
+        $administrator[$field['Field']] = database::create_variable($field);
+      });
 
-      session::$data['administrator']['apps'] = [];
-      session::$data['administrator']['widgets'] = [];
+      $administrator['apps'] = [];
+      $administrator['widgets'] = [];
+
+      session::$data['administrator'] = $administrator;
     }
 
     public static function load($administrator_id) {

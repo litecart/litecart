@@ -42,43 +42,33 @@
 
         case 'also_purchased_products':
 
-          $this->_data['also_purchased_products'] = [];
-
-            $query = database::query(
-              "select oi.product_id, sum(oi.quantity) as num_purchases from ". DB_TABLE_PREFIX ."orders_items oi
-              left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
-              where p.status
-              and (oi.product_id != 0 and oi.product_id != ". (int)$this->_data['id'] .")
-              and order_id in (
-                select distinct order_id as id from ". DB_TABLE_PREFIX ."orders_items
-                where product_id = ". (int)$this->_data['id'] ."
-              )
-              group by oi.product_id
-              order by num_purchases desc;"
-            );
-
-            while ($row = database::fetch($query)) {
-              $this->_data['also_purchased_products'][$row['product_id']] = reference::product($row['product_id'], $this->_language_codes[0]);
-            }
+          $this->_data['also_purchased_products'] = database::query(
+            "select oi.product_id, sum(oi.quantity) as num_purchases from ". DB_TABLE_PREFIX ."orders_items oi
+            left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
+            where p.status
+            and (oi.product_id != 0 and oi.product_id != ". (int)$this->_data['id'] .")
+            and order_id in (
+              select distinct order_id as id from ". DB_TABLE_PREFIX ."orders_items
+              where product_id = ". (int)$this->_data['id'] ."
+            )
+            group by oi.product_id
+            order by num_purchases desc;"
+          )->fetch_custom(function($product) {
+            return reference::product($row['product_id'], $this->_language_codes[0]);
+          });
 
           break;
 
         case 'attributes':
 
-          $this->_data['attributes'] = [];
-
-          $product_attributes_query = database::query(
+          $this->_data['attributes'] = database::query(
             "select pa.*, ag.code, agi.name as group_name, avi.name as value_name, pa.custom_value from ". DB_TABLE_PREFIX ."products_attributes pa
             left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = pa.group_id)
             left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input($this->_language_codes[0]) ."')
             left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input($this->_language_codes[0]) ."')
             where product_id = ". (int)$this->_data['id'] ."
             order by priority, group_name, value_name, custom_value;"
-          );
-
-          while ($attribute = database::fetch($product_attributes_query)) {
-            $this->_data['attributes'][$attribute['group_id'].'-'.$attribute['value_id']] = $attribute;
-          }
+          )->fetch_all();
 
           break;
 
@@ -247,16 +237,12 @@
 
         case 'parents':
 
-          $this->_data['parents'] = [];
-
-          $query = database::query(
+          $this->_data['parents'] = database::query(
             "select category_id from ". DB_TABLE_PREFIX ."products_to_categories
             where product_id = ". (int)$this->_data['id'] .";"
-          );
-
-          while ($row = database::fetch($query)) {
-            $this->_data['parents'][$row['category_id']] = reference::category($row['category_id'], $this->_language_codes[0]);
-          }
+          )->fetch_custom(function($row) {
+            return reference::category($row['category_id'], $this->_language_codes[0]);
+          });
 
           break;
 
@@ -274,17 +260,22 @@
           break;
 
         case 'quantity':
+        case 'num_stock_options':
 
           $this->_data['quantity'] = null;
+          $this->_data['num_stock_options'] = null;
 
-          $stock_items = database::query(
-            "select count(p2si.id) as num_stock_items, sum(si.quantity) as sum_quantity from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
-            left join ". DB_TABLE_PREFIX ."stock_items si on (p2si.stock_item_id = si.id)
-            where p2si.product_id = ". (int)$this->_data['id'] .";"
+          $stock_options = database::query(
+            "select count(id) as num_stock_options, sum(quantity) as total_quantity
+            from ". DB_TABLE_PREFIX ."products_stock_options
+            where product_id = ". (int)$this->_data['id'] ."
+            group by product_id;"
           )->fetch();
 
-          if ($stock_items['num_stock_items'] > 0) {
-            $this->_data['quantity'] = $stock_items['sum_quantity'];
+          $this->_data['num_stock_options'] = $stock_options['num_stock_options'];
+
+          if ($stock_options['num_stock_options']) {
+            $this->_data['quantity'] = $stock_options['total_quantity'];
           }
 
           break;
@@ -294,7 +285,7 @@
 
           $this->_data['quantity_available'] = null;
 
-          if (!database::query("select id from ". DB_TABLE_PREFIX ."products_to_stock_items where product_id = ". (int)$this->_data['id'] ." limit 1;")->num_rows) {
+          if (!database::query("select id from ". DB_TABLE_PREFIX ."products_stock_options where product_id = ". (int)$this->_data['id'] ." limit 1;")->num_rows) {
             break;
           }
 
@@ -315,9 +306,7 @@
         case 'quantity_available':
         case 'quantity_reserved':
 
-          $this->_data['quantity_available'] = null;
-
-          $reserved_items_query = database::query(
+          $this->_data['quantity_reserved'] = database::query(
             "select sum(quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
             left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
             where oi.product_id = ". (int)$this->_data['id'] ."
@@ -325,10 +314,9 @@
               select id from ". DB_TABLE_PREFIX ."order_statuses
               where stock_action = 'reserve'
             );"
-          );
+          )->fetch('total_reserved');
 
-          $this->_data['quantity_reserved'] = database::fetch($reserved_items_query, 'total_reserved');
-          $this->_data['quantity_available'] = $this->quantity - $this->_data['quantity_reserved'];
+          $this->_data['quantity_available'] = $this->quantity - $this->quantity_reserved;
 
           break;
 
@@ -365,12 +353,13 @@
         case 'stock_options':
 
           $this->_data['stock_options'] = database::query(
-            "select p2si.*, sii.name, si.sku, si.gtin, si.mpn, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit, si.quantity, oi.reserved, coalesce(si.quantity - oi.reserved, si.quantity) as quantity_available, si.image
-            from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
-            left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = p2si.stock_item_id)
-            left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = p2si.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+            "select pso.*, sii.name, ifnull(oi.quantity_reserved, 0) as quantity_reserved, si.quantity - ifnull(oi.quantity_reserved, 0) as quantity_available
+            from ". DB_TABLE_PREFIX ."products_stock_options pso
+            left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+            left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = pso.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
             left join (
-              select stock_item_id, sum(quantity) as reserved from ". DB_TABLE_PREFIX ."orders_items
+              select product_id, stock_item_id, sum(quantity) as quantity_reserved
+              from ". DB_TABLE_PREFIX ."orders_items
               where order_id in (
                 select id from ". DB_TABLE_PREFIX ."orders
                 where order_status_id in (
@@ -379,11 +368,10 @@
                 )
               )
               group by stock_item_id
-            ) oi on (oi.stock_item_id = p2si.stock_item_id)
-            where product_id = ". (int)$this->_data['id'] ."
-            ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
-            order by p2si.priority asc;"
-          )->fetch_all('', 'id');
+            ) oi on (oi.product_id = pso.product_id and oi.stock_item_id = pso.id)
+            where pso.product_id = ". (int)$this->_data['id'] ."
+            order by pso.priority asc;"
+          )->fetch_all();
 
           break;
 
@@ -442,13 +430,17 @@
           );
 
           if ($result->num_rows) {
-            $this->_data = $result->fetch();
+            $row = $result->fetch();
           } else {
-            $this->_data = array_fill_keys($result->fields(), null);
+            $row = array_fill_keys($result->fields(), null);
           }
 
-          $this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
-          $this->_data['synonyms'] = preg_split('#\s*,\s*#', $this->_data['synonyms'], -1, PREG_SPLIT_NO_EMPTY);
+          foreach ($row as $key => $value) {
+            $this->_data[$key] = $value;
+          }
+
+          $this->_data['keywords'] = preg_split('#\s*,\s*#', (string)$this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+          $this->_data['synonyms'] = preg_split('#\s*,\s*#', (string)$this->_data['synonyms'], -1, PREG_SPLIT_NO_EMPTY);
 
           break;
       }

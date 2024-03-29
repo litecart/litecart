@@ -18,7 +18,7 @@
 
     protected function _load($field) {
 
-      switch($field) {
+      switch ($field) {
 
         case 'name':
         case 'description':

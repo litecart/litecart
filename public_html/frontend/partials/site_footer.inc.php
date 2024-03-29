@@ -1,4 +1,5 @@
 <?php
+
   $site_footer_cache_token = cache::token('store_footer', ['language', 'login', 'region']);
   if (cache::capture($site_footer_cache_token)) {
 
@@ -10,55 +11,55 @@
       'social_bookmarks' => [],
     ];
 
-    $pages_query = database::query(
+  // Pages
+    $site_footer->snippets['pages'] = database::query(
       "select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
       left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
       where status
       and find_in_set('information', dock)
       order by p.priority, pi.title;"
-    );
-
-    while ($page = database::fetch($pages_query)) {
-      $site_footer->snippets['pages'][$page['id']] = [
+    )->fetch_custom(function($page) {
+      return [
         'id' => $page['id'],
         'title' => $page['title'],
         'link' => document::href_ilink('information', ['page_id' => $page['id']]),
       ];
-    }
+    });
 
-    $modules_query = database::query(
+  // Modules
+    database::query(
       "select id, settings  from ". DB_TABLE_PREFIX ."modules
       where type in ('shipping', 'payment')
       and status
       order by type, id;"
-    );
-
-    while ($module = database::fetch($modules_query)) {
+    )->each(function($module) use ($site_footer) {
       $module['settings'] = json_decode($module['settings'], true);
 
-      if (empty($module['settings']['icon'])) continue;
+      if (empty($module['settings']['icon'])) return;
+
       $icon = 'app://'.$module['settings']['icon'];
 
-      if (!is_file($icon)) continue;
+      if (!is_file($icon)) return;
 
-      $site_footer->snippets['modules'][$module['id']] = [
+      $site_footer->snippets['modules'][] = [
         'id' => $module['id'],
         'icon' => $icon,
       ];
-    }
+    });
 
-    $social_media = [
+    // Social media
+    foreach ([
       'facebook',
       'instagram',
       'linkedin',
       'pinterest',
       'twitter',
       'youtube',
-    ];
+    ] as $platform) {
 
-    foreach ($social_media as $platform) {
       if (!$link = settings::get($platform.'_link')) continue;
-      $site_footer->snippets['social_bookmarks'][$platform] = [
+
+      $site_footer->snippets['social_bookmarks'][] = [
         'type' => $platform,
         'title' => ucfirst($platform),
         'icon' => 'fa-'.$platform,

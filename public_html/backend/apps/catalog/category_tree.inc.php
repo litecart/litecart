@@ -4,11 +4,13 @@
 
   breadcrumbs::add(language::translate('title_category_tree', 'Category Tree'));
 
-  if (empty($_GET['category_id'])) $_GET['category_id'] = 0;
+  if (empty($_GET['category_id'])) {
+    $_GET['category_id'] = 0;
+  }
 
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
-
     try {
+
       if (empty($_POST['categories']) && empty($_POST['products'])) {
         throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
       }
@@ -39,8 +41,8 @@
   }
 
   if (isset($_POST['clone'])) {
-
     try {
+
       if (empty($_POST['categories']) && empty($_POST['products'])) {
         throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
       }
@@ -111,7 +113,6 @@
   }
 
   if (isset($_POST['copy'])) {
-
     try {
 
       if (!empty($_POST['categories'])) {
@@ -144,8 +145,8 @@
   }
 
   if (isset($_POST['move'])) {
-
     try {
+
       if (empty($_POST['categories']) && empty($_POST['products'])) {
         throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
       }
@@ -193,7 +194,6 @@
   }
 
   if (isset($_POST['unmount'])) {
-
     try {
 
       if (empty($_POST['categories']) && empty($_POST['products'])) {
@@ -240,8 +240,8 @@
   }
 
   if (isset($_POST['delete'])) {
-
     try {
+
       if (empty($_POST['categories']) && empty($_POST['products'])) {
         throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
       }
@@ -502,21 +502,20 @@
           $warning = $e->getMessage();
         }
 
-        $output .= '<tr class="'. (!$product['status'] ? ' semi-transparent' : '') .'">' . PHP_EOL
-                 . '  <td>'. functions::form_input_checkbox('products[]', $product['id'], true) .'</td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon(!empty($product['status']) ? 'on' : 'off') .'</td>' . PHP_EOL
-                 . '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : '') .'</td>' . PHP_EOL;
-
-        if ($display_images) {
-          $output .= '  <td>'. functions::draw_thumbnail('storage://images/' . $product['image'], 24, 24, 'fit', 'style="margin-inline-start: '. ($depth*16) .'px;"') .' <a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
-        } else {
-          $output .= '  <td><span style="margin-inline-start: '. (($depth+1)*16) .'px;">&nbsp;<a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
-        }
-
-        $output .= '  <td class="text-end">'. currency::format($product['price']) .'</td>' . PHP_EOL
-                 . '  <td><a class="btn btn-default btn-sm" href="'. document::href_ilink('f:product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
-                 . '  <td class="text-end"><a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
-                 . '</tr>' . PHP_EOL;
+        $output .= implode(PHP_EOL, [
+          '<tr class="'. (!$product['status'] ? ' semi-transparent' : '') .'">',
+          '  <td>'. functions::form_input_checkbox('products[]', $product['id'], true) .'</td>',
+          '  <td>'. functions::draw_fonticon(!empty($product['status']) ? 'on' : 'off') .'</td>',
+          '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : '') .'</td>',
+          (($display_images) ?
+            '  <td>'. functions::draw_thumbnail('storage://images/' . $product['image'], 24, 24, 'fit', 'style="margin-inline-start: '. ($depth*16) .'px;"') .' <a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>'
+          : '  <td><span style="margin-inline-start: '. (($depth+1)*16) .'px;">&nbsp;<a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>'
+          ),
+          '<td class="text-end">'. currency::format($product['price']) .'</td>',
+          '<td><a class="btn btn-default btn-sm" href="'. document::href_ilink('f:product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>',
+          '<td class="text-end"><a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>',
+          '</tr>',
+         ]);
       }
 
       return $output;
@@ -527,15 +526,17 @@
       $output = '';
 
       if (empty($category_id)) {
-        $output .= '<tr>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cc6;"') .' <strong><a href="'. document::href_ilink(null, ['category_id' => '0']) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL
-                 . '</tr>' . PHP_EOL;
+        $output .= implode(PHP_EOL, [
+          '<tr>',
+          '  <td></td>',
+          '  <td></td>',
+          '  <td></td>',
+          '  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cc6;"') .' <strong><a href="'. document::href_ilink(null, ['category_id' => '0']) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>',
+          '  <td></td>',
+          '  <td></td>',
+          '  <td></td>',
+          '</tr>',
+        ]);
       }
 
     // Output subcategories
@@ -550,10 +551,12 @@
       while ($category = database::fetch($categories_query)) {
         $num_category_rows++;
 
-        $output .= '<tr class="'. ($category['status'] ? null : ' semi-transparent') .'">' . PHP_EOL
-                 . '  <td>'. functions::form_input_checkbox('categories[]', $category['id'], true) .'</td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon($category['status'] ? 'on' : 'off') .'</td>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL;
+        $output .= implode(PHP_EOL, [
+          '<tr class="'. ($category['status'] ? null : ' semi-transparent') .'">',
+          '  <td>'. functions::form_input_checkbox('categories[]', $category['id'], true) .'</td>',
+          '  <td>'. functions::draw_fonticon($category['status'] ? 'on' : 'off') .'</td>',
+          '  <td></td>',
+        ]);
 
         if ($category['id'] == $_GET['category_id']) {
           $output .= '  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cc6; margin-inline-start: '. ($depth*16) .'px;"') .' <strong><a class="link" href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
@@ -563,10 +566,12 @@
           $output .= '  <td>'. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cc6; margin-inline-start: '. ($depth*16) .'px;"') .' <a class="link" href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         }
 
-        $output .= '  <td></td>' . PHP_EOL
-                 . '  <td><a class="btn btn-default btn-sm" href="'. document::href_ilink('f:category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
-                 . '  <td class="text-end"><a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_category', ['category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
-                 . '</tr>' . PHP_EOL;
+        $output .= implode(PHP_EOL, [
+          '  <td></td>',
+          '  <td><a class="btn btn-default btn-sm" href="'. document::href_ilink('f:category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>',
+          '  <td class="text-end"><a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_category', ['category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>',
+          '</tr>',
+        ]);
 
         if (in_array($category['id'], $category_trail)) {
 
@@ -581,15 +586,17 @@
 
           } else {
 
-            $output .= '<tr>' . PHP_EOL
-                     . '  <td></td>' . PHP_EOL
-                     . '  <td></td>' . PHP_EOL
-                     . '  <td></td>' . PHP_EOL
-                     . '  <td><em style="margin-inline-start: '. (($depth+1)*16) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>' . PHP_EOL
-                     . '  <td></td>' . PHP_EOL
-                     . '  <td></td>' . PHP_EOL
-                     . '  <td></td>' . PHP_EOL
-                     . '</tr>' . PHP_EOL;
+            $output .= implode(PHP_EOL, [
+              '<tr>',
+              '  <td></td>',
+              '  <td></td>',
+              '  <td></td>',
+              '  <td><em style="margin-inline-start: '. (($depth+1)*16) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>',
+              '  <td></td>',
+              '  <td></td>',
+              '  <td></td>',
+              '</tr>',
+           ]);
           }
         }
       }

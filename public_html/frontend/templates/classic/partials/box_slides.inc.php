@@ -2,25 +2,29 @@
 
   <div class="carousel-inner">
 <?php
+  $output = [];
+
   foreach ($slides as $key => $slide) {
-    echo '<div class="item'. (($key == 0) ? ' active' : '') .'">' . PHP_EOL;
+    $output[] = '<div class="item'. (($key == 0) ? ' active' : '') .'">';
 
     if ($slide['link']) {
-      echo '<a href="'. functions::escape_html($slide['link']) .'">' . PHP_EOL;
+      $output[] = '<a href="'. functions::escape_html($slide['link']) .'">';
     }
 
-    echo '<img src="'. document::href_rlink($slide['image']) .'" alt="'. functions::escape_html($slide['name']) .'" style="width: 100%;" />' . PHP_EOL;
+    $output[] = '<img src="'. document::href_rlink($slide['image']) .'" alt="'. functions::escape_html($slide['name']) .'" style="width: 100%;" />';
 
     if (!empty($slide['caption'])) {
-      echo '<div class="carousel-caption">'. $slide['caption'] .'</div>' . PHP_EOL;
+      $output[] = '<div class="carousel-caption">'. $slide['caption'] .'</div>';
     }
 
     if ($slide['link']) {
-      echo '</a>' . PHP_EOL;
+      $output[] = '</a>';
     }
 
-    echo '</div>' . PHP_EOL;
+    $output[] = '</div>';
   }
+
+  echo implode(PHP_EOL, $output);
 ?>
   </div>
 

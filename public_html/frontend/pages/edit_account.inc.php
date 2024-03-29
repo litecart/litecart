@@ -91,9 +91,14 @@
   if (isset($_POST['save_details'])) {
 
     try {
-      if (!isset($_POST['different_shipping_address'])) $_POST['different_shipping_address'] = 0;
-      if (!isset($_POST['newsletter'])) $_POST['newsletter'] = 0;
 
+      if (!isset($_POST['different_shipping_address'])) {
+        $_POST['different_shipping_address'] = 0;
+      }
+
+      if (!isset($_POST['newsletter'])) {
+        $_POST['newsletter'] = 0;
+      }
 
       if (empty($_POST['firstname'])) {
         throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
@@ -175,27 +180,6 @@
       foreach ($fields as $field) {
         if (isset($_POST[$field])) {
           $customer->data[$field] = $_POST[$field];
-        }
-      }
-
-      $fields = [
-        'company',
-        'firstname',
-        'lastname',
-        'address1',
-        'address2',
-        'postcode',
-        'city',
-        'country_code',
-        'zone_code',
-        'phone',
-      ];
-
-      foreach ($fields as $field) {
-        if (empty($_POST['different_shipping_address']) && settings::get('customer_shipping_address')) {
-          $customer->data['shipping_address'][$field] = fallback($_POST['shipping_address'][$field]);
-        } else {
-          $customer->data['shipping_address'][$field] = $customer->data[$field];
         }
       }
 

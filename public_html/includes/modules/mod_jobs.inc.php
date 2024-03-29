@@ -41,15 +41,17 @@
 
         if (!empty($log)) {
 
-          $log = str_repeat('#', 72) . PHP_EOL
-               . '#'. str_pad(" $module_id executed at ". date('Y-m-d H:i:s') .' ', 71, '#', STR_PAD_RIGHT) . PHP_EOL
-               . str_repeat('#', 72) . PHP_EOL . PHP_EOL
-               . $log . PHP_EOL . PHP_EOL
-               . str_repeat('#', 72) . PHP_EOL
-               . '#'. str_pad(' Completed in '. round(microtime(true) - $timestamp, 3).' s ', 71, '#', STR_PAD_RIGHT) . PHP_EOL
-               . str_repeat('#', 72) . PHP_EOL;
-
-          $output .= $log;
+          $output .= $log = implode(PHP_EOL, [
+            str_repeat('#', 72),
+            '#'. str_pad(" $module_id executed at ". date('Y-m-d H:i:s') .' ', 71, '#', STR_PAD_RIGHT),
+            str_repeat('#', 72),
+            '',
+            $log,
+            '',
+            str_repeat('#', 72),
+            '#'. str_pad(' Completed in '. round(microtime(true) - $timestamp, 3).' s ', 71, '#', STR_PAD_RIGHT),
+            str_repeat('#', 72),
+          ]);
 
           database::query(
             "update ". DB_TABLE_PREFIX ."modules

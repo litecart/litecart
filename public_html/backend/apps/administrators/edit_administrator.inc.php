@@ -185,18 +185,17 @@
             <div class="form-input" style="height: 400px; overflow-y: scroll;">
               <ul class="list-unstyled">
 <?php
-  $apps = functions::admin_get_apps();
-  foreach ($apps as $app) {
-    echo '  <li data-app="'. functions::escape_html($app['id']) .'">' . PHP_EOL
-       . '  '. functions::form_input_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true) . PHP_EOL;
-    if (!empty($app['docs'])) {
-      echo '  <ul class="list-unstyled">' . PHP_EOL;
-      foreach ($app['docs'] as $doc => $file) {
-        echo '    <li data-doc="'. functions::escape_html($doc) .'"><label>'. functions::form_input_checkbox('apps['.$app['id'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
-      }
-      echo '  </ul>' . PHP_EOL;
-    }
-    echo '</li>' . PHP_EOL;
+  foreach (functions::admin_get_apps() as $app) {
+    echo implode(PHP_EOL, [
+      '<li data-app="'. functions::escape_html($app['id']) .'">',
+      '  '. functions::form_input_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true),
+      '  <ul class="list-unstyled">',
+      implode(PHP_EOL, array_map(function($doc) use ($app) {
+        return '    <li data-doc="'. functions::escape_html($doc) .'">'. functions::form_input_checkbox('apps['.$app['id'].'][docs][]', [$doc], true) .'</li>';
+      }, array_keys($app['docs']))),
+      '  </ul>',
+      '</li>',
+    ]);
   }
 ?>
               </ul>
@@ -208,11 +207,12 @@
             <div class="form-input" style="height: 150px; overflow-y: scroll;">
               <ul class="list-unstyled">
 <?php
-  $widgets = functions::admin_get_widgets();
-  foreach ($widgets as $widget) {
-    echo '<li>' . PHP_EOL
-       . '  '. functions::form_input_checkbox('widgets['.$widget['id'].']', ['1', $widget['name']], true) . PHP_EOL
-       . '</li>' . PHP_EOL;
+  foreach (functions::admin_get_widgets() as $widget) {
+    echo implode(PHP_EOL, [
+      '<li>',
+      '  '. functions::form_input_checkbox('widgets['.$widget['id'].']', ['1', $widget['name']], true),
+      '</li>',
+    ]);
   }
 ?>
               </ul>

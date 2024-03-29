@@ -20,10 +20,8 @@
     $_GET['date_to'] = date('Y-m-d');
   }
 
-// Table Rows
-  $rows = [];
-
-  $orders_query = database::query(
+  // Table Rows
+  $rows = database::query(
     "select
       group_concat(o.id) as order_ids,
       sum(o.total) - sum(o.total_tax) as total_sales,
@@ -51,15 +49,14 @@
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : "") ."
     group by date_format(o.date_created, '%Y-%m')
     order by `year_month` desc;"
-  );
+  )->fetch_all();
 
-  while ($orders = database::fetch($orders_query)) {
-    if (!isset($total)) $total = [];
-    foreach (array_keys($orders) as $key) {
-      if (!isset($total[$key])) $total[$key] = $orders[$key];
-      else $total[$key] += $orders[$key];
+  $total = array_fill_keys(['total_sales', 'total_tax', 'total_subtotal', 'total_shipping_fees', 'total_payment_fees'], 0);
+
+  foreach (array_keys($total) as $key) {
+    if (isset($total[$key])) {
+      $total[$key] = array_sum(array_column($rows, $key));
     }
-    $rows[] = $orders;
   }
 
   if (isset($_GET['download'])) {
