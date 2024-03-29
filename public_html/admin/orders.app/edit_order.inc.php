@@ -823,7 +823,7 @@
   </div>
 <?php echo functions::form_draw_form_end(); ?>
 
-<div id="modal-customer-picker" class="modal fade" style="max-width: 640px; display: none;">
+<div id="modal-customer-picker" class="modal fade" style="max-width: 64px; display: none;">
 
   <h2><?php echo language::translate('title_customer', 'Customer'); ?></h2>
 
@@ -851,7 +851,7 @@
   </div>
 </div>
 
-<div id="modal-edit-order-item" class="modal fade" style="max-width: 640px; display: none;">
+<div id="modal-edit-order-item" class="modal fade" style="max-width: 800px; display: none;">
 
   <h2><?php echo language::translate('title_edit_order_item', 'Edit Order Item'); ?></h2>
 
@@ -909,17 +909,17 @@
     </div>
 
     <div class="row">
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
         <label><?php echo language::translate('title_quantity', 'quantity'); ?></label>
         <?php echo functions::form_draw_decimal_field('quantity', ''); ?>
       </div>
 
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
         <label><?php echo language::translate('title_price', 'Price'); ?></label>
         <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'price', ''); ?>
       </div>
 
-        <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
         <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'tax', ''); ?>
       </div>
@@ -990,17 +990,17 @@
     </div>
 
     <div class="row">
-        <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
         <?php echo functions::form_draw_decimal_field('quantity', '0'); ?>
       </div>
 
-        <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label><?php echo language::translate('title_price', 'Price'); ?></label>
         <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'price', '0'); ?>
       </div>
 
-        <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
         <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'tax', '0'); ?>
       </div>
@@ -1048,7 +1048,7 @@
       async: false,
       dataType: 'json',
       error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn(errorThrown.message);
+        console.warn(errorThrown.message);
       },
       success: function(data) {
         $.each(data, function(key, value) {
@@ -1112,11 +1112,8 @@
   });
 
   $('#customer-details button[name="copy_billing_address"]').click(function(){
-    console.log('a');
-
     let fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone'];
     $.each(fields, function(key, field){
-          console.log($(':input[name="customer[shipping_address]['+ field +']"]').length);
       $(':input[name="customer[shipping_address]['+ field +']"]').val(
         $(':input[name="customer['+ field +']"]').val()
       ).trigger('change');
@@ -1274,6 +1271,15 @@
   });
 
 // Order items
+  $('#order-items').on('change input', ':input[name$="[price]"], :input[name$="[tax_class_id]"]', function(){
+    var price = $(this).closest('tr').find(':input[name$="[price]"]').val(),
+      tax_class_id = $(this).closest('tr').find(':input[name$="[tax_class_id]"]').val(),
+      tax = get_tax(price, tax_class_id),
+      decimals = $('select[name="currency_code"] option:selected').data('decimals');
+
+    $(this).closest('tr').find(':input[name$="[tax]"]').val(tax.toFixed(decimals)).trigger('change');
+  });
+
   $('#order-items').on('change', 'input[name$="[price]"], input[name$="[tax]"]', function(e) {
     var decimals = $('select[name="currency_code"] option:selected').data('decimals'),
       value = parseFloat($(this).val());
@@ -1303,6 +1309,16 @@
         row = $(this).closest('tr');
 
     $(modal).data('row', '');
+  });
+
+  $('#modal-edit-order-item, #modal-add-order-item').on('change input', ':input[name="price"], :input[name="tax_class_id"]', function(){
+    var $modal = $('.featherlight.active'),
+      price = $modal.find(':input[name="price"]').val(),
+      tax_class_id = $modal.find(':input[name="tax_class_id"]').val(),
+      tax = get_tax(price, tax_class_id),
+      decimals = $('select[name="currency_code"] option:selected').data('decimals');
+
+    $modal.find(':input[name="tax"]').val(tax.toFixed(decimals)).trigger('input');
   });
 
   $('#modal-edit-order-item button[name="ok"]').click(function(e){
@@ -1348,28 +1364,26 @@
 
   $('#modal-add-order-item button[name="ok"]').click(function(e){
 
-    var modal = $('.featherlight.active');
-    var row = $(modal).data('row');
-    var item = {};
-    var fields = [
-      'name',
-      'sku',
-      'gtin',
-      'taric',
-      'weight',
-      'weight_class',
-      'dim_x',
-      'dim_y',
-      'dim_z',
-      'dim_class',
-      'price',
-      'tax',
-    ];
-
-    $.each($(modal).find(':input'), function(i,element){
-      var field = $(element).attr('name');
-      item[field] = $(modal).find(':input[name="'+field+'"]').val();
-    });
+    let $modal = $('.featherlight.active'),
+      row = $modal.data('row')
+      item = {
+        id: '',
+        product_id: $modal.find(':input[name="product_id"]').val(),
+        name: $modal.find(':input[name="name"]').val(),
+        sku: $modal.find(':input[name="sku"]').val(),
+        gtin: $modal.find(':input[name="gtin"]').val(),
+        taric: $modal.find(':input[name="taric"]').val(),
+        weight: parseFloat($modal.find(':input[name="weight"]').val() || 0),
+        weight_class: $modal.find(':input[name="weight_class"]').val(),
+        dim_x: parseFloat($modal.find(':input[name="dim_x"]').val() || 0),
+        dim_y: parseFloat($modal.find(':input[name="dim_y"]').val() || 0),
+        dim_z: parseFloat($modal.find(':input[name="dim_z"]').val() || 0),
+        dim_class: $modal.find(':input[name="dim_class"]').val(),
+        quantity: parseFloat($modal.find(':input[name="quantity"]').val() || 0),
+        price: parseFloat($modal.find(':input[name="price"]').val() || 0),
+        tax: parseFloat($modal.find(':input[name="tax"]').val() || 0),
+        tax_class_id: parseInt($modal.find(':input[name="tax_class_id"]').val() || 0)
+      };
 
     addItem(item);
 
@@ -1541,7 +1555,7 @@
     $('#order-total .total').text(order_total.toMoney());
   }
 
-  $('body').on('click keyup', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="order_total"][name$="[value]"], input[name^="order_total"][name$="[tax]"], input[name^="order_total"][name$="[calculate]"], #order-items a.remove, #order-total a.remove', function() {
+  $('body').on('input change click', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="order_total"][name$="[value]"], input[name^="order_total"][name$="[tax]"], input[name^="order_total"][name$="[calculate]"], #order-items a.remove, #order-total a.remove', function() {
     calculate_total();
   });
 </script>

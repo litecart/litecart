@@ -361,8 +361,8 @@
 
           <?php if (count(language::$languages) > 1) { ?>
           <nav class="nav nav-tabs" style="padding-top:0; margin-top: -1em;">
-            <?php foreach ($language_codes as $language) { ?>
-            <a class="nav-link<?php echo ($language['code'] == language::$selected['code']) ? ' active' : ''; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
+            <?php foreach ($language_codes as $language_code) { ?>
+            <a class="nav-link<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>" data-toggle="tab" href="#<?php echo $language_code; ?>"><?php echo language::$languages[$language_code]['name']; ?></a>
             <?php } ?>
           </nav>
           <?php } ?>

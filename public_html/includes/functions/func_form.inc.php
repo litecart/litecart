@@ -140,10 +140,13 @@
 
     $currency = currency::$currencies[$currency_code];
 
-  // Format and show an additional two decimals precision if needed
+  // Format a minimum of given currency decimals, but a maximum of 2 extra decimals
     if ($value != '') {
-      $value = number_format((float)$value, $currency['decimals'], '.', '');
-      //$value = preg_replace('#\.00$#', '', $value); // Auto decimals
+      $max_decimals = $currency['decimals'] + 2;
+      do {
+        $formatted = number_format((float)$value, $currency['decimals']++, '.', '');
+      } while ($formatted != $value && $currency['decimals'] <= $max_decimals);
+      $value = $formatted;
     }
 
     return '<div class="input-group">' . PHP_EOL

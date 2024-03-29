@@ -84,7 +84,7 @@
 
             $subject = language::translate('user_account_blocked:email_subject', 'User Account Blocked');
             $message = strtr(language::translate('user_account_blocked:email_body',
-              "Your user account %username has been blocked until %expires because of too many invalid attempts.\r\n"
+              "Your user account %username has been blocked until %expires because of too many invalid login attempts.\r\n"
             . "\r\n"
             . "Client: %hostname (%ip_address)\r\n"
             . "%user_agent\r\n"
