@@ -196,7 +196,7 @@
 
     public function save() {
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
         throw new Exception('vMod ID cannot be empty');
       }
 

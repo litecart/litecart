@@ -211,7 +211,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_categories', 'Categories'); ?></label>
-                <?php echo functions::form_select_category('categories[]', true, 'style="max-height: 480px;"'); ?>
+                <?php //echo functions::form_select_category('categories[]', true, 'style="max-height: 480px;"'); ?>
               </div>
 
               <div class="form-group">
@@ -308,8 +308,7 @@
                   <?php } ?>
                 </div>
 
-                <div class="new-images">
-                </div>
+                <div class="new-images"></div>
 
                 <div class="form-group">
                   <a href="#" class="add btn btn-default btn-sm"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_image', 'Add Image'); ?></a>
@@ -320,7 +319,7 @@
 
         </div>
 
-        <div id="tab-information" class="tab-pane" style="max-width: 1200px;">
+        <div id="tab-information" class="tab-pane">
 
           <nav class="nav nav-tabs" style="margin-top: -1em;">
             <?php foreach (language::$languages as $language) { ?>
@@ -366,7 +365,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a>
-                    <?php echo functions::form_regional_textarea('technical_data['. $language_code .']', $language_code, true, 'style="height: 250px;"'); ?>
+                    <?php echo functions::form_regional_textarea('technical_data['. $language_code .']', $language_code, true, 'style="height: 640px;"'); ?>
                     <div><?php echo functions::form_input_checkbox('autofill_technical_data', ['1', language::translate('text_autogenerate_from_attributes', 'Generate from attributes')], ''); ?></div>
                   </div>
                 </div>
@@ -569,7 +568,7 @@
 
                 <tfoot>
                   <td colspan="5">
-                    <a href="<?php echo document::href_ilink(__APP__.'/product_picker', ['js_callback' => 'add_chained_product']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
+                    <a href="<?php echo document::href_ilink(__APP__.'/product_picker', ['collect' => ['stock_option', 'quantity'], 'js_callback' => 'add_chained_product']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
                   </td>
                 </tfoot>
               </table>
@@ -582,22 +581,23 @@
           <table id="stock-options" class="table table-striped table-dragable table-hover data-table">
             <thead>
               <tr>
-                <th colspan="2"><?php echo language::translate('title_stock_item', 'Stock Item'); ?></th>
-                <th style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
-                <th style="width: 100px;" class="text-end"><?php echo language::translate('title_weight', 'Weight'); ?></th>
-                <th style="width: 150px;" class="text-end"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
-                <th style="width: 125px;" class="text-center"><?php echo language::translate('title_price', 'Price'); ?></th>
-                <th style="width: 150px;" class="text-center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-                <th style="width: 175px;" class="text-center"><?php echo language::translate('title_adjust_qty', 'Adjust Qty'); ?></th>
-                <th style="width: 175px;" class="text-center"><?php echo language::translate('title_backordered', 'Backordered'); ?></th>
-                <th style="width: 85px;"></th>
-                <th style="width: 50px;"></th>
+                <th><?php echo language::translate('title_id', 'ID'); ?></th>
+                <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+                <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
+                <th class="text-end"><?php echo language::translate('title_weight', 'Weight'); ?></th>
+                <th class="text-end"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
+                <th style="min-width: 275px;" colspan="2"><?php echo language::translate('title_price', 'Price'); ?></th>
+                <th style="min-width: 150px;" class="text-center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
+                <th style="min-width: 175px;" class="text-center"><?php echo language::translate('title_adjust_qty', 'Adjust Qty'); ?></th>
+                <th style="min-width: 175px;" class="text-center"><?php echo language::translate('title_backordered', 'Backordered'); ?></th>
+                <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               <?php if (!empty($_POST['stock_options'])) foreach ($_POST['stock_options'] as $key => $stock_option) { ?>
               <tr data-stock-item-id="<?php echo $stock_option['stock_item_id']; ?>">
-                <td class="grabable">
+                <td>
                   <?php echo functions::form_input_hidden('stock_options['.$key.'][id]', true); ?>
                   <?php echo functions::form_input_hidden('stock_options['.$key.'][stock_item_id]', true); ?>
                   <?php echo functions::form_input_hidden('stock_options['.$key.'][sku]', true); ?>
@@ -609,16 +609,16 @@
                   <?php echo functions::form_input_hidden('stock_options['.$key.'][length_unit]', true); ?>
                   <span class="id"><?php echo $stock_option['id']; ?></span>
                 </td>
-                <td class="grabable">
+                <td>
                   <span class="name"><?php echo $stock_option['name'][language::$selected['code']]; ?></span>
                 </td>
-                <td class="grabable">
+                <td>
                   <span class="sku"><?php echo $stock_option['sku']; ?></span>
                 </td>
-                <td class="grabable text-end">
+                <td class="text-end">
                   <span class="weight"><?php echo (float)$stock_option['weight']; ?></span> <span class="weight_unit"><?php echo $stock_option['weight_unit']; ?></span>
                 </td>
-                <td class="grabable text-end">
+                <td class="text-end">
                   <span class="length"><?php echo (float)$stock_option['length']; ?></span> x <span class="width"><?php echo (float)$stock_option['width']; ?></span> x <span class="height"><?php echo (float)$stock_option['height']; ?></span> <span class="length_unit"><?php echo $stock_option['length_unit']; ?></span>
                 </td>
                 <td>
@@ -648,10 +648,11 @@
                     <?php echo functions::form_input_decimal('stock_options['. $key .'][backordered]', true, 2, 'min="0"'); ?>
                   </div>
                 </td>
-                <td class="text-end">
-                  <a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"'); ?></a>
+                <td class="grabable">
+                  <?php echo functions::draw_fonticon('fa-arrows-v'); ?>
                 </td>
                 <td class="text-end">
+                  <a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"'); ?></a>
                   <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_option['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>
                 </td>
               </tr>
@@ -659,14 +660,13 @@
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="10">
+                <td colspan="12">
                   <a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_existing_stock_item', 'Add Existing Stock Item'); ?></a>
                   <a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="800"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
                 </td>
               </tr>
             </tfoot>
           </table>
-
 
         </div>
 <!--
@@ -1672,6 +1672,10 @@
   */
 
 // Stock
+  function add_chained_product(product){
+    console.log(product);
+  }
+
   <?php if (currency::$currencies > 1) { ?>
   $('#stock-options').on('focusin', 'input[name^="stock_options"][name*="[price]"]', function(){
     $(this).closest('.dropdown').dropdown();
@@ -1688,27 +1692,31 @@
     $(qty_field).val(parseFloat($(qty_field).data('quantity') || 0) + parseFloat($(this).val() || 0));
   });
 
-  $('#stock-options button[name="transfer"]').click(function(){
-    var quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
-    var backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]');
-    console.log($(quantity_field).length);
+  $('#stock-options').on('click', 'button[name="transfer"]', function(e){
+    e.preventDefault();
+
+    let quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]'),
+      backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]');
+
     $(quantity_field).val(parseFloat($(quantity_field).val() || 0) + parseFloat($(backordered_field).val() || 0)).trigger('input');
     $(backordered_field).val(0);
   });
 
   $('#stock-options').on('click', '.move-up, .move-down', function(e) {
     e.preventDefault();
-    var row = $(this).closest('tr');
 
-    if ($(this).is('.move-up') && $(row).prevAll().length > 1) {
-      $(row).insertBefore($(row).prev());
-    } else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
-      $(row).insertAfter($(row).next());
+    let $row = $(this).closest('tr');
+
+    if ($(this).is('.move-up') && $row.prevAll().length > 1) {
+      $row.insertBefore($row.prev());
+    } else if ($(this).is('.move-down') && $row.nextAll().length > 0) {
+      $row.insertAfter($row.next());
     }
   });
 
   $('#stock-options').on('click', '.remove', function(e) {
     e.preventDefault();
+
     $(this).closest('tr').remove();
 
     var total = 0;
@@ -1741,7 +1749,7 @@
 
     let output = [
       '<tr data-stock-item-id="'+ stock_item.id +'">',
-      '  <td class="grabable">',
+      '  <td>',
       '    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][id]', '')); ?>',
       '    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][stock_option_id]', '')); ?>',
     '    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][sku]', '')); ?>',
@@ -1752,7 +1760,10 @@
       '    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][width]', '')); ?>',
       '    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][height]', '')); ?>',
       '    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][length_unit]', '')); ?>',
-      '    <span class="name"></name>',
+      '    <span class="id"></name>',
+      '  </td>',
+      '  <td>',
+      '    <span class="name"></span>',
       '  </td>',
       '  <td>',
       '    <span class="sku"></span>',
@@ -1788,10 +1799,11 @@
       '      <?php echo functions::escape_js(functions::form_input_decimal('stock_options[new_stock_item_i][backordered]', '', 2, 'min="0"')); ?>',
       '    </div>',
       '  </td>',
-      '  <td class="text-end">',
-      '    <a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"')); ?></a>',
+      '  <td class="grabable">',
+      '    <?php echo functions::draw_fonticon('fa-arrows-v'); ?>',
       '  </td>',
       '  <td class="text-end">',
+      '    <a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"')); ?></a>',
       '    <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_option_id' => 'new_stock_option_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>',
       '  </td>',
       '</tr>',

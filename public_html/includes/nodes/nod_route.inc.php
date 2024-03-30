@@ -171,7 +171,7 @@
       $request_path = functions::file_resolve_path(parse_url(self::$request, PHP_URL_PATH));
 
       // Tunnel an asset stored in an add-on
-      if (preg_match('#^assets/#', $request_path) && is_file('app://'.$request_path) && preg_match('#\.(avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|a?png|svg|tiff?|ttf|webp|woff2?)$#', pathinfo($request_path, PATHINFO_BASENAME))) {
+      if (preg_match('#^assets/#', $request_path) && is_file('app://'.$request_path) && preg_match('#\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$#', pathinfo($request_path, PATHINFO_BASENAME))) {
 
         if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= filemtime('app://'.$request_path)) {
           header('HTTP/1.1 304 Not Modified');

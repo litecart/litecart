@@ -1,6 +1,7 @@
 <?php
 
   header('X-Robots-Tag: noindex');
+
   document::$layout = 'checkout';
 
   if (settings::get('catalog_only_mode')) return;
@@ -34,7 +35,7 @@
     }
 
   // Verify transaction
-    if (!empty($shopping_cart->payment->modules) && count($shopping_cart->payment->options()) > 0) {
+    if ($payment->modules && count($payment->options($shopping_cart)) > 0) {
       $result = $shopping_cart->payment->verify($shopping_cart);
 
     // If payment error

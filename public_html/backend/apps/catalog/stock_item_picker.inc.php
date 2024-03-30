@@ -39,12 +39,16 @@
 
 <script>
   var xhr_stock_item_picker = null;
-  $('#modal-stock-item-picker input[name="query"]').bind('input', function(){
+  $('#modal-stock-item-picker input[name="query"]').on('input', function(){
+
+    /*
     if ($(this).val() == '') {
       $('#modal-stock-item-picker tbody').html('');
       xhr_stock_item_picker = null;
       return;
     }
+    */
+
     xhr_stock_item_picker = $.ajax({
       type: 'get',
       async: true,
@@ -84,7 +88,7 @@
         }
       }
     });
-  }).focus();
+  }).trigger('input').focus();
 
   $('#modal-stock-item-picker tbody').on('click', 'td', function() {
     <?php if (!empty($_GET['js_callback'])) { ?>

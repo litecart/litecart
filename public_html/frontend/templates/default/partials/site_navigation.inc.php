@@ -1,6 +1,6 @@
 <div id="site-navigation" class="container">
 
-  <div class="navbar wrapper">
+  <div class="navbar">
 
    <div class="navbar-brand">
      <a href="<?php echo document::href_ilink(''); ?>">
@@ -9,7 +9,7 @@
     </div>
 
     <nav class="navbar-menu">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav" style="margin-inline-start: .5em;">
 
         <?php if ($categories) { ?>
         <li class="categories dropdown">
@@ -22,11 +22,11 @@
         </li>
         <?php } ?>
 
-        <?php if ($brands) { ?>
+        <?php /*if ($brands) { ?>
         <li class="brands dropdown">
           <a class="navbar-item" href="<?php echo document::href_ilink('brands'); ?>"><?php echo language::translate('title_brands', 'Brands'); ?></a>
         </li>
-        <?php } ?>
+        <?php }*/ ?>
       </ul>
 
       <div class="navbar-search" data-hint="<?php echo functions::escape_html(''); ?>">
@@ -34,6 +34,7 @@
         <div class="navbar-link dropdown">
           <?php echo functions::form_input_search('query', true, 'autocomplete="off" placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
           <ul class="dropdown-menu">
+            <li> Hello</li>
           </ul>
         </div>
         <?php echo functions::form_end(); ?>
@@ -80,7 +81,7 @@
 
       </ul>
 
-      <ul class="navbar-nav">
+      <ul class="navbar-nav" style="margin-inline-end: .5em;">
 
         <li class="shopping-cart<?php if (!empty($shopping_cart['items'])) echo ' filled'; ?> dropdown">
           <a class="navbar-item" href="#" data-toggle="dropdown">

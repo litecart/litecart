@@ -40,7 +40,9 @@
           $.each(results, function(i, result){
             $.each(result, function(i, row){
               $navbar_search.find('.dropdown-menu').append([
-                '<li><a href="'+ row.url +'">'+ row.name +'</a></li>',
+                '<li><a href="'+ row.url +'">',
+                '  <img src="'+ row.thumbnail +'" style="height: 1em;"> ' + row.name,
+                '</a></li>',
               ].join('\n'));
             });
           });

@@ -1,14 +1,12 @@
 <?php
 
   class mod_order_total extends abs_modules {
-    private $_shopping_cart;
 
-    public function __construct($shopping_cart) {
-      $this->_shopping_cart = $shopping_cart;
+    public function __construct() {
       $this->load();
     }
 
-    public function process() {
+    public function process($order) {
 
       $output = [];
 
@@ -19,12 +17,12 @@
           foreach ($rows as $row) {
 
             if (!empty($row['tax_class_id'])) {
-              $row['tax'] = tax::get_tax($row['amount'], $row['tax_class_id'], $this->_shopping_cart->data['customer']);
+              $row['tax'] = tax::get_tax($row['amount'], $row['tax_class_id'], $order->data['customer']);
             }
 
           // Round currency amount (Gets rid of hidden decimals)
-            $row['amount'] = currency::round($row['amount'], $this->_shopping_cart->data['currency_code']);
-            $row['tax'] = currency::round($row['tax'], $this->_shopping_cart->data['currency_code']);
+            $row['amount'] = currency::round($row['amount'], $order->data['currency_code']);
+            $row['tax'] = currency::round($row['tax'], $order->data['currency_code']);
 
             if (empty($row['amount']) && isset($row['value'])){
               $row['amount'] = $row['value']; // Backwards compatibility LiteCart <3.0

@@ -8,6 +8,9 @@
    */
 
   header('X-Robots-Tag: noindex');
+
+  if (settings::get('catalog_only_mode')) return;
+
   document::$title[] = language::translate('title_order_success', 'Order Success');
 
   breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::ilink('checkout/index'));

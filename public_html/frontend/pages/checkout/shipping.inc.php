@@ -9,6 +9,8 @@
 
   header('X-Robots-Tag: noindex');
 
+  if (settings::get('catalog_only_mode')) return;
+
   $shopping_cart = &session::$data['checkout']['shopping_cart'];
 
   if (empty($shopping_cart->data['items'])) return;

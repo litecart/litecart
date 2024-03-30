@@ -41,18 +41,14 @@ body {
 }
 
 #site-navigation {
-  background-color: var(--navigation-background-color);
-  //background-color: #8EC5FC;
-  //background-image: linear-gradient(62deg, #8EC5FC99 0%, #E0C3FC99 100%);
-
-  position: sticky;
-  top: -1px;
-  z-index: 999;
-  backdrop-filter: saturate(500%) blur(15px);
-  box-shadow: 0px -5px 15px 0px rgba(0, 0, 0, .15);
+  padding-bottom: 0;
 
   @media (min-width: (@media-breakpoint-md)) {
     backdrop-filter: saturate(500%) blur(15px);
+
+    .navbar {
+      background-color: var(--navigation-background-color);
+    }
 
     .categories .dropdown-menu {
       columns: 2;
@@ -95,7 +91,13 @@ body {
   .shopping-cart {
     transition: all 200ms ease-out;
     img {
+      margin: -.5em 0;
       max-height: 36px;
+      //vertical-align: middle;
+    }
+
+    .navbar-item {
+
     }
 
     .dropdown-menu {
@@ -163,10 +165,6 @@ body {
       order: initial;
     }
   }
-}
-
-#content {
-  grid-area: content;
 }
 
 #footer {

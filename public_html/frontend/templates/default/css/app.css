@@ -35,16 +35,14 @@ body main {
   padding: 0.25em 0.5em;
 }
 #site-navigation {
-  background-color: var(--navigation-background-color);
-  position: sticky;
-  top: -1px;
-  z-index: 999;
-  backdrop-filter: saturate(500%) blur(15px);
-  box-shadow: 0px -5px 15px 0px rgba(0, 0, 0, 0.15);
+  padding-bottom: 0;
 }
 @media (min-width: 768px) {
   #site-navigation {
     backdrop-filter: saturate(500%) blur(15px);
+  }
+  #site-navigation .navbar {
+    background-color: var(--navigation-background-color);
   }
   #site-navigation .categories .dropdown-menu {
     columns: 2;
@@ -83,6 +81,7 @@ body main {
   transition: all 200ms ease-out;
 }
 #site-navigation .shopping-cart img {
+  margin: -0.5em 0;
   max-height: 36px;
 }
 #site-navigation .shopping-cart .dropdown-menu {
@@ -140,9 +139,6 @@ body main {
 #site-navigation .shopping-cart .search {
   flex-grow: 1;
   order: initial;
-}
-#content {
-  grid-area: content;
 }
 #footer {
   background: var(--footer-background-color);

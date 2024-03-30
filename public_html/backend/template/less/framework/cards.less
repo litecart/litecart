@@ -10,13 +10,15 @@
 
   .card-header, .card-filter, .card-body, .card-footer,
   .panel-heading, .panel-filter, .panel-body, .panel-footer {
-    padding: 2em;
+    padding: 1em 2em;
   }
 
-  .card-filter, .card-body,
-  .panel-filter, .panel-body {
-    padding-top: 1em;
+  > *:first-child {
+    padding-top: 2em;
     padding-bottom: 1em;
+  }
+  > *:last-child {
+    padding-bottom: 2em;
   }
 
   .card-header,
@@ -34,13 +36,11 @@
 
   .card-body,
   .panel-body {
-    padding-bottom: 2em;
     background-color: var(--card-body-background-color);
   }
 
   .card-footer,
   .panel-footer {
-    padding-bottom: 2em;
     background-color: var(--card-footer-background-color);
     border-end-end-radius: var(--border-radius);
     border-end-start-radius: var(--border-radius);
@@ -71,7 +71,7 @@
   .card-filter,
   .panel-filter {
     display: flex;
-    gap: ~"calc(var(--gutter-size) / 2)";
+    gap: var(--gutter-size);
     > * {
       &.expandable {
         flex-grow: 1;

@@ -9,6 +9,8 @@
 
   header('X-Robots-Tag: noindex');
 
+  if (settings::get('catalog_only_mode')) return;
+
   $shopping_cart = &session::$data['checkout']['shopping_cart'];
 
   if (empty($shopping_cart->data['items'])) return;
@@ -26,12 +28,15 @@
   $terms_of_purchase_id = settings::get('terms_of_purchase');
 
   switch(true) {
+
     case ($terms_of_purchase_id && $privacy_policy_id):
       $box_checkout_summary->snippets['consent'] = language::translate('consent:privacy_policy_and_terms_of_purchase', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and <a href="%terms_of_purchase_link" target="_blank">Terms of Purchase</a> and I consent.');
       break;
+
     case ($privacy_policy_id):
       $box_checkout_summary->snippets['consent'] = language::translate('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.');
       break;
+
     case ($terms_of_purchase_id):
       $box_checkout_summary->snippets['consent'] = language::translate('consent:terms_of_purchase', 'I have read the <a href="%terms_of_purchase_link" target="_blank">Terms of Purchase</a> and I consent.');
       break;

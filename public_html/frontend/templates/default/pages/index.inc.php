@@ -2,8 +2,11 @@
   <div id="content">
     {{notices}}
 
-    <?php include 'app://frontend/partials/box_slides.inc.php'; ?>
-
+    <?php if ($leaderboard = functions::draw_banner('leaderboard')) { ?>
+    <div id="box-leaderboard" style="margin-bottom: 2em;">
+      <?php echo $leaderboard; ?>
+    </div>
+    <?php } ?>
 
     <div class="row layout">
       <div class="col-md-4">

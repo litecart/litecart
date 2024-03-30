@@ -2,11 +2,17 @@
 
 .carousel {
   position: relative;
+  box-shadow: 0 10px 20px rgb(0 0 0 / 15%);
+  margin-bottom: var(--gutter-size);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+
   .carousel-control,
   .carousel-indicators {
     opacity: 0;
     transition: opacity 200ms;
   }
+
   &:hover {
     .carousel-control{
       opacity: 0.5;
@@ -22,6 +28,7 @@
   width: 100%;
   overflow: hidden;
   line-height: 0;
+
   > .item {
     position: relative;
     display: none;

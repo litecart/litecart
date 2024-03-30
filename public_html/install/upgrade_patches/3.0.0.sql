@@ -14,24 +14,60 @@ CREATE TABLE `lc_banners` (
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-);
+) ENGINE=InnoDB;
+-- --------------------------------------------------------
+CREATE TABLE `lc_customers_addresses` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `customer_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `type` ENUM('','business','individual') NOT NULL DEFAULT '',
+  `tax_id` VARCHAR(32) NOT NULL DEFAULT '',
+  `company` VARCHAR(64) NOT NULL DEFAULT '',
+  `firstname` VARCHAR(64) NOT NULL DEFAULT '',
+  `lastname` VARCHAR(64) NOT NULL DEFAULT '',
+  `address1` VARCHAR(64) NOT NULL DEFAULT '',
+  `address2` VARCHAR(64) NOT NULL DEFAULT '',
+  `postcode` VARCHAR(8) NOT NULL DEFAULT '',
+  `city` VARCHAR(32) NOT NULL DEFAULT '',
+  `country_code` CHAR(2) NOT NULL DEFAULT '',
+  `zone_code` VARCHAR(8) NOT NULL DEFAULT '',
+  `phone` VARCHAR(24) NOT NULL DEFAULT '',
+  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `customer_id` (`customer_id`) USING BTREE
+) ENGINE=InnoDB;
+-- --------------------------------------------------------
+CREATE TABLE `lc_products_references` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `product_id` INT UNSIGNED NOT NULL,
+  `source_type` VARCHAR(32) NOT NULL DEFAULT '',
+  `source` VARCHAR(32) NOT NULL DEFAULT '',
+  `type` VARCHAR(32) NOT NULL DEFAULT '',
+  `code` VARCHAR(32) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  INDEX `product_id` (`product_id`),
+  INDEX `type` (`type`),
+  INDEX `source` (`source`),
+  INDEX `source_type` (`source_type`),
+  UNIQUE INDEX `code` (`product_id`, `code`, `type`, `source`, `source_type`)
+) ENGINE=InnoDB;
 -- --------------------------------------------------------
 CREATE TABLE `lc_shopping_carts` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `uid` CHAR(13) NOT NULL DEFAULT '',
   `customer_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `customer_email` VARCHAR(128) NOT NULL DEFAULT '',
-  `customer_company` VARCHAR(64) NOT NULL DEFAULT '',
-  `customer_firstname` VARCHAR(64) NOT NULL DEFAULT '',
-  `customer_lastname` VARCHAR(64) NOT NULL DEFAULT '',
-  `customer_tax_id` VARCHAR(32) NOT NULL DEFAULT '',
-  `customer_address1` VARCHAR(64) NOT NULL DEFAULT '',
-  `customer_address2` VARCHAR(64) NOT NULL DEFAULT '',
-  `customer_city` VARCHAR(32) NOT NULL DEFAULT '',
-  `customer_postcode` VARCHAR(16) NOT NULL DEFAULT '',
-  `customer_country_code` CHAR(2) NOT NULL DEFAULT '',
-  `customer_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
-  `customer_phone` VARCHAR(24) NOT NULL DEFAULT '',
+  `billing_company` VARCHAR(64) NOT NULL DEFAULT '',
+  `billing_firstname` VARCHAR(64) NOT NULL DEFAULT '',
+  `billing_lastname` VARCHAR(64) NOT NULL DEFAULT '',
+  `billing_tax_id` VARCHAR(32) NOT NULL DEFAULT '',
+  `billing_address1` VARCHAR(64) NOT NULL DEFAULT '',
+  `billing_address2` VARCHAR(64) NOT NULL DEFAULT '',
+  `billing_city` VARCHAR(32) NOT NULL DEFAULT '',
+  `billing_postcode` VARCHAR(16) NOT NULL DEFAULT '',
+  `billing_country_code` CHAR(2) NOT NULL DEFAULT '',
+  `billing_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
+  `billing_phone` VARCHAR(24) NOT NULL DEFAULT '',
   `different_shipping_address` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `shipping_company` VARCHAR(64) NOT NULL DEFAULT '',
   `shipping_firstname` VARCHAR(64) NOT NULL DEFAULT '',
@@ -61,38 +97,11 @@ CREATE TABLE `lc_shopping_carts` (
   `subtotal_tax` FLOAT(11,4) NOT NULL DEFAULT '0',
   `client_ip` VARCHAR(39) NOT NULL DEFAULT '',
   `user_agent` VARCHAR(255) NOT NULL DEFAULT '',
-  `date_updated` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
-  `date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `customer_id` (`customer_id`)
-);
--- --------------------------------------------------------
-CREATE TABLE `lc_products_to_stock_items` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `stock_item_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-  `price_adjust` FLOAT(11,4) NOT NULL DEFAULT '0',
-  `price_operator` VARCHAR(1) NOT NULL DEFAULT '',
-  `priority` TINYINT(2) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `stock_option` (`product_id`, `stock_item_id`),
-  INDEX `product_id` (`product_id`)
-);
--- --------------------------------------------------------
-CREATE TABLE `lc_stock_items_references` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `stock_item_id` INT UNSIGNED NOT NULL,
-  `source_type` VARCHAR(32) NOT NULL DEFAULT '',
-  `source` VARCHAR(32) NOT NULL DEFAULT '',
-  `type` VARCHAR(32) NOT NULL DEFAULT '',
-  `code` VARCHAR(32) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  INDEX `stock_item_id` (`stock_item_id`),
-  INDEX `type` (`type`),
-  INDEX `source` (`source`),
-  INDEX `source_type` (`source_type`),
-  UNIQUE INDEX `code` (`code`, `type`, `source`, `source_type`, `stock_item_id`)
-);
+) ENGINE=InnoDB;
 -- --------------------------------------------------------
 CREATE TABLE `lc_stock_transactions` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -101,7 +110,7 @@ CREATE TABLE `lc_stock_transactions` (
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-);
+) ENGINE=InnoDB;
 -- --------------------------------------------------------
 CREATE TABLE `lc_stock_transactions_contents` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -109,12 +118,9 @@ CREATE TABLE `lc_stock_transactions_contents` (
   `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `quantity_adjustment` FLOAT(11,4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-);
+) ENGINE=InnoDB;
 -- --------------------------------------------------------
 RENAME TABLE `lc_cart_items` TO `lc_shopping_carts_items`;
--- --------------------------------------------------------
-ALTER TABLE `lc_categories_info`
-ADD COLUMN `synonyms` VARCHAR(256) NOT NULL DEFAULT '' AFTER `meta_description`;
 -- --------------------------------------------------------
 RENAME TABLE `lc_manufacturers` TO `lc_brands`;
 -- --------------------------------------------------------
@@ -122,7 +128,7 @@ UPDATE `lc_brands` SET image = REPLACE(image, 'manufacturers/', 'brands/');
 -- --------------------------------------------------------
 RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
 -- --------------------------------------------------------
-RENAME TABLE `lc_products_options` TO `lc_products_configurations`;
+RENAME TABLE `lc_products_options` TO `lc_products_customizations`;
 -- --------------------------------------------------------
 RENAME TABLE `lc_products_options_values` TO `lc_products_customizations_values`;
 -- --------------------------------------------------------
@@ -153,7 +159,14 @@ ALTER TABLE `lc_categories_images`
 CHANGE COLUMN `category_id` `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
 -- ---------------------------------------------------------
 ALTER TABLE `lc_categories_info`
-CHANGE COLUMN `category_id` `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
+CHANGE COLUMN `category_id` `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
+ADD COLUMN `synonyms` VARCHAR(256) NOT NULL DEFAULT '' AFTER `description`,
+ALTER TABLE `lc_categories_info`
+ADD FULLTEXT INDEX `name` (`name`),
+ADD FULLTEXT INDEX `short_description` (`short_description`),
+ADD FULLTEXT INDEX `description` (`description`),
+ADD FULLTEXT INDEX `synonyms` (`synonyms`);
+
 -- ---------------------------------------------------------
 ALTER TABLE `lc_countries`
 CHANGE COLUMN `postcode_format` `postcode_format` VARCHAR(255) NOT NULL DEFAULT '',
@@ -164,7 +177,19 @@ ADD INDEX `code` (`code`),
 ADD INDEX `number` (`number`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_customers`
-CHANGE COLUMN `country_code` `country_code` CHAR(2) NOT NULL DEFAULT '' ,
+ADD COLUMN `default_billing_address_id` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `shipping_phone`,
+ADD COLUMN `default_shipping_address_id` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `default_billing_address_id`,
+CHANGE COLUMN `tax_id` `billing_tax_id` VARCHAR(32) NOT NULL DEFAULT '' AFTER `password_hash`,
+CHANGE COLUMN `company` `billing_company` VARCHAR(64) NOT NULL DEFAULT '' AFTER `billing_tax_id`,
+CHANGE COLUMN `firstname` `billing_firstname` VARCHAR(64) NOT NULL DEFAULT '' AFTER `billing_company`,
+CHANGE COLUMN `lastname` `billing_lastname` VARCHAR(64) NOT NULL DEFAULT '' AFTER `billing_firstname`,
+CHANGE COLUMN `address1` `billing_address1` VARCHAR(64) NOT NULL DEFAULT '' AFTER `billing_lastname`,
+CHANGE COLUMN `address2` `billing_address2` VARCHAR(64) NOT NULL DEFAULT '' AFTER `billing_address1`,
+CHANGE COLUMN `postcode` `billing_postcode` VARCHAR(8) NOT NULL DEFAULT '' AFTER `billing_address2`,
+CHANGE COLUMN `city` `billing_city` VARCHAR(32) NOT NULL DEFAULT '' AFTER `billing_postcode`,
+CHANGE COLUMN `country_code` `billing_country_code` VARCHAR(4) NOT NULL DEFAULT '' AFTER `billing_city`,
+CHANGE COLUMN `zone_code` `billing_zone_code` VARCHAR(8) NOT NULL DEFAULT '' AFTER `billing_country_code`,
+CHANGE COLUMN `phone` `billing_phone` VARCHAR(24) NOT NULL DEFAULT '' AFTER `billing_zone_code`;
 CHANGE COLUMN `shipping_country_code` `shipping_country_code` CHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
@@ -174,6 +199,10 @@ ALTER TABLE `lc_delivery_statuses_info`
 CHANGE COLUMN `delivery_status_id` `delivery_status_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_emails`
+ADD COLUMN `ip_address` VARCHAR(39) NOT NULL DEFAULT '' AFTER `multiparts`,
+ADD COLUMN `hostname` VARCHAR(128) NOT NULL DEFAULT '' AFTER `ip_address`,
+ADD COLUMN `user_agent` VARCHAR(256) NOT NULL DEFAULT '' AFTER `hostname`,
+ADD INDEX `status` (`status`),
 DROP COLUMN `charset`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_languages`
@@ -183,11 +212,21 @@ ADD INDEX `code2` (`code2`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders`
 DROP COLUMN `uid`,
+CHANGE COLUMN `customer_tax_id` `billing_tax_id` VARCHAR(32) NOT NULL DEFAULT '' AFTER `customer_email`,
+CHANGE COLUMN `customer_company` `billing_company` VARCHAR(64) NOT NULL DEFAULT '' AFTER `billing_tax_id`,
+CHANGE COLUMN `customer_firstname` `billing_firstname` VARCHAR(64) NOT NULL DEFAULT '' AFTER `billing_company`,
+CHANGE COLUMN `customer_lastname` `billing_lastname` VARCHAR(64) NOT NULL DEFAULT '' AFTER `billing_firstname`,
+CHANGE COLUMN `customer_address1` `billing_address1` VARCHAR(64) NOT NULL DEFAULT '' AFTER `billing_lastname`,
+CHANGE COLUMN `customer_address2` `billing_address2` VARCHAR(64) NOT NULL DEFAULT '' AFTER `billing_address1`,
+CHANGE COLUMN `customer_city` `billing_city` VARCHAR(32) NOT NULL DEFAULT '' AFTER `billing_address2`,
+CHANGE COLUMN `customer_postcode` `billing_postcode` VARCHAR(8) NOT NULL DEFAULT '' AFTER `billing_city`,
+CHANGE COLUMN `customer_country_code` `billing_country_code` VARCHAR(2) NOT NULL DEFAULT '' AFTER `billing_postcode`,
+CHANGE COLUMN `customer_zone_code` `billing_zone_code` VARCHAR(8) NOT NULL DEFAULT '' AFTER `billing_country_code`,
+CHANGE COLUMN `customer_phone` `billing_phone` VARCHAR(24) NOT NULL DEFAULT '' AFTER `billing_zone_code`;
+CHANGE COLUMN `shipping_country_code` `shipping_country_code` CHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `payment_due` `total` FLOAT(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `tax_total` `total_tax` FLOAT(11,4) NOT NULL DEFAULT '0',
-CHANGE COLUMN `customer_country_code` `customer_country_code` CHAR(2) NOT NULL DEFAULT '',
-CHANGE COLUMN `shipping_country_code` `shipping_country_code` CHAR(2) NOT NULL DEFAULT '',
 ADD COLUMN `no` VARCHAR(16) NOT NULL DEFAULT '' AFTER `id`,
 ADD COLUMN `subtotal` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `display_prices_including_tax`,
 ADD COLUMN `subtotal_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `subtotal`,
@@ -217,7 +256,7 @@ CHANGE COLUMN `dim_z` `height` FLOAT(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `options` `configuration` VARCHAR(1024) NOT NULL DEFAULT '',
 CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT '',
-ADD COLUMN `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `product_id`,
+ADD COLUMN `stock_option_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `product_id`,
 ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `tax`,
 ADD COLUMN `discount_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount`,
 ADD COLUMN `sum` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount_tax`,
@@ -225,7 +264,7 @@ ADD COLUMN `sum_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `sum`,
 ADD COLUMN `downloads` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `length_unit`,
 ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `downloads`,
 ADD INDEX `product_id` (`product_id`),
-ADD INDEX `stock_item_id` (`stock_item_id`);
+ADD INDEX `stock_option_id` (`stock_option_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_totals`
 CHANGE COLUMN `order_id` `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
@@ -242,14 +281,19 @@ ALTER TABLE `lc_pages_info`
 CHANGE COLUMN `page_id` `page_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products`
+ADD COLUMN `type` ENUM('virtual','physical','digital','variable','bundle') NOT NULL DEFAULT 'virtual' AFTER `id`,
 ADD COLUMN `synonyms` VARCHAR(256) NOT NULL DEFAULT '' AFTER `keywords`,
 ADD COLUMN `autofill_technical_data` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `image`,
+CHANGE COLUMN `keywords` `keywords` VARCHAR(256) NOT NULL DEFAULT '' AFTER `taric`,
 CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `dim_x` `length` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_y` `width` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_z` `height` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
+ADD COLUMN `file` VARCHAR(128) NOT NULL DEFAULT '' AFTER `image`,
+ADD COLUMN `filename` VARCHAR(128) NOT NULL DEFAULT '' AFTER `file`,
+ADD COLUMN `mime_type` VARCHAR(32) NOT NULL DEFAULT '' AFTER `filename`,
 DROP COLUMN `upc`,
 DROP INDEX `manufacturer_id`,
 ADD INDEX `type` (`type`),
@@ -271,32 +315,24 @@ CHANGE COLUMN `checksum` `checksum` CHAR(32) NOT NULL DEFAULT '';
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_info`
 CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products_stock_options`
+CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT FIRST,
 CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `combination` `attributes` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `sku` `sku` VARCHAR(32) NOT NULL DEFAULT '',
-ADD COLUMN `gtin` VARCHAR(32) NOT NULL DEFAULT '' AFTER `sku`,
-ADD COLUMN `mpn` VARCHAR(32) NOT NULL DEFAULT '' AFTER `gtin`,
-ADD COLUMN `taric` VARCHAR(32) NOT NULL DEFAULT '' AFTER `mpn`,
-ADD COLUMN `image` VARCHAR(128) NOT NULL DEFAULT '' AFTER `taric`,
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `dim_x` `length` FLOAT(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_y` `width` FLOAT(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_z` `height` FLOAT(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 ADD COLUMN `purchase_price` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `length_unit`,
-ADD COLUMN `purchase_price_currency_code` CHAR(3) NOT NULL DEFAULT '' AFTER `purchase_price`,
-ADD COLUMN `quantity_unit_id` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `quantity`,
-ADD COLUMN `reorder_point` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `quantity_unit_id`,
-ADD COLUMN `backordered` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `reorder_point`,
-ADD COLUMN `file` VARCHAR(128) NOT NULL DEFAULT '' AFTER `backordered`,
-ADD COLUMN `filename` VARCHAR(128) NOT NULL DEFAULT '' AFTER `file`,
-ADD COLUMN `mime_type` VARCHAR(32) NOT NULL DEFAULT '' AFTER `filename`,
-ADD COLUMN `downloads` INT NOT NULL DEFAULT '0' AFTER `mime_type`,
+ADD COLUMN `backordered` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `quantity`,
 DROP INDEX `product_option_stock`,
+ADD UNIQUE KEY `product_stock_option` (`product_id`, `attributes`),
 ADD INDEX `sku` (`sku`),
 ADD INDEX `gtin` (`gtin`),
-ADD INDEX `mpn` (`mpn`),
-ADD FULLTEXT INDEX `name` (`name`);
+ADD INDEX `mpn` (`mpn`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_to_categories`
 CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' FIRST,
@@ -316,9 +352,9 @@ ADD INDEX `group_key` (`group_key`),
 DROP INDEX `setting_group_key`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_shopping_carts_items`
+ADD COLUMN `stock_option_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `product_id`,
 ADD COLUMN `cart_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `customer_id`,
 CHANGE COLUMN `data` `userdata` VARCHAR() NOT NULL DEFAULT '' AFTER `name`,
-ADD COLUMN `type` ENUM('product','stock_item','custom') NOT NULL DEFAULT 'product' AFTER `cart_id`,
 ADD COLUMN `code` VARCHAR(32) NOT NULL DEFAULT '' BEFORE `sku`,
 ADD COLUMN `configuration` VARCHAR(512) NOT NULL DEFAULT '0',
 ADD COLUMN `final_price` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `price`,
@@ -359,11 +395,39 @@ INSERT IGNORE INTO `lc_banners`
 (`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `date_valid_from`, `date_valid_to`)
 SELECT id, status, name, languages, '', replace(image, 'slides/', 'banners/'), '', 'leaderboard', date_valid_from, date_valid_to FROM `lc_slides`;
 -- --------------------------------------------------------
+INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
+(0, 'Left', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Left</div>', '', '', 'left', 0, 0, NULL, NULL, NOW(), NOW()),
+(0, 'Middle', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Middle</div>', '', '', 'middle', 0, 0, NULL, NULL, NOW(), NOW()),
+(0, 'Right', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: seashell;">Right</div>', '', '', 'right', 0, 0, NULL, NULL, NOW(), NOW());
+-- --------------------------------------------------------
+INSERT IGNORE INTO `lc_customers_addresses`
+(customer_id, tax_id, company, firstname, lastname, address1, address2, postcode, city, country_code, zone_code, phone)
+SELECT DISTINCT id, billing_tax_id, billing_company, billing_firstname, billing_lastname, billing_address1, billing_address2, billing_postcode, billing_city, billing_country_code, billing_zone_code, billing_phone
+FROM `lc_customers`
+ORDER BY id ASC;
+-- --------------------------------------------------------
+INSERT IGNORE INTO `lc_customers_addresses`
+(customer_id, tax_id, company, firstname, lastname, address1, address2, postcode, city, country_code, zone_code, phone)
+SELECT DISTINCT id, shipping_tax_id, shipping_company, shipping_firstname, shipping_lastname, shipping_address1, shipping_address2, shipping_postcode, shipping_city, shipping_country_code, shipping_zone_code, shipping_phone
+FROM `lc_customers`
+WHERE different_shipping_address = 1
+ORDER BY id ASC;
+-- --------------------------------------------------------
+INSERT IGNORE INTO `lc_stock_items`
+(product_id, sku, mpn, gtin, taric, quantity)
+SELECT id, sku, mpn, gtin, taric, quantity
+FROM `lc_products`
+WHERE id NOT IN (
+  SELECT DISTINCT product_id FROM `lc_stock_items`
+);
+-- --------------------------------------------------------
 UPDATE `lc_modules` SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit') WHERE `module_id` = 'sm_zone_weight' LIMIT 1;
 -- --------------------------------------------------------
 DELETE FROM `lc_modules` WHERE `module_id` = 'ot_subtotal' LIMIT 1;
 -- --------------------------------------------------------
 UPDATE `lc_orders` SET `no` = id;
+-- --------------------------------------------------------
+UPDATE `lc_products` SET `type` = 'physical';
 -- --------------------------------------------------------
 UPDATE `lc_pages` SET `dock` = REPLACE('customer_service', 'information');
 -- --------------------------------------------------------
@@ -441,11 +505,20 @@ LEFT JOIN (
 SET o.discount = 0 - if(ot.discount, ot.discount, 0),
 o.discount_tax = 0 - if(ot.discount_tax, ot.discount_tax, 0);
 -- --------------------------------------------------------
+UPDATE `lc_orders_items` oi
+LEFT JOIN `lc_orders` o ON (o.id = oi.invoice_id)
+LEFT JOIN `lc_products` p ON (p.id = oi.product_id)
+SET oi.tax_class_id = p.tax_class_id,
+  oi.discount = oi.price * (o.discount/o.total),
+  oi.discount_tax = oi.price * (o.discount_tax/o.total),
+  oi.`sum` = oi.price - (oi.price * (o.discount/o.total)),
+  oi.sum_tax = oi.tax - (oi.tax * (o.discount/o.total));
+-- --------------------------------------------------------
 DELETE FROM `lc_orders_totals` WHERE module_id = 'ot_subtotal';
 -- --------------------------------------------------------
 UPDATE `lc_orders_items` oi
-LEFT JOIN `lc_stock_items` si ON (si.product_id = oi.product_id AND si.attributes = oi.attributes)
-SET oi.stock_item_id = si.id;
+LEFT JOIN `lc_products_stock_options` pso ON (pso.product_id = oi.product_id AND pso.attributes = oi.attributes)
+SET oi.stock_option_id = pso.id;
 -- --------------------------------------------------------
 UPDATE `lc_orders_items`
 SET sum = price * quantity,
@@ -454,9 +527,12 @@ sum_tax = tax * quantity;
 ALTER TABLE `lc_orders_items`
 DROP COLUMN `tax`;
 -- --------------------------------------------------------
-INSERT INTO `lc_products_to_stock_items`
-(product_id, stock_item_id)
-SELECT product_id, id FROM `lc_stock_items`;
+ALTER TABLE `lc_products`
+DROP COLUMN `sku`,
+DROP COLUMN `gtin`,
+DROP COLUMN `mpn`,
+DROP COLUMN `taric`,
+DROP COLUMN `quantity`;
 -- --------------------------------------------------------
 DELETE FROM `lc_settings` WHERE `key` IN ('store_template_admin', 'store_template_admin_settings', 'round_amounts', 'cache_system_breakpoint', 'jobs_interval', 'jobs_last_push');
 -- --------------------------------------------------------
@@ -471,42 +547,32 @@ UPDATE `lc_settings`
 SET `value` = 'https://'
 WHERE `value` IN ('?app=settings&doc=advanced&action=edit&key=control_panel_link', '?app=settings&doc=advanced&action=edit&key=database_admin_link', '?app=settings&doc=advanced&action=edit&key=webmail_link');
 -- --------------------------------------------------------
-UPDATE `lc_stock_items` si
-LEFT JOIN `lc_products` p on (p.id = si.product_id) SET
-si.gtin = if(si.gtin != '', si.gtin, p.gtin),
-si.mpn = if(si.mpn != '', si.mpn, p.mpn),
-si.taric = if(si.taric != '', si.taric, p.taric),
-si.weight = if (si.weight > 0, si.weight, p.weight),
-si.weight_unit = if(si.weight_unit != '', si.weight_unit, p.weight_unit),
-si.length = if (si.length > 0, si.length, p.length),
-si.width = if (si.width > 0, si.width, p.width),
-si.height = if (si.height > 0, si.height, p.height),
-si.length_unit = if(si.length_unit != '', si.length_unit, p.length_unit),
-si.purchase_price = p.purchase_price,
-si.purchase_price_currency_code = p.purchase_price_currency_code,
-si.quantity_unit_id = if(si.quantity_unit_id > 0, si.quantity_unit_id, p.quantity_unit_id);
--- --------------------------------------------------------
 INSERT INTO `lc_stock_transactions` (id, name, description)
 VALUES (1, 'Initial Stock Transaction', 'This is an initial system generated stock transaction to deposit stock for all sold items and items in stock. We need this for future inconcistency checks.');
 -- --------------------------------------------------------
 INSERT INTO `lc_stock_transactions_contents`
-(transaction_id, stock_item_id, quantity_adjustment)
-SELECT transaction_id, stock_item_id, quantity_adjustment FROM (
-  SELECT '1' AS transaction_id, stock_item_id, SUM(quantity) as quantity_adjustment FROM (
-    SELECT si.id AS stock_item_id, si.quantity FROM `lc_stock_items` si
-    UNION
-    SELECT oi.stock_item_id, oi.quantity FROM `lc_orders_items` oi
+(transaction_id, product_id, stock_option_id, quantity_adjustment)
+SELECT '1' AS transaction_id, product_id, stock_option_id, quantity_adjustment FROM (
+  SELECT product_id, stock_option_id, SUM(quantity) as quantity_adjustment FROM (
+
+    SELECT pso.product_id, pso.id AS stock_option_id, pso.quantity
+    FROM `lc_products_stock_options` pso
+
+    UNION SELECT oi.product_id, oi.stock_option_id, oi.quantity FROM `lc_orders_items` oi
    WHERE oi.order_id IN (
       SELECT id FROM `lc_orders` o
       WHERE o.order_status_id IN (
         SELECT id FROM `lc_order_statuses` os
-        WHERE os.is_sale
+        WHERE os.stock_action = 'withdraw'
       )
     )
-  ) x
-  GROUP BY x.stock_item_id
-  ORDER BY x.stock_item_id
-) y;
+
+  )
+  GROUP BY product_id, stock_option_id
+  ORDER BY product_id, stock_option_id
+);
+-- --------------------------------------------------------
+/* Cleanup before foreign keys */
 DELETE FROM `lc_attribute_groups_info` WHERE group_id NOT IN (SELECT id from `lc_attribute_groups`) OR language_code NOT IN (SELECT code from `lc_languages`);
 -- --------------------------------------------------------
 DELETE FROM `lc_attribute_values` WHERE group_id NOT IN (SELECT id from `lc_attribute_groups`);
@@ -551,6 +617,7 @@ DELETE FROM `lc_tax_rates` WHERE tax_class_id NOT IN (SELECT id from `lc_tax_cla
 -- --------------------------------------------------------
 DELETE FROM `lc_zones_to_geo_zones` WHERE geo_zone_id NOT IN (SELECT id from `lc_geo_zones`) OR country_code NOT IN (SELECT iso_code_2 from `lc_countries`);
 -- --------------------------------------------------------
+/* Add foreign keys */
 ALTER TABLE `lc_attribute_groups_info`
 ADD CONSTRAINT `attribute_group_info_to_attribute_group` FOREIGN KEY (`group_id`) REFERENCES `lc_attribute_groups` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
 ADD CONSTRAINT `attribute_group_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE NO ACTION;
@@ -641,6 +708,19 @@ ADD CONSTRAINT `tax_rate_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc
 ALTER TABLE `lc_zones_to_geo_zones`
 ADD CONSTRAINT `zone_entry_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc_geo_zones` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
 ADD CONSTRAINT `zone_entry_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_customers`
+DROP COLUMN `different_shipping_address`,
+DROP COLUMN `shipping_company`,
+DROP COLUMN `shipping_firstname`,
+DROP COLUMN `shipping_lastname`,
+DROP COLUMN `shipping_address1`,
+DROP COLUMN `shipping_address2`,
+DROP COLUMN `shipping_city`,
+DROP COLUMN `shipping_postcode`,
+DROP COLUMN `shipping_country_code`,
+DROP COLUMN `shipping_zone_code`,
+DROP COLUMN `shipping_phone`;
 -- --------------------------------------------------------
 DROP TABLE `lc_slides`;
 DROP TABLE `lc_slides_info`;

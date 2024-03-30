@@ -311,7 +311,7 @@
   let clickHandler = function (e) {
     let href
     let $this   = $(this)
-    let $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) // strip for ie7
+    let $target = $($this.attr('data-target') || $this.closest('.carousel'))
     if (!$target.hasClass('carousel')) return
     let options = $.extend({}, $target.data(), $this.data())
     let slideIndex = $this.attr('data-slide-to')
@@ -867,7 +867,9 @@
           $.each(results, function(i, result){
             $.each(result, function(i, row){
               $navbar_search.find('.dropdown-menu').append([
-                '<li><a href="'+ row.url +'">'+ row.name +'</a></li>',
+                '<li><a href="'+ row.url +'">',
+                '  <img src="'+ row.thumbnail +'" style="height: 1em;"> ' + row.name,
+                '</a></li>',
               ].join('\n'));
             });
           });

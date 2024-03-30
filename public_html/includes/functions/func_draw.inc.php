@@ -111,7 +111,7 @@
 
         if ($banner['link']) {
           $banner['html'] = implode(PHP_EOL, [
-            '<a href="$target_url" target="_blank">',
+            '<a href="$target_url">',
             '  ' . $banner['html'],
             '</a>',
           ]);

@@ -464,6 +464,10 @@ hr {
 /* Carousel - Bootstrap Compatible */
 .carousel {
   position: relative;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  margin-bottom: var(--gutter-size);
+  border-radius: var(--border-radius);
+  overflow: hidden;
 }
 .carousel .carousel-control,
 .carousel .carousel-indicators {
@@ -1572,7 +1576,7 @@ fieldset[disabled] > :not(legend),
 }
 img.responsive {
   display: block;
-  max-width: 100%;
+  width: 100%;
   margin-inline-end: auto;
   margin-inline-start: auto;
   object-fit: scale-down;
@@ -1752,7 +1756,7 @@ ul.list-inline li {
 }
 .navbar .navbar-brand a {
   display: inline-flex;
-  padding: 0.75em 1em;
+  padding: 0.5em 1em;
   font-weight: bold;
   text-decoration: none;
 }
@@ -1762,7 +1766,7 @@ ul.list-inline li {
 .navbar .navbar-brand img {
   display: block;
   max-width: 250px;
-  max-height: 60px;
+  max-height: 50px;
   padding: 0.25em;
 }
 @media (min-width: 768px) {
@@ -1848,9 +1852,6 @@ ul.list-inline li {
   padding: 0;
   list-style: none;
   width: 100%;
-}
-.navbar .navbar-nav > li > a {
-  font-weight: 500;
 }
 .navbar .navbar-nav > li.open > .navbar-item {
   background-color: rgba(0, 0, 0, 0.15) !important;
@@ -1958,7 +1959,6 @@ ul.list-inline li {
 @media (min-width: 768px) {
   .navbar {
     flex-direction: row;
-    gap: 2em;
   }
   .navbar .navbar-toggle {
     display: none;

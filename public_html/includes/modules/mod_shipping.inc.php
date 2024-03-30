@@ -99,6 +99,7 @@
             'module_id' => $module->id,
             'option_id' => $option['id'],
             'icon' => $option['icon'],
+            'vendor' => fallback($option['vendor'], ''),
             'name' => $option['name'],
             'description' => fallback($option['description'], ''),
             'fields' => fallback($option['fields']),
@@ -120,10 +121,10 @@
       return $this->_cache[$checksum]['options'];
     }
 
-    public function cheapest() {
+    public function cheapest($order) {
 
       if (empty($this->_options)) {
-        $options = $this->options($this->_shopping_cart->data['items'], $this->_shopping_cart->data['currency_code'], $this->_shopping_cart->data['customer']);
+        $options = $this->options($order->data['items'], $order->data['currency_code'], $order->data['customer']);
       }
 
       if (empty($options)) return false;

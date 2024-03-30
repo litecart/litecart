@@ -18,18 +18,18 @@
     <?php include 'app://frontend/partials/site_navigation.inc.php'; ?>
   </header>
 
-  <main>
-    {{content}}
-  </main>
+  {{content}}
 
   <footer>
     <?php include 'app://frontend/partials/site_footer.inc.php'; ?>
   </footer>
 </div>
 
+<?php if (document::$settings['scroll_up']) { ?>
 <a id="scroll-up" class="hidden-print" href="#">
   <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>
 </a>
+<?php } ?>
 
 <?php include 'app://frontend/templates/'.settings::get('template').'/partials/site_cookie_notice.inc.php'; ?>
 
