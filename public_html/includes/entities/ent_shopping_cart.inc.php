@@ -158,17 +158,17 @@
         set uid = '". database::input($this->data['uid']) ."',
           customer_id = ". (int)$this->data['customer']['id'] .",
           customer_email = '". database::input($this->data['customer']['email']) ."',
-          customer_tax_id = '". database::input($this->data['customer']['tax_id']) ."',
-          customer_company = '". database::input($this->data['customer']['company']) ."',
-          customer_firstname = '". database::input($this->data['customer']['firstname']) ."',
-          customer_lastname = '". database::input($this->data['customer']['lastname']) ."',
-          customer_address1 = '". database::input($this->data['customer']['address1']) ."',
-          customer_address2 = '". database::input($this->data['customer']['address2']) ."',
-          customer_city = '". database::input($this->data['customer']['city']) ."',
-          customer_postcode = '". database::input($this->data['customer']['postcode']) ."',
-          customer_country_code = '". database::input($this->data['customer']['country_code']) ."',
-          customer_zone_code = '". database::input($this->data['customer']['zone_code']) ."',
-          customer_phone = '". database::input($this->data['customer']['phone']) ."',
+          billing_tax_id = '". database::input($this->data['billing_address']['tax_id']) ."',
+          billing_company = '". database::input($this->data['billing_address']['company']) ."',
+          billing_firstname = '". database::input($this->data['billing_address']['firstname']) ."',
+          billing_lastname = '". database::input($this->data['billing_address']['lastname']) ."',
+          billing_address1 = '". database::input($this->data['billing_address']['address1']) ."',
+          billing_address2 = '". database::input($this->data['billing_address']['address2']) ."',
+          billing_city = '". database::input($this->data['billing_address']['city']) ."',
+          billing_postcode = '". database::input($this->data['billing_address']['postcode']) ."',
+          billing_country_code = '". database::input($this->data['billing_address']['country_code']) ."',
+          billing_zone_code = '". database::input($this->data['billing_address']['zone_code']) ."',
+          billing_phone = '". database::input($this->data['billing_address']['phone']) ."',
           shipping_company = '". database::input($this->data['shipping_address']['company']) ."',
           shipping_firstname = '". database::input($this->data['shipping_address']['firstname']) ."',
           shipping_lastname = '". database::input($this->data['shipping_address']['lastname']) ."',
@@ -469,53 +469,53 @@
         }
       }
 
-    // Validate customer details
+    // Validate billing details
       try {
 
-        if (empty($this->data['customer']['firstname'])) {
+        if (empty($this->data['billing_address']['firstname'])) {
           throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
         }
 
-        if (empty($this->data['customer']['lastname'])) {
+        if (empty($this->data['billing_address']['lastname'])) {
           throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
         }
 
 
-        if (empty($this->data['customer']['address1'])) {
+        if (empty($this->data['billing_address']['address1'])) {
           throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
         }
 
-        if (empty($this->data['customer']['city'])) {
+        if (empty($this->data['billing_address']['city'])) {
           throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
         }
 
-        if (empty($this->data['customer']['country_code'])) {
+        if (empty($this->data['billing_address']['country_code'])) {
           throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
         }
 
-        if (empty($this->data['customer']['email'])) {
+        if (empty($this->data['billing_address']['email'])) {
           throw new Exception(language::translate('error_missing_email', 'You must enter an email address.'));
         }
 
-        if (empty($this->data['customer']['phone'])) {
+        if (empty($this->data['billing_address']['phone'])) {
           throw new Exception(language::translate('error_missing_phone', 'You must enter a phone number.'));
         }
 
-        if (!functions::validate_email($this->data['customer']['email'])){
+        if (!functions::validate_email($this->data['billing_address']['email'])){
           throw new Exception(language::translate('error_invalid_email_address', 'Invalid email address'));
         }
 
-        if (reference::country($this->data['customer']['country_code'])->tax_id_format) {
-          if (!empty($this->data['customer']['tax_id'])) {
-            if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->tax_id_format .'#i', $this->data['customer']['tax_id'])) {
+        if (reference::country($this->data['billing_address']['country_code'])->tax_id_format) {
+          if (!empty($this->data['billing_address']['tax_id'])) {
+            if (!preg_match('#'. reference::country($this->data['billing_address']['country_code'])->tax_id_format .'#i', $this->data['billing_address']['tax_id'])) {
               throw new Exception(language::translate('error_invalid_tax_id_format', 'Invalid tax ID format'));
             }
           }
         }
 
-        if (reference::country($this->data['customer']['country_code'])->postcode_format) {
-          if (!empty($this->data['customer']['postcode'])) {
-            if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->postcode_format .'#i', $this->data['customer']['postcode'])) {
+        if (reference::country($this->data['billing_address']['country_code'])->postcode_format) {
+          if (!empty($this->data['billing_address']['postcode'])) {
+            if (!preg_match('#'. reference::country($this->data['billing_address']['country_code'])->postcode_format .'#i', $this->data['billing_address']['postcode'])) {
               throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format'));
             }
           } else {

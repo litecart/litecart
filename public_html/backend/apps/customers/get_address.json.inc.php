@@ -21,19 +21,8 @@
     'country_code' => fallback($customer['country_code']),
     'zone_code' => fallback($customer['zone_code']),
     'phone' => fallback($customer['phone']),
-    'different_shipping_address' => !empty($customer['different_shipping_address']) ? true : false,
-    'shipping_address' => [
-      'company' => fallback($customer['shipping_company']),
-      'firstname' => fallback($customer['shipping_firstname']),
-      'lastname' => fallback($customer['shipping_lastname']),
-      'address1' => fallback($customer['shipping_address1']),
-      'address2' => fallback($customer['shipping_address2']),
-      'postcode' => fallback($customer['shipping_postcode']),
-      'city' => fallback($customer['shipping_city']),
-      'country_code' => fallback($customer['shipping_country_code']),
-      'zone_code' => fallback($customer['shipping_zone_code']),
-      'phone' => fallback($customer['shipping_phone']),
-    ],
+    'default_billing_address_id' => fallback($customer['default_billing_address_id']),
+    'default_shipping_address_id' => fallback($customer['default_shipping_address_id']),
   ];
 
   ob_clean();

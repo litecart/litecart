@@ -65,7 +65,7 @@ table.items tbody tr:nth-child(11) {
         <div class="row">
           <div class="col-3 shipping-address">
             <div class="label"><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></div>
-            <div class="value"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])); ?></div>
+            <div class="value"><?php echo nl2br(reference::country($order['shipping_address']['country_code'])->format_address($order['shipping_address'])); ?></div>
           </div>
 
           <div class="col-3">
@@ -79,7 +79,7 @@ table.items tbody tr:nth-child(11) {
           <div class="col-6 billing-address">
             <div class="rounded-rectangle">
               <div class="label"><?php echo language::translate('title_billing_address', 'Billing Address'); ?></div>
-              <div class="value"><?php echo nl2br(reference::country($order['customer']['country_code'])->format_address($order['customer'])); ?></div>
+              <div class="value"><?php echo nl2br(reference::country($order['billing_address']['country_code'])->format_address($order['billing_address'])); ?></div>
             </div>
           </div>
         </div>
@@ -106,9 +106,9 @@ table.items tbody tr:nth-child(11) {
       <table class="items table table-striped data-table">
         <thead>
           <tr>
-            <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
-            <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
             <th><?php echo language::translate('title_qty', 'Qty'); ?></th>
+            <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
+            <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
             <th class="text-end"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
             <th class="text-end"><?php echo language::translate('title_tax', 'Tax'); ?> </th>
             <th class="text-end"><?php echo language::translate('title_sum', 'Sum'); ?></th>
@@ -117,9 +117,9 @@ table.items tbody tr:nth-child(11) {
         <tbody>
           <?php foreach ($order['items'] as $item) { ?>
           <tr>
-            <td><?php echo $item['gtin']; ?></td>
+            <td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
             <td style="white-space: normal;"><?php echo $item['name']; ?></td>
-            <td><?php echo (float)$item['quantity']; ?></td>
+            <td><?php echo $item['gtin']; ?></td>
             <td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
             <td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['discount'] + $item['discount_tax'] : $item['discount'], false, $order['currency_code'], $order['currency_value']); ?></td>
             <td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['sum'] + $item['sum_tax'] : $item['sum'], false, $order['currency_code'], $order['currency_value']); ?></td>

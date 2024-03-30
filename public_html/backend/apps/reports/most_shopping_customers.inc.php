@@ -42,7 +42,7 @@
     "select
       sum(o.total - total_tax) as total_amount,
       o.customer_id as id,
-      if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) as name,
+      if(o.billing_company, o.billing_company, concat(o.billing_firstname, ' ', o.billing_lastname)) as name,
       customer_email as email
     from ". DB_TABLE_PREFIX ."orders o
     where o.order_status_id in (

@@ -22,26 +22,8 @@
 
           if (!$customer) return;
 
-          $remap_keys = [
-            'shipping_company' => 'company',
-            'shipping_firstname' => 'firstname',
-            'shipping_lastname' => 'lastname',
-            'shipping_address1' => 'address1',
-            'shipping_address2' => 'address2',
-            'shipping_postcode' => 'postcode',
-            'shipping_city' => 'city',
-            'shipping_country_code' => 'country_code',
-            'shipping_zone_code' => 'zone_code',
-            'shipping_phone' => 'phone',
-          ];
-
           foreach ($customer as $key => $value) {
-            if (!in_array($key, array_keys($remap_keys))) continue;
             $this->_data[$key] = $customer[$key];
-          }
-
-          foreach ($remap_keys as $skey => $tkey) {
-            $this->_data['shipping_address'][$tkey] = $customer[$skey];
           }
 
           break;

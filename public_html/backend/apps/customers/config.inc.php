@@ -33,6 +33,7 @@
       'customers' => 'customers.inc.php',
       'customers.json' => 'customers.json.inc.php',
       'csv' => 'csv.inc.php',
+      'edit_address' => 'edit_address.inc.php',
       'edit_customer' => 'edit_customer.inc.php',
       'get_address.json' => 'get_address.json.inc.php',
       'newsletter_recipients' => 'newsletter_recipients.inc.php',

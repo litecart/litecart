@@ -40,8 +40,8 @@
         if ($free_shipping_table = functions::csv_decode($this->settings['free_shipping_table'], ',')) {
 
           foreach ($free_shipping_table as $row) {
-            if (empty($row['country_code']) || $row['country_code'] != $order->data['customer']['shipping_address']['country_code']) continue;
-            if (!empty($row['zone_code']) && $row['zone_code'] != $order->data['customer']['shipping_address']['zone_code']) continue;
+            if (empty($row['country_code']) || $row['country_code'] != $order->data['shipping_address']['country_code']) continue;
+            if (!empty($row['zone_code']) && $row['zone_code'] != $order->data['shipping_address']['zone_code']) continue;
             if (!isset($row['min_subtotal']) || $row['min_subtotal'] < 0) continue;
             if ($subtotal < $row['min_subtotal']) continue;
 

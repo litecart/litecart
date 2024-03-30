@@ -1115,7 +1115,7 @@
 
   function form_select_address($name, $input=true, $parameters='') {
 
-    $addresses = database::query(
+    $options = database::query(
       "select * from ". DB_TABLE_PREFIX ."customers_addresses
       where customer_id = ". (int)customer::$data['id'] ."
       order by id asc;"
