@@ -26,6 +26,8 @@ DROP TABLE IF EXISTS `lc_currencies`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_customers`;
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_customers_addresses`;
+-- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_delivery_statuses`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_delivery_statuses_info`;

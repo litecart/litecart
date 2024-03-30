@@ -149,10 +149,6 @@
         self::$data['country_code'] = '';
       }
 
-      if (!in_array(self::$data['shipping_address']['country_code'], $countries)) {
-        self::$data['shipping_address']['country_code'] = '';
-      }
-
     // Set country from URI
       if (!empty($_GET['country'])) {
         if (in_array($_GET['country'], $countries)) {
@@ -247,17 +243,6 @@
         self::$data['zone_code'] = array_keys(reference::country(self::$data['country_code'])->zones)[0];
       }
 
-    // Set shipping country if empty
-      if (empty(self::$data['shipping_address']['country_code'])) {
-        self::$data['shipping_address']['country_code'] = self::$data['country_code'];
-        self::$data['shipping_address']['zone_code'] = self::$data['zone_code'];
-      }
-
-    // Unset zone if not in country
-      if (!isset(reference::country(self::$data['shipping_address']['country_code'])->zones[self::$data['shipping_address']['zone_code']])) {
-        self::$data['shipping_address']['zone_code'] = '';
-      }
-
     // Set tax from cookie
       if (!isset(self::$data['display_prices_including_tax']) || self::$data['display_prices_including_tax'] === null) {
         if (isset($_COOKIE['display_prices_including_tax'])) {
@@ -273,21 +258,17 @@
 
     public static function reset() {
 
-      session::$data['customer'] = [];
+      $customer = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."customers;"
-      );
+      )->each(function($field) use ($customer) {
+        $customer[$field['Field']] = database::create_variable($field);
+      });
 
-      while ($field = database::fetch($fields_query)) {
-        if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
-          session::$data['customer']['shipping_address'][$matches[1]] = database::create_variable($field);
-        } else {
-          session::$data['customer'][$field['Field']] = database::create_variable($field);
-        }
-      }
+      $customer['display_prices_including_tax'] = null;
 
-      session::$data['customer']['display_prices_including_tax'] = null;
+      session::$data['customer'] = $customer;
     }
 
     public static function load(int $customer_id) {
@@ -300,19 +281,28 @@
         limit 1;"
       )->fetch();
 
-      foreach ($customer as $field => $value) {
-        if (preg_match('#^shipping_(.*)$#', $field, $matches)) {
-          session::$data['customer']['shipping_address'][$matches[1]] = $value;
-        } else {
-          session::$data['customer'][$field] = $value;
-        }
+
+     $customer['billing_address'] = database::query(
+        "select * from ". DB_TABLE_PREFIX ."addresses
+        where id = ". (int)$customer['billing_address_id'] ."
+        limit 1;"
+      )->extract($result)->fetch();
+
+      if (!$customer['billing_address']) {
+        $customer['billing_address'] = $result->fields();
       }
 
-      if (empty(self::$data['different_shipping_address'])) {
-        foreach (array_keys(self::$data['shipping_address']) as $key) {
-          self::$data['shipping_address'][$key] = self::$data[$key];
-        }
+      $customer['shipping_address'] = database::query(
+        "select * from ". DB_TABLE_PREFIX ."addresses
+        where id = ". (int)$customer['shipping_address_id'] ."
+        limit 1;"
+      )->extract($result)->fetch();
+
+      if (!$customer['shipping_address']) {
+        $customer['shipping_address'] = $result->fields();
       }
+
+      session::$data['customer'] = array_replace(session::$data['customer'], array_intersect_key($customer, session::$data['customer']));
     }
 
     public static function require_login() {

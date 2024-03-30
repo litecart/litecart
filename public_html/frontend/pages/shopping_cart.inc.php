@@ -18,10 +18,12 @@
   functions::draw_lightbox();
 
   if (empty(cart::$items)) {
-    echo '<div id="content">' . PHP_EOL
-        . '  <p>'. language::translate('description_no_items_in_cart', 'There are no items in your cart.') .'</p>' . PHP_EOL
-        . '  <div><a class="btn btn-default" href="'. document::href_ilink('') .'">'. language::translate('title_back', 'Back') .'</a></div>'
-        . '</div>';
+    echo implode(PHP_EOL, [
+      '<div id="content">',
+      '  <p>'. language::translate('description_no_items_in_cart', 'There are no items in your cart.') .'</p>',
+      '  <div><a class="btn btn-default" href="'. document::href_ilink('') .'">'. language::translate('title_back', 'Back') .'</a></div>',
+      '</div>',
+    ]);
     return;
   }
 

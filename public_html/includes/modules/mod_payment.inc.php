@@ -97,6 +97,7 @@
             'module_id' => $module->id,
             'option_id' => $option['id'],
             'icon' => $option['icon'],
+            'vendor' => fallback($option['vendor'], ''),
             'name' => $option['name'],
             'description' => !empty($option['fields']) ? $option['description'] : '',
             'fields' => fallback($option['fields']),

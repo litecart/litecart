@@ -1,18 +1,17 @@
 <?php
   $draw_branch = function($category, &$category_path) use (&$draw_branch) {
-
-    echo '<li class="category-'. $category['id'] . (!empty($category['opened']) ? ' opened' : '') . (!empty($category['active']) ? ' active' : '') .'">' . PHP_EOL
-       . '  <a href="'. functions::escape_html($category['link']) .'">'. functions::draw_fonticon('fa-angle-'. (!empty($category['opened']) ? 'down' : ((language::$selected['direction'] == 'rtl') ? 'left' : 'right')) .' fa-fw float-end') .' '. $category['name'] . ((settings::get('category_tree_product_count') && $category['num_products']) ? ' <small class="float-end">('. $category['num_products'] .')</small>' : '') .'</a>' . PHP_EOL;
-
-    if (!empty($category['subcategories'])) {
-      echo '  <ul class="nav nav-stacked">' . PHP_EOL;
-      foreach ($category['subcategories'] as $subcategory) {
-        echo PHP_EOL . $draw_branch($subcategory, $category_path);
-      }
-      echo '  </ul>' . PHP_EOL;
-    }
-
-    echo '</li>' . PHP_EOL;
+    return implode(PHP_EOL, [
+      '<li class="category-'. $category['id'] . (!empty($category['opened']) ? ' opened' : '') . (!empty($category['active']) ? ' active' : '') .'">',
+      '  <a href="'. functions::escape_html($category['link']) .'">'. functions::draw_fonticon('fa-angle-'. (!empty($category['opened']) ? 'down' : ((language::$selected['direction'] == 'rtl') ? 'left' : 'right')) .' fa-fw float-end') .' '. $category['name'] . ((settings::get('category_tree_product_count') && $category['num_products']) ? ' <small class="float-end">('. $category['num_products'] .')</small>' : '') .'</a>',
+     (!empty($category['subcategories'])) ? implode(PHP_EOL, [
+        '  <ul class="nav nav-stacked">',
+          array_map(function($subcategory) use ($draw_branch, $category_path) {
+            return $draw_branch($subcategory, $category_path);
+          }, $category['subcategories']),
+        '  </ul>'
+      ]) : '',
+      '</li>'
+    ]);
   };
 ?>
 
@@ -34,7 +33,7 @@
 
   <div class="card-body">
     <ul class="nav nav-stacked nav-pills<?php if (!empty(document::$settings['compact_category_tree']) && !empty($category_path)) echo ' compact'; ?>">
-      <?php foreach ($categories as $category) $draw_branch($category, $category_path); ?>
+      <?php foreach ($categories as $category) echo $draw_branch($category, $category_path); ?>
     </ul>
   </div>
 </section>
