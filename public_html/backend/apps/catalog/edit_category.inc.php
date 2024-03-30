@@ -39,7 +39,7 @@
         $_POST['filters'] = [];
       }
 
-      $fields = [
+      foreach ([
         'status',
         'parent_id',
         'code',
@@ -56,9 +56,7 @@
         'synonyms',
         'filters',
         'priority',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $category->data[$field] = $_POST[$field];
         }

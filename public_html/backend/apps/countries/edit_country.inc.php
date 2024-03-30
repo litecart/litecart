@@ -46,7 +46,7 @@
       $_POST['iso_code_2'] = strtoupper($_POST['iso_code_2']);
       $_POST['iso_code_3'] = strtoupper($_POST['iso_code_3']);
 
-      $fields = [
+      foreach ([
         'status',
         'iso_code_1',
         'iso_code_2',
@@ -60,9 +60,7 @@
         'currency_code',
         'phone_code',
         'zones',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $country->data[$field] = $_POST[$field];
         }

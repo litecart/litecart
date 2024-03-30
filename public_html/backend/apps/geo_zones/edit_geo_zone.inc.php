@@ -21,14 +21,12 @@
 
       if (empty($_POST['zones'])) $_POST['zones'] = [];
 
-      $fields = [
+      foreach ([
         'code',
         'name',
         'description',
         'zones',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $geo_zone->data[$field] = $_POST[$field];
         }

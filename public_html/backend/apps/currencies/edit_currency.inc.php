@@ -53,7 +53,7 @@
         throw new Exception(language::translate('error_cannot_set_disabled_store_currency', 'You cannot set a disabled currency as store currency.'));
       }
 
-      $fields = [
+      foreach ([
         'status',
         'code',
         'number',
@@ -63,9 +63,7 @@
         'suffix',
         'decimals',
         'priority',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $currency->data[$field] = $_POST[$field];
         }

@@ -26,16 +26,14 @@
 
       if (!isset($_POST['status'])) $_POST['status'] = '0';
 
-      $fields = [
+      foreach ([
         'code',
         'name',
         'description',
         'email',
         'phone',
         'link',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $supplier->data[$field] = $_POST[$field];
         }

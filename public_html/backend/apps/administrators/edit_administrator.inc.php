@@ -38,7 +38,7 @@
       if (empty($_POST['apps'])) $_POST['apps'] = [];
       if (empty($_POST['widgets'])) $_POST['widgets'] = [];
 
-      $fields = [
+      foreach ([
         'status',
         'username',
         'email',
@@ -47,9 +47,7 @@
         'widgets',
         'date_valid_from',
         'date_valid_to',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $administrator->data[$field] = $_POST[$field];
         }

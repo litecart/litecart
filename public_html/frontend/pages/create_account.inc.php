@@ -107,13 +107,11 @@
       $result = $mod_customer->validate($_POST);
       if (!empty($result['error'])) throw new Exception($result['error']);
 
-      $customer = new ent_customer();
 
-      $customer->data['status'] = 1;
 
-      $fields = [
-        'email',
-        'tax_id',
+      $address = new ent_customer_address();
+
+      foreach ([
         'company',
         'firstname',
         'lastname',
@@ -124,10 +122,24 @@
         'country_code',
         'zone_code',
         'phone',
-        'newsletter',
-      ];
+      ] as $field) {
+        if (isset($_POST[$field])) {
+          $address->data[$field] = $_POST[$field];
+        }
+      }
 
-      foreach ($fields as $field) {
+      $address->save();
+
+      $customer = new ent_customer();
+
+      $customer->data['status'] = 1;
+      $customer->data['default_billing_address_id'] = $address->data['id'];
+      $customer->data['default_shipping_address_id'] = $address->data['id'];
+
+      foreach ([
+        'email',
+        'newsletter',
+      ] as $field) {
         if (isset($_POST[$field])) {
           $customer->data[$field] = $_POST[$field];
         }
@@ -140,8 +152,8 @@
       database::query(
         "update ". DB_TABLE_PREFIX ."customers
         set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-            last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
-            last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
+          last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+          last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
         where id = ". (int)$customer->data['id'] ."
         limit 1;"
       );

@@ -63,11 +63,9 @@
         }
       }
 
-      $fields = [
+      foreach ([
         'email',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $customer->data[$field] = $_POST[$field];
         }
@@ -168,7 +166,7 @@
         }
       }
 
-      $fields = [
+      foreach ([
         'tax_id',
         'company',
         'firstname',
@@ -182,9 +180,7 @@
         'phone',
         'different_shipping_address',
         'newsletter',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $customer->data[$field] = $_POST[$field];
         }

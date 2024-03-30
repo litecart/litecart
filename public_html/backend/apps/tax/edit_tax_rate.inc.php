@@ -44,7 +44,7 @@
       if (empty($_POST['rule_individuals_with_tax_id'])) $_POST['rule_individuals_with_tax_id'] = 0;
       if (empty($_POST['rule_individuals_without_tax_id'])) $_POST['rule_individuals_without_tax_id'] = 0;
 
-      $fields = [
+      foreach ([
         'tax_class_id',
         'geo_zone_id',
         'code',
@@ -56,9 +56,7 @@
         'rule_companies_without_tax_id',
         'rule_individuals_with_tax_id',
         'rule_individuals_without_tax_id',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $tax_rate->data[$field] = $_POST[$field];
         }

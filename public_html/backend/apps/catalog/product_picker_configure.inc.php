@@ -48,13 +48,11 @@
 
     if (!$_POST) {
 
-      $fields = [
+      foreach ([
         'name',
         'price',
         'tax',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($product->$field)) {
           $_POST[$field] = $product->$field;
         }

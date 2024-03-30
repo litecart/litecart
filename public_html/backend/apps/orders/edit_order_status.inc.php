@@ -28,7 +28,7 @@
       if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
       if (empty($_POST['is_trackable'])) $_POST['is_trackable'] = 0;
 
-      $fields = [
+      foreach ([
         'hidden',
         'state',
         'icon',
@@ -42,9 +42,7 @@
         'description',
         'email_subject',
         'email_message',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $order_status->data[$field] = $_POST[$field];
         }

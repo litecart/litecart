@@ -28,7 +28,7 @@
         throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
       }
 
-      $fields = [
+      foreach ([
         'status',
         'featured',
         'code',
@@ -40,9 +40,7 @@
         'h1_title',
         'meta_description',
         'link',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $brand->data[$field] = $_POST[$field];
         }

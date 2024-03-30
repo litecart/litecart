@@ -26,15 +26,13 @@
 
       if (empty($_POST['separate'])) $_POST['separate'] = 0;
 
-      $fields = [
+      foreach ([
         'decimals',
         'separate',
         'priority',
         'name',
         'description',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $quantity_unit->data[$field] = $_POST[$field];
         }

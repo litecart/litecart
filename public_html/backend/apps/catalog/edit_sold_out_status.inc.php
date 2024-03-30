@@ -27,14 +27,12 @@
       if (empty($_POST['hidden'])) $_POST['hidden'] = 0;
       if (empty($_POST['orderable'])) $_POST['orderable'] = 0;
 
-      $fields = [
+      foreach ([
         'name',
         'description',
         'hidden',
         'orderable',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $sold_out_status->data[$field] = $_POST[$field];
         }

@@ -426,16 +426,14 @@
             }
 
           // Set new category data
-            $fields = [
+            foreach ([
               'parent_id',
               'status',
               'code',
               'keywords',
               'image',
               'priority',
-            ];
-
-            foreach ($fields as $field) {
+            ] as $field) {
               if (isset($row[$field])) {
                 $category->data[$field] = $row[$field];
               }
@@ -443,16 +441,15 @@
 
           // Set category info data
             if (!empty($row['language_code'])) {
-              $fields = [
+
+              foreach ([
                 'name',
                 'short_description',
                 'description',
                 'head_title',
                 'h1_title',
                 'meta_description',
-              ];
-
-              foreach ($fields as $field) {
+              ] as $field) {
                 if (isset($row[$field])) {
                   $category->data[$field][$row['language_code']] = $row[$field];
                 }
@@ -533,16 +530,14 @@
             }
 
           // Set new brand data
-            $fields = [
+            foreach ([
               'status',
               'code',
               'name',
               'keywords',
               'image',
               'priority',
-            ];
-
-            foreach ($fields as $field) {
+            ] as $field) {
               if (isset($row[$field])) {
                 $brand->data[$field] = $row[$field];
               }
@@ -550,15 +545,14 @@
 
           // Set brand info data
             if (!empty($row['language_code'])) {
-              $fields = [
+
+              foreach ([
                 'short_description',
                 'description',
                 'head_title',
                 'h1_title',
                 'meta_description',
-              ];
-
-              foreach ($fields as $field) {
+              ] as $field) {
                 if (isset($row[$field])) {
                   $brand->data[$field][$row['language_code']] = $row[$field];
                 }
@@ -688,7 +682,8 @@
               }
             }
 
-            $fields = [
+          // Set new product data
+            foreach ([
               'status',
               'brand_id',
               'default_catgeory_id',
@@ -707,10 +702,7 @@
               'sold_out_status_id',
               'date_valid_from',
               'date_valid_to',
-            ];
-
-          // Set new product data
-            foreach ($fields as $field) {
+            ] as $field) {
               if (isset($row[$field])) {
                 $product->data[$field] = $row[$field];
               }
@@ -730,16 +722,14 @@
           // Set product info data
             if (!empty($row['language_code'])) {
 
-              $fields = [
+              foreach ([
                 'name',
                 'short_description',
                 'description',
                 'technical_data',
                 'head_title',
                 'meta_description',
-              ];
-
-              foreach ($fields as $field) {
+              ] as $field) {
                 if (isset($row[$field])) {
                   $product->data[$field][$row['language_code']] = $row[$field];
                 }
@@ -907,14 +897,12 @@
               $batch['counters']['inserted']++;
             }
 
-            $fields = [
+            foreach ([
               'product_id',
               'stock_item_id',
               'price_operator',
               'priority',
-            ];
-
-            foreach ($fields as $field) {
+            ] as $field) {
               if (isset($row[$field])) {
                 $stock_option[$field] = $row[$field];
               } else if (!isset($stock_option[$field])) {
@@ -1017,7 +1005,7 @@
             }
 
           // Set new stock_item data
-            $fields = [
+            foreach ([
               'brand_id',
               'status',
               'code',
@@ -1035,9 +1023,7 @@
               'purchase_price',
               'purchase_price_currency_code',
               'priority',
-            ];
-
-            foreach ($fields as $field) {
+            ] as $field) {
               if (isset($row[$field])) {
                 $stock_item->data[$field] = $row[$field];
               }
@@ -1046,11 +1032,9 @@
           // Set info
             if (!empty($row['language_code'])) {
 
-              $fields = [
+              foreach ([
                 'name',
-              ];
-
-              foreach ($fields as $field) {
+              ] as $field) {
                 if (isset($row[$field])) {
                   $product->data[$field][$row['language_code']] = $row[$field];
                 }
@@ -1120,7 +1104,7 @@
             }
 
           // Set new supplier data
-            $fields = [
+            foreach ([
               'status',
               'code',
               'name',
@@ -1128,9 +1112,7 @@
               'email',
               'phone',
               'link',
-            ];
-
-            foreach ($fields as $field) {
+            ] as $field) {
               if (isset($row[$field])) $supplier->data[$field] = $row[$field];
             }
 

@@ -37,7 +37,7 @@
         $_POST['languages'] = [];
       }
 
-      $fields = [
+      foreach ([
         'status',
         'name',
         'languages',
@@ -46,9 +46,7 @@
         'keywords',
         'date_valid_from',
         'date_valid_to',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $banner->data[$field] = $_POST[$field];
         }

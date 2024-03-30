@@ -34,7 +34,7 @@
         $_POST[$field] = trim($_POST[$field]);
       }
 
-      $fields = [
+      foreach ([
         'name',
         'sku',
         'mpn',
@@ -54,9 +54,7 @@
         'purchase_price',
         'purchase_price_currency_code',
         'references',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $stock_item->data[$field] = $_POST[$field];
         }

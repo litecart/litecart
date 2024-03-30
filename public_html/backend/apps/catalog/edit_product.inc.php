@@ -54,7 +54,7 @@
       if (empty($_POST['stock_options'])) $_POST['stock_options'] = [];
       if (empty($_POST['autofill_technical_data'])) $_POST['autofill_technical_data'] = '';
 
-      $fields = [
+      foreach ([
         'status',
         'brand_id',
         'delivery_status_id',
@@ -86,9 +86,7 @@
         'meta_description',
         'images',
         'stock_options',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $product->data[$field] = $_POST[$field];
         }

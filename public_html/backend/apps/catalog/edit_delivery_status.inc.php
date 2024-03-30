@@ -24,12 +24,10 @@
         throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
       }
 
-      $fields = [
+      foreach ([
         'name',
         'description',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $delivery_status->data[$field] = $_POST[$field];
         }

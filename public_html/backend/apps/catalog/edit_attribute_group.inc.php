@@ -29,14 +29,12 @@
         }
       }
 
-      $fields = [
+      foreach ([
         'code',
         'sort',
         'name',
         'values',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $attribute_group->data[$field] = $_POST[$field];
         }

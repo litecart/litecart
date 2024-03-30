@@ -78,19 +78,17 @@
     }
 
   // Customer
-    $fields = [
+    foreach ([
       'email',
       'different_shipping_address',
-    ];
-
-    foreach ($fields as $field) {
+    ] as $field) {
       if (isset($_POST['customer'][$field])) {
         $shopping_cart->data['customer'][$field] = $_POST['customer'][$field];
       }
     }
 
   // Billing address
-    $fields = [
+    foreach ([
       'tax_id',
       'company',
       'firstname',
@@ -102,16 +100,14 @@
       'country_code',
       'zone_code',
       'phone',
-    ];
-
-    foreach ($fields as $field) {
+    ] as $field) {
       if (isset($_POST['billing_address'][$field])) {
         $shopping_cart->data['billing_address'][$field] = $_POST['billing_address'][$field];
       }
     }
 
   // Shipping address
-    $fields = [
+    foreach ([
       'company',
       'firstname',
       'lastname',
@@ -122,9 +118,7 @@
       'country_code',
       'zone_code',
       'phone',
-    ];
-
-    foreach ($fields as $field) {
+    ] as $field) {
       if (!empty($shopping_cart->data['different_shipping_address']) && settings::get('customer_shipping_address')) {
         if (isset($_POST['shipping_address'][$field])) {
           $shopping_cart->data['shipping_address'][$field] = $_POST['shipping_address'][$field];

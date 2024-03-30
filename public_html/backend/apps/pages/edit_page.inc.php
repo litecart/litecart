@@ -26,7 +26,7 @@
       if (empty($_POST['status'])) $_POST['status'] = 0;
       if (empty($_POST['dock'])) $_POST['dock'] = [];
 
-      $fields = [
+      foreach ([
         'status',
         'parent_id',
         'title',
@@ -35,10 +35,10 @@
         'priority',
         'head_title',
         'meta_description',
-      ];
-
-      foreach ($fields as $field) {
-        if (isset($_POST[$field])) $page->data[$field] = $_POST[$field];
+      ] as $field) {
+        if (isset($_POST[$field])) {
+          $page->data[$field] = $_POST[$field];
+        }
       }
 
       $page->save();

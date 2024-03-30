@@ -75,7 +75,7 @@
       $_POST['raw_datetime'] = $_POST['raw_date'] .' '. $_POST['raw_time'];
       $_POST['format_datetime'] = $_POST['format_date'] .' '. $_POST['format_time'];
 
-      $fields = [
+      foreach ([
         'status',
         'code',
         'code2',
@@ -95,9 +95,7 @@
         'thousands_sep',
         'currency_code',
         'priority',
-      ];
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $language->data[$field] = $_POST[$field];
         }

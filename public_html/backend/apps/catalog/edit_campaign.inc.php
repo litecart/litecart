@@ -27,19 +27,19 @@
         throw new Exception(language::translate('error_start_date_cannot_be_greater_than_end_date', 'The start date cannot be greater than the end date'));
       }
 
-      $fields = [
+      foreach ([
         'product_id',
         'start_date',
         'end_date',
-      ];
-
-      foreach (array_keys(currency::$currencies) as $currency_code) {
-        $fields[] = $currency_code;
-      }
-
-      foreach ($fields as $field) {
+      ] as $field) {
         if (isset($_POST[$field])) {
           $campaign->data[$field] = $_POST[$field];
+        }
+      }
+
+      foreach (array_keys(currency::$currencies) as $currency_code) {
+        if (isset($_POST[$currency_code])) {
+          $campaign->data[$currency_code] = $_POST[$currency_code];
         }
       }
 
