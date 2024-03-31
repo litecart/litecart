@@ -127,14 +127,14 @@
 
       foreach (array_keys(language::$languages) as $language_code) {
 
-        $categories_info_query = database::query(
+        $categories_info = database::query(
           "select * from ". DB_TABLE_PREFIX ."categories_info
           where category_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
-        );
+        )->fetch();
 
-        if (!$category_info = database::fetch($categories_info_query)) {
+        if (!$category_info) {
           database::query(
             "insert into ". DB_TABLE_PREFIX ."categories_info
             (category_id, language_code)
@@ -288,15 +288,13 @@
       if (!$this->data['id']) return;
 
     // Delete subcategories
-      $subcategories_query = database::query(
+      database::query(
         "select id from ". DB_TABLE_PREFIX ."categories
         where parent_id = ". (int)$this->data['id'] .";"
-      );
-
-      while ($subcategory = database::fetch($subcategories_query)) {
+      )->each(function($subcategory) {
         $subcategory = new ent_category($subcategory['id']);
         $subcategory->delete();
-      }
+      });
 
     // Delete products
       foreach ($this->data['products'] as $product_id) {
@@ -312,7 +310,6 @@
           $product->save();
         }
       }
-
 
       database::query(
         "delete c, ci, cf, ptc

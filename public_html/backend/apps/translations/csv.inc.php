@@ -35,13 +35,13 @@
       foreach ($csv as $row) {
         $line++;
 
-        $translation_query = database::query(
+        $translation = database::query(
           "select * from ". DB_TABLE_PREFIX ."translations
           where code = '". database::input($row['code']) ."'
           limit 1;"
-        );
+        )->fetch();
 
-        if ($translation = database::fetch($translation_query)) {
+        if ($translation) {
 
           foreach ($language_codes as $language_code) {
 
@@ -108,24 +108,21 @@
         throw new Exception(language::translate('error_must_select_at_least_one_language', 'You must select at least one language'));
       }
 
-      $csv = [];
-
       $_POST['language_codes'] = array_filter($_POST['language_codes']);
 
-      $translations_query = database::query(
+      $csv = database::query(
         "select * from ". DB_TABLE_PREFIX ."translations
         order by date_created asc;"
-      );
-
-      while ($translation = database::fetch($translations_query)) {
+      )->fetch_custom(function($translation) {
 
         $row = ['code' => $translation['code']];
+
         foreach ($_POST['language_codes'] as $language_code) {
           $row[$language_code] = $translation['text_'.$language_code];
         }
 
-        $csv[] = $row;
-      }
+        return $row;
+      });
 
       ob_clean();
 

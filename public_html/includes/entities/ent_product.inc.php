@@ -87,16 +87,14 @@
       });
 
     // Prices
-      $products_prices_query = database::query(
+      database::query(
         "select * from ". DB_TABLE_PREFIX ."products_prices
         where product_id = ". (int)$this->data['id'] .";"
-      );
-
-      while ($product_price = database::fetch($products_prices_query)) {
+      )->each(function($price){
         foreach (array_keys(currency::$currencies) as $currency_code) {
-          $this->data['prices'][$currency_code] = $product_price[$currency_code];
+          $this->data['prices'][$currency_code] = $price[$currency_code];
         }
-      }
+      });
 
     // Campaigns
       $this->data['campaigns'] = database::query(
@@ -145,7 +143,7 @@
 
       foreach ($this->data['stock_options'] as $key => $stock_option) {
 
-        $stock_option_info_query = database::query(
+        $stock_option_info = database::query(
           "select * from ". DB_TABLE_PREFIX ."stock_items_info
            where stock_item_id = ". (int)$stock_option['id'] .";"
         );
@@ -210,11 +208,13 @@
       $this->data['keywords'] = array_unique($this->data['keywords']);
       $this->data['keywords'] = implode(',', $this->data['keywords']);
 
-      $this->data['synonyms'] = preg_split('#\s*,\s*#', $this->data['synonyms'], -1, PREG_SPLIT_NO_EMPTY);
-      $this->data['synonyms'] = array_map('trim', $this->data['synonyms']);
-      $this->data['synonyms'] = array_filter($this->data['synonyms']);
-      $this->data['synonyms'] = array_unique($this->data['synonyms']);
-      $this->data['synonyms'] = implode(',', $this->data['synonyms']);
+      foreach (array_keys($this->data['synonyms']) as $language_code) {
+        $this->data['synonyms'][$language_code] = preg_split('#\s*,\s*#', $this->data['synonyms'][$language_code], -1, PREG_SPLIT_NO_EMPTY);
+        $this->data['synonyms'][$language_code] = array_map('trim', $this->data['synonyms'][$language_code]);
+        $this->data['synonyms'][$language_code] = array_filter($this->data['synonyms'][$language_code]);
+        $this->data['synonyms'][$language_code] = array_unique($this->data['synonyms'])[$language_code];
+        $this->data['synonyms'][$language_code] = implode(',', $this->data['synonyms'][$language_code]);
+      }
 
       if (empty($this->data['default_category_id']) || !in_array($this->data['default_category_id'], $this->data['categories'])) {
         $this->data['default_category_id'] = reset($this->data['categories']);
@@ -229,7 +229,6 @@
           sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
           default_category_id = ". (int)$this->data['default_category_id'] .",
           keywords = '". database::input($this->data['keywords']) ."',
-          synonyms = '". database::input($this->data['synonyms']) ."',
           quantity_min = ". (float)$this->data['quantity_min'] .",
           quantity_max = ". (float)$this->data['quantity_max'] .",
           quantity_step = ". (float)$this->data['quantity_step'] .",
@@ -296,6 +295,7 @@
             short_description = '". database::input($this->data['short_description'][$language_code]) ."',
             description = '". database::input($this->data['description'][$language_code], true) ."',
             technical_data = '". database::input($this->data['technical_data'][$language_code], true) ."',
+            synonyms = '". database::input($this->data['synonyms'][$language_code]) ."',
             head_title = '". database::input($this->data['head_title'][$language_code]) ."',
             meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
             where product_id = ". (int)$this->data['id'] ."
@@ -337,13 +337,13 @@
     // Prices
       foreach (array_keys(currency::$currencies) as $currency_code) {
 
-        $products_prices_query = database::query(
+        $products_price = database::query(
           "select * from ". DB_TABLE_PREFIX ."products_prices
           where product_id = ". (int)$this->data['id'] ."
           limit 1;"
         );
 
-        if (!$product_price = database::fetch($products_prices_query)) {
+        if (!$product_price) {
           database::query(
             "insert into ". DB_TABLE_PREFIX ."products_prices
             (product_id)
@@ -351,7 +351,7 @@
           );
         }
 
-        $sql_currency_prices = implode(",".PHP_EOL, array_map(function($currency) {
+        $sql_currency_prices = implode(',' . PHP_EOL, array_map(function($currency) {
           return "`". database::input($currency['code']) ."` = ". (isset($this->data['prices'][$currency['code']]) ? (float)$this->data['prices'][$currency['code']] : 0);
         }, currency::$currencies));
 
@@ -399,26 +399,25 @@
       }
 
     // Delete images
-      $products_images_query = database::query(
+      database::query(
         "select * from ". DB_TABLE_PREFIX ."products_images
         where product_id = ". (int)$this->data['id'] ."
         and id not in ('". implode("', '", array_column($this->data['images'], 'id')) ."');"
-      );
+      )->each(function($image) {
 
-      while ($product_image = database::fetch($products_images_query)) {
-        if (is_file('storage://images/' . $product_image['filename'])) {
-          unlink('storage://images/' . $product_image['filename']);
+        if (is_file('storage://images/' . $image['filename'])) {
+          unlink('storage://images/' . $image['filename']);
         }
 
-        functions::image_delete_cache('storage://images/' . $product_image['filename']);
+        functions::image_delete_cache('storage://images/' . $image['filename']);
 
         database::query(
           "delete from ". DB_TABLE_PREFIX ."products_images
           where product_id = ". (int)$this->data['id'] ."
-          and id = ". (int)$product_image['id'] ."
+          and id = ". (int)$image['id'] ."
           limit 1;"
         );
-      }
+      });
 
     // Update images
       if (!empty($this->data['images'])) {

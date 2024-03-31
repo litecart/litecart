@@ -5,7 +5,7 @@
     'results' => [],
   ];
 
-  $orders_query = database::query(
+  $result['results'] = database::query(
     "select id, concat(customer_firstname, ' ', customer_lastname) as customer_name,
     (
       if(id = '". database::input($query) ."', 10, 0)
@@ -21,17 +21,13 @@
     having relevance > 0
     order by relevance desc, id desc
     limit 5;"
-  );
-
-  if (!database::num_rows($orders_query)) return;
-
-  while ($order = database::fetch($orders_query)) {
-    $result['results'][] = [
+  )->fetch_custom(function($order) {
+    return [
       'id' => $order['id'],
       'title' => language::translate('title_order', 'Order') .' '. $order['id'],
       'description' => $order['customer_name'],
       'link' => document::ilink($app.'/edit_order', ['order_id' => $order['id']]),
     ];
-  }
+  });
 
   return [$result];

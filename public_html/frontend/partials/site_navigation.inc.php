@@ -21,96 +21,84 @@
 
   // Categories
 
-    $categories_query = functions::catalog_categories_query(0);
-
-    while ($category = database::fetch($categories_query)) {
-      $site_navigation->snippets['categories'][] = [
+    $site_navigation->snippets['categories'] = functions::catalog_categories_query(0)->fetch_custom(function($category) {
+      return [
         'type' => 'category',
         'id' => $category['id'],
         'title' => $category['name'],
         'link' => document::ilink('category', ['category_id' => $category['id']]),
         'priority' => $category['priority'],
       ];
-    }
+    });
 
   // Brands
 
-    $pages_query = database::query(
+  $site_navigation->snippets['brands'] = database::query(
       "select id, name from ". DB_TABLE_PREFIX ."brands
       where status
       and featured
       order by name;"
-    );
-
-    while ($brand = database::fetch($pages_query)) {
-      $site_navigation->snippets['brands'][] = [
+    )->fetch_custom(function($brand) {
+      return [
         'type' => 'brand',
         'id' => $brand['id'],
         'title' => $brand['name'],
         'link' => document::ilink('brand', ['brand_id' => $brand['id']]),
         'priority' => 0,
       ];
-    }
+    });
 
   // Pages
 
-    $pages_query = database::query(
-      "select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
-      left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
-      where status
-      and parent_id = 0
-      and find_in_set('menu', dock)
-      order by p.priority, pi.title;"
-    );
-
-    while ($page = database::fetch($pages_query)) {
-      $site_navigation->snippets['pages'][] = [
-        'type' => 'page',
-        'id' => $page['id'],
-        'title' => $page['title'],
-        'link' => document::ilink('page', ['page_id' => $page['id']]),
-        'priority' => $page['priority'],
-        'subitems' => [],
-      ];
-
-      $subpages_query = database::query(
+  $site_navigation->snippets['pages'] = database::query(
+    "select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
+    left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+    where status
+    and parent_id = 0
+    and find_in_set('menu', dock)
+    order by p.priority, pi.title;"
+  )->fetch_custom(function($page) {
+    return [
+      'type' => 'page',
+      'id' => $page['id'],
+      'title' => $page['title'],
+      'link' => document::ilink('page', ['page_id' => $page['id']]),
+      'priority' => $page['priority'],
+      'subitems' => database::query(
         "select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
         left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
         where status
         and parent_id = ". (int)$page['id'] ."
         order by p.priority, pi.title;"
-      );
-
-      while ($subpage = database::fetch($subpages_query)) {
-        $site_navigation->snippets['pages'][] = [
+      )->fetch_custom(function($subpage) {
+        return [
           'type' => 'page',
           'id' => $subpage['id'],
           'title' => $subpage['title'],
           'link' => document::ilink('page', ['page_id' => $subpage['id']]),
           'priority' => $subpage['priority'],
         ];
-      }
-    }
+      }),
+    ];
+  });
 
   // Information
 
-    $pages_query = database::query(
+   $site_navigation->snippets['information'] = database::query(
       "select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
       left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
       where status
       and find_in_set('information', dock)
       order by p.priority, pi.title;"
-    );
-
-    while ($page = database::fetch($pages_query)) {
-      $site_navigation->snippets['information'][] = [
+    )->fetch_custom(function($page) {
+      return [
         'type' => 'page',
         'id' => $page['id'],
         'title' => $page['title'],
         'link' => document::ilink('information', ['page_id' => $page['id']]),
         'priority' => $page['priority'],
       ];
-    }
+    });
 
     cache::set($site_navigation_cache_token, $site_navigation->snippets);
   }

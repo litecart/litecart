@@ -30,28 +30,25 @@
       'subcategories' => [],
     ];
 
-    $categories_query = database::query(
+    $json['subcategories'] = database::query(
       "select c.id, c.parent_id, ci.name, c.date_created from ". DB_TABLE_PREFIX ."categories c
       left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input($_GET['language_code']) ."')
       where c.id
       ". (isset($_GET['parent_id']) ? "and c.parent_id = ". (int)$_GET['parent_id'] : "") ."
       ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
       order by c.priority, ci.name;"
-    );
+    )->fetch_custom(function($subcategory) {
 
-    if (database::num_rows($categories_query)) {
-      while ($subcategory = database::fetch($categories_query)) {
+      $subcategory['path'] = [];
 
-        $subcategory['path'] = [];
-        if (!empty(reference::category($subcategory['id'])->path)) {
-          foreach (reference::category($subcategory['id'])->path as $ancestor) {
-            $subcategory['path'][] = $ancestor->name;
-          }
+      if (!empty(reference::category($subcategory['id'])->path)) {
+        foreach (reference::category($subcategory['id'])->path as $ancestor) {
+          $subcategory['path'][] = $ancestor->name;
         }
-
-        $json['subcategories'][] = $subcategory;
       }
-    }
+
+      return $subcategory;
+    });
 
   } catch (Exception $e) {
     $json = ['error' => $e->getMessage()];

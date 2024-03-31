@@ -20,20 +20,11 @@
 
         case 'zones':
 
-          $this->_data['zones'] = [];
-
-          $query = database::query(
+          $this->_data['zones'] = database::query(
             "select * from ". DB_TABLE_PREFIX ."zones
             where country_code = '". database::input($this->_country_code) ."'
             order by name;"
-          );
-
-          while ($row = database::fetch($query)) {
-            foreach ($row as $key => $value) {
-              if ($key == 'country_code') continue;
-              $this->_data['zones'][$row['code']] = $row;
-            }
-          }
+          )->fetch_all();
 
           break;
 

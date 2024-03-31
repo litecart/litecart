@@ -93,39 +93,33 @@
       }
     }
 
-    $settings_groups_query = database::query(
+    database::query(
       "select `key` from ". DB_TABLE_PREFIX ."settings_groups;"
-    );
-
-    while ($group = database::fetch($settings_groups_query)) {
+    )->each(function($group) use (&$translation_keys) {
       $translation_keys[] = 'settings_group:title_'.$group['key'];
       $translation_keys[] = 'settings_group:description_'.$group['key'];
-    }
+    });
 
-    $settings_query = database::query(
+    database::query(
       "select `key` from ". DB_TABLE_PREFIX ."settings
       where (group_key is not null and group_key != '');"
-    );
-
-    while ($setting = database::fetch($settings_query)) {
+    )->each(function($setting) use (&$translation_keys) {
       $translation_keys[] = 'settings_key:title_'.$setting['key'];
       $translation_keys[] = 'settings_key:description_'.$setting['key'];
-    }
+    });
 
-    $translations_query = database::query(
+    database::query(
       "select * from ". DB_TABLE_PREFIX ."translations
       where code not in ('". implode("', '", database::input($translation_keys)) ."')
       order by date_accessed desc;"
-    );
-
-    while ($translation = database::fetch($translations_query)) {
+    )->each(function($translation) use (&$orphan) {
       if (empty($translation['date_accessed']) || strtotime($translation['date_accessed']) < strtotime('-12 months')) {
         if (mb_strlen($translation['text_'.language::$selected['code']]) > 100) {
           $translation['text_'.language::$selected['code']] = mb_substr($translation['text_'.language::$selected['code']], 0, 100) . '...';
         }
         $orphan[] = $translation;
       }
-    }
+    });
 
     $log = ob_get_clean();
 

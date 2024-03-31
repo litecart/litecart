@@ -223,7 +223,7 @@
     ],
   ];
 
-  $order_statuses_query = database::query(
+  database::query(
     "select os.*, osi.name, o.num_orders from ". DB_TABLE_PREFIX ."order_statuses os
     left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and language_code = '". database::input(language::$selected['code']) ."')
     left join (
@@ -232,11 +232,9 @@
       group by order_status_id
     ) o on (o.order_status_id = os.id)
     order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), osi.name asc;"
-  );
-
-  while ($order_status = database::fetch($order_statuses_query)) {
-    $order_status_options[1]['options'][$order_status['id']] = $order_status['name'] . ' ('. language::number_format($order_status['num_orders']) .')';
-  }
+  )->each(function($order_status) use (&$order_status_options) {
+    $order_status_options[1]['options'][$order_status['id']] = $order_status['name'] .' ('. language::number_format($order_status['num_orders']) .')';
+  });
 
 // Actions
   $order_actions = [];

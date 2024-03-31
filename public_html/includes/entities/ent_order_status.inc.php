@@ -109,14 +109,14 @@
 
       foreach (array_keys(language::$languages) as $language_code) {
 
-        $order_status_info_query = database::query(
+        $order_status_info = database::query(
           "select * from ". DB_TABLE_PREFIX ."order_statuses_info
           where order_status_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
-        );
+        )->fetch();
 
-        if (!$order_status_info = database::fetch($order_status_info_query)) {
+        if (!$order_status_info) {
           database::query(
             "insert into ". DB_TABLE_PREFIX ."order_statuses_info
             (order_status_id, language_code)

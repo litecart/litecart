@@ -30,7 +30,7 @@
 
   function catalog_categories_query($parent_id=0) {
 
-    $categories_query = database::query(
+    $query = database::query(
       "select c.id, c.parent_id, c.image, ci.name, ci.short_description, c.priority, c.date_updated from ". DB_TABLE_PREFIX ."categories c
 
       left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
@@ -55,7 +55,7 @@
       order by c.priority asc, ci.name asc;"
     );
 
-    return $categories_query;
+    return $query;
   }
 
   function catalog_categories_search_query($filter=[]) {
@@ -235,7 +235,7 @@
     }
 
     $query = (
-      "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, ifnull(ptsi.num_stock_items, 0) as num_stock_items, ptsi.quantity, ifnull(ptsi.quantity - oi.quantity_reserved, 0) as quantity_available, pa.attributes, ss.hidden
+      "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, ifnull(pso.num_stock_items, 0) as num_stock_items, pso.quantity, pso.quantity_available, pa.attributes, ss.hidden
 
       from (
         select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, p.keywords, p.image, p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.views, p.purchases, p.date_created
@@ -288,26 +288,27 @@
       ) pc on (pc.product_id = p.id)
 
       left join (
-        select ptsi.product_id, ptsi.stock_item_id, count(ptsi.stock_item_id) as num_stock_items, sum(si.quantity) as quantity
-        from ". DB_TABLE_PREFIX ."products_to_stock_items ptsi
-        left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = ptsi.stock_item_id)
-        group by ptsi.product_id
-      ) ptsi on (ptsi.product_id = p.id)
+        select pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_items, sum(si.quantity) as quantity, (si.quantity - oi.quantity_reserved) as quantity_available
+        from ". DB_TABLE_PREFIX ."products_stock_options pso
+        left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+        left join (
+          select oi.stock_item_id, sum(oi.quantity) as quantity_reserved
+          from ". DB_TABLE_PREFIX ."orders_items oi
+          left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+          where o.order_status_id in (
+            select id from ". DB_TABLE_PREFIX ."order_statuses
+            where stock_action = 'reserve'
+          )
+          group by oi.stock_item_id
+        ) oi on (oi.stock_item_id = pso.stock_item_id)
+        group by pso.product_id
+      ) pso on (pso.product_id = p.id)
 
-      left join (
-        select oi.stock_item_id, sum(oi.quantity) as quantity_reserved from ". DB_TABLE_PREFIX ."orders_items oi
-        left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
-        where o.order_status_id in (
-          select id from ". DB_TABLE_PREFIX ."order_statuses
-          where stock_action = 'reserve'
-        )
-        group by oi.stock_item_id
-      ) oi on (oi.stock_item_id = ptsi.stock_item_id)
 
       left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
 
       where (p.id
-        and (ifnull(ptsi.num_stock_items, 0) = 0 or (ptsi.quantity - oi.quantity_reserved) > 0 or ss.hidden != 1)
+        and (ifnull(pso.num_stock_items, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)
         ". (!empty($filter['sql_where']) ? "and (". $filter['sql_where'] .")" : null) ."
         ". (!empty($filter['product_name']) ? "and pi.name like '%". database::input($filter['product_name']) ."%'" : null) ."
         ". (!empty($filter['campaign']) ? "and campaign_price > 0" : null) ."
@@ -326,7 +327,9 @@
 // Search function using OR syntax
   function catalog_products_search_query($filter=[]) {
 
-    if (!is_array($filter)) trigger_error('Invalid array filter for products query', E_USER_ERROR);
+    if (!is_array($filter)) {
+      trigger_error('Invalid array filter for products query', E_USER_ERROR);
+    }
 
     if (!empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
     if (!empty($filter['brands'])) $filter['brands'] = array_filter($filter['brands']);
@@ -350,7 +353,7 @@
 
       $sql_select_relevance[] = (
         "if(p.id in (
-          select distinct product_id from ". DB_TABLE_PREFIX ."products_to_stock_items
+          select distinct product_id from ". DB_TABLE_PREFIX ."products_stock_options
           where stock_item_id in (
             select id from ". DB_TABLE_PREFIX ."stock_items
             where sku regexp '". database::input($code_regex) ."'
@@ -440,7 +443,7 @@
         "if(id in (
           select distinct product_id
           from ". DB_TABLE_PREFIX ."products_attributes
-          where concat(group_id, '-', value_id) in ('". implode("', '", database::fetch($filter['attributes'])) ."')
+          where concat(group_id, '-', value_id) in ('". implode("', '", database::input($filter['attributes'])) ."')
         ), 1, 0)"
       );
     }
@@ -484,7 +487,7 @@
     }
 
     $query = (
-      "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, count(ptsi.stock_item_id) as quantity, pa.attributes
+      "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, pso.quantity, pso.quantity_available, pa.attributes
 
       from (
         select id, delivery_status_id, sold_out_status_id, code, brand_id, keywords, image, recommended_price, tax_class_id, quantity_unit_id, views, purchases, date_created, (
@@ -529,26 +532,26 @@
       ) pc on (pc.product_id = p.id)
 
       left join (
-        select ptsi.product_id, ptsi.stock_item_id, count(ptsi.stock_item_id) as num_stock_items, sum(si.quantity) as quantity
-        from ". DB_TABLE_PREFIX ."products_to_stock_items ptsi
-        left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = ptsi.stock_item_id)
-        group by ptsi.product_id
-      ) ptsi on (ptsi.product_id = p.id)
-
-      left join (
-        select oi.stock_item_id, sum(oi.quantity) as quantity_reserved from ". DB_TABLE_PREFIX ."orders_items oi
-        left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
-        where o.order_status_id in (
-          select id from ". DB_TABLE_PREFIX ."order_statuses
-          where stock_action = 'reserve'
-        )
-        group by oi.stock_item_id
-      ) oi on (oi.stock_item_id = ptsi.stock_item_id)
+        select pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_items, sum(si.quantity) as quantity, (si.quantity - oi.quantity_reserved) as quantity_available
+        from ". DB_TABLE_PREFIX ."products_stock_options pso
+        left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+        left join (
+          select oi.stock_item_id, sum(oi.quantity) as quantity_reserved
+          from ". DB_TABLE_PREFIX ."orders_items oi
+          left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+          where o.order_status_id in (
+            select id from ". DB_TABLE_PREFIX ."order_statuses
+            where stock_action = 'reserve'
+          )
+          group by oi.stock_item_id
+        ) oi on (oi.stock_item_id = pso.stock_item_id)
+        group by pso.product_id
+      ) pso on (pso.product_id = p.id)
 
       left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
 
       where (p.id
-        and (ptsi.num_stock_items = 0 or ptsi.quantity > 0 or ss.hidden != 1)
+        and (pso.num_stock_items = 0 or pso.quantity_available > 0 or ss.hidden != 1)
         ". (!empty($sql_where) ? implode(" and ", $sql_where) : "") ."
       )
 

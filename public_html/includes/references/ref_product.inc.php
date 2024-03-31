@@ -101,21 +101,19 @@
 
           $this->_data['campaign'] = [];
 
-          $campaigns_query = database::query(
+          database::query(
             "select *, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)) as price
             from ". DB_TABLE_PREFIX ."products_campaigns
             where product_id = ". (int)$this->_data['id'] ."
             and (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
             and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."');"
-          );
-
-          while ($campaign = database::fetch($campaigns_query)) {
+          )->each(function($campaign) {
             if ($campaign['price'] < $this->price) {
               if (!isset($this->_data['campaign']['price']) || $campaign['price'] < $this->_data['campaign']['price']) {
                 $this->_data['campaign'] = $campaign;
               }
             }
-          }
+          });
 
           break;
 
@@ -123,30 +121,25 @@
 
           $this->_data['categories'] = [];
 
-          $products_to_categories_query = database::query(
+          database::query(
             "select * from ". DB_TABLE_PREFIX ."products_to_categories
             where product_id = ". (int)$this->_data['id'] .";"
-          );
+          )->each(function($product_to_category) {
 
-          while ($product_to_category = database::fetch($products_to_categories_query)) {
-            $categories_info_query = database::query(
+            database::query(
               "select * from ". DB_TABLE_PREFIX ."categories_info
               where category_id = ". (int)$product_to_category['category_id'] ."
               and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
               order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-            );
-
-            while ($row = database::fetch($categories_info_query)) {
+            )->each(function($category_info) {
               foreach ($row as $key => $value) {
-
                 if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
-
                 if (empty($this->_data['categories'][$product_to_category['category_id']])) {
                   $this->_data['categories'][$product_to_category['category_id']] = $value;
                 }
               }
-            }
-          }
+            });
+          });
 
           break;
 
@@ -164,23 +157,19 @@
 
           $this->_data['delivery_status'] = [];
 
-          $query = database::query(
+          database::query(
             "select * from ". DB_TABLE_PREFIX ."delivery_statuses_info
             where delivery_status_id = ". (int)$this->_data['delivery_status_id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-          );
-
-          while ($row = database::fetch($query)) {
-            foreach ($row as $key => $value) {
-
+          )->each(function($info) {
+            foreach ($info as $key => $value) {
               if (in_array($key, ['id', 'delivery_status_id', 'language_code'])) continue;
-
               if (empty($this->_data['delivery_status'][$key])) {
                 $this->_data['delivery_status'][$key] = $value;
               }
             }
-          }
+          });
 
           break;
 
@@ -211,19 +200,17 @@
         case 'head_title':
         case 'meta_description':
 
-          $query = database::query(
+          database::query(
             "select * from ". DB_TABLE_PREFIX ."products_info
             where product_id = ". (int)$this->_data['id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-          );
-
-          while ($row = database::fetch($query)) {
+          )->each(function($row) {
             foreach ($row as $key => $value) {
               if (in_array($key, ['id', 'product_id', 'language_code'])) continue;
               if (empty($this->_data[$key])) $this->_data[$key] = $value;
             }
-          }
+          });
 
           if ($this->autofill_technical_data) {
             $this->_data['technical_data'] = '';
@@ -330,23 +317,19 @@
 
           if (!$this->_data['quantity_unit']) return;
 
-          $query = database::query(
+          database::query(
             "select * from ". DB_TABLE_PREFIX ."quantity_units_info
             where quantity_unit_id = ". (int)$this->quantity_unit_id ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-          );
-
-          while ($row = database::fetch($query)) {
-            foreach ($row as $key => $value) {
-
+          )->each(function($info) {
+            foreach ($info as $key => $value) {
               if (in_array($key, ['id', 'quantity_unit_id', 'language_code'])) continue;
-
               if (empty($this->_data['quantity_unit'][$key])) {
                 $this->_data['quantity_unit'][$key] = $value;
               }
             }
-          }
+          });
 
           break;
 
@@ -395,23 +378,19 @@
 
           if (!$this->_data['sold_out_status']) return;
 
-          $query = database::query(
+          database::query(
             "select * from ". DB_TABLE_PREFIX ."sold_out_statuses_info
             where sold_out_status_id = ". (int)$this->_data['sold_out_status_id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-          );
-
-          while ($row = database::fetch($query)) {
-            foreach ($row as $key => $value) {
-
+          )->each(function($info) {
+            foreach ($info as $key => $value) {
               if (in_array($key, ['id', 'sold_out_status_id', 'language_code'])) continue;
-
               if (empty($this->_data['sold_out_status'][$key])) {
                 $this->_data['sold_out_status'][$key] = $value;
               }
             }
-          }
+          });
 
           break;
 

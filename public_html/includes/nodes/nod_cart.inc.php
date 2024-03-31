@@ -90,12 +90,10 @@
         );
       }
 
-      $cart_items_query = database::query(
+      database::query(
         "select * from ". DB_TABLE_PREFIX ."shopping_carts_items
         where cart_uid = '". database::input(session::$data['cart_uid']) ."';"
-      );
-
-      while ($item = database::fetch($cart_items_query)) {
+      )->each(function($item){
 
       // Remove duplicate cart item if present
         if (!empty(self::$items[$item['key']])) {
@@ -112,7 +110,7 @@
         if (isset(self::$items[$item['key']])){
           self::$items[$item['key']]['id'] = $item['id'];
         }
-      }
+      });
     }
 
     public static function add_product($product_id, $stock_option_id=0, $quantity=1, $force=false, $item_key=null) {
