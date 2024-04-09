@@ -79,7 +79,7 @@
 // Page
   $_page = new ent_view();
 
-  document::$schema += [
+  document::$schema['product'] = [
     '@context' => 'http://schema.org/',
     '@type' => 'Product',
     'productID' => $product->id,
@@ -213,7 +213,7 @@
 
 // Manufacturer
   if (!empty($product->manufacturer) && $product->manufacturer->status) {
-    $schema_json['brand']['name'] = $product->manufacturer->name;
+    document::$schema['product']['brand']['name'] = $product->manufacturer->name;
 
     $_page->snippets['manufacturer'] = [
       'id' => $product->manufacturer->id,

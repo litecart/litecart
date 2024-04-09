@@ -10,6 +10,26 @@
     public static $jsenv = [];
 
     public static function init() {
+
+    // Set schema
+      self::$schema['website'] = [
+        '@context' => 'https://schema.org/',
+        '@type' => 'Website',
+        'name' => settings::get('store_name'),
+        'url' => self::ilink(''),
+        'countryOfOrigin' => settings::get('store_country_code'),
+      ];
+
+      self::$schema['organization'] = [
+        '@context' => 'https://schema.org/',
+        '@type' => 'Organization',
+        'name' => settings::get('store_name'),
+        'url' => self::ilink(''),
+        'logo' => self::rlink(FS_DIR_STORAGE . 'images/logotype.png'),
+        'email' => settings::get('store_email'),
+        'availableLanguage' => array_column(language::$languages, 'name'),
+      ];
+
       event::register('before_capture', [__CLASS__, 'before_capture']);
       event::register('prepare_output', [__CLASS__, 'prepare_output']);
       event::register('before_output',  [__CLASS__, 'before_output']);
@@ -64,17 +84,6 @@
         self::$snippets['head_tags']['hreflang'] = trim(self::$snippets['head_tags']['hreflang']);
       }
 
-    // Set schema
-      self::$schema = [
-        '@context' => 'https://schema.org/',
-        '@type' => 'Organization',
-        'name' => settings::get('store_name'),
-        'url' => self::ilink(''),
-        'logo' => self::rlink(FS_DIR_STORAGE . 'images/logotype.png'),
-        'email' => settings::get('store_email'),
-        'availableLanguage' => array_column(language::$languages, 'name'),
-      ];
-
     // Get template settings
       $template_config = include vmod::check(FS_DIR_APP .'includes/templates/'. settings::get('store_template_catalog') .'/config.inc.php');
       if (!is_array($template_config)) include vmod::check(FS_DIR_APP .'includes/templates/'. settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
@@ -94,7 +103,7 @@
       if (!empty(self::$schema)) {
         self::$snippets['head_tags']['schema_json'] = implode(PHP_EOL, [
           '<script type="application/ld+json">',
-          json_encode(self::$schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+          json_encode(array_values(self::$schema), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
           '</script>',
         ]);
       }
