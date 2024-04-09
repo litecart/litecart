@@ -123,7 +123,7 @@
 
       $administrator = database::query(
         "show fields from ". DB_TABLE_PREFIX ."administrators;"
-      )->each(function($field) use ($administrator) {
+      )->each(function($field) use (&$administrator) {
         $administrator[$field['Field']] = database::create_variable($field);
       });
 

@@ -5,9 +5,9 @@
 
     public static function init() {
 
-      if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
+      //if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
         self::reset();
-      }
+      //}
 
     // Bind customer to session
       self::$data = &session::$data['customer'];
@@ -262,7 +262,7 @@
 
       database::query(
         "show fields from ". DB_TABLE_PREFIX ."customers;"
-      )->each(function($field) use ($customer) {
+      )->each(function($field) use (&$customer) {
         $customer[$field['Field']] = database::create_variable($field);
       });
 

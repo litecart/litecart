@@ -114,11 +114,9 @@ table th:last-child {
         </div>
       </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></label>
-          <div><?php echo functions::form_select_language('languages[]', true); ?></div>
-        </div>
+      <div class="form-group">
+        <label><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></label>
+        <div><?php echo functions::form_select_language('languages[]', true); ?></div>
       </div>
 
       <div class="form-group">
@@ -135,7 +133,7 @@ table th:last-child {
       <div class="form-group">
         <label><?php echo language::translate('title_html', 'HTML'); ?></label>
         <div class="form-control" style="padding: 0;">
-          <?php echo functions::form_input_code('html', true, 'placeholder="'. functions::escape_html('<a href="$target_url"><img class="responsive" src="$image_url" /></a>') .'" style="height: 150px;"'); ?>
+          <?php echo functions::form_input_code('html', true, 'placeholder="'. functions::escape_html('<a href="$target_url"><img class="responsive" src="$image_url"></a>') .'" style="height: 150px;"'); ?>
           <div style="padding: 0.5em; background: #efefef;">
             <?php echo language::translate('title_aliases', 'Aliases'); ?>: <em>$uid, $key, $language_code, $image_url, $target_url</em>
           </div>
@@ -214,21 +212,6 @@ table th:last-child {
       "Encapsulates the code with a div wrapper and makes it trackable.\n\n" +
       "When disabled use the following parameters on an element for tracking:\n" +
       "id=\"banner-$uid\" class=\"banner ...\""
-    );
-  });
-
-  $('a.keywords-help').click(function(e){
-    e.preventDefault();
-    alert(
-      "Supported Triggers:\n" +
-      "* Show for all set 'always' or leave blank\n" +
-      "* Show for a certain language set language code e.g. 'en'\n" +
-      "* Show for a certain banner set banner code e.g. 'US'\n" +
-      "* Language and banner combined e.g. 'en-US'\n" +
-      "* Show for users coming from a Google Analytics campaign, set your utm_campaign value\n" +
-      "* Show when nothing else was matched set '?'\n" +
-      "\n" +
-      "Example: en,US,?"
     );
   });
 </script>

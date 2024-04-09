@@ -39,7 +39,7 @@
       where type in ('shipping', 'payment')
       and status
       order by type, id;"
-    )->each(function($module) use ($site_footer) {
+    )->each(function($module) use (&$site_footer) {
       $module['settings'] = json_decode($module['settings'], true);
 
       if (empty($module['settings']['icon'])) return;

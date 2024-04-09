@@ -132,7 +132,7 @@
     <?php echo functions::form_begin('stock_item_form', 'post', false, true); ?>
 
       <div class="row">
-        <div class="col-xl-6">
+        <div class="<?php echo (is_ajax_load()) ? 'col-xl-12' : 'col-xl-6'; ?>">
 
           <div class="form-group">
             <label><?php echo language::translate('title_name', 'Name'); ?></label>
@@ -140,7 +140,7 @@
           </div>
 
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
               <div class="form-group">
                 <label><?php echo language::translate('title_image', 'Image'); ?></label>
 
@@ -156,7 +156,7 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-8">
               <div class="form-group references">
                 <label><?php echo language::translate('title_references', 'References'); ?></label>
                 <div class="input-group">
@@ -266,8 +266,7 @@
           </div>
         </div>
 
-        <?php if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') { ?>
-        <div class="col-xl-6">
+        <div class="<?php echo (is_ajax_load()) ? 'col-xl-12' : 'col-xl-6'; ?>">
           <h2><?php echo language::translate('title_references', 'References'); ?></h2>
 
           <div class="table-responsive">
@@ -299,7 +298,7 @@
             </table>
           </div>
         </div>
-        <?php } ?>
+
       </div>
 
       <div class="card-action">

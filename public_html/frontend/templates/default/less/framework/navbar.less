@@ -3,7 +3,6 @@
 .navbar {
   display: flex;
   flex-direction: row;
-  position: relative;
   border-radius: var(--border-radius);
   color: ~"var(--navigation-text-color)";
 
@@ -23,7 +22,7 @@
     flex: 1 1 auto;
     a {
       display: inline-flex;
-      padding: .5em 1em;
+      padding: .75em 1em;
       font-weight: bold;
       text-decoration: none;
       &:hover {
@@ -164,7 +163,7 @@
 
   .dropdown-menu {
     padding: .75em;
-    min-width: fit-content;
+    min-width: max-content;
     margin-top: -1px;
     border-top: none;
     //border-start-start-radius: 0;

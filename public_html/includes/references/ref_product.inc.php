@@ -131,11 +131,11 @@
               where category_id = ". (int)$product_to_category['category_id'] ."
               and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
               order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-            )->each(function($category_info) {
-              foreach ($row as $key => $value) {
+            )->each(function($info) {
+              foreach ($info as $key => $value) {
                 if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
-                if (empty($this->_data['categories'][$product_to_category['category_id']])) {
-                  $this->_data['categories'][$product_to_category['category_id']] = $value;
+                if (empty($this->_data['categories'][$info['category_id']])) {
+                  $this->_data['categories'][$info['category_id']] = $value;
                 }
               }
             });
@@ -199,6 +199,7 @@
         case 'technical_data':
         case 'head_title':
         case 'meta_description':
+        case 'synonyms':
 
           database::query(
             "select * from ". DB_TABLE_PREFIX ."products_info
@@ -219,6 +220,8 @@
             }
             $this->_data['technical_data'] = rtrim($this->_data['technical_data']);
           }
+
+          $this->_data['synonyms'] = preg_split('#\s*,\s*#', (string)$this->_data['synonyms'], -1, PREG_SPLIT_NO_EMPTY);
 
           break;
 
@@ -419,7 +422,6 @@
           }
 
           $this->_data['keywords'] = preg_split('#\s*,\s*#', (string)$this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
-          $this->_data['synonyms'] = preg_split('#\s*,\s*#', (string)$this->_data['synonyms'], -1, PREG_SPLIT_NO_EMPTY);
 
           break;
       }

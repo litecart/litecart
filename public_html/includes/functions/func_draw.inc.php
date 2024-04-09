@@ -294,10 +294,10 @@
     document::load_style('app://assets/featherlight/featherlight.min.css', 'featherlight');
     document::load_script('app://assets/featherlight/featherlight.min.js', 'featherlight');
     document::$javascript['featherlight'] = implode(PHP_EOL, [
-      "$.featherlight.autoBind = '[data-toggle=\"lightbox\"]';",
-      "$.featherlight.defaults.loading = '<div class=\"loader\" style=\"width: 128px; height: 128px; opacity: 0.5;\"></div>';",
-      "$.featherlight.defaults.closeIcon = '&#x2716;';",
-      "$.featherlight.defaults.targetAttr = 'data-target';",
+      '$.featherlight.autoBind = \'[data-toggle="lightbox"]\';',
+      '$.featherlight.defaults.loading = \'<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>\';',
+      '$.featherlight.defaults.closeIcon = \'&#x2716;\';',
+      '$.featherlight.defaults.targetAttr = \'data-target\';',
     ]);
 
     $selector = str_replace("'", '"', $selector);
@@ -305,41 +305,41 @@
     if (empty($selector)) return;
 
     if (preg_match('#^(https?:)?//#', $selector)) {
-      $js = ['  $.featherlight(\''. $selector .'\', {'];
+      $js = ['$.featherlight(\''. $selector .'\', {'];
     } else {
-      $js = ['  $(\''. $selector .'\').featherlight({'];
+      $js = ['$(\''. $selector .'\').featherlight({'];
     }
 
     foreach ($parameters as $key => $value) {
       switch (gettype($parameters[$key])) {
 
         case 'NULL':
-          $js[] = '    '. $key .': null,';
+          $js[] = '  '. $key .': null,';
           break;
 
         case 'boolean':
-          $js[] = '    '. $key .': '. ($value ? 'true' : 'false') .',';
+          $js[] = '  '. $key .': '. ($value ? 'true' : 'false') .',';
           break;
 
         case 'integer':
-          $js[] = '    '. $key .': '. $value .',';
+          $js[] = '  '. $key .': '. $value .',';
           break;
 
         case 'string':
           if (preg_match('#^function\s*\(#', $value)) {
-            $js[] = '    '. $key .': '. $value .',';
+            $js[] = '  '. $key .': '. $value .',';
           } else {
-            $js[] = '    '. $key .': "'. addslashes($value) .'",';
+            $js[] = '  '. $key .': "'. addslashes($value) .'",';
           }
           break;
 
         case 'array':
-          $js[] = '    '. $key .': ["'. implode('", "', $value) .'"],';
+          $js[] = '  '. $key .': ["'. implode('", "', $value) .'"],';
           break;
       }
     }
 
-    $js[] = '  });';
+    $js[] = '});';
 
     document::$javascript['featherlight-'.$selector] = implode(PHP_EOL, $js);
   }

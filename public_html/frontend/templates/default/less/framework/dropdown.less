@@ -16,7 +16,6 @@
     //top: 100%;
     left: 0;
     right: 0;
-    min-width: 160px;
     padding: .5em;
     margin: 2px 0 0;
     list-style: none;
@@ -76,7 +75,6 @@
 
     @media (min-width: @media-breakpoint-sm) {
       .navbar-form {
-        min-width: 320px;
         margin: 1rem;
       }
     }
@@ -93,7 +91,7 @@
   &.open {
     //z-index: 1;
     > .dropdown-menu {
-      display: block;
+      display: flex;
       //z-index: -1;
     }
     > a {
@@ -108,7 +106,8 @@
   position: relative;
   z-index: 1;
   .dropdown-menu {
-    display: block;
+    display: flex;
+    flex-direction: column;
     transform-origin: 0px 0px;
     transform: rotateX(-25deg);
     transition: 250ms;

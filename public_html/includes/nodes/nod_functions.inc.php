@@ -18,8 +18,8 @@
         '#^form_draw_(.*?)s_list$#' => 'form_select_$1',
         '#^form_draw_form_(.*?)$#' => 'form_$2',
         '#^form_draw_(.*?)_field$#' => 'form_input_$2',
-        '#^form_draw_checkbox$#' => 'form_input_checkbox',
-        '#^form_draw_radio_button$#' => 'form_input_radio_button',
+        '#^form_draw_checkbox$#' => 'form_checkbox',
+        '#^form_draw_radio_button$#' => 'form_radio_button',
         '#^form_draw_textarea$#' => 'form_input_textarea',
       ];
 

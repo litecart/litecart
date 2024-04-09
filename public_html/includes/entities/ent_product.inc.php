@@ -143,7 +143,7 @@
 
       foreach ($this->data['stock_options'] as $key => $stock_option) {
 
-        $stock_option_info = database::query(
+        $stock_option_info_query = database::query(
           "select * from ". DB_TABLE_PREFIX ."stock_items_info
            where stock_item_id = ". (int)$stock_option['id'] .";"
         );

@@ -21,6 +21,7 @@ body main {
 #site-top-navigation {
   background: var(--top-navigation-background-color);
   color: var(--top-navigation-text-color);
+  z-index: 999999;
 }
 #site-top-navigation .container {
   display: flex;
@@ -35,7 +36,9 @@ body main {
   padding: 0.25em 0.5em;
 }
 #site-navigation {
+  position: relative;
   padding-bottom: 0;
+  z-index: 1;
 }
 @media (min-width: 768px) {
   #site-navigation {
@@ -45,7 +48,8 @@ body main {
     background-color: var(--navigation-background-color);
   }
   #site-navigation .categories .dropdown-menu {
-    columns: 2;
+    flex-wrap: wrap;
+    max-height: 400px;
   }
   #site-navigation .categories .dropdown-menu li {
     break-inside: avoid;
@@ -83,9 +87,6 @@ body main {
 #site-navigation .shopping-cart img {
   margin: -0.5em 0;
   max-height: 36px;
-}
-#site-navigation .shopping-cart .dropdown-menu {
-  min-width: 320px;
 }
 #site-navigation .shopping-cart .badge {
   position: absolute;
@@ -213,6 +214,9 @@ body main {
   backdrop-filter: saturate(200%) blur(5px);
   color: var(--cookie-notice-text-color);
   z-index: 999;
+}
+#box-cookie-notice a {
+  color: inherit;
 }
 #box-cookie-notice .buttons {
   margin-top: 1em;
@@ -383,16 +387,17 @@ body main {
 .listing .product {
   background: var(--whitespace-color);
   font-size: calc(var(--default-text-size) - 1px);
-  border-radius: var(--border-radius);
   transform: scale(1);
   transition: all 100ms linear;
-  border: 1px solid var(--card-border-color);
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
+  overflow: hidden;
 }
 @media (min-width: 576px) {
   .listing .product:hover {
-    border-color: var(--listing-border-color);
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--listing-border-color);
     transform: scale(1.02);
+    background: #fff;
   }
 }
 .listing .product .link {
@@ -401,6 +406,9 @@ body main {
 }
 .listing .product .image-wrapper {
   background: var(--whitespace-color);
+}
+.listing .product .image-wrapper .thumbnail {
+  padding: 2rem;
 }
 .listing .product .image-wrapper .sticker {
   position: absolute;
@@ -615,11 +623,6 @@ body main {
   [data-toggle="momentumScroll"] .listing .product {
     flex: 0 0 calc(20% - 2em);
   }
-}
-#view-full-page {
-  float: right;
-  display: inline-block;
-  padding: 0.5rem 1rem;
 }
 #box-product .images {
   margin-bottom: 2rem;

@@ -37,7 +37,7 @@ input[type="number"] {
     content: ' *';
     color: #f00;
   }
-  &:not([class*=col-]) {
+  &:not([class*=col-]):not(:last-child) {
     margin-bottom: 1em;
   }
   > label:not(.form-check) {

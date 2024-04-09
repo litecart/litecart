@@ -93,7 +93,7 @@ button {
   -webkit-appearance: button;
 }
 fieldset {
-  padding: 0.35em 0.75em 0.625em;
+  padding: 1em;
 }
 legend {
   color: inherit;
@@ -215,7 +215,7 @@ fieldset {
   border-radius: var(--border-radius);
 }
 hr {
-  margin: var(--gutter-size) 0;
+  margin: 1em 0;
   border: 0;
   border-top: 1px solid var(--default-border-color);
 }
@@ -232,7 +232,7 @@ hr {
 }
 .banner {
   border-radius: var(--border-radius);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
 /* Boxes */
@@ -843,7 +843,6 @@ hr {
   position: fixed;
   left: 0;
   right: 0;
-  min-width: 160px;
   padding: 0.5em;
   margin: 2px 0 0;
   list-style: none;
@@ -897,7 +896,6 @@ hr {
 }
 @media (min-width: 576px) {
   .dropdown .dropdown-menu .navbar-form {
-    min-width: 320px;
     margin: 1rem;
   }
 }
@@ -906,7 +904,7 @@ hr {
   left: 100%;
 }
 .dropdown.open > .dropdown-menu {
-  display: block;
+  display: flex;
 }
 .dropdown.open > a {
   outline: 0;
@@ -917,7 +915,8 @@ hr {
   z-index: 1;
 }
 .dropdown .dropdown-menu {
-  display: block;
+  display: flex;
+  flex-direction: column;
   transform-origin: 0px 0px;
   transform: rotateX(-25deg);
   transition: 250ms;
@@ -1036,7 +1035,6 @@ tr.semi-transparent td {
   align-items: center;
 }
 .row [class*="col-"] {
-  position: relative;
   grid-column: span 12;
 }
 @media (min-width: 576px) {
@@ -1353,7 +1351,7 @@ input[type="number"] {
   content: ' *';
   color: #f00;
 }
-.form-group:not([class*=col-]) {
+.form-group:not([class*=col-]):not(:last-child) {
   margin-bottom: 1em;
 }
 .form-group > label:not(.form-check) {
@@ -1568,7 +1566,6 @@ fieldset[disabled] > :not(legend),
   height: auto;
   line-height: var(--default-line-height);
   background-color: var(--whitespace-color);
-  border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
   transition: border 200ms ease-in-out;
   margin-inline-end: auto;
@@ -1738,7 +1735,6 @@ ul.list-inline li {
 .navbar {
   display: flex;
   flex-direction: row;
-  position: relative;
   border-radius: var(--border-radius);
   color: var(--navigation-text-color);
 }
@@ -1756,7 +1752,7 @@ ul.list-inline li {
 }
 .navbar .navbar-brand a {
   display: inline-flex;
-  padding: 0.5em 1em;
+  padding: 0.75em 1em;
   font-weight: bold;
   text-decoration: none;
 }
@@ -1889,7 +1885,7 @@ ul.list-inline li {
 }
 .navbar .dropdown-menu {
   padding: 0.75em;
-  min-width: fit-content;
+  min-width: max-content;
   margin-top: -1px;
   border-top: none;
 }
