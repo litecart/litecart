@@ -367,9 +367,9 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div class="form-input">
-                <?php echo functions::form_input_radio_button('type', ['addresses', language::translate('title_addresses', 'Addresses')], true); ?>
-                <?php echo functions::form_input_radio_button('type', ['customers', language::translate('title_customers', 'Customers')], true); ?>
-                <?php echo functions::form_input_radio_button('type', ['newsletter_recipients', language::translate('title_newsletter_recipients', 'Newsletter Recipients')], true); ?>
+                <?php echo functions::form_radio_button('type', ['addresses', language::translate('title_addresses', 'Addresses')], true); ?>
+                <?php echo functions::form_radio_button('type', ['customers', language::translate('title_customers', 'Customers')], true); ?>
+                <?php echo functions::form_radio_button('type', ['newsletter_recipients', language::translate('title_newsletter_recipients', 'Newsletter Recipients')], true); ?>
               </div>
             </div>
 
@@ -401,9 +401,9 @@
             </div>
 
             <div class="form-group">
-              <?php echo functions::form_input_checkbox('reset', ['1', language::translate('text_wipe_storage_clean_before_inserting_data', 'Wipe storage clean before inserting data')], true); ?>
-              <?php echo functions::form_input_checkbox('insert', ['1', language::translate('text_insert_new_entries', 'Insert new entries')], true); ?>
-              <?php echo functions::form_input_checkbox('overwrite', ['1', language::translate('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
+              <?php echo functions::form_checkbox('reset', ['1', language::translate('text_wipe_storage_clean_before_inserting_data', 'Wipe storage clean before inserting data')], true); ?>
+              <?php echo functions::form_checkbox('insert', ['1', language::translate('text_insert_new_entries', 'Insert new entries')], true); ?>
+              <?php echo functions::form_checkbox('overwrite', ['1', language::translate('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
             </div>
 
             <?php echo functions::form_button('import', language::translate('title_import', 'Import'), 'submit'); ?>
@@ -421,9 +421,9 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div class="form-input">
-                <?php echo functions::form_input_radio_button('type', ['addresses', language::translate('title_addresses', 'Addresses')], true); ?>
-                <?php echo functions::form_input_radio_button('type', ['customers', language::translate('title_customers', 'Customers')], true); ?>
-                <?php echo functions::form_input_radio_button('type', ['newsletter_recipients', language::translate('title_newsletter_recipients', 'Newsletter Recipients')], true); ?>
+                <?php echo functions::form_radio_button('type', ['addresses', language::translate('title_addresses', 'Addresses')], true); ?>
+                <?php echo functions::form_radio_button('type', ['customers', language::translate('title_customers', 'Customers')], true); ?>
+                <?php echo functions::form_radio_button('type', ['newsletter_recipients', language::translate('title_newsletter_recipients', 'Newsletter Recipients')], true); ?>
               </div>
             </div>
 

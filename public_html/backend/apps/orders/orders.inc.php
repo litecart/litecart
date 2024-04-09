@@ -312,7 +312,7 @@ table .fa-star:hover {
       <tbody>
         <?php foreach ($orders as $order) { ?>
         <tr class="<?php echo implode(' ', $order['css_classes']); ?>" data-id="<?php echo $order['id']; ?>">
-          <td><?php echo functions::form_input_checkbox('orders[]', $order['id'], true); ?></td>
+          <td><?php echo functions::form_checkbox('orders[]', $order['id'], true); ?></td>
           <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
           <td class="text-end"><?php echo $order['no']; ?></td>
           <td><?php echo !empty($order['starred']) ? functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?></td>

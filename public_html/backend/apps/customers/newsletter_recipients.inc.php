@@ -122,7 +122,7 @@
       <tbody>
         <?php foreach ($recipients as $recipient) { ?>
         <tr>
-          <td><?php echo functions::form_input_checkbox('recipients[]', $recipient['id']); ?></td>
+          <td><?php echo functions::form_checkbox('recipients[]', $recipient['id']); ?></td>
           <td><?php echo $recipient['id']; ?></td>
           <td><?php echo $recipient['email']; ?></td>
           <td><?php echo $recipient['name']; ?></td>

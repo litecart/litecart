@@ -80,7 +80,7 @@
       <tbody>
         <?php foreach ($currencies as $currency) { ?>
         <tr class="<?php if (empty($currency['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_input_checkbox('currencies[]', $currency['code']); ?></td>
+          <td><?php echo functions::form_checkbox('currencies[]', $currency['code']); ?></td>
           <td><?php echo functions::draw_fonticon(($currency['status'] == 1) ? 'on' : (($currency['status'] == -1) ? 'semi-off' : 'off')); ?></td>
           <td><?php echo $currency['id']; ?></td>
           <td><?php echo $currency['code']; ?></td>

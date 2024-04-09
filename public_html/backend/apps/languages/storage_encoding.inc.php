@@ -98,7 +98,7 @@
       <tbody>
         <?php foreach ($tables as $table) { ?>
         <tr>
-          <td><?php echo functions::form_input_checkbox('tables[]', $table['TABLE_NAME'], true); ?></td>
+          <td><?php echo functions::form_checkbox('tables[]', $table['TABLE_NAME'], true); ?></td>
           <td><?php echo $table['TABLE_NAME']; ?></td>
           <td><?php echo $table['TABLE_COLLATION']; ?></td>
           <td><?php echo $table['ENGINE']; ?></td>
@@ -121,7 +121,7 @@
         </div>
 
         <div class="form-group">
-          <?php echo functions::form_input_checkbox('set_database_default', ['1', language::translate('text_also_set_as_database_default', 'Also set as database default (when new tables are created)')], true); ?>
+          <?php echo functions::form_checkbox('set_database_default', ['1', language::translate('text_also_set_as_database_default', 'Also set as database default (when new tables are created)')], true); ?>
         </div>
       </div>
 

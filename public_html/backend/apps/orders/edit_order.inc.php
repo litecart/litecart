@@ -356,10 +356,10 @@
     <div class="card-action">
       <ul class="list-inline">
         <li>
-          <?php echo functions::form_input_checkbox('send_order_copy', ['1', language::translate('text_send_order_copy_email', 'Send order copy email')], true); ?>
+          <?php echo functions::form_checkbox('send_order_copy', ['1', language::translate('text_send_order_copy_email', 'Send order copy email')], true); ?>
         </li>
         <li>
-          <?php echo functions::form_input_checkbox('unread', ['1', language::translate('title_mark_as_unread', 'Mark as unread')], false); ?>
+          <?php echo functions::form_checkbox('unread', ['1', language::translate('title_mark_as_unread', 'Mark as unread')], false); ?>
         </li>
         <li>
           <?php echo functions::form_button_predefined('save'); ?>
@@ -703,7 +703,7 @@
 
                 <div class="actions">
                   <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
-                  <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_input_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
+                  <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
                 </div>
               </div>
               <?php } ?>
@@ -743,7 +743,7 @@
       <tbody>
         <?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
         <tr class="item">
-          <td><?php echo functions::form_input_checkbox('selected_items[]', $key, true); ?></td>
+          <td><?php echo functions::form_checkbox('selected_items[]', $key, true); ?></td>
           <td class="grabable">
             <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('f:product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
             <?php echo functions::form_input_hidden('items['.$key.'][id]', true); ?>
@@ -830,7 +830,7 @@
           <td><?php echo functions::form_input_text('order_total['. $key .'][title]', true, 'class="form-input text-end"'); ?></td>
           <td>
             <div class="input-group">
-            <span class="input-group-text"><?php echo functions::form_input_checkbox('order_total['. $key .'][calculate]', ['1', functions::draw_fonticon('fa-calculator')], true, 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
+            <span class="input-group-text"><?php echo functions::form_checkbox('order_total['. $key .'][calculate]', ['1', functions::draw_fonticon('fa-calculator')], true, 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
             <?php echo functions::form_input_money('order_total['. $key .'][value]', $_POST['currency_code'], true); ?>
             </div>
           </td>
@@ -853,7 +853,7 @@
           <td><?php echo functions::form_input_text('order_total['.$key.'][title]', true, 'class="form-input text-end"'); ?></td>
           <td>
             <div class="input-group">
-            <span class="input-group-text"><?php echo functions::form_input_checkbox('order_total['.$key.'][calculate]', ['1', functions::draw_fonticon('fa-calculator')], true, 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
+            <span class="input-group-text"><?php echo functions::form_checkbox('order_total['.$key.'][calculate]', ['1', functions::draw_fonticon('fa-calculator')], true, 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
             <?php echo functions::form_input_money('order_total['.$key.'][value]', $_POST['currency_code'], true); ?>
             </div>
           </td>
@@ -1302,8 +1302,8 @@
       '  <?php echo functions::escape_js(functions::form_input_textarea('comments[new_comment_index][text]', '')); ?>',
       '  <div class="date"><?php echo language::strftime(language::$selected['format_datetime']); ?></div>',
       '  <div class="actions">',
-      '    <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_input_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('fa-envelope')], true)); ?> </label>',
-      '    <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_input_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('fa-eye-slash')], true)); ?></label>',
+      '    <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('fa-envelope')], true)); ?> </label>',
+      '    <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('fa-eye-slash')], true)); ?></label>',
       '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw'); ?></a>',
       '  </div>',
       '</div>'
@@ -1604,7 +1604,7 @@
       '    <td><?php echo functions::escape_js(functions::form_input_text('order_total[new_ot_row_index][title]', '', 'class="form-input text-end"')); ?></td>',
       '    <td>',
       '      <div class="input-group">',
-      '        <span class="input-group-text"><?php echo functions::escape_js(functions::form_input_checkbox('order_total[new_ot_row_index][calculate]', ['1', functions::draw_fonticon('fa-calculator')], '1', 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>',
+      '        <span class="input-group-text"><?php echo functions::escape_js(functions::form_checkbox('order_total[new_ot_row_index][calculate]', ['1', functions::draw_fonticon('fa-calculator')], '1', 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>',
       '        <?php echo functions::escape_js(functions::form_input_money('order_total[new_ot_row_index][value]', $_POST['currency_code'], currency::format_raw(0))); ?>',
       '      </div>',
       '    </td>',

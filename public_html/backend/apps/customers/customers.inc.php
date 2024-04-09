@@ -120,7 +120,7 @@
       <tbody>
         <?php foreach ($customers as $customer) { ?>
         <tr class="<?php if (empty($customer['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_input_checkbox('customers[]', $customer['id']); ?></td>
+          <td><?php echo functions::form_checkbox('customers[]', $customer['id']); ?></td>
           <td><?php echo functions::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $customer['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>"><?php echo $customer['email']; ?></a></td>

@@ -247,14 +247,14 @@
 
             <?php if (!$subscribed_to_newsletter) { ?>
             <div class="form-group">
-              <?php echo functions::form_input_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
+              <?php echo functions::form_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
             </div>
             <?php } ?>
 
             <?php if (settings::get('customer_shipping_address')) { ?>
             <div class="address shipping-address">
 
-              <h3><?php echo functions::form_input_checkbox('different_shipping_address', ['1', language::translate('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['different_shipping_address']) ? '1' : true, 'style="margin: 0px;"'); ?></h3>
+              <h3><?php echo functions::form_checkbox('different_shipping_address', ['1', language::translate('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['different_shipping_address']) ? '1' : true, 'style="margin: 0px;"'); ?></h3>
 
               <fieldset<?php if (empty($_POST['different_shipping_address'])) echo ' style="display: none;" disabled'; ?>>
 
@@ -332,14 +332,14 @@
 
             <?php if (!empty(customer::$data['id'])) { ?>
             <div class="form-group">
-              <?php echo functions::form_input_checkbox('save_to_account', ['1', language::translate('title_save_details_to_my_account', 'Save details to my account')], true, 'style="margin: 0px;"'); ?>
+              <?php echo functions::form_checkbox('save_to_account', ['1', language::translate('title_save_details_to_my_account', 'Save details to my account')], true, 'style="margin: 0px;"'); ?>
             </div>
             <?php } ?>
 
             <div class="account">
 
               <?php if (!$account_exists) { ?>
-              <h3><?php echo functions::form_input_checkbox('create_account', ['1', language::translate('title_create_account', 'Create Account')], (!empty($_POST['customer']['create_account']) || settings::get('register_guests')) ? '1': true, 'style="margin: 0px;"' . (settings::get('register_guests') ? ' disabled' : '')); ?></h3>
+              <h3><?php echo functions::form_checkbox('create_account', ['1', language::translate('title_create_account', 'Create Account')], (!empty($_POST['customer']['create_account']) || settings::get('register_guests')) ? '1': true, 'style="margin: 0px;"' . (settings::get('register_guests') ? ' disabled' : '')); ?></h3>
               <?php if (settings::get('register_guests')) echo functions::form_input_hidden('create_account', '1'); ?>
 
               <fieldset<?php if (empty($_POST['customer']['create_account'])) echo ' style="display: none;" disabled'; ?>>

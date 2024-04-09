@@ -44,7 +44,7 @@
       <tbody>
         <?php foreach ($quantity_units as $quantity_unit) { ?>
         <tr>
-          <td><?php echo functions::form_input_checkbox('quantity_units[]', $quantity_unit['id']); ?></td>
+          <td><?php echo functions::form_checkbox('quantity_units[]', $quantity_unit['id']); ?></td>
           <td><?php echo $quantity_unit['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_quantity_unit', ['quantity_unit_id' => $quantity_unit['id']]); ?>"><?php echo $quantity_unit['name']; ?></a></td>
           <td><?php echo $quantity_unit['description']; ?></td>

@@ -64,7 +64,7 @@
           <th></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
-          <th><?php echo language::translate('title_triggers', 'Triggers'); ?></th>
+          <th><?php echo language::translate('title_keywords', 'Keywords'); ?></th>
           <th class="text-center"><?php echo language::translate('title_clicks', 'Clicks'); ?></th>
           <th class="text-center"><?php echo language::translate('title_views', 'Views'); ?></th>
           <th class="text-center"><?php echo language::translate('title_ratio', 'Ratio'); ?></th>
@@ -77,7 +77,7 @@
       <tbody>
         <?php foreach ($banners as $banner) { ?>
         <tr class="<?php echo $banner['status'] ? false : ' semi-transparent'; ?>">
-          <td><?php echo functions::form_input_checkbox('banners[]', $banner['id']); ?></td>
+          <td><?php echo functions::form_checkbox('banners[]', $banner['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($banner['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
           <td><?php echo $banner['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>"><?php echo $banner['name']; ?></a></td>

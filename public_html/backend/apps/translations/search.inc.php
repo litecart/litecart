@@ -103,8 +103,8 @@ th:not(:last-child) {
   <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
       <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
-      <?php echo functions::form_input_checkbox('untranslated', ['1', language::translate('text_only_untranslated', 'Only untranslated')]); ?>
-      <?php echo functions::form_input_checkbox('modules', ['1', language::translate('text_inlcude_modules', 'Include modules')]); ?>
+      <?php echo functions::form_checkbox('untranslated', ['1', language::translate('text_only_untranslated', 'Only untranslated')]); ?>
+      <?php echo functions::form_checkbox('modules', ['1', language::translate('text_inlcude_modules', 'Include modules')]); ?>
       <?php echo functions::form_select_dropdown('languages[]', $language_options, true); ?>
       <div style="max-width: max-content;"><?php echo functions::form_select('endpoint', ['' => '-- '. language::translate('title_all', 'All') .' --', 'frontend' => language::translate('title_frontend', 'Frontend'), 'backend' => language::translate('title_backend', 'Backend')]); ?></div>
       <?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
@@ -128,7 +128,7 @@ th:not(:last-child) {
           <tr>
             <td>
               <code class="code"><?php echo $translation['code']; ?></code><br>
-              <span style="color: #999;"><?php echo functions::form_input_checkbox('translations['. $translation['code'] .'][html]', ['1', language::translate('text_enable_html', 'Enable HTML')], (isset($_POST['translations'][$translation['code']]['html']) ? $_POST['translations'][$translation['code']]['html'] : $translation['html'])); ?></span>
+              <span style="color: #999;"><?php echo functions::form_checkbox('translations['. $translation['code'] .'][html]', ['1', language::translate('text_enable_html', 'Enable HTML')], (isset($_POST['translations'][$translation['code']]['html']) ? $_POST['translations'][$translation['code']]['html'] : $translation['html'])); ?></span>
             </td>
             <?php foreach ($_GET['languages'] as $key => $language_code) { ?>
             <td>

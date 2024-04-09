@@ -81,7 +81,7 @@
       <tbody>
         <?php foreach ($geo_zones as $geo_zone) { ?>
         <tr>
-          <td><?php echo functions::form_input_checkbox('geo_zones[]', $geo_zone['id']); ?></td>
+          <td><?php echo functions::form_checkbox('geo_zones[]', $geo_zone['id']); ?></td>
           <td><?php echo $geo_zone['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>"><?php echo $geo_zone['name']; ?></a></td>
           <td class="text-center"><?php echo $geo_zone['num_zones']; ?></td>

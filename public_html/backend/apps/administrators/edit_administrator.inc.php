@@ -179,17 +179,17 @@
 
         <div class="col-md-4">
           <div id="app-permissions" class="form-group">
-            <?php echo functions::form_input_checkbox('apps_toggle', ['1', language::translate('title_apps', 'Apps')]); ?>
+            <?php echo functions::form_checkbox('apps_toggle', ['1', language::translate('title_apps', 'Apps')]); ?>
             <div class="form-input" style="height: 400px; overflow-y: scroll;">
               <ul class="list-unstyled">
 <?php
   foreach (functions::admin_get_apps() as $app) {
     echo implode(PHP_EOL, [
       '<li data-app="'. functions::escape_html($app['id']) .'">',
-      '  '. functions::form_input_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true),
+      '  '. functions::form_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true),
       '  <ul class="list-unstyled">',
       implode(PHP_EOL, array_map(function($doc) use ($app) {
-        return '    <li data-doc="'. functions::escape_html($doc) .'">'. functions::form_input_checkbox('apps['.$app['id'].'][docs][]', [$doc], true) .'</li>';
+        return '    <li data-doc="'. functions::escape_html($doc) .'">'. functions::form_checkbox('apps['.$app['id'].'][docs][]', [$doc], true) .'</li>';
       }, array_keys($app['docs']))),
       '  </ul>',
       '</li>',
@@ -201,14 +201,14 @@
           </div>
 
           <div id="widget-permissions" class="form-group">
-            <?php echo functions::form_input_checkbox('widgets_toggle', ['1', language::translate('title_widgets', 'Widgets')]); ?>
+            <?php echo functions::form_checkbox('widgets_toggle', ['1', language::translate('title_widgets', 'Widgets')]); ?>
             <div class="form-input" style="height: 150px; overflow-y: scroll;">
               <ul class="list-unstyled">
 <?php
   foreach (functions::admin_get_widgets() as $widget) {
     echo implode(PHP_EOL, [
       '<li>',
-      '  '. functions::form_input_checkbox('widgets['.$widget['id'].']', ['1', $widget['name']], true),
+      '  '. functions::form_checkbox('widgets['.$widget['id'].']', ['1', $widget['name']], true),
       '</li>',
     ]);
   }

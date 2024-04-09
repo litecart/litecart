@@ -113,7 +113,7 @@
 
                   <div class="form-group">
                     <div class="checkbox">
-                      <label><?php echo functions::form_input_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
+                      <label><?php echo functions::form_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
                     </div>
                   </div>
 

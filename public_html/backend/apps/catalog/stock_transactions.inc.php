@@ -65,7 +65,7 @@
       <tbody>
       <?php foreach ($transactions as $transaction) { ?>
       <tr>
-        <td><?php echo functions::form_input_checkbox('stock_transactions[]', $transaction['id']); ?></td>
+        <td><?php echo functions::form_checkbox('stock_transactions[]', $transaction['id']); ?></td>
         <td><?php echo $transaction['id']; ?></td>
         <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>"><?php echo $transaction['name']; ?></a></td>
         <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($transaction['date_created'])); ?></td>

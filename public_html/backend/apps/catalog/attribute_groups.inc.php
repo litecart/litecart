@@ -45,7 +45,7 @@
       <tbody>
         <?php foreach ($attribute_groups as $attribute_group) { ?>
         <tr>
-          <td><?php echo functions::form_input_checkbox('attributes[]', $attribute_group['id']); ?></td>
+          <td><?php echo functions::form_checkbox('attributes[]', $attribute_group['id']); ?></td>
           <td class="text-center"><?php echo $attribute_group['id']; ?></td>
           <td><?php echo $attribute_group['code']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_attribute_group', ['group_id' => $attribute_group['id']]); ?>"><?php echo $attribute_group['name']; ?></a></td>

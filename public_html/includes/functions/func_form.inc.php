@@ -89,7 +89,7 @@
     return functions::captcha_draw($id, $config, $parameters);
 	}
 
-  function form_input_checkbox($name, $value, $input=true, $parameters='') {
+  function form_checkbox($name, $value, $input=true, $parameters='') {
 
     if (is_array($value)) {
 
@@ -395,7 +395,7 @@
 		]);
   }
 
-  function form_input_radio_button($name, $value, $input=true, $parameters='') {
+  function form_radio_button($name, $value, $input=true, $parameters='') {
 
     if (is_array($value)) {
 
@@ -632,7 +632,7 @@
 
 		$html = '<select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-select"' : '') .' name="'. functions::escape_html($name) .'"'. ($parameters ? ' ' . $parameters : '') .'>' . PHP_EOL;
 
-    $is_numerical_index = (array_keys($options) === range(0, count($options) - 1));
+    $is_numerical_index = array_is_list($options);
 
     foreach ($options as $key => $option) {
 
@@ -666,7 +666,7 @@
       '  <ul class="dropdown-menu">',
     ]);
 
-    $is_numerical_index = (array_keys($options) === range(0, count($options) - 1));
+    $is_numerical_index = array_is_list($options);
 
     foreach ($options as $key => $option) {
 
@@ -679,9 +679,9 @@
       }
 
       if (preg_match('#\[\]$#', $name)) {
-        $html .= '<li class="option">' . functions::form_input_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
+        $html .= '<li class="option">' . functions::form_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
       } else {
-        $html .= '<li class="option">' . functions::form_input_radio_button($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
+        $html .= '<li class="option">' . functions::form_radio_button($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
       }
     }
 
@@ -697,7 +697,7 @@
 
 		$html = '<div class="form-input"' . ($parameters ? ' ' . $parameters : '') .'>' . PHP_EOL;
 
-    $is_numerical_index = (array_keys($options) === range(0, count($options) - 1));
+    $is_numerical_index = array_is_list($options);
 
     foreach ($options as $key => $option) {
 
@@ -709,7 +709,7 @@
         }
       }
 
-      $html .= form_input_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '');
+      $html .= form_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '');
     }
 
     $html .= '</div>';
@@ -726,14 +726,14 @@
 
     if (!is_array($groups)) {
     	$groups = [$groups];
-	}
+	  }
 
 		$html = '<select class="form-select" name="'. functions::escape_html($name) .'"'. (preg_match('#\[\]$#', $name) ? ' multiple' : '') . ($parameters ? ' ' . $parameters : '') .'>' . PHP_EOL;
 
     foreach ($groups as $group) {
       $html .= '    <optgroup label="'. $group['label'] .'">' . PHP_EOL;
 
-      $is_numerical_index = (array_keys($group['options']) === range(0, count($group['options']) - 1));
+      $is_numerical_index = array_is_list($group['options']);
 
       foreach ($group['options'] as $key => $option) {
 
@@ -833,7 +833,7 @@
 
     $html = '<div '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn-group btn-block btn-group-inline"' : '') .' data-toggle="buttons"'. ($parameters ? ' '.$parameters : '') .'>'. PHP_EOL;
 
-    $is_numerical_index = (array_keys($options) === range(0, count($options) - 1));
+    $is_numerical_index = array_is_list($options);
 
     foreach ($options as $key => $option) {
 
@@ -901,7 +901,7 @@
       case 'checkbox':
         $html = '';
         foreach ($options as $option) {
-          $html .= form_input_checkbox($name, [$option, $option], $input, $parameters);
+          $html .= form_checkbox($name, [$option, $option], $input, $parameters);
         }
         return $html;
 
@@ -1011,7 +1011,7 @@
       case 'radio':
         $html = '';
         foreach ($options as $option) {
-          $html .= form_input_radio_button($name, [$option, $option], $input, $parameters);
+          $html .= form_radio_button($name, [$option, $option], $input, $parameters);
         }
         return $html;
 
@@ -1044,7 +1044,7 @@
       case 'radio':
         $html = '';
         for ($i=0; $i<count($options); $i++) {
-          $html .= '<div class="radio"><label>'. form_input_radio_button($name, $options[$i], $input, $parameters) .' '. $options[$i] .'</label></div>';
+          $html .= '<div class="radio"><label>'. form_radio_button($name, $options[$i], $input, $parameters) .' '. $options[$i] .'</label></div>';
         }
         return $html;
 
@@ -1180,7 +1180,7 @@
   function form_select_attribute_value($name, $group_id, $input=true, $parameters='') {
 
     if (is_numeric($name)) {
-      trigger_error('form_select_attribute_value_lit() no longer takes group ID as 1st parameter. Instead, use form_attribute_values($name, $group_id, $input, $parameters)', E_USER_DEPRECATED);
+      trigger_error('form_select_attribute_value_list() no longer takes group ID as 1st parameter. Instead, use form_select_attribute_value($name, $group_id, $input, $parameters)', E_USER_DEPRECATED);
       list($name, $group_id) = [$group_id, $name];
     }
 
@@ -1861,8 +1861,8 @@
     if ($input) {
       $product = database::query(
         "select p.id, p.sku, pp.price, pi.name
-        from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        from ". DB_TABLE_PREFIX ."products p
+        left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         left join (
           select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
           from ". DB_TABLE_PREFIX ."products_prices

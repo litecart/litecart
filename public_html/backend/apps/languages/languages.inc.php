@@ -80,7 +80,7 @@
       <tbody>
       <?php foreach ($languages as $language) { ?>
         <tr class="<?php if (empty($language['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_input_checkbox('languages[]', $language['code']); ?></td>
+          <td><?php echo functions::form_checkbox('languages[]', $language['code']); ?></td>
           <td><?php echo functions::draw_fonticon(($language['status'] == 1) ? 'on' : (($language['status'] == -1) ? 'semi-off' : 'off')); ?></td>
           <td><?php echo $language['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_language', ['language_code' => $language['code']]); ?>"><?php echo $language['name']; ?></a></td>

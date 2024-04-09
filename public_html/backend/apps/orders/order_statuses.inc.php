@@ -119,7 +119,7 @@
       <tbody>
         <?php foreach ($order_statuses as $order_status) { ?>
         <tr>
-          <td><?php echo functions::form_input_checkbox('order_statuses[]', $order_status['id']); ?></td>
+          <td><?php echo functions::form_checkbox('order_statuses[]', $order_status['id']); ?></td>
           <td><?php echo $order_status['id']; ?></td>
           <td class="text-center"><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>

@@ -122,7 +122,7 @@
               <label><?php echo !empty($brand->data['image']) ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image'); ?></label>
               <?php echo functions::form_input_file('image', 'accept="image/*"'); ?>
               <?php if (!empty($brand->data['image'])) { ?>
-              <?php echo functions::form_input_checkbox('delete_image', ['true', language::translate('title_delete', 'Delete')], true); ?>
+              <?php echo functions::form_checkbox('delete_image', ['true', language::translate('title_delete', 'Delete')], true); ?>
               <?php } ?>
             </div>
           </div>

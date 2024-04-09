@@ -196,7 +196,7 @@
                   <?php echo functions::form_input_file('image', ''); ?>
                   <?php if (!empty($category->data['image'])) { ?><br />
                   <div><?php echo $category->data['image']; ?></div>
-                  <div><?php echo functions::form_input_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></div>
+                  <div><?php echo functions::form_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></div>
                   <?php } ?>
                 </div>
               </div>
@@ -240,6 +240,11 @@
                 <?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
               </div>
 
+              <div class="form-group">
+                <label><?php echo language::translate('title_synonyms', 'Synonyms'); ?></label>
+                <?php echo functions::form_regional_text('synonyms['. $language_code .']', $language_code, true); ?>
+              </div>
+
               <div class="row">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
@@ -252,10 +257,6 @@
                 </div>
               </div>
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_synonyms', 'Synonyms'); ?></label>
-                <?php echo functions::form_regional_text('synonyms['. $language_code .']', $language_code, true); ?>
-              </div>
             </div>
             <?php } ?>
 
@@ -282,7 +283,7 @@
                   <?php echo functions::form_input_hidden('filters['.$key.'][attribute_group_name]', true); ?>
                   <?php echo functions::escape_html($_POST['filters'][$key]['attribute_group_name']); ?>
                 </td>
-                <td class="grabable"><?php echo functions::form_input_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
+                <td class="grabable"><?php echo functions::form_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
                 <td class="text-end">
                   <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
                   <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
@@ -376,7 +377,7 @@
       '  <?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>',
       '  <?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>',
       '  <td>new_attribute_group_name</td>',
-      '  <td><?php echo functions::form_input_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>',
+      '  <td><?php echo functions::form_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>',
       '  <td class="text-end">',
       '    <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>',
       '    <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>',

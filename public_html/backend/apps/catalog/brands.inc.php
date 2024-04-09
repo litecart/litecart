@@ -73,7 +73,7 @@
       <tbody>
         <?php foreach ($brands as $brand) { ?>
         <tr class="<?php if (empty($brand['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_input_checkbox('brands[]', $brand['id']); ?></td>
+          <td><?php echo functions::form_checkbox('brands[]', $brand['id']); ?></td>
           <td><?php echo functions::draw_fonticon($brand['status'] ? 'on' : 'off'); ?></td>
           <td><?php if ($brand['featured']) echo functions::draw_fonticon('fa-star', 'style="color: #ffd700;"'); ?></td>
           <td><?php echo functions::draw_thumbnail('storage://images/' . ($brand['image'] ? $brand['image'] : 'no_image.png'), 16, 16, 'fit', 'style="vertical-align: bottom;"'); ?></td>

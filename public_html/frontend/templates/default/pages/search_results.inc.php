@@ -47,7 +47,7 @@
                   <ul class="dropdown-menu">
                     <?php foreach ($sort_alternatives as $key => $title) { ?>
                     <li>
-                      <?php echo functions::form_input_radio_button('sort', [$key, $title], true); ?>
+                      <?php echo functions::form_radio_button('sort', [$key, $title], true); ?>
                     </li>
                     <?php } ?>
                   </ul>

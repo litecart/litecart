@@ -121,7 +121,7 @@
         </div>
 
         <div class="form-group">
-          <?php echo functions::form_input_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
+          <?php echo functions::form_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
         </div>
 
         <p><?php echo functions::form_button('save_details', language::translate('title_save', 'Save')); ?></p>

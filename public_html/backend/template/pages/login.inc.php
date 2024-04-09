@@ -70,7 +70,7 @@ html.dark-mode body {
       </div>
 
       <div class="form-group">
-        <?php echo functions::form_input_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
+        <?php echo functions::form_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
       </div>
     </div>
 

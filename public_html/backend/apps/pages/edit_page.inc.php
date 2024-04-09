@@ -93,8 +93,8 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
           <div>
-            <?php echo functions::form_input_checkbox('dock[]', ['menu', language::translate('text_dock_in_site_menu', 'Dock in site menu')], true); ?>
-            <?php echo functions::form_input_checkbox('dock[]', ['information', language::translate('text_dock_in_information', 'Dock in information')], true); ?>
+            <?php echo functions::form_checkbox('dock[]', ['menu', language::translate('text_dock_in_site_menu', 'Dock in site menu')], true); ?>
+            <?php echo functions::form_checkbox('dock[]', ['information', language::translate('text_dock_in_information', 'Dock in information')], true); ?>
           </div>
         </div>
 

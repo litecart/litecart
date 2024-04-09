@@ -137,7 +137,7 @@
       <tbody>
         <?php foreach ($stock_items as $stock_item) { ?>
         <tr>
-          <td><?php echo functions::form_input_checkbox('stock_items[]', $stock_item['id']); ?></td>
+          <td><?php echo functions::form_checkbox('stock_items[]', $stock_item['id']); ?></td>
           <td><?php echo $stock_item['id']; ?></td>
           <td><?php if (!empty($stock_item['warning'])) echo functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($stock_item['warning']) .'"'); ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>

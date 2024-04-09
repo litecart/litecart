@@ -565,7 +565,7 @@ textarea.warning {
 
     <h2><?php echo language::translate('title_uninstall_vmod', 'Uninstall vMod'); ?></h2>
 
-    <p><label><?php echo functions::form_input_checkbox('cleanup', '1', ''); ?> <?php echo language::translate('text_remove_all_traces_of_the_vmod', 'Remove all traces of the vMod such as database tables, settings, etc.'); ?></label></p>
+    <p><label><?php echo functions::form_checkbox('cleanup', '1', ''); ?> <?php echo language::translate('text_remove_all_traces_of_the_vmod', 'Remove all traces of the vMod such as database tables, settings, etc.'); ?></label></p>
 
     <div>
       <?php echo functions::form_button('delete', language::translate('title_uninstall', 'Uninstall'), 'submit', 'class="btn btn-danger"'); ?>

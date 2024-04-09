@@ -93,7 +93,7 @@
 
   <div class="address shipping-address">
 
-    <h3><?php echo functions::form_input_checkbox('different_shipping_address', '1', !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
+    <h3><?php echo functions::form_checkbox('different_shipping_address', '1', !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
 
     <fieldset<?php if (empty($_POST['different_shipping_address'])) echo ' style="display: none;" disabled'; ?>>
 
@@ -168,7 +168,7 @@
 
   <?php if (!$subscribed_to_newsletter) { ?>
   <div class="form-group">
-    <label class="checkbox"><?php echo functions::form_input_checkbox('newsletter', '1', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?></label>
+    <label class="checkbox"><?php echo functions::form_checkbox('newsletter', '1', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?></label>
   </div>
   <?php } ?>
 
@@ -176,7 +176,7 @@
 
   <?php if (!empty(customer::$data['id'])) { ?>
   <div class="form-group">
-    <?php echo functions::form_input_checkbox('save_to_account', ['1', language::translate('title_save_details_to_my_account', 'Save details to my account')], true, 'style="margin: 0px;"'); ?>
+    <?php echo functions::form_checkbox('save_to_account', ['1', language::translate('title_save_details_to_my_account', 'Save details to my account')], true, 'style="margin: 0px;"'); ?>
   </div>
   <?php } ?>
 
@@ -190,7 +190,7 @@
 
     <?php } else { ?>
 
-    <h3><?php echo functions::form_input_checkbox('create_account', '1', true, 'style="margin: 0px;"'); ?> <?php echo language::translate('title_create_account', 'Create Account'); ?></h3>
+    <h3><?php echo functions::form_checkbox('create_account', '1', true, 'style="margin: 0px;"'); ?> <?php echo language::translate('title_create_account', 'Create Account'); ?></h3>
 
     <fieldset<?php if (empty($_POST['create_account'])) echo ' style="display: none;" disabled'; ?>>
 

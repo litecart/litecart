@@ -255,11 +255,6 @@
               </div>
 
               <div class="form-group">
-                <label><?php echo language::translate('title_synonyms', 'Synonyms'); ?></label>
-                <?php echo functions::form_input_tags('synonyms', true); ?>
-              </div>
-
-              <div class="form-group">
                 <label><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></label>
                 <?php echo functions::form_input_datetime('date_valid_from', true); ?>
               </div>
@@ -290,7 +285,7 @@
                     <?php echo functions::form_input_hidden('images['.$key.'][id]', true); ?>
                     <?php echo functions::form_input_hidden('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
 
-                    <div class="float-start thumbnail <?php echo strtolower(settings::get('product_image_clipping')); ?>">
+                    <div class="float-start <?php echo strtolower(settings::get('product_image_clipping')); ?>">
                       <?php echo functions::draw_thumbnail('storage://images/' . $product->data['images'][$key]['filename'], 64, 0, 'product'); ?>
                     </div>
 
@@ -347,6 +342,11 @@
                     <?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 250px;"'); ?>
                   </div>
 
+                  <div class="form-group">
+                    <label><?php echo language::translate('title_synonyms', 'Synonyms'); ?></label>
+                    <?php echo functions::form_input_tags('synonyms['. $language_code .']', true); ?>
+                  </div>
+
                   <div class="row">
                     <div class="form-group col-md-6">
                       <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
@@ -364,7 +364,7 @@
                   <div class="form-group">
                     <?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a>
                     <?php echo functions::form_regional_textarea('technical_data['. $language_code .']', $language_code, true, 'style="height: 640px;"'); ?>
-                    <div><?php echo functions::form_input_checkbox('autofill_technical_data', ['1', language::translate('text_autogenerate_from_attributes', 'Generate from attributes')], ''); ?></div>
+                    <div><?php echo functions::form_checkbox('autofill_technical_data', ['1', language::translate('text_autogenerate_from_attributes', 'Generate from attributes')], ''); ?></div>
                   </div>
                 </div>
               </div>
@@ -537,14 +537,13 @@
 
             <div class="col-md-6">
 
-              <h2><?php echo language::translate('title_also_included_products', 'Also Included Products'); ?></h2>
+              <h2><?php echo language::translate('title_always_included_stock_items', 'Always Included Stock Items'); ?></h2>
 
               <table class="table table-striped table-dragable data-table">
                 <thead>
                   <tr>
                     <th><?php echo language::translate('title_id', 'ID'); ?></th>
-                    <th><?php echo language::translate('title_name', 'Name'); ?></th>
-                    <th class="main"><?php echo language::translate('title_stock_option', 'Stock Option'); ?></th>
+                    <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
                     <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
                     <th></th>
                   </tr>
@@ -556,7 +555,6 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
                     <td class="text-end">
                       <a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times', 'style="color: #c33;"'); ?></a>
                     </td>
@@ -565,8 +563,9 @@
                 </tbody>
 
                 <tfoot>
-                  <td colspan="5">
-                    <a href="<?php echo document::href_ilink(__APP__.'/product_picker', ['collect' => ['stock_option', 'quantity'], 'js_callback' => 'add_chained_product']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
+                  <td colspan="4">
+                    <a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['collect' => ['quantity'], 'js_callback' => 'add_always_included_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_existing_stock_item', 'Add Existing Stock Item'); ?></a>
+                    <a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="920"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
                   </td>
                 </tfoot>
               </table>
@@ -574,9 +573,131 @@
             </div>
           </div>
 
-          <h3><?php echo language::translate('title_stock_options', 'Stock Options'); ?></h3>
+<style>
+#options .group {
+  background: #fbfcfd;
+  margin-bottom: 1em;
+  padding: 1em;
+  border: 1px solid #e5e5e5;
+  border-radius: var(--border-radius);
+}
+#options .option {
+  background: #fbfcfd;
+  margin-bottom: 1em;
+  padding: 1em;
+  border: 1px solid #e5e5e5;
+  border-radius: var(--border-radius);
+}
+</style>
 
-          <table id="stock-options" class="table table-striped table-dragable table-hover data-table">
+          <h3><?php echo language::translate('title_product_options', 'Product Options'); ?></h3>
+
+          <div id="options">
+            <div class="group">
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                    <?php //foreach (language::$languages as $language) echo functions::form_regional_text('options[0][name]['.$language['code'].']', $language['code'], true); ?>
+                    <?php echo functions::form_regional_text('options[0][name][en]', 'en', true); ?>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label><?php echo language::translate('title_type', 'Type'); ?></label>
+                    <?php echo functions::form_select('options[0][type]', ['checkbox' => language::translate('title_checkbox', 'Checkbox')], true); ?>
+                    <?php echo functions::form_checkbox('options[0][required]', ['1', 'Required'], true); ?>
+                  </div>
+                </div>
+              </div>
+
+              <?php for ($i=0; $i < 2; $i++) { ?>
+              <div class="option">
+                <div class="row">
+
+                  <div class="col-md-2">
+                    <div>
+                      <?php echo functions::draw_thumbnail('storage://images/' . @$_POST['options'][0]['image'], 350, 0, 'product'); ?>
+                    </div>
+
+                    <div class="form-group">
+                      <label><?php echo language::translate('title_image', 'Image'); ?></label>
+                      <?php echo functions::form_input_hidden('options[0][image]', @$_POST['options'][0]['image']); ?>
+                      <?php //echo functions::form_input_text('options[0][image][new_image]', fallback($_POST['options'][0]['new_image'], $_POST['options'][$key]['new_image'])); ?>
+                      <?php echo functions::form_input_file('options[0][image][new_image]'); ?>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+
+                    <div class="form-group">
+                      <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                      <?php //foreach (language::$languages as $language) echo functions::form_regional_text('options[0][name]['.$language['code'].']', $language['code'], true); ?>
+                      <?php echo functions::form_regional_text('options[0][name]['.$language['code'].']', 'en', true); ?>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-md-6">
+                        <label><?php echo language::translate('title_price_adjust', 'Price Adjust'); ?></label>
+                        <?php echo functions::form_select('', ['+', '-', '*', '=']); ?>
+                      </div>
+
+                      <div class="form-group col-md-6">
+                        <label><?php echo language::translate('title_amount', 'Amount'); ?></label>
+                        <?php echo functions::form_input_money('options[0][price][USD]', 'USD', true); ?>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="col-md-6">
+
+                  <h3><?php echo language::translate('title_additional_stock_items_for_this_option', 'Additional Stock Items For This Option'); ?></h3>
+                    <table class="table table-striped table-dragable data-table">
+                      <thead>
+                        <tr>
+                          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+                          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+                          <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <?php //foreach ($_POST['chained_products'] as $key => $chained_product) { ?>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td class="text-end">
+                            <a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times', 'style="color: #c33;"'); ?></a>
+                          </td>
+                        </tr>
+                        <?php //} ?>
+                      </tbody>
+
+                      <tfoot>
+                        <td colspan="4">
+                          <a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['collect' => ['quantity'], 'js_callback' => 'add_always_included_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_existing_stock_item', 'Add Existing Stock Item'); ?></a>
+                          <a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="920"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
+                        </td>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <?php } ?>
+              <div class="form-group">
+                <button name="add_product_option" class="btn btn-default" type="button"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_product_option', 'Add Product Option'); ?></button>
+              </div>
+           </div>
+          </div>
+
+
+
+          <table id="options" class="table table-striped table-dragable table-hover data-table">
             <thead>
               <tr>
                 <th><?php echo language::translate('title_id', 'ID'); ?></th>
@@ -592,6 +713,7 @@
                 <th></th>
               </tr>
             </thead>
+
             <tbody>
               <?php if (!empty($_POST['stock_options'])) foreach ($_POST['stock_options'] as $key => $stock_option) { ?>
               <tr data-stock-item-id="<?php echo $stock_option['stock_item_id']; ?>">
@@ -656,11 +778,12 @@
               </tr>
             <?php } ?>
             </tbody>
+
             <tfoot>
               <tr>
                 <td colspan="12">
-                  <a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_existing_stock_item', 'Add Existing Stock Item'); ?></a>
-                  <a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="800"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
+                  <a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_existing_stock_item', 'Add Existing Stock Item'); ?></a>
+                  <a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="920"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
                 </td>
               </tr>
             </tfoot>
@@ -726,7 +849,7 @@
                   <label><?php echo language::translate('title_downloadable_file', 'Downloadable File'); ?></label>
                   <?php echo functions::form_input_file('file'); ?>
                   <?php if (!empty($product->data['file'])) { ?>
-                  <div><?php echo functions::form_input_checkbox('delete_file', ['1', language::translate('text_delete', 'Delete') .' '. $product->data['filename']], true); ?></div>
+                  <div><?php echo functions::form_checkbox('delete_file', ['1', language::translate('text_delete', 'Delete') .' '. $product->data['filename']], true); ?></div>
                   <?php } ?>
                 </div>
 
@@ -1059,7 +1182,7 @@
 
     let output = [
       '<div class="image form-group">',
-      '  <div class="thumbnail float-start">',
+      '  <div class="float-start">',
       '    <?php echo functions::draw_thumbnail('storage://images/no_image.png', 64, 0, 'product'); ?>',
       '  </div>',
       '  ',

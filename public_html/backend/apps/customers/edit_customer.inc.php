@@ -151,7 +151,7 @@
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
-              <?php echo functions::form_input_checkbox('newsletter', ['1', language::translate('title_subscribe', 'Subscribe')], true); ?>
+              <?php echo functions::form_checkbox('newsletter', ['1', language::translate('title_subscribe', 'Subscribe')], true); ?>
             </div>
           </div>
 

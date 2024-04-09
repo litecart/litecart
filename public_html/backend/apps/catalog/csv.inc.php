@@ -446,6 +446,7 @@
                 'name',
                 'short_description',
                 'description',
+                'synonyms',
                 'head_title',
                 'h1_title',
                 'meta_description',
@@ -690,7 +691,6 @@
               'supplier_id',
               'code',
               'keywords',
-              'synonyms',
               'tax_class_id',
               'quantity',
               'quantity_min',
@@ -727,6 +727,7 @@
                 'short_description',
                 'description',
                 'technical_data',
+                'synonyms',
                 'head_title',
                 'meta_description',
               ] as $field) {
@@ -1378,13 +1379,13 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div class="form-input">
-                <?php echo functions::form_input_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
-                <?php echo functions::form_input_radio_button('type', ['brands', language::translate('title_brands', 'Brands')], true); ?>
-                <?php echo functions::form_input_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
-                <?php echo functions::form_input_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true); ?>
-                <?php echo functions::form_input_radio_button('type', ['products', language::translate('title_products', 'Products')], true); ?>
-                <?php echo functions::form_input_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true); ?>
-                <?php echo functions::form_input_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
+                <?php echo functions::form_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
+                <?php echo functions::form_radio_button('type', ['brands', language::translate('title_brands', 'Brands')], true); ?>
+                <?php echo functions::form_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
+                <?php echo functions::form_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true); ?>
+                <?php echo functions::form_radio_button('type', ['products', language::translate('title_products', 'Products')], true); ?>
+                <?php echo functions::form_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true); ?>
+                <?php echo functions::form_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
               </div>
             </div>
 
@@ -1418,9 +1419,9 @@
             </div>
 
             <div class="form-group">
-              <?php echo functions::form_input_checkbox('reset', ['1', language::translate('text_wipe_storage_clean_before_inserting_data', 'Wipe storage clean before inserting data')], true); ?>
-              <?php echo functions::form_input_checkbox('insert', ['1', language::translate('text_insert_new_entries', 'Insert new entries')], true); ?>
-              <?php echo functions::form_input_checkbox('overwrite', ['1', language::translate('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
+              <?php echo functions::form_checkbox('reset', ['1', language::translate('text_wipe_storage_clean_before_inserting_data', 'Wipe storage clean before inserting data')], true); ?>
+              <?php echo functions::form_checkbox('insert', ['1', language::translate('text_insert_new_entries', 'Insert new entries')], true); ?>
+              <?php echo functions::form_checkbox('overwrite', ['1', language::translate('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
             </div>
 
             <?php echo functions::form_button('import', language::translate('title_import', 'Import'), 'submit'); ?>
@@ -1438,13 +1439,13 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div class="form-input">
-                <?php echo functions::form_input_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
-                <?php echo functions::form_input_radio_button('type', ['brands', language::translate('title_brands', 'Brands')], true, 'data-dependencies="language"'); ?>
-                <?php echo functions::form_input_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
-                <?php echo functions::form_input_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true, 'data-dependencies="language"'); ?>
-                <?php echo functions::form_input_radio_button('type', ['products', language::translate('title_products', 'Products')], true, 'data-dependencies="currency,language"'); ?>
-                <?php echo functions::form_input_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true, 'data-dependencies="language"'); ?>
-                <?php echo functions::form_input_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
+                <?php echo functions::form_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
+                <?php echo functions::form_radio_button('type', ['brands', language::translate('title_brands', 'Brands')], true, 'data-dependencies="language"'); ?>
+                <?php echo functions::form_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
+                <?php echo functions::form_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true, 'data-dependencies="language"'); ?>
+                <?php echo functions::form_radio_button('type', ['products', language::translate('title_products', 'Products')], true, 'data-dependencies="currency,language"'); ?>
+                <?php echo functions::form_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true, 'data-dependencies="language"'); ?>
+                <?php echo functions::form_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
               </div>
             </div>
 

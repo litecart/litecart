@@ -259,7 +259,7 @@ table .thumbnail {
       <tbody>
         <?php foreach ($products as $product) { ?>
         <tr class="<?php if (empty($product['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_input_checkbox('products[]', $product['id']); ?></td>
+          <td><?php echo functions::form_checkbox('products[]', $product['id']); ?></td>
           <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
           <td class="warning"><?php if (!empty($product['warning'])) echo functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($product['warning']) .'"'); ?></td>
           <td class="text-center"><?php echo $product['id']; ?></td>

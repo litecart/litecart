@@ -205,7 +205,7 @@
       <tbody>
         <?php foreach ($vmods as $vmod) { ?>
         <tr class="<?php echo $vmod['status'] ? null : 'semi-transparent'; ?>">
-          <td><?php echo functions::form_input_checkbox('vmods[]', $vmod['id']); ?></td>
+          <td><?php echo functions::form_checkbox('vmods[]', $vmod['id']); ?></td>
           <td><?php echo functions::draw_fonticon($vmod['status'] ? 'on' : 'off'); ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['id']]); ?>"><?php echo $vmod['name']; ?></a></td>
           <td class="text-center"><?php echo $vmod['version']; ?></td>

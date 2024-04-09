@@ -92,8 +92,8 @@
 
       <div class="row">
         <div class="form-group col-md-6">
-          <?php echo functions::form_input_checkbox('hidden', ['1', language::translate('text_hide_from_listing', 'Hide from listing')], true); ?>
-          <?php echo functions::form_input_checkbox('orderable', ['1', language::translate('text_product_is_orderable', 'Product is orderable')], true); ?>
+          <?php echo functions::form_checkbox('hidden', ['1', language::translate('text_hide_from_listing', 'Hide from listing')], true); ?>
+          <?php echo functions::form_checkbox('orderable', ['1', language::translate('text_product_is_orderable', 'Product is orderable')], true); ?>
         </div>
       </div>
 

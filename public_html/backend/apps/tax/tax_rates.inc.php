@@ -47,7 +47,7 @@
       <tbody>
         <?php foreach ($tax_rates as $tax_rate) { ?>
         <tr>
-          <td><?php echo functions::form_input_checkbox('tax_rates[]', $tax_rate['id']); ?></td>
+          <td><?php echo functions::form_checkbox('tax_rates[]', $tax_rate['id']); ?></td>
           <td><?php echo $tax_rate['id']; ?></td>
           <td><?php echo $tax_rate['tax_class']; ?></td>
           <td><?php echo $tax_rate['geo_zone']; ?></td>

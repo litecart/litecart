@@ -143,24 +143,24 @@
         <div class="form-group col-md-5">
           <label><?php echo language::translate('title_address_type', 'Address Type'); ?></label>
           <div>
-            <?php echo functions::form_input_radio_button('address_type', ['shipping', language::translate('title_shipping_address', 'Shipping Address')], true); ?>
-            <?php echo functions::form_input_radio_button('address_type', ['payment', language::translate('title_payment_address', 'Payment Address')], true); ?>
+            <?php echo functions::form_radio_button('address_type', ['shipping', language::translate('title_shipping_address', 'Shipping Address')], true); ?>
+            <?php echo functions::form_radio_button('address_type', ['payment', language::translate('title_payment_address', 'Payment Address')], true); ?>
           </div>
         </div>
 
         <div class="form-group col-md-7">
           <label><?php echo language::translate('title_conditions', 'Conditions'); ?></label>
           <div class="radio">
-            <label><?php echo functions::form_input_checkbox('rule_companies_with_tax_id', ['1', language::translate('text_applies_to_companies_with_tax_id', 'Applies to companies with a tax ID')], true); ?></label>
+            <label><?php echo functions::form_checkbox('rule_companies_with_tax_id', ['1', language::translate('text_applies_to_companies_with_tax_id', 'Applies to companies with a tax ID')], true); ?></label>
           </div>
           <div class="radio">
-            <label><?php echo functions::form_input_checkbox('rule_companies_without_tax_id', ['1', language::translate('rule_applies_to_companies_without_tax_id', 'Applies to companies without a tax ID')], true); ?></label>
+            <label><?php echo functions::form_checkbox('rule_companies_without_tax_id', ['1', language::translate('rule_applies_to_companies_without_tax_id', 'Applies to companies without a tax ID')], true); ?></label>
           </div>
           <div class="radio">
-            <label><?php echo functions::form_input_checkbox('rule_individuals_with_tax_id', ['1', language::translate('text_applies_to_individuals_with_tax_id', 'Applies to individuals with a tax ID')], true); ?></label>
+            <label><?php echo functions::form_checkbox('rule_individuals_with_tax_id', ['1', language::translate('text_applies_to_individuals_with_tax_id', 'Applies to individuals with a tax ID')], true); ?></label>
           </div>
           <div class="radio">
-            <label><?php echo functions::form_input_checkbox('rule_individuals_without_tax_id', ['1', language::translate('rule_applies_to_individuals_without_tax_id', 'Applies to individuals without a tax ID')], true); ?></label>
+            <label><?php echo functions::form_checkbox('rule_individuals_without_tax_id', ['1', language::translate('rule_applies_to_individuals_without_tax_id', 'Applies to individuals without a tax ID')], true); ?></label>
           </div>
         </div>
       </div>

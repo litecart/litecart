@@ -170,7 +170,7 @@ table tbody .toggle {
 
 ?>
         <tr class="<?php if (empty($page['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_input_checkbox('pages[]', $page['id']); ?></td>
+          <td><?php echo functions::form_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $page['id']; ?></td>
           <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
@@ -222,7 +222,7 @@ table tbody .toggle {
         }
 ?>
         <tr class="<?php if (empty($page['status'])) echo 'semi-transparent'; ?>">
-          <td><?php echo functions::form_input_checkbox('pages[]', $page['id']); ?></td>
+          <td><?php echo functions::form_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $page['id']; ?></td>
           <td style="padding-inline-start: <?php echo $depth * 30; ?>px">

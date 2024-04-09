@@ -107,7 +107,7 @@
       <tbody>
         <?php foreach ($shopping_carts as $shopping_cart) { ?>
         <tr>
-          <td><?php echo functions::form_input_checkbox('shopping_carts['.$shopping_cart['id'].']', $shopping_cart['id'], true); ?></td>
+          <td><?php echo functions::form_checkbox('shopping_carts['.$shopping_cart['id'].']', $shopping_cart['id'], true); ?></td>
           <td><?php echo $shopping_cart['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_shopping_cart', ['cart_id' => $shopping_cart['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo ($shopping_cart['billing_company']) ? $shopping_cart['billing_company'] : $shopping_cart['billing_firstname'] .' '. $shopping_cart['billing_lastname']; ?><?php if (empty($shopping_cart['customer_id'])) echo ' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></a> <span style="opacity: 0.5;"><?php echo $shopping_cart['billing_tax_id']; ?></span></td>
           <td><?php if (!empty($shopping_cart['billing_country_code'])) echo reference::country($shopping_cart['billing_country_code'])->name; ?></td>
