@@ -14,7 +14,7 @@ For an updated version of the upgrade documentation, visit https://wiki.litecart
 What you need:
 
   * An Apache2 web server running PHP 5.6 or higher. Latest stable PHP release recommended for best performance.
-  * A MySQL 5.7+ account.
+  * A MySQL 5.7+ or MariaDB database.
 
 ## Instructions
 
@@ -40,19 +40,19 @@ Paths are machine specific, so talk to your web host if you are uncertain where 
 
 If everything went well LiteCart should be successfully installed.
 
-For community written installation instructions see https://wiki.litecart.net/doku.php?id=how_to_install.
+For community written installation instructions see https://www.litecart.net/en/wiki/how_to_install.
 
 
 # How To Get Started
 
-To get your store up and running, see our [step list](https://wiki.litecart.net/doku.php?id=get_started) for best practise.
+To get your store up and running, see our [step list](https://www.litecart.net/en/wiki/how_to_install) for best practise.
 
 
 # How To Change The Look Of Your Store
 
 Navigate to the folder ~/includes/templates/default.catalog/ and you will find all HTML content and CSS files to edit. If you want to adapt your work with LESS instead of CSS you will need a LESS compiler. We recommend downloading our [Developer Kit](https://www.litecart.net/addons/163/developer-kit) that has a preconfigured LESS compiler and JavaScript minifyer.
 
-See our wiki article [How To Create a Template](https://wiki.litecart.net/doku.php?id=how_to_create_a_template).
+See our wiki article [How To Create a Template](https://www.litecart.net/en/wiki/how_to_create_a_template).
 
 # Links
 
