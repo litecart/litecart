@@ -265,15 +265,15 @@
     echo '<p>Checking MySQL version... ';
 
     $version_query = database::query("SELECT VERSION();");
-    $version = database::fetch($version_query);
+    $mysql_version = database::fetch($version_query, 'VERSION()');
 
-    if (version_compare($version['VERSION()'], '5.5', '<')) {
-      throw new Exception($version['VERSION()'] . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
-    } else if (version_compare($version['VERSION()'], '5.7', '<')) {
-      echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
+    if (version_compare($mysql_version, '5.5', '<')) {
+      throw new Exception($mysql_version . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
+    } else if (version_compare($mysql_version, '5.7', '<')) {
+      echo $mysql_version .' <span class="ok">[OK]</span><br />'
          . '<span class="warning">MySQL 5.7+ recommended</span></span></p>';
     } else {
-      echo $version['VERSION()'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      echo $mysql_version . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
     ### Database > Check Charset ##################################
