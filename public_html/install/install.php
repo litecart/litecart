@@ -100,7 +100,7 @@
     }
 
     if (empty($_REQUEST['db_username'])) {
-      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No MySQL user provided</p>' . PHP_EOL  . PHP_EOL);
+      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No MySQL/MariaDB user provided</p>' . PHP_EOL  . PHP_EOL);
     }
 
     if (empty($_REQUEST['db_password'])) {
@@ -108,7 +108,7 @@
     }
 
     if (empty($_REQUEST['db_database'])) {
-      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No MySQL database provided</p>' . PHP_EOL  . PHP_EOL);
+      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No MySQL/MariaDB database provided</p>' . PHP_EOL  . PHP_EOL);
     }
 
     if (empty($_REQUEST['db_collation'])) {
@@ -248,7 +248,7 @@
 
     ### Database > Connection #####################################
 
-    echo '<p>Connecting to MySQL server on '. $_REQUEST['db_server'] .'... ';
+    echo '<p>Connecting to MySQL/MariaDB server on '. $_REQUEST['db_server'] .'... ';
 
     require_once FS_DIR_APP . 'includes/library/lib_database.inc.php';
 
@@ -262,23 +262,23 @@
 
     ### Database > Check Version ##################################
 
-    echo '<p>Checking MySQL version... ';
+    echo '<p>Checking MySQL/MariaDB version... ';
 
     $version_query = database::query("SELECT VERSION();");
     $version = database::fetch($version_query);
 
     if (version_compare($version['VERSION()'], '5.5', '<')) {
-      throw new Exception($version['VERSION()'] . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
+      throw new Exception($version['VERSION()'] . ' <span class="error">[Error] MySQL/MariaDB 5.5+ required</span></p>');
     } else if (version_compare($version['VERSION()'], '5.7', '<')) {
       echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
-         . '<span class="warning">MySQL 5.7+ recommended</span></span></p>';
+         . '<span class="warning">MySQL 5.7+ / MariaDB 10.3+ recommended</span></span></p>';
     } else {
       echo $version['VERSION()'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
     ### Database > Check Charset ##################################
 
-    echo '<p>Checking MySQL database default character set... ';
+    echo '<p>Checking MySQL/MariaDB database default character set... ';
 
     $charset_query = database::query(
       "select DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME from information_schema.SCHEMATA
@@ -288,14 +288,14 @@
     $charset = database::fetch($charset_query);
 
     if (substr($charset['DEFAULT_CHARACTER_SET_NAME'], 0, 4) != 'utf8') {
-      echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="warning">[Warning]</span> The database default charset is not \'utf8\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. substr($_REQUEST['db_collation'], 0, strpos($_REQUEST['db_collation'], '_')) .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
+      echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="warning">[Warning]</span> The database default charset is not \'utf8\' and you might experience future trouble with foreign characters. Try performing the following MySQL/MariaDB query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. substr($_REQUEST['db_collation'], 0, strpos($_REQUEST['db_collation'], '_')) .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
     } else {
       echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-      echo '<p>Checking MySQL database default collation... ';
+      echo '<p>Checking MySQL/MariaDB database default collation... ';
 
       if ($charset['DEFAULT_COLLATION_NAME'] != $_REQUEST['db_collation']) {
-        echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="warning">[Warning]</span> The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. substr($_REQUEST['db_collation'], 0, strpos($_REQUEST['db_collation'], '_')) .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
+        echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="warning">[Warning]</span> The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL/MariaDB query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. substr($_REQUEST['db_collation'], 0, strpos($_REQUEST['db_collation'], '_')) .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
       } else {
         echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       }
