@@ -397,7 +397,7 @@ input[name="development_type"]:checked + div {
 
 <form name="installation_form" method="post" action="install.php">
 
-  <input class="form-input" name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
+  <input class="form-input" name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
 
   <h3>File System</h3>
 
@@ -426,12 +426,12 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label>Hostname</label>
-      <input class="form-input" name="db_server" type="text" placeholder="localhost" />
+      <input class="form-input" name="db_server" type="text" placeholder="localhost">
     </div>
 
     <div class="form-group col-md-6">
       <label>Database</label>
-      <input class="form-input" type="text" name="db_database" required />
+      <input class="form-input" type="text" name="db_database" required>
     </div>
 
     <div class="form-group col-md-6">
@@ -467,23 +467,23 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label>Username</label>
-      <input class="form-input" type="text" name="db_username" required />
+      <input class="form-input" type="text" name="db_username" required>
     </div>
 
     <div class="form-group col-md-6">
       <label>Password</label>
-      <input class="form-input" type="password" name="db_password" />
+      <input class="form-input" type="password" name="db_password">
     </div>
 
     <div class="form-group col-md-6">
       <label>Table Prefix</label>
-      <input class="form-input" name="db_table_prefix" type="text" value="lc_" style="max-width: 50%;" />
+      <input class="form-input" name="db_table_prefix" type="text" value="lc_" style="max-width: 50%;">
     </div>
 
     <div class="form-group col-md-6">
       <label>Demo Data</label>
       <label class="form-check">
-        <input name="demo_data" type="checkbox" value="true" <?php if (!file_exists('data/demo/data.sql')) echo 'disabled'; ?> /> Install demo data
+        <input name="demo_data" type="checkbox" value="true" <?php if (!file_exists('data/demo/data.sql')) echo 'disabled'; ?>> Install demo data
       </label>
     </div>
   </div>
@@ -493,12 +493,12 @@ input[name="development_type"]:checked + div {
   <div class="row">
     <div class="form-group col-md-6">
       <label>Store Name</label>
-      <input class="form-input" name="store_name" type="text" value="My Store" required />
+      <input class="form-input" name="store_name" type="text" value="My Store" required>
     </div>
 
     <div class="form-group col-md-6">
       <label>Store Email</label>
-      <input class="form-input" name="store_email" type="text" value="store@email.com" required />
+      <input class="form-input" name="store_email" type="text" value="store@email.com" required>
     </div>
   </div>
 
@@ -530,11 +530,11 @@ input[name="development_type"]:checked + div {
 
   <div class="form-group" style="display: flex;">
     <label>
-      <input name="development_type" value="standard" type="radio" checked />
+      <input name="development_type" value="standard" type="radio" checked>
       <div>
         <div class="type">Standard</div>
         <div class="title">
-          .css<br />
+          .css<br>
           .js
         </div>
         <small class="description">(Uncompressed files)</small>
@@ -542,11 +542,11 @@ input[name="development_type"]:checked + div {
     </label>
 
     <label>
-      <input name="development_type" value="advanced" type="radio" />
+      <input name="development_type" value="advanced" type="radio">
       <div>
         <div class="type">Advanced</div>
         <div class="title">
-          .less + .min.css<br />
+          .less + .min.css<br>
           .js + .min.js
         </div>
         <small class="description">
@@ -563,7 +563,7 @@ input[name="development_type"]:checked + div {
       <label>Backend URL</label>
       <div class="input-group">
         <span class="input-group-text"><?php echo preg_replace('#install/.*$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)); ?></span>
-        <input class="form-input" name="admin_folder" type="text" value="admin" required />
+        <input class="form-input" name="admin_folder" type="text" value="admin" required>
       </div>
     </div>
   </div>
@@ -571,26 +571,26 @@ input[name="development_type"]:checked + div {
   <div class="row">
     <div class="form-group col-md-6">
       <label>Username</label>
-      <input class="form-input" name="username" type="text" id="username" value="admin" required />
+      <input class="form-input" name="username" type="text" id="username" value="admin" required>
     </div>
 
     <div class="form-group col-md-6">
       <label>Password</label>
-      <input class="form-input" name="password" type="password" id="password" required />
+      <input class="form-input" name="password" type="password" id="password" required>
     </div>
   </div>
 
-  <hr />
+  <hr>
 
   <p class="text-center">
     This software is licensed under <a href="https://creativecommons.org/licenses/by-nd/4.0/" target="blank">Creative Commons BY-ND 4.0</a>.
   </p>
 
   <div class="form-group text-center">
-    <label><input id="accept_terms" name="accept_terms" value="1" type="checkbox" required /> I agree to the terms and conditions.</label>
+    <label><input id="accept_terms" name="accept_terms" value="1" type="checkbox" required> I agree to the terms and conditions.</label>
   </div>
 
-  <input class="btn btn-success btn-block" type="submit" name="install" value="Install Now" onclick="if (document.getElementById('accept_terms').value != 1) return false; if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />
+  <input class="btn btn-success btn-block" type="submit" name="install" value="Install Now" onclick="if (document.getElementById('accept_terms').value != 1) return false; if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;">
 </form>
 
 <?php require(__DIR__.'/includes/footer.inc.php'); ?>

@@ -60,9 +60,9 @@
         $last_modified = $folder_last_modified;
       }
 
-      foreach (glob(FS_DIR_STORAGE .'vmod/*.xml') as $vmod) {
-        if (filemtime($vmod) > $last_modified) {
-          $last_modified = filemtime($vmod);
+      foreach (glob(FS_DIR_STORAGE .'vmods/*.xml') as $vmod) {
+        if (($modification_last_modified = filemtime($file)) > $last_modified) {
+          $last_modified = $modification_last_modified;
         }
       }
 
@@ -82,7 +82,10 @@
     // Load installed
       foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $installed) {
         list($id, $version) = preg_split('#;#', $installed);
-        self::$_installed[$id] = $version;
+        self::$_installed[] = [
+          'id' => $id,
+          'version' => $version,
+        ];
       }
 
     // Load settings
@@ -111,8 +114,9 @@
 
     // Load modifications from disk
       if (empty(self::$_modifications)) {
-        foreach (glob(FS_DIR_STORAGE .'vmod/*.xml') as $vmod) {
-          self::load($vmod);
+
+        foreach (glob(FS_DIR_STORAGE . 'vmods/*.xml') as $file) {
+          self::load($file);
         }
 
       // Store modifications to cache
@@ -290,15 +294,15 @@
 
       try {
 
-        // Get XML file contents
+      // Get XML file contents
         if (!$xml = file_get_contents($file)) {
           throw new \Exception('Could not read file', E_USER_ERROR);
         }
 
-        // Normalize line endings
+      // Normalize line endings
         $xml = preg_replace('#\r\n?|\n#', PHP_EOL, $xml);
 
-        // Initiate a Document Object
+      // Initiate a Document Object
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->preserveWhiteSpace = false;
 
@@ -308,37 +312,38 @@
 
         $vmod = self::parse_xml($dom, $file);
 
-        // Load modification if it is installed
-        if (in_array($vmod['id'], array_keys(self::$_installed))) {
+      // Load modification if it is installed
+        if (in_array($vmod['id'], array_column(self::$_installed, 'id'))) {
 
-        self::$_modifications[$vmod['id']] = $vmod;
+          self::$_modifications[$vmod['id']] = $vmod;
 
-      // Create cross reference for file patterns
-        foreach (array_keys($vmod['files']) as $key) {
+        // Create cross reference for file patterns
+          foreach (array_keys($vmod['files']) as $key) {
 
-          $glob_pattern = $vmod['files'][$key]['name'];
+            $glob_pattern = $vmod['files'][$key]['name'];
 
-        // Apply path aliases
-          if (!empty(self::$aliases)) {
-            $glob_pattern = preg_replace(array_keys(self::$aliases), array_values(self::$aliases), $glob_pattern);
+          // Apply path aliases
+            if (!empty(self::$aliases)) {
+              $glob_pattern = preg_replace(array_keys(self::$aliases), array_values(self::$aliases), $glob_pattern);
+            }
+
+            foreach (glob(FS_DIR_APP . $glob_pattern, GLOB_BRACE) as $file_to_modify) {
+              $relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file_to_modify);
+
+              self::$_files_to_modifications[$relative_path][] = [
+                'id' => $vmod['id'],
+                'key' => $key,
+              ];
+            }
           }
 
-          foreach (glob(FS_DIR_APP . $glob_pattern, GLOB_BRACE) as $file_to_modify) {
-            $relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file_to_modify);
+      // Run upgrades if a previous version is installed
+        if (!empty($dom->getElementsByTagName('upgrade'))) {
 
-            self::$_files_to_modifications[$relative_path][] = [
-              'id' => $vmod['id'],
-              'key' => $key,
-            ];
-          }
-        }
+          if ($installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
+            if ($installed_version < $vmod['version']) {
 
-          // Run upgrades if a previous version is installed
-          if (self::$_installed[$vmod['id']] < $vmod['version']) {
-
-            if (!empty($dom->getElementsByTagName('upgrade')->length)) {
-
-              // Gather upgrade scripts
+            // Gather upgrade scripts
               $upgrades = [];
 
               foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
@@ -349,8 +354,8 @@
                   $upgrades[] = [
                     'version' => $upgrade_version,
                     'script' => $upgrade_node->textContent,
-          ];
-        }
+                  ];
+                }
               }
 
               uasort($upgrades, function($a, $b) {
@@ -360,46 +365,46 @@
               require_once vmod::check(FS_DIR_APP . 'includes/compatibility.inc.php');
               require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
 
-              // Execute upgrade scripts
+            // Execute upgrade scripts
               foreach ($upgrades as $upgrade) {
 
-                if (version_compare($upgrade['version'], self::$_installed[$vmod['id']], '<=')) continue;
+                if (version_compare($upgrade['version'], $installed_version, '<=')) continue;
 
-            // Exceute upgrade in an isolated scope
-              $tmp_file = stream_get_meta_data(tmpfile())['uri'];
-              file_put_contents($tmp_file, "<?php" . PHP_EOL . $upgrade['script']);
+              // Exceute upgrade in an isolated scope
+                $tmp_file = stream_get_meta_data(tmpfile())['uri'];
+                file_put_contents($tmp_file, "<?php" . PHP_EOL . $upgrade['script']);
 
-              (function() {
-                include func_get_arg(0);
-              })($tmp_file);
+                // Exceute upgrade in an isolated scope
+                  (function() {
+                    include func_get_arg(0);
+                  })($tmp_file);
 
-                foreach (self::$_installed as $id => $version) {
-                  if ($id == $vmod['id']) {
-                    self::$_installed[$id] = $upgrade['version'];
-                  break;
+                  foreach (self::$_installed as $key => $installed) {
+                    if ($installed['id'] == $vmod['id']) {
+                      self::$_installed[$key]['version'] = $upgrade['version'];
+                    break;
+                  }
                 }
               }
-              }
 
-              $new_contents = implode(PHP_EOL, array_map(function($id, $version) {
-                return $id .';'. $version;
-              }, array_keys(self::$_installed), self::$_installed));
+              $new_contents = implode(PHP_EOL, array_map(function($vmod){
+                return $vmod['id'] .';'. $vmod['version'];
+              }, self::$_installed));
 
-              file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
+                file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
 
-              if (isset($_SERVER['REQUEST_URI'])) {
                 header('Location: '. $_SERVER['REQUEST_URI']);
                 exit;
+              }
             }
           }
-        }
 
-        // Install if this is a new modification
+      // Install if this is a new modification
         } else {
 
           file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $vmod['id'] .';'. $vmod['version'] . PHP_EOL, FILE_APPEND | LOCK_EX);
 
-          // Exceute install script
+        // Exceute install script
           if ($dom->getElementsByTagName('install')->length) {
 
             require_once vmod::check(FS_DIR_APP . 'includes/compatibility.inc.php');
@@ -414,9 +419,12 @@
 
             header('Location: '. $_SERVER['REQUEST_URI']);
             exit;
-      }
+          }
 
-          self::$_installed[$vmod['id']] = $vmod['version'];
+          self::$_installed[] = [
+            'id' => $vmod['id'],
+            'version' => $vmod['version'],
+          ];
         }
 
       } catch (\Exception $e) {
@@ -434,12 +442,9 @@
         throw new \Exception('File is missing the name element');
       }
 
-      $id = preg_replace('#\.disabled$#', '', basename(dirname($file)));
-      if ($id == 'vmods') $id = preg_replace('#\.(disabled|xml)$#', '', basename($file));
-
       $vmod = [
         'type' => 'vmod',
-        'id' => $id,
+        'id' => preg_replace('#\.(xml|disabled)$#', '', pathinfo($file, PATHINFO_FILENAME)),
         'name' => $dom->getElementsByTagName('name')->item(0)->textContent,
         'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
         'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
@@ -452,33 +457,6 @@
 
       if (empty($vmod['version'])) {
         $vmod['version'] = date('Y-m-d', filemtime($file));
-      }
-
-      if (!isset(self::$_installed[$vmod['id']])) {
-
-        if ($dom->getElementsByTagName('install')->length > 0) {
-          $vmod['install'] = $dom->getElementsByTagName('install')->item(0)->textContent;
-        }
-
-      } else {
-
-        if (!empty($dom->getElementsByTagName('upgrade'))) {
-          foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
-
-            $upgrade_version = $upgrade_node->getAttribute('version');
-
-            if (version_compare($vmod['version'], $upgrade_version, '<=')) {
-              $vmod['upgrades'][] = [
-                'version' => $upgrade_version,
-                'script' => $upgrade_node->textContent,
-              ];
-            }
-          }
-        }
-
-        uasort($vmod['upgrades'], function($a, $b){
-          return version_compare($a['version'], $b['version']);
-        });
       }
 
       $aliases = [];
@@ -518,12 +496,6 @@
 
             $find_node = $operation_node->getElementsByTagName('find')->item(0);
             $find = $find_node->textContent;
-
-            if (!empty($aliases)) {
-              foreach ($aliases as $key => $value) {
-                $find = str_replace('{alias:'. $key .'}', $value, $insert);
-              }
-            }
 
           // Trim
             if (in_array($operation_node->getAttribute('type'), ['inline', 'regex'])) {
@@ -607,14 +579,12 @@
                 break;
 
               case 'top':
-                $find = '#^#s';
-                $indexes = '';
+                $find = '#^.*$#s';
                 $insert = addcslashes($insert, '\\$').'$0';
                 break;
 
               case 'bottom':
-                $find = '#$#s';
-                $indexes = '';
+                $find = '#^.*$#s';
                 $insert = '$0'.addcslashes($insert, '\\$');
                 break;
 

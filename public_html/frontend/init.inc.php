@@ -19,10 +19,12 @@
         '%link' => document::href_ilink('maintenance_mode'),
       ]));
     } else {
-      http_response_code(503);
-      include 'app://frontend/pages/maintenance_mode.inc.php';
-      include 'app://includes/app_footer.inc.php';
-      exit;
+      if (!in_array(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), [WS_DIR_APP . 'manifest.json'])) {
+        http_response_code(503);
+        include 'app://frontend/pages/maintenance_mode.inc.php';
+        include 'app://includes/app_footer.inc.php';
+        exit;
+      }
     }
   }
 

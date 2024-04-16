@@ -24,7 +24,6 @@
       }
 
       if (empty($_POST['status'])) $_POST['status'] = 0;
-      if (empty($_POST['dock'])) $_POST['dock'] = [];
 
       foreach ([
         'status',

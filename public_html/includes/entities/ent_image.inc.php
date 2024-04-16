@@ -627,10 +627,16 @@
             $this->_image->setImageDepth(16);
           }
 
-          if (strtolower($type) == 'jpg') {
-            $this->_image->setImageCompression(Imagick::COMPRESSION_JPEG);
-          } else {
-            $this->_image->setImageCompression(Imagick::COMPRESSION_ZIP);
+          switch(strtolower($type)) {
+
+            case 'jpeg':
+            case 'jpg':
+               $this->_image->setImageCompression(Imagick::COMPRESSION_JPEG);
+               break;
+
+            default:
+               $this->_image->setImageCompression(Imagick::COMPRESSION_ZIP);
+               break;
           }
 
           $this->_image->setImageCompressionQuality((int)$quality);

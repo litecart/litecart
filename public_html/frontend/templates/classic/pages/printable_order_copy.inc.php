@@ -9,16 +9,18 @@ h1 {
   border: none;
 }
 
-.addresses .row > :not(.billing-address) {
-  margin-top: 4mm;
+.addresses .row {
+  margin-bottom: 8mm;
+}
+.addresses .billing-address {
+  margin-top: -4mm;
 }
 
-.billing-address .rounded-rectangle {
+.rounded-rectangle {
   border: 1px solid #000;
   border-radius: 5mm;
   padding: 4mm;
   margin-inline-start: -15px;
-  margin-bottom: 3mm;
 }
 .billing-address .value {
   margin: 0 !important;
@@ -27,7 +29,9 @@ h1 {
 .items tr th:last-child, .order-total tr td:last-child {
   width: 30mm;
 }
-
+hr {
+  margin: 0 0 2.5mm 0;
+}
 .page .label {
   font-weight: bold;
   margin-bottom: 3pt;
@@ -37,6 +41,28 @@ h1 {
 }
 .page .footer .row {
   margin-bottom: 0;
+}
+
+@media print {
+  button[name="print"] {
+    display: none;
+  }
+}
+
+@media screen {
+  button[name="print"] {
+    display: none;
+  }
+
+  html:hover button[name="print"] {
+    position: fixed;
+    top: 0cm;
+    right: 1cm;
+    display: block;
+    margin: 5mm auto;
+    z-index: 999999;
+    border-radius: 0.25em;
+  }
 }
 </style>
 
@@ -48,7 +74,7 @@ h1 {
       </div>
 
       <div class="col-6 text-end">
-        <h1><?php echo language::translate('title_order_copy', 'Order Copy'); ?></h1>
+        <h1><?php echo language::translate('title_order', 'Order'); ?></h1>
         <div><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
         <div><?php echo !empty($order['date_created']) ? date(language::$selected['raw_date'], strtotime($order['date_created'])) : date(language::$selected['raw_date']); ?></div>
       </div>
@@ -66,9 +92,6 @@ h1 {
         <div class="col-3">
           <div class="label"><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></div>
           <div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_unit'])  : '-'; ?></div>
-
-          <div class="label"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></div>
-          <div class="value"><?php echo functions::escape_html($order['customer']['tax_id']); ?></div>
         </div>
 
         <div class="col-6 billing-address">
@@ -96,6 +119,23 @@ h1 {
         <div class="label"><?php echo language::translate('title_transaction_number', 'Transaction Number'); ?></div>
         <div class="value"><?php echo fallback($order['payment_transaction_id'], '-'); ?></div>
       </div>
+
+      <div class="col-xs-6">
+        <div class="label"><?php echo language::translate('title_email', 'Email Address'); ?></div>
+        <div class="value"><?php echo $order['customer']['email']; ?></div>
+
+        <div class="row" style="margin-bottom: 0;">
+          <div class="col-md-6">
+            <div class="label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
+            <div class="value"><?php echo $order['customer']['phone']; ?></div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="label"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></div>
+            <div class="value"><?php echo !empty($order['customer']['tax_id']) ? functions::escape_html($order['customer']['tax_id']) : '-'; ?></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <table class="items table table-striped data-table">
@@ -105,10 +145,13 @@ h1 {
           <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
           <th><?php echo language::translate('title_qty', 'Qty'); ?></th>
           <th class="text-end"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+          <?php if ($order['tax_total']) { ?>
           <th class="text-end"><?php echo language::translate('title_tax', 'Tax'); ?> </th>
+          <?php } ?>
           <th class="text-end"><?php echo language::translate('title_sum', 'Sum'); ?></th>
         </tr>
       </thead>
+
       <tbody>
         <?php foreach ($order['items'] as $item) { ?>
         <tr>
@@ -118,7 +161,7 @@ h1 {
     if (!empty($item['data'])) {
       foreach ($item['data'] as $key => $value) {
         if (is_array($value)) {
-          echo '<br />- '.$key .': ';
+          echo '<br>- '.$key .': ';
           $use_comma = false;
           foreach ($value as $v) {
             if ($use_comma) echo ', ';
@@ -126,22 +169,18 @@ h1 {
             $use_comma = true;
           }
         } else {
-          echo '<br />- '.$key .': '. $value;
+          echo '<br>- '.$key .': '. $value;
         }
       }
     }
 ?>
           </td>
-          <td><?php echo (float)$item['quantity']; ?></td>
-          <?php if (!empty($order['display_prices_including_tax'])) { ?>
-          <td class="text-end"><?php echo currency::format($item['price'] + $item['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
+          <td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
+          <td class="text-end"><?php echo currency::format($order['display_prices_including_tax'] ? ($item['price'] + $item['tax']) : $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
+          <?php if ($order['tax_total']) { ?>
           <td class="text-end"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo ($item['price'] != 0 && $item['tax'] != 0) ? round($item['tax'] / $item['price'] * 100) : '0'; ?> %)</td>
-          <td class="text-end"><?php echo currency::format($item['quantity'] * ($item['price'] + $item['tax']), false, $order['currency_code'], $order['currency_value']); ?></td>
-          <?php } else { ?>
-          <td class="text-end"><?php echo currency::format($item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
-          <td class="text-end"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo ($item['price'] != 0 && $item['tax'] != 0) ? round($item['tax'] / $item['price'] * 100) : '0'; ?> %)</td>
-          <td class="text-end"><?php echo currency::format($item['quantity'] * $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
           <?php } ?>
+          <td class="text-end"><?php echo currency::format($item['quantity'] * ($order['display_prices_including_tax'] ? $item['price'] + $item['tax'] : $item['price']), false, $order['currency_code'], $order['currency_value']); ?></td>
         </tr>
         <?php } ?>
       </tbody>
@@ -150,17 +189,10 @@ h1 {
     <table class="order-total table data-table">
       <tbody>
         <?php foreach ($order['order_total'] as $row) { ?>
-        <?php if (!empty($order['display_prices_including_tax'])) { ?>
         <tr>
           <td class="text-end"><?php echo $row['title']; ?>:</td>
-          <td class="text-end"><?php echo currency::format($row['amount'] + $row['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
+          <td class="text-end"><?php echo currency::format($order['display_prices_including_tax'] ? ($row['amount'] + $row['tax']) : $row['amount'], false, $order['currency_code'], $order['currency_value']); ?></td>
         </tr>
-        <?php } else { ?>
-        <tr>
-          <td class="text-end"><?php echo $row['title']; ?>:</td>
-          <td class="text-end"><?php echo currency::format($row['amount'], false, $order['currency_code'], $order['currency_value']); ?></td>
-        </tr>
-        <?php } ?>
         <?php } ?>
 
         <?php if ($order['total_tax'] != 0) { ?>
@@ -181,12 +213,12 @@ h1 {
   <?php if (count($order['items']) <= 10) { ?>
   <footer class="footer">
 
-    <hr />
+    <hr>
 
     <div class="row">
       <div class="col-3">
         <div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
-        <div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
+        <div class="value"><?php echo nl2br(settings::get('store_postal_address'), false); ?></div>
       </div>
 
       <div class="col-3">
@@ -212,6 +244,17 @@ h1 {
       <div class="col-3">
       </div>
     </div>
+
   </footer>
   <?php } ?>
 </section>
+
+<button name="print" class="btn btn-default btn-lg">
+  <?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
+</button>
+
+<script>
+  $('button[name="print"]').click(function(){
+    window.print();
+  });
+</script>

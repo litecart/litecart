@@ -285,7 +285,7 @@
 
     var shadowImage = "";
     if (options.initial_css.image != "") {
-      shadowImage = "<img src='" + options.initial_css.image + "' style='width: 100%; height: 100%' />";
+      shadowImage = "<img src='" + options.initial_css.image + "' style='width: 100%; height: 100%'>";
     }
 
     var dy = source.offset().top + source.width()/2 - target.offset().top,

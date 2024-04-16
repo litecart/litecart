@@ -81,8 +81,6 @@
           }
         }
 
-        $row['dock'] = preg_split('#\s*,\s*#', $row['dock'], -1, PREG_SPLIT_NO_EMPTY);
-
       // Set page data
 
         foreach ([

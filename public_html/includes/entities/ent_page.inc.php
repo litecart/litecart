@@ -30,8 +30,6 @@
         $this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
       });
 
-      $this->data['dock'] = [];
-
       $this->previous = $this->data;
     }
 
@@ -54,8 +52,6 @@
       } else {
         throw new Exception('Could not find page (ID: '. (int)$page_id .') in database.');
       }
-
-      $this->data['dock'] = explode(',', $this->data['dock']);
 
       database::query(
         "select * from ". DB_TABLE_PREFIX ."pages_info
@@ -94,7 +90,7 @@
         "update ". DB_TABLE_PREFIX ."pages
         set status = ". (int)$this->data['status'] .",
           parent_id = ". (int)$this->data['parent_id'] .",
-          dock = '". (!empty($this->data['dock']) ? implode(',', database::input($this->data['dock'])) : '') ."',
+          dock = '". database::input($this->data['dock']) ."',
           priority = ". (int)$this->data['priority'] .",
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."

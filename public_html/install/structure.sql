@@ -460,7 +460,8 @@ CREATE TABLE `lc_orders` (
 CREATE TABLE `lc_orders_comments` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `author` ENUM('system','staff','customer') NOT NULL DEFAULT 'system',
+  `author_id` INT(11) NOT NULL DEFAULT '0',
+  `author` enum('system','staff','customer') NOT NULL DEFAULT 'system',
   `text` VARCHAR(512) NOT NULL DEFAULT '',
   `hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

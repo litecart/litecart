@@ -74,6 +74,10 @@
 
       $dependencies[] = 'site';
 
+      if (settings::get('avif_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
+        $dependencies[] = 'avif';
+      }
+
       if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
         $dependencies[] = 'webp';
       }

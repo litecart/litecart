@@ -561,7 +561,7 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label style="margin-top: 2.25em;">
-        <input type="checkbox" class="form-check" name="skip_updates" value="0" /> Skip downloading the latest updates
+        <input type="checkbox" class="form-check" name="skip_updates" value="0"> Skip downloading the latest updates
       </label>
     </div>
   </div>
@@ -570,11 +570,11 @@ input[name="development_type"]:checked + div {
 
   <div class="form-group" style="display: flex;">
     <label>
-      <input name="development_type" value="standard" type="radio" checked />
+      <input name="development_type" value="standard" type="radio" checked>
       <div>
         <div class="type">Standard</div>
         <div class="title">
-          .css<br />
+          .css<br>
           .js
         </div>
         <small class="description">(Uncompressed files)</small>
@@ -582,11 +582,11 @@ input[name="development_type"]:checked + div {
     </label>
 
     <label>
-      <input name="development_type" value="advanced" type="radio" />
+      <input name="development_type" value="advanced" type="radio">
       <div>
         <div class="type">Advanced</div>
         <div class="title">
-          .less + .min.css<br />
+          .less + .min.css<br>
           .js + .min.js
         </div>
         <small class="description">
@@ -596,7 +596,7 @@ input[name="development_type"]:checked + div {
     </label>
   </div>
 
-  <button class="btn btn-success btn-block" type="submit" name="upgrade" value="true" onclick="if(!confirm('Warning! The procedure cannot be undone.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />Upgrade To <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></button>
+  <button class="btn btn-success btn-block" type="submit" name="upgrade" value="true" onclick="if(!confirm('Warning! The procedure cannot be undone.')) return false;" style="font-size: 1.5em; padding: 0.5em;">Upgrade To <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></button>
 </form>
 <?php
   require('includes/footer.inc.php');

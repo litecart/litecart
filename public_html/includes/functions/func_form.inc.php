@@ -13,6 +13,7 @@
     if (empty($name)) return;
 
     foreach ([$_POST, $_GET] as $superglobal) {
+
       if (empty($superglobal)) continue;
 
     // Extract name parts

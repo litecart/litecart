@@ -6,7 +6,7 @@
   Deny from all
 </IfModule>
 
-<FilesMatch "\.(gif|jpe?g|png|webp)$">
+<FilesMatch "\.(a?png|avif|gif|jpe?g|webp)$">
   <IfModule mod_authz_core.c>
     Require all granted
   </IfModule>

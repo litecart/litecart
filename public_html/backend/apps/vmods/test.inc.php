@@ -137,7 +137,7 @@
           <div><?php echo functions::escape_html($file['file']); ?> <?php echo empty($file['error']) ? functions::draw_fonticon('fa-check', 'style="color: #7ccc00;"') : functions::draw_fonticon('fa-times', 'style="color: #c00;"'); ?></div>
           <ul>
             <?php foreach ($file['operations'] as $i => $operation) { ?>
-            <li>Operation #<?php echo $i+1; ?> <?php echo empty($operation['error']) ? functions::draw_fonticon('fa-check', 'style="color: #7ccc00;"') : functions::draw_fonticon('fa-times', 'style="color: #c00;"') .'<br />'. $operation['error']; ?></li>
+            <li>Operation #<?php echo $i+1; ?> <?php echo empty($operation['error']) ? functions::draw_fonticon('fa-check', 'style="color: #7ccc00;"') : functions::draw_fonticon('fa-times', 'style="color: #c00;"') .'<br>'. $operation['error']; ?></li>
             <?php } ?>
           </ul>
           <?php } ?>

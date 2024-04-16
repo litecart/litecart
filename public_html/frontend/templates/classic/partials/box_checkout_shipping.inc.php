@@ -6,12 +6,13 @@
     <?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
     <label class="option btn btn-default btn-block<?php if (!empty($selected['id']) && $selected['id'] == $module['id'].':'.$option['id']) echo ' active'; ?><?php if (!empty($option['error'])) echo ' disabled'; ?>">
       <?php echo functions::form_radio_button('shipping[option_id]', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled' : '')); ?>
+
       <div class="header row" style="margin: 0;">
         <div class="col-xs-3 thumbnail" style="margin: 0;">
           <?php echo functions::draw_thumbnail('storage://' . $option['icon'], 140, 60, 'fit'); ?>
         </div>
 
-        <div class="col-xs-9 text-start">
+        <div class="col-xs-10 text-start">
           <div class="title"><?php echo $module['title']; ?></div>
           <div class="name"><?php echo $option['name']; ?></div>
           <div class="price"><?php echo (empty($option['error']) && (float)$option['cost'] != 0) ? '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])) : language::translate('text_no_fee', 'No fee'); ?></div>
@@ -23,6 +24,7 @@
 
       <?php if (empty($option['error']) && (!empty($option['description']) || !empty($option['fields']))) { ?>
       <div class="content">
+
         <hr />
 
         <?php if (!empty($option['description'])) { ?>
@@ -34,6 +36,7 @@
         <?php } ?>
       </div>
       <?php } ?>
+
     </label>
     <?php } ?>
 

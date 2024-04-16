@@ -32,12 +32,10 @@
 
           if (settings::get('avif_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
             $extension = 'avif';
-          } else {
-            $extension = pathinfo($source, PATHINFO_EXTENSION);
-          }
 
-          if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
+          } else if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
             $extension = 'webp';
+
           } else {
             $extension = pathinfo($source, PATHINFO_EXTENSION);
           }

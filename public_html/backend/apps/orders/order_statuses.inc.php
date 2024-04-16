@@ -163,7 +163,7 @@
           </div>
 
           <div class="col-md-1">
-            <br />
+            <br>
             <?php echo functions::form_button('change', [1, language::translate('title_change', 'Change')], 'submit'); ?>
           </div>
         </div>

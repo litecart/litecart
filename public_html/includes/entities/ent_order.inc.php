@@ -149,9 +149,10 @@
       )->fetch_all();
 
       $this->data['comments'] = database::query(
-        "select * from ". DB_TABLE_PREFIX ."orders_comments
-        where order_id = ". (int)$order_id ."
-        order by id;"
+        "select oc.*, u.username as author_username from ". DB_TABLE_PREFIX ."orders_comments oc
+        left join ". DB_TABLE_PREFIX ."users u on (u.id = oc.author_id)
+        where oc.order_id = ". (int)$order_id ."
+        order by oc.id;"
       )->fetch_all();
 
       $this->data['payment_due'] = &$this->data['total']; // Backwards compatibility <3.0.0
@@ -172,7 +173,7 @@
       if (!empty($this->previous['id']) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
         $this->data['comments'][] = [
           'author' => 'system',
-          'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status by %username', settings::get('store_language_code')), [
+          'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status', settings::get('store_language_code')), [
             '%username' => !empty(administrator::$data['username']) ? administrator::$data['username'] : 'system',
             '%new_status' => reference::order_status($this->data['order_status_id'], settings::get('store_language_code'))->name,
           ]),
@@ -431,6 +432,7 @@
         foreach ($this->data['comments'] as $key => $comment) {
 
           if (empty($comment['author'])) $comment['author'] = 'system';
+          if (empty($comment['author_id'])) $comment['author_id'] = ($comment['author'] == 'customer') ? -1 : 0;
 
           if (empty($comment['id'])) {
             database::query(
@@ -449,6 +451,7 @@
           database::query(
             "update ". DB_TABLE_PREFIX ."orders_comments
             set author = '". (!empty($comment['author']) ? database::input($comment['author']) : 'system') ."',
+              author_id = ". (int)$comment['author_id'] .",
               text = '". database::input($comment['text']) ."',
               hidden = '". (!empty($comment['hidden']) ? 1 : 0) ."'
             where id = ". (int)$comment['id'] ."
@@ -569,7 +572,7 @@
       $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
     }
 
-    public function email_order_copy($recipient, $bccs=[], $language_code='') {
+    public function send_order_copy($recipient, $ccs=[], $bccs=[], $language_code='') {
 
       if (empty($recipient)) return;
 
@@ -637,6 +640,12 @@
 
       $email = new ent_email();
 
+      if (!empty($ccs)) {
+        foreach ($ccs as $cc) {
+          $email->add_cc($cc);
+        }
+      }
+
       if (!empty($bccs)) {
         foreach ($bccs as $bcc) {
           $email->add_bcc($bcc);
@@ -661,9 +670,9 @@
         '%new_status' => $order_status->name,
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
-        '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
+        '%billing_address' => nl2br(functions::format_address($this->data['customer']), false),
         '%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
-        '%shipping_address' => nl2br(functions::format_address($this->data['shipping_address'])),
+        '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address']), false),
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
         '%shipping_current_status' => !empty($this->data['shipping_current_status']) ? $this->data['shipping_current_status'] : '',
@@ -688,10 +697,10 @@
             }
           }
 
-          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($userdata) ? ' ('. implode(', ', $userdata) .')' : '') . "<br />\r\n";
+          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($userdata) ? ' ('. implode(', ', $userdata) .')' : '') . "<br>\r\n";
 
         } else {
-          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($userdata) ? ' ('. implode(', ', $userdata) .')' : '') . "<br />\r\n";
+          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($userdata) ? ' ('. implode(', ', $userdata) .')' : '') . "<br>\r\n";
         }
       }
 

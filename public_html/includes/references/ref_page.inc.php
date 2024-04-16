@@ -144,8 +144,6 @@
             $this->_data[$key] = $value;
           }
 
-          $this->_data['dock'] = preg_split('#\s*,\s*#', $this->_data['dock'], -1, PREG_SPLIT_NO_EMPTY);
-
           break;
       }
     }

@@ -34,7 +34,13 @@ input, button, select, textarea {
 }
 
 input[type="number"] {
-  text-align: right;
+  -moz-appearance: textfield;
+  text-align: end;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    display: none;
+  }
 }
 
 .form-group {

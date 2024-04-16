@@ -25,11 +25,11 @@
           echo 'Copying '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source) .' to '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $target);
 
           if (file_xcopy($source, $target, $results)) {
-            echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
+            echo ' <span class="ok">[OK]</span><br><br>' . PHP_EOL . PHP_EOL;
           } else if ($on_error == 'skip') {
-            echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
+            echo ' <span class="warning">[Skipped]</span><br><br>' . PHP_EOL . PHP_EOL;
           } else {
-            die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
+            die(' <span class="error">[Error]</span><br><br>' . PHP_EOL . PHP_EOL);
           }
         }
 
@@ -82,11 +82,11 @@
           echo 'Deleting '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source);
 
           if (file_delete($source, $results)) {
-            echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
+            echo ' <span class="ok">[OK]</span><br><br>' . PHP_EOL . PHP_EOL;
           } else if ($on_error == 'skip') {
-            echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
+            echo ' <span class="warning">[Skipped]</span><br><br>' . PHP_EOL . PHP_EOL;
           } else {
-            die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
+            die(' <span class="error">[Error]</span><br><br>' . PHP_EOL . PHP_EOL);
           }
         }
 
@@ -104,11 +104,11 @@
           echo 'Moving '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source) .' to '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $target);
 
           if (file_move($source, $target, $results)) {
-            echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
+            echo ' <span class="ok">[OK]</span><br><br>' . PHP_EOL . PHP_EOL;
           } else if ($on_error == 'skip') {
-            echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
+            echo ' <span class="warning">[Skipped]</span><br><br>' . PHP_EOL . PHP_EOL;
           } else {
-            die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
+            die(' <span class="error">[Error]</span><br><br>' . PHP_EOL . PHP_EOL);
           }
         }
 
@@ -150,11 +150,11 @@
           }
 
           if (!in_array(false, $results)) {
-            echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
+            echo ' <span class="ok">[OK]</span><br><br>' . PHP_EOL . PHP_EOL;
           } else if ($on_error == 'skip') {
-            echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
+            echo ' <span class="warning">[Skipped]</span><br><br>' . PHP_EOL . PHP_EOL;
           } else {
-            die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
+            die(' <span class="error">[Error]</span><br><br>' . PHP_EOL . PHP_EOL);
           }
         }
 

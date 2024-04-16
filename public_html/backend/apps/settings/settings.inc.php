@@ -153,7 +153,7 @@
         <?php if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) { ?>
         <tr>
           <td>
-            <strong><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></strong><br />
+            <strong><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></strong><br>
             <?php echo language::translate('settings_key:description_'.$setting['key'], $setting['description']); ?>
           </td>
           <td><?php echo functions::form_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
@@ -167,7 +167,7 @@
           <td class="text-start"><a class="link" href="<?php echo document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></a></td>
           <td style="white-space: normal;">
             <div style="max-height: 200px; overflow-y: auto;" title="<?php echo functions::escape_html(language::translate('settings_key:description_'.$setting['key'], $setting['description'])); ?>">
-              <?php echo $setting['value']; ?>
+              <?php echo nl2br($setting['value'], false); ?>
             </div>
           </td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>

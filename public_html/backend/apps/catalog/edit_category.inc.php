@@ -194,7 +194,7 @@
                 <div class="form-group">
                   <label><?php echo ((isset($category->data['image']) && $category->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></label>
                   <?php echo functions::form_input_file('image', ''); ?>
-                  <?php if (!empty($category->data['image'])) { ?><br />
+                  <?php if (!empty($category->data['image'])) { ?><br>
                   <div><?php echo $category->data['image']; ?></div>
                   <div><?php echo functions::form_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></div>
                   <?php } ?>

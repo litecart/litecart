@@ -38,6 +38,28 @@ h1 {
 .page .footer .row {
   margin-bottom: 0;
 }
+
+@media print {
+  button[name="print"] {
+    display: none;
+  }
+}
+
+@media screen {
+  button[name="print"] {
+    display: none;
+  }
+
+  html:hover button[name="print"] {
+    position: fixed;
+    top: 0cm;
+    right: 1cm;
+    display: block;
+    margin: 5mm auto;
+    z-index: 999999;
+    border-radius: 0.25em;
+  }
+}
 </style>
 
 <section class="page" data-size="A4" dir="<?php echo $text_direction; ?>">
@@ -95,14 +117,14 @@ h1 {
       <tbody>
         <?php foreach ($order['items'] as $item) { ?>
         <tr>
-          <td><?php echo (float)$item['quantity']; ?></td>
+          <td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
           <td><?php echo $item['sku']; ?></td>
           <td style="white-space: normal;"><?php echo $item['name']; ?>
 <?php
     if (!empty($item['data'])) {
       foreach ($item['data'] as $key => $value) {
         if (is_array($value)) {
-          echo '<br />- '.$key .': ';
+          echo '<br>- '.$key .': ';
           $use_comma = false;
           foreach ($value as $v) {
             if ($use_comma) echo ', ';
@@ -110,7 +132,7 @@ h1 {
             $use_comma = true;
           }
         } else {
-          echo '<br />- '.$key .': '. $value;
+          echo '<br>- '.$key .': '. $value;
         }
       }
     }
@@ -136,12 +158,12 @@ h1 {
   <?php if (count($order['items']) <= 10) { ?>
   <footer class="footer">
 
-    <hr />
+    <hr>
 
     <div class="row">
       <div class="col-3">
         <div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
-        <div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
+        <div class="value"><?php echo nl2br(settings::get('store_postal_address'), false); ?></div>
       </div>
 
       <div class="col-3">
@@ -170,3 +192,13 @@ h1 {
   </footer>
   <?php } ?>
 </section>
+
+<button name="print" class="btn btn-default btn-lg">
+  <?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
+</button>
+
+<script>
+  $('button[name="print"]').click(function(){
+    window.print();
+  });
+</script>

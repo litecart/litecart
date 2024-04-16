@@ -17,8 +17,8 @@
   }
 
   function format_mysql_fulltext($string) {
-    $string = strip_tags($string);
-    return preg_replace('#[+\-<>\(\)~*\"@;]+#', ' ', $string);
+    trigger_error('format_mysql_fulltext() is deprecated. Instead, use database::input_fulltext()', E_USER_DEPRECATED);
+    return database::input_fulltext($string);
   }
 
   function format_path_friendly($text, $language_code='') {

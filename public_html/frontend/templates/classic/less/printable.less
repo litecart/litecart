@@ -1,4 +1,6 @@
-@page-margin: 15mm;
+:root {
+  --page-margin: 10mm;
+}
 
 * {
   line-height: 125%;
@@ -22,10 +24,14 @@ hr {
   border-color: #000;
 }
 
+.table > thead > tr > th {
+  padding: 6px 12px;
+}
+
 @media print {
   @page {
     size: A4;
-    margin: @page-margin;
+    margin: var(--page-margin);
     zoom: 100%;
     padding: 0;
   }
@@ -35,10 +41,10 @@ hr {
     page-break-after: always;
 
     &[data-size="A4"] {
-      height: calc(29.7cm - @page-margin - @page-margin);
+      height: ~"calc(29.7cm - var(--page-margin) - var(--page-margin))";
     }
     &[data-size="A4R"] {
-      height: calc(21cm - @page-margin - @page-margin);
+      height: ~"calc(21cm - var(--page-margin) - var(--page-margin))";
     }
   }
 
@@ -62,7 +68,7 @@ hr {
 
   .page {
     margin: 5mm auto;
-    padding: @page-margin;
+    padding: var(--page-margin);
     background: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 
@@ -76,15 +82,15 @@ hr {
     }
 
     .footer {
-      left: @page-margin;
-      right: @page-margin;
-      bottom: @page-margin;
+      left: var(--page-margin);
+      right: var(--page-margin);
+      bottom: var(--page-margin);
     }
   }
 
   .page-break {
     border-bottom: 1px #ccc dashed;
-    margin: @page-margin -@page-margin;
+    margin: var(--page-margin) -var(--page-margin);
     line-height: 0;
   }
 }

@@ -118,7 +118,7 @@
       );
 
       self::$stats['requests']++;
-      self::$stats['duration'] += microtime(true) - $timestamp;
+      self::$stats['duration'] += $this->last_response['duration'];
 
     // Redirect
       if ($status_code == 301) {

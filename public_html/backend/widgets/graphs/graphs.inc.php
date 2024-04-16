@@ -179,6 +179,7 @@
 </div>
 
 <script>
+
 // Monthly Sales
   var data = {
     labels: <?php echo json_encode(array_column($monthly_sales[date('Y')], 'label'), JSON_UNESCAPED_SLASHES); ?>,
@@ -208,7 +209,7 @@
     }]
   ];
 
-  let chart1 = new Chartist.Bar('#chart-sales-monthly', data, options, responsiveOptions);
+  let chart1 = new Chartist.BarChart('#chart-sales-monthly', data, options, responsiveOptions);
 
   // Offset x1 a tiny amount so that the straight stroke gets a bounding box
   // Straight lines don't get a bounding box
@@ -257,7 +258,7 @@
     }]
   ];
 
-  let chart2 = new Chartist.Bar('#chart-sales-daily', data, options, responsiveOptions);
+  let chart2 = new Chartist.BarChart('#chart-sales-daily', data, options, responsiveOptions);
 
   // Offset x1 a tiny amount so that the straight stroke gets a bounding box
   // Straight lines don't get a bounding box

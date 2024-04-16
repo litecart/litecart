@@ -29,6 +29,7 @@
     public function select($id, $userdata=[]) {
 
       $this->selected = [];
+      if (empty($this->modules)) return [];
 
       if (!$options = $this->options()) return;
 
