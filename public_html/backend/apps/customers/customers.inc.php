@@ -3,9 +3,12 @@
   if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
     $_GET['page'] = 1;
   }
-  if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
 
-  document::$title[] = language::translate('title_customers', 'Customers');
+  if (empty($_GET['sort'])) {
+    $_GET['sort'] = 'date_created';
+  }
+
+  document::$snippets['title'][] = language::translate('title_customers', 'Customers');
 
   breadcrumbs::add(language::translate('title_customers', 'Customers'));
 
@@ -32,19 +35,31 @@
     }
   }
 
-  if (!empty($_POST['delete'])) {
+  if (isset($_POST['delete'])) {
 
-    if (!empty($_POST['customers'])) {
+    try {
+
+      if (empty($_POST['customers'])) {
+        throw new Exception(language::translate('error_must_select_customers', 'You must select customers'));
+      }
+
       foreach ($_POST['customers'] as $customer_id) {
         $customer = new ent_customer($customer_id);
         $customer->delete();
       }
-    }
 
-    notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-    header('Location: '. document::link());
-    exit;
+      notices::add('success', strtr(language::translate('success_deleted_n_customers', 'Deleted %n customers'), ['%n' => count($_POST['customers'])]));
+
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
+
+// Table Rows
+  $customers = [];
 
   if (!empty($_GET['query'])) {
     $sql_find = [

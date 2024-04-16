@@ -199,13 +199,14 @@ textarea.form-input {
   }
   .form-input:first-child, .btn:first-child, .input-group-btn:first-child .btn,
   .input-group-text:first-child {
-    border-radius: var(--input-border-radius) 0 0 var(--input-border-radius);
+    border-start-start-radius: var(--input-border-radius);
+    border-end-start-radius: var(--input-border-radius);
   }
   .form-input:last-child, .input-group-btn:last-child .btn,
   .input-group-text:last-child {
     margin-inline-end: -1px;
-    border-end-end-radius: var(--input-border-radius);
     border-start-end-radius: var(--input-border-radius);
+    border-end-end-radius: var(--input-border-radius);
   }
 }
 

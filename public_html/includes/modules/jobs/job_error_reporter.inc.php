@@ -12,32 +12,49 @@
     public function process($force, $last_run) {
 
       if (empty($force)) {
-        if (empty($this->settings['status'])) return;
 
-        if (!empty($this->settings['working_hours'])) {
-          list($from_time, $to_time) = explode('-', $this->settings['working_hours']);
-          if (time() < strtotime("Today $from_time") || time() > strtotime("Today $to_time")) return;
-        }
+      // Abort if no log file is set
+        if (!$log_file = ini_get('error_log')) return;
 
-        switch ($this->settings['report_frequency']) {
-          case 'Hourly':
-            if (date('Ymdh', strtotime($last_run)) == date('Ymdh')) return;
-            break;
-          case 'Daily':
-            if (date('Ymd', strtotime($last_run)) == date('Ymd')) return;
-            break;
-          case 'Weekly':
-            if (date('W', strtotime($last_run)) == date('W')) return;
-            break;
-          case 'Monthly':
-            if (date('Ym', strtotime($last_run)) == date('Ym')) return;
-            break;
+      // Abort if log file is missing
+        if (!is_file($log_file)) return;
+
+      // Make sure this is not an urgent matter of a huge log file (100+ MB)
+        if (filesize($log_file) < 100e6) {
+
+        // Abort if disabled
+          if (empty($this->settings['status'])) return;
+
+        // Abort if not within working hours
+          if (!empty($this->settings['working_hours'])) {
+            list($from_time, $to_time) = explode('-', $this->settings['working_hours']);
+            if (time() < strtotime("Today $from_time") || time() > strtotime("Today $to_time")) return;
+          }
+
+        // Abort if the frequency for running this job is not met
+          switch ($this->settings['frequency']) {
+
+            case 'Hourly':
+              if (strtotime($last_run) >= mktime(date('H'), 0, 0)) return;
+              break;
+
+            case 'Daily':
+              if (strtotime($last_run) >= mktime(0, 0, 0)) return;
+              break;
+
+            case 'Weekly':
+              if (strtotime($last_run) >= strtotime('This week 00:00:00')) return;
+              break;
+
+            case 'Monthly':
+              if (strtotime($last_run) >= mktime(0, 0, 0, null, 1)) return;
+              break;
+          }
         }
       }
 
-      $log_file = ini_get('error_log');
-
-      if (!is_file($log_file)) return;
+    // Disable RAM memory limit usage (in case we are dealing with some major big)
+      ini_set('memory_limit', -1);
 
       if (!$contents = file_get_contents($log_file)) return;
 
@@ -107,11 +124,11 @@
           'function' => 'text()',
         ],
         [
-          'key' => 'report_frequency',
+          'key' => 'frequency',
           'default_value' => 'Weekly',
-          'title' => language::translate(__CLASS__.':title_report_frequency', 'Report Frequency'),
-          'description' => language::translate(__CLASS__.':description_report_frequency', 'How often the reports should be sent.'),
-          'function' => 'radio("Immediately","Hourly","Daily","Weekly","Monthly")',
+          'title' => language::translate(__CLASS__.':title_frequency', 'Report Frequency'),
+          'description' => language::translate(__CLASS__.':description_frequency', 'How often the reports should be sent.'),
+          'function' => 'radio("Hourly","Daily","Weekly","Monthly")',
         ],
         [
           'key' => 'email_recipient',

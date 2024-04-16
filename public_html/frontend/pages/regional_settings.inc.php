@@ -17,6 +17,13 @@
 
     try {
 
+      if (!empty($_GET['redirect_url']) && (empty($_POST['language_code']) || $_POST['language_code'] == language::$selected['code'])) {
+        $redirect_url = new ent_link($_GET['redirect_url']);
+        $redirect_url->host = '';
+      } else {
+        $redirect_url = document::ilink('', [], null, [], !empty($_POST['language_code']) ? $_POST['language_code'] : '');
+      }
+
       if (!empty($_POST['language_code'])) {
         language::set($_POST['language_code']);
       }

@@ -8,6 +8,8 @@
     background-position: right var(--input-padding-x) center;
     background-size: .8em;
     padding-inline-end: ~"calc(var(--input-padding-x) + 1.5em)" !important;
+    cursor: default;
+    user-select: none;
   }
 
   &.open {
@@ -31,7 +33,7 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    text-align: left;
+    text-align: start;
     background-color: var(--dropdown-menu-background-color);
     border: 1px solid var(--default-border-color);
     border-radius: var(--border-radius);

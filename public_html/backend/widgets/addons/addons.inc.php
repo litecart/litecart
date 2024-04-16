@@ -75,8 +75,10 @@
 </div>
 <?php
       }
+
     } catch(Exception $e) {
       // Do nothing
     }
+
     cache::end_capture($widget_addons_cache_token);
   }

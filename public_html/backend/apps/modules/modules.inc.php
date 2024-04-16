@@ -135,7 +135,16 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_button_link('https://www.litecart.net/addons/', 'LiteCart Add-Ons', 'target="_blank"', 'fa-globe'); ?>
+
+    <?php if ($type == 'job') { ?>
+    <button id="cron-example" class="btn btn-default" type="button" style="margin-right: 1em;">
+      <?php echo functions::draw_fonticon('fa-info'); ?> <?php echo language::translate('title_cron_job', 'Cron Job'); ?>
+    </button>
+    <?php } ?>
+
+    <a class="btn btn-default" href="https://www.litecart.net/addons" target="_blank">
+      <?php echo functions::draw_fonticon('fa-globe'); ?> LiteCart Add-ons
+    </a>
   </div>
 
   <?php echo functions::form_begin('modules_form', 'post'); ?>
@@ -211,6 +220,10 @@
 </div>
 
 <script>
+  $('#cron-example').click(function(){
+    prompt("<?php echo language::translate('title_cron_job_configuration', 'Cron Job Configuration'); ?>", "*/5 * * * * curl --silent <?php echo document::ilink('push_jobs'); ?> &>/dev/null");
+  });
+
   $('.data-table :checkbox').change(function() {
     $('#actions').prop('disabled', !$('.data-table :checked').length);
   }).first().trigger('change');

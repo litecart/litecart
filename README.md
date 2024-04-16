@@ -11,11 +11,8 @@ For an additional installation instructions, visit https://wiki.litecart.net/how
 
 What you need:
 
-  * An Apache2 web server running PHP 5.4 or higher. Latest stable PHP release recommended for best performance.
-  * A MySQL 5.5+ account.
-
-If you don't have access to a web server and want to try LiteCart on your local machine, check out [AMPPS](http://www.ampps.com/). AMPPS is an Apache web server suite that offers LiteCart for installation with one click using Softaculous.
-
+  * An Apache2 web server running PHP 5.6 or higher. Latest stable PHP release recommended for best performance.
+  * A MySQL 5.7+ or MariaDB database.
 
 ## Installation Instructions
 
@@ -41,19 +38,19 @@ Paths are machine specific, so talk to your web host if you are uncertain where 
 
 If everything went well LiteCart should be successfully installed.
 
-For community written installation instructions see https://wiki.litecart.net/doku.php?id=how_to_install.
+For community written installation instructions see https://www.litecart.net/en/wiki/how_to_install.
 
 
 ## How To Get Started
 
-To get your store up and running, see our [step list](https://wiki.litecart.net/doku.php?id=get_started) for best practise.
+To get your store up and running, see our [step list](https://www.litecart.net/en/wiki/how_to_install) for best practise.
 
 
 ## How To Change The Look Of Your Store
 
 Navigate to the folder ~/frontend/templates/ and you will find all HTML content and CSS files to edit. If you want to adapt your work with LESS instead of CSS you will need a LESS compiler. We recommend downloading our [Developer Kit](https://www.litecart.net/addons/163/developer-kit) that has a preconfigured LESS compiler and JavaScript minifyer.
 
-See our wiki article [How To Create a Template](https://wiki.litecart.net/doku.php?id=how_to_create_a_template).
+See our wiki article [How To Create a Template](https://www.litecart.net/en/wiki/how_to_create_a_template).
 
 ## See Also
 

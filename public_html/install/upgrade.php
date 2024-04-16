@@ -516,14 +516,14 @@ input[name="development_type"]:checked + div {
 
   <div class="row">
     <div class="form-group col-md-6">
-      <label>MySQL Server</label>
+      <label>MySQL/MariaDB Server</label>
       <div class="form-control">
         <?php echo DB_SERVER; ?>
       </div>
     </div>
 
     <div class="form-group col-md-6">
-      <label>MySQL Database</label>
+      <label>MySQL/MariaDB Database</label>
       <div class="form-control">
         <?php echo DB_DATABASE; ?>
       </div>

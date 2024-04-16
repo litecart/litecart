@@ -56,7 +56,7 @@
     try {
 
       foreach (array_keys($module->data['settings']) as $key) {
-        if (in_array($key, array('id', 'date_updated', 'date_created'))) continue;
+        if (in_array($key, ['id', 'date_updated', 'date_created'])) continue;
         $module->data['settings'][$key] = isset($_POST['settings'][$key]) ? $_POST['settings'][$key] : '';
       }
 

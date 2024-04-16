@@ -17,19 +17,18 @@
         throw new Exception(language::translate('error_missing_from_order_status', 'Please select a from order status'));
       }
 
-      if (empty($_POST['to_order_status_id'])) {
-        throw new Exception(language::translate('error_missing_to_order_status', 'Please select a to order status'));
-      }
-
-      database::query(
-        "update ". DB_TABLE_PREFIX ."orders
-        set order_status_id = ". (int)$_POST['to_order_status_id'] ."
+      $orders_query = database::query(
+        "select id from ". DB_TABLE_PREFIX ."orders
         where order_status_id = ". (int)$_POST['from_order_status_id'] .";"
       );
 
-      $affected_rows = database::affected_rows();
+      while ($order = database::fetch($orders_query)) {
+        $order = new ent_order($order['id']);
+        $order->data['order_status_id'] = (int)$_POST['to_order_status_id'];
+        $order->save();
+      }
 
-      notices::add('success', strtr(language::translate('success_changed_order_status_for_n_orders', 'Changed order status for %num orders'), ['%num' => $affected_rows]));
+      notices::add('success', strtr(language::translate('success_changed_order_status_for_n_orders', 'Changed order status for %num orders'), ['%num' => database::num_rows($orders_query)]));
 
       header('Location: '. document::link());
       exit;

@@ -69,8 +69,10 @@
 </div>
 <?php
       }
+
     } catch(Exception $e) {
       // Do nothing
     }
+
     cache::end_capture($widget_discussions_cache_token);
   }

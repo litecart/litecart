@@ -58,25 +58,6 @@
     }
   }
 
-// Add to cart animation
-  $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
-    e.preventDefault();
-    var form = $(this);
-    $(this).find('button[name="add_cart_product"]').animate_from_to('#cart', {
-      pixels_per_second: 2000,
-      initial_css: {
-        'border': '1px rgba(0,136,204,1) solid',
-        'background-color': 'rgba(0,136,204,0.5)',
-        'z-index': '999999',
-        'border-radius': '3px',
-        'padding': '5px'
-      },
-      callback: function() {
-        updateCart($(form).serialize() + '&add_cart_product=true');
-      }
-    });
-  });
-
 // Tabs (data-toggle="tab")
   $('.nav-tabs').each(function(){
     if (!$(this).find('.active').length) {
@@ -191,7 +172,9 @@
   });
 
 // Update cart / Keep alive
+  var num_cart_updates = 0;
   window.updateCart = function(data) {
+
     $.ajax({
       url: window._env.platform.url + 'ajax/cart.json',
       type: data ? 'post' : 'get',
@@ -204,8 +187,6 @@
       },
       error: function(jqXHR, textStatus, errorThrown) {
         if (data) alert('Error while updating cart');
-        console.error('Error while updating cart');
-        console.debug(jqXHR.responseText);
       },
       success: function(json) {
         if (json['alert']) alert(json['alert']);
@@ -221,9 +202,32 @@
         $('#cart .formatted_value').html(json['formatted_value']);
       }
     });
+
+    if (++num_cart_updates < 60) { // Continue refreshing up to 60 cycles
+      setTimeout('updateCart', 60e3);
+    }
   }
 
-  var timerCart = setInterval("updateCart()", 60000); // Keeps session alive
+  setTimeout('updateCart', 60e3); // Keeps session alive
+
+// Add to cart animation
+  $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
+    e.preventDefault();
+    var form = $(this);
+    $(this).find('button[name="add_cart_product"]').animate_from_to('#cart', {
+      pixels_per_second: 2000,
+      initial_css: {
+        'border': '1px rgba(0,136,204,1) solid',
+        'background-color': 'rgba(0,136,204,0.5)',
+        'z-index': '999999',
+        'border-radius': '3px',
+        'padding': '5px'
+      },
+      callback: function() {
+        updateCart($(form).serialize() + '&add_cart_product=true');
+      }
+    });
+  });
 
 /*
  * jQuery Animate From To plugin 1.0

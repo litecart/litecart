@@ -31,7 +31,12 @@
       });
 
       $this->data['status'] = 1;
+      $this->data['tax_class_id'] = settings::get('default_tax_class_id');
       $this->data['purchase_price_currency_code'] = settings::get('store_currency_code');
+      $this->data['quantity_unit_id'] = settings::get('default_quantity_unit_id');
+      $this->data['delivery_status_id'] = settings::get('default_delivery_status_id');
+      $this->data['sold_out_status_id'] = settings::get('default_sold_out_status_id');
+      $this->data['reserved'] = 0;
 
       $this->data['categories'] = [];
       $this->data['images'] = [];

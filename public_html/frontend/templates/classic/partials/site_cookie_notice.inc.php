@@ -1,6 +1,3 @@
-<?php
-  if (!settings::get('cookie_policy')) return;
-?>
 <?php if (!isset($_COOKIE['cookies_accepted'])) { ?>
 <div id="box-cookie-notice">
   <div class="container">

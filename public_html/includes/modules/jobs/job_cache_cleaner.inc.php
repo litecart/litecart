@@ -25,7 +25,7 @@
       clearstatcache();
 
       foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
-        $search = !empty($keyword) ? '/*_'.$keyword.'*.cache' : '/*.cache';
+        $search = '/*.cache';
         foreach (glob($dir.$search) as $file) {
           if (filemtime($file) > $timestamp) continue;
           echo '  Deleting ' . basename($file) . PHP_EOL;

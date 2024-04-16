@@ -95,7 +95,7 @@
               <div class="row">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-                  <?php echo functions::form_input_text('address1', true, 'required'); ?>
+                  <?php echo functions::form_input_text('address1', true); ?>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -112,7 +112,7 @@
 
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_city', 'City'); ?></label>
-                  <?php echo functions::form_input_text('city', true, 'required'); ?>
+                  <?php echo functions::form_input_text('city', true); ?>
                 </div>
               </div>
 
@@ -131,7 +131,7 @@
               <div class="row">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
-                  <?php echo functions::form_input_phone('phone', true, 'required placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
+                  <?php echo functions::form_input_phone('phone', true, 'placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
                 </div>
               </div>
 

@@ -109,7 +109,7 @@
       ];
 
       file_put_contents(functions::file_realpath('storage://logs/http_request_last-'. $parts['host'] .'.log'),
-        '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_request['timestamp']) .'] Request ', 70, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .
+        '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_request['timestamp']) .'] Request ', 70, '#', STR_PAD_RIGHT) . "\r\n\r\n" .
         $this->last_request['head'] . "\r\n" .
         $this->last_request['body'] . "\r\n\r\n" .
         '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_response['timestamp']) .'] Response — '. $this->last_response['bytes'] .' bytes transferred in '. $this->last_response['duration'] .' s ', 72, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .

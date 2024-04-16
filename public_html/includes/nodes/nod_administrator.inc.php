@@ -110,7 +110,7 @@
           if (!isset(session::$data['administrator_security_timestamp']) || session::$data['administrator_security_timestamp'] < strtotime($administrator['date_expire_sessions'])) {
             self::reset();
             notices::add('errors', language::translate('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
-            header('Location: '. document::ilink('login'));
+            header('Location: '. document::ilink('b:login'));
             exit;
           }
         }

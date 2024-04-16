@@ -770,7 +770,7 @@ ul.breadcrumb li a {
   margin: 0;
   padding: 0;
   list-style: none;
-  text-align: left;
+  text-align: start;
   background-color: var(--dropdown-menu-background-color);
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
@@ -851,10 +851,14 @@ ul.breadcrumb li a {
 html[dir="rtl"] .dropdown [data-toggle="dropdown"] {
   background-position: left 1em center;
 }
+html[dir="rtl"] .dropdown-menu {
+  left: auto !important;
+  right: 0 !important;
+}
 @media (min-width: 768px) {
-  html[dir="rtl"] .dropdown-menu-end {
-    left: 0;
-    right: auto;
+  html[dir="rtl"] .dropdown-menu.dropdown-menu-end {
+    left: 0 !important;
+    right: auto !important;
   }
 }
 .dropdown-backdrop {
@@ -947,42 +951,6 @@ html[dir="rtl"] .float-end {
 }
 .row [class*="col-"] {
   grid-column: span 12;
-}
-.col--1 {
-  grid-column: span 1 !important;
-}
-.col--2 {
-  grid-column: span 2 !important;
-}
-.col--3 {
-  grid-column: span 3 !important;
-}
-.col--4 {
-  grid-column: span 4 !important;
-}
-.col--5 {
-  grid-column: span 5 !important;
-}
-.col--6 {
-  grid-column: span 6 !important;
-}
-.col--7 {
-  grid-column: span 7 !important;
-}
-.col--8 {
-  grid-column: span 8 !important;
-}
-.col--9 {
-  grid-column: span 9 !important;
-}
-.col--10 {
-  grid-column: span 10 !important;
-}
-.col--11 {
-  grid-column: span 11 !important;
-}
-.col--12 {
-  grid-column: span 12 !important;
 }
 .col-xs-1 {
   grid-column: span 1 !important;
@@ -1432,14 +1400,15 @@ textarea.form-input {
 .input-group .btn:first-child,
 .input-group .input-group-btn:first-child .btn,
 .input-group .input-group-text:first-child {
-  border-radius: var(--input-border-radius) 0 0 var(--input-border-radius);
+  border-start-start-radius: var(--input-border-radius);
+  border-end-start-radius: var(--input-border-radius);
 }
 .input-group .form-input:last-child,
 .input-group .input-group-btn:last-child .btn,
 .input-group .input-group-text:last-child {
   margin-inline-end: -1px;
-  border-end-end-radius: var(--input-border-radius);
   border-start-end-radius: var(--input-border-radius);
+  border-end-end-radius: var(--input-border-radius);
 }
 [data-toggle="buttons"] input[type="checbox"],
 [data-toggle="buttons"] input[type="radio"] {
@@ -1727,7 +1696,7 @@ ul.list-inline li {
 html[dir="rtl"] .offcanvas {
   left: auto;
   right: 0;
-  transform: translateX(100%);
+  transform: translateX(0%);
 }
 /* Navbar - Bootstrap Compatible */
 .navbar {
@@ -1799,7 +1768,7 @@ html[dir="rtl"] .offcanvas {
 .navbar-nav {
   display: flex;
   flex-direction: column;
-  padding-left: 0;
+  padding-inline-start: 0;
   margin-top: 0;
   margin-bottom: 0;
   list-style: none;
@@ -2089,10 +2058,10 @@ html[dir="rtl"] .offcanvas {
 }
 /* Typography - Bootstrap Compatible */
 .text-start {
-  text-align: left !important;
+  text-align: start !important;
 }
 .text-left {
-  text-align: start !important;
+  text-align: left !important;
 }
 .text-center {
   text-align: center !important;
@@ -2104,11 +2073,11 @@ html[dir="rtl"] .offcanvas {
   text-align: end !important;
 }
 @media (min-width: 768px) {
-  .text-sm-left {
-    text-align: left !important;
-  }
   .text-sm-start {
     text-align: start !important;
+  }
+  .text-sm-left {
+    text-align: left !important;
   }
   .text-sm-center {
     text-align: center !important;

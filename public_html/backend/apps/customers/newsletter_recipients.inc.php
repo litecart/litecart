@@ -65,7 +65,7 @@
     database::query(
       "select email from ". DB_TABLE_PREFIX ."newsletter_recipients
       where id
-      ". (!empty($_GET['query']) ? "c.email like '%". database::input($_GET['query']) ."%'" : "") ."
+      ". (!empty($_GET['query']) ? "and c.email like '%". database::input($_GET['query']) ."%'" : "") ."
       order by date_created desc;"
     )->each(function($recipient) {
       echo $recipient['email'] . PHP_EOL;
@@ -111,10 +111,10 @@
       <thead>
         <tr>
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-          <th><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
-          <th><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_email', 'Email'); ?></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_client_ip', 'Client IP'); ?></th>
+          <th><?php echo language::translate('title_hostname', 'Hostname'); ?></th>
           <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
         </tr>
       </thead>
@@ -123,10 +123,10 @@
         <?php foreach ($recipients as $recipient) { ?>
         <tr>
           <td><?php echo functions::form_checkbox('recipients[]', $recipient['id']); ?></td>
-          <td><?php echo $recipient['id']; ?></td>
           <td><?php echo $recipient['email']; ?></td>
           <td><?php echo $recipient['name']; ?></td>
           <td><?php echo $recipient['client_ip']; ?></td>
+          <td><?php echo $recipient['hostname']; ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
         </tr>
         <?php } ?>

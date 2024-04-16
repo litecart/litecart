@@ -7,6 +7,7 @@
     $errfile = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', 'app://', str_replace('\\', '/', $errfile));
 
     switch($errno) {
+
       case E_STRICT:
         $output = "<strong>Strict:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
         break;
@@ -53,7 +54,7 @@
     }
 
     if (filter_var(ini_get('display_errors'), FILTER_VALIDATE_BOOLEAN)) {
-      if (filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOLEAN) || PHP_SAPI == 'cli') {
+      if (filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOLEAN) || $_SERVER['SERVER_SOFTWARE'] == 'CLI') {
         echo strip_tags($output . (isset($_GET['debug']) ? $backtrace_output : ''));
       } else {
         echo $output . (isset($_GET['debug']) ? $backtrace_output : '');
@@ -79,3 +80,10 @@
   }
 
   set_error_handler('error_handler');
+
+// Pass fatal errors to error handler
+  function exception_handler($e) {
+    error_handler(E_ERROR, $e->getMessage(), $e->getFile(), $e->getLine());
+  }
+
+  set_exception_handler('exception_handler');

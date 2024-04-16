@@ -305,9 +305,11 @@
 
       success: function(data){
         if (data.status == 'ok') {
-          $('.stock-notice').text(data.notice).removeClass('warning');
+          $('.stock-notice').text(data.notice).removeClass('warning').removeClass('notice');
         } else if (data.status == 'warning') {
-          $('.stock-notice').text(data.notice).addClass('warning');
+          $('.stock-notice').text(data.notice).addClass('warning').removeClass('notice');
+        } else if (data.status == 'notice') {
+          $('.stock-notice').text(data.notice).addClass('notice').removeClass('warning');
         } else {
           $('.stock-notice').html('');
         }

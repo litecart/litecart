@@ -323,7 +323,7 @@ body.scrolling-down #site-navigation {
 }
 #box-filter .tokens .token {
   padding: 0.5em 1em;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   cursor: default;
   margin-inline-end: 0.5em;
 }
@@ -694,6 +694,10 @@ body.scrolling-down #site-navigation {
 }
 #box-product .stock-notice:empty {
   display: none;
+}
+#box-product .stock-notice.notice {
+  color: #e58310;
+  border-color: #e58310;
 }
 #box-product .stock-notice.warning {
   color: #c00;

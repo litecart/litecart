@@ -48,7 +48,7 @@
 
     <?php echo functions::form_begin('file_form', 'post'); ?>
 
-      <div class="form-group" style="max-width: 640px;">
+      <div class="form-group" style="max-width: 800px;">
           <label><?php echo language::translate('title_file', 'File'); ?></label>
           <div class="form-input" readonly><?php echo $stylesheet; ?></div>
         </div>

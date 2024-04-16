@@ -135,7 +135,6 @@
     '#^install/#',
     '#^storage/#',
     '#^vendor/#',
-    '#^vmods/#',
   ];
 
   $scripts = functions::file_search(FS_DIR_APP . '**.php', GLOB_BRACE);
