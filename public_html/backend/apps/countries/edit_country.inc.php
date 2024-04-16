@@ -107,7 +107,7 @@
     <?php echo functions::form_begin('country_form', 'post', false, false); ?>
 
       <div class="row">
-        <div class="col-lg-5">
+        <div class="col-lg-6">
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_status', 'Status'); ?></label>
@@ -179,7 +179,7 @@
           </div>
         </div>
 
-        <div class="col-lg-7">
+        <div class="col-lg-6">
           <h2><?php echo language::translate('title_zones', 'Zones'); ?></h2>
           <table class="table table-striped table-hover data-table">
             <thead>
@@ -196,7 +196,7 @@
                 <td><?php echo functions::form_input_hidden('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
                 <td><?php echo functions::form_input_text('zones['. $key .'][code]', true); ?></td>
                 <td><?php echo functions::form_input_text('zones['. $key .'][name]', true); ?></td>
-                <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+                <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
               </tr>
               <?php } ?>
             </tbody>
@@ -239,12 +239,12 @@
     if ($('select[name="country[code]"]').find('option:selected').val() == '') return;
 
     let output = [
-      '<tr>'
+      '<tr>',
       '  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][id]', '')); ?></td>',
       '  <td><?php echo functions::escape_js(functions::form_input_text('zones[new_zone_index][code]', '')); ?></td>',
       '  <td><?php echo functions::escape_js(functions::form_input_text('zones[new_zone_index][name]', '')); ?></td>',
-      '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>',
-      '</tr>'
+      '  <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>',
+      '</tr>',
     ].join('')
     .replace(/new_zone_index/g, 'new_' + new_zone_index++)
     .replace(/new_zone_code/g, $('input[name="zone[code]"]').val())

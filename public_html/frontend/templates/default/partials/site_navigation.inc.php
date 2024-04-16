@@ -15,9 +15,9 @@
         <li class="categories dropdown">
           <a class="navbar-item" href="#" data-toggle="dropdown"><?php echo language::translate('title_categories', 'Categories'); ?></a>
           <ul class="dropdown-menu">
-            <?php foreach ($categories as $item) { ?>
+            <?php foreach ($categories as $item) { for ($i=0; $i < 4; $i++) {?>
             <li><a class="navbar-item" href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
-            <?php } ?>
+            <?php }} ?>
           </ul>
         </li>
         <?php } ?>
@@ -91,20 +91,28 @@
             <span class="badge"><?php echo $shopping_cart['num_items']; ?></span>
           </a>
 
-          <ul class="dropdown-menu dropdown-menu-end">
-            <?php foreach ($shopping_cart['items'] as $item) { ?>
+          <ul class="dropdown-menu dropdown-menu-end" style="max-width: 480px;">
+            <?php foreach ($shopping_cart['items'] as $key => $item) { ?>
             <li>
               <div class="dropdown-item item">
                 <div class="row">
                   <div class="col-3">
-                    <img class="image img-responsive" src="<?php echo document::href_rlink($item['thumbnail']); ?>" alt="<?php echo $item['name']; ?>" />
+                    <?php echo functions::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. functions::escape_html($item['name']) .'"'); ?>
                   </div>
+
                   <div class="col-8">
-                    <div><a class="name" href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>"><?php echo $item['name']; ?></a></div>
-                    <div class="price"><?php echo currency::format($item['price']); ?></div>
+                    <div>
+                      <a class="name" href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>">
+                        <?php echo $item['name']; ?>
+                      </a>
+                    </div>
+                    <div class="price">
+                      <?php echo currency::format($item['price']); ?>
+                    </div>
                   </div>
+
                   <div class="col-1 text-end">
-                    <?php echo functions::form_button('remove_cart_item', [$item['key'], functions::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
+                    <?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
                   </div>
                 </div>
               </div>

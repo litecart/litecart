@@ -212,12 +212,8 @@
     '\'' => language::translate('char_single_quote', 'Single quote'),
   ];
 
-// Prefillable currencies
-  $prefillable_language_options = [];
-
-  if (empty($currency->data['id'])) {
-
-    $prefillable_language_options[] = ['', '-- '. language::translate('title_select', 'Select') .' --'];
+// Prefillable Languages
+  if (empty($language->data['id'])) {
 
   // Get all existing languages
     $existing_languages = database::query(
@@ -234,20 +230,25 @@
       return !in_array($a['code'], $existing_languages);
     });
 
-  // Sort by native name
+  // Sort by code
     uasort($available_languages, function($a, $b){
       return ($a['code'] < $b['code']) ? -1 : 1;
     });
 
-  // Append to array of options
-    foreach ($available_languages as $available_language) {
-      $prefillable_language_options[] = [
-        $available_language['code'],
-        $available_language['code'] .' &ndash; '. $available_language['native'],
-        implode(' ', array_map(function($k, $v){
-          return 'data-'. str_replace('_', '-', $k) .'="'. functions::escape_html($v) .'"';
-        }, array_keys($available_language), array_values($available_language))),
-      ];
+    if ($available_languages) {
+
+      $prefillable_language_options = [['', '-- '. language::translate('title_select', 'Select') .' --']];
+
+    // Append to array of options
+      foreach ($available_languages as $available_language) {
+        $prefillable_language_options[] = [
+          $available_language['code'],
+          $available_language['code'] .' &ndash; '. $available_language['native'],
+          implode(' ', array_map(function($k, $v){
+            return 'data-'. str_replace('_', '-', $k) .'="'. functions::escape_html($v) .'"';
+          }, array_keys($available_language), array_values($available_language))),
+        ];
+      }
     }
   }
 
@@ -262,7 +263,7 @@
   <div class="card-body">
     <?php echo functions::form_begin('language_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
-      <?php if (!empty($available_languages)) { ?>
+      <?php if (!empty($prefillable_language_options)) { ?>
       <div class="form-group col-md-6">
         <label><?php echo language::translate('text_prefill_from_the_web', 'Prefill from the web'); ?></label>
         <?php echo functions::form_select('prefill', $prefillable_language_options, ''); ?>

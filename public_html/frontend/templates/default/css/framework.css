@@ -261,15 +261,12 @@ hr {
 }
 /* Breadcrumbs - Bootstrap Compatible */
 .breadcrumbs {
+  background: #e9e9ef;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  padding: 0;
-  margin: 0 0 var(--gutter-size) 0;
-  list-style: none;
-  background-color: var(--breadcrumbs-background-color);
-  color: var(--breadcrumbs-text-color);
-  border: 1px solid var(--breadcrumbs-border-color);
+  margin: 0;
+  padding: 0.75em 1em;
   border-radius: var(--border-radius);
 }
 @media (min-width: 768px) {
@@ -277,45 +274,38 @@ hr {
     margin: 0 0 var(--gutter-size) 0;
   }
 }
+.breadcrumbs:is(ul) {
+  list-style: none;
+}
 .breadcrumbs .breadcrumb {
-  transition: all 150ms linear;
-  position: relative;
+  flex: 0 1 auto;
+}
+.breadcrumbs .breadcrumb:not(:first-child) {
+  margin-left: 0.5em;
+}
+.breadcrumbs .breadcrumb a,
+.breadcrumbs .breadcrumb span {
   display: inline-block;
-  padding: 0.75em 1em 0.75em 2em;
-  color: inherit;
-}
-.breadcrumbs .breadcrumb:is(a) {
+  background-color: #e0e0e8;
+  border-radius: 2em 0 2em 0;
+  color: var(--breadcrumbs-text-color);
+  transition: all 100ms linear;
   text-decoration: none;
+  text-align: center;
+  line-height: 1em;
+  padding: 0.5em 1.5em;
+  vertical-align: middle;
 }
-.breadcrumbs .breadcrumb:is(a):hover {
-  background-color: var(--breadcrumbs-background-color-hover);
+.breadcrumbs .breadcrumb a:hover,
+.breadcrumbs .breadcrumb span:hover {
+  transform: scale(1.15);
 }
-.breadcrumbs .breadcrumb:is(a):hover,
-.breadcrumbs .breadcrumb:is(a):hover::after {
-  background: var(--breadcrumbs-background-color-hover);
-}
-.breadcrumbs .breadcrumb:not(a) {
+.breadcrumbs .breadcrumb span {
   cursor: default;
 }
-.breadcrumbs .breadcrumb:not(:last-child)::after,
-.breadcrumbs .breadcrumb:not(:last-child)::before {
-  background: var(--breadcrumbs-background-color);
-  bottom: 0;
-  clip-path: polygon(50% 50%, -50% -50%, 0 100%);
-  content: "";
-  left: 100%;
-  position: absolute;
-  top: 0;
-  transition: all 150ms linear;
-  width: 2em;
-  z-index: 1;
-}
-.breadcrumbs .breadcrumb:not(:last-child)::before {
-  background: var(--breadcrumbs-border-color);
-  margin-left: 1px;
-}
-.breadcrumbs .breadcrumb:empty {
-  display: none;
+.breadcrumbs .breadcrumb:not(:last-child) a,
+.breadcrumbs .breadcrumb:not(:last-child) span {
+  padding-right: 1.5em;
 }
 /* Buttons & Button Groups - Bootstrap Compatible */
 .btn {
@@ -403,6 +393,7 @@ hr {
   text-color: #404040;
 }
 .btn.btn-sm {
+  padding: 0.33em 0.75em;
   font-size: 0.8em;
 }
 .btn.btn-lg {
@@ -1885,8 +1876,6 @@ ul.list-inline li {
 }
 .navbar .dropdown-menu {
   padding: 0.75em;
-  min-width: max-content;
-  margin-top: -1px;
   border-top: none;
 }
 .navbar .dropdown-menu li > .nav-item {

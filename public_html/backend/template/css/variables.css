@@ -34,6 +34,8 @@
   --top-text-color: var(--card-text-color);
   --page-background-color: #e8ebf1;
   --sidebar-background-color: #d9dce5;
+  --sidebar-background-color-hover: #e5e7ef;
+  --sidebar-background-color-active: #eaebf1;
   --sidebar-border-color: var(--default-border-color);
   --sidebar-text-color: #333;
   --sidebar-width: 20rem;
@@ -106,6 +108,7 @@
   --input-addon-background-color: #f3f4f7;
   --input-code-background-color: #313b50;
   --input-code-text-color: #fff;
+  --input-checkbox-background-color-active: #7052c2;
   --input-text-color: #000;
   --input-border-color: #e5e6e9;
   --input-border-color-focus: #e7e9f0;
@@ -129,6 +132,8 @@ html.dark-mode {
   --top-text-color: var(--card-text-color);
   --page-background-color: #1a2133;
   --sidebar-background-color: #283144;
+  --sidebar-background-color-hover: #374258;
+  --sidebar-background-color-active: #1a2133;
   --sidebar-border-color: #1d2431;
   --sidebar-text-color: #acb6c2;
   --default-background-color: #283042;
@@ -166,9 +171,9 @@ html.dark-mode {
   --pagination-text-color: var(--default-text-color);
   --pagination-text-color-active: var(--default-text-color);
   --pagination-text-color-hover: #fff;
-  --button-default-background-color: #434e67;
+  --button-default-background-color: #354362;
   --button-default-background-color-hover: #535f7a;
-  --button-default-background-color-active: #161b25;
+  --button-default-background-color-active: #1a2133;
   --button-default-border-color: #434e67;
   --button-default-text-color: #acb6c2;
   --button-danger-background-color: #a93e3a;
@@ -186,6 +191,7 @@ html.dark-mode {
   --input-border-color-focus: #555e74;
   --input-addon-background-color: #3d485e;
   --input-text-color: #acb6c2;
+  --input-checkbox-background-color-active: #495abd;
   --breadcrumbs-text-color: var(--default-text-color);
   --copyright-text-color: #acb6c2;
   --link-text-color: #acb6c7;

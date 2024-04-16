@@ -456,6 +456,10 @@
 
     public static function rlink($resource) {
 
+      if (empty($resource)) {
+        return '';
+      }
+
       if (!$resource || !is_file($resource)) {
         return self::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource));
       }

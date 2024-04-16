@@ -22,7 +22,9 @@
 
     public static function render() {
 
-      if (count(self::$data) <= 1) return '';
+      if (count(self::$data) <= 1) {
+        return '';
+      }
 
       if (preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'#', route::$request)) {
         $view = new ent_view('app://backend/template/partials/breadcrumbs.inc.php');

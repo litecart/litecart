@@ -1,13 +1,21 @@
 // Stylesheet Loader
-  $.loadStylesheet = function(url, callback, fallback) {
-    $('<link/>', {rel: 'stylesheet', href: url}).appendTo('head');
+  $.loadStylesheet = function(url, options) {
+
+    options = $.extend(options || {}, {
+      rel: 'stylesheet',
+      href: url
+      //onload: callback,
+      //onerror: fallback
+    });
+
+    $('<link/>', options).appendTo('head');
   }
 
 // JavaScript Loader
   $.loadScript = function(url, options) {
 
     options = $.extend(options || {}, {
-      mtehod: 'GET',
+      method: 'GET',
       dataType: 'script',
       cache: true
     });
@@ -31,19 +39,35 @@
   };
 
 // Money Formatting
-  Number.prototype.toMoney = function() {
+  Number.prototype.toMoney = function(use_html = false) {
     var n = this,
       c = _env.session.currency.decimals,
       d = _env.session.language.decimal_point,
       t = _env.session.language.thousands_separator,
       p = _env.session.currency.prefix,
       x = _env.session.currency.suffix,
+      u = _env.session.currency.code,
       s = n < 0 ? '-' : '',
       i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
       f = n - i,
       j = (j = i.length) > 3 ? j % 3 : 0;
 
     return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x;
+  }
+
+  // Money Formatting (HTML)
+  Number.prototype.toMoneyHTML = function(currency_code) {
+    var n = this,
+    c = _env.session.currency.decimals,
+    d = _env.session.language.decimal_point,
+    t = _env.session.language.thousands_separator,
+    p = _env.session.currency.prefix,
+    x = _env.session.currency.suffix,
+    s = n < 0 ? '-' : '',
+    i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
+    f = n - i,
+    j = (j = i.length) > 3 ? j % 3 : 0;
+
   }
 
 // Keep-alive
@@ -56,21 +80,16 @@
 
 // Toggle Buttons (data-toggle="buttons")
 
-$('body').on('click', '[data-toggle="buttons"] .btn', function(){
-  if ($(this).hasClass('active') && $(this).find(':input').prop('checked')) return;
-  $(this).addClass('active').find(':input').prop('checked', true).trigger('change');
-  $(this).removeClass('active').siblings().find(':input').prop('checked', true).trigger('change');
+$('body').on('click', '[data-toggle="buttons"] :checkbox', function(){
+  if ($(this).is(':checked')) {
+    $(this).closest('.btn').addClass('active');
+  } else {
+    $(this).closest('.btn').removeClass('active');
+  }
 });
 
-$('body').on('click', '[data-toggle="buttons"] :input', function(){
-  if ($(this).prop('checked') && $(this).closest('.btn').hasClass('active')) return;
-  $(this).closest('.btn').trigger('click');
-});
-
-$('body').on('change', '[data-toggle="buttons"] :input', function(){
-  $('input[name="'+ $(this).attr('name') +'"]').each(function(){
-    $(this).closest('btn').toggleClass('active', $(this).prop('checked'));
-  });
+$('body').on('click', '[data-toggle="buttons"] :radio', function(){
+  $(this).closest('.btn').addClass('active').siblings().removeClass('active');
 });
 
 $('[data-toggle="buttons"] :input:checked').trigger('change'); // Init

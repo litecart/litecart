@@ -53,12 +53,17 @@ body {
       background-color: var(--navigation-background-color);
     }
 
-    .categories .dropdown-menu {
-      flex-wrap: wrap;
-      max-height: 400px;
-    }
-    .categories .dropdown-menu li {
-      break-inside: avoid;
+    .categories {
+      .dropdown-menu {
+        @media (min-width: @media-breakpoint-sm) {
+          flex-wrap: wrap;
+          max-height: 250px;
+          gap: 0 2em;
+        }
+        li {
+          break-inside: avoid;
+        }
+      }
     }
   }
 

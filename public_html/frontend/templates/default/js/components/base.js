@@ -1,21 +1,28 @@
 // Stylesheet Loader
-  $.loadStylesheet = function(url, callback, fallback) {
-    $('<link/>', {rel: 'stylesheet', href: url}).appendTo('head');
+  $.loadStylesheet = function(url, options) {
+
+    options = $.extend(options || {}, {
+      rel: 'stylesheet',
+      href: url
+      //onload: callback,
+      //onerror: fallback
+    });
+
+    $('<link/>', options).appendTo('head');
   }
 
 // JavaScript Loader
   $.loadScript = function(url, options) {
 
     options = $.extend(options || {}, {
+      method: 'GET',
+      url: url,
       dataType: 'script',
-      cache: true,
-      url: url
+      cache: true
     });
 
     return jQuery.ajax(options);
   };
-
-  //$.loadScript('...').done(function(script, textStatus) { ... });
 
 // Money Formatting
   Number.prototype.toMoney = function() {

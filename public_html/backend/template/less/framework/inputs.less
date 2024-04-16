@@ -69,7 +69,7 @@ label.form-check {
     appearance: none;
 
     &:checked {
-      background-color: #0066bb;
+      background-color: var(--input-checkbox-background-color-active);
     }
     &:hover:not([disabled]) {
     }
@@ -108,7 +108,6 @@ input[type="radio"].form-check:not([disabled]):hover,
   display: block;
   width: 100%;
   color: var(--input-text-color);
-  vertical-align: middle;
   overflow-y: auto;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   //transition: all 50ms;

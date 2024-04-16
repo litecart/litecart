@@ -15,7 +15,7 @@
 
       $file = readdir($this->_directory);
 
-    // Skip returning . and ..
+      // Skip returning . and ..
       if (is_string($file) && preg_match('#^\.{1,2}$#', $file)) {
         return $this->dir_readdir();
       }
@@ -143,6 +143,7 @@
 
     public function url_stat(string $path, int $flags): array|false {
       $path = $this->_resolve_path($path);
+      $path = vmod::check($path);
       return file_exists($path) ? stat($path) : false;
     }
 

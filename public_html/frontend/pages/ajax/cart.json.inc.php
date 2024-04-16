@@ -14,7 +14,7 @@
       'product_id' => $item['product_id'],
       'stock_option_id' => $item['stock_option_id'],
       'userdata' => $item['userdata'],
-      'link' => document::rilink('product', ['product_id' => $item['product_id']]),
+      'link' => document::ilink('product', ['product_id' => $item['product_id']]),
       'image' => $item['image'] ? 'storage://images/' . $item['image'] : 'no_image.png',
       'name' => $item['name'],
       'code' => $item['code'],

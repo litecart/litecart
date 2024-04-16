@@ -101,28 +101,30 @@
 
   $('#modal-product-picker tbody').on('click', 'td', function() {
 
-    var $tr = $(this).closest('tr'),
+    let $row = $(this).closest('tr'),
       callback = $.featherlight.current().$currentTarget.data('callback'),
       expand = <?php echo (isset($_GET['collect']) && array_intersect(['price', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
-      product = $tr.data();
+      product = $row.data();
 
-    if (expand || $tr.data('stock_option')) {
+    if (expand || $row.data('stock_option')) {
       callback = function(product){
         $.featherlight('<?php echo document::ilink(__APP__.'/product_picker_configure', ['callback' => @$_GET['callback']]);?>&product_id='+ product.id);
       }
     }
 
     if (callback) {
+
       if (typeof callback == 'function') {
         callback(product);
       } else {
         window[callback](product);
       }
+
     } else if ($.featherlight.current().$currentTarget[0].closest('.input-group')) {
-      let field = $.featherlight.current().$currentTarget[0].closest('.input-group');
-      $(field).find(':input').val(product.id).trigger('change');
-      $(field).find('.id').text(product.id);
-      $(field).find('.name').text(product.name);
+      let $field = $.featherlight.current().$currentTarget[0].closest('.input-group');
+      $field.find(':input').val(product.id).trigger('change');
+      $field.find('.id').text(product.id);
+      $field.find('.name').text(product.name);
       $.featherlight.close();
     }
   });

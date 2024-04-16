@@ -1,21 +1,28 @@
 // Stylesheet Loader
-  $.loadStylesheet = function(url, callback, fallback) {
-    $('<link/>', {rel: 'stylesheet', href: url}).appendTo('head');
+  $.loadStylesheet = function(url, options) {
+
+    options = $.extend(options || {}, {
+      rel: 'stylesheet',
+      href: url
+      //onload: callback,
+      //onerror: fallback
+    });
+
+    $('<link/>', options).appendTo('head');
   }
 
 // JavaScript Loader
   $.loadScript = function(url, options) {
 
     options = $.extend(options || {}, {
+      method: 'GET',
+      url: url,
       dataType: 'script',
-      cache: true,
-      url: url
+      cache: true
     });
 
     return jQuery.ajax(options);
   };
-
-  //$.loadScript('...').done(function(script, textStatus) { ... });
 
 // Money Formatting
   Number.prototype.toMoney = function() {
@@ -82,7 +89,8 @@
     return false;
   });
 
-// Bootstrap Compatible (data-toggle="buttons")
+// Toggle Buttons (data-toggle="buttons")
+
   $('body').on('click', '[data-toggle="buttons"] :checkbox', function(){
     if ($(this).is(':checked')) {
       $(this).closest('.btn').addClass('active');
@@ -93,14 +101,6 @@
 
   $('body').on('click', '[data-toggle="buttons"] :radio', function(){
     $(this).closest('.btn').addClass('active').siblings().removeClass('active');
-  });
-
-// Data-Table Toggle Checkboxes
-  $('body').on('click', '.data-table *[data-toggle="checkbox-toggle"]', function() {
-    $(this).closest('.data-table').find('tbody :checkbox').each(function() {
-      $(this).prop('checked', !$(this).prop('checked'));
-    });
-    return false;
   });
 
 /* ========================================================================
@@ -344,11 +344,11 @@
     e.preventDefault();
 
     let $form = $(this)
-        $button = $(this).find('button[type="submit"]'),
-        $target = $('#site-navigation .shopping-cart'),
-        target_height = $target.innerHeight(),
-        target_width = $target.innerWidth(),
-        $object = $('<div id="animated-cart-item"></div>');
+      $button = $(this).find('button[type="submit"]'),
+      $target = $('#site-navigation .shopping-cart'),
+      target_height = $target.innerHeight(),
+      target_width = $target.innerWidth(),
+      $object = $('<div id="animated-cart-item"></div>');
 
     updateCart($form.serialize() + '&add_cart_product=true');
 
@@ -420,20 +420,22 @@
 
           let html = '';
           $.each(result.items, function(key, item){
-            html += '<div class="item">' +
-                    '  <div class="row">' +
-                    '    <div class="col-3">' +
-                    '      ' + $('<img class="image img-responsive" />').attr('src', item.thumbnail).attr('alt', item.name).prop('outerHTML') +
-                    '    </div>' +
-                    '    <div class="col-8">' +
-                    '      <div>' + $('<a class="name"></a>').attr('href', item.link).text(item.name).prop('outerHTML') + '</div>' +
-                    '      ' + $('<div class="price"></div>').text(item.formatted_price).prop('outerHTML') +
-                    '    </div>' +
-                    '    <div class="col-1 text-end">' +
-                    '      ' + $('<button class="btn btn-danger btn-sm" name="remove_cart_item" type="submit"><i class="fa fa-trash"></i></button>').val(item.key).prop('outerHTML') +
-                    '    </div>' +
-                    '  </div>' +
-                    '</div>';
+            html += [
+              '<li class="item">',
+              '  <div class="row">',
+              '    <div class="col-3">',
+              '      ' + $('<img class="image img-responsive">').attr('src', item.thumbnail).attr('alt', item.name).prop('outerHTML'),
+              '    </div>',
+              '    <div class="col-8">',
+              '      <div>' + $('<a class="name"></a>').attr('href', item.link).text(item.name).prop('outerHTML') + '</div>',
+              '      ' + $('<div class="price"></div>').text(item.formatted_price).prop('outerHTML'),
+              '    </div>',
+              '    <div class="col-1 text-end">',
+              '      ' + $('<button class="btn btn-danger btn-sm" name="remove_cart_item" type="submit"><i class="fa fa-trash"></i></button>').val(item.key).prop('outerHTML'),
+              '    </div>',
+              '  </div>',
+              '</li>'
+            ].join('');
           });
 
           $('#site-navigation .shopping-cart ul').prepend(html);
@@ -880,6 +882,19 @@
     });
   }).trigger('input');
 
+// Data-Table Toggle Checkboxes
+$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
+  $(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
+    $(this).prop('checked', !$(this).prop('checked')).trigger('change');
+  });
+  return false;
+});
+
+$('body').on('click', '.data-table tbody tr', function(e) {
+  if ($(e.target).is('a') || $(e.target).closest('a').length) return;
+  if ($(e.target).is('.btn, :input, th, .fa-star, .fa-star-o')) return;
+  $(this).find(':checkbox, :radio').first().trigger('click');
+});
 // Bootstrap Compatible (data-toggle="tab")
   $('body').on('click', '[data-toggle="tab"]', function(e) {
     e.preventDefault();

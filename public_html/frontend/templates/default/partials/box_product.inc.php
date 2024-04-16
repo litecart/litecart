@@ -98,7 +98,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
           <?php if (isset($quantity_available)) { ?>
           <div class="stock-status" style="margin: 1em 0;">
-          <?php if ($quantity_available > 0) { ?>
+            <?php if ($quantity_available > 0) { ?>
             <div class="stock-available">
               <?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
               <span class="value">{{stock_status}}</span>
@@ -111,24 +111,22 @@ form[name="buy_now_form"] .dropdown-menu .image {
             </div>
             <?php } ?>
 
-          <?php } else { ?>
+            <?php } else { ?>
             <?php if ($sold_out_status) { ?>
               <div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>">
                 <?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
                 <span class="value"><?php echo $sold_out_status['name']; ?></span>
               </div>
 
-            <?php } else { ?>
+              <?php } else { ?>
               <div class="stock-unavailable">
                 <?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
                 <span class="value"><?php echo language::translate('title_sold_out', 'Sold Out'); ?></span>
               </div>
-            <?php } ?>
-          <?php } ?>
+              <?php } ?>
+              <?php } ?>
           </div>
-        <?php } ?>
-
-          <hr />
+          <?php } ?>
 
           <fieldset class="buy_now" style="margin: 1em 0;">
             <?php echo functions::form_begin('buy_now_form', 'post'); ?>
@@ -142,7 +140,6 @@ form[name="buy_now_form"] .dropdown-menu .image {
             <?php } else if (count($stock_options) == 1) { ?>
             <?php echo functions::form_input_hidden('stock_option_id', $stock_options[0]['stock_option_id']); ?>
             <?php } ?>
-
 
             <div class="price-wrapper">
               <?php if ($campaign_price) { ?>
@@ -178,8 +175,6 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
             <?php echo functions::form_end(); ?>
           </fieldset>
-
-          <hr />
 
           <div class="social-bookmarks">
             <a class="link" href="#"><?php echo functions::draw_fonticon('fa-link', 'style="color: #333;"'); ?></a>

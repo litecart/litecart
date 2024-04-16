@@ -3,11 +3,11 @@
     e.preventDefault();
 
     let $form = $(this)
-        $button = $(this).find('button[type="submit"]'),
-        $target = $('#site-navigation .shopping-cart'),
-        target_height = $target.innerHeight(),
-        target_width = $target.innerWidth(),
-        $object = $('<div id="animated-cart-item"></div>');
+      $button = $(this).find('button[type="submit"]'),
+      $target = $('#site-navigation .shopping-cart'),
+      target_height = $target.innerHeight(),
+      target_width = $target.innerWidth(),
+      $object = $('<div id="animated-cart-item"></div>');
 
     updateCart($form.serialize() + '&add_cart_product=true');
 
@@ -79,20 +79,22 @@
 
           let html = '';
           $.each(result.items, function(key, item){
-            html += '<div class="item">' +
-                    '  <div class="row">' +
-                    '    <div class="col-3">' +
-                    '      ' + $('<img class="image img-responsive" />').attr('src', item.thumbnail).attr('alt', item.name).prop('outerHTML') +
-                    '    </div>' +
-                    '    <div class="col-8">' +
-                    '      <div>' + $('<a class="name"></a>').attr('href', item.link).text(item.name).prop('outerHTML') + '</div>' +
-                    '      ' + $('<div class="price"></div>').text(item.formatted_price).prop('outerHTML') +
-                    '    </div>' +
-                    '    <div class="col-1 text-end">' +
-                    '      ' + $('<button class="btn btn-danger btn-sm" name="remove_cart_item" type="submit"><i class="fa fa-trash"></i></button>').val(item.key).prop('outerHTML') +
-                    '    </div>' +
-                    '  </div>' +
-                    '</div>';
+            html += [
+              '<li class="item">',
+              '  <div class="row">',
+              '    <div class="col-3">',
+              '      ' + $('<img class="image img-responsive">').attr('src', item.thumbnail).attr('alt', item.name).prop('outerHTML'),
+              '    </div>',
+              '    <div class="col-8">',
+              '      <div>' + $('<a class="name"></a>').attr('href', item.link).text(item.name).prop('outerHTML') + '</div>',
+              '      ' + $('<div class="price"></div>').text(item.formatted_price).prop('outerHTML'),
+              '    </div>',
+              '    <div class="col-1 text-end">',
+              '      ' + $('<button class="btn btn-danger btn-sm" name="remove_cart_item" type="submit"><i class="fa fa-trash"></i></button>').val(item.key).prop('outerHTML'),
+              '    </div>',
+              '  </div>',
+              '</li>'
+            ].join('');
           });
 
           $('#site-navigation .shopping-cart ul').prepend(html);

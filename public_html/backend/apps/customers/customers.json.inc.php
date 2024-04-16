@@ -14,9 +14,10 @@
 
 // Rows, Total Number of Rows, Total Number of Pages
   $customers = database::query(
-    "select id, if(company, company, concat(firstname, ' ', lastname) as name, email, date_created from ". DB_TABLE_PREFIX ."customers
+    "select id, if(company, company, concat(firstname, ' ', lastname)) as name, email, date_created
+    from ". DB_TABLE_PREFIX ."customers
     ". (!empty($sql_find) ? "where (". implode(" or ", $sql_find) .")" : "") ."
-    order by firstname, lastname
+    order by if(company, company, concat(firstname, ' ', lastname))
     limit 15;"
   )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
