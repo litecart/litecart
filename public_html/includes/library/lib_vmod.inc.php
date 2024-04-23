@@ -169,15 +169,21 @@
 
     // Return original file if nothing to modify
       if (empty($queue)) {
-        if (is_file(FS_DIR_STORAGE . $modified_file)) unlink(FS_DIR_STORAGE . $modified_file);
+
+        if (is_file(FS_DIR_STORAGE . $modified_file)) {
+          unlink(FS_DIR_STORAGE . $modified_file);
+        }
+
         self::$time_elapsed += microtime(true) - $timestamp;
         return FS_DIR_STORAGE . (self::$_checked[$original_file] = $modified_file);
       }
 
     // Return modified file if checksum matches
-      if (!empty(self::$_checksums[$original_file]) && !empty(self::$_checked[$original_file]) && file_exists(FS_DIR_APP . self::$_checked[$original_file]) && self::$_checksums[$original_file] == $checksum) {
-        self::$time_elapsed += microtime(true) - $timestamp;
-        return FS_DIR_STORAGE . (self::$_checked[$original_file] = $modified_file);
+      if (!empty(self::$_checksums[$original_file]) && self::$_checksums[$original_file] == $checksum) {
+        if (!empty(self::$_checked[$original_file]) && file_exists(FS_DIR_STORAGE . self::$_checked[$original_file])) {
+          self::$time_elapsed += microtime(true) - $timestamp;
+          return FS_DIR_STORAGE . (self::$_checked[$original_file] = $modified_file);
+        }
       }
 
     // Modify file
@@ -368,6 +374,7 @@
                   $tmp_file = stream_get_meta_data(tmpfile())['uri'];
                   file_put_contents($tmp_file, "<?php" . PHP_EOL . $upgrade['script']);
 
+                // Exceute upgrade in an isolated scope
                   (function() {
                     include func_get_arg(0);
                   })($tmp_file);
@@ -442,7 +449,6 @@
         'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
         'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
         'date_modified' => date('Y-m-d H:i:s', filemtime($file)),
-        'aliases' => [],
         'settings' => [],
         'files' => [],
         'install' => null,

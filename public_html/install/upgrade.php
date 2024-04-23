@@ -2,6 +2,7 @@
   // Automatic upgrade: upgrade.php?upgrade=true&redirect={url}
 
   @set_time_limit(900);
+  @ignore_user_abort(true);
   ini_set('memory_limit', -1);
   ini_set('display_errors', 'On');
 
@@ -58,8 +59,6 @@
   ini_set('log_errors', 'Off');
   ini_set('display_errors', 'On');
   ini_set('html_errors', 'On');
-
-  ignore_user_abort(true);
 
   require_once __DIR__.'/../includes/error_handler.inc.php';
   require_once __DIR__.'/../includes/functions/func_file.inc.php';

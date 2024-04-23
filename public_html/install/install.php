@@ -16,7 +16,7 @@
       . "  --db_collation       Set database collation (Default: utf8_swedish_ci)\n"
       . "  --document_root      Set document root\n\n"
       . "  --timezone           Set timezone e.g. Europe/London\n\n"
-      . "  --admin_folder       Set admin folder name (Default admin)\n"
+      . "  --admin_folder       Set admin folder name (Default: admin)\n"
       . "  --username           Set admin username\n"
       . "  --password           Set admin user password\n\n"
       . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n"
@@ -144,7 +144,7 @@
     ini_set('log_errors', 'Off');
     ini_set('display_errors', 'On');
     ini_set('html_errors', 'On');
-
+    ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');
     date_default_timezone_set(!empty($_REQUEST['timezone']) ? $_REQUEST['timezone'] : ini_get('date.timezone'));
 
     ### PHP > Check Version #######################################
@@ -334,7 +334,7 @@
     $sql = file_get_contents('clean.sql');
     $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-    foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
+    foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
       $query = preg_replace('#^-- .*?\R+#m', '', $query);
       database::query($query);
     }
@@ -365,7 +365,7 @@
       $sql = str_replace($search, $replace, $sql);
     }
 
-    foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
+    foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
       $query = preg_replace('#^-- .*?\R+#m', '', $query);
       database::query($query);
     }
@@ -390,9 +390,7 @@
       $sql = str_replace($search, database::input($replace), $sql);
     }
 
-    $sql = explode('-- --------------------------------------------------------', $sql);
-
-    foreach ($sql as $query) {
+    foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
       $query = preg_replace('#^-- .*?\R+#m', '', $query);
       database::query($query);
     }
@@ -478,17 +476,17 @@
         foreach ($directories as $dir) {
 
           $dir = basename($dir);
+
           if ($dir == 'demo') continue;
           if ($dir == 'default') continue;
 
           foreach (glob('data/'. $dir .'/*.sql') as $file) {
-            $sql = file_get_contents($file);
 
-            if (empty($sql)) continue;
+            if (!$sql = file_get_contents($file)) continue;
 
             $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-            foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
+            foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
               $query = preg_replace('#^-- .*?\R+#m', '', $query);
               database::query($query);
             }
@@ -513,9 +511,7 @@
       if (!empty($sql)) {
         $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-        $sql = explode('-- --------------------------------------------------------', $sql);
-
-        foreach ($sql as $query) {
+        foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
           $query = preg_replace('#^-- .*?\R+#m', '', $query);
           database::query($query);
         }
