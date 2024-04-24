@@ -43,7 +43,7 @@
 			return opened;
 		};
 
-	// document wide key handler
+	// Document wide key handler
 	var toggleGlobalEvents = function(newState) {
 		if (Featherlight._globalHandlerInstalled !== newState) {
 			Featherlight._globalHandlerInstalled = newState;
@@ -65,8 +65,10 @@
 
 	Featherlight.prototype = {
 		constructor: Featherlight,
-		/*** defaults ***/
-		// extend featherlight with defaults and methods
+
+		/*** Defaults ***/
+
+		// Extend featherlight with defaults and methods
 		autoBind:       '[data-toggle="featherlight"]', // Will automatically bind elements matching this selector. Clear or set before onReady
 
 		targetAttr:     'data-target',         // Attribute of the triggered element that contains the selector to the modal
@@ -76,7 +78,6 @@
 		closeOnEsc:     true,                  // Close lightbox when pressing esc
 		loading:        '<div class="featherlight-loader"></div>', // Content to show while initial modal is loading
 		persist:        false,                 // If set, the modal will persist and will be shown again when opened again. 'shared' is a special value when binding multiple elements for them to share the same modal
-		otherClose:     null,                  // Selector for alternate close buttons (e.g. "a.close")
 		beforeOpen:     $.noop,                // Called before open. can return false to prevent opening of lightbox. Gets event as parameter, this contains all data
 		beforeContent:  $.noop,                // Called when modal is loaded. Gets event as parameter, this contains all data
 		beforeClose:    $.noop,                // Called before close. can return false to prevent closing the lightbox. Gets event as parameter, this contains all data
@@ -95,10 +96,11 @@
 		maxHeight:      '',                    // Specify max-height of lightbox.
 		requireWindowWidth: null,              // Minimum scren width in pixels to enable the Featherlight. Otherwise bypass it.  */
 
-		/*** methods ***/
-		// setup iterates over a single instance of featherlight and prepares the backdrop and binds the events
+		/*** Methods ***/
+		// Setup iterates over a single instance of featherlight and prepares the backdrop and binds the events
 		setup: function(target, config){
-			// all arguments are optional
+
+			// Make all arguments optional
 			if (typeof target === 'object' && target instanceof $ === false && !config) {
 				config = target;
 				target = undefined;
@@ -108,21 +110,23 @@
 
 			self.$instance = $([
 				'<div class="featherlight featherlight-loading">',
-					'<div class="featherlight-modal'+ (self.seamless ? ' featherlight-seamless' : '') +'">',
-							'<div class="featherlight-inner">' + self.loading + '</div>',
-						'</div>',
+        '  <div class="featherlight-modal'+ (self.seamless ? ' featherlight-seamless' : '') +'">',
+				'    <div class="featherlight-inner">' + self.loading + '</div>',
+				'  </div>',
 				'</div>'
-			].join(''));
+			].join('\n'));
 
-			// close when click on backdrop/anywhere/null or closebox
+			// Close when click on backdrop/anywhere/null or closebox
 			self.$instance.on('click.featherlight', function(e) {
+
 				if (e.isDefaultPrevented()) {
 					return;
 				}
+
 				switch (true) {
 					case (self.closeOnClick === 'backdrop' && $(e.target).is('.featherlight')):
 					case (self.closeOnClick === 'anywhere'):
-					case ($(e.target).is('.featherlight-close' + (self.otherClose ? ',' + self.otherClose : ''))):
+					case ($(e.target).is('.featherlight-close')):
 						self.close(e);
 						e.preventDefault();
 						break;
@@ -132,8 +136,9 @@
 			return this;
 		},
 
-		// this method prepares the modal and converts it into a jQuery object or a promise
+		// This method prepares the modal and converts it into a jQuery object or a promise
 		getContent: function(){
+
 			if (this.persist !== false && this.$modal) {
 				return this.$modal;
 			}
@@ -147,14 +152,14 @@
 			// Find which filter applies
 			var filter = filters[self.type]; // check explicit type like {type: 'image'}
 
-			// check explicit type like data-target="image"
+			// Check explicit type like data-target="image"
 			if (!filter && data in filters) {
 				filter = filters[data];
 				data = self.target && targetValue;
 			}
 			data = data || readTargetAttr('href') || '';
 
-			// check explicity type & content like {image: 'photo.jpg'}
+			// Check explicity type & content like {image: 'photo.jpg'}
 			if (!filter) {
 				for (var filterName in filters) {
 					if (self[filterName]) {
@@ -164,10 +169,11 @@
 				}
 			}
 
-			// otherwise it's implicit, run checks
+			// Otherwise it's implicit, run checks
 			if (!filter) {
 				var target = data;
 				data = null;
+
 				$.each(self.contentFilters, function() {
 					filter = filters[this];
 					if (filter.test) {
@@ -186,6 +192,7 @@
 					return false;
 				}
 			}
+
 			// Process it
 			return filter.process.call(self, data);
 		},
@@ -200,11 +207,11 @@
 			self.$instance.find('.featherlight-modal').html(self.$modal);
 
 			if (self.closeIcon) {
-				self.$instance.find('.featherlight-modal').prepend(
-					'<div class="featherlight-close-icon featherlight-close">' +
-						self.closeIcon +
-					'</div>'
-				);
+				self.$instance.find('.featherlight-modal').prepend([
+					'<div class="featherlight-close-icon featherlight-close">',
+				  '  ' + self.closeIcon,
+					'</div>',
+        ].join('\n'));
 			}
 
 			return self;
@@ -298,12 +305,9 @@
 			return deferred.promise();
 		},
 
-		/* Utility function to chain callbacks
-		   [Warning: guru-level]
-		   Used be extensions that want to let users specify callbacks but
-		   also need themselves to use the callbacks.
-		   The argument 'chain' has callback names as keys and function(super, event)
-		   as values. That function is meant to call `super` at some point.
+		/* [Warning: guru-level] Utility function to chain callbacks
+		 * Used be extensions that want to let users specify callbacks but also need themselves to use the callbacks.
+		 * The argument 'chain' has callback names as keys and function(super, event) as values. That function is meant to call `super` at some point.
 		*/
 		chainCallbacks: function(chain) {
 			for (var name in chain) {
@@ -313,10 +317,9 @@
 	};
 
 	$.extend(Featherlight, {
-		id: 0,                                      // Used to id single featherlight instances
-		defaults:       Featherlight.prototype,     // You can access and override all defaults using $.featherlight.defaults, which is just a synonym for $.featherlight.prototype
-		// Contains the logic to determine content
-		contentFilters: {
+		id: 0, // Used to id single featherlight instances
+		defaults: Featherlight.prototype, // You can access and override all defaults using $.featherlight.defaults, which is just a synonym for $.featherlight.prototype
+		contentFilters: { // Contains the logic to determine content
 
 			jquery: {
 				regex: /^[#.]\w/,         // Anything that starts with a class name or identifiers
@@ -327,65 +330,77 @@
 			image: {
 				regex: /\.(a?png|avif|bmp|gif|ico|jpe?g|jp2|svg|tiff?|webp)(\?\S*)?$/i,
 				process: function(url) {
+
 					var self = this,
-						deferred = $.Deferred(),
-						img = new Image(),
-						$img = $('<img src="'+url+'" alt="">');
-					img.onload = function() {
-						// Store naturalWidth & height for IE8
-						$img.naturalWidth = img.width;
-						$img.naturalHeight = img.height;
-						deferred.resolve($img);
-					}
-					img.onerror = function() { deferred.reject($img); };
-					img.src = url;
+            deferred = $.Deferred();
+
+					var $img = $('<img>', {
+            src: url,
+            alt: '',
+            complete: function(){
+              deferred.resolve($(this));
+            }
+          });
+
 					return deferred.promise();
 				}
 			},
 
 			html: {
 				regex: /^\s*<[\w!][^<]*>/,  // Anything that starts with some kind of valid tag
-				process: function(html) { return $(html); }
+				process: function(html) {
+          return $(html);
+        }
 			},
 
 			ajax: {
 				regex: /./,  // At this point, any content is assumed to be an URL
 				process: function(url)  {
+
 					var self = this,
 						deferred = $.Deferred();
+
 					// we are using load so one can specify a target with: url.html #targetelement
-					url = url.replace('#', ' #');
-					var $container = $('<div></div>').load(url, function(response, status){
+					var $container = $('<div></div>').load(url.replace('#', ' #'), function(response, status){
 						if (status !== 'error') {
 							deferred.resolve($container.contents());
 						}
 						deferred.reject();
 					});
+
 					return deferred.promise();
 				}
 			},
 
 			iframe: {
 				process: function(url) {
-					var deferred = new $.Deferred();
-					var $modal = $('<iframe/>');
-					$modal.hide()
-						.attr('src', url)
-						.on('load', function() { deferred.resolve($modal.show()); })
-						// We can't move an <iframe> and avoid reloading it,
-						// so let's put it in place ourselves right now:
-						.appendTo(this.$instance.find('.featherlight-modal'));
+
+					var self = this,
+            deferred = new $.Deferred();
+
+					var $iframe = $('<iframe/>', {
+            src: url,
+						complete, function(){
+              // We can't move an <iframe> and avoid reloading it, so let's put it in place ourselves right now:
+              $iframe.show().appendTo(self.$instance.find('.featherlight-modal'));
+              deferred.resolve($iframe);
+            }
+          }).hide();
+
 					return deferred.promise();
 				}
 			},
 
 			text: {
-				process: function(text) { return $('<div>', {text: text}); }
+				process: function(text) {
+          return $('<div>', {text: text});
+        }
 			}
 		},
 
-		/*** class methods ***/
-		/* read element's attributes starting with data- */
+		/*** Class Methods ***/
+
+		// Read element's data attributes
 		readElementConfig: function(element) {
 
 			if (!element) return;
@@ -403,12 +418,15 @@
 		},
 
 		attach: function($source, $modal, config) {
+
 			var self = this;
+
 			if (typeof $modal === 'object' && $modal instanceof $ === false && !config) {
 				config = $modal;
 				$modal = undefined;
 			}
-			// make a copy
+
+			// Make a copy
 			config = $.extend({}, config);
 
 			/* Only for openTrigger and filter ... */
@@ -416,22 +434,28 @@
 				sharedPersist;
 
 			var handler = function(e) {
+
 				var $target = $(e.currentTarget);
+
 				// ... since we might as well compute the config on the actual target
 				var elementConfig = $.extend(
 					{$source: $source, $currentTarget: $target},
 					self.readElementConfig($source[0]),
 					self.readElementConfig(this),
 					config);
+
 				var fl = sharedPersist || $target.data('featherlight-persisted') || new self($modal, elementConfig);
+
 				if (fl.persist === 'shared') {
 					sharedPersist = fl;
 				} else if (fl.persist !== false) {
 					$target.data('featherlight-persisted', fl);
 				}
+
 				if (elementConfig.$currentTarget.blur) {
 					elementConfig.$currentTarget.blur(); // Otherwise 'enter' key might trigger the dialog again
 				}
+
 				fl.open(e);
 			};
 
@@ -456,41 +480,7 @@
 			if (cur) { return cur.close(e); }
 		},
 
-		/* Does the auto binding on startup.
-		   Meant only to be used by Featherlight and its extensions
-		*/
-		_onReady: function() {
-			var self = this;
-			if (self.autoBind){
-				var $autobound = $(self.autoBind);
-				// Bind existing elements
-				$autobound.each(function(){
-					self.attach($(this));
-				});
-				// If a click propagates to the document level, then we have an item that was added later on
-				$(document).on('click', self.autoBind, function(e) {
-					if (e.isDefaultPrevented()) {
-						return;
-					}
-					var $cur = $(e.currentTarget);
-					var len = $autobound.length;
-					$autobound = $autobound.add($cur);
-					if(len === $autobound.length) {
-						return; // already bound
-					}
-					// Bind featherlight
-					var data = self.attach($cur);
-					// Dispatch event directly
-					if (!data.filter || $(e.target).parentsUntil($cur, data.filter).length > 0) {
-						data.handler(e);
-					}
-				});
-			}
-		},
-
-		/* Featherlight uses the onKeyUp callback to intercept the escape key.
-		   Private to Featherlight.
-		*/
+		// Featherlight uses the onKeyUp callback to intercept the escape key. Private to Featherlight.
 		_callbackChain: {
 			onKeyUp: function(_super, e){
 
@@ -504,7 +494,6 @@
 
 				return _super(e);
 			},
-
 
 			onResize: function(_super, e){
 				return _super(e);
@@ -562,12 +551,48 @@
 
 	$.featherlight = Featherlight;
 
-	// bind jQuery elements to trigger featherlight
+	// Bind jQuery elements to trigger featherlight
 	$.fn.featherlight = function($modal, config) {
 		Featherlight.attach(this, $modal, config);
 		return this;
 	};
 
-	// bind featherlight on ready if config autoBind is set
-	$(document).ready(function(){ Featherlight._onReady(); });
+	// Bind featherlight on ready if config autoBind is set
+	$(document).ready(function(){
+
+		// Do auto binding on startup. Meant only to be used by Featherlight and its extensions
+    if (Featherlight.autoBind){
+
+      var $autobound = $(Featherlight.autoBind);
+
+      // Bind existing elements
+      $autobound.each(function(){
+        Featherlight.attach($(this));
+      });
+
+      // If a click propagates to the document level, then we have an item that was added later on
+      $(document).on('click', Featherlight.autoBind, function(e) {
+
+        if (e.isDefaultPrevented()) {
+          return;
+        }
+
+        var $cur = $(e.currentTarget);
+        var len = $autobound.length;
+        $autobound = $autobound.add($cur);
+        if (len === $autobound.length) {
+          return; // already bound
+        }
+
+        // Bind featherlight
+        var data = Featherlight.attach($cur);
+
+        // Dispatch event directly
+        if (!data.filter || $(e.target).parentsUntil($cur, data.filter).length > 0) {
+          data.handler(e);
+        }
+      });
+    }
+  });
+
 }(jQuery));
