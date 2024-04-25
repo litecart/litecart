@@ -213,7 +213,7 @@
     }
 
     $query = (
-      "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, pa.attributes, (0
+      "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, pc.end_date as campaign_end_date, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, pa.attributes, (0
         ". (!empty($filter['product_name']) ? "+ if(pi.name like '%". database::input($filter['product_name']) ."%', 1, 0)" : false) ."
         ". (!empty($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
         ". (!empty($filter['categories']) ? "+ if(find_in_set('". implode("', categories), 1, 0) + if(find_in_set('", database::input($filter['categories'])) ."', categories), 1, 0)" : false) ."
@@ -260,7 +260,7 @@
       ) pp on (pp.product_id = p.id)
 
       left join (
-        select product_id, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)) as campaign_price
+        select product_id, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)) as campaign_price, start_date, end_date
         from ". DB_TABLE_PREFIX ."products_campaigns
         where (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
         and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
