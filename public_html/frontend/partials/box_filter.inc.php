@@ -31,7 +31,7 @@
       and brand_id
       ". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
       order by b.name asc;"
-    )->fetch_custom(function($brand) {
+    )->fetch_all(function($brand) {
       return [
         'id' => $brand['id'],
         'name' => $brand['name'],

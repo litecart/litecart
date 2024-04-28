@@ -1121,7 +1121,7 @@
       "select * from ". DB_TABLE_PREFIX ."customers_addresses
       where customer_id = ". (int)customer::$data['id'] ."
       order by id asc;"
-    )->fetch_custom(function($address){
+    )->fetch_all(function($address){
       $formatted_address = reference::country($address['country_code'])->format_address($address);
       return [$address['id'], $formatted_address];
     });
@@ -1144,7 +1144,7 @@
     $options = database::query(
       "select id, username from ". DB_TABLE_PREFIX ."administrators
       order by username;"
-    )->fetch_custom(function($administrator){
+    )->fetch_all(function($administrator){
       return [$administrator['id'], $administrator['username']];
     });
 
@@ -1167,7 +1167,7 @@
       "select ag.id, agi.name from ". DB_TABLE_PREFIX ."attribute_groups ag
       left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
       order by name;"
-    )->fetch_custom(function($group){
+    )->fetch_all(function($group){
       return [$group['id'], $group['name']];
     });
 
@@ -1196,7 +1196,7 @@
       left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id and avi.language_code = '". database::input(language::$selected['code']) ."')
       where group_id = ". (int)$group_id ."
       order by name;"
-    )->fetch_custom(function($value){
+    )->fetch_all(function($value){
       return [$value['id'], $value['name']];
     });
 
@@ -1218,7 +1218,7 @@
     $options = database::query(
       "select id, name from ". DB_TABLE_PREFIX ."brands
       order by name asc;"
-    )->fetch_custom(function($brand){
+    )->fetch_all(function($brand){
       return [$brand['id'], $brand['name']];
     });
 
@@ -1378,7 +1378,7 @@
       "select * from ". DB_TABLE_PREFIX ."countries
       where status
       order by name asc;"
-    )->fetch_custom(function($country) {
+    )->fetch_all(function($country) {
       return [$country['iso_code_2'], $country['name'], 'data-tax-id-format="'. $country['tax_id_format'] .'" data-postcode-format="'. $country['postcode_format'] .'" data-phone-code="'. $country['phone_code'] .'"'];
     });
 
@@ -1471,7 +1471,7 @@
     $options = database::query(
       "select id, email, company, firstname, lastname from ". DB_TABLE_PREFIX ."customers
       order by email;"
-    )->fetch_custom(function($customer) {
+    )->fetch_all(function($customer) {
       return [$customer['id'], $customer['email'], 'data-name="'. functions::escape_html($customer['company'] ? $customer['company'] : $customer['firstname'] .' '. $customer['lastname']) .'"'];
     });
 
@@ -1502,7 +1502,7 @@
       "select ds.id, dsi.name , dsi.description from ". DB_TABLE_PREFIX ."delivery_statuses ds
       left join ". DB_TABLE_PREFIX ."delivery_statuses_info dsi on (dsi.delivery_status_id = ds.id and dsi.language_code = '". database::input(language::$selected['code']) ."')
       order by dsi.name asc;"
-    )->fetch_custom(function($row) {
+    )->fetch_all(function($row) {
       return [$row['id'], $row['name'], 'title="'. functions::escape_html($row['description']) .'"'];
     });
 
@@ -1621,7 +1621,7 @@
     $options = database::query(
       "select * from ". DB_TABLE_PREFIX ."geo_zones
       order by name asc;"
-    )->fetch_custom(function($geo_zone) {
+    )->fetch_all(function($geo_zone) {
       return [$geo_zone['id'], $geo_zone['name']];
     });
 
@@ -1742,7 +1742,7 @@
       "select os.id, os.icon, os.color, osi.name from ". DB_TABLE_PREFIX ."order_statuses os
       left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = os.id and osi.language_code = '". database::input(language::$selected['code']) ."')
       order by field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, osi.name asc;"
-    )->fetch_custom(function($row) {
+    )->fetch_all(function($row) {
       return [$row['id'], functions::draw_fonticon($row['icon'], 'style="color: '. $row['color'] .';"') .' '. $row['name'], 'data-icon="'. functions::escape_html($row['icon']) .'" data-color="'. functions::escape_html($row['color']) .'"'];
     });
 
@@ -1814,7 +1814,7 @@
       "select * from ". DB_TABLE_PREFIX ."modules
       where type = 'payment'
       and status;"
-    )->fetch_custom(function($module) {
+    )->fetch_all(function($module) {
       $module = new $module();
       return [$module['id'], $module['name']];
     });
@@ -1905,7 +1905,7 @@
       "select p.*, pi.name from ". DB_TABLE_PREFIX ."products p
       left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
       order by pi.name"
-    )->fetch_custom(function($product) {
+    )->fetch_all(function($product) {
       return [$product['id'], $product['name'] .' &mdash; '. $product['sku'] . ' ['. (float)$product['quantity'] .']'];
     });
 
@@ -1979,7 +1979,7 @@
       "select qu.*, qui.name, qui.description from ". DB_TABLE_PREFIX ."quantity_units qu
       left join ". DB_TABLE_PREFIX ."quantity_units_info qui on (qui.quantity_unit_id = qu.id and language_code = '". database::input(language::$selected['code']) ."')
       order by qu.priority, qui.name asc;"
-    )->fetch_custom(function($quantity_unit) {
+    )->fetch_all(function($quantity_unit) {
       return [$quantity_unit['id'], $quantity_unit['name'], 'data-separate="'. (!empty($quantity_unit['separate']) ? 'true' : 'false') .'" data-decimals="'. (int)$quantity_unit['decimals'] .'" title="'. functions::escape_html($quantity_unit['description']) .'"'];
     });
 
@@ -2002,7 +2002,7 @@
       "select * from ". DB_TABLE_PREFIX ."modules
       where type = 'shipping'
       and status;"
-    )->fetch_custom(function($module) {
+    )->fetch_all(function($module) {
       $module = new $module();
       return [$module['id'], $module['name']];
     });
@@ -2034,7 +2034,7 @@
       "select sos.id, sosi.name, sosi.description from ". DB_TABLE_PREFIX ."sold_out_statuses sos
       left join ". DB_TABLE_PREFIX ."sold_out_statuses_info sosi on (sosi.sold_out_status_id = sos.id and sosi.language_code = '". database::input(language::$selected['code']) ."')
       order by sosi.name asc;"
-    )->fetch_custom(function($row) {
+    )->fetch_all(function($row) {
       return [$row['id'], $row['name'], 'title="'. functions::escape_html($row['description']) .'"'];
     });
 
@@ -2056,7 +2056,7 @@
     $options = database::query(
       "select id, name, description from ". DB_TABLE_PREFIX ."suppliers
       order by name;"
-    )->fetch_custom(function($supplier) {
+    )->fetch_all(function($supplier) {
       return [$supplier['id'], $supplier['name'], 'title="'. functions::escape_html($supplier['description']) .'"'];
     });
 
@@ -2086,7 +2086,7 @@
     $options = database::query(
       "select * from ". DB_TABLE_PREFIX ."tax_classes
       order by name asc;"
-    )->fetch_custom(function($tax_class) {
+    )->fetch_all(function($tax_class) {
       return [$tax_class['id'], $tax_class['name'], 'title="'. functions::escape_html($tax_class['description']) .'"'];
     });
 
@@ -2224,7 +2224,7 @@
       "select * from ". DB_TABLE_PREFIX ."zones
       where country_code = '". database::input($country_code) ."'
       order by name asc;"
-    )->fetch_custom(function($zone) {
+    )->fetch_all(function($zone) {
       return [$zone['code'], $zone['name']];
     });
 

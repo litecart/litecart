@@ -60,7 +60,7 @@
     ". (!empty($sql_find) ? "where (". implode(" or ", $sql_find) .")" : "") ."
     order by pi.name
     limit 15;"
-  )->fetch_custom(function($product) {
+  )->fetch_all(function($product) {
     return [
       'id' => $product['id'],
       'name' => $product['name'],

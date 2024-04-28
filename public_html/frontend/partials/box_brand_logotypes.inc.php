@@ -18,7 +18,7 @@
       and featured
       and (image is not null and image != '')
       order by rand();"
-    )->fetch_custom(function($brand){
+    )->fetch_all(function($brand){
       return [
         'name' => $brand['name'],
         'link' => document::ilink('brand', ['brand_id' => $brand['id']]),

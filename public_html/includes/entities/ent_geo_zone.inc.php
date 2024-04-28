@@ -54,7 +54,7 @@
         left join ". DB_TABLE_PREFIX ."zones z on (z.code = z2gz.zone_code)
         where geo_zone_id = ". (int)$geo_zone_id ."
         order by c.name, z.name;"
-      )->custom_fetch(function($zone){
+      )->fetch_all(function($zone){
         if (!$zone['zone_code']) {
           $zone['zone_name'] = '-- '. language::translate('title_all_zones', 'All Zones') .' --';
         }

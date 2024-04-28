@@ -37,7 +37,7 @@
       ". (isset($_GET['parent_id']) ? "and c.parent_id = ". (int)$_GET['parent_id'] : "") ."
       ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
       order by c.priority, ci.name;"
-    )->fetch_custom(function($subcategory) {
+    )->fetch_all(function($subcategory) {
 
       $subcategory['path'] = [];
 

@@ -63,7 +63,7 @@
             ))
             and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
             and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
-          )->fetch_custom(function($row) {
+          )->fetch_all(function($row) {
             return new ref_product($row['id'], $this->_language_codes[0]);
           });
 

@@ -70,7 +70,7 @@
         "select filename from ". DB_TABLE_PREFIX ."products_images
         where product_id = ". (int)$product['id'] ."
         order by priority;"
-      )->fetch_custom(function($image){
+      )->fetch_all(function($image){
         return implode(PHP_EOL, [
           '    <image:image>',
           '      <image:loc>'. document::link('storage://images/' . $image['filename']) .'</image:loc>',

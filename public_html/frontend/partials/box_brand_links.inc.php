@@ -17,7 +17,7 @@
       left join ". DB_TABLE_PREFIX ."brands_info bi on (b.id = bi.brand_id and bi.language_code = '". language::$selected['code'] ."')
       where b.status
       order by b.name;"
-    )->fetch_custom(function($brand) {
+    )->fetch_all(function($brand) {
       return [
         'id' => $brand['id'],
         'name' => $brand['name'],

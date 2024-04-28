@@ -21,7 +21,7 @@
     having relevance > 0
     order by relevance desc, id desc
     limit 5;"
-  )->fetch_custom(function($order) {
+  )->fetch_all(function($order) {
     return [
       'id' => $order['id'],
       'title' => language::translate('title_order', 'Order') .' '. $order['id'],

@@ -38,7 +38,7 @@
       where status
       and featured
       order by name;"
-    )->fetch_custom(function($brand) {
+    )->fetch_all(function($brand) {
       return [
         'type' => 'brand',
         'id' => $brand['id'],
@@ -57,7 +57,7 @@
     and parent_id = 0
     and find_in_set('menu', dock)
     order by p.priority, pi.title;"
-  )->fetch_custom(function($page) {
+  )->fetch_all(function($page) {
     return [
       'type' => 'page',
       'id' => $page['id'],
@@ -70,7 +70,7 @@
         where status
         and parent_id = ". (int)$page['id'] ."
         order by p.priority, pi.title;"
-      )->fetch_custom(function($subpage) {
+      )->fetch_all(function($subpage) {
         return [
           'type' => 'page',
           'id' => $subpage['id'],
@@ -90,7 +90,7 @@
       where status
       and find_in_set('information', dock)
       order by p.priority, pi.title;"
-    )->fetch_custom(function($page) {
+    )->fetch_all(function($page) {
       return [
         'type' => 'page',
         'id' => $page['id'],

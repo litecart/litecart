@@ -9,7 +9,7 @@
     and os.is_archived = 0
     order by o.date_created desc, o.id desc
     limit 10;"
-  )->fetch_custom(function($order) {
+  )->fetch_all(function($order) {
 
     if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
     if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';

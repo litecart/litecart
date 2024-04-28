@@ -16,16 +16,13 @@
       ],
     ];
 
-    $tax_rates = [];
-
-    $tax_classes_query = database::query(
+    $tax_rates = database::query(
       "select * from ". DB_TABLE_PREFIX ."tax_classes
       order by code, name;"
-    );
+    )->fetch_all(function($tax_class) use ($customer) {
+      return tax::get_rates($tax_class['id'], $customer);
+    });
 
-    while ($tax_class = database::fetch($tax_classes_query)) {
-      $tax_rates = tax::get_rates($tax_class['id'], $customer);
-    }
 
   } catch (Exception $e) {
     http_response_code($e->getCode());

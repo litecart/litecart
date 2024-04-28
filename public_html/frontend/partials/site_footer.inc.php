@@ -25,7 +25,7 @@
       where status
       and find_in_set('information', dock)
       order by p.priority, pi.title;"
-    )->fetch_custom(function($page) {
+    )->fetch_all(function($page) {
       return [
         'id' => $page['id'],
         'title' => $page['title'],

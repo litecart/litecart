@@ -234,7 +234,7 @@
         ) x
         where x.code != ''
         order by x.code;"
-      )->fetch_custom(function($translation) {
+      )->fetch_all(function($translation) {
 
         $row = ['code' => $translation['code']];
 

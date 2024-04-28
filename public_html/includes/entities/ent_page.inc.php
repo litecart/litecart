@@ -25,7 +25,7 @@
 
       database::query(
         "show fields from ". DB_TABLE_PREFIX ."pages_info;"
-      )->each(function($field) {
+      )->each(function($field){
         if (in_array($field['Field'], ['id', 'page_id', 'language_code'])) return;
         $this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
       });

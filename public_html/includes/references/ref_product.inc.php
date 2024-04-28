@@ -53,7 +53,7 @@
             )
             group by oi.product_id
             order by num_purchases desc;"
-          )->fetch_custom(function($product) {
+          )->fetch_all(function($product) {
             return reference::product($row['product_id'], $this->_language_codes[0]);
           });
 
@@ -131,7 +131,7 @@
               where category_id = ". (int)$product_to_category['category_id'] ."
               and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
               order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-            )->each(function($info) {
+            )->each(function($info){
               foreach ($info as $key => $value) {
                 if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
                 if (empty($this->_data['categories'][$info['category_id']])) {
@@ -230,7 +230,7 @@
           $this->_data['parents'] = database::query(
             "select category_id from ". DB_TABLE_PREFIX ."products_to_categories
             where product_id = ". (int)$this->_data['id'] .";"
-          )->fetch_custom(function($row) {
+          )->fetch_all(function($row) {
             return reference::category($row['category_id'], $this->_language_codes[0]);
           });
 

@@ -17,7 +17,7 @@
     having relevance > 0
     order by relevance desc, id desc
     limit 5;"
-  )->fetch_custom(function($customer) {
+  )->fetch_all(function($customer) {
     return [
       'id' => $customer['id'],
       'title' => $customer['name'],

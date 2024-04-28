@@ -19,7 +19,7 @@
 
       database::query(
         "show fields from ". DB_TABLE_PREFIX ."orders;"
-      )->each(function($field) {
+      )->each(function($field){
         switch (true) {
 
           case (preg_match('#^customer_#', $field['Field'])):
@@ -128,7 +128,7 @@
         left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
         where oi.order_id = ". (int)$order_id ."
         order by oi.id;"
-      )->fetch_custom(function($item) {
+      )->fetch_all(function($item) {
         $item['userdata'] = $item['userdata'] ? json_decode($item['userdata'], true) : '';
         $item['sufficient_stock'] = null;
 
