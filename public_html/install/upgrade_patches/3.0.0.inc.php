@@ -824,3 +824,16 @@
       ],
     ],
   ]);
+
+// Set hostname for orders
+  database::query(
+    "select ip_address from ". DB_TABLE_PREFIX ."orders
+    order by date_created desc
+    limit 250;"
+  )->each(function($order) {
+    database::query(
+      "update ". DB_TABLE_PREFIX ."orders
+      set hostname = '". gethostbyaddr($order['ip_address']) ."'
+      where ip_address = '". $order['ip_address'] ."';"
+    );
+  });

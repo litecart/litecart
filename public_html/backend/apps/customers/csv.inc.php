@@ -239,7 +239,9 @@
           // Set newsletter recipient data
             foreach ([
               'email',
-              'client_ip',
+              'ip_address',
+              'hostname',
+              'user_agent',
             ] as $field) {
               if (isset($row[$field])) {
                 $recipient->data[$field] = $row[$field];

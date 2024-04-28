@@ -23,6 +23,10 @@
         $this->data[$field['Field']] = database::create_variable($field);
       });
 
+      $this->data['ip_address'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+      $this->data['hostname'] = isset($_SERVER['REMOTE_ADDR']) ? gethostbyaddr($_SERVER['REMOTE_ADDR']) : '';
+      $this->data['user_agent'] = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
       $this->previous = $this->data;
     }
 
@@ -65,7 +69,9 @@
       database::query(
         "update ". DB_TABLE_PREFIX ."newsletter_recipients
         set email = '". database::input($this->data['email']) ."',
-          client_ip = '". database::input($this->data['client_ip']) ."'
+          ip_address = '". database::input($this->data['ip_address']) ."',
+          hostname = '". database::input($this->data['hostname']) ."',
+          user_agent = '". database::input($this->data['user_agent']) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

@@ -127,6 +127,7 @@
           <th data-sort="email"><?php echo language::translate('title_email', 'Email'); ?></th>
           <th data-sort="name"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th data-sort="company" class="main"><?php echo language::translate('title_company_name', 'Company Name'); ?></th>
+          <th><?php echo language::translate('title_ip_address', 'IP Address'); ?></th>
           <th data-sort="date_created" class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
           <th></th>
         </tr>
@@ -141,6 +142,7 @@
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>"><?php echo $customer['email']; ?></a></td>
           <td><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></td>
           <td><?php echo $customer['company']; ?></td>
+          <td><?php echo $customer['ip_address']; ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
@@ -149,7 +151,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="8"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo language::number_format($num_rows); ?></td>
+          <td colspan="9"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>

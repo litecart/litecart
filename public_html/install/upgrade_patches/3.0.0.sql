@@ -95,7 +95,8 @@ CREATE TABLE `lc_shopping_carts` (
   `display_prices_including_tax` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `subtotal` FLOAT(11,4) NOT NULL DEFAULT '0',
   `subtotal_tax` FLOAT(11,4) NOT NULL DEFAULT '0',
-  `client_ip` VARCHAR(39) NOT NULL DEFAULT '',
+  `ip_address` VARCHAR(39) NOT NULL DEFAULT '',
+  `hostname` VARCHAR(128) NOT NULL DEFAULT '',
   `user_agent` VARCHAR(255) NOT NULL DEFAULT '',
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -210,8 +211,12 @@ DROP COLUMN `charset`,
 ADD INDEX `code` (`code`),
 ADD INDEX `code2` (`code2`);
 -- --------------------------------------------------------
+ALTER TABLE `lc_newsletter_recipients`
+CHANGE COLUMN `client_ip` `ip_address` VARCHAR(39) NOT NULL DEFAULT '';
+-- --------------------------------------------------------
 ALTER TABLE `lc_orders`
 DROP COLUMN `uid`,
+CHANGE COLUMN `customer_email` `billing_email` VARCHAR(128) NOT NULL DEFAULT '' AFTER `customer_phone`,
 CHANGE COLUMN `customer_tax_id` `billing_tax_id` VARCHAR(32) NOT NULL DEFAULT '' AFTER `customer_email`,
 CHANGE COLUMN `customer_company` `billing_company` VARCHAR(64) NOT NULL DEFAULT '' AFTER `billing_tax_id`,
 CHANGE COLUMN `customer_firstname` `billing_firstname` VARCHAR(64) NOT NULL DEFAULT '' AFTER `billing_company`,
@@ -227,6 +232,7 @@ CHANGE COLUMN `shipping_country_code` `shipping_country_code` CHAR(2) NOT NULL D
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `payment_due` `total` FLOAT(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `tax_total` `total_tax` FLOAT(11,4) NOT NULL DEFAULT '0',
+CHANGE COLUMN `client_ip` `ip_address` VARCHAR(39) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci' AFTER `affiliate_id`,
 ADD COLUMN `no` VARCHAR(16) NOT NULL DEFAULT '' AFTER `id`,
 ADD COLUMN `subtotal` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `display_prices_including_tax`,
 ADD COLUMN `subtotal_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `subtotal`,

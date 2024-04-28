@@ -4,7 +4,7 @@
     $order = new ent_order($_GET['order_id']);
   } else {
     $order = new ent_order();
-    $order->data['client_ip'] = $_SERVER['REMOTE_ADDR'];
+    $order->data['ip_address'] = $_SERVER['REMOTE_ADDR'];
     $order->data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
     $order->data['date_created'] = date('Y-m-d H:i:s');
   }

@@ -204,11 +204,11 @@
             <?php echo functions::form_toggle('lock_prices', 'y/n', true); ?>
           </div>
 
-          <?php if ($shopping_cart->data['client_ip']) { ?>
+          <?php if ($shopping_cart->data['ip_address']) { ?>
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_ip_address', 'IP Address'); ?></label>
             <div class="form-input">
-              <?php echo $shopping_cart->data['client_ip']; ?> <a href="https://ip-api.com/#<?php echo $shopping_cart->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a>
+              <?php echo $shopping_cart->data['ip_address']; ?> <a href="https://ip-api.com/#<?php echo $shopping_cart->data['ip_address']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a>
             </div>
           </div>
           <?php } ?>

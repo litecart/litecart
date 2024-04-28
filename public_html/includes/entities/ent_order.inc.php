@@ -61,7 +61,8 @@
         'subtotal' => 0,
         'subtotal_tax' => 0,
         'display_prices_including_tax' => settings::get('default_display_prices_including_tax'),
-        'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '',
+        'ip_address' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '',
+        'hostname' => isset($_SERVER['REMOTE_ADDR']) ? gethostbyaddr($_SERVER['REMOTE_ADDR']) : '',
         'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
         'domain' => isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '',
       ]);
@@ -207,12 +208,12 @@
         }
       }
 
-    // Insert/update order
+    // Insert order
       if (!$this->data['id']) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."orders
-          (uid, client_ip, user_agent, domain, date_created)
-          values ('". database::input($this->data['uid']) ."', '". database::input($this->data['client_ip']) ."', '". database::input($this->data['user_agent']) ."', '". database::input($this->data['domain']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+          (uid, date_created)
+          values ('". database::input($this->data['uid']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
 
         $this->data['id'] = database::insert_id();
@@ -277,6 +278,10 @@
           discount_tax = ". (float)$this->data['discount_tax'] .",
           total = ". (float)$this->data['total'] .",
           total_tax = ". (float)$this->data['total_tax'] .",
+          ip_address = '". database::input($this->data['ip_address']) ."',
+          hostname = '". database::input(gethostbyaddr($this->data['hostname'])) ."',
+          user_agent = '". database::input($this->data['user_agent']) ."',
+          domain = '". database::input($this->data['domain']) ."',
           public_key = '". database::input($this->data['public_key']) ."',
           date_paid = ". (!empty($this->data['date_paid']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['date_paid'])) ."'" : "null") .",
           date_dispatched = ". (!empty($this->data['date_dispatched']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['date_dispatched'])) ."'" : "null") .",
