@@ -615,6 +615,8 @@ DELETE FROM `lc_products_to_categories` WHERE product_id NOT IN (SELECT id from 
 -- --------------------------------------------------------
 DELETE FROM `lc_quantity_units_info` WHERE quantity_unit_id NOT IN (SELECT id from `lc_quantity_units`) OR language_code NOT IN (SELECT code from `lc_languages`);
 -- --------------------------------------------------------
+DELETE FROM `lc_settings` WHERE `key` IN ('gzip_enabled');
+-- --------------------------------------------------------
 DELETE FROM `lc_slides_info` WHERE slide_id NOT IN (SELECT id from `lc_slides`) OR language_code NOT IN (SELECT code from `lc_languages`);
 -- --------------------------------------------------------
 DELETE FROM `lc_sold_out_statuses_info` WHERE sold_out_status_id NOT IN (SELECT id from `lc_sold_out_statuses`) OR language_code NOT IN (SELECT code from `lc_languages`);

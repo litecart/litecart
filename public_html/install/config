@@ -67,3 +67,6 @@
 
 // Timezone
   ini_set('date.timezone', '{TIMEZONE}');
+
+// Output Compression
+	ini_set('zlib.output_compression', 1);
