@@ -219,6 +219,11 @@
     ini_set('serialize_precision', -1);
   }
 
+	// Polyfill for glob brace on Alpine
+	if (!defined('GLOB_BRACE')) {
+		define('GLOB_BRACE', 0);
+	}
+
 // Emulate getallheaders() on non-Apache machines
   if (!function_exists('getallheaders')) {
     function getallheaders() {
@@ -232,8 +237,7 @@
     }
   }
 
-
-  // Polyfill for some $_SERVER variables in CLI
+// Polyfill for some $_SERVER variables in CLI
   if (!isset($_SERVER['REQUEST_METHOD'])) { // Don't rely on php_sapi_name()
     $_SERVER['DOCUMENT_ROOT'] = realpath(__DIR__.'/..');
     $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
@@ -246,7 +250,7 @@
     $_SERVER['SCRIPT_FILENAME'] = isset($argv[0]) ? $argv[0] : 'index.php';
   }
 
-  // Fix Windows paths
+// Fix Windows paths
   $_SERVER['SCRIPT_FILENAME'] = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME']);
 
   if (empty($_SERVER['HTTPS'])) $_SERVER['HTTPS'] = ($_SERVER['SERVER_PROTOCOL'] == 'https') ? 'on' : 'off';
