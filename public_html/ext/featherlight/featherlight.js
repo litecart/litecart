@@ -349,12 +349,12 @@
 			},
 
 			image: {
-				regex: /\.(a?png|bmp|gif|ico|jpe?g|jp2|svg|tiff?|webp)(\?\S*)?$/i,
+				regex: /\.(a?png|avif|bmp|gif|ico|jpe?g|jp2|svg|tiff?|webp)(\?\S*)?$/i,
 				process: function(url) {
 					var self = this,
 						deferred = $.Deferred(),
 						img = new Image(),
-						$img = $('<img src="'+url+'" alt="" />');
+						$img = $('<img alt="">').attr('src', url);
 					img.onload = function() {
 						/* Store naturalWidth & height for IE8 */
 						$img.naturalWidth = img.width;

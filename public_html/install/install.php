@@ -347,11 +347,8 @@
 
     $sql = file_get_contents('structure.sql');
 
-    $version_query = database::query("SELECT VERSION();");
-    $version = database::fetch($version_query);
-
   // Workaround for early MySQL versions (<5.6.5) not supporting multiple DEFAULT CURRENT_TIMESTAMP
-    if (version_compare($version['VERSION()'], '5.6.5', '<')) {
+    if (version_compare($mysql_version, '5.6.5', '<')) {
       str_replace('`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,', '`date_updated` TIMESTAMP NOT NULL DEFAULT NOW(),', $sql);
     }
 

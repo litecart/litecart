@@ -1,6 +1,6 @@
 <?php
 
-  $max_age = 60*60*24;
+  $max_age = strtotime('+7 days') - time();
 
   $sitemap_cache_token = cache::token('sitemap', ['domain', 'language'], 'file', $max_age);
   if (!$output = cache::get($sitemap_cache_token, $max_age, true)) {

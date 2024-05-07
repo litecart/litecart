@@ -130,7 +130,7 @@ DELETE FROM `lc_settings`
 WHERE `key` = 'job_error_reporter:last_run';
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
-('email', 'Send Emails', 'Wheither or not the platform should deliver outgoing emails.', 'email_status', '1', 'toggle("y/n")', '1', NOW(), NOW());
+('email', 'Send Emails', 'Whether or not the platform should deliver outgoing emails.', 'email_status', '1', 'toggle("y/n")', '1', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT IGNORE INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES ('legal', 'Legal', 'Legal settings and information', 50);
 -- --------------------------------------------------------
