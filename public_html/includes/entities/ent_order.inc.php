@@ -455,6 +455,10 @@
         }
       }
 
+      list($module_id, $option_id) = preg_split('#:#', $this->data['payment_option']['id']);
+      $payment_modules = new mod_payment();
+      $payment_modules->run('after_save', $module_id, $this);
+
       $order_modules = new mod_order();
       $order_modules->update($this);
 
@@ -860,6 +864,7 @@
     // Empty order first..
       $this->data['items'] = [];
       $this->data['order_total'] = [];
+      $this->data['comments'] = [];
       $this->refresh_total();
       $this->save();
 
