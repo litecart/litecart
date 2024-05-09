@@ -7,7 +7,7 @@
   mb_internal_encoding('UTF-8');
   mb_http_output('UTF-8');
 
-  if (php_sapi_name() == 'cli') {
+  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
     if (!isset($argv[1]) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
       echo "\nLiteCart® 3.0.0\n"
@@ -48,9 +48,11 @@
     include(__DIR__ . '/../includes/config.inc.php');
 
   } else {
-    echo '<h2>No Installation Detected</h2>' . PHP_EOL
-       . '<p>Warning: No configuration file was found.</p>' . PHP_EOL
-       . '<p><a class="btn btn-default" href="index.php">Click here to install instead</a></p>' . PHP_EOL;
+    echo implode(PHP_EOL, [
+      '<h2>No Installation Detected</h2>',
+      '<p>Warning: No configuration file was found.</p>',
+      '<p><a class="btn btn-default" href="index.php">Click here to install instead</a></p>',
+    ]);
     require('includes/footer.inc.php');
     return;
   }
@@ -122,7 +124,7 @@
   if (!empty($_REQUEST['upgrade'])) {
 
     ob_start(function($buffer) {
-      if (php_sapi_name() == 'cli') {
+      if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
         $buffer = strip_tags($buffer);
       }
       return $buffer;
@@ -325,9 +327,7 @@
           $sql = file_get_contents(__DIR__ . '/upgrade_patches/'. $version .'.sql');
           $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
-          $sql = explode('-- --------------------------------------------------------', $sql);
-
-          foreach ($sql as $query) {
+          foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
             $query = preg_replace('#^-- .*?\R+#m', '', $query);
             if (!empty($query)) {
               database::query($query);
@@ -461,7 +461,7 @@
 
     echo ob_get_clean();
 
-    if (php_sapi_name() == 'cli') exit;
+    if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') exit;
 
     require('includes/footer.inc.php');
     exit;
@@ -517,14 +517,14 @@ input[name="development_type"]:checked + div {
   <div class="row">
     <div class="form-group col-md-6">
       <label>MySQL/MariaDB Server</label>
-      <div class="form-control">
+      <div class="form-input">
         <?php echo DB_SERVER; ?>
       </div>
     </div>
 
     <div class="form-group col-md-6">
       <label>MySQL/MariaDB Database</label>
-      <div class="form-control">
+      <div class="form-input">
         <?php echo DB_DATABASE; ?>
       </div>
     </div>
@@ -534,7 +534,7 @@ input[name="development_type"]:checked + div {
 
   <div class="form-group">
     <label class="form-check">
-      <input type="checkbox" name="backup" value="true" checked /> Backup my database before performing the upgrade.
+      <input type="checkbox" name="backup" value="true" checked> Backup my database before performing the upgrade.
     </label>
   </div>
 
@@ -542,12 +542,12 @@ input[name="development_type"]:checked + div {
   <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
     <div class="form-group col-md-3">
       <label>Current Version</label>
-      <div class="form-control"><?php echo PLATFORM_DATABASE_VERSION; ?></div>
+      <div class="form-input"><?php echo PLATFORM_DATABASE_VERSION; ?></div>
     </div>
     <?php } else { ?>
     <div class="form-group col-md-3">
       <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
-      <select class="form-control" name="from_version">
+      <select class="form-input" name="from_version">
         <option value="">-- Select Version --</option>
         <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected' : '') .'>'. PLATFORM_NAME .' '. $version .'</option>' . PHP_EOL; ?>
       </select>
@@ -556,7 +556,7 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-3">
       <label>New Version</label>
-      <div class="form-control"><?php echo PLATFORM_VERSION; ?></div>
+      <div class="form-input"><?php echo PLATFORM_VERSION; ?></div>
   </div>
 
     <div class="form-group col-md-6">

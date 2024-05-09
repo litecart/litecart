@@ -70,7 +70,7 @@
                       <div class="row">
                         <div class="col-4 col-md-2">
                           <a href="<?php echo functions::escape_html($item['link']); ?>" class="float-start" style="max-width: 64px; margin-inline-end: 1em;">
-                            <img class="thumbnail" src="<?php echo document::href_rlink($item['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink($item['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink($item['image']['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $item['image']['viewport']['ratio']; ?>;" alt="" />
+                            <img class="thumbnail" src="<?php echo document::href_rlink($item['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink($item['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink($item['image']['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $item['image']['viewport']['ratio']; ?>;" alt="">
                           </a>
                         </div>
 

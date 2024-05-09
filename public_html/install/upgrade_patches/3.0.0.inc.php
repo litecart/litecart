@@ -828,7 +828,7 @@
     ],
   ]);
 
-// Set hostname for orders
+// Set hostname for recent orders
   database::query(
     "select ip_address from ". DB_TABLE_PREFIX ."orders
     order by date_created desc

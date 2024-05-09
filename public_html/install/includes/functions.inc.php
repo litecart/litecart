@@ -61,11 +61,11 @@
           }
 
           if (!in_array(false, $results)) {
-            echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
+            echo ' <span class="ok">[OK]</span><br><br>' . PHP_EOL . PHP_EOL;
           } else if ($on_error == 'skip') {
-            echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
+            echo ' <span class="warning">[Skipped]</span><br><br>' . PHP_EOL . PHP_EOL;
           } else {
-            die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
+            die(' <span class="error">[Error]</span><br><br>' . PHP_EOL . PHP_EOL);
           }
         }
 

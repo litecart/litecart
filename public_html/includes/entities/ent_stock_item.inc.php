@@ -25,7 +25,7 @@
 
       database::query(
         "show fields from ". DB_TABLE_PREFIX ."stock_items_info;"
-      )->each(function($field) {
+      )->each(function($field){
         if (in_array($field['Field'], ['id', 'stock_item_id', 'language_code'])) return;
         $this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
       });
@@ -61,7 +61,7 @@
       database::query(
         "select * from ". DB_TABLE_PREFIX ."stock_items_info
          where stock_item_id = ". (int)$this->data['id'] .";"
-      )->each(function($info) {
+      )->each(function($info){
         foreach ($info as $key => $value) {
           if (in_array($key, ['id', 'stock_item_id', 'language_code'])) continue;
           $this->data[$key][$info['language_code']] = $value;

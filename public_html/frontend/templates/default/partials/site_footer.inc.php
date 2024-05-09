@@ -46,13 +46,13 @@
 
       <section class="col-12 col-sm-12 col-md-3 col-lg-6 text-center" style="align-self: center;">
         <div class="logotype hidden-xs hidden-sm">
-          <img class="responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+          <img class="responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>">
         </div>
 
         <?php if ($modules) { ?>
         <ul class="buttons list-inline text-center">
           <?php foreach ($modules as $module) { ?>
-          <li><img class="thumbnail responsive" src="<?php echo document::href_rlink($module['icon']); ?>" alt="" /></li>
+          <li><img class="thumbnail responsive" src="<?php echo document::href_rlink($module['icon']); ?>" alt=""></li>
           <?php } ?>
         </ul>
         <?php } ?>

@@ -3,32 +3,46 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    replace: {
-      app_header: {
-        src: ['public_html/includes/app_header.inc.php'],
-        overwrite: true,
-        replacements: [
-          {
-            from: /define\('PLATFORM_VERSION', '([0-9\.]+)'\);/,
-            to: 'define(\'PLATFORM_VERSION\', \'<%= pkg.version %>\');'
-          }
-        ]
+    concat: {
+      backend: {
+        //options: {
+        //  stripBanners: true,
+        //  banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+        //    '<%= grunt.template.today("yyyy-mm-dd") %> */',
+        //},
+        files: {
+          'public_html/backend/template/js/app.js': ['public_html/backend/template/js/components/*.js']
+        },
       },
+      frontend: {
+        files: {
+          //'public_html/frontend/templates/classic/js/app.js': ['public_html/frontend/templates/classic/js/components/*.js'],
+          'public_html/frontend/templates/default/js/app.js': ['public_html/frontend/templates/default/js/components/*.js']
+        },
+      }
+    },
 
-      app: {
-        src: [
-          'public_html/index.php',
-          'public_html/install/install.php',
-          'public_html/install/upgrade.php'
-        ],
-        overwrite: true,
-        replacements: [
-          {
-            from: /LiteCart® ([0-9\.]+)/,
-            to: 'LiteCart® <%= pkg.version %>'
-          }
-        ]
+    'dart-sass': {
+      chartist_minified: {
+        options: {
+          sourceMap: false,
+          outputStyle: 'compressed',
+          compass: false
+        },
+        files: {
+          'public_html/assets/chartist/chartist.min.css': 'public_html/assets/chartist/chartist.scss'
+        }
       },
+      trumbowyg_minified: {
+        options: {
+          sourceMap: false,
+          outputStyle: 'compressed',
+          compass: false
+        },
+        files: {
+          'public_html/assets/trumbowyg/ui/trumbowyg.min.css': 'public_html/assets/trumbowyg/ui/trumbowyg.scss'
+        }
+      }
     },
 
     less: {
@@ -129,58 +143,46 @@ module.exports = function(grunt) {
       },
     },
 
-    'dart-sass': {
-      chartist_minified: {
-        options: {
-          sourceMap: false,
-          outputStyle: 'compressed',
-          compass: false
-        },
-        files: {
-          'public_html/assets/chartist/chartist.min.css': 'public_html/assets/chartist/chartist.scss'
-        }
+
+    phplint: {
+      options: {
+        //phpCmd: 'C:/xampp/php/php.exe', // Defaults to php
+        limit: 10,
+        stdout: false
       },
-      trumbowyg_minified: {
-        options: {
-          sourceMap: false,
-          outputStyle: 'compressed',
-          compass: false
-        },
-        files: {
-          'public_html/assets/trumbowyg/ui/trumbowyg.min.css': 'public_html/assets/trumbowyg/ui/trumbowyg.scss'
-        }
+      files: 'public_html/**/*.php'
+    },
+    
+    replace: {
+      app_header: {
+        src: ['public_html/includes/app_header.inc.php'],
+        overwrite: true,
+        replacements: [
+          {
+            from: /define\('PLATFORM_VERSION', '([0-9\.]+)'\);/,
+            to: 'define(\'PLATFORM_VERSION\', \'<%= pkg.version %>\');'
+          }
+        ]
+      },
+
+      app: {
+        src: [
+          'public_html/index.php',
+          'public_html/install/install.php',
+          'public_html/install/upgrade.php'
+        ],
+        overwrite: true,
+        replacements: [
+          {
+            from: /LiteCart® ([0-9\.]+)/,
+            to: 'LiteCart® <%= pkg.version %>'
+          }
+        ]
       }
     },
-
-    concat: {
-      backend: {
-        //options: {
-        //  stripBanners: true,
-        //  banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-        //    '<%= grunt.template.today("yyyy-mm-dd") %> */',
-        //},
-        files: {
-          'public_html/backend/template/js/app.js': ['public_html/backend/template/js/components/*.js']
-        },
-      },
-      frontend: {
-        files: {
-          //'public_html/frontend/templates/classic/js/app.js': ['public_html/frontend/templates/classic/js/components/*.js'],
-          'public_html/frontend/templates/default/js/app.js': ['public_html/frontend/templates/default/js/components/*.js']
-        },
-      }
-    },
-
+    
     uglify: {
-      featherlight: {
-        options: {
-          sourceMap: false,
-        },
-        files: {
-          'public_html/assets/featherlight/featherlight.min.js': ['public_html/assets/featherlight/featherlight.js'],
-        }
-      },
-      litecart: {
+      application: {
         options: {
           sourceMap: true,
         },
@@ -190,15 +192,14 @@ module.exports = function(grunt) {
           'public_html/frontend/templates/default/js/app.min.js': ['public_html/frontend/templates/default/js/app.js'],
         }
       },
-    },
-
-    phplint: {
-      options: {
-        //phpCmd: 'C:/xampp/php/php.exe', // Defaults to php
-        limit: 10,
-        stdout: false
+      featherlight: {
+        options: {
+          sourceMap: false,
+        },
+        files: {
+          'public_html/assets/featherlight/featherlight.min.js': ['public_html/assets/featherlight/featherlight.js'],
+        }
       },
-      files: 'public_html/**/*.php'
     },
 
     watch: {
@@ -235,6 +236,7 @@ module.exports = function(grunt) {
         tasks: ['dart-sass']
       },
     }
+
   });
 
   grunt.loadNpmTasks('grunt-contrib-less');
@@ -245,7 +247,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-text-replace');
 
   grunt.registerTask('default', ['replace', 'less', 'dart-sass', 'concat', 'uglify']);
-  grunt.registerTask('compile', ['less', 'dart-sass', 'concat', 'uglify']);
+  grunt.registerTask('build', ['replace', 'less', 'dart-sass', 'concat', 'uglify', 'watch']);
+  grunt.registerTask('watch', ['watch']);
 
   require('phplint').gruntPlugin(grunt);
   grunt.registerTask('test', ['phplint']);

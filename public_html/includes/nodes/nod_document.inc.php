@@ -66,7 +66,7 @@
         self::$head_tags['hreflang'] = '';
         foreach (language::$languages as $language) {
           if ($language['url_type'] == 'none') continue;
-          self::$head_tags['hreflang'] .= '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. self::href_ilink(route::$selected['resource'], [], true, ['page', 'sort'], $language['code']) .'" />' . PHP_EOL;
+          self::$head_tags['hreflang'] .= '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. self::href_ilink(route::$selected['resource'], [], true, ['page', 'sort'], $language['code']) .'">' . PHP_EOL;
         }
         self::$head_tags['hreflang'] = trim(self::$head_tags['hreflang']);
       }
@@ -456,7 +456,7 @@
 
     public static function rlink($resource) {
 
-      if (empty($resource)) {
+			if (!$resource) {
         return '';
       }
 

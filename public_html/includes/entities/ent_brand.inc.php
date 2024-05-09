@@ -58,7 +58,7 @@
         where brand_id = ". (int)$brand_id .";"
       )->each(function($info){
         foreach ($info as $key => $value) {
-          if (in_array($key, ['id', 'brand_id', 'language_code'])) return;
+          if (in_array($key, ['id', 'brand_id', 'language_code'])) continue;
           $this->data[$key][$brand_info['language_code']] = $value;
         }
       });

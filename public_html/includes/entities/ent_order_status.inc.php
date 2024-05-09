@@ -60,7 +60,7 @@
         where order_status_id = ". (int)$this->data['id'] .";"
       )->each(function($info){
         foreach ($info as $key => $value) {
-          if (in_array($key, ['id', 'order_status_id', 'language_code'])) return;
+          if (in_array($key, ['id', 'order_status_id', 'language_code'])) continue;
           $this->data[$key][$info['language_code']] = $value;
         }
       });

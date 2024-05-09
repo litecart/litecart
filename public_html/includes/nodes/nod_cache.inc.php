@@ -10,7 +10,10 @@
 
       self::$enabled = settings::get('cache_enabled');
 
-      if (!isset(session::$data['cache'])) session::$data['cache'] = [];
+      if (!isset(session::$data['cache'])) {
+        session::$data['cache'] = [];
+      }
+
       self::$_data = &session::$data['cache'];
 
       if (settings::get('cache_clear')) {
@@ -188,12 +191,12 @@
 
     public static function get($token, $max_age=900, $force_cache=false) {
 
-      if (empty($force_cache)) {
-        if (empty(self::$enabled)) return;
-        if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
-          if (preg_match('#no-cache|max-age=0#i', $_SERVER['HTTP_CACHE_CONTROL'])) return;
-        }
+			if (!$force_cache && !self::$enabled) {
+				return;
       }
+      }
+
+      $data = null;
 
       switch ($token['storage']) {
 
@@ -201,45 +204,53 @@
 
           $cache_file = FS_DIR_STORAGE .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
 
-          if (!file_exists($cache_file) || filemtime($cache_file) < strtotime('-'.$max_age .' seconds')) return;
+					if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
+						$data = @json_decode(file_get_contents($cache_file), true);
+					}
 
-          return @json_decode(file_get_contents($cache_file), true);
+					break;
 
         case 'memory':
 
           switch (true) {
+
             case (function_exists('apcu_fetch')):
-              return apcu_fetch($_SERVER['HTTP_HOST'].':'.$token['id']);
+							$data = apcu_fetch($_SERVER['HTTP_HOST'].':'.$token['id']);
+							break;
 
             case (function_exists('apc_fetch')):
-              return apc_fetch($_SERVER['HTTP_HOST'].':'.$token['id']);
+							$data = apc_fetch($_SERVER['HTTP_HOST'].':'.$token['id']);
+							break;
 
             default:
               $token['storage'] = 'file';
               return self::get($token, $max_age, $force_cache);
+							break;
           }
 
         case 'session':
 
           if (isset(self::$_data[$token['id']]['mtime']) && self::$_data[$token['id']]['mtime'] > strtotime('-'.$max_age .' seconds')) {
-            return self::$_data[$token['id']]['data'];
+						$data = self::$_data[$token['id']]['data'];
           }
 
-          return;
+					break;
 
         default:
 
           trigger_error('Invalid cache storage ('. $token['storage'] .')', E_USER_WARNING);
 
-          return;
+					break;
       }
+
+			return $data;
     }
 
     public static function set($token, $data) {
 
-      if (empty(self::$enabled)) return;
+      if (!self::$enabled) return;
 
-      if (empty($data)) return;
+      if (!$data) return;
 
       switch ($token['storage']) {
 
@@ -250,24 +261,28 @@
           if (!is_dir(dirname($cache_file))) {
             if (!mkdir(dirname($cache_file))) {
               trigger_error('Could not create cache subfolder', E_USER_WARNING);
-              return false;
+							$result = false;
+							break;
             }
           }
 
-          return file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES));
+					return file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
         case 'memory':
 
           switch (true) {
             case (function_exists('apcu_store')):
-              return apcu_store($_SERVER['HTTP_HOST'].':'.$token['id'], $data, $token['ttl']);
+							$result = apcu_store($_SERVER['HTTP_HOST'].':'.$token['id'], $data, $token['ttl']);
+							break;
 
             case (function_exists('apc_store')):
-              return apc_store($_SERVER['HTTP_HOST'].':'.$token['id'], $data, $token['ttl']);
+							$result = apc_store($_SERVER['HTTP_HOST'].':'.$token['id'], $data, $token['ttl']);
+							break;
 
             default:
               $token['storage'] = 'file';
-              return self::set($token, $data);
+							$result = self::set($token, $data);
+							break;
           }
 
         case 'session':
@@ -277,12 +292,16 @@
             'data' => $data,
           ];
 
-          return true;
+					$result = true;
+					break;
 
         default:
           trigger_error('Invalid cache type ('. $token['storage'] .')', E_USER_WARNING);
-          return;
+					$result = false;
+					break;
       }
+
+			return $result;
     }
 
     // Output recorder (This option is not affected by self::$enabled as fresh data is always building up cache)
@@ -309,7 +328,9 @@
 
     public static function end_capture($token=[]) {
 
-      if (empty($token['id'])) $token['id'] = current(array_reverse(self::$_recorders));
+      if (empty($token['id'])) {
+        $token['id'] = current(array_reverse(self::$_recorders));
+      }
 
       if (!isset(self::$_recorders[$token['id']])) {
         trigger_error('Could not end buffer recording as token id doesn\'t exist', E_USER_WARNING);
@@ -333,7 +354,7 @@
     public static function clear_cache($keyword='') {
 
     // Clear modifications
-      if (empty($keyword)) {
+      if (!$keyword) {
         foreach (glob('storage://addons/.cache/*.php') as $file) {
           if (is_file($file)) unlink($file);
         }
@@ -341,13 +362,13 @@
 
     // Clear files
       foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
-        $search = !empty($keyword) ? '/*_'.$keyword.'*.cache' : '/*.cache';
+        $search = $keyword ? '/*_'.$keyword.'*.cache' : '/*.cache';
         foreach (glob($dir.$search) as $file) unlink($file);
       }
 
     // Clear memory
       if (function_exists('apcu_delete')) {
-        if (!empty($keyword)) {
+        if ($keyword) {
           $cached_keys = new APCUIterator('#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*'. preg_quote($keyword, '#') .'.*#', APC_ITER_KEY);
         } else {
           $cached_keys = new APCUIterator('#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*#', APC_ITER_KEY);
@@ -358,7 +379,7 @@
       }
 
       if (function_exists('apc_delete')) {
-        if (!empty($keyword)) {
+        if ($keyword) {
           $cached_keys = new APCIterator('user', '#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*'. preg_quote($keyword, '#') .'.*#', APC_ITER_KEY);
         } else {
           $cached_keys = new APCIterator('user', '#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*#', APC_ITER_KEY);
@@ -368,7 +389,7 @@
         }
       }
 
-      if (!empty($keyword)) {
+      if ($keyword) {
         foreach (array_keys(self::$_data) as $token_id) {
           if (strpos($keyword, $token_id) !== false) {
             unset(self::$_data[$token_id]);

@@ -749,6 +749,8 @@ ul.breadcrumb li a {
   background-position: right var(--input-padding-x) center;
   background-size: 0.8em;
   padding-inline-end: calc(var(--input-padding-x) + 1.5em) !important;
+  cursor: default;
+  user-select: none;
 }
 .dropdown.open {
   z-index: 999;
@@ -851,14 +853,10 @@ ul.breadcrumb li a {
 html[dir="rtl"] .dropdown [data-toggle="dropdown"] {
   background-position: left 1em center;
 }
-html[dir="rtl"] .dropdown-menu {
-  left: auto !important;
-  right: 0 !important;
-}
 @media (min-width: 768px) {
-  html[dir="rtl"] .dropdown-menu.dropdown-menu-end {
-    left: 0 !important;
-    right: auto !important;
+  html[dir="rtl"] .dropdown-menu-end {
+    left: 0;
+    right: auto;
   }
 }
 .dropdown-backdrop {

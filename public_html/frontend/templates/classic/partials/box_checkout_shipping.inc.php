@@ -25,7 +25,7 @@
       <?php if (empty($option['error']) && (!empty($option['description']) || !empty($option['fields']))) { ?>
       <div class="content">
 
-        <hr />
+        <hr>
 
         <?php if (!empty($option['description'])) { ?>
         <p class="description text-start"><?php echo $option['description']; ?></p>

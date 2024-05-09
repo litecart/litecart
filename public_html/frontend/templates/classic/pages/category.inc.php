@@ -36,7 +36,7 @@
             <?php foreach ($subcategories as $subcategory) { ?><a class="nav-link" href="<?php echo document::href_ilink('category', ['category_id' => $subcategory['id']]); ?>"><?php echo $subcategory['name']; ?></a><?php } ?>
           </nav>
 
-          <?php if (isset($_GET['product_name']) || isset($_GET['attributes']) || isset($_GET['manufacturers']) || $products) { ?>
+          <?php if (isset($_GET['product_name']) || isset($_GET['attributes']) || isset($_GET['brands']) || $products) { ?>
           <div class="card">
             <?php include 'app://frontend/partials/box_filter.inc.php'; ?>
 

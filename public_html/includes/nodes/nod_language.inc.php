@@ -42,7 +42,7 @@
           "select id, code, if(text_". self::$selected['code'] ." != '', text_". self::$selected['code'] .", text_en) as text from ". DB_TABLE_PREFIX ."translations
           where ". ((isset(route::$request['endpoint']) && route::$request['endpoint'] == 'backend') ? "backend = 1" : "frontend = 1") ."
           having text != '';"
-        )->each(function($translation) {
+        )->each(function($translation){
           self::$_cache['translations'][self::$selected['code']][$translation['code']] = $translation['text'];
         });
       }

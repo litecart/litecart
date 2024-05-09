@@ -14,7 +14,7 @@
       self::$data = &session::$data['administrator'];
 
     // Login remembered administrator automatically
-      if (empty(self::$data['id']) && !empty($_COOKIE['remember_me']) && empty($_POST)) {
+      if (empty(self::$data['id']) && !empty($_COOKIE['remember_me']) && !$_POST) {
 
         try {
 
@@ -121,7 +121,9 @@
 
     public static function reset() {
 
-      $administrator = database::query(
+      $administrator = [];
+
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."administrators;"
       )->each(function($field) use (&$administrator) {
         $administrator[$field['Field']] = database::create_variable($field);

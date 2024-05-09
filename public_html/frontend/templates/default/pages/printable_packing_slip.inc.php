@@ -49,7 +49,7 @@ table.items tbody tr:nth-child(11) {
     <header class="header">
       <div class="row">
         <div class="col-6">
-          <img class="logotype" src="<?php echo document::link('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
+          <?php echo functions::draw_image('storage://images/logotype.png', 0, 0, null, 'class="logotype" alt="'. functions::escape_attr(settings::get('store_name')) .'"'); ?>
         </div>
 
         <div class="col-6 text-end">
@@ -81,7 +81,7 @@ table.items tbody tr:nth-child(11) {
             </div>
 
             <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
-            <div class="value"><?php echo fallback($order['customer']['email'], '-'); ?></div>
+            <div class="value"><?php echo fallback($order['billing_address']['email'], '-'); ?></div>
 
             <div class="label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
             <div class="value"><?php echo fallback($order['shipping_address']['phone'], '-'); ?></div>
@@ -112,7 +112,7 @@ table.items tbody tr:nth-child(11) {
     <?php if (count($order['items']) <= 10) { ?>
     <footer class="footer">
 
-      <hr />
+      <hr>
 
       <div class="row">
         <div class="col-3">

@@ -28,13 +28,14 @@
 		"grunt-phplint": "^0.1.0",
 		"grunt-text-replace": "^0.4.0",
 		"phplint": "^2.0.5",
-		"sass": "^1.69.5"
+		"sass": "^1.76.0"
 	},
 	"engines": {
 		"node": ">=19"
 	},
 	"scripts": {
-		"build": "grunt",
+		"archive": "git archive --format=zip --output latest.zip master",
+		"build": "grunt build",
 		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php",
 		"less": "grunt less",
 		"phplint": "grunt phplint",

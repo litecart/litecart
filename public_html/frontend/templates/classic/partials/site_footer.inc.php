@@ -52,12 +52,12 @@
 
       <section class="hidden-xs hidden-sm col-md-4" style="align-self: center;">
         <div class="logotype">
-          <img class="responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+          <img class="responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>">
         </div>
 
         <ul class="modules list-inline text-center">
           <?php foreach ($modules as $module) { ?>
-          <li><img class="thumbnail responsive" src="<?php echo document::href_rlink($module['icon']); ?>" class="" alt="" /></li>
+          <li><img class="thumbnail responsive" src="<?php echo document::href_rlink($module['icon']); ?>" alt=""></li>
           <?php } ?>
         </ul>
 
@@ -70,7 +70,7 @@
         <div id="copyright">
           <div class="container notice">
             <!-- LiteCart is provided free under license CC BY-ND 4.0 - https://creativecommons.org/licenses/by-nd/4.0/. Removing the link back to litecart.net without permission is a violation - https://www.litecart.net/addons/172/removal-of-attribution-link -->
-            Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved <br />
+            Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved <br>
             Powered by <a href="https://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a>
           </div>
           </div>

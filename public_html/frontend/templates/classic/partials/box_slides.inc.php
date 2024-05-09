@@ -11,7 +11,7 @@
       $output[] = '<a href="'. functions::escape_html($slide['link']) .'">';
     }
 
-    $output[] = '<img src="'. document::href_rlink($slide['image']) .'" alt="'. functions::escape_html($slide['name']) .'" style="width: 100%;" />';
+    $output[] = '<img src="'. document::href_rlink($slide['image']) .'" alt="'. functions::escape_html($slide['name']) .'" style="width: 100%;">';
 
     if (!empty($slide['caption'])) {
       $output[] = '<div class="carousel-caption">'. $slide['caption'] .'</div>';

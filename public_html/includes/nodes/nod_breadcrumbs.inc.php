@@ -6,7 +6,7 @@
 
     public static function init() {
 
-      self::add(functions::draw_fonticon('fa-home', 'title="'. functions::escape_html(language::translate('title_home', 'Home')) .'"'), WS_DIR_APP);
+			self::add(functions::draw_fonticon('fa-home', 'title="'. functions::escape_attr(language::translate('title_home', 'Home')) .'"'), WS_DIR_APP);
     }
 
     public static function reset() {
@@ -22,7 +22,7 @@
 
     public static function render() {
 
-      if (count(self::$data) <= 1) {
+      if (!count(self::$data)) {
         return '';
       }
 

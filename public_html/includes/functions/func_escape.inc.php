@@ -4,7 +4,7 @@
     return htmlspecialchars((string)$string, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5);
   }
 
-  function escape_attr($string) {
+	function escape_attr($string) {
     return addcslashes(escape_html($string), "\r\n");
   }
 

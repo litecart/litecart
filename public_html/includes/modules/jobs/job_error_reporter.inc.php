@@ -11,7 +11,7 @@
 
     public function process($force, $last_run) {
 
-      if (empty($force)) {
+      if (!$force) {
 
       // Abort if no log file is set
         if (!$log_file = ini_get('error_log')) return;
@@ -23,7 +23,7 @@
         if (filesize($log_file) < 100e6) {
 
         // Abort if disabled
-          if (empty($this->settings['status'])) return;
+          if (!$this->settings['status']) return;
 
         // Abort if not within working hours
           if (!empty($this->settings['working_hours'])) {

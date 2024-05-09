@@ -50,7 +50,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
           <div class="brand">
             <a href="<?php echo functions::escape_html($brand['link']); ?>">
               <?php if ($brand['image']) { ?>
-              <img src="<?php echo document::href_rlink($brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink($brand['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink($brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($brand['name']); ?>" />
+              <?php echo functions::draw_thumbnail($brand['image'], 0, 40, '', 'style="max-height: 40px; max-width: 100%;"'); ?>
               <?php } else { ?>
               <h3><?php echo $brand['name']; ?></h3>
               <?php } ?>

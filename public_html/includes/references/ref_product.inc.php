@@ -54,7 +54,7 @@
             group by oi.product_id
             order by num_purchases desc;"
           )->fetch_all(function($product) {
-            return reference::product($row['product_id'], $this->_language_codes[0]);
+            return reference::product($product['product_id'], $this->_language_codes[0]);
           });
 
           break;
@@ -162,7 +162,7 @@
             where delivery_status_id = ". (int)$this->_data['delivery_status_id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-          )->each(function($info) {
+          )->each(function($info){
             foreach ($info as $key => $value) {
               if (in_array($key, ['id', 'delivery_status_id', 'language_code'])) continue;
               if (empty($this->_data['delivery_status'][$key])) {
@@ -206,8 +206,8 @@
             where product_id = ". (int)$this->_data['id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-          )->each(function($row) {
-            foreach ($row as $key => $value) {
+          )->each(function($info){
+            foreach ($info as $key => $value) {
               if (in_array($key, ['id', 'product_id', 'language_code'])) continue;
               if (empty($this->_data[$key])) $this->_data[$key] = $value;
             }
@@ -325,7 +325,7 @@
             where quantity_unit_id = ". (int)$this->quantity_unit_id ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-          )->each(function($info) {
+          )->each(function($info){
             foreach ($info as $key => $value) {
               if (in_array($key, ['id', 'quantity_unit_id', 'language_code'])) continue;
               if (empty($this->_data['quantity_unit'][$key])) {
@@ -386,7 +386,7 @@
             where sold_out_status_id = ". (int)$this->_data['sold_out_status_id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-          )->each(function($info) {
+          )->each(function($info){
             foreach ($info as $key => $value) {
               if (in_array($key, ['id', 'sold_out_status_id', 'language_code'])) continue;
               if (empty($this->_data['sold_out_status'][$key])) {

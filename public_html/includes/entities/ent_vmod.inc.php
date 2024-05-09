@@ -4,10 +4,10 @@
     public $data;
     public $previous;
 
-    public function __construct($filename=null) {
+    public function __construct($id=null) {
 
-      if (!empty($filename)) {
-        $this->load(basename($filename));
+      if (!empty($id)) {
+        $this->load(basename($id));
       } else {
         $this->reset();
       }
@@ -36,18 +36,20 @@
       $this->previous = $this->data;
     }
 
-    public function load($filename) {
+    public function load($id) {
 
       $this->reset();
 
-      if (is_file($file = 'storage://vmods/'. $filename.'.xml')) {
+      if (is_file($file = 'storage://vmods/'. $id.'.xml')) {
         $xml = file_get_contents($file);
+        $filename = basename($file);
 
-      } else if (is_file($file = 'storage://vmods/'. $filename.'.disabled')) {
+      } else if (is_file($file = 'storage://vmods/'. $id.'.disabled')) {
         $xml = file_get_contents($file);
+        $filename = basename($file);
 
       } else {
-        throw new Exception('Invalid vMod ('. $filename .')');
+        throw new Exception('Invalid vMod ('. $id .')');
       }
 
       $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
@@ -59,7 +61,7 @@
         throw new Exception(libxml_get_errors());
       }
 
-      $this->data['id'] = preg_replace('#\.(xml|disabled)?$#', '', $filename);
+      $this->data['id'] = $id;
       $this->data['status'] = !preg_match('#\.disabled$#', $filename) ? '1' : '0';
       $this->data['filename'] = $filename;
       $this->data['date_created'] = date('Y-m-d H:i:s', filectime($file));

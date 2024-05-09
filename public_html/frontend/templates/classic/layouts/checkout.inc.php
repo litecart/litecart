@@ -2,13 +2,13 @@
 <html lang="{{language}}" dir="{{text_direction}}">
 <head>
 <title>{{title}}</title>
-<meta charset="{{charset}}" />
-<meta name="description" content="{{description}}" />
+<meta charset="{{charset}}">
+<meta name="description" content="{{description}}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/css/variables.css'); ?>" />
-<link rel="stylesheet" href="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/css/framework.min.css'); ?>" />
-<link rel="stylesheet" href="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/css/app.min.css'); ?>" />
-<link rel="stylesheet" href="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/css/checkout.min.css'); ?>" />
+<link rel="stylesheet" href="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/css/variables.css'); ?>">
+<link rel="stylesheet" href="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/css/framework.min.css'); ?>">
+<link rel="stylesheet" href="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/css/app.min.css'); ?>">
+<link rel="stylesheet" href="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/css/checkout.min.css'); ?>">
 {{head_tags}}
 </head>
 <body>
@@ -26,7 +26,7 @@
 
     <div id="header" class="container">
       <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-        <img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+        <img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>">
       </a>
 
       <div class="middle hidden-xs text-center">

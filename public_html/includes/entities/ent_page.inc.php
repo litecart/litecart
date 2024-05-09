@@ -56,8 +56,8 @@
       database::query(
         "select * from ". DB_TABLE_PREFIX ."pages_info
         where page_id = ". (int)$this->data['id'] .";"
-      )->each(function($page_info) {
-        foreach ($page_info as $key => $value) {
+      )->each(function($info){
+        foreach ($info as $key => $value) {
           if (in_array($key, ['id', 'page_id', 'language_code'])) continue;
           $this->data[$key][$page_info['language_code']] = $value;
         }

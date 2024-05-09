@@ -52,6 +52,7 @@
       self::$aliases['#^includes/routes/#'] = 'frontend/routes/'; // <3.0.0
       self::$aliases['#^includes/templates/(.*?)\.admin/#'] = 'backend/template/'; // <3.0.0
       self::$aliases['#^includes/templates/(.*?)\.catalog/#'] = 'frontend/templates/$1/'; // <3.0.0
+      self::$aliases['#^includes/wrappers/wrap_(http|smtp)#'] = 'includes/clients/$1_client'; // <3.0.0
 
     // Determine last modified date
       $last_modified = null;
@@ -60,7 +61,7 @@
         $last_modified = $folder_last_modified;
       }
 
-      foreach (glob(FS_DIR_STORAGE .'vmods/*.xml') as $vmod) {
+      foreach (glob(FS_DIR_STORAGE .'vmods/*.xml') as $file) {
         if (($modification_last_modified = filemtime($file)) > $last_modified) {
           $last_modified = $modification_last_modified;
         }
@@ -179,6 +180,24 @@
 
       $checksum = crc32(implode($digest));
 
+    // Return modified file if checksum matches
+      if (isset(self::$_checksums[$original_file]) && self::$_checksums[$original_file] == $checksum) {
+
+        self::$time_elapsed += microtime(true) - $timestamp;
+
+        if (!empty(self::$_checked[$original_file]) && file_exists(FS_DIR_STORAGE . self::$_checked[$original_file])) {
+
+          if (!empty(self::$_checked[$original_file])) {
+            return FS_DIR_STORAGE . (self::$_checked[$original_file] = $modified_file);
+          } else {
+            return FS_DIR_APP . $original_file;
+          }
+
+        } else {
+          return FS_DIR_APP . $original_file;
+        }
+      }
+
     // Return original file if nothing to modify
       if (empty($queue)) {
 
@@ -187,15 +206,9 @@
         }
 
         self::$time_elapsed += microtime(true) - $timestamp;
-        return FS_DIR_STORAGE . (self::$_checked[$original_file] = $modified_file);
-      }
 
-    // Return modified file if checksum matches
-      if (!empty(self::$_checksums[$original_file]) && self::$_checksums[$original_file] == $checksum) {
-        if (!empty(self::$_checked[$original_file]) && file_exists(FS_DIR_STORAGE . self::$_checked[$original_file])) {
-          self::$time_elapsed += microtime(true) - $timestamp;
-          return FS_DIR_STORAGE . (self::$_checked[$original_file] = $modified_file);
-        }
+        self::$_checked[$original_file] = false;
+        return FS_DIR_APP . $original_file;
       }
 
     // Modify file
@@ -268,7 +281,8 @@
     // Return original if nothing was modified
       if ($buffer == $original) {
         self::$time_elapsed += microtime(true) - $timestamp;
-        return FS_DIR_STORAGE . (self::$_checked[$original_file] = $original_file);
+        self::$_checked[$original_file] = false;
+        return FS_DIR_APP . $original_file;
       }
 
     // Write modified file
@@ -276,8 +290,10 @@
 
     // Update checked cache
       if (!isset(self::$_checked[$original_file]) || self::$_checksums[$original_file] != $checksum) {
+
         self::$_checked[$original_file] = $modified_file;
         self::$_checksums[$original_file] = $checksum;
+
         $serialized_checked = implode('', array_map(function($original_file){
           if (!isset(self::$_checksums[$original_file])) return;
           return $original_file .';'. self::$_checked[$original_file] .';'. self::$_checksums[$original_file] . PHP_EOL;
@@ -337,42 +353,43 @@
             }
           }
 
-      // Run upgrades if a previous version is installed
-        if (!empty($dom->getElementsByTagName('upgrade'))) {
+        // Run upgrades if a previous version is installed
+          if (!empty($dom->getElementsByTagName('upgrade'))) {
 
-          if ($installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
-            if ($installed_version < $vmod['version']) {
+            if ($installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
 
-            // Gather upgrade scripts
-              $upgrades = [];
+              if ($installed_version < $vmod['version']) {
 
-              foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
+              // Gather upgrade scripts
+                $upgrades = [];
 
-                $upgrade_version = $upgrade_node->getAttribute('version');
+                foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
 
-                if (version_compare($vmod['version'], $upgrade_version, '<=')) {
-                  $upgrades[] = [
-                    'version' => $upgrade_version,
-                    'script' => $upgrade_node->textContent,
-                  ];
+                  $upgrade_version = $upgrade_node->getAttribute('version');
+
+                  if (version_compare($vmod['version'], $upgrade_version, '<=')) {
+                    $upgrades[] = [
+                      'version' => $upgrade_version,
+                      'script' => $upgrade_node->textContent,
+                    ];
+                  }
                 }
-              }
 
-              uasort($upgrades, function($a, $b) {
-                return version_compare($a['version'], $b['version']);
-              });
+                uasort($upgrades, function($a, $b) {
+                  return version_compare($a['version'], $b['version']);
+                });
 
-              require_once vmod::check(FS_DIR_APP . 'includes/compatibility.inc.php');
-              require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
+                require_once vmod::check(FS_DIR_APP . 'includes/compatibility.inc.php');
+                require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
 
-            // Execute upgrade scripts
-              foreach ($upgrades as $upgrade) {
+              // Execute upgrade scripts
+                foreach ($upgrades as $upgrade) {
 
-                if (version_compare($upgrade['version'], $installed_version, '<=')) continue;
+                  if (version_compare($upgrade['version'], $installed_version, '<=')) continue;
 
-              // Exceute upgrade in an isolated scope
-                $tmp_file = stream_get_meta_data(tmpfile())['uri'];
-                file_put_contents($tmp_file, "<?php" . PHP_EOL . $upgrade['script']);
+                // Exceute upgrade in an isolated scope
+                  $tmp_file = stream_get_meta_data(tmpfile())['uri'];
+                  file_put_contents($tmp_file, "<?php" . PHP_EOL . $upgrade['script']);
 
                 // Exceute upgrade in an isolated scope
                   (function() {
@@ -382,19 +399,24 @@
                   foreach (self::$_installed as $key => $installed) {
                     if ($installed['id'] == $vmod['id']) {
                       self::$_installed[$key]['version'] = $upgrade['version'];
-                    break;
+                      break;
+                    }
                   }
-                }
-              }
 
-              $new_contents = implode(PHP_EOL, array_map(function($vmod){
-                return $vmod['id'] .';'. $vmod['version'];
-              }, self::$_installed));
+                  $pending_reload = true;
+                }
+
+              // Update installed file
+                $new_contents = implode(PHP_EOL, array_map(function($vmod){
+                  return $vmod['id'] .';'. $vmod['version'];
+                }, self::$_installed));
 
                 file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
 
-                header('Location: '. $_SERVER['REQUEST_URI']);
-                exit;
+                if (!empty($pending_reload)) {
+                  header('Location: '. $_SERVER['REQUEST_URI']);
+                  exit;
+                }
               }
             }
           }
@@ -516,6 +538,7 @@
 
               // Whitespace
                 $find = preg_split('#(\r\n?|\n)#', $find);
+
                 for ($i=0; $i<count($find); $i++) {
                   if ($find[$i] = trim($find[$i])) {
                     $find[$i] = '[ \\t]*' . preg_quote($find[$i], '#') . '[ \\t]*(?:\r\n?|\n|$)';
@@ -523,6 +546,7 @@
                     $find[$i] = '[ \\t]*(?:\r\n?|\n)';
                   }
                 }
+
                 $find = implode($find);
 
               // Offset
@@ -579,12 +603,14 @@
                 break;
 
               case 'top':
-                $find = '#^.*$#s';
+								$find = '#^#s';
+								$indexes = '';
                 $insert = addcslashes($insert, '\\$').'$0';
                 break;
 
               case 'bottom':
-                $find = '#^.*$#s';
+								$find = '#$#s';
+								$indexes = '';
                 $insert = '$0'.addcslashes($insert, '\\$');
                 break;
 

@@ -70,7 +70,7 @@ hr {
   <header class="header">
     <div class="row">
       <div class="col-6">
-        <img class="logotype" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
+        <?php echo functions::draw_image('storage://images/logotype.png', 0, 0, null, 'class="logotype" alt="'. functions::escape_attr(settings::get('store_name')) .'"'); ?>
       </div>
 
       <div class="col-6 text-end">
@@ -86,18 +86,18 @@ hr {
       <div class="row">
         <div class="col-3 shipping-address">
           <div class="label"><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></div>
-          <div class="value"><?php echo nl2br(functions::escape_html(reference::country($order['shipping_address']['country_code'])->format_address($order['shipping_address']))); ?></div>
+          <div class="value"><?php echo nl2br(reference::country($order['shipping_address']['country_code'])->format_address($order['shipping_address'])); ?></div>
         </div>
 
         <div class="col-3">
           <div class="label"><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></div>
-          <div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_unit'])  : '-'; ?></div>
+          <div class="value"><?php echo $order['weight_total'] ? weight::format($order['weight_total'], $order['weight_unit']) : ''; ?></div>
         </div>
 
         <div class="col-6 billing-address">
           <div class="rounded-rectangle">
             <div class="label"><?php echo language::translate('title_billing_address', 'Billing Address'); ?></div>
-            <div class="value"><?php echo nl2br(functions::escape_html(reference::country($order['billing_address']['country_code'])->format_address($order['billing_address']))); ?></div>
+            <div class="value"><?php echo nl2br(reference::country($order['billing_address']['country_code'])->format_address($order['billing_address'])); ?></div>
           </div>
         </div>
       </div>
@@ -106,23 +106,23 @@ hr {
     <div class="row">
       <div class="col-6">
         <div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
-        <div class="value"><?php echo fallback($order['shipping_option']['name'], '-'); ?></div>
+        <div class="value"><?php echo $order['shipping_option']['name']; ?></div>
 
         <div class="label"><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
-        <div class="value"><?php echo fallback($order['shipping_tracking_id'], '-'); ?></div>
+        <div class="value"><?php echo $order['shipping_tracking_id']; ?></div>
       </div>
 
       <div class="col-6">
         <div class="label"><?php echo language::translate('title_payment_option', 'Payment Option'); ?></div>
-        <div class="value"><?php echo fallback($order['payment_option']['name'], '-'); ?></div>
+        <div class="value"><?php echo $order['payment_option']['name']; ?></div>
 
         <div class="label"><?php echo language::translate('title_transaction_number', 'Transaction Number'); ?></div>
-        <div class="value"><?php echo fallback($order['payment_transaction_id'], '-'); ?></div>
+        <div class="value"><?php echo $order['payment_transaction_id']; ?></div>
       </div>
 
       <div class="col-xs-6">
         <div class="label"><?php echo language::translate('title_email', 'Email Address'); ?></div>
-        <div class="value"><?php echo $order['customer']['email']; ?></div>
+        <div class="value"><?php echo $order['billing_address']['email']; ?></div>
 
         <div class="row" style="margin-bottom: 0;">
           <div class="col-md-6">
@@ -132,7 +132,7 @@ hr {
 
           <div class="col-md-6">
             <div class="label"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></div>
-            <div class="value"><?php echo !empty($order['customer']['tax_id']) ? functions::escape_html($order['customer']['tax_id']) : '-'; ?></div>
+            <div class="value"><?php echo $order['billing_address']['tax_id']; ?></div>
           </div>
         </div>
       </div>

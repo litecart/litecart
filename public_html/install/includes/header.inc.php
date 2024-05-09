@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="<?php echo mb_http_output(); ?>" />
+<meta charset="<?php echo mb_http_output(); ?>">
 <title>LiteCart Installer</title>
 <link rel="stylesheet" href="../backend/template/css/variables.css">
 <?php if (is_file(__DIR__.'/../../backend/template/css/framework.css')) { ?>
@@ -16,6 +16,10 @@ html {
 
 body {
   padding: 15px;
+}
+
+header {
+  margin: 2em 0;
 }
 
 .glass-edges {
@@ -47,12 +51,17 @@ span.warning {
   color: #c60;
   font-weight: bold;
 }
+footer {
+  font-size: .8em;
+  color: #999;
+}
 </style>
 </head>
 <body>
 
-<div class="glass-edges">
-  <main id="content">
-    <header class="text-center">
-      <img src="../backend/template/images/logotype.svg" alt="LiteCart" style="max-width: 300px; max-height: 100px;" />
-    </header>
+<header class="text-center">
+  <img src="data/default/storage/images/logotype.png" alt="LiteCart" style="max-width: 300px; max-height: 100px;">
+</header>
+
+<main class="glass-edges">
+  <div id="content">

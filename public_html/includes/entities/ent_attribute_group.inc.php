@@ -58,7 +58,8 @@
       database::query(
         "select name, language_code from ". DB_TABLE_PREFIX ."attribute_groups_info
         where group_id = ". (int)$group_id .";"
-      )->each(function($group_info) {
+      )->each(function($info){
+        if (in_array($info['language_code'], ['id', 'group_id', 'language_code'])) return;
         $this->data['name'][$info['language_code']] = $info['name'];
       });
 
@@ -147,13 +148,13 @@
         and id not in ('". implode("', '", array_column($this->data['values'], 'id')) ."');"
       )->each(function($value) {
 
-        $num_products_attributes = database::query(
+        $has_products_attributes = database::query(
           "select id from ". DB_TABLE_PREFIX ."products_attributes
           where value_id = ". (int)$value['id'] ."
           limit 1;"
-        )->num_rows;
+        )->num_rows ? true : false;
 
-        if ($num_products_attributes) {
+        if ($has_products_attributes) {
           throw new Exception('Cannot delete value linked to product attributes');
         }
 

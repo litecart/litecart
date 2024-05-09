@@ -59,7 +59,7 @@
       database::query(
         "select * from ". DB_TABLE_PREFIX ."categories_info
         where category_id = ". (int)$category_id .";"
-      )->each(function($info) {
+      )->each(function($info){
         foreach ($info as $key => $value) {
           if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
           $this->data[$key][$info['language_code']] = $value;

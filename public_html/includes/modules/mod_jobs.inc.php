@@ -10,7 +10,7 @@
 
       if (empty($this->modules)) return;
 
-      if (empty($modules)) {
+			if (!$modules) {
         $modules = array_keys($this->modules);
       }
 
@@ -35,17 +35,16 @@
         );
 
 				if (!$last_run = $this->modules[$module_id]->date_processed) {
-					$last_run = 0; // As null will throw a Deprecated warning
+					$last_run = 0; // As null will throw a deprecated notice in PHP 8.2+
 				}
 
 				ob_start();
 				$timestamp = microtime(true);
 				$this->modules[$module_id]->process($force, $last_run);
-				$log = ob_get_clean();
 
-        if (!empty($log)) {
+				if ($log = ob_get_clean()) {
 
-          $output .= $log = implode(PHP_EOL, [
+					$log = implode(PHP_EOL, [
             str_repeat('#', 72),
             '#'. str_pad(" $module_id executed at ". date('Y-m-d H:i:s') .' ', 71, '#', STR_PAD_RIGHT),
             str_repeat('#', 72),
@@ -67,6 +66,6 @@
         }
       }
 
-      return $output;
+      return $log;
     }
   }

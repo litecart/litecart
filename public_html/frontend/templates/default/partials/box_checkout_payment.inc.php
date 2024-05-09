@@ -4,7 +4,7 @@ input[name="payment_option[id]"]:checked + .option::after {
 }
 </style>
 
-<section id="box-checkout-payment" class="">
+<section id="box-checkout-payment">
   <div class="card-header">
     <h2 class="card-title"><?php echo language::translate('title_payment', 'Payment'); ?></h2>
   </div>
@@ -14,7 +14,7 @@ input[name="payment_option[id]"]:checked + .option::after {
 
       <?php foreach ($options as $option) { ?>
       <label class="option-wrapper">
-        <input name="payment_option[id]" value="<?php echo $option['id']; ?>" type="radio" hidden <?php if (!empty($selected) && $selected['id'] == $option['id']) echo ' checked'; ?><?php if (!empty($option['error'])) echo ' disabled'; ?> />
+        <input name="payment_option[id]" value="<?php echo $option['id']; ?>" type="radio" hidden <?php if (!empty($selected) && $selected['id'] == $option['id']) echo ' checked'; ?><?php if (!empty($option['error'])) echo ' disabled'; ?>>
         <div class="option">
           <div class="header row" style="margin: 0;">
             <div class="col-3" style="margin: 0;">
@@ -37,7 +37,7 @@ input[name="payment_option[id]"]:checked + .option::after {
 
           <?php if (empty($option['error']) && !empty($option['fields'])) { ?>
           <div class="content">
-            <hr />
+            <hr>
             <div class="fields text-start"><?php echo $option['fields']; ?></div>
           </div>
           <?php } ?>

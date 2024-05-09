@@ -1,4 +1,3 @@
-
 # Syntax Formatting and Code Standards
 
 ## Code Compliance
@@ -9,7 +8,7 @@
 
  - Style definitions must be compliant with CSS 3.
 
- - Any use of JavaScript should honour the jQuery framework.
+ - Any use of JavaScript should honor the jQuery framework.
 
 
 ## Character Encoding
@@ -148,7 +147,7 @@
       echo 'Hello World!';
 
       $array = [
-        'foo' => 'bar', // Describer
+        'foo' => 'bar', // Side note
       ];
 
 ## PHP Tags
@@ -248,7 +247,7 @@
 
 ## Naming of Variables and Elements
 
-  Simply use PECL styled naming with lowercases and underscores. Don't use CAPS, CamelCase or camelCase.
+  Name your variables and elements using lowercases and underscores (a.k.a. snake_case). Don't use CAPS, camelCase, or PascalCase.
   Don't make up abbreviations. Always use full words unless they are annoyingly long. Don't mix languages, use English only for code and comments.
 
   Incorrect:

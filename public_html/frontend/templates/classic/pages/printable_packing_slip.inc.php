@@ -66,7 +66,7 @@ h1 {
   <header class="header">
     <div class="row">
       <div class="col-6">
-        <img class="logotype" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
+        <?php echo functions::draw_image('storage://images/logotype.png', 0, 0, null, 'class="logotype" alt="'. functions::escape_attr(settings::get('store_name')) .'"'); ?>
       </div>
 
       <div class="col-6 text-end">
@@ -98,7 +98,7 @@ h1 {
           </div>
 
           <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
-          <div class="value"><?php echo !empty($order['customer']['email']) ? functions::escape_html($order['customer']['email']) : '-'; ?></div>
+          <div class="value"><?php echo !empty($order['billing_address']['email']) ? functions::escape_html($order['billing_address']['email']) : '-'; ?></div>
 
           <div class="label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
           <div class="value"><?php echo !empty($order['shipping_address']['phone']) ? functions::escape_html($order['shipping_address']['phone']) : '-'; ?></div>

@@ -49,7 +49,7 @@ table.items tbody tr:nth-child(11) {
     <header class="header">
       <div class="row">
         <div class="col-6">
-          <img class="logotype" src="<?php echo document::link('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
+          <?php echo functions::draw_image('storage://images/logotype.png', 0, 0, null, 'class="logotype" alt="'. functions::escape_attr(settings::get('store_name')) .'"'); ?>
         </div>
 
         <div class="col-6 text-end">
@@ -73,7 +73,7 @@ table.items tbody tr:nth-child(11) {
             <div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_unit'])  : '-'; ?></div>
 
             <div class="label"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></div>
-            <div class="value"><?php echo $order['customer']['tax_id']; ?></div>
+            <div class="value"><?php echo $order['billing_address']['tax_id']; ?></div>
           </div>
 
           <div class="col-6 billing-address">
@@ -167,7 +167,7 @@ table.items tbody tr:nth-child(11) {
     <?php if (count($order['items']) <= 10) { ?>
     <footer class="footer">
 
-      <hr />
+      <hr>
 
       <div class="row">
         <div class="col-3">

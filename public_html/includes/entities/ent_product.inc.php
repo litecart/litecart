@@ -25,7 +25,7 @@
 
       database::query(
         "show fields from ". DB_TABLE_PREFIX ."products_info;"
-      )->each(function($field) {
+      )->each(function($field){
         if (in_array($field['Field'], ['id', 'product_id', 'language_code'])) return;
         $this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
       });
@@ -408,7 +408,7 @@
         "select * from ". DB_TABLE_PREFIX ."products_images
         where product_id = ". (int)$this->data['id'] ."
         and id not in ('". implode("', '", array_column($this->data['images'], 'id')) ."');"
-      )->each(function($image) {
+      )->each(function($image){
 
         if (is_file('storage://images/' . $image['filename'])) {
           unlink('storage://images/' . $image['filename']);

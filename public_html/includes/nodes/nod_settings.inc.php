@@ -9,13 +9,13 @@
         "select `key`, `value`, `function`
         from ". DB_TABLE_PREFIX ."settings
         where `type` = 'global';"
-      )->each(function($setting) {
+      )->each(function($setting){
 
 				switch (true) {
 
 					case (substr($setting['function'], 0, 9) == 'regional_'):
 
-						if (!class_exists('language') || empty(language::$selected)) break;
+						if (!class_exists('language') || !language::$selected) break;
 
             if ($setting['value']) {
               $setting['value'] = json_decode($setting['value'], true);

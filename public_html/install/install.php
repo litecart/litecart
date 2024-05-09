@@ -4,7 +4,7 @@
   mb_internal_encoding('UTF-8');
   mb_http_output('UTF-8');
 
-  if (php_sapi_name() == 'cli') {
+  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
     if (!isset($argv[1]) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
       echo "\nLiteCart® 3.0.0\n"
@@ -48,7 +48,7 @@
   }
 
   ob_start(function($buffer) {
-    if (php_sapi_name() == 'cli') {
+    if ($_SERVER['SERVER_SOFTWARE'] == 'cli') {
       $buffer = strip_tags($buffer);
       exit;
     }
@@ -71,7 +71,7 @@
 
     register_shutdown_function(function(){
       $buffer = ob_get_clean();
-      echo (php_sapi_name() == 'cli') ? strip_tags($buffer) : $buffer;
+      echo ($_SERVER['SERVER_SOFTWARE'] == 'CLI') ? strip_tags($buffer) : $buffer;
     });
 
     echo '<h1>LiteCart Installer</h1>' . PHP_EOL . PHP_EOL;
@@ -82,7 +82,7 @@
 
     if (!empty($_SERVER['DOCUMENT_ROOT'])) {
       define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/') . '/');
-    } else if (php_sapi_name() == 'cli' && !empty($_REQUEST['document_root'])) {
+    } else if ($_SERVER['SERVER_SOFTWARE'] == 'CLI' && !empty($_REQUEST['document_root'])) {
       define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_REQUEST['document_root'])), '/') . '/');
     } else {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
@@ -108,7 +108,7 @@
     }
 
     if (!empty($_REQUEST['admin_folder'])) {
-      $_REQUEST['admin_folder'] = rtrim(str_replace('\\', '/', $_REQUEST['admin_folder']), '/');
+      $_REQUEST['admin_folder'] = basename(trim(str_replace('\\', '/', $_REQUEST['admin_folder']), '/'));
     } else {
       $_REQUEST['admin_folder'] = 'admin';
     }
@@ -119,6 +119,10 @@
 
     if (empty($_REQUEST['db_username'])) {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No MySQL/MariaDB user provided</p>' . PHP_EOL  . PHP_EOL);
+    }
+
+    if (empty($_REQUEST['db_password'])) {
+      $_REQUEST['db_password'] = '';
     }
 
     if (empty($_REQUEST['db_database'])) {
@@ -151,17 +155,17 @@
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No time zone provided</p>' . PHP_EOL  . PHP_EOL);
     }
 
-    define('BACKEND_ALIAS', !empty($_REQUEST['admin_folder']) ? basename($_REQUEST['admin_folder']) : 'admin');
-    define('DB_SERVER', !empty($_REQUEST['db_server']) ? $_REQUEST['db_server'] : '127.0.0.1');
+    define('BACKEND_ALIAS', $_REQUEST['admin_folder']);
+    define('DB_SERVER', $_REQUEST['db_server']);
     define('DB_USERNAME', $_REQUEST['db_username']);
-    define('DB_PASSWORD', !empty($_REQUEST['db_password']) ? $_REQUEST['db_password'] : '');
+    define('DB_PASSWORD', $_REQUEST['db_password']);
     define('DB_DATABASE', $_REQUEST['db_database']);
 
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
     ### Environment > Set #########################################
 
-    error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
+    error_reporting(version_compare(PHP_VERSION, '5.6.0', '<') ? E_ALL | E_STRICT : E_ALL);
     ini_set('ignore_repeated_errors', 'Off');
     ini_set('log_errors', 'On');
     ini_set('display_errors', 'On');
@@ -220,7 +224,7 @@
 
     ### PHP > Check document root #################################
 
-    if (php_sapi_name() != 'cli') {
+    if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
       echo '<p>Checking $_SERVER["DOCUMENT_ROOT"]... ';
 
       if (DOCUMENT_ROOT . preg_replace('#/index\.php$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != str_replace('\\', '/', __DIR__)) {
@@ -292,7 +296,7 @@
     if (version_compare($mysql_version, '5.5', '<')) {
       throw new Exception($mysql_version . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
     } else if (version_compare($mysql_version, '5.7', '<')) {
-      echo $mysql_version .' <span class="ok">[OK]</span><br />'
+      echo $mysql_version .' <span class="ok">[OK]</span><br>'
          . '<span class="warning">MySQL 5.7+ recommended</span></span></p>';
     } else {
       echo $mysql_version . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
@@ -379,7 +383,7 @@
     $sql = file_get_contents('clean.sql');
     $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-    foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
+    foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
       $query = preg_replace('#^-- .*?\R+#m', '', $query);
       database::query($query);
     }
@@ -410,7 +414,7 @@
       $sql = str_replace($search, $replace, $sql);
     }
 
-    foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
+    foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
       $query = preg_replace('#^-- .*?\R+#m', '', $query);
       database::query($query);
     }
@@ -435,9 +439,7 @@
       $sql = str_replace($search, database::input($replace), $sql);
     }
 
-    $sql = explode('-- --------------------------------------------------------', $sql);
-
-    foreach ($sql as $query) {
+    foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
       $query = preg_replace('#^-- .*?\R+#m', '', $query);
       database::query($query);
     }
@@ -472,10 +474,10 @@
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
-    ### Admin > Database > Users ##################################
+    ### Admin > Database > Administrators ##################################
 
     database::query(
-      "insert into ". str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], '`lc_users`') ."
+      "insert into ". str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], '`lc_administrators`') ."
       (`id`, `status`, `username`, `password_hash`, `date_updated`, `date_created`)
       values ('1', '1', '". database::input($_REQUEST['username']) ."', '". database::input(password_hash($_REQUEST['password'], PASSWORD_DEFAULT)) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
     );
@@ -520,7 +522,7 @@
 
             $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-            foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
+            foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
               $query = preg_replace('#^-- .*?\R+#m', '', $query);
               database::query($query);
             }
@@ -546,9 +548,7 @@
       if (!empty($sql)) {
         $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-        $sql = explode('-- --------------------------------------------------------', $sql);
-
-        foreach ($sql as $query) {
+        foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
           $query = preg_replace('#^-- .*?\R+#m', '', $query);
           database::query($query);
         }
@@ -710,26 +710,33 @@
 
     ### #############################################################
 
-    echo PHP_EOL
-       . '<h2>Complete</h2>' . PHP_EOL
-       . '<p>Installation complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL . PHP_EOL
-       . '<p>You may now log in to the <a href="../'. BACKEND_ALIAS .'/">backend</a> and start configuring your store.</p>' . PHP_EOL . PHP_EOL
-       . '<p>Check out the <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> website for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>' . PHP_EOL . PHP_EOL;
+    echo implode(PHP_EOL, [
+      '<h2>Complete</h2>',
+      '<p>Installation complete! Please delete the <strong>~/install/</strong> folder.</p>',
+      '<p>You may now log in to the <a href="../'. BACKEND_ALIAS .'/">backend</a> and start configuring your store.</p>',
+      '<p>Check out the <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> website for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>',
+    ]);
 
-    if (php_sapi_name() != 'cli') {
-      echo '<form method="get" action="http://twitter.com/intent/tweet" target="_blank">' . PHP_EOL
-         . '  <input type="hidden" value="https://www.litecart.net/">' . PHP_EOL
-         . '  <div class="form-group">' . PHP_EOL
-         . '    <div class="input-group">' . PHP_EOL
-         . '      <input type="text" class="form-input" name="text" value="Woohoo! I just installed #LiteCart and I am super excited! :)" />' . PHP_EOL
-         . '      <button class="btn btn-primary" type="submit">Tweet!</button>' . PHP_EOL
-         . '    </div>' . PHP_EOL
-         . '  </div>' . PHP_EOL
-         . '</form>' . PHP_EOL;
+    if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
+      echo implode(PHP_EOL, [
+        '<form method="get" action="http://twitter.com/intent/tweet" target="_blank">',
+        '  <input type="hidden" value="https://www.litecart.net/">',
+        '  <div class="form-group">',
+        '    <div class="input-group">',
+        '      <input type="text" class="form-input" name="text" value="Woohoo! I just installed #LiteCart and I am super excited! :)">',
+        '      <button class="btn btn-primary" type="submit">Tweet!</button>',
+        '    </div>',
+        '  </div>',
+        '</form>',
+      ]);
     }
 
   } catch (Exception $e) {
-    echo PHP_EOL . '[ABORTED] ' . $e->getMessage() . PHP_EOL;
+    echo implode(PHP_EOL, [
+      '',
+      '[ABORTED] ' . $e->getMessage(),
+      '',
+    ]);
   }
 
   if (!empty($_REQUEST['redirect'])) {
@@ -739,6 +746,6 @@
 
   echo ob_get_clean();
 
-  if (php_sapi_name() == 'cli') exit;
+  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') exit;
 
   require __DIR__ . '/includes/footer.inc.php';

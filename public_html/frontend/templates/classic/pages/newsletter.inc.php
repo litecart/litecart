@@ -49,7 +49,7 @@
             </p>
             <?php } ?>
 
-            <?php echo functions::form_draw_button('subscribe', language::translate('title_subscribe', 'Subscribe')); ?>
+            <?php echo functions::form_button('subscribe', language::translate('title_subscribe', 'Subscribe')); ?>
 
           <?php echo functions::form_end(); ?>
         </div>
@@ -68,7 +68,7 @@
               <?php echo functions::form_input_email('email', true, 'required'); ?>
             </div>
 
-            <?php echo functions::form_draw_button('unsubscribe', language::translate('title_unsubscribe', 'Unsubscribe')); ?>
+            <?php echo functions::form_button('unsubscribe', language::translate('title_unsubscribe', 'Unsubscribe')); ?>
 
           <?php echo functions::form_end(); ?>
         </div>

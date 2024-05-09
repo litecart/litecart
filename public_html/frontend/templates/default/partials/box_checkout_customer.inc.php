@@ -1,4 +1,4 @@
-<section id="box-checkout-customer" class="">
+<section id="box-checkout-customer">
 
   <div class="card-body">
 

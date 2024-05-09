@@ -30,7 +30,7 @@
       <div class="row">
         <div class="col-3 col-sm-2 col-md-1">
           <a href="{{$item.link}}" class="thumbnail float-start" style="margin-inline-end: 1em;">
-            <img class="responsive" src="<?php echo document::href_rlink($item['image']['thumbnail']); ?>" alt="" />
+            <img class="responsive" src="<?php echo document::href_rlink($item['image']['thumbnail']); ?>" alt="">
           </a>
         </div>
 
@@ -41,7 +41,7 @@
 
               <div class="name"><a href="{{$item.link}}" style="color: inherit;">{{item.name}}</a></div>
 
-              <?php if (!empty($item['data'])) echo '<div class="options">'. implode('<br />', $item['data']) .'</div>'; ?>
+              <?php if (!empty($item['data'])) echo '<div class="options">'. implode('<br>', $item['data']) .'</div>'; ?>
               <?php if (!empty($item['error'])) echo '<div class="error">'. $item['error'] .'</div>'; ?>
             </div>
 

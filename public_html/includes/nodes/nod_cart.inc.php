@@ -119,7 +119,7 @@
       $quantity = round((float)$quantity, $product->quantity_unit ? (int)$product->quantity_unit['decimals'] : 0, PHP_ROUND_HALF_UP);
 
     // Set item key
-      if (empty($item_key)) {
+      if (!$item_key) {
         if (!empty($product->quantity_unit['separate'])) {
           $item_key = uniqid();
         } else {

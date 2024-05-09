@@ -74,7 +74,7 @@
                 <div class="row">
                   <div class="col-4 col-md-2">
                     <a href="<?php echo functions::escape_html($item['link']); ?>" class="thumbnail float-start" style="max-width: 64px; margin-inline-end: 1em;">
-                      <img src="<?php echo document::href_rlink($item['image']['thumbnail']); ?>" alt="" />
+                      <img src="<?php echo document::href_rlink($item['image']['thumbnail']); ?>" alt="">
                     </a>
                   </div>
 

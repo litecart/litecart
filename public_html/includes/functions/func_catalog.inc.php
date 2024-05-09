@@ -70,7 +70,7 @@
     if (!empty($filter['query'])) {
 
       $code_regex = functions::format_regex_code($_GET['query']);
-      $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
+      $query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
 
       $sql_select_relevance[] = (
         "if(c.id in (
@@ -158,13 +158,29 @@
       trigger_error('Invalid array filter for products query', E_USER_ERROR);
     }
 
-    if (!empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
-    if (!empty($filter['brands'])) $filter['brands'] = array_filter($filter['brands']);
-    if (!empty($filter['attributes'])) $filter['attributes'] = array_filter($filter['attributes']);
-    if (!empty($filter['products'])) $filter['products'] = array_filter($filter['products']);
-    if (!empty($filter['exclude_products'])) $filter['exclude_products'] = array_filter($filter['exclude_products']);
+    if (!empty($filter['categories'])) {
+      $filter['categories'] = array_filter($filter['categories']);
+    }
 
-    if (empty($filter['sort'])) $filter['sort'] = 'popularity';
+    if (!empty($filter['brands'])) {
+      $filter['brands'] = array_filter($filter['brands']);
+    }
+
+    if (!empty($filter['attributes'])) {
+      $filter['attributes'] = array_filter($filter['attributes']);
+    }
+
+    if (!empty($filter['products'])) {
+      $filter['products'] = array_filter($filter['products']);
+    }
+
+    if (!empty($filter['exclude_products'])) {
+      $filter['exclude_products'] = array_filter($filter['exclude_products']);
+    }
+
+    if (empty($filter['sort'])) {
+      $filter['sort'] = 'popularity';
+    }
 
     $sql_inner_sort = [];
     $sql_outer_sort = [];
@@ -331,10 +347,21 @@
       trigger_error('Invalid array filter for products query', E_USER_ERROR);
     }
 
-    if (!empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
-    if (!empty($filter['brands'])) $filter['brands'] = array_filter($filter['brands']);
-    if (!empty($filter['products'])) $filter['products'] = array_filter($filter['products']);
-    if (!empty($filter['exclude_products'])) $filter['exclude_products'] = array_filter($filter['exclude_products']);
+    if (!empty($filter['categories'])) {
+      $filter['categories'] = array_filter($filter['categories']);
+    }
+
+    if (!empty($filter['brands'])) {
+      $filter['brands'] = array_filter($filter['brands']);
+    }
+
+    if (!empty($filter['products'])) {
+      $filter['products'] = array_filter($filter['products']);
+    }
+
+    if (!empty($filter['exclude_products'])) {
+      $filter['exclude_products'] = array_filter($filter['exclude_products']);
+    }
 
     $sql_select_relevance = [];
     $sql_inner_where = [];
@@ -344,7 +371,7 @@
     if (!empty($filter['query'])) {
 
       $code_regex = functions::format_regex_code($_GET['query']);
-      $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
+      $query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
 
       $sql_select_relevance[] = "if(p.code regexp '". database::input($code_regex) ."', 5, 0)";
       $sql_select_relevance[] = "if(p.sku regexp '". database::input($code_regex) ."', 5, 0)";

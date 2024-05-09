@@ -2,7 +2,6 @@
 
   #[AllowDynamicProperties]
   class job_shipping_tracker extends abs_module {
-
     public $id = __CLASS__;
     public $name = 'Shipping Tracker';
     public $description = '';
@@ -39,7 +38,7 @@
         }
       }
 
-      $orders_query = database::query(
+      $orders = database::query(
         "select id, shipping_option_id, shipping_tracking_id
         from ". DB_TABLE_PREFIX ."orders
         where shipping_tracking_id != ''
@@ -50,11 +49,11 @@
         and date_created > '". date('Y-m-d H:i:s', strtotime('-30 days')) ."'
         order by date_created asc
         limit 10;"
-      );
+      )->fetch_all();
 
-      echo 'Found '. database::num_rows($orders_query) .' orders to track' . PHP_EOL;
+      echo 'Found '. count($orders) .' orders to track' . PHP_EOL;
 
-      while ($order = database::fetch($orders_query)) {
+      foreach ($orders as $order) {
         $order = new ent_order($order['id']);
 
         try {
@@ -63,7 +62,7 @@
 
           list($module_id, $option_id) = explode(':', $order->data['shipping_option']['id']);
 
-          if (empty($module_id)) {
+          if (!$module_id) {
             throw new Exception('No module ID');
           }
 

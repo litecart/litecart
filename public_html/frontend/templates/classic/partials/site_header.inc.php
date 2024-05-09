@@ -1,6 +1,6 @@
 <header id="header" class="hidden-print">
   <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-    <img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+    <img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>">
   </a>
 
   <div class="hidden-xs">

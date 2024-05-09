@@ -257,14 +257,14 @@
   ];
 
 // Include config
-  if (is_file(__DIR__ . '/../storage/config.inc.php') || is_file(__DIR__ . '/../includes/config.inc.php')) {
+  if (is_file(FS_DIR_APP . 'includes/config.inc.php') || is_file(FS_DIR_STORAGE . 'config.inc.php')) {
     $installation_detected = true;
   }
 
 ?>
 
 <?php if (!empty($installation_detected)) { ?>
-<link rel="stylesheet" href="<?php echo WS_DIR_APP; ?>assets/featherlight/featherlight.min.css" />
+<link rel="stylesheet" href="<?php echo WS_DIR_APP; ?>assets/featherlight/featherlight.min.css">
 
 <div id="modal-warning-existing-installation" style="display: none; width: 320px;">
   <h2>Existing Installation Detected</h2>
@@ -375,7 +375,7 @@ input[name="development_type"]:checked + div {
     FS_DIR_STORAGE . 'cache/',
     FS_DIR_STORAGE . 'data/',
     FS_DIR_STORAGE . 'images/',
-    FS_DIR_STORAGE . 'includes/config.inc.php',
+    FS_DIR_STORAGE . 'config.inc.php',
     FS_DIR_STORAGE . 'vmods/',
     FS_DIR_STORAGE . '.htaccess',
   ];
@@ -461,7 +461,7 @@ input[name="development_type"]:checked + div {
         <option>utf8mb4_sinhala_ci</option>
       </select>
       <label class="form-check">
-        <input type="checkbox" name="set_default_collation" value="1" checked /> Set default collation for the database
+        <input type="checkbox" name="set_default_collation" value="1" checked> Set default collation for the database
       </label>
     </div>
 
