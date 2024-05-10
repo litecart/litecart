@@ -72,18 +72,23 @@
   }
 
   switch($_GET['sort']) {
+
     case 'id':
       $sql_sort = "c.id desc";
       break;
+
     case 'email':
       $sql_sort = "c.email";
       break;
+
     case 'name':
       $sql_sort = "c.firstname, c.lastname";
       break;
+
     case 'company':
       $sql_sort = "c.firstname, c.lastname";
       break;
+
     default:
       $sql_sort = "c.date_created desc, c.id desc";
       break;
@@ -121,15 +126,15 @@
     <table class="table table-striped table-hover table-sortable data-table">
       <thead>
         <tr>
-          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-          <th></th>
-          <th data-sort="id"><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th style="width: 40px;"><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th style="width: 40px;"></th>
+          <th data-sort="id" style="width: 50px;"><?php echo language::translate('title_id', 'ID'); ?></th>
           <th data-sort="email"><?php echo language::translate('title_email', 'Email'); ?></th>
           <th data-sort="name"><?php echo language::translate('title_name', 'Name'); ?></th>
-          <th data-sort="company" class="main"><?php echo language::translate('title_company_name', 'Company Name'); ?></th>
-          <th><?php echo language::translate('title_ip_address', 'IP Address'); ?></th>
-          <th data-sort="date_created" class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
-          <th></th>
+          <th data-sort="company"><?php echo language::translate('title_company_name', 'Company Name'); ?></th>
+          <th><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></th>
+          <th data-sort="date_created" class="text-end"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
+          <th style="width: 50px;"></th>
         </tr>
       </thead>
 
@@ -142,7 +147,7 @@
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>"><?php echo $customer['email']; ?></a></td>
           <td><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></td>
           <td><?php echo $customer['company']; ?></td>
-          <td><?php echo $customer['ip_address']; ?></td>
+          <td><?php echo $customer['last_hostname']; ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>

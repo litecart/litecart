@@ -10,17 +10,22 @@
 
   function form_reinsert_value($name, $array_value=null) {
 
-    if (empty($name)) return;
+		if (!$name) {
+			return;
+		}
 
     foreach ([$_POST, $_GET] as $superglobal) {
 
-      if (empty($superglobal)) continue;
+			if (!$superglobal) {
+				continue;
+			}
 
     // Extract name parts
       $parts = preg_split('#[\]\[]+#', preg_replace('#\[\]$#', '', $name), -1, PREG_SPLIT_NO_EMPTY);
 
     // Get array node
       $node = $superglobal;
+
       foreach ($parts as $part) {
         if (!isset($node[$part])) continue 2;
         $node = $node[$part];
@@ -41,7 +46,9 @@
         }
       }
 
-      if ($node || $node != '') return $node;
+			if ($node || $node != '') {
+				return $node;
+			}
     }
 
     return '';
@@ -62,7 +69,7 @@
 
   function form_button_predefined($name, $parameters='') {
 
-    switch($name) {
+    switch ($name) {
       case 'save':
         return functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"' . ($parameters ? ' '. $parameters : ''), 'save');
 
@@ -336,7 +343,7 @@
       $input = form_reinsert_value($name);
     }
 
-    if (empty($currency_code)) {
+    if (!$currency_code) {
       $currency_code = settings::get('store_currency_code');
     }
 
@@ -350,7 +357,7 @@
     return implode(PHP_EOL, [
       '<div class="input-group">',
       '  <strong class="input-group-text" style="opacity: 0.75; font-family: monospace;">'. functions::escape_html($currency['code']) .'</strong>',
-      '  ' . form_input_decimal($name, $input, $currency['decimals'], 'step="any" data-type="currency"'),
+      '  ' . form_input_decimal($name, $input, $currency['decimals'], 'step="any" data-type="currency"'. ($parameters ? ' '. $parameters : '')),
       '</div>',
     ]);
   }
@@ -1705,7 +1712,7 @@
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
     } else {
-      array_unshift($options, ['--', '']);
+      array_unshift($options, ['', '--']);
       return form_select($name, $options, $input, $parameters);
     }
   }
@@ -1862,14 +1869,14 @@
 
     if ($input) {
       $product = database::query(
-        "select p.id, p.sku, pp.price, pi.name
+        "select p.id, p.code, pp.price, pi.name
         from ". DB_TABLE_PREFIX ."products p
         left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         left join (
           select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
           from ". DB_TABLE_PREFIX ."products_prices
         ) pp on (pp.product_id = p.id)
-        where p.id = ". (int)$value ."
+        where p.id = ". (int)$input ."
         limit 1;"
       )->fetch();
     }
@@ -1879,7 +1886,7 @@
     return implode(PHP_EOL, [
       '<div class="input-group"' . ($parameters ? ' ' . $parameters : '') . '>',
       '  <div class="form-input">',
-      '    ' . form_input_hidden($name, true, $product ? 'data-sku="'. $product['sku'] .'" data-price="'. $product['price'] .'"' : ''),
+      '    ' . form_input_hidden($name, true, !empty($product) ? 'data-code="'. $product['code'] .'" data-price="'. $product['price'] .'"' : ''),
       '    <span class="name" style="display: inline-block;">'. $product_name .'</span>',
       '    [<span class="id" style="display: inline-block;">'. (int)$input .'</span>]',
       '  </div>',
@@ -1986,7 +1993,7 @@
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
     } else {
-      array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
+      array_unshift($options, ['', '--']);
       return form_select($name, $options, $input, $parameters);
     }
   }
@@ -2169,7 +2176,7 @@
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
     } else {
-      array_unshift($options, ['--', '']);
+      array_unshift($options, ['', '--']);
       return form_select($name, $options, $input, $parameters);
     }
   }
@@ -2188,7 +2195,7 @@
     if (preg_match('#\[\]$#', $name)) {
       return form_select_multiple($name, $options, $input, $parameters);
     } else {
-      array_unshift($options, ['--', '']);
+      array_unshift($options, ['', '--']);
       return form_select($name, $options, $input, $parameters);
     }
   }

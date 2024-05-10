@@ -61,7 +61,7 @@
       header('Location: '. document::ilink(__APP__.'/vmods'));
 
       if (isset($_POST['quicksave'])) {
-        header('Location: '. document::ilink(__APP__.'/edit_vmod', ['vmod' => $vmod->data['filename']]));
+        header('Location: '. document::ilink(__APP__.'/edit_vmod', ['vmod' => $vmod->data['id']]));
       } else {
         header('Location: '. document::ilink(__APP__.'/vmods'));
       }
@@ -78,7 +78,7 @@
     try {
 
       if (empty($vmod->data['id'])) {
-         throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vmod'));
+        throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vmod'));
       }
 
       if (!empty($_POST['cleanup'])) {
@@ -431,9 +431,9 @@ textarea.warning {
                       <div class="form-group">
                         <h4><?php echo language::translate('title_insert', 'Insert'); ?></h4>
                         <?php if (isset($_POST['files'][$f]['operations'][$o]['type']) && in_array($_POST['files'][$f]['operations'][$o]['type'], ['inline', 'regex'])) { ?>
-                        <?php echo functions::form_input_text('files['.$f.'][operations]['.$o.'][insert][content]', true, 'class="form-code" required'); ?>
+                        <?php echo functions::form_input_text('files['.$f.'][operations]['.$o.'][insert][content]', true, 'class="form-code"'); ?>
                         <?php } else { ?>
-                        <?php echo functions::form_input_code('files['.$f.'][operations]['.$o.'][insert][content]', true, 'required'); ?>
+                        <?php echo functions::form_input_code('files['.$f.'][operations]['.$o.'][insert][content]', true); ?>
                         <?php }?>
                       </div>
 
@@ -559,7 +559,7 @@ textarea.warning {
 
       <div class="card-action">
         <div class="btn-group">
-          <?php echo functions::form_draw_button('quicksave', ['true', ''], 'submit', 'class="btn btn-success btn-icon" title="'. functions::escape_html(language::translate('title_quicksave', 'Quicksave')) .'"', 'save'); ?>
+          <?php echo functions::form_button('quicksave', ['true', ''], 'submit', 'class="btn btn-success btn-icon" title="'. functions::escape_html(language::translate('title_quicksave', 'Quicksave')) .'"', 'save'); ?>
           <?php echo functions::form_button_predefined('save'); ?>
         </div>
         <?php if (!empty($vmod->data['id'])) echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'button', 'class="btn btn-danger"', 'delete'); ?>

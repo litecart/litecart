@@ -93,6 +93,7 @@
     'cancelled' => language::translate('title_cancelled', 'Cancelled'),
   ];
 
+  $language_codes = array_unique(array_merge([language::$selected['code']], [settings::get('store_language_code')], array_keys(language::$languages)));
 ?>
 <style>
 .form-group .checkbox {
@@ -113,36 +114,44 @@
       <div class="row">
         <div class="col-md-6">
           <div class="row">
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_name', 'Name'); ?></label>
-              <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true); ?>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                <?php foreach ($language_codes as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true); ?>
+              </div>
             </div>
 
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_order_state', 'State'); ?></label>
-              <?php echo functions::form_select('state', $states, true); ?>
-            </div>
+            <div class="col-md-6">
 
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-              <?php echo functions::form_input_number('priority', true); ?>
+              <div class="row">
+                <div class="form-group col-md-8">
+                  <label><?php echo language::translate('title_order_state', 'State'); ?></label>
+                  <?php echo functions::form_select('state', $states, true); ?>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+                  <?php echo functions::form_input_number('priority', true); ?>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_icon', 'Icon'); ?> <a href="https://fontawesome.com/v4.7.0/icons/" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <?php echo functions::form_input_text('icon', true, 'placeholder="fa-circle-thin"'); ?>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_color', 'Color'); ?></label>
+                  <?php echo functions::form_input_color('color', empty($_POST['color']) ? '#cccccc' : true, 'placeholder="#cccccc"'); ?>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_description', 'Description'); ?></label>
             <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 50px;"'); ?>
-          </div>
-
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_icon', 'Icon'); ?> <a href="https://fontawesome.com/v4.7.0/icons/" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-              <?php echo functions::form_input_text('icon', true, 'placeholder="fa-circle-thin"'); ?>
-            </div>
-
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_color', 'Color'); ?></label>
-              <?php echo functions::form_input_color('color', empty($_POST['color']) ? '#cccccc' : true, 'placeholder="#cccccc"'); ?>
-            </div>
           </div>
 
           <div class="row">

@@ -99,6 +99,8 @@
     }
   }
 
+  $language_codes = array_unique(array_merge([language::$selected['code']], [settings::get('store_language_code')], array_keys(language::$languages)));
+
   $list_style_options = [
     [language::translate('title_columns', 'Columns'), 'columns'],
     [language::translate('title_rows', 'Rows'), 'rows'],
@@ -207,17 +209,17 @@
 
         <div id="tab-information" class="tab-pane" style="max-width: 640px;">
 
-          <?php if (count(language::$languages) > 1) { ?>
+          <?php if (count($language_codes) > 1) { ?>
           <nav class="nav nav-tabs">
-            <?php foreach (language::$languages as $language) { ?>
-            <a class="nav-link<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
+            <?php foreach ($language_codes as $language) { ?>
+            <a class="nav-link<?php if ($language_code == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language_code; ?>"><?php echo language::$languages[$language_code]['name']; ?></a>
             <?php } ?>
           </nav>
           <?php } ?>
 
           <div class="tab-content">
 
-            <?php foreach (array_keys(language::$languages) as $language_code) { ?>
+            <?php foreach ($language_codes as $language_code) { ?>
             <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 
               <div class="form-group">

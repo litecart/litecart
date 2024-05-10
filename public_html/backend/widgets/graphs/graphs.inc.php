@@ -153,7 +153,7 @@
 <div id="widget-graphs" class="widget">
   <div class="row">
     <div class="col-md-8">
-      <div class="card card-default">
+      <div class="card">
         <div class="card-header">
           <div class="card-title"><?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?></div>
         </div>
@@ -165,7 +165,7 @@
     </div>
 
     <div class="col-md-4">
-      <div class="card card-default">
+      <div class="card">
         <div class="card-header">
           <div class="card-title"><?php echo language::translate('title_daily_sales', 'Daily Sales'); ?></div>
         </div>

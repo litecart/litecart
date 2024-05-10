@@ -35,8 +35,8 @@
         'url' => document::ilink('categories'),
       ],
       [
-        'name' => language::translate('title_manufacturers', 'Manufacturers'),
-        'url' => document::ilink('manufacturers'),
+        'name' => language::translate('title_brands', 'Brands'),
+        'url' => document::ilink('brands'),
       ],
       [
         'name' => language::translate('title_customer_service', 'Customer Service'),

@@ -47,12 +47,16 @@
         }
       }
 
+      if (empty($_POST['autofill_technical_data'])) {
+        $_POST['autofill_technical_data'] = '';
+      }
+
       if (empty($_POST['categories'])) $_POST['categories'] = [];
       if (empty($_POST['images'])) $_POST['images'] = [];
       if (empty($_POST['campaigns'])) $_POST['campaigns'] = [];
       if (empty($_POST['attributes'])) $_POST['attributes'] = [];
       if (empty($_POST['stock_options'])) $_POST['stock_options'] = [];
-      if (empty($_POST['autofill_technical_data'])) $_POST['autofill_technical_data'] = '';
+      if (empty($_POST['extras'])) $_POST['options'] = [];
 
       foreach ([
         'status',

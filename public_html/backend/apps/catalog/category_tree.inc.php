@@ -327,7 +327,7 @@
   if (!empty($_GET['query'])) {
 
     $code_regex = functions::format_regex_code($_GET['query']);
-    $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
+    $query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
 
     $products_query = database::query(
       "select p.id, p.status, p.image, pi.name, p.image, pp.price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, (

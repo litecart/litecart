@@ -55,7 +55,7 @@
 }
 </style>
 
-<div id="widget-addons" class="widget panel card-default">
+<div id="widget-addons" class="widget card">
   <div class="card-header">
     <div class="card-title">
       <?php echo language::translate('title_latest_addons', 'Latest Add-ons'); ?>

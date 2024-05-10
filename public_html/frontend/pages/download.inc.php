@@ -36,21 +36,14 @@
     $file = 'storage://files/' . $item['file'];
 
     if (!is_file($file)) {
-      trigger_error('Missing download for stock item ' . $item['id'], E_USER_WARNING);
-      throw new Exception('Found a reference for but the file does not exist on the disk', 404);
+      trigger_error('Missing download for product ' . $item['id'], E_USER_WARNING);
+      throw new Exception('The downloadable file does not exist on the server', 404);
     }
 
     database::query(
       "update ". DB_TABLE_PREFIX ."orders_items
       set downloads = downloads + 1
       where id = ". (int)$item['id'] ."
-      limit 1;"
-    );
-
-    database::query(
-      "update ". DB_TABLE_PREFIX ."stock_items
-      set downloads = downloads + 1
-      where id = ". (int)$item['stock_item_id'] ."
       limit 1;"
     );
 

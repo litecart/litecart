@@ -95,8 +95,8 @@
 
       foreach ($shopping_cart as $field => $value) {
         switch (true) {
-          case (preg_match('#^customer_#', $field)):
 
+          case (preg_match('#^customer_#', $field)):
             $this->data['customer'][preg_replace('#^(customer_)#', '', $field)] = $value;
             break;
 

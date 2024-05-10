@@ -22,7 +22,7 @@
   });
 
 ?>
-<div id="widget-orders" class="card card-widget">
+<div id="widget-orders" class="widget card" style="overflow: hidden;">
   <div class="card-header">
     <div class="card-title">
       <?php echo language::translate('title_orders', 'Orders'); ?>
@@ -33,12 +33,12 @@
     <thead>
       <tr>
         <th></th>
-        <th><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th><?php echo language::translate('title_numer', 'Number'); ?></th>
         <th class="main"><?php echo language::translate('title_customer', 'Customer'); ?></th>
         <th><?php echo language::translate('title_country', 'Country'); ?></th>
         <th><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
         <th><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
-        <th><?php echo language::translate('title_amount', 'Amount'); ?></th>
+        <th class="text-end"><?php echo language::translate('title_amount', 'Amount'); ?></th>
         <th><?php echo language::translate('title_date', 'Date'); ?></th>
         <th></th>
       </tr>
@@ -48,7 +48,7 @@
       <?php foreach ($orders as $order) { ?>
       <tr class="<?php echo implode(' ', $order['classes']); ?>">
         <td><?php echo functions::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
-        <td><?php echo $order['id']; ?></td>
+        <td class="text-center"><?php echo $order['no']; ?></td>
         <td><a class="link" href="<?php echo document::href_ilink('orders/edit_order', ['order_id' => $order['id']]); ?>"><?php echo $order['billing_company'] ? $order['billing_company'] : $order['billing_firstname'] .' '. $order['billing_lastname']; ?></a></td>
         <td><?php if (!empty($order['billing_country_code'])) echo reference::country($order['billing_country_code'])->name; ?></td>
         <td><?php echo $order['payment_option_name']; ?></td>

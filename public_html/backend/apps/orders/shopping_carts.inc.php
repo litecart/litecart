@@ -67,7 +67,7 @@
     where sc.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
     order by $sql_sort;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
 <div class="card card-app">

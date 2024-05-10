@@ -1195,10 +1195,10 @@
           }
 
           $csv = database::query(
-            "select m.*, '' as new_image, mi.name, mi.short_description, mi.description, mi.meta_description, mi.head_title, mi.h1_title, '". database::input($_POST['language_code']) ."' as language_code
-            from ". DB_TABLE_PREFIX ."manufacturers m
-            left join ". DB_TABLE_PREFIX ."manufacturers_info mi on (mi.category_id = m.id and mi.language_code = '". database::input($_POST['language_code']) ."')
-            order by m.priority;"
+            "select b.*, '' as new_image, bi.name, bi.short_description, bi.description, bi.meta_description, bi.head_title, bi.h1_title, '". database::input($_POST['language_code']) ."' as language_code
+            from ". DB_TABLE_PREFIX ."brands b
+            left join ". DB_TABLE_PREFIX ."brands_info bi on (bi.category_id = b.id and bi.language_code = '". database::input($_POST['language_code']) ."')
+            order by b.priority;"
           )->export($result)->fetch_all();
 
           if (!$csv) {
@@ -1254,7 +1254,6 @@
             "select p.*, '". database::input($_POST['currency_code']) ."' as currency_code, pi.name, pi.description, pi.short_description, pi.technical_data, pi.meta_description, pi.head_title, '". database::input($_POST['language_code']) ."' as language_code, p2c.categories, pp.price, pim.images, '' as new_image, pa.attributes
             from ". DB_TABLE_PREFIX ."products p
             left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
-            left join ". DB_TABLE_PREFIX ."manufacturers m on (m.id = p.manufacturer_id)
             left join (
               select product_id, group_concat(category_id separator ',') as categories
               from ". DB_TABLE_PREFIX ."products_to_categories

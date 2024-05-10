@@ -30,6 +30,15 @@
       'info_columns' => ['name'],
     ],
     [
+      'id' => 'brands',
+      'entity' => 'brand',
+      'name' => language::translate('title_brands', 'Brands'),
+      'entity_table' => 'brands',
+      'info_table' => 'brands_info',
+      'entity_column' => 'brand_id',
+      'info_columns' => ['description', 'short_description', 'head_title', 'meta_description'],
+    ],
+    [
       'id' => 'categories',
       'entity' => 'category',
       'name' => language::translate('title_categories', 'Categories'),
@@ -55,15 +64,6 @@
       'info_table' => false,
       'entity_column' => false,
       'info_columns' => [],
-    ],
-    [
-      'id' => 'manufacturers',
-      'entity' => 'manufacturer',
-      'name' => language::translate('title_manufacturers', 'Manufacturers'),
-      'entity_table' => 'manufacturers',
-      'info_table' => 'manufacturers_info',
-      'entity_column' => 'manufacturer_id',
-      'info_columns' => ['description', 'short_description', 'head_title', 'meta_description'],
     ],
     [
       'id' => 'order_statuses',

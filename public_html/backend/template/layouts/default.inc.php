@@ -61,24 +61,23 @@
       <li style="flex-grow: 1;"></li>
 
       <li>
-        <div class="btn-group btn-group-inline" data-toggle="buttons">
+        <div class="btn-group" data-toggle="buttons">
           <button name="font_size" class="btn btn-default btn-sm" type="button" value="decrease"><span style="font-size: .8em;">A</span></button>
           <button name="font_size" class="btn btn-default btn-sm" type="button" value="increase"><span style="font-size: 1.25em;">A</span></button>
         </div>
       </li>
 
       <li>
-        <div class="btn-group btn-group-inline" data-toggle="buttons">
-          <button name="spacing" class="btn btn-default btn-sm" type="button" value="decrease"><?php echo functions::draw_fonticon('fa-expand', 'style="font-size: .6em;"'); ?></button>
-          <button name="spacing" class="btn btn-default btn-sm" type="button" value="increase"><?php echo functions::draw_fonticon('fa-expand', 'style="font-size: .8em;"'); ?></button>
-          <button name="spacing" class="btn btn-default btn-sm" type="button" value="decrease"><?php echo functions::draw_fonticon('fa-expand', 'style="font-size: 1.2em;"'); ?></button>
+        <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-default btn-sm<?php if (empty($_COOKIE['condensed'])) echo ' active'; ?>" type="button" value="0"><input type="radio" name="condensed" value="0"<?php if (empty($_COOKIE['condensed'])) echo ' checked'; ?>> <?php echo functions::draw_fonticon('fa-compress'); ?></label>
+          <label class="btn btn-default btn-sm<?php if (!empty($_COOKIE['condensed'])) echo ' active'; ?>" type="button" value="1"><input type="radio" name="condensed" value="1"<?php if (!empty($_COOKIE['condensed'])) echo ' checked'; ?>> <?php echo functions::draw_fonticon('fa-expand'); ?></label>
         </div>
       </li>
 
       <li>
-        <div class="btn-group btn-group-inline" data-toggle="buttons">
-          <label class="btn btn-default btn-sm<?php if (empty($_COOKIE['dark_mode'])) echo ' active'; ?>" title="<?php echo functions::escape_html(language::translate('title_light', 'Light')); ?>"><input type="radio" name="dark_mode" value="0"<?php if (empty($_COOKIE['dark_mode'])) echo ' checked'; ?> /> <?php echo functions::draw_fonticon('fa-sun-o'); ?></label>
-          <label class="btn btn-default btn-sm<?php if (!empty($_COOKIE['dark_mode'])) echo ' active'; ?>" title="<?php echo functions::escape_html(language::translate('title_dark', 'Dark')); ?>"><input type="radio" name="dark_mode" value="1"<?php if (!empty($_COOKIE['dark_mode'])) echo ' checked'; ?> /> <?php echo functions::draw_fonticon('fa-moon-o'); ?></label>
+        <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-default btn-sm<?php if (empty($_COOKIE['dark_mode'])) echo ' active'; ?>" title="<?php echo functions::escape_html(language::translate('title_light', 'Light')); ?>"><input type="radio" name="dark_mode" value="0"<?php if (empty($_COOKIE['dark_mode'])) echo ' checked'; ?>> <?php echo functions::draw_fonticon('fa-sun-o'); ?></label>
+          <label class="btn btn-default btn-sm<?php if (!empty($_COOKIE['dark_mode'])) echo ' active'; ?>" title="<?php echo functions::escape_html(language::translate('title_dark', 'Dark')); ?>"><input type="radio" name="dark_mode" value="1"<?php if (!empty($_COOKIE['dark_mode'])) echo ' checked'; ?>> <?php echo functions::draw_fonticon('fa-moon-o'); ?></label>
         </div>
       </li>
 
@@ -87,7 +86,7 @@
         <ul class="dropdown-menu">
           <?php foreach (language::$languages as $language) { ?>
           <li>
-            <a href="<?php echo document::href_ilink(null, ['language' => $language['code']]); ?>">
+						<a href="<?php echo document::href_ilink(null, [], [], [], $language['code']); ?>">
               <?php echo $language['name']; ?>
             </a>
           </li>
@@ -157,10 +156,10 @@
 
   $('input[name="dark_mode"]').click(function(){
     if ($(this).val() == 1) {
-      document.cookie = 'dark_mode=1;Path=<?php echo WS_DIR_ADMIN; ?>;Max-Age=2592000';
+      document.cookie = 'dark_mode=1;Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000';
       $('html').addClass('dark-mode');
     } else {
-      document.cookie = 'dark_mode=0;Path=<?php echo WS_DIR_ADMIN; ?>;Max-Age=2592000';
+      document.cookie = 'dark_mode=0;Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000';
       $('html').removeClass('dark-mode');
     }
   });

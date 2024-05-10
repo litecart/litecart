@@ -92,10 +92,7 @@
   </div>
 
   <div class="card-action">
-    <ul class="list-inline">
-      <li><?php echo functions::form_button('add_recipient', language::translate('title_create_new_recipient', 'Create New Recipient'), 'button', '', 'add'); ?></li>
-      <li><?php echo functions::form_button_link(document::ilink(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"'); ?></li>
-    </ul>
+    <?php echo functions::form_button_link(document::ilink(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"'); ?>
   </div>
 
   <?php echo functions::form_begin('search_form', 'get'); ?>
@@ -110,12 +107,12 @@
     <table class="table table-striped table-hover data-table">
       <thead>
         <tr>
-          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-          <th><?php echo language::translate('title_email', 'Email'); ?></th>
-          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-          <th><?php echo language::translate('title_ip_address', 'IP Address'); ?></th>
-          <th><?php echo language::translate('title_hostname', 'Hostname'); ?></th>
-          <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
+          <th style="width: 50px;"><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th style="width: 50px;"><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th style="width: 480px;"><?php echo language::translate('title_email', 'Email'); ?></th>
+          <th><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th style="width: 200px;"><?php echo language::translate('title_hostname', 'Hostname'); ?></th>
+          <th class="text-end" style="width: 200px;"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
         </tr>
       </thead>
 
@@ -123,9 +120,9 @@
         <?php foreach ($recipients as $recipient) { ?>
         <tr>
           <td><?php echo functions::form_checkbox('recipients[]', $recipient['id']); ?></td>
+          <td><?php echo $recipient['id']; ?></td>
           <td><?php echo $recipient['email']; ?></td>
           <td><?php echo $recipient['name']; ?></td>
-          <td><?php echo $recipient['ip_address']; ?></td>
           <td><?php echo $recipient['hostname']; ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
         </tr>

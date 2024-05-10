@@ -8,7 +8,7 @@
     notices::add('notices', language::translate('text_already_logged_in', 'You are already logged in'));
   }
 
-  if (empty($_COOKIE[session_name()])) {
+  if (!session_name()) {
     notices::add('notices', language::translate('error_missing_session_cookie', 'We failed to identify your browser session. Make sure your browser has cookies enabled or try another browser.'));
   }
 

@@ -125,7 +125,7 @@
       $split_order->data['comments'] = [[
         'author' => 'system',
         'hidden' => true,
-        'text' => 'Split items from order '. $order->data['id'],
+        'text' => 'Splitted from order '. $order->data['id'],
       ]];
 
       $split_order->save();

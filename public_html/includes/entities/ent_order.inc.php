@@ -224,6 +224,7 @@
         $this->data['no'] = $this->_generate_order_number();
       }
 
+    // Update order
       database::query(
         "update ". DB_TABLE_PREFIX ."orders
         set no = '". database::input($this->data['no']) ."',

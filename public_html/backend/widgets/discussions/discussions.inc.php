@@ -49,7 +49,7 @@
 }
 </style>
 
-<div id="widget-discussions" class="widget card card-default">
+<div id="widget-discussions" class="widget card">
   <div class="card-header">
     <div class="card-title">
       <?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?>

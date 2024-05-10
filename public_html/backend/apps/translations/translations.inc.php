@@ -167,6 +167,11 @@
     $_POST['translations'] = $translations;
   }
 
+  $language_options = [['-- '. language::translate('title_select', 'Select') .' --', '']];
+  foreach ($_GET['languages'] as $language_code) {
+    $language_options[] = [$language_code, language::$languages[$language_code]['name']];
+  }
+
   functions::draw_lightbox();
 ?>
 <style>
@@ -202,20 +207,20 @@
     </div>
   </div>
 
-  <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
-    <?php echo functions::form_draw_hidden_field('app', true); ?>
-    <?php echo functions::form_draw_hidden_field('doc', true); ?>
+  <?php echo functions::form_begin('filter_form', 'get'); ?>
+    <?php echo functions::form_input_hidden('app', true); ?>
+    <?php echo functions::form_input_hidden('doc', true); ?>
     <div class="card-filter">
-      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+      <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
 
       <div class="dropdown">
-        <div class="form-control" data-toggle="dropdown">
+        <div class="form-select" data-toggle="dropdown">
           <?php echo language::translate('title_languages', 'Languages'); ?>
         </div>
         <ul class="dropdown-menu">
           <?php foreach (language::$languages as $language) { ?>
           <li>
-            <label class="option"><?php echo functions::form_draw_checkbox('languages[]', $language['code'], true); ?>
+            <label class="option"><?php echo functions::form_checkbox('languages[]', $language['code'], true); ?>
               <span class="title"><?php echo $language['name']; ?></span>
             </label>
           </li>
@@ -224,17 +229,17 @@
       </div>
 
       <div class="dropdown">
-        <div class="form-control" data-toggle="dropdown">
+        <div class="form-select" data-toggle="dropdown">
           <?php echo language::translate('title_endpoint', 'Endpoint'); ?>
         </div>
         <ul class="dropdown-menu">
           <li>
-            <label class="option"><?php echo functions::form_draw_checkbox('endpoint[]', 'frontend', true); ?>
+            <label class="option"><?php echo functions::form_checkbox('endpoint[]', 'frontend', true); ?>
               <span class="title"><?php echo language::translate('title_frontend', 'Frontend'); ?></span>
             </label>
           </li>
           <li>
-            <label class="option"><?php echo functions::form_draw_checkbox('endpoint[]', 'backend', true); ?>
+            <label class="option"><?php echo functions::form_checkbox('endpoint[]', 'backend', true); ?>
               <span class="title"><?php echo language::translate('title_backend', 'Backend'); ?></span>
             </label>
           </li>
@@ -242,13 +247,13 @@
       </div>
 
       <div class="dropdown">
-        <div class="form-control" data-toggle="dropdown">
+        <div class="form-select" data-toggle="dropdown">
           <?php echo language::translate('title_collections', 'Collections'); ?>
         </div>
         <ul class="dropdown-menu">
           <?php foreach ($collections as $collection) { ?>
           <li>
-            <label class="option"><?php echo functions::form_draw_checkbox('collections[]', $collection['id'], true); ?>
+            <label class="option"><?php echo functions::form_checkbox('collections[]', $collection['id'], true); ?>
               <span class="title"><?php echo $collection['name']; ?></span>
             </label>
           </li>
@@ -257,27 +262,27 @@
       </div>
 
       <div class="dropdown">
-        <div class="form-control" data-toggle="dropdown">
+        <div class="form-select" data-toggle="dropdown">
           <?php echo language::translate('title_filters', 'Filters'); ?>
         </div>
         <ul class="dropdown-menu">
           <li>
-            <label class="option"><?php echo functions::form_draw_checkbox('untranslated', '1', true); ?>
+            <label class="option"><?php echo functions::form_checkbox('untranslated', '1', true); ?>
               <span class="title"><?php echo language::translate('text_untranslated_only', 'Untranslated only'); ?></span>
             </label>
           </li>
         </ul>
       </div>
 
-      <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
+      <div><?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
   <div class="card-body">
     <div id="tokens"></div>
   </div>
 
-  <?php echo functions::form_draw_form_begin('translations_form', 'post'); ?>
+  <?php echo functions::form_begin('translations_form', 'post'); ?>
 
     <table class="table table-striped table-hover table-sortable data-table">
       <thead>
@@ -292,16 +297,16 @@
         <?php foreach ($translations as $key => $translation) { ?>
         <tr>
           <td>
-            <?php echo functions::form_draw_checkbox('translations['.$key.'][checked]', $translation['code'], true, preg_match('#^\[#', $translation['code']) ? 'disabled' : ''); ?>
-            <?php echo functions::form_draw_hidden_field('translations['.$key.'][entity]', true); ?>
-            <?php echo functions::form_draw_hidden_field('translations['.$key.'][code]', true); ?>
+            <?php echo functions::form_checkbox('translations['.$key.'][checked]', $translation['code'], true, preg_match('#^\[#', $translation['code']) ? 'disabled' : ''); ?>
+            <?php echo functions::form_input_hidden('translations['.$key.'][entity]', true); ?>
+            <?php echo functions::form_input_hidden('translations['.$key.'][code]', true); ?>
           </td>
           <td>
             <pre><?php echo functions::escape_html($translation['code']); ?></pre>
-            <small style="color: #999;"><?php echo functions::form_draw_checkbox('translations['.$key.'][html]', '1', true); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
+            <small style="color: #999;"><?php echo functions::form_checkbox('translations['.$key.'][html]', '1', true); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
           </td>
           <?php foreach ($_GET['languages'] as $language_code) { ?>
-          <td><?php echo functions::form_draw_textarea('translations['.$key.'][text_'. $language_code .']', true); ?></td>
+          <td><?php echo functions::form_textarea('translations['.$key.'][text_'. $language_code .']', true); ?></td>
           <?php } ?>
         </tr>
         <?php } ?>
@@ -319,17 +324,17 @@
         <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
         <ul class="list-inline">
-          <li><?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
+          <li><?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
         </ul>
       </fieldset>
     </div>
 
     <div class="card-action">
-      <?php echo functions::form_draw_button('translator_tool', language::translate('title_translator_tool', 'Translator Tool'), 'button', 'class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool" data-width="980px"'); ?>
-      <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+      <?php echo functions::form_button('translator_tool', language::translate('title_translator_tool', 'Translator Tool'), 'button', 'class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool" data-width="980px"'); ?>
+      <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
     </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
   <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
@@ -345,23 +350,17 @@
     <div class="col-md-6">
       <div class="form-group">
         <label><?php echo language::translate('title_from_language', 'From Language'); ?></label>
-<?php
-  $options = [['-- '. language::translate('title_select', 'Select') .' --', '']];
-  foreach ($_GET['languages'] as $language_code) {
-    $options[] = [language::$languages[$language_code]['name'], $language_code];
-  }
-?>
-        <?php echo functions::form_draw_select_field('from_language_code', $options, $_GET['languages'][0]); ?>
+        <?php echo functions::form_select('from_language_code', $language_options, $_GET['languages'][0]); ?>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_to_language', 'To Language'); ?></label>
-        <?php echo functions::form_draw_select_field('to_language_code', $options); ?>
+        <?php echo functions::form_select('to_language_code', $language_options); ?>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('text_copy_below_to_translation_service', 'Copy below to translation service'); ?></label>
-        <textarea class="form-control" name="source" style="height: 320px;" readonly></textarea>
+        <textarea class="form-input" name="source" style="height: 320px;" readonly></textarea>
       </div>
 
       <div class="btn-group btn-block">
@@ -373,7 +372,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label><?php echo language::translate('text_paste_your_translated_result_below', 'Paste your translated result below'); ?></label>
-        <textarea class="form-control" name="result" style="height: 455px;"></textarea>
+        <textarea class="form-input" name="result" style="height: 455px;"></textarea>
       </div>
 
       <div>

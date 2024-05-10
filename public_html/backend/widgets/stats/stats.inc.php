@@ -63,7 +63,7 @@
       "select count(id) as num_products from ". DB_TABLE_PREFIX ."products;"
     )->fetch('num_products');
 ?>
-<div id="widget-stats" class="card card-widget">
+<div id="widget-stats" class="widget card">
   <div class="card-header">
     <div class="card-title">
       <?php echo language::translate('title_statistics', 'Statistics'); ?>
