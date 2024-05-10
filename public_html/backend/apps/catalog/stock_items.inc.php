@@ -81,7 +81,7 @@
     where si.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
     order by si.sku, sii.name;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
   foreach ($stock_items as $i => $stock_item) {
     if ($stock_item['quantity'] != $stock_item['total_deposited'] - $stock_item['total_withdrawn']) {

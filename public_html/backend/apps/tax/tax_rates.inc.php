@@ -14,7 +14,7 @@
     left join ". DB_TABLE_PREFIX ."geo_zones gz on (gz.id = tr.geo_zone_id)
     left join ". DB_TABLE_PREFIX ."tax_classes tc on (tc.id = tr.tax_class_id)
     order by tc.name, gz.name, tr.name;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
 <div class="card card-app">

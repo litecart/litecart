@@ -40,7 +40,7 @@
     left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = pc.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
     left join ". DB_TABLE_PREFIX ."products_prices pp on (pp.product_id = pc.product_id)
     order by pc.start_date, pc.end_date;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
 <div class="card card-app">

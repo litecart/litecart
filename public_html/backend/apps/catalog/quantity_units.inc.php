@@ -14,7 +14,7 @@
     "select qu.id, qui.name, qui.description from ". DB_TABLE_PREFIX ."quantity_units qu
     left join ". DB_TABLE_PREFIX ."quantity_units_info qui on (qu.id = qui.quantity_unit_id and qui.language_code = '". database::input(language::$selected['code']) ."')
     order by qu.priority, qui.name asc;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
 <div class="card card-app">

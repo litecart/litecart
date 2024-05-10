@@ -42,7 +42,7 @@
     where o.customer_id = ". (int)customer::$data['id'] ."
     and os.hidden != 0
     order by o.date_created desc;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
   foreach ($orders as $order) {
     $_page->snippets['orders'][] = [

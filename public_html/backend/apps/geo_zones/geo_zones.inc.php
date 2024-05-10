@@ -44,7 +44,7 @@
   $geo_zones = database::query(
     "select * from ". DB_TABLE_PREFIX ."geo_zones
     order by name asc;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
   foreach ($geo_zones as $key => $geo_zone) {
     $geo_zones[$key]['num_zones'] = database::query(

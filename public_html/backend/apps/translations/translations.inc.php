@@ -150,9 +150,7 @@
 
 // Table Rows
 
-  $translations = [];
-
-  $translations_query = database::query(
+  $translations = database::query(
     "select * from (
       ". implode(PHP_EOL . PHP_EOL . "union ", $sql_union) ."
     ) x
@@ -162,21 +160,7 @@
     ". (!empty($_GET['untranslated']) ? "and (". implode(" or ", array_map(function($language_code) { return "`text_$language_code` = ''"; }, $_GET['languages'])) .")" : "") ."
     ". (!empty($_GET['query']) ? "and (code like '%". addcslashes(database::input($_GET['query']), '%_') ."%' or ". implode(' or ', array_map(function($language_code) { return "`text_". database::input($language_code) ."` like '%". addcslashes(database::input($_GET['query']), '%_') ."%'"; }, $_GET['languages'])) .")" : "") ."
     order by x.date_updated desc;"
-  );
-
-  if ($_GET['page'] > 1) database::seek($translations_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($translation = database::fetch($translations_query)) {
-    $translations[] = $translation;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($translations_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
+  )->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 
 // Reinsert post data
   if (!$_POST) {

@@ -14,7 +14,7 @@
     "select ag.id, ag.code, agi.name from ". DB_TABLE_PREFIX ."attribute_groups ag
     left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
     order by agi.name asc;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
 <div class="card card-app">

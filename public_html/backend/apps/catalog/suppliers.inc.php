@@ -14,7 +14,7 @@
     "select id, name
     from ". DB_TABLE_PREFIX ."suppliers
     order by name asc;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
 <div class="card card-app">

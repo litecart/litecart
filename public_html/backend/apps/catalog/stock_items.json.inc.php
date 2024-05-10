@@ -26,7 +26,7 @@
     ". (!empty($sql_find) ? "where (". implode(" or ", $sql_find) .")" : "") ."
     order by si.sku, b.name, sii.name
     limit 15;"
-  )->fetch_page($_REQUEST['page'], 15, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_REQUEST['page']['page'], 15, $num_rows, $num_pages);
 
   foreach ($stock_items as $i => $stock_item) {
     $stock_item['date_updated'] = language::strftime(language::$selected['format_date'], strtotime($stock_item['date_updated']));

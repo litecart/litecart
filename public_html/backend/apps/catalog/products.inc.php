@@ -184,7 +184,7 @@
     group by p.id
     ". (!empty($sql_select_relevance) ? "having relevance > 0" : "") ."
     ". (!empty($sql_select_relevance) ? "order by relevance desc" : "order by p.status desc, pi.name asc") .";"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
   foreach ($products as $i => $product) {
 

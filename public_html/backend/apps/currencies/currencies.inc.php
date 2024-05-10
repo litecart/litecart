@@ -44,7 +44,7 @@
   $currencies = database::query(
     "select * from ". DB_TABLE_PREFIX ."currencies
     order by field(status, 1, -1, 0), priority, name;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
 <div class="card card-app">

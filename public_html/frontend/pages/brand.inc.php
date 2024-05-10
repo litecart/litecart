@@ -71,7 +71,7 @@
       'product_name' => fallback($_GET['product_name']),
       'sort' => $_GET['sort'],
       'campaigns_first' => true,
-    ])->fetch_page($_GET['page'], 20, $num_rows, $num_pages);
+    ])->fetch_page(null, null, $_GET['page'], 20, $num_rows, $num_pages);
 
     $_page->snippets['pagination'] = functions::draw_pagination($num_pages);
 

@@ -36,7 +36,7 @@
     ". (!empty($_GET['keyword']) ? "and find_in_set('". database::input($_GET['keywords']) ."', keywords)" : '') ."
     ". (!empty($_GET['query']) ? "and name like '%". database::input($_GET['query']) ."%'" : '') ."
     order by status desc, name asc;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
 <div class="card card-app">

@@ -36,7 +36,7 @@
   $administrators = database::query(
     "select * from ". DB_TABLE_PREFIX ."administrators
     order by username;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
 

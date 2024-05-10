@@ -103,7 +103,7 @@
       'product_name' => fallback($_GET['product_name']),
       'sort' => $_GET['sort'],
       'campaigns_first' => true,
-    ])->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+    ])->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
     $_page->snippets['num_products_page'] = count($_page->snippets['products']);
     $_page->snippets['num_products_total'] = $num_rows;

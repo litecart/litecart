@@ -163,7 +163,7 @@ table tbody .toggle {
       ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
       ". (!empty($_GET['dock']) ? "and find_in_set('". database::input($_GET['dock']) ."', p.dock)" : "") ."
       order by p.priority, pi.title;"
-    )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+    )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
     foreach ($pages as $page) {
       $page['dock'] = explode(',', $page['dock']);

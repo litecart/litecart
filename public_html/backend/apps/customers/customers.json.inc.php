@@ -19,7 +19,7 @@
     ". (!empty($sql_find) ? "where (". implode(" or ", $sql_find) .")" : "") ."
     order by if(company, company, concat(firstname, ' ', lastname))
     limit 15;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
   ob_end_clean();
   header('Content-Type: application/json');

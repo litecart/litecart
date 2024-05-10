@@ -80,7 +80,7 @@
     where id
     ". (!empty($_GET['query']) ? "and email like '%". database::input($_GET['query']) ."%'" : "") ."
     order by date_created desc;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
   functions::draw_lightbox();
 ?>

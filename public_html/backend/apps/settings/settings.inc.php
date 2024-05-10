@@ -79,7 +79,7 @@
     "select * from ". DB_TABLE_PREFIX ."settings
     where `group_key` = '". database::input($settings_group['key']) ."'
     order by priority, `key` asc;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
   foreach ($settings as $i => $setting) {
     if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {

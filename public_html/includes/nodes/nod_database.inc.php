@@ -462,33 +462,39 @@
 
       $row = mysqli_fetch_assoc($this->_result);
 
-      if ($filter) {
+      if ($row !== null && $filter) {
         switch (gettype($filter)) {
 
           case 'array':
-            $row = array_intersect_key($row, array_flip($filter));
+            $result = array_intersect_key($row, array_flip($filter));
             break;
 
           case 'string':
             if (isset($row[$filter])) {
-              $row = $row[$filter];
+              $result = $row[$filter];
             } else {
-              $row = false;
+              $result = false;
             }
             break;
 
           case 'object':
-            $row = call_user_func($filter, $row);
+            $result = call_user_func_array($filter, [&$row]);
+						if ($result === null) { // Was no result returned?
+							$result = $row;
+						}
             break;
 
           default:
             $row = false;
+						break;
         }
+			} else {
+				$result = $row;
       }
 
       database::$stats['duration'] += microtime(true) - $timestamp;
 
-      return $row;
+			return $result;
     }
 
     public function fetch_all($filter=null, $index_column=null) {
@@ -505,33 +511,46 @@
             switch (gettype($filter)) {
 
               case 'array':
-                $row = array_intersect_key($row, array_flip($filter));
+                $result = array_intersect_key($row, array_flip($filter));
                 break;
 
               case 'string':
                 if (isset($row[$filter])) {
-                  $row = $row[$filter];
+                  $result = $row[$filter];
                 } else {
-                  $row = false;
+                  $result = false;
                 }
                 break;
 
               case 'object':
-                $row = call_user_func($filter, $row);
+                $result = call_user_func_array($filter, [&$row]);
+								if ($result === null) { // Was no result returned?
+									$result = $row;
+								}
                 break;
 
               default:
-                $row = false;
+                $result = false;
             }
+					} else {
+						$result = $row;
           }
 
-          if ($row === false) continue;
-          if (is_array($row) && empty($row)) continue;
+          if (empty($result) && !is_numeric($result)) {
+						continue;
+					}
 
           if ($index_column) {
-            $rows[$row[$index_column]] = $row;
+
+						if (isset($row[$index_column])) {
+							$rows[$row[$index_column]] = $result;
           } else {
-            $rows[] = $row;
+							trigger_error('Index column not found in row ('. $index_column .')', E_USER_WARNING);
+							$rows[] = false;
+						}
+
+					} else {
+						$rows[] = $result;
           }
         }
 
@@ -544,7 +563,7 @@
       return $rows;
     }
 
-    public function fetch_page($page, $items_per_page=null, &$num_rows=null, &$num_pages=null) {
+    public function fetch_page($filter=null, $index_column=null, $page=1, $items_per_page=null, &$num_rows=null, &$num_pages=null) {
 
       $timestamp = microtime(true);
 
@@ -556,17 +575,28 @@
         $items_per_page = settings::get('data_table_rows_per_page');
       }
 
-      mysqli_data_seek($this->_result, ((int)$page -1) * $items_per_page);
-
+			$rows = [];
       $num_rows = mysqli_num_rows($this->_result);
       $num_pages = ceil($num_rows / $items_per_page);
+			$pointer = (((int)$_GET['page']) -1) * $items_per_page;
 
-      $rows = [];
+			if ($pointer < $num_rows) {
 
-      $i = 0;
-      while ($row = mysqli_fetch_assoc($this->_result)) {
+				mysqli_data_seek($this->_result, $pointer);
+
+				for ($i=0; $i < $items_per_page; $i++) {
+
+					$row = $this->fetch($filter, $index_column);
+					$pointer++;
+
+					if (!empty($row) || !is_numeric($row)) {
         $rows[] = $row;
-        if (++$i == $items_per_page) break;
+					}
+
+					if ($pointer == $num_rows) {
+						break; // We reached the end of the result set
+					}
+				}
       }
 
       database::$stats['duration'] += microtime(true) - $timestamp;

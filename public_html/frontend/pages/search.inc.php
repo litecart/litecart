@@ -59,7 +59,7 @@
   $products = functions::catalog_products_search_query([
     'query' => $_GET['query'],
     'sort' => $_GET['sort'],
-  ])->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  ])->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
   if (count($products) == 1) {
     $product = current($products);
