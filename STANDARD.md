@@ -2,7 +2,7 @@
 
 ## Code Compliance
 
- - PHP code must comply with minimum PHP 5.4+ E_STRICT.
+ - PHP code must comply with minimum PHP 5.6+ E_STRICT.
 
  - HTML code must comply with HTML 5.
 
@@ -115,14 +115,15 @@
 
 ## Indentation
 
-  Committed code should use an indentation of 1 tab characters. Indentation will be automatically handled if your editor has support for [.editorconfig](https://editorconfig.org/). If you would like to render a different the tab width this can be set in indent_size = 2.
+  Committed code should use an indentation of one tab characters.
+  Indentation will be automatically handled if your editor has support for [.editorconfig](https://editorconfig.org/). If you would like to render a different the tab width this can be set in indent_size = 2.
 
   Incorrect (using multiple spaces):
 
     Level 1
-    	Level 2
-    		Level 3
-    			Level 4
+    	  Level 2
+    		    Level 3
+    			      Level 4
 
   Correct (using TABs):
 
@@ -194,7 +195,7 @@
 
     $foo = "bar";
 
-    <img src='' />
+    <img src=''>
 
     echo "<a href='http://www.site.com'>Hello World</a>";
     echo "<a href=\"http://www.site.com\">Hello World</a>";
@@ -208,7 +209,7 @@
 
     $foo = 'bar';
 
-    <img src="" />
+    <img src="">
 
     echo '<a href="http://www.site.com">Hello World</a>';
 
@@ -521,18 +522,3 @@
     );
 
     echo '<input value="<?php echo htmlspecialchars($_POST['variable']); ?>" />
-
-
-## No Sloppy HTML
-
-  No sloppy coding for single HTML tags. We use the strict standard:
-
-  Incorrect:
-
-        <img src="">
-        <br>
-
-  Correct:
-
-        <img src="" />
-        <br />
