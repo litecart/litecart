@@ -108,6 +108,7 @@
 
   // Shipping address
     foreach ([
+      'tax_id',
       'company',
       'firstname',
       'lastname',

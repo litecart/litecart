@@ -157,7 +157,7 @@
         "update ". DB_TABLE_PREFIX ."shopping_carts
         set uid = '". database::input($this->data['uid']) ."',
           customer_id = ". (int)$this->data['customer']['id'] .",
-          customer_email = '". database::input($this->data['customer']['email']) ."',
+          billing_email = '". database::input($this->data['billing_address']['email']) ."',
           billing_tax_id = '". database::input($this->data['billing_address']['tax_id']) ."',
           billing_company = '". database::input($this->data['billing_address']['company']) ."',
           billing_firstname = '". database::input($this->data['billing_address']['firstname']) ."',
@@ -530,7 +530,7 @@
         if (empty($this->data['customer']['id'])) {
           $customer_query = database::query(
             "select id from ". DB_TABLE_PREFIX ."customers
-            where email = '". database::input($this->data['customer']['email']) ."'
+            where email = '". database::input($this->data['billing_address']['email']) ."'
             and status = 0
             limit 1;"
           );

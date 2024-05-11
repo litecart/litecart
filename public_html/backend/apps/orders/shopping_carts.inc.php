@@ -32,8 +32,9 @@
     $sql_where_query = [
       "sc.id = '". database::input($_GET['query']) ."'",
       "sc.uid = '". database::input($_GET['query']) ."'",
-      "sc.customer_email like '%". database::input($_GET['query']) ."%'",
+      "sc.billing_email like '%". database::input($_GET['query']) ."%'",
       "sc.billing_tax_id like '%". database::input($_GET['query']) ."%'",
+      "sc.shipping_tax_id like '%". database::input($_GET['query']) ."%'",
       "concat(sc.billing_company, '\\n', sc.billing_firstname, ' ', sc.billing_lastname, '\\n', sc.billing_address1, '\\n', sc.billing_address2, '\\n', sc.billing_postcode, '\\n', sc.billing_city) like '%". database::input($_GET['query']) ."%'",
       "concat(sc.shipping_company, '\\n', sc.shipping_firstname, ' ', sc.shipping_lastname, '\\n', sc.shipping_address1, '\\n', sc.shipping_address2, '\\n', sc.shipping_postcode, '\\n', sc.shipping_city) like '%". database::input($_GET['query']) ."%'",
       "sc.id in (

@@ -108,8 +108,9 @@
       "o.id = '". database::input($_GET['query']) ."'",
       "o.no like '%". database::input($_GET['query']) ."%'",
       "o.reference like '%". database::input($_GET['query']) ."%'",
-      "o.customer_email like '%". database::input($_GET['query']) ."%'",
+      "o.billing_email like '%". database::input($_GET['query']) ."%'",
       "o.billing_tax_id like '%". database::input($_GET['query']) ."%'",
+      "o.shipping_tax_id like '%". database::input($_GET['query']) ."%'",
       "concat(o.billing_company, '\\n', o.billing_firstname, ' ', o.billing_lastname, '\\n', o.billing_address1, '\\n', o.billing_address2, '\\n', o.billing_postcode, '\\n', o.billing_city) like '%". database::input($_GET['query']) ."%'",
       "concat(o.shipping_company, '\\n', o.shipping_firstname, ' ', o.shipping_lastname, '\\n', o.shipping_address1, '\\n', o.shipping_address2, '\\n', o.shipping_postcode, '\\n', o.shipping_city) like '%". database::input($_GET['query']) ."%'",
       "o.payment_option_id like '%". database::input($_GET['query']) ."%'",
@@ -172,7 +173,7 @@
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : '') ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : '') ."
     order by $sql_sort;"
-  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+  )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
   foreach ($orders as $i => $order) {
     if (empty($order['order_status_id'])) {

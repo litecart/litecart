@@ -183,11 +183,11 @@
       }
 
     // Link guests to customer profile
-      if (empty($this->data['customer']['id']) && !empty($this->data['customer']['email'])) {
+      if (empty($this->data['customer']['id']) && !empty($this->data['billing_address']['email'])) {
 
         $customer = database::query(
           "select id from ". DB_TABLE_PREFIX ."customers
-          where email = '". database::input($this->data['customer']['email']) ."'
+          where email = '". database::input($this->data['billing_address']['email']) ."'
           limit 1;"
         )->fetch();
 
@@ -232,7 +232,6 @@
           unread = ". (int)$this->data['unread'] .",
           order_status_id = ". (int)$this->data['order_status_id'] .",
           customer_id = ". (int)$this->data['customer']['id'] .",
-          customer_email = '". database::input($this->data['customer']['email']) ."',
           billing_tax_id = '". database::input($this->data['billing_address']['tax_id']) ."',
           billing_company = '". database::input($this->data['billing_address']['company']) ."',
           billing_firstname = '". database::input($this->data['billing_address']['firstname']) ."',
@@ -244,6 +243,7 @@
           billing_country_code = '". database::input($this->data['billing_address']['country_code']) ."',
           billing_zone_code = '". database::input($this->data['billing_address']['zone_code']) ."',
           billing_phone = '". database::input($this->data['billing_address']['phone']) ."',
+          billing_email = '". database::input($this->data['billing_address']['email']) ."',
           shipping_company = '". database::input($this->data['shipping_address']['company']) ."',
           shipping_firstname = '". database::input($this->data['shipping_address']['firstname']) ."',
           shipping_lastname = '". database::input($this->data['shipping_address']['lastname']) ."',
@@ -254,6 +254,7 @@
           shipping_country_code = '". database::input($this->data['shipping_address']['country_code']) ."',
           shipping_zone_code = '". database::input($this->data['shipping_address']['zone_code']) ."',
           shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
+          shipping_email = '". database::input($this->data['shipping_address']['email']) ."',
           shipping_option_id = '". (!empty($this->shipping->selected['id']) ? database::input($this->data['shipping_option']['id']) : '') ."',
           shipping_option_name = '". (!empty($this->shipping->selected['id']) ? database::input($this->shipping->selected['name']) : '') ."',
           shipping_option_userdata = '". (!empty($this->shipping->selected['userdata']) ? database::input(json_encode($this->data['shipping_option']['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
@@ -476,7 +477,7 @@
           }
 
           $email = new ent_email();
-          $email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
+          $email->add_recipient($this->data['billing_address']['email'], $this->data['billing_address']['firstname'] .' '. $this->data['billing_address']['lastname'])
                 ->set_subject($subject)
                 ->add_body($message)
                 ->send();
@@ -591,8 +592,8 @@
       $aliases = [
         '%order_id' => $this->data['no'], // Backwards compatibility
         '%order_no' => $this->data['no'],
-        '%firstname' => $this->data['customer']['firstname'],
-        '%lastname' => $this->data['customer']['lastname'],
+        '%firstname' => $this->data['billing_address']['firstname'],
+        '%lastname' => $this->data['billing_address']['lastname'],
         '%billing_address' => functions::format_address($this->data['customer']),
         '%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
         '%shipping_address' => functions::format_address($this->data['shipping_address']),

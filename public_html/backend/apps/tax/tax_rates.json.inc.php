@@ -3,16 +3,19 @@
   try {
 
     $customer = [
-      'tax_id' => !empty($_REQUEST['customer']['tax_id']) ? $_REQUEST['customer']['tax_id'] : '',
-      'company' => !empty($_REQUEST['customer']['company']) ? $_REQUEST['customer']['company'] : '',
-      'country_code' => !empty($_REQUEST['customer']['country_code']) ? $_REQUEST['customer']['country_code'] : settings::get('site_country_code'),
-      'zone_code' => !empty($_REQUEST['customer']['zone_code']) ? $_REQUEST['customer']['zone_code'] : settings::get('site_zone_code'),
-      'city' => !empty($_REQUEST['customer']['city']) ? $_REQUEST['customer']['city'] : '',
+      'billing_address' => [
+        'tax_id' => fallback($_REQUEST['billing_address']['tax_id'], ''),
+        'company' => fallback($_REQUEST['billing_address']['company'], ''),
+        'country_code' => fallback($_REQUEST['billing_address']['country_code'], settings::get('site_country_code')),
+        'zone_code' => fallback($_REQUEST['billing_address']['zone_code'], settings::get('site_zone_code')),
+        'city' => fallback($_REQUEST['billing_address']['city'], ''),
+      ],
       'shipping_address' => [
-        'company' => !empty($_REQUEST['customer']['shipping_address']['company']) ? $_REQUEST['customer']['shipping_address']['company'] : $_REQUEST['customer']['company'],
-        'country_code' => !empty($_REQUEST['customer']['shipping_address']['country_code']) ? $_REQUEST['customer']['shipping_address']['country_code'] : $_REQUEST['customer']['country_code'],
-        'zone_code' => !empty($_REQUEST['customer']['shipping_address']['zone_code']) ? $_REQUEST['customer']['shipping_address']['zone_code'] : $_REQUEST['customer']['shipping_Address']['zone_code'],
-        'city' => !empty($_REQUEST['customer']['shipping_address']['city']) ? $_REQUEST['customer']['shipping_address']['city'] : $_REQUEST['customer']['city'],
+        'tax_id' => fallback($_REQUEST['shipping_address']['tax_id'], $_REQUEST['billing_address']['tax_id'], ''),
+        'company' => fallback($_REQUEST['shipping_address']['company'], $_REQUEST['billing_address']['company'], ''),
+        'country_code' => fallback($_REQUEST['shipping_address']['country_code'], $_REQUEST['billing_address']['country_code'], ''),
+        'zone_code' => fallback($_REQUEST['shipping_address']['zone_code'], $_REQUEST['billing_address']['zone_code'], ''),
+        'city' => fallback($_REQUEST['shipping_address']['city'], $_REQUEST['billing_address']['city'], ''),
       ],
     ];
 

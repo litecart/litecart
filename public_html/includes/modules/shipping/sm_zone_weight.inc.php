@@ -12,7 +12,7 @@
       $this->name = language::translate(__CLASS__.':title_zone_based_shipping', 'Zone Based Shipping');
     }
 
-    public function options($items, $subtotal, $tax, $currency_code, $customer) {
+    public function options($items, $subtotal, $tax, $currency_code, $address) {
 
       if (empty($this->settings['status'])) return;
 
@@ -27,7 +27,7 @@
       for ($i=1; $i <= 3; $i++) {
 
         if (empty($this->settings['geo_zone_id_'.$i])) continue;
-        if (!reference::country($customer['shipping_address']['country_code'])->in_geo_zone($this->settings['geo_zone_id_'.$i], $customer['shipping_address'])) continue;
+        if (!reference::country($address['country_code'])->in_geo_zone($this->settings['geo_zone_id_'.$i], $address)) continue;
 
         $fee = $this->calculate_fee($this->settings['weight_rate_table_'.$i], $total_weight);
 
@@ -37,7 +37,7 @@
           'name' => language::translate(__CLASS__.':title_option_name_zone_'.$i, $this->name),
           'description' => language::translate(__CLASS__.':title_option_description_zone_'.$i, ''),
           'fields' => '',
-          'fee' => $fee,
+          'cost' => $fee,
           'tax_class_id' => $this->settings['tax_class_id'],
           'exclude_cheapest' => false,
         ];
@@ -55,7 +55,7 @@
           'name' => language::translate(__CLASS__.':title_option_name_zone_x', $this->name),
           'description' => language::translate(__CLASS__.':title_option_description_zone_x', ''),
           'fields' => '',
-          'cost' => (float)$cost + (float)$this->settings['handling_fee'],
+          'cost' => (float)$fee + (float)$this->settings['handling_fee'],
           'tax_class_id' => $this->settings['tax_class_id'],
         ];
       }
