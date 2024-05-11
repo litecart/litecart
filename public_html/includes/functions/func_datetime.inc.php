@@ -1,7 +1,6 @@
 <?php
 
 // Returns the last point in time by step interval
-// Returns the last point in time by step interval
 	function datetime_last_by_interval($interval, $timestamp=null) {
 
 		if ($timestamp === null) {
