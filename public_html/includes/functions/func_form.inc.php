@@ -389,6 +389,16 @@
     ]);
   }
 
+  function form_input_percent($name, $input=true, $decimals=2, $parameters='') {
+
+    return implode(PHP_EOL, [
+      '<div class="input-group">',
+      '  ' . form_input_decimal($name, $input, $decimals, $parameters),
+      '  <span class="input-group-text">%</span>',
+      '</div>',
+    ]);
+  }
+
   function form_input_phone($name, $input=true, $parameters='') {
 
     if ($input === true) {
