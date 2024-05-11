@@ -17,15 +17,6 @@
   // Run before output processes
   event::fire('before_output');
 
-  // Output Compression
-  if (filter_var(settings::get('gzip_enabled'), FILTER_VALIDATE_BOOLEAN)) {
-    if (!headers_sent()) {
-    ini_set('zlib.output_compression', 1);
-    }
-  } else {
-    ini_set('zlib.output_compression', 0);
-  }
-
   stats::stop_watch('after_content');
 
   // Output page
