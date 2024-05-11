@@ -12,20 +12,9 @@
 
     public function process($force, $last_run) {
 
-      if (empty($force)) {
-        if (empty($this->settings['status'])) return;
-
-        switch ($this->settings['frequency']) {
-          case 'Daily':
-            if (date('Ymd', strtotime($last_run)) == date('Ymd')) return;
-            break;
-          case 'Weekly':
-            if (date('W', strtotime($last_run)) == date('W')) return;
-            break;
-          case 'Monthly':
-            if (date('Ym', strtotime($last_run)) == date('Ym')) return;
-            break;
-        }
+      if (!$force) {
+        if (!$this->settings['status']) return;
+				if (strtotime($last_run) > functions::datetime_last_by_interval($this->settings['frequency'], $last_run)) return;
       }
 
       echo 'Optimizing MySQL Tables...' . PHP_EOL;

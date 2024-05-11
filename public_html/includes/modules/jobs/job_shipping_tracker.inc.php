@@ -13,29 +13,9 @@
 
     public function process($force, $last_run) {
 
-      if (empty($this->settings['status'])) return;
-
       if (!$force) {
-        switch ($this->settings['frequency']) {
-          case '15 min':
-            if (strtotime($last_run) > strtotime('-15 minutes')) return;
-            break;
-          case 'Hourly':
-            if (strtotime($last_run) > strtotime('-1 h')) return;
-            break;
-          case '3 Hours':
-            if (strtotime($last_run) > strtotime('-3 h')) return;
-            break;
-          case '6 Hours':
-            if (strtotime($last_run) > strtotime('-6 h')) return;
-            break;
-          case '12 Hours':
-            if (strtotime($last_run) > strtotime('-12 h')) return;
-            break;
-          case 'Daily':
-            if (strtotime($last_run) > strtotime('-24 h')) return;
-            break;
-        }
+        if (!$this->settings['status']) return;
+				if (strtotime($last_run) > functions::datetime_last_by_interval($this->settings['frequency'], $last_run)) return;
       }
 
       $orders = database::query(

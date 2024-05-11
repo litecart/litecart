@@ -32,24 +32,7 @@
           }
 
         // Abort if the frequency for running this job is not met
-          switch ($this->settings['frequency']) {
-
-            case 'Hourly':
-              if (strtotime($last_run) >= mktime(date('H'), 0, 0)) return;
-              break;
-
-            case 'Daily':
-              if (strtotime($last_run) >= mktime(0, 0, 0)) return;
-              break;
-
-            case 'Weekly':
-              if (strtotime($last_run) >= strtotime('This week 00:00:00')) return;
-              break;
-
-            case 'Monthly':
-              if (strtotime($last_run) >= mktime(0, 0, 0, null, 1)) return;
-              break;
-          }
+          if (strtotime($last_run) > functions::datetime_last_by_interval($this->settings['frequency'], $last_run)) return;
         }
       }
 

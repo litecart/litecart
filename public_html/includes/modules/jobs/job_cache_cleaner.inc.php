@@ -11,10 +11,10 @@
 
     public function process($force, $last_run) {
 
-      if (empty($this->settings['status'])) return;
+      if (!$this->settings['status']) return;
 
-      if (empty($force)) {
-        if (strtotime($last_run) > strtotime('-1 hour')) return;
+      if ($last_run || !$force) {
+        if (strtotime($last_run) > functions::datetime_last_by_interval('Hourly', $last_run)) return;
       }
 
       echo 'Wipe out old cache files...' . PHP_EOL;
