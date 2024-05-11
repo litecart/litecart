@@ -27,14 +27,13 @@
       <img class="center-block responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>">
     </a>
 
-    <div id="search">
-      <?php echo functions::form_input_search('query', false, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'&hellip;" autocomplete="off"'); ?>
-      <div class="results"></div>
+    <div class="filter">
+      <?php echo functions::form_input_search('filter', false, 'placeholder="'. functions::escape_html(language::translate('title_filter', 'Filter')) .'&hellip;" autocomplete="off"'); ?>
     </div>
 
     <?php include 'app://backend/partials/box_apps_menu.inc.php'; ?>
 
-    <a class="platform text-center" href="<?php echo document::ilink('about'); ?>">
+    <a class="platform text-center" href="<?php echo document::href_ilink('about'); ?>">
       <span class="name"><?php echo PLATFORM_NAME; ?>®</span>
       <span class="version"><?php echo PLATFORM_VERSION; ?></span>
     </a>
@@ -58,7 +57,12 @@
         {{breadcrumbs}}
       </li>
 
-      <li style="flex-grow: 1;"></li>
+			<li style="flex-grow: 1;">
+				<div id="search" class="dropdown">
+					<?php echo functions::form_input_search('query', false, 'placeholder="'. functions::escape_html(language::translate('title_search_entire_platform', 'Search entire platform')) .'&hellip;" autocomplete="off"'); ?>
+					<div class="results dropdown-menu"></div>
+				</div>
+			</li>
 
       <li>
         <div class="btn-group" data-toggle="buttons">

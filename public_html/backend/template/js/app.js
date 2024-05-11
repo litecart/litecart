@@ -280,11 +280,12 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
 
 }(jQuery);
 
+
 /* ========================================================================
- * Bootstrap: dropdown.js v3.3.7
- * http://getbootstrap.com/javascript/#dropdowns
+ * Bootstrap: dropdown.js v3.4.1
+ * https://getbootstrap.com/docs/3.4/javascript/#dropdowns
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -294,34 +295,34 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
   // DROPDOWN CLASS DEFINITION
   // =========================
 
-  let backdrop = '.dropdown-backdrop'
-  let toggle   = '[data-toggle="dropdown"]'
-  let Dropdown = function (element) {
+  var backdrop = '.dropdown-backdrop'
+  var toggle   = '[data-toggle="dropdown"]'
+  var Dropdown = function (element) {
     $(element).on('click.bs.dropdown', this.toggle)
   }
 
-  Dropdown.VERSION = '3.3.7'
+  Dropdown.VERSION = '3.4.1'
 
   function getParent($this) {
-    let selector = $this.attr('data-target')
+    var selector = $this.attr('data-target')
 
     if (!selector) {
       selector = $this.attr('href')
       selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
     }
 
-    let $parent = selector && $(selector)
+    var $parent = selector !== '#' ? $(document).find(selector) : null
 
-    return $parent && $parent.length ? $parent : $this.closest('.dropdown')
+    return $parent && $parent.length ? $parent : $this.parent()
   }
 
   function clearMenus(e) {
     if (e && e.which === 3) return
     $(backdrop).remove()
     $(toggle).each(function () {
-      let $this         = $(this)
-      let $parent       = getParent($this)
-      let relatedTarget = { relatedTarget: this }
+      var $this         = $(this)
+      var $parent       = getParent($this)
+      var relatedTarget = { relatedTarget: this }
 
       if (!$parent.hasClass('open')) return
 
@@ -337,12 +338,12 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
   }
 
   Dropdown.prototype.toggle = function (e) {
-    let $this = $(this)
+    var $this = $(this)
 
     if ($this.is('.disabled, :disabled')) return
 
-    let $parent  = getParent($this)
-    let isActive = $parent.hasClass('open')
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
 
     clearMenus()
 
@@ -351,11 +352,11 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
         // if mobile we use a backdrop because click events don't delegate
         $(document.createElement('div'))
           .addClass('dropdown-backdrop')
-          .insertAfter($(this))
+          .insertAfter($parent)
           .on('click', clearMenus)
       }
 
-      let relatedTarget = { relatedTarget: this }
+      var relatedTarget = { relatedTarget: this }
       $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
 
       if (e.isDefaultPrevented()) return
@@ -375,27 +376,27 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
   Dropdown.prototype.keydown = function (e) {
     if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
 
-    let $this = $(this)
+    var $this = $(this)
 
     e.preventDefault()
     e.stopPropagation()
 
     if ($this.is('.disabled, :disabled')) return
 
-    let $parent  = getParent($this)
-    let isActive = $parent.hasClass('open')
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
 
     if (!isActive && e.which != 27 || isActive && e.which == 27) {
       if (e.which == 27) $parent.find(toggle).trigger('focus')
       return $this.trigger('click')
     }
 
-    let desc = ' li:not(.disabled):visible a'
-    let $items = $parent.find('.dropdown-menu' + desc)
+    var desc = ' li:not(.disabled):visible a'
+    var $items = $parent.find('.dropdown-menu' + desc)
 
     if (!$items.length) return
 
-    let index = $items.index(e.target)
+    var index = $items.index(e.target)
 
     if (e.which == 38 && index > 0)                 index--         // up
     if (e.which == 40 && index < $items.length - 1) index++         // down
@@ -410,15 +411,15 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
 
   function Plugin(option) {
     return this.each(function () {
-      let $this = $(this)
-      let data  = $this.data('bs.dropdown')
+      var $this = $(this)
+      var data  = $this.data('bs.dropdown')
 
       if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
       if (typeof option == 'string') data[option].call($this)
     })
   }
 
-  let old = $.fn.dropdown
+  var old = $.fn.dropdown
 
   $.fn.dropdown             = Plugin
   $.fn.dropdown.Constructor = Dropdown
@@ -444,7 +445,6 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
     .on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
 
 }(jQuery);
-
 
 
   $('textarea[data-toggle="csv"] + table').on('click', '.remove', function(e) {
@@ -612,79 +612,122 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
       $(this).remove()
     });
   });
+
+  $('#sidebar input[name="filter"]').on({
+  
+  	'input': function(){
+  
+  		let query = $(this).val();
+  
+  		if ($(this).val() == '') {
+  			$('#box-apps-menu .app').css('display', 'block');
+  			return;
+  		}
+  
+  		$('#box-apps-menu .app').each(function(){
+  			var regex = new RegExp(''+ query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')  +'', 'ig');
+  			console.log()
+  			if (regex.test($(this).text())) {
+  				$(this).show();
+  			} else {
+  				$(this).hide();
+  			}
+  		});
+  	}
   });
 
 // AJAX Search
   let timer_ajax_search = null;
   let xhr_search = null;
-  $('#search input[name="query"]').on('input', function(){
-
-    let search_field = this;
-
-    if (xhr_search) xhr_search.abort();
-
-    if ($(this).val() == '') {
-      $('#search .results').hide().html('');
-      $('#box-apps-menu').fadeIn('fast');
-      return;
-    }
-
-    if (!$('#search .loader-wrapper').length) {
-      $('#box-apps-menu').fadeOut('fast');
-      $('#search .results').show().html('<div class="loader-wrapper text-center"><div class="loader" style="width: 48px; height: 48px;"></div></div>');
-    }
-
-    clearTimeout(timer_ajax_search);
-    timer_ajax_search = setTimeout(function() {
-      xhr_search = $.ajax({
-        type: 'get',
-        async: true,
-        cache: false,
-        url: window._env.backend.url + 'search_results.json?query=' + $(search_field).val(),
-        dataType: 'json',
-
-        beforeSend: function(jqXHR) {
-          jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
-        },
-
-        error: function(jqXHR, textStatus, errorThrown) {
-          $('#search .results').text(textStatus + ': ' + errorThrown);
-        },
-
-        success: function(json) {
-
-          $('#search .results').html('');
-
-          if (!$('#search input[name="query"]').val()) return;
-
-          $.each(json, function(i, group){
-
-            if (group.results.length) {
-              $('#search .results').append(
-                '<h4>'+ group.name +'</h4>' +
-                '<ul class="list-group" data-group="'+ group.name +'"></ul>'
-              );
-
-              $.each(group.results, function(i, result){
-                $('#search .results ul[data-group="'+ group.name +'"]').append(
-                  '<li class="result">' +
-                  '  <a class="list-group-item" href="'+ result.link +'" style="border-inline-start: 3px solid '+ group.theme.color +';">' +
-                  '    <small class="id float-end">#'+ result.id +'</small>' +
-                  '    <div class="title">'+ result.title +'</div>' +
-                  '    <div class="description"><small>'+ result.description +'</small></div>' +
-                  '  </a>' +
-                  '</li>'
+  
+  $('#search input[name="query"]').on({
+  
+  	'focus': function(){
+  		$('#search.dropdown').addClass('open');
+  	},
+  
+  	'blur': function(){
+  		$('#search.dropdown').removeClass('open');
+  	},
+  
+  	'input': function(){
+  
+  		if (xhr_search) {
+  			xhr_search.abort();
+  		}
+  
+  		let search_field = this;
+  
+      if ($(this).val() == '') {
+  			$('#search .results').html('');
+        return;
+      }
+  
+      if (!$('#search .loader-wrapper').length) {
+  			$('#search .results').show().html([
+  				'<div class="loader-wrapper text-center">',
+  				'  <div class="loader" style="width: 48px; height: 48px;"></div>',
+  				'</div>'
+  			].join('\n'));
+      }
+  
+      clearTimeout(timer_ajax_search);
+  
+      timer_ajax_search = setTimeout(function() {
+        xhr_search = $.ajax({
+          type: 'get',
+          async: true,
+          cache: false,
+          url: window._env.backend.url + 'search_results.json?query=' + $(search_field).val(),
+          dataType: 'json',
+  
+          beforeSend: function(jqXHR) {
+            jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
+          },
+  
+          error: function(jqXHR, textStatus, errorThrown) {
+            $('#search .results').text(textStatus + ': ' + errorThrown);
+          },
+  
+          success: function(json) {
+  
+            $('#search .results').html('');
+  
+            if (!$('#search input[name="query"]').val()) return;
+  
+            $.each(json, function(i, group){
+  
+              if (group.results.length) {
+  
+                $('#search .results').append(
+                  '<h4>'+ group.name +'</h4>' +
+                  '<ul class="flex flex-rows" data-group="'+ group.name +'"></ul>'
                 );
-              });
+  
+                $.each(group.results, function(i, result){
+  
+  								var $li = $([
+  									'<li class="result">',
+  									'  <a class="list-group-item" href="'+ result.link +'" style="border-inline-start: 3px solid '+ group.theme.color +';">',
+  									'    <small class="id float-end">#'+ result.id +'</small>',
+  									'    <div class="title">'+ result.title +'</div>',
+  									'    <div class="description"><small>'+ result.description +'</small></div>',
+  									'  </a>',
+                    '</li>'
+  								].join('\n'));
+  
+  								$('#search .results ul[data-group="'+ group.name +'"]').append($li);
+                });
+              }
+            });
+  
+            if ($('#search .results').html() == '') {
+              $('#search .results').html('<p class="text-center no-results"><em>:(</em></p>');
             }
-          });
-
-          if ($('#search .results').html() == '') {
-            $('#search .results').html('<p class="text-center no-results"><em>:(</em></p>');
-          }
-        },
-      });
-    }, 500);
+          },
+        });
+      }, 500);
+  	}
   });
 
 // Tabs (data-toggle="tab")
@@ -819,10 +862,3 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
 
     window.location.search = $.param(params);
   });
-
-// Data-Table Condensed
-  $('.data-table thead th:last-child:empty').html(
-    $('<button class="btn btn-default btn-sm" type="button"><i class="fa fa-expand fa-fw"></i></button>').click(function(){
-      $(this).closest('.data-table').toggleClass('table-condensed');
-    })
-  );
