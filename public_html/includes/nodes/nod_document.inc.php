@@ -252,7 +252,7 @@
               break;
 
             case 'script':
-              $preloads[$m[0]] = 'script';
+              //$preloads[$m[0]] = 'script'; // Avoided as browser may complain about script preloading
               break;
           }
         }
