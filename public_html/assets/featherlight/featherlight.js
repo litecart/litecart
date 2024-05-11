@@ -27,7 +27,6 @@
 		if (this instanceof Featherlight) {  // called with new
 			this.id = Featherlight.id++;
 			this.setup($modal, config);
-			this.chainCallbacks(Featherlight._callbackChain);
 		} else {
 			var fl = new Featherlight($modal, config);
 			fl.open();
@@ -97,6 +96,7 @@
 		requireWindowWidth: null,              // Minimum scren width in pixels to enable the Featherlight. Otherwise bypass it.  */
 
 		/*** Methods ***/
+
 		// Setup iterates over a single instance of featherlight and prepares the backdrop and binds the events
 		setup: function(target, config){
 
@@ -145,19 +145,13 @@
 
 			var self = this,
 				filters = this.constructor.contentFilters,
-				readTargetAttr = function(name){ return self.$currentTarget && self.$currentTarget.attr(name); },
-				targetValue = readTargetAttr(self.targetAttr),
-				data = self.target || targetValue || '';
-
-			// Find which filter applies
-			var filter = filters[self.type]; // check explicit type like {type: 'image'}
+				data = self.target || (self.$currentTarget && (self.$currentTarget.attr(name) || self.$currentTarget.attr('href'))) || '',
+        filter = filters[self.type]; // check explicit type like {type: 'image'}
 
 			// Check explicit type like data-target="image"
 			if (!filter && data in filters) {
 				filter = filters[data];
-				data = self.target && targetValue;
 			}
-			data = data || readTargetAttr('href') || '';
 
 			// Check explicity type & content like {image: 'photo.jpg'}
 			if (!filter) {
@@ -281,13 +275,14 @@
 		/* closes the lightbox. "this" contains $instance with the lightbox, and with the config
 			returns a promise, resolved after the lightbox is successfully closed. */
 		close: function(e){
+
 			var self = this,
 				deferred = $.Deferred();
 
 			if (self.beforeClose(e) === false) {
 				deferred.reject();
-			} else {
 
+			} else {
 				if (pruneOpened(self).length === 0) {
 					toggleGlobalEvents(false);
 				}
@@ -302,18 +297,9 @@
 					$('body').removeClass('featherlight-open');
 				}
 			}
+
 			return deferred.promise();
 		},
-
-		/* [Warning: guru-level] Utility function to chain callbacks
-		 * Used be extensions that want to let users specify callbacks but also need themselves to use the callbacks.
-		 * The argument 'chain' has callback names as keys and function(super, event) as values. That function is meant to call `super` at some point.
-		*/
-		chainCallbacks: function(chain) {
-			for (var name in chain) {
-				this[name] = $.proxy(chain[name], this, $.proxy(this[name], this));
-			}
-		}
 	};
 
 	$.extend(Featherlight, {
@@ -438,11 +424,10 @@
 				var $target = $(e.currentTarget);
 
 				// ... since we might as well compute the config on the actual target
-				var elementConfig = $.extend(
-					{$source: $source, $currentTarget: $target},
-					self.readElementConfig($source[0]),
-					self.readElementConfig(this),
-					config);
+				var elementConfig = $.extend({
+          $source: $source,
+          $currentTarget: $target
+        }, self.readElementConfig($source[0]), self.readElementConfig(this), config);
 
 				var fl = sharedPersist || $target.data('featherlight-persisted') || new self($modal, elementConfig);
 
@@ -577,9 +562,11 @@
           return;
         }
 
-        var $cur = $(e.currentTarget);
-        var len = $autobound.length;
+        var $cur = $(e.currentTarget),
+          len = $autobound.length;
+
         $autobound = $autobound.add($cur);
+
         if (len === $autobound.length) {
           return; // already bound
         }
