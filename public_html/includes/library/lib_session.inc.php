@@ -23,9 +23,13 @@
 
       self::$data = &$_SESSION;
 
-      if (!isset($_SERVER['HTTP_USER_AGENT'])) $_SERVER['HTTP_USER_AGENT'] = '';
-      if (empty(self::$data['last_ip_address'])) self::$data['last_ip_address'] = $_SERVER['REMOTE_ADDR'];
-      if (empty(self::$data['last_user_agent'])) self::$data['last_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+      if (empty(self::$data['last_ip_address'])) {
+        self::$data['last_ip_address'] = $_SERVER['REMOTE_ADDR'];
+      }
+
+      if (empty(self::$data['last_user_agent'])) {
+        self::$data['last_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+      }
 
       if ((!empty(self::$data['last_ip_address']) && $_SERVER['REMOTE_ADDR'] != self::$data['last_ip_address'])
        || (!empty(self::$data['last_user_agent']) && $_SERVER['HTTP_USER_AGENT'] != self::$data['last_user_agent'])) {

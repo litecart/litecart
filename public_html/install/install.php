@@ -1,6 +1,6 @@
 <?php
 
-  if (php_sapi_name() == 'cli') {
+  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
     if (!isset($argv[1]) || $argv[1] == 'help' || $argv[1] == '-h' || $argv[1] == '--help' || $argv[1] == '/?') {
       echo "\nLiteCart® 2.6.0\n"
@@ -53,7 +53,7 @@
 
     register_shutdown_function(function(){
       $buffer = ob_get_clean();
-      echo (php_sapi_name() == 'cli') ? strip_tags($buffer) : $buffer;
+      echo ($_SERVER['SERVER_SOFTWARE'] == 'CLI') ? strip_tags($buffer) : $buffer;
     });
 
     echo '<h1>LiteCart Installer</h1>' . PHP_EOL . PHP_EOL;
@@ -64,7 +64,7 @@
 
     if (!empty($_SERVER['DOCUMENT_ROOT'])) {
       define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/') . '/');
-    } else if (php_sapi_name() == 'cli' && !empty($_REQUEST['document_root'])) {
+    } else if ($_SERVER['SERVER_SOFTWARE'] == 'CLI' && !empty($_REQUEST['document_root'])) {
       define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_REQUEST['document_root'])), '/') . '/');
     } else {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
@@ -198,7 +198,7 @@
 
     ### PHP > Check document root #################################
 
-    if (php_sapi_name() != 'cli') {
+    if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
       echo '<p>Checking $_SERVER["DOCUMENT_ROOT"]... ';
 
       if (rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']) . '/') . preg_replace('#index\.php$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != str_replace('\\', '/', __DIR__)) {
@@ -678,7 +678,7 @@
        . '<p>You may now log in to the <a href="../'. $_REQUEST['admin_folder'] .'/">admin panel</a> and start configuring your store.</p>' . PHP_EOL . PHP_EOL
        . '<p>Check out the <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> website for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>' . PHP_EOL . PHP_EOL;
 
-    if (php_sapi_name() != 'cli') {
+    if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
       echo '<form method="get" action="http://twitter.com/intent/tweet" target="_blank">' . PHP_EOL
          . '  <input type="hidden" value="https://www.litecart.net/">' . PHP_EOL
          . '  <div class="form-group">' . PHP_EOL
@@ -696,7 +696,7 @@
 
   $buffer = ob_get_clean();
 
-  if (php_sapi_name() == 'cli') {
+  if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
     echo strip_tags($buffer);
     exit;
   }

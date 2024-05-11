@@ -6,7 +6,7 @@
   ini_set('memory_limit', -1);
   ini_set('display_errors', 'On');
 
-  if (php_sapi_name() == 'cli') {
+  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
     if (!isset($argv[1]) || $argv[1] == 'help' || $argv[1] == '-h' || $argv[1] == '--help' || $argv[1] == '/?') {
       echo "\nLiteCart® 2.6.0\n"
@@ -107,7 +107,7 @@
   if (!empty($_REQUEST['upgrade'])) {
 
     ob_start(function($buffer) {
-      if (php_sapi_name() == 'cli') {
+      if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
         $buffer = strip_tags($buffer);
       }
       return $buffer;
@@ -338,7 +338,7 @@
 
     echo ob_get_clean();
 
-    if (php_sapi_name() == 'cli') exit;
+    if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') exit;
 
     require('includes/footer.inc.php');
     exit;

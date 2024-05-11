@@ -239,15 +239,26 @@
   if (php_sapi_name() === 'cli') {
     $_SERVER['DOCUMENT_ROOT'] = rtrim(FS_DIR_APP, '/');
     $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+    $_SERVER['REQUEST_METHOD'] = 'GET';
+    $_SERVER['REQUEST_URI'] = '/';
     $_SERVER['SERVER_NAME'] = 'localhost';
     $_SERVER['SERVER_PORT'] = '80';
     $_SERVER['SERVER_PROTOCOL'] = 'https';
-    $_SERVER['REQUEST_METHOD'] = 'GET';
-    $_SERVER['REQUEST_URI'] = '/';
     $_SERVER['SERVER_SOFTWARE'] = 'CLI';
   }
 
-  if (!isset($_SERVER['SERVER_SOFTWARE'])) $_SERVER['SERVER_SOFTWARE'] = 'Unknown';
+  if (!isset($_SERVER['SERVER_SOFTWARE'])) {
+    $_SERVER['SERVER_SOFTWARE'] = 'Unknown';
+  }
 
-  if (empty($_SERVER['HTTPS'])) $_SERVER['HTTPS'] = 'off';
-  if (empty($_SERVER['HTTP_HOST'])) $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
+  if (empty($_SERVER['HTTPS'])) {
+    $_SERVER['HTTPS'] = 'off';
+  }
+
+  if (empty($_SERVER['HTTP_HOST'])) {
+    $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
+  }
+
+  if (!isset($_SERVER['HTTP_USER_AGENT'])) {
+    $_SERVER['HTTP_USER_AGENT'] = '';
+  }

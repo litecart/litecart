@@ -327,12 +327,12 @@
       return mysqli_real_escape_string(self::$_links[$link], $string);
     }
 
-    function input_like($string, $allowable_tags=false, $trim=true, $link='default') {
+    public static function input_like($string, $allowable_tags=false, $trim=true, $link='default') {
       $string = self::input($string, $allowable_tags, $trim, $link);
       return addcslashes($string, '%_');
     }
 
-    function input_fulltext($string, $allowable_tags=false, $trim=true, $link='default') {
+    public static function input_fulltext($string, $allowable_tags=false, $trim=true, $link='default') {
       $string = self::input($string, $allowable_tags, $trim, $link);
       $string = preg_replace('#[+\-<>\(\)~*\"@;]+#', ' ', $string);
       return preg_replace('# +#', ' ', $string);
