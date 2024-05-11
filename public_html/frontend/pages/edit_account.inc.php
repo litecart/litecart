@@ -186,6 +186,24 @@
         }
       }
 
+      foreach ([
+        'tax_id',
+        'company',
+        'firstname',
+        'lastname',
+        'address1',
+        'address2',
+        'postcode',
+        'city',
+        'country_code',
+        'zone_code',
+        'phone',
+      ] as $field) {
+        if (isset($_POST[$field])) {
+          $customer->data['shipping_address'][$field] = $_POST[$field];
+        }
+      }
+
       $customer->save();
       customer::$data = $customer->data;
 
