@@ -5,6 +5,11 @@
     return [$width, round($width / $x * $y)];
   }
 
+  function image_scale_by_height($height, $ratio) {
+    list($x, $y) = explode(':', $ratio);
+    return [$height, round($height / $y * $x)];
+  }
+
   function image_process($source, $options) {
 
     try {
