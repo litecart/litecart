@@ -28,6 +28,7 @@ html.dark-mode body {
   margin: auto;
   border-radius: 0px 25px 0px 25px;
   box-shadow: 0px 0px 60px rgba(0,0,0,0.25);
+  overflow: hidden;
 }
 #box-login .card-header a {
   display: block;
@@ -44,50 +45,52 @@ html.dark-mode body {
 </div>
 
 
-<div id="box-login" class="card">
-  <div class="card-header text-center">
-    <a href="<?php echo document::href_ilink(''); ?>">
-      <img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>">
-    </a>
+<div id="box-login">
+  <div class="card" style="margin: 0;">
+    <div class="card-header text-center">
+      <a href="<?php echo document::href_ilink(''); ?>">
+        <img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>">
+      </a>
+    </div>
+
+    <?php echo functions::form_begin('login_form', 'post'); ?>
+      <?php echo functions::form_input_hidden('login', 'true'); ?>
+      <?php echo functions::form_input_hidden('redirect_url', true); ?>
+
+      <div class="card-body">
+
+        {{notices}}
+
+        <h1><?php echo language::translate('title_sign_in', 'Sign In'); ?></h1>
+
+        <div class="form-group">
+          <?php echo functions::form_input_username('username', true, 'placeholder="'. language::translate('title_username_or_email_address', 'Username or Email Address') .'"'); ?>
+        </div>
+
+        <div class="form-group">
+          <?php echo functions::form_input_password('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'" autocomplete="current-password"'); ?>
+        </div>
+
+        <div class="form-group">
+          <?php echo functions::form_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div class="row">
+          <div class="col-md-6 text-start">
+            <a class="btn btn-hover-outline btn-lg" href="<?php echo document::href_ilink('f:'); ?>">
+              <?php echo functions::draw_fonticon('fa-chevron-left'); ?> <?php echo language::translate('title_go_to_frontend', 'Go To Frontend'); ?>
+            </a>
+          </div>
+          <div class="col-md-6 text-end">
+            <?php echo functions::form_button('login', language::translate('title_login', 'Login'), 'submit', 'class="btn btn-default btn-lg"'); ?>
+          </div>
+        </div>
+      </div>
+
+    <?php echo functions::form_end(); ?>
   </div>
-
-  <?php echo functions::form_begin('login_form', 'post'); ?>
-    <?php echo functions::form_input_hidden('login', 'true'); ?>
-    <?php echo functions::form_input_hidden('redirect_url', true); ?>
-
-    <div class="card-body">
-
-      {{notices}}
-
-      <h1><?php echo language::translate('title_sign_in', 'Sign In'); ?></h1>
-
-      <div class="form-group">
-        <?php echo functions::form_input_username('username', true, 'placeholder="'. language::translate('title_username_or_email_address', 'Username or Email Address') .'"'); ?>
-      </div>
-
-      <div class="form-group">
-        <?php echo functions::form_input_password('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'" autocomplete="current-password"'); ?>
-      </div>
-
-      <div class="form-group">
-        <?php echo functions::form_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
-      </div>
-    </div>
-
-    <div class="card-footer">
-      <div class="row">
-        <div class="col-md-6 text-start">
-          <a class="btn btn-hover-outline btn-lg" href="<?php echo document::href_ilink('f:'); ?>">
-            <?php echo functions::draw_fonticon('fa-chevron-left'); ?> <?php echo language::translate('title_go_to_frontend', 'Go To Frontend'); ?>
-          </a>
-        </div>
-        <div class="col-md-6 text-end">
-          <?php echo functions::form_button('login', language::translate('title_login', 'Login'), 'submit', 'class="btn btn-default btn-lg"'); ?>
-        </div>
-      </div>
-    </div>
-
-  <?php echo functions::form_end(); ?>
 </div>
 
 <script>
