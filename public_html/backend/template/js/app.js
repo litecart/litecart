@@ -608,7 +608,10 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
 // Alerts
   $('body').on('click', '.alert .close', function(e){
     e.preventDefault();
-    $(this).closest('.alert').fadeOut('fast', function(){$(this).remove()});
+    $(this).closest('.alert').fadeOut('fast', function(){
+      $(this).remove()
+    });
+  });
   });
 
 // AJAX Search

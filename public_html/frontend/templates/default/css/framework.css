@@ -998,37 +998,46 @@ tr.semi-transparent td {
 .float-end {
   float: right;
 }
+.grid,
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-gap: 1em;
 }
+.grid:not(last-child),
 .row:not(last-child) {
   margin-bottom: var(--gutter-size);
 }
 @media (min-width: 992px) {
+  .grid.layout,
   .row.layout {
     grid-gap: var(--gutter-size);
     margin-bottom: var(--gutter-size);
   }
 }
+.grid.half-gutter,
 .row.half-gutter {
   grid-gap: calc(var(--gutter-size)/2);
 }
+.grid.column,
 .row.column {
   flex-direction: column;
 }
+.grid.nowrap,
 .row.nowrap {
   grid-auto-flow: column;
 }
+.grid.center,
 .row.center {
   justify-items: center;
   align-items: center;
 }
+.grid [class*="col-"],
 .row [class*="col-"] {
   grid-column: span 12;
 }
 @media (min-width: 576px) {
+  .grid,
   .row {
     grid-gap: var(--gutter-size);
     margin-bottom: 1rem;

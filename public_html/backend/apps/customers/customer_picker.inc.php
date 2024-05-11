@@ -39,13 +39,15 @@
 <script>
   $('#modal-customer-picker input[name="query"]').focus();
 
-  let xhr_customer_picker = null;
+  var xhr_customer_picker = null;
   $('#modal-customer-picker input[name="query"]').on('input', function(){
+
     if ($(this).val() == '') {
       $('#modal-customer-picker .results tbody').html('');
       xhr_customer_picker = null;
       return;
     }
+
     xhr_customer_picker = $.ajax({
       type: 'get',
       async: true,
@@ -59,20 +61,30 @@
         console.error(textStatus + ': ' + errorThrown);
       },
       success: function(json) {
+
         $('#modal-customer-picker .results tbody').html('');
+
         $.each(json, function(i, row){
-          if (row) {
-            $('#modal-customer-picker .results tbody').append(
-              '<tr>' +
-              '  <td class="id">' + row.id + '</td>' +
-              '  <td class="name">' + row.name + '</td>' +
-              '  <td class="email">' + row.email + '</td>' +
-              '  <td class="date-created">' + row.date_created + '</td>' +
-              '  <td></td>' +
-              '</tr>'
-            );
-          }
+
+          $row = $([
+            '<tr>',
+            '  <td class="id">' + row.id + '</td>',
+            '  <td class="name">' + row.name + '</td>',
+            '  <td class="email">' + row.email + '</td>',
+            '  <td class="date-created">' + row.date_created + '</td>',
+            '  <td></td>' +
+            '</tr>'
+          ].join('\n'));
+
+          $row.find('.id').text(row.id);
+          $row.find('.name').text(row.name);
+          $row.find('.date-created').text(row.date_created);
+
+          $row.data(row);
+
+          $('#modal-customer-picker .results tbody').append($row);
         });
+
         if ($('#modal-customer-picker .results tbody').html() == '') {
           $('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
         }
@@ -81,22 +93,34 @@
   });
 
   $('#modal-customer-picker tbody').on('click', 'td', function() {
-    let row = $(this).closest('tr');
 
-    let id = $(row).find('.id').text();
-    let name = $(row).find('.name').text();
+    let $row = $(this).closest('tr'),
+      callback = $.featherlight.current().$currentTarget.data('callback'),
+      expand = <?php echo (isset($_GET['collect']) && array_intersect(['address', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
+      customer = $row.data();
 
-    if (!id) {
-      id = 0;
-      name = '(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)';
+    if (!customer.id) {
+      customer = {
+        id: 0,
+        name: '(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)',
+      };
     }
 
-    let field = $.featherlight.current().$currentTarget.closest('.form-input');
+    if (callback) {
 
-    $(field).find(':input').val(id).trigger('change');
-    $(field).find('.id').text(id);
-    $(field).find('.name').text(name);
-    $.featherlight.close();
+      if (typeof callback == 'function') {
+        callback(product);
+      } else {
+        window[callback](customer);
+      }
+
+    } else {
+      let $field = $.featherlight.current().$currentTarget.closest('.form-group');
+      $field.find(':input').val(customer.id).trigger('change');
+      $field.find('.id').text(customer.id);
+      $field.find('.name').text(customer.name);
+      $.featherlight.close();
+    }
   });
 
   $('#modal-customer-picker .set-guest').click(function(){

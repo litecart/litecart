@@ -113,7 +113,7 @@
   if (!empty($_GET['query'])) {
 
     $code_regex = functions::format_regex_code($_GET['query']);
-    $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
+    $query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
 
     $sql_select_relevance = (
       "(

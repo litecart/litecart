@@ -120,11 +120,14 @@
         window[callback](product);
       }
 
-    } else if ($.featherlight.current().$currentTarget[0].closest('.input-group')) {
-      let $field = $.featherlight.current().$currentTarget[0].closest('.input-group');
+    } else if ($.featherlight.current().$currentTarget.closest('.input-group').length) {
+      let $field = $.featherlight.current().$currentTarget.closest('.input-group');
       $field.find(':input').val(product.id).trigger('change');
       $field.find('.id').text(product.id);
       $field.find('.name').text(product.name);
+    }
+
+    if ($.featherlight.opened) {
       $.featherlight.close();
     }
   });

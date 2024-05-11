@@ -5,7 +5,7 @@
 // Products
 
   $code_regex = functions::format_regex_code($query);
-  $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
+  $query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
 
   $products = database::query(
     "select p.id, p.default_category_id, pi.name,
@@ -66,7 +66,7 @@
   ];
 
   $code_regex = functions::format_regex_code($query);
-  $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
+  $query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
 
   $stock_items = database::query(
     "select s.id, s.sku, si.name,

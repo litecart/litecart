@@ -11,5 +11,3 @@ $('body').on('click', '[data-toggle="buttons"] :checkbox', function(){
 $('body').on('click', '[data-toggle="buttons"] :radio', function(){
   $(this).closest('.btn').addClass('active').siblings().removeClass('active');
 });
-
-$('[data-toggle="buttons"] :input:checked').trigger('change'); // Init

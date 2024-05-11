@@ -428,7 +428,9 @@ input[name="development_type"]:checked + div {
       <label>Hostname</label>
       <input class="form-input" name="db_server" type="text" placeholder="localhost">
     </div>
+  </div>
 
+  <div class="row">
     <div class="form-group col-md-6">
       <label>Database</label>
       <input class="form-input" type="text" name="db_database" required>
@@ -464,7 +466,9 @@ input[name="development_type"]:checked + div {
         <input type="checkbox" name="set_default_collation" value="1" checked> Set default collation for the database
       </label>
     </div>
+  </div>
 
+  <div class="row">
     <div class="form-group col-md-6">
       <label>Username</label>
       <input class="form-input" type="text" name="db_username" required>
@@ -474,7 +478,9 @@ input[name="development_type"]:checked + div {
       <label>Password</label>
       <input class="form-input" type="password" name="db_password">
     </div>
+  </div>
 
+  <div class="row">
     <div class="form-group col-md-6">
       <label>Table Prefix</label>
       <input class="form-input" name="db_table_prefix" type="text" value="lc_" style="max-width: 50%;">

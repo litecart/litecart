@@ -1,5 +1,10 @@
 /* Grid - Bootstrap Compatible */
 
+.float-left { float: left; }
+.float-right { float: right; }
+.float-start { float: inline-start; }
+.float-end { float: inline-end; }
+
 .container-fluid, .container {
   padding: 0 var(--gutter-size);
 }
@@ -9,16 +14,7 @@
   margin: 0 auto;
 }
 
-.float-left { float: left; }
-.float-right { float: right; }
-.float-start { float: left; }
-.float-end { float: right; }
-
-html[dir="rtl"] {
-  .float-start { float: right; }
-  .float-end { float: left; }
-}
-
+.grid,
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);

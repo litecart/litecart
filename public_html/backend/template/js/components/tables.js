@@ -79,10 +79,3 @@
 
     window.location.search = $.param(params);
   });
-
-// Data-Table Condensed
-  $('.data-table thead th:last-child:empty').html(
-    $('<button class="btn btn-default btn-sm" type="button"><i class="fa fa-expand fa-fw"></i></button>').click(function(){
-      $(this).closest('.data-table').toggleClass('table-condensed');
-    })
-  );

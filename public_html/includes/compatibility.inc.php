@@ -18,7 +18,6 @@
     }
   }
 
-
   // Polyfill for some $_SERVER variables in CLI
   if (!isset($_SERVER['REQUEST_METHOD'])) { // Don't rely on php_sapi_name()
     $_SERVER['DOCUMENT_ROOT'] = realpath(__DIR__.'/..');
@@ -35,5 +34,10 @@
   // Fix Windows paths
   $_SERVER['SCRIPT_FILENAME'] = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME']);
 
-  if (empty($_SERVER['HTTPS'])) $_SERVER['HTTPS'] = ($_SERVER['SERVER_PROTOCOL'] == 'https') ? 'on' : 'off';
-  if (empty($_SERVER['HTTP_HOST'])) $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
+  if (empty($_SERVER['HTTPS'])) {
+    $_SERVER['HTTPS'] = ($_SERVER['SERVER_PROTOCOL'] == 'https') ? 'on' : 'off';
+  }
+
+  if (empty($_SERVER['HTTP_HOST'])) {
+    $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
+  }

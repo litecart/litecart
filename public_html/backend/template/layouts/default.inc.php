@@ -25,7 +25,7 @@
 
     <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
       <img class="center-block responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>">
-      </a>
+    </a>
 
     <div id="search">
       <?php echo functions::form_input_search('query', false, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'&hellip;" autocomplete="off"'); ?>

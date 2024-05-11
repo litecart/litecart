@@ -11,7 +11,7 @@ body {
 #sidebar {
   flex: 0 0 var(--sidebar-width);
   background-color: var(--sidebar-background-color);
-  padding: var(--gutter-size);
+	padding: var(--gutter-size);
 
   .logotype {
     display: block;
@@ -40,6 +40,7 @@ body {
 }
 
 #sidebar-compressed:checked {
+  padding: ~"calc(var(--gutter-size)/2)";
 
   ~ #sidebar {
     flex-basis: auto;
@@ -83,11 +84,6 @@ body {
   }
 }
 
-html[dir="rtl"] #sidebar-compressed:checked ~ #sidebar #box-apps-menu > .app:hover .docs {
-  left: initial;
-  right: 30px;
-}
-
 #top-bar {
   display: flex;
   padding: 0;
@@ -102,7 +98,7 @@ html[dir="rtl"] #sidebar-compressed:checked ~ #sidebar #box-apps-menu > .app:hov
     align-self: center;
     flex: 0 0 auto;
     > * {
-      padding: ~"calc(var(--gutter-size)/2)";
+      padding: 1em;
     }
 
     > a {

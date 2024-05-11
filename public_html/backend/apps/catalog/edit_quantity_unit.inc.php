@@ -103,7 +103,7 @@
         </div>
 
         <div class="form-group col-md-8">
-          <br />
+          <br>
           <div class="checkbox">
             <label><?php echo functions::form_checkbox('separate', '1', true); ?> <?php echo language::translate('text_separate_added_cart_items', 'Separate added cart items'); ?></label>
           </div>

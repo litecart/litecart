@@ -1,25 +1,41 @@
 <?php
 
 // Output any variable to the browser console
-  function console_dump(...$vars) { // ... as of PHP 5.6
+	function console_dump(...$vars) { // ... as of PHP 5.6
 
-    ob_start();
-    var_dump($vars);
-    $output = addcslashes(ob_get_clean(), "\"\r\n");
+		ob_start();
+		var_dump($vars);
+		$output = ob_get_clean();
 
-    echo '<script>console.log("'. addcslashes($output, '"') .'");</script>';
-  }
+		echo '<script>console.log("'. addcslashes($output, "\"\r\n") .'");</script>';
+	}
 
-// Checks if variable is not set, null, (bool)false, (int)0, (float)0.00, (string)"", (string)"0", (string)"0.00", (array)[], or array with nil nodes
-  function nil(&$var) {
-    if (is_array($var)) {
-      foreach ($var as $node) {
-        if (!nil($node)) return !1;
-      }
-      return true;
-    }
-    return (empty($var) || (is_numeric($var) && (float)$var == 0));
-  }
+	function redirect($url=null, $status_code=302) {
+
+		if (!$url) {
+			$url = $_SERVER['REQUEST_URI'];
+		}
+
+		header('Location: '. $url, $status_code);
+		exit;
+	}
+
+	function reload() {
+		redirect();
+	}
+
+// Checks if variables are not set, null, (bool)false, (int)0, (float)0.00, (string)"", (string)"0", (string)"0.00", (array)[], or array with nil nodes
+	function nil(&...$args) { // ... as of PHP 5.6
+		foreach ($args as $arg) {
+			if (is_array($arg)) {
+				foreach ($arg as $node) {
+					if (!nil($node)) return !1;
+				}
+			}
+			if (!empty($arg) || (is_numeric($arg) && (float)$arg != 0)) return !1;
+		}
+		return !0;
+	}
 
 // Returns value for variable or falls back to a substituting value on nil(). Similar to $var ?? $fallback
   function fallback(&$var, $fallback=null) {

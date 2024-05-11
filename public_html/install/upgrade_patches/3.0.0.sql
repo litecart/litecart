@@ -623,6 +623,8 @@ DELETE FROM `lc_sold_out_statuses_info` WHERE sold_out_status_id NOT IN (SELECT 
 -- --------------------------------------------------------
 DELETE FROM `lc_tax_rates` WHERE tax_class_id NOT IN (SELECT id from `lc_tax_classes`) OR geo_zone_id NOT IN (SELECT id from `lc_geo_zones`);
 -- --------------------------------------------------------
+DELETE FROM `lc_zones` WHERE country_code NOT IN (SELECT iso_code_2 from `lc_countries`);
+-- --------------------------------------------------------
 DELETE FROM `lc_zones_to_geo_zones` WHERE geo_zone_id NOT IN (SELECT id from `lc_geo_zones`) OR country_code NOT IN (SELECT iso_code_2 from `lc_countries`);
 -- --------------------------------------------------------
 /* Add foreign keys */
@@ -712,6 +714,9 @@ ADD CONSTRAINT `stock_transaction_content_to_stock_item` FOREIGN KEY (`stock_opt
 ALTER TABLE `lc_tax_rates`
 ADD CONSTRAINT `tax_rate_to_tax_class` FOREIGN KEY (`tax_class_id`) REFERENCES `lc_tax_classes` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
 ADD CONSTRAINT `tax_rate_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc_geo_zones` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- --------------------------------------------------------
+ALTER TABLE `lc_zones`
+ADD CONSTRAINT `zone_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE NO ACTION ON DELETE CASCADE;
 -- --------------------------------------------------------
 ALTER TABLE `lc_zones_to_geo_zones`
 ADD CONSTRAINT `zone_entry_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc_geo_zones` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
