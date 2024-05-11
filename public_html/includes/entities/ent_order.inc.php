@@ -630,14 +630,20 @@
 
       $subject = '['. language::translate('title_order', 'Order', $language_code) .' '. $this->data['no'] .'] '. language::translate('title_order_confirmation', 'Order Confirmation', $language_code);
 
-      $message = "Thank you for your purchase!\r\n\r\n"
-               . "Your order #%order_no has successfully been created with a total of %total for the following ordered items:\r\n\r\n"
-               . "%order_items\r\n\r\n"
-               . "A printable order copy is available here:\r\n"
-               . "%order_copy_url\r\n\r\n"
-               . "Regards,\r\n"
-               . "%store_name\r\n"
-               . "%store_url\r\n";
+      $message = implode("\r\n", [
+        'Thank you for your purchase!',
+        '',
+        'Your order #%order_no has successfully been created with a total of %total for the following ordered items:',
+        '',
+        '. %order_items',
+        '',
+        'A printable order copy is available here:',
+        '%order_copy_url',
+        '',
+        'Regards,',
+        '%store_name',
+        '%store_url',
+      ]);
 
       $message = strtr(language::translate('email_order_confirmation', $message, $language_code), $aliases);
 

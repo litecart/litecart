@@ -27,8 +27,15 @@
         throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
       }
 
-      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."categories where id != '". (isset($_GET['category_id']) ? (int)$_GET['category_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) {
-        throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      if (!empty($_POST['code'])) {
+        if (database::query(
+          "select id from ". DB_TABLE_PREFIX ."categories
+          where id != '". (isset($_GET['category_id']) ? (int)$_GET['category_id'] : 0) ."'
+          and code = '". database::input($_POST['code']) ."'
+          limit 1;"
+        )->num_rows) {
+          throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+        }
       }
 
       if (isset($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name']) && !empty($_FILES['image']['error'])) {

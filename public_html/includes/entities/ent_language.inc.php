@@ -62,7 +62,7 @@
         throw new Exception(language::translate('error_cannot_disable_store_language', 'You must change the store language before disabling it.'));
       }
 
-      $language_query = database::query(
+      if (database::query(
         "select id from ". DB_TABLE_PREFIX ."languages
         where (
           code = '". database::input($this->data['code']) ."'
@@ -70,9 +70,7 @@
         )
         ". (!empty($this->data['id']) ? "and id != ". (int)$this->data['id'] : "") ."
         limit 1;"
-      );
-
-      if (database::num_rows($language_query)) {
+      )->num_rows) {
         throw new Exception(language::translate('error_language_conflict', 'The language conflicts with another language in the database'));
       }
 
@@ -185,12 +183,10 @@
         limit 1;"
       );
 
-      $translations_query = database::query(
+      if (database::query(
         "show fields from ". DB_TABLE_PREFIX ."translations
         where `Field` = 'text_". database::input($this->data['code']) ."';"
-      );
-
-      if (database::num_rows($translations_query) == 1) {
+      )->num_rows) {
         database::query(
           "alter table ". DB_TABLE_PREFIX ."translations
           drop `text_". database::input($this->data['code']) ."`;"

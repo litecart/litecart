@@ -528,14 +528,12 @@
         }
 
         if (empty($this->data['customer']['id'])) {
-          $customer_query = database::query(
+          if (database::query(
             "select id from ". DB_TABLE_PREFIX ."customers
             where email = '". database::input($this->data['billing_address']['email']) ."'
             and status = 0
             limit 1;"
-          );
-
-          if (database::num_rows($customer_query)) {
+          )->num_rows) {
             throw new Exception(language::translate('error_customer_account_is_disabled', 'The customer account is disabled'));
           }
         }

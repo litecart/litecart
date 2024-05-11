@@ -91,17 +91,19 @@
         ];
       }
 
-      if (!is_array($geo_zones)) $geo_zones = [$geo_zones];
+      if (!is_array($geo_zones)) {
+        $geo_zones = [$geo_zones];
+      }
 
-      $zones_to_geo_zones_query = database::query(
+      if (database::query(
         "select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
         where geo_zone_id in ('". implode("', '", database::input($geo_zones)) ."')
         ". (!empty($address['country_code']) ? "and (country_code = '' or country_code = '". database::input($address['country_code']) ."')" : "and (country_code = '' or country_code = '". database::input($this->_country_code) ."')") ."
         ". (!empty($address['zone_code']) ? "and (zone_code = '' or zone_code = '". database::input($address['zone_code']) ."')" : "and zone_code = ''") ."
         ". (!empty($address['city']) ? "and (city = '' or city like '". addcslashes(database::input($address['city']), '%_') ."')" : "and city = ''") ."
         limit 1;"
-      );
-
-      if (database::num_rows($zones_to_geo_zones_query)) return true;
+      )->num_rows) {
+        return true;
+      }
     }
   }

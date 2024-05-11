@@ -24,8 +24,14 @@
         throw new Exception(language::translate('error_name_missing', 'You must enter a name.'));
       }
 
-      if (!empty($_POST['code']) && database::query("select id from ". DB_TABLE_PREFIX ."brands where id != '". (isset($_GET['brand_id']) ? (int)$_GET['brand_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;")->num_rows) {
-        throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      if (!empty($_POST['code'])) {
+        if (database::query(
+          "select id from ". DB_TABLE_PREFIX ."brands
+          where id != '". (isset($_GET['brand_id']) ? (int)$_GET['brand_id'] : 0) ."'
+          and code = '". database::input($_POST['code']) ."' limit 1;"
+        )->num_rows) {
+          throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+        }
       }
 
       foreach ([

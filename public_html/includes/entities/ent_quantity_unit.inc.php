@@ -123,10 +123,13 @@
 
     public function delete() {
 
-      if (database::query("select id from ". DB_TABLE_PREFIX ."products where quantity_unit_id = ". (int)$this->data['id'] ." limit 1;")->num_rows) {
+      if (database::query(
+        "select id from ". DB_TABLE_PREFIX ."products
+        where quantity_unit_id = ". (int)$this->data['id'] ."
+        limit 1;"
+      )->num_rows) {
         throw new Exception('Cannot delete the quantity unit because there are products using it');
       }
-
 
       database::query(
         "delete qu, qui

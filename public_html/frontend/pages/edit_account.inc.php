@@ -36,7 +36,12 @@
         $_POST['email'] = strtolower($_POST['email']);
       }
 
-      if (database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' and id != ". (int)$customer->data['id'] ." limit 1;")->num_rows) {
+      if (database::query(
+        "select id from ". DB_TABLE_PREFIX ."customers
+        where email = '". database::input($_POST['email']) ."'
+        and id != ". (int)$customer->data['id'] ."
+        limit 1;"
+      )->num_rows) {
         throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database.'));
       }
 

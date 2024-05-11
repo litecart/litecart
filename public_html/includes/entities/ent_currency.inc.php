@@ -70,7 +70,7 @@
         }
       }
 
-      $currency_query = database::query(
+      if (database::query(
         "select id from ". DB_TABLE_PREFIX ."currencies
         where (
           code = '". database::input($this->data['code']) ."'
@@ -78,9 +78,7 @@
         )
         ". (!empty($this->data['id']) ? "and id != ". $this->data['id'] : "") ."
         limit 1;"
-      );
-
-      if (database::num_rows($currency_query)) {
+      )->num_rows) {
         throw new Exception(language::translate('error_currency_conflict', 'The currency conflicts another currency in the database'));
       }
 

@@ -120,7 +120,11 @@
 
     public function delete() {
 
-      if (database::query("select id from ". DB_TABLE_PREFIX ."products where delivery_status_id = ". (int)$this->data['id'] ." limit 1;")->num_rows) {
+      if (database::query(
+        "select id from ". DB_TABLE_PREFIX ."products
+        where delivery_status_id = ". (int)$this->data['id'] ."
+        limit 1;"
+      )->num_rows) {
         throw new Exception('Cannot delete the delivery status because there are products using it');
       }
 

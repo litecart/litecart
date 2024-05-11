@@ -29,13 +29,21 @@
         throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
       }
 
-      if (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain' && empty($_POST['domain_name'])) {
-        throw new Exception(language::translate('error_must_provide_domain', 'You must provide a domain name'));
-      }
+      if (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain') {
 
-      if (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain' && !empty($_POST['domain_name'])) {
-        if (!empty($language->data['id']) && database::query("select id from ". DB_TABLE_PREFIX ."languages where domain_name = '". database::input($_POST['domain_name']) ."' and id != ". (int)$language->data['id'] ." limit 1;")->num_rows) {
-          throw new Exception(language::translate('error_domain_in_use_by_other_language', 'The domain name is already in use by another domain name.'));
+        if (empty($_POST['domain_name'])) {
+          throw new Exception(language::translate('error_must_provide_domain', 'You must provide a domain name'));
+        }
+
+        if (!empty($language->data['id'])) {
+          if (database::query(
+            "select id from ". DB_TABLE_PREFIX ."languages
+            where domain_name = '". database::input($_POST['domain_name']) ."'
+            and id != ". (int)$language->data['id'] ."
+            limit 1;"
+          )->num_rows) {
+            throw new Exception(language::translate('error_domain_in_use_by_other_language', 'The domain name is already in use by another domain name.'));
+          }
         }
       }
 
@@ -104,11 +112,21 @@
       $language->save();
 
       if (!empty($_POST['set_default'])) {
-        database::query("update ". DB_TABLE_PREFIX ."settings set `value` = '". database::input($_POST['code']) ."' where `key` = 'default_language_code' limit 1;");
+        database::query(
+          "update ". DB_TABLE_PREFIX ."settings
+          set `value` = '". database::input($_POST['code']) ."'
+          where `key` = 'default_language_code'
+          limit 1;"
+        );
       }
 
       if (!empty($_POST['set_store'])) {
-        database::query("update ". DB_TABLE_PREFIX ."settings set `value` = '". database::input($_POST['code']) ."' where `key` = 'store_language_code' limit 1;");
+        database::query(
+          "update ". DB_TABLE_PREFIX ."settings
+          set `value` = '". database::input($_POST['code']) ."'
+          where `key` = 'store_language_code'
+          limit 1;"
+        );
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));

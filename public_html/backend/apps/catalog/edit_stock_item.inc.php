@@ -18,16 +18,37 @@
         throw new Exception(language::translate('error_name_missing', 'You must provide a name'));
       }
 
-      if (!empty($_POST['sku']) && database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and sku = '". database::input($_POST['sku']) ."' limit 1;")->num_rows) {
-        throw new Exception(language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
+      if (!empty($_POST['sku'])) {
+        if (database::query(
+          "select id from ". DB_TABLE_PREFIX ."stock_items
+          where id != ". (int)$stock_item->data['id'] ."
+          and sku = '". database::input($_POST['sku']) ."'
+          limit 1;"
+        )->num_rows) {
+          throw new Exception(language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
+        }
       }
 
-      if (!empty($_POST['mpn']) && database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and mpn = '". database::input($_POST['mpn']) ."' limit 1;")->num_rows) {
-        throw new Exception(language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
+      if (!empty($_POST['mpn'])) {
+        if (database::query(
+          "select id from ". DB_TABLE_PREFIX ."stock_items
+          where id != ". (int)$stock_item->data['id'] ."
+          and mpn = '". database::input($_POST['mpn']) ."'
+          limit 1;"
+        )->num_rows) {
+          throw new Exception(language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
+        }
       }
 
-      if (!empty($_POST['gtin']) && database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and gtin = '". database::input($_POST['gtin']) ."' limit 1;")->num_rows) {
-        throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
+      if (!empty($_POST['gtin'])) {
+        if (database::query(
+          "select id from ". DB_TABLE_PREFIX ."stock_items
+          where id != ". (int)$stock_item->data['id'] ."
+          and gtin = '". database::input($_POST['gtin']) ."'
+          limit 1;"
+        )->num_rows) {
+          throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
+        }
       }
 
       foreach (['sku', 'mpn', 'gtin', 'taric'] as $field) {

@@ -275,7 +275,11 @@
 
           $this->_data['quantity_available'] = null;
 
-          if (!database::query("select id from ". DB_TABLE_PREFIX ."products_stock_options where product_id = ". (int)$this->_data['id'] ." limit 1;")->num_rows) {
+          if (!database::query(
+            "select id from ". DB_TABLE_PREFIX ."products_stock_options
+            where product_id = ". (int)$this->_data['id'] ."
+            limit 1;"
+          )->num_rows) {
             break;
           }
 

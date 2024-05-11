@@ -105,7 +105,13 @@
         $i = 1;
         while (true) {
           $this->data['sku'] = $this->data['id'] .'-'. ($this->data['name'][settings::get('store_language_code')] ? strtoupper(substr($this->data['name'][settings::get('store_language_code')], 0, 4)) : 'UNKN') .'-'. $i++;
-          if (!database::query("select id from ". DB_TABLE_PREFIX ."stock_items where sku = '". database::input($this->data['sku']) ."' limit 1;")->num_rows) break;
+          if (!database::query(
+            "select id from ". DB_TABLE_PREFIX ."stock_items
+            where sku = '". database::input($this->data['sku']) ."'
+            limit 1;"
+          )->num_rows) {
+            break;
+          }
         }
       }
 

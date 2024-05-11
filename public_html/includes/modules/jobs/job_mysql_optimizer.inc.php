@@ -26,7 +26,7 @@
         and table_name like '". DB_TABLE_PREFIX ."%';"
       )->each(function($row){
         echo '  ' . $row['table_name'] . PHP_EOL;
-        database::query("optimize table ". $row['table_name'] .";");        
+        database::query("optimize table ". $row['table_name'] .";");
       });
 
       echo PHP_EOL . 'Done!';

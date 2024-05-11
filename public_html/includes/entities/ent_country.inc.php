@@ -71,7 +71,7 @@
         throw new Exception(language::translate('error_cannot_disable_default_country', 'You must change the default country before disabling it.'));
       }
 
-      $country_query = database::query(
+      if (database::query(
         "select id from ". DB_TABLE_PREFIX ."countries
         where id != ". (int)$this->data['id'] ."
         and (
@@ -80,9 +80,7 @@
           or iso_code_2 = '". database::input(strtoupper($this->data['iso_code_3'])) ."'
         )
         limit 1;"
-      );
-
-      if (database::num_rows($country_query)) {
+      )->num_rows) {
         throw new Exception(language::translate('error_language_conflict', 'The country conflicts another country in the database'));
       }
 

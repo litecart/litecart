@@ -72,11 +72,21 @@
       $currency->save();
 
       if (!empty($_POST['set_default'])) {
-        database::query("update ". DB_TABLE_PREFIX ."settings set `value` = '". database::input($_POST['code']) ."' where `key` = 'default_currency_code' limit 1;");
+        database::query(
+          "update ". DB_TABLE_PREFIX ."settings
+          set `value` = '". database::input($_POST['code']) ."'
+          where `key` = 'default_currency_code'
+          limit 1;"
+        );
       }
 
       if (!empty($_POST['set_store'])) {
-        database::query("update ". DB_TABLE_PREFIX ."settings set `value` = '". database::input($_POST['code']) ."' where `key` = 'store_currency_code' limit 1;");
+        database::query(
+          "update ". DB_TABLE_PREFIX ."settings
+          set `value` = '". database::input($_POST['code']) ."'
+          where `key` = 'store_currency_code'
+          limit 1;"
+        );
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));

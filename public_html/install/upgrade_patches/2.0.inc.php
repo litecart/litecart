@@ -208,4 +208,9 @@
     }
   }
 
-  database::query("alter table ". DB_TABLE_PREFIX ."slides change column `language_code` `languages` varchar(32) not null, drop column `caption`, drop column `link`;");
+  database::query(
+    "alter table ". DB_TABLE_PREFIX ."slides
+    change column `language_code` `languages` varchar(32) not null,
+    drop column `caption`,
+    drop column `link`;"
+);
