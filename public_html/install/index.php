@@ -363,7 +363,7 @@ input[name="development_type"]:checked + div {
   <h3>Database Server</h3>
 
   <ul>
-    <li>MySQL Version 5.5 - 8.0 / MariaDB Version 10.8</li>
+    <li>MySQL 5.7+ - 8.0 / MariaDB 10.8+</li>
   </ul>
 
   <h2>Writables</h2>
