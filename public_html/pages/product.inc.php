@@ -43,7 +43,8 @@
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'" />';
 
   if (!empty($product->image)) {
-    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink(FS_DIR_STORAGE . 'images/' . $product->image) .'"/>';
+    $og_image = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, 1200, 630, 'FIT_USE_WHITESPACING');
+    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink(FS_DIR_STORAGE . $og_image) .'">';
   }
 
   if (!empty($_GET['category_id'])) {
