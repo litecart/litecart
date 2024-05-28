@@ -6,14 +6,22 @@
   ], 'skip');
 
   perform_action('modify', [
-    FS_DIR_APP . '.htaccess' => [
+    [
       [
         'file'    => FS_DIR_APP . '.htaccess',
         'search'  => '  <FilesMatch "\.(a?png|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">',
         'replace' => '  <FilesMatch "\.(a?png|avif|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">',
       ],
     ],
-  ]);
+    [
+      [
+        'file'    => FS_DIR_APP . 'includes/config.inc.php',
+        'search'  => '#'. preg_quote('// Database Tables - Backwards Compatibility (LiteCart <2.3)', '#') .'.*?\s*(\#*)#s',
+        'replace' => '$1',
+        'regex' => true,
+      ],
+    ],
+  ], 'skip');
 
 // Get store timezone
   $setting_query = database::query(
