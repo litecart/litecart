@@ -156,8 +156,8 @@
       if (!empty($_POST['newsletter'])) {
         database::query(
           "insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
-          (email, client_ip, date_created)
-          values ('". database::input($_POST['email']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."');"
+          (email, firstname, lastname, client_ip, hostname, user_agent, date_created)
+          values ('". database::input($_POST['email']) ."', '". database::input($_POST['firstname']) ."', '". database::input($_POST['lastname']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."');"
         );
       }
 
