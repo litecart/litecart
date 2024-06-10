@@ -102,7 +102,7 @@
           if (!is_file($this->view)) {
             $this->view = 'app://frontend/template/'. $view;
           }
-          }
+        }
 
       } else {
         $view = $this->view;

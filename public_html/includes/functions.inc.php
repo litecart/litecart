@@ -60,13 +60,13 @@
   }
 */
 
-// Check if variable indicates a truthy value
+// Check if variable indicates a truish value
   function is_true($string) {
     //return (!empty($string) && preg_match('#^(1|true|yes|on|active|enabled)$#i', $string));
     return filter_var($string, FILTER_VALIDATE_BOOLEAN);
   }
 
-// Check if variable indicates a falsy value
+// Check if variable indicates a falsish value
   function is_false($string) {
     //return (empty($string) || preg_match('#^(0|false|no|off|inactive|disabled)$#i', $string));
     return !filter_var($string, FILTER_VALIDATE_BOOLEAN);
@@ -90,23 +90,4 @@
     parse_str(implode('&', $result), $result);
 
     return $result;
-  }
-
-// Slice a string into two arrays at the nth position
-  function str_slice($string, $position) {
-    return [substr($string, 0, $position), substr($string, $position)];
-  }
-
-// Adds padding to the beginning of each line of a string
-  function str_pad_lines($string, $padding, $pad_type=STR_PAD_LEFT) {
-
-    if ($pad_type & STR_PAD_BOTH || $pad_type & STR_PAD_LEFT) {
-      $string = preg_replace('#^#m', preg_quote($padding), $string);
-    }
-
-    if ($pad_type & STR_PAD_BOTH || $pad_type & STR_PAD_RIGHT) {
-      $string = preg_replace('#$#m', preg_quote($padding), $string);
-    }
-
-    return $string;
   }

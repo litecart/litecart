@@ -2,7 +2,7 @@
   <a class="link" href="<?php echo functions::escape_html($link) ?>" title="<?php echo functions::escape_html($name); ?>" data-id="<?php echo $product_id; ?>" data-sku="<?php echo functions::escape_html($sku); ?>" data-name="<?php echo functions::escape_html($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>">
 
     <div class="image-wrapper">
-      <?php echo functions::draw_thumbnail($image, 200, 0, 'product', 'loading="lazy" alt="'. functions::escape_html($name) .'"'); ?>
+      <?php echo functions::draw_thumbnail($image, 200, 0, 'product', 'loading="lazy" alt="'. functions::escape_attr($name) .'"'); ?>
       <?php echo $sticker; ?>
     </div>
 

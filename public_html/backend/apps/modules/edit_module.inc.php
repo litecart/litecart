@@ -3,34 +3,34 @@
 
   $module_id = basename($_GET['module_id']);
 
-  switch (__DOC__) {
+	switch (true) {
 
-    case 'edit_customer':
+		case (preg_match('#^cm_#', $module_id)):
       $type = 'customer';
       $return_doc = 'customer';
       break;
 
-    case 'edit_job':
+		case (preg_match('#^job_#', $module_id)):
       $type = 'job';
       $return_doc = 'jobs';
       break;
 
-    case 'edit_order':
+		case (preg_match('#^om_#', $module_id)):
       $type = 'order';
       $return_doc = 'order';
       break;
 
-    case 'edit_order_total':
+		case (preg_match('#^ot_#', $module_id)):
       $type = 'order_total';
       $return_doc = 'order_total';
       break;
 
-    case 'edit_payment':
+		case (preg_match('#^pm_#', $module_id)):
       $type = 'payment';
       $return_doc = 'payment';
       break;
 
-    case 'edit_shipping':
+		case (preg_match('#^sm_#', $module_id)):
       $type = 'shipping';
       $return_doc = 'shipping';
       break;
@@ -107,9 +107,9 @@
   <div class="card-body">
     <h2><?php echo $object->name; ?></h2>
 
-    <?php if (!empty($object->author)) echo '<p><strong>'. language::translate('title_developed_by', 'Developed by') .'</strong> <a href="'. $object->website .'" target="_blank">'. $object->author .'</a></p>'; ?>
+		<?php echo !empty($object->author) ? '<p><strong>'. language::translate('title_developed_by', 'Developed by') .'</strong> <a href="'. $object->website .'" target="_blank">'. $object->author .'</a></p>' : false; ?>
 
-    <?php if (!empty($object->description)) echo '<p style="max-width: 960px;">'. $object->description .'</p>'; ?>
+		<?php echo !empty($object->description) ? '<p style="max-width: 960px;">'. $object->description .'</p>' : ''; ?>
 
     <?php echo functions::form_begin('module_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
 
@@ -119,14 +119,14 @@
           <tr>
             <td style="width: 50%">
               <strong><?php echo $setting['title']; ?></strong>
-              <?php if (!empty($setting['description'])) echo '<div>'. $setting['description'] .'</div>'; ?>
+							<?php echo !empty($setting['description']) ? '<div>'. $setting['description'] .'</div>' : ''; ?>
             </td>
             <td style="width: 50%">
               <?php
                 if (!empty($setting['multiple'])) {
-                  echo functions::form_function('settings['.$setting['key'].'][]', $setting['function'], true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_html($setting['placeholder']) .'"' : '');
+									echo functions::form_function('settings['.$setting['key'].'][]', $setting['function'], true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_attr($setting['placeholder']) .'"' : '');
                 } else {
-                  echo functions::form_function('settings['.$setting['key'].']', $setting['function'], true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_html($setting['placeholder']) .'"' : '');
+									echo functions::form_function('settings['.$setting['key'].']', $setting['function'], true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_attr($setting['placeholder']) .'"' : '');
                 }
               ?>
             </td>

@@ -129,12 +129,12 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
-              <?php echo functions::form_input_password('password', '', 'autocomplete="new-password"'); ?>
+							<?php echo functions::form_input_password_unmaskable('password', '', 'autocomplete="new-password"'); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-              <?php echo functions::form_input_password('confirmed_password', '', 'autocomplete="new-password"'); ?>
+							<?php echo functions::form_input_password_unmaskable('confirmed_password', '', 'autocomplete="new-password"'); ?>
             </div>
           </div>
 
@@ -185,11 +185,11 @@
 <?php
   foreach (functions::admin_get_apps() as $app) {
     echo implode(PHP_EOL, [
-      '<li data-app="'. functions::escape_html($app['id']) .'">',
+      '<li data-app="'. functions::escape_attr($app['id']) .'">',
       '  '. functions::form_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true),
       '  <ul class="list-unstyled">',
       implode(PHP_EOL, array_map(function($doc) use ($app) {
-        return '    <li data-doc="'. functions::escape_html($doc) .'">'. functions::form_checkbox('apps['.$app['id'].'][docs][]', [$doc], true) .'</li>';
+        return '    <li data-doc="'. functions::escape_attr($doc) .'">'. functions::form_checkbox('apps['.$app['id'].'][docs][]', [$doc], true) .'</li>';
       }, array_keys($app['docs']))),
       '  </ul>',
       '</li>',

@@ -1,5 +1,9 @@
 <?php
 
+	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+		$_GET['page'] = 1;
+	}
+
   if (!empty($_GET['customer_id'])) {
     $customer = new ent_customer($_GET['customer_id']);
   } else {

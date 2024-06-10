@@ -120,14 +120,14 @@
       </div>
 
       <div class="row">
-        <div class="form-group col-md-5">
-          <label><?php echo language::translate('title_geo_zone', 'Geo Zone'); ?></label>
-          <?php echo functions::form_select_geo_zone('geo_zone_id', true); ?>
-        </div>
-
         <div class="form-group col-md-4">
           <label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
           <?php echo functions::form_select_tax_class('tax_class_id', true); ?>
+        </div>
+        
+        <div class="form-group col-md-5">
+          <label><?php echo language::translate('title_geo_zone', 'Geo Zone'); ?></label>
+          <?php echo functions::form_select_geo_zone('geo_zone_id', true); ?>
         </div>
 
         <div class="form-group col-md-3">

@@ -68,7 +68,7 @@
         set
           `value` = '". database::input(json_encode($new_settings, JSON_UNESCAPED_SLASHES)) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'
-        where `key` = '". database::input('frontend/templates/default/_settings') ."'
+        where `key` = '". database::input('template_settings') ."'
         limit 1;"
       );
 
@@ -164,7 +164,7 @@
 
         <?php if (!$settings) { ?>
         <tr>
-          <td colspan="3"><?php echo language::translate('text_no_template_settings', 'There are no settings available for this template.'); ?></td>
+					<td colspan="3"><?php echo language::translate('text_no_frontend_template_settings', 'There are no settings available for the frontend template.'); ?></td>
         </tr>
         <?php } ?>
       </tbody>

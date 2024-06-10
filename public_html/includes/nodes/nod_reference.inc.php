@@ -23,6 +23,7 @@
       }
 
       switch(true) {
+
         case ($component == 'ref'):
         case (!$component && is_file('app://includes/references/ref_'.basename($resource).'.inc.php')):
 

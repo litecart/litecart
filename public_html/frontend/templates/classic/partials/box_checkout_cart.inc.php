@@ -55,9 +55,9 @@
                   <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
                 <?php } ?>
                 </div>
-                <?php echo functions::form_button('update_cart_item', array($key, functions::draw_fonticon('fa-refresh')), 'submit', 'title="'. functions::escape_html(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
+                <?php echo functions::form_button('update_cart_item', array($key, functions::draw_fonticon('fa-refresh')), 'submit', 'title="'. functions::escape_attr(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
 
-                <div style="margin-inline-start: 1em;"><?php echo functions::form_button('remove_cart_item', array($key, functions::draw_fonticon('fa-trash')), 'submit', 'class="btn btn-danger" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></div>
+                <div style="margin-inline-start: 1em;"><?php echo functions::form_button('remove_cart_item', array($key, functions::draw_fonticon('fa-trash')), 'submit', 'class="btn btn-danger" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></div>
               </div>
             </div>
 

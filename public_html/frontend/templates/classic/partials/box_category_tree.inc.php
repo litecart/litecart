@@ -2,7 +2,7 @@
   $draw_branch = function($category, &$category_path) use (&$draw_branch) {
     return implode(PHP_EOL, [
       '<li class="category-'. $category['id'] . (!empty($category['opened']) ? ' opened' : '') . (!empty($category['active']) ? ' active' : '') .'">',
-      '  <a href="'. functions::escape_html($category['link']) .'">'. functions::draw_fonticon('fa-angle-'. (!empty($category['opened']) ? 'down' : ((language::$selected['direction'] == 'rtl') ? 'left' : 'right')) .' fa-fw float-end') .' '. $category['name'] . ((settings::get('category_tree_product_count') && $category['num_products']) ? ' <small class="float-end">('. $category['num_products'] .')</small>' : '') .'</a>',
+      '  <a href="'. functions::escape_attr($category['link']) .'">'. functions::draw_fonticon('fa-angle-'. (!empty($category['opened']) ? 'down' : ((language::$selected['direction'] == 'rtl') ? 'left' : 'right')) .' fa-fw float-end') .' '. $category['name'] . ((settings::get('category_tree_product_count') && $category['num_products']) ? ' <small class="float-end">('. $category['num_products'] .')</small>' : '') .'</a>',
      (!empty($category['subcategories'])) ? implode(PHP_EOL, [
         '  <ul class="nav nav-stacked">',
           array_map(function($subcategory) use ($draw_branch, $category_path) {

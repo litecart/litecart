@@ -4,16 +4,27 @@
 
     switch (true) {
 
-      case (substr($class, 0, 4) == 'abs_'):
+			case (preg_match('#^abs_#', $class)):
 
         require 'app://includes/abstracts/' . $class . '.inc.php';
         break;
 
-      case (substr($class, 0, 4) == 'chk_'):
+			case (preg_match('#^chk_#', $class)):
+
         require 'app://includes/modules/checkout/' . $class . '.inc.php';
         break;
 
-      case (preg_match('#^(cm|job|om|ot|pm|sm)_#', $class)):
+			case (preg_match('#_client$#', $class)):
+
+        require 'app://includes/clients/' . $class . '.inc.php';
+        break;
+
+			case (preg_match('#^cm_#', $class)):
+			case (preg_match('#^job_#', $class)):
+			case (preg_match('#^om_#', $class)):
+			case (preg_match('#^ot_#', $class)):
+			case (preg_match('#^pm_#', $class)):
+			case (preg_match('#^sm_#', $class)):
 
       // Patch modules for PHP 8.2 Compatibility
         if (version_compare(PHP_VERSION, 8.2, '>=')) {
@@ -39,68 +50,71 @@
         }
 
         switch (true) {
-          case (substr($class, 0, 3) == 'cm_'):
+					case (preg_match('#^cm_#', $class)):
             require 'app://includes/modules/customer/' . $class . '.inc.php';
             break;
 
-          case (substr($class, 0, 4) == 'job_'):
+					case (preg_match('#^job_#', $class)):
             require 'app://includes/modules/jobs/' . $class . '.inc.php';
             break;
 
-          case (substr($class, 0, 3) == 'om_'):
+					case (preg_match('#^om_#', $class)):
             require 'app://includes/modules/order/' . $class . '.inc.php';
             break;
 
-          case (substr($class, 0, 3) == 'ot_'):
+					case (preg_match('#^ot_#', $class)):
             require 'app://includes/modules/order_total/' . $class . '.inc.php';
             break;
 
-          case (substr($class, 0, 3) == 'pm_'):
+					case (preg_match('#^pm_#', $class)):
             require 'app://includes/modules/payment/' . $class . '.inc.php';
             break;
 
-          case (substr($class, 0, 3) == 'sm_'):
+					case (preg_match('#^sm_#', $class)):
             require 'app://includes/modules/shipping/' . $class . '.inc.php';
             break;
         }
 
         break;
 
-      case (substr($class, 0, 4) == 'ent_'):
+			case (preg_match('#^ent_#', $class)):
+
         require 'app://includes/entities/' . $class . '.inc.php';
         break;
 
-      case (substr($class, 0, 4) == 'mod_'):
+			case (preg_match('#^mod_#', $class)):
+
         require 'app://includes/modules/' . $class . '.inc.php';
         break;
 
-      case (substr($class, 0, 4) == 'ref_'):
+			case (preg_match('#^ref_#', $class)):
+
         require 'app://includes/references/' . $class . '.inc.php';
         break;
 
-      case (substr($class, 0, 3) == 'sm_'):
+			case (preg_match('#^sm_#', $class)):
         require 'app://includes/modules/shipping/' . $class . '.inc.php';
         break;
 
-      case (substr($class, 0, 4) == 'url_'):
+			case (preg_match('#^url_#', $class)):
+
         if (is_file($file = 'app://backend/routes/' . $class . '.inc.php')) require $file;
         if (is_file($file = 'app://frontend/routes/' . $class . '.inc.php')) require $file;
         break;
 
-      case (substr($class, 0, 5) == 'stream_'):
+			case (preg_match('#^stream_#', $class)):
         require 'app://includes/streams/' . $class . '.inc.php';
         break;
 
-      case (substr($class, -7) == '_client'):
-        require 'app://includes/clients/' . $class . '.inc.php';
-        break;
-
       default:
-        require 'app://includes/nodes/nod_' . $class . '.inc.php';
 
-        if (method_exists($class, 'init')) {
-          call_user_func([$class, 'init']); // As static classes do not have a __construct() (PHP #62860)
-        }
+				if (is_file($file = 'app://includes/nodes/nod_' . $class . '.inc.php')) {
+					require $file;
+
+					if (method_exists($class, 'init')) {
+						call_user_func([$class, 'init']); // As static classes do not have a __construct() (PHP #62860)
+					}
+				}
 
         break;
     }

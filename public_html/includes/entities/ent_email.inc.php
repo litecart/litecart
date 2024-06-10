@@ -373,8 +373,8 @@
         $body .= $this->data['multiparts'][0]['body'];
       }
 
-      if (empty($body)) {
-        trigger_error('Cannot send email with an empty body', E_USER_WARNING);
+			if (!$body) {
+				trigger_error('Will not send email with an empty body', E_USER_WARNING);
         return false;
       }
 

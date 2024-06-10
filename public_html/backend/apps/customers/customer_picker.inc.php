@@ -15,7 +15,7 @@
 
   <div class="modal-body">
     <div class="form-group">
-      <?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
+      <?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_attr(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
     </div>
 
     <div class="form-group results table-responsive">

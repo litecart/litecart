@@ -22,7 +22,7 @@
     // Clean up old shopping cart items
       database::query(
         "delete from ". DB_TABLE_PREFIX ."shopping_carts_items
-        where date_created < '". date('Y-m-d H:i:s', strtotime('-3 months')) ."';"
+        where date_created < '". date('Y-m-d H:i:s', strtotime('-6 months')) ."';"
       );
 
     // Load items
@@ -105,7 +105,9 @@
           );
         }
 
-        self::add_product($item['product_id'], unserialize($item['options']), $item['quantity'], true, $item['key']);
+        $item['options'] = @json_decode($item['options'], true);
+
+        self::add_product($item['product_id'], $item['options'], $item['quantity'], true, $item['key']);
 
         if (isset(self::$items[$item['key']])){
           self::$items[$item['key']]['id'] = $item['id'];
@@ -123,7 +125,7 @@
         if (!empty($product->quantity_unit['separate'])) {
           $item_key = uniqid();
         } else {
-          $item_key = md5(json_encode([$product->id, $options]));
+          $item_key = md5(json_encode([$product->id, $stock_option_id]));
         }
       }
 
@@ -231,8 +233,8 @@
         if (!$force) {
           database::query(
             "insert into ". DB_TABLE_PREFIX ."shopping_carts_items
-            (customer_id, cart_uid, `key`, product_id, options, quantity, date_updated, date_created)
-            values (". (int)customer::$data['id'] .", '". database::input(session::$data['cart_uid']) ."', '". database::input($item_key) ."', ". (int)$item['product_id'] .", '". database::input(serialize($item['options'])) ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+            (cart_uid, `key`, product_id, quantity, date_updated, date_created)
+            values ('". database::input(session::$data['cart_uid']) ."', '". database::input($item_key) ."', ". (int)$item['product_id'] .", ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
           );
           self::$items[$item_key]['id'] = database::insert_id();
         }

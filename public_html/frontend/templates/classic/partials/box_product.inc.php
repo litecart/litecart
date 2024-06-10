@@ -8,7 +8,7 @@
 
             <div class="col-xs-12">
               <a class="main-image" href="<?php echo document::href_rlink($image); ?>" data-toggle="lightbox" data-gallery="product">
-                <?php echo functions::draw_thumbnail($image, 1024, 0, 'product', 'title="'. functions::escape_html($name) .'"'); ?>
+                <?php echo functions::draw_thumbnail($image, 1024, 0, 'product', 'title="'. functions::escape_attr($name) .'"'); ?>
                 <?php echo $sticker; ?>
               </a>
             </div>
@@ -16,7 +16,7 @@
             <?php foreach ($extra_images as $extra_image) { ?>
             <div class="col-xs-4">
               <a class="extra-image" href="<?php echo document::href_rlink($extra_image); ?>" data-toggle="lightbox" data-gallery="product">
-                <?php echo functions::draw_thumbnail($image, 250, 0, 'product', 'title="'. functions::escape_html($name) .'"'); ?>
+                <?php echo functions::draw_thumbnail($image, 250, 0, 'product', 'title="'. functions::escape_attr($name) .'"'); ?>
               </a>
             </div>
             <?php } ?>

@@ -45,51 +45,129 @@
     exit;
   }
 
-  if (!empty($_POST['set_order_status'])) {
-    try {
-
-      if (empty($_POST['orders'])) {
-        throw new Exception(language::translate('error_must_select_orders', 'You must select orders to perform the operation'));
-      }
-      foreach ($_POST['orders'] as $order_id) {
-        $order = new ent_order($order_id);
-        $order->data['order_status_id'] = $_POST['order_status_id'];
-        $order->save();
-      }
-
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-
-      header('Location: '. $_SERVER['REQUEST_URI']);
-      exit;
-
-    } catch(Exception $e) {
-      notices::$data['errors'][] = $e->getMessage();
-    }
-  }
-
-  if (!empty($_POST['order_action'])) {
+  if (!empty($_POST['action'])) {
 
     try {
 
       if (empty($_POST['orders'])) {
         throw new Exception(language::translate('error_must_select_orders', 'You must select orders to perform the operation'));
-      }
-
-      list($module_id, $action_id) = explode(':', $_POST['order_action']);
-
-      $order_action = new mod_order();
-
-      $actions = $order_action->actions();
-
-      if (!method_exists($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function'])) {
-        throw new Exception(language::translate('error_method_doesnt_exist', 'The method doesn\'t exist'));
       }
 
       sort($_POST['orders']);
+      $_POST['orders'] = array_unique($_POST['orders']);
+      $_POST['orders'] = array_reverse($_POST['orders']);
 
-      if ($result = call_user_func([$order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']], $_POST['orders'])) {
-        echo $result;
-        return;
+      switch ($_POST['action']) {
+
+        // Set Order Status
+        case 'set_order_status':
+
+          if (empty($_POST['order_status_id'])) {
+            throw new Exception(language::translate('error_must_select_order_status', 'You must select an order status'));
+          }
+
+          foreach ($_POST['orders'] as $order_id) {
+            $order = new ent_order($order_id);
+            $order->data['order_status_id'] = $_POST['order_status_id'];
+            $order->save();
+          }
+
+          break;
+
+        // Book Shipping
+        case 'book_shipping':
+
+          foreach ($_POST['orders'] as $order_id) {
+
+            try {
+
+              $order = new ent_order($order_id);
+
+              if (!$module_id = preg_replace('#^(.*)?:.*$#', '$1', $order->data['shipping_option']['id'])) {
+                throw new Exception('Unknown shipping module for order '. $order->data['id']);
+              }
+
+              if (!class_exists($module_id)) {
+                throw new Exception('Could not instantiate shipping module '. $module_id);
+              }
+
+              $module = new $module_id;
+
+              if (!method_exists($module, 'book')) {
+                throw new Exception('Method book() not found in shipping module '. $module_id);
+              }
+
+              $result = call_user_func([$module, 'book'], $order);
+
+              if (!empty($result['error'])) {
+                throw new Exception($result['error']);
+              }
+
+              notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+
+            } catch (Exception $e) {
+              notices::add('errors', $e->getMessage());
+            }
+          }
+
+          break;
+
+        // Book Shipping
+        case 'cancel_payment':
+
+          foreach ($_POST['orders'] as $order_id) {
+
+            try {
+
+              $order = new ent_order($order_id);
+
+              if (!$module_id = preg_replace('#^(.*)?:.*$#', '$1', $order->data['payment_option']['id'])) {
+                throw new Exception('Unknown payment module for order '. $order->data['id']);
+              }
+
+              if (!class_exists($module_id)) {
+                throw new Exception('Could not instantiate payment module '. $module_id);
+              }
+
+              $module = new $module_id;
+
+              if (!method_exists($module, 'cancel')) {
+                throw new Exception('Method cancel() not found in payment module '. $module_id);
+              }
+
+              $result = call_user_func([$module, 'cancel'], $order);
+
+              if (!empty($result['error'])) {
+                throw new Exception($result['error']);
+              }
+
+              notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+
+            } catch (Exception $e) {
+              notices::add('errors', $e->getMessage());
+            }
+          }
+
+          break;
+
+        // Perform Action from Order Module
+        default:
+
+          list($module_id, $action_id) = explode(':', $_POST['order_action']);
+
+          $order_action = new mod_order();
+          $actions = $order_action->actions();
+
+          if (!method_exists($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function'])) {
+            throw new Exception(language::translate('error_method_doesnt_exist', 'The method doesn\'t exist'));
+          }
+
+          if ($result = call_user_func([$order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']], $_POST['orders'])) {
+            echo $result;
+            return;
+          }
+
+          break;
       }
 
       header('Location: '. $_SERVER['REQUEST_URI']);
@@ -342,27 +420,48 @@ table .fa-star:hover {
 
     <div class="card-body">
       <ul id="actions" class="list-inline">
+
         <li>
           <fieldset>
             <legend><?php echo language::translate('title_set_order_status', 'Set Order Status'); ?></legend>
             <div class="form-group">
               <div class="input-group">
                 <?php echo functions::form_select_order_status('order_status_id', true); ?>
-                <button class="btn btn-default" name="set_order_status" value="true" type="submit" formtarget="_self"><?php echo language::translate('title_set', 'Set'); ?></button>
+                <button class="btn btn-default" name="action" value="set_order_status" type="submit" formtarget="_self"><?php echo language::translate('title_set', 'Set'); ?></button>
               </div>
             </div>
           </fieldset>
         </li>
+
+        <li>
+          <fieldset>
+            <legend><?php echo language::translate('title_shipping', 'Shipping'); ?></legend>
+            <div class="form-group">
+              <?php echo functions::form_button('action', ['book_shipping', language::translate('title_book_shipping', 'Book Shipping')]); ?>
+            </div>
+          </fieldset>
+        </li>
+
+        <li>
+          <fieldset>
+            <legend><?php echo language::translate('title_payment', 'Payment'); ?></legend>
+            <div class="form-group">
+              <?php echo functions::form_button('action', ['cancel_payment', language::translate('title_cancel_payment', 'Cancel Payment')]); ?>
+            </div>
+          </fieldset>
+        </li>
+
         <?php foreach ($order_actions as $module) { ?>
         <li>
           <fieldset title="<?php echo functions::escape_html($module['description']); ?>">
             <legend><?php echo $module['name']; ?></legend>
             <div class="btn-group">
-              <?php foreach ($module['actions'] as $action) echo functions::form_button('order_action', [$module['id'].':'.$action['id'], $action['title']], 'submit', 'formtarget="'. functions::escape_html($action['target']) .'" title="'. functions::escape_html($action['description']) .'"'); ?>
+              <?php foreach ($module['actions'] as $action) echo functions::form_button('action', [$module['id'].':'.$action['id'], $action['title']], 'submit', 'formtarget="'. functions::escape_attr($action['target']) .'" title="'. functions::escape_attr($action['description']) .'"'); ?>
             </div>
           </fieldset>
         </li>
         <?php } ?>
+
       </ul>
     </div>
 
@@ -406,5 +505,12 @@ table .fa-star:hover {
       $(star).replaceWith('<?php echo functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?>');
     });
     return false;
+  });
+
+  $('#actions button').click(function(e){
+    if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
+      e.preventDefault();
+      return false;
+    }
   });
 </script>

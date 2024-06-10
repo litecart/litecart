@@ -1,86 +1,5 @@
 <?php
 
-  function draw_image($image, $width=null, $height=null, $clipping='fit', $parameters='') {
-
-    if ($width && $height) {
-      if (preg_match('#style="#', $parameters)) {
-        $parameters = preg_replace('#style="(.*?)"#', 'style="$1 aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"', $parameters);
-      } else {
-        $parameters .= ' style="aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"';
-      }
-    }
-
-    return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="'. functions::escape_html($clipping) .'"' : '') .' src="'. document::href_rlink($image) .'" '. ($parameters ? ' '. $parameters : '') .'>';
-  }
-
-  function draw_thumbnail($source, $width, $height, $clipping='fit', $parameters='') {
-
-    if (!is_file($source)) {
-      $source = 'storage://images/no_image.png';
-    }
-
-    if (!$width) {
-      if ($clipping == 'product') {
-        list($width, $height) = functions::image_scale_by_height($height, settings::get('product_image_ratio'));
-      } else if ($clipping == 'category') {
-        list($width, $height) = functions::image_scale_by_height($height, settings::get('category_image_ratio'));
-      } else {
-        list($width, $height) = functions::image_scale_by_height($height, functions::image_ratio($source));
-      }
-    }
-
-    if (!$height) {
-      if ($clipping == 'product') {
-        list($width, $height) = functions::image_scale_by_width($width, settings::get('product_image_ratio'));
-      } else if ($clipping == 'category') {
-        list($width, $height) = functions::image_scale_by_width($width, settings::get('category_image_ratio'));
-      } else {
-        list($width, $height) = functions::image_scale_by_width($width, functions::image_ratio($source));
-      }
-    }
-
-    switch (strtolower($clipping)) {
-
-      case '':
-        $clipping = '';
-        break;
-
-      case 'fit':
-        $clipping = 'fit';
-        break;
-
-      case 'crop':
-        $clipping = 'crop';
-        break;
-
-      case 'product':
-        $clipping = strtolower(settings::get('product_image_clipping'));
-        break;
-
-      case 'category':
-        $clipping = strtolower(settings::get('category_image_clipping'));
-        break;
-
-      default:
-        trigger_error('Invalid clipping mode ('. $clipping .')', E_USER_WARNING);
-        break;
-    }
-
-    $thumbnail = functions::image_thumbnail($source, $width, $height);
-    $thumbnail_2x = functions::image_thumbnail($source, $width*2, $height*2);
-
-
-    if ($width && $height) {
-      if (preg_match('#style="#', $parameters)) {
-        $parameters = preg_replace('#style="(.*?)"#', 'style="$1 aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"', $parameters);
-      } else {
-        $parameters .= ' style="aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"';
-      }
-    }
-
-    return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="thumbnail '. functions::escape_html($clipping) .'"' : '') .' src="'. document::href_rlink($thumbnail) .'" srcset="'. document::href_rlink($thumbnail) .' 1x, '. document::href_rlink($thumbnail_2x) .' 2x"'. ($parameters ? ' '. $parameters : '') .'>';
-  }
-
   function draw_banner($keywords, $limit=0) {
 
     if (!is_array($keywords)) {
@@ -202,6 +121,7 @@
     switch ($class) {
       case 'add':         return draw_fonticon('fa-plus');
       case 'cancel':      return draw_fonticon('fa-times');
+			case 'company':     return draw_fonticon('fa-building', 'style="color: #888;"');
       case 'edit':        return draw_fonticon('fa-pencil');
       case 'fail':        return draw_fonticon('fa-times', 'color: #c00;"');
       case 'folder':      return draw_fonticon('fa-folder', 'style="color: #cc6;"');
@@ -216,9 +136,91 @@
       case 'semi-off':    return draw_fonticon('fa-circle', 'style="color: #ded90f;"');
       case 'save':        return draw_fonticon('fa-floppy-o');
       case 'send':        return draw_fonticon('fa-paper-plane');
+			case 'user':        return draw_fonticon('fa-user', 'style="color: #888"');
       case 'warning':     return draw_fonticon('fa-exclamation-triangle', 'color: #c00;"');
       default: trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING); return;
     }
+  }
+
+  function draw_image($image, $width=null, $height=null, $clipping='fit', $parameters='') {
+
+    if ($width && $height) {
+      if (preg_match('#style="#', $parameters)) {
+        $parameters = preg_replace('#style="(.*?)"#', 'style="$1 aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"', $parameters);
+      } else {
+        $parameters .= ' style="aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"';
+      }
+    }
+
+    return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="'. functions::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($image) .'" '. ($parameters ? ' '. $parameters : '') .'>';
+  }
+
+  function draw_thumbnail($image, $width=0, $height=0, $clipping='fit', $parameters='') {
+
+    if (!is_file($image)) {
+      $image = 'storage://images/no_image.png';
+    }
+
+    if (!$width) {
+      if ($clipping == 'product') {
+        list($width, $height) = functions::image_scale_by_height($height, settings::get('product_image_ratio'));
+      } else if ($clipping == 'category') {
+        list($width, $height) = functions::image_scale_by_height($height, settings::get('category_image_ratio'));
+      } else {
+        list($width, $height) = functions::image_scale_by_height($height, functions::image_ratio($source));
+      }
+    }
+
+    if (!$height) {
+      if ($clipping == 'product') {
+        list($width, $height) = functions::image_scale_by_width($width, settings::get('product_image_ratio'));
+      } else if ($clipping == 'category') {
+        list($width, $height) = functions::image_scale_by_width($width, settings::get('category_image_ratio'));
+      } else {
+        list($width, $height) = functions::image_scale_by_width($width, functions::image_ratio($source));
+      }
+    }
+
+    switch (strtolower($clipping)) {
+
+      case '':
+        $clipping = '';
+        break;
+
+      case 'fit':
+        $clipping = 'fit';
+        break;
+
+      case 'crop':
+        $clipping = 'crop';
+        break;
+
+      case 'product':
+        $clipping = strtolower(settings::get('product_image_clipping'));
+        break;
+
+      case 'category':
+        $clipping = strtolower(settings::get('category_image_clipping'));
+        break;
+
+      default:
+        trigger_error('Invalid clipping mode ('. $clipping .')', E_USER_WARNING);
+        break;
+    }
+
+    $thumbnail = functions::image_thumbnail($image, $width, $height);
+    $thumbnail_2x = functions::image_thumbnail($image, $width*2, $height*2);
+
+
+    if ($width && $height) {
+      if (preg_match('#style="#', $parameters)) {
+        $parameters = preg_replace('#style="(.*?)"#', 'style="$1 aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"', $parameters);
+      } else {
+        $parameters .= ' style="aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"';
+      }
+    }
+
+    return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="thumbnail '. functions::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($thumbnail) .'" srcset="'. document::href_rlink($thumbnail) .' 1x, '. document::href_rlink($thumbnail_2x) .' 2x"'. ($parameters ? ' '. $parameters : '') .'>';
   }
 
   function draw_listing_category($category, $view='views/listing_category') {

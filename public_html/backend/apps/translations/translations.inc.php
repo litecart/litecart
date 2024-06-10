@@ -208,8 +208,6 @@
   </div>
 
   <?php echo functions::form_begin('filter_form', 'get'); ?>
-    <?php echo functions::form_input_hidden('app', true); ?>
-    <?php echo functions::form_input_hidden('doc', true); ?>
     <div class="card-filter">
       <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
 
@@ -306,7 +304,7 @@
             <small style="color: #999;"><?php echo functions::form_checkbox('translations['.$key.'][html]', '1', true); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
           </td>
           <?php foreach ($_GET['languages'] as $language_code) { ?>
-          <td><?php echo functions::form_textarea('translations['.$key.'][text_'. $language_code .']', true); ?></td>
+          <td><?php echo functions::form_input_textarea('translations['.$key.'][text_'. $language_code .']', true); ?></td>
           <?php } ?>
         </tr>
         <?php } ?>

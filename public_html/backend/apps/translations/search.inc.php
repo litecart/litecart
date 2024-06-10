@@ -66,7 +66,7 @@
     ". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'backend') ? "and backend = 1" : null) ."
     ". (!empty($_GET['query']) ? "and (code like '%". str_replace('%', "\\%", database::input($_GET['query'])) ."%' or " . implode(" or ", array_map(function($s){ return "`text_$s` like '%". database::input($_GET['query']) ."%'";}, database::input($_GET['languages']))) .")" : "") ."
     ". (!empty($_GET['untranslated']) ? "and (". implode(" or ", array_map(function($s){ return "(text_$s is null or text_$s = '')"; }, database::input($_GET['languages']))) .")" : null) ."
-    ". (empty($_GET['modules']) ? " and code not regexp '^(cm|job|om|ot|pm|sm)_'" : null) ."
+    ". (empty($_GET['modules']) ? " and code not regexp '^(cm|job|om|ot|pm|sm)_'" : '') ."
     order by date_updated desc;"
   )->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 

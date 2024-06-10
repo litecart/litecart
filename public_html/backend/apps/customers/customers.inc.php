@@ -94,7 +94,7 @@
       break;
   }
 
-// Table Rows, Total Number of Rows, Total Number of Pages
+	// Table Rows, Total Number of Rows, Total Number of Pages
   $customers = database::query(
     "select c.* from ". DB_TABLE_PREFIX ."customers c
     where c.id
@@ -165,15 +165,14 @@
       <fieldset id="actions">
         <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-        <ul class="list-inline">
-          <li>
-          <div class="btn-group">
+				<div class="flex flex-columns flex-gap">
+					<div div class="btn-group">
             <?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
             <?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
           </div>
-          </li>
-          <li><?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
-        </ul>
+          <?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
+				</div>
+
       </fieldset>
     </div>
 

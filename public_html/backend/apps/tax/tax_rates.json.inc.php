@@ -26,7 +26,6 @@
       return tax::get_rates($tax_class['id'], $customer);
     });
 
-
   } catch (Exception $e) {
     http_response_code($e->getCode());
     notices::add('errors', $e->getMessage());

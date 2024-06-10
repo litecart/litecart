@@ -3,7 +3,7 @@
 
     $output = [
       '<li class="page-'. $page['id'] .'">',
-      '  <a class="nav-item'. (!empty($page['opened']) ? ' opened' : '') . (!empty($page['active']) ? ' active' : '') .'" href="'. functions::escape_html($page['link']) .'">'. $page['title'] .'</a>',
+      '  <a class="nav-item'. (!empty($page['opened']) ? ' opened' : '') . (!empty($page['active']) ? ' active' : '') .'" href="'. functions::escape_attr($page['link']) .'">'. $page['title'] .'</a>',
     ];
 
     if (!empty($page['subpages'])) {

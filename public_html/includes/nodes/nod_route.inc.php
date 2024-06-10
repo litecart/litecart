@@ -46,15 +46,24 @@
     public static function add($resource, $route) {
 
       if (strpos($resource, ':') === false) {
-        if (!preg_match('#^.:#', $resource)) {
+				if (!preg_match('#^\w:#', $resource)) {
           $resource = 'f:'.$resource;
         }
       }
 
       switch (true) {
-        case (preg_match('#^b:#', $resource)): $route['endpoint'] = 'backend'; break;
-        case (preg_match('#^f:#', $resource)): $route['endpoint'] = 'frontend'; break;
-        default: $route['endpoint'] = 'frontend'; break;
+
+				case (preg_match('#^b:#', $resource)):
+				  $route['endpoint'] = 'backend';
+				  break;
+
+				case (preg_match('#^f:#', $resource)):
+  				$route['endpoint'] = 'frontend';
+  				break;
+
+				default:
+  				$route['endpoint'] = 'frontend';
+  				break;
         }
 
       if (!isset($route['patterns'])) {
@@ -85,7 +94,7 @@
 
             // Resolve resource logic
             if (preg_match('#\*#', $route['resource'])) {
-              $route['resource'] = preg_replace_callback('#^(.:).*$#', function($matches){
+							$route['resource'] = preg_replace_callback('#^(\w:).*$#', function($matches){
                 return fallback($matches[1], 'f:') . preg_replace('#^'. preg_quote(ltrim(BACKEND_ALIAS . '/', '/'), '#') .'#', '', parse_url(self::$request, PHP_URL_PATH));
               }, $route['resource']);
             }
@@ -186,11 +195,11 @@
         switch (pathinfo($request_path, PATHINFO_EXTENSION)) {
 
           case 'css': // Not supported by mime_content_type()
-            header('Content-Type: text/css; charset=utf-8');
+						header('Content-Type: text/css; charset='. mb_http_output());
             break;
 
           case 'js': // Not supported by mime_content_type()
-            header('Content-Type: text/javascript; charset=utf-8');
+						header('Content-Type: text/javascript; charset='. mb_http_output());
             break;
 
           default:
@@ -350,7 +359,7 @@
     // Strip logic from string
       $ipath = self::strip_url_logic($link->path);
 
-      if (!preg_match('#^(f|b):#', $ipath)) {
+			if (!preg_match('#^\w:#', $ipath)) {
         $ipath = 'f:'.$ipath;
       }
 

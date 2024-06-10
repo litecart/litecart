@@ -194,6 +194,9 @@
 			if (!$force_cache && !self::$enabled) {
 				return;
       }
+
+			if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache|max-age=0#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
+				return;
       }
 
       $data = null;

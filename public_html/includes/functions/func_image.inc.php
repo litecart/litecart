@@ -97,7 +97,7 @@
         if (!$image->watermark($options['watermark'], 'RIGHT', 'BOTTOM')) return;
       }
 
-      if (!$image->write($options['destination'], $options['quality'], !empty($options['interlaced']))) return;
+      if (!$image->save($options['destination'], $options['quality'], !empty($options['interlaced']))) return;
 
       return $options['destination'];
 

@@ -28,7 +28,7 @@
     </a>
 
     <div class="filter">
-      <?php echo functions::form_input_search('filter', false, 'placeholder="'. functions::escape_html(language::translate('title_filter', 'Filter')) .'&hellip;" autocomplete="off"'); ?>
+      <?php echo functions::form_input_search('filter', false, 'placeholder="'. functions::escape_attr(language::translate('title_filter', 'Filter')) .'&hellip;" autocomplete="off"'); ?>
     </div>
 
     <?php include 'app://backend/partials/box_apps_menu.inc.php'; ?>
@@ -59,7 +59,7 @@
 
 			<li style="flex-grow: 1;">
 				<div id="search" class="dropdown">
-					<?php echo functions::form_input_search('query', false, 'placeholder="'. functions::escape_html(language::translate('title_search_entire_platform', 'Search entire platform')) .'&hellip;" autocomplete="off"'); ?>
+					<?php echo functions::form_input_search('query', false, 'placeholder="'. functions::escape_attr(language::translate('title_search_entire_platform', 'Search entire platform')) .'&hellip;" autocomplete="off"'); ?>
 					<div class="results dropdown-menu"></div>
 				</div>
 			</li>

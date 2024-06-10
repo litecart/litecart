@@ -178,7 +178,7 @@
           <?php } ?>
           <td><?php echo $module['id']; ?></td>
           <td class="text-end"><?php echo $module['version']; ?></td>
-          <td><?php echo !empty($module['website']) ? '<a href="'. functions::escape_html($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
+					<td><?php echo !empty($module['website']) ? '<a href="'. functions::escape_attr($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
           <td class="text-center"><?php echo $module['priority']; ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/'.$edit_doc, ['module_id' => $module['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
@@ -190,7 +190,7 @@
           <td class="text-center"></td>
           <td><?php echo $module['id']; ?></td>
           <td class="text-end"><?php echo $module['version']; ?></td>
-          <td><?php echo !empty($module['website']) ? '<a href="'. functions::escape_html($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
+					<td><?php echo !empty($module['website']) ? '<a href="'. functions::escape_attr($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
           <td class="text-center">-</td>
           <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_install', 'Install'); ?></a></td>
         </tr>

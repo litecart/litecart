@@ -59,7 +59,7 @@
       )->each(function($info){
         foreach ($info as $key => $value) {
           if (in_array($key, ['id', 'brand_id', 'language_code'])) continue;
-          $this->data[$key][$brand_info['language_code']] = $value;
+          $this->data[$key][$info['language_code']] = $value;
         }
       });
 

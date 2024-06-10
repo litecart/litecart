@@ -25,7 +25,7 @@
           <section class="information col-6 col-sm-3">
             <h3 class="title"><?php echo language::translate('title_information', 'Information'); ?></h3>
             <ul class="list-unstyled">
-              <?php foreach ($pages as $page) echo '<li><a href="'. functions::escape_html($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
+              <?php foreach ($pages as $page) echo '<li><a href="'. functions::escape_attr($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
             </ul>
           </section>
 
@@ -63,7 +63,7 @@
 
         <div class="social-bookmarks text-center">
           <?php foreach ($social_bookmarks as $bookmark) { ?>
-          <a class="thumbnail" href="<?php echo functions::escape_html($bookmark['link']); ?>"><?php echo functions::draw_fonticon($bookmark['icon'] .' fa-fw', 'title="'. functions::escape_html($bookmark['title']) .'"'); ?></a>
+          <a class="thumbnail" href="<?php echo functions::escape_html($bookmark['link']); ?>"><?php echo functions::draw_fonticon($bookmark['icon'] .' fa-fw', 'title="'. functions::escape_attr($bookmark['title']) .'"'); ?></a>
           <?php } ?>
         </div>
 

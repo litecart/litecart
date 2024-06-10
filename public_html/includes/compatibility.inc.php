@@ -41,3 +41,7 @@
   if (empty($_SERVER['HTTP_HOST'])) {
     $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
   }
+
+  if (!isset($_SERVER['HTTP_USER_AGENT'])) {
+    $_SERVER['HTTP_USER_AGENT'] = '';
+  }

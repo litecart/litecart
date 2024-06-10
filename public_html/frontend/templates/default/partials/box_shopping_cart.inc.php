@@ -16,7 +16,7 @@
       <div class="row">
 
         <div class="col-3">
-          <?php echo functions::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. functions::escape_html($item['name']) .'"'); ?>
+          <?php echo functions::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. functions::escape_attr($item['name']) .'"'); ?>
         </div>
 
         <div class="col-8">

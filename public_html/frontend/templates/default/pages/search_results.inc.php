@@ -36,7 +36,7 @@
 
             <div class="filter">
               <div>
-                <?php echo functions::form_input_search('query', true, 'autocomplete="off" placeholder="'. functions::escape_html(language::translate('text_search_products', 'Search products')) .' ..."'); ?>
+                <?php echo functions::form_input_search('query', true, 'autocomplete="off" placeholder="'. functions::escape_attr(language::translate('text_search_products', 'Search products')) .' ..."'); ?>
               </div>
 
               <div>

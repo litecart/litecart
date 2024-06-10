@@ -114,7 +114,7 @@
       }
 
     // Load modifications from disk
-      if (empty(self::$_modifications)) {
+			if (!self::$_modifications) {
 
         foreach (glob(FS_DIR_STORAGE . 'vmods/*.xml') as $file) {
           self::load($file);

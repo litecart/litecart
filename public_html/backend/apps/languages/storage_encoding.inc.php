@@ -12,13 +12,9 @@
     ORDER BY TABLE_NAME;"
   )->fetch_all();
 
-  $defined_tables = [];
-
-  foreach ($tables as $table) {
-    if (preg_match('#^'.preg_quote(DB_TABLE_PREFIX, '#').'#', $table['TABLE_NAME'])) {
-      $defined_tables[] = $table['TABLE_NAME'];
-    }
-  }
+  $defined_tables = array_filter(array_column($tables, 'TABLE_NAME'), function($table){
+    return preg_match('#^'.preg_quote(DB_TABLE_PREFIX, '#').'#', $table);
+  });
 
   if (!$_POST) {
     $_POST['tables'] = $defined_tables;

@@ -27,16 +27,13 @@
 
       functions::image_delete_cache('storage://images/' . $filename);
 
-      if (settings::get('image_downsample_size')) {
-        list($width, $height) = explode(',', settings::get('image_downsample_size'));
-        $image->resample($width, $height, 'FIT_ONLY_BIGGER');
-      }
+			$image->resample(512, 512, 'FIT_ONLY_BIGGER');
 
-      if (!$image->write('storage://images/' . $filename)) {
+			if (!$image->save('storage://images/' . $filename)) {
         throw new Exception(language::translate('error_failed_uploading_image', 'The uploaded image failed saving to disk. Make sure permissions are set.'));
       }
 
-      notices::add('success', language::translate('success_changes_saved_refresh_cache', 'Changes saved successfully. If you don\'t see any changes, try <a href="https://www.google.com/search?q=how+to+hard+refresh+a+web+page" target="_blank">hard refreshing</a> the page or clear browser cache.'));
+			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink());
       exit;
 

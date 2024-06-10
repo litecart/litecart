@@ -410,7 +410,7 @@
         <tr class="<?php if (empty($product['status'])) echo 'semi-transparent'; ?>">
           <td><?php echo functions::form_checkbox('products[]', $product['id']); ?></td>
           <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
-          <td class="warning"><?php if (!empty($warning)) echo functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"'); ?></td>
+          <td class="warning"><?php if (!empty($warning)) echo functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_attr($warning) .'"'); ?></td>
           <td><?php echo functions::draw_thumbnail('storage://images/' . $product['image'], 24, 24, 'fit'); ?><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"> <?php echo $product['name'] ? $product['name'] : '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
           <td class="text-end"><?php echo currency::format($product['price']); ?></td>
           <td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('f:product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
@@ -506,7 +506,7 @@
           '<tr class="'. (!$product['status'] ? ' semi-transparent' : '') .'">',
           '  <td>'. functions::form_checkbox('products[]', $product['id'], true) .'</td>',
           '  <td>'. functions::draw_fonticon(!empty($product['status']) ? 'on' : 'off') .'</td>',
-          '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : '') .'</td>',
+          '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_attr($warning) .'"') : '') .'</td>',
           (($display_images) ?
             '  <td>'. functions::draw_thumbnail('storage://images/' . $product['image'], 24, 24, 'fit', 'style="margin-inline-start: '. ($depth*16) .'px;"') .' <a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>'
           : '  <td><span style="margin-inline-start: '. (($depth+1)*16) .'px;">&nbsp;<a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>'

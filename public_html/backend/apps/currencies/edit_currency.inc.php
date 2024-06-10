@@ -152,7 +152,7 @@
           $available_currency['code'],
           $available_currency['code'] .' &ndash; '. $available_currency['name'],
           implode(' ', array_map(function($k, $v){
-            return 'data-'. str_replace('_', '-', $k) .'="'. functions::escape_html($v) .'"';
+            return 'data-'. str_replace('_', '-', $k) .'="'. functions::escape_attr($v) .'"';
           }, array_keys($available_currency), array_values($available_currency))),
         ];
       }

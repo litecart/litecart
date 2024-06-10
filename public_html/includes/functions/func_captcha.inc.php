@@ -78,7 +78,7 @@
   // Output key and image
     return implode(PHP_EOL, [
       '<div class="input-group" style="width: '. ((int)$config['width'] * 2) .'px;">',
-      '  <input type="hidden" name="lc-captcha-id" value="'. functions::escape_html($id) .'">',
+      '  <input type="hidden" name="lc-captcha-id" value="'. functions::escape_attr($id) .'">',
       '  <img src="data:image/gif;base64,'. $base64_image .'" alt="" style="width: '. $config['width'] .'px; height: '. $config['height'] .'px; border-radius: var(--border-radius) var(--border-radius) 0 0;"'. ($parameters ? ' ' . $parameters : '') .'>',
       '  ' . form_input_text('lc-captcha-response', '', 'required maxlength="'. (int)$config['length'] .'" autocomplete="off" style="font-size: '. round($config['font_size'])  .'px; padding: 0; text-align: center;"'. ($parameters ? ' '. $parameters : '')),
       '</div>',

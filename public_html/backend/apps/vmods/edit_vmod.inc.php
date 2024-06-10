@@ -323,9 +323,9 @@ textarea.warning {
                     </div>
 
                     <div class="col-md-2" style="align-self: center;">
-                      <?php echo functions::form_button('aliases[new_alias_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_up', 'Move Up')) .'"'); ?>
-                      <?php echo functions::form_button('aliases[new_alias_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_down', 'Move Down')) .'"'); ?>
-                      <?php echo functions::form_button('aliases[new_alias_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'"'); ?>
+                      <?php echo functions::form_button('aliases[new_alias_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_up', 'Move Up')) .'"'); ?>
+                      <?php echo functions::form_button('aliases[new_alias_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_down', 'Move Down')) .'"'); ?>
+                      <?php echo functions::form_button('aliases[new_alias_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'"'); ?>
                     </div>
                   </div>
                 </fieldset>
@@ -479,9 +479,9 @@ textarea.warning {
                 </div>
 
                 <div class="col-md-2 text-center" style="align-self: center;">
-                  <?php echo functions::form_button('settings['.$key.'][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_up', 'Move Up')) .'"'); ?>
-                  <?php echo functions::form_button('settings['.$key.'][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_down', 'Move Down')) .'"'); ?>
-                  <?php echo functions::form_button('settings['.$key.'][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'"'); ?>
+                  <?php echo functions::form_button('settings['.$key.'][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_up', 'Move Up')) .'"'); ?>
+                  <?php echo functions::form_button('settings['.$key.'][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_down', 'Move Down')) .'"'); ?>
+                  <?php echo functions::form_button('settings['.$key.'][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'"'); ?>
                 </div>
               </div>
 
@@ -559,7 +559,7 @@ textarea.warning {
 
       <div class="card-action">
         <div class="btn-group">
-          <?php echo functions::form_button('quicksave', ['true', ''], 'submit', 'class="btn btn-success btn-icon" title="'. functions::escape_html(language::translate('title_quicksave', 'Quicksave')) .'"', 'save'); ?>
+          <?php echo functions::form_button('quicksave', ['true', ''], 'submit', 'class="btn btn-success btn-icon" title="'. functions::escape_attr(language::translate('title_quicksave', 'Quicksave')) .'"', 'save'); ?>
           <?php echo functions::form_button_predefined('save'); ?>
         </div>
         <?php if (!empty($vmod->data['id'])) echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'button', 'class="btn btn-danger"', 'delete'); ?>
@@ -982,9 +982,9 @@ textarea.warning {
       '    </div>',
       '',
       '    <div class="col-md-2" style="align-self: center;">',
-      '     <?php echo functions::form_button('aliases[new_alias_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_up', 'Move Up')) .'"'); ?>',
-      '     <?php echo functions::form_button('aliases[new_alias_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_down', 'Move Down')) .'"'); ?>',
-      '     <?php echo functions::form_button('aliases[new_alias_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'"'); ?>',
+      '     <?php echo functions::form_button('aliases[new_alias_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_up', 'Move Up')) .'"'); ?>',
+      '     <?php echo functions::form_button('aliases[new_alias_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_down', 'Move Down')) .'"'); ?>',
+      '     <?php echo functions::form_button('aliases[new_alias_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'"'); ?>',
       '    </div>',
       '  </div>',
       '</fieldset>'
@@ -1037,9 +1037,9 @@ textarea.warning {
       '    </div>',
       '',
       '    <div class="col-md-2 text-center" style="align-self: center;">',
-      '     <?php echo functions::form_button('settings[new_setting_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_up', 'Move Up')) .'"'); ?>',
-      '     <?php echo functions::form_button('settings[new_setting_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_move_down', 'Move Down')) .'"'); ?>',
-      '     <?php echo functions::form_button('settings[new_setting_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'"'); ?>',
+      '     <?php echo functions::form_button('settings[new_setting_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_up', 'Move Up')) .'"'); ?>',
+      '     <?php echo functions::form_button('settings[new_setting_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_down', 'Move Down')) .'"'); ?>',
+      '     <?php echo functions::form_button('settings[new_setting_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'"'); ?>',
       '    </div>',
       '  </div>',
       '',

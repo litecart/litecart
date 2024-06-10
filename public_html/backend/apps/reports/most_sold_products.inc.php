@@ -97,7 +97,7 @@ form[name="filter_form"] li {
   <div class="card-action">
     <?php echo functions::form_begin('filter_form', 'get'); ?>
       <ul class="list-inline">
-        <li><?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_html(language::translate('title_item_name_or_sku', 'Item Name or SKU')) .'"'); ?></li>
+        <li><?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_attr(language::translate('title_item_name_or_sku', 'Item Name or SKU')) .'"'); ?></li>
         <li>
           <div class="input-group" style="max-width: 380px;">
             <?php echo functions::form_input_date('date_from', true); ?>
