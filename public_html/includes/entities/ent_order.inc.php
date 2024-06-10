@@ -491,6 +491,10 @@
         }
       }
 
+      list($module_id, $option_id) = preg_split('#:#', $this->data['payment_option']['id']);
+      $payment_modules = new mod_payment();
+      $payment_modules->run('after_save', $module_id, $this);
+
       $order_modules = new mod_order();
       $order_modules->update($this);
 

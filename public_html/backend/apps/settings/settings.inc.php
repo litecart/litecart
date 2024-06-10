@@ -117,7 +117,7 @@
           break;
 
         case (substr($setting['function'], 0, 6) == 'toggle'):
-          if (in_array(($setting['value']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
+          if (in_array($setting['value'], ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
            $setting['value'] = language::translate('title_true', 'True');
           } else if (in_array(($setting['value']), ['', '0', 'inactive', 'disabled', 'off', 'false', 'no'])) {
            $setting['value'] = language::translate('title_false', 'False');

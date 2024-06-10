@@ -47,6 +47,11 @@
 
   document::$head_tags['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', ['category_id' => $category->id]) .'">';
 
+  if (!empty($category->image)) {
+    $og_image = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->image, 1200, 630, 'FIT_USE_WHITESPACING');
+    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink(FS_DIR_STORAGE . $og_image) .'">';
+  }
+
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
   foreach (array_slice($category->path, 0, -1, true) as $category_crumb) {
     breadcrumbs::add($category_crumb->name, document::ilink('category', ['category_id' => $category_crumb->id]));
