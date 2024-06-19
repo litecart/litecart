@@ -33,6 +33,14 @@ hr {
   .page[data-size="A4R"] {
     height: calc(21cm - 15mm - 15mm);
   }
+  .page[data-size="us-letter"] {
+    width: 8.5in;
+    height: 11in;
+  }
+  .page[data-size="us-legal"] {
+    width: 8.5in;
+    height: 14in;
+  }
   h1 {
     margin-top: 0;
   }
