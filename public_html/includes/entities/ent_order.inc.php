@@ -37,7 +37,7 @@
           case 'customer_country_code':
           case 'customer_zone_code':
           case 'customer_phone':
-            $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = database::create_variable($field['Type']);
+            $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           case 'shipping_company':
@@ -50,21 +50,21 @@
           case 'shipping_country_code':
           case 'shipping_zone_code':
           case 'shipping_phone':
-            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = database::create_variable($field['Type']);
+            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           case 'payment_option_id':
           case 'payment_option_name':
-            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = database::create_variable($field['Type']);
+            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           case 'shipping_option_id':
           case 'shipping_option_name':
-            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = database::create_variable($field['Type']);
+            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           default:
-            $this->data[$field['Field']] = database::create_variable($field['Type']);
+            $this->data[$field['Field']] = database::create_variable($field);
             break;
         }
       }
