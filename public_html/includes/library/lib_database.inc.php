@@ -105,9 +105,13 @@
 
     public static function set_encoding($charset, $collation=null, $link='default') {
 
-      if (!isset(self::$_links[$link])) self::connect($link);
+      if (!$charset) {
+        return false;
+      }
 
-      if (empty($charset)) return false;
+      if (!isset(self::$_links[$link])) {
+        self::connect($link);
+      }
 
       $charset = strtolower($charset);
 
@@ -135,7 +139,9 @@
         'windows-1257' => 'cp1257',
       ];
 
-      $charset = strtr($charset, $charset_to_mysql_character_set);
+      if (isset($charset_to_mysql_character_set[$charset])) {
+        $charset = $charset_to_mysql_character_set[$charset];
+      }
 
       if (!self::set_charset($charset, $link)) {
         trigger_error('Unknown MySQL character set for charset '. $charset, E_USER_WARNING);
@@ -181,7 +187,9 @@
 
     public static function query($query, $link='default') {
 
-      if (!isset(self::$_links[$link])) self::connect($link);
+      if (!isset(self::$_links[$link])) {
+        self::connect($link);
+      }
 
       $measure_start = microtime(true);
 
@@ -198,6 +206,10 @@
       if (class_exists('stats', false)) {
         self::$stats['queries']++;
         self::$stats['duration'] += $duration;
+      }
+
+      if ($result instanceof mysqli_result) {
+        return new database_result($query, $result);
       }
 
       return $result;
@@ -230,38 +242,23 @@
     }
 
     public static function fetch($result, $column='') {
+      return $result->fetch($column);
+    }
 
-      $measure_start = microtime(true);
-
-      $array = mysqli_fetch_assoc($result);
-
-      $duration = microtime(true) - $measure_start;
-
-      if (class_exists('stats', false)) {
-        self::$stats['duration'] += $duration;
-      }
-
-      if ($column) {
-        if (isset($array[$column])) {
-          return $array[$column];
-        } else {
-          return false;
-        }
-      }
-
-      return $array;
+    public static function fetch_all($result, $column=null, $index_column=null) {
+      return $result->fetch_all($column=null, $index_column=null);
     }
 
     public static function seek($result, $offset) {
-      return mysqli_data_seek($result, $offset);
+      return $result->seek($offset);
     }
 
     public static function num_rows($result) {
-      return mysqli_num_rows($result);
+      return $result->num_rows;
     }
 
     public static function free($result) {
-      return mysqli_free_result($result);
+      return $result->free();
     }
 
     public static function insert_id($link='default') {
@@ -273,9 +270,7 @@
     }
 
     public static function info($link='default') {
-
       if (!isset(self::$_links[$link])) self::connect($link);
-
       return mysqli_info(self::$_links[$link]);
     }
 
@@ -293,48 +288,256 @@
       }
     }
 
-    public static function input($string, $allowable_tags=false, $trim=true, $link='default') {
+    public static function input($input, $allowable_tags=false, $trim=true, $link='default') {
 
-      if (is_array($string)) {
-        foreach (array_keys($string) as $key) {
-          $string[$key] = self::input($string[$key], $allowable_tags, $trim, $link);
+      if (is_array($input)) {
+        foreach (array_keys($input) as $key) {
+          $input[$key] = self::input($input[$key], $allowable_tags, $trim, $link);
         }
-        return $string;
+        return $input;
       }
 
-      if (empty($string)) return '';
+			if ($input == '') {
+				return '';
+			}
 
-      if (in_array(gettype($string), ['null', 'boolean', 'double', 'integer', 'float'])) {
-        return $string;
+      if (in_array(gettype($input), ['null', 'boolean', 'double', 'integer', 'float'])) {
+        return $input;
       }
 
       if ($allowable_tags !== true) {
         if ($allowable_tags != '') {
-          $string = strip_tags($string, $allowable_tags);
+          $input = strip_tags($input, $allowable_tags);
         } else {
-          $string = strip_tags($string);
+          $input = strip_tags($input);
         }
       }
 
       if ($trim === true) {
-        $string = trim($string);
+        $input = trim($input);
       } else if ($trim != '') {
-        $string = trim($string, $trim);
+        $input = trim($input, $trim);
       }
 
-      if (!isset(self::$_links[$link])) self::connect($link);
+      if (!isset(self::$_links[$link])) {
+        self::connect($link);
+      }
 
-      return mysqli_real_escape_string(self::$_links[$link], $string);
+      return mysqli_real_escape_string(self::$_links[$link], $input);
     }
 
-    public static function input_like($string, $allowable_tags=false, $trim=true, $link='default') {
-      $string = self::input($string, $allowable_tags, $trim, $link);
-      return addcslashes($string, '%_');
+    public static function input_like($input, $allowable_tags=false, $trim=true, $link='default') {
+      $input = self::input($input, $allowable_tags, $trim, $link);
+      $input = addcslashes($input, '%_');
+      return $input;
     }
 
-    public static function input_fulltext($string, $allowable_tags=false, $trim=true, $link='default') {
-      $string = self::input($string, $allowable_tags, $trim, $link);
-      $string = preg_replace('#[+\-<>\(\)~*\"@;]+#', ' ', $string);
-      return preg_replace('# +#', ' ', $string);
+    public static function input_fulltext($input, $allowable_tags=false, $trim=true, $link='default') {
+      $input = self::input($input, $allowable_tags, $trim, $link);
+      $input = preg_replace('#[+\-<>\(\)~*\"@;]+#', ' ', $input);
+      $input = preg_replace('# +#', ' ', $input);
+      return $string;
+    }
+  }
+
+  class database_result {
+    private $_query;
+    private $_result;
+
+    public function __construct(string $query, mysqli_result $result) {
+      $this->_query = $query;
+      $this->_result = $result;
+    }
+
+    public function __call($method, $arguments) {
+      return call_user_func_array([$this->_result, $method], $arguments);
+    }
+
+    public function __get($name) {
+      return $this->_result->$name;
+    }
+
+    public function __set($name, $value) {
+      // Do nothing
+    }
+
+    public function export(&$object) {
+      return $object = $this;
+    }
+
+    public function fields() {
+			$fields = array_column(mysqli_fetch_fields($this->_result), 'name');
+      return $fields;
+    }
+
+    public function fetch($filter=null) {
+
+      $timestamp = microtime(true);
+
+      $row = mysqli_fetch_assoc($this->_result);
+
+      if ($row !== null && $filter) {
+        switch (gettype($filter)) {
+
+          case 'array':
+            $result = array_intersect_key($row, array_flip($filter));
+            break;
+
+          case 'string':
+            if (isset($row[$filter])) {
+              $result = $row[$filter];
+            } else {
+              $result = false;
+            }
+            break;
+
+          case 'object':
+            $result = call_user_func_array($filter, [&$row]);
+						if ($result === null) { // Was no result returned?
+							$result = $row;
+						}
+            break;
+
+          default:
+            $row = false;
+						break;
+        }
+			} else {
+				$result = $row;
+      }
+
+      database::$stats['duration'] += microtime(true) - $timestamp;
+
+			return $result;
+    }
+
+    public function fetch_all($filter=null, $index_column=null) {
+
+      $timestamp = microtime(true);
+
+      if ($filter || $index_column) {
+
+        $rows = [];
+
+        while ($row = mysqli_fetch_assoc($this->_result)) {
+
+          if ($filter) {
+            switch (gettype($filter)) {
+
+              case 'array':
+                $result = array_intersect_key($row, array_flip($filter));
+                break;
+
+              case 'string':
+                if (isset($row[$filter])) {
+                  $result = $row[$filter];
+                } else {
+                  $result = false;
+                }
+                break;
+
+              case 'object':
+                $result = call_user_func_array($filter, [&$row]);
+								if ($result === null) { // Was no result returned?
+									$result = $row;
+								}
+                break;
+
+              default:
+                $result = false;
+            }
+					} else {
+						$result = $row;
+          }
+
+          if (empty($result) && !is_numeric($result)) {
+						continue;
+					}
+
+          if ($index_column) {
+
+						if (isset($row[$index_column])) {
+							$rows[$row[$index_column]] = $result;
+          } else {
+							trigger_error('Index column not found in row ('. $index_column .')', E_USER_WARNING);
+							$rows[] = false;
+						}
+
+					} else {
+						$rows[] = $result;
+          }
+        }
+
+      } else {
+        $rows = mysqli_fetch_all($this->_result, MYSQLI_ASSOC);
+      }
+
+      database::$stats['duration'] += microtime(true) - $timestamp;
+
+      return $rows;
+    }
+
+    public function fetch_page($filter=null, $index_column=null, $page=1, $items_per_page=null, &$num_rows=null, &$num_pages=null) {
+
+      $timestamp = microtime(true);
+
+			if (!is_numeric($page) || $page < 1) {
+				$page = 1;
+			}
+
+      if (!$items_per_page) {
+        $items_per_page = settings::get('data_table_rows_per_page');
+      }
+
+			$rows = [];
+      $num_rows = mysqli_num_rows($this->_result);
+      $num_pages = ceil($num_rows / $items_per_page);
+			$pointer = (((int)$_GET['page']) -1) * $items_per_page;
+
+			if ($pointer < $num_rows) {
+
+				mysqli_data_seek($this->_result, $pointer);
+
+				for ($i=0; $i < $items_per_page; $i++) {
+
+					$row = $this->fetch($filter, $index_column);
+					$pointer++;
+
+					if (!empty($row) || !is_numeric($row)) {
+        $rows[] = $row;
+					}
+
+					if ($pointer == $num_rows) {
+						break; // We reached the end of the result set
+					}
+				}
+      }
+
+      database::$stats['duration'] += microtime(true) - $timestamp;
+
+      return $rows;
+    }
+
+    public function each(callable $function) {
+      while ($row = $this->fetch()) {
+        call_user_func($function, $row);
+      }
+    }
+
+    public function seek($offset) {
+      mysqli_data_seek($this->_result, $offset);
+      return $this;
+    }
+
+    public function num_rows() {
+      return mysqli_num_rows($this->_result);
+    }
+
+    public function free() {
+      return mysqli_free_result($this->_result);
+    }
+
+    public function __destruct() {
+      $this->free();
     }
   }
