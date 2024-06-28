@@ -141,7 +141,7 @@
     }
 
   } else {
-    session::$data['checkout']['shopping_cart'] = &cart::$cart;
+    session::$data['checkout']['shopping_cart'] = new ent_shopping_cart(session::$data['cart_uid']);
   }
 
   $mod_checkout = new mod_checkout();

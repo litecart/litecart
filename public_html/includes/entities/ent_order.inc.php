@@ -150,8 +150,8 @@
       )->fetch_all();
 
       $this->data['comments'] = database::query(
-        "select oc.*, u.username as author_username from ". DB_TABLE_PREFIX ."orders_comments oc
-        left join ". DB_TABLE_PREFIX ."users u on (u.id = oc.author_id)
+        "select oc.*, a.username as author_username from ". DB_TABLE_PREFIX ."orders_comments oc
+        left join ". DB_TABLE_PREFIX ."administrators a on (a.id = oc.author_id)
         where oc.order_id = ". (int)$order_id ."
         order by oc.id;"
       )->fetch_all();
@@ -685,8 +685,8 @@
         '%order_id' => $this->data['no'], // Backwards compatibility
         '%order_no' => $this->data['no'],
         '%new_status' => $order_status->name,
-        '%firstname' => $this->data['customer']['firstname'],
-        '%lastname' => $this->data['customer']['lastname'],
+        '%firstname' => $this->data['billing_address']['firstname'],
+        '%lastname' => $this->data['billing_address']['lastname'],
         '%billing_address' => nl2br(functions::format_address($this->data['customer']), false),
         '%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
         '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address']), false),
@@ -739,7 +739,7 @@
       }
 
       $email = new ent_email();
-      $email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
+      $email->add_recipient($this->data['billing_address']['email'], $this->data['billing_address']['firstname'] .' '. $this->data['billing_address']['lastname'])
             ->set_subject($subject)
             ->add_body($message, true)
             ->send();

@@ -496,6 +496,11 @@ UPDATE `lc_settings`
 SET `function` = 'regional_text()'
 WHERE `function` = 'regional_input()';
 -- --------------------------------------------------------
+UPDATE `lc_orders`
+SET shipping_tax_id = billing_tax_id,
+  shipping_phone = billing_phone,
+  shipping_email = billing_email;
+-- --------------------------------------------------------
 UPDATE `lc_orders` o
 LEFT JOIN `lc_orders_totals` ot ON (ot.order_id = o.id AND ot.module_id = 'ot_subtotal')
 SET o.subtotal = ot.`amount`,
@@ -527,8 +532,9 @@ LEFT JOIN `lc_products_stock_options` pso ON (pso.product_id = oi.product_id AND
 SET oi.stock_option_id = pso.id;
 -- --------------------------------------------------------
 UPDATE `lc_orders_items`
-SET sum = price * quantity,
-sum_tax = tax * quantity;
+SET `type` = 'product',
+  sum = price * quantity,
+  sum_tax = tax * quantity;
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
 DROP COLUMN `tax`;

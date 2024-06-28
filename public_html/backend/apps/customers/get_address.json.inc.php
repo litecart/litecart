@@ -9,7 +9,6 @@
   if (!$customer) exit;
 
   $json = [
-    'email' => fallback($customer['email']),
     'tax_id' => fallback($customer['tax_id']),
     'company' => fallback($customer['company']),
     'firstname' => fallback($customer['firstname']),
@@ -21,6 +20,7 @@
     'country_code' => fallback($customer['country_code']),
     'zone_code' => fallback($customer['zone_code']),
     'phone' => fallback($customer['phone']),
+    'email' => fallback($customer['email']),
     'default_billing_address_id' => fallback($customer['default_billing_address_id']),
     'default_shipping_address_id' => fallback($customer['default_shipping_address_id']),
   ];

@@ -314,10 +314,12 @@
 
       $_page->snippets = array_merge(self::$snippets, [
         'head_tags' => self::$head_tags,
+				'style' => self::$style,
         'breadcrumbs' => breadcrumbs::render(),
         'notices' => notices::render(),
         'content' => self::$content,
         'foot_tags' => self::$foot_tags,
+				'javascript' => self::$javascript,
 				'important_notice' => settings::get('important_notice'),
       ]);
 

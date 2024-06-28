@@ -103,7 +103,7 @@
           $bccs[] = $email;
         }
 
-        $shopping_cart->email_shopping_cart_copy($shopping_cart->data['customer']['email'], $bccs, $shopping_cart->data['language_code']);
+        $shopping_cart->email_shopping_cart_copy($shopping_cart->data['billing_address']['email'], $bccs, $shopping_cart->data['language_code']);
       }
 
       if (!empty($_GET['redirect_url'])) {
@@ -451,7 +451,7 @@
 
   <div class="modal-body">
     <div class="form-group">
-      <?php echo functions::form_input_text('query', true, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'"'); ?>
+      <?php echo functions::form_input_text('query', true, 'placeholder="'. functions::escape_attr(language::translate('title_search', 'Search')) .'"'); ?>
     </div>
 
     <div class="form-group results table-responsive">

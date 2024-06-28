@@ -1069,6 +1069,7 @@ CREATE TABLE `lc_zones` (
   PRIMARY KEY (`id`),
   KEY `country_code` (`country_code`),
   KEY `code` (`code`)
+  CONSTRAINT `zone_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE NO ACTION ON DELETE CASCADE,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- --------------------------------------------------------
 CREATE TABLE `lc_zones_to_geo_zones` (
