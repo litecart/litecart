@@ -3,9 +3,6 @@
   define('PLATFORM_VERSION', '3.0.0');
   define('SCRIPT_TIMESTAMP_START', microtime(true));
 
-// Capture output buffer
-  ob_start();
-
 // Get config
   if (!defined('FS_DIR_APP')) {
     if (!file_exists(__DIR__ . '/../storage/config.inc.php')) {
@@ -14,6 +11,9 @@
     }
     require __DIR__ . '/../storage/config.inc.php';
   }
+
+	// Capture output to buffer
+	ob_start(null, 0, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
 
 // Virtual File System
   require FS_DIR_APP .'includes/streams/stream_app.inc.php';
