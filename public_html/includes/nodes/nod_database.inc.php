@@ -273,12 +273,6 @@
 
       self::$stats['queries']++;
       self::$stats['duration'] += $duration;
-
-      if ($result instanceof mysqli_result) {
-        return new database_result($sql, $result);
-      }
-
-      return $result;
     }
 
     public static function multi_query($sql, $link='default') {
@@ -340,7 +334,7 @@
 
     public static function create_variable($field, $value=null) {
 
-      if (empty($field)) {
+			if (!$field) {
         return null;
       }
 
@@ -387,7 +381,7 @@
         return $input;
       }
 
-			if (empty($input)) {
+			if ($input == '') {
 				return '';
 			}
 
