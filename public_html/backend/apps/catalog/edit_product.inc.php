@@ -4,10 +4,6 @@
     $product = new ent_product($_GET['product_id']);
   } else {
     $product = new ent_product();
-    $product->data['status'] = 1;
-    $product->data['quantity_min'] = 1;
-    $product->data['quantity_max'] = 0;
-    $product->data['quantity_step'] = 0;
   }
 
   if (!$_POST) {

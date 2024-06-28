@@ -609,7 +609,7 @@ CREATE TABLE `lc_products` (
   `keywords` VARCHAR(255) NOT NULL DEFAULT '',
   `synonyms` VARCHAR(255) NOT NULL DEFAULT '',
   `quantity` FLOAT(11) NOT NULL DEFAULT '0.0000',
-  `quantity_min` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+  `quantity_min` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '1.0000',
   `quantity_max` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
   `quantity_step` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
   `quantity_unit_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
