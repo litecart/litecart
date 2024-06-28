@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{language}}" dir="{{text_direction}}"<?php if (!empty($_COOKIE['dark_mode'])) echo ' class="dark-mode"'; ?>>
+<html lang="{{language}}" dir="{{text_direction}}" class="<?php echo !empty($_COOKIE['dark_mode']) ? ' class="dark-mode"' : ''; ?><?php echo !empty($_COOKIE['condensed']) ? ' condensed' : ''; ?>">
 <head>
 <title>{{title}}</title>
 <meta charset="{{charset}}">
@@ -156,6 +156,16 @@
     let new_size = parseInt($(':root').css('--default-text-size').split('px')[0]) + (($(this).val() == 'increase') ? 1 : -1);
     $(':root').css('--default-text-size', new_size + 'px');
     document.cookie = 'font_size='+ new_size +';Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000';
+  });
+
+  $('input[name="condensed"]').click(function(){
+    if ($(this).val() == 1) {
+      document.cookie = 'condensed=1;Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000';
+      $('html').addClass('condensed');
+    } else {
+      document.cookie = 'condensed=0;Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000';
+      $('html').removeClass('condensed');
+    }
   });
 
   $('input[name="dark_mode"]').click(function(){

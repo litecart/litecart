@@ -326,3 +326,49 @@ html.dark-mode {
     background: #283144;
   }
 }
+
+/* Condensed Mode */
+
+html.condensed {
+  --sidebar-width: 18rem;
+  --gutter-size: 1.5em;
+
+  #top-bar {
+    margin: 0;
+    border-radius: 0;
+  }
+
+  #content {
+    //background: var(--card-background-color);
+    margin: 0;
+    padding: .5em;
+    > :last-child {
+      margin-bottom: 1em;
+    }
+  }
+
+  .card {
+    margin: 1em;
+  }
+
+  .grid {
+    grid-gap: 1.5em;
+  }
+
+  .table {
+    th {
+      padding: .5em .5em;
+    }
+    td {
+      padding: .33em .5em;
+    }
+    th, td {
+      &:first-child {
+        padding-inline-start: 1em;
+      }
+      &:last-child {
+        padding-inline-start: 1em;
+      }
+    }
+  }
+}
