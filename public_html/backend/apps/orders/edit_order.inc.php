@@ -173,7 +173,9 @@
         'order_status_id',
         'shipping_tracking_id',
         'shipping_tracking_url',
+        'shipping_purchase_cost',
         'payment_transaction_id',
+        'payment_transaction_fee',
         'payment_receipt_url',
         'payment_terms',
         'display_prices_including_tax',
@@ -599,9 +601,16 @@
                 </div>
               </div>
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_transaction_id', 'Transaction ID'); ?></label>
-                <?php echo functions::form_input_text('payment_transaction_id', true); ?>
+              <div class="row">
+                <div class="form-group col-md-8">
+                  <label><?php echo language::translate('title_transaction_id', 'Transaction ID'); ?></label>
+                  <?php echo functions::form_input_text('payment_transaction_id', true); ?>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label><?php echo language::translate('title_transaction_fee', 'Transaction Fee'); ?></label>
+                  <?php echo functions::form_input_money('payment_transaction_fee', settings::get('store_currency_code'), true); ?>
+                </div>
               </div>
 
               <div class="form-group">
@@ -644,14 +653,21 @@
                 </div>
 
                 <div class="form-group col-md-4">
-                  <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
-                  <div class="form-input"><?php echo weight::format($order->data['weight_total'], $order->data['weight_unit']) ?></div>
+                  <label><?php echo language::translate('title_shipping_purchase_cost', 'Shipping Purchase Cost'); ?></label>
+                  <?php echo functions::form_input_money('shipping_purchase_cost', settings::get('store_currency_code'), true); ?>
                 </div>
               </div>
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_tracking_url', 'Tracking URL'); ?></label>
-                <?php echo functions::form_input_url('shipping_tracking_url', true); ?>
+              <div class="row">
+                <div class="form-group col-md-8">
+                  <label><?php echo language::translate('title_tracking_url', 'Tracking URL'); ?></label>
+                  <?php echo functions::form_input_url('shipping_tracking_url', true); ?>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
+                  <div class="form-input"><?php echo weight::format($order->data['weight_total'], $order->data['weight_unit']) ?></div>
+                </div>
               </div>
 
               <div class="row">
