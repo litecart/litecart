@@ -148,12 +148,12 @@
           <?php } ?>
 
           <div class="row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-8">
               <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
               <?php echo functions::form_input_email('email', true); ?>
             </div>
 
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
               <?php echo functions::form_checkbox('newsletter', ['1', language::translate('title_subscribe', 'Subscribe')], true); ?>
             </div>
