@@ -448,6 +448,7 @@ CREATE TABLE `lc_orders` (
   `discount_tax` FLOAT(11) NOT NULL DEFAULT '0.0000',
   `total` FLOAT(11) NOT NULL DEFAULT '0.0000',
   `total_tax` FLOAT(11) NOT NULL DEFAULT '0.0000',
+  `notes` VARCHAR(1024) NOT NULL DEFAULT '',
   `ip_address` VARCHAR(39) NOT NULL DEFAULT '',
   `hostname` VARCHAR(128) NOT NULL DEFAULT '',
   `user_agent` VARCHAR(255) NOT NULL DEFAULT '',

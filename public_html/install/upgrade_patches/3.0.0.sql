@@ -247,6 +247,7 @@ ADD COLUMN `shipping_current_location` VARCHAR(128) NOT NULL DEFAULT '' AFTER `s
 ADD COLUMN `payment_option_userdata` VARCHAR(512) NOT NULL DEFAULT '' AFTER `payment_option_name`,
 ADD COLUMN `payment_option_fee` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `payment_option_userdata`,
 ADD COLUMN `payment_option_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `payment_option_fee`,
+ADD COLUMN `notes` VARCHAR(1024) NOT NULL DEFAULT '' AFTER `total_tax`,
 ADD INDEX `no` (`no`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_comments`
