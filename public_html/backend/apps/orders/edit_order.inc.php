@@ -898,7 +898,7 @@
             <?php echo functions::form_input_hidden('items['.$key.'][id]', true); ?>
             <?php echo functions::form_input_hidden('items['.$key.'][type]', true); ?>
             <?php echo functions::form_input_hidden('items['.$key.'][product_id]', true); ?>
-            <?php echo functions::form_input_hidden('items['.$key.'][stock_item_id]', true); ?>
+            <?php echo functions::form_input_hidden('items['.$key.'][option_stock_combination]', true); ?>
             <?php echo functions::form_input_hidden('items['.$key.'][name]', true); ?>
             <?php echo functions::form_input_hidden('items['.$key.'][data]', true); ?>
             <?php echo functions::form_input_hidden('items['.$key.'][sku]', true); ?>
@@ -1692,7 +1692,7 @@
 
     if (!$row) {
 
-        let $output = $([
+      let $output = $([
         '  <tr class="item">',
         '    <td></td>',
         '    <td class="grabable">' + item.name,
