@@ -34,7 +34,7 @@
               </div>
 
               <div class="form-group col-6">
-                <small><?php echo language::translate('title_postcode', 'Postcode'); ?></small>
+                <small><?php echo language::translate('title_postcode', 'Postal Code'); ?></small>
                 <div style="line-height: 2;"><?php echo customer::$data['different_shipping_address'] ? customer::$data['shipping_address'] : customer::$data['postcode']; ?></div>
               </div>
             </div>

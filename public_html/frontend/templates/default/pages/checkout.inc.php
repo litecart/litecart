@@ -102,18 +102,23 @@
 
     let url = '';
     switch (task.component) {
+
       case 'customer':
         url = '<?php echo document::ilink('checkout/customer'); ?>';
         break;
+
       case 'shipping':
         url = '<?php echo document::ilink('checkout/shipping'); ?>';
         break;
+
       case 'payment':
         url = '<?php echo document::ilink('checkout/payment'); ?>';
         break;
+
       case 'summary':
         url = '<?php echo document::ilink('checkout/summary'); ?>';
         break;
+
       default:
         alert('Error: Invalid component ' + task.component);
         break;
@@ -173,5 +178,4 @@
       }
     });
   }).trigger('update');
-
 </script>

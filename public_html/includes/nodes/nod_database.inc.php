@@ -411,13 +411,17 @@
       return mysqli_real_escape_string(self::$_links[$link], $input);
     }
 
-    public static function input_fulltext($string) {
-      $string = preg_replace('#[+\-<>\(\)~*\"@;]+#', ' ', $string);
-      return self::input($string);
-    }
+		public static function input_fulltext($input, $allowable_tags=false, $trim=true, $link='default') {
+		  $input = self::input($input, $allowable_tags, $trim, $link);
+		  $input = preg_replace('#[+\-<>\(\)~*\"@;]+#', ' ', $input);
+		  $input = preg_replace('# +#', ' ', $input);
+		  return $string;
+		}
 
-    public static function input_like($string) {
-      return addcslashes(self::input($string), '_%');
+		public static function input_like($input, $allowable_tags=false, $trim=true, $link='default') {
+		  $input = self::input($input, $allowable_tags, $trim, $link);
+		  $input = addcslashes($input, '%_');
+		  return $input;
     }
   }
 

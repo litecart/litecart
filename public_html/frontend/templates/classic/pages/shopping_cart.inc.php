@@ -41,7 +41,7 @@
         </div>
 
         <div class="form-group">
-          <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
+          <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
           <?php echo functions::form_input_text('postcode', customer::$data['postcode']); ?>
         </div>
 

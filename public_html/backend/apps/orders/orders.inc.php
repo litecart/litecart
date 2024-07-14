@@ -383,7 +383,8 @@ table .fa-star:hover {
           <th data-sort="order_status"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
           <th><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
           <th class="text-center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
-          <th class="text-end" data-sort="date_created"><?php echo language::translate('title_date', 'Date'); ?></th>
+          <th class="text-end" data-sort="date_created"><?php echo language::translate('title_date_created', 'Date Created'); ?></th>
+          <th></th>
           <th></th>
         </tr>
       </thead>
@@ -403,17 +404,32 @@ table .fa-star:hover {
           <td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
           <td>
-            <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="<?php echo language::translate('title_packing_slip', 'Packing Slip'); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
-            <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('f:printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="<?php echo language::translate('title_order_copy', 'Order Copy'); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
-            <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
+            <div class="dropdown">
+              <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                <?php echo functions::draw_fonticon('fa-print'); ?>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="<?php echo  document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank">
+                    <?php echo functions::escape_html(language::translate('title_packing_slip', 'Packing Slip')); ?>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="<?php echo document::href_ilink('f:printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="">
+                    <?php echo functions::escape_html(language::translate('title_order_copy', 'Order Copy')); ?>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>
 
       <tfoot>
         <tr>
-          <td colspan="12"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo language::number_format($num_rows); ?></td>
+          <td colspan="13"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>

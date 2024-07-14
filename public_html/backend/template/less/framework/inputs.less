@@ -369,16 +369,20 @@ input[data-toggle="tags"] + .form-input {
     font-size: .8em;
   }
   .tag {
-    background: rgba(0,0,0,.10);
+    background: rgba(0, 93, 152, 0.2);
     padding: 0.25em 0.5em;
     margin: .25em;
     border-radius: .25em;
     cursor: default;
     .remove {
-      background: #999;
+      background: rgba(255, 15, 15, 0.4);
+      color: #fff;
       border-radius: .25em;
       padding: 0 .25em;
       cursor: pointer;
+      &:hover {
+        background: rgba(255, 15, 15, 0.6);
+      }
     }
   }
   .input {

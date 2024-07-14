@@ -60,7 +60,7 @@
         }
       }
 
-      notices::add('success', language::translate('title_changes_sasved', 'Changes saved'));
+      notices::add('success', language::translate('title_changes_saved', 'Changes saved'));
       header('Location: '. $_SERVER['REQUEST_URI']);
       exit;
 
@@ -89,7 +89,7 @@
         );
       }
 
-      notices::add('success', language::translate('title_changes_sasved', 'Changes saved'));
+      notices::add('success', language::translate('title_changes_saved', 'Changes saved'));
       header('Location: '. $_SERVER['REQUEST_URI']);
       exit;
 

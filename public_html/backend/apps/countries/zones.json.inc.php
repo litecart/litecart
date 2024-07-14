@@ -1,7 +1,7 @@
 <?php
 
   if (empty($_GET['country_code'])) {
-    http_response_code(500);
+    http_response_code(400);
     exit;
   }
 
