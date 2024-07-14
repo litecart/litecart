@@ -129,6 +129,12 @@
 
         <div class="col-md-8">
 
+          <?php if (!empty($customer->data['id'])) { ?>
+          <div class="form-group">
+            <?php echo functions::form_button('sign_in', ['true', language::translate('text_sign_in_as_customer', 'Sign in as customer')], 'submit', 'class="btn btn-default btn-block"'); ?>
+          </div>
+          <?php } ?>
+
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_status', 'Status'); ?></label>
@@ -140,12 +146,6 @@
               <?php echo functions::form_input_text('code', true); ?>
             </div>
           </div>
-
-          <?php if (!empty($customer->data['id'])) { ?>
-          <div class="form-group">
-            <?php echo functions::form_button('sign_in', ['true', language::translate('text_sign_in_as_customer', 'Sign in as customer')], 'submit', 'class="btn btn-default btn-block"'); ?>
-          </div>
-          <?php } ?>
 
           <div class="row">
             <div class="form-group col-md-6">
