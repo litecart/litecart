@@ -1489,7 +1489,8 @@
       '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw'); ?></a>',
       '  </div>',
       '</div>'
-    ].join('').replace(/new_comment_index/g, 'new_' + new_comment_index++));
+    ].join('\n')
+    .replace(/new_comment_index/g, 'new_' + new_comment_index++));
 
     $(this).before($output);
     $(this).closest('#box-comments .bubbles textarea:last-child').focus();

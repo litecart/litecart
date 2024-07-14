@@ -94,7 +94,7 @@
               '    </div>',
               '  </div>',
               '</li>'
-            ].join('');
+            ].join('\n');
           });
 
           $('#site-navigation .shopping-cart ul').prepend(html);

@@ -195,7 +195,7 @@ table th:last-child {
       <?php } ?>
       '  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>',
       '</tr>'
-    ].join('')
+    ].join('\n')
     .replace(/new_key_index/g, 'new_' + new_key_index++);
 
     $('.data-table tbody').append(output);

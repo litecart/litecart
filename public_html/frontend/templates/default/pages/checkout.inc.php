@@ -91,7 +91,7 @@
         '<div class="loader-wrapper">'
         '  <div class="loader" style="width: 256px; height: 256px;"></div>',
         '</div>'
-      ].join('');
+      ].join('\n');
 
       $('body').append(loader);
     }

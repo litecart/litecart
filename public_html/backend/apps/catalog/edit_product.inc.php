@@ -1202,7 +1202,7 @@
       '    </div>',
       '  </div>',
       '</div>'
-    ].join('');
+    ].join('\n');
 
     $('#images .new-images').append(output);
     refreshMainImage();

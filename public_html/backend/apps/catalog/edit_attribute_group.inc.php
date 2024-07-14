@@ -160,7 +160,7 @@
       '  <td class="text-center"><?php echo language::translate('title_no', 'No'); ?></td>',
       '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"')); ?></a></td>',
       '</tr>'
-    ].join('')
+    ].join('\n')
     .replace(/new_value_index/g, 'new_' + new_value_index++);
 
     $(this).closest('table').find('tbody').append(output);

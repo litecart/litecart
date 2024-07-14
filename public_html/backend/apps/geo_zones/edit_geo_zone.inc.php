@@ -195,7 +195,7 @@
       '  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][city]', '')); ?>' + $('input[name="new_zone[city]"]').val() + '</td>',
       '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>',
       '</tr>'
-    ].join('')
+    ].join('\n')
     .replace(/new_zone_index/g, 'new_' + new_zone_index++);
 
     $(this).closest('table').find('tbody').append(output);

@@ -840,7 +840,7 @@
       '      <a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"')); ?></a>',
       '    </td>',
       '  </tr>'
-    ].join('')
+    ].join('\n')
     .replace(/new_item_index/g, 'new_' + new_item_index++);
 
     $output = $(output);
