@@ -14,7 +14,8 @@
     "select ag.id, ag.code, agi.name, av.num_values from ". DB_TABLE_PREFIX ."attribute_groups ag
     left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
     left join (
-      select group_id, count(id) as num_values ". DB_TABLE_PREFIX ."attribute_values
+      select group_id, count(id) as num_values
+      from ". DB_TABLE_PREFIX ."attribute_values
       group by group_id
     ) av on av.group_id = ag.id
     order by agi.name asc;"
