@@ -1,4 +1,4 @@
-20e2d6f04a17f27ee2290393e53bc8d2	admin/about.php
+611ebfababae25412d6434497eb23c31	admin/about.php
 6294cd437ab6cd00c8f0cfd60b39b731	admin/addons.widget/addons.inc.php
 5d89f353269fba5822e8ca9eda49cb19	admin/addons.widget/config.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/addons.widget/index.html
@@ -135,10 +135,10 @@ d41d8cd98f00b204e9800998ecf8427e	data/index.html
 930b04e1da4bf8cca10f4fa8b8805cbe	ext/chartist/LICENSE
 bc4ccda72c36a389b3bc14912926ddda	ext/chartist/chartist.min.css
 84b5deca9f4af7c080be6117132c0c19	ext/chartist/chartist.min.js
-2e075959d998a16e1e194b6386f852fe	ext/featherlight/featherlight.js
+0016c2d445299d5a7d5cbc591009137b	ext/featherlight/featherlight.js
 5ac60fb82768c977be2de509b3c2ea6b	ext/featherlight/featherlight.less
 ad7b8d9efcee3a1ec78d006d967cf3d9	ext/featherlight/featherlight.min.css
-73ff201a14963f85c175162ce5e50e36	ext/featherlight/featherlight.min.js
+93c9e06dc6c65238e410e0dbf825988a	ext/featherlight/featherlight.min.js
 5acc3def839fbdea90e044cda738ae2a	ext/fontawesome/LICENESE.txt
 aacf274db0520d79711283626beaae60	ext/fontawesome/font-awesome.min.css
 7141350af3a97784839bd17423da48b6	ext/fontawesome/fontawesome-webfont.woff2
@@ -339,7 +339,7 @@ d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 086e68bcb7bfd173df5ff538ad747044	includes/templates/default.admin/css/app.min.css
 ae6294757123e0f9e5edc467ef71f0ee	includes/templates/default.admin/css/app.min.css.map
 78acefc1cfd91aa899b489ad65cbd5ce	includes/templates/default.admin/css/framework.min.css
-b0d4842a718bd373e7ff67965ddc243e	includes/templates/default.admin/css/framework.min.css.map
+acc52c78b9dd6b89dc499c11d752b625	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 219677d5dc1ba2e8bbb5ff911f9da8be	includes/templates/default.admin/css/printable.min.css
 8ae6632623a5d8f588382a89e6e28493	includes/templates/default.admin/css/printable.min.css.map
@@ -386,7 +386,7 @@ e05147ba59974d9bef67a6dbc7ba5a60	includes/templates/default.admin/less/framework
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/less/index.html
 6b532b29eab4f948e66d0bf86acdd7f2	includes/templates/default.admin/less/printable.less
 e59127266f121b4c85c2042f3970cc23	includes/templates/default.admin/less/variables.less
-6acb6c037a1367a7f58d2f098293c95e	includes/templates/default.admin/pages/about.inc.php
+3c80ee270dcb578ce43107a90496a46a	includes/templates/default.admin/pages/about.inc.php
 b6fc7003936788dd0d2fa113c8f31734	includes/templates/default.admin/pages/doc.inc.php
 c350d51cd1b3329cd7f3f4a376746a97	includes/templates/default.admin/pages/error_document.inc.php
 20ccb7d6c26b8089f5b66d861591bbb6	includes/templates/default.admin/pages/login.inc.php
@@ -404,7 +404,7 @@ cecca2dc922c55b8ed28d2635b3b4125	includes/templates/default.catalog/css/app.min.
 a1822b38e13fd26331d20e50b789a230	includes/templates/default.catalog/css/checkout.min.css.map
 abf07f6edc02cafe22bb495192a77d76	includes/templates/default.catalog/css/framework.css
 62f775f51ae2953b062643e876c691fe	includes/templates/default.catalog/css/framework.min.css
-2aa864a386101b5b677b96c10831024a	includes/templates/default.catalog/css/framework.min.css.map
+ff3267c8aeccc7cde0ac16ee8c8d9f34	includes/templates/default.catalog/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/css/index.html
 bc618f9b1da8fac82828219ed0d579cc	includes/templates/default.catalog/css/printable.css
 219677d5dc1ba2e8bbb5ff911f9da8be	includes/templates/default.catalog/css/printable.min.css
