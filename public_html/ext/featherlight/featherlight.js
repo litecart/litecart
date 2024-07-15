@@ -403,8 +403,26 @@
 				}
 			},
 
+			raw: {
+				regex: /\.(log|md|txt)(\?\S*)?$/i,
+				process: function(url) {
+					var self = this,
+						deferred = $.Deferred(),
+						$content = $('<div>').css({
+              "white-space": 'pre-wrap',
+              "max-width": '90vw'
+            });
+					$content.load(url, function() {
+						deferred.resolve( $content );
+					});
+					return deferred.promise();
+				}
+			},
+
 			text: {
-				process: function(text) { return $('<div>', {text: text}); }
+				process: function(text) {
+          return $('<div>', {text: text});
+        }
 			}
 		},
 
