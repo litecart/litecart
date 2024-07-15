@@ -31,6 +31,7 @@
 <nav class="nav nav-tabs">
     <a class="nav-link active" data-toggle="tab" href="#tab-system"><?php echo language::translate('title_system', 'System'); ?></a>
     <a class="nav-link" data-toggle="tab" href="#tab-errors"><?php echo language::translate('title_error_log', 'Error Log'); ?></a>
+    <a class="nav-link" data-toggle="tab" href="#tab-logs"><?php echo language::translate('title_error_logs', 'Logs'); ?></a>
   </nav>
 
   <div class="tab-content">
@@ -238,6 +239,69 @@
           <div class="card-body">
             <div id="actions">
               <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger"', 'delete'); ?>
+            </div>
+          </div>
+
+          <?php echo functions::form_draw_form_end(); ?>
+      </div>
+    </div>
+
+    <div id="tab-logs" class="tab-pane">
+      <div id="box-logs" class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <?php echo language::translate('title_logs', 'Logs'); ?>
+          </div>
+        </div>
+
+        <?php echo functions::form_draw_form_begin('errors_form', 'post'); ?>
+
+        <div class="card-body">
+          <?php echo FS_DIR_STORAGE . 'logs/'; ?>
+        </div>
+
+          <table class="table table-striped table-hover table-sortable data-table">
+            <thead>
+              <tr>
+                <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+                <th class="main"><?php echo language::translate('title_file', 'File'); ?></th>
+                <th class="text-end"><?php echo language::translate('title_size', 'Size'); ?></th>
+                <th class="text-end"><?php echo language::translate('title_modified', 'Modified'); ?></th>
+                <th class="text-end"><?php echo language::translate('title_created', 'Created'); ?></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <?php if (!empty($_GET['path']) && $_GET['path'] != '/') { ?>
+              <tr>
+                <td></td>
+                <td colspan="6">
+                  <?php echo functions::draw_fonticon('fa-arrow-left fa-fw fa-lg'); ?> <a href="<?php echo document::href_link(null, ['path' => (dirname($_GET['path']) == '.') ? '' : str_replace('\\', '/', dirname($_GET['path']))]); ?>"> <?php echo language::translate('title_back', 'Back'); ?></a>
+                </td>
+              </tr>
+              <?php } ?>
+
+              <?php foreach ($log_files as $log) { ?>
+              <tr>
+                <td><?php echo functions::form_draw_checkbox('log_files[]', $log['name']); ?></td>
+                <td class="file"><?php echo functions::draw_fonticon('fa-file-text-o fa-fw fa-lg'); ?> <a href="<?php echo document::link(null, ['view_log_file' => $log['name']], ['app', 'doc']); ?>" data-toggle="lightbox" data-type="raw"><?php echo $log['name']; ?></a></td>
+                <td class="text-end"><?php echo functions::file_format_size($log['size']); ?></td>
+                <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], $log['date_updated']); ?></td>
+                <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], $log['date_created']); ?></td>
+              </tr>
+              <?php } ?>
+            </tbody>
+
+            <tfoot>
+              <td colspan="7">
+                <?php echo language::translate('title_log_files', 'Log Files'); ?>: <?php echo count($log_files); ?>,
+              </td>
+            </tfoot>
+          </table>
+
+          <div class="card-body">
+            <div id="actions">
+              <?php echo functions::form_draw_button('delete_log_file', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger"', 'delete'); ?>
             </div>
           </div>
 

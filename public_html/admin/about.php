@@ -36,6 +36,44 @@
     }
   }
 
+  if (isset($_POST['delete_log_file'])) {
+    try {
+
+      foreach ($_POST['log_files'] as $file) {
+
+        if (!is_file(FS_DIR_STORAGE .'logs/'. functions::file_resolve_path($file))) {
+          throw new Exception(language::translate('error_file_not_found', 'The file was not found'));
+        }
+
+        unlink(FS_DIR_STORAGE .'logs/'. functions::file_resolve_path($file));
+      }
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+  if (isset($_GET['view_log_file'])) {
+    try {
+
+      if (!is_file(FS_DIR_STORAGE .'logs/'. functions::file_resolve_path($_GET['view_log_file']))) {
+        throw new Exception(language::translate('error_file_not_found', 'The file was not found'));
+      }
+
+      header('Content-Type: text/plain; charset='. language::$selected['charset']);
+      header('Content-Disposition: inline; filename='. $_GET['view_log_file']);
+      readfile(FS_DIR_STORAGE . 'logs/'. $_GET['view_log_file']);
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
 // Build apps list menu
   $box_apps_menu = new ent_view();
   $box_apps_menu->snippets['apps'] = [];
@@ -177,6 +215,18 @@
     });
   }
 
+  $log_files = [];
+
+  foreach (functions::file_search(FS_DIR_STORAGE . 'logs/**.log') as $file) {
+    $log_files[] = [
+      'file' => $file,
+      'name' => preg_replace('#^'. preg_quote(FS_DIR_STORAGE .'logs/', '#') .'#', '', $file),
+      'size' => functions::file_size($file),
+      'date_updated' => filemtime($file),
+      'date_created' => filectime($file),
+    ];
+  }
+
 // Render view
   $_page = new ent_view();
 
@@ -215,7 +265,10 @@
       'database' => DB_DATABASE,
     ],
     'errors' => $errors,
+    'log_files' => $log_files,
   ];
+
+  functions::draw_lightbox();
 
   echo $_page->stitch(FS_DIR_TEMPLATE . 'pages/about.inc.php');
 
