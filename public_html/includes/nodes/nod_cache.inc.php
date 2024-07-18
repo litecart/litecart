@@ -191,12 +191,12 @@
 
     public static function get($token, $max_age=900, $force_cache=false) {
 
-			if (!$force_cache && !self::$enabled) {
-				return;
+      if (!$force_cache && !self::$enabled) {
+        return;
       }
 
-			if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache|max-age=0#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
-				return;
+      if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache|max-age=0#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
+        return;
       }
 
       $data = null;
@@ -207,46 +207,46 @@
 
           $cache_file = FS_DIR_STORAGE .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
 
-					if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
-						$data = @json_decode(file_get_contents($cache_file), true);
-					}
+          if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
+            $data = @json_decode(file_get_contents($cache_file), true);
+          }
 
-					break;
+          break;
 
         case 'memory':
 
           switch (true) {
 
             case (function_exists('apcu_fetch')):
-							$data = apcu_fetch($_SERVER['HTTP_HOST'].':'.$token['id']);
-							break;
+              $data = apcu_fetch($_SERVER['HTTP_HOST'].':'.$token['id']);
+              break;
 
             case (function_exists('apc_fetch')):
-							$data = apc_fetch($_SERVER['HTTP_HOST'].':'.$token['id']);
-							break;
+              $data = apc_fetch($_SERVER['HTTP_HOST'].':'.$token['id']);
+              break;
 
             default:
               $token['storage'] = 'file';
               return self::get($token, $max_age, $force_cache);
-							break;
+              break;
           }
 
         case 'session':
 
           if (isset(self::$_data[$token['id']]['mtime']) && self::$_data[$token['id']]['mtime'] > strtotime('-'.$max_age .' seconds')) {
-						$data = self::$_data[$token['id']]['data'];
+            $data = self::$_data[$token['id']]['data'];
           }
 
-					break;
+          break;
 
         default:
 
           trigger_error('Invalid cache storage ('. $token['storage'] .')', E_USER_WARNING);
 
-					break;
+          break;
       }
 
-			return $data;
+      return $data;
     }
 
     public static function set($token, $data) {
@@ -264,28 +264,28 @@
           if (!is_dir(dirname($cache_file))) {
             if (!mkdir(dirname($cache_file))) {
               trigger_error('Could not create cache subfolder', E_USER_WARNING);
-							$result = false;
-							break;
+              $result = false;
+              break;
             }
           }
 
-					return file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+          return file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
         case 'memory':
 
           switch (true) {
             case (function_exists('apcu_store')):
-							$result = apcu_store($_SERVER['HTTP_HOST'].':'.$token['id'], $data, $token['ttl']);
-							break;
+              $result = apcu_store($_SERVER['HTTP_HOST'].':'.$token['id'], $data, $token['ttl']);
+              break;
 
             case (function_exists('apc_store')):
-							$result = apc_store($_SERVER['HTTP_HOST'].':'.$token['id'], $data, $token['ttl']);
-							break;
+              $result = apc_store($_SERVER['HTTP_HOST'].':'.$token['id'], $data, $token['ttl']);
+              break;
 
             default:
               $token['storage'] = 'file';
-							$result = self::set($token, $data);
-							break;
+              $result = self::set($token, $data);
+              break;
           }
 
         case 'session':
@@ -295,16 +295,16 @@
             'data' => $data,
           ];
 
-					$result = true;
-					break;
+          $result = true;
+          break;
 
         default:
           trigger_error('Invalid cache type ('. $token['storage'] .')', E_USER_WARNING);
-					$result = false;
-					break;
+          $result = false;
+          break;
       }
 
-			return $result;
+      return $result;
     }
 
     // Output recorder (This option is not affected by self::$enabled as fresh data is always building up cache)

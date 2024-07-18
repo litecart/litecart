@@ -52,16 +52,16 @@
       self::$snippets['charset'] = mb_http_output();
       self::$snippets['home_path'] = WS_DIR_APP;
 
-			switch (route::$selected['endpoint']) {
+      switch (route::$selected['endpoint']) {
 
-				case 'backend':
-					self::$snippets['template_path'] = WS_DIR_APP . 'backend/template/';
-					break;
+        case 'backend':
+          self::$snippets['template_path'] = WS_DIR_APP . 'backend/template/';
+          break;
 
-				default:
-					self::$snippets['template_path'] = WS_DIR_APP . 'frontend/templates/'.settings::get('template').'/';
-					break;
-			}
+        default:
+          self::$snippets['template_path'] = WS_DIR_APP . 'frontend/templates/'.settings::get('template').'/';
+          break;
+      }
 
       self::$head_tags['favicon'] = implode(PHP_EOL, [
         '<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon.ico') .'" type="image/x-icon" sizes="32x32 48x48 64x64 96x96">',
@@ -74,14 +74,14 @@
       self::$foot_tags['jquery'] = '<script src="'. self::href_rlink('app://assets/jquery/jquery-4.0.0.min.js') .'"></script>';
 
     // Hreflang
-			if (route::$selected['endpoint'] == 'frontend') {
-				$hreflangs = [];
+      if (route::$selected['endpoint'] == 'frontend') {
+        $hreflangs = [];
         foreach (language::$languages as $language) {
           if ($language['url_type'] == 'none') continue;
-					$hreflangs[] = '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. self::href_ilink(route::$selected['resource'], [], true, ['page', 'sort'], $language['code']) .'">';
-				}
-				self::$head_tags['hreflang'] = implode(PHP_EOL, $hreflangs);
-			}
+          $hreflangs[] = '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. self::href_ilink(route::$selected['resource'], [], true, ['page', 'sort'], $language['code']) .'">';
+        }
+        self::$head_tags['hreflang'] = implode(PHP_EOL, $hreflangs);
+      }
 
     // Get template settings
       if (!$template_config = include 'app://frontend/templates/'. settings::get('template') .'/config.inc.php') {
@@ -135,16 +135,16 @@
         'settings' => self::$settings,
       ];
       
-			switch (route::$selected['endpoint']) {
+      switch (route::$selected['endpoint']) {
 
-				case 'backend':
-					self::$jsenv['template']['url'] = WS_DIR_APP . 'backend/template/';
-					break;
+        case 'backend':
+          self::$jsenv['template']['url'] = WS_DIR_APP . 'backend/template/';
+          break;
 
-				default:
-					self::$jsenv['template']['url'] = WS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/';
-					break;
-			}
+        default:
+          self::$jsenv['template']['url'] = WS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/';
+          break;
+      }
 
       self::$jsenv['customer'] = [
         'id' => !empty(customer::$data['id']) ? customer::$data['id'] : null,
@@ -301,26 +301,26 @@
 
       stats::start_watch('rendering');
 
-			switch (route::$selected['endpoint']) {
-			 
-			  case 'backend':
-				$_page = new ent_view('app://backend/template/layouts/'.self::$layout.'.inc.php');
-				  break;
-				  
+      switch (route::$selected['endpoint']) {
+       
+        case 'backend':
+        $_page = new ent_view('app://backend/template/layouts/'.self::$layout.'.inc.php');
+          break;
+          
         default:
-				$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/layouts/'.self::$layout.'.inc.php');
-				  break;
-			}
+        $_page = new ent_view('app://frontend/templates/'.settings::get('template').'/layouts/'.self::$layout.'.inc.php');
+          break;
+      }
 
       $_page->snippets = array_merge(self::$snippets, [
         'head_tags' => self::$head_tags,
-				'style' => self::$style,
+        'style' => self::$style,
         'breadcrumbs' => breadcrumbs::render(),
         'notices' => notices::render(),
         'content' => self::$content,
         'foot_tags' => self::$foot_tags,
-				'javascript' => self::$javascript,
-				'important_notice' => settings::get('important_notice'),
+        'javascript' => self::$javascript,
+        'important_notice' => settings::get('important_notice'),
       ]);
 
       // Prepare title
@@ -486,12 +486,12 @@
 
     public static function rlink($resource) {
 
-			if (!$resource) {
+      if (!$resource) {
         return '';
       }
 
-			if (is_file($resource)) {
-				$resource = functions::file_realpath($resource);
+      if (is_file($resource)) {
+        $resource = functions::file_realpath($resource);
       }
 
       if (preg_match('#^app://#', $resource)) {
@@ -504,8 +504,8 @@
         $webpath = preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', str_replace('\\', '/', $resource));
       }
 
-			return self::link($webpath, is_file($resource) ? ['_' => filemtime($resource)] : []);
-		}
+      return self::link($webpath, is_file($resource) ? ['_' => filemtime($resource)] : []);
+    }
 
     public static function href_rlink($resource) {
       return functions::escape_html(self::rlink($resource));

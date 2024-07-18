@@ -13,7 +13,7 @@
 
       $type = preg_replace('#mod_(.*)$#', '$1', get_called_class());
 
-			if ($filter && !is_array($filter)) {
+      if ($filter && !is_array($filter)) {
         $filter = [$filter];
       }
 
@@ -50,7 +50,7 @@
           $object->settings[$setting['key']] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
         }
 
-				$object->status = (isset($object->settings['status']) && filter_var($object->settings['status'], FILTER_VALIDATE_BOOLEAN));
+        $object->status = (isset($object->settings['status']) && filter_var($object->settings['status'], FILTER_VALIDATE_BOOLEAN));
         $object->priority = isset($object->settings['priority']) ? (int)$object->settings['priority'] : 0;
 
         if ($type == 'jobs') {

@@ -61,9 +61,9 @@
   }
 
   $available_stock_items = database::query(
-    "select si.id, si.sku, si.quantity, si.backordered, sii.name from ". DB_TABLE_PREFIX ."stock_items si
-    left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
-    order by sku, name;"
+    "select p.id, p.sku, p.quantity, p.backordered, p.name from ". DB_TABLE_PREFIX ."products p
+    left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
+    order by p.sku, p.name;"
   )->fetch_all();
 
   functions::draw_lightbox();
@@ -127,7 +127,7 @@
         <tr class="item">
           <td>
             <?php echo functions::form_input_hidden('contents['.$key.'][id]', true); ?>
-            <?php echo functions::form_input_hidden('contents['.$key.'][stock_item_id]', true); ?>
+            <?php echo functions::form_input_hidden('contents['.$key.'][product_id]', true); ?>
             <?php echo functions::form_input_hidden('contents['. $key .'][sku]', true); ?>
             <?php echo functions::form_input_hidden('contents['. $key .'][name]', true); ?>
             <?php echo functions::escape_html($_POST['contents'][$key]['sku']); ?>

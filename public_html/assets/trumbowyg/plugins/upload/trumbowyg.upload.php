@@ -26,7 +26,7 @@
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
-			$image->save($upload_directory . $filename, '', 90);
+      $image->save($upload_directory . $filename, '', 90);
 
       unlink($_FILES['fileToUpload']['tmp_name']);
 

@@ -28,10 +28,10 @@
       if (empty($parts['port'])) $parts['port'] = ($parts['scheme'] == 'ssl') ? 443 : 80;
       if (empty($parts['path'])) $parts['path'] = '/';
 
-			if ($data) {
+      if ($data) {
         $data = is_array($data) ? http_build_query($data) : $data;
-			} else {
-				$data = '';
+      } else {
+        $data = '';
       }
 
       if (!empty($parts['user']) && empty($headers['Authorization'])) {
@@ -47,7 +47,7 @@
       }
 
       if (empty($headers['Content-Length'])) {
-				$headers['Content-Length'] = ($data != '') ? strlen($data) : 0;
+        $headers['Content-Length'] = ($data != '') ? strlen($data) : 0;
       }
 
       if (empty($headers['Connection'])) {
@@ -90,7 +90,7 @@
 
       fclose($socket);
 
-			self::$stats['duration'] += microtime(true) - $timestamp;
+      self::$stats['duration'] += microtime(true) - $timestamp;
 
       $response_headers = substr($response, 0, strpos($response, "\r\n\r\n") + 2);
       $response_body = substr($response, strpos($response, "\r\n\r\n") + 4);
@@ -140,7 +140,7 @@
 
     public function http_decode_chunked_data($data) {
 
-			for ($result = ''; $data; $data = trim($data)) {
+      for ($result = ''; $data; $data = trim($data)) {
         $position = strpos($data, "\r\n");
         $length = (int)hexdec(substr($data, 0, $position));
         $result .= substr($data, $position + 2, $length);

@@ -431,7 +431,6 @@
 
   perform_action('copy', [
     FS_DIR_APP . 'install/data/default/storage/images/favicon*' => FS_DIR_STORAGE . 'images/',
-    FS_DIR_APP . 'install/data/default/storage/images/stock_items/' => FS_DIR_STORAGE . 'images/stock_items/',
   ]);
 
   perform_action('modify', [
@@ -602,46 +601,6 @@
       DROP INDEX `brand_info`;"
     );
   }
-
-// Separate product configurations from stock options
-  $stock_items_query = database::query(
-    "select * from ". DB_TABLE_PREFIX ."stock_items;"
-  );
-
-  while ($stock_item = database::fetch($stock_items_query )) {
-    foreach (explode(',', $stock_item['attributes']) as $pair) {
-
-      list($group_id, $value_id) = explode('-', $pair);
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_customizations_values
-        where product_id = ". (int)$stock_item['product_id'] ."
-        and (group_id = ". (int)$group_id ." and value_id = ". (int)$value_id .");"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_customizations
-        where product_id = ". (int)$stock_item['product_id'] ."
-        and group_id = ". (int)$group_id ."
-        and product_id not in (
-          select product_id from ". DB_TABLE_PREFIX ."products_customizations_values
-          where product_id = ". (int)$stock_item['product_id'] ."
-          and group_id = ". (int)$group_id ."
-        );"
-      );
-    }
-  }
-
-  database::query(
-    "ALTER TABLE `lc_orders_items`
-    DROP COLUMN `attributes`;"
-  );
-
-  database::query(
-    "ALTER TABLE `lc_stock_items`
-    DROP COLUMN `product_id`,
-    DROP COLUMN `attributes`;"
-  );
 
  // Migrate PHP serialized configurations to JSON
   $order_items_query = database::query(

@@ -389,7 +389,7 @@
     $sql = file_get_contents('clean.sql');
     $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-    foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
+    foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
       $query = preg_replace('#^-- .*?\R+#m', '', $query);
       database::query($query);
     }
@@ -420,7 +420,7 @@
       $sql = str_replace($search, $replace, $sql);
     }
 
-    foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
+    foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
       $query = preg_replace('#^-- .*?\R+#m', '', $query);
       database::query($query);
     }
@@ -445,7 +445,7 @@
       $sql = str_replace($search, database::input($replace), $sql);
     }
 
-    foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
+    foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
       $query = preg_replace('#^-- .*?\R+#m', '', $query);
       database::query($query);
     }
@@ -528,7 +528,7 @@
 
             $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-            foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
+            foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
               $query = preg_replace('#^-- .*?\R+#m', '', $query);
               database::query($query);
             }
@@ -554,7 +554,7 @@
       if (!empty($sql)) {
         $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-        foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
+        foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
           $query = preg_replace('#^-- .*?\R+#m', '', $query);
           database::query($query);
         }

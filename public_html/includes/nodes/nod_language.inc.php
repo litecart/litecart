@@ -118,7 +118,7 @@
       $all_languages = array_keys(self::$languages);
       $enabled_languages = [];
 
-			foreach (self::$languages as $language) {
+      foreach (self::$languages as $language) {
         if (!empty(administrator::$data['id']) || $language['status'] == 1) {
           $enabled_languages[] = $language['code'];
         }

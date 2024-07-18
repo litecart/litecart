@@ -35,9 +35,8 @@
       $this->data['prices'] = [];
       $this->data['campaigns'] = [];
       $this->data['attributes'] = [];
+      $this->data['options'] = [];
       $this->data['stock_options'] = [];
-      $this->data['chained_products'] = [];
-      $this->data['references'] = [];
 
       $this->data['status'] = 1;
       $this->data['tax_class_id'] = settings::get('default_tax_class_id');
@@ -302,8 +301,8 @@
             synonyms = '". database::input($this->data['synonyms'][$language_code]) ."',
             head_title = '". database::input($this->data['head_title'][$language_code]) ."',
             meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
-            where product_id = ". (int)$this->data['id'] ."
-            and language_code = '". database::input($language_code) ."'
+          where product_id = ". (int)$this->data['id'] ."
+          and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
       }
@@ -341,13 +340,11 @@
     // Prices
       foreach (array_keys(currency::$currencies) as $currency_code) {
 
-        $products_price = database::query(
+        if (!database::query(
           "select * from ". DB_TABLE_PREFIX ."products_prices
           where product_id = ". (int)$this->data['id'] ."
           limit 1;"
-        );
-
-        if (!$product_price) {
+        )->num_rows) {
           database::query(
             "insert into ". DB_TABLE_PREFIX ."products_prices
             (product_id)
@@ -397,6 +394,151 @@
               $sql_currency_campaigns
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$campaign['id'] ."
+            limit 1;"
+          );
+        }
+      }
+
+    // Delete options
+      database::query(
+        "delete from ". DB_TABLE_PREFIX ."products_options
+        where product_id = ". (int)$this->data['id'] ."
+        and id not in ('". implode("', '", array_column($this->data['options'], 'id')) ."');"
+      );
+
+      database::query(
+        "delete from ". DB_TABLE_PREFIX ."products_options_values
+        where product_id = ". (int)$this->data['id'] ."
+        and group_id not in ('". implode("', '", array_column($this->data['options'], 'group_id')) ."');"
+      );
+
+    // Update options
+      if (!empty($this->data['options'])) {
+
+        $i = 0;
+        foreach ($this->data['options'] as &$option) {
+
+          if (empty($option['id'])) {
+            database::query(
+              "insert into ". DB_TABLE_PREFIX ."products_options
+              (product_id, group_id)
+              values (". (int)$this->data['id'] .", ". (int)$option['group_id'] .");"
+            );
+            $option['id'] = database::insert_id();
+          }
+
+          database::query(
+            "update ". DB_TABLE_PREFIX ."products_options set
+              group_id = ". (int)$option['group_id'] .",
+              `function` = '". database::input($option['function']) ."',
+              required = ". (!empty($option['required']) ? 1 : 0) .",
+              sort = '". (!empty($option['sort']) ? database::input($option['sort']) : 'alphabetical') ."',
+              priority = ". ++$i ."
+            where product_id = ". (int)$this->data['id'] ."
+            and id = ". (int)$option['id'] ."
+            limit 1;"
+          );
+
+        // Delete option values
+          database::query(
+            "delete from ". DB_TABLE_PREFIX ."products_options_values
+            where product_id = ". (int)$this->data['id'] ."
+            and group_id = ". (int)$option['group_id'] ."
+            and id not in ('". implode("', '", !empty($option['values']) ? array_column($option['values'], 'id') : []) ."');"
+          );
+
+        // Update option values
+          if (!empty($option['values'])) {
+
+            $j = 0;
+            foreach ($option['values'] as &$value) {
+
+              if (empty($value['id'])) {
+
+                database::query(
+                  "insert into ". DB_TABLE_PREFIX ."products_options_values
+                  (product_id, group_id, value_id)
+                  values (". (int)$this->data['id'] .", ". (int)$option['group_id'] .", ". (int)$value['value_id'] .");"
+                );
+
+                $value['id'] = database::insert_id();
+              }
+
+              $sql_currencies = "";
+              foreach (array_keys(currency::$currencies) as $currency_code) {
+                $sql_currencies .= $currency_code ." = '". (isset($value[$currency_code]) ? (float)$value[$currency_code] : 0) ."', ";
+              }
+
+              database::query(
+                "update ". DB_TABLE_PREFIX ."products_options_values set
+                  group_id = ". (int)$option['group_id'] .",
+                  value_id = ". (int)$value['value_id'] .",
+                  custom_value = '". database::input($value['custom_value']) ."',
+                  price_operator = '". database::input($value['price_operator']) ."',
+                  $sql_currencies
+                  priority = ". ++$j ."
+                where product_id = ". (int)$this->data['id'] ."
+                and group_id = ". (int)$option['group_id'] ."
+                and id = ". (int)$value['id'] ."
+                limit 1;"
+              );
+            } unset($value);
+          }
+        } unset($option);
+      }
+
+    // Delete stock options
+      database::query(
+        "delete from ". DB_TABLE_PREFIX ."products_options_stock
+        where product_id = ". (int)$this->data['id'] ."
+        and id not in ('". implode("', '", array_column($this->data['options_stock'], 'id')) ."');"
+      );
+
+    // Update stock options
+      if (!empty($this->data['options_stock'])) {
+
+        $i = 0;
+        foreach ($this->data['options_stock'] as $key => $stock_option) {
+
+          if (empty($stock_option['id'])) {
+
+            database::query(
+              "insert into ". DB_TABLE_PREFIX ."products_options_stock
+              (product_id, combination, date_created)
+              values (". (int)$this->data['id'] .", '". database::input($stock_option['combination']) ."', '". date('Y-m-d H:i:s') ."');"
+            );
+
+            $stock_option['id'] = $this->data['options_stock'][$key]['id'] = database::insert_id();
+          }
+
+        // Ascending option combination
+          $combinations = explode(',', $stock_option['combination']);
+
+          usort($combinations, function($a, $b) {
+            $a = explode('-', $a);
+            $b = explode('-', $b);
+            if ($a[0] == $b[0]) {
+              return ($a[1] < $b[1]) ? -1 : 1;
+            }
+            return ($a[0] < $b[0]) ? -1 : 1;
+          });
+
+          $this->data['stock_options'][$key]['combination'] = implode(',', $combinations);
+
+          database::query(
+            "update ". DB_TABLE_PREFIX ."products_options_stock
+            set combination = '". database::input($stock_option['combination']) ."',
+            sku = '". database::input($stock_option['sku']) ."',
+            weight = '". database::input($stock_option['weight']) ."',
+            weight_class = '". database::input($stock_option['weight_class']) ."',
+            dim_x = '". database::input($stock_option['dim_x']) ."',
+            dim_y = '". database::input($stock_option['dim_y']) ."',
+            dim_z = '". database::input($stock_option['dim_z']) ."',
+            dim_class = '". database::input($stock_option['dim_class']) ."',
+            priority = ". (int)$i++ .",
+            date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+            where product_id = ". (int)$this->data['id'] ."
+            and id = ". (int)$stock_option['id'] ."
             limit 1;"
           );
         }
@@ -466,52 +608,6 @@
         limit 1;"
       );
 
-    // Delete stock options
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_stock_options
-        where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". implode("', '", array_column($this->data['stock_options'], 'id')) ."');"
-      );
-
-    // Update stock options
-      if (!empty($this->data['stock_options'])) {
-
-        $i = 0;
-        foreach ($this->data['stock_options'] as $key => $stock_option) {
-
-          if (empty($stock_option['id'])) {
-            database::query(
-              "insert into ". DB_TABLE_PREFIX ."products_stock_options
-              (product_id, stock_item_id)
-              values (". (int)$this->data['id'] .", ". (int)$stock_option['stock_item_id'] .");"
-            );
-            $stock_option['id'] = $this->data['stock_options'][$key]['id'] = database::insert_id();
-          }
-
-          $sql_currency_prices = implode(",".PHP_EOL, array_map(function($currency) use ($stock_option) {
-            return "`". database::input($currency['code']) ."` = ". (isset($stock_option[$currency['code']]) ? (float)$stock_option[$currency['code']] : 0);
-          }, currency::$currencies));
-
-          database::query(
-            "update ". DB_TABLE_PREFIX ."products_stock_options
-            set stock_item_id = ". (int)$stock_option['stock_item_id'] .",
-              price_operator = '". database::input($stock_option['price_operator']) ."',
-              $sql_currency_prices,
-              priority = ". (int)$i++ ."
-            where id = ". (int)$stock_option['id'] ."
-            and product_id = ". (int)$this->data['id'] ."
-            limit 1;"
-          );
-
-    // Update stock item
-          $ent_stock_item = new ent_stock_item($stock_option['stock_item_id']);
-          $ent_stock_item->data['sku'] = $stock_option['sku'];
-          $ent_stock_item->data['quantity_adjust'] = $stock_option['quantity_adjustment'];
-          $ent_stock_item->data['backordered'] = $stock_option['backordered'];
-          $ent_stock_item->save();
-        }
-      }
-
 /*
     // Adjust quantity
       $stock_transaction = new ent_stock_transaction('system');
@@ -544,8 +640,8 @@
 */
       $this->previous = $this->data;
 
-      cache::clear_cache('categories');
       cache::clear_cache('brands');
+      cache::clear_cache('categories');
       cache::clear_cache('products');
     }
 
@@ -632,6 +728,7 @@
 
       $this->reset();
 
+      cache::clear_cache('brands');
       cache::clear_cache('category');
       cache::clear_cache('products');
     }

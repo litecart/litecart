@@ -7,7 +7,7 @@ body {
   display: flex;
   width: 100vw;
   height: 100vh;
-	background: url(<?php echo document::href_rlink('app://backend/template/images/background.svg'); ?>);
+  background: url(<?php echo document::href_rlink('app://backend/template/images/background.svg'); ?>);
   background-size: cover;
 }
 html.dark-mode body {

@@ -27,13 +27,13 @@
 
       functions::image_delete_cache('storage://images/' . $filename);
 
-			$image->resample(512, 512, 'FIT_ONLY_BIGGER');
+      $image->resample(512, 512, 'FIT_ONLY_BIGGER');
 
-			if (!$image->save('storage://images/' . $filename)) {
+      if (!$image->save('storage://images/' . $filename)) {
         throw new Exception(language::translate('error_failed_uploading_image', 'The uploaded image failed saving to disk. Make sure permissions are set.'));
       }
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink());
       exit;
 

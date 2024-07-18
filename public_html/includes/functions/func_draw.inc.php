@@ -121,7 +121,7 @@
     switch ($class) {
       case 'add':         return draw_fonticon('fa-plus');
       case 'cancel':      return draw_fonticon('fa-times');
-			case 'company':     return draw_fonticon('fa-building', 'style="color: #888;"');
+      case 'company':     return draw_fonticon('fa-building', 'style="color: #888;"');
       case 'edit':        return draw_fonticon('fa-pencil');
       case 'fail':        return draw_fonticon('fa-times', 'color: #c00;"');
       case 'folder':      return draw_fonticon('fa-folder', 'style="color: #cc6;"');
@@ -136,7 +136,7 @@
       case 'semi-off':    return draw_fonticon('fa-circle', 'style="color: #ded90f;"');
       case 'save':        return draw_fonticon('fa-floppy-o');
       case 'send':        return draw_fonticon('fa-paper-plane');
-			case 'user':        return draw_fonticon('fa-user', 'style="color: #888"');
+      case 'user':        return draw_fonticon('fa-user', 'style="color: #888"');
       case 'warning':     return draw_fonticon('fa-exclamation-triangle', 'color: #c00;"');
       default: trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING); return;
     }

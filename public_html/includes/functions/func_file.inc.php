@@ -141,9 +141,9 @@
 
   function file_realpath($path) {
 
-		if (!$path) {
-			return '';
-		}
+    if (!$path) {
+      return '';
+    }
 
     if (preg_match('#^app://#', $path)) {
       $path = preg_replace('#^app://#', FS_DIR_APP, $path);
@@ -162,9 +162,9 @@
       $path = str_replace('\\', '/', $path);
     }
 
-		if (is_dir($path)) {
-			$path = rtrim($path, '/') . '/';
-		}
+    if (is_dir($path)) {
+      $path = rtrim($path, '/') . '/';
+    }
 
     return $path;
   }
@@ -261,7 +261,7 @@
       '?'  => '.',
     ]);
 
-		// Resolve some glob flags into regex
+    // Resolve some glob flags into regex
     if ($flags & GLOB_BRACE) {
 
       $regex = preg_replace_callback('#\{[^\}]+\}#', function($matches) {
@@ -290,19 +290,19 @@
 
       if ($filetype == 'dir') {
 
-				$file = rtrim($file, '/') . '/';
+        $file = rtrim($file, '/') . '/';
 
       // Resolve double globstars
         if (strpos($pattern, '**') !== false) {
-					$folders = array_merge($folders, file_search($file.$pattern.$remains, $flags));
+          $folders = array_merge($folders, file_search($file.$pattern.$remains, $flags));
         }
 
       // Collect a matching folder
         if (preg_match($regex, basename($file)) || preg_match($regex, basename($file).'/')) {
           if ($remains) {
-						$folders = array_merge($folders, file_search($file.$remains, $flags));
+            $folders = array_merge($folders, file_search($file.$remains, $flags));
           } else {
-						$folders[] = $file;
+            $folders[] = $file;
           }
         }
 

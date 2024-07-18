@@ -20,12 +20,11 @@
     }
 
     $item = database::query(
-      "select oi.id, oi.stck_item_id, si.file, si.filename, si.mime_type from ". DB_TABLE_PREFIX ."orders_items oi
-      left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
+      "select oi.id, oi.product_id, p.file, p.filename, p.mime_type from ". DB_TABLE_PREFIX ."order_items
+      left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
       where oi.order_id = ". (int)$order['id'] ."
       and id = ". (int)$_GET['order_item_id'] ."
-      and oi.stock_item_id
-      and si.file
+      and p.file
       limit 1;"
     )->fetch();
 

@@ -114,7 +114,7 @@
       }
 
     // Load modifications from disk
-			if (!self::$_modifications) {
+      if (!self::$_modifications) {
 
         foreach (glob(FS_DIR_STORAGE . 'vmods/*.xml') as $file) {
           self::load($file);
@@ -519,11 +519,11 @@
             $find_node = $operation_node->getElementsByTagName('find')->item(0);
             $find = $find_node->textContent;
 
-						if ($aliases) {
-							foreach ($aliases as $key => $value) {
-								$find = str_replace('{alias:'. $key .'}', $value, $insert);
-							}
-						}
+            if ($aliases) {
+              foreach ($aliases as $key => $value) {
+                $find = str_replace('{alias:'. $key .'}', $value, $insert);
+              }
+            }
 
             if ($settings) {
               foreach ($settings as $key => $value) {
@@ -615,14 +615,14 @@
                 break;
 
               case 'top':
-								$find = '#^#s';
-								$indexes = '';
+                $find = '#^#s';
+                $indexes = '';
                 $insert = addcslashes($insert, '\\$').'$0';
                 break;
 
               case 'bottom':
-								$find = '#$#s';
-								$indexes = '';
+                $find = '#$#s';
+                $indexes = '';
                 $insert = '$0'.addcslashes($insert, '\\$');
                 break;
 

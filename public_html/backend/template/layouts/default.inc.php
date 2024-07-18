@@ -57,12 +57,12 @@
         {{breadcrumbs}}
       </li>
 
-			<li style="flex-grow: 1;">
-				<div id="search" class="dropdown">
-					<?php echo functions::form_input_search('query', false, 'placeholder="'. functions::escape_attr(language::translate('title_search_entire_platform', 'Search entire platform')) .'&hellip;" autocomplete="off"'); ?>
-					<div class="results dropdown-menu"></div>
-				</div>
-			</li>
+      <li style="flex-grow: 1;">
+        <div id="search" class="dropdown">
+          <?php echo functions::form_input_search('query', false, 'placeholder="'. functions::escape_attr(language::translate('title_search_entire_platform', 'Search entire platform')) .'&hellip;" autocomplete="off"'); ?>
+          <div class="results dropdown-menu"></div>
+        </div>
+      </li>
 
       <li>
         <div class="btn-group" data-toggle="buttons">
@@ -90,7 +90,7 @@
         <ul class="dropdown-menu">
           <?php foreach (language::$languages as $language) { ?>
           <li>
-						<a href="<?php echo document::href_ilink(null, [], [], [], $language['code']); ?>">
+            <a href="<?php echo document::href_ilink(null, [], [], [], $language['code']); ?>">
               <?php echo $language['name']; ?>
             </a>
           </li>

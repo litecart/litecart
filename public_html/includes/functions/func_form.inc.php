@@ -1,24 +1,24 @@
 <?php
 
   function form_begin($name='', $method='post', $action=false, $multipart=false, $parameters='') {
-		return  '<form'. (($name) ? ' name="'. functions::escape_attr($name) .'"' : '') .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. mb_http_output() .'"'. (($action) ? ' action="'. functions::escape_attr($action) .'"' : '') . ($parameters ? ' ' . $parameters : '') .'>';
+    return  '<form'. (($name) ? ' name="'. functions::escape_attr($name) .'"' : '') .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. mb_http_output() .'"'. (($action) ? ' action="'. functions::escape_attr($action) .'"' : '') . ($parameters ? ' ' . $parameters : '') .'>';
   }
 
   function form_end() {
-		return '</form>';
+    return '</form>';
   }
 
   function form_reinsert_value($name, $array_value=null) {
 
-		if (!$name) {
-			return;
-		}
+    if (!$name) {
+      return;
+    }
 
     foreach ([$_POST, $_GET] as $superglobal) {
 
-			if (!$superglobal) {
-				continue;
-			}
+      if (!$superglobal) {
+        continue;
+      }
 
     // Extract name parts
       $parts = preg_split('#[\]\[]+#', preg_replace('#\[\]$#', '', $name), -1, PREG_SPLIT_NO_EMPTY);
@@ -46,9 +46,9 @@
         }
       }
 
-			if ($node || $node != '') {
-				return $node;
-			}
+      if ($node || $node != '') {
+        return $node;
+      }
     }
 
     return '';
@@ -287,7 +287,7 @@
       $input = number_format((float)$input, (int)$decimals, '.', '');
     }
 
-		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'" step="any" data-decimals="'. $decimals .'"'. ($parameters ? ' '. $parameters : '') .'>';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'" step="any" data-decimals="'. $decimals .'"'. ($parameters ? ' '. $parameters : '') .'>';
   }
 
   function form_input_email($name, $input=true, $parameters='') {
@@ -356,7 +356,7 @@
 
     return implode(PHP_EOL, [
       '<div class="input-group">',
-			'  ' . form_input_decimal($name, $input, $currency['decimals'], ($parameters ? $parameters .' ' : '') .'step="any" data-type="currency"'),
+      '  ' . form_input_decimal($name, $input, $currency['decimals'], ($parameters ? $parameters .' ' : '') .'step="any" data-type="currency"'),
       '  <strong class="input-group-text" style="opacity: 0.75; font-family: monospace;">'. functions::escape_html($currency['code']) .'</strong>',
       '</div>',
     ]);
@@ -389,20 +389,20 @@
     ]);
   }
 
-	function form_input_password_unmaskable($name, $input='', $parameters='') {
+  function form_input_password_unmaskable($name, $input='', $parameters='') {
 
-		if ($input === true) {
-			$input = form_reinsert_value($name);
-		}
+    if ($input === true) {
+      $input = form_reinsert_value($name);
+    }
 
-		return implode(PHP_EOL, [
-			'<div class="input-group">',
-			'  <span class="input-group-icon">'. functions::draw_fonticon('fa-key fa-fw') .'</span>',
-			'  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="password" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'"'. ($parameters ? ' '. $parameters : '') .'>',
-			'  <button class="btn btn-default" type="button" onclick="$(this).prev().attr(\'type\', ($(this).prev().attr(\'type\') == \'password\') ? \'text\' : \'password\')">'. functions::draw_fonticon('fa-eye') .'</button>',
-			'</div>',
-		]);
-	}
+    return implode(PHP_EOL, [
+      '<div class="input-group">',
+      '  <span class="input-group-icon">'. functions::draw_fonticon('fa-key fa-fw') .'</span>',
+      '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="password" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'"'. ($parameters ? ' '. $parameters : '') .'>',
+      '  <button class="btn btn-default" type="button" onclick="$(this).prev().attr(\'type\', ($(this).prev().attr(\'type\') == \'password\') ? \'text\' : \'password\')">'. functions::draw_fonticon('fa-eye') .'</button>',
+      '</div>',
+    ]);
+  }
 
   function form_input_percent($name, $input=true, $decimals=2, $parameters='') {
 
@@ -764,7 +764,7 @@
     $html = '<select class="form-select" name="'. functions::escape_attr($name) .'"'. (preg_match('#\[\]$#', $name) ? ' multiple' : '') . ($parameters ? ' ' . $parameters : '') .'>' . PHP_EOL;
 
     foreach ($groups as $group) {
-			$html .= '  <optgroup label="'. functions::escape_attr($group['label']) .'">' . PHP_EOL;
+      $html .= '  <optgroup label="'. functions::escape_attr($group['label']) .'">' . PHP_EOL;
 
       $is_numerical_index = array_is_list($group['options']);
 
@@ -903,7 +903,7 @@
 
     if (!preg_match('#(\w*)\((.*?)\)$#i', $function, $matches)) {
       trigger_error('Invalid form function ('. $function .')', E_USER_WARNING);
-			return form_textarea($name, $input, $parameters);
+      return form_textarea($name, $input, $parameters);
     }
 
     $options = [];
@@ -1598,58 +1598,58 @@
     }
   }
 
-	function form_select_form_function($name, $parameters='') {
+  function form_select_form_function($name, $parameters='') {
 
-		if (preg_match('#\[\]$#', $name)) {
-			return form_select_multiple_files($name, $options, $input, $parameters);
-		}
+    if (preg_match('#\[\]$#', $name)) {
+      return form_select_multiple_files($name, $options, $input, $parameters);
+    }
 
-		$options = [
-			'administrator()',
-			'bigtext()',
-			'checkbox()',
-			'color()',
-			'country()',
-			'csv()',
-			'currency()',
-			'customer()',
-			'date()',
-			'datetime()',
-			'decimal()',
-			'email()',
-			'file()',
-			'geo_zone()',
-			'language()',
-			'mediumtext()',
-			'number()',
-			'password()',
-			'percent()',
-			'phone()',
-			'radio()',
-			'regional_text()',
-			'regional_textarea()',
-			'regional_wysiwyg()',
-			'select()',
-			'tags()',
-			'text()',
-			'textarea()',
-			'time()',
-			'timezone()',
-			'toggle()',
-			'upload()',
-			'tax_class()',
-			'url()',
-			'wysiwyg()',
-			'zone()',
-		];
+    $options = [
+      'administrator()',
+      'bigtext()',
+      'checkbox()',
+      'color()',
+      'country()',
+      'csv()',
+      'currency()',
+      'customer()',
+      'date()',
+      'datetime()',
+      'decimal()',
+      'email()',
+      'file()',
+      'geo_zone()',
+      'language()',
+      'mediumtext()',
+      'number()',
+      'password()',
+      'percent()',
+      'phone()',
+      'radio()',
+      'regional_text()',
+      'regional_textarea()',
+      'regional_wysiwyg()',
+      'select()',
+      'tags()',
+      'text()',
+      'textarea()',
+      'time()',
+      'timezone()',
+      'toggle()',
+      'upload()',
+      'tax_class()',
+      'url()',
+      'wysiwyg()',
+      'zone()',
+    ];
 
-		if (preg_match('#\[\]$#', $name)) {
-			return form_select_multiple($name, $options, $input, $parameters);
-		} else {
-			array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
-			return form_select($name, $options, $input, $parameters);
-		}
-	}
+    if (preg_match('#\[\]$#', $name)) {
+      return form_select_multiple($name, $options, $input, $parameters);
+    } else {
+      array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
+      return form_select($name, $options, $input, $parameters);
+    }
+  }
 
   function form_select_file($name, $parameters='') {
 
@@ -2129,92 +2129,6 @@
       array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
       return form_select($name, $options, $input, $parameters);
     }
-  }
-
-  function form_select_stock_item($name, $input=true, $parameters='') {
-
-    if (preg_match('#\[\]$#', $name)) {
-      return form_select_multiple_stock_items($name, $input, $parameters);
-    }
-
-    if ($input === true) {
-      $input = form_reinsert_value($name);
-    }
-
-    if ($input) {
-      $item = database::query(
-        "select si.id, si.sku sii.name
-        from ". DB_TABLE_PREFIX ."stock_items si
-        left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = si.id and sii.language_code = '". database::input(language::$selected['code']) ."')
-        where p.id = ". (int)$input ."
-        limit 1;"
-      )->fetch();
-    } else {
-      $item_name = '('. language::translate('title_no_items', 'No Item') .')';
-    }
-
-    functions::draw_lightbox();
-
-    return implode(PHP_EOL, [
-      '<div class="input-group"' . ($parameters ? ' ' . $parameters : '') . '>',
-      '  <div class="form-input">',
-      '    ' . form_input_hidden($name, true, !empty($item) ? 'data-sku="'. $item['sku'] .'"' : ''),
-      '    <span class="name" style="display: inline-block;">'. $item_name .'</span>',
-      '    [<span class="id" style="display: inline-block;">'. (int)$input .'</span>]',
-      '  </div>',
-      '  <div style="align-self: center;">',
-      '    <a href="'. document::href_ilink('b:catalog/item_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>',
-      '  </div>',
-      '</div>',
-    ]);
-  }
-
-  function form_select_multiple_stock_items($name, $input=true, $parameters='') {
-
-    if (!preg_match('#\[\]$#', $name)) {
-      return form_select_stock_item($name, $input, $parameters);
-    }
-
-    if ($input === true) {
-      $input = form_reinsert_value($name);
-    }
-
-    if (!is_array($input)) {
-      $input = preg_split('#\s*,\s*#', (string)$input, -1, PREG_SPLIT_NO_EMPTY);
-    }
-
-    $items = database::query(
-      "select si.id, si.sku, si.quantity, sii.name
-      from ". DB_TABLE_PREFIX ."stock_items si
-      left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
-      where si.id in ('". implode("', '", database::input($input)) ."')
-      order by sii.name"
-    )->fetch_all();
-
-    $uid = uniqid();
-
-    $output = implode(PHP_EOL, [
-      '<div id="input-'.$uid.'" '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-input flex flex-rows"' : '') . ($parameters ? ' '. $parameters : '') .'>',
-      '  <div class="stock-items flex-grow">',
-      //!$input ? '<em>'. language::translate('text_no_items', 'No items') .'</em>' : '',
-      implode(PHP_EOL, array_map(function($item) {
-        return '    <div class="stock-item" data-id="'. $item['id'] .'">'. $item['name'] .' &mdash; '. $item['sku'] .' ['. (float)$item['quantity'] .']</div>';
-      }, $items)),
-      '  </div>',
-      '  '. form_button('add', language::translate('title_add_item', 'Add'), 'button', 'data-toggle="lightbox" data-target="'. document::href_ilink('catalog/item_picker', ['js_callback' => '_callback_'.$uid]) .'"'),
-      '</div>',
-    ]);
-
-    document::$javascript[] = implode(PHP_EOL, [
-      'window._callback_'.$uid.' = function(item){',
-      ' console.log(item);',
-      '  let $input = $(\'#input-'.$uid.'\');',
-      '  var $item = $(\'<div class="item"></div>\').attr("data-id", item.id).html(item.name +\' &mdash; \'+ item.sku +\' [\'+ item.quantity +\']\').append(\'<button class="btn btn-default btn-sm" class="float-end">x</span>\');',
-      '  $input.find(\'.stock-items\').append($item);',
-      '}'
-    ]);
-
-    return $output;
   }
 
   function form_select_supplier($name, $input=true, $parameters='') {

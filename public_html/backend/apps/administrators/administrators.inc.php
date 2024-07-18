@@ -93,7 +93,7 @@
 
       <tbody>
         <?php foreach ($administrators as $administrator) { ?>
-				<tr class="<?php echo empty($administrator['status']) ? 'semi-transparent' : ''; ?>">
+        <tr class="<?php echo empty($administrator['status']) ? 'semi-transparent' : ''; ?>">
           <td><?php echo functions::form_checkbox('administrators[]', $administrator['id']); ?></td>
           <td><?php echo functions::draw_fonticon($administrator['status'] ? 'on' : 'off'); ?></td>
           <td class="warning"><?php echo !empty($administrator['warning']) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($administrator['warning']) .'"') : ''; ?></td>

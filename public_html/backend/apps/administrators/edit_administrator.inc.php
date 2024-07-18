@@ -129,12 +129,12 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
-							<?php echo functions::form_input_password_unmaskable('password', '', 'autocomplete="new-password"'); ?>
+              <?php echo functions::form_input_password_unmaskable('password', '', 'autocomplete="new-password"'); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-							<?php echo functions::form_input_password_unmaskable('confirmed_password', '', 'autocomplete="new-password"'); ?>
+              <?php echo functions::form_input_password_unmaskable('confirmed_password', '', 'autocomplete="new-password"'); ?>
             </div>
           </div>
 

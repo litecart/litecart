@@ -73,9 +73,9 @@
 
           if (empty($value)) {
             if ($this->host == $_SERVER['HTTP_HOST']) {
-							if (isset($_SERVER['HTTPS']) && filter_var($_SERVER['HTTPS'], FILTER_VALIDATE_BOOLEAN)) {
-								$value = 'https';
-							} else if	(isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443) {
+              if (isset($_SERVER['HTTPS']) && filter_var($_SERVER['HTTPS'], FILTER_VALIDATE_BOOLEAN)) {
+                $value = 'https';
+              } else if	(isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443) {
                 $value = 'https';
               } else {
                 $value = 'http';

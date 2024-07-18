@@ -132,7 +132,7 @@
             case 'product_stock_options':
 
               database::multi_query(implode(PHP_EOL, [
-                "truncate ". DB_TABLE_PREFIX ."product_stock_options;",
+                "truncate ". DB_TABLE_PREFIX ."product_options_stock;",
               ]));
 
               break;
@@ -141,16 +141,6 @@
 
               database::multi_query(implode(PHP_EOL, [
                 "truncate ". DB_TABLE_PREFIX ."suppliers;",
-              ]));
-
-              break;
-
-            case 'stock_items':
-
-              database::multi_query(implode(PHP_EOL, [
-                "truncate ". DB_TABLE_PREFIX ."products_stock_options;",
-                "truncate ". DB_TABLE_PREFIX ."stock_items;",
-                "truncate ". DB_TABLE_PREFIX ."stock_items_info;",
               ]));
 
               break;
@@ -834,7 +824,7 @@
 
           case 'product_stock_options':
 
-            foreach (['product_id', 'stock_item_id'] as $column) {
+            foreach (['product_id', 'sku'] as $column) {
               if (empty($row[$column])) {
                 throw new Exception("Missing value for mandatory column $column on line $i");
               }

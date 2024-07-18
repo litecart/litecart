@@ -132,11 +132,8 @@
         + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
         + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
         + if (p.id in (
-          select product_id from ". DB_TABLE_PREFIX ."products_stock_options
-          where stock_item_id in (
-            select id from ". DB_TABLE_PREFIX ."stock_items
-            where sku regexp '". database::input($code_regex) ."'
-          )
+          select product_id from ". DB_TABLE_PREFIX ."products_options_stock
+          where sku regexp '". database::input($code_regex) ."'
         ), 5, 0)
         + if(b.name like '%". database::input($_GET['query']) ."%', 3, 0)
         + if(s.name like '%". database::input($_GET['query']) ."%', 2, 0)
@@ -146,7 +143,7 @@
 
 // Table Rows, Total Number of Rows, Total Number of Pages
   $products = database::query(
-    "select p.id, p.status, p.code, pi.name, p.image, pp.price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, p.date_created". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
+    "select p.id, p.status, p.code, pi.name, p.image, pp.price, pos.num_stock_options, pos.quantity, pos.quantity - oi.total_reserved as quantity_available, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, p.date_created". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
 
     from ". DB_TABLE_PREFIX ."products p
     left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
@@ -159,21 +156,20 @@
     ) pp on (pp.product_id = p.id)
 
     left join (
-      select pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as quantity
-      from ". DB_TABLE_PREFIX ."products_stock_options pso
-      left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
-      group by pso.product_id
+      select product_id, count(id) as num_stock_options, sum(quantity) as quantity
+      from ". DB_TABLE_PREFIX ."products_options_stock
+      group by product_id
     ) pso on (pso.product_id = p.id)
 
     left join (
-      select oi.stock_item_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
+      select oi.product_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
       left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
       where o.order_status_id in (
         select id from ". DB_TABLE_PREFIX ."order_statuses
         where stock_action = 'reserve'
       )
-      group by oi.stock_item_id
-    ) oi on (oi.stock_item_id = pso.stock_item_id)
+      group by oi.product_id
+    ) oi on (oi.product_id = p.id)
 
     where p.id
     ". (!empty($_GET['category_id']) ? "and p.id in (

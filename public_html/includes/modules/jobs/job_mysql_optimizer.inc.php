@@ -14,7 +14,7 @@
 
       if (!$force) {
         if (!$this->settings['status']) return;
-				if (strtotime($last_run) > functions::datetime_last_by_interval($this->settings['frequency'], $last_run)) return;
+        if (strtotime($last_run) > functions::datetime_last_by_interval($this->settings['frequency'], $last_run)) return;
       }
 
       echo 'Optimizing MySQL Tables...' . PHP_EOL;

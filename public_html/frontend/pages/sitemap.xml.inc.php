@@ -82,7 +82,7 @@
       '    <changefreq>weekly</changefreq>',
       '    <priority>0.8</priority>',
       '  </url>',
-	  ])) . PHP_EOL;
+    ])) . PHP_EOL;
   });
 
   $output .= '</urlset>';

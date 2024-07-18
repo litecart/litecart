@@ -257,24 +257,62 @@ form[name="buy_now_form"] .dropdown-menu .image {
 </article>
 
 <script>
-  $('#box-product[data-id="<?php echo $product_id; ?>"] form[name=buy_now_form] input[name="stock_option_id"]').on('change', function(e) {
+  $('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', function(e) {
 
-    let $selected_option = $(this).closest('.dropdown').find(':input:checked');
-    let regular_price = <?php echo currency::format_raw($regular_price); ?>;
-    let sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>;
-    let tax = <?php echo currency::format_raw($total_tax); ?>;
+    var regular_price = <?php echo currency::format_raw($regular_price); ?>;
+    var sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>;
+    var tax = <?php echo currency::format_raw($total_tax); ?>;
 
-    $(this).closest('.form-group').find('[data-toggle="dropdown"]').text( $selected_option.data('name') );
+    $(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function(){
+      if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
+      if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
+      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+    });
 
-    if ($selected_option.data('price-adjustment')) regular_price += $selected_option.data('price-adjustment') || 0;
-    if ($selected_option.data('price-adjustment')) sales_price += $selected_option.data('price-adjustment') || 0;
-    if ($selected_option.data('tax-adjustment')) tax += $selected_option.data('tax-adjustment') || 0;
+    $(this).find('select option:checked').each(function(){
+      if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
+      if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
+      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+    });
+
+    $(this).find('input[type!="radio"][type!="checkbox"]').each(function(){
+      if ($(this).val() != '') {
+        if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
+        if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
+        if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+      }
+    });
 
     $(this).find('.regular-price').text(regular_price.toMoney());
     $(this).find('.campaign-price').text(sales_price.toMoney());
     $(this).find('.price').text(sales_price.toMoney());
     $(this).find('.total-tax').text(tax.toMoney());
-  }).trigger('change');
+  });
+
+  $('#box-product form[name="buy_now_form"] .options :input').change(function(){
+
+    $.ajax({
+      type: 'post',
+      url: '<?php echo document::ilink('ajax/product_options_stock.json'); ?>',
+      data: $(this).closest('form').serialize(),
+      dataType: 'json',
+      cache: false,
+
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log('error', errorThrown);
+      },
+
+      success: function(data){
+        if (data.status == 'ok') {
+          $('.stock-notice').text(data.notice).removeClass('warning');
+        } else if (data.status == 'warning') {
+          $('.stock-notice').text(data.notice).addClass('warning');
+        } else {
+          $('.stock-notice').html('');
+        }
+      }
+    });
+  });
 
   $('#box-product[data-id="{{product_id}}"] .social-bookmarks .link').off().click(function(e){
     e.preventDefault();

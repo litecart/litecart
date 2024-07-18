@@ -58,7 +58,7 @@
 
       if (empty(self::$data)) return '';
 
-			if (route::$selected['endpoint'] == 'backend') {
+      if (route::$selected['endpoint'] == 'backend') {
         $view = new ent_view('app://backend/template/partials/notices.inc.php');
       } else {
         $view = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/notices.inc.php');

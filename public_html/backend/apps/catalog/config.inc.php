@@ -44,11 +44,6 @@
         'params' => [],
       ],
       [
-        'title' => language::translate('title_stock_items', 'Stock Items'),
-        'doc' => 'stock_items',
-        'params' => [],
-      ],
-      [
         'title' => language::translate('title_stock_transactions', 'Stock Transactions'),
         'doc' => 'stock_transactions',
         'params' => [],
@@ -102,10 +97,6 @@
       'products.json' => 'products.json.inc.php',
       'product_picker' => 'product_picker.inc.php',
       'product_picker_configure' => 'product_picker_configure.inc.php',
-      'stock_items' => 'stock_items.inc.php',
-      'stock_item_picker' => 'stock_item_picker.inc.php',
-      'stock_items.json' => 'stock_items.json.inc.php',
-      'edit_stock_item' => 'edit_stock_item.inc.php',
       'stock_transactions' => 'stock_transactions.inc.php',
       'edit_stock_transaction' => 'edit_stock_transaction.inc.php',
     ],

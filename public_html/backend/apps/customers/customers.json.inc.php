@@ -12,7 +12,7 @@
     ];
   }
 
-	// Rows, Total Number of Rows, Total Number of Pages
+  // Rows, Total Number of Rows, Total Number of Pages
   $customers = database::query(
     "select id, if(company, company, concat(firstname, ' ', lastname)) as name, email, date_created
     from ". DB_TABLE_PREFIX ."customers

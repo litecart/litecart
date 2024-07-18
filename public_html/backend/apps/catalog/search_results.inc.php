@@ -18,15 +18,9 @@
         + if(pi.short_description like '%". database::input($query) ."%', 2, 0)
         + if(pi.description like '%". database::input($query) ."%', 1, 0)
         + if(p.code regexp '". database::input($code_regex) ."', 5, 0)
-        + if(p.sku regexp '". database::input($code_regex) ."', 5, 0)
-        + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
-        + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
         + if (p.id in (
-          select product_id from ". DB_TABLE_PREFIX ."products_to_stock_items
-          where stock_item_id in (
-            select id from ". DB_TABLE_PREFIX ."stock_items
-            where sku regexp '". database::input($code_regex) ."'
-          )
+          select product_id from ". DB_TABLE_PREFIX ."products_options_stock
+          where sku regexp '". database::input($code_regex) ."'
         ), 5, 0)
     ) as relevance
 
@@ -69,21 +63,20 @@
   $query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
 
   $stock_items = database::query(
-    "select s.id, s.sku, si.name,
-    (
-        if(s.id = '". database::input($query) ."', 10, 0)
-        + (match(si.name) against ('". database::input($query_fulltext) ."' in boolean mode))
-        + if(si.name like '%". database::input($query) ."%', 3, 0)
-        + if(s.sku regexp '". database::input($code_regex) ."', 5, 0)
-        + if(s.mpn regexp '". database::input($code_regex) ."', 5, 0)
-        + if(s.gtin regexp '". database::input($code_regex) ."', 5, 0)
-        + if (s.id in (
-          select stock_item_id from ". DB_TABLE_PREFIX ."stock_items_references
-          where stock_item_id in (
-            select id from ". DB_TABLE_PREFIX ."stock_items_references
-            where code regexp '". database::input($code_regex) ."'
-          )
-        ), 5, 0)
+    "select s.id, s.sku, si.name, (
+      if(s.id = '". database::input($query) ."', 10, 0)
+      + (match(si.name) against ('". database::input($query_fulltext) ."' in boolean mode))
+      + if(si.name like '%". database::input($query) ."%', 3, 0)
+      + if(s.sku regexp '". database::input($code_regex) ."', 5, 0)
+      + if(s.mpn regexp '". database::input($code_regex) ."', 5, 0)
+      + if(s.gtin regexp '". database::input($code_regex) ."', 5, 0)
+      + if (s.id in (
+        select stock_item_id from ". DB_TABLE_PREFIX ."stock_items_references
+        where stock_item_id in (
+          select id from ". DB_TABLE_PREFIX ."stock_items_references
+          where code regexp '". database::input($code_regex) ."'
+        )
+      ), 5, 0)
     ) as relevance
 
     from ". DB_TABLE_PREFIX ."stock_items s
