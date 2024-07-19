@@ -1,139 +1,139 @@
 <?php
-  document::$layout = 'ajax';
+	document::$layout = 'ajax';
 ?>
 <style>
 #modal-customer-picker tbody > tr {
-  cursor: pointer;
+	cursor: pointer;
 }
 </style>
 
 <div id="modal-customer-picker" class="modal fade" style="max-width: 720px; display: none;">
 
-  <button class="set-guest btn btn-default btn-sm float-end" type="button"><?php echo language::translate('text_set_as_guest', 'Set As Guest'); ?></button>
+	<button class="set-guest btn btn-default btn-sm float-end" type="button"><?php echo language::translate('text_set_as_guest', 'Set As Guest'); ?></button>
 
-  <h2 style="margin-top: 0;"><?php echo language::translate('title_customers', 'Customers'); ?></h2>
+	<h2 style="margin-top: 0;"><?php echo language::translate('title_customers', 'Customers'); ?></h2>
 
-  <div class="modal-body">
-    <div class="form-group">
-      <?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_attr(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
-    </div>
+	<div class="modal-body">
+		<div class="form-group">
+			<?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_attr(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
+		</div>
 
-    <div class="form-group results table-responsive">
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
-            <th><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
-          </tr>
-        </thead>
-        <tbody>
-        </tbody
-      </table>
-    </div>
-  </div>
+		<div class="form-group results table-responsive">
+			<table class="table table-striped table-hover data-table">
+				<thead>
+					<tr>
+						<th><?php echo language::translate('title_id', 'ID'); ?></th>
+						<th><?php echo language::translate('title_name', 'Name'); ?></th>
+						<th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
+						<th><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody
+			</table>
+		</div>
+	</div>
 
 </div>
 
 <script>
-  $('#modal-customer-picker input[name="query"]').focus();
+	$('#modal-customer-picker input[name="query"]').focus();
 
-  var xhr_customer_picker = null;
-  $('#modal-customer-picker input[name="query"]').on('input', function(){
+	var xhr_customer_picker = null;
+	$('#modal-customer-picker input[name="query"]').on('input', function(){
 
-    if ($(this).val() == '') {
-      $('#modal-customer-picker .results tbody').html('');
-      xhr_customer_picker = null;
-      return;
-    }
+		if ($(this).val() == '') {
+			$('#modal-customer-picker .results tbody').html('');
+			xhr_customer_picker = null;
+			return;
+		}
 
-    xhr_customer_picker = $.ajax({
-      type: 'get',
-      async: true,
-      cache: false,
-      url: '<?php echo document::ilink('customers/customers.json'); ?>?query=' + $(this).val(),
-      dataType: 'json',
-      beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.error(textStatus + ': ' + errorThrown);
-      },
-      success: function(json) {
+		xhr_customer_picker = $.ajax({
+			type: 'get',
+			async: true,
+			cache: false,
+			url: '<?php echo document::ilink('customers/customers.json'); ?>?query=' + $(this).val(),
+			dataType: 'json',
+			beforeSend: function(jqXHR) {
+				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.error(textStatus + ': ' + errorThrown);
+			},
+			success: function(json) {
 
-        $('#modal-customer-picker .results tbody').html('');
+				$('#modal-customer-picker .results tbody').html('');
 
-        $.each(json, function(i, row){
+				$.each(json, function(i, row){
 
-          $row = $([
-            '<tr>',
-            '  <td class="id">' + row.id + '</td>',
-            '  <td class="name">' + row.name + '</td>',
-            '  <td class="email">' + row.email + '</td>',
-            '  <td class="date-created">' + row.date_created + '</td>',
-            '  <td></td>' +
-            '</tr>'
-          ].join('\n'));
+					$row = $([
+						'<tr>',
+						'  <td class="id">' + row.id + '</td>',
+						'  <td class="name">' + row.name + '</td>',
+						'  <td class="email">' + row.email + '</td>',
+						'  <td class="date-created">' + row.date_created + '</td>',
+						'  <td></td>' +
+						'</tr>'
+					].join('\n'));
 
-          $row.find('.id').text(row.id);
-          $row.find('.name').text(row.name);
-          $row.find('.date-created').text(row.date_created);
+					$row.find('.id').text(row.id);
+					$row.find('.name').text(row.name);
+					$row.find('.date-created').text(row.date_created);
 
-          $row.data(row);
+					$row.data(row);
 
-          $('#modal-customer-picker .results tbody').append($row);
-        });
+					$('#modal-customer-picker .results tbody').append($row);
+				});
 
-        if ($('#modal-customer-picker .results tbody').html() == '') {
-          $('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
-        }
-      },
-    });
-  });
+				if ($('#modal-customer-picker .results tbody').html() == '') {
+					$('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
+				}
+			},
+		});
+	});
 
-  $('#modal-customer-picker tbody').on('click', 'td', function() {
+	$('#modal-customer-picker tbody').on('click', 'td', function() {
 
-    let $row = $(this).closest('tr'),
-      callback = $.featherlight.current().$currentTarget.data('callback'),
-      expand = <?php echo (isset($_GET['collect']) && array_intersect(['address', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
-      customer = $row.data();
+		let $row = $(this).closest('tr'),
+			callback = $.featherlight.current().$currentTarget.data('callback'),
+			expand = <?php echo (isset($_GET['collect']) && array_intersect(['address', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
+			customer = $row.data();
 
-    if (!customer.id) {
-      customer = {
-        id: 0,
-        name: '(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)',
-      };
-    }
+		if (!customer.id) {
+			customer = {
+				id: 0,
+				name: '(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)',
+			};
+		}
 
-    if (callback) {
+		if (callback) {
 
-      if (typeof callback == 'function') {
-        callback(product);
-      } else {
-        window[callback](customer);
-      }
+			if (typeof callback == 'function') {
+				callback(product);
+			} else {
+				window[callback](customer);
+			}
 
-    } else {
-      let $field = $.featherlight.current().$currentTarget.closest('.form-group');
-      $field.find(':input').val(customer.id).trigger('change');
-      $field.find('.id').text(customer.id);
-      $field.find('.name').text(customer.name);
-      $.featherlight.close();
-    }
-  });
+		} else {
+			let $field = $.featherlight.current().$currentTarget.closest('.form-group');
+			$field.find(':input').val(customer.id).trigger('change');
+			$field.find('.id').text(customer.id);
+			$field.find('.name').text(customer.name);
+			$.featherlight.close();
+		}
+	});
 
-  $('#modal-customer-picker .set-guest').click(function(){
+	$('#modal-customer-picker .set-guest').click(function(){
 
-    let field = $.featherlight.current().$currentTarget.closest('.form-input');
+		let field = $.featherlight.current().$currentTarget.closest('.form-input');
 
-    $(field).find(':input').val('0').trigger('change');
-    $(field).find('.id').text('0');
-    $(field).find('.name').text('(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)');
-    $.featherlight.close();
-  });
+		$(field).find(':input').val('0').trigger('change');
+		$(field).find('.id').text('0');
+		$(field).find('.name').text('(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)');
+		$.featherlight.close();
+	});
 </script>
 
 <?php
-  require_once 'app://includes/app_footer.inc.php';
-  exit;
+	require_once 'app://includes/app_footer.inc.php';
+	exit;

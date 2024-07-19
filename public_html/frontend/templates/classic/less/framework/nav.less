@@ -1,143 +1,143 @@
 /* Nav (Tabs, Pills) - Bootstrap Compatible */
 
 .nav {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  li {
-    position: relative;
-    flex: 0 0 100%;
-    @media(min-width: @media-breakpoint-sm) {
-      flex: 0 0 auto;
-    }
-    > a {
-      position: relative;
-      display: block;
-      padding: .75em var(--gutter-x);
-      color: inherit;
-      text-decoration: none;
-    }
-    &.disabled > a {
-      color: fade(#777, 25%);
-      &:hover,
-      &:focus {
-        text-decoration: none;
-        cursor: not-allowed;
-      }
-    }
-  }
-  > li {
-    > a > img {
-      max-width: none;
-    }
-    > ul {
-      list-style: none;
-      padding: 0;
-      > li > a {
-        padding-inline-start: 40px;
-      }
-      > li > ul > li > a {
-        padding-inline-start: 50px;
-      }
-      > li > ul ul > li > a {
-        padding-inline-start: 60px;
-      }
-      > li > ul ul ul > li > a {
-        padding-inline-start: 70px;
-      }
-    }
-  }
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	li {
+		position: relative;
+		flex: 0 0 100%;
+		@media(min-width: @media-breakpoint-sm) {
+			flex: 0 0 auto;
+		}
+		> a {
+			position: relative;
+			display: block;
+			padding: .75em var(--gutter-x);
+			color: inherit;
+			text-decoration: none;
+		}
+		&.disabled > a {
+			color: fade(#777, 25%);
+			&:hover,
+			&:focus {
+				text-decoration: none;
+				cursor: not-allowed;
+			}
+		}
+	}
+	> li {
+		> a > img {
+			max-width: none;
+		}
+		> ul {
+			list-style: none;
+			padding: 0;
+			> li > a {
+				padding-inline-start: 40px;
+			}
+			> li > ul > li > a {
+				padding-inline-start: 50px;
+			}
+			> li > ul ul > li > a {
+				padding-inline-start: 60px;
+			}
+			> li > ul ul ul > li > a {
+				padding-inline-start: 70px;
+			}
+		}
+	}
 
-  &.nav-justified {
-    > li {
-      flex: 1 0 auto;
-      > a {
-        margin-inline-end: 0;
-        text-align: center;
-        @media (min-width: @media-breakpoint-sm) {
-          margin-bottom: 0;
-        }
-      }
-    }
-  }
+	&.nav-justified {
+		> li {
+			flex: 1 0 auto;
+			> a {
+				margin-inline-end: 0;
+				text-align: center;
+				@media (min-width: @media-breakpoint-sm) {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
 
-  &.nav-stacked {
-    display: flex;
-    flex-direction: column;
-    li {
-      display: flex;
-      flex-direction: column;
-      + li > a {
-        margin-inline-start: 0;
-      }
-    }
-  }
+	&.nav-stacked {
+		display: flex;
+		flex-direction: column;
+		li {
+			display: flex;
+			flex-direction: column;
+			+ li > a {
+				margin-inline-start: 0;
+			}
+		}
+	}
 }
 
 .nav-pills {
-  display: inline-flex;
-  gap: 2px;
-  a {
-    display: inline-block;
-    padding: .5em 1em;
-    background: var(--pills-background-color);
-    border-radius: var(--border-radius);
-    transition: all 125ms linear;
-    color: var(--pills-text-color);
-    &:hover {
-      background: var(--pills-background-color-hover);
-    }
-  }
-  li.active > a, a.active {
-    background: var(--pills-background-color-active);
-    color: var(--pills-text-color-active);
-  }
-  li + li > a {
-    margin-inline-start: 2px;
-  }
+	display: inline-flex;
+	gap: 2px;
+	a {
+		display: inline-block;
+		padding: .5em 1em;
+		background: var(--pills-background-color);
+		border-radius: var(--border-radius);
+		transition: all 125ms linear;
+		color: var(--pills-text-color);
+		&:hover {
+			background: var(--pills-background-color-hover);
+		}
+	}
+	li.active > a, a.active {
+		background: var(--pills-background-color-active);
+		color: var(--pills-text-color-active);
+	}
+	li + li > a {
+		margin-inline-start: 2px;
+	}
 }
 
 .nav-tabs {
-  background: var(--tabs-pane-background-color);
-  border-start-start-radius: var(--border-radius);
-  border-start-end-radius: var(--border-radius);
-  border-bottom: 1px solid var(--tabs-pane-border-color);
-  padding: var(--gutter-y) var(--gutter-x);
-  padding-bottom: 4px;
-  color: var(--tabs-text-color);
-  a {
-    flex: 0 0 auto;
-    margin-inline-end: .5em;
-    line-height: 1.4;
-    border-radius: var(--border-radius) var(--border-radius) 0 0;
-    padding: .5em 1em;
-    background-color: var(--tabs-background-color);
-    color: var(--tabs-text-color);
-    border: 1px solid var(--tabs-border-color);
-    border-bottom-color: var(--tabs-background-color);
-    text-decoration: none;
-    &:hover:not(.active) {
-      filter: brightness(0.95);
-    }
-    &.active {
-      background-color: var(--tabs-background-color-active);
-      color: var(--tabs-text-color-active);
-      margin-top: 1px;
-      margin-bottom: -1px;
-      border: 1px solid var(--tabs-border-color-active);
-      border-bottom-color: var(--tabs-content-background-color);
-    }
-  }
+	background: var(--tabs-pane-background-color);
+	border-start-start-radius: var(--border-radius);
+	border-start-end-radius: var(--border-radius);
+	border-bottom: 1px solid var(--tabs-pane-border-color);
+	padding: var(--gutter-y) var(--gutter-x);
+	padding-bottom: 4px;
+	color: var(--tabs-text-color);
+	a {
+		flex: 0 0 auto;
+		margin-inline-end: .5em;
+		line-height: 1.4;
+		border-radius: var(--border-radius) var(--border-radius) 0 0;
+		padding: .5em 1em;
+		background-color: var(--tabs-background-color);
+		color: var(--tabs-text-color);
+		border: 1px solid var(--tabs-border-color);
+		border-bottom-color: var(--tabs-background-color);
+		text-decoration: none;
+		&:hover:not(.active) {
+			filter: brightness(0.95);
+		}
+		&.active {
+			background-color: var(--tabs-background-color-active);
+			color: var(--tabs-text-color-active);
+			margin-top: 1px;
+			margin-bottom: -1px;
+			border: 1px solid var(--tabs-border-color-active);
+			border-bottom-color: var(--tabs-content-background-color);
+		}
+	}
 }
 
 .tab-content {
-  padding: var(--gutter-y) 0;
-  background: var(--tabs-content-background-color);
-  .tab-pane {
-    > .title {
-     margin-top: 0;
-    }
-  }
+	padding: var(--gutter-y) 0;
+	background: var(--tabs-content-background-color);
+	.tab-pane {
+		> .title {
+		 margin-top: 0;
+		}
+	}
 }

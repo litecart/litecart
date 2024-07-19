@@ -1,121 +1,121 @@
 /* Tables - Bootstrap Compatible */
 
 .table {
-  width: 100%;
-  max-width: 100%;
-  margin-bottom: var(--gutter-y);
-  background-color: transparent;
-  border-spacing: 0;
-  border-collapse: collapse;
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: var(--gutter-y);
+	background-color: transparent;
+	border-spacing: 0;
+	border-collapse: collapse;
 
-  td, th {
-    padding: .5em ~"calc(var(--gutter-x) / 2)";
-    line-height: var(--default-line-height);
-    &:first-child {
-      padding-inline-start: var(--gutter-x);
-    }
-    &:last-child {
-      padding-inline-end: var(--gutter-x);
-    }
-  }
+	td, th {
+		padding: .5em ~"calc(var(--gutter-x) / 2)";
+		line-height: var(--default-line-height);
+		&:first-child {
+			padding-inline-start: var(--gutter-x);
+		}
+		&:last-child {
+			padding-inline-end: var(--gutter-x);
+		}
+	}
 
-  > * > tr > td,
-  > * > tr > th {
-    padding: 6px 12px;
-    line-height: var(--default-line-height);
-    vertical-align: top;
+	> * > tr > td,
+	> * > tr > th {
+		padding: 6px 12px;
+		line-height: var(--default-line-height);
+		vertical-align: top;
 
-    &.border-top {
-      border-top: 1px solid var(--default-border-color);
-    }
-    &.border-start {
-      border-inline-start: 1px solid var(--default-border-color);
-    }
-    &.border-end {
-      border-inline-end: 1px solid var(--default-border-color);
-    }
-    &.border-left {
-      border-left: 1px solid var(--default-border-color);
-    }
-    &.border-right{
-      border-right: 1px solid var(--default-border-color);
-    }
-    &.border-bottom {
-      border-bottom: 1px solid var(--default-border-color);
-    }
+		&.border-top {
+			border-top: 1px solid var(--default-border-color);
+		}
+		&.border-start {
+			border-inline-start: 1px solid var(--default-border-color);
+		}
+		&.border-end {
+			border-inline-end: 1px solid var(--default-border-color);
+		}
+		&.border-left {
+			border-left: 1px solid var(--default-border-color);
+		}
+		&.border-right{
+			border-right: 1px solid var(--default-border-color);
+		}
+		&.border-bottom {
+			border-bottom: 1px solid var(--default-border-color);
+		}
 
-    @media print {
-      &.border-top, &.border-left, &.border-start, &.border-end, &.border-right, &.border-bottom {
-        border-color: #000 !important;
-      }
-    }
-  }
+		@media print {
+			&.border-top, &.border-left, &.border-start, &.border-end, &.border-right, &.border-bottom {
+				border-color: #000 !important;
+			}
+		}
+	}
 
-  > thead > tr > th {
-    padding: 12px;
-    text-align: start;
-    vertical-align: bottom;
-    border-bottom: 2px solid var(--default-border-color);
-    @media print {
-      border-color: #000 !important;
-    }
-    &.main {
-      width: 100%;
-    }
-  }
+	> thead > tr > th {
+		padding: 12px;
+		text-align: start;
+		vertical-align: bottom;
+		border-bottom: 2px solid var(--default-border-color);
+		@media print {
+			border-color: #000 !important;
+		}
+		&.main {
+			width: 100%;
+		}
+	}
 
-  > tfoot {
-    padding: 6px 12px;
-    text-align: start;
-    border-top: 1px solid var(--default-border-color);
-    @media print {
-      border-color: #000 !important;
-    }
-  }
+	> tfoot {
+		padding: 6px 12px;
+		text-align: start;
+		border-top: 1px solid var(--default-border-color);
+		@media print {
+			border-color: #000 !important;
+		}
+	}
 
-  &.table-bordered {
-    border: 1px solid var(--default-border-color);
-    > * > tr > td {
-      border-top: 1px solid var(--default-border-color);
-      @media print {
-        border-color: #000 !important;
-      }
-    }
-  }
+	&.table-bordered {
+		border: 1px solid var(--default-border-color);
+		> * > tr > td {
+			border-top: 1px solid var(--default-border-color);
+			@media print {
+				border-color: #000 !important;
+			}
+		}
+	}
 
-  &.table-striped {
-    > tbody > tr:nth-of-type(odd) {
-      background: var(--table-striped-row-background-odd);
-    }
-    > tbody > tr:nth-of-type(even) {
-      background: var(--table-striped-row-background-even);
-    }
-    @media print {
-      > tbody > tr {
-        border-bottom: 1px solid #000;
-      }
-    }
-  }
+	&.table-striped {
+		> tbody > tr:nth-of-type(odd) {
+			background: var(--table-striped-row-background-odd);
+		}
+		> tbody > tr:nth-of-type(even) {
+			background: var(--table-striped-row-background-even);
+		}
+		@media print {
+			> tbody > tr {
+				border-bottom: 1px solid #000;
+			}
+		}
+	}
 
-  &.table-hover {
-    > tbody > tr {
-      transition: background 125ms linear;
-      &:hover {
-        background: var(--table-row-hover-background);
-      }
-    }
-  }
+	&.table-hover {
+		> tbody > tr {
+			transition: background 125ms linear;
+			&:hover {
+				background: var(--table-row-hover-background);
+			}
+		}
+	}
 
-  &.data-table {
-    white-space: nowrap;
-  }
+	&.data-table {
+		white-space: nowrap;
+	}
 }
 
 .table-responsive {
-  overflow-x: auto;
-  > .table {
-    margin-bottom: 0;
-  }
+	overflow-x: auto;
+	> .table {
+		margin-bottom: 0;
+	}
 }
 
 .table > caption + thead > tr:first-child > th,
@@ -124,5 +124,5 @@
 .table > caption + thead > tr:first-child > td,
 .table > colgroup + thead > tr:first-child > td,
 .table > thead:first-child > tr:first-child > td {
-  border-top: 0;
+	border-top: 0;
 }

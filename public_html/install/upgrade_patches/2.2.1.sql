@@ -5,9 +5,9 @@ INSERT IGNORE INTO `lc_settings` (`setting_group_key`, `key`, `title`, `descript
 ('customer_details', 'customer_field_tax_id', 'Tax ID Field', 'Display the field for the customer\'s tax ID.', '1', 'toggle("y/n")', 22, NOW(), NOW());
 -- -----
 UPDATE `lc_settings` SET
-  `key` = 'regional_settings_screen',
-  `setting_group_key` = 'customer_details',
-  `priority` = 10
+	`key` = 'regional_settings_screen',
+	`setting_group_key` = 'customer_details',
+	`priority` = 10
 WHERE `key` = 'regional_settings_screen_enabled'
 LIMIT 1;
 -- -----

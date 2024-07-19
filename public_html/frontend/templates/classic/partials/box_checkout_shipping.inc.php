@@ -1,44 +1,44 @@
 <section id="box-checkout-shipping" class="box">
-  <h2 class="title"><?php echo language::translate('title_shipping', 'Shipping'); ?></h2>
+	<h2 class="title"><?php echo language::translate('title_shipping', 'Shipping'); ?></h2>
 
-  <div class="options btn-group-vertical">
+	<div class="options btn-group-vertical">
 
-    <?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
-    <label class="option btn btn-default btn-block<?php if (!empty($selected['id']) && $selected['id'] == $module['id'].':'.$option['id']) echo ' active'; ?><?php if (!empty($option['error'])) echo ' disabled'; ?>">
-      <?php echo functions::form_radio_button('shipping[option_id]', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled' : '')); ?>
+		<?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
+		<label class="option btn btn-default btn-block<?php if (!empty($selected['id']) && $selected['id'] == $module['id'].':'.$option['id']) echo ' active'; ?><?php if (!empty($option['error'])) echo ' disabled'; ?>">
+			<?php echo functions::form_radio_button('shipping[option_id]', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled' : '')); ?>
 
-      <div class="header row" style="margin: 0;">
-        <div class="col-xs-3 thumbnail" style="margin: 0;">
-          <?php echo functions::draw_thumbnail('storage://' . $option['icon'], 140, 60, 'fit'); ?>
-        </div>
+			<div class="header row" style="margin: 0;">
+				<div class="col-xs-3 thumbnail" style="margin: 0;">
+					<?php echo functions::draw_thumbnail('storage://' . $option['icon'], 140, 60, 'fit'); ?>
+				</div>
 
-        <div class="col-xs-10 text-start">
-          <div class="title"><?php echo $module['title']; ?></div>
-          <div class="name"><?php echo $option['name']; ?></div>
-          <div class="price"><?php echo (empty($option['error']) && (float)$option['cost'] != 0) ? '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])) : language::translate('text_no_fee', 'No fee'); ?></div>
-          <?php if (!empty($option['error'])) { ?>
-          <div class="error"><?php echo $option['error']; ?></div>
-          <?php } ?>
-        </div>
-      </div>
+				<div class="col-xs-10 text-start">
+					<div class="title"><?php echo $module['title']; ?></div>
+					<div class="name"><?php echo $option['name']; ?></div>
+					<div class="price"><?php echo (empty($option['error']) && (float)$option['cost'] != 0) ? '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])) : language::translate('text_no_fee', 'No fee'); ?></div>
+					<?php if (!empty($option['error'])) { ?>
+					<div class="error"><?php echo $option['error']; ?></div>
+					<?php } ?>
+				</div>
+			</div>
 
-      <?php if (empty($option['error']) && (!empty($option['description']) || !empty($option['fields']))) { ?>
-      <div class="content">
+			<?php if (empty($option['error']) && (!empty($option['description']) || !empty($option['fields']))) { ?>
+			<div class="content">
 
-        <hr>
+				<hr>
 
-        <?php if (!empty($option['description'])) { ?>
-        <p class="description text-start"><?php echo $option['description']; ?></p>
-        <?php } ?>
+				<?php if (!empty($option['description'])) { ?>
+				<p class="description text-start"><?php echo $option['description']; ?></p>
+				<?php } ?>
 
-        <?php if (!empty($option['fields'])) { ?>
-        <div class="fields text-start"><?php echo $option['fields']; ?></div>
-        <?php } ?>
-      </div>
-      <?php } ?>
+				<?php if (!empty($option['fields'])) { ?>
+				<div class="fields text-start"><?php echo $option['fields']; ?></div>
+				<?php } ?>
+			</div>
+			<?php } ?>
 
-    </label>
-    <?php } ?>
+		</label>
+		<?php } ?>
 
-  </div>
+	</div>
 </section>

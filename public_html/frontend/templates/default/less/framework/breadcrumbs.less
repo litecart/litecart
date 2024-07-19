@@ -1,57 +1,57 @@
 /* Breadcrumbs - Bootstrap Compatible */
 
 .breadcrumbs {
-  background: #e9e9ef;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin: 0;
-  padding: .75em 1em;
-  border-radius: var(--border-radius);
+	background: #e9e9ef;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin: 0;
+	padding: .75em 1em;
+	border-radius: var(--border-radius);
 
-  @media(min-width: @media-breakpoint-md) {
-    margin: 0 0 var(--gutter-size) 0;
-  }
+	@media(min-width: @media-breakpoint-md) {
+		margin: 0 0 var(--gutter-size) 0;
+	}
 
-  &:is(ul) {
-    list-style: none;
-  }
+	&:is(ul) {
+		list-style: none;
+	}
 
-  .breadcrumb {
-    flex: 0 1 auto;
+	.breadcrumb {
+		flex: 0 1 auto;
 
-    &:not(:first-child) {
-      margin-left: .5em;
-    }
+		&:not(:first-child) {
+			margin-left: .5em;
+		}
 
-    a, span {
-      display: inline-block;
-      background-color: #e0e0e8;
-      border-radius: 2em 0 2em 0;
-      color: var(--breadcrumbs-text-color);
-      transition: all 100ms linear;
-      //border: 2px solid var(--site-background-color);
-      //box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
-      text-decoration: none;
-      text-align: center;
-      line-height: 1em;
-      padding: .5em 1.5em;
-      vertical-align: middle;
-      &:hover {
-        transform: scale(1.15);
-        //padding: .5em 2em !important;
-      }
-    }
+		a, span {
+			display: inline-block;
+			background-color: #e0e0e8;
+			border-radius: 2em 0 2em 0;
+			color: var(--breadcrumbs-text-color);
+			transition: all 100ms linear;
+				//border: 2px solid var(--site-background-color);
+				//box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+			text-decoration: none;
+			text-align: center;
+			line-height: 1em;
+			padding: .5em 1.5em;
+			vertical-align: middle;
+			&:hover {
+				transform: scale(1.15);
+					//padding: .5em 2em !important;
+			}
+		}
 
-    span {
-      cursor: default;
-    }
+		span {
+			cursor: default;
+		}
 
 
-    &:not(:last-child) {
-     a, span {
-        padding-right: 1.5em;
-     }
-    }
-  }
+		&:not(:last-child) {
+		 a, span {
+				padding-right: 1.5em;
+		 }
+		}
+	}
 }

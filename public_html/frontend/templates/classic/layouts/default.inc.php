@@ -12,25 +12,25 @@
 <body>
 
 <div id="page">
-  <header>
-    <?php include 'app://frontend/partials/site_important_notice.inc.php'; ?>
-    <?php //include 'app://frontend/partials/site_header.inc.php'; ?>
-    <?php include 'app://frontend/partials/site_navigation.inc.php'; ?>
-  </header>
+	<header>
+		<?php include 'app://frontend/partials/site_important_notice.inc.php'; ?>
+		<?php //include 'app://frontend/partials/site_header.inc.php'; ?>
+		<?php include 'app://frontend/partials/site_navigation.inc.php'; ?>
+	</header>
 
-  <main>
-    {{content}}
-  </main>
+	<main>
+		{{content}}
+	</main>
 
-  <footer>
-    <?php include 'app://frontend/partials/site_footer.inc.php'; ?>
-  </footer>
+	<footer>
+		<?php include 'app://frontend/partials/site_footer.inc.php'; ?>
+	</footer>
 </div>
 
 <?php include 'app://frontend/partials/site_cookie_notice.inc.php'; ?>
 
 <a id="scroll-up" class="hidden-print" href="#">
-  <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>
+	<?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>
 </a>
 
 {{foot_tags}}

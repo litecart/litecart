@@ -1,195 +1,195 @@
 /* Tables - Bootstrap Compatible */
 
 .table {
-  width: 100%;
-  max-width: 100%;
-  background: var(--table-body-background-color);
-  border-spacing: 0;
-  border-collapse: collapse;
+	width: 100%;
+	max-width: 100%;
+	background: var(--table-body-background-color);
+	border-spacing: 0;
+	border-collapse: collapse;
 
-  thead th {
-    padding: 1em;
-    background: var(--table-header-background-color);
-    border-bottom: 2px solid var(--table-border-color);
-    vertical-align: bottom;
-  }
-  thead td {
-    vertical-align: middle;
-  }
+	thead th {
+		padding: 1em;
+		background: var(--table-header-background-color);
+		border-bottom: 2px solid var(--table-border-color);
+		vertical-align: bottom;
+	}
+	thead td {
+		vertical-align: middle;
+	}
 
-  tbody td {
-    padding: .5em 1em;
-  }
+	tbody td {
+		padding: .5em 1em;
+	}
 
-  td, th {
-    line-height: 1.5;
-    color: var(--default-text-color);
+	td, th {
+		line-height: 1.5;
+		color: var(--default-text-color);
 
-    &:first-child {
-      padding-inline-start: var(--gutter-size);
-    }
-    &:last-child {
-      padding-inline-end: var(--gutter-size);
-    }
+		&:first-child {
+			padding-inline-start: var(--gutter-size);
+		}
+		&:last-child {
+			padding-inline-end: var(--gutter-size);
+		}
 
-    &.border-start {
-      border-inline-start: 1px solid var(--table-border-color);
-    }
-    &.border-end {
-      border-inline-end: 1px solid var(--table-border-color);
-    }
+		&.border-start {
+			border-inline-start: 1px solid var(--table-border-color);
+		}
+		&.border-end {
+			border-inline-end: 1px solid var(--table-border-color);
+		}
 
-    @media print {
-      &.border-top, &.border-start {
-        border-color: #000 !important;
-      }
-    }
-  }
+		@media print {
+			&.border-top, &.border-start {
+				border-color: #000 !important;
+			}
+		}
+	}
 
-  > thead > tr > th {
-    text-align: start;
-    vertical-align: bottom;
+	> thead > tr > th {
+		text-align: start;
+		vertical-align: bottom;
 
-    @media print {
-      border-color: #000 !important;
-    }
-    &.main {
-      width: 100%;
-    }
-  }
+		@media print {
+			border-color: #000 !important;
+		}
+		&.main {
+			width: 100%;
+		}
+	}
 
-  a {
-    color: inherit;
-    &.link {
-      background: var(--table-link-background-color);
-      padding: 0.33em 1em;
-      border-radius: var(--border-radius);
-      &:hover {
-        text-decoration: none;
-        background: var(--table-link-background-color-hover);
-      }
-    }
-  }
+	a {
+		color: inherit;
+		&.link {
+			background: var(--table-link-background-color);
+			padding: 0.33em 1em;
+			border-radius: var(--border-radius);
+			&:hover {
+				text-decoration: none;
+				background: var(--table-link-background-color-hover);
+			}
+		}
+	}
 
-  &:not(.table-striped) {
-    > tbody > tr:not(:last-child) > td {
-      border-bottom: 1px solid var(--table-border-color);
-    }
-  }
+	&:not(.table-striped) {
+		> tbody > tr:not(:last-child) > td {
+			border-bottom: 1px solid var(--table-border-color);
+		}
+	}
 
-  > tfoot {
-    position: sticky;
-    bottom: 0;
-    background: var(--table-footer-background-color);
-    border-top: 1px solid var(--table-border-color);
-    border-bottom: 1px solid var(--table-border-color);
-    text-align: start;
-    td {
-      padding: 1em;
-    }
-  }
+	> tfoot {
+		position: sticky;
+		bottom: 0;
+		background: var(--table-footer-background-color);
+		border-top: 1px solid var(--table-border-color);
+		border-bottom: 1px solid var(--table-border-color);
+		text-align: start;
+		td {
+			padding: 1em;
+		}
+	}
 
-  &.table-bordered {
-    > thead {
-      border-bottom: 2px solid var(--table-border-color);
-    }
-    > * > tr > td {
-      border-top: 1px solid var(--table-border-color);
-      @media print {
-        border-color: #000 !important;
-      }
-    }
-    > tfoot {
-      border-top: 1px solid var(--table-border-color);
-    }
-  }
+	&.table-bordered {
+		> thead {
+			border-bottom: 2px solid var(--table-border-color);
+		}
+		> * > tr > td {
+			border-top: 1px solid var(--table-border-color);
+			@media print {
+				border-color: #000 !important;
+			}
+		}
+		> tfoot {
+			border-top: 1px solid var(--table-border-color);
+		}
+	}
 
-  &.table-striped {
-    > tbody > tr:nth-of-type(odd) {
-      background: var(--table-row-background-color-odd);
-    }
-    > tbody > tr:nth-of-type(even) {
-      background: var(--table-row-background-color-even);
-    }
-    @media print {
-      > tbody > tr {
-        border-bottom: 1px solid #000;
-      }
-    }
-  }
+	&.table-striped {
+		> tbody > tr:nth-of-type(odd) {
+			background: var(--table-row-background-color-odd);
+		}
+		> tbody > tr:nth-of-type(even) {
+			background: var(--table-row-background-color-even);
+		}
+		@media print {
+			> tbody > tr {
+				border-bottom: 1px solid #000;
+			}
+		}
+	}
 
-  &.table-hover {
-    > tbody > tr {
-      transition: background 125ms linear;
-      &:hover {
-        background: var(--table-row-background-color-hover);
-      }
-    }
-  }
+	&.table-hover {
+		> tbody > tr {
+			transition: background 125ms linear;
+			&:hover {
+				background: var(--table-row-background-color-hover);
+			}
+		}
+	}
 
-  &.table-sortable th[data-sort] {
-    cursor: pointer;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+	&.table-sortable th[data-sort] {
+		cursor: pointer;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
 
-  &.table-condensed {
-    th {
-      padding: .25em .5em;
-      &:first-child {
-        padding-inline-start: .5em;
-      }
-    }
-    td {
-      padding: .125em .5em;
-      &:last-child {
-        padding-inline-end: .5em;
-      }
-    }
-  }
+	&.table-condensed {
+		th {
+			padding: .25em .5em;
+			&:first-child {
+				padding-inline-start: .5em;
+			}
+		}
+		td {
+			padding: .125em .5em;
+			&:last-child {
+				padding-inline-end: .5em;
+			}
+		}
+	}
 
-  &.table-dragable {
-    > tbody .grabable {
-      cursor: n-resize;
-      user-select: none;
-    }
-    > tbody > tr.grabbed {
-      user-input: unset;
-      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-    }
-  }
+	&.table-dragable {
+		> tbody .grabable {
+			cursor: n-resize;
+			user-select: none;
+		}
+		> tbody > tr.grabbed {
+			user-input: unset;
+			box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+		}
+	}
 
-  &.table-input {
-    > tbody > tr > td {
-      vertical-align: middle;
-    }
-  }
+	&.table-input {
+		> tbody > tr > td {
+			vertical-align: middle;
+		}
+	}
 
-  &.data-table {
-    white-space: nowrap;
+	&.data-table {
+		white-space: nowrap;
 
-    thead th {
-      @media only screen {
-        position: sticky;
-        top: 0;
-        z-index: 1;
-      }
-    }
-    tfoot {
-      @media only screen {
-        position: sticky;
-        bottom: 0;
-      }
-    }
-  }
+		thead th {
+			@media only screen {
+				position: sticky;
+				top: 0;
+				z-index: 1;
+			}
+		}
+		tfoot {
+			@media only screen {
+				position: sticky;
+				bottom: 0;
+			}
+		}
+	}
 }
 
 .table-responsive {
-  overflow-x: auto;
-  > .table {
-    margin-bottom: 0;
-  }
+	overflow-x: auto;
+	> .table {
+		margin-bottom: 0;
+	}
 }
 
 .table > caption + thead > tr:first-child > th,
@@ -198,11 +198,11 @@
 .table > caption + thead > tr:first-child > td,
 .table > colgroup + thead > tr:first-child > td,
 .table > thead:first-child > tr:first-child > td {
-  border-top: 0;
+	border-top: 0;
 }
 
 .table {
-  :not(.btn-group) > .btn + .btn {
-    margin-inline-start: 1em;
-  }
+	:not(.btn-group) > .btn + .btn {
+		margin-inline-start: 1em;
+	}
 }

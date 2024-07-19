@@ -1,29 +1,29 @@
 CREATE TABLE IF NOT EXISTS `lc_modules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `module_id` varchar(64) NOT NULL,
-  `type` varchar(16) NOT NULL,
-  `status` tinyint(1) NOT NULL,
-  `priority` tinyint(4) NOT NULL,
-  `settings` text NOT NULL,
-  `last_log` text NOT NULL,
-  `date_updated` datetime NOT NULL,
-  `date_created` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `module_id` (`module_id`),
-  KEY `type` (`type`),
-  KEY `status` (`status`)
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`module_id` varchar(64) NOT NULL,
+	`type` varchar(16) NOT NULL,
+	`status` tinyint(1) NOT NULL,
+	`priority` tinyint(4) NOT NULL,
+	`settings` text NOT NULL,
+	`last_log` text NOT NULL,
+	`date_updated` datetime NOT NULL,
+	`date_created` datetime NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `module_id` (`module_id`),
+	KEY `type` (`type`),
+	KEY `status` (`status`)
 ) ENGINE=MyISAM;
 -- -----
 CREATE TABLE IF NOT EXISTS `lc_slides_info` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `slide_id` int(11) NOT NULL,
-  `language_code` varchar(2) NOT NULL,
-  `caption` TEXT NOT NULL,
-  `link` VARCHAR(256) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `slide_info` (`slide_id`,`language_code`),
-  KEY `slide_id` (`slide_id`),
-  KEY `language_code` (`language_code`)
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`slide_id` int(11) NOT NULL,
+	`language_code` varchar(2) NOT NULL,
+	`caption` TEXT NOT NULL,
+	`link` VARCHAR(256) NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `slide_info` (`slide_id`,`language_code`),
+	KEY `slide_id` (`slide_id`),
+	KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM;
 -- -----
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES

@@ -127,10 +127,10 @@
 
   Correct (using TABs):
 
-    Level 1
-      Level 2
-        Level 3
-          Level 4
+		Level 1
+			Level 2
+				Level 3
+					Level 4
 
   Code is immediately indented after opening a PHP tag:
 
@@ -140,12 +140,12 @@
 
 ## Code Commenting
 
-  We use two types of code commenting. Chapters and line describers.
-
-      # Chapter Comment
+  Comments should having the same indentation as the code:
 
       // Line describing comment
       echo 'Hello World!';
+
+	Inline sidenotes are made at the end of the line:
 
       $array = [
         'foo' => 'bar', // Side note
@@ -358,19 +358,15 @@
 
   Incorrect:
 
-    if (condition):
+    if ('orange' == $fruit):
       ...
     endif;
 
-    if ('happy' == $my_mood) {
-
   Correct:
 
-    if (condition) {
+    if ($fruit == 'orange') {
       ...
     }
-
-    if ($my_mood == 'happy') {
 
 
 ## PHP Class Variables and Methods
@@ -522,3 +518,18 @@
     );
 
     echo '<input value="<?php echo htmlspecialchars($_POST['variable']); ?>" />
+
+
+## No Sloppy HTML
+
+  No sloppy coding for single HTML tags. We use the strict standard:
+
+  Incorrect:
+
+        <img src="">
+        <br>
+
+  Correct:
+
+        <img src="" />
+        <br />

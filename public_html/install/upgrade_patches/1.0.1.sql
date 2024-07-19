@@ -23,37 +23,37 @@ ALTER TABLE `lc_orders_totals` DROP `tax_class_id`;
 ALTER TABLE `lc_products_options_stock` CHANGE `weight` `weight` DECIMAL(11, 4) NOT NULL;
 -- -----
 CREATE TABLE `lc_slides` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `status` tinyint(1) NOT NULL,
-  `language_code` varchar(8) NOT NULL,
-  `name` varchar(128) NOT NULL,
-  `caption` varchar(256) NOT NULL,
-  `link` varchar(256) NOT NULL,
-  `image` varchar(64) NOT NULL,
-  `priority` tinyint(2) NOT NULL,
-  `date_valid_from` datetime NOT NULL,
-  `date_valid_to` datetime NOT NULL,
-  `date_updated` datetime NOT NULL,
-  `date_created` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`status` tinyint(1) NOT NULL,
+	`language_code` varchar(8) NOT NULL,
+	`name` varchar(128) NOT NULL,
+	`caption` varchar(256) NOT NULL,
+	`link` varchar(256) NOT NULL,
+	`image` varchar(64) NOT NULL,
+	`priority` tinyint(2) NOT NULL,
+	`date_valid_from` datetime NOT NULL,
+	`date_valid_to` datetime NOT NULL,
+	`date_updated` datetime NOT NULL,
+	`date_created` datetime NOT NULL,
+	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 -- -----
 CREATE TABLE `lc_users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `status` tinyint(1) NOT NULL,
-  `username` varchar(32) NOT NULL,
-  `password` varchar(128) NOT NULL,
-  `last_ip` varchar(15) NOT NULL,
-  `last_host` varchar(64) NOT NULL,
-  `login_attempts` int(11) NOT NULL,
-  `total_logins` int(11) NOT NULL,
-  `date_blocked` datetime NOT NULL,
-  `date_expires` datetime NOT NULL,
-  `date_active` datetime NOT NULL,
-  `date_login` datetime NOT NULL,
-  `date_created` datetime NOT NULL,
-  `date_updated` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`status` tinyint(1) NOT NULL,
+	`username` varchar(32) NOT NULL,
+	`password` varchar(128) NOT NULL,
+	`last_ip` varchar(15) NOT NULL,
+	`last_host` varchar(64) NOT NULL,
+	`login_attempts` int(11) NOT NULL,
+	`total_logins` int(11) NOT NULL,
+	`date_blocked` datetime NOT NULL,
+	`date_expires` datetime NOT NULL,
+	`date_active` datetime NOT NULL,
+	`date_login` datetime NOT NULL,
+	`date_created` datetime NOT NULL,
+	`date_updated` datetime NOT NULL,
+	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- -----
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES

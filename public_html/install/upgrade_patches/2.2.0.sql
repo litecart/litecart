@@ -1,44 +1,44 @@
 DROP TABLE IF EXISTS `lc_addresses`;
 -- -----
 CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `code` varchar(32) NOT NULL,
-  `sort` ENUM('alphabetical','priority') NOT NULL DEFAULT 'alphabetical',
-  `date_updated` datetime NOT NULL,
-  `date_created` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `code` (`code`)
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`code` varchar(32) NOT NULL,
+	`sort` ENUM('alphabetical','priority') NOT NULL DEFAULT 'alphabetical',
+	`date_updated` datetime NOT NULL,
+	`date_created` datetime NOT NULL,
+	PRIMARY KEY (`id`),
+	KEY `code` (`code`)
 ) ENGINE=MyISAM;
 -- -----
 CREATE TABLE IF NOT EXISTS `lc_attribute_groups_info` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) NOT NULL,
-  `language_code` varchar(2) NOT NULL,
-  `name` varchar(128) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `attribute_group` (`group_id`,`language_code`),
-  KEY `group_id` (`group_id`),
-  KEY `language_code` (`language_code`)
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`group_id` int(11) NOT NULL,
+	`language_code` varchar(2) NOT NULL,
+	`name` varchar(128) NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `attribute_group` (`group_id`,`language_code`),
+	KEY `group_id` (`group_id`),
+	KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM;
 -- -----
 CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) NOT NULL,
-  `date_updated` datetime NOT NULL,
-  `date_created` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `group_id` (`group_id`)
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`group_id` int(11) NOT NULL,
+	`date_updated` datetime NOT NULL,
+	`date_created` datetime NOT NULL,
+	PRIMARY KEY (`id`),
+	KEY `group_id` (`group_id`)
 ) ENGINE=MyISAM;
 -- -----
 CREATE TABLE IF NOT EXISTS `lc_attribute_values_info` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `value_id` int(11) NOT NULL,
-  `language_code` varchar(2) NOT NULL,
-  `name` varchar(128) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `attribute_value` (`value_id`,`language_code`),
-  KEY `value_id` (`value_id`),
-  KEY `language_code` (`language_code`)
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`value_id` int(11) NOT NULL,
+	`language_code` varchar(2) NOT NULL,
+	`name` varchar(128) NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `attribute_value` (`value_id`,`language_code`),
+	KEY `value_id` (`value_id`),
+	KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM;
 -- -----
 INSERT INTO `lc_attribute_groups`
@@ -58,29 +58,29 @@ INSERT INTO `lc_attribute_values_info`
 SELECT id, product_group_value_id, language_code, name FROM `lc_product_groups_values_info`;
 -- -----
 CREATE TABLE `lc_categories_filters` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `category_id` INT(11) NOT NULL,
-  `select_multiple` TINYINT(1) NOT NULL,
-  `attribute_group_id` INT(11) NOT NULL,
-  `priority` INT(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `attribute_filter` (`category_id`, `attribute_group_id`),
-  KEY `category_id` (`category_id`)
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`category_id` INT(11) NOT NULL,
+	`select_multiple` TINYINT(1) NOT NULL,
+	`attribute_group_id` INT(11) NOT NULL,
+	`priority` INT(11) NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `attribute_filter` (`category_id`, `attribute_group_id`),
+	KEY `category_id` (`category_id`)
 ) ENGINE=MyISAM;
 -- -----
 CREATE TABLE `lc_categories_images` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `category_id` INT(11) NOT NULL,
-  `filename` VARCHAR(256) NOT NULL,
-  `checksum` CHAR(32) NOT NULL,
-  `priority` TINYINT(2) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `category_id` (`category_id`)
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`category_id` INT(11) NOT NULL,
+	`filename` VARCHAR(256) NOT NULL,
+	`checksum` CHAR(32) NOT NULL,
+	`priority` TINYINT(2) NOT NULL,
+	PRIMARY KEY (`id`),
+	KEY `category_id` (`category_id`)
 ) ENGINE=MyISAM;
 -- -----
 INSERT INTO `lc_categories_images` (category_id, filename) (
-  SELECT id, image FROM `lc_categories`
-  WHERE image != ''
+	SELECT id, image FROM `lc_categories`
+	WHERE image != ''
 );
 -- -----
 ALTER TABLE `lc_customers`
@@ -92,25 +92,25 @@ ADD COLUMN `last_agent` VARCHAR(256) NOT NULL AFTER `last_host`,
 ADD COLUMN `date_login` DATETIME NOT NULL AFTER `last_agent`;
 -- -----
 CREATE TABLE `lc_emails` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `status` ENUM('draft','scheduled','sent','error') NOT NULL DEFAULT 'draft',
-  `code` VARCHAR(256) NOT NULL,
-  `charset` VARCHAR(16) NOT NULL,
-  `sender` VARCHAR(256) NOT NULL,
-  `recipients` TEXT NOT NULL,
-  `ccs` TEXT NOT NULL,
-  `bccs` TEXT NOT NULL,
-  `subject` VARCHAR(256) NOT NULL,
-  `multiparts` MEDIUMTEXT NOT NULL,
-  `date_scheduled` DATETIME NOT NULL,
-  `date_sent` DATETIME NOT NULL,
-  `date_updated` DATETIME NOT NULL,
-  `date_created` DATETIME NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `date_scheduled` (`date_scheduled`),
-  KEY `code` (`code`),
-  KEY `date_created` (`date_created`),
-  KEY `sender_email` (`sender`)
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`status` ENUM('draft','scheduled','sent','error') NOT NULL DEFAULT 'draft',
+	`code` VARCHAR(256) NOT NULL,
+	`charset` VARCHAR(16) NOT NULL,
+	`sender` VARCHAR(256) NOT NULL,
+	`recipients` TEXT NOT NULL,
+	`ccs` TEXT NOT NULL,
+	`bccs` TEXT NOT NULL,
+	`subject` VARCHAR(256) NOT NULL,
+	`multiparts` MEDIUMTEXT NOT NULL,
+	`date_scheduled` DATETIME NOT NULL,
+	`date_sent` DATETIME NOT NULL,
+	`date_updated` DATETIME NOT NULL,
+	`date_created` DATETIME NOT NULL,
+	PRIMARY KEY (`id`),
+	KEY `date_scheduled` (`date_scheduled`),
+	KEY `code` (`code`),
+	KEY `date_created` (`date_created`),
+	KEY `sender_email` (`sender`)
 ) ENGINE=MyISAM;
 -- -----
 ALTER TABLE `lc_orders`
@@ -161,16 +161,16 @@ DROP TABLE `lc_product_groups_values`;
 DROP TABLE `lc_product_groups_values_info`;
 -- -----
 CREATE TABLE `lc_products_attributes` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `product_id` INT(11) NOT NULL,
-  `group_id` INT(11) NOT NULL,
-  `value_id` INT(11) NOT NULL,
-  `custom_value` VARCHAR(256) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`, `product_id`, `group_id`, `value_id`),
-  KEY `product_id` (`product_id`),
-  KEY `group_id` (`group_id`),
-  KEY `value_id` (`value_id`)
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`product_id` INT(11) NOT NULL,
+	`group_id` INT(11) NOT NULL,
+	`value_id` INT(11) NOT NULL,
+	`custom_value` VARCHAR(256) NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `id` (`id`, `product_id`, `group_id`, `value_id`),
+	KEY `product_id` (`product_id`),
+	KEY `group_id` (`group_id`),
+	KEY `value_id` (`value_id`)
 ) ENGINE=MyISAM;
 -- -----
 ALTER TABLE `lc_products_info`

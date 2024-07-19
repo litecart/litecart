@@ -1,124 +1,124 @@
 #box-product {
 
-  form[name="buy_now_form"] {
-    padding: var(--gutter-y) var(--gutter-x);
-    margin: 1em 0;
-    border: 1px solid var(--default-border-color);
-    border-radius: var(--border-radius);
-  }
+	form[name="buy_now_form"] {
+		padding: var(--gutter-y) var(--gutter-x);
+		margin: 1em 0;
+		border: 1px solid var(--default-border-color);
+		border-radius: var(--border-radius);
+	}
 
-  .images {
-    margin-bottom: var(--gutter-y);
-  }
+	.images {
+		margin-bottom: var(--gutter-y);
+	}
 
-  .main-image {
-    position: relative;
-    background: var(--whitespace-color);
-    overflow: hidden;
+	.main-image {
+		position: relative;
+		background: var(--whitespace-color);
+		overflow: hidden;
 
-    .sticker {
-      top: 1em;
-      left: 0;
-      padding: .25em 1em;
-      position: absolute;
-      text-transform: uppercase;
-      font-weight: bold;
-      border-radius: 0 var(--border-radius) var(--border-radius) 0;
-      &.new {
-        background: rgba(251, 184, 41, 0.85);
-        color: #fff;
-      }
-      &.sale {
-        background: rgba(237, 60, 50, 0.85);
-        color: #fff;
-      }
-    }
-  }
+		.sticker {
+			top: 1em;
+			left: 0;
+			padding: .25em 1em;
+			position: absolute;
+			text-transform: uppercase;
+			font-weight: bold;
+			border-radius: 0 var(--border-radius) var(--border-radius) 0;
+			&.new {
+				background: rgba(251, 184, 41, 0.85);
+				color: #fff;
+			}
+			&.sale {
+				background: rgba(237, 60, 50, 0.85);
+				color: #fff;
+			}
+		}
+	}
 
-  .price-wrapper {
-    font-size: 1.75em;
-    .regular-price, .recommended-price {
-      font-size: 0.75em;
-    }
-    .campaign-price {
-      color: #cc0000;
-    }
-  }
-  .tax {
-    color: #999;
-  }
+	.price-wrapper {
+		font-size: 1.75em;
+		.regular-price, .recommended-price {
+			font-size: 0.75em;
+		}
+		.campaign-price {
+			color: #cc0000;
+		}
+	}
+	.tax {
+		color: #999;
+	}
 
-  .offer-expires {
-  }
+	.offer-expires {
+	}
 
-  .stock-available {
-    .value {
-      color: #009900;
-    }
-  }
-  .stock-partly-available {
-    .value {
-      color: #ff9900;
-    }
-  }
-  .stock-unavailable {
-    .value {
-      color: #cc0000;
-    }
-  }
+	.stock-available {
+		.value {
+			color: #009900;
+		}
+	}
+	.stock-partly-available {
+		.value {
+			color: #ff9900;
+		}
+	}
+	.stock-unavailable {
+		.value {
+			color: #cc0000;
+		}
+	}
 
-  .out-of-stock-notice {
-    background: var(--default-background-color);
-    border: 1px solid var(--default-border-color);
-    padding: var(--gutter-y) var(--gutter-x);
-    border-radius: var(--border-radius);
-  }
+	.out-of-stock-notice {
+		background: var(--default-background-color);
+		border: 1px solid var(--default-border-color);
+		padding: var(--gutter-y) var(--gutter-x);
+		border-radius: var(--border-radius);
+	}
 
-  .stock-notice {
-    margin-top: 1em;
-    padding: .5em;
-    border-radius: var(--border-radius);
-    border: 1px #86cb00 solid;
-    color: #86cb00;
+	.stock-notice {
+		margin-top: 1em;
+		padding: .5em;
+		border-radius: var(--border-radius);
+		border: 1px #86cb00 solid;
+		color: #86cb00;
 
-    &:empty {
-      display: none;
-    }
+		&:empty {
+			display: none;
+		}
 
-    &.notice {
-      color: #e58310;
-      border-color: #e58310;
-    }
+		&.notice {
+			color: #e58310;
+			border-color: #e58310;
+		}
 
-    &.warning {
-      color: #c00;
-      border-color: #c00;
-    }
+		&.warning {
+			color: #c00;
+			border-color: #c00;
+		}
 
-    .description {
-      margin-top: 1em;
-      font-size: .8em;
-    }
-  }
+		.description {
+			margin-top: 1em;
+			font-size: .8em;
+		}
+	}
 
-  .social-bookmarks {
-    font-size: 1.75em;
-    margin-top: 1em;
+	.social-bookmarks {
+		font-size: 1.75em;
+		margin-top: 1em;
 
-    a {
-      margin: 0 .125em;
-    }
-  }
+		a {
+			margin: 0 .125em;
+		}
+	}
 
-  .description {
-    p:first-child {
-      margin-top: 0;
-    }
-    p:last-child {
-      margin-bottom: 0;
-    }
-    a {
-      text-decoration: underline;
-    }
-  }
+	.description {
+		p:first-child {
+			margin-top: 0;
+		}
+		p:last-child {
+			margin-bottom: 0;
+		}
+		a {
+			text-decoration: underline;
+		}
+	}
 }

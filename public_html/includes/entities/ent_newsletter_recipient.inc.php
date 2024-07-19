@@ -1,95 +1,95 @@
 <?php
 
-  class ent_newsletter_recipient {
-    public $data;
-    public $previous;
+	class ent_newsletter_recipient {
+		public $data;
+		public $previous;
 
-    public function __construct($recipient_id=null) {
+		public function __construct($recipient_id=null) {
 
-      if (!empty($recipient_id)) {
-        $this->load($recipient_id);
-      } else {
-        $this->reset();
-      }
-    }
+			if (!empty($recipient_id)) {
+				$this->load($recipient_id);
+			} else {
+				$this->reset();
+			}
+		}
 
-    public function reset() {
+		public function reset() {
 
-      $this->data = [];
+			$this->data = [];
 
-      database::query(
-        "show fields from ". DB_TABLE_PREFIX ."newsletter_recipients;"
-      )->each(function($field){
-        $this->data[$field['Field']] = database::create_variable($field);
-      });
+			database::query(
+				"show fields from ". DB_TABLE_PREFIX ."newsletter_recipients;"
+			)->each(function($field){
+				$this->data[$field['Field']] = database::create_variable($field);
+			});
 
-      $this->data['ip_address'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
-      $this->data['hostname'] = isset($_SERVER['REMOTE_ADDR']) ? gethostbyaddr($_SERVER['REMOTE_ADDR']) : '';
-      $this->data['user_agent'] = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+			$this->data['ip_address'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+			$this->data['hostname'] = isset($_SERVER['REMOTE_ADDR']) ? gethostbyaddr($_SERVER['REMOTE_ADDR']) : '';
+			$this->data['user_agent'] = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 
-      $this->previous = $this->data;
-    }
+			$this->previous = $this->data;
+		}
 
-    public function load($recipient_id) {
+		public function load($recipient_id) {
 
-      if (!preg_match('#(^[0-9]+$|@)#', $recipient_id)) {
-        throw new Exception('Invalid newsletter recipient (ID: '. $recipient_id .')');
-      }
+			if (!preg_match('#(^[0-9]+$|@)#', $recipient_id)) {
+				throw new Exception('Invalid newsletter recipient (ID: '. $recipient_id .')');
+			}
 
-      $this->reset();
+			$this->reset();
 
-      $recipient = database::query(
-        "select * from ". DB_TABLE_PREFIX ."newsletter_recipients
-        ". (preg_match('#^[0-9]+$#', $recipient_id) ? "where id = '". (int)$recipient_id ."'" : "") ."
-        ". (preg_match('#@#', $recipient_id) ? "where lower(email) = '". database::input(strtolower($recipient_id)) ."'" : "") ."
-        limit 1;"
-      )->fetch();
+			$recipient = database::query(
+				"select * from ". DB_TABLE_PREFIX ."newsletter_recipients
+				". (preg_match('#^[0-9]+$#', $recipient_id) ? "where id = '". (int)$recipient_id ."'" : "") ."
+				". (preg_match('#@#', $recipient_id) ? "where lower(email) = '". database::input(strtolower($recipient_id)) ."'" : "") ."
+				limit 1;"
+			)->fetch();
 
-      if ($recipient) {
-        $this->data = array_replace($this->data, array_intersect_key($recipient, $this->data));
-      } else {
-        throw new Exception('Could not find newsletter recipient (ID: '. (int)$recipient_id .') in database.');
-      }
+			if ($recipient) {
+				$this->data = array_replace($this->data, array_intersect_key($recipient, $this->data));
+			} else {
+				throw new Exception('Could not find newsletter recipient (ID: '. (int)$recipient_id .') in database.');
+			}
 
-      $this->previous = $this->data;
-    }
+			$this->previous = $this->data;
+		}
 
-    public function save() {
+		public function save() {
 
-      if (!$this->data['id']) {
-        database::query(
-          "insert into ". DB_TABLE_PREFIX ."newsletter_recipients
-          (email, date_created)
-          values ('". database::input($this->data['email']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
-        );
+			if (!$this->data['id']) {
+				database::query(
+					"insert into ". DB_TABLE_PREFIX ."newsletter_recipients
+					(email, date_created)
+					values ('". database::input($this->data['email']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+				);
 
-        $this->data['id'] = database::insert_id();
-      }
+				$this->data['id'] = database::insert_id();
+			}
 
-      database::query(
-        "update ". DB_TABLE_PREFIX ."newsletter_recipients
-        set email = '". database::input($this->data['email']) ."',
-          ip_address = '". database::input($this->data['ip_address']) ."',
-          hostname = '". database::input($this->data['hostname']) ."',
-          user_agent = '". database::input($this->data['user_agent']) ."'
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
+			database::query(
+				"update ". DB_TABLE_PREFIX ."newsletter_recipients
+				set email = '". database::input($this->data['email']) ."',
+					ip_address = '". database::input($this->data['ip_address']) ."',
+					hostname = '". database::input($this->data['hostname']) ."',
+					user_agent = '". database::input($this->data['user_agent']) ."'
+				where id = ". (int)$this->data['id'] ."
+				limit 1;"
+			);
 
-      $this->previous = $this->data;
+			$this->previous = $this->data;
 
-      cache::clear_cache('newsletter_recipients');
-    }
+			cache::clear_cache('newsletter_recipients');
+		}
 
-    public function delete() {
+		public function delete() {
 
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."newsletter_recipients
-        where id = ". (int)$this->data['id'] .";"
-      );
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."newsletter_recipients
+				where id = ". (int)$this->data['id'] .";"
+			);
 
-      $this->reset();
+			$this->reset();
 
-      cache::clear_cache('newsletter_recipients');
-    }
-  }
+			cache::clear_cache('newsletter_recipients');
+		}
+	}

@@ -15,40 +15,40 @@
 
 <div id="page">
 
-  <header>
-    <?php if ($important_notice) { ?>
-    <div id="important-notice">
-      <div class="container">
-        <?php echo $important_notice; ?>
-      </div>
-    </div>
-    <?php } ?>
+	<header>
+		<?php if ($important_notice) { ?>
+		<div id="important-notice">
+			<div class="container">
+				<?php echo $important_notice; ?>
+			</div>
+		</div>
+		<?php } ?>
 
-    <div id="header" class="container">
-      <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-        <img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>">
-      </a>
+		<div id="header" class="container">
+			<a class="logotype" href="<?php echo document::href_ilink(''); ?>">
+				<img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>">
+			</a>
 
-      <div class="middle hidden-xs text-center">
-        <a class="btn btn-default btn-lg" href="<?php echo document::href_ilink(''); ?>">
-          <?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back_to_store', 'Back To Store'); ?>
-        </a>
-      </div>
+			<div class="middle hidden-xs text-center">
+				<a class="btn btn-default btn-lg" href="<?php echo document::href_ilink(''); ?>">
+					<?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back_to_store', 'Back To Store'); ?>
+				</a>
+			</div>
 
-      <div class="contact-info hidden-xs">
-        <div class="title"><?php echo language::translate('title_contact', 'Contact'); ?></div>
-        <?php if (settings::get('store_phone')) { ?>
-        <div class="phone"><?php echo functions::draw_fonticon('fa-phone'); ?> <?php echo settings::get('store_phone'); ?></div>
-        <?php } else { ?>
-        <div class="email"><?php echo functions::draw_fonticon('fa-envelope'); ?> <?php echo settings::get('store_email'); ?></div>
-        <?php } ?>
-      </div>
-    </div>
-  </header>
+			<div class="contact-info hidden-xs">
+				<div class="title"><?php echo language::translate('title_contact', 'Contact'); ?></div>
+				<?php if (settings::get('store_phone')) { ?>
+				<div class="phone"><?php echo functions::draw_fonticon('fa-phone'); ?> <?php echo settings::get('store_phone'); ?></div>
+				<?php } else { ?>
+				<div class="email"><?php echo functions::draw_fonticon('fa-envelope'); ?> <?php echo settings::get('store_email'); ?></div>
+				<?php } ?>
+			</div>
+		</div>
+	</header>
 
-  <main>
-    {{content}}
-  </main>
+	<main>
+		{{content}}
+	</main>
 
 </div>
 

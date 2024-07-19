@@ -1,68 +1,68 @@
 <style>
 input[name="shipping_option[id]"]:checked + .option::after {
-  content: '<?php echo language::translate('title_selected', 'Selected'); ?>';
+	content: '<?php echo language::translate('title_selected', 'Selected'); ?>';
 }
 </style>
 
 <section id="box-checkout-shipping">
-  <div class="card-header">
-    <h2 class="card-title"><?php echo language::translate('title_shipping', 'Shipping'); ?></h2>
-  </div>
+	<div class="card-header">
+		<h2 class="card-title"><?php echo language::translate('title_shipping', 'Shipping'); ?></h2>
+	</div>
 
-  <div class="card-body">
-    <div class="options">
+	<div class="card-body">
+		<div class="options">
 
-      <?php foreach ($options as $option) { ?>
-      <label class="option-wrapper">
-        <input name="shipping_option[id]" value="<?php echo $option['id']; ?>" type="radio" hidden <?php if (!empty($selected) && $selected['id'] == $option['id']) echo ' checked'; ?><?php if (!empty($option['error'])) echo ' disabled'; ?>>
-        <div class="option">
-          <div class="header row" style="margin: 0;">
-            <div class="col-3">
-              <?php echo functions::draw_thumbnail($option['icon'], 160, 80, 'fit'); ?>
-            </div>
+			<?php foreach ($options as $option) { ?>
+			<label class="option-wrapper">
+				<input name="shipping_option[id]" value="<?php echo $option['id']; ?>" type="radio" hidden <?php if (!empty($selected) && $selected['id'] == $option['id']) echo ' checked'; ?><?php if (!empty($option['error'])) echo ' disabled'; ?>>
+				<div class="option">
+					<div class="header row" style="margin: 0;">
+						<div class="col-3">
+							<?php echo functions::draw_thumbnail($option['icon'], 160, 80, 'fit'); ?>
+						</div>
 
-            <div class="col-9" style="align-self: center;">
-              <div class="name"><?php echo $option['name']; ?></div>
+						<div class="col-9" style="align-self: center;">
+							<div class="name"><?php echo $option['name']; ?></div>
 
-              <?php if (!empty($option['description'])) { ?>
-              <div class="description"><?php echo $option['description']; ?></div>
-              <?php } ?>
+							<?php if (!empty($option['description'])) { ?>
+							<div class="description"><?php echo $option['description']; ?></div>
+							<?php } ?>
 
-              <div class="price"><?php echo (empty($option['error']) && $option['fee'] != 0) ? '+ ' . currency::format(tax::get_price($option['fee'], $option['tax_class_id'])) : language::translate('text_no_fee', 'No fee'); ?></div>
-              <?php if (!empty($option['error'])) { ?>
-              <div class="error"><?php echo $option['error']; ?></div>
-              <?php } ?>
-            </div>
-          </div>
+							<div class="price"><?php echo (empty($option['error']) && $option['fee'] != 0) ? '+ ' . currency::format(tax::get_price($option['fee'], $option['tax_class_id'])) : language::translate('text_no_fee', 'No fee'); ?></div>
+							<?php if (!empty($option['error'])) { ?>
+							<div class="error"><?php echo $option['error']; ?></div>
+							<?php } ?>
+						</div>
+					</div>
 
-          <?php if (empty($option['error']) && !empty($option['fields'])) { ?>
-          <div class="content">
-            <hr>
-            <div class="fields text-start"><?php echo $option['fields']; ?></div>
-          </div>
-          <?php } ?>
-        </div>
-      </label>
-      <?php } ?>
+					<?php if (empty($option['error']) && !empty($option['fields'])) { ?>
+					<div class="content">
+						<hr>
+						<div class="fields text-start"><?php echo $option['fields']; ?></div>
+					</div>
+					<?php } ?>
+				</div>
+			</label>
+			<?php } ?>
 
-    </div>
-  </div>
+		</div>
+	</div>
 </section>
 
 <script>
 $(':input[name="shipping_option[id]"]:not(:checked) + .option :input').prop('disabled', true);
 
-// Shipping Form: Process Data
+	// Shipping Form: Process Data
 
-  $('input[name="shipping_option[id]"]').on('change', function(e){
+	$('input[name="shipping_option[id]"]').on('change', function(e){
 
-    $('input[name="shipping_option[id]"]:not(:checked) + .option :input').prop('disabled', true);
-    $(this).next('.option').find(':input').prop('disabled', false);
+		$('input[name="shipping_option[id]"]:not(:checked) + .option :input').prop('disabled', true);
+		$(this).next('.option').find(':input').prop('disabled', false);
 
-    let formdata = $(this).closest('.option-wrapper :input').serialize();
+		let formdata = $(this).closest('.option-wrapper :input').serialize();
 
-    $('#box-checkout').trigger('update', [{component: 'shipping', data: formdata + '&select_shipping=true', refresh: false}])
-                      .trigger('update', [{component: 'payment', refresh: true}])
-                      .trigger('update', [{component: 'summary', refresh: true}]);
-  });
+		$('#box-checkout').trigger('update', [{component: 'shipping', data: formdata + '&select_shipping=true', refresh: false}])
+											.trigger('update', [{component: 'payment', refresh: true}])
+											.trigger('update', [{component: 'summary', refresh: true}]);
+	});
 </script>

@@ -91,9 +91,9 @@ SET SQL_BIG_SELECTS=1; /* Prevent MAX_JOIN_SIZE error for query below */
 UPDATE `lc_newsletter_recipients` nr
 LEFT JOIN `lc_customers` c on (c.email = nr.email)
 LEFT JOIN (
-  SELECT customer_email as email, customer_firstname as firstname, customer_lastname as lastname
-  FROM `lc_orders` o
-  GROUP BY customer_email
+	SELECT customer_email as email, customer_firstname as firstname, customer_lastname as lastname
+	FROM `lc_orders` o
+	GROUP BY customer_email
 ) o on (o.email = nr.email)
 SET nr.firstname = COALESCE(c.firstname, o.firstname, ''),
 nr.lastname = COALESCE(c.lastname, o.lastname, '');

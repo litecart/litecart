@@ -3,45 +3,45 @@
 .thumbnail > img,
 .thumbnail a > img,
 .img-responsive {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 0 auto;
+	display: block;
+	max-width: 100%;
+	height: auto;
+	margin: 0 auto;
 }
 
 .thumbnail {
-  display: block;
-  line-height: var(--default-line-height);
-  background-color: var(--whitespace-color);
-  border: 1px solid var(--default-border-color);
-  border-radius: var(--border-radius);
-  transition: border .2s ease-in-out;
-  > img,
-  a > img {
-    margin-inline-end: auto;
-    margin-inline-start: auto;
-  }
+	display: block;
+	line-height: var(--default-line-height);
+	background-color: var(--whitespace-color);
+	border: 1px solid var(--default-border-color);
+	border-radius: var(--border-radius);
+	transition: border .2s ease-in-out;
+	> img,
+	a > img {
+		margin-inline-end: auto;
+		margin-inline-start: auto;
+	}
 }
 
 .img-thumbnail {
-  padding: .5em;
-  max-width: 100%;
-  height: auto;
-  background-color: var(--whitespace-color);
-  border: 1px solid var(--default-border-color);
-  border-radius: var(--border-radius);
-  transition: all .1s ease-in-out;
+	padding: .5em;
+	max-width: 100%;
+	height: auto;
+	background-color: var(--whitespace-color);
+	border: 1px solid var(--default-border-color);
+	border-radius: var(--border-radius);
+	transition: all .1s ease-in-out;
 }
 
 img {
-  &.fit {
-    width: 100%;
-    padding: 10%;
-    object-fit: scale-down;
-    //object-fit: contain;
-  }
-  &.crop {
-    width: 100%;
-    object-fit: cover;
-  }
+	&.fit {
+		width: 100%;
+		padding: 10%;
+		object-fit: scale-down;
+			//object-fit: contain;
+	}
+	&.crop {
+		width: 100%;
+		object-fit: cover;
+	}
 }

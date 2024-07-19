@@ -1,31 +1,31 @@
 /* Notices (Alerts) - Bootstrap Compatible */
 
 .alert(@type) {
-  background-color: ~"var(--@{type}-notice-background-color)";
-  color: ~"var(--@{type}-notice-text-color)";
-  border: 1px solid ~"var(--@{type}-notice-border-color)";
+	background-color: ~"var(--@{type}-notice-background-color)";
+	color: ~"var(--@{type}-notice-text-color)";
+	border: 1px solid ~"var(--@{type}-notice-border-color)";
 }
 
 .alert {
-  border-radius: var(--border-radius);
-  margin-bottom: var(--gutter-size);
-  padding: .5em 1em;
-  .close {
-    float: right;
-    font-size: 1.5em;
-    font-weight: bold;
-    line-height: 1;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
-    opacity: .2;
-    &:hover {
-      text-decoration: none;
-    }
-  }
+	border-radius: var(--border-radius);
+	margin-bottom: var(--gutter-size);
+	padding: .5em 1em;
+	.close {
+		float: right;
+		font-size: 1.5em;
+		font-weight: bold;
+		line-height: 1;
+		color: #000;
+		text-shadow: 0 1px 0 #fff;
+		opacity: .2;
+		&:hover {
+			text-decoration: none;
+		}
+	}
 
-  &.alert-default { .alert("default"); }
-  &.alert-success { .alert("success"); }
-  &.alert-warning { .alert("warning"); }
-  &.alert-info { .alert("info"); }
-  &.alert-danger { .alert("danger"); }
+	&.alert-default { .alert("default"); }
+	&.alert-success { .alert("success"); }
+	&.alert-warning { .alert("warning"); }
+	&.alert-info { .alert("info"); }
+	&.alert-danger { .alert("danger"); }
 }

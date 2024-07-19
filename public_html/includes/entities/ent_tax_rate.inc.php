@@ -1,99 +1,99 @@
 <?php
 
-  class ent_tax_rate {
-    public $data;
-    public $previous;
+	class ent_tax_rate {
+		public $data;
+		public $previous;
 
-    public function __construct($tax_rate_id=null) {
+		public function __construct($tax_rate_id=null) {
 
-      if (!empty($tax_rate_id)) {
-        $this->load($tax_rate_id);
-      } else {
-        $this->reset();
-      }
-    }
+			if (!empty($tax_rate_id)) {
+				$this->load($tax_rate_id);
+			} else {
+				$this->reset();
+			}
+		}
 
-    public function reset() {
+		public function reset() {
 
-      $this->data = [];
+			$this->data = [];
 
-      database::query(
-        "show fields from ". DB_TABLE_PREFIX ."tax_rates;"
-      )->each(function($field){
-        $this->data[$field['Field']] = database::create_variable($field);
-      });
+			database::query(
+				"show fields from ". DB_TABLE_PREFIX ."tax_rates;"
+			)->each(function($field){
+				$this->data[$field['Field']] = database::create_variable($field);
+			});
 
-      $this->previous = $this->data;
-    }
+			$this->previous = $this->data;
+		}
 
-    public function load($tax_rate_id) {
+		public function load($tax_rate_id) {
 
-      if (!preg_match('#^[0-9]+$#', $tax_rate_id)) {
-        throw new Exception('Invalid tax rate (ID: '. $tax_rate_id .')');
-      }
+			if (!preg_match('#^[0-9]+$#', $tax_rate_id)) {
+				throw new Exception('Invalid tax rate (ID: '. $tax_rate_id .')');
+			}
 
-      $this->reset();
+			$this->reset();
 
-      $tax_rate = database::query(
-        "select * from ". DB_TABLE_PREFIX ."tax_rates
-        where id = ". (int)$tax_rate_id ."
-        limit 1;"
-      )->fetch();
+			$tax_rate = database::query(
+				"select * from ". DB_TABLE_PREFIX ."tax_rates
+				where id = ". (int)$tax_rate_id ."
+				limit 1;"
+			)->fetch();
 
-      if ($tax_rate) {
-        $this->data = array_replace($this->data, array_intersect_key($tax_rate, $this->data));
-      } else {
-        throw new Exception('Could not find tax rate (ID: '. (int)$tax_rate_id .') in database.');
-      }
+			if ($tax_rate) {
+				$this->data = array_replace($this->data, array_intersect_key($tax_rate, $this->data));
+			} else {
+				throw new Exception('Could not find tax rate (ID: '. (int)$tax_rate_id .') in database.');
+			}
 
-      $this->previous = $this->data;
-    }
+			$this->previous = $this->data;
+		}
 
-    public function save() {
+		public function save() {
 
-      if (!$this->data['id']) {
-        database::query(
-          "insert into ". DB_TABLE_PREFIX ."tax_rates
-          (date_created)
-          values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
-        );
+			if (!$this->data['id']) {
+				database::query(
+					"insert into ". DB_TABLE_PREFIX ."tax_rates
+					(date_created)
+					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+				);
 
-        $this->data['id'] = database::insert_id();
-      }
+				$this->data['id'] = database::insert_id();
+			}
 
-      database::query(
-        "update ". DB_TABLE_PREFIX ."tax_rates
-        set tax_class_id = ". (int)$this->data['tax_class_id'] .",
-          geo_zone_id = ". (int)$this->data['geo_zone_id'] .",
-          code = '". database::input($this->data['code']) ."',
-          name = '". database::input($this->data['name']) ."',
-          description = '". database::input($this->data['description']) ."',
-          rate = ". (float)$this->data['rate'] .",
-          address_type = '". database::input($this->data['address_type']) ."',
-          rule_companies_with_tax_id = ". (int)$this->data['rule_companies_with_tax_id'] .",
-          rule_companies_without_tax_id = ". (int)$this->data['rule_companies_without_tax_id'] .",
-          rule_individuals_with_tax_id = ". (int)$this->data['rule_individuals_with_tax_id'] .",
-          rule_individuals_without_tax_id = ". (int)$this->data['rule_individuals_without_tax_id'] .",
-          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
+			database::query(
+				"update ". DB_TABLE_PREFIX ."tax_rates
+				set tax_class_id = ". (int)$this->data['tax_class_id'] .",
+					geo_zone_id = ". (int)$this->data['geo_zone_id'] .",
+					code = '". database::input($this->data['code']) ."',
+					name = '". database::input($this->data['name']) ."',
+					description = '". database::input($this->data['description']) ."',
+					rate = ". (float)$this->data['rate'] .",
+					address_type = '". database::input($this->data['address_type']) ."',
+					rule_companies_with_tax_id = ". (int)$this->data['rule_companies_with_tax_id'] .",
+					rule_companies_without_tax_id = ". (int)$this->data['rule_companies_without_tax_id'] .",
+					rule_individuals_with_tax_id = ". (int)$this->data['rule_individuals_with_tax_id'] .",
+					rule_individuals_without_tax_id = ". (int)$this->data['rule_individuals_without_tax_id'] .",
+					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+				where id = ". (int)$this->data['id'] ."
+				limit 1;"
+			);
 
-      $this->previous = $this->data;
+			$this->previous = $this->data;
 
-      cache::clear_cache('tax_rates');
-    }
+			cache::clear_cache('tax_rates');
+		}
 
-    public function delete() {
+		public function delete() {
 
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."tax_rates
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."tax_rates
+				where id = ". (int)$this->data['id'] ."
+				limit 1;"
+			);
 
-      $this->reset();
+			$this->reset();
 
-      cache::clear_cache('tax_rates');
-    }
-  }
+			cache::clear_cache('tax_rates');
+		}
+	}

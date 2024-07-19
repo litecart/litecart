@@ -1,150 +1,150 @@
 <?php
 
-  class ref_page extends abs_reference_entity {
+	class ref_page extends abs_reference_entity {
 
-    protected $_language_codes;
+		protected $_language_codes;
 
-    function __construct($page_id, $language_code=null) {
+		function __construct($page_id, $language_code=null) {
 
-      if (empty($language_code)) {
-        $language_code = language::$selected['code'];
-      }
+			if (empty($language_code)) {
+				$language_code = language::$selected['code'];
+			}
 
-      $this->_data['id'] = (int)$page_id;
-      $this->_language_codes = array_unique([
-        $language_code,
-        settings::get('default_language_code'),
-        settings::get('store_language_code'),
-      ]);
-    }
+			$this->_data['id'] = (int)$page_id;
+			$this->_language_codes = array_unique([
+				$language_code,
+				settings::get('default_language_code'),
+				settings::get('store_language_code'),
+			]);
+		}
 
-    protected function _load($field) {
+		protected function _load($field) {
 
-      switch($field) {
+			switch($field) {
 
-        case 'title':
-        case 'content':
-        case 'head_title':
-        case 'meta_description':
+				case 'title':
+				case 'content':
+				case 'head_title':
+				case 'meta_description':
 
-          $query = database::query(
-            "select * from ". DB_TABLE_PREFIX ."pages_info
-            where page_id = ". (int)$this->_data['id'] ."
-            and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-            order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-          );
+					$query = database::query(
+						"select * from ". DB_TABLE_PREFIX ."pages_info
+						where page_id = ". (int)$this->_data['id'] ."
+						and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+						order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
+					);
 
-          while ($row = database::fetch($query)) {
-            foreach ($row as $key => $value) {
+					while ($row = database::fetch($query)) {
+						foreach ($row as $key => $value) {
 
-              if (in_array($key, ['id', 'page_id', 'language_code'])) continue;
+							if (in_array($key, ['id', 'page_id', 'language_code'])) continue;
 
-              if (empty($this->_data[$key])) {
-                $this->_data[$key] = $row[$key];
-              }
-            }
-          }
+							if (empty($this->_data[$key])) {
+								$this->_data[$key] = $row[$key];
+							}
+						}
+					}
 
-          break;
+					break;
 
-        case 'parent':
+				case 'parent':
 
-          if (!empty($this->parent_id)) {
-            $this->_data['parent'] = reference::page($this->parent_id, $this->_language_codes[0]);
-          }
+					if (!empty($this->parent_id)) {
+						$this->_data['parent'] = reference::page($this->parent_id, $this->_language_codes[0]);
+					}
 
-          break;
+					break;
 
-        case 'path':
+				case 'path':
 
-          $this->_data['path'] = [$this->id => $this];
+					$this->_data['path'] = [$this->id => $this];
 
-          $current = $this;
-          while ($current->parent_id) {
+					$current = $this;
+					while ($current->parent_id) {
 
-            $this->_data['path'][$current->parent_id] = $current->parent;
-            $current = $current->parent;
-          }
+						$this->_data['path'][$current->parent_id] = $current->parent;
+						$current = $current->parent;
+					}
 
-          $this->_data['path'] = array_reverse($this->_data['path'], true);
+					$this->_data['path'] = array_reverse($this->_data['path'], true);
 
-          break;
+					break;
 
-        case 'siblings':
+				case 'siblings':
 
-          $this->_data['siblings'] = [];
+					$this->_data['siblings'] = [];
 
-          if (empty($this->parent_id)) return;
+					if (empty($this->parent_id)) return;
 
-          $query = database::query(
-            "select id from ". DB_TABLE_PREFIX ."pages
-            where status
-            and parent_id = ". (int)$this->parent_id ."
-            and id != ". (int)$this->_data['id'] .";"
-          );
+					$query = database::query(
+						"select id from ". DB_TABLE_PREFIX ."pages
+						where status
+						and parent_id = ". (int)$this->parent_id ."
+						and id != ". (int)$this->_data['id'] .";"
+					);
 
-          while ($row = database::fetch($query)) {
-            $this->_data['siblings'][$row['id']] = reference::page($row['id'], $this->_language_codes[0]);
-          }
+					while ($row = database::fetch($query)) {
+						$this->_data['siblings'][$row['id']] = reference::page($row['id'], $this->_language_codes[0]);
+					}
 
-          break;
+					break;
 
-        case 'descendants':
+				case 'descendants':
 
-          $this->_data['descendants'] = [];
+					$this->_data['descendants'] = [];
 
-          $iterator = function($parent_id) use (&$iterator) {
+					$iterator = function($parent_id) use (&$iterator) {
 
-            $descendants = [];
+						$descendants = [];
 
-            $pages_query = database::query(
-              "select id from ". DB_TABLE_PREFIX ."pages
-              where parent_id = ". (int)$parent_id .";"
-            );
+						$pages_query = database::query(
+							"select id from ". DB_TABLE_PREFIX ."pages
+							where parent_id = ". (int)$parent_id .";"
+						);
 
-            while ($page = database::fetch($pages_query)) {
-              $descendants[$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
-              $descendants += $iterator($page['id']);
-            }
+						while ($page = database::fetch($pages_query)) {
+							$descendants[$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
+							$descendants += $iterator($page['id']);
+						}
 
-            return $descendants;
-          };
+						return $descendants;
+					};
 
-          $this->_data['descendants'] = $iterator($this->_data['id']);
+					$this->_data['descendants'] = $iterator($this->_data['id']);
 
-          break;
+					break;
 
-        case 'subpages': // To be deprecated
-        case 'children':
+				case 'subpages': // To be deprecated
+				case 'children':
 
-          $this->_data['subpages'] = [];
+					$this->_data['subpages'] = [];
 
-            $page_query = database::query(
-              "select id, parent_id from ". DB_TABLE_PREFIX ."pages
-              where parent_id = ". (int)$this->_data['id'] .";"
-            );
+						$page_query = database::query(
+							"select id, parent_id from ". DB_TABLE_PREFIX ."pages
+							where parent_id = ". (int)$this->_data['id'] .";"
+						);
 
-            while ($page = database::fetch($page_query)) {
-              $this->_data['subpages'][$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
-            }
+						while ($page = database::fetch($page_query)) {
+							$this->_data['subpages'][$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
+						}
 
-          break;
+					break;
 
-        default:
+				default:
 
-          $page = database::query(
-            "select * from ". DB_TABLE_PREFIX ."pages
-            where id = ". (int)$this->_data['id'] ."
-            limit 1;"
-          )->fetch();
+					$page = database::query(
+						"select * from ". DB_TABLE_PREFIX ."pages
+						where id = ". (int)$this->_data['id'] ."
+						limit 1;"
+					)->fetch();
 
-          if (!$page) return;
+					if (!$page) return;
 
-          foreach ($page as $key => $value) {
-            $this->_data[$key] = $value;
-          }
+					foreach ($page as $key => $value) {
+						$this->_data[$key] = $value;
+					}
 
-          break;
-      }
-    }
-  }
+					break;
+			}
+		}
+	}

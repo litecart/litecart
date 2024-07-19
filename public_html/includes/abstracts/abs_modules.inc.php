@@ -1,87 +1,87 @@
 <?php
 
-  abstract class abs_modules {
-    public $modules;
+	abstract class abs_modules {
+		public $modules;
 
-    public function reset() {
-      $this->modules = [];
-    }
+		public function reset() {
+			$this->modules = [];
+		}
 
-    public function load($filter=[]) {
+		public function load($filter=[]) {
 
-      $this->reset();
+			$this->reset();
 
-      $type = preg_replace('#mod_(.*)$#', '$1', get_called_class());
+			$type = preg_replace('#mod_(.*)$#', '$1', get_called_class());
 
-      if ($filter && !is_array($filter)) {
-        $filter = [$filter];
-      }
+			if ($filter && !is_array($filter)) {
+				$filter = [$filter];
+			}
 
-      database::query(
-        "select * from ". DB_TABLE_PREFIX ."modules
-        where type = '". database::input(strtr($type, ['jobs' => 'job'])) ."'
-        ". (!empty($filter) ? "and module_id in ('". implode("', '", database::input($filter)) ."')" : "") .";"
-      )->each(function($module) use ($type) {
+			database::query(
+				"select * from ". DB_TABLE_PREFIX ."modules
+				where type = '". database::input(strtr($type, ['jobs' => 'job'])) ."'
+				". (!empty($filter) ? "and module_id in ('". implode("', '", database::input($filter)) ."')" : "") .";"
+			)->each(function($module) use ($type) {
 
-      // If module no longer exists, remove traces
-        if (!is_file('app://includes/modules/'.$type.'/'.$module['module_id'].'.inc.php')) {
+				// If module no longer exists, remove traces
+				if (!is_file('app://includes/modules/'.$type.'/'.$module['module_id'].'.inc.php')) {
 
-        // Remove deleted modules
-          database::query(
-            "delete from ". DB_TABLE_PREFIX ."modules
-            where module_id = '". database::input($module['id']) ."'
-            limit 1;"
-          );
+					// Remove deleted modules
+					database::query(
+						"delete from ". DB_TABLE_PREFIX ."modules
+						where module_id = '". database::input($module['id']) ."'
+						limit 1;"
+					);
 
-          return;
-        }
+					return;
+				}
 
-      // Create object
-        $object = new $module['module_id'];
-        $object->id = $module['module_id']; // Set ID
+				// Create object
+				$object = new $module['module_id'];
+				$object->id = $module['module_id']; // Set ID
 
-      // Decode settings
-        $settings = json_decode($module['settings'], true);
+				// Decode settings
+				$settings = json_decode($module['settings'], true);
 
-      // Set settings to object
-        $object->settings = [];
-        foreach ($object->settings() as $setting) {
-          $setting['key'] = rtrim($setting['key'], '[]');
-          $object->settings[$setting['key']] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
-        }
+				// Set settings to object
+				$object->settings = [];
+				foreach ($object->settings() as $setting) {
+					$setting['key'] = rtrim($setting['key'], '[]');
+					$object->settings[$setting['key']] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
+				}
 
-        $object->status = (isset($object->settings['status']) && filter_var($object->settings['status'], FILTER_VALIDATE_BOOLEAN));
-        $object->priority = isset($object->settings['priority']) ? (int)$object->settings['priority'] : 0;
+				$object->status = (isset($object->settings['status']) && filter_var($object->settings['status'], FILTER_VALIDATE_BOOLEAN));
+				$object->priority = isset($object->settings['priority']) ? (int)$object->settings['priority'] : 0;
 
-        if ($type == 'jobs') {
-          $object->date_pushed = $module['date_pushed'];
-          $object->date_processed = $module['date_processed'];
-        }
+				if ($type == 'jobs') {
+					$object->date_pushed = $module['date_pushed'];
+					$object->date_processed = $module['date_processed'];
+				}
 
-      // Add module to list
-        $this->modules[$object->id] = $object;
-      });
+				// Add module to list
+				$this->modules[$object->id] = $object;
+			});
 
-    // Sort modules by priority
-      uasort($this->modules, function($a, $b) {
-        if ($a->priority == $b->priority) {
-          return ($a->name < $b->name) ? -1 : 1;
-        }
-        return ($a->priority < $b->priority) ? -1 : 1;
-      });
-    }
+			// Sort modules by priority
+			uasort($this->modules, function($a, $b) {
+				if ($a->priority == $b->priority) {
+					return ($a->name < $b->name) ? -1 : 1;
+				}
+				return ($a->priority < $b->priority) ? -1 : 1;
+			});
+		}
 
-    public function run($method_name, $module_id=null) {
+		public function run($method_name, $module_id=null) {
 
-      if (empty($module_id) && !empty($this->selected['id'])) {
-        list($module_id, $option_id) = explode(':', $this->selected['id']);
-      }
+			if (empty($module_id) && !empty($this->selected['id'])) {
+				list($module_id, $option_id) = explode(':', $this->selected['id']);
+			}
 
-      if (empty($this->modules[$module_id]) || !method_exists($this->modules[$module_id], $method_name)) return false;
+			if (empty($this->modules[$module_id]) || !method_exists($this->modules[$module_id], $method_name)) return false;
 
-      return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
-    }
+			return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
+		}
 
-  // Last destination method handler for prevent throwing errors if called methods are not defined
-    public function call($name, $arguments) {}
-  }
+		// Last destination method handler for prevent throwing errors if called methods are not defined
+		public function call($name, $arguments) {}
+	}

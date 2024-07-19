@@ -1,79 +1,79 @@
 <?php
 
-  class mod_order extends abs_modules {
+	class mod_order extends abs_modules {
 
-    public function __construct() {
-      $this->load();
-    }
+		public function __construct() {
+			$this->load();
+		}
 
-    public function actions() {
+		public function actions() {
 
-      $actions = [];
+			$actions = [];
 
-      if (empty($this->modules)) return;
+			if (empty($this->modules)) return;
 
-      foreach ($this->modules as $module) {
+			foreach ($this->modules as $module) {
 
-        if (!method_exists($module, 'actions')) continue;
+				if (!method_exists($module, 'actions')) continue;
 
-        $result = $module->actions();
+				$result = $module->actions();
 
-        if (empty($result)) continue;
+				if (empty($result)) continue;
 
-        $actions[$module->id] = [
-          'id' => $result['id'],
-          'name' => $result['name'],
-          'description' => @$result['description'],
-          'actions' => [],
-        ];
+				$actions[$module->id] = [
+					'id' => $result['id'],
+					'name' => $result['name'],
+					'description' => @$result['description'],
+					'actions' => [],
+				];
 
-        foreach ($result['actions'] as $action) {
-          $actions[$module->id]['actions'][$action['id']] = [
-            'id' => $action['id'],
-            'title' => $action['title'],
-            'description' => @$action['description'],
-            'function' => $action['function'],
-            'target' => fallback($action['target'], '_self'),
-          ];
-        }
-      }
+				foreach ($result['actions'] as $action) {
+					$actions[$module->id]['actions'][$action['id']] = [
+						'id' => $action['id'],
+						'title' => $action['title'],
+						'description' => @$action['description'],
+						'function' => $action['function'],
+						'target' => fallback($action['target'], '_self'),
+					];
+				}
+			}
 
-      return $actions;
-    }
+			return $actions;
+		}
 
-    public function validate($order) {
+		public function validate($order) {
 
-      if (empty($this->modules)) return;
+			if (empty($this->modules)) return;
 
-      foreach ($this->modules as $module_id => $module) {
-        if (method_exists($this->modules[$module_id], 'validate')) {
-          if ($result = $module->validate($order)) return $result;
-        }
-      }
-    }
+			foreach ($this->modules as $module_id => $module) {
+				if (method_exists($this->modules[$module_id], 'validate')) {
+					if ($result = $module->validate($order)) return $result;
+				}
+			}
+		}
 
-    public function success($order) {
+		public function success($order) {
 
-      if (empty($this->modules)) return;
+			if (empty($this->modules)) return;
 
-      $output = '';
+			$output = '';
 
-      foreach ($this->modules as $module_id => $module) {
-        if (method_exists($this->modules[$module_id], 'success')) {
-          if ($data = $module->success($order)) {
-            $output .= $data;
-          }
-        }
-      }
+			foreach ($this->modules as $module_id => $module) {
+				if (method_exists($this->modules[$module_id], 'success')) {
+					if ($data = $module->success($order)) {
+						$output .= $data;
+					}
+				}
+			}
 
-      return $output;
-    }
+			return $output;
+		}
 
-    public function update($order) {
-      return $this->run('update', null, $order);
-    }
+		public function update($order) {
+			return $this->run('update', null, $order);
+		}
 
-    public function delete($order) {
-      return $this->run('delete', null, $order);
-    }
-  }
+		public function delete($order) {
+			return $this->run('delete', null, $order);
+		}
+	}

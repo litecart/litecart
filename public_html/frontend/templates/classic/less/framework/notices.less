@@ -1,27 +1,27 @@
 /* Notices (Alerts) - Bootstrap Compatible */
 
 .alert(@type) {
-  background-color: ~"var(--@{type}-notice-background-color)";
-  color: ~"var(--@{type}-notice-text-color)";
-  border: 1px solid ~"var(--@{type}-notice-border-color)";
+	background-color: ~"var(--@{type}-notice-background-color)";
+	color: ~"var(--@{type}-notice-text-color)";
+	border: 1px solid ~"var(--@{type}-notice-border-color)";
 }
 
 .alert {
-  border-radius: var(--border-radius);
-  margin-bottom: var(--gutter-y);
-  padding: var(--input-padding-y) var(--input-padding-x);
-  .close {
-    float: right;
-    font-size: 1.25em;
-    color: inherit;
-    line-height: 1;
-    &:hover {
-      text-decoration: none;
-    }
-  }
+	border-radius: var(--border-radius);
+	margin-bottom: var(--gutter-y);
+	padding: var(--input-padding-y) var(--input-padding-x);
+	.close {
+		float: right;
+		font-size: 1.25em;
+		color: inherit;
+		line-height: 1;
+		&:hover {
+			text-decoration: none;
+		}
+	}
 
-  &.alert-default { .alert("default"); }
-  &.alert-success { .alert("success"); }
-  &.alert-warning { .alert("warning"); }
-  &.alert-danger { .alert("danger"); }
+	&.alert-default { .alert("default"); }
+	&.alert-success { .alert("success"); }
+	&.alert-warning { .alert("warning"); }
+	&.alert-danger { .alert("danger"); }
 }

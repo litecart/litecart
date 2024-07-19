@@ -1,5 +1,5 @@
 <FilesMatch "\.(a?png|bmp|css|gif|ico|jpe?g|jp2|js|svg|tiff?|webp?)$">
-  <IfModule mod_authz_core.c>
-    Require all granted
-  </IfModule>
+	<IfModule mod_authz_core.c>
+		Require all granted
+	</IfModule>
 </FilesMatch>

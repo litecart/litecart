@@ -1,17 +1,17 @@
 <IfModule mod_authz_core.c>
-  Require all denied
+	Require all denied
 </IfModule>
 <IfModule !mod_authz_core.c>
-  Order Deny,Allow
-  Deny from all
+	Order Deny,Allow
+	Deny from all
 </IfModule>
 
 <FilesMatch "\.(a?png|avif|gif|jpe?g|webp)$">
-  <IfModule mod_authz_core.c>
-    Require all granted
-  </IfModule>
-  <IfModule !mod_authz_core.c>
-    Order Allow,Deny
-    Allow from all
-  </IfModule>
+	<IfModule mod_authz_core.c>
+		Require all granted
+	</IfModule>
+	<IfModule !mod_authz_core.c>
+		Order Allow,Deny
+		Allow from all
+	</IfModule>
 </FilesMatch>

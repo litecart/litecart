@@ -1,237 +1,237 @@
 <?php
 
-  class ref_category extends abs_reference_entity {
+	class ref_category extends abs_reference_entity {
 
-    protected $_language_codes;
+		protected $_language_codes;
 
-    function __construct($category_id, $language_code=null) {
+		function __construct($category_id, $language_code=null) {
 
-      if (empty($language_code)) {
-        $language_code = language::$selected['code'];
-      }
+			if (empty($language_code)) {
+				$language_code = language::$selected['code'];
+			}
 
-      $this->_data['id'] = (int)$category_id;
-      $this->_language_codes = array_unique([
-        $language_code,
-        settings::get('default_language_code'),
-        settings::get('store_language_code'),
-      ]);
-    }
+			$this->_data['id'] = (int)$category_id;
+			$this->_language_codes = array_unique([
+				$language_code,
+				settings::get('default_language_code'),
+				settings::get('store_language_code'),
+			]);
+		}
 
-    protected function _load($field) {
+		protected function _load($field) {
 
-      switch($field) {
+			switch($field) {
 
-        case 'name':
-        case 'description':
-        case 'short_description':
-        case 'head_title':
-        case 'meta_description':
-        case 'h1_title':
-        case 'synonyms':
+				case 'name':
+				case 'description':
+				case 'short_description':
+				case 'head_title':
+				case 'meta_description':
+				case 'h1_title':
+				case 'synonyms':
 
-          $this->_data['info'] = [];
+					$this->_data['info'] = [];
 
-          $query = database::query(
-            "select * from ". DB_TABLE_PREFIX ."categories_info
-            where category_id = ". (int)$this->_data['id'] ."
-            and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-            order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-          );
+					$query = database::query(
+						"select * from ". DB_TABLE_PREFIX ."categories_info
+						where category_id = ". (int)$this->_data['id'] ."
+						and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+						order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
+					);
 
-          while ($row = database::fetch($query)) {
-            foreach ($row as $key => $value) {
+					while ($row = database::fetch($query)) {
+						foreach ($row as $key => $value) {
 
-              if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
+							if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
 
-              if (empty($this->_data[$key])) {
-                $this->_data[$key] = $row[$key];
-              }
-            }
-          }
+							if (empty($this->_data[$key])) {
+								$this->_data[$key] = $row[$key];
+							}
+						}
+					}
 
-          break;
+					break;
 
-        case 'parent':
+				case 'parent':
 
-          $this->_data['parent'] = false;
+					$this->_data['parent'] = false;
 
-          if (empty($this->parent_id)) return;
+					if (empty($this->parent_id)) return;
 
-          $this->_data['parent'] = reference::category($this->parent_id, $this->_language_codes[0]);
+					$this->_data['parent'] = reference::category($this->parent_id, $this->_language_codes[0]);
 
-          break;
+					break;
 
-        case 'main_category':
-        case 'ancestor':
+				case 'main_category':
+				case 'ancestor':
 
-          $this->_data['ancestor'] = $this;
+					$this->_data['ancestor'] = $this;
 
-          while ($this->_data['ancestor']->parent_id) {
-            $this->_data['ancestor'] = $this->_data['ancestor']->parent;
-          }
+					while ($this->_data['ancestor']->parent_id) {
+						$this->_data['ancestor'] = $this->_data['ancestor']->parent;
+					}
 
-          $this->_data['main_category'] = &$this->_data['ancestor'];
+					$this->_data['main_category'] = &$this->_data['ancestor'];
 
-          break;
+					break;
 
-        case 'path':
+				case 'path':
 
-          $this->_data['path'] = [$this->_data['id'] => $this];
+					$this->_data['path'] = [$this->_data['id'] => $this];
 
-          $current = $this;
-          while ($current->parent_id) {
-            $this->_data['path'] = [$current->parent_id => $current->parent] + $this->_data['path'];
-            $current = $current->parent;
-          }
+					$current = $this;
+					while ($current->parent_id) {
+						$this->_data['path'] = [$current->parent_id => $current->parent] + $this->_data['path'];
+						$current = $current->parent;
+					}
 
-          break;
+					break;
 
-        case 'products':
+				case 'products':
 
-          $this->_data['products'] = [];
+					$this->_data['products'] = [];
 
-          $query = database::query(
-            "select id from ". DB_TABLE_PREFIX ."products
-            where status
-            and id in (
-              select product_id from ". DB_TABLE_PREFIX ."products_to_categories
-              where category_id = ". (int)$this->_data['id'] ."
-            )
-            and (quantity > 0 or sold_out_status_id in (
-              select id from ". DB_TABLE_PREFIX ."sold_out_statuses
-              where (hidden is null or hidden = 0)
-            ))
-            and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
-            and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
-          );
+					$query = database::query(
+						"select id from ". DB_TABLE_PREFIX ."products
+						where status
+						and id in (
+							select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+							where category_id = ". (int)$this->_data['id'] ."
+						)
+						and (quantity > 0 or sold_out_status_id in (
+							select id from ". DB_TABLE_PREFIX ."sold_out_statuses
+							where (hidden is null or hidden = 0)
+						))
+						and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
+						and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
+					);
 
-          while ($row = database::fetch($query)) {
-            $this->_data['products'][$row['id']] = reference::product($row['id'], $this->_language_codes[0]);
-          }
-
-          break;
+					while ($row = database::fetch($query)) {
+						$this->_data['products'][$row['id']] = reference::product($row['id'], $this->_language_codes[0]);
+					}
+
+					break;
 
-        case 'num_subcategories':
+				case 'num_subcategories':
 
-          if (!empty($this->_data['subcategories'])) {
-            $this->_data['num_subcategories'] = count($this->_data['subcategories']);
-            break;
-          }
+					if (!empty($this->_data['subcategories'])) {
+						$this->_data['num_subcategories'] = count($this->_data['subcategories']);
+						break;
+					}
 
-          $query = database::query(
-            "select count(id) as num_subcategories from ". DB_TABLE_PREFIX ."categories
-            where status
-            and parent_id ". (int)$this->_data['id'] .";"
-          );
+					$query = database::query(
+						"select count(id) as num_subcategories from ". DB_TABLE_PREFIX ."categories
+						where status
+						and parent_id ". (int)$this->_data['id'] .";"
+					);
 
-          $this->_data['num_subcategories'] = (int)database::fetch($query, 'num_subcategories');
+					$this->_data['num_subcategories'] = (int)database::fetch($query, 'num_subcategories');
 
-          break;
+					break;
 
-        case 'num_products':
+				case 'num_products':
 
-          if (!empty($this->_data['products'])) {
-            $this->_data['num_products'] = count($this->_data['products']);
-            break;
-          }
+					if (!empty($this->_data['products'])) {
+						$this->_data['num_products'] = count($this->_data['products']);
+						break;
+					}
 
-          $query = database::query(
-            "select count(id) as num_products from ". DB_TABLE_PREFIX ."products
-            where status
-            and id in (
-              select product_id from ". DB_TABLE_PREFIX ."products_to_categories
-              where category_id = ". (int)$this->_data['id'] ."
-              ". ($this->descendants ? "or category_id in (". implode(", ", array_keys($this->descendants)) .")" : "") ."
-            )
-            and (quantity > 0 or sold_out_status_id in (
-              select id from ". DB_TABLE_PREFIX ."sold_out_statuses
-              where (hidden is null or hidden = 0)
-            ))
-            and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
-            and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
-          );
+					$query = database::query(
+						"select count(id) as num_products from ". DB_TABLE_PREFIX ."products
+						where status
+						and id in (
+							select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+							where category_id = ". (int)$this->_data['id'] ."
+							". ($this->descendants ? "or category_id in (". implode(", ", array_keys($this->descendants)) .")" : "") ."
+						)
+						and (quantity > 0 or sold_out_status_id in (
+							select id from ". DB_TABLE_PREFIX ."sold_out_statuses
+							where (hidden is null or hidden = 0)
+						))
+						and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
+						and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
+					);
 
-          $this->_data['num_products'] = (int)database::fetch($query, 'num_products');
+					$this->_data['num_products'] = (int)database::fetch($query, 'num_products');
 
-          break;
+					break;
 
-        case 'siblings':
+				case 'siblings':
 
-          $this->_data['siblings'] = [];
+					$this->_data['siblings'] = [];
 
-          if (empty($this->parent_id)) return;
+					if (empty($this->parent_id)) return;
 
-          $query = database::query(
-            "select id from ". DB_TABLE_PREFIX ."categories
-            where status
-            and parent_id = ". (int)$this->parent_id ."
-            and id != ". (int)$this->_data['id'] ."
-            order by priority;"
-          );
+					$query = database::query(
+						"select id from ". DB_TABLE_PREFIX ."categories
+						where status
+						and parent_id = ". (int)$this->parent_id ."
+						and id != ". (int)$this->_data['id'] ."
+						order by priority;"
+					);
 
-          while ($row = database::fetch($query)) {
-            $this->_data['siblings'][$row['id']] = reference::category($row['id'], $this->_language_codes[0]);
-          }
+					while ($row = database::fetch($query)) {
+						$this->_data['siblings'][$row['id']] = reference::category($row['id'], $this->_language_codes[0]);
+					}
 
-          break;
+					break;
 
-        case 'descendants':
+				case 'descendants':
 
-          $this->_data['descendants'] = [];
+					$this->_data['descendants'] = [];
 
-          $categories_query = database::query(
-            "select id, parent_id from ". DB_TABLE_PREFIX ."categories
-            join (select @parent_id := ". (int)$this->_data['id'] .") tmp
-            where find_in_set(parent_id, @parent_id)
-            and length(@parent_id := concat(@parent_id, ',', id));"
-          );
+					$categories_query = database::query(
+						"select id, parent_id from ". DB_TABLE_PREFIX ."categories
+						join (select @parent_id := ". (int)$this->_data['id'] .") tmp
+						where find_in_set(parent_id, @parent_id)
+						and length(@parent_id := concat(@parent_id, ',', id));"
+					);
 
-          while ($row = database::fetch($categories_query)) {
-            $this->_data['descendants'][$row['id']] = reference::category($row['id']);
-          }
+					while ($row = database::fetch($categories_query)) {
+						$this->_data['descendants'][$row['id']] = reference::category($row['id']);
+					}
 
-          break;
+					break;
 
-        case 'subcategories':
-        case 'children':
+				case 'subcategories':
+				case 'children':
 
-          $this->_data['children'] = [];
+					$this->_data['children'] = [];
 
-          $query = database::query(
-            "select id from ". DB_TABLE_PREFIX ."categories
-            where status
-            and parent_id = ". (int)$this->_data['id'] ."
-            order by priority;"
-          );
+					$query = database::query(
+						"select id from ". DB_TABLE_PREFIX ."categories
+						where status
+						and parent_id = ". (int)$this->_data['id'] ."
+						order by priority;"
+					);
 
-          while ($row = database::fetch($query)) {
-            foreach ($row as $key => $value) {
-              $this->_data['children'][$row['id']] = reference::category($row['id'], $this->_language_codes[0]);
-            }
-          }
+					while ($row = database::fetch($query)) {
+						foreach ($row as $key => $value) {
+							$this->_data['children'][$row['id']] = reference::category($row['id'], $this->_language_codes[0]);
+						}
+					}
 
-          $this->_data['subcategories'] = &$this->_data['children'];
+					$this->_data['subcategories'] = &$this->_data['children'];
 
-          break;
+					break;
 
-        default:
+				default:
 
-          $row = database::query(
-            "select * from ". DB_TABLE_PREFIX ."categories
-            where id = ". (int)$this->_data['id'] ."
-            limit 1;"
-          )->fetch();
+					$row = database::query(
+						"select * from ". DB_TABLE_PREFIX ."categories
+						where id = ". (int)$this->_data['id'] ."
+						limit 1;"
+					)->fetch();
 
-          if (!$row) return;
+					if (!$row) return;
 
-          foreach ($row as $key => $value) {
-            $this->_data[$key] = $value;
-          }
+					foreach ($row as $key => $value) {
+						$this->_data[$key] = $value;
+					}
 
-          $this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+					$this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
-          break;
-      }
-    }
-  }
+					break;
+			}
+		}
+	}

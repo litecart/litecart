@@ -1,99 +1,99 @@
 <?php
 
-  class settings {
-    private static $_cache;
+	class settings {
+		private static $_cache;
 
-    public static function init() {
+		public static function init() {
 
-      database::query(
-        "select `key`, `value`, `function`
-        from ". DB_TABLE_PREFIX ."settings
-        where `type` = 'global';"
-      )->each(function($setting){
+			database::query(
+				"select `key`, `value`, `function`
+				from ". DB_TABLE_PREFIX ."settings
+				where `type` = 'global';"
+			)->each(function($setting){
 
-        switch (true) {
+				switch (true) {
 
-          case (substr($setting['function'], 0, 9) == 'regional_'):
+					case (substr($setting['function'], 0, 9) == 'regional_'):
 
-            if (!class_exists('language') || !language::$selected) break;
+						if (!class_exists('language') || !language::$selected) break;
 
-            if ($setting['value']) {
-              $setting['value'] = json_decode($setting['value'], true);
+						if ($setting['value']) {
+							$setting['value'] = json_decode($setting['value'], true);
 
-                if (!empty($setting['value'][language::$selected['code']])) {
-                $setting['value'] = $setting['value'][language::$selected['code']];
+								if (!empty($setting['value'][language::$selected['code']])) {
+								$setting['value'] = $setting['value'][language::$selected['code']];
 
-                } else if (!empty($setting['value']['en'])) {
-                $setting['value'] = $setting['value']['en'];
+								} else if (!empty($setting['value']['en'])) {
+								$setting['value'] = $setting['value']['en'];
 
-              } else {
-                $setting['value'] = '';
-              }
+							} else {
+								$setting['value'] = '';
+							}
 
-            } else {
-              $setting['value'] = '';
-            }
+						} else {
+							$setting['value'] = '';
+						}
 
-            break;
-        }
+						break;
+				}
 
-        self::$_cache[$setting['key']] = $setting['value'];
-      });
-    }
+				self::$_cache[$setting['key']] = $setting['value'];
+			});
+		}
 
-    ######################################################################
+		######################################################################
 
-    public static function get(string $key, $fallback=null) {
+		public static function get(string $key, $fallback=null) {
 
-      if (isset(self::$_cache[$key])) return self::$_cache[$key];
+			if (isset(self::$_cache[$key])) return self::$_cache[$key];
 
-      $setting = database::query(
-        "select `key`, `value`, `function`
-        from ". DB_TABLE_PREFIX ."settings
-        where `key` = '". database::input($key) ."'
-        limit 1;"
-      )->fetch();
+			$setting = database::query(
+				"select `key`, `value`, `function`
+				from ". DB_TABLE_PREFIX ."settings
+				where `key` = '". database::input($key) ."'
+				limit 1;"
+			)->fetch();
 
-      if (!$setting) {
+			if (!$setting) {
 
-        if ($fallback === null) {
-          trigger_error('Unsupported settings key ('. $key .')', E_USER_WARNING);
-        }
+				if ($fallback === null) {
+					trigger_error('Unsupported settings key ('. $key .')', E_USER_WARNING);
+				}
 
-        return $fallback;
-      }
+				return $fallback;
+			}
 
-      switch (true) {
+			switch (true) {
 
-        case (substr($setting['function'], 0, 9) == 'regional_'):
+				case (substr($setting['function'], 0, 9) == 'regional_'):
 
-          if (!class_exists('language') || empty(language::$selected)) return;
+					if (!class_exists('language') || empty(language::$selected)) return;
 
-          if ($setting['value']) {
-            $setting['value'] = json_decode($setting['value'], true);
+					if ($setting['value']) {
+						$setting['value'] = json_decode($setting['value'], true);
 
-            if (!empty($setting['value'][language::$selected['code']])) {
-              $setting['value'] = $setting['value'][language::$selected['code']];
+						if (!empty($setting['value'][language::$selected['code']])) {
+							$setting['value'] = $setting['value'][language::$selected['code']];
 
-            } else if (!empty($value['en'])) {
-              $setting['value'] = $setting['value']['en'];
+						} else if (!empty($value['en'])) {
+							$setting['value'] = $setting['value']['en'];
 
-          } else {
-              $setting['value'] = '';
-          }
+					} else {
+							$setting['value'] = '';
+					}
 
-          } else {
-            $setting['value'] = [];
-        }
+					} else {
+						$setting['value'] = [];
+				}
 
-          break;
+					break;
 
-        }
+				}
 
-      return self::$_cache[$key] = $setting['value'];
-      }
+			return self::$_cache[$key] = $setting['value'];
+			}
 
-    public static function set($key, $value) {
-      self::$_cache[$key] = $value;
-    }
-  }
+		public static function set($key, $value) {
+			self::$_cache[$key] = $value;
+		}
+	}

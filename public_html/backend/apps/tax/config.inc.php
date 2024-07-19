@@ -1,33 +1,33 @@
 <?php
 
-  return [
-    'name' => language::translate('title_tax', 'Tax'),
-    'default' => 'tax_rates',
-    'priority' => 0,
+	return [
+		'name' => language::translate('title_tax', 'Tax'),
+		'default' => 'tax_rates',
+		'priority' => 0,
 
-    'theme' => [
-      'color' => '#a8bf2e',
-      'icon' => 'fa-university',
-    ],
+		'theme' => [
+			'color' => '#a8bf2e',
+			'icon' => 'fa-university',
+		],
 
-    'menu' => [
-      [
-        'title' => language::translate('title_tax_rates', 'Tax Rates'),
-        'doc' => 'tax_rates',
-        'params' => [],
-      ],
-      [
-        'title' => language::translate('title_tax_classes', 'Tax Classes'),
-        'doc' => 'tax_classes',
-        'params' => [],
-      ],
-    ],
+		'menu' => [
+			[
+				'title' => language::translate('title_tax_rates', 'Tax Rates'),
+				'doc' => 'tax_rates',
+				'params' => [],
+			],
+			[
+				'title' => language::translate('title_tax_classes', 'Tax Classes'),
+				'doc' => 'tax_classes',
+				'params' => [],
+			],
+		],
 
-    'docs' => [
-      'tax_classes' => 'tax_classes.inc.php',
-      'edit_tax_class' => 'edit_tax_class.inc.php',
-      'tax_rates' => 'tax_rates.inc.php',
-      'tax_rates.json' => 'tax_rates.json.inc.php',
-      'edit_tax_rate' => 'edit_tax_rate.inc.php',
-    ],
-  ];
+		'docs' => [
+			'tax_classes' => 'tax_classes.inc.php',
+			'edit_tax_class' => 'edit_tax_class.inc.php',
+			'tax_rates' => 'tax_rates.inc.php',
+			'tax_rates.json' => 'tax_rates.json.inc.php',
+			'edit_tax_rate' => 'edit_tax_rate.inc.php',
+		],
+	];

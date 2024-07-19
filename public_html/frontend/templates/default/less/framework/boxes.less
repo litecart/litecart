@@ -1,32 +1,32 @@
 /* Boxes */
 
 #sidebar > .box > :first-child {
-  //margin-top: 0;
+		//margin-top: 0;
 }
 
 .box {
-  margin-bottom: var(--gutter-size);
+	margin-bottom: var(--gutter-size);
 
-  &.box-default {
-    padding: var(--gutter-size);
-    background: #fff;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .15);
-    border-radius: var(--border-radius);
-    > :first-child {
-      margin-top: 0;
-    }
-  }
+	&.box-default {
+		padding: var(--gutter-size);
+		background: #fff;
+		box-shadow: 0 10px 20px rgba(0, 0, 0, .15);
+		border-radius: var(--border-radius);
+		> :first-child {
+			margin-top: 0;
+		}
+	}
 
-  + &.box-default {
-    margin-top: var(--gutter-size);
-  }
+	+ &.box-default {
+		margin-top: var(--gutter-size);
+	}
 
-  @media(min-width: @media-breakpoint-md) {
-    &.box-default {
-      padding: var(--gutter-size);
-    }
-    + &.box-default {
-      margin-top: var(--gutter-size);
-    }
-  }
+	@media(min-width: @media-breakpoint-md) {
+		&.box-default {
+			padding: var(--gutter-size);
+		}
+		+ &.box-default {
+			margin-top: var(--gutter-size);
+		}
+	}
 }

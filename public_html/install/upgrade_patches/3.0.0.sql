@@ -1,73 +1,73 @@
 CREATE TABLE `lc_banners` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-  `name` VARCHAR(64) NOT NULL DEFAULT '',
-  `languages` VARCHAR(64) NOT NULL DEFAULT '',
-  `html` TEXT NOT NULL DEFAULT '',
-  `image` VARCHAR(64) NOT NULL DEFAULT '',
-  `link` VARCHAR(255) NOT NULL DEFAULT '',
-  `keywords` VARCHAR(255) NOT NULL DEFAULT '',
-  `total_views` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `total_clicks` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `date_valid_from` TIMESTAMP NULL DEFAULT NULL,
-  `date_valid_to` TIMESTAMP NULL DEFAULT NULL,
-  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`name` VARCHAR(64) NOT NULL DEFAULT '',
+	`languages` VARCHAR(64) NOT NULL DEFAULT '',
+	`html` TEXT NOT NULL DEFAULT '',
+	`image` VARCHAR(64) NOT NULL DEFAULT '',
+	`link` VARCHAR(255) NOT NULL DEFAULT '',
+	`keywords` VARCHAR(255) NOT NULL DEFAULT '',
+	`total_views` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`total_clicks` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`date_valid_from` TIMESTAMP NULL DEFAULT NULL,
+	`date_valid_to` TIMESTAMP NULL DEFAULT NULL,
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 -- -----
 CREATE TABLE `lc_customers_addresses` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `customer_id` INT(11) UNSIGNED NULL,
-  `type` ENUM('','business','individual') NOT NULL DEFAULT '',
-  `tax_id` VARCHAR(32) NOT NULL DEFAULT '',
-  `company` VARCHAR(64) NOT NULL DEFAULT '',
-  `firstname` VARCHAR(64) NOT NULL DEFAULT '',
-  `lastname` VARCHAR(64) NOT NULL DEFAULT '',
-  `address1` VARCHAR(64) NOT NULL DEFAULT '',
-  `address2` VARCHAR(64) NOT NULL DEFAULT '',
-  `postcode` VARCHAR(8) NOT NULL DEFAULT '',
-  `city` VARCHAR(32) NOT NULL DEFAULT '',
-  `country_code` CHAR(2) NOT NULL DEFAULT '',
-  `zone_code` VARCHAR(8) NOT NULL DEFAULT '',
-  `phone` VARCHAR(24) NOT NULL DEFAULT '',
-  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `customer_id` (`customer_id`) USING BTREE
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`customer_id` INT(11) UNSIGNED NULL,
+	`type` ENUM('','business','individual') NOT NULL DEFAULT '',
+	`tax_id` VARCHAR(32) NOT NULL DEFAULT '',
+	`company` VARCHAR(64) NOT NULL DEFAULT '',
+	`firstname` VARCHAR(64) NOT NULL DEFAULT '',
+	`lastname` VARCHAR(64) NOT NULL DEFAULT '',
+	`address1` VARCHAR(64) NOT NULL DEFAULT '',
+	`address2` VARCHAR(64) NOT NULL DEFAULT '',
+	`postcode` VARCHAR(8) NOT NULL DEFAULT '',
+	`city` VARCHAR(32) NOT NULL DEFAULT '',
+	`country_code` CHAR(2) NOT NULL DEFAULT '',
+	`zone_code` VARCHAR(8) NOT NULL DEFAULT '',
+	`phone` VARCHAR(24) NOT NULL DEFAULT '',
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `customer_id` (`customer_id`) USING BTREE
 ) ENGINE=InnoDB;
 -- -----
 CREATE TABLE `lc_products_references` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `product_id` INT UNSIGNED NOT NULL,
-  `source_type` VARCHAR(32) NOT NULL DEFAULT '',
-  `source` VARCHAR(32) NOT NULL DEFAULT '',
-  `type` VARCHAR(32) NOT NULL DEFAULT '',
-  `code` VARCHAR(32) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  INDEX `product_id` (`product_id`),
-  INDEX `type` (`type`),
-  INDEX `source` (`source`),
-  INDEX `source_type` (`source_type`),
-  UNIQUE INDEX `code` (`product_id`, `code`, `type`, `source`, `source_type`)
+	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`product_id` INT UNSIGNED NOT NULL,
+	`source_type` VARCHAR(32) NOT NULL DEFAULT '',
+	`source` VARCHAR(32) NOT NULL DEFAULT '',
+	`type` VARCHAR(32) NOT NULL DEFAULT '',
+	`code` VARCHAR(32) NOT NULL DEFAULT '',
+	PRIMARY KEY (`id`),
+	INDEX `product_id` (`product_id`),
+	INDEX `type` (`type`),
+	INDEX `source` (`source`),
+	INDEX `source_type` (`source_type`),
+	UNIQUE INDEX `code` (`product_id`, `code`, `type`, `source`, `source_type`)
 ) ENGINE=InnoDB;
 -- -----
 CREATE TABLE `lc_stock_transactions` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(128) NOT NULL DEFAULT '',
-  `description` MEDIUMTEXT NOT NULL DEFAULT '',
-  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(128) NOT NULL DEFAULT '',
+	`description` MEDIUMTEXT NOT NULL DEFAULT '',
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 -- -----
 CREATE TABLE `lc_stock_transactions_contents` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `transaction_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `sku` varchar(32) UNSIGNED NOT NULL DEFAULT '0',
-  `quantity_adjustment` FLOAT(11,4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`transaction_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`sku` varchar(32) UNSIGNED NOT NULL DEFAULT '0',
+	`quantity_adjustment` FLOAT(11,4) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 -- -----
 RENAME TABLE `lc_cart_items` TO `lc_shopping_carts_items`;
@@ -528,23 +528,23 @@ VALUES (1, 'Initial Stock Transaction', 'This is an initial system generated sto
 INSERT INTO `lc_stock_transactions_contents`
 (transaction_id, product_id, stock_option_id, quantity_adjustment)
 SELECT '1' AS transaction_id, product_id, stock_option_id, quantity_adjustment FROM (
-  SELECT product_id, stock_option_id, SUM(quantity) as quantity_adjustment FROM (
+	SELECT product_id, stock_option_id, SUM(quantity) as quantity_adjustment FROM (
 
-    SELECT pso.product_id, pso.id AS stock_option_id, pso.quantity
-    FROM `lc_products_stock_options` pso
+		SELECT pso.product_id, pso.id AS stock_option_id, pso.quantity
+		FROM `lc_products_stock_options` pso
 
-    UNION SELECT oi.product_id, oi.stock_option_id, oi.quantity FROM `lc_orders_items` oi
-   WHERE oi.order_id IN (
-      SELECT id FROM `lc_orders` o
-      WHERE o.order_status_id IN (
-        SELECT id FROM `lc_order_statuses` os
-        WHERE os.stock_action = 'withdraw'
-      )
-    )
+		UNION SELECT oi.product_id, oi.stock_option_id, oi.quantity FROM `lc_orders_items` oi
+	 WHERE oi.order_id IN (
+			SELECT id FROM `lc_orders` o
+			WHERE o.order_status_id IN (
+				SELECT id FROM `lc_order_statuses` os
+				WHERE os.stock_action = 'withdraw'
+			)
+		)
 
-  )
-  GROUP BY product_id, stock_option_id
-  ORDER BY product_id, stock_option_id
+	)
+	GROUP BY product_id, stock_option_id
+	ORDER BY product_id, stock_option_id
 );
 -- -----
 UPDATE `lc_brands` SET image = REPLACE(image, 'manufacturers/', 'brands/');
@@ -582,8 +582,8 @@ UPDATE `lc_settings` SET `key` = 'store_length_unit', `title` = 'Store Length Un
 UPDATE `lc_settings`
 SET `required` = 1
 WHERE `key` IN (
-  'store_email', 'store_name', 'store_language_code','store_currency_code', 'store_weight_unit', 'store_length_unit', 'store_timezone',
-  'default_language_code', 'default_currency_code', 'default_country_code', 'default_zone_code', 'template'
+	'store_email', 'store_name', 'store_language_code','store_currency_code', 'store_weight_unit', 'store_length_unit', 'store_timezone',
+	'default_language_code', 'default_currency_code', 'default_country_code', 'default_zone_code', 'template'
 );
 -- -----
 UPDATE `lc_settings` SET `function` = 'select("FIT","CROP")' WHERE `key` = 'category_image_clipping' LIMIT 1;
@@ -600,8 +600,8 @@ WHERE `function` = 'regional_input()';
 -- -----
 UPDATE `lc_orders`
 SET shipping_tax_id = billing_tax_id,
-  shipping_phone = billing_phone,
-  shipping_email = billing_email;
+	shipping_phone = billing_phone,
+	shipping_email = billing_email;
 -- -----
 UPDATE `lc_orders` o
 LEFT JOIN `lc_orders_totals` ot ON (ot.order_id = o.id AND ot.module_id = 'ot_subtotal')
@@ -610,10 +610,10 @@ o.subtotal_tax = ot.`tax`;
 -- -----
 UPDATE `lc_orders` o
 LEFT JOIN (
-  SELECT order_id, sum(`amount`) as discount, sum(`tax`) as discount_tax
-  FROM `lc_orders_totals`
-  WHERE `amount` < 0 AND calculate
-  GROUP BY order_id
+	SELECT order_id, sum(`amount`) as discount, sum(`tax`) as discount_tax
+	FROM `lc_orders_totals`
+	WHERE `amount` < 0 AND calculate
+	GROUP BY order_id
 ) ot ON (ot.order_id = o.id)
 SET o.discount = 0 - if(ot.discount, ot.discount, 0),
 o.discount_tax = 0 - if(ot.discount_tax, ot.discount_tax, 0);
@@ -622,10 +622,10 @@ UPDATE `lc_orders_items` oi
 LEFT JOIN `lc_orders` o ON (o.id = oi.invoice_id)
 LEFT JOIN `lc_products` p ON (p.id = oi.product_id)
 SET oi.tax_class_id = p.tax_class_id,
-  oi.discount = oi.price * (o.discount/o.total),
-  oi.discount_tax = oi.price * (o.discount_tax/o.total),
-  oi.`sum` = oi.price - (oi.price * (o.discount/o.total)),
-  oi.sum_tax = oi.tax - (oi.tax * (o.discount/o.total));
+	oi.discount = oi.price * (o.discount/o.total),
+	oi.discount_tax = oi.price * (o.discount_tax/o.total),
+	oi.`sum` = oi.price - (oi.price * (o.discount/o.total)),
+	oi.sum_tax = oi.tax - (oi.tax * (o.discount/o.total));
 -- -----
 UPDATE `lc_orders_items` oi
 LEFT JOIN `lc_products_stock_options` pso ON (pso.product_id = oi.product_id AND pso.attributes = oi.attributes)
@@ -633,13 +633,13 @@ SET oi.stock_option_id = pso.id;
 -- -----
 UPDATE `lc_orders_items`
 SET `type` = 'product',
-  sum = price * quantity,
-  sum_tax = tax * quantity;
+	sum = price * quantity,
+	sum_tax = tax * quantity;
 -- -----
 UPDATE `lc_settings`
 SET `key` = 'jobs_last_push',
-  `title` = 'Background Jobs Last Push',
-  `description` = 'Time when background jobs were last pushed.'
+	`title` = 'Background Jobs Last Push',
+	`description` = 'Time when background jobs were last pushed.'
 WHERE `key` = 'jobs_last_run'
 LIMIT 1;
 -- -----

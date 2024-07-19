@@ -14,32 +14,32 @@
  * LiteCart is a registered trademark, property of T. Almroth.
  */
 
-  require_once('includes/app_header.inc.php');
+	require_once('includes/app_header.inc.php');
 
-  route::load('app://frontend/routes/url_*.inc.php');
-  route::load('app://backend/routes/url_*.inc.php');
+	route::load('app://frontend/routes/url_*.inc.php');
+	route::load('app://backend/routes/url_*.inc.php');
 
-// Append last destination route
-  route::add('*', [
-  'pattern' => '#^(.+)$#',
-    'endpoint' => 'frontend',
-    'controller' => 'app://frontend/pages/$1.inc.php',
-  ]);
+	// Append last destination route
+	route::add('*', [
+	'pattern' => '#^(.+)$#',
+		'endpoint' => 'frontend',
+		'controller' => 'app://frontend/pages/$1.inc.php',
+	]);
 
-// Identify current route
-  route::identify();
+	// Identify current route
+	route::identify();
 
-// Initialize endpoint
-  if (!empty(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend') {
-    require 'app://backend/init.inc.php';
-    } else {
-    require 'app://frontend/init.inc.php';
-  }
+	// Initialize endpoint
+	if (!empty(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend') {
+		require 'app://backend/init.inc.php';
+		} else {
+		require 'app://frontend/init.inc.php';
+	}
 
-// Run operations before processing the route
-  event::fire('before_capture');
+	// Run operations before processing the route
+	event::fire('before_capture');
 
-// Process the route and capture the content
-  route::process();
+	// Process the route and capture the content
+	route::process();
 
-  require_once 'app://includes/app_footer.inc.php';
+	require_once 'app://includes/app_footer.inc.php';
