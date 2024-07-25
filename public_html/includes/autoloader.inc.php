@@ -48,7 +48,7 @@
           if (is_file($file)) {
             $source = file_get_contents($file);
             if (!preg_match('#\#\[AllowDynamicProperties\]#', $source)) {
-              $source = preg_replace('#([ \t]*)class [a-zA-Z0-9_-]+ *\{(\n|\r\n?)#', '$1#[AllowDynamicProperties]$2$0', $source);
+              $source = preg_replace('#([ \t]*)class [a-zA-Z0-9_-]+\s*?\{(\n|\r\n?)#', '$1#[AllowDynamicProperties]$2$0', $source);
               file_put_contents($file, $source);
             }
           }
