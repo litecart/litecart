@@ -38,7 +38,7 @@ body:
     id: error_log
     attributes:
       label: Error/Backtrace
-      description: If an error message was return, what was the error? All logged PHP errors and their backtraces are found in logs/errors.log.
+      description: If an error message was returned, what was the error? All logged PHP errors and their backtraces are found in logs/errors.log.
       render: shell
   - type: dropdown
     id: reproducable_in_demo
