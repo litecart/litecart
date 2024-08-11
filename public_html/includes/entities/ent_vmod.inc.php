@@ -294,9 +294,11 @@
 
 			$dom->appendChild( $vmod_node );
 
-			$xml = $dom->saveXML();
+			$xml = preg_replace_callback('#^ +#m', function($m) {
+				return str_repeat("\t", strlen($m[0]) / 4); // Replace indentation with tabs
+			}, $dom->saveXML());
 
-			// Pretty print
+			// Additional pretty printing
 			$xml = preg_replace('#( |\t)+(\r\n?|\n)#', '$2', $xml); // Remove trailing whitespace
 			$xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml); // Convert line endings
 			$xml = preg_replace('#^( +<(alias|setting|install|uninstall|upgrade|file|operation|insert)[^>]*>)#m', PHP_EOL . '$1', $xml); // Add some empty lines
