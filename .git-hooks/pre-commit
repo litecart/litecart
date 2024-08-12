@@ -2,16 +2,16 @@
 
 for hook in $(dirname "$0")/pre-commit.d/*; do
 
-    if [[ $hook == *.php ]]; then php $hook
-    elif [[ $hook == *.js ]]; then node $hook
-    elif [[ $hook == *.py ]]; then python $hook
-    elif [[ $hook == *.sh ]]; then bash $hook
-    else bash $hook
-    fi
+  if [[ $hook == *.php ]]; then php $hook
+  elif [[ $hook == *.js ]]; then node $hook
+  elif [[ $hook == *.py ]]; then python $hook
+  elif [[ $hook == *.sh ]]; then bash $hook
+  else bash $hook
+  fi
 
-    RESULT=$?
-    if [ $RESULT != 0 ]; then
-        echo "pre-commit.d/$hook returned an error: $RESULT, commit aborted"
-        exit $RESULT
-    fi
+  RESULT=$?
+  if [ $RESULT != 0 ]; then
+    echo "pre-commit.d/$hook returned an error: $RESULT, commit aborted"
+    exit $RESULT
+  fi
 done
