@@ -3,6 +3,7 @@
 // Delete some files
   perform_action('delete', [
     FS_DIR_APP . 'ext/jquery/jquery-3.6.4.min.js',
+    FS_DIR_ADMIN . 'translations.app/search.inc.php',
   ], 'skip');
 
   perform_action('modify', [
