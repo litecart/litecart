@@ -203,13 +203,11 @@
         file_put_contents(FS_DIR_STORAGE . 'logs/performance.log', $log_message, FILE_APPEND);
       }
 
-      if (class_exists('stats', false)) {
-        self::$stats['queries']++;
-        self::$stats['duration'] += $duration;
-      }
+      self::$stats['queries']++;
+      self::$stats['duration'] += $duration;
 
       if ($result instanceof mysqli_result) {
-        return new database_result($query, $result);
+				return new database_result($result);
       }
 
       return $result;
@@ -217,7 +215,9 @@
 
     public static function multi_query($query, $link='default') {
 
-      if (!isset(self::$_links[$link])) self::connect($link);
+			if (!isset(self::$_links[$link])) {
+				self::connect($link);
+			}
 
       $measure_start = microtime(true);
 
@@ -235,10 +235,9 @@
 
       $duration = microtime(true) - $measure_start;
 
-      if (class_exists('stats', false)) {
-        self::$stats['queries']++;
-        self::$stats['duration'] += $duration;
-      }
+
+      self::$stats['queries']++;
+      self::$stats['duration'] += $duration;
     }
 
     public static function fetch($result, $column='') {
@@ -352,26 +351,23 @@
       return mysqli_real_escape_string(self::$_links[$link], $input);
     }
 
-    public static function input_like($input, $allowable_tags=false, $trim=true, $link='default') {
+		public static function input_fulltext($input, $allowable_tags=false, $trim=true, $link='default') {
       $input = self::input($input, $allowable_tags, $trim, $link);
-      $input = addcslashes($input, '%_');
-      return $input;
+			$input = preg_replace('#[+\-<>\(\)~*\"@; ]+#', ' ', $input);
+			return $string;
     }
 
-    public static function input_fulltext($input, $allowable_tags=false, $trim=true, $link='default') {
+		public static function input_like($input, $allowable_tags=false, $trim=true, $link='default') {
       $input = self::input($input, $allowable_tags, $trim, $link);
-      $input = preg_replace('#[+\-<>\(\)~*\"@;]+#', ' ', $input);
-      $input = preg_replace('# +#', ' ', $input);
-      return $string;
+			$input = addcslashes($input, '%_');
+			return $input;
     }
   }
 
   class database_result {
-    private $_query;
     private $_result;
 
-    public function __construct(string $query, mysqli_result $result) {
-      $this->_query = $query;
+		public function __construct(mysqli_result $result) {
       $this->_result = $result;
     }
 
@@ -448,6 +444,7 @@
         while ($row = mysqli_fetch_assoc($this->_result)) {
 
           if ($filter) {
+
             switch (gettype($filter)) {
 
               case 'array':
@@ -472,6 +469,7 @@
               default:
                 $result = false;
             }
+
 					} else {
 						$result = $row;
           }
