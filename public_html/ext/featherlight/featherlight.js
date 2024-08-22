@@ -412,9 +412,13 @@
               "white-space": 'pre-wrap',
               "max-width": '90vw'
             });
-					$content.load(url, function() {
-						deferred.resolve( $content );
-					});
+
+          $.get(url, function(data) {
+            $content.text(data);
+          }).done(function(data) {
+            deferred.resolve( $content );
+          })
+
 					return deferred.promise();
 				}
 			},
