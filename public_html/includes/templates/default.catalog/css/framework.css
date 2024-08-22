@@ -248,6 +248,7 @@ ul.breadcrumb {
   list-style: none;
   background-color: var(--breadcrumbs-background-color);
   border-radius: var(--border-radius);
+  line-height: 1.5;
 }
 ul.breadcrumb li {
   display: inline-block;
