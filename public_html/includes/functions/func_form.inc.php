@@ -116,7 +116,15 @@
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="color" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="color" '. (($parameters) ? ' ' . $parameters : '') .' />';
   }
 
+  function form_draw_csv_field($name, $input=true, $delimiter=',', $parameters='') {
+
+    return implode(PHP_EOL, [
+      form_draw_textarea($name, $input, 'data-toggle="csv" data-delimiter="'. functions::escape_html($delimiter) .'"' . ($parameters ? ' ' . $parameters : '')),
+    ]);
+  }
+
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     if (empty($currency_code)) {
@@ -637,7 +645,7 @@
         return form_draw_currencies_list($name, $input, true, $parameters);
 
       case 'csv':
-        return form_draw_textarea($name, $input, $parameters . 'style="height: 250px;" data-type="csv"');
+        return form_draw_csv_field($name, $input, $options[0], $parameters);
 
       case 'delivery_status':
         return form_draw_delivery_statuses_list($name, $input, false, $parameters);
