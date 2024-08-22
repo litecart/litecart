@@ -26,9 +26,9 @@
 
       clearstatcache();
 
-      foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
+      foreach (functions::file_search(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
 
-        foreach (glob($dir.'/*.cache') as $file) {
+        foreach (functions::file_search($dir.'/*.cache') as $file) {
 
           if (!is_file($file)) continue;
           if (filemtime($file) > $timestamp) continue;
