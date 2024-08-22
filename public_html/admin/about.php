@@ -12,6 +12,7 @@
   if (isset($_POST['delete'])) {
 
     try {
+
       if (empty($_POST['errors'])) {
         throw new Exception(language::translate('error_must_select_errors', 'You must select errors'));
       }
@@ -182,7 +183,9 @@
 // Errors
   $errors = [];
 
-  if ($log_file = ini_get('error_log')) {
+  $log_file = ini_get('error_log');
+
+  if ($log_file && is_file($log_file)) {
 
     $entries = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($log_file));
 
