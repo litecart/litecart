@@ -256,15 +256,11 @@
 
         <?php echo functions::form_draw_form_begin('errors_form', 'post'); ?>
 
-        <div class="card-body">
-          <?php echo FS_DIR_STORAGE . 'logs/'; ?>
-        </div>
-
           <table class="table table-striped table-hover table-sortable data-table">
             <thead>
               <tr>
                 <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-                <th class="main"><?php echo language::translate('title_file', 'File'); ?></th>
+                <th class="main"><?php echo FS_DIR_STORAGE . 'logs/'; ?></th>
                 <th class="text-end"><?php echo language::translate('title_size', 'Size'); ?></th>
                 <th class="text-end"><?php echo language::translate('title_modified', 'Modified'); ?></th>
                 <th class="text-end"><?php echo language::translate('title_created', 'Created'); ?></th>
@@ -294,7 +290,7 @@
 
             <tfoot>
               <td colspan="7">
-                <?php echo language::translate('title_log_files', 'Log Files'); ?>: <?php echo count($log_files); ?>,
+                <?php echo language::translate('title_log_files', 'Log Files'); ?>: <?php echo count($log_files); ?>
               </td>
             </tfoot>
           </table>
