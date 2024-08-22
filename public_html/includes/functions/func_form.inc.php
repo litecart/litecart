@@ -126,8 +126,9 @@
     $currency = currency::$currencies[$currency_code];
 
     if ($value != '') {
-      $value = number_format((float)$value, $currency['decimals'], '.', '');
-      //$value = preg_replace('#\.00$#', '', $value); // Auto decimals
+      if (strlen(substr(strrchr($value, '.'), 1)) < $currency['decimals']) {
+        $value = number_format((float)$value, $currency['decimals'], '.', '');
+      }
     }
 
     return '<div class="input-group">' . PHP_EOL
@@ -192,7 +193,9 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     if ($value != '') {
-      $value = number_format((float)$value, (int)$decimals, '.', '');
+      if (strlen(substr(strrchr($value, '.'), 1)) < $decimals) {
+        $value = number_format((float)$value, (int)$decimals, '.', '');
+      }
     }
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="decimal" '. (($min != '') ? 'min="'. (float)$min .'"' : '') . (($max != '') ? ' max="'. (float)$max .'"' : '') . (($parameters) ? ' ' . $parameters : '') . (!preg_match('#step="([^"]+)?"#', $parameters) ? ' step="any"' : '') .' />';
