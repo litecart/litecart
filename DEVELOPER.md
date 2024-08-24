@@ -98,6 +98,20 @@ Edit **~/.git/config** and set the following configuration:
     [core]
       hooksPath = .git-hooks/
 
-Alternatively, run the following command in Terminal window:
+Alternatively, run the following Terminal command:
 
     git config core.hooksPath .git-hooks/
+
+
+# Maintain Indentations with Git
+
+    [core]
+      whitespace = indent,trailing-space,tabwidth=2
+
+    [apply]
+      whitespace = fix
+
+Alternatively, run the following Terminal command:
+
+    git config core.whitespace indent,trailing-space,tabwidth=2
+    git config apply.whitespace fix
