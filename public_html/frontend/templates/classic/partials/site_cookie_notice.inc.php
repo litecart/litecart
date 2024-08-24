@@ -7,7 +7,7 @@
 
 		<div class="buttons text-center">
 			<?php echo functions::form_button('accept_cookies', ['1', language::translate('text_accept_cookies', 'Accept Cookies')], 'button', 'style="font-weight: bold;"'); ?>
-			<?php echo functions::form_button('decline_cookies', ['0', language::translate('text_decline', 'Decline')], 'button'); ?>
+			<?php echo functions::form_button('reject_cookies', ['0', language::translate('text_reject', 'Reject')], 'button'); ?>
 		</div>
 	</div>
 </div>
@@ -21,7 +21,7 @@
 		$('document').trigger('cookiesAccepted');
 	});
 
-	$('#box-cookie-notice button[name="decline_cookies"]').click(function(){
+	$('#box-cookie-notice button[name="reject_cookies"]').click(function(){
 		$('#box-cookie-notice').fadeOut();
 		document.cookie = 'cookies_accepted=0; Expires=0; Path=<?php echo WS_DIR_APP; ?>; SameSite=Lax';
 	});
