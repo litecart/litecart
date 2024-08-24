@@ -587,9 +587,9 @@
 
 		public function send_order_copy($recipient, $ccs=[], $bccs=[], $language_code='') {
 
-			if (empty($recipient)) return;
+			if (!$recipient) return;
 
-			if (empty($language_code)) {
+			if (!$language_code) {
 				$language_code = $this->data['language_code'];
 			}
 
@@ -726,11 +726,11 @@
 			$subject = strtr($order_status->email_subject, $aliases);
 			$message = strtr($order_status->email_message, $aliases);
 
-			if (empty($subject)) {
+			if (!$subject) {
 				$subject = '['. language::translate('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['no'] .'] '. $order_status->name;
 			}
 
-			if (empty($message)) {
+			if (!$message) {
 				$message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), $aliases);
 			}
 

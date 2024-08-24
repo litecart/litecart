@@ -248,7 +248,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['replace', 'less', 'dart-sass', 'concat', 'uglify']);
   grunt.registerTask('build', ['replace', 'less', 'dart-sass', 'concat', 'uglify', 'watch']);
-  grunt.registerTask('watch', ['watch']);
 
   require('phplint').gruntPlugin(grunt);
   grunt.registerTask('test', ['phplint']);

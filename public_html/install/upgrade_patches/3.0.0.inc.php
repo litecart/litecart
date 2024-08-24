@@ -602,21 +602,22 @@
 		);
 	}
 
- // Migrate PHP serialized configurations to JSON
-	$order_items_query = database::query(
+ 	// Migrate PHP serialized configurations to JSON
+	database::query(
 		"select * from ". DB_TABLE_PREFIX ."orders_items;"
-	);
+	)->each(function($item){
 
-	while ($item = database::fetch($order_items_query)) {
 		$item['configuration'] = unserialize($item['configuration']);
 
 		database::query(
 			"update ". DB_TABLE_PREFIX ."orders_items
-			set configuration = '". (!empty($item['configuration']) ? json_encode($item['configuration'], JSON_UNESCAPED_SLASHES) : '') ."'
+			set configuration = '". (!empty($item['configuration']) ? json_encode($item['configuration'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : '') ."'
 			where id = ". (int)$item['id'] ."
 			limit 1;"
 		);
-	}
+	});
+
+	});
 
 	// Download Product Configurations Add-On
 	if (database::query(

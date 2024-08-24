@@ -203,7 +203,7 @@
 			$this->data['folder'] = $this->data['id'] . (empty($this->data['status']) ? '.disabled' : '');
 			$this->data['location'] = 'storage://addons/'.$this->data['folder'] .'/';
 
-			if (empty($this->previous['folder'])) {
+			if (!$this->previous['folder']) {
 				mkdir($this->data['location']);
 
 			} else if ($this->data['folder'] != $this->previous['folder']) {
@@ -364,7 +364,9 @@
 
 		public function delete($cleanup=false) {
 
-			if (empty($this->previous['folder'])) return;
+			if (!$this->previous['folder']) {
+				return;
+			}
 
 			if (!empty($this->data['uninstall'])) {
 

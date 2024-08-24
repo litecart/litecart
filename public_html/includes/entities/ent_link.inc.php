@@ -67,11 +67,11 @@
 				return $this;
 			}
 
-			switch($component) {
+			switch ($component) {
 
 				case 'scheme':
 
-					if (empty($value)) {
+					if (!$value) {
 						if ($this->host == $_SERVER['HTTP_HOST']) {
 							if (isset($_SERVER['HTTPS']) && filter_var($_SERVER['HTTPS'], FILTER_VALIDATE_BOOLEAN)) {
 								$value = 'https';
@@ -89,7 +89,7 @@
 
 				case 'host':
 
-					if (empty($value)) {
+					if (!$value) {
 						$value = $_SERVER['HTTP_HOST'];
 					}
 

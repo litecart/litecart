@@ -171,7 +171,7 @@
 			group by oi.product_id
 		) oi on (oi.product_id = p.id)
 
-		where p.id
+		where true
 		". (!empty($_GET['category_id']) ? "and p.id in (
 			select product_id from ". DB_TABLE_PREFIX ."products_to_categories ptc
 			where category_id = ". (int)$_GET['category_id'] ."

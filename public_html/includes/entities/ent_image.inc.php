@@ -200,7 +200,7 @@
 			unset($this->_data['height']);
 			unset($this->_data['aspect_ratio']);
 
-			if (empty($file)) {
+			if (!$file) {
 				throw new Exception('Could not set image to an empty source file');
 			}
 
@@ -565,7 +565,7 @@
 				case 'imagick':
 
 					switch($filter) {
-						
+
 						case 'blur':
 								//return $this->_image->gaussianBlurImage(2, 3);
 							return $this->_image->blurImage(2, 3);
@@ -594,7 +594,7 @@
 				case 'gd':
 
 					switch($filter) {
-						
+
 						case 'contrast':
 							ImageFilter($this->_image, IMG_FILTER_CONTRAST, -2);
 							return true;
@@ -637,11 +637,11 @@
 						default:
 							throw new Exception('Unknown image filter');
 					}
-				
+
 					break;
 			}
 		}
-	
+
 		public function trim() {
 
 			if (!$this->_image) {
@@ -694,7 +694,7 @@
 			$align_x = strtoupper($align_x);
 			$align_y = strtoupper($align_y);
 			settype($margin, 'integer');
-			
+
 			if (!is_file($watermark)) {
 				throw new Exception("Cannot load watermark as file is missing ($watermark)");
 			}
@@ -928,7 +928,7 @@
 
 					switch ($type) {
 
-						case 'avif': 
+						case 'avif':
 							$result = ImageAVIF($new_image, $destination);
 							break;
 

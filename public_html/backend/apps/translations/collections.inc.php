@@ -120,15 +120,6 @@
 			'info_columns' => [],
 		],
 		[
-			'id' => 'slides',
-			'entity' => 'slide',
-			'name' => language::translate('title_slides', 'Slides'),
-			'entity_table' => 'slides',
-			'info_table' => 'slides_info',
-			'entity_column' => 'slide_id',
-			'info_columns' => ['caption'],
-		],
-		[
 			'id' => 'sold_out_statuses',
 			'entity' => 'sold_out_status',
 			'name' => language::translate('title_sold_out_statuses', 'Sold Out Statuses'),

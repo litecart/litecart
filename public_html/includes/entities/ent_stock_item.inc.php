@@ -222,7 +222,9 @@
 
 		public function save_image($file) {
 
-			if (empty($file)) return;
+			if (!$file) {
+				return;
+			}
 
 			if (!$this->data['id']) {
 				$this->save();

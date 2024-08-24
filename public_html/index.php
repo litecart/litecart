@@ -3,13 +3,11 @@
 /*!
  * LiteCart® 3.0.0
  *
- * E-Commerce Platform
- *
- * LiteCart is provided free without warranty.
+ * This application is provided free without warranty.
  *
  * @author    LiteCart Dev Team <development@litecart.net>
- * @license   http://creativecommons.org/licenses/by-nd/4.0/ CC BY-ND 4.0
- * @link      https://www.litecart.net Official Website
+ * @license   https://creativecommons.org/licenses/by-nd/4.0/ CC BY-ND 4.0
+ * @link      https://www.litecart.net/ Official Website
  *
  * LiteCart is a registered trademark, property of T. Almroth.
  */

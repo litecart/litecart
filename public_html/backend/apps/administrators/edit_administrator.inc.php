@@ -27,16 +27,14 @@
 				throw new Exception(language::translate('error_must_enter_password', 'You must enter a password'));
 			}
 
-			if (!empty($_POST['password']) && empty($_POST['confirmed_password'])) {
-				throw new Exception(language::translate('error_must_enter_confirmed_password', 'You must confirm the password'));
+
+			if (empty($_POST['apps'])) {
+				$_POST['apps'] = [];
 			}
 
-			if (!empty($_POST['password']) && $_POST['password'] != $_POST['confirmed_password']) {
-				throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
+			if (empty($_POST['widgets'])) {
+				$_POST['widgets'] = [];
 			}
-
-			if (empty($_POST['apps'])) $_POST['apps'] = [];
-			if (empty($_POST['widgets'])) $_POST['widgets'] = [];
 
 			foreach ([
 				'status',
@@ -102,7 +100,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('administrator_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
+		<?php echo functions::form_begin('administrator_form', 'post', false, false, 'autocomplete="off" style="max-width: 1200px;"'); ?>
 
 			<div class="row">
 
@@ -112,29 +110,22 @@
 							<label><?php echo language::translate('title_status', 'Status'); ?></label>
 							<?php echo functions::form_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
 						</div>
-					</div>
 
-					<div class="row">
 						<div class="form-group col-sm-6">
 							<label><?php echo language::translate('title_username', 'Username'); ?></label>
 							<?php echo functions::form_input_text('username', true, 'autocomplete="off" required'); ?>
 						</div>
+					</div>
 
+					<div class="row">
 						<div class="form-group col-sm-6">
 							<label><?php echo language::translate('title_email', 'Email'); ?></label>
 							<?php echo functions::form_input_email('email', true, 'autocomplete="off"'); ?>
 						</div>
-					</div>
 
-					<div class="row">
 						<div class="form-group col-md-6">
 							<label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
 							<?php echo functions::form_input_password_unmaskable('password', '', 'autocomplete="new-password"'); ?>
-						</div>
-
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-							<?php echo functions::form_input_password_unmaskable('confirmed_password', '', 'autocomplete="new-password"'); ?>
 						</div>
 					</div>
 

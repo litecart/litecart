@@ -7,7 +7,7 @@
 
 		public function __construct($module_id) {
 
-			if (empty($module_id)) {
+			if (!$module_id) {
 				throw new Exception('First argument module_id cannot be empty');
 			}
 
@@ -52,7 +52,7 @@
 		}
 
 		private function _decode_settings($data) {
-			if (empty($data)) return;
+			if (!$data) return;
 			return json_decode($data, true);
 		}
 

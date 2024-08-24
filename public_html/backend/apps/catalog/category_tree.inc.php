@@ -314,7 +314,7 @@
 					<th></th>
 					<th></th>
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-						<th><?php echo language::translate('title_price', 'Price'); ?></th>
+					<th class="text-end"><?php echo language::translate('title_price', 'Price'); ?></th>
 					<th></th>
 					<th></th>
 				</tr>

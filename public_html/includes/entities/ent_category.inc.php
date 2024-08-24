@@ -213,7 +213,9 @@
 
 		public function save_image($file, $filename='') {
 
-			if (empty($file)) return;
+			if (!$file) {
+				return;
+			}
 
 			$image = new ent_image($file);
 
@@ -235,7 +237,7 @@
 
 			$image = new ent_image($file);
 
-			if (empty($filename)) {
+			if (!$filename) {
 				$filename = 'categories/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type;
 			}
 

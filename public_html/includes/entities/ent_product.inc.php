@@ -53,7 +53,7 @@
 
 		public function load($product_id) {
 
-			if (empty($product_id)) {
+			if (!$product_id) {
 				throw new Exception('Invalid product (ID: n/a)');
 			}
 
@@ -193,11 +193,13 @@
 		public function save() {
 
 			if (!$this->data['id']) {
+
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."products
 					(date_created)
 					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
 				);
+
 				$this->data['id'] = database::insert_id();
 			}
 
@@ -215,7 +217,7 @@
 				$this->data['synonyms'][$language_code] = preg_split('#\s*,\s*#', $this->data['synonyms'][$language_code], -1, PREG_SPLIT_NO_EMPTY);
 				$this->data['synonyms'][$language_code] = array_map('trim', $this->data['synonyms'][$language_code]);
 				$this->data['synonyms'][$language_code] = array_filter($this->data['synonyms'][$language_code]);
-				$this->data['synonyms'][$language_code] = array_unique($this->data['synonyms'])[$language_code];
+				$this->data['synonyms'][$language_code] = array_unique($this->data['synonyms'][$language_code]);
 				$this->data['synonyms'][$language_code] = implode(',', $this->data['synonyms'][$language_code]);
 			}
 
@@ -647,7 +649,7 @@
 
 		public function add_image($file, $filename='') {
 
-			if (empty($file)) {
+			if (!$file) {
 				throw new Exception('Missing image');
 			};
 

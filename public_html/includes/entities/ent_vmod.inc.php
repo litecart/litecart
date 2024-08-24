@@ -317,9 +317,11 @@
 
 		public function delete($cleanup=false) {
 
-			if (empty($this->previous['filename'])) return;
+			if (!$this->previous['filename']) {
+				return;
+			}
 
-			if (!empty($this->data['uninstall'])) {
+			if ($this->data['uninstall']) {
 
 				$tmp_file = stream_get_meta_data(tmpfile())['uri'];
 				file_put_contents($tmp_file, "<?php\r\n" . $this->data['uninstall']);

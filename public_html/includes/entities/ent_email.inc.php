@@ -110,7 +110,9 @@
 
 		public function set_sender($email, $name=null) {
 
-			if (empty($name)) $name = preg_replace('#"?(.*)"?\s*<[^>]+>#', '$1', $email);
+			if (!$name) {
+				$name = preg_replace('#"?(.*)"?\s*<[^>]+>#', '$1', $email);
+			}
 
 			$email = trim(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email));
 			$name = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $name));
@@ -150,7 +152,7 @@
 
 		public function add_body($content, $html=false) {
 
-			if (empty($content)) {
+			if (!$content) {
 				trigger_error('Cannot add an email body with empty content', E_USER_WARNING);
 				return $this;
 			}
@@ -204,7 +206,7 @@
 
 		public function add_recipient($email, $name=null) {
 
-			if (empty($name)) {
+			if (!$name) {
 				$name = preg_replace('#"?(.*)"?\s*<[^>]+>#', '$1', $email);
 			}
 

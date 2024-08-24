@@ -212,9 +212,11 @@
 			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
 
 			<div class="dropdown">
+
 				<div class="form-select" data-toggle="dropdown">
 					<?php echo language::translate('title_languages', 'Languages'); ?>
 				</div>
+
 				<ul class="dropdown-menu">
 					<?php foreach (language::$languages as $language) { ?>
 					<li>
@@ -227,9 +229,11 @@
 			</div>
 
 			<div class="dropdown">
+
 				<div class="form-select" data-toggle="dropdown">
 					<?php echo language::translate('title_endpoint', 'Endpoint'); ?>
 				</div>
+
 				<ul class="dropdown-menu">
 					<li>
 						<label class="option"><?php echo functions::form_checkbox('endpoint[]', 'frontend', true); ?>
@@ -245,9 +249,11 @@
 			</div>
 
 			<div class="dropdown">
+
 				<div class="form-select" data-toggle="dropdown">
 					<?php echo language::translate('title_collections', 'Collections'); ?>
 				</div>
+
 				<ul class="dropdown-menu">
 					<?php foreach ($collections as $collection) { ?>
 					<li>
@@ -260,9 +266,11 @@
 			</div>
 
 			<div class="dropdown">
+
 				<div class="form-select" data-toggle="dropdown">
 					<?php echo language::translate('title_filters', 'Filters'); ?>
 				</div>
+
 				<ul class="dropdown-menu">
 					<li>
 						<label class="option"><?php echo functions::form_checkbox('untranslated', '1', true); ?>
@@ -272,7 +280,9 @@
 				</ul>
 			</div>
 
-			<div><?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
+			<div>
+				<?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
+			</div>
 		</div>
 	<?php echo functions::form_end(); ?>
 
