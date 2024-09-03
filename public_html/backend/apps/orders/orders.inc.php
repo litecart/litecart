@@ -402,7 +402,7 @@ table .fa-star:hover {
 					<td><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
 					<td class="text-center"><?php if (!is_null($order['sufficient_stock'])) echo $order['sufficient_stock'] ? functions::draw_fonticon('fa-check', 'style="color: #88cc44;"') : functions::draw_fonticon('fa-times', 'style="color: #ff6644;"'); ?></td>
 					<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
-					<td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
+					<td class="text-end"><?php echo language::strftime('datetime', $order['date_created']); ?></td>
 					<td>
 						<div class="dropdown">
 							<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">

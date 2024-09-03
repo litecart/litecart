@@ -26,7 +26,7 @@
 			$aliases = [
 				'%ipaddress' => $_SERVER['REMOTE_ADDR'],
 				'%hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
-				'%datetime' => language::strftime(language::$selected['format_datetime']),
+				'%datetime' => language::strftime('datetime'),
 				'%store_name' => settings::get('store_name'),
 				'%store_link' => document::ilink(),
 			];

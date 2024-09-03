@@ -124,7 +124,7 @@
 					<td><?php echo $recipient['email']; ?></td>
 					<td><?php echo $recipient['name']; ?></td>
 					<td><?php echo $recipient['hostname']; ?></td>
-					<td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
+					<td class="text-end"><?php echo language::strftime('datetime', $recipient['date_created']); ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>

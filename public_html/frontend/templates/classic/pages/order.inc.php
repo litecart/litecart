@@ -39,7 +39,7 @@ body {
 		<?php foreach ($comments as $comment) { ?>
 		<div class="bubble <?php echo $comment['type']; ?>">
 			<div class="text"><?php echo nl2br(functions::escape_html($comment['text']), false); ?></div>
-			<div class="date"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($comment['date_created'])); ?></div>
+			<div class="date"><?php echo language::strftime('datetime', $comment['date_created']); ?></div>
 		</div>
 		<?php } ?>
 	</div>

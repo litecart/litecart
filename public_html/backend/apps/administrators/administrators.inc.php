@@ -100,9 +100,9 @@
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>"><?php echo $administrator['username']; ?></a></td>
 					<td><?php echo $administrator['email']; ?></td>
 					<td><?php echo (json_decode($administrator['apps'], true)) ? language::translate('title_restricted', 'Restricted') : '-'; ?></td>
-					<td class="text-end"><?php echo ($administrator['date_valid_from'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($administrator['date_valid_from'])) : '-'; ?></td>
-					<td class="text-end"><?php echo ($administrator['date_valid_to'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($administrator['date_valid_to'])) : '-'; ?></td>
-					<td class="text-end"><?php echo ($administrator['date_login'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($administrator['date_login'])) : '-'; ?></td>
+					<td class="text-end"><?php echo ($administrator['date_valid_from'] > 1970) ? language::strftime('datetime', $administrator['date_valid_from']) : '-'; ?></td>
+					<td class="text-end"><?php echo ($administrator['date_valid_to'] > 1970) ? language::strftime('datetime', $administrator['date_valid_to']) : '-'; ?></td>
+					<td class="text-end"><?php echo ($administrator['date_login'] > 1970) ? language::strftime('datetime', $administrator['date_login']) : '-'; ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>

@@ -306,6 +306,22 @@
 				return 'n/a';
 			}
 
+			// Format aliases
+			switch ($format) {
+
+				case 'date':
+					$format = self::$selected['format_date'];
+					break;
+
+				case 'datetime':
+					$format = self::$selected['format_datetime'];
+					break;
+
+				case 'time':
+					$format = self::$selected['format_time'];
+					break;
+			}
+
 			$intl_formats = [
 				'%a' => 'EEE',	// An abbreviated textual representation of the day	Sun through Sat
 				'%A' => 'EEEE',	// A full textual representation of the day	Sunday through Saturday

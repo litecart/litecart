@@ -149,7 +149,7 @@
 
 						<?php if (!empty($campaign['end_date'])) { ?>
 						<div class="offer-expires" style="margin-bottom: 1em;">
-							<?php echo strtr(language::translate('text_offer_expires_on_date', 'The offer expires on %datetime.'), ['%datetime' => language::strftime(language::$selected['format_datetime'], strtotime($campaign_price_end_date))]); ?>
+							<?php echo strtr(language::translate('text_offer_expires_on_date', 'The offer expires on %datetime.'), ['%datetime' => language::strftime('datetime', $campaign_price_end_date)]); ?>
 						</div>
 						<?php } ?>
 

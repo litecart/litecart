@@ -1482,7 +1482,7 @@
 			'  <?php echo functions::form_input_hidden('comments[new_comment_index][author]', 'staff'); ?>',
 			'  <?php echo functions::form_input_hidden('comments[new_comment_index][date_created]', language::strftime(language::$selected['format_datetime'])); ?>',
 			'  <?php echo functions::escape_js(functions::form_input_textarea('comments[new_comment_index][text]', '')); ?>',
-			'  <div class="date"><?php echo language::strftime(language::$selected['format_datetime']); ?></div>',
+			'  <div class="date"><?php echo language::strftime('datetime'); ?></div>',
 			'  <div class="actions">',
 			'    <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('fa-envelope')], true)); ?> </label>',
 			'    <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('fa-eye-slash')], true)); ?></label>',

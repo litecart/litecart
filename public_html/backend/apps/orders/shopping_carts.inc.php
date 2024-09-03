@@ -114,7 +114,7 @@
 					<td><?php if (!empty($shopping_cart['billing_country_code'])) echo reference::country($shopping_cart['billing_country_code'])->name; ?></td>
 					<td class="text-end"><?php echo $shopping_cart['num_items']; ?></td>
 					<td class="text-end"><?php echo currency::format($shopping_cart['subtotal'], false, $shopping_cart['currency_code']); ?></td>
-					<td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($shopping_cart['date_created'])); ?></td>
+					<td class="text-end"><?php echo language::strftime('datetime', $shopping_cart['date_created']); ?></td>
 					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_shopping_cart', ['cart_id' => $shopping_cart['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
 				</tr>
 				<?php } ?>

@@ -51,7 +51,7 @@
 			'printable_link' => document::ilink('printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]),
 			'order_status' => $order['order_status_name'],
 			'num_downloads' => database::num_rows($downloadable_order_items_query),
-			'date_created' => language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])),
+			'date_created' => language::strftime('datetime', $order['date_created']),
 			'total' => currency::format($order['total'], false, $order['currency_code'], $order['currency_value']),
 		];
 	}
