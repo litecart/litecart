@@ -270,7 +270,8 @@
 			}
 
 				if (($result = mysqli_query(self::$_links[$link], $sql)) === false) {
-					trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL, E_USER_ERROR);
+					$error_message = mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\s+#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . $sql . PHP_EOL;
+					trigger_error($error_message, E_USER_ERROR);
 				}
 
 			if (($duration = microtime(true) - $timestamp) > 3) {
@@ -425,7 +426,7 @@
 		public static function input_fulltext($input, $allowable_tags=false, $trim=true, $link='default') {
 			$input = self::input($input, $allowable_tags, $trim, $link);
 			$input = preg_replace('#[+\-<>\(\)~*\"@; ]+#', ' ', $input);
-			return $string;
+			return $input;
 		}
 
 		public static function input_like($input, $allowable_tags=false, $trim=true, $link='default') {

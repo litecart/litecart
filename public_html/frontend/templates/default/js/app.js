@@ -3,12 +3,12 @@
 
 		options = $.extend(options || {}, {
 			rel: 'stylesheet',
-			href: url
-				//onload: callback,
-				//onerror: fallback
+			href: url,
+			//onload: callback,
+			//onerror: fallback
 		});
 
-		$('<link/>', options).appendTo('head');
+		$('<link>', options).appendTo('head');
 	}
 
 	// JavaScript Loader
@@ -16,14 +16,12 @@
 
 		options = $.extend(options || {}, {
 			method: 'GET',
-			url: url,
 			dataType: 'script',
 			cache: true
 		});
 
-		return jQuery.ajax(options);
+		return jQuery.ajax(url, options);
 	};
-
 	// Money Formatting
 	Number.prototype.toMoney = function() {
 		var n = this,
@@ -313,8 +311,10 @@
 		let $this   = $(this)
 		let $target = $($this.attr('data-target') || $this.closest('.carousel'))
 		if (!$target.hasClass('carousel')) return
+		
 		let options = $.extend({}, $target.data(), $this.data())
 		let slideIndex = $this.attr('data-slide-to')
+		
 		if (slideIndex) options.interval = false
 
 		Plugin.call($target, options)
@@ -606,16 +606,24 @@
 }(jQuery);
 
 
-	// Dropdown select
+	// Dropdown Select
 	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
-		let dropdown = $(this).closest('.dropdown');
-		let input = $(dropdown).find(':input:checked');
-		$(dropdown).find('li.active').removeClass('active');
-		if ($(dropdown).find(':input:checked').data('set-title')) {
-			$(dropdown).find('.form-select').text($(input).data('set-title'));
-			$(input).closest('li').addClass('active');
+		
+		let $dropdown = $(this).closest('.dropdown');
+		let $input = $dropdown.find(':input:checked');
+		
+		$dropdown.find('li.active').removeClass('active');
+		
+		if ($dropdown.find(':input:checked').data('name')) {
+			var name = $input.data('name');
+		} else {
+			var name = $input.closest('.option').text();
 		}
-		$(dropdown).trigger('click.bs.dropdown');
+		
+		$dropdown.find('.form-select').text(name);
+		$input.closest('li').addClass('active');
+		
+		$dropdown.trigger('click.bs.dropdown');
 	});
 
 	$('.data-table tbody tr').click(function(e) {
@@ -753,7 +761,9 @@
 	// Alerts
 	$('body').on('click', '.alert .close', function(e){
 		e.preventDefault();
-		$(this).closest('.alert').fadeOut('fast', function(){$(this).remove()});
+		$(this).closest('.alert').fadeOut('fast', function(){
+			$(this).remove()
+		});
 	});
 
 	// Password Strength

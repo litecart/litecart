@@ -11,8 +11,13 @@
 		$_GET['page'] = 1;
 	}
 
-	if (empty($_GET['sort'])) $_GET['sort'] = 'price';
-	if (empty($_GET['list_style'])) $_GET['list_style'] = 'columns';
+	if (empty($_GET['sort'])) {
+		$_GET['sort'] = 'price';
+	}
+
+	if (empty($_GET['list_style'])) {
+		$_GET['list_style'] = 'columns';
+	}
 
 	if (empty($_GET['category_id'])) {
 		header('Location: '. document::ilink('categories'));
@@ -30,13 +35,13 @@
 		$_GET['list_style'] = !empty($category->list_style) ? $category->list_style : 'columns';
 	}
 
-	if (empty($category->id)) {
+	if (!$category->id) {
 		http_response_code(410);
 		include 'app://frontend/pages/error_document.inc.php';
 		return;
 	}
 
-	if (empty($category->status)) {
+	if (!$category->status) {
 		http_response_code(404);
 		include 'app://frontend/pages/error_document.inc.php';
 		return;
@@ -47,7 +52,7 @@
 
 	document::$head_tags['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', ['category_id' => $category->id]) .'">';
 
-	if (!empty($category->image)) {
+	if ($category->image) {
 		$og_image = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->image, 1200, 630, 'FIT_USE_WHITESPACING');
 		document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink(FS_DIR_STORAGE . $og_image) .'">';
 	}
@@ -75,7 +80,12 @@
 			'head_title' => $category->head_title ? $category->head_title : $category->name,
 			'meta_description' => $category->meta_description ? $category->meta_description : $category->short_description,
 			'image' => ($category->image ? 'storage://images/' . $category->image : ''),
-			'main_category' => [],
+			'main_category' => [
+				'id' => $category->main_category->id,
+				'name' => $category->main_category->name,
+				'image' => $category->main_category->image ? 'storage://images/' . $category->main_category->image : '',
+				'link' => document::ilink('category', ['category_id' => $category->main_category->id]),
+			],
 			'subcategories' => [],
 			'products' => [],
 			'list_style' => $category->list_style,
@@ -85,17 +95,8 @@
 				'popularity' => language::translate('title_popularity', 'Popularity'),
 				'date' => language::translate('title_date', 'Date'),
 			],
+			'pagination' => null,
 		];
-
-			// Main Category
-		if (!empty($category->id)) {
-			$_page->snippets['main_category'] = [
-				'id' => $category->main_category->id,
-				'name' => $category->main_category->name,
-				'image' => $category->main_category->image ? 'storage://images/' . $category->main_category->image : '',
-				'link' => document::ilink('category', ['category_id' => $category->main_category->id]),
-			];
-		}
 
 		// Subcategories
 		$_page->snippets['subcategories'] = functions::catalog_categories_query($category->id)->fetch_all();

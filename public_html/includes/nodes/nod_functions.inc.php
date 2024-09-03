@@ -15,15 +15,16 @@
 				'#^form_draw_length_classes_list$#' => 'form_select_length_unit',
 				'#^form_draw_volume_classes_list$#' => 'form_select_volume_unit',
 				'#^form_draw_order_status_list$#' => 'form_select_order_status',
-				'#^form_draw_(.*?)ies_list$#' => 'form_select_$1y',
-				'#^form_draw_(.*?)ses_list$#' => 'form_select_$1s',
-				'#^form_draw_(.*?)s_list$#' => 'form_select_$1',
-				'#^form_draw_form_(.*?)$#' => 'form_$1',
-				'#^form_draw_(.*?)_field$#' => 'form_input_$1',
 				'#^form_draw_checkbox$#' => 'form_checkbox',
 				'#^form_draw_radio_button$#' => 'form_radio_button',
 				'#^form_draw_textarea$#' => 'form_input_textarea',
 				'#^form_draw_button$#' => 'form_button',
+
+				'#^form_draw_(.*?)ies_list$#' => 'form_select_$1y',
+				'#^form_draw_(.*?)ses_list$#' => 'form_select_$1s',
+				'#^form_draw_(.*?)s_list$#' => 'form_select_$1',
+				'#^form_draw_form_(begin|end)$#' => 'form_$1',
+				'#^form_draw_(.*?)_field$#' => 'form_input_$1',
 			];
 
 			foreach ($search_replace as $search => $replace) {

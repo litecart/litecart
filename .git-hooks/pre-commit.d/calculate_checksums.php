@@ -24,7 +24,7 @@
 	}
 
 // If there are no committed files, go through all tracked files
-	if (empty($committed_files)) {
+	if (!$committed_files) {
 		echo 'No committed files detected. Going through all tracked files in repository...' . PHP_EOL;
 		$committed_files = $tracked_files;
 	}

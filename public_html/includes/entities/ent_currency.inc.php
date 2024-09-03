@@ -85,8 +85,8 @@
 			if (!$this->data['id']) {
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."currencies
-					(date_created)
-					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(code, number, date_created)
+					values ('". database::input($this->data['code']) ."', '". database::input($this->data['number']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
 				);
 				$this->data['id'] = database::insert_id();
 			}
@@ -115,41 +115,38 @@
 					}
 
 					database::query(
-						"alter table ". DB_TABLE_PREFIX ."products_prices
-						change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
+						"alter table ". DB_TABLE_PREFIX ."campaigns_products
+						change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` float(11, 4) not null;"
 					);
 
 					database::query(
-						"alter table ". DB_TABLE_PREFIX ."products_campaigns
-						change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
+						"alter table ". DB_TABLE_PREFIX ."products_prices
+						change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` float(11, 4) not null;"
 					);
 				}
 
 			} else {
 
-				$products_prices_query = database::query(
+				if (!database::query(
+					"show fields from ". DB_TABLE_PREFIX ."campaigns_products
+					where `Field` = '". database::input($this->data['code']) ."';"
+				)->num_rows) {
+					database::query(
+						"alter table ". DB_TABLE_PREFIX ."campaigns_products
+						add `". database::input($this->data['code']) ."` float(11, 4) not null;"
+					);
+				}
+
+				if (!database::query(
 					"show fields from ". DB_TABLE_PREFIX ."products_prices
 					where `Field` = '". database::input($this->data['code']) ."';"
-				);
-
-				if (!database::num_rows($products_prices_query)) {
+				)->num_rows) {
 					database::query(
 						"alter table ". DB_TABLE_PREFIX ."products_prices
-						add `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
+						add `". database::input($this->data['code']) ."` float(11, 4) not null;"
 					);
 				}
 
-				$products_campaigns_query = database::query(
-					"show fields from ". DB_TABLE_PREFIX ."products_campaigns
-					where `Field` = '". database::input($this->data['code']) ."';"
-				);
-
-				if (!database::num_rows($products_campaigns_query)) {
-					database::query(
-						"alter table ". DB_TABLE_PREFIX ."products_campaigns
-						add `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
-					);
-				}
 			}
 
 			$this->previous = $this->data;
@@ -174,11 +171,13 @@
 			);
 
 			database::query(
-				"alter table ". DB_TABLE_PREFIX ."products_prices drop `". database::input($this->data['code']) ."`;"
+				"alter table ". DB_TABLE_PREFIX ."campaigns_products
+				drop `". database::input($this->data['code']) ."`;"
 			);
 
 			database::query(
-				"alter table ". DB_TABLE_PREFIX ."products_campaigns drop `". database::input($this->data['code']) ."`;"
+				"alter table ". DB_TABLE_PREFIX ."products_prices
+				drop `". database::input($this->data['code']) ."`;"
 			);
 
 			$this->reset();

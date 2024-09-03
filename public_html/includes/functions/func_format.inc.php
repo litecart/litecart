@@ -16,11 +16,6 @@
 		return reference::country($address['country_code'])->format_address($address);
 	}
 
-	function format_mysql_fulltext($string) {
-		trigger_error('format_mysql_fulltext() is deprecated. Instead, use database::input_fulltext()', E_USER_DEPRECATED);
-		return database::input_fulltext($string);
-	}
-
 	function format_path_friendly($text, $language_code='') {
 
 		if (empty($text)) return '';

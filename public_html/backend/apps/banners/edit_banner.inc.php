@@ -187,7 +187,7 @@ table th:last-child {
 	$('.data-table .add').click(function(e){
 		e.preventDefault();
 
-		let output = [
+		let $output = $([
 			'<tr>',
 			'  <td><?php echo functions::form_input_text('keys[new_key_index]', 'new_key_index', 'required pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>',
 			<?php foreach (language::$languages as $language) { ?>
@@ -196,7 +196,8 @@ table th:last-child {
 			'  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>',
 			'</tr>'
 		].join('\n')
-		.replace(/new_key_index/g, 'new_' + new_key_index++);
+			.replace(/new_key_index/g, 'new_' + new_key_index++)
+		);
 
 		$('.data-table tbody').append(output);
 	});
@@ -208,10 +209,11 @@ table th:last-child {
 
 	$('a.tracker-wrapper-help').click(function(e){
 		e.preventDefault();
-		alert(
-			"Encapsulates the code with a div wrapper and makes it trackable.\n\n" +
-			"When disabled use the following parameters on an element for tracking:\n" +
+		alert([
+			"Encapsulates the code with a div wrapper and makes it trackable.",
+			"",
+			"When disabled use the following parameters on an element for tracking:",
 			"id=\"banner-$uid\" class=\"banner ...\""
-		);
+		].join('\n'));
 	});
 </script>

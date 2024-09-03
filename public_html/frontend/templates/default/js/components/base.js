@@ -3,12 +3,12 @@
 
 		options = $.extend(options || {}, {
 			rel: 'stylesheet',
-			href: url
-				//onload: callback,
-				//onerror: fallback
+			href: url,
+			//onload: callback,
+			//onerror: fallback
 		});
 
-		$('<link/>', options).appendTo('head');
+		$('<link>', options).appendTo('head');
 	}
 
 	// JavaScript Loader
@@ -16,14 +16,12 @@
 
 		options = $.extend(options || {}, {
 			method: 'GET',
-			url: url,
 			dataType: 'script',
 			cache: true
 		});
 
-		return jQuery.ajax(options);
+		return jQuery.ajax(url, options);
 	};
-
 	// Money Formatting
 	Number.prototype.toMoney = function() {
 		var n = this,

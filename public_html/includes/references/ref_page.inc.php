@@ -114,7 +114,6 @@
 
 					break;
 
-				case 'subpages': // To be deprecated
 				case 'children':
 
 					$this->_data['subpages'] = [];

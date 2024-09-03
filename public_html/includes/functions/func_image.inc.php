@@ -1,13 +1,13 @@
 <?php
 
-	function image_scale_by_width($width, $ratio) {
-		list($x, $y) = explode(':', $ratio);
+	function image_scale_by_width($width, $aspect_ratio) {
+		list($x, $y) = preg_split('#[:/]#', $aspect_ratio, 2);
 		return [$width, round($width / $x * $y)];
 	}
 
-	function image_scale_by_height($height, $ratio) {
-		list($x, $y) = explode(':', $ratio);
-		return [$height, round($height / $y * $x)];
+	function image_scale_by_height($height, $aspect_ratio) {
+		list($x, $y) = preg_split('#[:/]#', $aspect_ratio, 2);
+		return [round($height / $y * $x), $height];
 	}
 
 	function image_process($source, $options) {

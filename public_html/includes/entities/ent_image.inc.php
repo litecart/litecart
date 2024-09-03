@@ -168,15 +168,15 @@
 
 				case 'aspect_ratio':
 
-					$ratio = [$this->width, $this->height];
+					$aspect_ratio = [$this->width, $this->height];
 
-					for ($x = $ratio[1]; $x > 1; $x--) {
-						if (($ratio[0] % $x) == 0 && ($ratio[1] % $x) == 0) {
-							$ratio = [$ratio[0] / $x, $ratio[1] / $x];
+					for ($x = $aspect_ratio[1]; $x > 1; $x--) {
+						if (($aspect_ratio[0] % $x) == 0 && ($aspect_ratio[1] % $x) == 0) {
+							$aspect_ratio = [$aspect_ratio[0] / $x, $aspect_ratio[1] / $x];
 						}
 					}
 
-					$this->data['ratio'] = implode('/', $ratio);
+					$this->_data['aspect_ratio'] = implode('/', $aspect_ratio);
 					break;
 			}
 
@@ -815,11 +815,6 @@
 
 					return $result;
 			}
-		}
-
-		public function write($destination, $quality=90, $interlaced=false) {
-			trigger_error(__CLASS__.'->write() is deprecated. Instead, use '.__CLASS__.'->save()', E_USER_DEPRECATED);
-			return $this->save($destination, $quality, $interlaced);
 		}
 
 		public function save($destination='', $quality=90, $interlaced=false) {

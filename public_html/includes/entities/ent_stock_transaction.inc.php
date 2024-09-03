@@ -81,11 +81,13 @@
 
 			// Insert/update transaction
 			if (!$this->data['id']) {
+
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."stock_transactions
 					(name, date_created)
 					values ('". database::input($this->data['name']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
 				);
+
 				$this->data['id'] = database::insert_id();
 			}
 
@@ -100,6 +102,7 @@
 
 			// Revert stock changes
 			foreach ($this->previous['contents'] as $content) {
+
 				if (!empty($content['stock_item_id'])) {
 					database::query(
 						"update ". DB_TABLE_PREFIX ."stock_items
@@ -109,6 +112,7 @@
 						limit 1;"
 					);
 				}
+
 				database::query(
 					"update ". DB_TABLE_PREFIX ."products
 					set quantity = quantity - ". (float)$content['quantity_adjustment'] ."
@@ -126,7 +130,9 @@
 
 			// Insert/update transaction contents
 			foreach ($this->data['contents'] as $key => $content) {
+
 				if (empty($content['id'])) {
+
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."stock_transactions_contents
 						(transaction_id)

@@ -356,13 +356,11 @@
 					);
 				}
 
-				$sql_currency_prices = implode(',' . PHP_EOL, array_map(function($currency) {
-					return "`". database::input($currency['code']) ."` = ". (isset($this->data['prices'][$currency['code']]) ? (float)$this->data['prices'][$currency['code']] : 0);
-				}, currency::$currencies));
-
 				database::query(
 					"update ". DB_TABLE_PREFIX ."products_prices
-					set $sql_currency_prices
+					set ". implode(',' . PHP_EOL, array_map(function($currency) {
+						return "`". database::input($currency['code']) ."` = ". (isset($this->data['prices'][$currency['code']]) ? (float)$this->data['prices'][$currency['code']] : 0);
+					}, currency::$currencies)) ."
 					where product_id = ". (int)$this->data['id'] ."
 					limit 1;"
 				);

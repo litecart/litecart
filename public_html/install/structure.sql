@@ -291,7 +291,7 @@ CREATE TABLE `lc_customers` (
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
-	UNIQUE KEY `email` (`email`),
+	UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_customers_addresses` (
@@ -769,7 +769,7 @@ CREATE TABLE `lc_products_stock_options` (
 -- -----
 CREATE TABLE `lc_products_to_categories` (
 	`product_id` INT(11) UNSIGNED NOT NULL,
-	`category_id` INT(11) UNSIGNED NOT NULL,
+	`category_id` INT(11) UNSIGNED NULL,
 	PRIMARY KEY(`product_id`, `category_id`),
 	CONSTRAINT `product_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
 	CONSTRAINT `product_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE

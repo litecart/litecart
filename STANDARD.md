@@ -213,7 +213,7 @@
 
 		echo '<a href="http://www.site.com">Hello World</a>';
 
-			database::query(
+		database::query(
 			"select * from `tablename`
 			 where `column` = 'string';"
 		);

@@ -14,23 +14,23 @@
 
 	$product = reference::product($_GET['product_id']);
 
-	if (empty($product->id)) {
+	if (!$product->id) {
 		http_response_code(410);
 		include 'app://frontend/pages/error_document.inc.php';
 		return;
 	}
 
-	if (empty($product->status)) {
+	if (!$product->status) {
 		http_response_code(404);
 		include 'app://frontend/pages/error_document.inc.php';
 		return;
 	}
 
-	if (!empty($product->date_valid_from) && $product->date_valid_from > date('Y-m-d H:i:s')) {
-		notices::add('errors', sprintf(language::translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), language::strftime(language::$selected['format_date'], strtotime($product->date_valid_from))));
+	if ($product->date_valid_from && $product->date_valid_from > date('Y-m-d H:i:s')) {
+		notices::add('errors', sprintf(language::translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), language::strftime('date', $product->date_valid_from)));
 	}
 
-	if (!empty($product->date_valid_to) && $product->date_valid_to < date('Y-m-d H:i:s')) {
+	if ($product->date_valid_to && $product->date_valid_to < date('Y-m-d H:i:s')) {
 		notices::add('errors', language::translate('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
 	}
 
@@ -172,7 +172,7 @@
 		}
 	}
 
-	// Stickers
+	// Sticker
 	if (!empty($product->campaign['price']) && $product->campaign['price'] > 0) {
 		$percentage = round(($product->price - $product->campaign['price']) / $product->price * 100);
 		$_page->snippets['sticker'] = '<div class="sticker sale">'. language::translate('sticker_sale', 'Sale') .' '. $percentage .'%</div>';
@@ -332,10 +332,9 @@
 			],
 		];
 
-		$shipping = new mod_shipping();
-		$cheapest_shipping = $shipping->cheapest($tmp_order);
+		$cheapest_shipping = (new mod_shipping())->cheapest($tmp_order);
 
-		if (!empty($cheapest_shipping)) {
+		if ($cheapest_shipping) {
 			$_page->snippets['cheapest_shipping_fee'] = tax::get_price($cheapest_shipping['fee'], $cheapest_shipping['tax_class_id']);
 		}
 	}

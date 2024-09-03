@@ -486,26 +486,28 @@
 			],
 			[
 				'search'  => '  # Web path to catalog root' . PHP_EOL,
-				'replace' => '  # Deny access to non-static content on static domain' . PHP_EOL
-									 . '  RewriteCond %{HTTP_HOST} ^static\.' . PHP_EOL
-									 . '  RewriteCond %{REQUEST_URI} !\.(css|eot|gif|jpe?g|js|map|otf|png|svg|ttf|woff2?)(\?.*?)?$ [NC]' . PHP_EOL
-									 . '  RewriteCond %{REQUEST_URI} !/handlers/ [NC]' . PHP_EOL
-									 . '  RewriteRule ^ - [R=403,L]' . PHP_EOL
-									 . PHP_EOL
-									 . '  # Remove bogus URL query parameters without values (MSNBot)'. PHP_EOL
-									 . '  RewriteCond %{QUERY_STRING} ^[0-9a-z]{6,8}=$' . PHP_EOL
-									 . '  RewriteRule ^(.*)$ $1 [R=301,L]' . PHP_EOL
-									 . PHP_EOL
-									 . ' # Favicons' . PHP_EOL
-									 . ' RewriteCond %{REQUEST_URI} /favicon\.ico$' . PHP_EOL
-									 . ' RewriteCond %{REQUEST_FILENAME} !-f' . PHP_EOL
-									 . ' RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon.ico [L]' . PHP_EOL
-									 . PHP_EOL
-									 . ' RewriteCond %{REQUEST_URI} /(android-chrome|android-icon|apple-icon|apple-touch-icon|favicon)(-\d{2,3}x\d{2,3})?(-precomposed)?\.png$' . PHP_EOL
-									 . ' RewriteCond %{REQUEST_FILENAME} !-f' . PHP_EOL
-									 . ' RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon-256x256.png [L]' . PHP_EOL
-									 . PHP_EOL
-									 . '  # Web path to catalog root' . PHP_EOL,
+				'replace' => implode(PHP_EOL, [
+					'  # Deny access to non-static content on static domain',
+					'  RewriteCond %{HTTP_HOST} ^static\.',
+					'  RewriteCond %{REQUEST_URI} !\.(css|eot|gif|jpe?g|js|map|otf|png|svg|ttf|woff2?)(\?.*?)?$ [NC]',
+					'  RewriteCond %{REQUEST_URI} !/handlers/ [NC]',
+					'  RewriteRule ^ - [R=403,L]',
+					'',
+					'  # Remove bogus URL query parameters without values (MSNBot)',
+					'  RewriteCond %{QUERY_STRING} ^[0-9a-z]{6,8}=$',
+					'  RewriteRule ^(.*)$ $1 [R=301,L]',
+					'',
+					' # Favicons',
+					' RewriteCond %{REQUEST_URI} /favicon\.ico$',
+					' RewriteCond %{REQUEST_FILENAME} !-f',
+					' RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon.ico [L]',
+					'',
+					' RewriteCond %{REQUEST_URI} /(android-chrome|android-icon|apple-icon|apple-touch-icon|favicon)(-\d{2,3}x\d{2,3})?(-precomposed)?\.png$',
+					' RewriteCond %{REQUEST_FILENAME} !-f',
+					' RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon-256x256.png [L]',
+					'',
+					'  # Web path to catalog root',
+				]),
 			],
 			[
 				'search'  => "  RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]" . PHP_EOL,

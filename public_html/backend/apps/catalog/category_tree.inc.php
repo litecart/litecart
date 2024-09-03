@@ -4,10 +4,6 @@
 
 	breadcrumbs::add(language::translate('title_category_tree', 'Category Tree'));
 
-	if (empty($_GET['category_id'])) {
-		$_GET['category_id'] = 0;
-	}
-
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 		try {
 

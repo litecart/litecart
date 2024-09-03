@@ -618,9 +618,6 @@
 			cache: true,
 			async: false,
 			dataType: 'json',
-			error: function(jqXHR, textStatus, errorThrown) {
-					//alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
-			},
 			success: function(data) {
 				$('select[name="billing_address[zone_code]"]').html('');
 				if ($('select[name="billing_address[zone_code]"]').is(':disabled')) $('select[name="billing_address[zone_code]"]').prop('disabled', false);
@@ -748,7 +745,7 @@
 		$.featherlight('#modal-edit-cart-item');
 
 		let modal = $('.featherlight.active'),
-				row = $(this).closest('tr');
+			row = $(this).closest('tr');
 
 		$(modal).data('row', row);
 
@@ -764,7 +761,7 @@
 		$.featherlight('#modal-add-cart-item');
 
 		let modal = $('.featherlight.active'),
-				row = $(this).closest('tr');
+			row = $(this).closest('tr');
 
 		$(modal).data('row', '');
 	});
@@ -824,7 +821,7 @@
 
 	window.addItem = function(item) {
 
-		let output = [
+		let $output = $([
 			'  <tr class="item">',
 			'    <td class="grabable">' + item.name,
 			'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][id]', '')); ?>',
@@ -841,16 +838,16 @@
 			'    </td>',
 			'  </tr>'
 		].join('\n')
-		.replace(/new_item_index/g, 'new_' + new_item_index++);
+			.replace(/new_item_index/g, 'new_' + new_item_index++)
+		);
 
-		$output = $(output);
-		$(output).find('*[name$="[product_id]"]').val(item.product_id);
-		$(output).find('*[name$="[stock_option_id]"]').val(item.stock_option_id);
-		$(output).find('*[name$="[name]"]').val(item.name);
-		$(output).find('*[name$="[quantity]"]').val(item.quantity);
-		$(output).find('*[name$="[price]"]').val(item.price);
-		$(output).find('*[name$="[tax]"]').val(item.tax);
-		$(output).find('[data-type="currency"]').parent().find('.input-group-text').text($(':input[name="currency_code"]').val());
+		$('*[name$="[product_id]"]', $output).val(item.product_id);
+		$('*[name$="[stock_option_id]"]', $output).val(item.stock_option_id);
+		$('*[name$="[name]"]', $output).val(item.name);
+		$('*[name$="[quantity]"]', $output).val(item.quantity);
+		$('*[name$="[price]"]', $output).val(item.price);
+		$('*[name$="[tax]"]', $output).val(item.tax);
+		$('[data-type="currency"]', $output).parent().find('.input-group-text').text($(':input[name="currency_code"]').val());
 
 		$('#shopping-cart-items tbody').append($output);
 
@@ -868,6 +865,7 @@
 		$('input[name^="items["][name$="[price]"]').each(function() {
 			subtotal += parseFloat($(this).val()) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
 		});
+
 		subtotal = parseFloat(subtotal.toFixed($('select[name="currency_code"] option:selected').data('decimals')));
 		$('#box-shopping-cart-items .subtotal .value').val(subtotal.toMoney());
 
@@ -875,6 +873,7 @@
 		$('input[name^="items["][name$="[tax]"]').each(function() {
 			subtotal_tax += parseFloat($(this).val()) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
 		});
+
 		subtotal_tax = parseFloat(subtotal_tax.toFixed($('select[name="currency_code"] option:selected').data('decimals')));
 		$('#box-shopping-cart-items .subtotal .tax').val(subtotal_tax.toMoney());
 	}

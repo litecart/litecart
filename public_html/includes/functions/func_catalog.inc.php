@@ -285,9 +285,13 @@
 			) pa on (p.id = pa.product_id)
 
 			left join (
-				select product_id, coalesce(
-					". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
-				) as price
+				select
+					product_id,
+					coalesce(
+						". implode(", ", array_map(function($currency){
+							return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)";
+						}, currency::$currencies)) ."
+					) as price
 				from ". DB_TABLE_PREFIX ."products_prices
 			) pp on (pp.product_id = p.id)
 
@@ -500,18 +504,23 @@
 
 		if (!empty($filter['sort'])) {
 			switch ($filter['sort']) {
+
 				case 'name':
 					$sql_order_by = "name asc";
 					break;
+
 				case 'price':
 					$sql_order_by = "final_price asc";
 					break;
+
 				case 'date':
 					$sql_order_by = "date_created desc";
 					break;
+
 				case 'rand':
 					$sql_order_by = "rand()";
 					break;
+
 				case 'popularity':
 					$sql_order_by = "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
 					break;
@@ -545,9 +554,13 @@
 			) pa on (p.id = pa.product_id)
 
 			left join (
-				select product_id, coalesce(
-					". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
-				) as price
+				select
+					product_id,
+					coalesce(
+						". implode(", ", array_map(function($currency){
+							return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)";
+						}, currency::$currencies)) ."
+					) as price
 				from ". DB_TABLE_PREFIX ."products_prices
 			) pp on (pp.product_id = p.id)
 

@@ -208,8 +208,10 @@
 		let $this   = $(this)
 		let $target = $($this.attr('data-target') || $this.closest('.carousel'))
 		if (!$target.hasClass('carousel')) return
+		
 		let options = $.extend({}, $target.data(), $this.data())
 		let slideIndex = $this.attr('data-slide-to')
+		
 		if (slideIndex) options.interval = false
 
 		Plugin.call($target, options)

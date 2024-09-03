@@ -262,7 +262,7 @@
 
 							<div class="form-group col-md-6">
 								<label><?php echo language::translate('title_output', 'Output'); ?></label>
-								<?php echo functions::form_select('output', ['file' => language::translate('title_file', 'File'), 'screen' => language::translate('title_screen', 'Screen')], true); ?>
+								<?php echo functions::form_select('output', ['screen' => language::translate('title_screen', 'Screen'), 'file' => language::translate('title_file', 'File')], true); ?>
 							</div>
 						</div>
 

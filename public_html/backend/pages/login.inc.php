@@ -40,11 +40,11 @@
 			}
 
 			if (!empty($administrator['date_valid_from']) && date('Y-m-d H:i:s') < $administrator['date_valid_from']) {
-				throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime(language::$selected['format_datetime'], strtotime($administrator['date_valid_from']))));
+				throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime('datetime', $administrator['date_valid_from'])));
 			}
 
 			if (!empty($administrator['date_valid_to']) && date('Y-m-d H:i:s') > $administrator['date_valid_to']) {
-				throw new Exception(sprintf(language::translate('error_account_expired', 'The account expired %s'), language::strftime(language::$selected['format_datetime'], strtotime($administrator['date_valid_to']))));
+				throw new Exception(sprintf(language::translate('error_account_expired', 'The account expired %s'), language::strftime('datetime', $administrator['date_valid_to'])));
 			}
 
 			if (!password_verify($_POST['password'], $administrator['password_hash'])) {

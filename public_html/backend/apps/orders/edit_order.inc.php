@@ -493,7 +493,7 @@
 					<div class="row">
 						<div class="form-group col-md-3">
 							<label><?php echo language::translate('title_date', 'Date'); ?></label>
-							<div class="form-input" readonly><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order->data['date_created'])); ?></div>
+							<div class="form-input" readonly><?php echo language::strftime('datetime', $order->data['date_created']); ?></div>
 						</div>
 
 						<div class="form-group col-md-3">
@@ -848,7 +848,7 @@
 
 							<?php echo nl2br($_POST['comments'][$key]['text']); ?>
 
-							<div class="date"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></div>
+							<div class="date"><?php echo language::strftime('datetime', $_POST['comments'][$key]['date_created']); ?></div>
 
 							<div class="actions">
 								<a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
@@ -1228,7 +1228,7 @@
 
 <script>
 
-		// Local Page Money Formatting
+	// Local Page Money Formatting
 	Number.prototype.toMoney = function(html) {
 
 		var n = this,
@@ -1480,7 +1480,7 @@
 			'<div class="bubble local me">',
 			'  <?php echo functions::form_input_hidden('comments[new_comment_index][id]', ''); ?>',
 			'  <?php echo functions::form_input_hidden('comments[new_comment_index][author]', 'staff'); ?>',
-			'  <?php echo functions::form_input_hidden('comments[new_comment_index][date_created]', language::strftime(language::$selected['format_datetime'])); ?>',
+			'  <?php echo functions::form_input_hidden('comments[new_comment_index][date_created]', language::strftime('datetime')); ?>',
 			'  <?php echo functions::escape_js(functions::form_input_textarea('comments[new_comment_index][text]', '')); ?>',
 			'  <div class="date"><?php echo language::strftime('datetime'); ?></div>',
 			'  <div class="actions">',
@@ -1490,7 +1490,8 @@
 			'  </div>',
 			'</div>'
 		].join('\n')
-		.replace(/new_comment_index/g, 'new_' + new_comment_index++));
+			.replace(/new_comment_index/g, 'new_' + new_comment_index++)
+		);
 
 		$(this).before($output);
 		$(this).closest('#box-comments .bubbles textarea:last-child').focus();
@@ -1603,7 +1604,7 @@
 		$.featherlight($modal);
 	});
 
-		// Callback handler for product picker modal
+	// Callback handler for product picker modal
 	let selectProduct = function(product) {
 
 		let params = {
@@ -1654,7 +1655,7 @@
 		$(this).closest('tr').remove();
 	});
 
-		// Edit Line Item Modal
+	// Edit Line Item Modal
 
 	let new_item_index = 0;
 	while ($(':input[name^="items['+new_item_index+']"]').length) new_item_index++;
@@ -1782,6 +1783,7 @@
 		$('#total-tax .amount').text(tax.toMoney(false));
 		$('#order-total .amount').html(total.toMoney(true));
 	}
+
 /*
 	$('body').on('input change', [
 		'#order-lines :input[name$="[quantity]"]',

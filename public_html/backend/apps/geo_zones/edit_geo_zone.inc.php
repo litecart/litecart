@@ -187,7 +187,7 @@
 
 		if (found) return;
 
-		let output = [
+		let $output = $([
 			'<tr>',
 			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][id]', '')); ?></td>',
 			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][country_code]', '')); ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>',
@@ -196,9 +196,10 @@
 			'  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>',
 			'</tr>'
 		].join('\n')
-		.replace(/new_zone_index/g, 'new_' + new_zone_index++);
+			.replace(/new_zone_index/g, 'new_' + new_zone_index++)
+		);
 
-		$(this).closest('table').find('tbody').append(output);
+		$(this).closest('table').find('tbody').append($output);
 
 		$('tfoot :input[name$="[country_code]"]').val($(':input[name="new_zone[country_code]"]').val());
 		$('tfoot :input[name$="[zone_code]"]').val($(':input[name="new_zone[zone_code]"]').val());

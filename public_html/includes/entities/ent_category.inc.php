@@ -97,8 +97,8 @@
 			if (!$this->data['id']) {
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."categories
-					(date_created)
-					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(parent_id, code, date_created)
+					values (". (!empty($this->data['parent_id']) ? (int)$this->data['parent_id'] : "null") .", '". database::input($this->data['code']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
 				);
 				$this->data['id'] = database::insert_id();
 			}
@@ -114,7 +114,7 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."categories
-				set parent_id = ". (int)$this->data['parent_id'] .",
+				set parent_id = ". (!empty($this->data['parent_id']) ? (int)$this->data['parent_id'] : "null") .",
 					status = ". (int)$this->data['status'] .",
 					code = '". database::input($this->data['code']) ."',
 					google_taxonomy_id = ". (int)$this->data['google_taxonomy_id'] .",

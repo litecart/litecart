@@ -435,7 +435,7 @@ ADD INDEX `mpn` (`mpn`);
 -- -----
 ALTER TABLE `lc_products_to_categories`
 CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL,
-CHANGE COLUMN `category_id` `category_id` INT(11) UNSIGNED NOT NULL;
+CHANGE COLUMN `category_id` `category_id` INT(11) UNSIGNED NULL;
 -- -----
 ALTER TABLE `lc_quantity_units`
 CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -564,7 +564,7 @@ SELECT '1' AS transaction_id, product_id, stock_option_id, quantity_adjustment F
 		FROM `lc_products_stock_options` pso
 
 		UNION SELECT oi.product_id, oi.stock_option_id, oi.quantity FROM `lc_orders_items` oi
-	 WHERE oi.order_id IN (
+		WHERE oi.order_id IN (
 			SELECT id FROM `lc_orders` o
 			WHERE o.order_status_id IN (
 				SELECT id FROM `lc_order_statuses` os
@@ -577,37 +577,79 @@ SELECT '1' AS transaction_id, product_id, stock_option_id, quantity_adjustment F
 	ORDER BY product_id, stock_option_id
 );
 -- -----
-UPDATE `lc_brands` SET image = REPLACE(image, 'manufacturers/', 'brands/');
+UPDATE `lc_brands`
+SET image = REPLACE(image, 'manufacturers/', 'brands/');
 -- -----
-UPDATE `lc_cart_items` SET customer_id = NULL WHERE customer_id = 0;
+UPDATE `lc_cart_items`
+SET customer_id = NULL
+WHERE customer_id = 0;
 -- -----
-UPDATE `lc_categories` SET parent_id = NULL WHERE parent_id = 0;
+UPDATE `lc_categories`
+SET parent_id = NULL
+WHERE parent_id = 0;
 -- -----
-UPDATE `lc_orders` SET order_status_id = NULL WHERE order_status_id = 0;
+UPDATE `lc_orders`
+SET order_status_id = NULL
+WHERE order_status_id = 0;
 -- -----
-UPDATE `lc_orders` SET customer_id = NULL WHERE customer_id = 0;
+UPDATE `lc_orders`
+SET customer_id = NULL
+WHERE customer_id = 0;
 -- -----
-UPDATE `lc_orders` SET language_code = NULL WHERE language_code = '';
+UPDATE `lc_orders`
+SET language_code = NULL
+WHERE language_code = '';
 -- -----
-UPDATE `lc_orders_items` SET product_id = NULL WHERE product_id = 0;
+UPDATE `lc_orders_items`
+SET product_id = NULL
+WHERE product_id = 0;
 -- -----
-UPDATE `lc_modules` SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit') WHERE `module_id` = 'sm_zone_weight' LIMIT 1;
+UPDATE `lc_modules`
+SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit')
+WHERE `module_id` = 'sm_zone_weight'
+LIMIT 1;
 -- -----
-UPDATE `lc_orders` SET `no` = id;
+UPDATE `lc_orders`
+SET `no` = id;
 -- -----
-UPDATE `lc_products` SET `type` = 'physical';
 -- -----
-UPDATE `lc_pages` SET `dock` = REPLACE('customer_service', 'information');
+UPDATE `lc_products_to_categories`
+SET `category_id` = NULL
+WHERE `category_id` = 0;
 -- -----
-UPDATE `lc_settings` SET `value` = '0' WHERE `key` = 'cache_clear_thumbnails' LIMIT 1;
+UPDATE `lc_pages`
+SET `dock` = REPLACE('customer_service', 'information');
 -- -----
-UPDATE `lc_settings` SET `key` = 'template', title = 'Template', `value` = REGEXP_REPLACE(`value`, '\.catalog$', '') WHERE `key` = 'store_template_catalog' LIMIT 1;
+UPDATE `lc_settings`
+SET `value` = '0'
+WHERE `key` = 'cache_clear_thumbnails'
+LIMIT 1;
 -- -----
-UPDATE `lc_settings` SET `key` = 'template_settings', title = 'Template Settings' WHERE `key` = 'store_template_catalog_settings';
+UPDATE `lc_settings`
+SET `key` = 'template',
+	`title` = 'Template',
+	`value` = REGEXP_REPLACE(`value`, '\.catalog$', '')
+WHERE `key` = 'store_template_catalog'
+LIMIT 1;
 -- -----
-UPDATE `lc_settings` SET `key` = 'store_weight_unit',  `title` = 'Store Weight Unit', `description` = 'The prefered weight unit.' WHERE `key` = 'store_length_class' LIMIT 1;
+UPDATE `lc_settings`
+SET `key` = 'template_settings',
+	`title` = 'Template Settings'
+WHERE `key` = 'store_template_catalog_settings';
 -- -----
-UPDATE `lc_settings` SET `key` = 'store_length_unit', `title` = 'Store Length Unit', `description` = 'The prefered length unit.' WHERE `key` = 'store_weight_class' LIMIT 1;
+UPDATE `lc_settings`
+SET `key` = 'store_weight_unit',
+	`title` = 'Store Weight Unit',
+	`description` = 'The prefered weight unit.'
+WHERE `key` = 'store_length_class'
+LIMIT 1;
+-- -----
+UPDATE `lc_settings`
+SET `key` = 'store_length_unit',
+`title` = 'Store Length Unit',
+`description` = 'The prefered length unit.'
+WHERE `key` = 'store_weight_class'
+LIMIT 1;
 -- -----
 UPDATE `lc_settings`
 SET `required` = 1

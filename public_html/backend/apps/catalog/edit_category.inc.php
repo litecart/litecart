@@ -78,7 +78,7 @@
 			$category->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'catalog', 'category_id' => $category->data['id']], ['app']));
+			header('Location: '. document::ilink('catalog/category_tree', ['parent_id' => $category->data['id']]));
 			exit;
 
 		} catch (Exception $e) {
@@ -98,7 +98,7 @@
 			$category->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'catalog', 'category_id' => $parent_id], ['app']));
+			header('Location: '. document::ilink('catalog/category_tree'));
 			exit;
 
 		} catch (Exception $e) {
@@ -109,8 +109,8 @@
 	$language_codes = array_unique(array_merge([language::$selected['code']], [settings::get('store_language_code')], array_keys(language::$languages)));
 
 	$list_style_options = [
-		[language::translate('title_columns', 'Columns'), 'columns'],
-		[language::translate('title_rows', 'Rows'), 'rows'],
+		['columns', language::translate('title_columns', 'Columns')],
+		['rows', language::translate('title_rows', 'Rows')],
 	];
 
 	functions::draw_lightbox();

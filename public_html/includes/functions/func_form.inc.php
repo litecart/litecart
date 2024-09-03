@@ -712,10 +712,16 @@
 			}
 
 			if (preg_match('#\[\]$#', $name)) {
-				$html .= '<li class="option">' . functions::form_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
+				$function = 'form_checkbox';
 			} else {
-				$html .= '<li class="option">' . functions::form_radio_button($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
+				$function = 'form_radio_button';
 			}
+
+			$html .=  implode(PHP_EOL, [
+				'<li class="dropdown-item option">',
+				'  '. call_user_func($function, $name, $option, $input, isset($option[2]) ? $option[2] : ''),
+				'</li>',
+			]);
 		}
 
 		$html .= implode(PHP_EOL, [
@@ -1304,7 +1310,9 @@
 			'    '. functions::draw_fonticon('folder') .' <span class="name" style="display: inline-block;">'. $category_name .'</span>',
 			'  </div>',
 			'  <div style="align-self: center;">',
-			'    <a href="'. document::href_ilink('b:catalog/category_picker', ['parent_id' => $input]) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>',
+			'    <a href="'. document::href_ilink('b:catalog/category_picker', ['parent_id' => $input]) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">',
+			'      '. language::translate('title_change', 'Change'),
+			'    </a>',
 			'  </div>',
 			'</div>',
 		]);
@@ -1339,13 +1347,11 @@
 			$options[] = ['0' => functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') .' ['. language::translate('title_root', 'Root') .']',];
 		}
 
-		$categories_query = database::query(
+		database::query(
 			"select c.id, ci.name from ". DB_TABLE_PREFIX ."categories c
 			left join ". DB_TABLE_PREFIX ."categories_info ci on (c.id = ci.category_id and ci.language_code = '". database::input(language::$selected['code']) ."')
 			where c.id in ('". implode("', '", database::input($input)) ."');"
-		);
-
-		while ($category = database::fetch($categories_query)) {
+		)->each(function($category) use (&$html, $name) {
 
 			$path = [];
 			if (!empty(reference::category($category['id'])->path)) {
@@ -1355,21 +1361,27 @@
 			}
 
 			$html .= implode(PHP_EOL, [
-				'<li class="list-item" style="display: flex;">',
-				'  ' . form_input_hidden($name, $category['id'], 'data-name="'. functions::escape_attr($category['name']) .'"'),
-				'  <div style="flex-grow: 1;">' . functions::draw_fonticon('folder') .' '. implode(' &gt; ', $path) .'</div>',
-				'  <button class="remove btn btn-default btn-sm" type="button">'. language::translate('title_remove', 'Remove') .'</button>',
-				'</li>',
+				'      <li class="list-item">',
+				'        '. form_input_hidden($name, $category['id'], 'data-name="'. functions::escape_attr($category['name']) .'"'),
+				'        <div>',
+				'          '. functions::draw_fonticon('folder') .' '. implode(' &gt; ', $path),
+				'        </div>',
+				'        <button class="remove btn btn-default btn-sm float-end" type="button">',
+				'          '. language::translate('title_remove', 'Remove'),
+				'        </button>',
+				'      </li>',
 			]);
-		}
+		});
 
 		$html .= implode(PHP_EOL, [
 			'    </ul>',
 			'  </div>',
 			'  <div class="dropdown">',
 			'  '. form_input_search('', '', 'autocomplete="off" placeholder="'. functions::escape_attr(language::translate('text_search_categories', 'Search categories')) .'&hellip;"'),
-			'    <ul class="dropdown-menu" style="padding: 1em; right: 0; max-height: 480px; overflow-y: auto;"></ul>',
+			'    <ul class="dropdown-menu" style="padding: 1em; right: 0; max-height: 480px; overflow-y: auto;">',
+			'    </ul>',
 			'  </div>',
+			'</div>',
 		]);
 
 		document::$javascript['category-picker'] = implode(PHP_EOL, [

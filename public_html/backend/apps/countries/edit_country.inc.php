@@ -246,9 +246,10 @@
 			'  <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>',
 			'</tr>',
 		].join('\n')
-		.replace(/new_zone_index/g, 'new_' + new_zone_index++)
-		.replace(/new_zone_code/g, $('input[name="zone[code]"]').val())
-		.replace(/new_zone_name/g, $('input[name="zone[name]"]').val());
+			.replace(/new_zone_index/g, 'new_' + new_zone_index++)
+			.replace(/new_zone_code/g, $('input[name="zone[code]"]').val()
+			.replace(/new_zone_name/g, $('input[name="zone[name]"]').val()
+		);
 
 		$(this).closest('table').find('tbody').append(output);
 	});

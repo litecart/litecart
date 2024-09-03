@@ -1322,6 +1322,7 @@
 
 			if ($_POST['output'] == 'screen') {
 				header('Content-Type: text/plain; charset='. $_POST['charset']);
+				header('Content-Disposition: inline; filename='. $_POST['type'] . (!empty($_POST['language_code']) ? '-'. $_POST['language_code'] : '') . (!empty($_POST['currency_code']) ? '-'. $_POST['currency_code'] : '') .'.csv');
 			} else {
 				header('Content-Type: application/csv; charset='. $_POST['charset']);
 				header('Content-Disposition: attachment; filename='. $_POST['type'] . (!empty($_POST['language_code']) ? '-'. $_POST['language_code'] : '') . (!empty($_POST['currency_code']) ? '-'. $_POST['currency_code'] : '') .'.csv');
@@ -1482,7 +1483,7 @@
 
 							<div class="form-group col-sm-6">
 								<label><?php echo language::translate('title_output', 'Output'); ?></label>
-								<?php echo functions::form_select('output', ['file' => language::translate('title_file', 'File'), 'screen' => language::translate('title_screen', 'Screen')], true); ?>
+								<?php echo functions::form_select('output', ['screen' => language::translate('title_screen', 'Screen'), 'file' => language::translate('title_file', 'File')], true); ?>
 							</div>
 						</div>
 

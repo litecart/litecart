@@ -16,9 +16,9 @@
 
 			self::$data = &session::$data['cart'];
 
-			// Recover a previous cart uid if possible
+			// Reuse an existing cart uid if possible
 			if (empty(self::$data['uid'])) {
-			if (!empty($_COOKIE['cart']['uid'])) {
+				if (!empty($_COOKIE['cart']['uid'])) {
 					self::$data['uid'] = $_COOKIE['cart']['uid'];
 				} else {
 					self::$data['uid'] = uniqid();
@@ -27,7 +27,7 @@
 
 				// Update cart cookie
 			if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
-			if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
+				if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
 					header('Set-Cookie: cart[uid]='. self::$data['uid'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
 				}
 			}
@@ -187,6 +187,7 @@
 			];
 
 			try {
+
 				if (!$product->id) {
 					throw new Exception(language::translate('error_item_not_a_valid_product', 'The item is not a valid product'));
 				}
@@ -196,11 +197,12 @@
 				}
 
 				if (!empty($product->date_valid_from) && $product->date_valid_from > date('Y-m-d H:i:s')) {
-					throw new Exception(strtr(language::translate('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_from))]));
+					throw new Exception(strtr(language::translate('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), ['%date' => language::strftime('date', $product->date_valid_from)]));
 				}
 
 				if (!empty($product->date_valid_to) && $product->date_valid_to > 1970 && $product->date_valid_to < date('Y-m-d H:i:s')) {
-					throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_to))]));
+					throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), ['%date' => language::strftime('date', $product->date_valid_to)]));
+				}
 				}
 
 				if ($quantity <= 0) {
@@ -225,11 +227,13 @@
 					}
 				}
 
-				// Remove empty options
+				// Remove empty userdata
 				$array_filter_recursive = function($array) use (&$array_filter_recursive) {
 
 					foreach ($array as $i => $value) {
-						if (is_array($value)) $array[$i] = $array_filter_recursive($value);
+						if (is_array($value)) {
+							$array[$i] = $array_filter_recursive($value);
+						}
 					}
 
 					return array_filter($array, function($v) {
@@ -407,7 +411,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."cart_items
 					set quantity = ". (float)self::$items[$item_key]['quantity'] .",
-					date_updated = '". date('Y-m-d H:i:s') ."'
+						date_updated = '". date('Y-m-d H:i:s') ."'
 					where cart_uid = '". database::input(self::$data['uid']) ."'
 					and `key` = '". database::input($item_key) ."'
 					limit 1;"
