@@ -1,34 +1,6 @@
 <?php
 
-	function catalog_category_trail($category_id=0, $language_code='') {
-
-		trigger_error('catalog_category_trail() is deprecated. Use reference::category(id)->path', E_USER_DEPRECATED);
-
-		if (empty($language_code)) $language_code = language::$selected['code'];
-
-		$trail = [];
-
-		foreach (reference::category($category_id, $language_code)->path as $category) {
-			$trail[$category->id] = $category->name;
-		}
-
-		return $trail;
-	}
-
-	function catalog_category_descendants($category_id=0, $language_code='') {
-
-		trigger_error('catalog_category_descendants() is deprecated. Use reference::category(id)->descendants', E_USER_DEPRECATED);
-
-		$descendants = [];
-
-		foreach (reference::category($category_id, $language_code)->path as $category) {
-			$descendants[$category->id] = $category->name;
-		}
-
-		return $descendants;
-	}
-
-	function catalog_categories_query($parent_id=0) {
+	function catalog_categories_query($parent_id=null) {
 
 		$query = database::query(
 			"select c.id, c.parent_id, c.image, ci.name, ci.short_description, c.priority, c.date_updated from ". DB_TABLE_PREFIX ."categories c
@@ -39,7 +11,7 @@
 				select category_id, count(product_id) as num_products
 				from lc_products_to_categories
 				group by category_id
-			) p2c on (p2c.category_id = c.id)
+			) ptc on (ptc.category_id = c.id)
 
 			left join (
 				select parent_id, count(id) as num_subcategories
@@ -49,8 +21,8 @@
 			) c2 on (c2.parent_id = c.id)
 
 			where c.status
-			and c.parent_id = ". (int)$parent_id ."
-			and (p2c.num_products > 0 or c2.num_subcategories > 0)
+			and ". ($parent_id ? "c.parent_id = ". (int)$parent_id : "c.parent_id is null") ."
+			and (ptc.num_products > 0 or c2.num_subcategories > 0)
 
 			order by c.priority asc, ci.name asc;"
 		);
@@ -129,7 +101,7 @@
 				select category_id, count(product_id) as num_products
 				from lc_products_to_categories
 				group by category_id
-			) p2c on (p2c.category_id = c.id)
+			) ptc on (ptc.category_id = c.id)
 
 			left join (
 				select parent_id, count(id) as num_subcategories
@@ -139,7 +111,7 @@
 			) c2 on (c2.parent_id = c.id)
 
 			where c.status
-			and (p2c.num_products > 0 or c2.num_subcategories > 0)
+			and (ptc.num_products > 0 or c2.num_subcategories > 0)
 			". (!empty($sql_where) ? implode(" and ", $sql_where) : "") ."
 
 			having relevance > 0

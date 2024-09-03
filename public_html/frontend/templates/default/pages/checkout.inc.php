@@ -87,13 +87,13 @@
 
 		if (!$('body > .loader-wrapper').length) {
 
-			let loader = [
+			let $loader = $([
 				'<div class="loader-wrapper">'
 				'  <div class="loader" style="width: 256px; height: 256px;"></div>',
 				'</div>'
-			].join('\n');
+			].join('\n'));
 
-			$('body').append(loader);
+			$('body').append($loader);
 		}
 
 		if (task.refresh) {

@@ -1241,7 +1241,7 @@
 					}
 
 					$csv = database::query(
-						"select p.*, '". database::input($_POST['currency_code']) ."' as currency_code, pi.name, pi.description, pi.short_description, pi.technical_data, pi.meta_description, pi.head_title, '". database::input($_POST['language_code']) ."' as language_code, p2c.categories, pp.price, pim.images, '' as new_image, pa.attributes
+						"select p.*, '". database::input($_POST['currency_code']) ."' as currency_code, pi.name, pi.description, pi.short_description, pi.technical_data, pi.meta_description, pi.head_title, '". database::input($_POST['language_code']) ."' as language_code, ptc.categories, pp.price, pim.images, '' as new_image, pa.attributes
 						from ". DB_TABLE_PREFIX ."products p
 						left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
 						left join (
@@ -1249,7 +1249,7 @@
 							from ". DB_TABLE_PREFIX ."products_to_categories
 							group by product_id
 							order by category_id
-						) p2c on (p2c.product_id = p.id)
+						) ptc on (ptc.product_id = p.id)
 						left join (
 							select product_id, group_concat(concat(group_id, ':', if(custom_value != '', concat('\"', custom_value, '\"'), value_id)) separator '\r\n') as attributes
 							from ". DB_TABLE_PREFIX ."products_attributes

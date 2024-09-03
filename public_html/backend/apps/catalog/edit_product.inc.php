@@ -248,7 +248,7 @@
 
 							<div class="form-group">
 								<label><?php echo language::translate('title_categories', 'Categories'); ?></label>
-								<?php //echo functions::form_select_category('categories[]', true, 'style="max-height: 480px;"'); ?>
+								<?php echo functions::form_select_category('categories[]', true, 'style="max-height: 480px;"'); ?>
 							</div>
 
 							<div class="form-group">
@@ -376,13 +376,13 @@
 				<div id="tab-information" class="tab-pane">
 
 					<nav class="nav nav-tabs" style="margin-top: -1em;">
-						<?php foreach (language::$languages as $language) { ?>
-						<a class="nav-link<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
+						<?php foreach ($language_codes as $language_code) { ?>
+						<a class="nav-link<?php if ($language_code == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language_code; ?>"><?php echo language::$languages[$language_code]['name']; ?></a>
 						<?php } ?>
 					</nav>
 
 					<div class="tab-content">
-						<?php foreach (array_keys(language::$languages) as $language_code) { ?>
+						<?php foreach ($language_codes as $language_code) { ?>
 						<div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 
 							<div class="row">
@@ -543,6 +543,7 @@
 								<th style="width: 60px;"></th>
 							</tr>
 						</thead>
+
 						<tbody>
 							<?php if (!empty($_POST['attributes'])) foreach (array_keys($_POST['attributes']) as $key) { ?>
 							<tr>
@@ -556,11 +557,14 @@
 								<td class="grabable"><?php echo $_POST['attributes'][$key]['value_name']; ?></td>
 								<td class="grabable"><?php echo $_POST['attributes'][$key]['custom_value']; ?></td>
 								<td class="text-end">
-									<button name="remove" class="btn btn-default btn-sm" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
+									<button name="remove" type="button" class="btn btn-default btn-sm" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
+										<?php echo functions::draw_fonticon('remove'); ?>
+									</a>
 								</td>
 							</tr>
 							<?php } ?>
 						</tbody>
+
 						<tfoot>
 							<tr>
 								<td><?php echo functions::form_select_attribute_group('new_attribute[group_id]', ''); ?></td>
@@ -859,8 +863,7 @@
 </div>
 
 <script>
-
-		// Cross Referencing
+	// Cross Referencing
 
 	$('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').on('input change', function(){
 		$('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
@@ -874,7 +877,7 @@
 		$('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
 	});
 
-		// Initiate
+	// Initiate
 
 	$('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').first().trigger('input');
 
@@ -908,13 +911,13 @@
 		}
 	}).trigger('change');
 
-		// SKU
+	// SKU
 
 	$('input[name="sku"]').on('input', function() {
 		$('input[name="sku"]').not(this).val($(this).val());
 	});
 
-		// Images
+	// Images
 
 	$('#images').on('click', '.move-up, .move-down', function(e) {
 		e.preventDefault();
@@ -937,7 +940,7 @@
 	$('#images .add').click(function(e) {
 		e.preventDefault();
 
-		let output = [
+		let $output = $([
 			'<div class="image form-group">',
 			'  <div class="float-start">',
 			'    <?php echo functions::draw_thumbnail('storage://images/no_image.png', 64, 0, 'product'); ?>',
@@ -952,20 +955,22 @@
 			'    </div>',
 			'  </div>',
 			'</div>'
-		].join('\n');
+		].join('\n'));
 
-		$('#images .new-images').append(output);
+		$('#images .new-images').append($output);
 		refreshMainImage();
 	});
 
 	$('#images').on('change', 'input[type="file"]', function(e) {
 		let img = $(this).closest('.form-group').find('img');
-
 		let oFReader = new FileReader();
+
 		oFReader.readAsDataURL(this.files[0]);
+
 		oFReader.onload = function(e){
 			$(img).attr('src', e.target.result);
 		};
+
 		oFReader.onloadend = function(e) {
 			refreshMainImage();
 		};
@@ -980,7 +985,7 @@
 		$('#tab-general .main-image').attr('src', '<?php echo document::href_rlink(functions::draw_thumbnail('storage://images/no_image.png', 360, 0, 'product')); ?>');
 	}
 
-		// Technical Data
+	// Technical Data
 
 	$('a.technical-data-hint').click(function(e){
 		e.preventDefault();
@@ -995,7 +1000,7 @@
 		}
 	}).trigger('change');
 
-		// Prices
+	// Prices
 
 	$('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').on('input', function() {
 		$('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').not(this).val($(this).val());
@@ -1004,7 +1009,7 @@
 	function get_tax_rate() {
 		switch ($('select[name=tax_class_id]').val()) {
 <?php
-	$tax_classes_query = database::query(
+	database::query(
 		"select * from ". DB_TABLE_PREFIX ."tax_classes
 		order by name asc;"
 	)->each(function($tax_class){
@@ -1023,22 +1028,22 @@
 
 	function get_currency_decimals(currency_code) {
 		switch (currency_code) {
-			<?php foreach (currency::$currencies as $currency) echo 'case \''. $currency['code'] .'\': return '. ($currency['decimals']+2) .';' . PHP_EOL; ?>
+			<?php foreach ($currency_codes as $currency_code) echo 'case \''. $currency_code .'\': return '. ($currency['decimals']+2) .';' . PHP_EOL; ?>
 		}
 	}
 
-		// Update prices
+	// Update prices
 	$('select[name="tax_class_id"]').change('input', function(){
 		$('input[name^="prices"]').trigger('input');
 	});
 
-		// Update gross price
+	// Update gross price
 	$('input[name^="prices"]').on('input', function() {
-		let currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1],
-				decimals = get_currency_decimals(currency_code),
-				gross_field = $('input[name="gross_prices['+ currency_code +']"]');
 
-		let gross_price = parseFloat(Number($(this).val() * (1+(get_tax_rate()/100))).toFixed(decimals));
+		let currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1],
+			decimals = get_currency_decimals(currency_code),
+			gross_field = $('input[name="gross_prices['+ currency_code +']"]'),
+			gross_price = parseFloat(Number($(this).val() * (1+(get_tax_rate()/100))).toFixed(decimals));
 
 		if ($(this).val() == 0) {
 			$(gross_field).val('');
@@ -1051,11 +1056,11 @@
 
 	// Update net price
 	$('input[name^="gross_prices"]').on('input', function() {
-		let currency_code = $(this).attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1],
-				decimals = get_currency_decimals(currency_code),
-				net_field = $('input[name="prices['+ currency_code +']"]');
 
-		let net_price = parseFloat(Number($(this).val() / (1+(get_tax_rate()/100))).toFixed(decimals));
+		let currency_code = $(this).attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1],
+			decimals = get_currency_decimals(currency_code),
+			net_field = $('input[name="prices['+ currency_code +']"]'),
+			net_price = parseFloat(Number($(this).val() / (1+(get_tax_rate()/100))).toFixed(decimals));
 
 		if ($(this).val() == 0) {
 			$(net_field).val('');
@@ -1066,12 +1071,12 @@
 		update_currency_prices();
 	});
 
-		// Update price placeholders
+	// Update price placeholders
 	function update_currency_prices() {
 		let store_currency_code = '<?php echo settings::get('store_currency_code'); ?>',
-				currencies = ['<?php echo implode("','", array_keys(currency::$currencies)); ?>'],
-				net_price = $('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val(),
-				gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val();
+			currencies = ['<?php echo implode("','", array_keys(currency::$currencies)); ?>'],
+			net_price = $('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val(),
+			gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val();
 
 		if (!net_price) {
 			net_price = $('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').attr('placeholder');
@@ -1085,8 +1090,8 @@
 			if (currency_code == '<?php echo settings::get('store_currency_code'); ?>') return;
 
 			let currency_decimals = get_currency_decimals(currency_code),
-					currency_net_price = net_price / get_currency_value(currency_code);
-					currency_gross_price = gross_price / get_currency_value(currency_code);
+				currency_net_price = net_price / get_currency_value(currency_code);
+				currency_gross_price = gross_price / get_currency_value(currency_code);
 
 			currency_net_price = currency_net_price ? parseFloat(currency_net_price.toFixed(currency_decimals)) : '';
 			currency_gross_price = currency_gross_price ? parseFloat(currency_gross_price.toFixed(currency_decimals)) : '';
@@ -1101,7 +1106,7 @@
 		alert('<?php echo str_replace(["\r", "\n", "'"], ["", "", "\\'"], language::translate('tooltip_field_price_incl_tax', 'This field helps you calculate net price based on the tax rates set for the store region. The prices stored in the database are always excluding tax.')); ?>');
 	});
 
-		// Campaigns
+	// Campaigns
 
 	$('#campaigns').on('focus', 'input[name^="campaigns"]', function(e) {
 		if($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
@@ -1147,6 +1152,7 @@
 		}
 		<?php } ?>
 	});
+
 	$('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').trigger('input');
 
 	$('#campaigns').on('click', '.remove', function(e) {
@@ -1244,7 +1250,7 @@
 			}
 		}
 
-		let output = [
+		let $output = $([
 			'<tr>',
 			'  <td>',
 			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[new_attribute_index][id]', '')); ?>',
@@ -1257,22 +1263,22 @@
 			'  </td>',
 			'  <td>new_value_name</td>',
 			'  <td>new_custom_value</td>',
-			'  <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>',
+			'  <td class="text-end">',
+			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">',
+			'      <?php echo functions::draw_fonticon('remove'); ?>',
+			'    </a>',
+			'  </td>',
 			'</tr>'
 		].join('\n')
-		.replace(/new_attribute_index/g, 'new_' + new_attribute_index++)
-		.replace(/new_group_id/g, $('select[name="new_attribute[group_id]"] option:selected').val())
-		.replace(/new_group_name/g, $('select[name="new_attribute[group_id]"] option:selected').text())
-		.replace(/new_value_id/g, $('select[name="new_attribute[value_id]"] option:selected').val())
-		.replace(/new_custom_value/g, $('input[name="new_attribute[custom_value]"]').val());
+			.replace(/new_attribute_index/g, 'new_' + new_attribute_index++)
+			.replace(/new_group_id/g, $('select[name="new_attribute[group_id]"] option:selected').val())
+			.replace(/new_group_name/g, $('select[name="new_attribute[group_id]"] option:selected').text())
+			.replace(/new_value_id/g, $('select[name="new_attribute[value_id]"] option:selected').val())
+			.replace(/new_custom_value/g, $('input[name="new_attribute[custom_value]"]').val())
+			.replace(/new_value_name/g, ($('select[name="new_attribute[value_id]"] option:selected').val() != '0') ? $('select[name="new_attribute[value_id]"] option:selected').text() : '')
+		);
 
-		if ($('select[name="new_attribute[value_id]"] option:selected').val() != '0') {
-			output = output.replace(/new_value_name/g, $('select[name="new_attribute[value_id]"] option:selected').text());
-		} else {
-			output = output.replace(/new_value_name/g, '');
-		}
-
-		$('#tab-attributes tbody').append(output);
+		$('#tab-attributes tbody').append($output);
 
 		$('select[name="new_attribute[group_id]"]').val('').trigger('change');
 	});
@@ -1282,7 +1288,7 @@
 		$(this).closest('tr').remove();
 	});
 
-		// Quantity Unit
+	// Quantity Unit
 
 	$('select[name="quantity_unit_id"]').change(function(){
 		if ($('option:selected', this).data('decimals') === undefined) return;
@@ -1303,7 +1309,7 @@
 		});
 	}).trigger('change');
 
-		// Quantity and Adjustments
+	// Quantity and Adjustments
 
 	$('body').on('input', ':input[name="quantity"], :input[name$="[quantity]"]', function(){
 		let $quantity_adjustment_field = $(':input[name="' + $(this).attr('name').replace('quantity', 'quantity_adjustment') + '"]');
@@ -1325,7 +1331,7 @@
 		$quantity_field.val( (quantity + quantity_adjustment).toFixed(decimals) );
 	});
 
-		// Transfer Backordered Quantity
+	// Transfer Backordered Quantity
 
 	$('body').on('click', 'button[name*="transfer_backordered"]', function(){
 		let $quantity_adjustment_field = $(':input[name="' + $(this).attr('name').replace('transfer_backordered', 'quantity_adjustment') +'"]'),
@@ -1337,7 +1343,7 @@
 		$backordered_field.val('');
 	});
 
-		// Quantity Unit
+	// Quantity Unit
 
 	$('select[name="quantity_unit_id"]').on('change', function(){
 		let decimals = parseInt($('select[name="quantity_unit_id"] option:selected').data('decimals'));

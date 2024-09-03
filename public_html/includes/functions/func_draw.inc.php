@@ -161,13 +161,20 @@
 			$image = 'storage://images/no_image.png';
 		}
 
+		if (!$width && !$height) {
+			$entity = new ent_image($image);
+			$width = $entity->width;
+			$height = $entity->height;
+		}
+
 		if (!$width) {
 			if ($clipping == 'product') {
 				list($width, $height) = functions::image_scale_by_height($height, settings::get('product_image_ratio'));
 			} else if ($clipping == 'category') {
 				list($width, $height) = functions::image_scale_by_height($height, settings::get('category_image_ratio'));
 			} else {
-				list($width, $height) = functions::image_scale_by_height($height, functions::image_ratio($source));
+				$aspect_ratio = (new ent_image($image))->aspect_ratio;
+				list($width, $height) = functions::image_scale_by_height($height, $aspect_ratio);
 			}
 		}
 
@@ -177,7 +184,8 @@
 			} else if ($clipping == 'category') {
 				list($width, $height) = functions::image_scale_by_width($width, settings::get('category_image_ratio'));
 			} else {
-				list($width, $height) = functions::image_scale_by_width($width, functions::image_ratio($source));
+				$aspect_ratio = (new ent_image($image))->aspect_ratio;
+				list($width, $height) = functions::image_scale_by_width($width, $aspect_ratio);
 			}
 		}
 

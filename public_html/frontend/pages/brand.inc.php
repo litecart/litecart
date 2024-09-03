@@ -11,8 +11,13 @@
 		$_GET['page'] = 1;
 	}
 
-	if (empty($_GET['sort'])) $_GET['sort'] = 'price';
-	if (empty($_GET['list_style'])) $_GET['list_style'] = 'columns';
+	if (empty($_GET['sort'])) {
+		$_GET['sort'] = 'price';
+	}
+
+	if (empty($_GET['list_style'])) {
+		$_GET['list_style'] = 'columns';
+	}
 
 	if (empty($_GET['brand_id'])) {
 		header('Location: '. document::ilink('brands'));
@@ -23,13 +28,13 @@
 
 	$brand = reference::brand($_GET['brand_id']);
 
-	if (empty($brand->id)) {
+	if (!$brand->id) {
 		http_response_code(410);
 		include 'app://frontend/pages/error_document.inc.php';
 		return;
 	}
 
-	if (empty($brand->status)) {
+	if (!$brand->status) {
 		http_response_code(404);
 		include 'app://frontend/pages/error_document.inc.php';
 		return;
@@ -62,9 +67,10 @@
 				'popularity' => language::translate('title_popularity', 'Popularity'),
 				'date' => language::translate('title_date', 'Date'),
 			],
+			'num_products_page' => null,
+			'num_products_total' => null,
 			'pagination' => null,
 		];
-
 
 		$_page->snippets['products'] = functions::catalog_products_query([
 			'brands' => [$brand->id],
@@ -73,6 +79,8 @@
 			'campaigns_first' => true,
 		])->fetch_page(null, null, $_GET['page'], 20, $num_rows, $num_pages);
 
+		$_page->snippets['num_products_page'] = count($_page->snippets['products']);
+		$_page->snippets['num_products_total'] = $num_rows;
 		$_page->snippets['pagination'] = functions::draw_pagination($num_pages);
 
 		cache::set($brand_cache_token, $_page->snippets);

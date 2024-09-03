@@ -289,15 +289,15 @@
 
 	<div class="card-action">
 		<ul class="list-inline">
-			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_category', ['parent_id' => $_GET['category_id']]), language::translate('title_create_new_category', 'Create New Category'), '', 'add'); ?></li>
+			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_category', isset($_GET['category_id']) ? ['parent_id' => $_GET['category_id']] : []), language::translate('title_create_new_category', 'Create New Category'), '', 'add'); ?></li>
 			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_product', [], ['category_id']), language::translate('title_create_new_product', 'Create New Product'), '', 'add'); ?></li>
 		</ul>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
-		 <div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink('', [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
-		 <div><?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
+			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink('', [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
+			<div><?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
 		</div>
 	<?php echo functions::form_end(); ?>
 
@@ -383,11 +383,11 @@
 				$warning = null;
 
 				if (!empty($product['date_valid_from']) && strtotime($product['date_valid_from']) > time()) {
-					throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from']))]));
+					throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime('date', $product['date_valid_from'])]));
 				}
 
 				if (!empty($product['date_valid_to']) && strtotime($product['date_valid_to']) < time()) {
-					throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to']))]));
+					throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime('date', $product['date_valid_to'])]));
 				}
 
 				if ($product['num_stock_options'] && $product['quantity'] <= 0) {

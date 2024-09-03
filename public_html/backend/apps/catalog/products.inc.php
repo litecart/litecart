@@ -43,6 +43,7 @@
 			}
 
 			foreach ($_POST['products'] as $product_id) {
+
 				$original = new ent_product($product_id);
 				$product = new ent_product();
 
@@ -143,7 +144,7 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$products = database::query(
-		"select p.id, p.status, p.code, pi.name, p.image, pp.price, pos.num_stock_options, pos.quantity, pos.quantity - oi.total_reserved as quantity_available, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, p.date_created". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
+		"select p.id, p.status, p.code, pi.name, p.image, pp.price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, p.date_created". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
 
 		from ". DB_TABLE_PREFIX ."products p
 		left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
@@ -187,11 +188,11 @@
 		try {
 
 			if (!empty($product['date_valid_from']) && $product['date_valid_from'] < date('Y-m-d H:i:s')) {
-				throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from']))]));
+				throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime('date', $product['date_valid_from'])]));
 			}
 
 			if (!empty($product['date_valid_to']) && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
-				throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to']))]));
+				throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime('date', $product['date_valid_to'])]));
 			}
 
 			if ($product['num_stock_options'] && $product['quantity'] <= 0) {
@@ -228,8 +229,8 @@ table .thumbnail {
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink(null, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
 			<div style="min-width: 300px;"><?php echo functions::form_select_category('category_id', true); ?></div>
+			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink(null, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
 			<div><?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
 		</div>
 	<?php echo functions::form_end(); ?>

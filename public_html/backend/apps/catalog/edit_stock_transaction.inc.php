@@ -265,9 +265,8 @@
 			'    <td class="text-center"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times', 'style="color: #c33;"')); ?></a></td>',
 			'  </tr>'
 		].join('\n')
-		.replace(/new_item_index/g, 'new_' + new_item_index++);
-
-		let $output = $(output);
+			.replace(/new_item_index/g, 'new_' + new_item_index++)
+		);
 
 		// Insert values
 		$output.find('[name$="[item_id]"]').val($('input[name="new[id]"]').data('id') || '');

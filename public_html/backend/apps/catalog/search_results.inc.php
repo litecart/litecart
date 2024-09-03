@@ -52,7 +52,7 @@
 		$results[] = $result;
 	}
 
-	// Stock Items
+// Stock Items
 
 	$result = [
 		'name' => language::translate('title_stock_items', 'Stock Items'),

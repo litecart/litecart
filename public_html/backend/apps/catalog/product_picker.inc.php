@@ -66,11 +66,14 @@
 				$('tbody', $modal).html('');
 
 				if (!json) {
-					$('tbody', $modal).html([
+
+					var $output = $([
 						'<tr>',
 						'  <td colspan="7"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td>',
 						'</tr>'
-					}.join('\n'));
+					].join('\n'));
+
+					$('tbody', $modal).html($output);
 				}
 
 				$.each(json, function(i, row){
