@@ -58,8 +58,7 @@
 			if (empty($_POST['images'])) $_POST['images'] = [];
 			if (empty($_POST['campaigns'])) $_POST['campaigns'] = [];
 			if (empty($_POST['attributes'])) $_POST['attributes'] = [];
-			if (empty($_POST['options'])) $_POST['options'] = [];
-			if (empty($_POST['extras'])) $_POST['options'] = [];
+			if (empty($_POST['customizations'])) $_POST['customizations'] = [];
 
 			foreach ([
 				'status',
@@ -104,8 +103,7 @@
 				'head_title',
 				'meta_description',
 				'images',
-				'options',
-				'extras',
+				'customizations',
 			] as $field) {
 				if (isset($_POST[$field])) {
 					$product->data[$field] = $_POST[$field];
@@ -160,6 +158,11 @@
 	$language_codes = array_unique(array_merge([language::$selected['code']], [settings::get('store_language_code')], array_keys(language::$languages)));
 	$currency_codes = array_unique(array_merge([currency::$selected['code']], [settings::get('store_currency_code')], array_keys(currency::$currencies)));
 
+  $customizations_sort_options = [
+    [language::translate('title_list_order', 'List Order'), 'priority'],
+    [language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'],
+  ];
+
 	functions::draw_lightbox();
 ?>
 <style>
@@ -199,7 +202,7 @@
 	background: transparent;
 }
 
-#tab-options li {
+#tab-customizations li {
 	background: #f9f9f9;
 	padding: 1em;
 	border-radius: 4px;
@@ -220,7 +223,7 @@
 		<a class="nav-link" data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a>
 		<a class="nav-link" data-toggle="tab" href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a>
 		<a class="nav-link" data-toggle="tab" href="#tab-attributes"><?php echo language::translate('title_attributes', 'Attributes'); ?></a>
-		<a class="nav-link" data-toggle="tab" href="#tab-options"><?php echo language::translate('title_options', 'Options'); ?></a>
+		<a class="nav-link" data-toggle="tab" href="#tab-customizations"><?php echo language::translate('title_customizations', 'Customizations'); ?></a>
 		<a class="nav-link" data-toggle="tab" href="#tab-stock"><?php echo language::translate('title_stock', 'Stock'); ?></a>
 	</nav>
 
@@ -569,43 +572,49 @@
 					</table>
 				</div>
 
-				<div id="tab-options" class="tab-pane">
+				<div id="tab-customizations" class="tab-pane">
 
-					<ul id="options" class="list-unstyled">
-						<?php foreach ($_POST['options'] as $group_id => $option) { ?>
-						<li data-group-id="<?php echo functions::escape_html($group_id); ?>" data-group-name="<?php echo functions::escape_html($option['name']); ?>">
+					<ul id="customizations" class="list-unstyled">
+						<?php foreach ($_POST['customizations'] as $group_id => $customization) { ?>
+						<li data-group-id="<?php echo functions::escape_html($group_id); ?>" data-group-name="<?php echo functions::escape_html($customization['name']); ?>">
 
 							<div class="float-end">
-								<a class="btn btn-default move-group-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-up', 'style="color: #3399cc;"'); ?></a>
-								<a class="btn btn-default move-group-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-down', 'style="color: #3399cc;"'); ?></a>
-								<a class="btn btn-default remove-group" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times', 'style="color: #cc3333;"'); ?></a>
+								<button name="move-group-up" type="button" class="btn btn-default" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>">
+									<?php echo functions::draw_fonticon('fa-arrow-up', 'style="color: #3399cc;"'); ?>
+								</button>
+								<button name="move-group-down" type="button" class="btn btn-default" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>">
+									<?php echo functions::draw_fonticon('fa-arrow-down', 'style="color: #3399cc;"'); ?>
+								</button>
+								<button name="remove-group" type="button" class="btn btn-default" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>">
+									<?php echo functions::draw_fonticon('fa-times', 'style="color: #cc3333;"'); ?>
+								</button>
 							</div>
 
-							<h2><?php echo $option['name']; ?></h2>
-							<?php echo functions::form_input_hidden('options['.$group_id.'][id]', true) . functions::form_input_hidden('options['.$group_id.'][group_id]', true) . functions::form_input_hidden('options['.$group_id.'][name]', true); ?>
+							<h2><?php echo $customization['name']; ?></h2>
+							<?php echo functions::form_input_hidden('customizations['.$group_id.'][id]', true) . functions::form_input_hidden('customizations['.$group_id.'][group_id]', true) . functions::form_input_hidden('customizations['.$group_id.'][name]', true); ?>
 
 							<div class="row">
 								<div class="form-group col-sm-4 col-md-2">
 									<label><?php echo language::translate('title_function', 'Function'); ?></label>
-									<?php echo functions::form_select('options['.$group_id.'][function]', in_array($option['function'], ['select', 'radio', 'checkbox']) ? ['select', 'radio', 'checkbox'] : ['text', 'textarea'], true); ?>
+									<?php echo functions::form_select('customizations['.$group_id.'][function]', in_array($customization['function'], ['select', 'radio', 'checkbox']) ? ['select', 'radio', 'checkbox'] : ['text', 'textarea'], true); ?>
 								</div>
 
-								<?php if (in_array($option['function'], ['select', 'radio', 'checkbox'])) { ?>
+								<?php if (in_array($customization['function'], ['select', 'radio', 'checkbox'])) { ?>
 								<div class="form-group col-sm-4 col-md-2">
 									<label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
-									<?php echo functions::form_select('options['.$group_id.'][sort]', $option_sort_options, true); ?>
+									<?php echo functions::form_select('customizations['.$group_id.'][sort]', $customizations_sort_options, true); ?>
 								</div>
 								<?php } ?>
 
 								<div class="form-group col-sm-4 col-md-2">
 									<label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>
 									<div class="checkbox">
-										<label><?php echo functions::form_checkbox('options['.$group_id.'][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>
+										<label><?php echo functions::form_checkbox('customizations['.$group_id.'][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>
 									</div>
 								</div>
 							</div>
 
-							<?php if (in_array($option['function'], ['select', 'radio', 'checkbox'])) { ?>
+							<?php if (in_array($customization['function'], ['select', 'radio', 'checkbox'])) { ?>
 							<div class="table-responsive">
 								<table class="table table-striped table-hover table-dragable data-table">
 									<thead>
@@ -618,12 +627,22 @@
 									</thead>
 
 									<tbody>
-									<?php foreach ($option['values'] as $value_id => $value) { ?>
-										<tr data-value-id="<?php echo functions::escape_html($value['value_id']); ?>" data-value-name="<?php echo functions::escape_html($_POST['options'][$group_id]['values'][$value_id]['name']); ?>">
-											<td class="grabable"><?php echo functions::form_input_hidden('options['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_input_hidden('options['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_input_hidden('options['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_input_hidden('options['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
-											<td class="text-center"><?php echo functions::form_select('options['.$group_id.'][values]['. $value_id .'][price_operator]', ['+','%','*','='], true); ?></td>
-											<?php foreach ($currency_codes as $currency_code) echo '<td>'. functions::form_select_currency($currency_code, 'options['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['options'][$group_id]['values'][$value_id][$currency_code]) || $_POST['options'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
-											<td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+									<?php foreach ($customization['values'] as $value_id => $value) { ?>
+										<tr data-value-id="<?php echo functions::escape_html($value['value_id']); ?>" data-value-name="<?php echo functions::escape_html($_POST['customizations'][$group_id]['values'][$value_id]['name']); ?>">
+											<td class="grabable"><?php echo functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
+											<td class="text-center"><?php echo functions::form_select('customizations['.$group_id.'][values]['. $value_id .'][price_operator]', ['+','%','*','='], true); ?></td>
+											<?php foreach ($currency_codes as $currency_code) echo '<td>'. functions::form_select_currency($currency_code, 'customizations['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['customizations'][$group_id]['values'][$value_id][$currency_code]) || $_POST['customizations'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
+											<td class="text-end">
+												<button name="move-up" type="button" class="btn btn-default btn-sm" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>">
+													<?php echo functions::draw_fonticon('move-up'); ?>
+												</button>
+												<button name="move-down" type="button" class="btn btn-default btn-sm" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>">
+													<?php echo functions::draw_fonticon('move-down'); ?>
+												</button>
+												<button name="remove" type="button" class="btn btn-default btn-sm" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>">
+													<?php echo functions::draw_fonticon('remove'); ?>
+												</button>
+											</td>
 										</tr>
 									<?php } ?>
 									</tbody>
@@ -636,46 +655,50 @@
 					</ul>
 
 					<div>
-						<a class="btn btn-default" href="#modal-predefined-option" data-toggle="lightbox"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_predefined_option', 'Add Predefined Option'); ?></a>
-						<a class="btn btn-default" href="#modal-user-input-option" data-toggle="lightbox"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_user_input_option', 'Add User Input Option'); ?></a>
+						<a class="btn btn-default" href="#modal-predefined-customization" data-toggle="lightbox">
+							<?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_predefined_customization', 'Add Predefined Option'); ?>
+						</a>
+						<a class="btn btn-default" href="#modal-user-input-customization" data-toggle="lightbox">
+							<?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_user_input_customization', 'Add User Input Option'); ?>
+						</a>
 					</div>
 
-					<div id="modal-predefined-option" style="display: none;">
+					<div id="modal-predefined-customization" style="display: none;">
 						<fieldset style="max-width: 960px;">
 							<legend><?php echo language::translate('title_add_predefined_option', 'Add Predefined Option'); ?></legend>
 							<div class="row" style="margin-bottom: 0;">
 								<div class="form-group col-md-3">
 									<label><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></label>
-									<?php echo functions::form_select_attribute_group('new_predefined_option[group_id]', ''); ?>
+									<?php echo functions::form_select_attribute_group('new_predefined_customization[group_id]', ''); ?>
 								</div>
 
 								<div class="form-group col-md-3">
 									<label><?php echo language::translate('title_value', 'Value'); ?></label>
-									<?php echo functions::form_select('new_predefined_option[value_id]', [['','']], '', 'disabled'); ?>
+									<?php echo functions::form_select('new_predefined_customization[value_id]', [['','']], '', 'disabled'); ?>
 								</div>
 
 								<div class="form-group col-md-3">
 									<label><?php echo language::translate('title_custom_value', 'Custom Value'); ?></label>
-									<?php echo functions::form_input_text('new_predefined_option[custom_value]', ''); ?>
+									<?php echo functions::form_input_text('new_predefined_customization[custom_value]', ''); ?>
 								</div>
 
 								<div class="form-group col-md-3" style="align-self: end;">
-									<?php echo functions::form_button('add_predefined_option', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
+									<?php echo functions::form_button('add_predefined_customization', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
 								</div>
 							</div>
 						</fieldset>
 					</div>
 
-					<div id="modal-user-input-option" style="display: none;">
+					<div id="modal-user-input-customization" style="display: none;">
 						<fieldset>
 							<legend><?php echo language::translate('title_add_user_input_option', 'Add User Input Option'); ?></legend>
 							<div class="row" style="margin-bottom: 0;">
 								<div class="form-group col-md-8">
 									<label><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></label>
-									<?php echo functions::form_select_attribute_group('new_user_input_option[group_id]', ''); ?>
+									<?php echo functions::form_select_attribute_group('new_user_input_customization[group_id]', ''); ?>
 								</div>
 								<div class="form-group col-md-4" style="align-self: end;">
-									<?php echo functions::form_button('add_user_input_option', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
+									<?php echo functions::form_button('add_user_input_customization', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
 								</div>
 							</div>
 						</fieldset>

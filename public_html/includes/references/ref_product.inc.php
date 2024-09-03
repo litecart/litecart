@@ -216,40 +216,40 @@
 
 					break;
 
-				case 'options':
+				case 'customizations':
 
-					$this->_data['options'] = [];
+					$this->_data['customizations'] = [];
 
-					$products_options_query = database::query(
-						"select * from ". DB_TABLE_PREFIX ."products_options
+					$products_customizations_query = database::query(
+						"select * from ". DB_TABLE_PREFIX ."products_customizations
 						where product_id = ". (int)$this->_data['id'] ."
 						order by priority;"
-					)->fetch(function($option){
+					)->fetch(function($customization){
 
 						// Group
 						database::query(
 							"select * from ". DB_TABLE_PREFIX ."attribute_groups_info pcgi
-							where group_id = ". (int)$option['group_id'] ."
+							where group_id = ". (int)$customization['group_id'] ."
 							and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
 							order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-						)->each(function($info) use ($option) {
+						)->each(function($info) use ($customization) {
 
 							foreach ($info as $key => $value) {
 								if (in_array($k, ['id', 'group_id', 'language_code'])) continue;
-								if (empty($option[$key])) $option[$key] = $value;
+								if (empty($customization[$key])) $customization[$key] = $value;
 							}
 
 						});
 
 						// Values
-						$option['values'] = [];
+						$customization['values'] = [];
 
 						database::query(
-							"select * from ". DB_TABLE_PREFIX ."products_options_values
+							"select * from ". DB_TABLE_PREFIX ."products_customizations_values
 							where product_id = ". (int)$this->_data['id'] ."
-							and group_id = ". (int)$option['group_id'] ."
+							and group_id = ". (int)$customization['group_id'] ."
 							order by priority;"
-						)->each(function($value) use ($option) {
+						)->each(function($value) use ($customization) {
 
 							if (!empty($value['value_id'])) {
 
@@ -311,7 +311,7 @@
 										break;
 
 									default:
-										trigger_error('Unknown price operator for option', E_USER_WARNING);
+										trigger_error('Unknown price operator for customization', E_USER_WARNING);
 										break;
 								}
 							}
@@ -321,14 +321,14 @@
 							}
 
 							if (!empty($value['value_id'])) {
-								$option['values'][$value['value_id']] = $value;
+								$customization['values'][$value['value_id']] = $value;
 							} else {
-								$option['values'][uniqid()] = $value;
+								$customization['values'][uniqid()] = $value;
 							}
 						});
 
-						if ($option['sort'] == 'alphabetically') {
-							uasort($option['values'], function($a, $b){
+						if ($customization['sort'] == 'alphabetically') {
+							uasort($customization['values'], function($a, $b){
 								if ($a['name'] == $b['name']) return 0;
 								return ($a['name'] < $b['name']) ? -1 : 1;
 							});

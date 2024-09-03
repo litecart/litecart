@@ -35,7 +35,7 @@
 			$this->data['prices'] = [];
 			$this->data['campaigns'] = [];
 			$this->data['attributes'] = [];
-			$this->data['options'] = [];
+			$this->data['customizations'] = [];
 			$this->data['stock_options'] = [];
 
 			$this->data['status'] = 1;
@@ -398,41 +398,92 @@
 				);
 			}
 
+			// Delete images
+			database::query(
+				"select * from ". DB_TABLE_PREFIX ."products_images
+				where product_id = ". (int)$this->data['id'] ."
+				and id not in ('". implode("', '", array_column($this->data['images'], 'id')) ."');"
+			)->each(function($image){
+
+				if (is_file('storage://images/' . $image['filename'])) {
+					unlink('storage://images/' . $image['filename']);
+				}
+
+				functions::image_delete_cache('storage://images/' . $image['filename']);
+
+				database::query(
+					"delete from ". DB_TABLE_PREFIX ."products_images
+					where product_id = ". (int)$this->data['id'] ."
+					and id = ". (int)$image['id'] ."
+					limit 1;"
+				);
+			});
+
+			// Update images
+			if (!empty($this->data['images'])) {
+				$image_priority = 1;
+
+				foreach ($this->data['images'] as $key => $image) {
+
+					if (empty($image['id'])) continue;
+					if (empty($image['new_filename'])) continue;
+
+					if ($this->data['images'][$key]['new_filename'] != $image['filename']) {
+
+						if (is_file('storage://images/' . $image['new_filename'])) {
+							throw new Exception('Cannot rename '. $this->data['images'][$key]['filename'] .' to '. $this->data['images'][$key]['filename'] .' as the new filename already exists');
+						}
+
+						rename('storage://images/' . $image['filename'], FS_DIR_STORAGE . 'images/' . $image['new_filename']);
+						$this->data['images'][$key]['filename'] = $image['new_filename'];
+
+						functions::image_delete_cache('storage://images/' . $image['filename']);
+						functions::image_delete_cache('storage://images/' . $image['new_filename']);
+					}
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."products_campaigns
-						set start_date = ". (empty($campaign['start_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($campaign['start_date'])) ."'") .",
-							end_date = ". (empty($campaign['end_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($campaign['end_date'])) ."'") .",
-							$sql_currency_campaigns
+						"update ". DB_TABLE_PREFIX ."products_images
+						set filename = '". database::input($image['filename']) ."',
+							priority = ". (int)$image_priority++ ."
 						where product_id = ". (int)$this->data['id'] ."
-						and id = ". (int)$campaign['id'] ."
+						and id = ". (int)$image['id'] ."
 						limit 1;"
 					);
 				}
 			}
 
-			// Delete options
+			// Set main product image
+			$this->data['image'] = !empty($this->data['images']) ? array_values($this->data['images'])[0]['filename'] : '';
+
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."products_options
+				"update ". DB_TABLE_PREFIX ."products
+				set image = '". database::input($this->data['image']) ."'
+				where id = ". (int)$this->data['id'] ."
+				limit 1;"
+			);
+
+			// Delete customizations
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."products_customizations
 				where product_id = ". (int)$this->data['id'] ."
-				and id not in ('". implode("', '", array_column($this->data['options'], 'id')) ."');"
+				and id not in ('". implode("', '", array_column($this->data['customizations'], 'id')) ."');"
 			);
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."products_options_values
+				"delete from ". DB_TABLE_PREFIX ."products_customizations_values
 				where product_id = ". (int)$this->data['id'] ."
-				and group_id not in ('". implode("', '", array_column($this->data['options'], 'group_id')) ."');"
+				and group_id not in ('". implode("', '", array_column($this->data['customizations'], 'group_id')) ."');"
 			);
 
-			// Update options
-			if (!empty($this->data['options'])) {
+			// Update customizations
+			if (!empty($this->data['customizations'])) {
 
 				$i = 0;
-				foreach ($this->data['options'] as &$option) {
+				foreach ($this->data['customizations'] as &$option) {
 
 					if (empty($option['id'])) {
 						database::query(
-							"insert into ". DB_TABLE_PREFIX ."products_options
+							"insert into ". DB_TABLE_PREFIX ."products_customizations
 							(product_id, group_id)
 							values (". (int)$this->data['id'] .", ". (int)$option['group_id'] .");"
 						);
@@ -440,7 +491,7 @@
 					}
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."products_options set
+						"update ". DB_TABLE_PREFIX ."products_customizations set
 							group_id = ". (int)$option['group_id'] .",
 							`function` = '". database::input($option['function']) ."',
 							required = ". (!empty($option['required']) ? 1 : 0) .",
@@ -453,7 +504,7 @@
 
 					// Delete option values
 					database::query(
-						"delete from ". DB_TABLE_PREFIX ."products_options_values
+						"delete from ". DB_TABLE_PREFIX ."products_customizations_values
 						where product_id = ". (int)$this->data['id'] ."
 						and group_id = ". (int)$option['group_id'] ."
 						and id not in ('". implode("', '", !empty($option['values']) ? array_column($option['values'], 'id') : []) ."');"
@@ -468,7 +519,7 @@
 							if (empty($value['id'])) {
 
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."products_options_values
+									"insert into ". DB_TABLE_PREFIX ."products_customizations_values
 									(product_id, group_id, value_id)
 									values (". (int)$this->data['id'] .", ". (int)$option['group_id'] .", ". (int)$value['value_id'] .");"
 								);
@@ -482,7 +533,7 @@
 							}
 
 							database::query(
-								"update ". DB_TABLE_PREFIX ."products_options_values set
+								"update ". DB_TABLE_PREFIX ."products_customizations_values set
 									group_id = ". (int)$option['group_id'] .",
 									value_id = ". (int)$value['value_id'] .",
 									custom_value = '". database::input($value['custom_value']) ."',
@@ -735,6 +786,7 @@
 				left join ". DB_TABLE_PREFIX ."products_attributes pa on (pa.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_prices pp on (pp.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_stock_options p2si on (p2si.product_id = p.id)
+				left join ". DB_TABLE_PREFIX ."products_customizations pcu on (pcu.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.product_id = p.id)
 				where p.id = ". (int)$this->data['id'] .";"
 			);

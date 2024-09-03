@@ -158,6 +158,7 @@ ALTER TABLE `lc_cart_items`
 CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `customer_id` `customer_id` INT(11) UNSIGNED NULL,
 CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NULL;
+CHANGE COLUMN `options` `userdata` VARCHAR(2048) NOT NULL DEFAULT '',
 -- -----
 ALTER TABLE `lc_categories`
 CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -309,13 +310,12 @@ ALTER TABLE `lc_orders_items`
 CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `order_id` `order_id` INT(11) UNSIGNED NOT NULL,
 CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NULL,
-CHANGE COLUMN `data` `userdata` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `dim_x` `length` FLOAT(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_y` `width` FLOAT(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_z` `height` FLOAT(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
-CHANGE COLUMN `options` `configuration` VARCHAR(1024) NOT NULL DEFAULT '',
+CHANGE COLUMN `options` `userdata` VARCHAR(2048) NULL AFTER `name`,
 CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT '',
 ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `tax`,
 ADD COLUMN `discount_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount`,
