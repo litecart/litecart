@@ -85,35 +85,22 @@
 					$this->_data['campaign'] = database::query(
 						"select *, min(
 							coalesce(
-								". implode(", ", array_map(function($currency_code){ return "if(`". database::input($currency_code) ."` != 0, `". database::input($currency_code) ."` * ". currency::$currencies[$currency_code]['value'] .", null)"; }, $this->_currency_codes)) ."
+								". implode(', ', array_map(function($currency_code){
+									return "if(`". database::input($currency_code) ."` != 0, `". database::input($currency_code) ."` * ". currency::$currencies[$currency_code]['value'] .", null)";
+								}, $this->_currency_codes)) ."
 							)
 						) as price
-						from ". DB_TABLE_PREFIX ."products_campaigns
+						from ". DB_TABLE_PREFIX ."campaigns_products
 						where product_id = ". (int)$this->_data['id'] ."
-						and (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
-						and (end_date is null or end_date >= '". date('Y-m-d H:i:s') ."')
+						and campaign_id in (
+							select id from ". DB_TABLE_PREFIX ."campaigns
+							where status
+							and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
+							and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."')
+						)
+						group by product_id
 						limit 1;"
 					)->fetch();
-
-					break;
-
-				case 'campaign':
-
-					$this->_data['campaign'] = [];
-
-					database::query(
-						"select *, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)) as price
-						from ". DB_TABLE_PREFIX ."products_campaigns
-						where product_id = ". (int)$this->_data['id'] ."
-						and (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
-						and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."');"
-					)->each(function($campaign) {
-						if ($campaign['price'] < $this->price) {
-							if (!isset($this->_data['campaign']['price']) || $campaign['price'] < $this->_data['campaign']['price']) {
-								$this->_data['campaign'] = $campaign;
-							}
-						}
-					});
 
 					break;
 

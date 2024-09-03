@@ -292,14 +292,19 @@
 			) pp on (pp.product_id = p.id)
 
 			left join (
-				select product_id, min(
-					coalesce(
-						". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
-					)
-				) as campaign_price
-				from ". DB_TABLE_PREFIX ."products_campaigns
-				where (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
-				and (end_date is null or end_date >= '". date('Y-m-d H:i:s') ."')
+				select product_id, min(coalesce(
+					". implode(", ", array_map(function($currency){
+						return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)";
+					}, currency::$currencies)) ."
+				)) as campaign_price
+				from ". DB_TABLE_PREFIX ."campaigns_products
+				where product_id = ". (int)$this->_data['id'] ."
+				and campaign_id in (
+					select id from ". DB_TABLE_PREFIX ."campaigns
+					where status
+					and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
+					and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."')
+				)
 				group by product_id
 			) pc on (pc.product_id = p.id)
 
@@ -547,14 +552,19 @@
 			) pp on (pp.product_id = p.id)
 
 			left join (
-				select product_id, min(
-					coalesce(
-						". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
-					)
-				) as campaign_price
-				from ". DB_TABLE_PREFIX ."products_campaigns
-				where (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
-				and (end_date is null or end_date >= '". date('Y-m-d H:i:s') ."')
+				select product_id, min(coalesce(
+					". implode(", ", array_map(function($currency){
+						return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)";
+					}, currency::$currencies)) ."
+				)) as campaign_price
+				from ". DB_TABLE_PREFIX ."campaigns_products
+				where product_id = ". (int)$this->_data['id'] ."
+				and campaign_id in (
+					select id from ". DB_TABLE_PREFIX ."campaigns
+					where status
+					and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
+					and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."')
+				)
 				group by product_id
 			) pc on (pc.product_id = p.id)
 

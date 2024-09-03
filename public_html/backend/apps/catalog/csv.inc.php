@@ -71,7 +71,7 @@
 						case 'campaigns':
 
 							database::multi_query(implode(PHP_EOL, [
-								"truncate ". DB_TABLE_PREFIX ."products_campaigns;",
+								"truncate ". DB_TABLE_PREFIX ."campaigns;",
 							]));
 
 							break;
@@ -109,10 +109,10 @@
 						case 'products':
 
 							database::multi_query(implode(PHP_EOL, [
+								"truncate ". DB_TABLE_PREFIX ."campaigns_products;",
 								"truncate ". DB_TABLE_PREFIX ."cart_items;",
 								"truncate ". DB_TABLE_PREFIX ."products;",
 								"truncate ". DB_TABLE_PREFIX ."products_attributes;",
-								"truncate ". DB_TABLE_PREFIX ."products_campaigns;",
 								"truncate ". DB_TABLE_PREFIX ."products_images;",
 								"truncate ". DB_TABLE_PREFIX ."products_info;",
 								"truncate ". DB_TABLE_PREFIX ."products_prices;",
@@ -303,7 +303,7 @@
 						// Find campaign
 						if (!empty($row['id'])) {
 							$campaign = database::query(
-								"select id from ". DB_TABLE_PREFIX ."products_campaigns
+								"select id from ". DB_TABLE_PREFIX ."campaigns
 								where id = ". (int)$row['id'] ."
 								limit 1;"
 							)->fetch();
@@ -331,7 +331,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."products_campaigns
+									"insert into ". DB_TABLE_PREFIX ."campaigns
 									(id, product_id)
 									values (". (int)$row['id'] .", '". $row['product_id'] ."');"
 								);
@@ -346,11 +346,11 @@
 						}
 
 						database::query(
-							"update ". DB_TABLE_PREFIX ."products_campaigns
-							set product_id = ". (int)$row['product_id'] .",
-									". $sql_update_prices ."
-									start_date = ". (empty($row['start_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['start_date'])) ."'") .",
-									end_date = ". (empty($row['end_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['end_date'])) ."'") ."
+							"update ". DB_TABLE_PREFIX ."campaigns
+							set status = ". (int)$row['status'] .",
+								name = '". database::input($row['name']) ."',
+								date_valid_from = ". (empty($row['date_valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['date_valid_from'])) ."'") .",
+								date_valid_to = ". (empty($row['date_valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['date_valid_to'])) ."'") ."
 							where id = ". (int)$row['id'] ."
 							limit 1;"
 						);
@@ -1200,7 +1200,7 @@
 				case 'campaigns':
 
 					$csv = database::query(
-						"select * from ". DB_TABLE_PREFIX ."products_campaigns
+						"select * from ". DB_TABLE_PREFIX ."campaigns
 						order by product_id;"
 					)->export($result)->fetch_all();
 

@@ -16,6 +16,36 @@ CREATE TABLE `lc_banners` (
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 -- -----
+CREATE TABLE `lc_campaigns` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
+	`name` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
+	`date_valid_from` TIMESTAMP NULL DEFAULT NULL,
+	`date_valid_to` TIMESTAMP NULL DEFAULT NULL,
+	`date_updated` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `date_valid_from` (`date_valid_from`) USING BTREE,
+	INDEX `date_valid_to` (`date_valid_to`) USING BTREE,
+	INDEX `status` (`status`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+-- -----
+CREATE TABLE `lc_campaigns_products` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`campaign_id` INT(11) UNSIGNED NOT NULL,
+	`product_id` INT(11) UNSIGNED NOT NULL,
+	`start_date` TIMESTAMP NULL DEFAULT NULL,
+	`end_date` TIMESTAMP NULL DEFAULT NULL,
+	`USD` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`EUR` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`SEK` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `product_id` (`product_id`) USING BTREE,
+	INDEX `campaign_id` (`campaign_id`) USING BTREE,
+	CONSTRAINT `campaign_price_to_campaign` FOREIGN KEY (`campaign_id`) REFERENCES `lc_campaigns` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT `campaign_price_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+-- -----
 CREATE TABLE `lc_customers_addresses` (
 	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`customer_id` INT(11) UNSIGNED NULL,

@@ -818,3 +818,53 @@
 			where ip_address = '". $order['ip_address'] ."';"
 		);
 	});
+
+	// Create missing currency columns in campaigns_products
+	$currencies = database::query(
+		"select code from ". DB_TABLE_PREFIX ."currencies;"
+	)->each(function($currency){
+		database::query(
+			"alter table ". DB_TABLE_PREFIX ."campaigns_products
+			add column `". $currency['code'] ."` float(11,4) not null default '0.0000';"
+		);
+	});
+
+	// Migrate product campaign prices to campaigns
+	$campaigns = [];
+
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."products_campaigns;"
+	)->each(function($campaign_product) use (&$campaigns) {
+
+		$valid_from = $campaign_product['date_valid_from'] ? date('YmdHis', strtotime($campaign_product['date_valid_from'])) : '0';
+		$valid_to = $campaign_product['date_valid_to'] ? date('YmdHis', strtotime($campaign_product['date_valid_to'])) : '0';
+
+		$campaigns[$valid_from.'-'.$valid_to][] = $campaign_product;
+	});
+
+	foreach ($campaigns as $campaign) {
+
+		database::query(
+			"insert into ". DB_TABLE_PREFIX ."campaigns
+			(name, date_valid_from, date_valid_to)
+			values ('', ". (!empty($campaign[0]['date_valid_from']) ? "'". $campaign[0]['date_valid_from'] ."'" : "null") .", ". (!empty($campaign[0]['date_valid_to']) ? "'". $campaign[0]['date_valid_to'] ."'" : "null") .");"
+		);
+
+		$campaign_id = database::insert_id();
+
+		$prices = array_filter($campaign_product, function ($key) {
+			return (preg_match('#^[A-Z]{3}$#', $key));
+		}, ARRAY_FILTER_USE_KEY);
+
+		foreach ($campaign as $campaign_product) {
+			database::query(
+				"insert into ". DB_TABLE_PREFIX ."campaigns_products
+				(campaign_id, product_id, `". implode("`, `", array_keys($prices)) ."`)
+				values (". (int)$campaign_id .", ". (int)$campaign_product['product_id'] .", '". implode("', '", $prices) ."');"
+			);
+		}
+	}
+
+	database::query(
+		"drop table ". DB_TABLE_PREFIX ."products_campaigns;"
+	);

@@ -1262,6 +1262,23 @@
 		}
 	}
 
+	function form_select_campaign($name, $input=true, $parameters='') {
+
+		$options = database::query(
+			"select id, name, date_valid_from, date_valid_to from ". DB_TABLE_PREFIX ."campaigns
+			order by status desc, name asc;"
+		)->fetch_all(function($campaign){
+			return [$campaign['id'], $campaign['name'], 'data-valid-from="'. ($campaign['date_valid_from'] ? date('Y-m-d H:i:s', strtotime($campaign['date_valid_from'])) : '') .'" data-valid-to="'. ($campaign['date_valid_to'] ? date('Y-m-d H:i:s', strtotime($campaign['date_valid_to'])) : '') .'"'];
+		});
+
+		if (preg_match('#\[\]$#', $name)) {
+			return form_select_multiple($name, $options, $input, $parameters);
+		} else {
+			array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
+			return form_select($name, $options, $input, $parameters);
+		}
+	}
+
 	function form_select_category($name, $input=true, $parameters='') {
 
 		if (preg_match('#\[\]$#', $name)) {

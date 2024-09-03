@@ -72,6 +72,7 @@
 		'docs' => [
 			'attribute_groups' => 'attribute_groups.inc.php',
 			'attribute_values.json' => 'attribute_values.json.inc.php',
+			'campaigns' => 'campaigns.inc.php',
 			'category_tree' => 'category_tree.inc.php',
 			'edit_attribute_group' => 'edit_attribute_group.inc.php',
 			'edit_product' => 'edit_product.inc.php',

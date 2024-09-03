@@ -101,9 +101,11 @@
 
 			// Campaigns
 			$this->data['campaigns'] = database::query(
-				"select * from ". DB_TABLE_PREFIX ."products_campaigns
-				where product_id = ". (int)$this->data['id'] ."
-				order by start_date;"
+				"select cp.*, c.name, c.date_valid_from, c.date_valid_to
+				from ". DB_TABLE_PREFIX ."campaigns_products cp
+				left join ". DB_TABLE_PREFIX ."campaigns c on (c.id = cp.campaign_id)
+				where cp.product_id = ". (int)$this->data['id'] ."
+				order by c.date_valid_from;"
 			)->fetch_all();
 
 			// Images
@@ -368,26 +370,36 @@
 
 			// Delete campaigns
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."products_campaigns
+				"delete from ". DB_TABLE_PREFIX ."campaigns_products
 				where product_id = ". (int)$this->data['id'] ."
-				and id not in ('". implode("', '", array_column($this->data['campaigns'], 'id')) ."');"
+				and id not in ('". implode("', '", array_column($this->data['campaigns'], 'campaign_id')) ."');"
 			);
 
 			// Update campaigns
-			if (!empty($this->data['campaigns'])) {
-				foreach ($this->data['campaigns'] as $key => $campaign) {
-					if (empty($campaign['id'])) {
-						database::query(
-							"insert into ". DB_TABLE_PREFIX ."products_campaigns
-							(product_id)
-							values (". (int)$this->data['id'] .");"
-						);
-						$campaign['id'] = database::insert_id();
-					}
+			foreach ($this->data['campaigns'] as $key => $campaign) {
 
-					$sql_currency_campaigns = implode(",".PHP_EOL, array_map(function($currency) use ($campaign) {
+				if (empty($campaign['id'])) {
+
+					database::query(
+						"insert into ". DB_TABLE_PREFIX ."campaigns_products
+						(campaign_id, product_id)
+						values (". (int)$this->data['campaign_id'] ."". (int)$this->data['id'] .");"
+					);
+
+					$this->data['campaigns'][$key]['id'] = $campaign['id'] = database::insert_id();
+				}
+
+				database::query(
+					"update ". DB_TABLE_PREFIX ."products_campaigns
+					set ". implode("," . PHP_EOL, array_map(function($currency) use ($campaign) {
 						return "`". database::input($currency['code']) ."` = ". (isset($campaign[$currency['code']]) ? (float)$campaign[$currency['code']] : 0);
-					}, currency::$currencies));
+					}, currency::$currencies)) ."
+					where product_id = ". (int)$this->data['id'] ."
+					and id = ". (int)$campaign['campaign_id'] ."
+					limit 1;"
+				);
+			}
+
 
 					database::query(
 						"update ". DB_TABLE_PREFIX ."products_campaigns
@@ -717,12 +729,13 @@
 			$this->save();
 
 			database::query(
-				"delete p, pi, pa, pp, pc, p2si, ptc
+				"delete p, cp, ci, pi, pa, pp, pcu, pso, ptc
 				from ". DB_TABLE_PREFIX ."products p
+				left join ". DB_TABLE_PREFIX ."campaigns_products cp on (cp.product_id = p.id)
+				left join ". DB_TABLE_PREFIX ."cart_items ci on (ci.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_info pi on (pi.id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_attributes pa on (pa.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_prices pp on (pp.product_id = p.id)
-				left join ". DB_TABLE_PREFIX ."products_campaigns pc on (pc.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_stock_options p2si on (p2si.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.product_id = p.id)
 				where p.id = ". (int)$this->data['id'] .";"

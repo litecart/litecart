@@ -467,17 +467,19 @@
 						</div>
 					</div>
 
-					<h2 style="margin-top: 2em;"><?php echo language::translate('title_campaigns', 'Campaigns'); ?></h2>
+					<h2 style="margin-top: 2em;">
+						<?php echo language::translate('title_campaigns', 'Campaigns'); ?>
+					</h2>
 
 					<div style="margin: 0 -2em -3em -2em">
 						<table id="campaigns" class="table table-striped data-table">
 							<thead>
 								<tr>
-									<th style="width: 50px;"><?php echo language::translate('title_id', 'ID'); ?></th>
-									<th style="width: 200px;"><?php echo language::translate('title_start_date', 'Start Date'); ?></th>
-									<th style="width: 200px;"><?php echo language::translate('title_end_date', 'End Date'); ?></th>
-									<th style="width: 200px;"><?php echo language::translate('title_percentage', 'Percentage'); ?></th>
-									<th style="width: 200px;"><?php echo language::translate('title_campaign_price', 'Campaign Price'); ?></th>
+									<th style="width: 50px;"><?php echo language::translate('title_campaign', 'Campaign'); ?></th>
+									<th style="width: 200px;"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
+									<th style="width: 200px;"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
+									<th style="width: 200px;"><?php echo language::translate('title_price', 'Price'); ?></th>
+									<th style="width: 200px;"><?php echo language::translate('title_discount', 'Discount'); ?></th>
 									<th></th>
 									<th style="width: 50px;"></th>
 								</tr>
@@ -486,10 +488,13 @@
 							<tbody>
 								<?php if (!empty($_POST['campaigns'])) foreach ($_POST['campaigns'] as $key => $campaign) { ?>
 								<tr>
-									<td><?php echo functions::form_input_hidden('campaigns['.$key.'][id]', true) . (int)$campaign['id']; ?></td>
-									<td><?php echo functions::form_input_datetime('campaigns['.$key.'][start_date]', true); ?></td>
-									<td><?php echo functions::form_input_datetime('campaigns['.$key.'][end_date]', true); ?></td>
-									<td><?php echo functions::form_input_percent('campaigns['.$key.'][percentage]', '', 2, 'min="0"'); ?></td>
+									<td>
+										<?php echo functions::form_input_hidden('campaigns['.$key.'][id]', true); ?>
+										<?php echo functions::form_input_hidden('campaigns['.$key.'][campaign_id]', true); ?>
+										<?php echo functions::escape_html($campaign['name']); ?>
+									</td>
+									<td><?php echo language::strftime('datetime', $campaign['date_valid_from']); ?></td>
+									<td><?php echo language::strftime('datetime', $campaign['date_valid_to']); ?></td>
 									<td>
 										<div class="dropdown">
 											<?php echo functions::form_input_money('campaigns['.$key.']['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
@@ -500,8 +505,13 @@
 											</ul>
 										</div>
 									</td>
+									<td><?php echo functions::form_input_percent('campaigns['.$key.'][percentage]', '', 2, 'min="0"'); ?></td>
 									<td></td>
-									<td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+									<td>
+										<a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
+											<?php echo functions::draw_fonticon('remove'); ?>
+										</a>
+									</td>
 								</tr>
 							<?php } ?>
 							</tbody>
@@ -509,7 +519,9 @@
 							<tfoot>
 								<tr>
 									<td colspan="7">
-										<button class="btn btn-default add" type="button"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_campaign', 'Add Campaign'); ?></button>
+										<button class="btn btn-default add" type="button">
+											<?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_campaign', 'Add Campaign'); ?>
+										</button>
 									</td>
 								</tr>
 							</tfoot>
