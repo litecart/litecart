@@ -1168,10 +1168,12 @@
 
 		let $output = $([
 			'<tr>',
-			'  <td><?php echo functions::escape_js(functions::form_input_hidden('campaigns[new_campaign_index][id]', '')); ?></td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_datetime('campaigns[new_campaign_index][start_date]', '')); ?></td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_datetime('campaigns[new_campaign_index][end_date]', '')); ?></td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_percent('campaigns[new_campaign_index][percentage]', '', 2)); ?></td>',
+			'  <td>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('campaigns[new_campaign_index][id]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_select_campaign('campaigns[new_campaign_index][campaign_id]', '', 'style="width: 200px;"')); ?>',
+			'  </td>',
+			'  <td><span class="campaign-valid-from"></span></td>',
+			'  <td><span class="campaign-valid-to"></span></td>',
 			'  <td>',
 			'    <div class="dropdown">',
 			'      <?php echo functions::escape_js(functions::form_input_money('campaigns[new_campaign_index]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?>',
@@ -1184,15 +1186,40 @@
 			'      </ul>',
 			'    </div>',
 			'  </td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_percent('campaigns[new_campaign_index][percentage]', '', 2)); ?></td>',
 			'  <td></td>',
-			'  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>',
+			'  <td>',
+			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>">',
+			'      <?php echo functions::escape_js(functions::draw_fonticon('remove')); ?>',
+			'    </a>',
+			'  </td>',
 			'</tr>'
-		].join('\n').replace(/new_campaign_index/g, 'new_' + new_campaign_index++));
+		].join('\n')
+			.replace(/new_campaign_index/g, 'new_' + new_campaign_index++)
+		);
+
+		$('.campaign-name', $output).text();
+		$('.campaign-valid-from', $output).text();
+		$('.campaign-valid-to', $output).text();
 
 		$('#campaigns tbody').append($output);
 	});
 
-		// Attributes
+	$('#campaigns select[name$="[campaign_id]"]').on('change', function(){
+
+		let $row = $(this).closest('tr');
+		$option = $(this).find('option:selected');
+
+		if ($(this).val() != '') {
+			$('.campaign-valid-from', $row).text($option.data('valid-from'));
+			$('.campaign-valid-to', $row).text($option.data('valid-to'));
+		} else {
+			$('.campaign-valid-from', $row).text('');
+			$('.campaign-valid-to', $row).text('');
+		}
+	});
+
+	// Attributes
 
 	$('select[name="new_attribute[group_id]"]').change(function(){
 
