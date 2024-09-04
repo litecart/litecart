@@ -1,5 +1,5 @@
 # Define some error documents
-ErrorDocument 401 "Access Forbidden"
+ErrorDocument 401 {WS_DIR_APP}error_document?code=401
 ErrorDocument 403 {WS_DIR_APP}error_document?code=403
 ErrorDocument 404 {WS_DIR_APP}error_document?code=404
 ErrorDocument 410 {WS_DIR_APP}error_document?code=410
@@ -59,7 +59,7 @@ ErrorDocument 500 "Internal Server Error"
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^ {WS_DIR_APP}storage/images/favicons/favicon-256x256.png [L]
 
-  # Web path to catalog root
+  # Web path to application root
   RewriteBase {WS_DIR_APP}
 
   # No rewrite logic for physical files

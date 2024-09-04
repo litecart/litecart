@@ -5,14 +5,10 @@
 	display: block;
 	width: 100%;
 	padding: .75em 1em;
-
 	background-color: var(--input-background-color);
-
 	color: var(--input-text-color);
-
 	border: var(--input-border-size) solid var(--input-border-color);
 	border-radius: var(--border-radius);
-
 	box-shadow: none;
 }
 
@@ -128,8 +124,19 @@ input[type="number"] {
 }
 
 .dropdown .form-select + .dropdown-menu {
-	> .active {
-		font-weight: bold;
+	.option {
+		label:hover {
+			background-filter: brightness(0.95);
+		}
+		input[type="checkbox"],
+		input[type="radio"] {
+			display: none;
+		}
+		&:has(input[type="checkbox"]:checked),
+		&:has(input[type="radio"]:checked) {
+			font-weight: bold;
+			background-filter: brightness(0.90);
+		}
 	}
 }
 

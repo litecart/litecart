@@ -99,8 +99,6 @@
 			'edit_stock_transaction' => 'edit_stock_transaction.inc.php',
 			'edit_attribute_group' => 'edit_attribute_group.inc.php',
 			'edit_product' => 'edit_product.inc.php',
-			'edit_product2' => 'edit_product2.inc.php',
-			'edit_product3' => 'edit_product3.inc.php',
 			'edit_category' => 'edit_category.inc.php',
 			'edit_brand' => 'edit_brand.inc.php',
 			'edit_campaign' => 'edit_campaign.inc.php',
