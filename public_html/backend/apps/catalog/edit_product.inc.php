@@ -1381,45 +1381,258 @@
 		});
 	}).trigger('change');
 
-		// Stock
+// Customizations
 
-	$('#table-stock').on('input', 'input[name="quantity"]', function(){
-		$('input[name="quantity_adjustment"]').val( parseFloat($(this).val() || 0) - parseFloat($(this).data('quantity') || 0) );
-	});
+  $('#customizations').on('click', '.remove-group', function(e) {
+    e.preventDefault();
+    $(this).closest('li').remove();
+  });
 
-	$('#table-stock').on('input', 'input[name="quantity_adjustment"]', function(){
-		$('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').data('quantity') || 0) + parseFloat($(this).val() || 0) );
-	});
+  $('#customizations').on('click', '.move-group-up, .move-group-down', function(e) {
+    e.preventDefault();
+    var row = $(this).closest('li');
+    if ($(this).is('.move-group-up') && $(row).prevAll().length > 0) {
+      $(row).insertBefore($(row).prev());
+    } else if ($(this).is('.move-group-down') && $(row).nextAll().length > 0) {
+      $(row).insertAfter($(row).next());
+    }
+  });
 
-	$('#table-stock').on('input', 'input[name$="[quantity]"]', function(){
-		var adjustment_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
-		$(adjustment_field).val( parseFloat($(this).val() || 0) - parseFloat($(this).data('quantity') || 0) );
+  $('#customizations').on('click', 'button[name="remove"]', function(e) {
+    e.preventDefault();
+    $(this).closest('tr').remove();
+  });
 
-		$('input[name="quantity"]').val(0);
-		$(this).closest('tbody').find('input[name$="[quantity]"]').each(function() {
-			$('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val() || 0) + parseFloat($(this).val() || 0) );
-		});
+  $('#customizations').on('click', 'button[name="move-up"], button[name="move-down"]', function(e) {
 
-		$('input[name="quantity_adjustment"]').val(0);
-		$(this).closest('tbody').find('input[name$="[quantity_adjustment]"]').each(function() {
-			$('input[name="quantity_adjustment"]').val( parseFloat($('input[name="quantity_adjustment"]').val() || 0) + parseFloat($(this).val() || 0) );
-		});
-	});
+    e.preventDefault();
 
-	$('#table-stock').on('input', 'input[name$="[quantity_adjustment]"]', function(){
-		var qty_field = $(this).closest('tr').find('input[name$="[quantity]"]');
-		$(qty_field).val( parseFloat($(qty_field).data('quantity') || 0) + parseFloat($(this).val() || 0) );
+    var $row = $(this).closest('tr');
 
-		$('input[name="quantity"]').val(0);
-		$(this).closest('tbody').find('input[name$="[quantity]"]').each(function() {
-			$('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val() || 0) + parseFloat($(this).val() || 0) );
-		});
+    if ($(this).is('.move-up') && $row.prevAll().length > 0) {
+      $row.insertBefore($row.prev());
+    } else if ($(this).is('.move-down') && $row.nextAll().length > 0) {
+      $row.insertAfter($row.next());
+    }
+  });
 
-		$('input[name="quantity_adjustment"]').val(0);
-		$(this).closest('tbody').find('input[name$="[quantity_adjustment]"]').each(function() {
-			$('input[name="quantity_adjustment"]').val( parseFloat($('input[name="quantity_adjustment"]').val() || 0) + parseFloat($(this).val() || 0) );
-		});
-	});
+  $('body').on('change', '.featherlight select[name="new_predefined_customization[group_id]"]', function(){
+    $.ajax({
+      url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + $(this).val(),
+      type: 'get',
+      cache: true,
+      async: true,
+      dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+      },
+      success: function(data) {
+        $('select[name="new_predefined_customization[value_id]"]').html('');
+        if ($('select[name="new_predefined_customization[value_id]"]').attr('disabled')) $('select[name="new_predefined_customization[value_id]"]').prop('disabled', false);
+        if (data) {
+          $('select[name="new_predefined_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
+          $.each(data, function(i, zone) {
+            $('select[name="new_predefined_customization[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
+          });
+        } else {
+          $('select[name="new_predefined_customization[value_id]"]').prop('disabled', true);
+        }
+      },
+    });
+  });
+
+  $('body').on('change', '.featherlight select[name="new_user_input_customization[group_id]"]', function(){
+    $.ajax({
+      url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + $(this).val(),
+      type: 'get',
+      cache: true,
+      async: true,
+      dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+      },
+      success: function(data) {
+        $('select[name="new_user_input_customization[value_id]"]').html('');
+        if ($('select[name="new_user_input_customization[value_id]"]').attr('disabled')) $('select[name="new_user_input_customization[value_id]"]').prop('disabled', false);
+        if (data) {
+          $('select[name="new_user_input_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
+          $.each(data, function(i, zone) {
+            $('select[name="new_user_input_customization[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
+          });
+        } else {
+          $('select[name="new_user_input_customization[value_id]"]').prop('disabled', true);
+        }
+      },
+    });
+  });
+
+  $('body').on('change', '.featherlight select[name="new_predefined_customization[value_id]"]', function(){
+    $('input[name="new_predefined_customization[custom_value]"]').val('');
+  });
+
+  $('body').on('keydown', '.featherlight input[name="new_predefined_customization[custom_value]"]', function(){
+    $('select[name="new_predefined_customization[value_id]"]').val('0');
+  });
+
+  var new_customization_group_i = 1,
+  	new_customization_value_i = 1;
+
+  $('body').on('click', '.featherlight button[name="add_predefined_customization"]', function(e) {
+    e.preventDefault();
+
+    var groupElement = $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"]'),
+			valueElement = $(this).closest('fieldset').find('select[name="new_predefined_customization[value_id]"]'),
+			customValueElement = $(this).closest('fieldset').find('input[name="new_predefined_customization[custom_value]"]');
+
+    if ($(groupElement).val() == '') {
+      alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
+      return;
+    }
+    if ($(valueElement).val() == '' || $(valueElement).val() == '0') {
+      if ($(customValueElement).val() == '') {
+        alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_value', 'You must select an attribute value')); ?>");
+        return;
+      }
+    } else {
+      if ($(customValueElement).val() != '') {
+        console.log($(valueElement).val(), $(customValueElement).val());
+        alert("<?php echo functions::escape_js(language::translate('error_cannot_define_both_value_and_custom_value', 'You cannot define both a value and a custom value')); ?>");
+        return;
+      }
+    }
+
+    if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').length) {
+      if ($(customValueElement).val() != '') {
+        if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[custom_value]"][value="'+ escape($(customValueElement).val()) +'"]').length) {
+          alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>");
+          return;
+        }
+
+      } else {
+        if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').closest('tr').find('input[name$="[custom_value]"]').val() == $(customValueElement).val()) {
+          alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>");
+          return;
+        }
+      }
+    }
+
+    if (!$('#customizations input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
+
+      var $output = $([
+				'<li data-group-id="'+ escapeHTML($(groupElement).val()) +'" data-group-name="'+ escapeHTML($(groupElement).find('option:selected').text()) +'">',
+				'  <div class="float-end">',
+				'    <a class="btn btn-default move-group-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-up', 'style="color: #3399cc;"'); ?></a>',
+				'    <a class="btn btn-default move-group-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-down', 'style="color: #3399cc;"'); ?></a>',
+				'    <a class="btn btn-default remove-group" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times', 'style="color: #cc3333;"'); ?></a>',
+				'  </div>',
+				'  <h2>'+ $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"] option:selected').text() +'</h2>',
+				'  <?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
+				'  <div class="row">',
+				'    <div class="form-group col-sm-4 col-md-2">',
+				'      <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
+				'      <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][function]', ['select', 'radio', 'checkbox'], 'select')); ?>',
+				'    </div>',
+				'    <div class="form-group col-sm-4 col-md-2">',
+				'      <label><?php echo functions::escape_js(language::translate('title_sort_values', 'Sort Values')); ?></label>',
+				'      <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][sort]', $customizations_sort_options, 'custom')); ?>',
+				'    </div>',
+				'    <div class="form-group col-sm-4 col-md-2">',
+				'      <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
+				'      <div class="checkbox">',
+				'        <label><?php echo functions::form_checkbox('customizations[new_group_id][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
+				'      </div>',
+				'    </div>',
+				'  </div>',
+				'  <div class="table-responsive">',
+				'    <table id="table-customizations" class="table table-striped table-hover table-dragable data-table">',
+				'      <thead>',
+				'        <tr>',
+				'          <th><?php echo functions::escape_js(language::translate('title_option', 'Option')); ?></th>',
+				'          <th style="width: 150px;"><?php echo functions::escape_js(language::translate('title_price_operator', 'Price Operator')); ?></th>',
+				'          <th colspan="<?php echo count(currency::$currencies); ?>"><?php echo functions::escape_js(language::translate('title_price_adjustment', 'Price Adjustment')); ?></th>',
+				'          <th style="width: 85px;">&nbsp;</th>',
+				'        </tr>',
+				'      </thead>',
+				'      <tbody>',
+				'      </tbody>',
+				'    </table>',
+				'  </div>',
+				'</li>'
+			].join('\n')
+				.replace(/new_customization_group_i/g, 'new_' + new_customization_group_i++)
+				.replace(/new_group_id/g, $(groupElement).val())
+				.replace(/new_group_name/g, $(groupElement).find('option:selected').text())
+			);
+
+			$('#customizations').append($output);
+    }
+
+    var $output = $([
+			'<tr data-value-id="'+ escapeHTML($(valueElement).val()) +'" data-value-name="'+ escapeHTML(($(valueElement).val() != 0) ? $(valueElement).find('option:selected').text() : $(customValueElement).val()) +'">',
+      '  <td class="grabable"><?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][value_id]', 'new_value_id')) . functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>',
+      '  <td class="text-center"><?php echo functions::escape_js(functions::form_select('customizations[new_group_id][values][new_customization_value_i][price_operator]', ['+','%','*','='], true)); ?></td>',
+      '  <?php foreach ($currency_codes as $currency_code) echo '<td style="width: 200px;">'. functions::escape_js(functions::form_select_currency($currency_code, 'customizations[new_group_id][values][new_customization_value_i]['. $currency_code. ']', '')) .'</td>'; ?>',
+      '  <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>',
+      '</tr>'
+		].join('\n')
+			.replace(/new_customization_value_i/g, 'new_' + new_customization_value_i++)
+			.replace(/new_group_id/g, $(groupElement).val())
+			.replace(/new_value_id/g, $(valueElement).val())
+			.replace(/new_custom_value/g, $(customValueElement).val().replace(/"/, '&quot;'))
+		);
+
+    $(':input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('tbody').append($output);
+
+    $.featherlight.close();
+  });
+
+  $('body').on('click', '.featherlight button[name="add_user_input_option"]', function(e) {
+    e.preventDefault();
+
+    var groupElement = $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"]');
+
+    if ($(groupElement).val() == '') {
+      alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
+      return;
+    }
+
+    if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
+      alert("<?php echo functions::escape_js(language::translate('error_group_already_defined', 'This group is already defined')); ?>");
+      return;
+    }
+
+    var $output = $([
+			'<li>',
+			'  <div class="float-end">',
+			'    <a class="move-group-up btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-up', 'style="color: #3399cc;"'); ?></a>',
+			'    <a class="move-group-down btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-down', 'style="color: #3399cc;"'); ?></a>',
+			'    <a class="remove-group btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times', 'style="color: #cc3333;"'); ?></a>',
+			'  </div>',
+			'  <h2>'+ $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"] option:selected').text() +'</h2>',
+			'  <?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
+			'  <div class="row">',
+			'    <div class="form-group col-sm-4 col-md-2">',
+			'      <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
+			'      <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][function]', ['text', 'textarea'], 'text')); ?>',
+			'    </div>',
+			'    <div class="form-group col-sm-4 col-md-2">',
+			'      <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
+			'      <div class="checkbox">',
+			'        <label><?php echo functions::form_checkbox('customizations[new_group_id][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
+			'      </div>',
+			'    </div>',
+			'  </div>',
+			'</li>'
+		].join('\n')
+			.replace(/new_group_id/g, $(groupElement).val())
+			.replace(/new_group_name/g, $(groupElement).find('option:selected').text())
+		);
+
+    $('#customizations').append($output);
+
+    $.featherlight.close();
+  });
+
 
 	$('#table-stock').on('click', '.remove', function(e) {
 		e.preventDefault();
