@@ -554,7 +554,12 @@
 			) pc on (pc.product_id = p.id)
 
 			left join (
-				select pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_items, sum(si.quantity) as quantity, (si.quantity - oi.quantity_reserved) as quantity_available
+				select
+					pso.product_id,
+					pso.id as stock_option_id,
+					count(pso.id) as num_stock_options,
+					sum(si.quantity) as quantity,
+					(si.quantity - oi.quantity_reserved) as quantity_available
 				from ". DB_TABLE_PREFIX ."products_stock_options pso
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 				left join (
@@ -573,7 +578,7 @@
 			left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
 
 			where (p.id
-				and (pso.num_stock_items = 0 or pso.quantity_available > 0 or ss.hidden != 1)
+				and (ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)
 				". (!empty($sql_where) ? implode(" and ", $sql_where) : "") ."
 			)
 

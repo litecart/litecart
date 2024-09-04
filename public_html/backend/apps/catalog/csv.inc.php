@@ -132,7 +132,7 @@
 						case 'product_stock_options':
 
 							database::multi_query(implode(PHP_EOL, [
-								"truncate ". DB_TABLE_PREFIX ."product_options_stock;",
+								"truncate ". DB_TABLE_PREFIX ."product_stock_options;",
 							]));
 
 							break;
@@ -141,6 +141,16 @@
 
 							database::multi_query(implode(PHP_EOL, [
 								"truncate ". DB_TABLE_PREFIX ."suppliers;",
+							]));
+
+							break;
+
+						case 'stock_items':
+
+							database::multi_query(implode(PHP_EOL, [
+								"truncate ". DB_TABLE_PREFIX ."products_stock_options;",
+								"truncate ". DB_TABLE_PREFIX ."stock_items;",
+								"truncate ". DB_TABLE_PREFIX ."stock_items_info;",
 							]));
 
 							break;
@@ -824,7 +834,7 @@
 
 					case 'product_stock_options':
 
-						foreach (['product_id', 'sku'] as $column) {
+						foreach (['product_id', 'stock_item_id'] as $column) {
 							if (empty($row[$column])) {
 								throw new Exception("Missing value for mandatory column $column on line $i");
 							}
@@ -1374,6 +1384,7 @@
 								<?php echo functions::form_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
 								<?php echo functions::form_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true); ?>
 								<?php echo functions::form_radio_button('type', ['products', language::translate('title_products', 'Products')], true); ?>
+								<?php echo functions::form_radio_button('type', ['product_stock_options', language::translate('title_product_stock_options', 'Product Stock Options')], true); ?>
 								<?php echo functions::form_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true); ?>
 								<?php echo functions::form_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
 							</div>
@@ -1434,6 +1445,7 @@
 								<?php echo functions::form_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
 								<?php echo functions::form_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true, 'data-dependencies="language"'); ?>
 								<?php echo functions::form_radio_button('type', ['products', language::translate('title_products', 'Products')], true, 'data-dependencies="currency,language"'); ?>
+								<?php echo functions::form_radio_button('type', ['product_stock_options', language::translate('title_product_stock_options', 'Product Stock Options')], true); ?>
 								<?php echo functions::form_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true, 'data-dependencies="language"'); ?>
 								<?php echo functions::form_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
 							</div>

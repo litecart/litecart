@@ -334,95 +334,7 @@
 							});
 						}
 
-						$this->_data['options'][$option['group_id']] = $option;
-					});
-
-					break;
-
-				case 'options_stock':
-
-					$this->_data['options_stock'] = [];
-
-					database::query(
-						"select * from ". DB_TABLE_PREFIX ."products_options_stock
-						where product_id = ". (int)$this->_data['id'] ."
-						". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
-						order by priority asc;"
-					)->each(function($stock_option){
-
-						if (empty($stock_option['tax_class_id'])) {
-							$stock_option['tax_class_id'] = $this->tax_class_id;
-						}
-
-						if (empty($stock_option['sku'])) {
-							$stock_option['sku'] = $this->sku;
-						}
-
-						if (empty($stock_option['weight']) || (float)$stock_option['weight'] == 0) {
-							$stock_option['weight'] = $this->weight;
-							$stock_option['weight_class'] = $this->weight_class;
-						}
-
-						if (empty($stock_option['dim_x'])) {
-							$stock_option['dim_x'] = $this->dim_x;
-							$stock_option['dim_y'] = $this->dim_y;
-							$stock_option['dim_z'] = $this->dim_z;
-							$stock_option['dim_class'] = $this->dim_class;
-						}
-
-						$stock_option['quantity_available'] = null;
-
-						$stock_option['reserved_quantity'] = database::query(
-							"select sum(quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
-							left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
-							where oi.product_id = ". (int)$this->_data['id'] ."
-							and oi.option_stock_combination = '". database::input($stock_option['combination']) ."'
-							and o.order_status_id in (
-								select id from ". DB_TABLE_PREFIX ."order_statuses
-								where stock_action = 'reserve'
-							);"
-						)->fetch('total_reserved');
-
-						$stock_option['quantity_available'] = $stock_option['quantity'] - $stock_option['reserved_quantity'];
-
-						$stock_option['name'] = [];
-
-						foreach (explode(',', $stock_option['combination']) as $combination) {
-							list($group_id, $value_id) = explode('-', $combination);
-
-							if (preg_match('#^0:"?(.*?)"?$#', $value_id, $matches)) {
-
-								foreach (array_keys(language::$languages) as $language_code) {
-									$stock_option['name'][$language_code] = $matches[1];
-								}
-
-							} else {
-
-								$options_values_query = database::query(
-									"select * from ". DB_TABLE_PREFIX ."products_options_values pov
-									left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pov.value_id)
-									where pov.value_id = ". (int)$value_id ."
-									and avi.language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-									order by field(avi.language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-								);
-
-								while ($option_value_info = database::fetch($options_values_query)) {
-
-									foreach ($option_value_info as $key => $value) {
-										if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
-										if (!is_array(empty($stock_option[$key][$option_value_info['value_id']]))) continue;
-										if (empty($stock_option[$key][$option_value_info['value_id']])) {
-											$stock_option[$key][$option_value_info['value_id']] = $value;
-										}
-									}
-
-								}
-							}
-						}
-
-						$stock_option['name'] = implode(',', $stock_option['name']);
-
-						$this->_data['options_stock'][$stock_option['id']] = $stock_option;
+						$this->_data['customizations'][$customization['group_id']] = $customization;
 					});
 
 					break;
@@ -539,6 +451,31 @@
 							}
 						}
 					});
+
+					break;
+
+				case 'stock_options':
+
+					$this->_data['stock_options'] = database::query(
+						"select si.*, pso.*, sii.name, ifnull(oi.quantity_reserved, 0) as quantity_reserved, si.quantity - ifnull(oi.quantity_reserved, 0) as quantity_available
+						from ". DB_TABLE_PREFIX ."products_stock_options pso
+						left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+						left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = pso.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+						left join (
+							select product_id, stock_item_id, sum(quantity) as quantity_reserved
+							from ". DB_TABLE_PREFIX ."orders_items
+							where order_id in (
+								select id from ". DB_TABLE_PREFIX ."orders
+								where order_status_id in (
+									select id from ". DB_TABLE_PREFIX ."order_statuses
+									where stock_action = 'reserve'
+								)
+							)
+							group by stock_item_id
+						) oi on (oi.product_id = pso.product_id and oi.stock_item_id = pso.id)
+						where pso.product_id = ". (int)$this->_data['id'] ."
+						order by pso.priority asc;"
+					)->fetch_all();
 
 					break;
 

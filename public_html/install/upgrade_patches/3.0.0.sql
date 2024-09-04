@@ -94,8 +94,7 @@ CREATE TABLE `lc_stock_transactions` (
 CREATE TABLE `lc_stock_transactions_contents` (
 	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`transaction_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-	`product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-	`sku` varchar(32) UNSIGNED NOT NULL DEFAULT '0',
+	`stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 	`quantity_adjustment` FLOAT(11,4) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
@@ -109,6 +108,8 @@ RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
 RENAME TABLE `lc_products_options` TO `lc_products_customizations`;
 -- -----
 RENAME TABLE `lc_products_options_values` TO `lc_products_customizations_values`;
+-- -----
+RENAME TABLE `lc_products_options_stock` TO `lc_products_stock_options`;
 -- -----
 RENAME TABLE `lc_users` TO `lc_administrators`;
 -- -----
@@ -157,8 +158,10 @@ ADD INDEX `brand_id` (`brand_id`);
 ALTER TABLE `lc_cart_items`
 CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `customer_id` `customer_id` INT(11) UNSIGNED NULL,
-CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NULL;
+CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NULL,
 CHANGE COLUMN `options` `userdata` VARCHAR(2048) NOT NULL DEFAULT '',
+ADD COLUMN `stock_option_id` INT(11) UNSIGNED NULL AFTER `product_id`,
+ADD COLUMN `image` VARCHAR(255) NOT NULL DEFAULT '' AFTER `userdata`;
 -- -----
 ALTER TABLE `lc_categories`
 CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -317,6 +320,7 @@ CHANGE COLUMN `dim_z` `height` FLOAT(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `options` `userdata` VARCHAR(2048) NULL AFTER `name`,
 CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT '',
+ADD COLUMN `stock_item_id` INT(11) UNSIGNED NULL AFTER `product_id`,
 ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `tax`,
 ADD COLUMN `discount_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount`,
 ADD COLUMN `sum` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount_tax`,
@@ -324,7 +328,7 @@ ADD COLUMN `sum_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `sum`,
 ADD COLUMN `downloads` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `length_unit`,
 ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `downloads`,
 ADD INDEX `product_id` (`product_id`),
-ADD INDEX `stock_option_id` (`stock_option_id`);
+ADD INDEX `stock_item_id` (`stock_item_id`);
 -- -----
 ALTER TABLE `lc_orders_totals`
 CHANGE COLUMN `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -426,6 +430,7 @@ CHANGE COLUMN `dim_x` `length` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_y` `width` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_z` `height` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
+ADD COLUMN `stock_item_id` INT(11) UNSIGNED NOT NULL AFTER `product_id`,
 ADD COLUMN `purchase_price` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `length_unit`,
 ADD COLUMN `backordered` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `quantity`,
 ADD UNIQUE KEY `product_stock_option` (`product_id`, `attributes`),
@@ -556,9 +561,9 @@ INSERT INTO `lc_stock_transactions` (id, name, description)
 VALUES (1, 'Initial Stock Transaction', 'This is an initial system generated stock transaction to deposit stock for all sold items and items in stock. We need this for future inconcistency checks.');
 -- -----
 INSERT INTO `lc_stock_transactions_contents`
-(transaction_id, product_id, stock_option_id, quantity_adjustment)
-SELECT '1' AS transaction_id, product_id, stock_option_id, quantity_adjustment FROM (
-	SELECT product_id, stock_option_id, SUM(quantity) as quantity_adjustment FROM (
+(transaction_id, stock_item_id, quantity_adjustment)
+SELECT '1' AS transaction_id, product_id, stock_item_id, quantity_adjustment FROM (
+	SELECT product_id, stock_item_id, SUM(quantity) as quantity_adjustment FROM (
 
 		SELECT pso.product_id, pso.id AS stock_option_id, pso.quantity
 		FROM `lc_products_stock_options` pso
@@ -893,8 +898,7 @@ ADD CONSTRAINT `sold_out_status_info_to_language` FOREIGN KEY (`language_code`) 
 -- -----
 ALTER TABLE `lc_stock_transactions_contents`
 ADD CONSTRAINT `stock_transaction_content_to_transaction` FOREIGN KEY (`transaction_id`) REFERENCES `lc_stock_transactions` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `stock_transaction_content_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE NO ACTION,
-ADD CONSTRAINT `stock_transaction_content_to_stock_option` FOREIGN KEY (`sku`) REFERENCES `lc_products_options_stock` (`sku`) ON UPDATE CASCADE ON DELETE NO ACTION;
+ADD CONSTRAINT `stock_transaction_content_to_stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE CASCADE ON DELETE SET NULL;
 -- -----
 ALTER TABLE `lc_tax_rates`
 ADD CONSTRAINT `tax_rate_to_tax_class` FOREIGN KEY (`tax_class_id`) REFERENCES `lc_tax_classes` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,

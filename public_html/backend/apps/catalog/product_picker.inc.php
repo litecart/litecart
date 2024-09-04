@@ -21,7 +21,6 @@
 				<tr>
 					<th><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
 					<th><?php echo language::translate('title_stock_options', 'Stock Options'); ?></th>
 					<th><?php echo language::translate('title_price', 'Price'); ?></th>
 					<th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
@@ -82,7 +81,6 @@
 						'<tr>',
 						'  <td>' + row.id + '</td>',
 						'  <td>' + row.name + '</td>',
-						'  <td>' + row.sku + '</td>' +
 						'  <td class="text-center">' + (row.num_stock_options ? row.num_stock_options : '-') + '</td>',
 						'  <td class="text-end">' + row.price.formatted + '</td>',
 						'  <td class="text-end">' + row.quantity + '</td>',
@@ -106,21 +104,31 @@
 
 	$('#modal-product-picker tbody').on('click', 'td', function() {
 
-		var product = $(this).closest('tr').data();
+		let $row = $(this).closest('tr'),
+			callback = $.featherlight.current().$currentTarget.data('callback'),
+			expand = <?php echo (isset($_GET['collect']) && array_intersect(['price', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
+			product = $row.data();
 
-		if ($.featherlight.current().$currentTarget.trigger('pick', product) === false) return;
+		if (expand || $row.data('stock_option')) {
+			callback = function(product){
+				$.featherlight('<?php echo document::ilink(__APP__.'/product_picker_configure', ['callback' => @$_GET['callback']]);?>&product_id='+ product.id);
+			}
+		}
 
-		var $input_group = $.featherlight.current().$currentTarget.closest('.input-group'),
-			$field = $input_group.find(':input');
+		if (callback) {
 
-		$field.val(product.id || 0)
-			.data('sku', product.sku || '')
-			.data('price', product.price.amount || 0)
-			.data('price-formatted', product.priceFormatted || '')
-			.trigger('change');
+			if (typeof callback == 'function') {
+				callback(product);
+			} else {
+				window[callback](product);
+			}
 
-		$input_group.find('.id').text(product.id || 0);
-		$input_group.find('.name').text(product.name || '(<?php echo functions::escape_js(language::translate('title_no_product', 'No Product')); ?>)');
+		} else if ($.featherlight.current().$currentTarget.closest('.input-group').length) {
+			let $field = $.featherlight.current().$currentTarget.closest('.input-group');
+			$field.find(':input').val(product.id).trigger('change');
+			$field.find('.id').text(product.id);
+			$field.find('.name').text(product.name);
+		}
 
 		if ($.featherlight.opened) {
 			$.featherlight.close();

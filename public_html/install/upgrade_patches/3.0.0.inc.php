@@ -431,6 +431,7 @@
 
 	perform_action('copy', [
 		FS_DIR_APP . 'install/data/default/storage/images/favicon*' => FS_DIR_STORAGE . 'images/',
+		FS_DIR_APP . 'install/data/default/storage/images/stock_items/' => FS_DIR_STORAGE . 'images/stock_items/',
 	]);
 
 	perform_action('modify', [
@@ -604,21 +605,85 @@
 		);
 	}
 
- 	// Migrate PHP serialized configurations to JSON
+	// Separate product configurations from stock options
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."orders_items;"
+		"select * from ". DB_TABLE_PREFIX ."products_stock_options;"
+	)->each(function($stock_item){
+		foreach (explode(',', $stock_item['attributes']) as $pair) {
+
+			list($group_id, $value_id) = explode('-', $pair);
+
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."products_customizations_values
+				where product_id = ". (int)$stock_item['product_id'] ."
+				and (group_id = ". (int)$group_id ." and value_id = ". (int)$value_id .");"
+			);
+
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."products_customizations
+				where product_id = ". (int)$stock_item['product_id'] ."
+				and group_id = ". (int)$group_id ."
+				and product_id not in (
+					select product_id from ". DB_TABLE_PREFIX ."products_customizations_values
+					where product_id = ". (int)$stock_item['product_id'] ."
+					and group_id = ". (int)$group_id ."
+				);"
+			);
+		}
+	});
+
+	database::query(
+		"ALTER TABLE `lc_orders_items`
+		DROP COLUMN `attributes`;"
+	);
+
+	database::query(
+		"ALTER TABLE `products_stock_options`
+		DROP COLUMN `attributes`;"
+	);
+
+ 	// Migrate PHP serialized userdata to JSON
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."cart_items;"
 	)->each(function($item){
 
-		$item['configuration'] = unserialize($item['configuration']);
+		$item['userdata'] = unserialize($item['userdata']);
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."orders_items
-			set configuration = '". (!empty($item['configuration']) ? json_encode($item['configuration'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : '') ."'
+			"update ". DB_TABLE_PREFIX ."cart_items
+			set userdata = '". (!empty($item['userdata']) ? json_encode($item['userdata'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : '') ."'
 			where id = ". (int)$item['id'] ."
 			limit 1;"
 		);
 	});
 
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."orders_items;"
+	)->each(function($item){
+
+		$item['userdata'] = unserialize($item['userdata']);
+
+		database::query(
+			"update ". DB_TABLE_PREFIX ."orders_items
+			set userdata = '". (!empty($item['userdata']) ? json_encode($item['userdata'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : '') ."'
+			where id = ". (int)$item['id'] ."
+			limit 1;"
+		);
+	});
+
+ 	// Migrate Stock Options
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."products_stock_options;"
+	)->each(function($stock_option){
+
+		// Remove combination from order item
+		database::query(
+			"update ". DB_TABLE_PREFIX ."orders_items
+			set stock_item_id = ". (int)$stock_item['stock_item_id'] .",
+				attributes = '',
+			where product_id = ". (int)$stock_option['product_id'] ."
+			and attributes = '". database::input($stock_option['attributes']) ."';"
+		);
 	});
 
 	// Download Product Configurations Add-On

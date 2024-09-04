@@ -898,7 +898,7 @@
 						<?php echo functions::form_input_hidden('items['.$key.'][id]', true); ?>
 						<?php echo functions::form_input_hidden('items['.$key.'][type]', true); ?>
 						<?php echo functions::form_input_hidden('items['.$key.'][product_id]', true); ?>
-						<?php echo functions::form_input_hidden('items['.$key.'][option_stock_combination]', true); ?>
+						<?php echo functions::form_input_hidden('items['.$key.'][stock_item_id]', true); ?>
 						<?php echo functions::form_input_hidden('items['.$key.'][name]', true); ?>
 						<?php echo functions::form_input_hidden('items['.$key.'][data]', true); ?>
 						<?php echo functions::form_input_hidden('items['.$key.'][sku]', true); ?>
@@ -1662,7 +1662,7 @@
 
 	window.addItem = function(item) {
 		$output.find('*[name$="[product_id]"]').val(item.product_id);
-		$output.find('*[name$="[stock_option_id]"]').val(item.stock_option_id);
+		$output.find('*[name$="[stock_item_id]"]').val(item.stock_item_id);
 		$output.find('*[name$="[sku]"]').val(item.sku);
 		$output.find('*[name$="[name]"]').val(item.name);
 		$output.find('*[name$="[gtin]"]').val(item.gtin);
@@ -1700,7 +1700,7 @@
 				'    <td class="grabable">' + item.name,
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][id]', '')); ?>',
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][product_id]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][stock_option_id]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][stock_item_id]', '')); ?>',
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][name]', '')); ?>',
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][description]', '')); ?>',
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][data]', '')); ?>',

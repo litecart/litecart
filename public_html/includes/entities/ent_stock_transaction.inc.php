@@ -69,7 +69,7 @@
 			$this->data['contents'] = database::query(
 				"select stc.*, sii.name, si.sku, si.quantity, si.backordered
 				from ". DB_TABLE_PREFIX ."stock_transactions_contents stc
-				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = stc.stock_item_id and si.id = stc.stock_item_id)
+				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = stc.stock_item_id)
 				left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = stc.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
 				where stc.transaction_id = ". (int)$this->data['id'] .";"
 			)->fetch_all();
@@ -135,16 +135,16 @@
 
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."stock_transactions_contents
-						(transaction_id)
-						values (". (int)$this->data['id'] .");"
+						(transaction_id, stock_item_id)
+						values (". (int)$this->data['id'] .", ". (int)$content['stock_item_id'] .");"
 					);
+
 					$this->data['contents'][$key]['id'] = $content['id'] = database::insert_id();
 				}
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."stock_transactions_contents
-					set product_id = ". (int)$content['product_id'] .",
-						stock_item_id = ". (int)$content['stock_item_id'] .",
+					set stock_item_id = ". (int)$content['stock_item_id'] .",
 						quantity_adjustment = ". (float)$content['quantity_adjustment'] ."
 					where id = ". (int)$content['id'] ."
 					and transaction_id = ". (int)$this->data['id'] ."

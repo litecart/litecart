@@ -10,18 +10,23 @@
 	$products = database::query(
 		"select p.id, p.default_category_id, pi.name,
 		(
-				if(p.id = '". database::input($query) ."', 10, 0)
-				+ (match(pi.name) against ('". database::input($query_fulltext) ."' in boolean mode))
-				+ (match(pi.short_description) against ('". database::input($query_fulltext) ."' in boolean mode) / 2)
-				+ (match(pi.description) against ('". database::input($query_fulltext) ."' in boolean mode) / 3)
-				+ if(pi.name like '%". database::input($query) ."%', 3, 0)
-				+ if(pi.short_description like '%". database::input($query) ."%', 2, 0)
-				+ if(pi.description like '%". database::input($query) ."%', 1, 0)
-				+ if(p.code regexp '". database::input($code_regex) ."', 5, 0)
-				+ if (p.id in (
-					select product_id from ". DB_TABLE_PREFIX ."products_options_stock
-					where sku regexp '". database::input($code_regex) ."'
-				), 5, 0)
+			if(p.id = '". database::input($query) ."', 10, 0)
+			+ (match(pi.name) against ('". database::input($query_fulltext) ."' in boolean mode))
+			+ (match(pi.short_description) against ('". database::input($query_fulltext) ."' in boolean mode) / 2)
+			+ (match(pi.description) against ('". database::input($query_fulltext) ."' in boolean mode) / 3)
+			+ if(pi.name like '%". database::input($query) ."%', 3, 0)
+			+ if(pi.short_description like '%". database::input($query) ."%', 2, 0)
+			+ if(pi.description like '%". database::input($query) ."%', 1, 0)
+			+ if(p.code regexp '". database::input($code_regex) ."', 5, 0)
+			+ if (p.id in (
+				select product_id from ". DB_TABLE_PREFIX ."products_stock_options
+					where stock_item_id in (
+						select id from ". DB_TABLE_PREFIX ."stock_items
+				where sku regexp '". database::input($code_regex) ."'
+						or gtin regexp '". database::input($code_regex) ."'
+						or mpn regexp '". database::input($code_regex) ."'
+					)
+			), 5, 0)
 		) as relevance
 
 		from ". DB_TABLE_PREFIX ."products p

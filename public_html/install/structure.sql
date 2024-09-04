@@ -151,7 +151,9 @@ CREATE TABLE `lc_cart_items` (
 	`cart_uid` VARCHAR(13) NOT NULL DEFAULT '',
 	`key` VARCHAR(32) NOT NULL DEFAULT '',
 	`product_id` INT(11) UNSIGNED NULL,
+	`stock_option_id` INT(11) UNSIGNED NULL,
 	`userdata` VARCHAR(2048) NOT NULL DEFAULT '',
+	`image` VARCHAR(255) NOT NULL DEFAULT '',
 	`quantity` FLOAT(11, 4) NOT NULL DEFAULT '1',
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -528,7 +530,7 @@ CREATE TABLE `lc_orders_items` (
 	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`order_id` INT(11) UNSIGNED NOT NULL,
 	`product_id` INT(11) UNSIGNED NULL,
-	`option_stock_combination` VARCHAR(32) NOT NULL DEFAULT '',
+	`stock_item_id` INT(11) UNSIGNED NULL,
 	`name` VARCHAR(128) NOT NULL DEFAULT '',
 	`sku` VARCHAR(32) NOT NULL DEFAULT '',
 	`gtin` VARCHAR(32) NOT NULL DEFAULT '',
@@ -554,6 +556,7 @@ CREATE TABLE `lc_orders_items` (
 	KEY `product_id` (`product_id`),
 	CONSTRAINT `order_item_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
 	CONSTRAINT `order_item_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE SET NULL
+	CONSTRAINT `order_item_to_stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_itemss` (`id`) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_orders_totals` (
@@ -849,6 +852,63 @@ CREATE TABLE `lc_sold_out_statuses_info` (
 	KEY `language_code` (`language_code`),
 	CONSTRAINT `sold_out_status_info_to_sold_out_status` FOREIGN KEY (`sold_out_status_id`) REFERENCES `lc_sold_out_statuses` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
 	CONSTRAINT `sold_out_status_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+-- -----
+CREATE TABLE `lc_stock_items` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`brand_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`supplier_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`sku` VARCHAR(32) NOT NULL DEFAULT '',
+	`mpn` VARCHAR(32) NOT NULL DEFAULT '',
+	`gtin` VARCHAR(32) NOT NULL DEFAULT '',
+	`shelf` VARCHAR(32) NOT NULL DEFAULT '',
+	`taric` VARCHAR(16) NOT NULL DEFAULT '',
+	`image` VARCHAR(512) NOT NULL DEFAULT '',
+	`weight` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
+	`length` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`width` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`height` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`length_unit` VARCHAR(2) NOT NULL DEFAULT '',
+	`quantity` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`backordered` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`purchase_price` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`purchase_price_currency_code` VARCHAR(3) NOT NULL DEFAULT '',
+	`priority` INT(11) NOT NULL DEFAULT '0',
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `mpn` (`mpn`) USING BTREE,
+	INDEX `gtin` (`gtin`) USING BTREE,
+	INDEX `sku` (`sku`) USING BTREE,
+	INDEX `product_id` (`product_id`) USING BTREE,
+	INDEX `brand_id` (`brand_id`) USING BTREE,
+	INDEX `supplier_id` (`supplier_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+-- -----
+CREATE TABLE `lc_stock_items_info` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`language_code` VARCHAR(2) NOT NULL DEFAULT '',
+	`name` VARCHAR(128) NOT NULL DEFAULT '',
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `stock_option_id` (`stock_item_id`) USING BTREE,
+	INDEX `language_code` (`language_code`) USING BTREE,
+	FULLTEXT INDEX `name` (`name`),
+	CONSTRAINT `stock_item_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE NO ACTION,
+	CONSTRAINT `stock_item_info_to_stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+-- -----
+CREATE TABLE `lc_stock_items_references` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`stock_item_id` INT(11) UNSIGNED NOT NULL,
+	`supplier_id` INT(11) UNSIGNED NOT NULL DEFAULT '',
+	`code` VARCHAR(32) NOT NULL DEFAULT '',
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `stock_item_id` (`stock_item_id`) USING BTREE,
+	CONSTRAINT `stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+	CONSTRAINT `supplier` FOREIGN KEY (`supplier_id`) REFERENCES `lc_suppliers` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_stock_transactions` (

@@ -303,6 +303,18 @@
 				'values' => $values,
 			];
 		}
+
+	// Stock Options
+	foreach ($product->stock_options as $stock_option) {
+		$stock_option['image'] = $stock_option['image'] ? 'storage://images/' . $stock_option['image'] : '';
+		$_page->snippets['stock_options'][] = $stock_option;
+	}
+
+	// Stock Status
+	if (!empty($product->quantity_unit['name'])) {
+		$_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity_available, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : language::translate('title_in_stock', 'In Stock');
+	} else {
+		$_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity_available) : language::translate('title_in_stock', 'In Stock');
 	}
 
 	// Cheapest shipping

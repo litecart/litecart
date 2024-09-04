@@ -2035,36 +2035,52 @@
 
 		$product = reference::product($product_id);
 
+		$has_images = array_filter(array_column($product->stock_options, 'image')) ? true : false;
+
 		$options = [];
 		foreach ($product->stock_options as $stock_option) {
 
-			$aliases = [
-				'%name' => $stock_option['name'],
-				'%image' => '',
-			];
-
 			if ($product->quantity_unit) {
-				$quantity_available_formatted = language::number_format($stock_option['quantity_available'], $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'];
+				$formatted_quantity_available = language::number_format($stock_option['quantity_available'], $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'];
 			} else {
-				$quantity_available_formatted = language::number_format($stock_option['quantity_available']);
+				$formatted_quantity_available = language::number_format($stock_option['quantity_available']);
 			}
 
-			if (!empty($stock_option['image'])) {
-				$aliases['%image'] = functions::draw_thumbnail('storage://images/' . $stock_option['image'], 40, 0, 'product');
+			switch (true) {
+
+				case ($stock_option['quantity_available'] === null || $stock_option['quantity_available'] > 0):
+					$icon = functions::draw_fonticon('on');
+					$notice = language::translate('title_available', 'Available') . (settings::get('display_stock_count') ?  ' (' . $formatted_quantity_available . ')' : '');
+					break;
+
+				case (!empty($product->sold_out_status) && !empty($product->sold_out_status['orderable'])):
+					$icon = functions::draw_fonticon('semi-off');
+					$notice = $product->sold_out_status['name'];
+					break;
+
+				default:
+					$icon = functions::draw_fonticon('off');
+					$notice = language::translate('title_sold_out', 'Sold Out');
+					break;
 			}
 
-			if ($stock_option['quantity_available'] > 0) {
-				$aliases['%icon'] = functions::draw_fonticon('on');
-				$aliases['%notice'] = language::translate('title_available', 'Available') . (settings::get('display_stock_count') ?  ' (' . $quantity_available_formatted . ')' : '');
-			} else if (!empty($product->sold_out_status) && !empty($product->sold_out_status['orderable'])) {
-				$aliases['%icon'] = functions::draw_fonticon('semi-off');
-				$aliases['%notice'] = $product->sold_out_status['name'];
-			} else {
-				$aliases['%icon'] = functions::draw_fonticon('off');
-				$aliases['%notice'] = language::translate('title_sold_out', 'Sold Out');
-			}
+			$option = implode(PHP_EOL, [
+				'<div class="flex">',
+				'  <div style="flex: 0 0 auto;">',
+				'  '. ($has_images ? functions::draw_thumbnail('storage://images/' . fallback($stock_option['image'], 'no_image.png'), 0, 64, 'product') : ''),
+				'  </div>',
+				'  <div class="flex-grow">',
+				'    <div class="name">'. $stock_option['name'] .' ['. $stock_option['sku'] .']</div>',
+				'    <div class="notice">'. $icon .' '. $notice .'</div>',
+				'  </div>',
+				'</div>',
+			]);
 
-			$options[] = [$stock_option['stock_option_id'], strtr('%image %name &ndash; %icon %notice', $aliases), 'data-name="'. functions::escape_attr($stock_option['name']) .'" data-sku="'. functions::escape_attr($stock_option['sku']) .'" data-weight="'. functions::escape_attr($stock_option['weight']) .'" data-weight-unit="'. functions::escape_attr($stock_option['weight_unit']) .'" data-length="'. functions::escape_attr($stock_option['length']) .'" data-width="'. functions::escape_attr($stock_option['width']) .'" data-height="'. functions::escape_attr($stock_option['height']) .'" data-length-unit="'. functions::escape_attr($stock_option['length_unit']) .'"'];
+			$parameters = implode(' ', array_map(function($key) use ($stock_option) {
+				return 'data-'. $key .'="'. functions::escape_attr($stock_option[$key]) .'"';
+			}, ['name', 'sku', 'weight', 'weight_unit', 'length', 'width', 'height', 'length_unit']));
+
+			$options[] = [$stock_option['id'], $option, $parameters];
 		}
 
 		if (preg_match('#\[\]$#', $name)) {
@@ -2158,6 +2174,92 @@
 			array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
 			return form_select($name, $options, $input, $parameters);
 		}
+	}
+
+	function form_select_stock_item($name, $input=true, $parameters='') {
+
+		if (preg_match('#\[\]$#', $name)) {
+			return form_select_multiple_stock_items($name, $input, $parameters);
+		}
+
+		if ($input === true) {
+			$input = form_reinsert_value($name);
+		}
+
+		if ($input) {
+			$item = database::query(
+				"select si.id, si.sku sii.name
+				from ". DB_TABLE_PREFIX ."stock_items si
+				left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = si.id and sii.language_code = '". database::input(language::$selected['code']) ."')
+				where p.id = ". (int)$input ."
+				limit 1;"
+			)->fetch();
+		} else {
+			$item_name = '('. language::translate('title_no_items', 'No Item') .')';
+		}
+
+		functions::draw_lightbox();
+
+		return implode(PHP_EOL, [
+			'<div class="input-group"' . ($parameters ? ' ' . $parameters : '') . '>',
+			'  <div class="form-input">',
+			'    ' . form_input_hidden($name, true, !empty($item) ? 'data-sku="'. $item['sku'] .'"' : ''),
+			'    <span class="name" style="display: inline-block;">'. $item_name .'</span>',
+			'    [<span class="id" style="display: inline-block;">'. (int)$input .'</span>]',
+			'  </div>',
+			'  <div style="align-self: center;">',
+			'    <a href="'. document::href_ilink('b:catalog/item_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>',
+			'  </div>',
+			'</div>',
+		]);
+	}
+
+	function form_select_multiple_stock_items($name, $input=true, $parameters='') {
+
+		if (!preg_match('#\[\]$#', $name)) {
+			return form_select_stock_item($name, $input, $parameters);
+		}
+
+		if ($input === true) {
+			$input = form_reinsert_value($name);
+		}
+
+		if (!is_array($input)) {
+			$input = preg_split('#\s*,\s*#', (string)$input, -1, PREG_SPLIT_NO_EMPTY);
+		}
+
+		$items = database::query(
+			"select si.id, si.sku, si.quantity, sii.name
+			from ". DB_TABLE_PREFIX ."stock_items si
+			left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+			where si.id in ('". implode("', '", database::input($input)) ."')
+			order by sii.name"
+		)->fetch_all();
+
+		$uid = uniqid();
+
+		$output = implode(PHP_EOL, [
+			'<div id="input-'.$uid.'" '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-input flex flex-rows"' : '') . ($parameters ? ' '. $parameters : '') .'>',
+			'  <div class="stock-items flex-grow">',
+			//!$input ? '<em>'. language::translate('text_no_items', 'No items') .'</em>' : '',
+			implode(PHP_EOL, array_map(function($item) {
+				return '    <div class="stock-item" data-id="'. $item['id'] .'">'. $item['name'] .' &mdash; '. $item['sku'] .' ['. (float)$item['quantity'] .']</div>';
+			}, $items)),
+			'  </div>',
+			'  '. form_button('add', language::translate('title_add_item', 'Add'), 'button', 'data-toggle="lightbox" data-target="'. document::href_ilink('catalog/item_picker', ['js_callback' => '_callback_'.$uid]) .'"'),
+			'</div>',
+		]);
+
+		document::$javascript[] = implode(PHP_EOL, [
+			'window._callback_'.$uid.' = function(item){',
+			' console.log(item);',
+			'  let $input = $(\'#input-'.$uid.'\');',
+			'  var $item = $(\'<div class="item"></div>\').attr("data-id", item.id).html(item.name +\' &mdash; \'+ item.sku +\' [\'+ item.quantity +\']\').append(\'<button class="btn btn-default btn-sm" class="float-end">x</span>\');',
+			'  $input.find(\'.stock-items\').append($item);',
+			'}'
+		]);
+
+		return $output;
 	}
 
 	function form_select_supplier($name, $input=true, $parameters='') {

@@ -346,7 +346,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."orders_items
 					set product_id = ". (int)$item['product_id'] .",
-						stock_option_id = ". (int)$item['stock_option_id'] .",
+						stock_item_id = ". (int)$item['stock_item_id'] .",
 						name = '". database::input($item['name']) ."',
 						userdata = '". (!empty($item['userdata']) ? database::input(json_encode($item['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
 						sku = '". database::input($item['sku']) ."',
@@ -374,11 +374,11 @@
 
 				// Withdraw stock
 				if (!empty($this->data['order_status_id']) && reference::order_status($this->data['order_status_id'])->stock_action == 'commit') {
-					if (!empty($item['stock_option_id'])) {
+					if (!empty($item['stock_item_id'])) {
 						database::query(
-							"update ". DB_TABLE_PREFIX ."products_stock_options
+							"update ". DB_TABLE_PREFIX ."stock_items
 							set quantity = quantity - ". (float)$item['quantity'] ."
-							where id = ". (int)$item['stock_option_id'] ."
+							where id = ". (int)$item['stock_item_id'] ."
 							and product_id = ". (int)$item['product_id'] ."
 							limit 1;"
 						);

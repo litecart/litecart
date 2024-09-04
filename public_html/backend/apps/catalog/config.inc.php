@@ -44,6 +44,11 @@
 				'params' => [],
 			],
 			[
+				'title' => language::translate('title_stock_items', 'Stock Items'),
+				'doc' => 'stock_items',
+				'params' => [],
+			],
+			[
 				'title' => language::translate('title_stock_transactions', 'Stock Transactions'),
 				'doc' => 'stock_transactions',
 				'params' => [],

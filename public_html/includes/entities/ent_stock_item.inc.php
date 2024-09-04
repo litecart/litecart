@@ -237,7 +237,7 @@
 			$image = new ent_image($file);
 
 			// 456-12345_Fancy-title.jpg
-			$filename = 'stock_items/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'], settings::get('store_language_code')) .'.'. $image->type;
+			$filename = 'stock_items/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type;
 
 			if (is_file('storage://images/' . $this->data['image'])) {
 				unlink('storage://images/' . $this->data['image']);
@@ -250,7 +250,7 @@
 				$image->resample($width, $height, 'FIT_ONLY_BIGGER');
 			}
 
-			$image->write('storage://images/' . $filename, 90);
+			$image->save('storage://images/' . $filename, 90);
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."stock_items
@@ -282,7 +282,7 @@
 
 		public function save_file($source, $filename, $mime_type) {
 
-			if (empty($source)) return;
+			if (!$source) return;
 
 			if (!$this->data['id']) {
 				$this->save();
