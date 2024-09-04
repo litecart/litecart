@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
+CREATE TABLE `lc_attribute_groups` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(32) NOT NULL DEFAULT '',
   `sort` ENUM('alphabetical','priority') NOT NULL DEFAULT 'alphabetical',
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
   KEY `code` (`code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lc_attribute_groups_info` (
+CREATE TABLE `lc_attribute_groups_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `group_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `language_code` VARCHAR(2) NOT NULL DEFAULT '',
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_groups_info` (
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
+CREATE TABLE `lc_attribute_values` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `group_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `priority` INT(11) NOT NULL DEFAULT '0',
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
   KEY `group_id` (`group_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lc_attribute_values_info` (
+CREATE TABLE `lc_attribute_values_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `value_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `language_code` VARCHAR(2) NOT NULL DEFAULT '',
@@ -294,7 +294,7 @@ CREATE TABLE `lc_manufacturers_info` (
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lc_modules` (
+CREATE TABLE `lc_modules` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `module_id` VARCHAR(64) NOT NULL DEFAULT '',
   `type` VARCHAR(16) NOT NULL DEFAULT '',
@@ -667,7 +667,7 @@ CREATE TABLE `lc_products_to_categories` (
    PRIMARY KEY(`product_id`, `category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lc_quantity_units` (
+CREATE TABLE `lc_quantity_units` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `decimals` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `separate` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
@@ -677,7 +677,7 @@ CREATE TABLE IF NOT EXISTS `lc_quantity_units` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lc_quantity_units_info` (
+CREATE TABLE `lc_quantity_units_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `quantity_unit_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `language_code` VARCHAR(2) NOT NULL DEFAULT '',
@@ -730,7 +730,7 @@ CREATE TABLE `lc_slides` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lc_slides_info` (
+CREATE TABLE `lc_slides_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `slide_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `language_code` VARCHAR(2) NOT NULL DEFAULT '',
@@ -827,7 +827,7 @@ CREATE TABLE `lc_translations` (
   KEY `date_created` (`date_created`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lc_users` (
+CREATE TABLE `lc_users` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL DEFAULT '0',
   `username` VARCHAR(32) NOT NULL DEFAULT '',
