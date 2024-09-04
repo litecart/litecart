@@ -33,6 +33,7 @@
 		"node": ">=19"
 	},
 	"scripts": {
+		"archive": "git archive --format=zip --output latest.zip master",
 		"build": "grunt",
 		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php",
 		"less": "grunt less",
