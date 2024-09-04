@@ -47,7 +47,7 @@
     // Convert timestamps for column
       database::query(
         "UPDATE ". $column['TABLE_NAME'] ."
-        SET `". $column['COLUMN_NAME'] ."` = CONVERT_TZ(`". $column['COLUMN_NAME'] ."`, @@GLOBAL.time_zone, '". $timezone->format('P') ."');"
+        SET `". $column['COLUMN_NAME'] ."` = CONVERT_TZ(`". $column['COLUMN_NAME'] ."`, @@GLOBAL.time_zone, '". $datetime->format('P') ."');"
       );
     }
   }

@@ -18,6 +18,12 @@ body {
   padding: 15px;
 }
 
+#logotype {
+  max-width: 300px;
+  max-height: 100px;
+  margin-bottom: 2em;
+}
+
 .glass-edges {
   margin: 0 auto;
   margin-bottom: 15px;
@@ -54,5 +60,5 @@ span.warning {
 <div class="glass-edges">
   <main id="content">
     <header class="text-center">
-      <img src="../includes/templates/default.admin/images/logotype.svg" alt="LiteCart" style="max-width: 300px; max-height: 100px;">
+      <img id="logotype" src="../includes/templates/default.admin/images/logotype.svg" alt="LiteCart">
     </header>
