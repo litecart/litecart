@@ -573,13 +573,13 @@ f8176cc134ac9e77b99bbd252e96aa47	install/data/demo/public_html/images/products/1
 d459f0ff7c7684a60ae0f8d79237f6fb	install/data/demo/public_html/images/products/3-red-duck-1.jpg
 4623955af0461b259b5347501300a70d	install/data/demo/public_html/images/products/4-blue-duck-1.jpg
 3293353f53c6af140981ea79036f741b	install/data/demo/public_html/images/products/5-purple-duck-1.jpg
-f765aa8f4e64461f618e0e8941cd2479	install/htaccess
+f4cd800714193ec5528c92e7448757bc	install/htaccess
 5ce62c13340c52070b1f99ff16a9a850	install/includes/footer.inc.php
 88c129a1bab3911671153318af96e38c	install/includes/functions.inc.php
 97b50b15e10f0b36677dbadccb3e0981	install/includes/header.inc.php
 fda5c8888e35084bf167bcc35be66121	install/index.php
 42134add3bf736b933918ff450802b1e	install/install.php
-a6d5f8678e85dab2f4fe7363db0ea610	install/structure.sql
+299d5f6f0e9573f12de83ff9d786d3cf	install/structure.sql
 59167ffeb3770e238e490539ee230829	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
 e40d16965a907467b8a8249a35927faf	install/upgrade_patches/1.0.1.4.inc.php
