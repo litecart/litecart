@@ -72,7 +72,7 @@
             limit 1;"
           );
 
-          throw new Exception(strtr(language::translate('error_account_has_been_blocked', 'The account has been temporarily blocked %n minutes'), ['%n' => 15, '%d' => 15]));
+          throw new Exception(strtr(language::translate('error_this_account_has_been_temporarily_blocked_n_minutes', 'This account has been temporarily blocked %n minutes'), ['%n' => 15, '%d' => 15]));
         }
       }
 

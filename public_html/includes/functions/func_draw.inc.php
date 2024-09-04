@@ -175,7 +175,7 @@
           break;
 
         case 'string':
-          if (preg_match('#^function\s*\(#', $value)) {
+          if (preg_match('#^\s*function\s*\(#', $value)) {
             $js .= '    '. $key .': '. $value .',' . PHP_EOL;
           } else {
             $js .= '    '. $key .': "'. addslashes($value) .'",' . PHP_EOL;

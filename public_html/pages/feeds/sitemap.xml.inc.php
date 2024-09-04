@@ -1,14 +1,16 @@
 <?php
 
-  $sitemap_cache_token = cache::TOKEN('sitemap', ['language'], 'file');
-  if (!$output = cache::get($sitemap_cache_token, 43200)) {
+  $max_age = strtotime('+7 days') - time();
+
+  $sitemap_cache_token = cache::token('sitemap', ['domain', 'language'], 'file', $max_age);
+  if (!$output = cache::get($sitemap_cache_token, $max_age, true)) {
 
     @set_time_limit(300);
 
     language::set(settings::get('store_language_code'));
 
     $output = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL
-            . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">' . PHP_EOL;
+            . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">' . PHP_EOL; // Must be non-secure http:// or Google will not accept it
 
     $hreflangs = '';
     foreach (language::$languages as $language) {
@@ -45,7 +47,7 @@
                  . '    <priority>1.0</priority>' . PHP_EOL
                  . '  </url>' . PHP_EOL;
 
-        $category_iterator($category['id']);
+        $output .= $category_iterator($category['id']);
       }
 
       return $output;

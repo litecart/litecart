@@ -96,8 +96,8 @@
         exit;
 
       } else {
-        $notice = language::translate('notice_option_out_of_stock_orderable', 'We are out of stock for this option, but you can order it.');
-        echo json_encode(['status' => 'warning', 'notice' => $notice]);
+        $notice = language::translate('notice_option_temporarily_out_of_stock_but_orderable', 'We are out of stock for this option, but you can order it.');
+        echo json_encode(['status' => 'notice', 'notice' => $notice]);
         exit;
       }
 

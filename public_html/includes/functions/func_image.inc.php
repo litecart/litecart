@@ -1,8 +1,17 @@
 <?php
 
   function image_scale_by_width($width, $ratio) {
-    list($x, $y) = explode(':', $ratio);
-    return[$width, round($width / $x * $y)];
+
+    if (!$width || !$ratio) {
+      return false;
+    }
+
+    list($x, $y) = preg_split('#[:/]#', $ratio);
+
+    settype($x, 'int');
+    settype($y, 'int');
+
+    return [$width, round($width / $x * $y)];
   }
 
   function image_process($source, $options) {

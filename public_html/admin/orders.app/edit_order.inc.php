@@ -1139,7 +1139,7 @@
       url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
       type: 'get',
       cache: true,
-      async: true,
+      async: false,
       dataType: 'json',
       error: function(jqXHR, textStatus, errorThrown) {
         //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);

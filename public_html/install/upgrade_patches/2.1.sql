@@ -4,7 +4,7 @@ INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALU
 ('email', 'Email', 'Email and SMTP', 30);
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
-('email', 'local', 'SMTP Enabled', 'Wheither or not to use an SMTP server for delivering email.', 'smtp_status', '0', 'toggle("e/d")', 10, NOW(), NOW()),
+('email', 'local', 'SMTP Enabled', 'Whether or not to use an SMTP server for delivering email.', 'smtp_status', '0', 'toggle("e/d")', 10, NOW(), NOW()),
 ('email', 'local', 'SMTP Host', 'SMTP hostname e.g. smtp.myprovider.com.', 'smtp_host', 'localhost', 'input()', 11, NOW(), NOW()),
 ('email', 'local', 'SMTP Port', 'SMTP port e.g. 25, 465 (SSL/TLS), or 587 (STARTTLS).', 'smtp_port', '25', 'number()', 12, NOW(), NOW()),
 ('email', 'local', 'SMTP Username', 'Username for SMTP authentication.', 'smtp_username', '', 'input()', 13, NOW(), NOW()),

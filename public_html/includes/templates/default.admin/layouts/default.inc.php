@@ -117,7 +117,7 @@
       </li>
 
       <li>
-        <a class="help" href="https://wiki.litecart.net/" target="_blank" title="<?php echo functions::escape_html(language::translate('title_help', 'Help')); ?>">
+        <a class="help" href="https://www.litecart.net/wiki/" target="_blank" title="<?php echo functions::escape_html(language::translate('title_help', 'Help')); ?>">
           <?php echo functions::draw_fonticon('fa-question-circle'); ?> <?php echo language::translate('title_help', 'Help'); ?>
         </a>
       </li>

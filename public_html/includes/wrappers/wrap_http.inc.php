@@ -5,6 +5,7 @@
     public $timeout = 20;
     public $last_request;
     public $last_response;
+    public $context;
     public static $stats = [
       'duration' => 0,
       'requests' => 0,
@@ -67,7 +68,7 @@
         'body' => $data,
       ];
 
-      if (!$socket = stream_socket_client(strtr('scheme://host:port', $parts), $errno, $errstr, $this->timeout)) {
+      if (!$socket = stream_socket_client(strtr('scheme://host:port', $parts), $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $this->context)) {
         return;
       }
 

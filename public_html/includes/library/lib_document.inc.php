@@ -194,12 +194,12 @@
         $javascripts = [];
         $javascript = [];
 
-        $matches[2] = preg_replace_callback('#\R?(<script[^>]+></script>)\R?#is', function($match) use (&$javascripts, &$javascript) {
-           $javascripts[] = trim($match[1]);
+        $matches[2] = preg_replace_callback('#\R?(<script(?! data-fixed)[^>]+></script>)\R?#is', function($match) use (&$javascripts, &$javascript) {
+            $javascripts[] = trim($match[1]);
         }, $matches[2]);
 
-        $matches[2] = preg_replace_callback('#<script(?:[^>]*\stype="(?:application|text)/javascript")?>(?!</script>)(.*?)</script>\R?#is', function($match) use (&$javascripts, &$javascript) {
-           $javascript[] = trim($match[1], "\r\n");
+        $matches[2] = preg_replace_callback('#<script(?! data-fixed)(?:[^>]*\stype="(?:application|text)/javascript")?>(?!</script>)(.*?)</script>\R?#is', function($match) use (&$javascripts, &$javascript) {
+            $javascript[] = trim($match[1], "\r\n");
         }, $matches[2]);
 
         return $matches[1] . $matches[2] . $matches[3];

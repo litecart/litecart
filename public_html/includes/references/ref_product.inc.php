@@ -301,9 +301,10 @@
                 switch ($value['price_operator']) {
 
                   case '+':
+
                     if ((float)$value[$this->_currency_code] != 0) {
                       $value['price_adjust'] = currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
-                    } else {
+                    } else if ($value[settings::get('store_currency_code')]) {
                       $value['price_adjust'] = (float)$value[settings::get('store_currency_code')];
                     }
                     break;
@@ -311,7 +312,7 @@
                   case '%':
                     if ((float)$value[$this->_currency_code] != 0) {
                       $value['price_adjust'] = $this->price * currency::convert((float)$value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code')) / 100;
-                    } else {
+                    } else if ($value[settings::get('store_currency_code')]) {
                       $value['price_adjust'] = $this->price * (float)$value[settings::get('store_currency_code')] / 100;
                     }
                     break;
@@ -319,7 +320,7 @@
                   case '*':
                     if ((float)$value[$this->_currency_code] != 0) {
                       $value['price_adjust'] = $this->price * currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
-                    } else {
+                    } else if ($value[settings::get('store_currency_code')]) {
                       $value['price_adjust'] = $this->price * $value[settings::get('store_currency_code')];
                     }
                     break;
@@ -327,7 +328,7 @@
                   case '=':
                     if ((float)$value[$this->_currency_code] != 0) {
                       $value['price_adjust'] = currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code')) - $this->price;
-                    } else {
+                    } else if ($value[settings::get('store_currency_code')]) {
                       $value['price_adjust'] = $value[settings::get('store_currency_code')] - $this->price;
                     }
                     break;
@@ -369,7 +370,6 @@
           $query = database::query(
             "select * from ". DB_TABLE_PREFIX ."products_options_stock
             where product_id = ". (int)$this->_data['id'] ."
-            ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
             order by priority asc;"
           );
 

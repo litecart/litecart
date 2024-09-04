@@ -17,11 +17,12 @@
       if (empty($_POST['to_order_status_id'])) throw new Exception(language::translate('error_missing_to_order_status', 'Please select a to order status'));
 
       $orders_query = database::query(
-        "select id ". DB_TABLE_PREFIX ."orders
+        "select id from ". DB_TABLE_PREFIX ."orders
         where order_status_id = ". (int)$_POST['from_order_status_id'] .";"
       );
 
       while ($order = database::fetch($orders_query)) {
+        $order = new ent_order($order['id']);
         $order->data['order_status_id'] = (int)$_POST['to_order_status_id'];
         $order->save();
       }

@@ -742,7 +742,7 @@
 
         } catch (Exception $e) {
           if (isset($batch['onerror']) && $batch['onerror'] == 'resume') {
-         	echo 'Error: '. $e->getMessage() . PHP_EOL;
+           echo 'Error: '. $e->getMessage() . PHP_EOL;
           } else {
             throw $e;
           }

@@ -131,7 +131,15 @@
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="color" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="color" '. (($parameters) ? ' ' . $parameters : '') .'>';
   }
 
+  function form_draw_csv_field($name, $input=true, $delimiter=',', $parameters='') {
+
+    return implode(PHP_EOL, [
+      form_draw_textarea($name, $input, 'data-toggle="csv" data-delimiter="'. functions::escape_html($delimiter) .'"' . ($parameters ? ' ' . $parameters : '')),
+    ]);
+  }
+
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     if (empty($currency_code)) {
@@ -140,13 +148,10 @@
 
     $currency = currency::$currencies[$currency_code];
 
-  // Format a minimum of given currency decimals, but a maximum of 2 extra decimals
     if ($value != '') {
-      $max_decimals = $currency['decimals'] + 2;
-      do {
-        $formatted = number_format((float)$value, $currency['decimals']++, '.', '');
-      } while ($formatted != $value && $currency['decimals'] <= $max_decimals);
-      $value = $formatted;
+      if (strlen(substr(strrchr($value, '.'), 1)) < $currency['decimals']) {
+        $value = number_format((float)$value, $currency['decimals'], '.', '');
+      }
     }
 
     return '<div class="input-group">' . PHP_EOL
@@ -175,6 +180,8 @@
       }
     }
 
+    functions::draw_lightbox();
+
     return '<div class="form-control"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
          . '  ' . form_draw_hidden_field($name, true) . PHP_EOL
          . '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$value .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
@@ -185,10 +192,10 @@
 
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!empty($value) && !in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-00-00', '1970-01-01'])) {
-      $value = date('Y-m-d', strtotime($value));
-    } else {
+    if (empty($value) || in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-00-00', '1970-01-01'])) {
       $value = '';
+    } else {
+      $value = date('Y-m-d', strtotime($value));
     }
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="date" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="date" placeholder="YYYY-MM-DD"'. (($parameters) ? ' ' . $parameters : '') .'>';
@@ -198,10 +205,10 @@
 
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!empty($value) && !in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-00-00', '1970-01-01'])) {
-      $value = date('Y-m-d\TH:i', strtotime($value));
-    } else {
+    if (empty($value) || in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-00-00', '1970-01-01'])) {
       $value = '';
+    } else {
+      $value = date('Y-m-d\TH:i', strtotime($value));
     }
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="datetime-local" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="datetime" placeholder="YYYY-MM-DD [hh:nn]"'. (($parameters) ? ' ' . $parameters : '') .'>';
@@ -212,7 +219,9 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     if ($value != '') {
-      $value = number_format((float)$value, (int)$decimals, '.', '');
+      if (strlen(substr(strrchr($value, '.'), 1)) < $decimals) {
+        $value = number_format((float)$value, (int)$decimals, '.', '');
+      }
     }
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="decimal" '. (($min != '') ? 'min="'. (float)$min .'"' : '') . (($max != '') ? ' max="'. (float)$max .'"' : '') . (($parameters) ? ' ' . $parameters : '') . (!preg_match('#step="([^"]+)?"#', $parameters) ? ' step="any"' : '') .'>';
@@ -310,7 +319,7 @@
 
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-text">'. functions::draw_fonticon('fa-phone fa-fw') .'</span>' . PHP_EOL
-         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="tel" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="phone" pattern="^\+?([0-9]|-| )+$"'. (($parameters) ? ' ' . $parameters : '') .'>'
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="tel" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="phone" pattern="^\+?[0-9\- ]+$"'. (($parameters) ? ' ' . $parameters : '') .'>'
          . '</div>';
   }
 
@@ -684,7 +693,7 @@
         return form_draw_currencies_list($name, $input, true, $parameters);
 
       case 'csv':
-        return form_draw_textarea($name, $input, true, $parameters . ' data-type="csv"');
+        return form_draw_csv_field($name, $input, $options[0], $parameters);
 
       case 'delivery_status':
         return form_draw_delivery_statuses_list($name, $input, false, $parameters);
@@ -970,12 +979,15 @@
     }
 
     switch ($input) {
+
       case 'customer_country_code':
         $input = customer::$data['country_code'];
         break;
+
       case 'default_country_code':
         $input = settings::get('default_country_code');
         break;
+
       case 'store_country_code':
         $input = settings::get('store_country_code');
         break;
@@ -1158,7 +1170,7 @@
     if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     if (!database::num_rows($geo_zones_query)) {
-      return form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled');
+      return form_draw_select_field($name, $options, $input, $parameters . ' disabled');
     }
 
     while ($geo_zone = database::fetch($geo_zones_query)) {

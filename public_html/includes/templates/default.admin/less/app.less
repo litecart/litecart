@@ -21,7 +21,6 @@
 }
 
 #sidebar-compressed:checked {
-  //~ #sidebar:not(:hover) {
   ~ #sidebar {
     flex-basis: auto;
     .name, .docs {
@@ -57,6 +56,11 @@
       }
     }
   }
+}
+
+html[dir="rtl"] #sidebar-compressed:checked ~ #sidebar #box-apps-menu > .app:hover .docs {
+  left: initial;
+  right: 30px;
 }
 
 #top-bar {

@@ -8,7 +8,9 @@
 
   $newletter_recipients_query = database::query(
     "select * from ". DB_TABLE_PREFIX ."newsletter_recipients
-    where client_ip != '' and hostname = '';"
+    where client_ip != '' and hostname = ''
+    order by date_created desc
+    limit 1000;"
   );
 
   while ($recipient = database::fetch($newletter_recipients_query)) {
