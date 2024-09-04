@@ -129,6 +129,7 @@
 		'head_title' => !empty($product->head_title) ? $product->head_title : $product->name,
 		'meta_description' => !empty($product->meta_description) ? $product->meta_description : $product->short_description,
 		'attributes' => $product->attributes,
+		'customizations' => [],
 		'stock_options' => [],
 		'keywords' => $product->keywords,
 		'image' => $product->images ? 'storage://images/' . $product->image : '',
@@ -156,7 +157,6 @@
 		'sold_out_status' => !empty($product->sold_out_status) ? $product->sold_out_status : [],
 		'orderable' => !empty($product->sold_out_status['orderable']),
 		'cheapest_shipping_fee' => null,
-		'options' => [],
 	];
 
 	// Extra Images
@@ -212,97 +212,114 @@
 		];
 	}
 
-	// Options
-	if (count($product->options) > 0) {
-		foreach ($product->options as $group) {
-			$values = '';
-			switch ($group['function']) {
+	// Customizations
+	foreach ($product->customizations as $group) {
 
-				case 'checkbox':
+		$values = '';
 
-					foreach ($group['values'] as $value) {
+		switch ($group['function']) {
 
-						$price_adjust_text = '';
-						$price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-						$tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+			case 'checkbox':
 
-						if ($value['price_adjust']) {
-							if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
-							else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
-							$price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
+				foreach ($group['values'] as $value) {
+
+					$price_adjust_text = '';
+					$price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
+					$tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+					if ($value['price_adjust']) {
+
+						if ($value['price_adjust'] > 0) {
+							$price_adjust_text = ' +';
+						} else if ($value['price_adjust'] < 0) {
+							$price_adjust_text = ' -';
 						}
 
-						$values .= implode(PHP_EOL, [
-							'<div class="checkbox">',
-							'  <label>' . functions::form_checkbox('options['.$group['name'].'][]', $value['name'], true, 'data-group-id="'. (int)$group['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>',
-							'</div>',
-						]);
+						$price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
 					}
-					break;
 
-				case 'radio':
+					$values .= implode(PHP_EOL, [
+						'<div class="checkbox">',
+						'  <label>' . functions::form_checkbox('customizations['.$group['name'].'][]', $value['name'], true, 'data-group-id="'. (int)$group['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>',
+						'</div>',
+					]);
+				}
 
-					foreach ($group['values'] as $value) {
+				break;
 
-						$price_adjust_text = '';
-						$price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-						$tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+			case 'radio':
 
-						if ($value['price_adjust']) {
-							if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
-							else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
-							$price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
+				foreach ($group['values'] as $value) {
+
+					$price_adjust_text = '';
+					$price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
+					$tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+					if ($value['price_adjust']) {
+
+						if ($value['price_adjust'] > 0) {
+							$price_adjust_text = ' +';
+						} else if ($value['price_adjust'] < 0) {
+							$price_adjust_text = ' -';
 						}
 
-						$values .= implode(PHP_EOL, [
-							'<div class="radio">',
-							'  <label>'. functions::form_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group-id="'. (int)$group['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>',
-							'</div>',
-						]);
+						$price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
 					}
-					break;
 
-				case 'select':
+					$values .= implode(PHP_EOL, [
+						'<div class="radio">',
+						'  <label>'. functions::form_radio_button('customizations['.$group['name'].']', $value['name'], true, 'data-group-id="'. (int)$group['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>',
+						'</div>',
+					]);
+				}
 
-					$options = [['-- '. language::translate('title_select', 'Select') .' --', '']];
-					foreach ($group['values'] as $value) {
+				break;
 
-						$price_adjust_text = '';
-						$price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-						$tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+			case 'select':
 
-						if ($value['price_adjust']) {
-							if ($value['price_adjust'] > 0) { $price_adjust_text = ' +'; }
-							else if ($value['price_adjust'] < 0) { $price_adjust_text = ' -'; }
-							$price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
+				$customizations = [['-- '. language::translate('title_select', 'Select') .' --', '']];
+				foreach ($group['values'] as $value) {
+
+					$price_adjust_text = '';
+					$price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
+					$tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+					if ($value['price_adjust']) {
+
+						if ($value['price_adjust'] > 0) {
+							$price_adjust_text = ' +';
+						} else if ($value['price_adjust'] < 0) {
+							$price_adjust_text = ' -';
 						}
 
-						$options[] = [$value['name'] . $price_adjust_text, $value['name'], 'data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"'];
+						$price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
 					}
 
-					$values .= functions::form_select('options['.$group['name'].']', $options, true, 'data-group-id="'. (int)$group['group_id'] .'"'. (!empty($group['required']) ? ' required' : ''));
-					break;
+					$customizations[] = [$value['name'] . $price_adjust_text, $value['name'], 'data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"'];
+				}
 
-				case 'input': // Deprecated
-				case 'text':
+				$values .= functions::form_select('customizations['.$group['name'].']', $customizations, true, 'data-group-id="'. (int)$group['group_id'] .'"'. (!empty($group['required']) ? ' required' : ''));
+				break;
 
-					$values .= functions::form_input_text('options['.$group['name'].']', true, 'data-group-id="'. (int)$group['group_id'] .'"' . (!empty($group['required']) ? ' required' : '')) . PHP_EOL;
-					break;
+			case 'text':
 
-				case 'textarea':
+				$values .= functions::form_input_text('customizations['.$group['name'].']', true, 'data-group-id="'. (int)$group['group_id'] .'"' . (!empty($group['required']) ? ' required' : '')) . PHP_EOL;
+				break;
 
-					$values .= functions::form_textarea('options['.$group['name'].']', true, !empty($group['required']) ? 'data-group-id="'. (int)$group['group_id'] .'" required' : '') . PHP_EOL;
-					break;
-			}
+			case 'textarea':
 
-			$_page->snippets['options'][] = [
-				'id' => $group['id'],
-				'group_id' => $group['group_id'],
-				'name' => $group['name'],
-				'required' => !empty($group['required']) ? 1 : 0,
-				'values' => $values,
-			];
+				$values .= functions::form_textarea('customizations['.$group['name'].']', true, !empty($group['required']) ? 'data-group-id="'. (int)$group['group_id'] .'" required' : '') . PHP_EOL;
+				break;
 		}
+
+		$_page->snippets['customizations'][] = [
+			'id' => $group['id'],
+			'group_id' => $group['group_id'],
+			'name' => $group['name'],
+			'required' => !empty($group['required']),
+			'values' => $values,
+		];
+	}
 
 	// Stock Options
 	foreach ($product->stock_options as $stock_option) {
