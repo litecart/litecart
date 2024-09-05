@@ -334,10 +334,7 @@
     $sql = file_get_contents('clean.sql');
     $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-    foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
-      $query = preg_replace('#^-- .*?\R+#m', '', $query);
-      database::query($query);
-    }
+    database::multi_query($sql);
 
     echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
@@ -362,10 +359,7 @@
       $sql = str_replace($search, $replace, $sql);
     }
 
-    foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
-      $query = preg_replace('#^-- .*?\R+#m', '', $query);
-      database::query($query);
-    }
+    database::multi_query($sql);
 
     echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
@@ -387,10 +381,7 @@
       $sql = str_replace($search, database::input($replace), $sql);
     }
 
-    foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
-      $query = preg_replace('#^-- .*?\R+#m', '', $query);
-      database::query($query);
-    }
+    database::multi_query($sql);
 
     echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
@@ -483,10 +474,7 @@
 
             $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-            foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
-              $query = preg_replace('#^-- .*?\R+#m', '', $query);
-              database::query($query);
-            }
+            database::multi_query($sql);
           }
         }
 
@@ -508,10 +496,7 @@
       if (!empty($sql)) {
         $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-        foreach (preg_split('#^-- -----+$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
-          $query = preg_replace('#^-- .*?\R+#m', '', $query);
-          database::query($query);
-        }
+        database::multi_query($sql);
       }
 
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
@@ -693,7 +678,7 @@
 
   $buffer = ob_get_clean();
 
-  if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
+  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
     echo strip_tags($buffer);
     exit;
   }
