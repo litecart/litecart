@@ -282,7 +282,7 @@ a0e0e8c78aeb83312210e713c36077f5	includes/library/lib_cache.inc.php
 589c4bd3403fc16e2b7b24cedeb339ca	includes/library/lib_cart.inc.php
 0f14dd8a55acb482677c6ec16535d7b3	includes/library/lib_currency.inc.php
 b9808552044b6f33524ad9b4804db9c0	includes/library/lib_customer.inc.php
-df7f3000369fc93e2df704fdda5a8136	includes/library/lib_database.inc.php
+9881717582ea9c63751858dcec7cfc03	includes/library/lib_database.inc.php
 797f557ef7b62d97082f86acf4151509	includes/library/lib_document.inc.php
 b4401ef3e46e288212dfc2fd3eb1d165	includes/library/lib_event.inc.php
 ea8d7ddb2524ec3236c7099e10854816	includes/library/lib_functions.inc.php
@@ -578,9 +578,9 @@ f4cd800714193ec5528c92e7448757bc	install/htaccess
 88c129a1bab3911671153318af96e38c	install/includes/functions.inc.php
 a37bf7b37ad3919a13f46de67748afed	install/includes/header.inc.php
 9f92b7ccb4e69a595440c999a7ed69a2	install/index.php
-559eba5f67032fef3796ecb8f4af35c9	install/install.php
+7afe2fc04db8b5c1b5a5e75da3c18e00	install/install.php
 c1828b34bed304f36a2e60cdfc734c5f	install/structure.sql
-71bdae6dfd371d767e5a7bc173503150	install/upgrade.php
+92a631bcd8e189176a8287f3856c992e	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
 e40d16965a907467b8a8249a35927faf	install/upgrade_patches/1.0.1.4.inc.php
 9560e70752a13b7a22ec65231e1b61e0	install/upgrade_patches/1.0.1.5.inc.php
