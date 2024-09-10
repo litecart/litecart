@@ -50,4 +50,18 @@
         SET `". $column['COLUMN_NAME'] ."` = CONVERT_TZ(`". $column['COLUMN_NAME'] ."`, @@GLOBAL.time_zone, '". $datetime->format('P') ."');"
       );
     }
+
+// Workaround for compatibility with both mysql and mariadb
+  if (!database::query(
+    "SELECT * FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = '". database::input(DB_SERVER) ."'
+    AND TABLE_NAME = '". database::input(DB_TABLE_PREFIX . 'users') ."'
+    AND COLUMN_NAME = 'date_expire_sessions'
+    LIMIT 1;"
+  )->num_rows) {
+
+    database::query(
+      "ALTER TABLE ". DB_TABLE_PREFIX ."users
+      ADD COLUMN `date_expire_sessions` TIMESTAMP NULL AFTER `date_login`;"
+    );
   }
