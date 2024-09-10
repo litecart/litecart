@@ -387,6 +387,13 @@
                   }
                 }
 
+                foreach (self::$_installed as $key => $installed) {
+                  if ($installed['id'] == $vmod['id']) {
+                    self::$_installed[$key]['version'] = $vmod['version'];
+                    break;
+                  }
+                }
+
                 $new_contents = implode(PHP_EOL, array_map(function($vmod){
                   return $vmod['id'] .';'. $vmod['version'];
                 }, self::$_installed));
