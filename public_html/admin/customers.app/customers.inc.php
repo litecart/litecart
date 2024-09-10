@@ -91,7 +91,6 @@
     where c.id
     ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
     order by $sql_sort;"
-
   );
 
   if ($_GET['page'] > 1) database::seek($customers_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));

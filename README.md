@@ -9,7 +9,7 @@ LiteCart is a registered trademark, property of founder T. Almroth - [LiteCart A
 
 # How To Install
 
-For an updated version of the upgrade documentation, visit https://wiki.litecart.net/how_to_install
+For an updated version of the upgrade documentation, visit https://www.litecart.net/wiki/how_to_install
 
 What you need:
 
