@@ -49,8 +49,9 @@
 
 // Workaround for compatibility with both mysql and mariadb
   if (!database::query(
+
     "SELECT * FROM information_schema.COLUMNS
-    WHERE TABLE_SCHEMA = '". database::input(DB_SERVER) ."'
+    WHERE TABLE_SCHEMA = '". database::input(DB_DATABASE) ."'
     AND TABLE_NAME = '". database::input(DB_TABLE_PREFIX . 'users') ."'
     AND COLUMN_NAME = 'date_expire_sessions'
     LIMIT 1;"
