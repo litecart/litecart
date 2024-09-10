@@ -7,16 +7,15 @@
   ], 'skip');
 
   perform_action('modify', [
-    [
+    FS_DIR_APP . '.htaccess' => [
       [
-        'file'    => FS_DIR_APP . '.htaccess',
         'search'  => '  <FilesMatch "\.(a?png|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">',
         'replace' => '  <FilesMatch "\.(a?png|avif|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">',
+        'regex'   => false,
       ],
     ],
-    [
+    FS_DIR_APP . 'includes/config.inc.php' => [
       [
-        'file'    => FS_DIR_APP . 'includes/config.inc.php',
         'search'  => '#'. preg_quote('// Database Tables - Backwards Compatibility (LiteCart <2.3)', '#') .'.*?\s*(\#*)#s',
         'replace' => '$1',
         'regex' => true,
@@ -38,7 +37,7 @@
       "SELECT * FROM information_schema.COLUMNS
       WHERE TABLE_SCHEMA = '". database::input(DB_DATABASE) ."'
       AND COLUMN_TYPE = 'timestamp';"
-    )->each(function($column){
+    )->each(function($column) use ($datetime) {
 
     // Convert timestamps for column
       database::query(
