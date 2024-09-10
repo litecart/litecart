@@ -83,10 +83,6 @@
 
       <ul class="navbar-nav">
 
-        <li class="nav-item customer-service">
-          <a class="nav-link" href="<?php echo document::href_ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a>
-        </li>
-
         <?php if ($information) { ?>
         <li class="nav-item information dropdown">
           <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?></a>
@@ -97,6 +93,10 @@
           </ul>
         </li>
         <?php } ?>
+
+        <li class="nav-item customer-service">
+          <a class="nav-link" href="<?php echo document::href_ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a>
+        </li>
 
         <?php if (settings::get('accounts_enabled')) { ?>
         <li class="nav-item account dropdown">

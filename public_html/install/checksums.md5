@@ -517,7 +517,7 @@ b4516e1a2a8f9630c392ab5e5b36482f	includes/templates/default.catalog/views/box_pr
 31d122331d0df63dc9d034fd3d63f48a	includes/templates/default.catalog/views/box_recently_viewed_products.inc.php
 fe29aeb6027be17f14ecf4ecbe4e1d08	includes/templates/default.catalog/views/box_similar_products.inc.php
 96c446dfce1d1ac4c6da7e321e69da2c	includes/templates/default.catalog/views/box_site_footer.inc.php
-29351262f8114004b409488064d0cd75	includes/templates/default.catalog/views/box_site_menu.inc.php
+9306c8d0ca3021ca39de17ed2be20544	includes/templates/default.catalog/views/box_site_menu.inc.php
 4df3d48d4797f1bc80c1362b54aa25d3	includes/templates/default.catalog/views/box_slides.inc.php
 643da0d69826e305ca6935eba7bfb4eb	includes/templates/default.catalog/views/breadcrumbs.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/views/index.html
