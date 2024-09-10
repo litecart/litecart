@@ -1,8 +1,8 @@
 INSERT INTO `lc_geo_zones` (`name`, `description`, `date_updated`, `date_created`) VALUES
 ('European Union', 'All countries in the European Union', NOW(), NOW());
--- --------------------------------------------------------
+-- -----
 SET @GEO_ZONE_EU = LAST_INSERT_ID();
--- --------------------------------------------------------
+-- -----
 INSERT INTO `lc_zones_to_geo_zones` (`geo_zone_id`, `country_code`, `zone_code`, `date_updated`, `date_created`) VALUES
 (@GEO_ZONE_EU, 'AT', '', NOW(), NOW()),
 (@GEO_ZONE_EU, 'BE', '', NOW(), NOW()),

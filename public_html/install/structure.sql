@@ -7,7 +7,7 @@ CREATE TABLE `lc_attribute_groups` (
   PRIMARY KEY (`id`),
   KEY `code` (`code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_attribute_groups_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `group_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -18,7 +18,7 @@ CREATE TABLE `lc_attribute_groups_info` (
   KEY `group_id` (`group_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_attribute_values` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `group_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -28,7 +28,7 @@ CREATE TABLE `lc_attribute_values` (
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_attribute_values_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `value_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -39,7 +39,7 @@ CREATE TABLE `lc_attribute_values_info` (
   KEY `value_id` (`value_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_cart_items` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `customer_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -54,7 +54,7 @@ CREATE TABLE `lc_cart_items` (
   KEY `customer_id` (`customer_id`),
   KEY `cart_uid` (`cart_uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_categories` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `parent_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -72,7 +72,7 @@ CREATE TABLE `lc_categories` (
   KEY `parent_id` (`parent_id`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_categories_filters` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -83,7 +83,7 @@ CREATE TABLE `lc_categories_filters` (
   UNIQUE INDEX `attribute_filter` (`category_id`, `attribute_group_id`),
   KEY `category_id` (`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_categories_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -99,7 +99,7 @@ CREATE TABLE `lc_categories_info` (
   KEY `category_id` (`category_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_countries` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL DEFAULT '0',
@@ -123,7 +123,7 @@ CREATE TABLE `lc_countries` (
   UNIQUE KEY `iso_code_3` (`iso_code_3`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_currencies` (
   `id` TINYINT(2) UNSIGNED NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL DEFAULT '0',
@@ -140,7 +140,7 @@ CREATE TABLE `lc_currencies` (
   PRIMARY KEY (`id`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_customers` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(32) NOT NULL DEFAULT '',
@@ -184,14 +184,14 @@ CREATE TABLE `lc_customers` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_delivery_statuses` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_delivery_statuses_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `delivery_status_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -203,7 +203,7 @@ CREATE TABLE `lc_delivery_statuses_info` (
   KEY `delivery_status_id` (`delivery_status_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_emails` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `status` ENUM('draft','scheduled','sent','error') NOT NULL DEFAULT 'draft',
@@ -225,7 +225,7 @@ CREATE TABLE `lc_emails` (
   KEY `date_created` (`date_created`),
   KEY `sender_email` (`sender`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_geo_zones` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(32) NOT NULL DEFAULT '',
@@ -235,7 +235,7 @@ CREATE TABLE `lc_geo_zones` (
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_languages` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL DEFAULT '0',
@@ -262,7 +262,7 @@ CREATE TABLE `lc_languages` (
   PRIMARY KEY `id` (`id`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_manufacturers` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL DEFAULT '0',
@@ -277,7 +277,7 @@ CREATE TABLE `lc_manufacturers` (
   KEY `code` (`code`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_manufacturers_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `manufacturer_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -293,7 +293,7 @@ CREATE TABLE `lc_manufacturers_info` (
   KEY `manufacturer_id` (`manufacturer_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_modules` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `module_id` VARCHAR(64) NOT NULL DEFAULT '',
@@ -311,7 +311,7 @@ CREATE TABLE `lc_modules` (
   KEY `type` (`type`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_newsletter_recipients` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `lastname` VARCHAR(64) NOT NULL DEFAULT '',
@@ -324,7 +324,7 @@ CREATE TABLE `lc_newsletter_recipients` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email` (`email`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_orders` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `uid` VARCHAR(13) NOT NULL DEFAULT '',
@@ -386,7 +386,7 @@ CREATE TABLE `lc_orders` (
   KEY `starred` (`starred`),
   KEY `unread` (`unread`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_orders_comments` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -398,7 +398,7 @@ CREATE TABLE `lc_orders_comments` (
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_orders_items` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -422,7 +422,7 @@ CREATE TABLE `lc_orders_items` (
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_order_statuses` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `state` ENUM('','created','on_hold','ready','delayed','processing','completed','dispatched','in_transit','delivered','returning','returned','cancelled','fraud','other') NOT NULL DEFAULT '',
@@ -440,7 +440,7 @@ CREATE TABLE `lc_order_statuses` (
   KEY `is_sale` (`is_sale`),
   KEY `is_archived` (`is_archived`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_order_statuses_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `order_status_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -454,7 +454,7 @@ CREATE TABLE `lc_order_statuses_info` (
   KEY `order_status_id` (`order_status_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_orders_totals` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -467,7 +467,7 @@ CREATE TABLE `lc_orders_totals` (
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_pages` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL DEFAULT '0',
@@ -481,7 +481,7 @@ CREATE TABLE `lc_pages` (
   KEY `parent_id` (`parent_id`),
   KEY `dock` (`dock`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_pages_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `page_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -495,7 +495,7 @@ CREATE TABLE `lc_pages_info` (
   KEY `page_id` (`page_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_products` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL DEFAULT '0',
@@ -548,7 +548,7 @@ CREATE TABLE `lc_products` (
   KEY `purchases` (`purchases`),
   KEY `views` (`views`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_products_attributes` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -561,7 +561,7 @@ CREATE TABLE `lc_products_attributes` (
   KEY `group_id` (`group_id`),
   KEY `value_id` (`value_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_products_campaigns` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -572,7 +572,7 @@ CREATE TABLE `lc_products_campaigns` (
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_products_images` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -582,7 +582,7 @@ CREATE TABLE `lc_products_images` (
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_products_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -601,7 +601,7 @@ CREATE TABLE `lc_products_info` (
   FULLTEXT KEY `short_description` (`short_description`),
   FULLTEXT KEY `description` (`description`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_products_options` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -615,7 +615,7 @@ CREATE TABLE `lc_products_options` (
   INDEX `product_id` (`product_id`),
   INDEX `priority` (`priority`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_products_options_values` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -631,7 +631,7 @@ CREATE TABLE `lc_products_options_values` (
   INDEX `product_id` (`product_id`),
   INDEX `priority` (`priority`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_products_options_stock` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -651,7 +651,7 @@ CREATE TABLE `lc_products_options_stock` (
   UNIQUE KEY `product_option_stock` (`product_id`, `combination`),
   KEY `product_id` (`product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_products_prices` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -660,13 +660,13 @@ CREATE TABLE `lc_products_prices` (
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_products_to_categories` (
    `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
    `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
    PRIMARY KEY(`product_id`, `category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_quantity_units` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `decimals` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
@@ -676,7 +676,7 @@ CREATE TABLE `lc_quantity_units` (
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_quantity_units_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `quantity_unit_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -688,7 +688,7 @@ CREATE TABLE `lc_quantity_units_info` (
   KEY `quantity_unit_id` (`quantity_unit_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_settings` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `setting_group_key` VARCHAR(64) NOT NULL DEFAULT '',
@@ -705,7 +705,7 @@ CREATE TABLE `lc_settings` (
   UNIQUE KEY `key` (`key`),
   KEY `setting_group_key` (`setting_group_key`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_settings_groups` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `key` VARCHAR(64) NOT NULL DEFAULT '',
@@ -715,7 +715,7 @@ CREATE TABLE `lc_settings_groups` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `key` (`key`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_slides` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL DEFAULT '0',
@@ -729,7 +729,7 @@ CREATE TABLE `lc_slides` (
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_slides_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `slide_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -741,7 +741,7 @@ CREATE TABLE `lc_slides_info` (
   KEY `slide_id` (`slide_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_sold_out_statuses` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
@@ -752,7 +752,7 @@ CREATE TABLE `lc_sold_out_statuses` (
   KEY `hidden` (`hidden`),
   KEY `orderable` (`orderable`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_sold_out_statuses_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `sold_out_status_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -764,7 +764,7 @@ CREATE TABLE `lc_sold_out_statuses_info` (
   KEY `sold_out_status_id` (`sold_out_status_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_suppliers` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(64) NOT NULL DEFAULT '',
@@ -778,7 +778,7 @@ CREATE TABLE `lc_suppliers` (
   PRIMARY KEY (`id`),
   KEY `code` (`code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_tax_classes` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(32) NOT NULL DEFAULT '',
@@ -788,7 +788,7 @@ CREATE TABLE `lc_tax_classes` (
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_tax_rates` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `tax_class_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -809,7 +809,7 @@ CREATE TABLE `lc_tax_rates` (
   KEY `tax_class_id` (`tax_class_id`),
   KEY `geo_zone_id` (`geo_zone_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_translations` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(250) NOT NULL DEFAULT '',
@@ -826,7 +826,7 @@ CREATE TABLE `lc_translations` (
   KEY `backend` (`backend`),
   KEY `date_created` (`date_created`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_users` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL DEFAULT '0',
@@ -851,7 +851,7 @@ CREATE TABLE `lc_users` (
   KEY `username` (`username`),
   KEY `email` (`email`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_zones` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `country_code` VARCHAR(4) NOT NULL DEFAULT '',
@@ -863,7 +863,7 @@ CREATE TABLE `lc_zones` (
   KEY `country_code` (`country_code`),
   KEY `code` (`code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
+-- -----
 CREATE TABLE `lc_zones_to_geo_zones` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `geo_zone_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
