@@ -215,32 +215,31 @@
       return $result;
     }
 
-    public static function multi_query($query, $link='default') {
+		public static function multi_query($sql, $link='default') {
 
 			if (!isset(self::$_links[$link])) {
 				self::connect($link);
 			}
 
-      $measure_start = microtime(true);
+			$timestamp = microtime(true);
 
-      if (($result = mysqli_multi_query(self::$_links[$link], $query)) === false) {
-        trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
-      }
+			if (mysqli_multi_query(self::$_links[$link], $sql) === false) {
+				trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL, E_USER_ERROR);
+			}
 
-      $i = 1;
-      while (mysqli_more_results(self::$_links[$link])) {
-        if (mysqli_next_result(self::$_links[$link]) === false) {
-          trigger_error('Fatal: Query '. $i .' failed', E_USER_ERROR);
-        }
-        $i++;
-      }
+			$results = [];
 
-      $duration = microtime(true) - $measure_start;
+			do {
+				if ($result = mysqli_store_result(self::$_links[$link])) {
+					$results[] = new database_result($result);
+				}
+			} while (mysqli_next_result(self::$_links[$link]));
 
+			self::$stats['queries']++;
+			self::$stats['duration'] += microtime(true) - $timestamp;
 
-      self::$stats['queries']++;
-      self::$stats['duration'] += $duration;
-    }
+			return $results;
+		}
 
     public static function fetch($result, $column='') {
       return $result->fetch($column);
