@@ -412,6 +412,7 @@ b248dc0d399fc418c35a8bf54a746245	includes/templates/default.catalog/css/printabl
 3ea29ac56e3c3323dab2145ba9e23725	includes/templates/default.catalog/css/printable.min.css
 06a0d13f8251c36ff7e6d15f34224431	includes/templates/default.catalog/css/printable.min.css.map
 66c275e182cbccdcf6eec679d336d327	includes/templates/default.catalog/css/variables.css
+68b09b64bbc846a37fee1665f893af46	includes/templates/default.catalog/fonts/.htaccess
 4c19bedc92e1357460b8191e6a4d0908	includes/templates/default.catalog/fonts/asap-v26-latin-ext_latin-700.woff2
 4844111cf2b17ad5ae960e59f3b67310	includes/templates/default.catalog/fonts/asap-v26-latin-ext_latin-regular.woff2
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/fonts/index.html
@@ -481,6 +482,7 @@ ddce7de870aa5d44528c170fbfe1de04	includes/templates/default.catalog/pages/newsle
 87fa9337a29b4b523ca520888d234837	includes/templates/default.catalog/pages/order.inc.php
 4b70154d1ab6937867c91a406a356841	includes/templates/default.catalog/pages/order_history.inc.php
 c58e3cf0dda42a1057ecaa460e5f6570	includes/templates/default.catalog/pages/order_success.inc.php
+4fa3c3cd5219d705112d59ad7352e013	includes/templates/default.catalog/pages/page.inc.php
 08191caea003efcc37729b5d98588fc3	includes/templates/default.catalog/pages/printable_order_copy.inc.php
 14981ba894e2acf56c6d217c0b010788	includes/templates/default.catalog/pages/printable_packing_slip.inc.php
 800f31f477f86dfbe60992e92c619913	includes/templates/default.catalog/pages/product.ajax.inc.php
