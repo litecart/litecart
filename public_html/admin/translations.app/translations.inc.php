@@ -49,13 +49,31 @@
           list($entity, $id, $column) = array_slice($matches, 1);
 
           foreach ($_GET['languages'] as $language_code) {
-            database::query(
-              "insert into ". DB_TABLE_PREFIX . $collection['info_table'] ."
-              (`". database::input($collection['entity_column']) ."`, language_code, `". database::input($column, !empty($translation['html'])) ."`)
-              values ('". database::input($id) ."', '". database::input($language_code) ."', '". database::input($translation['text_'.$language_code]) ."')
-              on duplicate key update
-              $column = '". database::input($translation['text_'.$language_code], !empty($translation['html'])) ."';"
-            );
+
+            $info = fetch();
+
+            if (database::query(
+              "select * from ". DB_TABLE_PREFIX . $collection['info_table'] ."
+              where `". database::input($collection['entity_column']) ."` = '". database::input($id) ."'
+              and language_code = '". database::input($language_code) ."'
+              limit 1;"
+            )->num_rows) {
+
+              database::query(
+                "update ". DB_TABLE_PREFIX . $collection['info_table'] ."
+                set $column = '". database::input($translation['text_'.$language_code], !empty($translation['html'])) ."'
+                where `". database::input($collection['entity_column']) ."` = '". database::input($id) ."'
+                and language_code = '". database::input($language_code) ."'
+                limit 1;"
+              );
+
+            } else {
+              database::query(
+                "insert into ". DB_TABLE_PREFIX . $collection['info_table'] ."
+                (`". database::input($collection['entity_column']) ."`, language_code, `". database::input($column, !empty($translation['html'])) ."`)
+                values ('". database::input($id) ."', '". database::input($language_code) ."', '". database::input($translation['text_'.$language_code]) ."');"
+              );
+            }
           }
         }
       }
