@@ -50,8 +50,6 @@
 
           foreach ($_GET['languages'] as $language_code) {
 
-            $info = fetch();
-
             if (database::query(
               "select * from ". DB_TABLE_PREFIX . $collection['info_table'] ."
               where `". database::input($collection['entity_column']) ."` = '". database::input($id) ."'
