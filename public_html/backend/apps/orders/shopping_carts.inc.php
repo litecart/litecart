@@ -7,7 +7,7 @@
 
 	document::$title[] = language::translate('title_shopping_carts', 'Shopping Carts');
 
-	breadcrumbs::add(language::translate('title_shopping_carts', 'Shopping Carts'));
+	breadcrumbs::add(language::translate('title_shopping_carts', 'Shopping Carts'), document::ilink());
 
 	if (!empty($_POST['delete'])) {
 		try {

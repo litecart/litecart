@@ -13,7 +13,7 @@
 	document::$title[] = !empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone');
 
 	breadcrumbs::add(language::translate('title_geo_zones', 'Geo Zones'), document::ilink(__APP__.'/geo_zones'));
-	breadcrumbs::add(!empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone'));
+	breadcrumbs::add(!empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

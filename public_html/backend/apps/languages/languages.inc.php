@@ -6,7 +6,7 @@
 
 	document::$title[] = language::translate('title_languages', 'Languages');
 
-	breadcrumbs::add(language::translate('title_languages', 'Languages'));
+	breadcrumbs::add(language::translate('title_languages', 'Languages'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 

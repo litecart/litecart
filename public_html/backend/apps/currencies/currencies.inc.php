@@ -6,7 +6,7 @@
 
 	document::$title[] = language::translate('title_currencies', 'Currencies');
 
-	breadcrumbs::add(language::translate('title_currencies', 'Currencies'));
+	breadcrumbs::add(language::translate('title_currencies', 'Currencies'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 

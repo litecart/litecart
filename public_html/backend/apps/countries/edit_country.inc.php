@@ -12,8 +12,8 @@
 
 	document::$title[] = !empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_create_new_country', 'Create New Country');
 
-	breadcrumbs::add(language::translate('title_countries', 'Countries'));
-	breadcrumbs::add(!empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_create_new_country', 'Create New Country'));
+	breadcrumbs::add(language::translate('title_countries', 'Countries'), document::ilink(__APP__.'/countries'));
+	breadcrumbs::add(!empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_create_new_country', 'Create New Country'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

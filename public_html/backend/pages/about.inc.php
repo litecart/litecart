@@ -2,7 +2,7 @@
 
 	breadcrumbs::reset();
 	breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), WS_DIR_ADMIN);
-	breadcrumbs::add(language::translate('title_about', 'About'));
+	breadcrumbs::add(language::translate('title_about', 'About'), document::link());
 
 	if (isset($_POST['delete'])) {
 

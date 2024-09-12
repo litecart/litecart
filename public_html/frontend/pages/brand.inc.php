@@ -46,7 +46,7 @@
 	document::$head_tags['canonical'] = '<link rel="canonical" href="'. document::href_ilink('brand', ['brand_id' => (int)$brand->id], false) .'">';
 
 	breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
-	breadcrumbs::add($brand->name);
+	breadcrumbs::add($brand->name, document::ilink('brand', ['brand_id' => $brand->id]));
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/brand.inc.php');
 

@@ -12,8 +12,8 @@
 
 	document::$title[] = !empty($tax_class->data['id']) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_create_new_tax_class', 'Create New Tax Class');
 
-	breadcrumbs::add(language::translate('title_tax_classes', 'Tax Classes'), document::ilink('tax_classes'));
-	breadcrumbs::add(!empty($tax_class->data['id']) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_create_new_tax_class', 'Create New Tax Class'));
+	breadcrumbs::add(language::translate('title_tax_classes', 'Tax Classes'), document::ilink(__APP__.'/tax_classes'));
+	breadcrumbs::add(!empty($tax_class->data['id']) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_create_new_tax_class', 'Create New Tax Class'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

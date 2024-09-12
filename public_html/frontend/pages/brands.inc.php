@@ -10,10 +10,10 @@
 	document::$title[] = language::translate('brands:head_title', 'Brands');
 	document::$description = language::translate('brands:meta_description', '');
 
-	breadcrumbs::add(language::translate('title_brands', 'Brands'));
+	breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/brands.inc.php');
-	
+
 	$_page->snippets['brands'] = [];
 
 	$brands_cache_token = cache::token('brands', ['get', 'language'], 'file');

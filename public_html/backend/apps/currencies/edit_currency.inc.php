@@ -13,7 +13,7 @@
 	document::$title[] = !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_create_new_currency', 'Create New Currency');
 
 	breadcrumbs::add(language::translate('title_currencies', 'Currencies'), document::ilink(__APP__.'/currencies'));
-	breadcrumbs::add(!empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_create_new_currency', 'Create New Currency'));
+	breadcrumbs::add(!empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_create_new_currency', 'Create New Currency'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

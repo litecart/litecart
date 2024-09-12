@@ -14,7 +14,7 @@
 
 	document::$title[] = language::translate('checkout:head_title', 'Checkout');
 
-	breadcrumbs::add(language::translate('title_checkout', 'Checkout'));
+	breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::ilink());
 
 	// If Confirm Order button was pressed
 	if (isset($_POST['confirm'])) {

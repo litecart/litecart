@@ -3,7 +3,7 @@
 	document::$title[] = language::translate('title_logotype', 'Logotype');
 
 	breadcrumbs::add(language::translate('title_appearance', 'Appearance'));
-	breadcrumbs::add(language::translate('title_logotype', 'Logotype'));
+	breadcrumbs::add(language::translate('title_logotype', 'Logotype'), document::ilink());
 
 	if (isset($_POST['upload'])) {
 

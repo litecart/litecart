@@ -14,7 +14,7 @@
 
 	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
 	breadcrumbs::add(language::translate('title_delivery_statuses', 'Delivery Statuses'), document::ilink(__APP__.'/delivery_statuses'));
-	breadcrumbs::add(!empty($delivery_status->data['id']) ? language::translate('title_edit_delivery_status', 'Edit Delivery Status') : language::translate('title_create_new_delivery_status', 'Create New Delivery Status'));
+	breadcrumbs::add(!empty($delivery_status->data['id']) ? language::translate('title_edit_delivery_status', 'Edit Delivery Status') : language::translate('title_create_new_delivery_status', 'Create New Delivery Status'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

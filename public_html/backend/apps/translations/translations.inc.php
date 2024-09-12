@@ -12,7 +12,7 @@
 
 	document::$snippets['title'][] = language::translate('title_translations', 'Translations');
 
-	breadcrumbs::add(language::translate('title_translations', 'Translations'));
+	breadcrumbs::add(language::translate('title_translations', 'Translations'), document::ilink());
 
 	$collections = include __DIR__.'/collections.inc.php';
 

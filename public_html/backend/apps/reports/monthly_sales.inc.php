@@ -3,7 +3,7 @@
 	document::$title[] = language::translate('title_monthly_sales', 'Monthly Sales');
 
 	breadcrumbs::add(language::translate('title_reports', 'Reports'));
-	breadcrumbs::add(language::translate('title_monthly_sales', 'Monthly Sales'));
+	breadcrumbs::add(language::translate('title_monthly_sales', 'Monthly Sales'), document::ilink());
 
 	$_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : date('Y-01-01 00:00:00');
 	$_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');

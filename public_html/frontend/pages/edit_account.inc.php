@@ -20,7 +20,7 @@
 	}
 
 	breadcrumbs::add(language::translate('title_account', 'Account'), '');
-	breadcrumbs::add(language::translate('title_edit_account', 'Edit Account'));
+	breadcrumbs::add(language::translate('title_edit_account', 'Edit Account'), document::ilink('edit_account'));
 
 	$customer = new ent_customer(customer::$data['id']);
 

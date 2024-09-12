@@ -34,7 +34,7 @@
 		foreach (array_slice($page->path, 0, -1, true) as $crumb) {
 			breadcrumbs::add($crumb->title, document::ilink('information', ['page_id' => $crumb->id]));
 		}
-		breadcrumbs::add($page->title);
+		breadcrumbs::add($page->title, document::ilink('information', ['page_id' => $page->id]));
 
 		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/information.inc.php');
 

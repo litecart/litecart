@@ -45,7 +45,7 @@
 	document::$title[] = !empty($module->data['id']) ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module');
 
 	breadcrumbs::add(language::translate('title_modules', 'Modules'));
-	breadcrumbs::add(!empty($module->data['id']) ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'));
+	breadcrumbs::add(!empty($module->data['id']) ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'), document::ilink());
 
 	if (!$_POST) {
 		$_POST['settings'] = $module->data['settings'];

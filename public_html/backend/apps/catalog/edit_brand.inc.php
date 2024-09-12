@@ -14,7 +14,7 @@
 
 	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
 	breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink(__APP__.'/brands'));
-	breadcrumbs::add(!empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_create_new_brand', 'Create New Brand'));
+	breadcrumbs::add(!empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_create_new_brand', 'Create New Brand'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

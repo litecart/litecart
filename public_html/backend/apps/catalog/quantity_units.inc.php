@@ -7,7 +7,7 @@
 	document::$title[] = language::translate('title_quantity_units', 'Quantity Units');
 
 	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_quantity_units', 'Quantity Units'));
+	breadcrumbs::add(language::translate('title_quantity_units', 'Quantity Units'), document::ilink(__APP__.'/quantity_units'));
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$quantity_units = database::query(

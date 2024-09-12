@@ -6,7 +6,8 @@
 
 	document::$title[] = language::translate('title_order_statuses', 'Order Statuses');
 
-	breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'));
+	breadcrumbs::add(language::translate('title_orders', 'Orders'), document::ilink('orders'));
+	breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'), document::ilink());
 
 
 	if (!empty($_POST['change'])) {

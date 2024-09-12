@@ -80,7 +80,7 @@
 	document::$title[] = $title;
 
 	breadcrumbs::add(language::translate('title_modules', 'Modules'));
-	breadcrumbs::add($title);
+	breadcrumbs::add($title, document::ilink());
 
 	// Installed Modules
 	$installed_modules = database::query(

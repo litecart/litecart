@@ -3,8 +3,8 @@
 	document::$title[] = language::translate('title_template_settings', 'Template Settings');
 
 	breadcrumbs::add(language::translate('title_appearance', 'Appearance'));
-	breadcrumbs::add(language::translate('title_template', 'Template'), document::ilink('appearance/template'));
-	breadcrumbs::add(language::translate('title_template_settings', 'Template Settings'));
+	breadcrumbs::add(language::translate('title_template', 'Template'), document::ilink(__APP__.'/template'));
+	breadcrumbs::add(language::translate('title_template_settings', 'Template Settings'), document::ilink());
 
 	// Get template settings structure
 	$settings = include 'app://frontend/templates/' . settings::get('template') .'/config.inc.php';

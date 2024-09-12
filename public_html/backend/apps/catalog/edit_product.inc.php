@@ -16,8 +16,9 @@
 
 	document::$title[] = !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_create_new_product', 'Create New Product');
 
+	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
 	breadcrumbs::add(language::translate('title_products', 'Products'), document::ilink(__APP__.'/products'));
-	breadcrumbs::add(!empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_create_new_product', 'Create New Product'));
+	breadcrumbs::add(!empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_create_new_product', 'Create New Product'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

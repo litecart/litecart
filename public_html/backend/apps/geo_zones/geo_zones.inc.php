@@ -6,7 +6,7 @@
 
 	document::$title[] = language::translate('title_geo_zones', 'Geo Zones');
 
-	breadcrumbs::add(language::translate('title_geo_zones', 'Geo Zones'));
+	breadcrumbs::add(language::translate('title_geo_zones', 'Geo Zones'), document::ilink());
 
 	if (isset($_POST['clone'])) {
 

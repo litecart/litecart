@@ -61,7 +61,7 @@
 	foreach (array_slice($category->path, 0, -1, true) as $category_crumb) {
 		breadcrumbs::add($category_crumb->name, document::ilink('category', ['category_id' => $category_crumb->id]));
 	}
-	breadcrumbs::add($category->name);
+	breadcrumbs::add($category->name, document::ilink('category', ['category_id' => $category->id]));
 
 	functions::draw_lightbox();
 

@@ -6,7 +6,8 @@
 
 	document::$title[] = language::translate('title_sold_out_statuses', 'Sold-Out Statuses');
 
-	breadcrumbs::add(language::translate('title_sold_out_statuses', 'Sold-Out Statuses'));
+	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
+	breadcrumbs::add(language::translate('title_sold_out_statuses', 'Sold-Out Statuses'), document::ilink());
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$sold_out_statuses = database::query(

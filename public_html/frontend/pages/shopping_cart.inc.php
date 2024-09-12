@@ -13,7 +13,7 @@
 
 	document::$title[] = language::translate('title_shopping_cart', 'Shopping Cart');
 
-	breadcrumbs::add(language::translate('title_shopping_cart', 'Shopping Cart'));
+	breadcrumbs::add(language::translate('title_shopping_cart', 'Shopping Cart'), document::ilink('shopping_cart'));
 
 	functions::draw_lightbox();
 

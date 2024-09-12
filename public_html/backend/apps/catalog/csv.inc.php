@@ -3,7 +3,7 @@
 	document::$title[] = language::translate('title_import_export_csv', 'Import/Export CSV');
 
 	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_import_export_csv', 'Import/Export CSV'));
+	breadcrumbs::add(language::translate('title_import_export_csv', 'Import/Export CSV'), document::ilink());
 
 	if (isset($_POST['import']) || isset($_GET['resume'])) {
 

@@ -10,7 +10,10 @@
 		$_POST = $vmod->data;
 	}
 
-	breadcrumbs::add(!empty($vmod->data['id']) ? language::translate('title_edit_vmod', 'Edit vMod') : language::translate('title_create_new_vmod', 'Create New vMod'));
+	document::$title[] = !empty($vmod->data['id']) ? language::translate('title_edit_vmod', 'Edit vMod') : language::translate('title_create_new_vmod', 'Create New vMod');
+
+	breadcrumbs::add(language::translate('title_vmods', 'vMods'), document::ilink(__APP__.'/vmods'));
+	breadcrumbs::add(!empty($vmod->data['id']) ? language::translate('title_edit_vmod', 'Edit vMod') : language::translate('title_create_new_vmod', 'Create New vMod'), document::ilink());
 
 	if (isset($_POST['save']) || isset($_POST['quicksave'])) {
 

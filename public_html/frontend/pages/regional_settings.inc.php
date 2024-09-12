@@ -11,7 +11,7 @@
 
 	document::$title[] = language::translate('regional_settings:head_title', 'Regional Settings');
 
-	breadcrumbs::add(language::translate('title_regional_settings', 'Regional Settings'));
+	breadcrumbs::add(language::translate('title_regional_settings', 'Regional Settings'), document::ilink('regional_settings'));
 
 	if (isset($_POST['save'])) {
 

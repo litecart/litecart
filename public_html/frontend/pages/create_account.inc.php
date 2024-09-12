@@ -8,9 +8,10 @@
 	 */
 
 	header('X-Robots-Tag: noindex');
+
 	document::$title[] = language::translate('title_create_account', 'Create Account');
 
-	breadcrumbs::add(language::translate('title_create_account', 'Create Account'));
+	breadcrumbs::add(language::translate('title_create_account', 'Create Account'), document::ilink('create_account'));
 
 	if (!settings::get('accounts_enabled')) {
 		echo language::translate('error_accounts_are_disabled', 'Accounts are disabled');

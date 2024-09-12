@@ -7,7 +7,7 @@
 	document::$title[] = language::translate('title_delivery_statuses', 'Delivery Statuses');
 
 	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_delivery_statuses', 'Delivery Statuses'));
+	breadcrumbs::add(language::translate('title_delivery_statuses', 'Delivery Statuses'), document::ilink());
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$delivery_statuses = database::query(

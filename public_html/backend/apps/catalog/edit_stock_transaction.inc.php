@@ -10,7 +10,11 @@
 		$_POST = $stock_transaction->data;
 	}
 
-	breadcrumbs::add(!empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_transaction', 'Create New Transaction'));
+	document::$title[] = !empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_transaction', 'Create New Transaction');
+	
+	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
+	breadcrumbs::add(language::translate('title_stock_transactions', 'Stock Transactions'), document::ilink(__APP__.'/stock_transactions'));
+	breadcrumbs::add(!empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_transaction', 'Create New Transaction'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

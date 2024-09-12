@@ -69,7 +69,8 @@
 		}
 	}
 
-	breadcrumbs::add(basename($_GET['vmod']));
+	breadcrumbs::add(language::translate('title_vmods', 'vMods'), document::ilink(__APP__.'/vmods'));
+	breadcrumbs::add(basename($_GET['vmod']), document::ilink());
 ?>
 <style>
 pre {

@@ -2,7 +2,7 @@
 
 	document::$title[] = language::translate('title_template', 'Template');
 
-	breadcrumbs::add(language::translate('title_template', 'Template'));
+	breadcrumbs::add(language::translate('title_template', 'Template'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

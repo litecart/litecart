@@ -10,7 +10,7 @@
 	document::$title[] = language::translate('categories:head_title', 'Categories');
 	document::$description = language::translate('categories:meta_description', '');
 
-	breadcrumbs::add(language::translate('title_categories', 'Categories'));
+	breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/categories.inc.php');
 	echo $_page->render();

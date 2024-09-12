@@ -2,7 +2,7 @@
 
 	document::$title[] = language::translate('title_import_export_csv', 'Import/Export CSV');
 
-	breadcrumbs::add(language::translate('title_import_export_csv', 'Import/Export CSV'));
+	breadcrumbs::add(language::translate('title_import_export_csv', 'Import/Export CSV'), document::ilink());
 
 	$collections = include __DIR__.'/collections.inc.php';
 
@@ -84,9 +84,12 @@
 							);
 
 							$updated++;
+
 						} else {
 
-							if (empty($_POST['append'])) continue;
+							if (empty($_POST['append'])) {
+								continue;
+							}
 
 							database::query(
 								"insert into ". DB_TABLE_PREFIX . $collection['info_table'] ."
@@ -100,13 +103,13 @@
 
 				} else {
 
-					$translation_query = database::query(
+					$translation = database::query(
 						"select * from ". DB_TABLE_PREFIX ."translations
 						where code = '". database::input($row['code']) ."'
 						limit 1;"
-					);
+					)->fetch();
 
-					if ($translation = database::fetch($translation_query)) {
+					if ($translation) {
 
 						foreach ($language_codes as $language_code) {
 							if (empty($row[$language_code])) continue;
@@ -127,7 +130,9 @@
 
 					} else {
 
-						if (empty($_POST['insert'])) continue;
+						if (empty($_POST['insert'])) {
+							continue;
+						}
 
 						database::query(
 							"insert into ". DB_TABLE_PREFIX ."translations
@@ -136,7 +141,9 @@
 
 						foreach ($language_codes as $language_code) {
 
-							if (empty($row[$language_code])) continue;
+							if (empty($row[$language_code])) {
+								continue;
+							}
 
 							if (!in_array($language_code, array_keys(language::$languages))) continue;
 
@@ -180,34 +187,40 @@
 
 			$_POST['language_codes'] = array_filter($_POST['language_codes']);
 
-			$csv = [];
-
 			if (in_array('translations', $_POST['collections'])) {
-				$sql_union[] = "select 'translation' as entity, frontend, backend, code, date_updated, html,
-											 ". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
-											 from ". DB_TABLE_PREFIX ."translations
-											 where code not regexp '^(settings_group:|settings_key:|cm|job|om|ot|pm|sm)_'";
+				$sql_union[] = (
+					"select 'translation' as entity, frontend, backend, code, date_updated, html,
+					". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
+					from ". DB_TABLE_PREFIX ."translations
+					where code not regexp '^(settings_group:|settings_key:|cm|job|om|ot|pm|sm)_'"
+				);
 			}
 
 			if (in_array('modules', $_POST['collections'])) {
-				$sql_union[] = "select 'translation' as entity, frontend, backend, code, date_updated, html,
-											 ". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
-											 from ". DB_TABLE_PREFIX ."translations
-											 where code regexp '^(cm|job|om|ot|pm|sm)_'";
+				$sql_union[] = (
+					"select 'translation' as entity, frontend, backend, code, date_updated, html,
+					". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
+					from ". DB_TABLE_PREFIX ."translations
+					where code regexp '^(cm|job|om|ot|pm|sm)_'"
+				);
 			}
 
 			if (in_array('setting_groups', $_POST['collections'])) {
-				$sql_union[] = "select 'translation' as entity, frontend, backend, code, date_updated, html,
-											 ". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
-											 from ". DB_TABLE_PREFIX ."translations
-											 where code regexp '^settings_group:'";
+				$sql_union[] = (
+					"select 'translation' as entity, frontend, backend, code, date_updated, html,
+					". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
+					from ". DB_TABLE_PREFIX ."translations
+					where code regexp '^settings_group:'"
+				);
 			}
 
 			if (in_array('settings', $_POST['collections'])) {
-				$sql_union[] = "select 'translation' as entity, frontend, backend, code, date_updated, html,
-											 ". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
-											 from ". DB_TABLE_PREFIX ."translations
-											 where code regexp '^settings_key:'";
+				$sql_union[] = (
+					"select 'translation' as entity, frontend, backend, code, date_updated, html,
+					". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
+					from ". DB_TABLE_PREFIX ."translations
+					where code regexp '^settings_key:'"
+				);
 			}
 
 			$union_select = function($entity, $entity_table, $info_table, $id, $field) {
@@ -228,7 +241,7 @@
 				}
 			}
 
-			$translations_query = database::query(
+			$csv = database::query(
 				"select * from (
 					". implode(PHP_EOL . PHP_EOL . "union ", $sql_union) ."
 				) x
@@ -255,12 +268,15 @@
 			}
 
 			switch($_POST['eol']) {
+
 				case 'Linux':
 					echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
 					break;
+
 				case 'Mac':
 					echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
 					break;
+
 				case 'Win':
 				default:
 					echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
@@ -342,8 +358,8 @@
 
 							<div class="form-group">
 								<?php echo language::translate('title_collections', 'Collections'); ?>
-								<?php echo functions::form_draw_select_multiple_field('collections[]', array_map(function($c) { return [$c['name'], $c['id']]; }, $collections), true); ?>
-							</ul>
+								<?php echo functions::form_select_multiple('collections[]', array_map(function($c) { return [$c['id'], $c['name']]; }, $collections), true); ?>
+							</div>
 
 						<div class="form-group">
 							<label><?php echo language::translate('title_languages', 'Languages'); ?></label>

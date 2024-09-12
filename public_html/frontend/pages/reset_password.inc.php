@@ -11,7 +11,8 @@
 
 	document::$title[] = language::translate('title_reset_password', 'Reset Password');
 
-	breadcrumbs::add(language::translate('title_reset_password', 'Reset Password'));
+	breadcrumbs::add(language::translate('title_account', 'Account'));
+	breadcrumbs::add(language::translate('title_reset_password', 'Reset Password'), document::ilink('reset_password'));
 
 	if (!empty($_POST['reset_password'])) {
 

@@ -14,7 +14,7 @@
 
 	document::$title[] = language::translate('title_pages', 'Pages');
 
-	breadcrumbs::add(language::translate('title_pages', 'Pages'));
+	breadcrumbs::add(language::translate('title_pages', 'Pages'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 

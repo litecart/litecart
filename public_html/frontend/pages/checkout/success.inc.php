@@ -14,7 +14,7 @@
 	document::$title[] = language::translate('title_order_success', 'Order Success');
 
 	breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::ilink('checkout/index'));
-	breadcrumbs::add(language::translate('title_order_success', 'Order Success'));
+	breadcrumbs::add(language::translate('title_order_success', 'Order Success'), document::ilink());
 
 	try {
 

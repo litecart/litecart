@@ -33,7 +33,7 @@
 
 	document::$title[] = language::translate('title_orders', 'Orders');
 
-	breadcrumbs::add(language::translate('title_orders', 'Orders'));
+	breadcrumbs::add(language::translate('title_orders', 'Orders'), document::ilink());
 
 	if (isset($_POST['star']) || isset($_POST['unstar'])) {
 		database::query(

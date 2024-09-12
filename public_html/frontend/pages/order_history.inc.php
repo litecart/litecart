@@ -18,7 +18,7 @@
 	}
 
 	breadcrumbs::add(language::translate('title_account', 'Account'));
-	breadcrumbs::add(language::translate('title_order_history', 'Order History'));
+	breadcrumbs::add(language::translate('title_order_history', 'Order History'), document::ilink('order_history'));
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/order_history.inc.php');
 

@@ -6,7 +6,7 @@
 
 	document::$title[] = language::translate('title_administrators', 'Administrators');
 
-	breadcrumbs::add(language::translate('title_administrators', 'Administrators'));
+	breadcrumbs::add(language::translate('title_administrators', 'Administrators'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
@@ -37,6 +37,7 @@
 		"select * from ". DB_TABLE_PREFIX ."administrators
 		order by username;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
+
 	foreach ($administrators as $key => $administrator) {
 		try {
 
@@ -44,7 +45,7 @@
 				throw new Exception(strtr(language::translate('text_acount_cannot_be_used_until_x', 'The account cannot be used until %datetime'), ['%datetime' => language::strftime('datetime', $administrator['date_valid_from'])]));
 			}
 
-			if ($administrator['date_valid_to'] && $administrator['date_valid_to'] > 1970 && $administrator['date_valid_to'] < date('Y-m-d H:i:s')) {
+			if ($administrator['date_valid_to'] && $administrator['date_valid_to'] < date('Y-m-d H:i:s')) {
 				throw new Exception(strtr(language::translate('text_account_expired_at_x', 'The account expired at %datetime and can no longer be used'), ['%datetime' => language::strftime('datetime', $administrator['date_valid_to'])]));
 			}
 
@@ -100,9 +101,9 @@
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>"><?php echo $administrator['username']; ?></a></td>
 					<td><?php echo $administrator['email']; ?></td>
 					<td><?php echo (json_decode($administrator['apps'], true)) ? language::translate('title_restricted', 'Restricted') : '-'; ?></td>
-					<td class="text-end"><?php echo ($administrator['date_valid_from'] > 1970) ? language::strftime('datetime', $administrator['date_valid_from']) : '-'; ?></td>
-					<td class="text-end"><?php echo ($administrator['date_valid_to'] > 1970) ? language::strftime('datetime', $administrator['date_valid_to']) : '-'; ?></td>
-					<td class="text-end"><?php echo ($administrator['date_login'] > 1970) ? language::strftime('datetime', $administrator['date_login']) : '-'; ?></td>
+					<td class="text-end"><?php echo $administrator['date_valid_from'] ? language::strftime('datetime', $administrator['date_valid_from']) : '-'; ?></td>
+					<td class="text-end"><?php echo $administrator['date_valid_to'] ? language::strftime('datetime', $administrator['date_valid_to']) : '-'; ?></td>
+					<td class="text-end"><?php echo $administrator['date_login'] ? language::strftime('datetime', $administrator['date_login']) : '-'; ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>

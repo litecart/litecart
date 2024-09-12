@@ -6,7 +6,7 @@
 
 	document::$title[] = language::translate('title_settings', 'Settings');
 
-	breadcrumbs::add(language::translate('title_settings', 'Settings'));
+	breadcrumbs::add(language::translate('title_settings', 'Settings'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

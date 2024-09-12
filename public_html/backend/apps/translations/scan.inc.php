@@ -2,7 +2,8 @@
 
 	document::$title[] = language::translate('title_scan_translations', 'Scan Translations');
 
-	breadcrumbs::add(language::translate('title_scan_translations', 'Scan Translations'));
+	breadcrumbs::add(language::translate('title_translations', 'Translations'), document::ilink('translations'));
+	breadcrumbs::add(language::translate('title_scan_translations', 'Scan Translations'), document::ilink());
 
 	if (!empty($_POST['scan'])) {
 

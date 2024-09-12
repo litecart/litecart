@@ -1,13 +1,13 @@
 CREATE TABLE `lc_administrators` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`username` VARCHAR(32) NOT NULL DEFAULT '',
 	`email` VARCHAR(128) NOT NULL DEFAULT '',
 	`password_hash` VARCHAR(255) NOT NULL DEFAULT '',
 	`apps` VARCHAR(4096) NOT NULL DEFAULT '',
 	`widgets` VARCHAR(512) NOT NULL DEFAULT '',
-	`login_attempts` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-	`total_logins` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`login_attempts` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`total_logins` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 	`last_hostname` VARCHAR(128) NOT NULL DEFAULT '',
 	`last_user_agent` VARCHAR(255) NOT NULL DEFAULT '',
@@ -24,7 +24,7 @@ CREATE TABLE `lc_administrators` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_attribute_groups` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`code` VARCHAR(32) NOT NULL DEFAULT '',
 	`sort` ENUM('alphabetical','priority') NOT NULL DEFAULT 'alphabetical',
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -34,8 +34,8 @@ CREATE TABLE `lc_attribute_groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_attribute_groups_info` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`group_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`group_id` INT(10) UNSIGNED NOT NULL,
 	`language_code` CHAR(2) NOT NULL,
 	`name` VARCHAR(128) NOT NULL DEFAULT '',
 	PRIMARY KEY (`id`),
@@ -47,8 +47,8 @@ CREATE TABLE `lc_attribute_groups_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_attribute_values` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`group_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`group_id` INT(10) UNSIGNED NOT NULL,
 	`priority` INT(11) NOT NULL DEFAULT '0',
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -57,8 +57,8 @@ CREATE TABLE `lc_attribute_values` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_attribute_values_info` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`value_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`value_id` INT(10) UNSIGNED NOT NULL,
 	`language_code` CHAR(2) NOT NULL,
 	`name` VARCHAR(128) NOT NULL DEFAULT '',
 	PRIMARY KEY (`id`),
@@ -70,7 +70,7 @@ CREATE TABLE `lc_attribute_values_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_banners` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`name` VARCHAR(64) NOT NULL DEFAULT '',
 	`languages` VARCHAR(64) NOT NULL DEFAULT '',
@@ -78,8 +78,8 @@ CREATE TABLE `lc_banners` (
 	`image` VARCHAR(64) NOT NULL DEFAULT '',
 	`link` VARCHAR(255) NOT NULL DEFAULT '',
 	`keywords` VARCHAR(255) NOT NULL DEFAULT '',
-	`total_views` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-	`total_clicks` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`total_views` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`total_clicks` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`date_valid_from` TIMESTAMP NULL DEFAULT NULL,
 	`date_valid_to` TIMESTAMP NULL DEFAULT NULL,
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -88,7 +88,7 @@ CREATE TABLE `lc_banners` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_brands` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`featured` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`code` VARCHAR(32) NOT NULL DEFAULT '',
@@ -103,8 +103,8 @@ CREATE TABLE `lc_brands` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_brands_info` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`brand_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`brand_id` INT(10) UNSIGNED NOT NULL,
 	`language_code` CHAR(2) NOT NULL,
 	`short_description` VARCHAR(255) NOT NULL DEFAULT '',
 	`description` TEXT NOT NULL DEFAULT '',
@@ -121,7 +121,7 @@ CREATE TABLE `lc_brands_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_campaigns` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
 	`name` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
 	`date_valid_from` TIMESTAMP NULL DEFAULT NULL,
@@ -135,9 +135,9 @@ CREATE TABLE `lc_campaigns` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_campaigns_products` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`campaign_id` INT(11) UNSIGNED NOT NULL,
-	`product_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`campaign_id` INT(10) UNSIGNED NOT NULL,
+	`product_id` INT(10) UNSIGNED NOT NULL,
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `product_id` (`product_id`) USING BTREE,
 	INDEX `campaign_id` (`campaign_id`) USING BTREE,
@@ -146,12 +146,12 @@ CREATE TABLE `lc_campaigns_products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_cart_items` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`customer_id` INT(11) UNSIGNED NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`customer_id` INT(10) UNSIGNED NULL,
 	`cart_uid` VARCHAR(13) NOT NULL DEFAULT '',
 	`key` VARCHAR(32) NOT NULL DEFAULT '',
-	`product_id` INT(11) UNSIGNED NULL,
-	`stock_option_id` INT(11) UNSIGNED NULL,
+	`product_id` INT(10) UNSIGNED NULL,
+	`stock_option_id` INT(10) UNSIGNED NULL,
 	`userdata` VARCHAR(2048) NOT NULL DEFAULT '',
 	`image` VARCHAR(255) NOT NULL DEFAULT '',
 	`quantity` FLOAT(11, 4) NOT NULL DEFAULT '1',
@@ -165,9 +165,9 @@ CREATE TABLE `lc_cart_items` (
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- -----
 CREATE TABLE `lc_categories` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`parent_id` INT(11) UNSIGNED NULL,
-	`google_taxonomy_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`parent_id` INT(10) UNSIGNED NULL,
+	`google_taxonomy_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`code` VARCHAR(64) NOT NULL DEFAULT '',
 	`keywords` VARCHAR(255) NOT NULL DEFAULT '',
@@ -182,9 +182,9 @@ CREATE TABLE `lc_categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_categories_filters` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`category_id` INT(11) UNSIGNED NOT NULL,
-	`attribute_group_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`category_id` INT(10) UNSIGNED NOT NULL,
+	`attribute_group_id` INT(10) UNSIGNED NOT NULL,
 	`select_multiple` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`priority` INT(11) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`id`),
@@ -195,8 +195,8 @@ CREATE TABLE `lc_categories_filters` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_categories_info` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`category_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`category_id` INT(10) UNSIGNED NOT NULL,
 	`language_code` CHAR(2) NOT NULL,
 	`name` VARCHAR(128) NOT NULL DEFAULT '',
 	`short_description` VARCHAR(255) NOT NULL DEFAULT '',
@@ -218,7 +218,7 @@ CREATE TABLE `lc_categories_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_countries` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`iso_code_1` CHAR(3) NOT NULL DEFAULT '',
 	`iso_code_2` CHAR(2) NOT NULL DEFAULT '',
@@ -261,7 +261,7 @@ CREATE TABLE `lc_currencies` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_customers` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
 	`code` VARCHAR(32) NOT NULL DEFAULT '',
 	`email` VARCHAR(128) NOT NULL DEFAULT '',
@@ -283,7 +283,7 @@ CREATE TABLE `lc_customers` (
 	`notes` TEXT NOT NULL DEFAULT '',
 	`password_reset_token` VARCHAR(128) NOT NULL DEFAULT '',
 	`login_attempts` INT(11) NOT NULL DEFAULT '0',
-	`total_logins` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`total_logins` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`last_ip` VARCHAR(39) NOT NULL DEFAULT '',
 	`last_host` VARCHAR(128) NOT NULL DEFAULT '',
 	`last_agent` VARCHAR(255) NOT NULL DEFAULT '',
@@ -297,8 +297,8 @@ CREATE TABLE `lc_customers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_customers_addresses` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`customer_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`customer_id` INT(10) UNSIGNED NOT NULL,
 	`type` ENUM('','business','individual') NOT NULL DEFAULT '',
 	`tax_id` VARCHAR(32) NOT NULL DEFAULT '',
 	`company` VARCHAR(64) NOT NULL DEFAULT '',
@@ -319,15 +319,15 @@ CREATE TABLE `lc_customers_addresses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_delivery_statuses` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_delivery_statuses_info` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`delivery_status_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`delivery_status_id` INT(10) UNSIGNED NOT NULL,
 	`language_code` CHAR(2) NOT NULL,
 	`name` VARCHAR(64) NOT NULL DEFAULT '',
 	`description` VARCHAR(255) NOT NULL DEFAULT '',
@@ -340,7 +340,7 @@ CREATE TABLE `lc_delivery_statuses_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_emails` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` ENUM('draft','scheduled','sent','error') NOT NULL DEFAULT 'draft',
 	`code` VARCHAR(255) NOT NULL DEFAULT '',
 	`sender` VARCHAR(255) NOT NULL DEFAULT '',
@@ -361,7 +361,7 @@ CREATE TABLE `lc_emails` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_geo_zones` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`code` VARCHAR(32) NOT NULL DEFAULT '',
 	`name` VARCHAR(64) NOT NULL DEFAULT '',
 	`description` VARCHAR(255) NOT NULL DEFAULT '',
@@ -371,7 +371,7 @@ CREATE TABLE `lc_geo_zones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_languages` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) NOT NULL DEFAULT '0',
 	`code` CHAR(2) NOT NULL DEFAULT '',
 	`code2` CHAR(3) NOT NULL DEFAULT '',
@@ -397,7 +397,7 @@ CREATE TABLE `lc_languages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_modules` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`module_id` VARCHAR(64) NOT NULL DEFAULT '',
 	`type` VARCHAR(16) NOT NULL DEFAULT '',
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
@@ -415,7 +415,7 @@ CREATE TABLE `lc_modules` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_newsletter_recipients` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`lastname` VARCHAR(64) NOT NULL DEFAULT '',
 	`firstname` VARCHAR(64) NOT NULL DEFAULT '',
 	`email` VARCHAR(128) NOT NULL DEFAULT '',
@@ -428,12 +428,12 @@ CREATE TABLE `lc_newsletter_recipients` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_orders` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`no` VARCHAR(1) NOT NULL DEFAULT '',
 	`starred` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`unread` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-	`order_status_id` INT(11) UNSIGNED NULL,
-	`customer_id` INT(11) UNSIGNED NULL,
+	`order_status_id` INT(10) UNSIGNED NULL,
+	`customer_id` INT(10) UNSIGNED NULL,
 	`billing_email` VARCHAR(128) NOT NULL DEFAULT '',
 	`billing_tax_id` VARCHAR(32) NOT NULL DEFAULT '',
 	`billing_company` VARCHAR(64) NOT NULL DEFAULT '',
@@ -514,9 +514,9 @@ CREATE TABLE `lc_orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_orders_comments` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`order_id` INT(11) UNSIGNED NOT NULL,
-	`author_id` INT(11) UNSIGNED NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`order_id` INT(10) UNSIGNED NOT NULL,
+	`author_id` INT(10) UNSIGNED NULL,
 	`author` enum('system','staff','customer') NOT NULL DEFAULT 'system',
 	`text` VARCHAR(512) NOT NULL DEFAULT '',
 	`hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
@@ -527,10 +527,11 @@ CREATE TABLE `lc_orders_comments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_orders_items` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`order_id` INT(11) UNSIGNED NOT NULL,
-	`product_id` INT(11) UNSIGNED NULL,
-	`stock_item_id` INT(11) UNSIGNED NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`order_id` INT(10) UNSIGNED NOT NULL,
+	`product_id` INT(10) UNSIGNED NULL,
+	`stock_option_id` INT(10) UNSIGNED NULL,
+	`userdata` VARCHAR(2048) UNSIGNED NULL,
 	`name` VARCHAR(128) NOT NULL DEFAULT '',
 	`sku` VARCHAR(32) NOT NULL DEFAULT '',
 	`gtin` VARCHAR(32) NOT NULL DEFAULT '',
@@ -549,7 +550,7 @@ CREATE TABLE `lc_orders_items` (
 	`width` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
 	`height` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
 	`length_unit` VARCHAR(2) NOT NULL DEFAULT '',
-	`downloads` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`downloads` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`priority` INT(11) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`id`),
 	KEY `order_id` (`order_id`),
@@ -560,8 +561,8 @@ CREATE TABLE `lc_orders_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_orders_totals` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`order_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`order_id` INT(10) UNSIGNED NOT NULL,
 	`module_id` VARCHAR(32) NOT NULL DEFAULT '',
 	`title` VARCHAR(128) NOT NULL DEFAULT '',
 	`amount` FLOAT(11) NOT NULL DEFAULT '0.0000',
@@ -575,7 +576,7 @@ CREATE TABLE `lc_orders_totals` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_order_statuses` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`state` ENUM('','created','on_hold','ready','delayed','processing','completed','dispatched','in_transit','delivered','returning','returned','cancelled','fraud','other') NOT NULL DEFAULT '',
 	`hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`icon` VARCHAR(24) NOT NULL DEFAULT '',
@@ -594,8 +595,8 @@ CREATE TABLE `lc_order_statuses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_order_statuses_info` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`order_status_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`order_status_id` INT(10) UNSIGNED NOT NULL,
 	`language_code` CHAR(2) NOT NULL,
 	`name` VARCHAR(64) NOT NULL DEFAULT '',
 	`description` VARCHAR(255) NOT NULL DEFAULT '',
@@ -610,8 +611,8 @@ CREATE TABLE `lc_order_statuses_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_pages` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`parent_id` INT(11) UNSIGNED NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`parent_id` INT(10) UNSIGNED NULL,
 	`status` TINYINT(1) NOT NULL DEFAULT '0',
 	`dock` VARCHAR(64) NOT NULL DEFAULT '',
 	`priority` INT(11) NOT NULL DEFAULT '0',
@@ -624,8 +625,8 @@ CREATE TABLE `lc_pages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_pages_info` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`page_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`page_id` INT(10) UNSIGNED NOT NULL,
 	`language_code` CHAR(2) NOT NULL,
 	`title` VARCHAR(255) NOT NULL DEFAULT '',
 	`content` MEDIUMTEXT NOT NULL DEFAULT '',
@@ -640,14 +641,14 @@ CREATE TABLE `lc_pages_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_products` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`type` ENUM('virtual','physical','digital','variable','bundle') NOT NULL DEFAULT 'virtual',
-	`brand_id` INT(11) UNSIGNED NULL,
-	`supplier_id` INT(11) UNSIGNED NULL,
-	`delivery_status_id` INT(11) UNSIGNED NULL,
-	`sold_out_status_id` INT(11) UNSIGNED NULL,
-	`default_category_id` INT(11) UNSIGNED NULL,
+	`brand_id` INT(10) UNSIGNED NULL,
+	`supplier_id` INT(10) UNSIGNED NULL,
+	`delivery_status_id` INT(10) UNSIGNED NULL,
+	`sold_out_status_id` INT(10) UNSIGNED NULL,
+	`default_category_id` INT(10) UNSIGNED NULL,
 	`code` VARCHAR(32) NOT NULL DEFAULT '',
 	`sku` VARCHAR(32) NOT NULL DEFAULT '',
 	`mpn` VARCHAR(32) NOT NULL DEFAULT '',
@@ -659,23 +660,23 @@ CREATE TABLE `lc_products` (
 	`quantity_min` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '1.0000',
 	`quantity_max` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
 	`quantity_step` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
-	`quantity_unit_id` INT(11) UNSIGNED NULL,
+	`quantity_unit_id` INT(10) UNSIGNED NULL,
 	`weight` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
 	`weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 	`length` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
 	`width` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
 	`height` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
 	`length_unit` VARCHAR(2) NOT NULL DEFAULT '',
-	`backordered` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`backordered` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`recommended_price` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
-	`tax_class_id` INT(11) UNSIGNED NULL,
+	`tax_class_id` INT(10) UNSIGNED NULL,
 	`image` VARCHAR(255) NOT NULL DEFAULT '',
 	`file` VARCHAR(128) NOT NULL DEFAULT '',
 	`filename` VARCHAR(128) NOT NULL DEFAULT '',
 	`mime_type` VARCHAR(32) NOT NULL DEFAULT '',
 	`autofill_technical_data` TINYINT(1) NOT NULL DEFAULT '0',
-	`views` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-	`purchases` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`views` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`purchases` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`date_valid_from` TIMESTAMP NULL DEFAULT NULL,
 	`date_valid_to` TIMESTAMP NULL DEFAULT NULL,
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -698,12 +699,12 @@ CREATE TABLE `lc_products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_products_attributes` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`product_id` INT(11) UNSIGNED NOT NULL,
-	`group_id` INT(11) UNSIGNED NOT NULL,
-	`value_id` INT(11) UNSIGNED NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`product_id` INT(10) UNSIGNED NOT NULL,
+	`group_id` INT(10) UNSIGNED NOT NULL,
+	`value_id` INT(10) UNSIGNED NULL,
 	`custom_value` VARCHAR(255) NOT NULL DEFAULT '',
-	`priority` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`priority` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	PRIMARY KEY (`id`),
 	UNIQUE INDEX `id` (`id`, `product_id`, `group_id`, `value_id`),
 	KEY `product_id` (`product_id`),
@@ -715,8 +716,8 @@ CREATE TABLE `lc_products_attributes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_products_images` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`product_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`product_id` INT(10) UNSIGNED NOT NULL,
 	`filename` VARCHAR(255) NOT NULL DEFAULT '',
 	`checksum` CHAR(32) NULL,
 	`priority` INT(11) NOT NULL DEFAULT '0',
@@ -726,8 +727,8 @@ CREATE TABLE `lc_products_images` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_products_info` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`product_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`product_id` INT(10) UNSIGNED NOT NULL,
 	`language_code` CHAR(2) NOT NULL,
 	`name` VARCHAR(128) NOT NULL DEFAULT '',
 	`short_description` VARCHAR(255) NOT NULL DEFAULT '',
@@ -747,8 +748,8 @@ CREATE TABLE `lc_products_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_products_prices` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`product_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`product_id` INT(10) UNSIGNED NOT NULL,
 	`USD` FLOAT(11) NOT NULL DEFAULT '0.0000',
 	`EUR` FLOAT(11) NOT NULL DEFAULT '0.0000',
 	PRIMARY KEY (`id`),
@@ -757,9 +758,9 @@ CREATE TABLE `lc_products_prices` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_products_stock_options` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`product_id` INT(11) UNSIGNED NOT NULL,
-	`stock_item_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`product_id` INT(10) UNSIGNED NOT NULL,
+	`stock_item_id` INT(10) UNSIGNED NOT NULL,
 	`price_operator` ENUM('+','%','*','=') NOT NULL DEFAULT '+',
 	`USD` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
 	`EUR` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
@@ -769,15 +770,15 @@ CREATE TABLE `lc_products_stock_options` (
 	KEY `product_id` (`product_id`)
 -- -----
 CREATE TABLE `lc_products_to_categories` (
-	`product_id` INT(11) UNSIGNED NOT NULL,
-	`category_id` INT(11) UNSIGNED NULL,
+	`product_id` INT(10) UNSIGNED NOT NULL,
+	`category_id` INT(10) UNSIGNED NULL,
 	PRIMARY KEY(`product_id`, `category_id`),
 	CONSTRAINT `product_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
 	CONSTRAINT `product_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_quantity_units` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`decimals` TINYINT(1) UNSIGNED NOT NULL DEFAULT '2',
 	`separate` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`priority` INT(11) NOT NULL DEFAULT '0',
@@ -787,8 +788,8 @@ CREATE TABLE `lc_quantity_units` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_quantity_units_info` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`quantity_unit_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`quantity_unit_id` INT(10) UNSIGNED NOT NULL,
 	`language_code` CHAR(2) NOT NULL,
 	`name` VARCHAR(32) NOT NULL DEFAULT '',
 	`description` VARCHAR(512),
@@ -801,7 +802,7 @@ CREATE TABLE `lc_quantity_units_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_settings` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`group_key` VARCHAR(32) NULL,
 	`type` ENUM('global','local') NOT NULL DEFAULT 'local',
 	`key` VARCHAR(32) NOT NULL DEFAULT '',
@@ -820,7 +821,7 @@ CREATE TABLE `lc_settings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_settings_groups` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`key` VARCHAR(32) NOT NULL,
 	`name` VARCHAR(64) NOT NULL DEFAULT '',
 	`description` VARCHAR(255) NOT NULL DEFAULT '',
@@ -830,7 +831,7 @@ CREATE TABLE `lc_settings_groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_sold_out_statuses` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`orderable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -841,8 +842,8 @@ CREATE TABLE `lc_sold_out_statuses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_sold_out_statuses_info` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`sold_out_status_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`sold_out_status_id` INT(10) UNSIGNED NOT NULL,
 	`language_code` CHAR(2) NOT NULL,
 	`name` VARCHAR(64) NOT NULL DEFAULT '',
 	`description` VARCHAR(255) NOT NULL DEFAULT '',
@@ -855,10 +856,10 @@ CREATE TABLE `lc_sold_out_statuses_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_stock_items` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-	`brand_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-	`supplier_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`product_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`brand_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`supplier_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`sku` VARCHAR(32) NOT NULL DEFAULT '',
 	`mpn` VARCHAR(32) NOT NULL DEFAULT '',
 	`gtin` VARCHAR(32) NOT NULL DEFAULT '',
@@ -888,8 +889,8 @@ CREATE TABLE `lc_stock_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_stock_items_info` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`stock_item_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`language_code` VARCHAR(2) NOT NULL DEFAULT '',
 	`name` VARCHAR(128) NOT NULL DEFAULT '',
 	PRIMARY KEY (`id`) USING BTREE,
@@ -901,9 +902,9 @@ CREATE TABLE `lc_stock_items_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_stock_items_references` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`stock_item_id` INT(11) UNSIGNED NOT NULL,
-	`supplier_id` INT(11) UNSIGNED NOT NULL DEFAULT '',
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`stock_item_id` INT(10) UNSIGNED NOT NULL,
+	`supplier_id` INT(10) UNSIGNED NOT NULL DEFAULT '',
 	`code` VARCHAR(32) NOT NULL DEFAULT '',
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `stock_item_id` (`stock_item_id`) USING BTREE,
@@ -912,7 +913,7 @@ CREATE TABLE `lc_stock_items_references` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_stock_transactions` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(128) NOT NULL DEFAULT '',
 	`description` MEDIUMTEXT NOT NULL DEFAULT '',
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -921,9 +922,9 @@ CREATE TABLE `lc_stock_transactions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_stock_transactions_contents` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`transaction_id` INT(11) UNSIGNED NOT NULL,
-	`product_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`transaction_id` INT(10) UNSIGNED NOT NULL,
+	`product_id` INT(10) UNSIGNED NOT NULL,
 	`sku` VARCHAR(32) NOT NULL,
 	`quantity_adjustment` FLOAT(11) NOT NULL DEFAULT '0.0000',
 	PRIMARY KEY (`id`),
@@ -936,7 +937,7 @@ CREATE TABLE `lc_stock_transactions_contents` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_suppliers` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`code` VARCHAR(64) NOT NULL DEFAULT '',
 	`name` VARCHAR(64) NOT NULL DEFAULT '',
 	`description` TEXT NOT NULL DEFAULT '',
@@ -950,7 +951,7 @@ CREATE TABLE `lc_suppliers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_tax_classes` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`code` VARCHAR(32) NOT NULL DEFAULT '',
 	`name` VARCHAR(64) NOT NULL DEFAULT '',
 	`description` VARCHAR(64) NOT NULL DEFAULT '',
@@ -960,9 +961,9 @@ CREATE TABLE `lc_tax_classes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_tax_rates` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`tax_class_id` INT(11) UNSIGNED NOT NULL,
-	`geo_zone_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`tax_class_id` INT(10) UNSIGNED NOT NULL,
+	`geo_zone_id` INT(10) UNSIGNED NOT NULL,
 	`code` VARCHAR(32) NOT NULL DEFAULT '',
 	`name` VARCHAR(64) NOT NULL DEFAULT '',
 	`description` VARCHAR(128) NOT NULL DEFAULT '',
@@ -982,7 +983,7 @@ CREATE TABLE `lc_tax_rates` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_translations` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`code` VARCHAR(128) NOT NULL DEFAULT '',
 	`text_en` TEXT NOT NULL DEFAULT '',
 	`html` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
@@ -999,7 +1000,7 @@ CREATE TABLE `lc_translations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_zones` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`country_code` CHAR(2) NOT NULL,
 	`code` VARCHAR(8) NOT NULL,
 	`name` VARCHAR(64) NOT NULL DEFAULT '',
@@ -1012,8 +1013,8 @@ CREATE TABLE `lc_zones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_zones_to_geo_zones` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`geo_zone_id` INT(11) UNSIGNED NOT NULL,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`geo_zone_id` INT(10) UNSIGNED NOT NULL,
 	`country_code` CHAR(2) NOT NULL,
 	`zone_code` VARCHAR(8) NULL,
 	`city` VARCHAR(32) NULL,

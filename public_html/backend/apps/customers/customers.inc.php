@@ -10,7 +10,7 @@
 
 	document::$snippets['title'][] = language::translate('title_customers', 'Customers');
 
-	breadcrumbs::add(language::translate('title_customers', 'Customers'));
+	breadcrumbs::add(language::translate('title_customers', 'Customers'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
@@ -94,7 +94,7 @@
 			break;
 	}
 
-		// Table Rows, Total Number of Rows, Total Number of Pages
+	// Table Rows, Total Number of Rows, Total Number of Pages
 	$customers = database::query(
 		"select c.* from ". DB_TABLE_PREFIX ."customers c
 		where c.id

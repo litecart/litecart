@@ -12,8 +12,8 @@
 
 	document::$title[] = !empty($banner->data['id']) ? language::translate('title_edit_banner', 'Edit Banner') : language::translate('title_create_new_banner', 'Create New Banner');
 
-	breadcrumbs::add(language::translate('title_banners', 'Banners'));
-	breadcrumbs::add(!empty($banner->data['id']) ? language::translate('title_edit_banner', 'Edit Banner') : language::translate('title_create_new_banner', 'Create New Banner'));
+	breadcrumbs::add(language::translate('title_banners', 'Banners'), document::ilink(__APP__.'/banners'));
+	breadcrumbs::add(!empty($banner->data['id']) ? language::translate('title_edit_banner', 'Edit Banner') : language::translate('title_create_new_banner', 'Create New Banner'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

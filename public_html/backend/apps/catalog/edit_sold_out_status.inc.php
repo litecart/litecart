@@ -14,7 +14,7 @@
 
 	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
 	breadcrumbs::add(language::translate('title_sold_out_statuses', 'Sold-Out Statuses'), document::ilink(__APP__.'/sold_out_statuses'));
-	breadcrumbs::add(!empty($sold_out_status->data['id']) ? language::translate('title_edit_sold_out_status', 'Edit Sold Out Status') : language::translate('title_create_new_sold_out_status', 'Create New Sold Out Status'));
+	breadcrumbs::add(!empty($sold_out_status->data['id']) ? language::translate('title_edit_sold_out_status', 'Edit Sold Out Status') : language::translate('title_create_new_sold_out_status', 'Create New Sold Out Status'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

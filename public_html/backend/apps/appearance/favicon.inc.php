@@ -3,7 +3,7 @@
 	document::$title[] = language::translate('title_favicon', 'Favicon');
 
 	breadcrumbs::add(language::translate('title_appearance', 'Appearance'));
-	breadcrumbs::add(language::translate('title_favicon', 'Favicon'));
+	breadcrumbs::add(language::translate('title_favicon', 'Favicon'), document::ilink());
 
 	$icon_sizes = [96, 64, 48, 32];
 	$thumbnail_sizes = [256, 192, 128];

@@ -67,7 +67,7 @@
 		breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
 		breadcrumbs::add($product->brand->name, document::ilink('brand', ['brand_id' => $product->brand->id]));
 	}
-	breadcrumbs::add($product->name);
+	breadcrumbs::add($product->name, document::ilink('product', ['product_id' => $product->id]));
 
 	functions::draw_lightbox();
 

@@ -11,7 +11,7 @@
 
 	document::$title[] = language::translate('title_sign_in', 'Sign In');
 
-	breadcrumbs::add(language::translate('title_sign_in', 'Sign In'));
+	breadcrumbs::add(language::translate('title_sign_in', 'Sign In'), document::ilink('login'));
 
 	if (!settings::get('accounts_enabled')) {
 		echo language::translate('error_accounts_are_disabled', 'Accounts are disabled');

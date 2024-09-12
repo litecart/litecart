@@ -6,7 +6,7 @@
 
 	document::$title[] = language::translate('title_tax_rates', 'Tax Rates');
 
-	breadcrumbs::add(language::translate('title_tax_rates', 'Tax Rates'));
+	breadcrumbs::add(language::translate('title_tax_rates', 'Tax Rates'), document::ilink());
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$tax_rates = database::query(
