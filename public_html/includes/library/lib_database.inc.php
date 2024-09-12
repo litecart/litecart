@@ -355,7 +355,7 @@
 		public static function input_fulltext($input, $allowable_tags=false, $trim=true, $link='default') {
       $input = self::input($input, $allowable_tags, $trim, $link);
 			$input = preg_replace('#[+\-<>\(\)~*\"@; ]+#', ' ', $input);
-			return $string;
+			return $input;
     }
 
 		public static function input_like($input, $allowable_tags=false, $trim=true, $link='default') {
