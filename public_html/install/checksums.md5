@@ -473,7 +473,7 @@ b4edf852f2f69477b532f5a4498fa3ec	includes/templates/default.catalog/pages/edit_a
 ef897de4bf719f1785e2067936f59228	includes/templates/default.catalog/pages/error_document.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/pages/index.html
 dc89bb2a3026475976d72a9ae1837832	includes/templates/default.catalog/pages/index.inc.php
-f67978f6e95966fc9c6231a3b493e5db	includes/templates/default.catalog/pages/information.inc.php
+b628eb7386f6b802ce03683578196c08	includes/templates/default.catalog/pages/information.inc.php
 0a6d22b211d28e55b860fea3a5602ea4	includes/templates/default.catalog/pages/login.inc.php
 ca899ca1575e4e6c6e28eea6dbf601bc	includes/templates/default.catalog/pages/maintenance_mode.inc.php
 b99121cb206e4d5693092187f3593f5f	includes/templates/default.catalog/pages/manufacturer.inc.php
@@ -482,7 +482,7 @@ ddce7de870aa5d44528c170fbfe1de04	includes/templates/default.catalog/pages/newsle
 87fa9337a29b4b523ca520888d234837	includes/templates/default.catalog/pages/order.inc.php
 4b70154d1ab6937867c91a406a356841	includes/templates/default.catalog/pages/order_history.inc.php
 c58e3cf0dda42a1057ecaa460e5f6570	includes/templates/default.catalog/pages/order_success.inc.php
-4fa3c3cd5219d705112d59ad7352e013	includes/templates/default.catalog/pages/page.inc.php
+947192a1b4b9af2818081425fe553aaa	includes/templates/default.catalog/pages/page.inc.php
 08191caea003efcc37729b5d98588fc3	includes/templates/default.catalog/pages/printable_order_copy.inc.php
 14981ba894e2acf56c6d217c0b010788	includes/templates/default.catalog/pages/printable_packing_slip.inc.php
 800f31f477f86dfbe60992e92c619913	includes/templates/default.catalog/pages/product.ajax.inc.php

@@ -12,8 +12,10 @@
         {snippet:breadcrumbs}
         {snippet:notices}
 
-        <section id="box-information">
-          <?php echo $content; ?>
+        <section id="box-information" class="card">
+          <div class="card-body">
+            <?php echo $content; ?>
+          </div>
         </section>
 
       </main>

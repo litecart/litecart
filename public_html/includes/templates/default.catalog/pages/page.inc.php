@@ -3,8 +3,10 @@
     {snippet:breadcrumbs}
     {snippet:notices}
 
-    <section id="box-page">
-      <?php echo $content; ?>
+    <section id="box-page" class="card">
+      <div class="card-body">
+        <?php echo $content; ?>
+      </div>
     </section>
 
   </main>
