@@ -282,7 +282,7 @@ a0e0e8c78aeb83312210e713c36077f5	includes/library/lib_cache.inc.php
 589c4bd3403fc16e2b7b24cedeb339ca	includes/library/lib_cart.inc.php
 0f14dd8a55acb482677c6ec16535d7b3	includes/library/lib_currency.inc.php
 b9808552044b6f33524ad9b4804db9c0	includes/library/lib_customer.inc.php
-c0586a0afba9659ccd1b190b824c50c9	includes/library/lib_database.inc.php
+74964d8569590c87e5a1eab94add72e8	includes/library/lib_database.inc.php
 797f557ef7b62d97082f86acf4151509	includes/library/lib_document.inc.php
 b4401ef3e46e288212dfc2fd3eb1d165	includes/library/lib_event.inc.php
 ea8d7ddb2524ec3236c7099e10854816	includes/library/lib_functions.inc.php
@@ -341,7 +341,7 @@ d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 086e68bcb7bfd173df5ff538ad747044	includes/templates/default.admin/css/app.min.css
 ae6294757123e0f9e5edc467ef71f0ee	includes/templates/default.admin/css/app.min.css.map
 e4c0e4542f41ad2130e85baf6b658a04	includes/templates/default.admin/css/framework.min.css
-e565c78917de386256af950f5f2fd838	includes/templates/default.admin/css/framework.min.css.map
+d4d7f6884644304717bdf65a2abcae3e	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 4cdd9dd1d8363e65a477589de49d9122	includes/templates/default.admin/css/printable.min.css
 b7b694ed107b09f26c2c3074d582507e	includes/templates/default.admin/css/printable.min.css.map
@@ -398,15 +398,15 @@ e8555f57751a7db6818507bf43a8c777	includes/templates/default.admin/views/box_apps
 9f5e9d0ca2790c600f7a542859e8cd9e	includes/templates/default.admin/views/notices.inc.php
 9a70738c8b02fe85ae87a9cd5b1bc734	includes/templates/default.admin/views/pagination.inc.php
 4f229050b33c408eec0ff63aa7b51d8d	includes/templates/default.catalog/config.inc.php
-7ae0c18371fc46c59269ef29466ce644	includes/templates/default.catalog/css/app.css
-b13c7fe7ac855db7364deab7b786318b	includes/templates/default.catalog/css/app.min.css
-bd65fccd9026e4814308d2293b43769a	includes/templates/default.catalog/css/app.min.css.map
+4524f54c6542a5f18376811b60f6e713	includes/templates/default.catalog/css/app.css
+fec2ce60062e8d99f89283a52e194a0e	includes/templates/default.catalog/css/app.min.css
+21db7d3de8ebbfcae636a196b431797f	includes/templates/default.catalog/css/app.min.css.map
 3ef1259bfbe917531b19cf91f36ebfbe	includes/templates/default.catalog/css/checkout.css
 89df9aed11506cbf3fc6bff54720308b	includes/templates/default.catalog/css/checkout.min.css
 a1822b38e13fd26331d20e50b789a230	includes/templates/default.catalog/css/checkout.min.css.map
-3d4c3c8b170432a081a27f3bbb859522	includes/templates/default.catalog/css/framework.css
-0a041896cc3384f565848ee7de23f961	includes/templates/default.catalog/css/framework.min.css
-41a800aeeee74d38ea0d0cec7a2912ac	includes/templates/default.catalog/css/framework.min.css.map
+0934316db69f75eeded279af339ea107	includes/templates/default.catalog/css/framework.css
+be0896d05169724bfd5a2aca1e5dc4a7	includes/templates/default.catalog/css/framework.min.css
+8437eba0a75514d51db8e957570e02c1	includes/templates/default.catalog/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/css/index.html
 b248dc0d399fc418c35a8bf54a746245	includes/templates/default.catalog/css/printable.css
 3ea29ac56e3c3323dab2145ba9e23725	includes/templates/default.catalog/css/printable.min.css
@@ -430,7 +430,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/js/index.htm
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/layouts/index.html
 89db1610757e0b780ad1c131ef78fdf8	includes/templates/default.catalog/layouts/printable.inc.php
 58c63fcc015b20d8a56b7b820dd5e545	includes/templates/default.catalog/less/app.less
-8c20a874668c1b45b54dbb96bc15b11f	includes/templates/default.catalog/less/app/boxes.less
+fa2a7837ad8d752dddb0c7b9c1249076	includes/templates/default.catalog/less/app/boxes.less
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/less/app/index.html
 fb2972e46da5b5d8e55051a5bb2e39cb	includes/templates/default.catalog/less/app/listing.less
 12b09ee51b4c5912ea017f7922b68c50	includes/templates/default.catalog/less/app/product.less
@@ -449,7 +449,7 @@ dac5f980e40f80a72c080237fcde3cf0	includes/templates/default.catalog/less/framewo
 6a8d150ad039996ea15f2685ea667193	includes/templates/default.catalog/less/framework/grid.less
 ec2fbf68302af29c7310bdc1a450a644	includes/templates/default.catalog/less/framework/images.less
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/less/framework/index.html
-048d6e33b022c7d836a7eaf1e75b5929	includes/templates/default.catalog/less/framework/inputs.less
+788a417b5bab3306338315677023c487	includes/templates/default.catalog/less/framework/inputs.less
 6432dea2a9ab0997fd9135ee67c89977	includes/templates/default.catalog/less/framework/lists.less
 e2c70f751c9e8d147651907bccd2cb79	includes/templates/default.catalog/less/framework/loader.less
 15e5d5083191a8e3226f6d3b99139a4e	includes/templates/default.catalog/less/framework/media.less

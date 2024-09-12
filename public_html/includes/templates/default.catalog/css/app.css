@@ -324,10 +324,12 @@ body.scrolling-down #site-menu {
   padding-top: var(--gutter-y);
 }
 #box-filter .tokens .token {
+  display: inline-block;
   padding: 0.5em 1em;
+  margin-top: 0.5em;
+  margin-inline-end: 0.5em;
   border-radius: var(--border-radius);
   cursor: default;
-  margin-inline-end: 0.5em;
 }
 #box-filter .tokens .token[data-group="name"] {
   background: #cbe2b6;
