@@ -483,8 +483,8 @@ ddce7de870aa5d44528c170fbfe1de04	includes/templates/default.catalog/pages/newsle
 4b70154d1ab6937867c91a406a356841	includes/templates/default.catalog/pages/order_history.inc.php
 c58e3cf0dda42a1057ecaa460e5f6570	includes/templates/default.catalog/pages/order_success.inc.php
 947192a1b4b9af2818081425fe553aaa	includes/templates/default.catalog/pages/page.inc.php
-4caef979cc2e66ab866b20920d1761d5	includes/templates/default.catalog/pages/printable_order_copy.inc.php
-1f0684369b39e098c4cb2cf21d4cd85d	includes/templates/default.catalog/pages/printable_packing_slip.inc.php
+e08bf96e52ac0752853562781699b7e5	includes/templates/default.catalog/pages/printable_order_copy.inc.php
+cadb0f82dc34313dcd7ef88de2b0218b	includes/templates/default.catalog/pages/printable_packing_slip.inc.php
 800f31f477f86dfbe60992e92c619913	includes/templates/default.catalog/pages/product.ajax.inc.php
 e760c75c85a4c6b9aed9015d78e4f2d7	includes/templates/default.catalog/pages/product.inc.php
 df595bac8dd411dedf5bbd25f9fc1383	includes/templates/default.catalog/pages/regional_settings.inc.php
@@ -532,9 +532,9 @@ d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
 fa848fc02430449510e7e6c1bcdc1fcb	index.php
 db7b7a833baf1b6f47160530e9a9bc9f	install/clean.sql
 2c767af22d8225eb4839cf179674a7db	install/config
-9d778d3863f77a3aa11aa498ee945837	install/data.sql
+25a846e17854604f80853eb6a6655b91	install/data.sql
 2b2639ce48f7d6723c0768bcf39ca725	install/data/AU/AU.sql
-bb365576d724d4a7f1be89ff50dd0305	install/data/CA/CA.sql
+9a133ec15a84f54a925d396fd0e270c3	install/data/CA/CA.sql
 80a156bc4202b15b747be924bad59315	install/data/DE/DE.sql
 bd27a8548a49e5da255867c0263c6c93	install/data/DK/DK.sql
 3eb1303e6f5965667318ce6b5f8e5ada	install/data/FI/FI.sql
@@ -547,7 +547,7 @@ c4675e7be677ac86b928504d3510e4b7	install/data/SE/public_html/ext/payson/.htacces
 39972d0120644a364c67775bd3b23188	install/data/SE/public_html/ext/payson/callback.php
 582d6bd9ca69ce717fa8dc574450da85	install/data/SE/public_html/images/payment/payson.png
 f65cc851eb2d3b4f6e17499e01b38fb9	install/data/SE/public_html/includes/modules/payment/pm_payson.inc.php
-05733800ab919ade2fd2063fd4c8b107	install/data/US/US.sql
+4895dee60df5fc6a88ab5ffa0ff7f5b5	install/data/US/US.sql
 51a94416f1b50733f55abb52665f48ca	install/data/XX/zones_au.sql
 e211d87c4a7c287aa080434544cd95ec	install/data/XX/zones_ca.sql
 b178546ae0f6101a2c9551e931d4a1a9	install/data/XX/zones_eu.sql
@@ -691,7 +691,7 @@ ab7ba686349fc0fd50570c6e0bf03299	install/upgrade_patches/2.5.2.sql
 0880bb22fcedcd4f6bc85908fb26e9bb	install/upgrade_patches/2.5.5.inc.php
 4b62b45560195ccef0a8c7e46a7200e8	install/upgrade_patches/2.5.5.sql
 d4fe7d3b2f64c05e94425cfa60c2016d	install/upgrade_patches/2.6.0.inc.php
-8798fe1e8738afe80d1a3752a61400d0	install/upgrade_patches/2.6.0.sql
+62eb2a2d6a9ac8413049204b301a3141	install/upgrade_patches/2.6.0.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
 70df41f74e6b15be767a8052f14b4036	pages/ajax/cart.json.inc.php
@@ -728,8 +728,8 @@ fbe136a97b9eb800569b9b303424c535	pages/manufacturers.inc.php
 c6d296afede4a57f2552a3fbe9845d52	pages/order_history.inc.php
 1dcc056264da345924d0fbb35c5b00ac	pages/order_process.inc.php
 3de677d41450e3b4ff619c7dd495c81b	pages/order_success.inc.php
-eb99d26c936445ec668bd6c966532793	pages/printable_order_copy.inc.php
-e4d60bbe75b45e2f3f0a76a0a8e37232	pages/printable_packing_slip.inc.php
+863a3199cad9509a463e5bc9f4427889	pages/printable_order_copy.inc.php
+6806771dba531ad32d7cdfe49d7e2c18	pages/printable_packing_slip.inc.php
 5e54941951a38b8bd9712ff4292e4cc6	pages/product.inc.php
 710bc9d08ae56704a2586855e62fc2af	pages/push_jobs.inc.php
 72da1ca1d9e845343f82020f5e953e20	pages/regional_settings.inc.php

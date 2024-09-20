@@ -31,8 +31,9 @@
 
   $_page = new ent_view();
   $_page->snippets = [
-    'order' => $order->data,
+    'paper_size' => settings::get('default_print_paper_size'),
     'text_direction' => !empty(language::$languages[$order->data['language_code']]['direction']) ? language::$languages[$order->data['language_code']]['direction'] : 'ltr',
+    'order' => $order->data,
     'comments' => [],
   ];
 
