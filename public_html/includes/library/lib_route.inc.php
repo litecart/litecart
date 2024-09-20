@@ -223,6 +223,11 @@
         $link->set_query($key, $value);
       }
 
+    // Remove any occurrence of page=1 as obsolete
+      if (isset($link->query['page']) && $link->query['page'] == 1) {
+        $link->unset_query('page');
+      }
+
     // Rewrite URL
       if ($rewrite) {
         if ($link->host == $_SERVER['HTTP_HOST']) {
