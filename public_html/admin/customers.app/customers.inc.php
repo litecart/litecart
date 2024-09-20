@@ -65,22 +65,31 @@
       "c.tax_id like '%". database::input($_GET['query']) ."%'",
       "c.company like '%". database::input($_GET['query']) ."%'",
       "concat(c.firstname, ' ', c.lastname) like '%". database::input($_GET['query']) ."%'",
+      "concat(c.address1, '\\n', c.address2, '\\n', c.postcode, '\\n', c.city) like '%". database::input($_GET['query']) ."%'",
+      "c.email like '%". database::input($_GET['query']) ."%'",
+      "last_ip like '%". database::input($_GET['query']) ."%'",
+      "last_hostname like '%". database::input($_GET['query']) ."%'",
     ];
   }
 
   switch($_GET['sort']) {
+
     case 'id':
       $sql_sort = "c.id desc";
       break;
+
     case 'email':
       $sql_sort = "c.email";
       break;
+
     case 'name':
       $sql_sort = "c.firstname, c.lastname";
       break;
+
     case 'company':
       $sql_sort = "c.firstname, c.lastname";
       break;
+
     default:
       $sql_sort = "c.date_created desc, c.id desc";
       break;

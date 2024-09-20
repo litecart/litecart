@@ -17,6 +17,7 @@
     left join ". DB_TABLE_PREFIX ."delivery_statuses_info dsi on (ds.id = dsi.delivery_status_id and dsi.language_code = '". database::input(language::$selected['code']) ."')
     order by dsi.name asc;"
   );
+
   if ($_GET['page'] > 1) database::seek($delivery_statuses_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
   $page_items = 0;

@@ -783,7 +783,7 @@
 
               <tfoot>
                 <tr>
-                  <td colspan="7"><a class="btn btn-default add" href="#"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_stock_option', 'Add Stock Option'); ?></a></td>
+                  <td colspan="8"><a class="btn btn-default add" href="#"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_stock_option', 'Add Stock Option'); ?></a></td>
                 </tr>
               </tfoot>
             </table>
