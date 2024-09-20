@@ -8,15 +8,72 @@
 
 .page {
   position: relative;
+  display: flex;
+  flex-direction: column;
+
   font-size: 12px;
+  font-family: var(--default-text-font);
   color: #000;
 
-  .footer {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    font-size: 10px;
+  overflow: hidden;
+
+  &[data-size="A4"] {
+		page: A4;
+    width: 210mm;
+    height: 297mm;
+  }
+  &[data-size="A4R"] {
+		page: A4R;
+    width: 297mm;
+    height: 210mm;
+  }
+  &[data-size="A5"] {
+  	page: A5;
+    width: 148mm;
+    height: 210mm;
+  }
+  &[data-size="A5R"] {
+  	page: A5R;
+    width: 210mm;
+    height: 148mm;
+  }
+  &[data-size="A6"] {
+  	page: A6;
+    width: 105mm;
+    height: 148mm;
+  }
+  &[data-size="A6R"] {
+  	page: A6R;
+    width: 148mm;
+    height: 105mm;
+  }
+  &[data-size="US-Letter"] {
+    page: US-Letter;
+    width: 8.5in;
+    height: 11in;
+  }
+  &[data-size="US-Legal"] {
+  	page: US-Legal;
+    width: 8.5in;
+    height: 14in;
+  }
+
+  > header,
+  > .header {
+    flex: 0 1 auto;
+    padding: var(--page-margin);
+    padding-bottom: 0;
+  }
+  > main,
+  > .content {
+    flex: 1 0 auto;
+    padding: 0 var(--page-margin);
+  }
+  > footer,
+  > .footer {
+    flex: 0 1 auto;
+    padding: var(--page-margin);
+    padding-top: 0;
   }
 }
 
@@ -30,30 +87,41 @@ hr {
 
 @media print {
   @page {
-    size: A4;
-    margin: var(--page-margin);
+    margin: 0;
     zoom: 100%;
     padding: 0;
   }
 
+	@page A4 {
+		size: A4 portrait;
+	}
+	@page A4R {
+		size: A4 landscape;
+	}
+	@page A5 {
+		size: A5 portrait;
+	}
+	@page A5R {
+		size: A5 landscape;
+	}
+	@page A6 {
+		size: A6 portrait;
+	}
+	@page A6R {
+		size: A6 landscape;
+	}
+	@page US-Letter {
+		size: letter portrait;
+	}
+	@page US-Legal {
+		size: legal portrait;
+	}
+	
   .page {
     position: relative;
+		page-break-inside: avoid;
     page-break-after: always;
-
-    &[data-size="A4"] {
-      height: ~"calc(29.7cm - var(--page-margin) - var(--page-margin))";
-    }
-    &[data-size="A4R"] {
-      height: ~"calc(21cm - var(--page-margin) - var(--page-margin))";
-    }
-    &[data-size="us-letter"] {
-      width: 8.5in;
-      height: 11in;
-    }
-    &[data-size="us-legal"] {
-      width: 8.5in;
-      height: 14in;
-    }
+    height: 100vh;
   }
 
   h1 {
@@ -67,6 +135,10 @@ hr {
   .page-break  {
     page-break-before: always;
   }
+
+  #actions {
+    display: none;
+  }
 }
 
 @media screen {
@@ -76,23 +148,12 @@ hr {
 
   .page {
     margin: 5mm auto;
-    padding: var(--page-margin);
     background: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+    border-radius: var(--border-radius);
 
-    &[data-size="A4"] {
-      width: 21cm;
-      height: 29.7cm;
-    }
-    &[data-size="A4R"] {
-      width: 29.7cm;
-      height: 21cm;
-    }
-
-    .footer {
-      left: var(--page-margin);
-      right: var(--page-margin);
-      bottom: var(--page-margin);
+    + .page {
+      margin-top: 10mm;
     }
   }
 
@@ -100,5 +161,14 @@ hr {
     border-bottom: 1px #ccc dashed;
     margin: var(--page-margin) -var(--page-margin);
     line-height: 0;
+  }
+
+  #actions {
+    display: block;
+    position: fixed;
+    top: 1cm;
+    right: 1cm;
+    font-size: 1.25em;
+    z-index: 999999;
   }
 }

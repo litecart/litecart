@@ -18,7 +18,7 @@ h1 {
 
 .rounded-rectangle {
   border: 1px solid #000;
-  border-radius: 5mm;
+  border-radius: 4mm;
   padding: 4mm;
   margin-inline-start: -15px;
 }
@@ -29,9 +29,6 @@ h1 {
 .items tr th:last-child, .order-total tr td:last-child {
   width: 30mm;
 }
-hr {
-  margin: 0 0 2.5mm 0;
-}
 .page .label {
   font-weight: bold;
   margin-bottom: 3pt;
@@ -41,28 +38,6 @@ hr {
 }
 .page .footer .row {
   margin-bottom: 0;
-}
-
-@media print {
-  button[name="print"] {
-    display: none;
-  }
-}
-
-@media screen {
-  button[name="print"] {
-    display: none;
-  }
-
-  html:hover button[name="print"] {
-    position: fixed;
-    top: 0cm;
-    right: 1cm;
-    display: block;
-    margin: 5mm auto;
-    z-index: 999999;
-    border-radius: 0.25em;
-  }
 }
 </style>
 
@@ -81,7 +56,7 @@ hr {
     </div>
   </header>
 
-  <div class="content">
+  <main class="content">
     <div class="addresses">
       <div class="row">
         <div class="col-xs-3 shipping-address">
@@ -209,7 +184,7 @@ hr {
         </tr>
       </tbody>
     </table>
-  </div>
+  </main>
 
   <?php if (count($order['items']) <= 10) { ?>
   <footer class="footer">
@@ -250,12 +225,20 @@ hr {
   <?php } ?>
 </section>
 
-<button name="print" class="btn btn-default btn-lg">
-  <?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
-</button>
+<div id="actions">
+  <ul class="list-unstyled">
+    <li>
+      <button name="print" class="btn btn-default btn-lg">
+        <?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
+      </button>
+    </li>
+  </ul>
+</div>
 
 <script>
-  $('button[name="print"]').click(function(){
+  document.title = "<?php echo functions::escape_js(language::translate('title_order', 'Order')); ?> #<?php echo $order['id']; ?>";
+
+  $('#actions button[name="print"]').click(function(){
     window.print();
   });
 </script>
