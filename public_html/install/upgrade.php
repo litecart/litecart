@@ -209,9 +209,7 @@
           $sql = file_get_contents(__DIR__ . '/upgrade_patches/'. $version .'.sql');
           $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
-          $sql = explode('-- --------------------------------------------------------', $sql);
-
-          foreach ($sql as $query) {
+          foreach (preg_split('#^-- -----+\R*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
             $query = preg_replace('#^-- .*?\R+#m', '', $query);
             if (!empty($query)) {
               database::query($query);
