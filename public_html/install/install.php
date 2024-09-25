@@ -394,6 +394,16 @@
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
+    perform_action('modify', [
+      FS_DIR_APP . 'robots.txt' => [
+        [
+          'search'  => '#'. preg_quote('Sitemap: /feeds/sitemap.xml', '#') .'#s',
+          'replace' => 'Sitemap: '. document::link('/feeds/sitemap.xml'),
+          'regex' => true,
+        ],
+      ],
+    ], 'skip');
+
     ### .htaccess mod rewrite #####################################
 
     echo '<p>Setting mod_rewrite base path...';

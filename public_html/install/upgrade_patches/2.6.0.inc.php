@@ -21,6 +21,13 @@
         'regex' => true,
       ],
     ],
+    FS_DIR_APP . 'robots.txt' => [
+      [
+        'search'  => '#'. preg_quote('Sitemap: /feeds/sitemap.xml', '#') .'#s',
+        'replace' => 'Sitemap: '. document::link('/feeds/sitemap.xml'),
+        'regex' => true,
+      ],
+    ],
   ], 'skip');
 
 // Get store timezone
