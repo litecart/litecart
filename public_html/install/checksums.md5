@@ -238,7 +238,7 @@ ea205d96efaafe0d18f144b61f9a19e6	includes/compatibility.inc.php
 e4e9a80e4ca667f1841e1683968f8290	includes/entities/ent_currency.inc.php
 6538185b7efc1013b8efa8da4437a5fd	includes/entities/ent_customer.inc.php
 b5771c7eff986dd9acd60aba2b7cdab0	includes/entities/ent_delivery_status.inc.php
-dedcc0ff82a75a4e3eda032406fa8045	includes/entities/ent_email.inc.php
+8288411ce0fbaf49f6c47dbe1f2fbb7c	includes/entities/ent_email.inc.php
 969b581645fe1da64dea674feecbab77	includes/entities/ent_geo_zone.inc.php
 3949b9bb7c6c09ed503c0dd9edd670b8	includes/entities/ent_image.inc.php
 9bb8ed44705f055da33628dee6e5f190	includes/entities/ent_language.inc.php
@@ -279,7 +279,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/library/index.html
 dfc0b6b23240b07472ae269fc9a29351	includes/library/lib_breadcrumbs.inc.php
 a0e0e8c78aeb83312210e713c36077f5	includes/library/lib_cache.inc.php
-589c4bd3403fc16e2b7b24cedeb339ca	includes/library/lib_cart.inc.php
+151c61f255638511b3a9959882ae9748	includes/library/lib_cart.inc.php
 0f14dd8a55acb482677c6ec16535d7b3	includes/library/lib_currency.inc.php
 b9808552044b6f33524ad9b4804db9c0	includes/library/lib_customer.inc.php
 74964d8569590c87e5a1eab94add72e8	includes/library/lib_database.inc.php
@@ -580,9 +580,9 @@ f4cd800714193ec5528c92e7448757bc	install/htaccess
 88c129a1bab3911671153318af96e38c	install/includes/functions.inc.php
 a37bf7b37ad3919a13f46de67748afed	install/includes/header.inc.php
 9f92b7ccb4e69a595440c999a7ed69a2	install/index.php
-7afe2fc04db8b5c1b5a5e75da3c18e00	install/install.php
+d5456203d44012b0145d7d62b67d3c45	install/install.php
 f536c43fea445645643573caaf50a895	install/structure.sql
-92a631bcd8e189176a8287f3856c992e	install/upgrade.php
+71bdae6dfd371d767e5a7bc173503150	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
 e40d16965a907467b8a8249a35927faf	install/upgrade_patches/1.0.1.4.inc.php
 9560e70752a13b7a22ec65231e1b61e0	install/upgrade_patches/1.0.1.5.inc.php
@@ -690,7 +690,7 @@ ab7ba686349fc0fd50570c6e0bf03299	install/upgrade_patches/2.5.2.sql
 903872089b5d22c2f27781540681c01a	install/upgrade_patches/2.5.4.sql
 0880bb22fcedcd4f6bc85908fb26e9bb	install/upgrade_patches/2.5.5.inc.php
 4b62b45560195ccef0a8c7e46a7200e8	install/upgrade_patches/2.5.5.sql
-d4fe7d3b2f64c05e94425cfa60c2016d	install/upgrade_patches/2.6.0.inc.php
+0cad7a95bbd65fd4aacd4605a5d5445f	install/upgrade_patches/2.6.0.inc.php
 62eb2a2d6a9ac8413049204b301a3141	install/upgrade_patches/2.6.0.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
