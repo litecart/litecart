@@ -23,9 +23,9 @@
     ],
     FS_DIR_APP . 'robots.txt' => [
       [
-        'search'  => '#'. preg_quote('Sitemap: /feeds/sitemap.xml', '#') .'#s',
-        'replace' => 'Sitemap: '. document::link('/feeds/sitemap.xml'),
-        'regex' => true,
+        'search'  => 'Sitemap: /feeds/sitemap.xml',
+        'replace' => 'Sitemap: '. ((isset($_SERVER['HTTPS']) && filter_var($_SERVER['HTTPS'], FILTER_VALIDATE_BOOLEAN)) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . WS_DIR_APP . 'feeds/sitemap.xml',
+        'regex' => false,
       ],
     ],
   ], 'skip');
