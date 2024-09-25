@@ -150,7 +150,7 @@
           'Content-Type' => ($html ? 'text/html' : 'text/plain') .'; charset='. $charset,
           'Content-Transfer-Encoding' => '8bit',
         ],
-        'body' => trim($content),
+        'body' => wordwrap(trim($content), 70, "\r\n"),
       ];
 
       return $this;
