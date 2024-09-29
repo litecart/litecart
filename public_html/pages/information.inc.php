@@ -27,7 +27,7 @@
 
     document::$snippets['title'][] = !empty($page->head_title) ? $page->head_title : $page->title;
     document::$snippets['description'] = !empty($page->meta_description) ? $page->meta_description : '';
-    document::$snippets['canonical'] = '<link rel="canonical" href="'. document::ilink('information', ['page_id' => $crumb->id]) .'">';
+    document::$snippets['canonical'] = '<link rel="canonical" href="'. document::ilink('information', ['page_id' => $page->id]) .'">';
 
     if ($page->dock == 'information') {
       breadcrumbs::add(language::translate('title_information', 'Information'));
