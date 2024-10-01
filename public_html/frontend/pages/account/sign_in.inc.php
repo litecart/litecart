@@ -22,24 +22,20 @@
 		$_POST['email'] = customer::$data['email'];
 	}
 
-	if (empty($_POST['remember_me'])) {
-		$_POST['remember_me'] = 0;
-	}
-
 	if (!empty(customer::$data['id'])) {
 		notices::add('notices', language::translate('text_already_logged_in', 'You are already logged in'));
 	}
 
-	if (!empty($_POST['login'])) {
+	if (!empty($_POST['sign_in'])) {
 
 		try {
 
-			if (!empty($_POST['customer_remember_me'])) {
-				header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
+			if (empty($_POST['email'])) {
+				throw new Exception(language::translate('error_must_enter_your_email_Address', 'You must enter your email address'));
 			}
 
-			if (empty($_POST['email']) || empty($_POST['password'])) {
-				throw new Exception(language::translate('error_missing_login_credentials', 'You must provide both your email address and password'));
+			if (empty($_POST['password'])) {
+				throw new Exception(language::translate('error_must_enter_your_password', 'You must enter your password'));
 			}
 
 			$customer = database::query(
@@ -52,11 +48,11 @@
 				throw new Exception(language::translate('error_email_not_found_in_database', 'The email does not exist in our database'));
 			}
 
-			if (empty($customer['status'])) {
+			if (!$customer['status']) {
 				throw new Exception(language::translate('error_customer_account_disabled_or_not_activated', 'The customer account is disabled or not activated'));
 			}
 
-			if (!empty($customer['date_blocked_until']) && date('Y-m-d H:i:s') < $customer['date_blocked_until']) {
+			if ($customer['date_blocked_until'] && strtotime($customer['date_blocked_until']) > time()) {
 				throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime('datetime', $customer['date_blocked_until'])));
 			}
 
@@ -71,7 +67,7 @@
 						limit 1;"
 					);
 
-					throw new Exception(language::translate('error_wrong_password_or_account', 'Wrong password or the account does not exist'));
+					throw new Exception(language::translate('error_wrong_email_password_combination', 'Wrong combination of email and password or the account does not exist'));
 
 				} else {
 
@@ -98,11 +94,11 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."customers
-				set login_attempts = 0,
-					num_logins = num_logins + 1,
-					last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+				set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 					last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
+					login_attempts = 0,
+					num_logins = num_logins + 1,
 					date_login = '". date('Y-m-d H:i:s') ."'
 				where id = ". (int)$customer['id'] ."
 				limit 1;"
@@ -128,7 +124,7 @@
 				$redirect_url = new ent_link($_POST['redirect_url']);
 				$redirect_url->host = '';
 			} else {
-				$redirect_url = document::ilink('');
+				$redirect_url = document::ilink('f:');
 			}
 
 			header('Location: '. $redirect_url);

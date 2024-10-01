@@ -47,7 +47,6 @@ body {
 	z-index: 1;
 
 	@media (min-width: (@media-breakpoint-md)) {
-		backdrop-filter: saturate(500%) blur(15px);
 
 		.navbar {
 			background-color: var(--navigation-background-color);
@@ -64,12 +63,6 @@ body {
 					break-inside: avoid;
 				}
 			}
-		}
-	}
-
-	@media (max-width: calc(@media-breakpoint-sm - 1px)) {
-		.navbar-menu {
-			backdrop-filter: saturate(500%) blur(5px) !important;
 		}
 	}
 
@@ -102,7 +95,7 @@ body {
 		img {
 			margin: -.5em 0;
 			max-height: 36px;
-				//vertical-align: middle;
+			//vertical-align: middle;
 		}
 
 		.badge {
@@ -337,6 +330,7 @@ body {
 		grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
 		@media (min-width: (@media-breakpoint-sm)) {
 			grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+			margin-bottom: 6em;
 		}
 	}
 
@@ -411,6 +405,7 @@ body {
 			color: var(--default-text-color);
 			text-align: center;
 			align-self: center;
+			font-size: 1.25em;
 			* {
 				color: inherit;
 				margin: 0;
@@ -419,9 +414,10 @@ body {
 
 		@media (min-width: (@media-breakpoint-sm)) {
 			img {
-				display: inline-block;
+				position: absolute;
+				top: 0;
+				display: block;
 				flex: 0 1 auto;
-				margin: .25em;
 				background: var(--whitespace-color);
 				border-radius: var(--border-radius);
 				transform: scale(1);
@@ -437,6 +433,11 @@ body {
 					transform: scale(1.10) rotate(-3deg);
 				}
 				.caption {
+
+					position: absolute;
+					left: 0;
+					right: 0;
+					bottom: 0;
 					color: #000;
 				}
 			}
@@ -447,7 +448,7 @@ body {
 		background: var(--whitespace-color);
 		font-size: ~"calc(var(--default-text-size) - 1px)";
 
-		transform: scale(1);
+		//transform: scale(1);
 		transition: all 100ms linear;
 
 		border: 1px solid transparent;
@@ -458,7 +459,7 @@ body {
 			&:hover {
 				border: 1px solid var(--listing-border-color);
 					//box-shadow: 0 0 2rem rgba(0, 0, 0, .1);
-				transform: scale(1.02);
+				//transform: scale(1.02);
 				background: #fff;
 			}
 		}
@@ -548,9 +549,9 @@ body {
 		.actions {
 			position: absolute;
 			display: none;
-			top: 7.5px;
-			right: 7.5px;
-			padding: .25em;
+			top: 1em;
+			right: 1em;
+			padding: .5em;
 			background: rgba(255, 255, 255, 0.75);
 			backdrop-filter: blur(3px);
 			border-radius: 1em;
@@ -571,7 +572,7 @@ body {
 			&:hover .actions {
 				display: flex;
 				flex-direction: column;
-				gap: .25em;
+				gap: .5em;
 			}
 		}
 	}

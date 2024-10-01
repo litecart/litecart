@@ -12,19 +12,20 @@
  * LiteCart is a registered trademark, property of T. Almroth.
  */
 
-	require_once('includes/app_header.inc.php');
+	require_once 'includes/app_header.inc.php';
 
+	// Recognize some destinations
 	route::load('app://frontend/routes/url_*.inc.php');
 	route::load('app://backend/routes/url_*.inc.php');
 
 	// Append last destination route
 	route::add('*', [
-	'pattern' => '#^(.+)$#',
+		'pattern' => '#^(.+)$#',
 		'endpoint' => 'frontend',
 		'controller' => 'app://frontend/pages/$1.inc.php',
 	]);
 
-	// Identify current route
+	// Find destination for the current request
 	route::identify();
 
 	// Initialize endpoint

@@ -19,6 +19,7 @@
 				'#^form_draw_radio_button$#' => 'form_radio_button',
 				'#^form_draw_textarea$#' => 'form_input_textarea',
 				'#^form_draw_button$#' => 'form_button',
+				'#^form_draw_select_multiple_field$#' => 'form_select_multiple',
 
 				'#^form_draw_(.*?)ies_list$#' => 'form_select_$1y',
 				'#^form_draw_(.*?)ses_list$#' => 'form_select_$1s',

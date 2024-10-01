@@ -41,9 +41,6 @@ body main {
   z-index: 1;
 }
 @media (min-width: 768px) {
-  #site-navigation {
-    backdrop-filter: saturate(500%) blur(15px);
-  }
   #site-navigation .navbar {
     background-color: var(--navigation-background-color);
   }
@@ -56,11 +53,6 @@ body main {
     flex-wrap: wrap;
     max-height: 250px;
     gap: 0 2em;
-  }
-}
-@media (max-width: calc(576px - 1px)) {
-  #site-navigation .navbar-menu {
-    backdrop-filter: saturate(500%) blur(5px) !important;
   }
 }
 #site-navigation .regional-settings {
@@ -295,6 +287,7 @@ body main {
 @media (min-width: 576px) {
   .listing.categories {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    margin-bottom: 6em;
   }
 }
 .listing.products.columns {
@@ -361,6 +354,7 @@ body main {
   color: var(--default-text-color);
   text-align: center;
   align-self: center;
+  font-size: 1.25em;
 }
 .listing .category .caption * {
   color: inherit;
@@ -368,9 +362,10 @@ body main {
 }
 @media (min-width: 576px) {
   .listing .category img {
-    display: inline-block;
+    position: absolute;
+    top: 0;
+    display: block;
     flex: 0 1 auto;
-    margin: 0.25em;
     background: var(--whitespace-color);
     border-radius: var(--border-radius);
     transform: scale(1);
@@ -384,13 +379,16 @@ body main {
     transform: scale(1.1) rotate(-3deg);
   }
   .listing .category:hover .caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
     color: #000;
   }
 }
 .listing .product {
   background: var(--whitespace-color);
   font-size: calc(var(--default-text-size) - 1px);
-  transform: scale(1);
   transition: all 100ms linear;
   border: 1px solid transparent;
   border-radius: var(--border-radius);
@@ -399,7 +397,6 @@ body main {
 @media (min-width: 576px) {
   .listing .product:hover {
     border: 1px solid var(--listing-border-color);
-    transform: scale(1.02);
     background: #fff;
   }
 }
@@ -479,9 +476,9 @@ body main {
 .listing .product .actions {
   position: absolute;
   display: none;
-  top: 7.5px;
-  right: 7.5px;
-  padding: 0.25em;
+  top: 1em;
+  right: 1em;
+  padding: 0.5em;
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(3px);
   border-radius: 1em;
@@ -496,7 +493,7 @@ body main {
   .listing .product:hover .actions {
     display: flex;
     flex-direction: column;
-    gap: 0.25em;
+    gap: 0.5em;
   }
 }
 .listing.columns .product .info {

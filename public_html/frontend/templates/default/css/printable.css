@@ -1,31 +1,78 @@
+:root {
+  --page-margin: 10mm;
+}
+* {
+  line-height: 125%;
+}
 .page {
   position: relative;
+  display: flex;
+  flex-direction: column;
   font-size: 12px;
+  font-family: var(--default-text-font);
   color: #000;
+  overflow: hidden;
 }
-.page .footer {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  font-size: 10px;
+.page[data-size="A4"] {
+  page: A4;
+  width: 21cm;
+  height: 29.7cm;
+}
+.page[data-size="A4R"] {
+  page: A4R;
+  width: 29.7cm;
+  height: 21cm;
+}
+.page[data-size="US-Letter"] {
+  page: US-Letter;
+  width: 8.5in;
+  height: 11in;
+}
+.page[data-size="US-Legal"] {
+  page: US-Legal;
+  width: 8.5in;
+  height: 14in;
+}
+.page > header {
+  flex: 0 1 auto;
+  padding: var(--page-margin);
+  padding-bottom: 0;
+}
+.page > main {
+  flex: 1 0 auto;
+  padding: 0 var(--page-margin);
+}
+.page > footer {
+  flex: 0 1 auto;
+  padding: var(--page-margin);
+  padding-top: 0;
 }
 hr {
   border-color: #000;
 }
 @media print {
   @page {
-    size: A4;
-    margin: 15mm;
+    margin: 0;
     zoom: 100%;
     padding: 0;
   }
+  @page A4 {
+    size: A4 portrait;
+  }
+  @page A4R {
+    size: A4 landscape;
+  }
+  @page US-Letter {
+    size: letter portrait;
+  }
+  @page US-Legal {
+    size: legal portrait;
+  }
   .page {
     position: relative;
+    page-break-inside: avoid;
     page-break-after: always;
-  }
-  .page[data-size="A4"] {
-    height: calc(29.7cm - 15mm - 15mm);
+    height: 100vh;
   }
   h1 {
     margin-top: 0;
@@ -39,6 +86,9 @@ hr {
   .page-break {
     page-break-before: always;
   }
+  #actions {
+    display: none;
+  }
 }
 @media screen {
   body {
@@ -46,27 +96,24 @@ hr {
   }
   .page {
     margin: 5mm auto;
-    padding: 15mm;
     background: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     border-radius: var(--border-radius);
   }
-  .page[data-size="A4"] {
-    width: 21cm;
-    height: 29.7cm;
-  }
-  .page[data-="A4"][data-orientation="portrait"] {
-    width: 29.7cm;
-    height: 21cm;
-  }
-  .page .footer {
-    left: 15mm;
-    right: 15mm;
-    bottom: 15mm;
+  .page + .page {
+    margin-top: 10mm;
   }
   .page-break {
     border-bottom: 1px #ccc dashed;
-    margin: 15mm -15mm;
+    margin: var(--page-margin) -var(--page-margin);
     line-height: 0;
+  }
+  #actions {
+    display: block;
+    position: fixed;
+    top: 1cm;
+    right: 1cm;
+    font-size: 1.25em;
+    z-index: 999999;
   }
 }

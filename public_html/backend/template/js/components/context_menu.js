@@ -3,7 +3,7 @@
  * by LiteCart
  */
 
-+function($) {
++function() {
 
 	$.fn.contextMenu = function(config){
 		this.each(function(){
@@ -13,10 +13,8 @@
 			self = this;
 
 			$(this).on('contextmenu').on({
-
 			});
-
 		});
 	}
 
-}(jQuery);
+}();

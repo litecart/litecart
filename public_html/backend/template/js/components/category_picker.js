@@ -3,7 +3,7 @@
  * by LiteCart
  */
 
-+function($) {
++function() {
 
 	$.fn.categoryPicker = function(config){
 		this.each(function(){
@@ -161,4 +161,4 @@
 		});
 	}
 
-}(jQuery);
+}();

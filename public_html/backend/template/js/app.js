@@ -97,7 +97,7 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
  * by LiteCart
  */
 
-+function($) {
++function() {
 
 	$.fn.categoryPicker = function(config){
 		this.each(function(){
@@ -255,14 +255,14 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
 		});
 	}
 
-}(jQuery);
+}();
 
 /*
  * jQuery Context Menu
  * by LiteCart
  */
 
-+function($) {
++function() {
 
 	$.fn.contextMenu = function(config){
 		this.each(function(){
@@ -272,13 +272,11 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
 			self = this;
 
 			$(this).on('contextmenu').on({
-
 			});
-
 		});
 	}
 
-}(jQuery);
+}();
 
 
 /* ========================================================================
@@ -289,7 +287,7 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
-+function ($) {
++function () {
 	'use strict';
 
 		// DROPDOWN CLASS DEFINITION
@@ -444,7 +442,7 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
 		.on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
 		.on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
 
-}(jQuery);
+}();
 
 
 	$('textarea[data-toggle="csv"] + table').on('click', '.remove', function(e) {
@@ -454,15 +452,15 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
 		$(parent).trigger('keyup');
 	});
 
-	$('textarea[data-toggle="csv"] + table .add-row').click(function(e) {
+	$('textarea[data-toggle="csv"] + table .add-row').on('click', function(e) {
 	 e.preventDefault();
 		var n = $(this).closest('table').find('thead th:not(:last-child)').length;
 		$(this).closest('table').find('tbody').append(
-			'<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class="remove" href="#"><i class="fa fa-times-circle" style="color: #d33;"></i></a></td>' +'</tr>'
+			'<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class="remove" href="#"><i class="fa fa-times" style="color: #d33;"></i></a></td>' +'</tr>'
 		).trigger('keyup');
 	});
 
-	$('textarea[data-toggle="csv"] + table .add-column').click(function(e) {
+	$('textarea[data-toggle="csv"] + table .add-column').on('click', function(e) {
 	 e.preventDefault();
 		var table = $(this).closest('table');
 		var title = prompt("Column Title");
@@ -473,7 +471,7 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
 		$(this).trigger('keyup');
 	});
 
-	$('textarea[data-toggle="csv"] + table').keyup(function(e) {
+	$('textarea[data-toggle="csv"] + table').on('keyup', function(e) {
 		var csv = $(this).find('thead tr, tbody tr').map(function (i, row) {
 				return $(row).find('th:not(:last-child),td:not(:last-child)').map(function (j, col) {
 					var text = $(col).text();
@@ -811,7 +809,7 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
 
 	// Data-Table Shift Check Multiple Checkboxes
 	let lastTickedCheckbox = null;
-	$('.data-table td:first-child :checkbox').click(function(e){
+	$('.data-table td:first-child :checkbox').on('click', function(e){
 
 		let $chkboxes = $('.data-table td:first-child :checkbox');
 
@@ -865,7 +863,7 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
 	});
 
 	// Data-Table Sorting (Page Reload)
-	$('.table-sortable thead th[data-sort]').click(function(){
+	$('.table-sortable thead th[data-sort]').on('click', function(){
 		let params = {};
 
 		window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {

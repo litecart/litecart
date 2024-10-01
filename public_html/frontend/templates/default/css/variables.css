@@ -27,7 +27,7 @@
 /* Variables */
 :root {
   /* General */
-  --border-radius: 10px;
+  --border-radius: 15px;
   --gutter-size: 2rem;
   --link-text-color: #5292b1;
   --whitespace-color: #fff;
@@ -51,7 +51,7 @@
   --default-border-color: #f3f7ff;
   --top-navigation-background-color: #000;
   --top-navigation-text-color: #fff;
-  --navigation-background-color: #d2d2e3;
+  --navigation-background-color: transparent;
   --navigation-text-color: #333;
   --card-background-color: #fff;
   --card-text-color: var(--default-text-color);
