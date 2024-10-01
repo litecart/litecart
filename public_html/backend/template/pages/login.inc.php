@@ -95,9 +95,9 @@ html.dark-mode body {
 
 <script>
 	if ($('input[name="username"]').val() == '') {
-		$('input[name="username"]').focus();
+		$('input[name="username"]').trigger('focus');
 	} else {
-		$('input[name="password"]').focus();
+		$('input[name="password"]').trigger('focus');
 	}
 
 	$('form[name="login_form"]').submit(function(e) {

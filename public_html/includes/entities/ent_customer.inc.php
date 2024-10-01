@@ -39,7 +39,7 @@
 
 			$customer = database::query(
 				"select * from ". DB_TABLE_PREFIX ."customers
-				". (preg_match('#^[0-9]+$#', $customer_id) ? "where id = '". (int)$customer_id ."'" : "") ."
+				". (preg_match('#^[0-9]+$#', $customer_id) ? "where id = ". (int)$customer_id ."" : "") ."
 				". (preg_match('#@#', $customer_id) ? "where lower(email) = '". database::input(strtolower($customer_id)) ."'" : "") ."
 				limit 1;"
 			)->fetch();

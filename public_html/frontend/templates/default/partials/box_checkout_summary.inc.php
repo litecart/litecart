@@ -94,7 +94,7 @@
 		$(this).closest('.comments').find('.remaining').text(remaining);
 	});
 
-	$('#box-checkout-summary button[name="confirm"]').click(function(e) {
+	$('#box-checkout-summary button[name="confirm"]').on('click', function(e) {
 		if ($('box-checkout-customer').prop('changed')) {
 			e.preventDefault();
 			alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");

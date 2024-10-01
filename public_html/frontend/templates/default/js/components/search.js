@@ -1,5 +1,5 @@
 	// AJAX Search
-	$('.navbar-search :input').focus(function(){
+	$('.navbar-search :input').on('focus', function(){
 		$(this).closest('.dropdown').addClass('open');
 	});
 

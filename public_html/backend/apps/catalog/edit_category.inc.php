@@ -374,7 +374,7 @@
 	// Filters
 
 	var new_attribute_filter_i = 0;
-	$('#tab-filters button[name="add"]').click(function(){
+	$('#tab-filters button[name="add"]').on('click', function(){
 
 		if ($('select[name="new_attribute_group"]').val() == '') {
 			alert("<?php echo functions::escape_html(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");

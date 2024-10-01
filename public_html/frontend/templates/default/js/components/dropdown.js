@@ -160,25 +160,25 @@
 
 	// Dropdown Select
 	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
-		
+
 		let $dropdown = $(this).closest('.dropdown');
 		let $input = $dropdown.find(':input:checked');
-		
+
 		$dropdown.find('li.active').removeClass('active');
-		
+
 		if ($dropdown.find(':input:checked').data('name')) {
 			var name = $input.data('name');
 		} else {
 			var name = $input.closest('.option').text();
 		}
-		
+
 		$dropdown.find('.form-select').text(name);
 		$input.closest('li').addClass('active');
-		
+
 		$dropdown.trigger('click.bs.dropdown');
 	});
 
-	$('.data-table tbody tr').click(function(e) {
+	$('.data-table tbody tr').on('click', function(e) {
 		if ($(e.target).is(':input')) return;
 		if ($(e.target).is('a, a *')) return;
 		if ($(e.target).is('th')) return;

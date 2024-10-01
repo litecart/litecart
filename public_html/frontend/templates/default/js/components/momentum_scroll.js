@@ -23,12 +23,15 @@
 			}
 
 			let momentumLoop = function() {
+
 				if (direction == 'left') {
 					$content.scrollLeft($content.scrollLeft() - velX); // Apply the velocity to the scroll position
 				} else {
 					$content.scrollLeft($content.scrollLeft() + velX);
 				}
+
 				velX *= 1 - 5 / 100; // Slow down the velocity 5%
+
 				if (Math.abs(velX) > 0.5) { // Still moving?
 					momentumID = requestAnimationFrame(momentumLoop); // Keep looping
 				}
@@ -45,15 +48,20 @@
 
 				'mousemove': function(e) {
 					if (!clicked) return;
+
 					dragging = true;
+
 					let prevScrollLeft = $content.scrollLeft(); // Store the previous scroll position
 						currentDrag = (clickX - e.pageX);
+
 					$content.scrollLeft(scrollX + (clickX - e.pageX));
+
 					if (currentDrag > 0) {
 						direction = 'right';
 					} else {
 						direction = 'left';
 					}
+
 					velX = Math.abs($content.scrollLeft() - prevScrollLeft); // Compare change in position to work out drag speed
 				},
 
@@ -107,6 +115,7 @@
 					$self.find('button[name="left"], button[name="right"]').remove();
 				}
 
+				/*
 				if ($(window).width() > ($self.outerWidth() + 45)) {
 					$self.find('button[name="left"]').css('left', '');
 					$self.find('button[name="right"]').css('right', '');
@@ -114,6 +123,7 @@
 					$self.find('button[name="left"]').css('left', 0);
 					$self.find('button[name="right"]').css('right', 0);
 				}
+				*/
 
 			}).trigger('resize');
 		});

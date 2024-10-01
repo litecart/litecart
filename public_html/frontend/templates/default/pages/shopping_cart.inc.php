@@ -144,7 +144,7 @@
 
 						<?php if (settings::get('accounts_enabled') && empty($shopping_cart->data['customer']['id'])) { ?>
 						<div class="float-end">
-							<a class="btn btn-outline" href="<?php echo document::ilink('login', ['redirect_url' => document::ilink('checkout/index')]) ?>" data-toggle="lightbox" data-require-window-width="768" data-seamless="true"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
+							<a class="btn btn-outline" href="<?php echo document::ilink('account/sign_in', ['redirect_url' => document::ilink('checkout/index')]) ?>" data-toggle="lightbox" data-require-window-width="768" data-seamless="true"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
 						</div>
 						<?php } ?>
 
@@ -339,10 +339,10 @@
 						<div class="account">
 
 							<?php if (!$account_exists) { ?>
-							<h3><?php echo functions::form_checkbox('create_account', ['1', language::translate('title_create_account', 'Create Account')], (!empty($_POST['customer']['create_account']) || settings::get('register_guests')) ? '1': true, 'style="margin: 0px;"' . (settings::get('register_guests') ? ' disabled' : '')); ?></h3>
-							<?php if (settings::get('register_guests')) echo functions::form_input_hidden('create_account', '1'); ?>
+							<h3><?php echo functions::form_checkbox('sign_up', ['1', language::translate('title_sign_up', 'Sign Up')], (!empty($_POST['customer']['sign_up']) || settings::get('register_guests')) ? '1': true, 'style="margin: 0px;"' . (settings::get('register_guests') ? ' disabled' : '')); ?></h3>
+							<?php if (settings::get('register_guests')) echo functions::form_input_hidden('sign_up', '1'); ?>
 
-							<fieldset<?php if (empty($_POST['customer']['create_account'])) echo ' style="display: none;" disabled'; ?>>
+							<fieldset<?php if (empty($_POST['customer']['sign_up'])) echo ' style="display: none;" disabled'; ?>>
 
 								<div class="row">
 									<div class="col-sm-6">
@@ -426,7 +426,7 @@
 		$('input[name="shipping_address[phone]"]').removeAttr('placeholder');
 	}
 
-	$('input[name="create_account"]:checkbox').trigger('change');
+	$('input[name="sign_up"]:checkbox').trigger('change');
 
 	// Toggles
 
@@ -438,7 +438,7 @@
 		}
 	});
 
-	$('#box-customer-details input[name="create_account"]').on('change', function(){
+	$('#box-customer-details input[name="sign_up"]').on('change', function(){
 		if (this.checked == true) {
 			$('#box-customer-details .account fieldset').prop('disabled', false).slideDown('fast');
 		} else {
@@ -593,8 +593,8 @@
 	});
 
 	// Prevent losing form focus when clicking the label of a checkbox
-	$('#box-customer-details .form-check').click(function(e){
-		$(this).find(':checkbox').trigger('focusin').focus();
+	$('#box-customer-details .form-check').on('click', function(e){
+		$(this).find(':checkbox').trigger('focusin').trigger('focus');
 	});
 
 	// Auto-Save
@@ -628,7 +628,7 @@
 
 	// Process Data
 
-	$('#box-customer-details button[name="save_customer_details"]').click(function(e){
+	$('#box-customer-details button[name="save_customer_details"]').on('click', function(e){
 		e.preventDefault();
 
 		let formdata = $('#box-customer-details :input').serialize() + '&save_customer_details=true';

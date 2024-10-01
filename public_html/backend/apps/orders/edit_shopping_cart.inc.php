@@ -414,7 +414,7 @@
 								<td><?php echo functions::form_input_money('items['. $key .'][price]', $_POST['currency_code'], true); ?></td>
 								<td><?php echo functions::form_input_money('items['. $key .'][discount]', $_POST['currency_code'], true); ?></td>
 								<td><?php echo functions::form_input_money('items['. $key .'][total]', $_POST['currency_code'], true, 'readonly'); ?></td>
-								<td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"'); ?></a></td>
+								<td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg fa-fw', 'style="color: #c33;"'); ?></a></td>
 								<td><a class="edit btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 							</tr>
 							<?php } ?>
@@ -566,7 +566,7 @@
 
 	// Customer
 
-	$('#customer-details button[name="get_address"]').click(function() {
+	$('#customer-details button[name="get_address"]').on('click', function() {
 		$.ajax({
 			url: '<?php echo document::ilink('customers/get_address.json'); ?>',
 			type: 'post',
@@ -635,7 +635,7 @@
 		});
 	});
 
-	$('#customer-details button[name="copy_billing_address"]').click(function(){
+	$('#customer-details button[name="copy_billing_address"]').on('click', function(){
 		fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone'];
 		$.each(fields, function(key, field){
 			$('*[name="shipping_address['+ field +']"]').val($('*[name="billing_address['+ field +']"]').val()).trigger('change');
@@ -757,7 +757,7 @@
 		});
 	});
 
-	$('#shopping-cart-items .add-custom-item').click(function(){
+	$('#shopping-cart-items .add-custom-item').on('click', function(){
 		$.featherlight('#modal-add-cart-item');
 
 		let modal = $('.featherlight.active'),
@@ -766,7 +766,7 @@
 		$(modal).data('row', '');
 	});
 
-	$('#modal-edit-cart-item button[name="ok"]').click(function(e){
+	$('#modal-edit-cart-item button[name="ok"]').on('click', function(e){
 
 		let modal = $('.featherlight.active');
 		let row = $(modal).data('row');
@@ -795,7 +795,7 @@
 		$.featherlight.close();
 	});
 
-	$('#modal-add-cart-item button[name="ok"]').click(function(e){
+	$('#modal-add-cart-item button[name="ok"]').on('click', function(e){
 
 		let modal = $('.featherlight.active');
 		let row = $(modal).data('row');
@@ -834,7 +834,7 @@
 			'    <td><?php echo functions::escape_js(functions::form_input_money('items[new_item_index][tax]', $_POST['currency_code'], '')); ?></td>',
 			'    <td class="text-end">',
 			'      <a class="edit" href="#" title="<?php echo functions::escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('edit')); ?></a>',
-			'      <a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"')); ?></a>',
+			'      <a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times fa-lg fa-fw', 'style="color: #c33;"')); ?></a>',
 			'    </td>',
 			'  </tr>'
 		].join('\n')

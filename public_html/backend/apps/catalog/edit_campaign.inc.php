@@ -211,7 +211,7 @@
 
 	$('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').trigger('input');
 
-	$('button[name="remove"]').click(function(e){
+	$('button[name="remove"]').on('click', function(e){
 		e.preventDefault();
 		if (confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
 			$(this).closest('tr').remove();

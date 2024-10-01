@@ -510,7 +510,7 @@
 			},
 
 			afterContent: function(_super, e){
-				this.$instance.find('[autofocus]:not([disabled])').focus();
+				this.$instance.find('[autofocus]:not([disabled])').trigger('focus');
 				this.onResize(e);
 				return _super(e);
 			},
@@ -525,7 +525,7 @@
 					$(element).attr('tabindex', self._previousWithTabIndices[i]);
 				});
 
-				this._previouslyActive.focus();
+				this._previouslyActive.trigger('focus');
 
 				this.$instance.off('next.featherlight previous.featherlight');
 

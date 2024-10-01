@@ -38,7 +38,7 @@
 
 			$campaign = database::query(
 				"select * from ". DB_TABLE_PREFIX ."campaigns
-				". (preg_match('#^[0-9]+$#', $campaign_id) ? "where id = '". (int)$campaign_id ."'" : "") ."
+				". (preg_match('#^[0-9]+$#', $campaign_id) ? "where id = ". (int)$campaign_id ."" : "") ."
 				limit 1;"
 			)->fetch();
 

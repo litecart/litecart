@@ -443,8 +443,8 @@
 	});
 
 	// Prevent losing form focus when clicking the label of a checkbox
-	$('#box-checkout-customer .form-check').click(function(e){
-		$(this).find(':checkbox').trigger('focusin').focus();
+	$('#box-checkout-customer .form-check').on('click', function(e){
+		$(this).find(':checkbox').trigger('focusin').trigger('focus');
 	});
 
 	// Auto-Save
@@ -478,7 +478,7 @@
 
 	// Process Data
 
-	$('#box-checkout-customer button[name="save_customer_details"]').click(function(e){
+	$('#box-checkout-customer button[name="save_customer_details"]').on('click', function(e){
 		e.preventDefault();
 
 		let formdata = $('#box-checkout-customer :input').serialize() + '&save_customer_details=true';

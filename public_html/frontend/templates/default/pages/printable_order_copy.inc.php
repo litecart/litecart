@@ -15,7 +15,7 @@ h1 {
 
 .billing-address .rounded-rectangle {
 	border: 1px solid #000;
-	border-radius: 2mm;
+	border-radius: var(--border-radius);
 	padding: 4mm;
 	margin-inline-start: -15px;
 	margin-bottom: 3mm;
@@ -205,4 +205,8 @@ table.items tbody tr:nth-child(11) {
 
 <script>
 	document.title = "<?php echo functions::escape_js(language::translate('title_order', 'Order')); ?> #<?php echo $order['id']; ?>";
+
+  $('#actions button[name="print"]').on('click', function(){
+    window.print();
+  });
 </script>

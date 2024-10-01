@@ -53,10 +53,6 @@
 				</div>
 			</li>
 
-			<li>
-				{{breadcrumbs}}
-			</li>
-
 			<li style="flex-grow: 1;">
 				<div id="search" class="dropdown">
 					<?php echo functions::form_input_search('query', false, 'placeholder="'. functions::escape_attr(language::translate('title_search_entire_platform', 'Search entire platform')) .'&hellip;" autocomplete="off"'); ?>
@@ -142,8 +138,13 @@
 		</ul>
 
 		<div id="content">
+
 			{{notices}}
+
+			{{breadcrumbs}}
+
 			{{content}}
+
 		</div>
 	</main>
 </div>
@@ -152,13 +153,13 @@
 <script src="<?php echo document::href_rlink('app://backend/template/js/app.min.js'); ?>"></script>
 
 <script>
-	$('button[name="font_size"]').click(function(){
+	$('button[name="font_size"]').on('click', function(){
 		let new_size = parseInt($(':root').css('--default-text-size').split('px')[0]) + (($(this).val() == 'increase') ? 1 : -1);
 		$(':root').css('--default-text-size', new_size + 'px');
 		document.cookie = 'font_size='+ new_size +';Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000';
 	});
 
-	$('input[name="condensed"]').click(function(){
+	$('input[name="condensed"]').on('click', function(){
 		if ($(this).val() == 1) {
 			document.cookie = 'condensed=1;Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000';
 			$('html').addClass('condensed');
@@ -168,7 +169,7 @@
 		}
 	});
 
-	$('input[name="dark_mode"]').click(function(){
+	$('input[name="dark_mode"]').on('click', function(){
 		if ($(this).val() == 1) {
 			document.cookie = 'dark_mode=1;Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000';
 			$('html').addClass('dark-mode');

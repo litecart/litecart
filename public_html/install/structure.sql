@@ -557,7 +557,7 @@ CREATE TABLE `lc_orders_items` (
 	KEY `product_id` (`product_id`),
 	CONSTRAINT `order_item_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
 	CONSTRAINT `order_item_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE SET NULL
-	CONSTRAINT `order_item_to_stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_itemss` (`id`) ON UPDATE CASCADE ON DELETE SET NULL
+	CONSTRAINT `order_item_to_stock_option` FOREIGN KEY (`stock_option_id`) REFERENCES `lc_products_stock_options` (`id`) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_orders_totals` (
@@ -767,7 +767,10 @@ CREATE TABLE `lc_products_stock_options` (
 	`priority` INT(11) NOT NULL DEFAULT '0.0000',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `stock_option` (`product_id`, `stock_item_id`),
-	KEY `product_id` (`product_id`)
+	KEY `product_id` (`product_id`),
+	CONSTRAINT `product_stock_option_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
+	CONSTRAINT `product_stock_option_to_stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_products_to_categories` (
 	`product_id` INT(10) UNSIGNED NOT NULL,

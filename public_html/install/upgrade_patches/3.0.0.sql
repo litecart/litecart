@@ -605,10 +605,6 @@ UPDATE `lc_orders`
 SET language_code = NULL
 WHERE language_code = '';
 -- -----
-UPDATE `lc_orders_items`
-SET product_id = NULL
-WHERE product_id = 0;
--- -----
 UPDATE `lc_modules`
 SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit')
 WHERE `module_id` = 'sm_zone_weight'
@@ -616,7 +612,6 @@ LIMIT 1;
 -- -----
 UPDATE `lc_orders`
 SET `no` = id;
--- -----
 -- -----
 UPDATE `lc_products_to_categories`
 SET `category_id` = NULL
@@ -830,6 +825,10 @@ WHERE order_id NOT IN (SELECT id from `lc_orders`);
 DELETE FROM `lc_orders_items`
 WHERE order_id NOT IN (SELECT id from `lc_orders`);
 -- -----
+UPDATE `lc_orders_items`
+SET product_id = NULL
+WHERE product_id NOT IN (SELECT id from `lc_products`);
+-- -----
 DELETE FROM `lc_orders_totals`
 WHERE order_id NOT IN (SELECT id from `lc_orders`);
 -- -----
@@ -924,7 +923,9 @@ ALTER TABLE `lc_orders_comments`
 ADD CONSTRAINT `order_comment_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 -- -----
 ALTER TABLE `lc_orders_items`
-ADD CONSTRAINT `order_item_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+ADD CONSTRAINT `order_item_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+ADD CONSTRAINT `order_item_to_products` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE SET NULL,
+ADD CONSTRAINT `order_item_to_stock_option` FOREIGN KEY (`stock_option_id`) REFERENCES `lc_products_stock_options` (`id`) ON UPDATE CASCADE ON DELETE SET NULL;
 -- -----
 ALTER TABLE `lc_orders_totals`
 ADD CONSTRAINT `order_total_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
@@ -958,6 +959,10 @@ ADD CONSTRAINT `product_price_to_product` FOREIGN KEY (`product_id`) REFERENCES 
 ALTER TABLE `lc_products_to_categories`
 ADD CONSTRAINT `product_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
 ADD CONSTRAINT `product_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+-- -----
+ALTER TABLE `lc_products_stock_options`
+ADD CONSTRAINT `product_stock_option_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `product_stock_option_to_stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
 -- -----
 ALTER TABLE `lc_quantity_units_info`
 ADD CONSTRAINT `quantity_unit_info_to_quantity_unit` FOREIGN KEY (`quantity_unit_id`) REFERENCES `lc_quantity_units` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,

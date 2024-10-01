@@ -172,7 +172,11 @@
 					<td><?php echo functions::draw_fonticon($module['status'] ? 'on' : 'off'); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo $module['name']; ?></a></td>
 					<?php if (__DOC__ == 'jobs' && !empty($module['status'])) { ?>
-					<td class="text-center"><a href="<?php echo document::href_ilink(__APP__.'/run_job', ['module_id' => $module['id']]); ?>" target="_blank"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>
+					<td class="text-center">
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/run_job', ['module_id' => $module['id']]); ?>" target="_blank">
+							<strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong>
+						</a>
+					</td>
 					<?php } else { ?>
 					<td class="text-center"></td>
 					<?php } ?>
@@ -220,7 +224,7 @@
 </div>
 
 <script>
-	$('#cron-example').click(function(){
+	$('#cron-example').on('click', function(){
 		prompt("<?php echo language::translate('title_cron_job_configuration', 'Cron Job Configuration'); ?>", "*/5 * * * * curl --silent <?php echo document::ilink('f:push_jobs'); ?> &>/dev/null");
 	});
 

@@ -246,7 +246,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 		});
 	});
 
-	$('#box-product[data-id="{{product_id}}"] .social-bookmarks .link').off().click(function(e){
+	$('#box-product[data-id="{{product_id}}"] .social-bookmarks .link').off().on('click', function(e){
 		e.preventDefault();
 		prompt("<?php echo language::translate('text_link_to_this_product', 'Link to this product'); ?>", '{{link}}');
 	});

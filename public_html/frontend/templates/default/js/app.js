@@ -82,7 +82,7 @@
 		}
 	});
 
-	$('#scroll-up').click(function(){
+	$('#scroll-up').on('click', function(){
 		$('html, body').animate({scrollTop: 0}, 1000, 'easeOutBounce');
 		return false;
 	});
@@ -608,25 +608,25 @@
 
 	// Dropdown Select
 	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
-		
+
 		let $dropdown = $(this).closest('.dropdown');
 		let $input = $dropdown.find(':input:checked');
-		
+
 		$dropdown.find('li.active').removeClass('active');
-		
+
 		if ($dropdown.find(':input:checked').data('name')) {
 			var name = $input.data('name');
 		} else {
 			var name = $input.closest('.option').text();
 		}
-		
+
 		$dropdown.find('.form-select').text(name);
 		$input.closest('li').addClass('active');
-		
+
 		$dropdown.trigger('click.bs.dropdown');
 	});
 
-	$('.data-table tbody tr').click(function(e) {
+	$('.data-table tbody tr').on('click', function(e) {
 		if ($(e.target).is(':input')) return;
 		if ($(e.target).is('a, a *')) return;
 		if ($(e.target).is('th')) return;
@@ -658,12 +658,15 @@
 			}
 
 			let momentumLoop = function() {
+
 				if (direction == 'left') {
 					$content.scrollLeft($content.scrollLeft() - velX); // Apply the velocity to the scroll position
 				} else {
 					$content.scrollLeft($content.scrollLeft() + velX);
 				}
+
 				velX *= 1 - 5 / 100; // Slow down the velocity 5%
+
 				if (Math.abs(velX) > 0.5) { // Still moving?
 					momentumID = requestAnimationFrame(momentumLoop); // Keep looping
 				}
@@ -680,15 +683,20 @@
 
 				'mousemove': function(e) {
 					if (!clicked) return;
+
 					dragging = true;
+
 					let prevScrollLeft = $content.scrollLeft(); // Store the previous scroll position
 						currentDrag = (clickX - e.pageX);
+
 					$content.scrollLeft(scrollX + (clickX - e.pageX));
+
 					if (currentDrag > 0) {
 						direction = 'right';
 					} else {
 						direction = 'left';
 					}
+
 					velX = Math.abs($content.scrollLeft() - prevScrollLeft); // Compare change in position to work out drag speed
 				},
 
@@ -742,6 +750,7 @@
 					$self.find('button[name="left"], button[name="right"]').remove();
 				}
 
+				/*
 				if ($(window).width() > ($self.outerWidth() + 45)) {
 					$self.find('button[name="left"]').css('left', '');
 					$self.find('button[name="right"]').css('right', '');
@@ -749,6 +758,7 @@
 					$self.find('button[name="left"]').css('left', 0);
 					$self.find('button[name="right"]').css('right', 0);
 				}
+				*/
 
 			}).trigger('resize');
 		});
@@ -838,7 +848,7 @@
 }(jQuery);
 
 	// AJAX Search
-	$('.navbar-search :input').focus(function(){
+	$('.navbar-search :input').on('focus', function(){
 		$(this).closest('.dropdown').addClass('open');
 	});
 
@@ -921,7 +931,7 @@ $('body').on('click', '.data-table tbody tr', function(e) {
 
 	$('.nav-tabs .active a').trigger('click');
 	if (document.location.hash != '') {
-		$('a[href="' + document.location.hash + '"]').click();
+		$('a[href="' + document.location.hash + '"]').trigger('click');
 	}
 
 	// Polyfill for easeOutBounce

@@ -184,7 +184,7 @@ table th:last-child {
 	let new_key_index = 0;
 	while ($(':input[name^="keys['+new_key_index+']"]').length) new_key_index++
 
-	$('.data-table .add').click(function(e){
+	$('.data-table .add').on('click', function(e){
 		e.preventDefault();
 
 		let $output = $([
@@ -193,7 +193,7 @@ table th:last-child {
 			<?php foreach (language::$languages as $language) { ?>
 			'  <td><?php echo functions::form_input_text('values['. $language['code'] .'][new_key_index]', true); ?></td>',
 			<?php } ?>
-			'  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>',
+			'  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a></td>',
 			'</tr>'
 		].join('\n')
 			.replace(/new_key_index/g, 'new_' + new_key_index++)
@@ -207,7 +207,7 @@ table th:last-child {
 		$(this).closest('tr').remove();
 	});
 
-	$('a.tracker-wrapper-help').click(function(e){
+	$('a.tracker-wrapper-help').on('click', function(e){
 		e.preventDefault();
 		alert([
 			"Encapsulates the code with a div wrapper and makes it trackable.",

@@ -201,11 +201,11 @@
 					throw new Exception(language::translate('error_product_currently_not_available_for_purchase', 'The product is currently not available for purchase'));
 				}
 
-				if (!empty($product->date_valid_from) && $product->date_valid_from > date('Y-m-d H:i:s')) {
+				if ($product->date_valid_from && $product->date_valid_from > date('Y-m-d H:i:s')) {
 					throw new Exception(strtr(language::translate('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), ['%date' => language::strftime('date', $product->date_valid_from)]));
 				}
 
-				if (!empty($product->date_valid_to) && $product->date_valid_to > 1970 && $product->date_valid_to < date('Y-m-d H:i:s')) {
+				if ($product->date_valid_to && $product->date_valid_to < date('Y-m-d H:i:s')) {
 					throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), ['%date' => language::strftime('date', $product->date_valid_to)]));
 				}
 
@@ -462,6 +462,7 @@
 			];
 
 			foreach (self::$items as $item) {
+
 				$num_items = $item['quantity'];
 
 				if (!empty($item['quantity_unit']['separate'])) {

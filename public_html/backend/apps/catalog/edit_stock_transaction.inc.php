@@ -11,7 +11,7 @@
 	}
 
 	document::$title[] = !empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_transaction', 'Create New Transaction');
-	
+
 	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
 	breadcrumbs::add(language::translate('title_stock_transactions', 'Stock Transactions'), document::ilink(__APP__.'/stock_transactions'));
 	breadcrumbs::add(!empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_transaction', 'Create New Transaction'), document::ilink());
@@ -232,7 +232,7 @@
 	let new_item_index = 0;
 	while ($(':input[name^="contents['+new_item_index+']"]').length) new_item_index++;
 
-	$('table tfoot button[name="add"]').click(function(e) {
+	$('table tfoot button[name="add"]').on('click', function(e) {
 		e.preventDefault();
 
 		let row = $(this).closest('tr');
@@ -286,12 +286,12 @@
 		$('input[name="new[name]"]').val('');
 		$('input[name="new[quantity]"]').val('');
 		$('input[name="new[quantity_adjustment]"]').val('');
-		$('input[name="new[sku]"]').focus();
+		$('input[name="new[sku]"]').trigger('focus');
 	});
 
-	$('button[name="save"]').click(function(){
+	$('button[name="save"]').on('click', function(){
 		if ($('input[name="new[sku]"]').val() != '' && $('input[name="new[quantity_adjustment]"]').val() != '') {
-			$('button[name="add"]').click();
+			$('button[name="add"]').trigger('click');
 		}
 	});
 </script>

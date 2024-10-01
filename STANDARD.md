@@ -490,7 +490,7 @@
 
 		$query = database::query(
 			"select * from ". DB_TABLE_NAME ."
-			where id = '". (int)$integrer ."'
+			where id = ". (int)$integrer ."
 			". (isset($string) ? "and string = '". database::input($string) ."'" : "") ."
 			limit 1;"
 		);

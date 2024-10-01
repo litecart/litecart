@@ -2,7 +2,7 @@
 
 	<?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
 	<div style="float:right">
-		<a href="<?php echo document::ilink('login', ['redirect_url' => document::ilink('checkout/index')]) ?>" data-toggle="lightbox" data-require-window-width="768"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
+		<a href="<?php echo document::ilink('account/sign_in', ['redirect_url' => document::ilink('checkout/index')]) ?>" data-toggle="lightbox" data-require-window-width="768"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
 	</div>
 	<?php } ?>
 
@@ -190,9 +190,9 @@
 
 		<?php } else { ?>
 
-		<h3><?php echo functions::form_checkbox('create_account', '1', true, 'style="margin: 0px;"'); ?> <?php echo language::translate('title_create_account', 'Create Account'); ?></h3>
+		<h3><?php echo functions::form_checkbox('sign_up', '1', true, 'style="margin: 0px;"'); ?> <?php echo language::translate('title_sign_up', 'Sign Up'); ?></h3>
 
-		<fieldset<?php if (empty($_POST['create_account'])) echo ' style="display: none;" disabled'; ?>>
+		<fieldset<?php if (empty($_POST['sign_up'])) echo ' style="display: none;" disabled'; ?>>
 
 			<div class="row">
 				<div class="col-sm-6">
@@ -258,7 +258,7 @@
 		$('input[name="shipping_address[phone]"]').removeAttr('placeholder');
 	}
 
-	$('input[name="create_account"][type="checkbox"]').trigger('change');
+	$('input[name="sign_up"][type="checkbox"]').trigger('change');
 
 	window.customer_form_changed = false;
 	window.customer_form_checksum = $('#box-checkout-customer :input').serialize();
@@ -273,7 +273,7 @@
 		}
 	});
 
-	$('#box-checkout-customer input[name="create_account"]').change(function(){
+	$('#box-checkout-customer input[name="sign_up"]').change(function(){
 		if (this.checked == true) {
 			$('#box-checkout-customer .account fieldset').removeAttr('disabled').slideDown('fast');
 		} else {

@@ -685,7 +685,7 @@ textarea.warning {
 		$($(this).attr('href')).find(':input[name$="[content]"]').trigger('input');
 	});
 
-	$('.nav-tabs .add').click(function(e){
+	$('.nav-tabs .add').on('click', function(e){
 		e.preventDefault();
 
 		let tab = '<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'"><span class="file">new'+ new_tab_index +'</span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times'); ?></span></a>'
@@ -699,7 +699,7 @@ textarea.warning {
 		$(this).before(tab);
 		$('#files').append($tab_pane);
 
-		$(this).prev().click();
+		$(this).prev().trigger('click');
 	});
 
 	$('.nav-tabs').on('click', '.remove', function(e) {
@@ -965,7 +965,7 @@ textarea.warning {
 	let new_alias_index = 0;
 	while ($(':input[name^="aliases['+new_alias_index+']"]').length) new_alias_index++;
 
-	$('button[name="add_alias"]').click(function(){
+	$('button[name="add_alias"]').on('click', function(){
 
 		let output = [
 			'<fieldset class="alias">',
@@ -1020,7 +1020,7 @@ textarea.warning {
 	let new_setting_index = 0;
 	while ($(':input[name^="settings['+new_setting_index+']"]').length) new_setting_index++;
 
-	$('button[name="add_setting"]').click(function(){
+	$('button[name="add_setting"]').on('click', function(){
 
 		let output = [
 			'<fieldset class="setting">',
@@ -1092,7 +1092,7 @@ textarea.warning {
 	let new_upgrade_patch_index = 0;
 	while ($(':input[name^="upgrades['+new_upgrade_patch_index+']"]').length) new_upgrade_patch_index++;
 
-	$('button[name="add_patch"]').click(function(){
+	$('button[name="add_patch"]').on('click', function(){
 
 		let output = [
 			'<fieldset class="upgrade">',
@@ -1112,7 +1112,7 @@ textarea.warning {
 		$('.upgrades').append(output);
 	});
 
-	$('.card-action button[name="delete"]').click(function(e){
+	$('.card-action button[name="delete"]').on('click', function(e){
 		e.preventDefault();
 		$.featherlight('#modal-uninstall');
 	});

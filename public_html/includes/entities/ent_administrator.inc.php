@@ -39,7 +39,7 @@
 
 			$administrator = database::query(
 				"select * from ". DB_TABLE_PREFIX ."administrators
-				". (preg_match('#^[0-9]+$#', $administrator_id) ? "where id = '". (int)$administrator_id ."'" : "") ."
+				". (preg_match('#^[0-9]+$#', $administrator_id) ? "where id = ". (int)$administrator_id ."" : "") ."
 				". (!preg_match('#^[0-9]+$#', $administrator_id) ? "where lower(username) = '". database::input(strtolower($administrator_id)) ."'" : "") ."
 				". (preg_match('#@#', $administrator_id) ? "where lower(email) = '". database::input(strtolower($administrator_id)) ."'" : "") ."
 				limit 1;"

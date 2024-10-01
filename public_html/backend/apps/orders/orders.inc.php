@@ -254,33 +254,51 @@
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 	foreach ($orders as $i => $order) {
+
 		if (empty($order['order_status_id'])) {
 			$order['order_status_icon'] = 'fa-minus';
 			$order['order_status_color'] = '#ccc';
 		}
 
-		if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
-		if (empty($order['order_status_color'])) $order['order_status_color'] = '#ccc';
+		if (empty($order['order_status_icon'])) {
+			$order['order_status_icon'] = 'fa-circle-thin';
+		}
+
+		if (empty($order['order_status_color'])) {
+			$order['order_status_color'] = '#ccc';
+		}
 
 		$order['css_classes'] = [];
-		if (empty($order['order_status_id'])) $order['css_classes'][]= 'semi-transparent';
-		if (!empty($order['unread'])) $order['css_classes'][]= 'bold';
+		if (empty($order['order_status_id'])) {
+			$order['css_classes'][]= 'semi-transparent';
+		}
 
+		if (!empty($order['unread'])) {
+			$order['css_classes'][]= 'bold';
+		}
 
-		$items_query = database::query(
-			"select oi.product_id, oi.sku, oi.quantity, si.quantity as stock_quantity
+		$order['items'] = database::query(
+			"select oi.*, si.quantity as stock_quantity
 			from ". DB_TABLE_PREFIX ."orders_items oi
-			join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
+			left join ". DB_TABLE_PREFIX ."products_stock_options pso on (pso.id = oi.stock_option_id)
+			left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 			where oi.order_id = ". (int)$order['id'] .";"
-		);
-
-		$order['sufficient_stock'] = database::num_rows($items_query) ? true : null;
-
-		while ($item = database::fetch($items_query)) {
-			if ($item['quantity'] < $item['stock_quantity']) {
-				$order['sufficient_stock'] = false;
-				break;
+		)->fetch_all(function($item){
+			if ($item['stock_quantity'] !== null) {
+				$item['sufficient_stock'] = null;
+			} else if ($item['quantity'] <= $item['stock_quantity']) {
+				$item['sufficient_stock'] = true;
+			} else {
+				$item['sufficient_stock'] = false;
 			}
+		});
+
+		if (in_array(false, array_column($order['items'], 'sufficient_stock'), true)) {
+			$order['sufficient_stock'] = false;
+		} else if (in_array(null, array_column($order['items'], 'sufficient_stock'), true)) {
+			$order['sufficient_stock'] = true;
+		} else {
+			$order['sufficient_stock'] = null;
 		}
 
 		$orders[$i] = $order;
@@ -525,7 +543,7 @@ table .fa-star:hover {
 		return false;
 	});
 
-	$('#actions button').click(function(e){
+	$('#actions button').on('click', function(e){
 		if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
 			e.preventDefault();
 			return false;

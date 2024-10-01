@@ -37,7 +37,7 @@
 </div>
 
 <script>
-	$('#modal-customer-picker input[name="query"]').focus();
+	$('#modal-customer-picker input[name="query"]').trigger('focus');
 
 	var xhr_customer_picker = null;
 	$('#modal-customer-picker input[name="query"]').on('input', function(){
@@ -123,7 +123,7 @@
 		}
 	});
 
-	$('#modal-customer-picker .set-guest').click(function(){
+	$('#modal-customer-picker .set-guest').on('click', function(){
 
 		let field = $.featherlight.current().$currentTarget.closest('.form-input');
 

@@ -51,23 +51,23 @@
 				self::set_charset($charset, $link);
 			}
 
-			$sql_mode = self::query("select @@SESSION.sql_mode as sql_mode;", [], $link)->fetch('sql_mode');
-			$sql_mode = preg_split('#\s*,\s*#', $sql_mode, -1, PREG_SPLIT_NO_EMPTY);
+			$sql_modes = self::query("select @@SESSION.sql_mode as sql_mode;", [], $link)->fetch(function($row){
+				return preg_split('#\s*,\s*#', $row['sql_mode'], -1, PREG_SPLIT_NO_EMPTY);
+			});
 
-			$undesired_modes = [
+			// Remove some undesired SQL modes
+			foreach ([
 				'TRADITIONAL',         // Shortcut flag for a bunch of other flags like below
 				'STRICT_ALL_TABLES',   // Strict mode [MySQL 5.7+, MariaDB 10.2.4+]
 				'STRICT_TRANS_TABLES', // Strict mode [MySQL 5.7+, MariaDB 10.2.4+]
-				'ONLY_FULL_GROUP_BY',  // Requiring an undesired amount of columns in group by clause [MySQL 5.7+]
-			];
-
-			foreach ($undesired_modes as $mode) {
-				if (($key = array_search($mode, $sql_mode)) !== false) {
-					unset($sql_mode[$key]);
+				'ONLY_FULL_GROUP_BY',  // Requiring an undesired amount of columns in group by clause to conform with indexes [MySQL 5.7+]
+			] as $undesired_mode) {
+				if (($key = array_search($undesired_mode, $sql_modes)) !== false) {
+					unset($sql_modes[$key]);
 				}
 			}
 
-			self::query("SET SESSION sql_mode = '". database::input(implode(',', $sql_mode)) ."';", [], $link);
+			self::query("SET SESSION sql_mode = '". database::input(implode(',', $sql_modes)) ."';", [], $link);
 			self::query("SET names '". database::input($charset) ."';", [], $link);
 			self::query("SET storage_engine = InnoDB;", [], $link);
 

@@ -35,7 +35,7 @@
 			if (!empty($_POST['code'])) {
 				if (database::query(
 					"select id from ". DB_TABLE_PREFIX ."products
-					where id != '". (int)$product->data['id'] ."'
+					where id != ". (int)$product->data['id'] ."
 					and code = '". database::input($_POST['code']) ."'
 					limit 1;"
 				)->num_rows) {
@@ -222,7 +222,7 @@
 		<?php echo functions::form_begin('product_form', 'post', false, true); ?>
 
 			<div class="tab-content">
-				<div id="tab-general" class="tab-pane active" style="max-width: 1200px;">
+				<div id="tab-general" class="tab-pane active" style="max-width: 1400px;">
 
 					<div class="row">
 						<div class="col-md-4">
@@ -321,11 +321,9 @@
 
 										<div class="input-group">
 											<?php echo functions::form_input_text('images['.$key.'][new_filename]', fallback($_POST['images'][$key]['new_filename'], $_POST['images'][$key]['filename'])); ?>
-											<div class="input-group-text">
-												<a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
-												<a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
-												<a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
-											</div>
+											<a class="btn btn-default btn-sm move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></a>
+											<a class="btn btn-default btn-sm move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></a>
+											<a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></a>
 										</div>
 									</div>
 									<?php } ?>
@@ -785,7 +783,7 @@
 									</td>
 									<td class="text-end">
                   <a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
-                  	<?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"'); ?>
+                  	<?php echo functions::draw_fonticon('fa-times fa-lg', 'style="color: #c33;"'); ?>
 										</a>
                 </td>
                 <td class="text-end">
@@ -899,7 +897,7 @@
 		refreshMainImage();
 	});
 
-	$('#images .add').click(function(e) {
+	$('#images .add').on('click', function(e) {
 		e.preventDefault();
 
 		let $output = $([
@@ -910,11 +908,9 @@
 			'  ',
 			'  <div class="input-group">',
 			'    <?php echo functions::form_input_file('new_images[]', 'accept="image/*"'); ?>',
-			'    <div class="input-group-text">',
-			'      <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>',
-			'      <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>',
-			'      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>',
-			'    </div>',
+			'    <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></a>',
+			'    <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></a>',
+			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></a>',
 			'  </div>',
 			'</div>'
 		].join('\n'));
@@ -949,7 +945,7 @@
 
 	// Technical Data
 
-	$('a.technical-data-hint').click(function(e){
+	$('a.technical-data-hint').on('click', function(e){
 		e.preventDefault();
 		alert('Syntax:\n\nTitle1\nProperty1: Value1\nProperty2: Value2\n\nTitle2\nProperty3: Value3...');
 	});
@@ -1063,7 +1059,7 @@
 		});
 	}
 
-	$('#price-incl-tax-tooltip').click(function(e) {
+	$('#price-incl-tax-tooltip').on('click', function(e) {
 		e.preventDefault();
 		alert('<?php echo str_replace(["\r", "\n", "'"], ["", "", "\\'"], language::translate('tooltip_field_price_incl_tax', 'This field helps you calculate net price based on the tax rates set for the store region. The prices stored in the database are always excluding tax.')); ?>');
 	});
@@ -1220,7 +1216,7 @@
 	let new_attribute_index = 0;
 	while ($(':input[name^="attributes['+new_attribute_index+']"]').length) new_attribute_index++;
 
-	$('#tab-attributes button[name="add"]').click(function(){
+	$('#tab-attributes button[name="add"]').on('click', function(){
 
 		if ($('select[name="new_attribute[group_id]"]').val() == '') {
 			alert("<?php echo language::translate('error_must_select_attribute_group', 'You must select an attribute group'); ?>");
@@ -1613,7 +1609,7 @@
     $(qty_field).val(parseFloat($(qty_field).data('quantity') || 0) + parseFloat($(this).val() || 0));
   });
 
-  $('#stock-options button[name="transfer"]').click(function(){
+  $('#stock-options button[name="transfer"]').on('click', function(){
     var $quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]'),
       $backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]');
     $quantity_field.val(parseFloat($(quantity_field).val() || 0) + parseFloat($(backordered_field).val() || 0)).trigger('input');
@@ -1716,7 +1712,7 @@
 			'    </div>',
 			'  </td>',
 			'  <td class="text-end">',
-			'    <a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"')); ?></a>',
+			'    <a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times fa-lg', 'style="color: #c33;"')); ?></a>',
 			'  </td>',
 			'  <td class="text-end">',
 			'    <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" data-max-width="980px" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>',

@@ -87,14 +87,14 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."products
 					set default_category_id = ". (int)$category_id . "
-					where id = '". (int)$product['id'] ."'
+					where id = ". (int)$product['id'] ."
 					limit 1;"
 				);
 			}
 			database::query(
 				"insert into `". DB_TABLE_PREFIX ."products_to_categories`
 				(product_id, category_id)
-				values ('". (int)$product['id'] ."', '". (int)$category_id ."');"
+				values (". (int)$product['id'] .", ". (int)$category_id .");"
 			);
 			$is_first = false;
 		}

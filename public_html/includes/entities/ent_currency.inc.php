@@ -36,7 +36,7 @@
 
 			$currency = database::query(
 				"select * from ". DB_TABLE_PREFIX ."currencies
-				". (preg_match('#^[0-9]{1,2}$#', $currency_code) ? "where id = '". (int)$currency_code ."'" : "") ."
+				". (preg_match('#^[0-9]{1,2}$#', $currency_code) ? "where id = ". (int)$currency_code ."" : "") ."
 				". (preg_match('#^[0-9]{3}$#', $currency_code) ? "where number = '". database::input($currency_code) ."'" : "") ."
 				". (preg_match('#^[A-Z]{3}$#', $currency_code) ? "where code = '". database::input($currency_code) ."'" : "") ."
 				". (preg_match('#^[a-z A-Z]{4,}$#', $currency_code) ? "where name like '". addcslashes(database::input($currency_code), '%_') ."'" : "") ."

@@ -198,7 +198,7 @@ h1 {
 </button>
 
 <script>
-	$('button[name="print"]').click(function(){
+	$('button[name="print"]').on('click', function(){
 		window.print();
 	});
 </script>

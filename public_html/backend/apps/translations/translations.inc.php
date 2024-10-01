@@ -471,11 +471,11 @@
 		$modal.find(':input[name="source"]').val(translations).select();
 	});
 
-	$('#translator-tool :input[name="source"]').focus(function(e){
+	$('#translator-tool :input[name="source"]').on('focus', function(e){
 		$(this).select();
 	});
 
-	$('#translator-tool button[name="prefill_fields"]').click(function(){
+	$('#translator-tool button[name="prefill_fields"]').on('click', function(){
 		var $modal = $(this).closest('.featherlight'),
 			 translated = $modal.find(':input[name="result"]').val().trim();
 

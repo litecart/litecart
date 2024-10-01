@@ -25,6 +25,8 @@
 			padding: .75em 1em;
 			font-weight: bold;
 			text-decoration: none;
+			border-top-left-radius: var(--border-radius);
+			border-bottom-left-radius: var(--border-radius);
 			&:hover {
 				background-color: rgba(0, 0, 0, .05);
 			}
@@ -33,7 +35,7 @@
 			display: block;
 			max-width: 250px;
 			max-height: 50px;
-			padding: 0.25em;
+			padding: 0.5em;
 		}
 		@media (min-width: @media-breakpoint-md) {
 			flex: 0 1 auto;
@@ -92,7 +94,6 @@
 			background: #fff;
 			color: var(--navigation-text-color);
 			transition: margin 200ms ease-out;
-			backdrop-filter: saturate(200%) blur(5px);
 			box-shadow: 0 0 15px #0003;
 		}
 	}

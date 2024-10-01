@@ -14,5 +14,5 @@
 
 	$('.nav-tabs .active a').trigger('click');
 	if (document.location.hash != '') {
-		$('a[href="' + document.location.hash + '"]').click();
+		$('a[href="' + document.location.hash + '"]').trigger('click');
 	}

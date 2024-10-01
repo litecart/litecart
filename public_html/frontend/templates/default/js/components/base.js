@@ -82,7 +82,7 @@
 		}
 	});
 
-	$('#scroll-up').click(function(){
+	$('#scroll-up').on('click', function(){
 		$('html, body').animate({scrollTop: 0}, 1000, 'easeOutBounce');
 		return false;
 	});

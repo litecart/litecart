@@ -15,13 +15,13 @@
 
 <script>
 	<?php if (!isset($_COOKIE['cookies_accepted'])) { ?>
-	$('#box-cookie-notice button[name="accept_cookies"]').click(function(){
+	$('#box-cookie-notice button[name="accept_cookies"]').on('click', function(){
 		$('#box-cookie-notice').fadeOut();
 		document.cookie = 'cookies_accepted=1; Max-Age=' + (365 * 24 * 60 * 60 * 1000) +'; Path=<?php echo WS_DIR_APP; ?>; SameSite=Lax';
 		$('document').trigger('cookiesAccepted');
 	});
 
-	$('#box-cookie-notice button[name="reject_cookies"]').click(function(){
+	$('#box-cookie-notice button[name="reject_cookies"]').on('click', function(){
 		$('#box-cookie-notice').fadeOut();
 		document.cookie = 'cookies_accepted=0; Expires=0; Path=<?php echo WS_DIR_APP; ?>; SameSite=Lax';
 	});

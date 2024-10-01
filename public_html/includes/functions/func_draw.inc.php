@@ -61,7 +61,7 @@
 			'  }, function(){',
 			'    mouseOverAd = false;',
 			'  });',
-			'  $(\'.banner[data-id]\').click(function(){',
+			'  $(\'.banner[data-id]\').on(\'click\', function(){',
 			'    $.post("'. document::ilink('ajax/bct') .'", "banner_id=" + $(this).data("id"));',
 			'  });',
 			'  $(window).blur(function(){',

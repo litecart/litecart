@@ -80,7 +80,7 @@
 	});
 
 	if (document.location.hash != '') {
-		$('a[data-toggle="tab"][href="' + document.location.hash + '"]').click();
+		$('a[data-toggle="tab"][href="' + document.location.hash + '"]').trigger('click');
 	}
 
 	// Bootstrap Compatible (data-toggle="buttons")
@@ -104,7 +104,7 @@
 		return false;
 	});
 
-	$('.data-table tbody tr').click(function(e) {
+	$('.data-table tbody tr').on('click', function(e) {
 		if ($(e.target).is(':input')) return;
 		if ($(e.target).is('a, a *')) return;
 		if ($(e.target).is('th')) return;
@@ -112,7 +112,7 @@
 	});
 
 	// Offcanvas
-	$('[data-toggle="offcanvas"]').click(function(e){
+	$('[data-toggle="offcanvas"]').on('click', function(e){
 		e.preventDefault();
 		var target = $(this).data('target');
 		if ($(target).hasClass('show')) {
@@ -126,7 +126,7 @@
 		}
 	});
 
-	$('.offcanvas [data-toggle="dismiss"]').click(function(e){
+	$('.offcanvas [data-toggle="dismiss"]').on('click', function(e){
 		$('.offcanvas').removeClass('show');
 		$('[data-toggle="offcanvas"]').removeClass('toggled');
 		$('body').removeClass('has-offcanvas');
@@ -166,7 +166,7 @@
 		}
 	});
 
-	$('#scroll-up').click(function(){
+	$('#scroll-up').on('click', function(){
 		$('html, body').animate({scrollTop: 0}, 1000, 'swing');
 		return false;
 	});

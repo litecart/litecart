@@ -276,7 +276,7 @@
 </div>
 
 <script>
-	$('form[name="import_form"] input[name="reset"]').click(function(){
+	$('form[name="import_form"] input[name="reset"]').on('click', function(){
 		if ($(this).is(':checked') && !confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false;
 	});
 

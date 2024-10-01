@@ -15,7 +15,7 @@ h1 {
 
 .rounded-rectangle {
 	border: 1px solid #000;
-	border-radius: 2mm;
+	border-radius: var(--border-radius);
 	padding: 4mm;
 	margin-inline-start: -15px;
 	margin-bottom: 3mm;
@@ -148,6 +148,20 @@ table.items tbody tr:nth-child(11) {
 	</section>
 </main>
 
+<div id="actions">
+  <ul class="list-unstyled">
+    <li>
+      <button name="print" class="btn btn-default btn-lg">
+        <?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
+      </button>
+    </li>
+  </ul>
+</div>
+
 <script>
 	document.title = "<?php echo functions::escape_js(language::translate('title_packing_slip', 'Packing Slip')); ?> #<?php echo $order['id']; ?>";
+
+  $('#actions button[name="print"]').on('click', function(){
+    window.print();
+  });
 </script>

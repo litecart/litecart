@@ -283,20 +283,20 @@
 
 
 		 $customer['billing_address'] = database::query(
-				"select * from ". DB_TABLE_PREFIX ."addresses
+				"select * from ". DB_TABLE_PREFIX ."customers_addresses
 				where id = ". (int)$customer['billing_address_id'] ."
 				limit 1;"
-			)->extract($result)->fetch();
+			)->export($result)->fetch();
 
 			if (!$customer['billing_address']) {
 				$customer['billing_address'] = $result->fields();
 			}
 
 			$customer['shipping_address'] = database::query(
-				"select * from ". DB_TABLE_PREFIX ."addresses
+				"select * from ". DB_TABLE_PREFIX ."customers_addresses
 				where id = ". (int)$customer['shipping_address_id'] ."
 				limit 1;"
-			)->extract($result)->fetch();
+			)->export($result)->fetch();
 
 			if (!$customer['shipping_address']) {
 				$customer['shipping_address'] = $result->fields();

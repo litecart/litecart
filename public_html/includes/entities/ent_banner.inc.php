@@ -69,7 +69,7 @@
 			database::query(
 				"update ". DB_TABLE_PREFIX ."banners
 				set
-					status = '". (int)$this->data['status'] ."',
+					status = ". (int)$this->data['status'] .",
 					name = '". database::input($this->data['name']) ."',
 					languages = '". implode(',', database::input($this->data['languages'])) ."',
 					link = '". database::input($this->data['link']) ."',
@@ -79,7 +79,7 @@
 					date_valid_from = ". (!empty($this->data['date_valid_from']) ? "'". database::input($this->data['date_valid_from']) ."'" : "null") .",
 					date_valid_to = ". (!empty($this->data['date_valid_to']) ? "'". database::input($this->data['date_valid_to']) ."'" : "null") .",
 					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
-				where id = '". (int)$this->data['id'] ."'
+				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
 
@@ -123,7 +123,7 @@
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."banners
-				where id = '". (int)$this->data['id'] ."'
+				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
 

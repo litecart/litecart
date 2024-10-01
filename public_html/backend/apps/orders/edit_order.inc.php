@@ -851,7 +851,7 @@
 							<div class="date"><?php echo language::strftime('datetime', $_POST['comments'][$key]['date_created']); ?></div>
 
 							<div class="actions">
-								<a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
+								<a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times'); ?></a>
 								<label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
 							</div>
 						</div>
@@ -1267,7 +1267,7 @@
 
 	// Customer
 
-	$('#customer-details button[name="get_address"]').click(function() {
+	$('#customer-details button[name="get_address"]').on('click', function() {
 		$.ajax({
 			url: '<?php echo document::ilink('customers/get_address.json'); ?>',
 			type: 'post',
@@ -1344,7 +1344,7 @@
 		});
 	});
 
-	$('#customer-details button[name="copy_billing_address"]').click(function(){
+	$('#customer-details button[name="copy_billing_address"]').on('click', function(){
 		fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone'];
 		$.each(fields, function(key, field){
 			$('*[name="shipping_address['+ field +']"]').val($('*[name="billing_address['+ field +']"]').val()).trigger('change');
@@ -1473,7 +1473,7 @@
 	let new_comment_index = 0;
 	while ($(':input[name^="comments['+new_comment_index+']"]').length) new_comment_index++;
 
-	$('#box-comments .add').click(function(e) {
+	$('#box-comments .add').on('click', function(e) {
 		e.preventDefault();
 
 		let $output = $([
@@ -1486,7 +1486,7 @@
 			'  <div class="actions">',
 			'    <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('fa-envelope')], true)); ?> </label>',
 			'    <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('fa-eye-slash')], true)); ?></label>',
-			'    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw'); ?></a>',
+			'    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg fa-fw'); ?></a>',
 			'  </div>',
 			'</div>'
 		].join('\n')
@@ -1494,7 +1494,7 @@
 		);
 
 		$(this).before($output);
-		$(this).closest('#box-comments .bubbles textarea:last-child').focus();
+		$(this).closest('#box-comments .bubbles textarea:last-child').trigger('focus');
 	});
 
 	$('#box-comments').on('click', ':input[name$="[hidden]"]', function(e) {
@@ -1635,7 +1635,7 @@
 		}, 'html');
 	}
 
-	$('#order-lines button[name="add"]').click(function(){
+	$('#order-lines button[name="add"]').on('click', function(){
 
 		$modal = $([
 
@@ -1687,7 +1687,7 @@
 		$output.find('.length_unit').text(item.length_unit);
 	}
 
-	$('#modal-edit-line-item button[name="ok"]').click(function(e){
+	$('#modal-edit-line-item button[name="ok"]').on('click', function(e){
 
 		let $modal = $('.featherlight.active');
 		let $row = $(modal).data('row');

@@ -14,7 +14,7 @@
 
 	// Data-Table Shift Check Multiple Checkboxes
 	let lastTickedCheckbox = null;
-	$('.data-table td:first-child :checkbox').click(function(e){
+	$('.data-table td:first-child :checkbox').on('click', function(e){
 
 		let $chkboxes = $('.data-table td:first-child :checkbox');
 
@@ -68,7 +68,7 @@
 	});
 
 	// Data-Table Sorting (Page Reload)
-	$('.table-sortable thead th[data-sort]').click(function(){
+	$('.table-sortable thead th[data-sort]').on('click', function(){
 		let params = {};
 
 		window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {

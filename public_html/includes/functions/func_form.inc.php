@@ -203,7 +203,7 @@
 			'  $(parent).trigger(\'input\');',
 			'});',
 			'',
-			'$(\'table[data-toggle="csv"] button[name="add_row"]\').click(function(e) {',
+			'$(\'table[data-toggle="csv"] button[name="add_row"]\').on(\'click\', function(e) {',
 			'  e.preventDefault();',
 			'  var n = $(this).closest(\'table\').find(\'thead th:not(:last-child)\').length;',
 			'  $(this).closest(\'table\').find(\'tbody\').append(',
@@ -211,7 +211,7 @@
 			'  ).trigger(\'input\');',
 			'});',
 			'',
-			'$(\'table[data-toggle="csv"] button[name="add_column"]\').click(function(e) {',
+			'$(\'table[data-toggle="csv"] button[name="add_column"]\').on(\'click\', function(e) {',
 			'  e.preventDefault();',
 			'  var $table = $(this).closest(\'table\');',
 			'  var title = prompt("'. functions::escape_js(language::translate('title_column_title', 'Column Title')) .'");',
@@ -1885,7 +1885,7 @@
 			$pages_query = database::query(
 				"select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
 				left join ". DB_TABLE_PREFIX ."pages_info pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
-				where p.parent_id = '". (int)$parent_id ."'
+				where p.parent_id = ". (int)$parent_id ."
 				order by p.priority asc, pi.title asc;"
 			);
 
@@ -1895,7 +1895,7 @@
 
 				$sub_pages_query = database::query(
 					"select id from ". DB_TABLE_PREFIX ."pages
-					where parent_id = '". (int)$page['id'] ."'
+					where parent_id = ". (int)$page['id'] ."
 					limit 1;"
 				);
 

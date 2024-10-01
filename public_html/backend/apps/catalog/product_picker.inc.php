@@ -35,7 +35,7 @@
 </div>
 
 <script>
-	$('#modal-product-picker input[name="query"]').focus();
+	$('#modal-product-picker input[name="query"]').trigger('focus');
 
 	var xhr_product_picker = null;
 	$('#modal-product-picker input[name="query"]').on('input', function(){
@@ -100,7 +100,7 @@
 				}
 			},
 		});
-	}).trigger('input').focus();
+	}).trigger('input').trigger('focus');
 
 	$('#modal-product-picker tbody').on('click', 'td', function() {
 

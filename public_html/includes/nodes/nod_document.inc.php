@@ -11,7 +11,6 @@
 		public static $content = [];
 		public static $foot_tags = [];
 		public static $javascript = [];
-
 		public static $snippets = [];
 		public static $settings = [];
 		public static $jsenv = [];
@@ -45,7 +44,7 @@
 			}
 
 			self::$title = [settings::get('store_name')];
-			
+
 			// Set some snippets
 			self::$snippets['language'] = language::$selected['code'];
 			self::$snippets['text_direction'] = language::$selected['direction'];
@@ -134,7 +133,7 @@
 			self::$jsenv['template'] = [
 				'settings' => self::$settings,
 			];
-			
+
 			switch (route::$selected['endpoint']) {
 
 				case 'backend':
@@ -302,11 +301,11 @@
 			stats::start_watch('rendering');
 
 			switch (route::$selected['endpoint']) {
-			 
+
 				case 'backend':
 				$_page = new ent_view('app://backend/template/layouts/'.self::$layout.'.inc.php');
 					break;
-					
+
 				default:
 				$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/layouts/'.self::$layout.'.inc.php');
 					break;
@@ -323,7 +322,7 @@
 				'important_notice' => settings::get('important_notice'),
 			]);
 
-				// Prepare title
+			// Prepare title
 			if (!empty(self::$title)) {
 
 				if (!is_array(self::$title)) {
@@ -334,12 +333,12 @@
 				$_page->snippets['title'] = implode(' | ', array_reverse(self::$title));
 			}
 
-				// Add meta description
+			// Add meta description
 			if (!empty(self::$description)) {
 				$_page->snippets['head_tags'][] = '<meta name="description" content="'. functions::escape_attr(self::$description) .'">';
 			}
 
-				// Prepare styles
+			// Prepare styles
 			if (!empty(self::$style)) {
 				$_page->snippets['head_tags'][] = implode(PHP_EOL, [
 					'<style>',
@@ -348,7 +347,7 @@
 				]);
 			}
 
-				// Prepare javascript
+			// Prepare javascript
 			if (!empty(self::$javascript)) {
 				$_page->snippets['foot_tags'][] = implode(PHP_EOL, [
 					'<script>',
@@ -357,7 +356,7 @@
 				]);
 			}
 
-				// Prepare snippets
+			// Prepare snippets
 			foreach ($_page->snippets as $key => $snippet) {
 				if (is_array($snippet)) {
 					$_page->snippets[$key] = implode(PHP_EOL, $snippet);

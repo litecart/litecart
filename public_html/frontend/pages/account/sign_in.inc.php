@@ -140,5 +140,5 @@
 		}
 	}
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/login.inc.php');
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/account/sign_in.inc.php');
 	echo $_page->render();

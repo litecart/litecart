@@ -120,7 +120,7 @@
 					<td class="grabable"><?php echo $group_value['id']; ?><?php echo functions::form_input_hidden('values['. $key .'][id]', $group_value['id']); ?></td>
 					<td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
 					<td class="text-center"><?php echo !empty($group_value['in_use']) ? language::translate('title_yes', 'Yes') : language::translate('title_no', 'No'); ?></td>
-					<td class="text-end"><?php if (empty($group_value['in_use'])) echo '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"') .'</a>'; ?></td>
+					<td class="text-end"><?php if (empty($group_value['in_use'])) echo '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times fa-lg', 'style="color: #c33;"') .'</a>'; ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -158,7 +158,7 @@
 			'  <td><?php echo functions::escape_js(functions::form_input_hidden('values[new_value_index][id]', '')); ?></td>',
 			'  <td><?php echo functions::escape_js($name_fields); ?></td>',
 			'  <td class="text-center"><?php echo language::translate('title_no', 'No'); ?></td>',
-			'  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"')); ?></a></td>',
+			'  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times fa-lg', 'style="color: #c33;"')); ?></a></td>',
 			'</tr>'
 		].join('\n')
 		.replace(/new_value_index/g, 'new_' + new_value_index++);
