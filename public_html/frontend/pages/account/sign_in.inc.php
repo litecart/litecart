@@ -4,14 +4,14 @@
 	 * This file contains PHP logic that is separated from the HTML view.
 	 * Visual changes can be made to the file found in the template folder:
 	 *
-	 *   ~/frontend/templates/default/pages/login.inc.php
+	 *   ~/frontend/templates/default/pages/account/sign_in.inc.php
 	 */
 
 	header('X-Robots-Tag: noindex');
 
 	document::$title[] = language::translate('title_sign_in', 'Sign In');
 
-	breadcrumbs::add(language::translate('title_sign_in', 'Sign In'), document::ilink('login'));
+	breadcrumbs::add(language::translate('title_sign_in', 'Sign In'), document::ilink('account/sign_in'));
 
 	if (!settings::get('accounts_enabled')) {
 		echo language::translate('error_accounts_are_disabled', 'Accounts are disabled');

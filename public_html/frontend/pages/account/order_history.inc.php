@@ -4,7 +4,7 @@
 	 * This file contains PHP logic that is separated from the HTML view.
 	 * Visual changes can be made to the file found in the template folder:
 	 *
-	 *   ~/frontend/templates/default/pages/order_history.inc.php
+	 *   ~/frontend/templates/default/pages/account/order_history.inc.php
 	 */
 
 	header('X-Robots-Tag: noindex');
@@ -18,7 +18,7 @@
 	}
 
 	breadcrumbs::add(language::translate('title_account', 'Account'));
-	breadcrumbs::add(language::translate('title_order_history', 'Order History'), document::ilink('order_history'));
+	breadcrumbs::add(language::translate('title_order_history', 'Order History'), document::ilink('account/order_history'));
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/order_history.inc.php');
 

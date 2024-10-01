@@ -18,7 +18,7 @@
 					</div>
 
 					<div class="card-body">
-						<?php echo functions::form_begin('login_form', 'post', document::ilink('login')); ?>
+						<?php echo functions::form_begin('sign_in_form', 'post', document::ilink('account/sign_in')); ?>
 							<?php echo functions::form_input_hidden('redirect_url', true); ?>
 
 							<div class="form-group">
@@ -34,11 +34,11 @@
 							</div>
 
 							<div>
-								<?php echo functions::form_button('login', language::translate('title_sign_in', 'Sign In'), 'submit', 'class="btn btn-default btn-block"'); ?>
+								<?php echo functions::form_button('sign_in', language::translate('title_sign_in', 'Sign In'), 'submit', 'class="btn btn-default btn-block"'); ?>
 							</div>
 
 							<p class="text-center">
-								<a href="<?php echo document::ilink('reset_password', ['email' => fallback($_POST['email'])]); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
+								<a href="<?php echo document::ilink('account/reset_password', ['email' => fallback($_POST['email'])]); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
 							</p>
 
 						<?php echo functions::form_end(); ?>
@@ -60,7 +60,7 @@
 						</ul>
 
 						<div>
-							<a class="btn btn-default" href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('title_register_now', 'Register Now'); ?></a>
+							<a class="btn btn-default" href="<?php echo document::href_ilink('account/sign_up'); ?>"><?php echo language::translate('title_register_now', 'Register Now'); ?></a>
 						</div>
 					</div>
 				</section>

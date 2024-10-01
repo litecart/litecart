@@ -4,7 +4,7 @@
 	 * This file contains PHP logic that is separated from the HTML view.
 	 * Visual changes can be made to the file found in the template folder:
 	 *
-	 *   ~/frontend/templates/default/pages/edit_account.inc.php
+	 *   ~/frontend/templates/default/pages/account/edit.inc.php
 	 */
 
 	header('X-Robots-Tag: noindex');
@@ -20,7 +20,7 @@
 	}
 
 	breadcrumbs::add(language::translate('title_account', 'Account'), '');
-	breadcrumbs::add(language::translate('title_edit_account', 'Edit Account'), document::ilink('edit_account'));
+	breadcrumbs::add(language::translate('title_edit_account', 'Edit Account'), document::ilink('account/edit'));
 
 	$customer = new ent_customer(customer::$data['id']);
 

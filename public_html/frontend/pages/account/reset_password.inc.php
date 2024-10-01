@@ -4,7 +4,7 @@
 	 * This file contains PHP logic that is separated from the HTML view.
 	 * Visual changes can be made to the file found in the template folder:
 	 *
-	 *   ~/frontend/templates/default/pages/reset_password.inc.php
+	 *   ~/frontend/templates/default/pages/account/reset_password.inc.php
 	 */
 
 	header('X-Robots-Tag: noindex');
@@ -12,7 +12,7 @@
 	document::$title[] = language::translate('title_reset_password', 'Reset Password');
 
 	breadcrumbs::add(language::translate('title_account', 'Account'));
-	breadcrumbs::add(language::translate('title_reset_password', 'Reset Password'), document::ilink('reset_password'));
+	breadcrumbs::add(language::translate('title_reset_password', 'Reset Password'), document::ilink('account/reset_password'));
 
 	if (!empty($_POST['reset_password'])) {
 
@@ -93,7 +93,7 @@
 					'%email' => $customer['email'],
 					'%store_name' => settings::get('store_name'),
 					'%token' => $reset_token['token'],
-					'%link' => document::ilink('reset_password', ['email' => $customer['email'], 'reset_token' => $reset_token['token']]),
+					'%link' => document::ilink('account/reset_password', ['email' => $customer['email'], 'reset_token' => $reset_token['token']]),
 				];
 
 				$subject = language::translate('title_reset_password', 'Reset Password');
@@ -106,7 +106,7 @@
 							->send();
 
 				notices::add('success', language::translate('success_reset_password_email_sent', 'An email with instructions has been sent to your email address.'));
-				header('Location: '. document::ilink('reset_password', ['email' => $_REQUEST['email'], 'reset_token' => '']));
+				header('Location: '. document::ilink('account/reset_password', ['email' => $_REQUEST['email'], 'reset_token' => '']));
 				exit;
 
 			} else {
@@ -116,7 +116,7 @@
 				$customer->data['password_reset_token'] = '';
 
 				notices::add('success', language::translate('success_new_password_set', 'Your new password has been set. You may now sign in.'));
-				header('Location: '. document::ilink('login', ['email' => $customer->data['email']]));
+				header('Location: '. document::ilink('account/sign_in', ['email' => $customer->data['email']]));
 				exit;
 
 			}

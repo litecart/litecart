@@ -47,15 +47,15 @@
 				<li class="account dropdown">
 					<a href="#" data-toggle="dropdown"><?php echo functions::draw_fonticon('fa-user-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <span class="hidden-sm"><?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span></a>
 					<ul class="dropdown-menu dropdown-menu-end">
-						<li><a class="navbar-item" href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
-						<li><a class="navbar-item" href="<?php echo document::href_ilink('addresses'); ?>"><?php echo language::translate('title_addresses', 'Addresses'); ?></a></li>
-						<li><a class="navbar-item" href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
+						<li><a class="navbar-item" href="<?php echo document::href_ilink('account/edit'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
+						<li><a class="navbar-item" href="<?php echo document::href_ilink('account/addresses'); ?>"><?php echo language::translate('title_addresses', 'Addresses'); ?></a></li>
+						<li><a class="navbar-item" href="<?php echo document::href_ilink('account/order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
 						<li><a class="navbar-item" href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
 					</ul>
 				</li>
 				<?php } else { ?>
 				<li class="account">
-					<a class="navbar-item" href="<?php echo document::href_ilink('login'); ?>">
+					<a class="navbar-item" href="<?php echo document::href_ilink('account/sign_in'); ?>">
 						<?php echo functions::draw_fonticon('fa-user-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo language::translate('title_sign_in', 'Sign In'); ?>
 					</a>
 				</li>

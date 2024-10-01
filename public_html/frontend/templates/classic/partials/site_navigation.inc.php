@@ -16,7 +16,7 @@
 			</a>
 
 			<?php if (settings::get('accounts_enabled')) { ?>
-			<a class="account text-center" href="<?php echo document::href_ilink('edit_account'); ?>">
+			<a class="account text-center" href="<?php echo document::href_ilink('account/edit'); ?>">
 				<div class="navbar-icon"><?php echo functions::draw_fonticon('fa-user-o'); ?></div>
 				<small class="hidden-xs"><?php echo language::translate('title_account', 'Account'); ?></small>
 			</a>
@@ -109,13 +109,13 @@
 					<a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? functions::escape_html(customer::$data['firstname']) : language::translate('title_sign_in', 'Sign In'); ?></a>
 					<ul class="dropdown-menu dropdown-menu-end">
 						<?php if (!empty(customer::$data['id'])) { ?>
-							<li><a class="nav-link" href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
-							<li><a class="nav-link" href="<?php echo document::href_ilink('addresses'); ?>"><?php echo language::translate('title_addresses', 'Addresses'); ?></a></li>
-							<li><a class="nav-link" href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
+							<li><a class="nav-link" href="<?php echo document::href_ilink('account/edit'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
+							<li><a class="nav-link" href="<?php echo document::href_ilink('account/addresses'); ?>"><?php echo language::translate('title_addresses', 'Addresses'); ?></a></li>
+							<li><a class="nav-link" href="<?php echo document::href_ilink('account/order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
 							<li><a class="nav-link" href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
 						<?php } else { ?>
 							<li class="nav-item">
-								<?php echo functions::form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form"'); ?>
+								<?php echo functions::form_begin('sign_in_form', 'post', document::ilink('account/sign_in'), false, 'class="navbar-form"'); ?>
 									<?php echo functions::form_input_hidden('redirect_url', document::link()); ?>
 
 									<div class="form-group">
@@ -133,16 +133,16 @@
 									</div>
 
 									<div class="btn-group btn-block">
-										<?php echo functions::form_button('login', language::translate('title_sign_in', 'Sign In')); ?>
+										<?php echo functions::form_button('sign_in', language::translate('title_sign_in', 'Sign In')); ?>
 									</div>
 								<?php echo functions::form_end(); ?>
 							</li>
 							<li class="nav-item text-center">
-								<a class="nav-link" href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('text_new_customers_click_here', 'New customers click here'); ?></a>
+								<a class="nav-link" href="<?php echo document::href_ilink('account/sign_up'); ?>"><?php echo language::translate('text_new_customers_click_here', 'New customers click here'); ?></a>
 							</li>
 
 							<li class="nav-item text-center">
-								<a class="nav-link" href="<?php echo document::href_ilink('reset_password'); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
+								<a class="nav-link" href="<?php echo document::href_ilink('account/reset_password'); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
 							</li>
 						<?php } ?>
 					</ul>

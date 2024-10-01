@@ -8,11 +8,11 @@
 				<ul class="list-unstyled">
 					<li><a href="<?php echo document::href_ilink('regional_settings'); ?>"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></a></li>
 					<?php if (empty(customer::$data['id'])) { ?>
-					<li><a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('title_create_account', 'Create Account'); ?></a></li>
-					<li><a href="<?php echo document::href_ilink('login'); ?>"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a></li>
+					<li><a href="<?php echo document::href_ilink('account/sign_up'); ?>"><?php echo language::translate('title_sign_up', 'Sign Up'); ?></a></li>
+					<li><a href="<?php echo document::href_ilink('account/sign_in'); ?>"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a></li>
 					<?php } else { ?>
-					<li><a href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
-					<li><a href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
+					<li><a href="<?php echo document::href_ilink('account/order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
+					<li><a href="<?php echo document::href_ilink('account/edit'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
 					<li><a href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_sign_out', 'Sign Out'); ?></a></li>
 					<?php } ?>
 				</ul>

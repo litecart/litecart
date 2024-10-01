@@ -11,7 +11,7 @@
 
 		<section id="box-create-account" class="card">
 			<div class="card-header">
-				<h1 class="card-title"><?php echo language::translate('title_create_account', 'Create Account'); ?></h1>
+				<h1 class="card-title"><?php echo language::translate('title_sign_up', 'Sign Up'); ?></h1>
 			</div>
 
 			<div class="card-body">
@@ -123,13 +123,13 @@
 					<div class="row">
 						<div class="form-group col-6">
 							<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-							<?php echo functions::form_input_captcha('create_account'); ?>
+							<?php echo functions::form_input_captcha('sign_up'); ?>
 						</div>
 					</div>
 					<?php } ?>
 
 					<div class="btn-group">
-						<?php echo functions::form_button('create_account', language::translate('title_create_account', 'Create Account')); ?>
+						<?php echo functions::form_button('sign_up', language::translate('title_sign_up', 'Sign Up')); ?>
 					</div>
 
 				<?php echo functions::form_end(); ?>

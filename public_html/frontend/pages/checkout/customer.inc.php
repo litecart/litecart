@@ -44,7 +44,7 @@
 
 		// Validate
 		if (!empty($_POST['save_customer_details'])) { // <-- Button is pressed
-			if (settings::get('accounts_enabled') && !empty($_POST['create_account'])) {
+			if (settings::get('accounts_enabled') && !empty($_POST['sign_up'])) {
 
 				try {
 
@@ -152,7 +152,7 @@
 
 			// Create customer account
 			if (settings::get('accounts_enabled') && empty($shopping_cart->data['customer']['id']) && !empty($shopping_cart->data['customer']['email'])) {
-				if (settings::get('register_guests') || !empty($_POST['create_account'])) {
+				if (settings::get('register_guests') || !empty($_POST['sign_up'])) {
 
 					if (!database::query(
 						"select id from ". DB_TABLE_PREFIX ."customers

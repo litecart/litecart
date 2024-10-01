@@ -50,7 +50,7 @@
 		document::$title[] = language::translate('title_order', 'Order') .' '. $order->data['no'];
 
 		breadcrumbs::add(language::translate('title_account', 'Account'), document::ilink('account'));
-		breadcrumbs::add(language::translate('title_order_history', 'Order History'), document::ilink('order_history'));
+		breadcrumbs::add(language::translate('title_order_history', 'Order History'), document::ilink('account/order_history'));
 		breadcrumbs::add(language::translate('title_order', 'Order') .' '. $order->data['no'], document::ilink('order', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]));
 
 		$session_language = language::$selected['code'];

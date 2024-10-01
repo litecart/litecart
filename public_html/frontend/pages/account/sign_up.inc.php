@@ -4,14 +4,14 @@
 	 * This file contains PHP logic that is separated from the HTML view.
 	 * Visual changes can be made to the file found in the template folder:
 	 *
-	 *   ~/frontend/templates/default/pages/create_account.inc.php
+	 *   ~/frontend/templates/default/pages/account/sign_up.inc.php
 	 */
 
 	header('X-Robots-Tag: noindex');
 
-	document::$title[] = language::translate('title_create_account', 'Create Account');
+	document::$title[] = language::translate('title_sign_up', 'Sign Up');
 
-	breadcrumbs::add(language::translate('title_create_account', 'Create Account'), document::ilink('create_account'));
+	breadcrumbs::add(language::translate('title_sign_up', 'Sign Up'), document::ilink('account/sign_up'));
 
 	if (!settings::get('accounts_enabled')) {
 		echo language::translate('error_accounts_are_disabled', 'Accounts are disabled');
@@ -26,7 +26,7 @@
 		notices::add('errors', language::translate('error_already_logged_in', 'You are already logged in'));
 	}
 
-	if (!empty($_POST['create_account'])) {
+	if (!empty($_POST['sign_up'])) {
 
 		try {
 
@@ -104,7 +104,7 @@
 				}
 			}
 
-			if (settings::get('captcha_enabled') && !functions::captcha_validate('create_account')) {
+			if (settings::get('captcha_enabled') && !functions::captcha_validate('sign_up')) {
 				throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 
@@ -192,7 +192,7 @@
 		}
 	}
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/create_account.inc.php');
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/account/sign_up.inc.php');
 
 	$_page->snippets = [
 		'consent' => null,
