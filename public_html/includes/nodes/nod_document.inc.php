@@ -6,6 +6,7 @@
 
 		public static $title = [];
 		public static $description = '';
+		public static $canonical = '';
 		public static $head_tags = [];
 		public static $style = [];
 		public static $content = [];
@@ -336,6 +337,11 @@
 			// Add meta description
 			if (!empty(self::$description)) {
 				$_page->snippets['head_tags'][] = '<meta name="description" content="'. functions::escape_attr(self::$description) .'">';
+			}
+
+			// Add canonical URL
+			if (!empty(self::$canonical)) {
+				$_page->snippets['head_tags'][] = '<link rel="canonical" href="'. functions::escape_attr(self::$canonical) .'">';
 			}
 
 			// Prepare styles
