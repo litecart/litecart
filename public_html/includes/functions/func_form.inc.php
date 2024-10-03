@@ -131,11 +131,31 @@
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="color" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" data-type="color" '. (($parameters) ? ' ' . $parameters : '') .'>';
   }
 
-  function form_draw_csv_field($name, $input=true, $delimiter=',', $parameters='') {
+  function form_draw_csv_field($name, $input=true, $delimiter=null, $parameters='') {
 
-    return implode(PHP_EOL, [
-      form_draw_textarea($name, $input, 'data-toggle="csv" data-delimiter="'. functions::escape_html($delimiter) .'"' . ($parameters ? ' ' . $parameters : '')),
-    ]);
+    if ($input === true) $input = form_reinsert_value($name);
+
+    if (!$delimiter) {
+
+      // Auto-detect delimiter
+      if (is_string($input)) {
+        preg_match('#^.*$#m', $input, $matches);
+
+        foreach ([',', ';', "\t", '|', chr(124)] as $char) {
+          if (strpos($matches[0], $char) !== false) {
+            $delimiter = $char;
+            break;
+          }
+        }
+      }
+
+      // Set default
+      if (!$delimiter) {
+        $delimiter = ',';
+      }
+    }
+
+    return form_draw_textarea($name, $input, 'data-toggle="csv" data-delimiter="'. functions::escape_html($delimiter) .'"' . ($parameters ? ' ' . $parameters : ''));
   }
 
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='') {
