@@ -50,7 +50,7 @@
 		<ul class="nav nav-pills nav-stacked">
       <?php if (!empty($_GET['parent_id'])) { ?>
       <li class="nav-item">
-        <a class="nav-link" ref="<?php echo document::link(null, ['parent_id' => reference::category($_GET['parent_id'])->id], true); ?>">
+        <a class="nav-link" href="<?php echo document::link(null, ['parent_id' => reference::category($category['id'])->parent_id], true); ?>">
           <?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back', 'Back'); ?>
         </a>
       <li>
