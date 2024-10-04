@@ -12,7 +12,7 @@ a4ff19eb943a2bbc82b3390ec59a38d9	admin/appearance.app/template.inc.php
 7d829528c1412da24a7d3d3503c315ff	admin/catalog.app/attribute_values.json.inc.php
 51185e3d0e68877fdaf5a33e9c468d87	admin/catalog.app/catalog.inc.php
 b30f270000d36cfb8f76bf57063935b4	admin/catalog.app/categories.json.inc.php
-3aeddee19d2bae6aaf3efd9babf2e793	admin/catalog.app/category_picker.inc.php
+7f0686d0b3daf624e34a53e6d0f239ba	admin/catalog.app/category_picker.inc.php
 641e19cc75c37392ee1f44f773262184	admin/catalog.app/config.inc.php
 663c8082b3e0dda354bca4b68aa435a1	admin/catalog.app/csv.inc.php
 b467bff81a4aacb99fe39be6c51f84e6	admin/catalog.app/delivery_statuses.inc.php
@@ -259,7 +259,7 @@ f544238e0e4478eca32c9cd6db82f0bf	includes/entities/ent_user.inc.php
 39c3cd84791b801a24b8fccd1b3bddbb	includes/entities/ent_view.inc.php
 687d309f776c6b632e5c415e9c4b6c6b	includes/entities/ent_vmod.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
-e77b497694c000cece81013b8f91d1f5	includes/error_handler.inc.php
+41c659b7ab31476627fc64e0e976bc6f	includes/error_handler.inc.php
 988f26d135e78b5006307b43dac28557	includes/functions/func_admin.inc.php
 923d14bfa0810ac0f2299727965e0c6b	includes/functions/func_captcha.inc.php
 646ada4f4baf317aa3b710c5e68b3186	includes/functions/func_catalog.inc.php
@@ -267,7 +267,7 @@ e2af395923278bea690f1e656c401291	includes/functions/func_csv.inc.php
 35bd66a33f7ac7bde0b537001b52f986	includes/functions/func_draw.inc.php
 2341090b7652ec1d4486dc35406ab975	includes/functions/func_escape.inc.php
 ebf4dd5f1755f6975de36988c840fb24	includes/functions/func_file.inc.php
-3f34a02ba7776041cf758fff0832f684	includes/functions/func_form.inc.php
+cae97b857e7990cc08cc9884c7b60be8	includes/functions/func_form.inc.php
 aff0f69a5f3212f61687ba0a1696a5ec	includes/functions/func_format.inc.php
 c95e56a0bd50153bdc4dda7362190fcd	includes/functions/func_general.inc.php
 b9d8054c74b8c56915f5bf19844ff7f6	includes/functions/func_image.inc.php
@@ -304,13 +304,13 @@ d41d8cd98f00b204e9800998ecf8427e	includes/modules/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/jobs/index.html
 0d8922e924a461eb2a793593d775bf79	includes/modules/jobs/job_cache_cleaner.inc.php
 9f62e030cdb612c7a5677d79d19ebdbc	includes/modules/jobs/job_error_reporter.inc.php
-58ea6488284064b3b469564f8fd25af8	includes/modules/jobs/job_mysql_optimizer.inc.php
+6f2198bf9353c343073884e3590afb13	includes/modules/jobs/job_mysql_optimizer.inc.php
 ad531c8df27d488f161cd717e63e2769	includes/modules/mod_customer.inc.php
 8c0d1942348d27e0f36e31e32269ad62	includes/modules/mod_jobs.inc.php
 8d478746ee885f1059c8bda2f9504b09	includes/modules/mod_order.inc.php
 9f1ded858a1fc835c2260de52ad91918	includes/modules/mod_order_total.inc.php
-98637c49220e00578fe0265f6f7a8bfb	includes/modules/mod_payment.inc.php
-66aa7c1553b07f6de55f00f0b75dc786	includes/modules/mod_shipping.inc.php
+fc12f5a0c182c1fd64a491298dfd59b6	includes/modules/mod_payment.inc.php
+b7a10b1dc23ac2e3ccedb9f7ea2e3c79	includes/modules/mod_shipping.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/order/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/order_total/index.html
 82ebff26f86c36ea74f3858b075f384b	includes/modules/order_total/ot_payment_fee.inc.php
@@ -532,7 +532,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
 fa848fc02430449510e7e6c1bcdc1fcb	index.php
 db7b7a833baf1b6f47160530e9a9bc9f	install/clean.sql
 2c767af22d8225eb4839cf179674a7db	install/config
-25a846e17854604f80853eb6a6655b91	install/data.sql
+bdd60d2cab85c947646a5f41c60af3fd	install/data.sql
 2b2639ce48f7d6723c0768bcf39ca725	install/data/AU/AU.sql
 9a133ec15a84f54a925d396fd0e270c3	install/data/CA/CA.sql
 80a156bc4202b15b747be924bad59315	install/data/DE/DE.sql
@@ -691,7 +691,7 @@ ab7ba686349fc0fd50570c6e0bf03299	install/upgrade_patches/2.5.2.sql
 0880bb22fcedcd4f6bc85908fb26e9bb	install/upgrade_patches/2.5.5.inc.php
 4b62b45560195ccef0a8c7e46a7200e8	install/upgrade_patches/2.5.5.sql
 c84802588edcf08935a6b2a68c3dbc33	install/upgrade_patches/2.6.0.inc.php
-62eb2a2d6a9ac8413049204b301a3141	install/upgrade_patches/2.6.0.sql
+5fb6430bea54f53c13e4d7611c916a74	install/upgrade_patches/2.6.0.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
 70df41f74e6b15be767a8052f14b4036	pages/ajax/cart.json.inc.php
@@ -713,10 +713,10 @@ e1eb0445c1946b7708afc93e87f13e53	pages/checkout.inc.php
 f2f3a19cd50b4a0cc74091de396a10c6	pages/edit_account.inc.php
 3274be0610ce5d1d37252141c05e3985	pages/error_document.inc.php
 d41d8cd98f00b204e9800998ecf8427e	pages/feeds/index.html
-fe76b039f92a53d56b717045a1cd7076	pages/feeds/sitemap.xml.inc.php
+44ecff979063417bf19e5407a5922911	pages/feeds/sitemap.xml.inc.php
 d41d8cd98f00b204e9800998ecf8427e	pages/index.html
 0a3f559a27f82909541a503fc5fdeef4	pages/index.inc.php
-692fea7156a7bf25e98b18368a9720c8	pages/information.inc.php
+abd9f78dc5888bbb68927beb5b8cdd06	pages/information.inc.php
 0184d937fed39f8148ebf6c614c61d06	pages/login.inc.php
 153ef94984c72eb9c912b6d371a917ca	pages/logout.inc.php
 7a6919c51b4bde72accb628c8f894c2a	pages/maintenance_mode.inc.php
