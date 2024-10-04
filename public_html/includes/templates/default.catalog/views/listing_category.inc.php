@@ -1,9 +1,9 @@
 <article class="category" data-id="<?php echo $category_id; ?>" data-name="<?php echo functions::escape_html($name); ?>">
   <a class="link" href="<?php echo functions::escape_html($link); ?>">
-    <img class="img-responsive hidden-xs hidden-sm" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?>" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" />
+    <img class="img-responsive hidden-xs hidden-sm" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?>"<?php echo settings::get('image_lazyload') ? ' loading="lazy"' : ''; ?> style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="">
 
     <div class="caption">
-      <h3 class="name"><?php echo $name; ?></h3>
+      <div class="name"><?php echo $name; ?></div>
       <div class="short-description"><?php echo $short_description; ?></div>
     </div>
   </a>

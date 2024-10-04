@@ -172,7 +172,7 @@ html.dark-mode {
   --input-border-color: #31384a;
   --input-border-color-focus: #555e74;
   --input-addon-background-color: #3d485e;
-  --input-text-color: #acb6c2;
+  --input-text-color: #000;
   --copyright-text-color: #acb6c2;
   --link-text-color: #acb6c7;
   --whitespace-color: #1a2133;

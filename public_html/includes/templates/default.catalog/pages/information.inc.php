@@ -1,7 +1,7 @@
 <div class="fourteen-forty">
   <div class="layout row">
 
-    <div class="hidden-xs hidden-sm col-md-3">
+    <div class="col-md-3">
       <div id="sidebar">
         <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_information_links.inc.php'); ?>
       </div>
@@ -12,8 +12,10 @@
         {snippet:breadcrumbs}
         {snippet:notices}
 
-        <section id="box-information">
-          <?php echo $content; ?>
+        <section id="box-information" class="card">
+          <div class="card-body">
+            <?php echo $content; ?>
+          </div>
         </section>
 
       </main>

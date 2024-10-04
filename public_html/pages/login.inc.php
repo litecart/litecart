@@ -1,7 +1,7 @@
 <?php
 
   header('X-Robots-Tag: noindex');
-  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex">';
   document::$snippets['title'][] = language::translate('title_sign_in', 'Sign In');
 
   breadcrumbs::add(language::translate('title_sign_in', 'Sign In'));
@@ -72,7 +72,7 @@
             limit 1;"
           );
 
-          throw new Exception(strtr(language::translate('error_account_has_been_blocked', 'The account has been temporarily blocked %n minutes'), ['%n' => 15, '%d' => 15]));
+          throw new Exception(strtr(language::translate('error_this_account_has_been_temporarily_blocked_n_minutes', 'This account has been temporarily blocked %n minutes'), ['%n' => 15, '%d' => 15]));
         }
       }
 

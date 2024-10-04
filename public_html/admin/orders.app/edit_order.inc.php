@@ -132,14 +132,14 @@
 
       $order->save();
 
-      if (!empty($_POST['email_order_copy'])) {
+      if (!empty($_POST['send_order_copy'])) {
 
         $bccs = [];
-        foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy'), -1, PREG_SPLIT_NO_EMPTY) as $email) {
+        foreach (preg_split('#[\s;,]+#', settings::get('send_order_copy'), -1, PREG_SPLIT_NO_EMPTY) as $email) {
           $bccs[] = $email;
         }
 
-        $order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['language_code']);
+        $order->send_order_copy($order->data['customer']['email'], [], $bccs, $order->data['language_code']);
       }
 
       if (!empty($_GET['redirect_url'])) {
@@ -302,8 +302,8 @@
               <div class="form-group col-md-3">
                 <label><?php echo language::translate('title_order_copy', 'Order Copy'); ?></label>
                 <div class="btn-group btn-block" data-toggle="buttons">
-                  <label class="btn btn-default<?php echo !empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="1"<?php echo !empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
-                  <label class="btn btn-default<?php echo empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="0"<?php echo empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
+                  <label class="btn btn-default<?php echo !empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="1"<?php echo !empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?>><?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
+                  <label class="btn btn-default<?php echo empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="0"<?php echo empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?>><?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
                 </div>
               </div>
             </div>
@@ -570,9 +570,9 @@
 
           <div id="comments" class="form-control bubbles">
 <?php
-  foreach (array_keys($_POST['comments']) as $key) {
+  foreach ($_POST['comments'] as $key => $comment) {
 
-    switch($_POST['comments'][$key]['author']) {
+    switch($comment['author']) {
       case 'customer':
         $type = 'remote';
         break;
@@ -584,17 +584,37 @@
         break;
     }
 
-    if (!empty($_POST['comments'][$key]['hidden'])) $type .= ' semi-transparent';
+    $aliases = [
+     '%author' => '',
+     '%datetime' => !empty($comment['date_created']) ? language::strftime(language::$selected['format_datetime'], strtotime($comment['date_created'])) : 0,
+    ];
+
+    switch (true) {
+      case (empty($comment['author_id'])):
+        $aliases['%author'] = 'system';
+        break;
+
+      case ($comment['author_id'] == -1):
+        $aliases['%author'] = 'customer';
+        break;
+
+      case ($comment['author_id'] > 0):
+        $aliases['%author'] = $comment['author_username'];
+        break;
+    }
+
+    if (!empty($comment['hidden'])) $type .= ' semi-transparent';
 ?>
             <div class="bubble <?php echo $type; ?>">
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][id]', true); ?>
+              <?php echo functions::form_draw_hidden_field('comments['. $key .'][author_id]', true); ?>
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][order_id]', true); ?>
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][author]', true); ?>
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][text]', true); ?>
 
-                <div class="text"><?php echo nl2br(functions::escape_html($_POST['comments'][$key]['text'])); ?></div>
+                <div class="text"><?php echo nl2br(functions::escape_html($comment['text']), false); ?></div>
 
-              <div class="date"><?php echo language::strftime(language::$selected['format_datetime'], !empty($_POST['comments'][$key]['date_created']) ? strtotime($_POST['comments'][$key]['date_created']) : 0); ?></div>
+              <div class="date"><?php echo strtr(language::translate('description_by_author_on_datetime', 'By %author on %datetime'), $aliases); ?></div>
 
               <div class="actions">
                 <a class="remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
@@ -614,7 +634,7 @@
       <ul class="list-inline">
         <li>
           <div class="checkbox">
-            <label><?php echo functions::form_draw_checkbox('email_order_copy', '1', true); ?> <?php echo language::translate('text_send_order_copy_email', 'Send order copy email'); ?></label>
+            <label><?php echo functions::form_draw_checkbox('send_order_copy', '1', true); ?> <?php echo language::translate('text_send_order_copy_email', 'Send order copy email'); ?></label>
           </div>
         </li>
         <li>
@@ -800,12 +820,10 @@
       </tfoot>
     </table>
 
-
-
   </div>
 <?php echo functions::form_draw_form_end(); ?>
 
-<div id="modal-customer-picker" class="modal fade" style="max-width: 640px; display: none;">
+<div id="modal-customer-picker" class="modal fade" style="max-width: 64px; display: none;">
 
   <h2><?php echo language::translate('title_customer', 'Customer'); ?></h2>
 
@@ -824,7 +842,8 @@
             <th><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
           </tr>
         </thead>
-        <tbody />
+        <tbody>
+        </tbody>
       </table>
 
       <p class="text-center"><button class="set-guest btn btn-default" type="button"><?php echo language::translate('text_set_as_guest', 'Set As Guest'); ?></button></p>
@@ -832,7 +851,7 @@
   </div>
 </div>
 
-<div id="modal-edit-order-item" class="modal fade" style="max-width: 640px; display: none;">
+<div id="modal-edit-order-item" class="modal fade" style="max-width: 800px; display: none;">
 
   <h2><?php echo language::translate('title_edit_order_item', 'Edit Order Item'); ?></h2>
 
@@ -890,17 +909,17 @@
     </div>
 
     <div class="row">
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
         <label><?php echo language::translate('title_quantity', 'quantity'); ?></label>
         <?php echo functions::form_draw_decimal_field('quantity', ''); ?>
       </div>
 
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
         <label><?php echo language::translate('title_price', 'Price'); ?></label>
         <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'price', ''); ?>
       </div>
 
-        <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
         <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'tax', ''); ?>
       </div>
@@ -971,17 +990,17 @@
     </div>
 
     <div class="row">
-        <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
         <?php echo functions::form_draw_decimal_field('quantity', '0'); ?>
       </div>
 
-        <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label><?php echo language::translate('title_price', 'Price'); ?></label>
         <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'price', '0'); ?>
       </div>
 
-        <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
         <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'tax', '0'); ?>
       </div>
@@ -1029,7 +1048,7 @@
       async: false,
       dataType: 'json',
       error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn(errorThrown.message);
+        console.warn(errorThrown.message);
       },
       success: function(data) {
         $.each(data, function(key, value) {
@@ -1093,11 +1112,8 @@
   });
 
   $('#customer-details button[name="copy_billing_address"]').click(function(){
-    console.log('a');
-
     let fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone'];
     $.each(fields, function(key, field){
-          console.log($(':input[name="customer[shipping_address]['+ field +']"]').length);
       $(':input[name="customer[shipping_address]['+ field +']"]').val(
         $(':input[name="customer['+ field +']"]').val()
       ).trigger('change');
@@ -1123,7 +1139,7 @@
       url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
       type: 'get',
       cache: true,
-      async: true,
+      async: false,
       dataType: 'json',
       error: function(jqXHR, textStatus, errorThrown) {
         //alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
@@ -1218,6 +1234,7 @@
     var output = '  <div class="bubble local me">'
                + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][id]', ''); ?>'
                + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][author]', 'staff'); ?>'
+               + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][author_id]', user::$data['id']); ?>'
                + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][date_created]', language::strftime(language::$selected['format_datetime'])); ?>'
                + '    <div class="text"><?php echo functions::escape_js(functions::form_draw_textarea('comments[new_comment_index][text]', '')); ?></div>'
                + '    <div class="date"><?php echo language::strftime(language::$selected['format_datetime']); ?></div>'
@@ -1254,6 +1271,15 @@
   });
 
 // Order items
+  $('#order-items').on('change input', ':input[name$="[price]"], :input[name$="[tax_class_id]"]', function(){
+    var price = $(this).closest('tr').find(':input[name$="[price]"]').val(),
+      tax_class_id = $(this).closest('tr').find(':input[name$="[tax_class_id]"]').val(),
+      tax = get_tax(price, tax_class_id),
+      decimals = $('select[name="currency_code"] option:selected').data('decimals');
+
+    $(this).closest('tr').find(':input[name$="[tax]"]').val(tax.toFixed(decimals)).trigger('change');
+  });
+
   $('#order-items').on('change', 'input[name$="[price]"], input[name$="[tax]"]', function(e) {
     var decimals = $('select[name="currency_code"] option:selected').data('decimals'),
       value = parseFloat($(this).val());
@@ -1283,6 +1309,16 @@
         row = $(this).closest('tr');
 
     $(modal).data('row', '');
+  });
+
+  $('#modal-edit-order-item, #modal-add-order-item').on('change input', ':input[name="price"], :input[name="tax_class_id"]', function(){
+    var $modal = $('.featherlight.active'),
+      price = $modal.find(':input[name="price"]').val(),
+      tax_class_id = $modal.find(':input[name="tax_class_id"]').val(),
+      tax = get_tax(price, tax_class_id),
+      decimals = $('select[name="currency_code"] option:selected').data('decimals');
+
+    $modal.find(':input[name="tax"]').val(tax.toFixed(decimals)).trigger('input');
   });
 
   $('#modal-edit-order-item button[name="ok"]').click(function(e){
@@ -1328,28 +1364,26 @@
 
   $('#modal-add-order-item button[name="ok"]').click(function(e){
 
-    var modal = $('.featherlight.active');
-    var row = $(modal).data('row');
-    var item = {};
-    var fields = [
-      'name',
-      'sku',
-      'gtin',
-      'taric',
-      'weight',
-      'weight_class',
-      'dim_x',
-      'dim_y',
-      'dim_z',
-      'dim_class',
-      'price',
-      'tax',
-    ];
-
-    $.each($(modal).find(':input'), function(i,element){
-      var field = $(element).attr('name');
-      item[field] = $(modal).find(':input[name="'+field+'"]').val();
-    });
+    let $modal = $('.featherlight.active'),
+      row = $modal.data('row')
+      item = {
+        id: '',
+        product_id: $modal.find(':input[name="product_id"]').val(),
+        name: $modal.find(':input[name="name"]').val(),
+        sku: $modal.find(':input[name="sku"]').val(),
+        gtin: $modal.find(':input[name="gtin"]').val(),
+        taric: $modal.find(':input[name="taric"]').val(),
+        weight: parseFloat($modal.find(':input[name="weight"]').val() || 0),
+        weight_class: $modal.find(':input[name="weight_class"]').val(),
+        dim_x: parseFloat($modal.find(':input[name="dim_x"]').val() || 0),
+        dim_y: parseFloat($modal.find(':input[name="dim_y"]').val() || 0),
+        dim_z: parseFloat($modal.find(':input[name="dim_z"]').val() || 0),
+        dim_class: $modal.find(':input[name="dim_class"]').val(),
+        quantity: parseFloat($modal.find(':input[name="quantity"]').val() || 0),
+        price: parseFloat($modal.find(':input[name="price"]').val() || 0),
+        tax: parseFloat($modal.find(':input[name="tax"]').val() || 0),
+        tax_class_id: parseInt($modal.find(':input[name="tax_class_id"]').val() || 0)
+      };
 
     addItem(item);
 
@@ -1431,11 +1465,11 @@
                          + '  - '+ group +': ';
         if ($.isArray(value)) {
           $.each(value, function(i, array_value) {
-            product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +'][]" value="'+ array_value +'" />' + array_value +', ';
+            product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +'][]" value="'+ array_value +'">' + array_value +', ';
           });
           product_options = product_options.substring(0, product_options.length - 2);
         } else {
-          product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +']" value="'+ value +'" />' + value;
+          product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +']" value="'+ value +'">' + value;
         }
         product_options += '</div>';
       });
@@ -1521,7 +1555,7 @@
     $('#order-total .total').text(order_total.toMoney());
   }
 
-  $('body').on('click keyup', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="order_total"][name$="[value]"], input[name^="order_total"][name$="[tax]"], input[name^="order_total"][name$="[calculate]"], #order-items a.remove, #order-total a.remove', function() {
+  $('body').on('input change click', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="order_total"][name$="[value]"], input[name^="order_total"][name$="[tax]"], input[name^="order_total"][name$="[calculate]"], #order-items a.remove, #order-total a.remove', function() {
     calculate_total();
   });
 </script>

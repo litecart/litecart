@@ -28,19 +28,19 @@
         }
       }
 
-      echo 'Optimizing MySQL Tables...' . PHP_EOL;
+      echo 'Optimizing MySQL Tables...' . PHP_EOL . PHP_EOL;
 
-      $query = database::query(
-        "select concat('`', table_schema, '`.`', table_name, '`') as `table` from `information_schema`.`tables`
-        where engine in ('Aria', 'MyISAM')
-        and table_schema = '". DB_DATABASE ."'
-        and table_name like '". DB_TABLE_PREFIX ."%';"
-      );
+      database::query(
+        "select table_name from `information_schema`.`tables`
+        where table_schema = '". DB_DATABASE ."'
+        and table_name like '". DB_TABLE_PREFIX ."%'
+        order by table_name;"
+      )->each(function($row){
+        echo '  ' . $row['table_name'] . PHP_EOL;
+        database::query("optimize table ". $row['table_name'] .";");
+      });
 
-      while ($row = database::fetch($query)) {
-        echo '  ' . $row['table'] . PHP_EOL;
-        database::query("optimize table ". $row['table'] .";");
-      }
+      echo PHP_EOL . 'Done!';
     }
 
     function settings() {

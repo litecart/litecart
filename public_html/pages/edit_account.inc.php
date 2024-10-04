@@ -1,7 +1,7 @@
 <?php
 
   header('X-Robots-Tag: noindex');
-  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex">';
 
   customer::require_login();
 
@@ -78,9 +78,9 @@
 
       if (empty($_POST['firstname'])) throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
       if (empty($_POST['lastname'])) throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
-      if (empty($_POST['address1'])) throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
-      if (empty($_POST['city'])) throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
-      if (empty($_POST['postcode']) && !empty($_POST['country_code']) && reference::country($_POST['country_code'])->postcode_format) throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
+      //if (empty($_POST['address1'])) throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
+      //if (empty($_POST['city'])) throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
+      //if (empty($_POST['postcode']) && !empty($_POST['country_code']) && reference::country($_POST['country_code'])->postcode_format) throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
       if (empty($_POST['country_code'])) throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
       if (empty($_POST['zone_code']) && settings::get('customer_field_zone') && reference::country($_POST['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
 

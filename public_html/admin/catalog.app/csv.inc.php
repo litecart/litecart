@@ -57,6 +57,7 @@
           'total_lines' => count($csv),
           'insert' => !empty($_POST['insert']),
           'overwrite' => !empty($_POST['overwrite']),
+          'onerror' => isset($_POST['onerror']) ? $_POST['onerror'] : 'abort',
           'counters' => [
             'updated' => 0,
             'inserted' => 0,
@@ -86,655 +87,665 @@
           throw new Exception('Connection aborted');
         }
 
-        $batch['counters']['line']++;
+        try {
 
-        switch ($batch['type']) {
+          $batch['counters']['line']++;
 
-          case 'attributes':
+          switch ($batch['type']) {
 
-          // Find attribute group
-            if (!empty($row['group_id']) && ($attribute_group = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where id = ". (int)$row['group_id'] ." limit 1;")))) {
-              $attribute_group = new ent_attribute_group($attribute_group['id']);
+            case 'attributes':
 
-            } elseif (!empty($row['code']) && $attribute_group = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where code = '". database::input($row['code']) ."' limit 1;"))) {
-              $attribute_group = new ent_attribute_group($attribute_group['id']);
+            // Find attribute group
+              if (!empty($row['group_id']) && ($attribute_group = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where id = ". (int)$row['group_id'] ." limit 1;")))) {
+                $attribute_group = new ent_attribute_group($attribute_group['id']);
 
-            } elseif (!empty($row['group_name']) && $attribute_group = database::fetch(database::query("select group_id as id from ". DB_TABLE_PREFIX ."attribute_groups_info where name = '". database::input($row['group_name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
-              $attribute_group = new ent_attribute_group($attribute_group['id']);
-            }
+              } elseif (!empty($row['code']) && $attribute_group = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where code = '". database::input($row['code']) ."' limit 1;"))) {
+                $attribute_group = new ent_attribute_group($attribute_group['id']);
 
-            if (!empty($attribute_group->data['id'])) {
-
-              if (empty($batch['overwrite'])) {
-                echo 'Skip updating existing attribute group on line '. $batch['counters']['line'] . PHP_EOL;
-                continue 2;
+              } elseif (!empty($row['group_name']) && $attribute_group = database::fetch(database::query("select group_id as id from ". DB_TABLE_PREFIX ."attribute_groups_info where name = '". database::input($row['group_name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
+                $attribute_group = new ent_attribute_group($attribute_group['id']);
               }
 
-              echo 'Updating existing attribute group on line '. $batch['counters']['line'] . PHP_EOL;
-              $batch['counters']['updated']++;
+              if (!empty($attribute_group->data['id'])) {
 
-            } else {
+                if (empty($batch['overwrite'])) {
+                  echo 'Skip updating existing attribute group on line '. $batch['counters']['line'] . PHP_EOL;
+                  continue 2;
+                }
 
-              if (empty($batch['insert'])) {
-                echo 'Skip inserting new attribute group on line '. $batch['counters']['line'] . PHP_EOL;
-                continue 2;
-              }
+                echo 'Updating existing attribute group on line '. $batch['counters']['line'] . PHP_EOL;
+                $batch['counters']['updated']++;
 
-              echo 'Inserting new attribute group on line '. $batch['counters']['line'] . PHP_EOL;
-              $batch['counters']['inserted']++;
-
-              if (!empty($row['group_id'])) {
-                database::query(
-                  "insert into ". DB_TABLE_PREFIX ."attribute_groups
-                  (id)
-                  values (". (int)$row['group_id'] .");"
-                );
-                $attribute_group = new ent_attribute_group($row['group_id']);
               } else {
-                $attribute_group = new ent_attribute_group();
-              }
-            }
 
-          // Set attribute data
-            if (isset($row['group_code'])) $attribute_group->data['code'] = $row['group_code'];
-            if (isset($row['group_name'])) $attribute_group->data['name'][$row['language_code']] = $row['group_name'];
-            if (isset($row['sort'])) $attribute_group->data['sort'] = $row['sort'];
+                if (empty($batch['insert'])) {
+                  echo 'Skip inserting new attribute group on line '. $batch['counters']['line'] . PHP_EOL;
+                  continue 2;
+                }
 
-            foreach ($attribute_group->data['values'] as $key => $value) {
-              if (!empty($row['value_id']) && $value['id'] == $row['value_id']) {
-                $value_key = $key;
-                break;
-              }
+                echo 'Inserting new attribute group on line '. $batch['counters']['line'] . PHP_EOL;
+                $batch['counters']['inserted']++;
 
-              if (!empty($row['value_name']) && isset($value['name'][$row['language_code']]) && $value['name'][$row['language_code']] == $row['value_name']) {
-                $value_key = $key;
-                break;
-              }
-            }
-
-            if (!empty($value_key)) {
-              $attribute_group->data['values'][$value_key]['name'][$row['language_code']] = $row['value_name'];
-            } else {
-              $attribute_group->data['values'][] = [
-                'name' => [
-                  $row['language_code'] => $row['value_name'],
-                ],
-              ];
-            }
-
-          // Sort values
-            uasort($attribute_group->data['values'], function($a, $b){
-              if (!isset($a['priority'])) $a['priority'] = '';
-              if (!isset($b['priority'])) $b['priority'] = '';
-
-              if ($a['priority'] == $b['priority']) {
-                return ($a['name'] < $b['name']) ? -1 : 1;
+                if (!empty($row['group_id'])) {
+                  database::query(
+                    "insert into ". DB_TABLE_PREFIX ."attribute_groups
+                    (id)
+                    values (". (int)$row['group_id'] .");"
+                  );
+                  $attribute_group = new ent_attribute_group($row['group_id']);
+                } else {
+                  $attribute_group = new ent_attribute_group();
+                }
               }
 
-              return ($a['priority'] < $b['priority']) ? -1 : 1;
-            });
+            // Set attribute data
+              if (isset($row['group_code'])) $attribute_group->data['code'] = $row['group_code'];
+              if (isset($row['group_name'])) $attribute_group->data['name'][$row['language_code']] = $row['group_name'];
+              if (isset($row['sort'])) $attribute_group->data['sort'] = $row['sort'];
 
-            $attribute_group->save();
+              foreach ($attribute_group->data['values'] as $key => $value) {
+                if (!empty($row['value_id']) && $value['id'] == $row['value_id']) {
+                  $value_key = $key;
+                  break;
+                }
 
-            break;
+                if (!empty($row['value_name']) && isset($value['name'][$row['language_code']]) && $value['name'][$row['language_code']] == $row['value_name']) {
+                  $value_key = $key;
+                  break;
+                }
+              }
 
-          case 'campaigns':
+              if (!empty($value_key)) {
+                $attribute_group->data['values'][$value_key]['name'][$row['language_code']] = $row['value_name'];
+              } else {
+                $attribute_group->data['values'][] = [
+                  'name' => [
+                    $row['language_code'] => $row['value_name'],
+                  ],
+                ];
+              }
 
-          // Find campaign
-            if (!empty($row['id'])) {
-              $campaign_query = database::query(
-                "select id from ". DB_TABLE_PREFIX ."products_campaigns
+            // Sort values
+              uasort($attribute_group->data['values'], function($a, $b){
+                if (!isset($a['priority'])) $a['priority'] = '';
+                if (!isset($b['priority'])) $b['priority'] = '';
+
+                if ($a['priority'] == $b['priority']) {
+                  return ($a['name'] < $b['name']) ? -1 : 1;
+                }
+
+                return ($a['priority'] < $b['priority']) ? -1 : 1;
+              });
+
+              $attribute_group->save();
+
+              break;
+
+            case 'campaigns':
+
+            // Find campaign
+              if (!empty($row['id'])) {
+                $campaign_query = database::query(
+                  "select id from ". DB_TABLE_PREFIX ."products_campaigns
+                  where id = ". (int)$row['id'] ."
+                  limit 1;"
+                );
+                $campaign = database::fetch($campaign_query);
+              }
+
+              if (!empty($campaign['id'])) {
+
+                if (empty($batch['overwrite'])) {
+                  echo 'Skip updating existing campaign on line '. $batch['counters']['line'] . PHP_EOL;
+                  continue 2;
+                }
+
+                echo 'Updating existing campaign on line '. $batch['counters']['line'] . PHP_EOL;
+                $batch['counters']['updated']++;
+
+              } else {
+
+                if (empty($batch['insert'])) {
+                  echo 'Skip inserting new campaign on line '. $batch['counters']['line'] . PHP_EOL;
+                  continue 2;
+                }
+
+                echo 'Inserting new campaign on line '. $batch['counters']['line'] . PHP_EOL;
+                $batch['counters']['inserted']++;
+
+                if (!empty($row['id'])) {
+                  database::query(
+                    "insert into ". DB_TABLE_PREFIX ."products_campaigns
+                    (id, product_id)
+                    values (". (int)$row['id'] .", '". $row['product_id'] ."');"
+                  );
+                }
+              }
+
+              $prices = array_intersect_key($row, currency::$currencies);
+
+              $sql_update_prices = '';
+              foreach ($prices as $currency_code => $price) {
+                $sql_update_prices .= database::input($currency_code) ." = ". (float)$price . "," . PHP_EOL;
+              }
+
+              database::query(
+                "update ". DB_TABLE_PREFIX ."products_campaigns
+                set product_id = ". (int)$row['product_id'] .",
+                    ". $sql_update_prices ."
+                    start_date = ". (empty($row['start_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['start_date'])) ."'") .",
+                    end_date = ". (empty($row['end_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['end_date'])) ."'") ."
                 where id = ". (int)$row['id'] ."
                 limit 1;"
               );
-              $campaign = database::fetch($campaign_query);
-            }
 
-            if (!empty($campaign['id'])) {
+              break;
 
-              if (empty($batch['overwrite'])) {
-                echo 'Skip updating existing campaign on line '. $batch['counters']['line'] . PHP_EOL;
-                continue 2;
+            case 'categories':
+
+            // Find category
+              if (!empty($row['id']) && $category = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."categories where id = ". (int)$row['id'] ." limit 1;"))) {
+                $category = new ent_category($category['id']);
+
+              } elseif (!empty($row['code']) && $category = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."categories where code = '". database::input($row['code']) ."' limit 1;"))) {
+                $category = new ent_category($category['id']);
+
               }
 
-              echo 'Updating existing campaign on line '. $batch['counters']['line'] . PHP_EOL;
-              $batch['counters']['updated']++;
-
-            } else {
-
-              if (empty($batch['insert'])) {
-                echo 'Skip inserting new campaign on line '. $batch['counters']['line'] . PHP_EOL;
-                continue 2;
-              }
-
-              echo 'Inserting new campaign on line '. $batch['counters']['line'] . PHP_EOL;
-              $batch['counters']['inserted']++;
-
-              if (!empty($row['id'])) {
-                database::query(
-                  "insert into ". DB_TABLE_PREFIX ."products_campaigns
-                  (id, product_id)
-                  values (". (int)$row['id'] .", '". $row['product_id'] ."');"
-                );
-              }
-            }
-
-            $prices = array_intersect_key($row, currency::$currencies);
-
-            $sql_update_prices = '';
-            foreach ($prices as $currency_code => $price) {
-              $sql_update_prices .= database::input($currency_code) ." = ". (float)$price . "," . PHP_EOL;
-            }
-
-            database::query(
-              "update ". DB_TABLE_PREFIX ."products_campaigns
-              set product_id = ". (int)$row['product_id'] .",
-                  ". $sql_update_prices ."
-                  start_date = ". (empty($row['start_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['start_date'])) ."'") .",
-                  end_date = ". (empty($row['end_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['end_date'])) ."'") ."
-              where id = ". (int)$row['id'] ."
-              limit 1;"
-            );
-
-            break;
-
-          case 'categories':
-
-          // Find category
-            if (!empty($row['id']) && $category = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."categories where id = ". (int)$row['id'] ." limit 1;"))) {
-              $category = new ent_category($category['id']);
-
-            } elseif (!empty($row['code']) && $category = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."categories where code = '". database::input($row['code']) ."' limit 1;"))) {
-              $category = new ent_category($category['id']);
-
-            }
-
-            if (!empty($category->data['id'])) {
-
-              if (empty($batch['overwrite'])) {
-                echo 'Skip updating existing category on line '. $batch['counters']['line'] . PHP_EOL;
-                continue 2;
-              }
-
-              echo 'Updating existing category '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
-              $batch['counters']['updated']++;
-
-            } else {
-
-              if (empty($batch['insert'])) {
-                echo 'Skip inserting new category on line '. $batch['counters']['line'] . PHP_EOL;
-                continue 2;
-              }
-
-              echo 'Inserting new category: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
-              $batch['counters']['inserted']++;
-
-              if (!empty($row['id'])) {
-                database::query(
-                  "insert into ". DB_TABLE_PREFIX ."categories (id, date_created)
-                  values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
-                );
-                $category = new ent_category($row['id']);
-              } else {
-                $category = new ent_category();
-              }
-            }
-
-            if (empty($row['parent_id']) && !empty($row['parent_code'])) {
-              $parent_query = database::query(
-                "select id from ". DB_TABLE_PREFIX ."categories
-                where code = '". database::input($row['parent_code']) ."'
-                limit 1;"
-              );
-              $row['parent_id'] = database::fetch($parent_query, 'id');
-            }
-
-          // Set new category data
-            $fields = [
-              'parent_id',
-              'status',
-              'code',
-              'keywords',
-              'image',
-              'priority',
-            ];
-
-            foreach ($fields as $field) {
-              if (isset($row[$field])) $category->data[$field] = $row[$field];
-            }
-
-          // Set category info data
-            if (!empty($row['language_code'])) {
-              $fields = [
-                'name',
-                'short_description',
-                'description',
-                'head_title',
-                'h1_title',
-                'meta_description',
-              ];
-
-              foreach ($fields as $field) {
-                if (isset($row[$field])) $category->data[$field][$row['language_code']] = $row[$field];
-              }
-            }
-
-            if (!empty($row['new_image'])) {
-              $category->save_image($row['new_image']);
-            }
-
-            $category->save();
-
-            if (!empty($row['date_created'])) {
-              database::query(
-                "update ". DB_TABLE_PREFIX ."categories
-                set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
-                where id = ". (int)$category->data['id'] ."
-                limit 1;"
-              );
-            }
-
-            break;
-
-          case 'manufacturers':
-
-          // Find manufacturer
-            if (!empty($row['id']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."manufacturers where id = ". (int)$row['id'] ." limit 1;"))) {
-              $manufacturer = new ent_manufacturer($manufacturer['id']);
-
-            } else if (!empty($row['code']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."manufacturers where code = '". database::input($row['code']) ."' limit 1;"))) {
-              $manufacturer = new ent_manufacturer($manufacturer['id']);
-
-            } else if (!empty($row['name']) && !empty($row['language_code']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."manufacturers where name = '". database::input($row['name']) ."' limit 1;"))) {
-              $manufacturer = new ent_manufacturer($manufacturer['id']);
-            }
-
-            if (!empty($manufacturer->data['id'])) {
-
-              if (empty($batch['overwrite'])) {
-                echo 'Skip updating existing manufacturer on line '. $batch['counters']['line'] . PHP_EOL;
-                continue 2;
-              }
-
-              echo 'Updating existing manufacturer '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
-              $batch['counters']['updated']++;
-
-            } else {
-
-              if (empty($batch['insert'])) {
-                echo 'Skip inserting new manufacturer on line '. $batch['counters']['line'] . PHP_EOL;
-                continue 2;
-              }
-
-              echo 'Inserting new manufacturer: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
-              $batch['counters']['inserted']++;
-
-              if (!empty($row['id'])) {
-                database::query(
-                  "insert into ". DB_TABLE_PREFIX ."manufacturers (id, date_created)
-                  values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
-                );
-                $manufacturer = new ent_manufacturer($row['id']);
-              } else {
-                $manufacturer = new ent_manufacturer();
-              }
-            }
-
-          // Set new manufacturer data
-            $fields = [
-              'status',
-              'code',
-              'name',
-              'keywords',
-              'image',
-              'priority',
-            ];
-
-            foreach ($fields as $field) {
-              if (isset($row[$field])) $manufacturer->data[$field] = $row[$field];
-            }
-
-          // Set manufacturer info data
-            if (!empty($row['language_code'])) {
-              $fields = [
-                'short_description',
-                'description',
-                'head_title',
-                'h1_title',
-                'meta_description',
-              ];
-
-              foreach ($fields as $field) {
-                if (isset($row[$field])) $manufacturer->data[$field][$row['language_code']] = $row[$field];
-              }
-            }
-
-            if (!empty($row['new_image'])) {
-              $manufacturer->save_image($row['new_image']);
-            }
-
-            $manufacturer->save();
-
-            if (!empty($row['date_created'])) {
-              database::query(
-                "update ". DB_TABLE_PREFIX ."manufacturers
-                set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
-                where id = ". (int)$manufacturer->data['id'] ."
-                limit 1;"
-              );
-            }
-
-            break;
-
-          case 'products':
-
-          // Find product
-            if (!empty($row['id']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where id = ". (int)$row['id'] ." limit 1;"))) {
-              $product = new ent_product($product['id']);
-
-            } elseif (!empty($row['code']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where code = '". database::input($row['code']) ."' limit 1;"))) {
-              $product = new ent_product($product['id']);
-
-            } elseif (!empty($row['sku']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where sku = '". database::input($row['sku']) ."' limit 1;"))) {
-              $product = new ent_product($product['id']);
-
-            } elseif (!empty($row['mpn']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
-              $product = new ent_product($product['id']);
-
-            } elseif (!empty($row['gtin']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
-              $product = new ent_product($product['id']);
-            }
-
-            if (!empty($product->data['id'])) {
-
-              if (empty($batch['overwrite'])) {
-                echo 'Skip updating existing product (ID: '. $product->data['id'] .') on line '. $batch['counters']['line'] . PHP_EOL;
-                continue 2;
-              }
-
-              echo 'Updating existing product '. (!empty($row['name']) ? $row['name'] : '') .' (ID: '. $product->data['id'] .') on line '. $batch['counters']['line'] . PHP_EOL;
-              $batch['counters']['updated']++;
-
-            } else {
-
-              if (empty($batch['insert'])) {
-                echo 'Skip inserting new product on line '. $batch['counters']['line'] . PHP_EOL;
-                continue 2;
-              }
-
-              echo 'Inserting new product '. (!empty($row['name']) ? $row['name'] : '') .' on line '. $batch['counters']['line'] . PHP_EOL;
-              $batch['counters']['inserted']++;
-
-              if (!empty($row['id'])) {
-                database::query(
-                  "insert into ". DB_TABLE_PREFIX ."products (id, date_created)
-                  values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
-                );
-                $product = new ent_product($row['id']);
-              } else {
-                $product = new ent_product();
-              }
-            }
-
-            if (empty($row['manufacturer_id']) && !empty($row['manufacturer_name'])) {
-              $manufacturers_query = database::query(
-                "select * from ". DB_TABLE_PREFIX ."manufacturers
-                where name = '". database::input($row['manufacturer_name']) ."'
-                limit 1;"
-              );
-
-              if ($manufacturer = database::fetch($manufacturers_query)) {
-                $row['manufacturer_id'] = $manufacturer['id'];
-              } else {
-                $manufacturer = new ent_manufacturer();
-                $manufacturer->data['name'] = $row['manufacturer_name'];
-                $manufacturer->save();
-                $row['manufacturer_id'] = $manufacturer->data['id'];
-              }
-            }
-
-            if (empty($row['supplier_id']) && !empty($row['supplier_id'])) {
-              $suppliers_query = database::query(
-                "select * from ". DB_TABLE_PREFIX ."suppliers
-                where name = '". database::input($row['supplier_name']) ."'
-                limit 1;"
-              );
-              if ($supplier = database::fetch($suppliers_query)) {
-                $row['supplier_id'] = $supplier['id'];
-              } else {
-                $supplier = new ent_supplier();
-                $supplier->data['name'] = $row['supplier_name'];
-                $supplier->save();
-                $row['supplier_id'] = $supplier->data['id'];
-              }
-            }
-
-            $fields = [
-              'status',
-              'default_catgeory_id',
-              'manufacturer_id',
-              'supplier_id',
-              'code',
-              'sku',
-              'mpn',
-              'gtin',
-              'taric',
-              'tax_class_id',
-              'quantity',
-              'quantity_unit_id',
-              'quantity_min',
-              'quantity_max',
-              'quantity_step',
-              'weight',
-              'weight_class',
-              'dim_x',
-              'dim_y',
-              'dim_z',
-              'dim_class',
-              'purchase_price',
-              'purchase_price_currency_code',
-              'recommended_price',
-              'delivery_status_id',
-              'sold_out_status_id',
-              'date_valid_from',
-              'date_valid_to',
-            ];
-
-          // Set new product data
-            foreach ($fields as $field) {
-              if (isset($row[$field])) $product->data[$field] = $row[$field];
-            }
-
-            if (isset($row['categories'])) {
-              $product->data['categories'] = preg_split('#\s*,\s*#', $row['categories'], -1, PREG_SPLIT_NO_EMPTY);
-            }
-
-          // Set price
-            if (!empty($row['currency_code'])) {
-              if (isset($row['price'])) $product->data['prices'][$row['currency_code']] = $row['price'];
-            }
-
-          // Set product info data
-            if (!empty($row['language_code'])) {
-
-              $fields = [
-                'name',
-                'short_description',
-                'description',
-                'technical_data',
-                'head_title',
-                'meta_description',
-              ];
-
-              foreach ($fields as $field) {
-                if (isset($row[$field])) $product->data[$field][$row['language_code']] = $row[$field];
-              }
-            }
-
-            if (empty($product->data['id'])) {
-              $product->save(); // Create product ID as we need it for images
-            }
-
-          // Delete images (by reinserting the ones that should stay)
-            if (isset($row['images'])) {
-              $row['images'] = preg_split('#;#', $row['images'], -1, PREG_SPLIT_NO_EMPTY);
-
-              $product->data['images'] = [];
-              foreach ($product->previous['images'] as $key => $image) {
-                if (in_array($image['filename'], $row['images'])) {
-                  $product->data['images'][$key] = $image;
+              if (!empty($category->data['id'])) {
+
+                if (empty($batch['overwrite'])) {
+                  echo 'Skip updating existing category on line '. $batch['counters']['line'] . PHP_EOL;
+                  continue 2;
                 }
-              }
 
-              foreach ($row['images'] as $filename) {
-                if (!in_array($filename, array_column($product->data['images'], 'filename'))) {
+                echo 'Updating existing category '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+                $batch['counters']['updated']++;
 
-                  if (!is_file(FS_DIR_STORAGE . 'images/' . $filename)) continue;
+              } else {
 
-                  $checksum = md5(FS_DIR_STORAGE . 'images/' . $filename);
+                if (empty($batch['insert'])) {
+                  echo 'Skip inserting new category on line '. $batch['counters']['line'] . PHP_EOL;
+                  continue 2;
+                }
 
+                echo 'Inserting new category: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+                $batch['counters']['inserted']++;
+
+                if (!empty($row['id'])) {
                   database::query(
-                    "insert into ". DB_TABLE_PREFIX ."products_images
-                    (product_id, filename, checksum)
-                    values (". (int)$product->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."');"
+                    "insert into ". DB_TABLE_PREFIX ."categories (id, date_created)
+                    values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
                   );
-
-                  $image_id = database::insert_id();
-
-                  $product->data['images'][$image_id] = [
-                    'id' => $image_id,
-                    'filename' => $filename,
-                    'checksum' => $checksum,
-                    'priority' => 0,
-                  ];
-
-                }
-              }
-            }
-
-          // Import new images
-            if (!empty($row['new_images'])) {
-              foreach (preg_split('#;#', $row['new_images'], -1, PREG_SPLIT_NO_EMPTY) as $new_image) {
-                $product->add_image($new_image);
-              }
-            }
-
-          // Set attributes
-            if (isset($row['attributes'])) {
-              $product->data['attributes'] = [];
-
-              foreach (preg_split('#\R+#', $row['attributes'], -1, PREG_SPLIT_NO_EMPTY) as $attribute_row) {
-
-                if (preg_match('#^([0-9]+):([0-9]+)$#', $attribute_row, $matches)) {
-                  $attribute = [
-                    'group_id' => $matches[1],
-                    'value_id' => $matches[2],
-                    'custom_value' => '',
-                  ];
-
-                } else if (preg_match('#^([0-9]+):"([^"]*)"#', $attribute_row, $matches)) {
-                  $attribute = [
-                    'group_id' => $matches[1],
-                    'value_id' => 0,
-                    'custom_value' => $matches[2],
-                  ];
-
+                  $category = new ent_category($row['id']);
                 } else {
-                  echo " - Skipping unknown attribute $attribute_row" . PHP_EOL;
-                  continue;
+                  $category = new ent_category();
+                }
+              }
+
+              if (empty($row['parent_id']) && !empty($row['parent_code'])) {
+                $parent_query = database::query(
+                  "select id from ". DB_TABLE_PREFIX ."categories
+                  where code = '". database::input($row['parent_code']) ."'
+                  limit 1;"
+                );
+                $row['parent_id'] = database::fetch($parent_query, 'id');
+              }
+
+            // Set new category data
+              $fields = [
+                'parent_id',
+                'status',
+                'code',
+                'keywords',
+                'image',
+                'priority',
+              ];
+
+              foreach ($fields as $field) {
+                if (isset($row[$field])) $category->data[$field] = $row[$field];
+              }
+
+            // Set category info data
+              if (!empty($row['language_code'])) {
+                $fields = [
+                  'name',
+                  'short_description',
+                  'description',
+                  'head_title',
+                  'h1_title',
+                  'meta_description',
+                ];
+
+                foreach ($fields as $field) {
+                  if (isset($row[$field])) $category->data[$field][$row['language_code']] = $row[$field];
+                }
+              }
+
+              if (!empty($row['new_image'])) {
+                $category->save_image($row['new_image']);
+              }
+
+              $category->save();
+
+              if (!empty($row['date_created'])) {
+                database::query(
+                  "update ". DB_TABLE_PREFIX ."categories
+                  set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
+                  where id = ". (int)$category->data['id'] ."
+                  limit 1;"
+                );
+              }
+
+              break;
+
+            case 'manufacturers':
+
+            // Find manufacturer
+              if (!empty($row['id']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."manufacturers where id = ". (int)$row['id'] ." limit 1;"))) {
+                $manufacturer = new ent_manufacturer($manufacturer['id']);
+
+              } else if (!empty($row['code']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."manufacturers where code = '". database::input($row['code']) ."' limit 1;"))) {
+                $manufacturer = new ent_manufacturer($manufacturer['id']);
+
+              } else if (!empty($row['name']) && !empty($row['language_code']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."manufacturers where name = '". database::input($row['name']) ."' limit 1;"))) {
+                $manufacturer = new ent_manufacturer($manufacturer['id']);
+              }
+
+              if (!empty($manufacturer->data['id'])) {
+
+                if (empty($batch['overwrite'])) {
+                  echo 'Skip updating existing manufacturer on line '. $batch['counters']['line'] . PHP_EOL;
+                  continue 2;
                 }
 
-                $product->data['attributes'][] = [
-                  'id' => isset($product->previous['attributes'][$attribute['group_id'].'-'.$attribute['value_id']]) ? $product->previous['attributes'][$attribute['group_id'].'-'.$attribute['value_id']]['id'] : null,
-                  'group_id' => $attribute['group_id'],
-                  'value_id' => $attribute['value_id'],
-                  'custom_value' => $attribute['custom_value'],
-                ];
-              }
-            }
+                echo 'Updating existing manufacturer '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+                $batch['counters']['updated']++;
 
-            $product->save();
-
-            if (!empty($row['date_created'])) {
-              database::query(
-                "update ". DB_TABLE_PREFIX ."products
-                set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
-                where id = ". (int)$product->data['id'] ."
-                limit 1;"
-              );
-            }
-
-            break;
-
-          case 'suppliers':
-
-          // Find supplier
-            if (!empty($row['id']) && $supplier = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."suppliers where id = ". (int)$row['id'] ." limit 1;"))) {
-              $supplier = new ent_supplier($supplier['id']);
-
-            } else if (!empty($row['code']) && $supplier = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."suppliers where code = '". database::input($row['code']) ."' limit 1;"))) {
-              $supplier = new ent_supplier($supplier['id']);
-            }
-
-            if (!empty($supplier->data['id'])) {
-              if (empty($batch['overwrite'])) {
-                echo 'Skip updating existing supplier on line '. $batch['counters']['line'] . PHP_EOL;
-                continue 2;
-              }
-              echo 'Updating existing supplier '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
-              $batch['counters']['updated']++;
-
-            } else {
-
-              if (empty($batch['insert'])) {
-                echo 'Skip inserting new supplier on line '. $batch['counters']['line'] . PHP_EOL;
-                continue 2;
-              }
-
-              echo 'Inserting new supplier: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
-              $batch['counters']['inserted']++;
-
-              if (!empty($row['id'])) {
-                database::query(
-                  "insert into ". DB_TABLE_PREFIX ."suppliers (id, date_created)
-                  values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
-                );
-                $supplier = new ent_supplier($row['id']);
               } else {
-                $supplier = new ent_supplier();
+
+                if (empty($batch['insert'])) {
+                  echo 'Skip inserting new manufacturer on line '. $batch['counters']['line'] . PHP_EOL;
+                  continue 2;
+                }
+
+                echo 'Inserting new manufacturer: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+                $batch['counters']['inserted']++;
+
+                if (!empty($row['id'])) {
+                  database::query(
+                    "insert into ". DB_TABLE_PREFIX ."manufacturers (id, date_created)
+                    values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
+                  );
+                  $manufacturer = new ent_manufacturer($row['id']);
+                } else {
+                  $manufacturer = new ent_manufacturer();
+                }
               }
-            }
 
-          // Set new supplier data
-            $fields = [
-              'status',
-              'code',
-              'name',
-              'description',
-              'email',
-              'phone',
-              'link',
-            ];
+            // Set new manufacturer data
+              $fields = [
+                'status',
+                'code',
+                'name',
+                'keywords',
+                'image',
+                'priority',
+              ];
 
-            foreach ($fields as $field) {
-              if (isset($row[$field])) $supplier->data[$field] = $row[$field];
-            }
+              foreach ($fields as $field) {
+                if (isset($row[$field])) $manufacturer->data[$field] = $row[$field];
+              }
 
-            $supplier->save();
+            // Set manufacturer info data
+              if (!empty($row['language_code'])) {
+                $fields = [
+                  'short_description',
+                  'description',
+                  'head_title',
+                  'h1_title',
+                  'meta_description',
+                ];
 
-            if (!empty($row['date_created'])) {
-              database::query(
-                "update ". DB_TABLE_PREFIX ."suppliers
-                set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
-                where id = ". (int)$supplier->data['id'] ."
-                limit 1;"
-              );
-            }
+                foreach ($fields as $field) {
+                  if (isset($row[$field])) $manufacturer->data[$field][$row['language_code']] = $row[$field];
+                }
+              }
 
-            break;
+              if (!empty($row['new_image'])) {
+                $manufacturer->save_image($row['new_image']);
+              }
 
-          default:
-            throw new Exception('Unknown type');
+              $manufacturer->save();
+
+              if (!empty($row['date_created'])) {
+                database::query(
+                  "update ". DB_TABLE_PREFIX ."manufacturers
+                  set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
+                  where id = ". (int)$manufacturer->data['id'] ."
+                  limit 1;"
+                );
+              }
+
+              break;
+
+            case 'products':
+
+            // Find product
+              if (!empty($row['id']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where id = ". (int)$row['id'] ." limit 1;"))) {
+                $product = new ent_product($product['id']);
+
+              } elseif (!empty($row['code']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where code = '". database::input($row['code']) ."' limit 1;"))) {
+                $product = new ent_product($product['id']);
+
+              } elseif (!empty($row['sku']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where sku = '". database::input($row['sku']) ."' limit 1;"))) {
+                $product = new ent_product($product['id']);
+
+              } elseif (!empty($row['mpn']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
+                $product = new ent_product($product['id']);
+
+              } elseif (!empty($row['gtin']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
+                $product = new ent_product($product['id']);
+              }
+
+              if (!empty($product->data['id'])) {
+
+                if (empty($batch['overwrite'])) {
+                  echo 'Skip updating existing product (ID: '. $product->data['id'] .') on line '. $batch['counters']['line'] . PHP_EOL;
+                  continue 2;
+                }
+
+                echo 'Updating existing product '. (!empty($row['name']) ? $row['name'] : '') .' (ID: '. $product->data['id'] .') on line '. $batch['counters']['line'] . PHP_EOL;
+                $batch['counters']['updated']++;
+
+              } else {
+
+                if (empty($batch['insert'])) {
+                  echo 'Skip inserting new product on line '. $batch['counters']['line'] . PHP_EOL;
+                  continue 2;
+                }
+
+                echo 'Inserting new product '. (!empty($row['name']) ? $row['name'] : '') .' on line '. $batch['counters']['line'] . PHP_EOL;
+                $batch['counters']['inserted']++;
+
+                if (!empty($row['id'])) {
+                  database::query(
+                    "insert into ". DB_TABLE_PREFIX ."products (id, date_created)
+                    values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
+                  );
+                  $product = new ent_product($row['id']);
+                } else {
+                  $product = new ent_product();
+                }
+              }
+
+              if (empty($row['manufacturer_id']) && !empty($row['manufacturer_name'])) {
+                $manufacturers_query = database::query(
+                  "select * from ". DB_TABLE_PREFIX ."manufacturers
+                  where name = '". database::input($row['manufacturer_name']) ."'
+                  limit 1;"
+                );
+
+                if ($manufacturer = database::fetch($manufacturers_query)) {
+                  $row['manufacturer_id'] = $manufacturer['id'];
+                } else {
+                  $manufacturer = new ent_manufacturer();
+                  $manufacturer->data['name'] = $row['manufacturer_name'];
+                  $manufacturer->save();
+                  $row['manufacturer_id'] = $manufacturer->data['id'];
+                }
+              }
+
+              if (empty($row['supplier_id']) && !empty($row['supplier_id'])) {
+                $suppliers_query = database::query(
+                  "select * from ". DB_TABLE_PREFIX ."suppliers
+                  where name = '". database::input($row['supplier_name']) ."'
+                  limit 1;"
+                );
+                if ($supplier = database::fetch($suppliers_query)) {
+                  $row['supplier_id'] = $supplier['id'];
+                } else {
+                  $supplier = new ent_supplier();
+                  $supplier->data['name'] = $row['supplier_name'];
+                  $supplier->save();
+                  $row['supplier_id'] = $supplier->data['id'];
+                }
+              }
+
+              $fields = [
+                'status',
+                'default_catgeory_id',
+                'manufacturer_id',
+                'supplier_id',
+                'code',
+                'sku',
+                'mpn',
+                'gtin',
+                'taric',
+                'tax_class_id',
+                'quantity',
+                'quantity_unit_id',
+                'quantity_min',
+                'quantity_max',
+                'quantity_step',
+                'weight',
+                'weight_class',
+                'dim_x',
+                'dim_y',
+                'dim_z',
+                'dim_class',
+                'purchase_price',
+                'purchase_price_currency_code',
+                'recommended_price',
+                'delivery_status_id',
+                'sold_out_status_id',
+                'date_valid_from',
+                'date_valid_to',
+              ];
+
+            // Set new product data
+              foreach ($fields as $field) {
+                if (isset($row[$field])) $product->data[$field] = $row[$field];
+              }
+
+              if (isset($row['categories'])) {
+                $product->data['categories'] = preg_split('#\s*,\s*#', $row['categories'], -1, PREG_SPLIT_NO_EMPTY);
+              }
+
+            // Set price
+              if (!empty($row['currency_code'])) {
+                if (isset($row['price'])) $product->data['prices'][$row['currency_code']] = $row['price'];
+              }
+
+            // Set product info data
+              if (!empty($row['language_code'])) {
+
+                $fields = [
+                  'name',
+                  'short_description',
+                  'description',
+                  'technical_data',
+                  'head_title',
+                  'meta_description',
+                ];
+
+                foreach ($fields as $field) {
+                  if (isset($row[$field])) $product->data[$field][$row['language_code']] = $row[$field];
+                }
+              }
+
+              if (empty($product->data['id'])) {
+                $product->save(); // Create product ID as we need it for images
+              }
+
+            // Delete images (by reinserting the ones that should stay)
+              if (isset($row['images'])) {
+                $row['images'] = preg_split('#;#', $row['images'], -1, PREG_SPLIT_NO_EMPTY);
+
+                $product->data['images'] = [];
+                foreach ($product->previous['images'] as $key => $image) {
+                  if (in_array($image['filename'], $row['images'])) {
+                    $product->data['images'][$key] = $image;
+                  }
+                }
+
+                foreach ($row['images'] as $filename) {
+                  if (!in_array($filename, array_column($product->data['images'], 'filename'))) {
+
+                    if (!is_file(FS_DIR_STORAGE . 'images/' . $filename)) continue;
+
+                    $checksum = md5(FS_DIR_STORAGE . 'images/' . $filename);
+
+                    database::query(
+                      "insert into ". DB_TABLE_PREFIX ."products_images
+                      (product_id, filename, checksum)
+                      values (". (int)$product->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."');"
+                    );
+
+                    $image_id = database::insert_id();
+
+                    $product->data['images'][$image_id] = [
+                      'id' => $image_id,
+                      'filename' => $filename,
+                      'checksum' => $checksum,
+                      'priority' => 0,
+                    ];
+
+                  }
+                }
+              }
+
+            // Import new images
+              if (!empty($row['new_images'])) {
+                foreach (preg_split('#;#', $row['new_images'], -1, PREG_SPLIT_NO_EMPTY) as $new_image) {
+                  $product->add_image($new_image);
+                }
+              }
+
+            // Set attributes
+              if (isset($row['attributes'])) {
+                $product->data['attributes'] = [];
+
+                foreach (preg_split('#\R+#', $row['attributes'], -1, PREG_SPLIT_NO_EMPTY) as $attribute_row) {
+
+                  if (preg_match('#^([0-9]+):([0-9]+)$#', $attribute_row, $matches)) {
+                    $attribute = [
+                      'group_id' => $matches[1],
+                      'value_id' => $matches[2],
+                      'custom_value' => '',
+                    ];
+
+                  } else if (preg_match('#^([0-9]+):"([^"]*)"#', $attribute_row, $matches)) {
+                    $attribute = [
+                      'group_id' => $matches[1],
+                      'value_id' => 0,
+                      'custom_value' => $matches[2],
+                    ];
+
+                  } else {
+                    echo " - Skipping unknown attribute $attribute_row" . PHP_EOL;
+                    continue;
+                  }
+
+                  $product->data['attributes'][] = [
+                    'id' => isset($product->previous['attributes'][$attribute['group_id'].'-'.$attribute['value_id']]) ? $product->previous['attributes'][$attribute['group_id'].'-'.$attribute['value_id']]['id'] : null,
+                    'group_id' => $attribute['group_id'],
+                    'value_id' => $attribute['value_id'],
+                    'custom_value' => $attribute['custom_value'],
+                  ];
+                }
+              }
+
+              $product->save();
+
+              if (!empty($row['date_created'])) {
+                database::query(
+                  "update ". DB_TABLE_PREFIX ."products
+                  set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
+                  where id = ". (int)$product->data['id'] ."
+                  limit 1;"
+                );
+              }
+
+              break;
+
+            case 'suppliers':
+
+            // Find supplier
+              if (!empty($row['id']) && $supplier = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."suppliers where id = ". (int)$row['id'] ." limit 1;"))) {
+                $supplier = new ent_supplier($supplier['id']);
+
+              } else if (!empty($row['code']) && $supplier = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."suppliers where code = '". database::input($row['code']) ."' limit 1;"))) {
+                $supplier = new ent_supplier($supplier['id']);
+              }
+
+              if (!empty($supplier->data['id'])) {
+                if (empty($batch['overwrite'])) {
+                  echo 'Skip updating existing supplier on line '. $batch['counters']['line'] . PHP_EOL;
+                  continue 2;
+                }
+                echo 'Updating existing supplier '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+                $batch['counters']['updated']++;
+
+              } else {
+
+                if (empty($batch['insert'])) {
+                  echo 'Skip inserting new supplier on line '. $batch['counters']['line'] . PHP_EOL;
+                  continue 2;
+                }
+
+                echo 'Inserting new supplier: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+                $batch['counters']['inserted']++;
+
+                if (!empty($row['id'])) {
+                  database::query(
+                    "insert into ". DB_TABLE_PREFIX ."suppliers (id, date_created)
+                    values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
+                  );
+                  $supplier = new ent_supplier($row['id']);
+                } else {
+                  $supplier = new ent_supplier();
+                }
+              }
+
+            // Set new supplier data
+              $fields = [
+                'status',
+                'code',
+                'name',
+                'description',
+                'email',
+                'phone',
+                'link',
+              ];
+
+              foreach ($fields as $field) {
+                if (isset($row[$field])) $supplier->data[$field] = $row[$field];
+              }
+
+              $supplier->save();
+
+              if (!empty($row['date_created'])) {
+                database::query(
+                  "update ". DB_TABLE_PREFIX ."suppliers
+                  set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
+                  where id = ". (int)$supplier->data['id'] ."
+                  limit 1;"
+                );
+              }
+
+              break;
+
+            default:
+              throw new Exception('Unknown type');
+          }
+
+        } catch (Exception $e) {
+          if (isset($batch['onerror']) && $batch['onerror'] == 'resume') {
+           echo 'Error: '. $e->getMessage() . PHP_EOL;
+          } else {
+            throw $e;
+          }
         }
       }
 
@@ -1079,6 +1090,12 @@
             <div class="form-group">
               <div class="checkbox"><label><?php echo functions::form_draw_checkbox('insert', '1', true); ?> <?php echo language::translate('text_insert_new_entries', 'Insert new entries'); ?></label></div>
               <div class="checkbox"><label><?php echo functions::form_draw_checkbox('overwrite', '1', true); ?> <?php echo language::translate('text_overwrite_existing_entries', 'Overwrite existing entries'); ?></label></div>
+            </div>
+
+            <div class="form-group">
+              <label><?php echo language::translate('title_on_error', 'On Error'); ?></label>
+              <label><?php echo functions::form_draw_radio_button('onerror', 'abort', isset($_POST['onerror']) ? true : 'abort'); ?> <?php echo language::translate('title_abort_operation', 'Abort Operation'); ?></label>
+              <label><?php echo functions::form_draw_radio_button('onerror', 'resume', isset($_POST['onerror']) ? true : ''); ?> <?php echo language::translate('title_resume_next', 'Resume Next'); ?></label>
             </div>
 
             <?php echo functions::form_draw_button('import', language::translate('title_import', 'Import'), 'submit'); ?>

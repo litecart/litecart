@@ -1,8 +1,17 @@
 <?php
 
   function image_scale_by_width($width, $ratio) {
-    list($x, $y) = explode(':', $ratio);
-    return[$width, round($width / $x * $y)];
+
+    if (!$width || !$ratio) {
+      return false;
+    }
+
+    list($x, $y) = preg_split('#[:/]#', $ratio);
+
+    settype($x, 'int');
+    settype($y, 'int');
+
+    return [$width, round($width / $x * $y)];
   }
 
   function image_process($source, $options) {
@@ -26,8 +35,12 @@
       if (is_dir($options['destination']) || substr($options['destination'], -1) == '/') {
         if (preg_match('#^'. preg_quote(FS_DIR_STORAGE . 'cache/', '#') .'$#', $options['destination'])) {
 
-          if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
+          if (settings::get('avif_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
+            $extension = 'avif';
+
+          } else if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
             $extension = 'webp';
+
           } else {
             $extension = pathinfo($source, PATHINFO_EXTENSION);
           }

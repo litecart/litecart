@@ -1,6 +1,13 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['sort'])) $_GET['sort'] = 'price';
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+    $_GET['page'] = 1;
+  }
+
+  if (empty($_GET['sort'])) {
+    $_GET['sort'] = 'price';
+  }
+
   if (empty($_GET['category_id'])) {
     header('Location: '. document::ilink('categories'));
     exit;
@@ -13,7 +20,9 @@
 
   $category = reference::category($_GET['category_id']);
 
-  if (empty($_GET['list_style'])) $_GET['list_style'] = !empty($category->list_style) ? $category->list_style : 'columns';
+  if (empty($_GET['list_style'])) {
+    $_GET['list_style'] = !empty($category->list_style) ? $category->list_style : 'columns';
+  }
 
   if (empty($category->id)) {
     http_response_code(410);
@@ -27,9 +36,14 @@
     return;
   }
 
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', ['category_id' => $category->id], false) .'" />';
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', ['category_id' => $category->id], false) .'">';
   document::$snippets['title'][] = $category->head_title ? $category->head_title : $category->name;
   document::$snippets['description'] = $category->meta_description ? $category->meta_description : strip_tags($category->short_description);
+
+  if (!empty($category->image)) {
+    $og_image = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->image, 1200, 630, 'FIT_USE_WHITESPACING');
+    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink(FS_DIR_STORAGE . $og_image) .'">';
+  }
 
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
   foreach (array_slice($category->path, 0, -1, true) as $category_crumb) {

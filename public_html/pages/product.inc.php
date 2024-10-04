@@ -40,10 +40,11 @@
 
   document::$snippets['title'][] = $product->head_title ? $product->head_title : $product->name;
   document::$snippets['description'] = $product->meta_description ? $product->meta_description : strip_tags($product->short_description);
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'" />';
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'">';
 
   if (!empty($product->image)) {
-    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink(FS_DIR_STORAGE . 'images/' . $product->image) .'"/>';
+    $og_image = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, 1200, 630, 'FIT_USE_WHITESPACING');
+    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink(FS_DIR_STORAGE . $og_image) .'">';
   }
 
   if (!empty($_GET['category_id'])) {
@@ -79,7 +80,7 @@
 // Page
   $_page = new ent_view();
 
-  $schema_json = [
+  document::$schema['product'] = [
     '@context' => 'http://schema.org/',
     '@type' => 'Product',
     'productID' => $product->id,
@@ -179,14 +180,41 @@
 // Stickers
   if (!empty($product->campaign['price']) && $product->campaign['price'] > 0) {
     $percentage = round(($product->price - $product->campaign['price']) / $product->price * 100);
-    $_page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'<br />-'. $percentage .'%</div>';
+    $_page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'<br>-'. $percentage .'%</div>';
   } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
     $_page->snippets['sticker'] = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
   }
 
+// Category
+  if (!empty($_GET['category_id'])) {
+
+    $category = reference::category($_GET['category_id']);
+
+    $_page->snippets['category'] = [
+      'id' => $category->id,
+      'parent_id' => $category->parent_id,
+      'name' => $category->name,
+      'image' => [],
+    ];
+
+    if ($category->image) {
+      list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
+      $_page->snippets['category']['image'] = [
+        'original' => $category->image ? 'images/' . $category->image : '',
+        'thumbnail_1x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->image, $width, $height, settings::get('category_image_clipping')),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->image, $width*2, $height*2, settings::get('category_image_clipping')),
+        'ratio' => str_replace(':', '/', settings::get('category_image_ratio')),
+        'viewport' => [
+          'width' => $width,
+          'height' => $height,
+        ],
+      ];
+    }
+  }
+
 // Manufacturer
   if (!empty($product->manufacturer) && $product->manufacturer->status) {
-    $schema_json['brand']['name'] = $product->manufacturer->name;
+    document::$schema['product']['brand']['name'] = $product->manufacturer->name;
 
     $_page->snippets['manufacturer'] = [
       'id' => $product->manufacturer->id,
@@ -345,5 +373,3 @@
   } else {
     echo $_page->stitch('pages/product');
   }
-
-  document::$snippets['head_tags']['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json, JSON_UNESCAPED_SLASHES) .'</script>';

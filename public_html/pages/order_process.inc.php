@@ -176,7 +176,7 @@
         }
       }
 
-      $order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['language_code']);
+      $order->send_order_copy($order->data['customer']['email'], [], $bccs, $order->data['language_code']);
     }
 
   // Run after process operations

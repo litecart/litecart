@@ -37,7 +37,7 @@
           case 'customer_country_code':
           case 'customer_zone_code':
           case 'customer_phone':
-            $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = database::create_variable($field['Type']);
+            $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           case 'shipping_company':
@@ -50,21 +50,21 @@
           case 'shipping_country_code':
           case 'shipping_zone_code':
           case 'shipping_phone':
-            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = database::create_variable($field['Type']);
+            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           case 'payment_option_id':
           case 'payment_option_name':
-            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = database::create_variable($field['Type']);
+            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           case 'shipping_option_id':
           case 'shipping_option_name':
-            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = database::create_variable($field['Type']);
+            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           default:
-            $this->data[$field['Field']] = database::create_variable($field['Type']);
+            $this->data[$field['Field']] = database::create_variable($field);
             break;
         }
       }
@@ -159,9 +159,6 @@
 
       while ($item = database::fetch($order_items_query)) {
         $item['options'] = unserialize($item['options']);
-        $item['quantity'] = (float)$item['quantity']; // Turn "1.0000" to 1
-        $item['price'] = (float)$item['price']; // Turn "1.0000" to 1
-        $item['tax'] = (float)$item['tax']; // Turn "1.0000" to 1
         $this->data['items'][$item['id']] = $item;
       }
 
@@ -178,9 +175,10 @@
       }
 
       $order_comments_query = database::query(
-        "select * from ". DB_TABLE_PREFIX ."orders_comments
-        where order_id = ". (int)$order_id ."
-        order by id;"
+        "select oc.*, u.username as author_username from ". DB_TABLE_PREFIX ."orders_comments oc
+        left join ". DB_TABLE_PREFIX ."users u on (u.id = oc.author_id)
+        where oc.order_id = ". (int)$order_id ."
+        order by oc.id;"
       );
 
       while ($row = database::fetch($order_comments_query)) {
@@ -199,7 +197,7 @@
       if (!empty($this->previous['id']) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
         $this->data['comments'][] = [
           'author' => 'system',
-          'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status by %username', settings::get('store_language_code')), [
+          'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status', settings::get('store_language_code')), [
             '%username' => !empty(user::$data['username']) ? user::$data['username'] : 'system',
             '%new_status' => reference::order_status($this->data['order_status_id'], settings::get('store_language_code'))->name,
           ]),
@@ -406,6 +404,7 @@
         foreach ($this->data['comments'] as &$comment) {
 
           if (empty($comment['author'])) $comment['author'] = 'system';
+          if (empty($comment['author_id'])) $comment['author_id'] = ($comment['author'] == 'customer') ? -1 : 0;
 
           if (empty($comment['id'])) {
             database::query(
@@ -423,6 +422,7 @@
           database::query(
             "update ". DB_TABLE_PREFIX ."orders_comments
             set author = '". (!empty($comment['author']) ? database::input($comment['author']) : 'system') ."',
+              author_id = ". (int)$comment['author_id'] .",
               text = '". database::input($comment['text']) ."',
               hidden = '". (!empty($comment['hidden']) ? 1 : 0) ."'
             where order_id = ". (int)$this->data['id'] ."
@@ -454,6 +454,10 @@
           $this->send_email_notification();
         }
       }
+
+      list($module_id, $option_id) = preg_split('#:#', $this->data['payment_option']['id']);
+      $payment_modules = new mod_payment();
+      $payment_modules->run('after_save', $module_id, $this);
 
       $order_modules = new mod_order();
       $order_modules->update($this);
@@ -706,7 +710,7 @@
       return false;
     }
 
-    public function email_order_copy($recipient, $bccs=[], $language_code='') {
+    public function send_order_copy($recipient, $ccs=[], $bccs=[], $language_code='') {
 
       if (empty($recipient)) return;
       if (empty($language_code)) $language_code = $this->data['language_code'];
@@ -770,6 +774,12 @@
 
       $email = new ent_email();
 
+      if (!empty($ccs)) {
+        foreach ($ccs as $cc) {
+          $email->add_cc($cc);
+        }
+      }
+
       if (!empty($bccs)) {
         foreach ($bccs as $bcc) {
           $email->add_bcc($bcc);
@@ -793,9 +803,9 @@
         '%new_status' => $order_status->name,
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
-        '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
+        '%billing_address' => nl2br(functions::format_address($this->data['customer']), false),
         '%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
-        '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
+        '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address']), false),
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
         '%order_items' => null,
@@ -818,10 +828,10 @@
             }
           }
 
-          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "<br />\r\n";
+          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "<br>\r\n";
 
         } else {
-          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "<br />\r\n";
+          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "<br>\r\n";
         }
       }
 
@@ -860,6 +870,7 @@
     // Empty order first..
       $this->data['items'] = [];
       $this->data['order_total'] = [];
+      $this->data['comments'] = [];
       $this->refresh_total();
       $this->save();
 

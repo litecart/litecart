@@ -146,17 +146,17 @@
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_properties', 'Properties'); ?></label>
               <div class="checkbox">
-                <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale'); ?><br />
+                <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale'); ?><br>
                 <?php echo language::translate('text_include_in_sales_reports', 'Include in sales reports'); ?></label>
               </div>
 
               <div class="checkbox">
-                <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived'); ?><br />
+                <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived'); ?><br>
                 <?php echo language::translate('text_exclude_from_list_of_orders', 'Exclude from the default list of orders'); ?></label>
               </div>
 
               <div class="checkbox">
-                <label><?php echo functions::form_draw_checkbox('is_trackable', '1', empty($_POST['is_trackable']) ? '0' : '1'); ?> <?php echo language::translate('text_is_trackable', 'Is trackable'); ?><br />
+                <label><?php echo functions::form_draw_checkbox('is_trackable', '1', empty($_POST['is_trackable']) ? '0' : '1'); ?> <?php echo language::translate('text_is_trackable', 'Is trackable'); ?><br>
                 <?php echo language::translate('text_will_send_tracking_event_to_shipping_module', 'Will send an event to the shipping module for tracking the shipment.'); ?></label>
               </div>
             </div>
@@ -165,17 +165,17 @@
               <label><?php echo language::translate('title_stock_action', 'Stock Action'); ?></label>
 
               <div class="checkbox">
-                <label><?php echo functions::form_draw_radio_button('stock_action', 'none', empty($_POST['stock_action']) ? 'none' : true); ?> <?php echo language::translate('title_none', 'None'); ?><br />
+                <label><?php echo functions::form_draw_radio_button('stock_action', 'none', empty($_POST['stock_action']) ? 'none' : true); ?> <?php echo language::translate('title_none', 'None'); ?><br>
                 <?php echo language::translate('text_stock_remains_without_an_action', 'Stock remains without any action'); ?></label>
               </div>
 
               <div class="checkbox">
-                <label><?php echo functions::form_draw_radio_button('stock_action', 'reserve', true); ?> <?php echo language::translate('title_reserve', 'Reserve'); ?><br />
+                <label><?php echo functions::form_draw_radio_button('stock_action', 'reserve', true); ?> <?php echo language::translate('title_reserve', 'Reserve'); ?><br>
                 <?php echo language::translate('text_reserve_stock_for_orders_having_this_status', 'Reserve stock for orders having this status'); ?></label>
               </div>
 
               <div class="checkbox">
-                <label><?php echo functions::form_draw_radio_button('stock_action', 'commit', true); ?> <?php echo language::translate('title_commit', 'Commit'); ?><br />
+                <label><?php echo functions::form_draw_radio_button('stock_action', 'commit', true); ?> <?php echo language::translate('title_commit', 'Commit'); ?><br>
                 <?php echo language::translate('text_commit_changes_to_the_stock', 'Commit changes to the stock'); ?></label>
               </div>
             </div>

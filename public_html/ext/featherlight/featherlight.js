@@ -349,12 +349,12 @@
 			},
 
 			image: {
-				regex: /\.(a?png|bmp|gif|ico|jpe?g|jp2|svg|tiff?|webp)(\?\S*)?$/i,
+				regex: /\.(a?png|avif|bmp|gif|ico|jpe?g|jp2|svg|tiff?|webp)(\?\S*)?$/i,
 				process: function(url) {
 					var self = this,
 						deferred = $.Deferred(),
 						img = new Image(),
-						$img = $('<img src="'+url+'" alt="" />');
+						$img = $('<img alt="">').attr('src', url);
 					img.onload = function() {
 						/* Store naturalWidth & height for IE8 */
 						$img.naturalWidth = img.width;
@@ -392,7 +392,7 @@
 			iframe: {
 				process: function(url) {
 					var deferred = new $.Deferred();
-					var $content = $('<iframe/>');
+					var $content = $('<iframe></iframe>');
 					$content.hide()
 						.attr('src', url)
 						.on('load', function() { deferred.resolve($content.show()); })
@@ -403,8 +403,30 @@
 				}
 			},
 
+			raw: {
+				regex: /\.(log|md|txt)(\?\S*)?$/i,
+				process: function(url) {
+					var self = this,
+						deferred = $.Deferred(),
+						$content = $('<div>').css({
+              "white-space": 'pre-wrap',
+              "max-width": '90vw'
+            });
+
+          $.get(url, function(data) {
+            $content.text(data);
+          }).done(function(data) {
+            deferred.resolve( $content );
+          })
+
+					return deferred.promise();
+				}
+			},
+
 			text: {
-				process: function(text) { return $('<div>', {text: text}); }
+				process: function(text) {
+          return $('<div>', {text: text});
+        }
 			}
 		},
 

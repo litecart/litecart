@@ -1,7 +1,16 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['parent_id']) || !is_numeric($_GET['parent_id'])) $_GET['parent_id'] = 0;
-  if (empty($_GET['expanded'])) $_GET['expanded'] = [];
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+    $_GET['page'] = 1;
+  }
+
+  if (empty($_GET['parent_id']) || !is_numeric($_GET['parent_id'])) {
+    $_GET['parent_id'] = 0;
+  }
+
+  if (empty($_GET['expanded'])) {
+    $_GET['expanded'] = [];
+  }
 
   document::$snippets['title'][] = language::translate('title_pages', 'Pages');
 
@@ -76,6 +85,12 @@
     [language::translate('title_customer_service', 'Customer Service'), 'customer_service'],
     [language::translate('title_information', 'Information'), 'information'],
   ];
+
+  $docks = [
+    'menu' => language::translate('title_site_menu', 'Site Menu'),
+    'customer_service' => language::translate('title_customer_service', 'Customer Service'),
+    'information' => language::translate('title_information', 'Information'),
+  ];
 ?>
 <style>
 table tbody .toggle {
@@ -117,9 +132,7 @@ table tbody .toggle {
           <th></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th class="main" style="padding-inline-start: 30px;"><?php echo language::translate('title_title', 'Title'); ?></th>
-          <th><?php echo language::translate('title_site_menu', 'Site Menu'); ?></th>
-          <th><?php echo language::translate('title_information', 'Information'); ?></th>
-          <th><?php echo language::translate('title_customer_service', 'Customer Service'); ?></th>
+          <th><?php echo language::translate('title_dock', 'Dock'); ?></th>
           <th></th>
         </tr>
       </thead>
@@ -143,13 +156,12 @@ table tbody .toggle {
       order by p.priority, pi.title;"
     );
 
-    if (database::num_rows($pages_query) > 0) {
+    if (database::num_rows($pages_query)) {
 
       if ($_GET['page'] > 1) database::seek($pages_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
       $page_items = 0;
       while ($page = database::fetch($pages_query)) {
-        $page['dock'] = explode(',', $page['dock']);
 
         $num_subpages = database::num_rows(
           database::query(
@@ -165,9 +177,7 @@ table tbody .toggle {
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($page['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
           <td><?php echo $page['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
-          <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td class="text-center"><?php echo strtr($page['dock'], $docks); ?></td>
           <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
 <?php
@@ -180,7 +190,7 @@ table tbody .toggle {
 
   } else {
 
-    $iterator = function($parent_id, $depth=0) use (&$iterator) {
+    $iterator = function($parent_id, $depth=0) use (&$iterator, $docks) {
 
       $pages_query = database::query(
         "select p.*, pi.title from ". DB_TABLE_PREFIX ."pages p
@@ -197,7 +207,6 @@ table tbody .toggle {
 
       $page_items = 0;
       while ($page = database::fetch($pages_query)) {
-        $page['dock'] = explode(',', $page['dock']);
 
         $subpages_query = database::query(
           "select p.*, pi.title from ". DB_TABLE_PREFIX ."pages p
@@ -227,9 +236,7 @@ table tbody .toggle {
             <?php echo $icon; ?>
             <a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a>
           </td>
-          <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td><?php echo strtr($page['dock'], $docks); ?></td>
           <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
 <?php

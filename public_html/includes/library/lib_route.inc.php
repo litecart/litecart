@@ -140,12 +140,12 @@
 
         sort($lines);
 
-        if (count($lines) >= 100) {
+        if (count($lines) >= 500) {
           $email = new ent_email();
           $email->add_recipient(settings::get('store_email'))
                 ->set_subject('[Not Found Report] '. settings::get('store_name'))
                 ->add_body(
-                  wordwrap("This is a list of the last 100 requests made to your website that did not have a destination. Most of these reports usually contain scans and attacks by evil robots. But some URLs may be indexed by search engines requiring a redirect to a proper destination.", 150, "\r\n") . "\r\n\r\n" .
+                  wordwrap("This is a list of the last 500 requests made to your website that did not have a destination. Most of these reports usually contain scans and attacks by malicious robots. But some URLs may be indexed by search engines requiring a redirect to a proper destination.", 150, "\r\n") . "\r\n\r\n" .
                   PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n" .
                   implode("\r\n", $lines)
                 )
@@ -213,9 +213,19 @@
         if (isset($link->query[$key])) $link->unset_query($key);
       }
 
+    // Decode new parameters passed as string
+      if (is_string($new_params)) {
+        parse_str($new_params, $new_params);
+      }
+
     // Set new params (overwrites any existing inherited params)
       foreach ($new_params as $key => $value) {
         $link->set_query($key, $value);
+      }
+
+    // Remove any occurrence of page=1 as obsolete
+      if (isset($link->query['page']) && $link->query['page'] == 1) {
+        $link->unset_query('page');
       }
 
     // Rewrite URL
@@ -232,7 +242,9 @@
 
     public static function rewrite(ent_link $link, $language_code=null) {
 
-      if ($link->host != $_SERVER['HTTP_HOST']) return $link;
+      if ($link->host != $_SERVER['HTTP_HOST']) {
+        return $link;
+      }
 
       if (empty($language_code)) {
         $language_code = language::$selected['code'];
@@ -246,7 +258,9 @@
         $language_code = language::identify();
       }
 
-      if (isset(self::$_links_cache[$language_code][(string)$link])) return self::$_links_cache[$language_code][(string)$link];
+      if (isset(self::$_links_cache[$language_code][(string)$link])) {
+        return self::$_links_cache[$language_code][(string)$link];
+      }
 
     // Strip logic from string
       $link->path = self::strip_url_logic($link->path);

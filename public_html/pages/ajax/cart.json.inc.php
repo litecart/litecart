@@ -4,8 +4,14 @@
   $json = [
     'items' => [],
     'quantity' => cart::$total['items'],
-    'value' => !empty(customer::$data['display_prices_including_tax']) ? cart::$total['value'] + cart::$total['tax'] : cart::$total['value'],
-    'formatted_value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(cart::$total['value'] + cart::$total['tax']) : currency::format(cart::$total['value']),
+    'subtotal' => [
+      'value' => !empty(customer::$data['display_prices_including_tax']) ? cart::$total['value'] + cart::$total['tax'] : cart::$total['value'],
+      'formatted' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(cart::$total['value'] + cart::$total['tax']) : currency::format(cart::$total['value']),
+    ],
+    'subtotal_tax' => [
+      'value' => cart::$total['tax'],
+      'formatted' => currency::format(cart::$total['tax']),
+    ],
     'text_total' => language::translate('title_total', 'Total'),
   ];
 

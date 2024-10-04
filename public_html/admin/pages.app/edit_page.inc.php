@@ -18,10 +18,12 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['title'])) throw new Exception(language::translate('error_missing_title', 'You must enter a title.'));
+
+      if (empty($_POST['title'])) {
+        throw new Exception(language::translate('error_missing_title', 'You must enter a title.'));
+      }
 
       if (empty($_POST['status'])) $_POST['status'] = 0;
-      if (empty($_POST['dock'])) $_POST['dock'] = [];
 
       $fields = [
         'status',
@@ -90,9 +92,9 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
           <div class="checkbox">
-            <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', true); ?> <?php echo language::translate('text_dock_in_site_menu', 'Dock in site menu'); ?></label><br />
-            <label><?php echo functions::form_draw_checkbox('dock[]', 'customer_service', true); ?> <?php echo language::translate('text_dock_in_customer_service', 'Dock in customer service'); ?></label><br />
-            <label><?php echo functions::form_draw_checkbox('dock[]', 'information', true); ?> <?php echo language::translate('text_dock_in_information', 'Dock in information'); ?></label>
+            <label><?php echo functions::form_draw_radio_button('dock', 'menu', true); ?> <?php echo language::translate('text_dock_in_site_menu', 'Dock in site menu'); ?></label><br>
+            <label><?php echo functions::form_draw_radio_button('dock', 'customer_service', true); ?> <?php echo language::translate('text_dock_in_customer_service', 'Dock in customer service'); ?></label><br>
+            <label><?php echo functions::form_draw_radio_button('dock', 'information', true); ?> <?php echo language::translate('text_dock_in_information', 'Dock in information'); ?></label>
           </div>
         </div>
 

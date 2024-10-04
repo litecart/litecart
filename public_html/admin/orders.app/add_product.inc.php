@@ -23,6 +23,7 @@
       'dim_class',
       'price',
       'tax',
+      'tax_class_id',
     ];
 
     foreach ($fields as $field) {
@@ -49,7 +50,7 @@
         <div class="thumbnail">
 <?php
   list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
-  echo '<img src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width, $height, settings::get('product_image_clipping'))) .'" />';
+  echo '<img src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width, $height, settings::get('product_image_clipping'))) .'">';
 ?>
         </div>
       </div>
@@ -165,7 +166,7 @@
           if ($value['price_adjust']) {
             $price_adjust_text = currency::format($value['price_adjust'], false, $_GET['currency_code'], $_GET['currency_value']);
             if ($value['price_adjust'] > 0) {
-              $price_adjust_text = ' <br />+'. $price_adjust;
+              $price_adjust_text = ' <br>+'. $price_adjust;
             }
           }
 
@@ -222,17 +223,22 @@
       </div>
 
       <div class="row">
-          <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
           <label><?php echo language::translate('title_quantity', 'quantity'); ?></label>
           <?php echo functions::form_draw_decimal_field('quantity', 1); ?>
         </div>
 
-          <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
           <label><?php echo language::translate('title_price', 'Price'); ?></label>
           <?php echo functions::form_draw_currency_field($_GET['currency_code'], 'price', true); ?>
         </div>
 
-          <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
+          <label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
+          <?php echo functions::form_draw_tax_classes_list('tax_class_id', true); ?>
+        </div>
+
+        <div class="form-group col-md-3">
           <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
           <?php echo functions::form_draw_currency_field($_GET['currency_code'], 'tax', true); ?>
         </div>
@@ -305,6 +311,15 @@
     $(this).find('input[name="tax"]').val( tax.toFixed(decimals) );
   });
 
+  $('form[name="form_add_product"]').on('change input', ':input[name="price"], :input[name="tax_class_id"]', function(){
+    var price = $('form[name="form_add_product"] :input[name="price"]').val(),
+      tax_class_id = $('form[name="form_add_product"] :input[name="tax_class_id"]').val(),
+      tax = get_tax(price, tax_class_id),
+      decimals = $('select[name="currency_code"] option:selected').data('decimals');
+
+    $('form[name="form_add_product"] :input[name="tax"]').val(tax.toFixed(decimals)).trigger('input');
+  });
+
   $('form[name="form_add_product"] button[name="ok"]').off('click').click(function(e){
     e.preventDefault();
 
@@ -328,7 +343,8 @@
       dim_class: $(form).find(':input[name="dim_class"]').val(),
       quantity: parseFloat($(form).find(':input[name="quantity"]').val() || 0),
       price: parseFloat($(form).find(':input[name="price"]').val() || 0),
-      tax: parseFloat($(form).find(':input[name="tax"]').val() || 0)
+      tax: parseFloat($(form).find(':input[name="tax"]').val() || 0),
+      tax_class_id: parseInt($(form).find(':input[name="tax_class_id"]').val() || 0)
     };
 
     var selected_option_combinations = [];

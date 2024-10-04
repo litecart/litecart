@@ -23,7 +23,7 @@ ErrorDocument 500 "Internal Server Error"
   #RewriteCond %{REQUEST_URI} !^/\.well-known/
   #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
-  # Force HTTPS (CloudFlare Flexi SSL / Load Balancing Servers)
+  # Force HTTPS (Proxy Servers, Load Balancing Servers, CloudFlare Flexi SSL)
   #RewriteCond %{HTTPS} off
   #RewriteCond %{HTTP:X-Forwarded-Proto} =http
   #RewriteCond %{REQUEST_METHOD} !=POST
@@ -48,7 +48,7 @@ ErrorDocument 500 "Internal Server Error"
   #RewriteCond %{REQUEST_URI} !^/\.well-known/
   #RewriteRule ^ https://www.mydomain.com%{REQUEST_URI} [R=301,L]
 
-  # Web path to catalog root
+  # Web path to application root
   RewriteBase {BASE_DIR}
 
   # No rewrite logic for physical files
@@ -77,7 +77,7 @@ ErrorDocument 500 "Internal Server Error"
     Header set Cache-Control "max-age=86400, public, must-revalidate"
   </FilesMatch>
 
-  <FilesMatch "\.(a?png|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">
+  <FilesMatch "\.(a?png|avif|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">
     Header set Cache-Control "max-age=604800, public, must-revalidate"
   </FilesMatch>
 </IfModule>

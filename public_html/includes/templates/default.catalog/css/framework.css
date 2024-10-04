@@ -248,6 +248,7 @@ ul.breadcrumb {
   list-style: none;
   background-color: var(--breadcrumbs-background-color);
   border-radius: var(--border-radius);
+  line-height: 1.5;
 }
 ul.breadcrumb li {
   display: inline-block;
@@ -1182,7 +1183,12 @@ textarea {
   outline: 0;
 }
 input[type="number"] {
+  -moz-appearance: textfield;
   text-align: end;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  display: none;
 }
 input[type="checkbox"] {
   -webkit-appearance: none;
@@ -1254,7 +1260,6 @@ input[type="radio"]:hover {
   padding: var(--input-padding-y) var(--input-padding-x);
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: all 50ms;
-  cursor: default;
 }
 .form-control[type="color"] {
   height: 37px;
@@ -1283,6 +1288,7 @@ select.form-control {
   background-position: right 1em center;
   background-size: 0.8em;
   padding-inline-end: 2.5em !important;
+  cursor: default;
 }
 select.form-control.multiple {
   padding: 0;

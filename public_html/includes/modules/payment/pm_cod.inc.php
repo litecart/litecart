@@ -42,14 +42,15 @@
           ],
         ]
       ];
+
       return $method;
     }
 
-    public function transfer($order) {
+    public function transfer($order, $success_url, $cancel_url) {
       return [
-        'action' => '',
-        'method' => '',
-        'fields' => '',
+        'action' => '', // Target URL
+        'method' => '', // GET, POST
+        'fields' => [], // Form data
       ];
     }
 

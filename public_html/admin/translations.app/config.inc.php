@@ -2,7 +2,7 @@
 
   return $app_config = [
     'name' => language::translate('title_translations', 'Translations'),
-    'default' => 'search',
+    'default' => 'translations',
     'priority' => 0,
     'theme' => [
       'color' => '#cc7d7d',
@@ -10,8 +10,8 @@
     ],
     'menu' => [
       [
-        'title' => language::translate('title_search_translations', 'Search Translations'),
-        'doc' => 'search',
+        'title' => language::translate('title_translations', 'Translations'),
+        'doc' => 'translations',
         'params' => [],
       ],
       [
@@ -26,7 +26,7 @@
       ],
     ],
     'docs' => [
-      'search' => 'search.inc.php',
+      'translations' => 'translations.inc.php',
       'scan' => 'scan.inc.php',
       'csv' => 'csv.inc.php',
     ],

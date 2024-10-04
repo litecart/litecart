@@ -24,7 +24,7 @@
       );
 
       while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = database::create_variable($field['Type']);
+        $this->data[$field['Field']] = database::create_variable($field);
       }
 
       $this->data['sender'] = [
@@ -138,14 +138,19 @@
         return $this;
       }
 
-      if (!$charset) $charset = $this->data['charset'];
+      if (!$charset) {
+        $charset = $this->data['charset'];
+      }
+
+    // Convert all line endings to RFC standard \r\n
+      $content = preg_replace('#\r\n?|\n#', "\r\n", $content);
 
       $this->data['multiparts'][] = [
         'headers' => [
           'Content-Type' => ($html ? 'text/html' : 'text/plain') .'; charset='. $charset,
           'Content-Transfer-Encoding' => '8bit',
         ],
-        'body' => trim($content),
+        'body' => wordwrap(trim($content), 70, "\r\n"),
       ];
 
       return $this;

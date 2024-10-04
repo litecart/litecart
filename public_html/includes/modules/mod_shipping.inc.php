@@ -129,22 +129,6 @@
         }
       }
 
-      if (empty($cheapest)) {
-        foreach ($this->data['options'] as $module) {
-          foreach ($module['options'] as $option) {
-            if (!empty($option['error'])) continue;
-            if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
-              $cheapest = [
-                'module_id' => $module['id'],
-                'option_id' => $option['id'],
-                'cost' => $option['cost'],
-                'tax_class_id' => $option['tax_class_id'],
-              ];
-            }
-          }
-        }
-      }
-
       if (empty($cheapest)) return false;
 
       return $cheapest;

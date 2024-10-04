@@ -8,6 +8,7 @@
     $box_site_menu->snippets = [
       'categories' => [],
       'manufacturers' => [],
+      'information' => [],
       'pages' => [],
     ];
 
@@ -44,13 +45,33 @@
       ];
     }
 
-  // Information pages
+  // Information Pages
 
     $pages_query = database::query(
       "select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
       left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
       where status
-      and find_in_set('menu', dock)
+      and dock = 'information'
+      order by p.priority, pi.title;"
+    );
+
+    while ($page = database::fetch($pages_query)) {
+      $box_site_menu->snippets['information'][$page['id']] = [
+        'type' => 'page',
+        'id' => $page['id'],
+        'title' => $page['title'],
+        'link' => document::ilink('information', ['page_id' => $page['id']]),
+        'priority' => $page['priority'],
+      ];
+    }
+
+  // Pages
+
+    $pages_query = database::query(
+      "select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
+      left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
+      where status
+      and dock = 'menu'
       order by p.priority, pi.title;"
     );
 

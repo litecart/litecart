@@ -22,7 +22,7 @@
       );
 
       while ($field = database::fetch($categories_query)) {
-        $this->data[$field['Field']] = database::create_variable($field['Type']);
+        $this->data[$field['Field']] = database::create_variable($field);
       }
 
       $categories_info_query = database::query(
@@ -34,7 +34,7 @@
 
         $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = database::create_variable($field['Type']);
+          $this->data[$field['Field']][$language_code] = database::create_variable($field);
         }
       }
 

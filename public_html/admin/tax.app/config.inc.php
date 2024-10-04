@@ -24,6 +24,7 @@
       'tax_classes' => 'tax_classes.inc.php',
       'edit_tax_class' => 'edit_tax_class.inc.php',
       'tax_rates' => 'tax_rates.inc.php',
+      'tax_rates.json' => 'tax_rates.json.inc.php',
       'edit_tax_rate' => 'edit_tax_rate.inc.php',
     ],
   ];

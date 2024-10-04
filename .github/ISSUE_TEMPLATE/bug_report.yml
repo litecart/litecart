@@ -30,7 +30,7 @@ body:
     id: php_version
     attributes:
       label: PHP Version
-      description: "What is PHP version were you running when the problem occured?"
+      description: "What is the PHP version you were running when the problem occured?"
       placeholder: "PHP x.x.x"
     validations:
       required: true
@@ -38,12 +38,12 @@ body:
     id: error_log
     attributes:
       label: Error/Backtrace
-      description: If an error message was produced, you can post the full backtrace error found in logs/errors.log.
+      description: If an error message was returned, what was the error? All logged PHP errors and their backtraces are found in logs/errors.log.
       render: shell
   - type: dropdown
     id: reproducable_in_demo
     attributes:
-      label: Is this a problem that can be reproduced in the [demo platform](https://demo.litecart.net/admin)?
+      label: Is this a problem that can be reproduced in the demo platform (https://demo.litecart.net/admin)?
       multiple: false
       options:
         - "I don't know"
@@ -52,7 +52,7 @@ body:
   - type: dropdown
     id: browser
     attributes:
-      label: If this problem could be related to a browser. Which one?
+      label: If this a visual problem that could be related to a browser. Which one?
       multiple: false
       options:
         - "Not relevant"

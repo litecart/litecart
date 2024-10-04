@@ -126,10 +126,6 @@
       return $cost;
     }
 
-    public function select() {}
-
-    public function after_process() {}
-
     public function settings() {
       return [
         [

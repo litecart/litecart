@@ -285,7 +285,7 @@
       return self::$_cache['translations'][$language_code][$code] = $default;
     }
 
-    public static function number_format($number, $decimals=2) {
+    public static function number_format($number, $decimals=0) {
       return number_format((float)$number, $decimals, self::$selected['decimal_point'], self::$selected['thousands_sep']);
     }
 

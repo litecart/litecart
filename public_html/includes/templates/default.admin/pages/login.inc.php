@@ -78,7 +78,7 @@ html.dark-mode body {
 
 <div id="box-login" class="card bounce-in">
   <div class="card-header text-center">
-    <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo document::href_link(WS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" /></a>
+    <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo document::href_link(WS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>"></a>
   </div>
 
   <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>

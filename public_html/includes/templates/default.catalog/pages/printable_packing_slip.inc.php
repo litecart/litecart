@@ -15,7 +15,7 @@ h1 {
 
 .rounded-rectangle {
   border: 1px solid #000;
-  border-radius: 5mm;
+  border-radius: 4mm;
   padding: 4mm;
   margin-inline-start: -15px;
   margin-bottom: 3mm;
@@ -40,11 +40,11 @@ h1 {
 }
 </style>
 
-<section class="page" data-size="A4" dir="<?php echo $text_direction; ?>">
+<section class="page" data-size="<?php echo $paper_size; ?>" dir="<?php echo $text_direction; ?>">
   <header class="header">
     <div class="row">
       <div class="col-xs-6">
-        <img class="logotype" src="<?php echo document::link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
+        <img class="logotype" src="<?php echo document::link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>">
       </div>
 
       <div class="col-xs-6 text-end">
@@ -55,7 +55,7 @@ h1 {
     </div>
   </header>
 
-  <div class="content">
+  <main class="content">
     <div class="addresses">
       <div class="row">
         <div class="col-xs-6">
@@ -72,7 +72,7 @@ h1 {
         <div class="col-xs-6 shipping-address">
           <div class="rounded-rectangle">
             <div class="label"><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></div>
-            <div class="value"><?php echo nl2br(functions::escape_html(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address']))); ?></div>
+            <div class="value"><?php echo nl2br(functions::escape_html(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])), false); ?></div>
           </div>
 
           <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
@@ -95,14 +95,14 @@ h1 {
       <tbody>
         <?php foreach ($order['items'] as $item) { ?>
         <tr>
-          <td><?php echo (float)$item['quantity']; ?></td>
+          <td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
           <td><?php echo $item['sku']; ?></td>
           <td style="white-space: normal;"><?php echo $item['name']; ?>
 <?php
     if (!empty($item['options'])) {
       foreach ($item['options'] as $key => $value) {
         if (is_array($value)) {
-          echo '<br />- '.$key .': ';
+          echo '<br>- '.$key .': ';
           $use_comma = false;
           foreach ($value as $v) {
             if ($use_comma) echo ', ';
@@ -110,7 +110,7 @@ h1 {
             $use_comma = true;
           }
         } else {
-          echo '<br />- '.$key .': '. $value;
+          echo '<br>- '.$key .': '. $value;
         }
       }
     }
@@ -131,17 +131,17 @@ h1 {
     </ul>
     <?php } ?>
 
-  </div>
+  </main>
 
   <?php if (count($order['items']) <= 10) { ?>
   <footer class="footer">
 
-    <hr />
+    <hr>
 
     <div class="row">
       <div class="col-xs-3">
         <div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
-        <div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
+        <div class="value"><?php echo nl2br(settings::get('store_postal_address'), false); ?></div>
       </div>
 
       <div class="col-xs-3">
@@ -170,3 +170,21 @@ h1 {
   </footer>
   <?php } ?>
 </section>
+
+<div id="actions">
+  <ul class="list-unstyled">
+    <li>
+      <button name="print" class="btn btn-default btn-lg">
+        <?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
+      </button>
+    </li>
+  </ul>
+</div>
+
+<script>
+  document.title = "<?php echo functions::escape_js(language::translate('title_packing_slip', 'Packing Slip')); ?> #<?php echo $order['id']; ?>";
+
+  $('#actions button[name="print"]').click(function(){
+    window.print();
+  });
+</script>

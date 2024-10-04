@@ -1,14 +1,14 @@
 <?php
 
-  if (php_sapi_name() == 'cli') {
+  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
-    if (!isset($argv[1]) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
-      echo "\nLiteCart® 2.5.5\n"
+    if (!isset($argv[1]) || $argv[1] == 'help' || $argv[1] == '-h' || $argv[1] == '--help' || $argv[1] == '/?') {
+      echo "\nLiteCart® 2.6.0\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
       . "Options:\n"
-      . "  --db_server          Set database hostname (Default: 127.0.0.1)\n"
+      . "  --db_server          Set database hostname (Default: ". ini_get('mysqli.default_host') .")\n"
       . "  --db_username        Set database username\n"
       . "  --db_password        Set database user password\n\n"
       . "  --db_database        Set database name\n"
@@ -16,7 +16,7 @@
       . "  --db_collation       Set database collation (Default: utf8_swedish_ci)\n"
       . "  --document_root      Set document root\n\n"
       . "  --timezone           Set timezone e.g. Europe/London\n\n"
-      . "  --admin_folder       Set admin folder name (Default admin)\n"
+      . "  --admin_folder       Set admin folder name (Default: admin)\n"
       . "  --username           Set admin username\n"
       . "  --password           Set admin user password\n\n"
       . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n"
@@ -53,7 +53,7 @@
 
     register_shutdown_function(function(){
       $buffer = ob_get_clean();
-      echo (php_sapi_name() == 'cli') ? strip_tags($buffer) : $buffer;
+      echo ($_SERVER['SERVER_SOFTWARE'] == 'CLI') ? strip_tags($buffer) : $buffer;
     });
 
     echo '<h1>LiteCart Installer</h1>' . PHP_EOL . PHP_EOL;
@@ -64,7 +64,7 @@
 
     if (!empty($_SERVER['DOCUMENT_ROOT'])) {
       define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/') . '/');
-    } else if (php_sapi_name() == 'cli' && !empty($_REQUEST['document_root'])) {
+    } else if ($_SERVER['SERVER_SOFTWARE'] == 'CLI' && !empty($_REQUEST['document_root'])) {
       define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_REQUEST['document_root'])), '/') . '/');
     } else {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
@@ -100,7 +100,7 @@
     }
 
     if (empty($_REQUEST['db_username'])) {
-      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No MySQL user provided</p>' . PHP_EOL  . PHP_EOL);
+      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No MySQL/MariaDB user provided</p>' . PHP_EOL  . PHP_EOL);
     }
 
     if (empty($_REQUEST['db_password'])) {
@@ -108,7 +108,7 @@
     }
 
     if (empty($_REQUEST['db_database'])) {
-      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No MySQL database provided</p>' . PHP_EOL  . PHP_EOL);
+      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No MySQL/MariaDB database provided</p>' . PHP_EOL  . PHP_EOL);
     }
 
     if (empty($_REQUEST['db_collation'])) {
@@ -144,7 +144,7 @@
     ini_set('log_errors', 'Off');
     ini_set('display_errors', 'On');
     ini_set('html_errors', 'On');
-
+    ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');
     date_default_timezone_set(!empty($_REQUEST['timezone']) ? $_REQUEST['timezone'] : ini_get('date.timezone'));
 
     ### PHP > Check Version #######################################
@@ -198,7 +198,7 @@
 
     ### PHP > Check document root #################################
 
-    if (php_sapi_name() != 'cli') {
+    if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
       echo '<p>Checking $_SERVER["DOCUMENT_ROOT"]... ';
 
       if (rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']) . '/') . preg_replace('#index\.php$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != str_replace('\\', '/', __DIR__)) {
@@ -248,7 +248,7 @@
 
     ### Database > Connection #####################################
 
-    echo '<p>Connecting to MySQL server on '. $_REQUEST['db_server'] .'... ';
+    echo '<p>Connecting to MySQL/MariaDB server on '. $_REQUEST['db_server'] .'... ';
 
     require_once FS_DIR_APP . 'includes/library/lib_database.inc.php';
 
@@ -262,23 +262,23 @@
 
     ### Database > Check Version ##################################
 
-    echo '<p>Checking MySQL version... ';
+    echo '<p>Checking MySQL/MariaDB version... ';
 
     $version_query = database::query("SELECT VERSION();");
-    $version = database::fetch($version_query);
+    $mysql_version = database::fetch($version_query, 'VERSION()');
 
-    if (version_compare($version['VERSION()'], '5.5', '<')) {
-      throw new Exception($version['VERSION()'] . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
-    } else if (version_compare($version['VERSION()'], '5.7', '<')) {
-      echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
+    if (version_compare($mysql_version, '5.5', '<')) {
+      throw new Exception($mysql_version . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
+    } else if (version_compare($mysql_version, '5.7', '<')) {
+      echo $mysql_version .' <span class="ok">[OK]</span><br />'
          . '<span class="warning">MySQL 5.7+ recommended</span></span></p>';
     } else {
-      echo $version['VERSION()'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      echo $mysql_version . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
     ### Database > Check Charset ##################################
 
-    echo '<p>Checking MySQL database default character set... ';
+    echo '<p>Checking MySQL/MariaDB database default character set... ';
 
     $charset_query = database::query(
       "select DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME from information_schema.SCHEMATA
@@ -288,14 +288,14 @@
     $charset = database::fetch($charset_query);
 
     if (substr($charset['DEFAULT_CHARACTER_SET_NAME'], 0, 4) != 'utf8') {
-      echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="warning">[Warning]</span> The database default charset is not \'utf8\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. substr($_REQUEST['db_collation'], 0, strpos($_REQUEST['db_collation'], '_')) .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
+      echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="warning">[Warning]</span> The database default charset is not \'utf8\' and you might experience future trouble with foreign characters. Try performing the following MySQL/MariaDB query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. substr($_REQUEST['db_collation'], 0, strpos($_REQUEST['db_collation'], '_')) .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
     } else {
       echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-      echo '<p>Checking MySQL database default collation... ';
+      echo '<p>Checking MySQL/MariaDB database default collation... ';
 
       if ($charset['DEFAULT_COLLATION_NAME'] != $_REQUEST['db_collation']) {
-        echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="warning">[Warning]</span> The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. substr($_REQUEST['db_collation'], 0, strpos($_REQUEST['db_collation'], '_')) .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
+        echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="warning">[Warning]</span> The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL/MariaDB query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. substr($_REQUEST['db_collation'], 0, strpos($_REQUEST['db_collation'], '_')) .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
       } else {
         echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       }
@@ -334,7 +334,7 @@
     $sql = file_get_contents('clean.sql');
     $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-    foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
+    foreach (preg_split('#^-- -----+\s*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
       $query = preg_replace('#^-- .*?\R+#m', '', $query);
       database::query($query);
     }
@@ -347,11 +347,8 @@
 
     $sql = file_get_contents('structure.sql');
 
-    $version_query = database::query("SELECT VERSION();");
-    $version = database::fetch($version_query);
-
   // Workaround for early MySQL versions (<5.6.5) not supporting multiple DEFAULT CURRENT_TIMESTAMP
-    if (version_compare($version['VERSION()'], '5.6.5', '<')) {
+    if (version_compare($mysql_version, '5.6.5', '<')) {
       str_replace('`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,', '`date_updated` TIMESTAMP NOT NULL DEFAULT NOW(),', $sql);
     }
 
@@ -365,7 +362,7 @@
       $sql = str_replace($search, $replace, $sql);
     }
 
-    foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
+    foreach (preg_split('#^-- -----+\s*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
       $query = preg_replace('#^-- .*?\R+#m', '', $query);
       database::query($query);
     }
@@ -390,9 +387,7 @@
       $sql = str_replace($search, database::input($replace), $sql);
     }
 
-    $sql = explode('-- --------------------------------------------------------', $sql);
-
-    foreach ($sql as $query) {
+    foreach (preg_split('#^-- -----+\s*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
       $query = preg_replace('#^-- .*?\R+#m', '', $query);
       database::query($query);
     }
@@ -407,6 +402,16 @@
     } else {
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
     }
+
+    perform_action('modify', [
+      FS_DIR_APP . 'robots.txt' => [
+        [
+          'search'  => 'Sitemap: /feeds/sitemap.xml',
+          'replace' => 'Sitemap: '. ((isset($_SERVER['HTTPS']) && filter_var($_SERVER['HTTPS'], FILTER_VALIDATE_BOOLEAN)) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . WS_DIR_APP . 'feeds/sitemap.xml',
+          'regex' => false,
+        ],
+      ],
+    ], 'skip');
 
     ### .htaccess mod rewrite #####################################
 
@@ -478,17 +483,17 @@
         foreach ($directories as $dir) {
 
           $dir = basename($dir);
+
           if ($dir == 'demo') continue;
           if ($dir == 'default') continue;
 
           foreach (glob('data/'. $dir .'/*.sql') as $file) {
-            $sql = file_get_contents($file);
 
-            if (empty($sql)) continue;
+            if (!$sql = file_get_contents($file)) continue;
 
             $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-            foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
+            foreach (preg_split('#^-- -----+\s*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
               $query = preg_replace('#^-- .*?\R+#m', '', $query);
               database::query($query);
             }
@@ -513,9 +518,7 @@
       if (!empty($sql)) {
         $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-        $sql = explode('-- --------------------------------------------------------', $sql);
-
-        foreach ($sql as $query) {
+        foreach (preg_split('#^-- -----+\s*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
           $query = preg_replace('#^-- .*?\R+#m', '', $query);
           database::query($query);
         }
@@ -538,7 +541,7 @@
 
     ### Files > Development Type ##################################
 
-    echo '<p>Preparing CSS files...<br />' . PHP_EOL;
+    echo '<p>Preparing CSS files...<br>' . PHP_EOL;
 
     $files_to_delete = [
       '../includes/templates/default.admin/less/',
@@ -580,7 +583,7 @@
       }
 
       foreach (glob('../includes/templates/default.catalog/layouts/*.inc.php') as $file) {
-        echo 'Modify '. $file .'<br />'. PHP_EOL;
+        echo 'Modify '. $file .'<br>'. PHP_EOL;
         $contents = file_get_contents($file);
         $search_replace = [
           'app.min.css' => 'app.css',
@@ -682,12 +685,12 @@
        . '<p>You may now log in to the <a href="../'. $_REQUEST['admin_folder'] .'/">admin panel</a> and start configuring your store.</p>' . PHP_EOL . PHP_EOL
        . '<p>Check out the <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> website for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>' . PHP_EOL . PHP_EOL;
 
-    if (php_sapi_name() != 'cli') {
+    if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
       echo '<form method="get" action="http://twitter.com/intent/tweet" target="_blank">' . PHP_EOL
-         . '  <input type="hidden" value="https://www.litecart.net/" />' . PHP_EOL
+         . '  <input type="hidden" value="https://www.litecart.net/">' . PHP_EOL
          . '  <div class="form-group">' . PHP_EOL
          . '    <div class="input-group">' . PHP_EOL
-         . '      <input type="text" class="form-control" name="text" value="Woohoo! I just installed #LiteCart and I am super excited! :)" />' . PHP_EOL
+         . '      <input type="text" class="form-control" name="text" value="Woohoo! I just installed #LiteCart and I am super excited! :)">' . PHP_EOL
          . '      <button class="btn btn-primary" type="submit">Tweet!</button>' . PHP_EOL
          . '    </div>' . PHP_EOL
          . '  </div>' . PHP_EOL
@@ -700,7 +703,7 @@
 
   $buffer = ob_get_clean();
 
-  if (php_sapi_name() == 'cli') {
+  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
     echo strip_tags($buffer);
     exit;
   }

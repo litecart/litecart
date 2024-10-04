@@ -4,11 +4,32 @@
 
     public static $template = '';
     public static $layout = 'default';
-    public static $snippets = [];
+    public static $schema = [];
     public static $settings = [];
+    public static $snippets = [];
     public static $jsenv = [];
 
     public static function init() {
+
+    // Set schema
+      self::$schema['website'] = [
+        '@context' => 'https://schema.org/',
+        '@type' => 'Website',
+        'name' => settings::get('store_name'),
+        'url' => self::ilink(''),
+        'countryOfOrigin' => settings::get('store_country_code'),
+      ];
+
+      self::$schema['organization'] = [
+        '@context' => 'https://schema.org/',
+        '@type' => 'Organization',
+        'name' => settings::get('store_name'),
+        'url' => self::ilink(''),
+        'logo' => self::rlink(FS_DIR_STORAGE . 'images/logotype.png'),
+        'email' => settings::get('store_email'),
+        'availableLanguage' => array_column(language::$languages, 'name'),
+      ];
+
       event::register('before_capture', [__CLASS__, 'before_capture']);
       event::register('prepare_output', [__CLASS__, 'prepare_output']);
       event::register('before_output',  [__CLASS__, 'before_output']);
@@ -18,7 +39,7 @@
 
       header('X-Frame-Options: SAMEORIGIN'); // Clickjacking Protection
       header('Content-Security-Policy: frame-ancestors \'self\';'); // Clickjacking Protection
-      header('Access-Control-Allow-Origin: '. document::ilink('')); // Only allow HTTP POST data from own domain
+      header('Access-Control-Allow-Origin: '. self::ilink('')); // Only allow HTTP POST data from own domain
       header('X-Powered-By: '. PLATFORM_NAME);
 
     // Set template
@@ -43,22 +64,22 @@
       self::$snippets['home_path'] = WS_DIR_APP;
       self::$snippets['template_path'] = WS_DIR_TEMPLATE;
       self::$snippets['title'] = [settings::get('store_name')];
-      self::$snippets['head_tags']['manifest'] = '<link rel="manifest" href="'. document::href_ilink('manifest.json') .'" />';
+      self::$snippets['head_tags']['manifest'] = '<link rel="manifest" href="'. document::href_ilink('manifest.json') .'">';
       self::$snippets['head_tags']['favicon'] = implode(PHP_EOL, [
-        '<link rel="icon" href="'. document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon.ico') .'" type="image/x-icon" sizes="32x32 48x48 64x64 96x96" />',
-        '<link rel="icon" href="'. document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-128x128.png') .'" type="image/png" sizes="128x128" />',
-        '<link rel="icon" href="'. document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-192x192.png') .'" type="image/png" sizes="192x192" />',
-        '<link rel="icon" href="'. document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-256x256.png') .'" type="image/png" sizes="256x256" />',
+        '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon.ico') .'" type="image/x-icon" sizes="32x32 48x48 64x64 96x96">',
+        '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-128x128.png') .'" type="image/png" sizes="128x128">',
+        '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-192x192.png') .'" type="image/png" sizes="192x192">',
+        '<link rel="icon" href="'. self::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-256x256.png') .'" type="image/png" sizes="255x255">',
       ]);
-      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'ext/fontawesome/font-awesome.min.css') .'" />';
-      self::$snippets['foot_tags']['jquery'] = '<script src="'. document::href_rlink(FS_DIR_APP .'ext/jquery/jquery-3.6.4.min.js') .'"></script>';
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. self::href_rlink(FS_DIR_APP .'ext/fontawesome/font-awesome.min.css') .'">';
+      self::$snippets['foot_tags']['jquery'] = '<script src="'. self::href_rlink(FS_DIR_APP .'ext/jquery/jquery-3.7.1.min.js') .'"></script>';
 
     // Hreflang
       if (!empty(route::$route['page'])) {
         self::$snippets['head_tags']['hreflang'] = '';
         foreach (language::$languages as $language) {
           if ($language['code'] == language::$selected['code']) continue;
-          self::$snippets['head_tags']['hreflang'] .= '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. document::href_ilink(route::$route['page'], [], true, ['page', 'sort'], $language['code']) .'" />' . PHP_EOL;
+          self::$snippets['head_tags']['hreflang'] .= '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. self::href_ilink(route::$route['page'], [], true, [], $language['code']) .'">' . PHP_EOL;
         }
         self::$snippets['head_tags']['hreflang'] = trim(self::$snippets['head_tags']['hreflang']);
       }
@@ -78,10 +99,19 @@
 
     public static function prepare_output() {
 
+    // Schema
+      if (!empty(self::$schema)) {
+        self::$snippets['head_tags']['schema_json'] = implode(PHP_EOL, [
+          '<script type="application/ld+json">',
+          json_encode(array_values(self::$schema), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+          '</script>',
+        ]);
+      }
+
     // JavaScript Environment
       self::$jsenv['platform'] = [
         'path' => WS_DIR_APP,
-        'url' => document::ilink(''),
+        'url' => self::ilink(''),
       ];
 
       self::$jsenv['session'] = [
@@ -92,7 +122,7 @@
       ];
 
       self::$jsenv['template'] = [
-        'url' => document::link(WS_DIR_TEMPLATE),
+        'url' => self::link(WS_DIR_TEMPLATE),
         'settings' => self::$settings,
       ];
 
@@ -113,7 +143,7 @@
 
     // Add meta description
       if (!empty(self::$snippets['description'])) {
-        self::$snippets['head_tags'][] = '<meta name="description" content="'. functions::escape_html(self::$snippets['description']) .'" />';
+        self::$snippets['head_tags'][] = '<meta name="description" content="'. functions::escape_html(self::$snippets['description']) .'">';
         unset(self::$snippets['description']);
       }
 
@@ -139,7 +169,7 @@
 
     public static function before_output() {
 
-      $microtime_start = microtime(true);
+      stats::start_watch('output_optimization');
 
     // Extract stylesheets and on page styling
       $GLOBALS['output'] = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function($matches) use (&$stylesheets, &$styles, &$javascripts, &$javascript) {
@@ -164,12 +194,12 @@
         $javascripts = [];
         $javascript = [];
 
-        $matches[2] = preg_replace_callback('#\R?(<script[^>]+></script>)\R?#is', function($match) use (&$javascripts, &$javascript) {
-           $javascripts[] = trim($match[1]);
+        $matches[2] = preg_replace_callback('#\R?(<script(?! data-fixed)[^>]+></script>)\R?#is', function($match) use (&$javascripts, &$javascript) {
+            $javascripts[] = trim($match[1]);
         }, $matches[2]);
 
-        $matches[2] = preg_replace_callback('#<script(?:[^>]*\stype="(?:application|text)/javascript")?>(?!</script>)(.*?)</script>\R?#is', function($match) use (&$javascripts, &$javascript) {
-           $javascript[] = trim($match[1], "\r\n");
+        $matches[2] = preg_replace_callback('#<script(?! data-fixed)(?:[^>]*\stype="(?:application|text)/javascript")?>(?!</script>)(.*?)</script>\R?#is', function($match) use (&$javascripts, &$javascript) {
+            $javascript[] = trim($match[1], "\r\n");
         }, $matches[2]);
 
         return $matches[1] . $matches[2] . $matches[3];
@@ -220,7 +250,7 @@
       }
 
       if (class_exists('stats', false)) {
-        stats::set('output_optimization', microtime(true) - $microtime_start);
+        stats::stop_watch('output_optimization');
       }
     }
 
@@ -278,12 +308,11 @@
 
       if (!is_file($resource)) {
         trigger_error('Could not create link for missing resource ('. $resource.')', E_USER_WARNING);
-        return document::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource));
+        return self::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource));
       }
 
       $resource = str_replace('\\', '/', realpath($resource));
-
-      return document::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource), ['_' => filemtime($resource)]);
+      return self::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource), ['_' => filemtime($resource)]);
     }
 
     public static function href_rlink($resource) {

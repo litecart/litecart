@@ -1,11 +1,13 @@
 <?php
   header('X-Robots-Tag: noindex');
-  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex">';
   document::$snippets['title'][] = language::translate('order_history:head_title', 'Order History');
 
   customer::require_login();
 
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+    $_GET['page'] = 1;
+  }
 
   breadcrumbs::add(language::translate('title_account', 'Account'));
   breadcrumbs::add(language::translate('title_order_history', 'Order History'));

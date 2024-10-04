@@ -29,7 +29,7 @@
       <div class="row">
         <div class="col-xs-3 col-sm-2 col-md-1">
           <a href="<?php echo functions::escape_html($item['link']); ?>" class="thumbnail float-start" style="margin-inline-end: 1em;">
-            <img class="img-responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $item['image']['thumbnail']); ?>" alt="" />
+            <img class="img-responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $item['image']['thumbnail']); ?>" alt="">
           </a>
         </div>
 
@@ -40,20 +40,24 @@
 
               <div class="name"><a href="<?php echo functions::escape_html($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></div>
 
-              <?php if (!empty($item['options'])) echo '<small class="options">'. implode('<br />', $item['options']) .'</small>'; ?>
+              <?php if (!empty($item['options'])) echo '<small class="options">'. implode('<br>', $item['options']) .'</small>'; ?>
               <?php if (!empty($item['error'])) echo '<div class="error">'. $item['error'] .'</div>'; ?>
             </div>
 
             <div class="col-sm-4">
               <div style="display: inline-flex;">
                 <div class="input-group" style="max-width: 175px;">
-                <?php if (!empty($item['quantity_unit']['name'])) { ?>
-                  <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], $item['quantity_min'], $item['quantity_max'], $item['quantity_step'] ? 'step="'. (float)$item['quantity_step'] .'"' : '') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_min'], $item['quantity_max'], $item['quantity_step'] ? 'step="'. (float)$item['quantity_step'] .'"' : ''); ?>
+                  <?php if (!empty($item['quantity_unit']['decimals'])) { ?>
+                   <?php echo functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], $item['quantity_min'], $item['quantity_max'], $item['quantity_step'] ? 'step="'. (float)$item['quantity_step'] .'"' : ''); ?>
+                  <?php } else { ?>
+                   <?php echo functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_min'], $item['quantity_max'], $item['quantity_step'] ? 'step="'. (float)$item['quantity_step'] .'"' : ''); ?>
+                  <?php } ?>
+
+                  <?php if (!empty($item['quantity_unit']['name'])) { ?>
                   <span class="input-group-text"><?php echo $item['quantity_unit']['name']; ?></span>
-                <?php } else { ?>
-                  <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
                 <?php } ?>
                 </div>
+
                 <?php echo functions::form_draw_button('update_cart_item', [$key, functions::draw_fonticon('fa-refresh')], 'submit', 'title="'. functions::escape_html(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
 
                 <div style="margin-inline-start: 1em;"><?php echo functions::form_draw_button('remove_cart_item', [$key, functions::draw_fonticon('fa-trash')], 'submit', 'class="btn btn-danger" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></div>

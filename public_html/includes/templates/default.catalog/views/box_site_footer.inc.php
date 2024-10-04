@@ -48,7 +48,7 @@
         <h3 class="title"><?php echo language::translate('title_contact', 'Contact'); ?></h3>
 
         <ul class="list-unstyled">
-          <li><?php echo nl2br(settings::get('store_postal_address')); ?></li>
+          <li><?php echo nl2br(settings::get('store_postal_address'), false); ?></li>
 
           <?php if (settings::get('store_phone')) { ?>
           <li><?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a></li>

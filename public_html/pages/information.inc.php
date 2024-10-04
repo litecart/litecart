@@ -19,7 +19,7 @@
     }
 
     $mother_page = array_values($page->path)[0];
-    if (in_array('customer_service', $page->dock) || in_array('customer_service', $mother_page->dock)) {
+    if ($mother_page->dock == 'customer_service') {
       http_response_code(301);
       header('Location: '. document::ilink('customer_service', ['page_id' => $page->id]));
       exit;
@@ -27,8 +27,12 @@
 
     document::$snippets['title'][] = !empty($page->head_title) ? $page->head_title : $page->title;
     document::$snippets['description'] = !empty($page->meta_description) ? $page->meta_description : '';
+    document::$snippets['canonical'] = '<link rel="canonical" href="'. document::ilink('information', ['page_id' => $page->id]) .'">';
 
-    breadcrumbs::add(language::translate('title_information', 'Information'));
+    if ($page->dock == 'information') {
+      breadcrumbs::add(language::translate('title_information', 'Information'));
+    }
+
     foreach (array_slice($page->path, 0, -1, true) as $crumb) {
       breadcrumbs::add($crumb->title, document::ilink('information', ['page_id' => $crumb->id]));
     }
@@ -41,7 +45,11 @@
       'content' => $page->content,
     ];
 
-    echo $_page->stitch('pages/information');
+    if ($page->dock == 'information') {
+      echo $_page->stitch('pages/information');
+    } else {
+      echo $_page->stitch('pages/page');
+    }
 
   } catch (Exception $e) {
     http_response_code($e->getCode());

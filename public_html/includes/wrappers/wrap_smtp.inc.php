@@ -49,7 +49,7 @@
       $this->read(220)
            ->write("EHLO {$_SERVER['SERVER_NAME']}\r\n", 250);
 
-      if (preg_match('#250-STARTTLS#', $this->_last_response)) {
+      if (preg_match('#250.STARTTLS#', $this->_last_response)) {
         $this->write("STARTTLS\r\n", 220);
         if (!stream_socket_enable_crypto($this->_socket, true, STREAM_CRYPTO_METHOD_SSLv23_CLIENT)) {
         //if (!stream_socket_enable_crypto($this->_socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {

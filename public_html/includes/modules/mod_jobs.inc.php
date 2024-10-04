@@ -29,10 +29,14 @@
           limit 1;"
         );
 
-        ob_start();
-        $timestamp = microtime(true);
-        $this->modules[$module_id]->process($force, $this->modules[$module_id]->date_processed);
-        $log = ob_get_clean();
+				if (!$last_run = $this->modules[$module_id]->date_processed) {
+					$last_run = 0; // As null will throw a Deprecated warning
+				}
+
+				ob_start();
+				$timestamp = microtime(true);
+				$this->modules[$module_id]->process($force, $last_run);
+				$log = ob_get_clean();
 
         if (!empty($log)) {
 

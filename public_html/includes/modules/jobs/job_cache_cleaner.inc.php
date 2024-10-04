@@ -20,22 +20,34 @@
 
       echo 'Wipe out old cache files...' . PHP_EOL;
 
+      $deleted_files = 0;
+      $deleted_dirs = 0;
       $timestamp = strtotime('-24 hours');
-      $deleted = 0;
 
       clearstatcache();
 
-      foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
-        $search = !empty($keyword) ? '/*_'.$keyword.'*.cache' : '/*.cache';
-        foreach (glob($dir.$search) as $file) {
+      foreach (functions::file_search(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
+
+        foreach (functions::file_search($dir.'/*.cache') as $file) {
+
+          if (!is_file($file)) continue;
           if (filemtime($file) > $timestamp) continue;
+
           echo '  Deleting ' . basename($file) . PHP_EOL;
           unlink($file);
-          $deleted++;
+
+          $deleted_files++;
+        }
+
+        $is_empty_dir = !(new \FilesystemIterator($dir))->valid();
+
+        if ($is_empty_dir) {
+          rmdir($dir);
+          $deleted_dirs++;
         }
       }
 
-      echo PHP_EOL . "Cleaned up $deleted files" . PHP_EOL;
+      echo PHP_EOL . "Cleaned up $deleted_files files and $deleted_dirs directories" . PHP_EOL;
     }
 
     function settings() {

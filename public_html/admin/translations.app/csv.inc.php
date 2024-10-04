@@ -4,6 +4,8 @@
 
   breadcrumbs::add(language::translate('title_import_export_csv', 'Import/Export CSV'));
 
+  $collections = include __DIR__.'/collections.inc.php';
+
   if (isset($_POST['import'])) {
 
     try {
@@ -39,60 +41,110 @@
       foreach ($csv as $row) {
         $line++;
 
-        $translation_query = database::query(
-          "select * from ". DB_TABLE_PREFIX ."translations
-          where code = '". database::input($row['code']) ."'
-          limit 1;"
-        );
+        if (preg_match('#^\[([a-z_]+):([0-9]+)\](.*)$#', $row['code'], $matches)) {
 
-        if ($translation = database::fetch($translation_query)) {
+          if (!$collection = $collections[array_search($matches[1], array_column($collections, 'entity'))]) {
+            throw new Exception('Unsupported entity on line '.$line);
+          }
+
+          list($entity, $id, $column) = array_slice($matches, 1);
 
           foreach ($language_codes as $language_code) {
 
-            if (empty($row[$language_code])) continue;
-            if (empty($_POST['update']) && empty($_POST['append'])) continue;
-            if (empty($translation['text_'.$language_code]) && empty($_POST['append'])) continue;
-            if (!empty($translation['text_'.$language_code]) && empty($_POST['update'])) continue;
-            if (!in_array($language_code, array_keys(language::$languages))) continue;
-
-            database::query(
-              "update ". DB_TABLE_PREFIX ."translations
-              set text_". $language_code ." = '". database::input($row[$language_code], true) ."'
-              where code = '". database::input($row['code']) ."'
+            $translation_query = database::query(
+              "select * from ". DB_TABLE_PREFIX . $collection['info_table'] ."
+              where `". database::input($collection['entity_column']) ."` = '". database::input($id) ."'
+              and language_code = '". database::input($language_code) ."'
               limit 1;"
             );
 
-            $updated++;
+            if ($translation = database::fetch($translation_query)) {
+
+              if (empty($row[$language_code])) continue;
+              if (empty($_POST['update']) && empty($_POST['append'])) continue;
+              if (empty($translation['text_'.$language_code]) && empty($_POST['append'])) continue;
+              if (!empty($translation['text_'.$language_code]) && empty($_POST['update'])) continue;
+              if (!in_array($language_code, array_keys(language::$languages))) continue;
+
+              database::query(
+                "update ". DB_TABLE_PREFIX . $collection['info_table'] ."
+                set `". database::input($column) ."` = '". database::input($row[$language_code], true) ."'
+                where id = '". database::input($translation['id']) ."'
+                limit 1;"
+              );
+
+              $updated++;
+            } else {
+
+              if (empty($_POST['append'])) continue;
+
+              database::query(
+                "insert into ". DB_TABLE_PREFIX . $collection['info_table'] ."
+                (`". database::input($collection['entity_column']) ."`, language_code, `". database::input($column, !empty($translation['html'])) ."`)
+                values ('". database::input($id) ."', '". database::input($language_code) ."', '". database::input($row[$language_code]) ."');"
+              );
+
+              $inserted++;
+            }
           }
 
         } else {
 
-          if (empty($_POST['insert'])) continue;
-
-          database::query(
-            "insert into ". DB_TABLE_PREFIX ."translations
-            (code) values ('". database::input($row['code']) ."');"
+          $translation_query = database::query(
+            "select * from ". DB_TABLE_PREFIX ."translations
+            where code = '". database::input($row['code']) ."'
+            limit 1;"
           );
 
-          foreach ($language_codes as $language_code) {
+          if ($translation = database::fetch($translation_query)) {
 
-            if (empty($row[$language_code])) continue;
+            foreach ($language_codes as $language_code) {
 
-            if (!in_array($language_code, array_keys(language::$languages))) continue;
+              if (empty($row[$language_code])) continue;
+              if (empty($_POST['update']) && empty($_POST['append'])) continue;
+              if (empty($translation['text_'.$language_code]) && empty($_POST['append'])) continue;
+              if (!empty($translation['text_'.$language_code]) && empty($_POST['update'])) continue;
+              if (!in_array($language_code, array_keys(language::$languages))) continue;
+
+              database::query(
+                "update ". DB_TABLE_PREFIX ."translations
+                set `text_". database::input($language_code) ."` = '". database::input($row[$language_code], true) ."'
+                where code = '". database::input($row['code']) ."'
+                limit 1;"
+              );
+
+              $updated++;
+            }
+
+          } else {
+
+            if (empty($_POST['insert'])) continue;
 
             database::query(
-              "update ". DB_TABLE_PREFIX ."translations
-              set text_". $language_code ." = '". database::input($row[$language_code], true) ."'
-              where code = '". database::input($row['code']) ."'
-              limit 1;"
+              "insert into ". DB_TABLE_PREFIX ."translations
+              (code) values ('". database::input($row['code']) ."');"
             );
 
-            $inserted++;
+            foreach ($language_codes as $language_code) {
+
+              if (empty($row[$language_code])) continue;
+
+              if (!in_array($language_code, array_keys(language::$languages))) continue;
+
+              database::query(
+                "update ". DB_TABLE_PREFIX ."translations
+                set text_". $language_code ." = '". database::input($row[$language_code], true) ."'
+                where code = '". database::input($row['code']) ."'
+                limit 1;"
+              );
+
+              $inserted++;
+            }
           }
         }
       }
 
-      cache::clear_cache('translations');
+      cache::clear_cache();
 
       notices::add($updated ? 'success' : 'notice', strtr(language::translate('success_updated_n_existing_entries', 'Updated %n existing entries'), ['%n' => $updated]));
       notices::add($inserted ? 'success' : 'notice', strtr(language::translate('success_insert_n_new_entries', 'Inserted %n new entries'), ['%n' => $inserted]));
@@ -108,15 +160,71 @@
   if (isset($_POST['export'])) {
 
     try {
-      if (empty($_POST['language_codes'])) throw new Exception(language::translate('error_must_select_at_least_one_language', 'You must select at least one language'));
 
-      $csv = [];
+      if (empty($_POST['collections'])) {
+        throw new Exception(language::translate('error_must_select_at_least_one_collection', 'You must select at least one collection'));
+      }
+
+      if (empty($_POST['language_codes'])) {
+        throw new Exception(language::translate('error_must_select_at_least_one_language', 'You must select at least one language'));
+      }
 
       $_POST['language_codes'] = array_filter($_POST['language_codes']);
 
+      $csv = [];
+
+      if (in_array('translations', $_POST['collections'])) {
+        $sql_union[] = "select 'translation' as entity, frontend, backend, code, date_updated, html,
+                       ". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
+                       from ". DB_TABLE_PREFIX ."translations
+                       where code not regexp '^(settings_group:|settings_key:|cm|job|om|ot|pm|sm)_'";
+      }
+
+      if (in_array('modules', $_POST['collections'])) {
+        $sql_union[] = "select 'translation' as entity, frontend, backend, code, date_updated, html,
+                       ". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
+                       from ". DB_TABLE_PREFIX ."translations
+                       where code regexp '^(cm|job|om|ot|pm|sm)_'";
+      }
+
+      if (in_array('setting_groups', $_POST['collections'])) {
+        $sql_union[] = "select 'translation' as entity, frontend, backend, code, date_updated, html,
+                       ". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
+                       from ". DB_TABLE_PREFIX ."translations
+                       where code regexp '^settings_group:'";
+      }
+
+      if (in_array('settings', $_POST['collections'])) {
+        $sql_union[] = "select 'translation' as entity, frontend, backend, code, date_updated, html,
+                       ". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
+                       from ". DB_TABLE_PREFIX ."translations
+                       where code regexp '^settings_key:'";
+      }
+
+      $union_select = function($entity, $entity_table, $info_table, $id, $field) {
+        return (
+          "select '$entity' as entity, '1' as frontend, '1' as backend, concat('[$entity', ':', e.id, ']$field') as code, '' as date_updated,
+            coalesce(". implode(', ', array_map(function($language_code) use($field) { return "if($language_code.$field regexp '<', 1, null)"; }, $_POST['language_codes'])) .", 0) as html,
+            ". implode(', ', array_map(function($language_code) use($field) { return "`". database::input($language_code) ."`.$field as `text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
+          from ". DB_TABLE_PREFIX ."$entity_table e
+          ". implode(PHP_EOL, array_map(function($language_code) use($info_table, $id) { return "left join ". DB_TABLE_PREFIX ."$info_table `". database::input($language_code) ."` on (`". database::input($language_code) ."`.$id = e.id and `". database::input($language_code) ."`.language_code = '$language_code')"; }, $_POST['language_codes']))
+        );
+      };
+
+      foreach ($collections as $collection) {
+        if (in_array($collection['id'], $_POST['collections'])) {
+          foreach ($collection['info_columns'] as $column) {
+            $sql_union[] = $union_select($collection['entity'], $collection['entity_table'], $collection['info_table'], $collection['entity_column'], $column);
+          }
+        }
+      }
+
       $translations_query = database::query(
-        "select * from ". DB_TABLE_PREFIX ."translations
-        order by date_created asc;"
+        "select * from (
+          ". implode(PHP_EOL . PHP_EOL . "union ", $sql_union) ."
+        ) x
+        where x.code != ''
+        order by x.code;"
       );
 
       while ($translation = database::fetch($translations_query)) {
@@ -229,6 +337,11 @@
 
           <fieldset>
             <legend><?php echo language::translate('title_export', 'Export'); ?></legend>
+
+              <div class="form-group">
+                <?php echo language::translate('title_collections', 'Collections'); ?>
+                <?php echo functions::form_draw_select_multiple_field('collections[]', array_map(function($c) { return [$c['name'], $c['id']]; }, $collections), true); ?>
+              </ul>
 
             <div class="form-group">
               <label><?php echo language::translate('title_languages', 'Languages'); ?></label>

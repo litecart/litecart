@@ -9,7 +9,7 @@
   }
 
   header('X-Robots-Tag: noindex');
-  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex">';
 
   if (!empty(user::$data['id'])) notices::add('notices', language::translate('text_already_logged_in', 'You are already logged in'));
 
@@ -84,7 +84,7 @@
 
             $subject = language::translate('user_account_blocked:email_subject', 'User Account Blocked');
             $message = strtr(language::translate('user_account_blocked:email_body',
-              "Your user account %username has been blocked until %expires because of too many invalid attempts.\r\n"
+              "Your user account %username has been blocked until %expires because of too many invalid login attempts.\r\n"
             . "\r\n"
             . "Client: %hostname (%ip_address)\r\n"
             . "%user_agent\r\n"
@@ -116,7 +116,46 @@
       }
 
       if (!empty($user['last_host']) && $user['last_host'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
+
         notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_host', 'Your account was previously used by another location or hostname (%hostname). If this was not you then your login credentials might be compromised.'), ['%hostname' => $user['last_host']]));
+
+        if (!empty($user['email'])) {
+
+          $aliases = [
+            '%store_name' => settings::get('store_name'),
+            '%store_link' => document::ilink(''),
+            '%username' => $user['username'],
+            '%expires' => date('Y-m-d H:i:00', strtotime('+15 minutes')),
+            '%ip_address' => $_SERVER['REMOTE_ADDR'],
+            '%hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
+            '%user_agent' => $_SERVER['HTTP_USER_AGENT'],
+            '%previous_ip_address' => $user['last_ip'],
+            '%previous_hostname' => $user['last_host'],
+          ];
+
+          $subject = language::translate('different_hostname_login:email_subject', 'A different hostname was used to sign in to your account');
+          $message = strtr(language::translate('different_hostname_login:email_body',
+            "Your user account %username was just signed in to from a different client hostname.\r\n"
+          . "\r\n"
+          . "Currently:\r\n"
+          . "%hostname (%ip_address)\r\n"
+          . "%user_agent\r\n"
+          . "\r\n"
+          . "Previously:\r\n"
+          . "%previous_hostname (%previous_ip_address)\r\n"
+          . "\r\n"
+          . "If this was not you then your account could be compromised."
+          . "\r\n"
+          . "%store_name\r\n"
+          . "%store_link"
+          ), $aliases);
+
+          $email = new ent_email();
+          $email->add_recipient($user['email'], $user['username'])
+                ->set_subject($subject)
+                ->add_body($message)
+                ->send();
+        }
       }
 
       database::query(

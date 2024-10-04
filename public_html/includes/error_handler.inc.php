@@ -7,32 +7,38 @@
     $errfile = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '~/', str_replace('\\', '/', $errfile));
 
     switch($errno) {
+
       case E_STRICT:
-        $output = "<strong>Strict:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
+        $output = "<strong>Strict:</strong> ". htmlspecialchars($errstr) ." in <strong>$errfile</strong> on line <strong>$errline</strong><br>" . PHP_EOL;
         break;
+
       case E_NOTICE:
       case E_USER_NOTICE:
-        $output = "<strong>Notice:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
+        $output = "<strong>Notice:</strong> ". htmlspecialchars($errstr) ." in <strong>$errfile</strong> on line <strong>$errline</strong><br>" . PHP_EOL;
         break;
+
       case E_WARNING:
       case E_USER_WARNING:
       case E_COMPILE_WARNING:
       case E_RECOVERABLE_ERROR:
-        $output = "<strong>Warning:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
+        $output = "<strong>Warning:</strong> ". htmlspecialchars($errstr) ." in <strong>$errfile</strong> on line <strong>$errline</strong><br>" . PHP_EOL;
         break;
+
       case E_DEPRECATED:
       case E_USER_DEPRECATED:
-        $output = "<strong>Deprecated:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
+        $output = "<strong>Deprecated:</strong> ". htmlspecialchars($errstr) ." in <strong>$errfile</strong> on line <strong>$errline</strong><br>" . PHP_EOL;
         break;
+
       case E_PARSE:
       case E_ERROR:
       case E_CORE_ERROR:
       case E_COMPILE_ERROR:
       case E_USER_ERROR:
-        $output = "<strong>Fatal error:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
+        $output = "<strong>Fatal error:</strong> ". htmlspecialchars($errstr) ." in <strong>$errfile</strong> on line <strong>$errline</strong><br>" . PHP_EOL;
         break;
+
       default:
-        $output = "<strong>Fatal error:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
+        $output = "<strong>Fatal error:</strong> ". htmlspecialchars($errstr) ." in <strong>$errfile</strong> on line <strong>$errline</strong><br>" . PHP_EOL;
         break;
     }
 
@@ -43,13 +49,15 @@
       foreach ($backtraces as $backtrace) {
         if (empty($backtrace['file'])) continue;
         $backtrace['file'] = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '~/', str_replace('\\', '/', $backtrace['file']));
-        $backtrace_output .= " ← <strong>{$backtrace['file']}</strong> on line <strong>{$backtrace['line']}</strong> in <strong>{$backtrace['function']}()</strong><br />" . PHP_EOL;
+        $backtrace_output .= " ← <strong>{$backtrace['file']}</strong> on line <strong>{$backtrace['line']}</strong> in <strong>{$backtrace['function']}()</strong><br>" . PHP_EOL;
       }
     }
 
     if (filter_var(ini_get('display_errors'), FILTER_VALIDATE_BOOLEAN)) {
-      if (filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOLEAN) || PHP_SAPI == 'cli') {
-        echo strip_tags($output . (isset($_GET['debug']) ? $backtrace_output : ''));
+      if (!filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOLEAN) || $_SERVER['SERVER_SOFTWARE'] == 'CLI') {
+        $stripped_output = strip_tags($output . (isset($_GET['debug']) ? $backtrace_output : ''));
+        $stripped_output = html_entity_decode($stripped_output);
+        echo $stripped_output;
       } else {
         echo $output . (isset($_GET['debug']) ? $backtrace_output : '');
       }

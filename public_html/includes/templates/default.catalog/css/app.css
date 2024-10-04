@@ -43,6 +43,22 @@ body.has-offcanvas {
     padding: 0 !important;
   }
 }
+#site-menu .quick-access {
+  display: flex;
+  font-size: 0.8em;
+  align-items: center;
+  gap: 1em;
+}
+@media (min-width: 768px) {
+  #site-menu .quick-access {
+    font-size: 1em;
+  }
+}
+@media (min-width: 992px) {
+  #site-menu .quick-access {
+    font-size: 1em;
+  }
+}
 #site-menu .navbar {
   padding: 0.5rem var(--gutter-x);
 }
@@ -308,10 +324,12 @@ body.scrolling-down #site-menu {
   padding-top: var(--gutter-y);
 }
 #box-filter .tokens .token {
+  display: inline-block;
   padding: 0.5em 1em;
+  margin-top: 0.5em;
+  margin-inline-end: 0.5em;
   border-radius: var(--border-radius);
   cursor: default;
-  margin-inline-end: 0.5em;
 }
 #box-filter .tokens .token[data-group="name"] {
   background: #cbe2b6;
@@ -682,6 +700,10 @@ body.scrolling-down #site-menu {
 }
 #box-product .stock-notice:empty {
   display: none;
+}
+#box-product .stock-notice.notice {
+  color: #e58310;
+  border-color: #e58310;
 }
 #box-product .stock-notice.warning {
   color: #c00;

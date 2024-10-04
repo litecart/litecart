@@ -1,6 +1,6 @@
 <?php
   define('PLATFORM_NAME', 'LiteCart');
-  define('PLATFORM_VERSION', '2.5.5');
+  define('PLATFORM_VERSION', '2.6.0');
   define('SCRIPT_TIMESTAMP_START', microtime(true));
 
 // Start redirecting output to the output buffer
@@ -34,8 +34,13 @@
   require_once vmod::check(FS_DIR_APP . 'includes/error_handler.inc.php');
 
 // Jump-start some library modules
+  class_exists('document');
   class_exists('notices');
   class_exists('stats');
 
 // Run operations before capture
   event::fire('before_capture');
+
+  stats::$data['before_content'] = microtime(true) - SCRIPT_TIMESTAMP_START;
+
+  stats::start_watch('content_capture');

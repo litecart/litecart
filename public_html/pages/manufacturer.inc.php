@@ -1,6 +1,12 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['sort'])) $_GET['sort'] = 'price';
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+    $_GET['page'] = 1;
+  }
+
+  if (empty($_GET['sort'])) {
+    $_GET['sort'] = 'price';
+  }
 
   if (empty($_GET['manufacturer_id'])) {
     header('Location: '. document::ilink('manufacturers'));
@@ -21,7 +27,7 @@
     return;
   }
 
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('manufacturer', ['manufacturer_id' => (int)$manufacturer->id], false) .'" />';
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('manufacturer', ['manufacturer_id' => (int)$manufacturer->id], false) .'">';
   document::$snippets['title'][] = $manufacturer->head_title ? $manufacturer->head_title : $manufacturer->name;
   document::$snippets['description'] = $manufacturer->meta_description ? $manufacturer->meta_description : strip_tags($manufacturer->short_description);
 

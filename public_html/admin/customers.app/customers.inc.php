@@ -1,6 +1,12 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+    $_GET['page'] = 1;
+  }
+
+  if (empty($_GET['sort'])) {
+    $_GET['sort'] = 'date_created';
+  }
 
   document::$snippets['title'][] = language::translate('title_customers', 'Customers');
 
@@ -59,22 +65,31 @@
       "c.tax_id like '%". database::input($_GET['query']) ."%'",
       "c.company like '%". database::input($_GET['query']) ."%'",
       "concat(c.firstname, ' ', c.lastname) like '%". database::input($_GET['query']) ."%'",
+      "concat(c.address1, '\\n', c.address2, '\\n', c.postcode, '\\n', c.city) like '%". database::input($_GET['query']) ."%'",
+      "c.email like '%". database::input($_GET['query']) ."%'",
+      "last_ip like '%". database::input($_GET['query']) ."%'",
+      "last_hostname like '%". database::input($_GET['query']) ."%'",
     ];
   }
 
   switch($_GET['sort']) {
+
     case 'id':
       $sql_sort = "c.id desc";
       break;
+
     case 'email':
       $sql_sort = "c.email";
       break;
+
     case 'name':
       $sql_sort = "c.firstname, c.lastname";
       break;
+
     case 'company':
       $sql_sort = "c.firstname, c.lastname";
       break;
+
     default:
       $sql_sort = "c.date_created desc, c.id desc";
       break;
@@ -85,7 +100,6 @@
     where c.id
     ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
     order by $sql_sort;"
-
   );
 
   if ($_GET['page'] > 1) database::seek($customers_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
@@ -168,10 +182,10 @@
 
         <ul class="list-inline">
           <li>
-          <div class="btn-group">
-            <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-            <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-          </div>
+            <div class="btn-group">
+              <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+              <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+            </div>
           </li>
           <li><?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
         </ul>

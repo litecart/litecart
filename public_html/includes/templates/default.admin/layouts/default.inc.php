@@ -2,12 +2,12 @@
 <html lang="{snippet:language}" dir="{snippet:text_direction}"<?php echo !empty($_COOKIE['dark_mode']) ? ' class="dark-mode"' : ''; ?>>
 <head>
 <title>{snippet:title}</title>
-<meta charset="{snippet:charset}" />
-<meta name="robots" content="noindex, nofollow" />
+<meta charset="{snippet:charset}">
+<meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=1600">
-<link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/variables.css'); ?>" />
-<link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/framework.min.css'); ?>" />
-<link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/app.min.css'); ?>" />
+<link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/variables.css'); ?>">
+<link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/framework.min.css'); ?>">
+<link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/app.min.css'); ?>">
 {snippet:head_tags}
 {snippet:style}
 <style>
@@ -19,13 +19,13 @@
 <body>
 
 <div id="backend-wrapper">
-  <input id="sidebar-compressed" type="checkbox" hidden />
+  <input id="sidebar-compressed" type="checkbox" hidden>
 
   <div id="sidebar" class="hidden-print">
 
     <div id="logotype">
       <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>">
-        <img class="responsive" src="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
+        <img class="responsive" src="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>">
       </a>
     </div>
 
@@ -38,7 +38,7 @@
 
     <div id="platform" class="text-center"><a href="<?php echo document::href_link(WS_DIR_ADMIN . 'about.php'); ?>"><?php echo PLATFORM_NAME; ?>® <?php echo PLATFORM_VERSION; ?></a></div>
 
-    <div id="copyright" class="text-center">Copyright &copy; <?php echo date('2012-Y'); ?><br />
+    <div id="copyright" class="text-center">Copyright &copy; <?php echo date('2012-Y'); ?><br>
       <a href="https://www.litecart.net" target="_blank">www.litecart.net</a>
     </div>
   </div>
@@ -117,7 +117,7 @@
       </li>
 
       <li>
-        <a class="help" href="https://wiki.litecart.net/" target="_blank" title="<?php echo functions::escape_html(language::translate('title_help', 'Help')); ?>">
+        <a class="help" href="https://www.litecart.net/wiki/" target="_blank" title="<?php echo functions::escape_html(language::translate('title_help', 'Help')); ?>">
           <?php echo functions::draw_fonticon('fa-question-circle'); ?> <?php echo language::translate('title_help', 'Help'); ?>
         </a>
       </li>

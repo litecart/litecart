@@ -181,9 +181,9 @@
           });
           $('#cart .items').append('<li class="dropdown-divider"></li>');
         }
-        $('#cart .items').append('<li><a href="' + window._env.platform.url + 'checkout"><i class="fa fa-shopping-cart"></i> ' + json['text_total'] + ': <span class="formatted-value">'+ json['formatted_value'] +'</a></li>');
-        $('#cart .quantity').html(json['quantity'] ? json['quantity'] : '');
-        $('#cart .formatted_value').html(json['formatted_value']);
+        $('#cart .items').append('<li><a href="' + window._env.platform.url + 'checkout"><i class="fa fa-shopping-cart"></i> ' + json.text_total + ': <span class="formatted-value">'+ json.subtotal.formatted +'</a></li>');
+        $('#cart .quantity').html(json.quantity ? json.quantity : '');
+        $('#cart .formatted_value').html(json.subtotal.formatted);
       }
     });
 
@@ -269,7 +269,7 @@
 
     var shadowImage = "";
     if (options.initial_css.image != "") {
-      shadowImage = "<img src='" + options.initial_css.image + "' style='width: 100%; height: 100%' />";
+      shadowImage = "<img src='" + options.initial_css.image + "' style='width: 100%; height: 100%'>";
     }
 
     var dy = source.offset().top + source.width()/2 - target.offset().top,

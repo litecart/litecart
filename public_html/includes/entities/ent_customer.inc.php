@@ -23,9 +23,9 @@
 
       while ($field = database::fetch($fields_query)) {
         if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
-          $this->data['shipping_address'][$matches[1]] = database::create_variable($field['Type']);
+          $this->data['shipping_address'][$matches[1]] = database::create_variable($field);
         } else {
-          $this->data[$field['Field']] = database::create_variable($field['Type']);
+          $this->data[$field['Field']] = database::create_variable($field);
         }
       }
 

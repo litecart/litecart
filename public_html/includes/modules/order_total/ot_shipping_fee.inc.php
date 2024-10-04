@@ -38,28 +38,39 @@
         }
 
       // Check for free shipping
-        if ($free_shipping_table = functions::csv_decode($this->settings['free_shipping_table'], ',')) {
+        $free_shipping = $this->_get_free_shipping($subtotal, $order->data['customer']['shipping_address']);
 
-          foreach ($free_shipping_table as $row) {
-            if (empty($row['country_code']) || $row['country_code'] != $order->data['customer']['shipping_address']['country_code']) continue;
-            if (!empty($row['zone_code']) && $row['zone_code'] != $order->data['customer']['shipping_address']['zone_code']) continue;
-            if (!isset($row['min_subtotal']) || $row['min_subtotal'] < 0) continue;
-            if ($subtotal < $row['min_subtotal']) continue;
-
-            $output[] = [
-              'title' => language::translate('title_free_shipping', 'Free Shipping'),
-              'value' => -$order->data['shipping_option']['cost'],
-              'tax' => -tax::get_tax($order->data['shipping_option']['cost'], $order->data['shipping_option']['tax_class_id'], $order->data['customer']),
-              'tax_class_id' => $order->data['shipping_option']['tax_class_id'],
-              'calculate' => true,
-            ];
-
-            break;
-          }
+        if ($free_shipping) {
+          $output[] = [
+            'title' => language::translate('title_free_shipping', 'Free Shipping'),
+            'value' => -$order->data['shipping_option']['cost'],
+            'tax' => -tax::get_tax($order->data['shipping_option']['cost'], $order->data['shipping_option']['tax_class_id'], $order->data['customer']),
+            'tax_class_id' => $order->data['shipping_option']['tax_class_id'],
+            'calculate' => true,
+          ];
         }
       }
 
       return $output;
+    }
+
+    private function _get_free_shipping($subtotal, $address) {
+
+      if (!$free_shipping_table = functions::csv_decode($this->settings['free_shipping_table'], ',')) return;
+
+      foreach ($free_shipping_table as $row) {
+        if (!empty($row['country_code']) && $row['country_code'] == $address['country_code']) {
+          if (empty($row['zone_code']) || $row['zone_code'] == $address['zone_code']) {
+            return ($subtotal >= $row['min_subtotal']) ? true : false;
+          }
+        }
+      }
+
+      foreach ($free_shipping_table as $row) {
+        if (!empty($row['country_code']) && $row['country_code'] == 'XX') {
+          if ($subtotal >= $row['min_subtotal']) return true;
+        }
+      }
     }
 
     function settings() {

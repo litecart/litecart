@@ -22,7 +22,7 @@
       );
 
       while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = database::create_variable($field['Type']);
+        $this->data[$field['Field']] = database::create_variable($field);
       }
 
       $info_fields_query = database::query(
@@ -34,7 +34,7 @@
 
         $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = database::create_variable($field['Type']);
+          $this->data[$field['Field']][$language_code] = database::create_variable($field);
         }
       }
 
@@ -44,6 +44,7 @@
       $this->data['quantity_unit_id'] = settings::get('default_quantity_unit_id');
       $this->data['delivery_status_id'] = settings::get('default_delivery_status_id');
       $this->data['sold_out_status_id'] = settings::get('default_sold_out_status_id');
+      $this->data['reserved'] = 0;
 
       $this->data['categories'] = [];
       $this->data['attributes'] = [];
@@ -168,8 +169,22 @@
 
     // Options stock
       $products_options_stock_query = database::query(
-        "select * from ". DB_TABLE_PREFIX ."products_options_stock
-        where product_id = ". (int)$this->data['id'] ."
+        "select pos.*, oi.reserved
+        from ". DB_TABLE_PREFIX ."products_options_stock pos
+        left join (
+          select product_id, sku, sum(quantity) as reserved
+          from ". DB_TABLE_PREFIX ."orders_items
+          where product_id = ". (int)$this->data['id'] ."
+          and order_id in (
+            select id from  ". DB_TABLE_PREFIX ."orders
+            where order_status_id in (
+              select id from ". DB_TABLE_PREFIX ."order_statuses
+              where stock_action = 'reserve'
+            )
+          )
+          group by product_id, sku
+        ) oi on (oi.sku = pos.sku)
+        where pos.product_id = ". (int)$this->data['id'] ."
         order by priority;"
       );
 
@@ -210,6 +225,22 @@
           }
         }
       }
+
+    // Total Reserved
+      $reserved_query = database::query(
+        "select sum(quantity) as reserved from ". DB_TABLE_PREFIX ."orders_items
+        where product_id = ". (int)$this->data['id'] ."
+        and order_id in (
+          select id from ". DB_TABLE_PREFIX ."orders
+          where order_status_id in (
+            select id from ". DB_TABLE_PREFIX ."order_statuses
+            where stock_action = 'reserve'
+          )
+        )
+        group by product_id;"
+      );
+
+      $this->data['reserved'] = database::fetch($reserved_query, 'reserved');
 
     // Images
       $products_images_query = database::query(

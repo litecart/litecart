@@ -9,15 +9,15 @@
 
     ob_start();
 
-    $dir_iterator = new RecursiveDirectoryIterator(FS_DIR_APP);
-    $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
-
     $found_files = 0;
     $found_translations = 0;
     $new_translations = 0;
     $updated_translations = 0;
     $translation_keys = [];
     $deleted_translations = 0;
+    $translations = [];
+
+    $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(FS_DIR_APP), RecursiveIteratorIterator::SELF_FIRST);
 
     foreach ($iterator as $file) {
       if (!preg_match('#\.php$#', $file)) continue;
@@ -26,90 +26,114 @@
       $found_files++;
       $contents = file_get_contents($file);
 
-      $regexp = [
-        'language::translate\((?:(?!\$)',
-        '(?:(__CLASS__)?\.)?',
-        '(?:[\'"])([^\'"]+)(?:[\'"])',
-        '(?:,?\s+(?:[\'"])([^\'"]+)?(?:[\'"]))?',
-        '(?:,?\s+?(?:[\'"])([^\'"]+)?(?:[\'"]))?',
-        ')\)',
-      ];
-      $regexp = '/'. implode($regexp) .'/s';
+      $regexp = implode([
+        'language::translate\(', // Function syntax
+        '(?!\$)', // No variables
+        '(?:(__CLASS__)?\s*\.\s*)?', // Class translations
+        '([\'"])(.+?)\2', // Translation key
+        '(?:,\s*([\'"])(.*?)(?<!\\\\)\4)?', // Translation injection
+        '(,\s*[^\)]+)?\)', // Optional third parameter
+      ]);
 
-      preg_match_all($regexp, $contents, $matches);
-      $translations = [];
+      preg_match_all('#'.$regexp.'#', $contents, $matches);
 
       if (!empty($matches)) {
         for ($i=0; $i<count($matches[1]); $i++) {
+
+          if (strpos($matches[5][$i], '\$') !== false) continue; // Avoid if suspicion of variables in content
+
           if ($matches[1][$i]) {
-            $key = substr(pathinfo($file, PATHINFO_BASENAME), 0, strpos(pathinfo($file, PATHINFO_BASENAME), '.')) . $matches[2][$i];
+            $key = substr(pathinfo($file, PATHINFO_BASENAME), 0, strpos(pathinfo($file, PATHINFO_BASENAME), '.')) . $matches[3][$i];
           } else {
-            $key = $matches[2][$i];
+            $key = $matches[3][$i];
           }
-          $translations[$key] = str_replace(["\\r", "\\n"], ["\r", "\n"], $matches[3][$i]);
+
+          $find_replace = [
+            "\\r" => "\r",
+            "\\n" => "\n",
+            "\\" => "",
+          ];
+
+          $translations[$key] = str_replace(array_keys($find_replace), array_values($find_replace), $matches[5][$i]);
           $translation_keys[] = $key;
-        }
-      }
-
-      foreach ($translations as $code => $translation) {
-
-        $found_translations++;
-
-        $translations_query = database::query(
-          "select text_en from ". DB_TABLE_PREFIX ."translations
-          where code = '". database::input($code) ."'
-          limit 1;"
-        );
-
-        if (!$row = database::fetch($translations_query)) {
-
-          $new_translations++;
-
-          database::query(
-            "insert into ". DB_TABLE_PREFIX ."translations
-            (code, text_en, html, date_created)
-            values ('". database::input($code) ."', '". database::input($translation, true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
-          );
-
-          echo  $code . ' [ADDED]<br/>' . PHP_EOL;
-
-        } else if (empty($row['text_en']) && !empty($translation) && !empty($_POST['update'])) {
-
-          $updated_translations++;
-
-          database::query(
-            "update ". DB_TABLE_PREFIX ."translations
-            set text_en = '". database::input($translation, true) ."'
-            where code = '". database::input($code) ."'
-            and text_en = ''
-            limit 1;"
-          );
-
-          echo  $code . ' [UPDATED]<br/>' . PHP_EOL;
         }
       }
     }
 
+  // Collect translations for setting groups
+    $settings_groups_query = database::query(
+      "select `key`, name, description
+      from ". DB_TABLE_PREFIX ."settings_groups;"
+    );
+
+    while ($group = database::fetch($settings_groups_query)) {
+
+      $key = 'settings_group:title_'.$group['key'];
+      $translations[$key] = $group['name'];
+      $translation_keys[] = $key;
+
+      $key = 'settings_group:description_'.$group['key'];
+      $translations[$key] = $group['description'];
+      $translation_keys[] = $key;
+    }
+
+  // Collect translations for settings
+    $settings_query = database::query(
+      "select `key`, title, description from ". DB_TABLE_PREFIX ."settings
+      where setting_group_key != '';"
+    );
+
+    while ($setting = database::fetch($settings_query)) {
+      $key = 'settings_key:title_'.$setting['key'];
+      $translations[$key] = $setting['title'];
+      $translation_keys[] = $key;
+
+      $key = 'settings_key:description_'.$setting['key'];
+      $translations[$key] = $setting['description'];
+      $translation_keys[] = $key;
+    }
+
+  // Process translations
+    foreach ($translations as $code => $translation) {
+
+      $found_translations++;
+
+      $translations_query = database::query(
+        "select text_en from ". DB_TABLE_PREFIX ."translations
+        where code = '". database::input($code) ."'
+        limit 1;"
+      );
+
+      if (!$row = database::fetch($translations_query)) {
+
+        $new_translations++;
+
+        database::query(
+          "insert into ". DB_TABLE_PREFIX ."translations
+          (code, text_en, html, date_created)
+          values ('". database::input($code) ."', '". database::input($translation, true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
+        );
+
+        echo  $code . ' [ADDED]<br/>' . PHP_EOL;
+
+      } else if (empty($row['text_en']) && !empty($translation) && !empty($_POST['update'])) {
+
+        $updated_translations++;
+
+        database::query(
+          "update ". DB_TABLE_PREFIX ."translations
+          set text_en = '". database::input($translation, true) ."'
+          where code = '". database::input($code) ."'
+          and text_en = ''
+          limit 1;"
+        );
+
+        echo  $code . ' [UPDATED]<br/>' . PHP_EOL;
+      }
+    }
+
+  // Clean orphan translations
     if (!empty($_POST['clean'])) {
-      $settings_groups_query = database::query(
-        "select `key` from ". DB_TABLE_PREFIX ."settings_groups;"
-      );
-
-      while ($group = database::fetch($settings_groups_query)) {
-        $translation_keys[] = 'settings_group:title_'.$group['key'];
-        $translation_keys[] = 'settings_group:description__'.$group['key'];
-      }
-
-      $settings_query = database::query(
-        "select `key` from ". DB_TABLE_PREFIX ."settings
-        where setting_group_key != '';"
-      );
-
-      while ($setting = database::fetch($settings_query)) {
-        $translation_keys[] = 'settings_key:title_'.$setting['key'];
-        $translation_keys[] = 'settings_key:description_'.$setting['key'];
-      }
-
       $translations_query = database::query(
         "select code from ". DB_TABLE_PREFIX ."translations;"
       );

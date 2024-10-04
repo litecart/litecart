@@ -129,7 +129,7 @@
               <label><?php echo language::translate('title_translations', 'Translations'); ?></label>
             </td>
             <td>
-              <a href="<?php echo document::href_link('', ['app' => 'translations', 'doc' => 'search', 'query' => $module_id . ':', 'modules' => 'true']); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a>
+              <a href="<?php echo document::href_link('', ['app' => 'translations', 'doc' => 'translations', 'query' => $module_id . ':', 'collections' => ['modules']]); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a>
             </td>
           </tr>
         </tbody>

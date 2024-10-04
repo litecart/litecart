@@ -9,6 +9,72 @@
   breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), WS_DIR_ADMIN);
   breadcrumbs::add(language::translate('title_about', 'About'));
 
+  if (isset($_POST['delete'])) {
+
+    try {
+
+      if (empty($_POST['errors'])) {
+        throw new Exception(language::translate('error_must_select_errors', 'You must select errors'));
+      }
+
+      $log_file = ini_get('error_log');
+
+      $content = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($log_file));
+
+      foreach ($_POST['errors'] as $error) {
+        $content = preg_replace('#\[\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/]+\] '. preg_quote($error, '#') . addcslashes(PHP_EOL, "\r\n") .'[^\[]*#s', '', $content, -1, $count);
+        if (!$count) throw new Exception('Failed deleting error from log');
+      }
+
+      file_put_contents($log_file, $content);
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+  if (isset($_POST['delete_log_file'])) {
+    try {
+
+      foreach ($_POST['log_files'] as $file) {
+
+        if (!is_file(FS_DIR_STORAGE .'logs/'. functions::file_resolve_path($file))) {
+          throw new Exception(language::translate('error_file_not_found', 'The file was not found'));
+        }
+
+        unlink(FS_DIR_STORAGE .'logs/'. functions::file_resolve_path($file));
+      }
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+  if (isset($_GET['view_log_file'])) {
+    try {
+
+      if (!is_file(FS_DIR_STORAGE .'logs/'. functions::file_resolve_path($_GET['view_log_file']))) {
+        throw new Exception(language::translate('error_file_not_found', 'The file was not found'));
+      }
+
+      header('Content-Type: text/plain; charset='. language::$selected['charset']);
+      header('Content-Disposition: inline; filename='. $_GET['view_log_file']);
+      readfile(FS_DIR_STORAGE . 'logs/'. $_GET['view_log_file']);
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
 // Build apps list menu
   $box_apps_menu = new ent_view();
   $box_apps_menu->snippets['apps'] = [];
@@ -114,7 +180,59 @@
     }
   }
 
+// Errors
+  $errors = [];
+
+  $log_file = ini_get('error_log');
+
+  if ($log_file && is_file($log_file)) {
+
+    $entries = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($log_file));
+
+    if (preg_match_all('#\[(\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/]+)\] (.*?)'. addcslashes(PHP_EOL, "\r\n") .'([^\[]*)#s', $entries, $matches)) {
+
+      foreach (array_keys($matches[0]) as $i) {
+
+        $checksum = crc32($matches[2][$i]);
+
+        if (!isset($errors[$checksum])) {
+          $errors[$checksum] = [
+            'error' => $matches[2][$i],
+            'backtrace' => $matches[3][$i],
+            'occurrences' => 1,
+            'last_occurrence' => strtotime($matches[1][$i]),
+          ];
+        } else {
+          $errors[$checksum]['occurrences']++;
+          //$rows[$checksum]['backtrace'] = $matches[3][$i];
+          $errors[$checksum]['last_occurrence'] = strtotime($matches[1][$i]);
+        }
+      }
+    }
+
+    uasort($errors, function($a, $b) {
+      if ($a['occurrences'] == $b['occurrences']) {
+        return ($a['last_occurrence'] > $b['last_occurrence']) ? -1 : 1;
+      }
+      return ($a['occurrences'] > $b['occurrences']) ? -1 : 1;
+    });
+  }
+
+  $log_files = [];
+
+  foreach (functions::file_search(FS_DIR_STORAGE . 'logs/**.log') as $file) {
+    $log_files[] = [
+      'file' => $file,
+      'name' => preg_replace('#^'. preg_quote(FS_DIR_STORAGE .'logs/', '#') .'#', '', $file),
+      'size' => functions::file_size($file),
+      'date_updated' => filemtime($file),
+      'date_created' => filectime($file),
+    ];
+  }
+
+// Render view
   $_page = new ent_view();
+
   $_page->snippets = [
     'machine' => [
       'name' => php_uname('n'),
@@ -149,7 +267,11 @@
       'user' => DB_USERNAME,
       'database' => DB_DATABASE,
     ],
+    'errors' => $errors,
+    'log_files' => $log_files,
   ];
+
+  functions::draw_lightbox();
 
   echo $_page->stitch(FS_DIR_TEMPLATE . 'pages/about.inc.php');
 

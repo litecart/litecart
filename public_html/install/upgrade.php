@@ -2,13 +2,14 @@
   // Automatic upgrade: upgrade.php?upgrade=true&redirect={url}
 
   @set_time_limit(900);
+  @ignore_user_abort(true);
   ini_set('memory_limit', -1);
   ini_set('display_errors', 'On');
 
-  if (php_sapi_name() == 'cli') {
+  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
-    if (!isset($argv[1]) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
-      echo "\nLiteCart® 2.5.5\n"
+    if (!isset($argv[1]) || $argv[1] == 'help' || $argv[1] == '-h' || $argv[1] == '--help' || $argv[1] == '/?') {
+      echo "\nLiteCart® 2.6.0\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -59,8 +60,6 @@
   ini_set('display_errors', 'On');
   ini_set('html_errors', 'On');
 
-  ignore_user_abort(true);
-
   require_once __DIR__.'/../includes/error_handler.inc.php';
   require_once __DIR__.'/../includes/functions/func_file.inc.php';
   require_once __DIR__.'/../includes/library/lib_database.inc.php';
@@ -108,7 +107,7 @@
   if (!empty($_REQUEST['upgrade'])) {
 
     ob_start(function($buffer) {
-      if (php_sapi_name() == 'cli') {
+      if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
         $buffer = strip_tags($buffer);
       }
       return $buffer;
@@ -210,9 +209,7 @@
           $sql = file_get_contents(__DIR__ . '/upgrade_patches/'. $version .'.sql');
           $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
-          $sql = explode('-- --------------------------------------------------------', $sql);
-
-          foreach ($sql as $query) {
+          foreach (preg_split('#^-- -----+\s*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
             $query = preg_replace('#^-- .*?\R+#m', '', $query);
             if (!empty($query)) {
               database::query($query);
@@ -339,7 +336,7 @@
 
     echo ob_get_clean();
 
-    if (php_sapi_name() == 'cli') exit;
+    if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') exit;
 
     require('includes/footer.inc.php');
     exit;
@@ -394,14 +391,14 @@ input[name="development_type"]:checked + div {
 
   <div class="row">
     <div class="form-group col-md-6">
-      <label>MySQL Server</label>
+      <label>MySQL/MariaDB Server</label>
       <div class="form-control">
         <?php echo DB_SERVER; ?>
       </div>
     </div>
 
     <div class="form-group col-md-6">
-      <label>MySQL Database</label>
+      <label>MySQL/MariaDB Database</label>
       <div class="form-control">
         <?php echo DB_DATABASE; ?>
       </div>
@@ -431,7 +428,7 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label style="margin-top: 2.25em;">
-        <input type="checkbox" class="form-check" name="skip_updates" value="0" /> Skip downloading the latest updates
+        <input type="checkbox" class="form-check" name="skip_updates" value="0"> Skip downloading the latest updates
       </label>
     </div>
   </div>
@@ -440,11 +437,11 @@ input[name="development_type"]:checked + div {
 
   <div class="form-group" style="display: flex;">
     <label>
-      <input name="development_type" value="standard" type="radio" checked />
+      <input name="development_type" value="standard" type="radio" checked>
       <div>
         <div class="type">Standard</div>
         <div class="title">
-          .css<br />
+          .css<br>
           .js
         </div>
         <small class="description">(Uncompressed files)</small>
@@ -452,11 +449,11 @@ input[name="development_type"]:checked + div {
     </label>
 
     <label>
-      <input name="development_type" value="advanced" type="radio" />
+      <input name="development_type" value="advanced" type="radio">
       <div>
         <div class="type">Advanced</div>
         <div class="title">
-          .less + .min.css<br />
+          .less + .min.css<br>
           .js + .min.js
         </div>
         <small class="description">
@@ -468,7 +465,7 @@ input[name="development_type"]:checked + div {
 
   <p class="alert alert-danger">Backup your files <strong><u>and</u></strong> database <strong><u>before</u></strong> you continue!</p>
 
-  <button class="btn btn-success btn-block" type="submit" name="upgrade" value="true" onclick="if(!confirm('Warning! The procedure cannot be undone.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />Upgrade To <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></button>
+  <button class="btn btn-success btn-block" type="submit" name="upgrade" value="true" onclick="if(!confirm('Warning! The procedure cannot be undone.')) return false;" style="font-size: 1.5em; padding: 0.5em;">Upgrade To <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></button>
 </form>
 <?php
   require('includes/footer.inc.php');

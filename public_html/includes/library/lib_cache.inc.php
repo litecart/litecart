@@ -33,12 +33,12 @@
         clearstatcache();
 
         foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
-          foreach (glob($dir.'/*.{jpg,png,webp}', GLOB_BRACE) as $file) {
+          foreach (glob($dir.'/*.{avif,jpg,png,webp}', GLOB_BRACE) as $file) {
             unlink($file);
           }
         }
 
-        foreach (glob(FS_DIR_STORAGE .'cache/*.{jpg,png,webp}', GLOB_BRACE) as $file) {
+        foreach (glob(FS_DIR_STORAGE .'cache/*.{avif,jpg,png,webp}', GLOB_BRACE) as $file) {
           unlink($file);
         }
 
@@ -79,6 +79,10 @@
 
       $dependencies[] = 'site';
 
+      if (settings::get('avif_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
+        $dependencies[] = 'avif';
+      }
+
       if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
         $dependencies[] = 'webp';
       }
@@ -88,6 +92,12 @@
 
       foreach ($dependencies as $dependency) {
         switch ($dependency) {
+
+          case 'avif':
+            if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
+              $hash_string .= 'avif';
+            }
+            break;
 
           case 'country':
             $hash_string .= customer::$data['country_code'];
@@ -314,7 +324,9 @@
         return;
       }
 
-      if (isset(self::$_recorders[$token['id']])) trigger_error('Cache recorder already initiated ('. $token['id'] .')', E_USER_ERROR);
+      if (isset(self::$_recorders[$token['id']])) {
+        trigger_error('Cache recorder already initiated ('. $token['id'] .')', E_USER_ERROR);
+      }
 
       $_data = self::get($token, $max_age, $force_cache);
 

@@ -10,6 +10,7 @@
   require(__DIR__.'/includes/functions.inc.php');
 
   ini_set('display_errors', 'On');
+  ini_set('memory_limit', '64M');
 
   $document_root = realpath(dirname(__FILE__) . '/..') .'/';
 
@@ -262,7 +263,7 @@
 ?>
 
 <?php if (!empty($installation_detected)) { ?>
-<link rel="stylesheet" href="<?php echo WS_DIR_APP; ?>ext/featherlight/featherlight.min.css" />
+<link rel="stylesheet" href="<?php echo WS_DIR_APP; ?>ext/featherlight/featherlight.min.css">
 
 <div id="modal-warning-existing-installation" style="display: none; width: 320px;">
   <h2>Existing Installation Detected</h2>
@@ -270,7 +271,7 @@
   <p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
 </div>
 
-<script src="<?php echo WS_DIR_APP; ?>ext/jquery/jquery-3.6.4.min.js"></script>
+<script src="<?php echo WS_DIR_APP; ?>ext/jquery/jquery-3.7.1.min.js"></script>
 <script src="<?php echo WS_DIR_APP; ?>ext/featherlight/featherlight.min.js"></script>
 <script>
   $.featherlight.autoBind = '[data-toggle="lightbox"]';
@@ -321,7 +322,7 @@ input[name="development_type"]:checked + div {
   <h3>PHP</h3>
 
   <ul>
-    <li>5.4 - 8.1 <?php echo (version_compare(PHP_VERSION, '5.4', '>=') && version_compare(PHP_VERSION, '8.3', '<'))? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
+    <li>5.4 - 8.3 <?php echo (version_compare(PHP_VERSION, '5.6', '>=') && version_compare(PHP_VERSION, '8.4', '<'))? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
     <li>register_globals = <?php echo ini_get('register_globals') ? ini_get('register_globals') : 'off'; ?> <?php echo in_array(strtolower(ini_get('register_globals')), ['off', 'false', '', '0']) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
     <li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
     <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
@@ -362,7 +363,7 @@ input[name="development_type"]:checked + div {
   <h3>Database Server</h3>
 
   <ul>
-    <li>MySQL Version 5.5 - 8.0 / MariaDB Version 10.8</li>
+    <li>MySQL 5.7+ - 8.0 / MariaDB 10.8+</li>
   </ul>
 
   <h2>Writables</h2>
@@ -395,7 +396,7 @@ input[name="development_type"]:checked + div {
 
 <form name="installation_form" method="post" action="install.php">
 
-  <input class="form-control" name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
+  <input class="form-control" name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
 
   <h3>File System</h3>
 
@@ -416,12 +417,12 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label>Hostname</label>
-      <input class="form-control" name="db_server" type="text" placeholder="localhost" />
+      <input class="form-control" name="db_server" type="text" placeholder="<?php echo ini_get('mysqli.default_host'); ?>">
     </div>
 
     <div class="form-group col-md-6">
       <label>Database</label>
-      <input class="form-control" type="text" name="db_database" required />
+      <input class="form-control" type="text" name="db_database" required>
     </div>
 
     <div class="form-group col-md-6">
@@ -454,23 +455,23 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label>Username</label>
-      <input class="form-control" type="text" name="db_username" required />
+      <input class="form-control" type="text" name="db_username" required>
     </div>
 
     <div class="form-group col-md-6">
       <label>Password</label>
-      <input class="form-control" type="password" name="db_password" />
+      <input class="form-control" type="password" name="db_password">
     </div>
 
     <div class="form-group col-md-6">
       <label>Table Prefix</label>
-      <input class="form-control" name="db_table_prefix" type="text" value="lc_" style="max-width: 50%;" />
+      <input class="form-control" name="db_table_prefix" type="text" value="lc_" style="max-width: 50%;">
     </div>
 
     <div class="form-group col-md-6">
       <label>Demo Data</label>
       <div class="checkbox">
-        <label><input name="demo_data" type="checkbox" value="true" <?php echo !file_exists('data/demo/data.sql') ? 'disabled' : ''; ?> /> Install demo data</label>
+        <label><input name="demo_data" type="checkbox" value="true" <?php echo !file_exists('data/demo/data.sql') ? 'disabled' : ''; ?>> Install demo data</label>
       </div>
     </div>
   </div>
@@ -480,12 +481,12 @@ input[name="development_type"]:checked + div {
   <div class="row">
     <div class="form-group col-md-6">
       <label>Store Name</label>
-      <input class="form-control" name="store_name" type="text" value="My Store" required />
+      <input class="form-control" name="store_name" type="text" value="My Store" required>
     </div>
 
     <div class="form-group col-md-6">
       <label>Store Email</label>
-      <input class="form-control" name="store_email" type="text" value="store@email.com" required />
+      <input class="form-control" name="store_email" type="text" value="store@email.com" required>
     </div>
   </div>
 
@@ -517,11 +518,11 @@ input[name="development_type"]:checked + div {
 
   <div class="form-group" style="display: flex;">
     <label>
-      <input name="development_type" value="standard" type="radio" checked />
+      <input name="development_type" value="standard" type="radio" checked>
       <div>
         <div class="type">Standard</div>
         <div class="title">
-          .css<br />
+          .css<br>
           .js
         </div>
         <small class="description">(Uncompressed files)</small>
@@ -529,11 +530,11 @@ input[name="development_type"]:checked + div {
     </label>
 
     <label>
-      <input name="development_type" value="advanced" type="radio" />
+      <input name="development_type" value="advanced" type="radio">
       <div>
         <div class="type">Advanced</div>
         <div class="title">
-          .less + .min.css<br />
+          .less + .min.css<br>
           .js + .min.js
         </div>
         <small class="description">
@@ -550,7 +551,7 @@ input[name="development_type"]:checked + div {
       <label>Backend URL</label>
       <div class="input-group">
         <span class="input-group-text">/</span>
-        <input class="form-control" name="admin_folder" type="text" value="admin" required />
+        <input class="form-control" name="admin_folder" type="text" value="admin" required>
       </div>
     </div>
   </div>
@@ -558,26 +559,26 @@ input[name="development_type"]:checked + div {
   <div class="row">
     <div class="form-group col-md-6">
       <label>Username</label>
-      <input class="form-control" name="username" type="text" id="username" value="admin" required />
+      <input class="form-control" name="username" type="text" id="username" value="admin" required>
     </div>
 
     <div class="form-group col-md-6">
       <label>Password</label>
-      <input class="form-control" name="password" type="password" id="password" required />
+      <input class="form-control" name="password" type="password" id="password" required>
     </div>
   </div>
 
-  <hr />
+  <hr>
 
   <p class="text-center">
     This software is licensed under <a href="https://creativecommons.org/licenses/by-nd/4.0/" target="blank">Creative Commons BY-ND 4.0</a>.
   </p>
 
   <div class="form-group text-center">
-    <label><input id="accept_terms" name="accept_terms" value="1" type="checkbox" required /> I agree to the terms and conditions.</label>
+    <label><input id="accept_terms" name="accept_terms" value="1" type="checkbox" required> I agree to the terms and conditions.</label>
   </div>
 
-  <input class="btn btn-success btn-block" type="submit" name="install" value="Install Now" onclick="if (document.getElementById('accept_terms').value != 1) return false; if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />
+  <input class="btn btn-success btn-block" type="submit" name="install" value="Install Now" onclick="if (document.getElementById('accept_terms').value != 1) return false; if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;">
 </form>
 
 <?php require(__DIR__.'/includes/footer.inc.php'); ?>

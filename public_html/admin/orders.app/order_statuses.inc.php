@@ -1,5 +1,8 @@
 <?php
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+
+  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+    $_GET['page'] = 1;
+  }
 
   document::$snippets['title'][] = language::translate('title_order_statuses', 'Order Statuses');
 
@@ -14,11 +17,12 @@
       if (empty($_POST['to_order_status_id'])) throw new Exception(language::translate('error_missing_to_order_status', 'Please select a to order status'));
 
       $orders_query = database::query(
-        "select id ". DB_TABLE_PREFIX ."orders
+        "select id from ". DB_TABLE_PREFIX ."orders
         where order_status_id = ". (int)$_POST['from_order_status_id'] .";"
       );
 
       while ($order = database::fetch($orders_query)) {
+        $order = new ent_order($order['id']);
         $order->data['order_status_id'] = (int)$_POST['to_order_status_id'];
         $order->save();
       }
@@ -162,7 +166,7 @@
           </div>
 
           <div class="col-md-1">
-            <br />
+            <br>
             <?php echo functions::form_draw_button('change', [1, language::translate('title_change', 'Change')], 'submit'); ?>
           </div>
         </div>
