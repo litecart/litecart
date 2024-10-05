@@ -265,6 +265,82 @@
 			notices::add('errors', $e->getMessage());
 		}
 	}
+
+	$category_branches = [];
+	$opened_categories = [];
+	$matched_categories = [];
+	$matched_products = [];
+
+	// Search Filter
+	if (!empty($_GET['query'])) {
+
+		$code_regex = functions::format_regex_code($_GET['query']);
+
+		$matched_products = database::query(
+			"select id from ". DB_TABLE_PREFIX ."products
+			where id = '". database::input($_GET['query']) ."'
+			or find_in_set('". database::input($_GET['query']) ."', keywords)
+			or id in (
+				select product_id from ". DB_TABLE_PREFIX ."products_info
+				where name like '%". database::input($_GET['query']) ."%'
+				or short_description like '%". database::input($_GET['query']) ."%'
+				or description like '%". database::input($_GET['query']) ."%'
+				or match(short_description) against ('*". database::input_fulltext($_GET['query']) ."*')
+				or match(description) against ('*". database::input_fulltext($_GET['query']) ."*' in boolean mode)
+				or find_in_set('". database::input($_GET['query']) ."', synonyms)
+			)
+			or id in (
+				select product_id from ". DB_TABLE_PREFIX ."products_stock_options
+				where stock_item_id in (
+					select id from ". DB_TABLE_PREFIX ."stock_items
+					where sku regexp '". database::input($code_regex) ."'
+					or gtin regexp '". database::input($code_regex) ."'
+				)
+			)
+			or brand_id in (
+				select id from ". DB_TABLE_PREFIX ."brands
+				where name like '%". database::input($_GET['query']) ."%'
+			)
+			or supplier_id in (
+				select id from ". DB_TABLE_PREFIX ."brands
+				where name like '%". database::input($_GET['query']) ."%'
+			);"
+		)->fetch_all('id');
+
+		$matched_categories = database::query(
+			"select distinct id from ". DB_TABLE_PREFIX ."categories
+			where id = '". database::input($_GET['query']) ."'
+			or find_in_set('". database::input($_GET['query']) ."', keywords)
+			or id in (
+				select category_id from ". DB_TABLE_PREFIX ."categories_info
+				where name like '%". database::input($_GET['query']) ."%'
+				or description like '%". database::input($_GET['query']) ."%'
+				or match(name) against ('*". database::input_fulltext($_GET['query']) ."*')
+				or match(description) against ('". database::input_fulltext($_GET['query']) ."' in boolean mode)
+			)
+			or id in (
+			  select distinct category_id from ". DB_TABLE_PREFIX ."products_to_categories
+			  where product_id in ('". implode("', '", database::input($matched_products)) ."')
+			);"
+		)->fetch_all('id');
+
+		foreach ($matched_categories as $category_id) {
+			$category = reference::category($category_id);
+			$category_branches[] = $category->parent_id ? $category->main_category->id : $category->id;
+			$opened_categories = array_merge($opened_categories, array_keys($category->path));
+		}
+
+	} else {
+		$category_branches = database::query(
+			"select distinct id from ". DB_TABLE_PREFIX ."categories
+			where parent_id is null;"
+		)->fetch_all('id');
+		$opened_categories = !empty($_GET['category_id']) ? array_keys(reference::category($_GET['category_id'])->path) : [];
+	}
+
+	$num_category_rows = 0;
+	$num_product_rows = 0;
+
 ?>
 <style>
 .warning .fa {
@@ -316,291 +392,217 @@
 					<th></th>
 				</tr>
 			</thead>
+
 			<tbody>
-<?php
-	$num_category_rows = 0;
-	$num_product_rows = 0;
-
-	if (!empty($_GET['query'])) {
-
-		$code_regex = functions::format_regex_code($_GET['query']);
-		$query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
-
-		$products_query = database::query(
-			"select p.id, p.status, p.image, pi.name, p.image, pp.price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, (
-				if(p.id = '". database::input($_GET['query']) ."', 10, 0)
-				+ (match(pi.name) against ('*". database::input($query_fulltext) ."*'))
-				+ (match(pi.short_description) against ('*". database::input($query_fulltext) ."*') / 2)
-				+ (match(pi.description) against ('*". database::input($query_fulltext) ."*') / 3)
-				+ (match(pi.name) against ('". database::input($query_fulltext) ."' in boolean mode))
-				+ (match(pi.short_description) against ('". database::input($query_fulltext) ."' in boolean mode) / 2)
-				+ (match(pi.description) against ('". database::input($query_fulltext) ."' in boolean mode) / 3)
-				+ if(pi.name like '%". database::input($_GET['query']) ."%', 3, 0)
-				+ if(pi.short_description like '%". database::input($_GET['query']) ."%', 2, 0)
-				+ if(pi.description like '%". database::input($_GET['query']) ."%', 1, 0)
-				+ if(p.code regexp '". database::input($code_regex) ."', 5, 0)
-				+ if (p.id in (
-					select product_id from ". DB_TABLE_PREFIX ."products_options_stock
-					where sku regexp '". database::input($code_regex) ."'
-				), 5, 0)
-				+ if(b.name like '%". database::input($_GET['query']) ."%', 3, 0)
-				+ if(s.name like '%". database::input($_GET['query']) ."%', 2, 0)
-			) as relevance
-
-			from ". DB_TABLE_PREFIX ."products p
-			left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
-			left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
-			left join ". DB_TABLE_PREFIX ."suppliers s on (s.id = p.supplier_id)
-
-			left join (
-				select product_id, `". database::input(settings::get('store_currency_code')) ."` as price
-				from ". DB_TABLE_PREFIX ."products_prices
-			) pp on (pp.product_id = p.id)
-
-			left join (
-				select product_id, count(id) as num_stock_options from ". DB_TABLE_PREFIX ."products_stock_options
-				group by product_id
-			) pso on (pso.product_id = p.id)
-
-			left join (
-				select oi.product_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
-				left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
-				where o.order_status_id in (
-					select id from ". DB_TABLE_PREFIX ."order_statuses
-					where stock_action = 'reserve'
-				)
-				group by oi.product_id
-			) oi on (oi.product_id = p.id)
-
-			group by p.id
-			having relevance > 0
-			order by relevance desc;"
-		);
-
-		while ($product = database::fetch($products_query)) {
-			$num_product_rows++;
-
-			try {
-				$warning = null;
-
-				if (!empty($product['date_valid_from']) && strtotime($product['date_valid_from']) > time()) {
-					throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime('date', $product['date_valid_from'])]));
-				}
-
-				if (!empty($product['date_valid_to']) && strtotime($product['date_valid_to']) < time()) {
-					throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime('date', $product['date_valid_to'])]));
-				}
-
-				if ($product['num_stock_options'] && $product['quantity'] <= 0) {
-					throw new Exception(language::translate('text_product_is_out_of_stock', 'The product is out of stock'));
-				}
-
-			} catch (Exception $e) {
-				$warning = $e->getMessage();
-			}
-?>
-				<tr class="<?php if (empty($product['status'])) echo 'semi-transparent'; ?>">
-					<td><?php echo functions::form_checkbox('products[]', $product['id']); ?></td>
-					<td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
-					<td class="warning"><?php if (!empty($warning)) echo functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_attr($warning) .'"'); ?></td>
-					<td><?php echo functions::draw_thumbnail('storage://images/' . $product['image'], 24, 24, 'fit'); ?><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"> <?php echo $product['name'] ? $product['name'] : '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
-					<td class="text-end"><?php echo currency::format($product['price']); ?></td>
-					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('f:product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>
+						<?php echo functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cc6;"'); ?>
+						<a href="'. document::href_ilink(null, [], [], []) .'">
+							<strong>[<?php echo language::translate('title_root', 'Root'); ?>]</strong>
+						</a>
+					</td>
+					<td></td>
+					<td></td>
+					<td></td>
 				</tr>
 <?php
+	$draw_category_branch = function($category_id, $depth=1) use (&$draw_category_branch, $opened_categories, $matched_categories, $matched_products, &$num_category_rows) {
+
+		$output = '';
+
+		$category = database::query(
+			"select c.id, c.status, ci.name
+			from ". DB_TABLE_PREFIX ."categories c
+			left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
+			where c.id = ". (int)$category_id ."
+			order by c.priority asc, ci.name asc;"
+		)->fetch();
+
+		$num_category_rows++;
+
+		$category['properties'] = [];
+
+		if (isset($_GET['category_id']) && $category['id'] == $_GET['category_id']) {
+			$category['properties'][] = 'active';
 		}
-?>
-				</tbody>
-				<tfoot>
-					<tr>
-						<td colspan="7"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
-					</tr>
-				</tfoot>
-<?php
 
-	} else {
+		if (in_array($category['id'], $opened_categories)) {
+			$category['properties'][] = 'opened';
+		}
 
-		$category_trail = !empty($_GET['category_id']) ? array_keys(reference::category($_GET['category_id'])->path) : [];
-		$num_category_rows = 0;
-		$num_product_rows = 0;
+		$output .= implode(PHP_EOL, [
+			'<tr class="'. ($category['status'] ? null : ' semi-transparent') .'">',
+			'  <td>'. functions::form_checkbox('categories[]', $category['id'], true) .'</td>',
+			'  <td>'. functions::draw_fonticon($category['status'] ? 'on' : 'off') .'</td>',
+			'  <td></td>',
+			'  <td style="padding-inline-start: '. ($depth+1) .'em;">',
+			'    '. functions::draw_fonticon(in_array('opened', $category['properties']) ? 'fa-folder-open fa-lg' : 'fa-folder fa-lg', 'style="color: #cc6;"'),
+			'    '. (in_array('active', $category['properties']) ? '<strong>' : '<a class="link" href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'),
+			'      ' . ($category['name'] ? $category['name'] : '[untitled]'),
+			'    '. (in_array('opened', $category['properties']) ? '</strong>' : '</a>'),
+			'  </td>',
+			'  <td></td>',
+			'  <td>',
+			'    <a class="btn btn-default btn-sm" href="'. document::href_ilink('f:category', ['category_id' => $category['id']]) .'" target="_blank">',
+			'    '.  functions::draw_fonticon('fa-external-link'),
+			'    </a>',
+			'  </td>',
+			'  <td class="text-end">',
+			'    <a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_category', ['category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">',
+			'    '. functions::draw_fonticon('fa-pencil'),
+			'    </a>',
+			'  </td>',
+			'</tr>',
+		]);
 
-		$output_products = function($category_id=0, $depth=1) use (&$output_products, &$num_product_rows) {
+		if (in_array($category['id'], $opened_categories)) {
 
-			$output = '';
+			$has_subcategories = database::query(
+				"select id from ". DB_TABLE_PREFIX ."categories
+				where parent_id = ". (int)$category['id'] ."
+				limit 1;"
+			)->num_rows ? true : false;
 
-			$products_query = database::query(
-				"select p.id, p.status, p.code, p.sold_out_status_id, p.image, pi.name, pp.price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.date_valid_from, p.date_valid_to, p2c.category_id
+			$has_products	= database::query(
+				"select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+				where category_id = ". (int)$category['id']."
+				limit 1;"
+			)->num_rows ? true : false;
 
-				from ". DB_TABLE_PREFIX ."products p
-				left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
-				left join ". DB_TABLE_PREFIX ."products_to_categories p2c on (p2c.product_id = p.id)
+			if ($has_subcategories || $has_products) {
 
-				left join (
-					select product_id, `". database::input(settings::get('store_currency_code')) ."` as price
-					from ". DB_TABLE_PREFIX ."products_prices
-				) pp on (pp.product_id = p.id)
+				// Output subcategories
+				$subcategories = database::query(
+					"select c.id, c.status, ci.name
+					from ". DB_TABLE_PREFIX ."categories c
+					left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
+					where c.parent_id = ". (int)$category['id'] ."
+					". (!empty($_GET['query']) ? "and c.id in ('". implode("', '", database::input($matched_categories)) ."')" : "") ."
+					order by ci.name;"
+				)->fetch_all();
 
-				left join (
-				select product_id, count(id) as num_stock_options, sum(quantity) as quantity
-				from ". DB_TABLE_PREFIX ."products_options_stock pos
-				group by product_id
-				) pos on (pos.product_id = p.id)
-
-				left join (
-					select sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
-					left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
-					where o.order_status_id in (
-						select id from ". DB_TABLE_PREFIX ."order_statuses
-						where stock_action = 'reserve'
-					)
-					group by oi.sku
-				) oi on (oi.sku = pos.sku)
-
-				where ". (!empty($category_id) ? "p.id in (
-					select product_id from ". DB_TABLE_PREFIX ."products_to_categories ptc
-					where category_id = ". (int)$category_id ."
-				)" : "p2c.category_id = 0") ."
-
-				group by p.id
-				order by pi.name asc;"
-			);
-
-			$display_images = true;
-			if (database::num_rows($products_query) > 100) {
-				$display_images = false;
-			}
-
-			while ($product = database::fetch($products_query)) {
-				$num_product_rows++;
-
-				try {
-					$warning = null;
-
-					if (!empty($product['date_valid_from']) && $product['date_valid_from'] > date('Y-m-d H:i:s')) {
-						throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from']))]));
-					}
-
-					if (!empty($product['date_valid_to']) && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
-						throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to']))]));
-					}
-
-					if ($product['num_stock_options'] && $product['quantity'] <= 0) {
-						throw new Exception(language::translate('text_product_is_out_of_stock', 'The product is out of stock'));
-					}
-
-				} catch (Exception $e) {
-					$warning = $e->getMessage();
+				foreach ($subcategories as $subcategory) {
+					$output .= $draw_category_branch($subcategory['id'], $depth+1);
 				}
 
-				$output .= implode(PHP_EOL, [
-					'<tr class="'. (!$product['status'] ? ' semi-transparent' : '') .'">',
-					'  <td>'. functions::form_checkbox('products[]', $product['id'], true) .'</td>',
-					'  <td>'. functions::draw_fonticon(!empty($product['status']) ? 'on' : 'off') .'</td>',
-					'  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_attr($warning) .'"') : '') .'</td>',
-					(($display_images) ?
-						'  <td>'. functions::draw_thumbnail('storage://images/' . $product['image'], 24, 24, 'fit', 'style="margin-inline-start: '. ($depth*16) .'px;"') .' <a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>'
-					: '  <td><span style="margin-inline-start: '. (($depth+1)*16) .'px;">&nbsp;<a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>'
-					),
-					'<td class="text-end">'. currency::format($product['price']) .'</td>',
-					'<td><a class="btn btn-default btn-sm" href="'. document::href_ilink('f:product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>',
-					'<td class="text-end"><a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>',
-					'</tr>',
-				 ]);
-			}
+				// Output products
+				$products = database::query(
+					"select p.id, p.status, p.code, p.sold_out_status_id, p.image, pi.name, pp.price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.date_valid_from, p.date_valid_to, ptc.category_id
+					from ". DB_TABLE_PREFIX ."products p
+					left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+					left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.product_id = p.id)
 
-			return $output;
-		};
+					left join (
+						select product_id, `". database::input(settings::get('store_currency_code')) ."` as price
+						from ". DB_TABLE_PREFIX ."products_prices
+					) pp on (pp.product_id = p.id)
 
-		$category_iterator = function($category_id, $depth) use (&$category_iterator, &$output_products, &$category_trail, &$num_category_rows) {
+					left join (
+						select pso.id, pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as quantity
+						from ". DB_TABLE_PREFIX ."products_stock_options pso
+						left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+						group by pso.product_id
+					) pso on (pso.product_id = p.id)
 
-			$output = '';
+					left join (
+						select oi.stock_option_id, sum(oi.quantity) as total_reserved
+						from ". DB_TABLE_PREFIX ."orders_items oi
+						left join ". DB_TABLE_PREFIX ."products_stock_options pso on (pso.id = oi.stock_option_id)
+						where oi.order_id in (
+							select id from ". DB_TABLE_PREFIX ."orders o
+							where order_status_id in (
+								select id from ". DB_TABLE_PREFIX ."order_statuses os
+								where stock_action = 'reserve'
+							)
+						)
+						group by pso.id
+					) oi on (oi.stock_option_id = pso.id)
 
-			if (empty($category_id)) {
+					where ". (!empty($category['id']) ? "p.id in (
+						select product_id from ". DB_TABLE_PREFIX ."products_to_categories ptc
+						where category_id = ". (int)$category['id'] ."
+					)" : "ptc.category_id is null") ."
+
+					". (!empty($_GET['query']) ? "and p.id in ('". implode("', '", database::input($matched_products)) ."')" : "") ."
+
+					group by p.id
+					order by pi.name asc;"
+				)->fetch_all();
+
+				foreach ($products as $product) {
+
+					try {
+
+						$product['warning'] = null;
+
+						if (!empty($product['date_valid_from']) && strtotime($product['date_valid_from']) > time()) {
+							throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime('date', $product['date_valid_from'])]));
+						}
+
+						if (!empty($product['date_valid_to']) && strtotime($product['date_valid_to']) < time()) {
+							throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime('date', $product['date_valid_to'])]));
+						}
+
+						if ($product['num_stock_options'] && $product['quantity'] <= 0) {
+							throw new Exception(language::translate('text_product_is_out_of_stock', 'The product is out of stock'));
+						}
+
+					} catch (Exception $e) {
+						$product['warning'] = $e->getMessage();
+					}
+
+					$output .= implode(PHP_EOL, [
+						'<tr class="'. (!$product['status'] ? ' semi-transparent' : '') .'">',
+						'  <td>'. functions::form_checkbox('products[]', $product['id'], true) .'</td>',
+						'  <td>'. functions::draw_fonticon(!empty($product['status']) ? 'on' : 'off') .'</td>',
+						'  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_attr($warning) .'"') : '') .'</td>',
+						'  <td style="padding-inline-start: '. ($depth+2) .'em;">',
+						'    '. empty($display_images) ? functions::draw_thumbnail('storage://images/' . $product['image'], 24, 24, 'fit') : '<span style="margin-inline-start: '. (($depth+1)*16) .'px;"></span>',
+						'    <a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">',
+						'      '. ($product['name'] ? $product['name'] : '['. language::translate('title_untitled', 'Untitled') .']'),
+						'    </a>',
+						'  </td>',
+						'  <td class="text-end">'. currency::format($product['price']) .'</td>',
+						'  <td>',
+						'    <a class="btn btn-default btn-sm" href="'. document::href_ilink('f:product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">',
+						'    '. functions::draw_fonticon('fa-external-link'),
+						'    </a>',
+						'  </td>',
+						'  <td class="text-end">',
+						'    <a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">',
+						'    '. functions::draw_fonticon('fa-pencil'),
+						'    </a>',
+						'  </td>',
+						'</tr>',
+					]);
+				}
+
+			} else {
+
 				$output .= implode(PHP_EOL, [
 					'<tr>',
 					'  <td></td>',
 					'  <td></td>',
 					'  <td></td>',
-					'  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cc6;"') .' <strong><a href="'. document::href_ilink(null, ['category_id' => '0']) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>',
+					'  <td><em style="margin-inline-start: '. (($depth+1)*16) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>',
 					'  <td></td>',
 					'  <td></td>',
 					'  <td></td>',
 					'</tr>',
 				]);
 			}
+		}
 
-			// Output subcategories
-			$categories_query = database::query(
-				"select c.id, c.status, ci.name
-				from ". DB_TABLE_PREFIX ."categories c
-				left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
-				where c.parent_id = ". (int)$category_id ."
-				order by c.priority asc, ci.name asc;"
-			);
+		return $output;
+	};
 
-			while ($category = database::fetch($categories_query)) {
-				$num_category_rows++;
+	foreach ($category_branches as $category_id) {
+		echo $draw_category_branch($category_id);
+	}
 
-				$output .= implode(PHP_EOL, [
-					'<tr class="'. ($category['status'] ? null : ' semi-transparent') .'">',
-					'  <td>'. functions::form_checkbox('categories[]', $category['id'], true) .'</td>',
-					'  <td>'. functions::draw_fonticon($category['status'] ? 'on' : 'off') .'</td>',
-					'  <td></td>',
-				]);
-
-				if ($category['id'] == $_GET['category_id']) {
-					$output .= '  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cc6; margin-inline-start: '. ($depth*16) .'px;"') .' <strong><a class="link" href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
-				} else if (in_array($category['id'], $category_trail)) {
-					$output .= '  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cc6; margin-inline-start: '. ($depth*16) .'px;"') .' <a class="link" href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
-				} else {
-					$output .= '  <td>'. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cc6; margin-inline-start: '. ($depth*16) .'px;"') .' <a class="link" href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
-				}
-
-				$output .= implode(PHP_EOL, [
-					'  <td></td>',
-					'  <td><a class="btn btn-default btn-sm" href="'. document::href_ilink('f:category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>',
-					'  <td class="text-end"><a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_category', ['category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>',
-					'</tr>',
-				]);
-
-				if (in_array($category['id'], $category_trail)) {
-
-					if (database::query("select id from ". DB_TABLE_PREFIX ."categories where parent_id = ". (int)$category['id'] ." limit 1;")->num_rows
-					 || database::query("select category_id from ". DB_TABLE_PREFIX ."products_to_categories where category_id = ".(int)$category['id']." limit 1;")->num_rows) {
-						$output .= $category_iterator($category['id'], $depth+1);
-
-							// Output products
-						if (in_array($category['id'], $category_trail)) {
-							$output .= $output_products($category['id'], $depth+1);
-						}
-
-					} else {
-
-						$output .= implode(PHP_EOL, [
-							'<tr>',
-							'  <td></td>',
-							'  <td></td>',
-							'  <td></td>',
-							'  <td><em style="margin-inline-start: '. (($depth+1)*16) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>',
-							'  <td></td>',
-							'  <td></td>',
-							'  <td></td>',
-							'</tr>',
-					 ]);
-					}
-				}
-			}
-
-				// Output products
-			if (empty($category_id)) {
-				$output .= $output_products($category_id, $depth);
-			}
-
-			return $output;
-		};
-
-		echo $category_iterator(0, 1);
 ?>
 				</tbody>
 				<tfoot>
@@ -608,9 +610,6 @@
 						<td colspan="7"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
 					</tr>
 				</tfoot>
-<?php
-	}
-?>
 		</table>
 
 		<div class="card-body">
