@@ -76,12 +76,72 @@ body main {
 #site-navigation .search form {
   padding: 0.5em;
 }
+#site-navigation .wishlist {
+  line-height: 1;
+  transition: all 200ms ease-out;
+}
+#site-navigation .wishlist img {
+  max-height: 32px;
+}
+#site-navigation .wishlist .badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+}
+#site-navigation .wishlist .badge,
+#site-navigation .wishlist .checkout {
+  display: none;
+}
+#site-navigation .wishlist .name {
+  white-space: normal;
+}
+#site-navigation .wishlist .price {
+  font-weight: 500;
+}
+#site-navigation .wishlist .items a {
+  color: inherit;
+}
+#site-navigation .wishlist .row {
+  margin-bottom: 0;
+}
+#site-navigation .wishlist.filled .badge {
+  display: inline-block;
+  animation: pulsating 2s linear;
+  animation-iteration-count: infinite;
+}
+#site-navigation .wishlist.filled .checkout {
+  display: block;
+}
+#site-navigation .wishlist.filled .empty {
+  display: none;
+}
+@media (min-width: 768px) {
+  #site-navigation .wishlist .dropdown-menu {
+    width: 360px;
+    max-height: calc(100vh - 125px);
+    display: flex;
+    flex-direction: column;
+  }
+  #site-navigation .wishlist .dropdown-menu li {
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+  #site-navigation .wishlist .items {
+    overflow-y: auto;
+    flex-shrink: 1 !important;
+    flex-grow: 1 !important;
+  }
+}
+#site-navigation .wishlist .search {
+  flex-grow: 1;
+  order: initial;
+}
 #site-navigation .shopping-cart {
+  line-height: 1;
   transition: all 200ms ease-out;
 }
 #site-navigation .shopping-cart img {
-  margin: -0.5em 0;
-  max-height: 36px;
+  max-height: 32px;
 }
 #site-navigation .shopping-cart .badge {
   position: absolute;
@@ -408,7 +468,7 @@ body main {
   background: var(--whitespace-color);
 }
 .listing .product .image-wrapper .thumbnail {
-  padding: 2rem;
+  padding: 0.5rem;
 }
 .listing .product .image-wrapper .sticker {
   position: absolute;
@@ -488,6 +548,7 @@ body main {
 .listing .product .actions .btn {
   padding: var(--input-padding-y);
   width: 2.5em;
+  line-height: 1;
 }
 @media (min-width: 576px) {
   .listing .product:hover .actions {
@@ -668,8 +729,10 @@ body main {
   color: #cc0000;
 }
 #box-product .social-bookmarks {
-  font-size: 1.75em;
   margin: 1rem 0;
+}
+#box-product .social-bookmarks a {
+  padding: 0.5em 1em;
 }
 #box-product .description p:first-child {
   margin-top: 0;

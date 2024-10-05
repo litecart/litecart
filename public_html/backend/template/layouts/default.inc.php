@@ -33,10 +33,12 @@
 
 		<?php include 'app://backend/partials/box_apps_menu.inc.php'; ?>
 
-		<a class="platform text-center" href="<?php echo document::href_ilink('about'); ?>">
-			<span class="name"><?php echo PLATFORM_NAME; ?>®</span>
-			<span class="version"><?php echo PLATFORM_VERSION; ?></span>
-		</a>
+		<div class="text-center">
+			<a class="platform" href="<?php echo document::href_ilink('about'); ?>">
+				<span class="name"><?php echo PLATFORM_NAME; ?>®</span>
+				<span class="version"><?php echo PLATFORM_VERSION; ?></span>
+			</a>
+		</div>
 
 		<div class="copyright" class="text-center">Copyright &copy; <?php echo date('2012-Y'); ?><br>
 			<a href="https://www.litecart.net" target="_blank">www.litecart.net</a>

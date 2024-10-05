@@ -1,22 +1,22 @@
-LiteCart contains work by the following third parties:
-======================================================
+# LiteCart contains work by the following third parties:
 
-Graphics
---------
+## Graphics
+
 * (cart) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
+* (wishlist) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
 * (logotype) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
 * (no-image/camera) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
 * (newsletter) T. Almroth - CC BY-SA 4.0 - http://www.tim-international.net/
 
-Fonts
------
-* Asap - Google Fonts - Free for commercial use - https://www.googlefonts.com/
-* Fontawesome - MIT License - https://www.fontawesome.io/
-* Reprobate (captcha) - Handwriting of Mike Sedillo - Free for commercial use - https://www.apostrophiclab.com/
-* Roboto - Google Fonts - Free for commercial use - https://www.googlefonts.com/
+## Fonts
 
-JavaScripts
------------
+* Fira Sans - Google Fonts - Free for commercial use - https://www.googlefonts.com/
+* Fontawesome - MIT License - https://www.fontawesome.io/
+* Inter - Google Fonts - Free for commercial use - https://www.googlefonts.com/
+* Reprobate (captcha) - Handwriting of Mike Sedillo - Free for commercial use - https://www.apostrophiclab.com/
+
+## JavaScripts
+
 * Bootstrap Carousel.js by Twitter - MIT License - https://getbootstrap.com/
 * Bootstrap Collapse.js by Twitter - MIT License - https://getbootstrap.com/
 * Bootstrap Dropdown.js by Twitter - MIT License - https://getbootstrap.com/

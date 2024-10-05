@@ -353,6 +353,7 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('defaults', 'global', 'Default Delivery Status', 'The default delivery status, if not otherwise set.', 'default_delivery_status_id', '1', 'delivery_status()', 0, 18, NOW(), NOW()),
 ('defaults', 'local', 'Default Incoterm', 'Default Incoterm for new orders if nothing else is set.', 'default_incoterm', 'EXW', 'incoterms()', 0, 19, NOW(), NOW()),
 ('defaults', 'local', 'Default Order Status', 'Default order status for new orders if nothing else is set.', 'default_order_status_id', '1', 'order_status()', 0, 20, NOW(), NOW()),
+('defaults', 'local', 'Default Print Paper Size', 'Default paper size used for printing.', 'default_print_paper_size', 'A4', 'select("A5","A5R","A4","A4R","US-Letter")', 1, 30, NOW(), NOW()),
 ('email', 'local', 'Send Emails', 'Whether or not the platform should deliver outgoing emails.', 'email_status', '1', 'toggle("y/n")', 0, 1, NOW(), NOW()),
 ('email', 'local', 'SMTP Enabled', 'Whether or not to use an SMTP server for delivering email.', 'smtp_status', '0', 'toggle("e/d")', 0, 10, NOW(), NOW()),
 ('email', 'local', 'SMTP Host', 'SMTP hostname, e.g. smtp.myprovider.com.', 'smtp_host', 'localhost', 'text()', 0, 11, NOW(), NOW()),

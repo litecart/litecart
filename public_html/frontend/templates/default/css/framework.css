@@ -207,8 +207,14 @@ a:active {
   text-decoration: underline;
 }
 fieldset {
+  padding: var(--gutter-size);
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
+}
+fieldset legend {
+  font-weight: 500;
+  padding: 0 1em;
+  letter-spacing: 0.1em;
 }
 hr {
   margin: 1em 0;
@@ -1622,7 +1628,6 @@ img.responsive {
   object-fit: scale-down;
 }
 img.fit {
-  padding: 5%;
   width: 100%;
   object-fit: contain;
 }
@@ -1807,7 +1812,7 @@ ul.list-inline li {
 .navbar .navbar-brand img {
   display: block;
   max-width: 250px;
-  max-height: 50px;
+  max-height: 48px;
   padding: 0.5em;
 }
 @media (min-width: 768px) {
@@ -1851,6 +1856,7 @@ ul.list-inline li {
   flex-direction: column;
   overflow-y: scroll;
   transition: all 200ms linear;
+  gap: 1em;
 }
 @media (max-width: 767px) {
   .navbar .navbar-menu {
@@ -1883,7 +1889,7 @@ ul.list-inline li {
   flex-direction: column;
   margin: 0;
   padding: 0;
-  gap: 0.25em;
+  gap: 1em;
   align-content: center;
 }
 .navbar .navbar-nav > li {

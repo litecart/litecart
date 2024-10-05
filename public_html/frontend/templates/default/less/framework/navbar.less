@@ -34,7 +34,7 @@
 		img {
 			display: block;
 			max-width: 250px;
-			max-height: 50px;
+			max-height:48px;
 			padding: 0.5em;
 		}
 		@media (min-width: @media-breakpoint-md) {
@@ -81,6 +81,7 @@
 		flex-direction: column;
 		overflow-y: scroll;
 		transition: all 200ms linear;
+		gap: 1em;
 		@media (max-width: (@media-breakpoint-md - 1px)) {
 			position: fixed;
 				//top: 100%;
@@ -112,7 +113,7 @@
 		flex-direction: column;
 		margin: 0;
 		padding: 0;
-		gap: .25em;
+		gap: 1em;
 		align-content: center;
 
 		> li {

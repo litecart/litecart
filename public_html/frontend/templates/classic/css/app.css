@@ -639,6 +639,7 @@ body.scrolling-down #site-navigation {
   position: relative;
   background: var(--whitespace-color);
   overflow: hidden;
+  border-radius: var(--border-radius);
 }
 #box-product .main-image .sticker {
   top: 1em;

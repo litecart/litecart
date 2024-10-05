@@ -60,46 +60,25 @@
 		}
 
 		public function stream_flush(): bool {
-			return fflush($this->_stream);
+			trigger_error('Flushing data to an app:// resource is prohibited', E_USER_WARNING);
+				return false;
 		}
 
 		public function stream_lock(int $operation): bool {
-			return flock($this->_stream, $operation);
+			trigger_error('Adding a file lock for an app:// resource is prohibited', E_USER_WARNING);
+			return false;
 		}
 
 		public function stream_metadata(string $path, int $option, mixed $value): bool {
-
-			$path = $this->_resolve_path($path);
-
-			switch ($option) {
-				case STREAM_META_TOUCH:
-					$currentTime = \time();
-					return touch($path, (is_array($value) && array_key_exists(0, $value)) ? $value[0] : $currentTime, (is_array($value) && array_key_exists(1, $value)) ? $value[1] : $currentTime);
-
-				case STREAM_META_OWNER_NAME:
-					return chown($path, (string)$value);
-
-				case STREAM_META_OWNER:
-					return chown($path, (int)$value);
-
-				case STREAM_META_GROUP_NAME:
-					return chgrp($path, (string)$value);
-
-				case STREAM_META_GROUP:
-					return chgrp($path, (int)$value);
-
-				case STREAM_META_ACCESS:
-					return chmod($path, $value);
-
-				default:
-					return false;
-			}
+			trigger_error('Changing metadata for an app:// resource is prohibited', E_USER_WARNING);
+			return false;
 		}
 
 		public function stream_open(string $path, string $mode, int $options, ?string &$opened_path): bool {
 
 			$path = $this->_resolve_path($path);
 			$path = vmod::check($path);
+			$mode = 'r'; // Force read-only
 
 			$this->_stream = fopen($path, $mode, $options, $opened_path);
 
@@ -133,7 +112,7 @@
 
 		public function stream_write(string $data): int|bool {
 			trigger_error('Writing to an app:// resource is prohibited', E_USER_WARNING);
-			return false;
+			return 0;
 		}
 
 		public function unlink(string $path): bool {

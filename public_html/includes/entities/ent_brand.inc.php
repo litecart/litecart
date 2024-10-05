@@ -159,7 +159,7 @@
 				$image->resample($width, $height, 'FIT_ONLY_BIGGER');
 			}
 
-			$image->write('storage://images/' . $filename, 90);
+			$image->save('storage://images/' . $filename, 90);
 
 			database::prepare(
 				"update ". DB_TABLE_PREFIX ."brands

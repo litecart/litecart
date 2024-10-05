@@ -36,7 +36,7 @@
 						<div class="row">
 							<div class="form-group col-xs-6">
 								<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-								<?php echo functions::form_captcha('captcha', 'newsletter_subscribe', 'required'); ?>
+								<?php echo functions::form_input_captcha('newsletter_subscribe', 'required'); ?>
 							</div>
 						</div>
 						<?php } ?>
@@ -44,7 +44,7 @@
 						<?php if ($consent) { ?>
 						<p class="consent">
 							<div class="checkbox">
-								<?php echo '<label>'. functions::form_draw_checkbox('terms_agreed', '1', true, 'required') .' '. $consent .'</label>'; ?>
+								<?php echo '<label>'. functions::form_checkbox('terms_agreed', '1', true, 'required') .' '. $consent .'</label>'; ?>
 							</div>
 						</p>
 						<?php } ?>

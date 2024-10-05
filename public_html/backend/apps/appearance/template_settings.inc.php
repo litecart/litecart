@@ -53,20 +53,14 @@
 		try {
 
 			$new_settings = [];
-			foreach ($settings as $setting) {
-				$new_settings[$setting['key']] = $setting['value'];
-			}
 
-			foreach (array_keys($_POST['settings']) as $key) {
-				if (isset($new_settings[$key])) {
-					$new_settings[$key] = $_POST['settings'][$key];
-				}
+			foreach ($settings as $setting) {
+				$new_settings[$setting['key']] = isset($_POST['settings'][$setting['key']]) ? $_POST['settings'][$setting['key']] : $setting['value'];
 			}
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."settings
-				set
-					`value` = '". database::input(json_encode($new_settings, JSON_UNESCAPED_SLASHES)) ."',
+				set `value` = '". database::input(json_encode($new_settings, JSON_UNESCAPED_SLASHES)) ."',
 					date_updated = '". date('Y-m-d H:i:s') ."'
 				where `key` = '". database::input('template_settings') ."'
 				limit 1;"
@@ -127,48 +121,29 @@
 	<?php echo functions::form_begin('template_settings_form', 'post'); ?>
 
 		<table class="table table-striped table-hover data-table">
-			<thead>
-				<tr>
-					<th style="width: 50%;"><?php echo language::translate('title_key', 'Key'); ?></th>
-					<th><?php echo language::translate('title_value', 'Value'); ?></th>
-					<th></th>
-				</tr>
-			</thead>
-
 			<tbody>
 				<?php foreach ($settings as $setting) { ?>
-				<?php if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) { ?>
 				<tr>
 					<td style="white-space: normal;">
 						<u><?php echo language::translate(settings::get('template').':title_'.$setting['key'], $setting['title']); ?></u><br>
 						<?php echo language::translate(settings::get('template').':description_'.$setting['key'], $setting['description']); ?>
 					</td>
 					<td><?php echo functions::form_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
-					<td class="text-end">
-						<?php echo functions::form_button_predefined('save'); ?>
-						<?php echo functions::form_button_predefined('cancel'); ?>
-					</td>
+
 				</tr>
-				<?php } else { ?>
-				<tr>
-					<td><?php echo language::translate(settings::get('template').':title_'.$setting['key'], $setting['title']); ?></td>
-					<td>
-						<div style="max-height: 200px; overflow-y: auto;">
-							<?php echo nl2br($setting['value']); ?>
-						</div>
-					</td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('appearance/template_settings', ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-				</tr>
-				<?php } ?>
 				<?php } ?>
 
 				<?php if (!$settings) { ?>
 				<tr>
-					<td colspan="3"><?php echo language::translate('text_no_frontend_template_settings', 'There are no settings available for the frontend template.'); ?></td>
+					<td colspan="2"><?php echo language::translate('text_no_frontend_template_settings', 'There are no settings available for the frontend template.'); ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
 		</table>
+
+		<div class="card-action">
+			<?php echo functions::form_button_predefined('save'); ?>
+		</div>
 
 	<?php echo functions::form_end(); ?>
 </div>

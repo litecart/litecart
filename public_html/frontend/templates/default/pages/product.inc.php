@@ -43,12 +43,12 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					<div class="card">
 						<div class="card-body">
 							<div class="row layout" style="margin-bottom: 0;">
-								<div class="col-sm-4 col-md-6">
+								<div class="col-md-6">
 									<div class="images row">
 
 										<div class="col-12">
 											<a class="main-image" href="<?php echo document::href_rlink($image); ?>" data-toggle="lightbox" data-gallery="product">
-												<?php echo functions::draw_thumbnail($image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
+												<?php echo functions::draw_thumbnail($image, 720, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
 												{{sticker}}
 											</a>
 										</div>
@@ -56,7 +56,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 										<?php foreach ($extra_images as $extra_image) { ?>
 										<div class="col-4">
 											<a class="extra-image" href="<?php echo document::href_rlink($extra_image); ?>" data-toggle="lightbox" data-gallery="product">
-												<?php echo functions::draw_thumbnail($image, 160, $height, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
+												<?php echo functions::draw_thumbnail($image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
 											</a>
 										</div>
 										<?php } ?>
@@ -64,7 +64,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									</div>
 								</div>
 
-								<div class="col-sm-8 col-md-6">
+								<div class="col-md-6">
 									<h1 class="title">{{name}}</h1>
 
 									<?php if ($short_description) { ?>
@@ -155,59 +155,83 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									</div>
 									<?php } ?>
 
-									<fieldset class="buy_now" style="margin: 1em 0;">
-										<?php echo functions::form_begin('buy_now_form', 'post'); ?>
-										<?php echo functions::form_input_hidden('product_id', $product_id); ?>
+									<?php echo functions::form_begin('buy_now_form', 'post'); ?>
 
-										<?php if (count($stock_options) > 1) { ?>
-										<div class="form-group">
-											<label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
-											<?php echo form_select_product_stock_option('stock_option_id', $product_id, true); ?>
-										</div>
-										<?php } else if (count($stock_options) == 1) { ?>
-										<?php echo functions::form_input_hidden('stock_option_id', $stock_options[0]['stock_option_id']); ?>
-										<?php } ?>
+										<fieldset class="buy_now" style="margin: 1em 0;">
 
-										<div class="price-wrapper">
-											<?php if ($campaign_price) { ?>
-											<del class="regular-price">{{regular_price|money}}</del> <strong class="campaign-price">{{campaign_price|money}}</strong>
-											<?php } else { ?>
-											<span class="price">{{regular_price|money}}</span>
+											<legend><?php echo language::translate('title_purchase_now', 'Purchase Now'); ?></legend>
+
+											<?php echo functions::form_input_hidden('product_id', $product_id); ?>
+
+											<?php if (count($stock_options) > 1) { ?>
+											<div class="form-group">
+												<label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
+												<?php echo form_select_product_stock_option('stock_option_id', $product_id, true); ?>
+											</div>
+											<?php } else if (count($stock_options) == 1) { ?>
+											<?php echo functions::form_input_hidden('stock_option_id', $stock_options[0]['stock_option_id']); ?>
 											<?php } ?>
-										</div>
 
-										<div class="tax" style="margin: 0 0 1em 0;">
-										<?php if ($tax_rates) { ?>
-											<?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax">{{total_tax|money}}</span>
-										<?php } else { ?>
-											<?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
-										<?php } ?>
-										</div>
+											<div class="row" style="margin-bottom: 0;">
+												<div class="col-xl-8">
+													<?php if (!settings::get('catalog_only_mode')) { ?>
+													<div class="form-group">
+														<label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
+														<div style="display: flex">
+															<div class="input-group" style="flex: 0 1 150px;">
+																<?php echo !empty($quantity_unit['decimals']) ? functions::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ? $quantity_min : '1') .'" max="'. ($quantity_max ? $quantity_max : '') .'" step="'. ($quantity_step ? $quantity_step : '') .'"') : functions::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ? $quantity_min : '1') .'" max="'. ($quantity_max ? $quantity_max : '') .'" step="'. ($quantity_step ? $quantity_step : '') .'"'); ?>
+																<?php if (!empty($quantity_unit['name'])) echo '<div class="input-group-text">'. $quantity_unit['name'] .'</div>'; ?>
+															</div>
 
-										<?php if (!settings::get('catalog_only_mode')) { ?>
-										<div class="form-group">
-											<label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
-											<div style="display: flex">
-												<div class="input-group" style="flex: 0 1 150px;">
-													<?php echo !empty($quantity_unit['decimals']) ? functions::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ? $quantity_min : '1') .'" max="'. ($quantity_max ? $quantity_max : '') .'" step="'. ($quantity_step ? $quantity_step : '') .'"') : functions::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ? $quantity_min : '1') .'" max="'. ($quantity_max ? $quantity_max : '') .'" step="'. ($quantity_step ? $quantity_step : '') .'"'); ?>
-													<?php if (!empty($quantity_unit['name'])) echo '<div class="input-group-text">'. $quantity_unit['name'] .'</div>'; ?>
+															<div style="flex: 1 0 auto; padding-inline-start: 1em;">
+																<?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity_available <= 0 && !$orderable) ? ' disabled' : '') .'>'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
+															</div>
+														</div>
+													</div>
+													<?php } ?>
 												</div>
 
-												<div style="flex: 1 0 auto; padding-inline-start: 1em;">
-													<?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity_available <= 0 && !$orderable) ? ' disabled' : '') .'>'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
+												<div class="col-xl-4">
+
+													<div class="price-wrapper">
+														<?php if ($campaign_price) { ?>
+														<del class="regular-price">{{regular_price|money}}</del> <strong class="campaign-price">{{campaign_price|money}}</strong>
+														<?php } else { ?>
+														<span class="price">{{regular_price|money}}</span>
+														<?php } ?>
+													</div>
+
+													<div class="tax" style="margin: 0 0 1em 0;">
+													<?php if ($tax_rates) { ?>
+														<?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax">{{total_tax|money}}</span>
+													<?php } else { ?>
+														<?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
+													<?php } ?>
+													</div>
+
 												</div>
 											</div>
-										</div>
-										<?php } ?>
 
-										<?php echo functions::form_end(); ?>
-									</fieldset>
+										</fieldset>
+
+									<?php echo functions::form_end(); ?>
 
 									<div class="social-bookmarks">
-										<a class="link" href="#"><?php echo functions::draw_fonticon('fa-link', 'style="color: #333;"'); ?></a>
-										<a class="facebook" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>"><?php echo functions::draw_fonticon('fa-facebook-square fa-lg', 'style="color: #3b5998;"'); ?></a>
-										<a class="twitter" href="<?php echo document::href_link('https://twitter.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>"><?php echo functions::draw_fonticon('fa-twitter-square fa-lg', 'style="color: #55acee;"'); ?></a>
-										<a class="pinterest" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Pinterest'); ?>"><?php echo functions::draw_fonticon('fa-pinterest-square fa-lg', 'style="color: #bd081c;"'); ?></a>
+										<a class="link btn btn-default" href="#">
+											<?php echo functions::draw_fonticon('fa-link', 'style="color: #333;"'); ?>
+										</a>
+
+										<a class="facebook btn btn-default" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>">
+											<?php echo functions::draw_fonticon('fa-facebook-square fa-lg', 'style="color: #3b5998;"'); ?>
+										</a>
+
+										<a class="twitter btn btn-default" href="<?php echo document::href_link('https://twitter.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>">
+											<?php echo functions::draw_fonticon('fa-twitter-square fa-lg', 'style="color: #55acee;"'); ?>
+										</a>
+
+										<a class="pinterest btn btn-default" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Pinterest'); ?>">
+											<?php echo functions::draw_fonticon('fa-pinterest-square fa-lg', 'style="color: #bd081c;"'); ?>
+										</a>
 									</div>
 
 								</div>

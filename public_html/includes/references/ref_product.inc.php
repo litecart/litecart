@@ -8,15 +8,15 @@
 
 		function __construct($product_id, $language_code=null, $currency_code=null, $customer_id=null) {
 
-			if (empty($language_code)) {
+			if (!$language_code) {
 				$language_code = language::$selected['code'];
 			}
 
-			if (empty($currency_code)) {
+			if (!$currency_code) {
 				$currency_code = currency::$selected['code'];
 			}
 
-			if (empty($customer_id)) {
+			if (!$customer_id) {
 				$customer_id = customer::$data['id'];
 			}
 

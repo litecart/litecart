@@ -19,7 +19,9 @@
 
 		try {
 
-			file_put_contents($stylesheet, $_POST['content']);
+			if (!file_put_contents($stylesheet, $_POST['content'])) {
+				throw new Exception(language::translate('error_unable_to_write_to_file', 'Unable to write to file'));
+			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 			header('Location: '. document::link());
