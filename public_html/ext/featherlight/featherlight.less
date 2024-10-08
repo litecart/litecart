@@ -61,7 +61,7 @@ body.featherlight-open {
     vertical-align: middle;
     display: inline-block;
 
-    margin: @gutter-size;
+    margin: 1em;
 
     border-radius: @border-radius;
 
@@ -78,6 +78,11 @@ body.featherlight-open {
 
     &.featherlight-seamless > * {
       margin: 0 !important;
+    }
+
+
+    @media (min-width: 640px) {
+      margin: @gutter-size;
     }
   }
 
@@ -156,3 +161,4 @@ body.featherlight-open {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+

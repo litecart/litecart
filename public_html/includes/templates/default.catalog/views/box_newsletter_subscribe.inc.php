@@ -24,7 +24,7 @@
     e.preventDefault();
     $.featherlight('<?php echo document::ilink('newsletter'); ?>?email='+ $(this).find('input[name="email"]').val() +' #box-newsletter-subscribe', {
       "seamless": true,
-      "width": "640px"
+      "max-width": "640px"
     });
   })
 </script>

@@ -5,14 +5,14 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: local(''), url('../fonts/roboto-v30-latin-ext_latin-regular.woff2') format('woff2');
+  src: url('../fonts/roboto-v32-latin_latin-ext-regular.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: local(''), url('../fonts/roboto-v30-latin-ext_latin-700.woff2') format('woff2');
+  src: url('../fonts/roboto-v32-latin_latin-ext-700.woff2') format('woff2');
 }
 /* Variables */
 :root {
