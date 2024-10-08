@@ -262,7 +262,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
 41c659b7ab31476627fc64e0e976bc6f	includes/error_handler.inc.php
 988f26d135e78b5006307b43dac28557	includes/functions/func_admin.inc.php
 923d14bfa0810ac0f2299727965e0c6b	includes/functions/func_captcha.inc.php
-646ada4f4baf317aa3b710c5e68b3186	includes/functions/func_catalog.inc.php
+b8fb6ac6e8de79811c5f966b17de6859	includes/functions/func_catalog.inc.php
 e2af395923278bea690f1e656c401291	includes/functions/func_csv.inc.php
 35bd66a33f7ac7bde0b537001b52f986	includes/functions/func_draw.inc.php
 2341090b7652ec1d4486dc35406ab975	includes/functions/func_escape.inc.php
