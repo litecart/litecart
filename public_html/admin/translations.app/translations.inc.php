@@ -94,6 +94,8 @@
 
       foreach ($_POST['translations'] as $translation) {
 
+        if (empty($translation['checked'])) continue;
+
         if ($translation['entity'] != 'translation') {
           throw new Exception('Cannot delete entity information');
         }
