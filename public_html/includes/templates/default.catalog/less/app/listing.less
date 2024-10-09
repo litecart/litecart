@@ -4,7 +4,7 @@
 
 .listing {
   display: grid;
-  grid-gap: ~"calc(var(--gutter-x)/2)";
+  grid-gap: var(--gutter-x);
 
   @media (min-width: (@media-breakpoint-sm)) {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

@@ -35,14 +35,16 @@
   }
 
   .tokens {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
     &:not(:empty) {
       padding-top: var(--gutter-y);
     }
     .token {
       display: inline-block;
       padding: .5em 1em;
-      margin-top: .5em;
-      margin-inline-end: .5em;
       border-radius: var(--border-radius);
       cursor: default;
 

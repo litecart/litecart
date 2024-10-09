@@ -320,14 +320,17 @@ body.scrolling-down #site-menu {
   max-height: 200px;
   overflow-y: auto;
 }
+#box-filter .tokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 #box-filter .tokens:not(:empty) {
   padding-top: var(--gutter-y);
 }
 #box-filter .tokens .token {
   display: inline-block;
   padding: 0.5em 1em;
-  margin-top: 0.5em;
-  margin-inline-end: 0.5em;
   border-radius: var(--border-radius);
   cursor: default;
 }
@@ -395,7 +398,7 @@ body.scrolling-down #site-menu {
 }
 .listing {
   display: grid;
-  grid-gap: calc(var(--gutter-x)/2);
+  grid-gap: var(--gutter-x);
 }
 @media (min-width: 768px) {
   .listing {
