@@ -340,12 +340,12 @@ db390b3ff0e45b37533913f7c5b345f5	includes/routes/url_order_process.inc.php
 d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 086e68bcb7bfd173df5ff538ad747044	includes/templates/default.admin/css/app.min.css
 ae6294757123e0f9e5edc467ef71f0ee	includes/templates/default.admin/css/app.min.css.map
-486ef663b64ceecbced39bcdafbd627e	includes/templates/default.admin/css/framework.min.css
-73328bb3258f03a070bddfa20cf1972d	includes/templates/default.admin/css/framework.min.css.map
+85874922142af4eebc65b93f816f4520	includes/templates/default.admin/css/framework.min.css
+cc84567bbd80a4000f80b559b43351cd	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 22ce4b29af0998bcd3552f0909816301	includes/templates/default.admin/css/printable.min.css
 6cf60f82ca84f46a3b2ce776669c507d	includes/templates/default.admin/css/printable.min.css.map
-c9d6caaf66a9fae0a7b73c78734e88d0	includes/templates/default.admin/css/variables.css
+961836c3083b0dc891eb03f2edf3f947	includes/templates/default.admin/css/variables.css
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/fonts/index.html
 8ba602333b4cc45c0f2167144f89e133	includes/templates/default.admin/fonts/roboto-v32-latin_latin-ext-700.woff2
 f04a7f27e3334a9b19754ec2245bdb07	includes/templates/default.admin/fonts/roboto-v32-latin_latin-ext-regular.woff2
@@ -368,7 +368,7 @@ fe941f37c2ff335786e6effb92a0fa84	includes/templates/default.admin/less/app.less
 5ea23628afdf6ef97c8058c57e788e1b	includes/templates/default.admin/less/framework/base.less
 c9ed538c79dab8901cf3babc43af0b68	includes/templates/default.admin/less/framework/breadcrumbs.less
 468a50835befd493ab83f6fcfee644f7	includes/templates/default.admin/less/framework/buttons.less
-8a67a4eaacf3c5d549bcc5d72eda56a6	includes/templates/default.admin/less/framework/cards.less
+2ac8f0f0392511a2e96dd097fa74c567	includes/templates/default.admin/less/framework/cards.less
 c9d9a6da4ca416235da5473b7b7609a5	includes/templates/default.admin/less/framework/chat.less
 83427f62727706851654dcca96709405	includes/templates/default.admin/less/framework/dropdown.less
 2551bea5f6dd9ca6af4d98347e8abb66	includes/templates/default.admin/less/framework/effects.less
@@ -387,7 +387,7 @@ edd0be6718efe3880d0ee48eca47f878	includes/templates/default.admin/less/framework
 e05147ba59974d9bef67a6dbc7ba5a60	includes/templates/default.admin/less/framework/typography.less
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/less/index.html
 4b83a8cea0c3b6c120ecb54211ab66a5	includes/templates/default.admin/less/printable.less
-aec10fbe75b9e852ebc8d91a6f256cd0	includes/templates/default.admin/less/variables.less
+7c126d997abac845705b61783ccc0213	includes/templates/default.admin/less/variables.less
 9af3494cf44a54e4bb1fb0417d4bd331	includes/templates/default.admin/pages/about.inc.php
 b6fc7003936788dd0d2fa113c8f31734	includes/templates/default.admin/pages/doc.inc.php
 c350d51cd1b3329cd7f3f4a376746a97	includes/templates/default.admin/pages/error_document.inc.php
