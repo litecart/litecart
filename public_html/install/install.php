@@ -484,8 +484,8 @@
 
 		database::query(
 			"insert into ". str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], '`lc_administrators`') ."
-			(`id`, `status`, `username`, `password_hash`, `date_updated`, `date_created`)
-			values ('1', '1', '". database::input($_REQUEST['username']) ."', '". database::input(password_hash($_REQUEST['password'], PASSWORD_DEFAULT)) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+			(`id`, `status`, `username`, `password_hash`, `known_ips`, `date_updated`, `date_created`)
+			values ('1', '1', '". database::input($_REQUEST['username']) ."', '". database::input(password_hash($_REQUEST['password'], PASSWORD_DEFAULT)) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 		);
 
 		### Set platform database version #############################

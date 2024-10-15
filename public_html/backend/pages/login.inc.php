@@ -2,6 +2,7 @@
 
 	document::$layout = 'blank';
 
+	document::$title[] = language::translate('title_login', 'Login');
 	document::$head_tags[] = '<meta name="viewport" content="width=device-width, initial-scale=1">';
 
 	if (!session_name()) {
@@ -29,7 +30,10 @@
 				where lower(username) = '". database::input(strtolower($_POST['username'])) ."'
 				or lower(email) = '". database::input(strtolower($_POST['username'])) ."'
 				limit 1;"
-			)->fetch();
+			)->fetch(function($administrator){
+				$administrator['known_ips'] = preg_split('#\s*,\s*#', $administrator['known_ips'], -1, PREG_SPLIT_NO_EMPTY);
+				return $administrator;
+			});
 
 			if (!$administrator) {
 				throw new Exception(language::translate('error_administrator_not_found', 'The administrator could not be found in our database'));
@@ -115,8 +119,11 @@
 				);
 			}
 
-			if (!empty($administrator['last_hostname']) && $administrator['last_hostname'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
-				notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_host', 'Your account was previously used by another location or hostname (%hostname). If this was not you then your login credentials might be compromised.'), ['%hostname' => $administrator['last_hostname']]));
+			if (!empty($administrator['last_ip_address']) && $administrator['last_ip_address'] != $_SERVER['REMOTE_ADDR']) {
+				notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_ip', 'Your account was previously used by another IP address %ip_address (%hostname). If this was not you then your login credentials might be compromised.'), [
+					'%ip_address' => $administrator['last_ip_address'],
+					'%hostname' => $administrator['last_hostname'],
+				]));
 			}
 
 			database::query(
@@ -124,6 +131,7 @@
 				set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 					last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
+					known_ips = '". database::input(implode(',', $administrator['known_ips'])) ."',
 					login_attempts = 0,
 					total_logins = total_logins + 1,
 					date_login = '". date('Y-m-d H:i:s') ."'
@@ -135,6 +143,48 @@
 
 			session::$data['administrator_security_timestamp'] = time();
 			session::regenerate_id();
+
+			if (!in_array($_SERVER['REMOTE_ADDR'], $administrator['known_ips']) && !empty($administrator['two_factor_auth'])) {
+
+				session::$data['security_verification'] = [
+					'type' => '2fa',
+					'code' => functions::password_generate(6, 0, 0, 6, 0),
+					'expires' => strtotime('+15 minutes'),
+					'attempts' => 0,
+				];
+
+				$email = new ent_email();
+				$email->add_recipient($administrator['email'])
+							->set_subject(language::translate('title_verification_code', 'Verification Code'))
+							->add_body(strtr(language::translate('email_verification_code', 'Verification code: %code'), ['%code' => session::$data['security_verification']['code']]))
+							->send();
+
+				notices::add('notices', language::translate('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
+
+				if (!empty($_POST['redirect_url'])) {
+					header('Location: '. document::ilink('verify_identity'));
+				} else {
+					header('Location: '. document::ilink('verify_identity', ['redirect_url' => $_POST['redirect_url']]));
+				}
+
+				exit;
+
+			} else {
+
+				array_unshift($administrator['known_ips'], $_SERVER['REMOTE_ADDR']);
+				$administrator['known_ips'] = array_unique($administrator['known_ips']);
+
+				if (count($administrator['known_ips']) > 5) {
+					array_pop($administrator['known_ips']);
+				}
+
+				database::query(
+					"update ". DB_TABLE_PREFIX ."administrators
+					set known_ips = '". database::input(implode(',', $administrator['known_ips'])) ."'
+					where id = ". (int)$administrator['id'] ."
+					limit 1;"
+				);
+			}
 
 			if (!empty($_POST['remember_me'])) {
 				$checksum = sha1($administrator['username'] . $administrator['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
@@ -160,5 +210,5 @@
 		}
 	}
 
-	$page_login = new ent_view('app://backend/template/pages/login.inc.php');
-	echo $page_login;
+	$_page = new ent_view('app://backend/template/pages/login.inc.php');
+	echo $_page;

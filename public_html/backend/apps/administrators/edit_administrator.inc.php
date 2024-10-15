@@ -27,6 +27,9 @@
 				throw new Exception(language::translate('error_must_enter_password', 'You must enter a password'));
 			}
 
+			if (!empty($_POST['two_factor_auth']) && empty($_POST['email'])) {
+				throw new Exception(language::translate('error_email_required_for_two_factor_authenticatoin', 'An email address is required for two-factor authentication'));
+			}
 
 			if (empty($_POST['apps'])) {
 				$_POST['apps'] = [];
@@ -43,6 +46,7 @@
 				'password',
 				'apps',
 				'widgets',
+				'two_factor_auth',
 				'date_valid_from',
 				'date_valid_to',
 			] as $field) {
@@ -51,7 +55,9 @@
 				}
 			}
 
-			if (!empty($_POST['password'])) $administrator->set_password($_POST['password']);
+			if (!empty($_POST['password'])) {
+				$administrator->set_password($_POST['password']);
+			}
 
 			$administrator->data['administrator_security_timestamp'] = date('Y-m-d H:i:s');
 
@@ -117,6 +123,7 @@
 						</div>
 					</div>
 
+
 					<div class="row">
 						<div class="form-group col-sm-6">
 							<label><?php echo language::translate('title_email', 'Email'); ?></label>
@@ -126,6 +133,13 @@
 						<div class="form-group col-md-6">
 							<label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
 							<?php echo functions::form_input_password_unmaskable('password', '', 'autocomplete="new-password"'); ?>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label><?php echo language::translate('title_two_factor_authentication', 'Two-Factor Authentication'); ?></label>
+							<?php echo functions::form_toggle('two_factor_auth', 'e/d', true); ?>
 						</div>
 					</div>
 

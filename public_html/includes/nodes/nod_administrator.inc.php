@@ -14,7 +14,7 @@
 			self::$data = &session::$data['administrator'];
 
 			// Login remembered administrator automatically
-			if (empty(self::$data['id']) && !empty($_COOKIE['remember_me']) && !$_POST) {
+			if (!self::$data['id'] && !empty($_COOKIE['remember_me']) && !$_POST) {
 
 				try {
 
@@ -156,15 +156,22 @@
 		}
 
 		public static function require_login() {
+
 			if (!self::check_login()) {
-					//notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
 				$redirect_url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
 				header('Location: ' . document::ilink('b:login', ['redirect_url' => $redirect_url]));
 				exit;
 			}
+
+			if (!empty(session::$data['security_verification']['type']) && session::$data['security_verification']['type'] == '2fa' && session::$data['security_verification']['type'] == '2fa') {
+				if (!in_array(route::$selected['resource'], ['b:verify_identity'])) {
+					header('Location: ' . document::ilink('b:verify_identity', ['redirect_url' => $_SERVER['REQUEST_URI']]));
+					exit;
+				}
+			}
 		}
 
 		public static function check_login() {
-			if (!empty(self::$data['id'])) return true;
+			return !empty(self::$data['id']);
 		}
 	}
