@@ -138,9 +138,15 @@
 			return (!empty($enabled_currencies)) ? $enabled_currencies[0] : $all_currencies[0];
 		}
 
-		public static function calculate($value, $to, $from='') {
+		public static function calculate($value, $to=null, $from=null) {
 
-			if (empty($from)) $from = settings::get('store_currency_code');
+			if (!$to) {
+				$to = self::$selected['code'];
+			}
+
+			if (!$from) {
+				$from = settings::get('store_currency_code');
+			}
 
 			if (!isset(self::$currencies[$from])){
 				trigger_error("Cannot convert from currency $from as the currency does not exist", E_USER_WARNING);
@@ -150,7 +156,7 @@
 				trigger_error("Cannot convert to currency $to as the currency does not exist", E_USER_WARNING);
 			}
 
-			return $value * self::$currencies[$from]['value'] / self::$currencies[$to]['value'];
+			return ($value * self::$currencies[$from]['value']) / self::$currencies[$to]['value'];
 		}
 
 		public static function convert($value, $from, $to='') {

@@ -133,7 +133,7 @@
 
 			if ($params) {
 
-					// Flatten the parameters
+				// Flatten the parameters
 				$flatten = function($array, $prefix = '') use (&$flatten) {
 
 					$result = [];
@@ -158,10 +158,10 @@
 
 				$flattened = $flatten($params);
 
-					// Step through each character in the query
+				// Step through each character in the query
 				for ($i = 0; $i < strlen($sql); $i++) {
 
-						// Skip over a value clause
+					// Skip over a value clause
 					if (preg_match("#[`']s#", $sql[$i]) && $sql[$i - 1] != "\\") {
 						$value_wrapper = $sql[$i];
 						for ($n = $i + 1; $n < strlen($sql); $n++) {
@@ -169,12 +169,12 @@
 						}
 						$i = $n;
 
-							// Restart at cursor position
+						// Restart at cursor position
 						$i--;
 						continue;
 					}
 
-						// Remove #comments
+					// Remove #comments
 					if ($sql[$i] == '#' && ($i == 0 || $sql[$i-1] != "\\")) {
 						for ($n = $i + 1; $n < strlen($sql); $n++) {
 							if (($sql[$n] == "\r" || $sql[$n] == "\n") && $sql[$n - 1] != "\\") {
@@ -184,15 +184,15 @@
 						}
 						$sql = substr($sql, 0, $i) . substr($sql, $n + 1);
 
-							// Restart at cursor position
+						// Restart at cursor position
 						$i--;
 						continue;
 					}
 
-						// Remove -- comments
+					// Remove -- comments
 					if ($sql[$i] == '-' && $sql[$i+1] == '-' && $sql[$i+2] == ' ') {
 
-							// Find end of line
+						// Find end of line
 						for ($n = $i + 3; $n < strlen($sql); $n++) {
 							if ($sql[$n] == "\r" || $sql[$n] == "\n") {
 								if ($sql[$n] == "\r" && $sql[$n+1] == "\n") $n++; // Windows CRLF
@@ -200,42 +200,42 @@
 							}
 						}
 
-							// Commit replacement
+						// Commit replacement
 						$sql = substr($sql, 0, $i) . substr($sql, $n + 1);
 
-							// Restart at cursor position
+						// Restart at cursor position
 						$i--;
 						continue;
 					}
 
-						// Remove /* comments */
+					// Remove /* comments */
 					if ($sql[$i] == '/' && $sql[$i+1] == '*') {
 
-							// Find end of comment
+						// Find end of comment
 						for ($n = $i + 2; $n < strlen($sql); $n++) {
 							if ($sql[$n] == '/' && $sql[$n-1] == '*') break;
 						}
 
-							// Commit replacement
+						// Commit replacement
 						$sql = substr($sql, 0, $i) . substr($sql, $n + 1);
 
-							// Restart at cursor position
+						// Restart at cursor position
 						$i--;
 						continue;
 					}
 
-						// Process a detected parameter placeholder
+					// Process a detected parameter placeholder
 					if ($sql[$i] == ':') {
 
-							// Find end of parameter
+						// Find end of parameter
 						for ($n = $i + 1; $n < strlen($sql); $n++) {
 							if (in_array($sql[$n], [' ', ';', "\r", "\n"]) || $i == strlen($sql)) break;
 						}
 
-							// Extract parameter name
+						// Extract parameter name
 						$param = substr($sql, $i+1, $n-1 - $i);
 
-							// Match parameter name with input parameter
+						// Match parameter name with input parameter
 						if (isset($flattened[$param])) {
 							switch (gettype($flattened[$param])) {
 
@@ -260,19 +260,19 @@
 							trigger_error('Unmatched parameter name ('. $param .')', E_USER_ERROR);
 						}
 
-							// Commit replacement
+						// Commit replacement
 						$sql = substr($sql, 0, $i) . $value . substr($sql, $n + 1);
 
-							// Move cursor to end of parameter
+						// Move cursor to end of parameter
 						$i = $i + strlen($value);
 					}
 				}
 			}
 
-				if (($result = mysqli_query(self::$_links[$link], $sql)) === false) {
+			if (($result = mysqli_query(self::$_links[$link], $sql)) === false) {
 					$error_message = mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\s+#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . $sql . PHP_EOL;
 					trigger_error($error_message, E_USER_ERROR);
-				}
+			}
 
 			if (($duration = microtime(true) - $timestamp) > 3) {
 				error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $sql) . PHP_EOL, 3, 'storage://logs/performance.log');
@@ -303,7 +303,7 @@
 			$i = 1;
 			while (mysqli_more_results(self::$_links[$link])) {
 				if (mysqli_next_result(self::$_links[$link]) === false) {
-					die('Fatal: Query '. $i .' failed');
+					trigger_error('Fatal: Query '. $i .' failed', E_USER_ERROR);
 				}
 				$i++;
 			}
@@ -452,7 +452,7 @@
 		}
 
 		public function __set($name, $value) {
-				// Do nothing
+			// Do nothing
 		}
 
 		public function export(&$object) {
@@ -516,6 +516,7 @@
 				while ($row = mysqli_fetch_assoc($this->_result)) {
 
 					if ($filter) {
+
 						switch (gettype($filter)) {
 
 							case 'array':
@@ -540,6 +541,7 @@
 							default:
 								$result = false;
 						}
+
 					} else {
 						$result = $row;
 					}
@@ -552,7 +554,7 @@
 
 						if (isset($row[$index_column])) {
 							$rows[$row[$index_column]] = $result;
-					} else {
+						} else {
 							trigger_error('Index column not found in row ('. $index_column .')', E_USER_WARNING);
 							$rows[] = false;
 						}
@@ -598,7 +600,7 @@
 					$pointer++;
 
 					if (!empty($row) || !is_numeric($row)) {
-				$rows[] = $row;
+						$rows[] = $row;
 					}
 
 					if ($pointer == $num_rows) {

@@ -25,7 +25,7 @@
 				}
 			}
 
-				// Update cart cookie
+			// Update cart cookie
 			if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
 				if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
 					header('Set-Cookie: cart[uid]='. self::$data['uid'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
@@ -153,7 +153,7 @@
 				if (!empty($product->quantity_unit['separate'])) {
 					$item_key = uniqid();
 				} else {
-					$item_key = md5(json_encode([$product->id, $userdata]));
+					$item_key = crc32(json_encode([$product->id, $userdata]));
 				}
 			}
 
@@ -387,7 +387,7 @@
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."cart_items
 						(customer_id, cart_uid, `key`, product_id, stock_option_id, userdata, image, quantity, date_updated, date_created)
-						values (". (int)customer::$data['id'] .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". (int)$item['product_id'] .", ". (!empty($item['stock_option_id']) ? (int)$item['stock_option_id'] : "null") .", '". database::input(json_encode($item['userdata'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."', '". database::input($item['image']) ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+						values (". (customer::$data['id'] ? (int)customer::$data['id'] : "null") .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". ($item['product_id'] ? (int)$item['product_id'] : "null") .", ". ($item['stock_option_id'] ? (int)$item['stock_option_id'] : "null") .", '". database::input(json_encode($item['userdata'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."', '". database::input($item['image']) ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 					);
 
 					self::$items[$item_key]['id'] = database::insert_id();

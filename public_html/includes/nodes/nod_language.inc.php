@@ -67,8 +67,6 @@
 			cache::set(self::$_cache_token, self::$_cache['translations']);
 		}
 
-		######################################################################
-
 		public static function load() {
 			self::$languages = database::query(
 				"select * from ". DB_TABLE_PREFIX ."languages
@@ -155,24 +153,17 @@
 			}
 
 			// Return language from country (TLD)
-			if (database::query(
-				"select table_name from information_schema.tables
-				where table_schema = '". database::input(DB_DATABASE) ."'
-				and table_name = '". database::input(DB_TABLE_PREFIX .'countries') ."'
-				limit 1;"
-			)->fetch()) {
-			if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
-
+			if (!preg_replace('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
+				
 				$country = database::query(
 					"select * from ". DB_TABLE_PREFIX ."countries
 					where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
 					limit 1;"
 				)->fetch();
 
-				if (!empty($country['language_code']) && in_array($country['language_code'], $enabled_languages)){
+				if ($country && in_array($country['language_code'], $enabled_languages)){
 					return $country['language_code'];
 				}
-			}
 			}
 
 			// Return language from browser request headers
@@ -193,12 +184,12 @@
 			}
 
 			// Return default language
-			if (in_array(settings::get('default_language_code'), $all_languages)){
+			if (in_array(settings::get('default_language_code'), $all_languages)) {
 				return settings::get('default_language_code');
 			}
 
 			// Return system language
-			if (in_array(settings::get('store_language_code'), $all_languages)){
+			if (in_array(settings::get('store_language_code'), $all_languages)) {
 				return settings::get('store_language_code');
 			}
 

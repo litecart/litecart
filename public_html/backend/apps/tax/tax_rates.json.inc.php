@@ -6,8 +6,8 @@
 			'billing_address' => [
 				'tax_id' => fallback($_REQUEST['billing_address']['tax_id'], ''),
 				'company' => fallback($_REQUEST['billing_address']['company'], ''),
-				'country_code' => fallback($_REQUEST['billing_address']['country_code'], settings::get('site_country_code')),
-				'zone_code' => fallback($_REQUEST['billing_address']['zone_code'], settings::get('site_zone_code')),
+				'country_code' => fallback($_REQUEST['billing_address']['country_code'], settings::get('store_country_code')),
+				'zone_code' => fallback($_REQUEST['billing_address']['zone_code'], settings::get('store_zone_code')),
 				'city' => fallback($_REQUEST['billing_address']['city'], ''),
 			],
 			'shipping_address' => [

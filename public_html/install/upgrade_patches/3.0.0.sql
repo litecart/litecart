@@ -99,8 +99,6 @@ CREATE TABLE `lc_stock_transactions_contents` (
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 -- -----
-RENAME TABLE `lc_cart_items` TO `lc_shopping_carts_items`;
--- -----
 RENAME TABLE `lc_manufacturers` TO `lc_brands`;
 -- -----
 RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
@@ -159,7 +157,9 @@ ADD INDEX `brand_id` (`brand_id`);
 -- -----
 ALTER TABLE `lc_cart_items`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CHANGE COLUMN `cart_uid` `cart_uid` VARCHAR(13) NOT NULL AFTER `id`,
 CHANGE COLUMN `customer_id` `customer_id` INT(10) UNSIGNED NULL,
+CHANGE COLUMN `key` `key` VARCHAR(32) NOT NULL,
 CHANGE COLUMN `product_id` `product_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `options` `userdata` VARCHAR(2048) NOT NULL DEFAULT '',
 ADD COLUMN `stock_option_id` INT(10) UNSIGNED NULL AFTER `product_id`,
@@ -897,7 +897,8 @@ ADD CONSTRAINT `brand_info_to_language` FOREIGN KEY (`language_code`) REFERENCES
 -- -----
 ALTER TABLE `lc_cart_items`
 ADD CONSTRAINT `cart_item_to_customer` FOREIGN KEY (`customer_id`) REFERENCES `lc_customers` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `cart_item_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+ADD CONSTRAINT `cart_item_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+ADD CONSTRAINT `cart_item_to_stock_option` FOREIGN KEY (`stock_option_id`) REFERENCES `lc_products_stock_options` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 -- -----
 ALTER TABLE `lc_categories`
 ADD CONSTRAINT `category_to_parent` FOREIGN KEY (`parent_id`) REFERENCES `lc_categories` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;

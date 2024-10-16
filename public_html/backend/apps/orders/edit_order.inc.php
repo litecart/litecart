@@ -838,7 +838,9 @@
 				break;
 		}
 
-		if (!empty($_POST['comments'][$key]['hidden'])) $type .= ' semi-transparent';
+		if (!empty($_POST['comments'][$key]['hidden'])) {
+			$type .= ' semi-transparent';
+		}
 ?>
 						<div class="bubble <?php echo $type; ?>">
 							<?php echo functions::form_input_hidden('comments['.$key.'][id]', true); ?>
@@ -923,8 +925,12 @@
 						<?php echo functions::draw_fonticon('fa-arrows-v'); ?>
 					</td>
 					<td>
-						<a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
-						<a class="btn btn-default btn-sm edit" href="#" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
+						<a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
+							<?php echo functions::draw_fonticon('remove'); ?>
+						</a>
+						<a class="btn btn-default btn-sm edit" href="#" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
+							<?php echo functions::draw_fonticon('edit'); ?>
+						</a>
 					</td>
 				</tr>
 				<?php } ?>

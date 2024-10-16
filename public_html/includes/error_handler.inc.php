@@ -57,18 +57,19 @@
 
 			if (isset($_GET['debug'])) {
 
-				if (filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOLEAN)) {
-					echo implode(PHP_EOL . '<br>' . PHP_EOL, $output);
-				} else {
+				if (!filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOLEAN) || $_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 					echo strip_tags(implode(PHP_EOL, $output));
+				} else {
+					echo implode(PHP_EOL . '<br>' . PHP_EOL, $output);
 				}
 
 			} else {
 
-				if (($_SERVER['SERVER_SOFTWARE'] == 'CLI') && filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOLEAN)) {
-					echo $output[0] . PHP_EOL;
-			} else {
+				if (!filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOLEAN)) {
 					echo strip_tags($output[0]) . PHP_EOL;
+
+				} else {
+					echo $output[0] . PHP_EOL;
 				}
 			}
 		}

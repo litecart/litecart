@@ -6,7 +6,7 @@
 
 		public function __construct($order_id=null) {
 
-			if (!empty($order_id)) {
+			if ($order_id) {
 				$this->load($order_id);
 			} else {
 				$this->reset();
@@ -171,7 +171,7 @@
 			$this->refresh_total();
 
 			// Log order status change as comment
-			if (!empty($this->previous['id']) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
+			if ($this->previous['id'] && $this->data['order_status_id'] != $this->previous['order_status_id']) {
 				$this->data['comments'][] = [
 					'author' => 'system',
 					'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status', settings::get('store_language_code')), [
@@ -183,7 +183,7 @@
 			}
 
 			// Link guests to customer profile
-			if (empty($this->data['customer']['id']) && !empty($this->data['billing_address']['email'])) {
+			if (!$this->data['customer']['id'] && $this->data['billing_address']['email']) {
 
 				$customer = database::query(
 					"select id from ". DB_TABLE_PREFIX ."customers
@@ -196,13 +196,13 @@
 				}
 			}
 
-			if (empty($this->data['public_key'])) {
+			if (!$this->data['public_key']) {
 				$this->data['public_key'] = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyz', mt_rand(5, 10))), 0, 32);
 			}
 
-			if (empty($this->data['date_dispatched'])) {
-				if (!empty($this->data['order_status_id']) && in_array(reference::order_status($this->data['order_status_id'])->state, ['dispatched', 'delivered'])) {
-					if (empty($this->previous['order_status_id']) || !in_array(reference::order_status($this->previous['order_status_id'])->state, ['dispatched', 'delivered'])) {
+			if (!$this->data['date_dispatched']) {
+				if ($this->data['order_status_id'] && in_array(reference::order_status($this->data['order_status_id'])->state, ['dispatched', 'delivered'])) {
+					if (!$this->previous['order_status_id'] || !in_array(reference::order_status($this->previous['order_status_id'])->state, ['dispatched', 'delivered'])) {
 						$this->data['date_dispatched'] = date('Y-m-d H:i:s');
 					}
 				}
@@ -212,7 +212,7 @@
 			if (!$this->data['id']) {
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."orders
-					(uid, date_created)
+					(date_created)
 					values ('". database::input($this->data['uid']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
 				);
 
@@ -220,7 +220,7 @@
 			}
 
 			// Create custom order number
-			if (empty($this->data['no'])) {
+			if (!$this->data['no']) {
 				$this->data['no'] = $this->_generate_order_number();
 			}
 
@@ -230,8 +230,8 @@
 				set no = '". database::input($this->data['no']) ."',
 					starred = ". (int)$this->data['starred'] .",
 					unread = ". (int)$this->data['unread'] .",
-					order_status_id = ". (int)$this->data['order_status_id'] .",
-					customer_id = ". (int)$this->data['customer']['id'] .",
+					order_status_id = ". ($this->data['order_status_id'] ? (int)$this->data['order_status_id'] : "null") .",
+					customer_id = ". ($this->data['customer']['id'] ? (int)$this->data['customer']['id'] : "null") .",
 					billing_tax_id = '". database::input($this->data['billing_address']['tax_id']) ."',
 					billing_company = '". database::input($this->data['billing_address']['company']) ."',
 					billing_firstname = '". database::input($this->data['billing_address']['firstname']) ."',
@@ -295,17 +295,19 @@
 			);
 
 			// Restock previous items
-			if (!empty($this->previous['order_status_id']) && reference::order_status($this->previous['order_status_id'])->stock_action == 'commit') {
+			if ($this->previous['order_status_id'] && reference::order_status($this->previous['order_status_id'])->stock_action == 'commit') {
+
 				foreach ($this->previous['items'] as $previous_order_item) {
 					if (empty($previous_order_item['product_id'])) continue;
 					$this->adjust_stock_quantity($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], (float)$previous_order_item['quantity']);
 				}
-					database::query(
-						"update ". DB_TABLE_PREFIX ."products
-						set quantity = quantity + ". (float)$previous_order_item['quantity'] ."
-						where product_id = ". (int)$previous_order_item['product_id'] ."
-						limit 1;"
-					);
+
+				database::query(
+					"update ". DB_TABLE_PREFIX ."products
+					set quantity = quantity + ". (float)$previous_order_item['quantity'] ."
+					where product_id = ". (int)$previous_order_item['product_id'] ."
+					limit 1;"
+				);
 			}
 
 			// Delete items
@@ -320,6 +322,7 @@
 			foreach ($this->data['items'] as $key => $item) {
 
 				if (empty($item['id'])) {
+
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."orders_items
 						(order_id)
@@ -340,9 +343,10 @@
 				}
 
 				// Withdraw stock
-				if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
-						$this->adjust_stock_quantity($item['product_id'], $item['option_stock_combination'], -(float)$item['quantity']);
+				if ($this->data['order_status_id'] && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
+					$this->adjust_stock_quantity($item['product_id'], $item['option_stock_combination'], -(float)$item['quantity']);
 				}
+
 				database::query(
 					"update ". DB_TABLE_PREFIX ."orders_items
 					set product_id = ". (int)$item['product_id'] .",
@@ -373,7 +377,8 @@
 				);
 
 				// Withdraw stock
-				if (!empty($this->data['order_status_id']) && reference::order_status($this->data['order_status_id'])->stock_action == 'commit') {
+				if ($this->data['order_status_id'] && reference::order_status($this->data['order_status_id'])->stock_action == 'commit') {
+
 					if (!empty($item['stock_item_id'])) {
 						database::query(
 							"update ". DB_TABLE_PREFIX ."stock_items
@@ -383,6 +388,7 @@
 							limit 1;"
 						);
 					}
+
 					database::query(
 						"update ". DB_TABLE_PREFIX ."products
 						set quantity = quantity - ". (float)$item['quantity'] ."
@@ -402,12 +408,15 @@
 			// Insert/update order total
 			$i = 0;
 			foreach ($this->data['order_total'] as $key => $row) {
+
 				if (empty($row['id'])) {
+
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."orders_totals
 						(order_id)
 						values (". (int)$this->data['id'] .");"
 					);
+
 					$row['id'] = $this->data['order_total'][$key]['id'] = database::insert_id();
 				}
 
@@ -440,8 +449,13 @@
 
 				foreach ($this->data['comments'] as $key => $comment) {
 
-					if (empty($comment['author'])) $comment['author'] = 'system';
-					if (empty($comment['author_id'])) $comment['author_id'] = ($comment['author'] == 'customer') ? -1 : 0;
+					if (empty($comment['author'])) {
+						$comment['author'] = 'system';
+					}
+
+					if (empty($comment['author_id'])) {
+						$comment['author_id'] = ($comment['author'] == 'customer') ? -1 : 0;
+					}
 
 					if (empty($comment['id'])) {
 						database::query(
@@ -487,7 +501,7 @@
 			}
 
 			// Send order status email notification
-			if (!empty($this->previous) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
+			if ($this->previous->data['order_status_id'] && $this->data['order_status_id'] != $this->previous['order_status_id']) {
 				if (!empty(reference::order_status($this->data['order_status_id'])->notify)) {
 					$this->send_email_notification();
 				}
@@ -569,17 +583,29 @@
 
 		public function add_item($item) {
 
-			$item['id'] = null;
-			$item['sum'] = ($item['price'] - $item['price']) * $item['quantity'];
-			$item['sum_tax'] = ($item['tax'] - $item['discount_tax']) * $item['quantity'];;
+			$structure = [];
 
-			$this->data['items'][] = array_diff_assoc($item, ['id']);
+			database::query(
+				"show fields from ". DB_TABLE_PREFIX ."orders_items;"
+			)->each(function($field) use (&$structure) {
+				$structure[$field['Field']] = database::create_variable($field);
+			});
+
+			// Stripe some fields
+			$item = array_diff_assoc($item, ['id', 'order_id']);
+
+			// Merge with structure
+			$item = array_replace($structure, array_intersect_key($item, $structure));
+
+			$item['sum'] = ($item['price'] - $item['discount']) * $item['quantity'];
+			$item['sum_tax'] = ($item['tax'] - $item['discount_tax']) * $item['quantity'];
+
+			$this->data['items'][] = $item;
 
 			$this->data['subtotal'] += $item['price'] * $item['quantity'];
 			$this->data['subtotal_tax'] += $item['tax'] * $item['quantity'];
 			$this->data['discount'] += $item['discount'] * $item['quantity'];
 			$this->data['discount_tax'] += $item['discount_tax'] * $item['quantity'];
-			$this->data['total_tax'] += $item['tax'] * $item['quantity'];
 			$this->data['total'] += ($item['price'] + $item['tax']) * $item['quantity'];
 			$this->data['total_tax'] += $item['tax'] * $item['quantity'];
 			$this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
@@ -679,7 +705,7 @@
 
 		public function send_email_notification() {
 
-			if (empty($this->data['order_status_id'])) return;
+			if (!$this->data['order_status_id']) return;
 
 			$order_status = reference::order_status($this->data['order_status_id'], $this->data['language_code']);
 

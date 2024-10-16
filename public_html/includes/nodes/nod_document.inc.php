@@ -2,19 +2,18 @@
 
 	class document {
 
-		public static $layout = 'default';
-
-		public static $title = [];
-		public static $description = '';
 		public static $canonical = '';
-		public static $head_tags = [];
-		public static $style = [];
 		public static $content = [];
+		public static $description = '';
+		public static $head_tags = [];
 		public static $foot_tags = [];
 		public static $javascript = [];
-		public static $snippets = [];
-		public static $settings = [];
 		public static $jsenv = [];
+		public static $layout = 'default';
+		public static $settings = [];
+		public static $snippets = [];
+		public static $style = [];
+		public static $title = [];
 
 		public static function init() {
 			event::register('before_capture', [__CLASS__, 'before_capture']);
@@ -67,7 +66,7 @@
 				'<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon.ico') .'" type="image/x-icon" sizes="32x32 48x48 64x64 96x96">',
 				'<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon-128x128.png') .'" type="image/png" sizes="128x128">',
 				'<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon-192x192.png') .'" type="image/png" sizes="192x192">',
-				'<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon-256x256.png') .'" type="image/png" sizes="255x255">',
+				'<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon-256x256.png') .'" type="image/png" sizes="256x256">',
 			]);
 			self::$head_tags['manifest'] = '<link rel="manifest" href="'. self::href_ilink('manifest.json') .'">'; // No namespace as relative to endpoint
 			self::$head_tags['fontawesome'] = '<link rel="stylesheet" href="'. self::href_rlink('app://assets/fontawesome/font-awesome.min.css') .'">';
@@ -128,6 +127,8 @@
 					'code' => currency::$selected['code'],
 					'name' => currency::$selected['name'],
 					'decimals' => currency::$selected['decimals'],
+					'prefix' => currency::$selected['prefix'],
+					'suffix' => currency::$selected['suffix'],
 				],
 			];
 
@@ -168,14 +169,14 @@
 			// Extract styling
 			$output = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function($matches) use (&$stylesheets, &$styles, &$javascripts, &$javascript) {
 
-				// Extract stylesheets
+				// Extract external stylesheets
 				$stylesheets = [];
 
 				$matches[2] = preg_replace_callback('#<link([^>]*rel="stylesheet"[^>]*)>\R*#is', function($match) use (&$stylesheets) {
 					 $stylesheets[] = trim($match[0]);
 				}, $matches[2]);
 
-				// Extract inline styling
+				// Extract internal styling
 				$styles = [];
 
 				$matches[2] = preg_replace_callback('#<style[^>]*>(.+?)</style>\R*#is', function($match) use (&$styles) {
@@ -188,14 +189,14 @@
 			// Extract javascripts
 			$output = preg_replace_callback('#(<body[^>]*>)(.*)(</body>)#is', function($matches) use (&$javascripts, &$javascript) {
 
-				// Extract javascript resources
+				// Extract external scripts
 				$javascripts = [];
 
 				$matches[2] = preg_replace_callback('#\R?<script([^>]+src="[^"]+"[^>]*)></script>\R*#is', function($match) use (&$javascripts) {
 					$javascripts[] = trim($match[0]);
 				}, $matches[2]);
 
-				// Extract inline scripts
+				// Extract internal scripts
 				$javascript = [];
 
 				$matches[2] = preg_replace_callback('#<script[^>]*(?!src="[^"]+")[^>]*>(.+?)</script>\R*#is', function($match) use (&$javascript) {
@@ -205,16 +206,16 @@
 				return $matches[1] . $matches[2] . $matches[3];
 			}, $output);
 
-			// Reinsert extracted stylesheets
+			// Reinsert external stylesheets
 			if (!empty($stylesheets)) {
 				$stylesheets = implode(PHP_EOL, $stylesheets) . PHP_EOL;
 				$output = preg_replace('#</head>#', addcslashes($stylesheets . '</head>', '\\$'), $output, 1);
 			}
 
-			// Reinsert inline styles
+			// Reinsert internal styles
 			if (!empty($styles)) {
 
-				// Minify Inline CSS
+				// Minify internal CSS
 				$search_replace = [
 					'#/\*(?:.(?!/)|[^\*](?=/)|(?<!\*)/)*\*/#s' => '', // Remove comments
 					'#([a-zA-Z0-9 \#=",-:()\[\]]+\{\s*\}\s*)#' => '', // Remove empty selectors
@@ -226,7 +227,7 @@
 
 				$styles = implode(PHP_EOL, [
 					'<style>',
-					 //'<!--/*--><![CDATA[/*><!--*/', // Do we still need bypassing in 2023?
+					 //'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from parser bypassing in 2024?
 					 preg_replace(array_keys($search_replace), array_values($search_replace), implode(PHP_EOL . PHP_EOL, $styles)),
 					 //'/*]]>*/-->',
 					 '</style>',
@@ -235,17 +236,17 @@
 				$output = preg_replace('#</head>#', addcslashes($styles . '</head>', '\\$'), $output, 1);
 			}
 
-			// Reinsert javascript resources
+			// Reinsert external javascripts
 			if (!empty($javascripts)) {
 				$javascripts = implode(PHP_EOL, $javascripts) . PHP_EOL;
 				$output = preg_replace('#</body>#is', addcslashes($javascripts .'</body>', '\\$'), $output, 1);
 			}
 
-			// Reinsert inline javascripts
+			// Reinsert internal javascript
 			if (!empty($javascript)) {
 				$javascript = implode(PHP_EOL, [
 					'<script>',
-						//'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from bypassing in 2024?
+					//'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from parser bypassing in 2024?
 						//'$(document).ready(function() {',
 					implode(PHP_EOL . PHP_EOL, $javascript),
 						//'});',
@@ -254,34 +255,6 @@
 				]) . PHP_EOL;
 
 				$output = preg_replace('#</body>#is', addcslashes($javascript . '</body>', '\\$'), $output, 1);
-			}
-
-			// Define some resources for preloading
-			if (preg_match_all('#<(link|script)[^>]+>#', $output, $matches)) {
-
-				$preloads = [];
-				foreach ($matches[0] as $key => $match) {
-
-					if (!preg_match('#(?<==")(https?:)?//[^"]+(?=")#is', $match, $m)) continue;
-
-					$m[0] = html_entity_decode($m[0]);
-
-					switch ($matches[1][$key]) {
-
-						case 'link':
-							if (!preg_match('#stylesheet#', $m[0])) continue 2;
-							$preloads[$m[0]] = 'style';
-							break;
-
-						case 'script':
-								//$preloads[$m[0]] = 'script'; // Avoided as browser may complain about script preloading
-							break;
-					}
-				}
-
-				foreach ($preloads as $link => $type) {
-					header('Link: <'.$link.'>; rel=preload; as='.$type, false);
-				}
 			}
 
 			// Remove HTML comments
@@ -344,7 +317,7 @@
 				$_page->snippets['head_tags'][] = '<link rel="canonical" href="'. functions::escape_attr(self::$canonical) .'">';
 			}
 
-			// Prepare styles
+			// Prepare internal styles
 			if (!empty(self::$style)) {
 				$_page->snippets['head_tags'][] = implode(PHP_EOL, [
 					'<style>',
@@ -353,7 +326,7 @@
 				]);
 			}
 
-			// Prepare javascript
+			// Prepare internal javascript
 			if (!empty(self::$javascript)) {
 				$_page->snippets['foot_tags'][] = implode(PHP_EOL, [
 					'<script>',
@@ -407,8 +380,7 @@
 			}
 
 			self::$head_tags[$key] = implode(PHP_EOL, array_map(function($url){
-				if (!$url) return;
-				return '<link rel="stylesheet" href="'. self::href_rlink($url) .'">';
+				if ($url) return '<link rel="stylesheet" href="'. self::href_rlink($url) .'">';
 			}, $urls));
 		}
 
@@ -419,8 +391,7 @@
 			}
 
 			self::$foot_tags[$key] = implode(PHP_EOL, array_map(function($url){
-				if (!$url) return;
-				return '<script src="'. self::href_rlink($url) .'"></script>';
+				if ($url) return '<script src="'. self::href_rlink($url) .'"></script>';
 			}, $urls));
 		}
 
@@ -431,7 +402,7 @@
 			}
 
 			self::$javascript[$key] = implode(PHP_EOL, array_map(function($line){
-				return '  '.$line;
+				return '	'.$line;
 			}, $lines));
 		}
 
@@ -457,7 +428,7 @@
 						$resource = WS_DIR_APP . BACKEND_ALIAS .'/'. $resource;
 					} else {
 						$resource = WS_DIR_APP . $resource;
-				}
+					}
 					break;
 			}
 

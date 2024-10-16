@@ -114,8 +114,8 @@
 
 			// Sort options by fee
 			uasort($this->_cache[$checksum]['options'], function($a, $b) {
-				if ($a['cost'] == $b['cost']) return;
-				return ($a['cost'] > $b['cost']) ? 1 : -1;
+				if ($a['fee'] == $b['fee']) return;
+				return ($a['fee'] > $b['fee']) ? 1 : -1;
 			});
 
 			return $this->_cache[$checksum]['options'];
@@ -124,7 +124,7 @@
 		public function cheapest($order) {
 
 			if (empty($this->_options)) {
-				$options = $this->options($order->data['items'], $order->data['currency_code'], $order->data['customer']);
+				$options = $this->options();
 			}
 
 			if (empty($options)) return false;

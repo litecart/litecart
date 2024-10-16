@@ -113,7 +113,7 @@
 
 			// Sort options by fee
 			uasort($this->_cache[$checksum]['options'], function($a, $b) {
-				return ($a['cost'] > $b['cost']) ? 1 : -1;
+				return ($a['fee'] > $b['fee']) ? 1 : -1;
 			});
 
 			return $this->_cache[$checksum]['options'];

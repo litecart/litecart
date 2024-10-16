@@ -2,7 +2,6 @@
 
 	class route {
 
-		private static $_classes = [];
 		private static $_links_cache = [];
 		private static $_links_cache_token;
 		private static $_routes = [];
@@ -30,9 +29,9 @@
 
 		######################################################################
 
-		public static function load($path) {
+		public static function load($pattern) {
 
-			foreach (functions::file_search($path) as $file) {
+			foreach (functions::file_search($pattern) as $file) {
 
 				$routes = include $file;
 				if (!$routes) continue;
@@ -54,17 +53,13 @@
 			switch (true) {
 
 				case (preg_match('#^b:#', $resource)):
-					$route['endpoint'] = 'backend';
-					break;
-
-				case (preg_match('#^f:#', $resource)):
-					$route['endpoint'] = 'frontend';
-					break;
+				  $route['endpoint'] = 'backend';
+				  break;
 
 				default:
-					$route['endpoint'] = 'frontend';
-					break;
-				}
+  				$route['endpoint'] = 'frontend';
+  				break;
+			}
 
 			if (!isset($route['patterns'])) {
 				$route['patterns'] = [$route['pattern']];
@@ -81,34 +76,34 @@
 			];
 		}
 
-			// Resolve the request to a route
+		// Resolve the request to a route
 		public static function identify() {
 
-				// Step through each route
+			// Step through each route
 			foreach (self::$_routes as $route) {
 
-					// Does any pattern of the route match the request?
+				// Does any pattern of the route match the request?
 				foreach ($route['patterns'] as $pattern) {
 
 					if (preg_match($pattern, self::$request)) {
 
-							// Resolve resource logic
+						// Resolve resource logic
 						if (preg_match('#\*#', $route['resource'])) {
 							$route['resource'] = preg_replace_callback('#^(\w:).*$#', function($matches){
 								return fallback($matches[1], 'f:') . preg_replace('#^'. preg_quote(ltrim(BACKEND_ALIAS . '/', '/'), '#') .'#', '', parse_url(self::$request, PHP_URL_PATH));
 							}, $route['resource']);
 						}
 
-							// Resolve controller logic
-				if (is_string($route['controller'])) {
+						// Resolve controller logic
+						if (is_string($route['controller'])) {
 							$route['controller'] = preg_replace($pattern, $route['controller'], self::$request);
-				}
+						}
 
-							// Resolve query params logic
-				if (!empty($route['params'])) {
+						// Resolve query params logic
+						if (!empty($route['params'])) {
 							parse_str(preg_replace($pattern, $route['params'], self::$request), $params);
-					$_GET = array_filter(array_merge($_GET, $params));
-				}
+							$_GET = array_filter(array_merge($_GET, $params));
+						}
 
 						return self::$selected = $route;
 					}
@@ -118,12 +113,12 @@
 
 		public static function process() {
 
-			if (empty(self::$selected)) {
+			if (!self::$selected) {
 				self::identify();
 			}
 
 			// Forward to rewritten URL (if necessary)
-			if (!empty(self::$selected)) {
+			if (self::$selected) {
 
 				$requested_url = document::link($_SERVER['REQUEST_URI']);
 				$rewritten_url = document::ilink(self::$selected['resource'], $_GET);
@@ -145,7 +140,10 @@
 					// Don't forward if there are notices in stack
 					if (!empty(notices::$data)) {
 						foreach (notices::$data as $notices) {
-							if (!empty($notices)) $do_redirect = false;
+							if (!$notices) {
+								$do_redirect = false;
+								break;
+							}
 						}
 					}
 
@@ -176,20 +174,30 @@
 				}
 			}
 
-				// Return a static file
+			// Return a static file
 			$request_path = functions::file_resolve_path(parse_url(self::$request, PHP_URL_PATH));
 
-				// Tunnel an asset stored in an add-on
-			if (preg_match('#^assets/#', $request_path) && is_file('app://'.$request_path) && preg_match('#\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$#', pathinfo($request_path, PATHINFO_BASENAME))) {
+			// Create whitelist of static folder content
+			$static_folders = [
+				'assets/',
+			];
+
+			// Tunnel an asset stored in an add-on
+			if (preg_match('#^('. implode('|', array_map(function($folder) { return preg_quote($folder, '#'); }, $static_folders)) .')#', $request_path)
+			 && is_file('app://'.$request_path) && preg_match('#\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$#', pathinfo($request_path, PATHINFO_BASENAME))) {
 
 				if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= filemtime('app://'.$request_path)) {
 					header('HTTP/1.1 304 Not Modified');
 					exit;
 				}
 
-				if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == md5_file('app://'.$request_path)) {
-					header('HTTP/1.1 304 Not Modified');
-					exit;
+				if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
+					foreach (preg_split('#\s*,\s*#', $_SERVER['HTTP_IF_NONE_MATCH'], -1, PREG_SPLIT_NO_EMPTY) as $potential_match) {
+						if (trim($potential_match, '"') == md5_file('app://'.$request_path)) {
+							header('HTTP/1.1 304 Not Modified');
+							exit;
+						}
+					}
 				}
 
 				switch (pathinfo($request_path, PATHINFO_EXTENSION)) {
@@ -205,7 +213,7 @@
 					default:
 						header('Content-Type: '. mime_content_type('app://'.$request_path));
 						break;
-					}
+				}
 
 				header('Content-Length: '. filesize('app://'.$request_path));
 				header('Etag: '. md5_file('app://'.$request_path));
@@ -240,13 +248,15 @@
 
 				$email = new ent_email();
 				$email->add_recipient(settings::get('store_email'))
-							->set_subject('[Not Found Report] '. settings::get('store_name'))
-								->add_body(
+					->set_subject('[Not Found Report] '. settings::get('store_name'))
+					->add_body(
 						wordwrap("This is a list of the last 100 requests made to your website that did not have a destination. Most of these reports usually contain scans and attacks by evil robots. But some URLs may be indexed by search engines requiring a redirect to a proper destination.", 72, "\r\n") . "\r\n\r\n" .
-									PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n" .
-									implode("\r\n", $lines)
-								)
-							->send();
+						PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n" .
+						implode("\r\n", array_map($lines, function($line){
+							return wordwrap($line);
+						}))
+					)
+					->send();
 
 				file_put_contents($not_found_file, '');
 
@@ -261,9 +271,11 @@
 
 		public static function strip_url_logic($path) {
 
-			if (empty($path)) return '';
+			if (!$path) {
+				return '';
+			}
 
-			$path = str_replace('//', '/', $path);
+			$path = preg_replace('#/+#', '/', $path); // Replace multiple slashes
 
 			if ($path = urldecode(parse_url($path, PHP_URL_PATH))) {
 				$path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $path);
@@ -278,7 +290,7 @@
 
 		public static function create_link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null, $rewrite=false) {
 
-			if (empty($language_code)){
+			if (!$language_code) {
 				$language_code = language::$selected['code'];
 			}
 
@@ -338,7 +350,7 @@
 				return $link;
 			}
 
-			if (empty($language_code)) {
+			if (!$language_code) {
 				$language_code = language::$selected['code'];
 			}
 
@@ -353,7 +365,7 @@
 			$checksum = crc32((string)$link);
 
 			if (isset(self::$_links_cache[$language_code][$checksum])) {
-		return self::$_links_cache[$language_code][$checksum];
+				return self::$_links_cache[$language_code][$checksum];
 			}
 
 			// Strip logic from string
@@ -395,14 +407,16 @@
 			switch (language::$languages[$language_code]['url_type']) {
 
 				case 'path':
-					if (isset($link->query['language'])) $link->unset_query('language');
 					$link->path = $language_code .'/'. ltrim($link->path, '/');
 					break;
 
 				case 'domain':
-					if (isset($link->query['language'])) $link->unset_query('language');
 					$link->host = language::$languages[$language_code]['domain_name'];
 					break;
+			}
+
+			if (isset($link->query['language'])) {
+				$link->unset_query('language');
 			}
 
 			// Set base (/index.php/ or /)

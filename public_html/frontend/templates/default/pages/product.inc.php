@@ -56,7 +56,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 										<?php foreach ($extra_images as $extra_image) { ?>
 										<div class="col-4">
 											<a class="extra-image" href="<?php echo document::href_rlink($extra_image); ?>" data-toggle="lightbox" data-gallery="product">
-												<?php echo functions::draw_thumbnail($image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
+												<?php echo functions::draw_thumbnail($extra_image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
 											</a>
 										</div>
 										<?php } ?>

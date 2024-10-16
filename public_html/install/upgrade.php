@@ -1,5 +1,5 @@
 <?php
-		// Automatic upgrade: upgrade.php?upgrade=true&redirect={url}
+	// Automatic upgrade: upgrade.php?upgrade=true&redirect={url}
 
 	@set_time_limit(900);
 	ini_set('memory_limit', -1);
@@ -37,9 +37,6 @@
 		}
 	}
 
-	require_once __DIR__ . '/includes/header.inc.php';
-	require_once __DIR__ . '/includes/functions.inc.php';
-
 	// Include config
 	if (is_file(__DIR__ . '/../storage/config.inc.php')) {
 		include(__DIR__ . '/../storage/config.inc.php');
@@ -48,6 +45,7 @@
 		include(__DIR__ . '/../includes/config.inc.php');
 
 	} else {
+		require_once __DIR__ . '/includes/header.inc.php';
 		echo implode(PHP_EOL, [
 			'<h2>No Installation Detected</h2>',
 			'<p>Warning: No configuration file was found.</p>',
@@ -56,6 +54,8 @@
 		require('includes/footer.inc.php');
 		return;
 	}
+
+	require_once __DIR__ . '/includes/functions.inc.php';
 
 	if (!defined('FS_DIR_APP')) {
 		define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME); // Prior to 2.2.x
@@ -92,7 +92,9 @@
 	preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../includes/app_header.inc.php'), $matches);
 	define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
 
-	if (!PLATFORM_VERSION) die('Could not identify target version.');
+	if (!PLATFORM_VERSION) {
+		die('Could not identify target version.');
+	}
 
 	// Get current platform database version
 	$platform_database_version = database::query(

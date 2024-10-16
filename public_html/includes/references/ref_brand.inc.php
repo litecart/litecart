@@ -6,7 +6,7 @@
 
 		function __construct($brand_id, $language_code=null) {
 
-			if (empty($language_code)){
+			if (!$language_code) {
 				$language_code = language::$selected['code'];
 			}
 

@@ -60,8 +60,6 @@
 			}
 		}
 
-		######################################################################
-
 		public static function token($keyword, $dependencies=[], $storage='memory', $ttl=900) {
 
 			if (!in_array($storage, ['file', 'memory', 'session'])) {
@@ -199,6 +197,8 @@
 				return;
 			}
 
+			stats::start_watch('cache');
+
 			$data = null;
 
 			switch ($token['storage']) {
@@ -227,8 +227,8 @@
 
 						default:
 							$token['storage'] = 'file';
+							stats::stop_watch('cache');
 							return self::get($token, $max_age, $force_cache);
-							break;
 					}
 
 				case 'session':
@@ -246,14 +246,18 @@
 					break;
 			}
 
+			stats::stop_watch('cache');
+
 			return $data;
 		}
 
 		public static function set($token, $data) {
 
-			if (!self::$enabled) return;
+			if (!self::$enabled || !$data) {
+				return;
+			}
 
-			if (!$data) return;
+			stats::start_watch('cache');
 
 			switch ($token['storage']) {
 
@@ -304,10 +308,12 @@
 					break;
 			}
 
+			stats::stop_watch('cache');
+
 			return $result;
 		}
 
-			// Output recorder (This option is not affected by self::$enabled as fresh data is always building up cache)
+		// Output recorder (This option is not affected by self::$enabled as fresh data is always building up cache)
 		public static function capture($token, $max_age=900, $force_cache=false) {
 
 			if (isset(self::$_recorders[$token['id']])) {
@@ -371,22 +377,26 @@
 
 			// Clear memory
 			if (function_exists('apcu_delete')) {
+
 				if ($keyword) {
 					$cached_keys = new APCUIterator('#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*'. preg_quote($keyword, '#') .'.*#', APC_ITER_KEY);
 				} else {
 					$cached_keys = new APCUIterator('#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*#', APC_ITER_KEY);
 				}
+
 				foreach ($cached_keys as $key) {
 					apcu_delete($key);
 				}
 			}
 
 			if (function_exists('apc_delete')) {
+
 				if ($keyword) {
 					$cached_keys = new APCIterator('user', '#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*'. preg_quote($keyword, '#') .'.*#', APC_ITER_KEY);
 				} else {
 					$cached_keys = new APCIterator('user', '#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*#', APC_ITER_KEY);
 				}
+
 				foreach ($cached_keys as $key) {
 					apc_delete($key);
 				}

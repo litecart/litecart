@@ -92,7 +92,7 @@
 				}
 			}
 
-			if (!isset($customer['billing_address']['city'])){
+			if (!isset($customer['billing_address']['city'])) {
 				$customer['billing_address']['city'] = '';
 			}
 
@@ -100,7 +100,7 @@
 				$customer['shipping_address'] = $customer['billing_address'];
 			}
 
-			if (!isset($customer['shipping_address']['city'])){
+			if (!isset($customer['shipping_address']['city'])) {
 				$customer['shipping_address']['city'] = '';
 			}
 

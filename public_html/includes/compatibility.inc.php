@@ -5,6 +5,11 @@
 		die('This application requires at minimum PHP 5.6+ (Detected '. phpversion() .')');
 	}
 
+	// Polyfill for glob brace on Alpine
+	if (!defined('GLOB_BRACE')) {
+		define('GLOB_BRACE', 0);
+	}
+
 	// Polyfill for getallheaders() on non-Apache machines
 	if (!function_exists('getallheaders')) {
 		function getallheaders() {

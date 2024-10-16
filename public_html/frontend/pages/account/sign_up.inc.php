@@ -80,7 +80,7 @@
 				//  throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
 				//}
 
-				//if (empty($_POST['postcode']) && !empty($_POST['country_code']) && reference::country($_POST['country_code'])->postcode_format){
+				//if (empty($_POST['postcode']) && !empty($_POST['country_code']) && reference::country($_POST['country_code'])->postcode_format) {
 				//  throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
 				//}
 

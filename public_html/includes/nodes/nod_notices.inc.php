@@ -16,7 +16,7 @@
 			}
 
 			self::$data = &session::$data['notices'];
-			}
+		}
 
 		public static function reset($type=null) {
 
@@ -58,10 +58,15 @@
 
 			if (empty(self::$data)) return '';
 
-			if (route::$selected['endpoint'] == 'backend') {
-				$view = new ent_view('app://backend/template/partials/notices.inc.php');
-			} else {
-				$view = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/notices.inc.php');
+			switch (route::$selected['endpoint']) {
+
+				case 'backend':
+					$view = new ent_view('app://backend/template/partials/notices.inc.php');
+					break;
+
+				default:
+					$view = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/notices.inc.php');
+					break;
 			}
 
 			$view->snippets['notices'] = self::$data;

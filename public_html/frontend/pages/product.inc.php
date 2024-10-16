@@ -57,16 +57,25 @@
 	}
 
 	if (!empty($_GET['category_id'])) {
+
 		breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
+
 		foreach (reference::category($_GET['category_id'])->path as $category_crumb) {
 			document::$title[] = $category_crumb->name;
 			breadcrumbs::add($category_crumb->name, document::ilink('category', ['category_id' => $category_crumb->id]));
 		}
+
 	} else if ($product->brand) {
 		document::$title[] = $product->brand->name;
 		breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
 		breadcrumbs::add($product->brand->name, document::ilink('brand', ['brand_id' => $product->brand->id]));
+
+	} else if ($product->default_category) {
+		document::$title[] = $product->default_category->name;
+		breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
+		breadcrumbs::add($product->default_category->name, document::ilink('category', ['category_id' => $product->default_category->id]));
 	}
+
 	breadcrumbs::add($product->name, document::ilink('product', ['product_id' => $product->id]));
 
 	functions::draw_lightbox();
@@ -85,13 +94,6 @@
 		'name' => $product->name,
 		'image' => $product->image ? 'storage://images/'.$product->image : '',
 	];
-
-	// Page
-	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/product.ajax.inc.php');
-	} else {
-		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/product.inc.php');
-	}
 
 	$schema_json = [
 		'@context' => 'http://schema.org/',
@@ -114,6 +116,13 @@
 			'url' => document::link(),
 		],
 	];
+
+	// Page
+	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/product.ajax.inc.php');
+	} else {
+		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/product.inc.php');
+	}
 
 	$_page->snippets = [
 		'product_id' => $product->id,

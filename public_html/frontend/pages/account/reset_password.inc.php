@@ -43,7 +43,6 @@
 					throw new Exception(language::translate('error_invalid_reset_token', 'Invalid reset token'));
 				}
 
-
 				if ($_REQUEST['reset_token'] != $reset_token['token']) {
 					throw new Exception(language::translate('error_incorrect_reset_token', 'Incorrect reset token'));
 				}
@@ -52,7 +51,7 @@
 					throw new Exception(language::translate('error_reset_token_expired', 'The reset token has expired'));
 				}
 
-				if (empty($_POST['new_password'])){
+				if (empty($_POST['new_password'])) {
 					throw new Exception(language::translate('error_missing_password', 'You must enter a password.'));
 				}
 
@@ -64,7 +63,7 @@
 					throw new Exception(language::translate('error_passwords_did_not_match', 'Passwords did not match'));
 				}
 
-				if (!functions::password_check_strength($_POST['new_password'], 6)){
+				if (!functions::password_check_strength($_POST['new_password'], 6)) {
 					throw new Exception(language::translate('error_password_not_strong_enough', 'The password is not strong enough'));
 				}
 			}

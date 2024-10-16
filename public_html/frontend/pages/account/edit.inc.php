@@ -166,7 +166,7 @@
 					throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
 				}
 
-				if (empty($_POST['shipping_address']['zone_code']) && settings::get('customer_field_zone') && reference::country($_POST['shipping_address']['country_code'])->zones){
+				if (empty($_POST['shipping_address']['zone_code']) && settings::get('customer_field_zone') && reference::country($_POST['shipping_address']['country_code'])->zones) {
 					throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
 				}
 			}

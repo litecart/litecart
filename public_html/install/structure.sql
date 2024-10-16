@@ -149,9 +149,9 @@ CREATE TABLE `lc_campaigns_products` (
 -- -----
 CREATE TABLE `lc_cart_items` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`cart_uid` VARCHAR(13) NOT NULL,
 	`customer_id` INT(10) UNSIGNED NULL,
-	`cart_uid` VARCHAR(13) NOT NULL DEFAULT '',
-	`key` VARCHAR(32) NOT NULL DEFAULT '',
+	`key` VARCHAR(32) NOT NULL,
 	`product_id` INT(10) UNSIGNED NULL,
 	`stock_option_id` INT(10) UNSIGNED NULL,
 	`userdata` VARCHAR(2048) NOT NULL DEFAULT '',
@@ -164,6 +164,7 @@ CREATE TABLE `lc_cart_items` (
 	KEY `cart_uid` (`cart_uid`),
 	CONSTRAINT `cart_item_to_customer` FOREIGN KEY (`customer_id`) REFERENCES `lc_customer` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT `cart_item_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
+	CONSTRAINT `cart_item_to_stock_option` FOREIGN KEY (`stock_option_id`) REFERENCES `lc_products_stock_options` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- -----
 CREATE TABLE `lc_categories` (
