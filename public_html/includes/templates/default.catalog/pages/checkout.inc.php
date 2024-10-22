@@ -3,23 +3,23 @@
 
   <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process'), false, 'autocomplete="off"'); ?>
 
-  <section id="box-checkout">
-    <div class="cart wrapper"></div>
+    <section id="box-checkout">
+      <div class="cart wrapper"></div>
 
-    <div class="row" style="grid-gap: 2rem;">
-      <div class="col-md-6">
-        <div class="customer wrapper"></div>
+      <div class="row" style="grid-gap: 2rem;">
+        <div class="col-md-6">
+          <div class="customer wrapper"></div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="shipping wrapper"></div>
+
+          <div class="payment wrapper"></div>
+        </div>
       </div>
 
-      <div class="col-md-6">
-        <div class="shipping wrapper"></div>
-
-        <div class="payment wrapper"></div>
-      </div>
-    </div>
-
-    <div class="summary wrapper"></div>
-  </section>
+      <div class="summary wrapper"></div>
+    </section>
 
   <?php echo functions::form_draw_form_end(); ?>
 </main>
