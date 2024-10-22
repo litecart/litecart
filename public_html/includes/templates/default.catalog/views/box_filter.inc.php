@@ -8,12 +8,12 @@
       <?php if ($manufacturers) { ?>
       <div class="dropdown">
         <div class="form-control" data-toggle="dropdown">
-          <?php echo language::translate('title_manufacturers', 'Brands'); ?>
+          <?php echo language::translate('title_manufacturers', 'Manufacturers'); ?>
         </div>
         <ul class="dropdown-menu">
           <?php foreach ($manufacturers as $manufacturer) { ?>
           <li>
-            <label class="option"><?php echo functions::form_draw_checkbox('manufacturers[]', $manufacturer['id'], true, 'data-token-group="manufacturer" data-token-title="'. language::translate('title_manufacturer', 'Brand') .'" data-token-value="'. $manufacturer['name'] .'"'); ?>
+            <label class="option"><?php echo functions::form_draw_checkbox('manufacturers[]', $manufacturer['id'], true, 'data-token-group="manufacturer" data-token-title="'. language::translate('title_manufacturer', 'Manufacturer') .'" data-token-value="'. $manufacturer['name'] .'"'); ?>
               <span class="title"><?php echo $manufacturer['name']; ?></span>
             </label>
           </li>
