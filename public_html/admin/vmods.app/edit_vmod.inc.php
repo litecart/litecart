@@ -511,7 +511,7 @@ textarea.warning {
 
               <div class="form-group">
                 <label><?php echo language::translate('title_script', 'Script'); ?></label>
-                <?php echo functions::form_draw_code_field('install', true, 'style="height: 200px;"'); ?>
+                <?php echo functions::form_draw_code_field('install', true, 'style="min-height: 250px;"'); ?>
               </div>
             </div>
 
@@ -519,7 +519,7 @@ textarea.warning {
               <h2><?php echo language::translate('title_uninstall', 'Uninstall'); ?></h2>
               <div class="form-group">
                 <label><?php echo language::translate('title_script', 'Script'); ?></label>
-                <?php echo functions::form_draw_code_field('uninstall', true, 'style="height: 200px;"'); ?>
+                <?php echo functions::form_draw_code_field('uninstall', true, 'style="min-height: 250px;"'); ?>
               </div>
             </div>
           </div>
