@@ -42,7 +42,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/currencies.app/index.html
 2b54bdbe7fa88b1735a6c0f9e6506583	admin/customers.app/config.inc.php
 210c5eafa7d0a6fa8ff48684b96e1f20	admin/customers.app/csv.inc.php
 15d3c2c5381711a37c19660e459ec2ff	admin/customers.app/customer_picker.inc.php
-94f661a13ee1aab6687e8664a140bbb4	admin/customers.app/customers.inc.php
+819f1d3df5ad444ddf7b3c4bb4fd5e16	admin/customers.app/customers.inc.php
 4de39944efc2340f301c005f712c7a70	admin/customers.app/customers.json.inc.php
 56b6f66fef9799cd46ec2c8a9c5f347f	admin/customers.app/edit_customer.inc.php
 069b78f8ee56491e9f4fd8aaa08c6d9d	admin/customers.app/get_address.json.inc.php
@@ -228,7 +228,7 @@ ef7eb684af5b095b31dc97de052c5e85	includes/boxes/box_popular_products.inc.php
 8a897cd2a31efd57ca3a99d14ec73e29	includes/boxes/box_recently_viewed_products.inc.php
 0b2c5910559f4c56703ef9eec3f2c120	includes/boxes/box_similar_products.inc.php
 8c894fe6172e020d39bb05715f9f9627	includes/boxes/box_site_footer.inc.php
-f9cfcf6c140e3e72cda3954cce91d2a4	includes/boxes/box_site_menu.inc.php
+b4806f71b682a0a0754ade967716ed0b	includes/boxes/box_site_menu.inc.php
 02426a41d7e9ae11739c7f6b17165126	includes/boxes/box_slides.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/boxes/index.html
 ea205d96efaafe0d18f144b61f9a19e6	includes/compatibility.inc.php
@@ -465,7 +465,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/less/index.h
 c7fc81a4e166d6cc352de27f5ec627a6	includes/templates/default.catalog/less/variables.less
 984cbdda599e468eb70e497e8b24d7ff	includes/templates/default.catalog/pages/categories.inc.php
 28e0a43dd219baf8b26d79036ebc842e	includes/templates/default.catalog/pages/category.inc.php
-1f63eb09c29c90dfa42a93a2e6ae51a3	includes/templates/default.catalog/pages/checkout.inc.php
+cd3e9cb284ef9249958d3551d9304ba8	includes/templates/default.catalog/pages/checkout.inc.php
 8d31597753325ce7cd20e1fcf9778ce4	includes/templates/default.catalog/pages/create_account.inc.php
 2f5bb620660802beeff1be40fb630b93	includes/templates/default.catalog/pages/customer_service.inc.php
 da311369f7276f65cf4168b7d5b5a8f1	includes/templates/default.catalog/pages/development_mode.inc.php
@@ -506,7 +506,7 @@ f5874d6737d1484697bd147fc83911bc	includes/templates/default.catalog/views/box_ch
 21565d86b5b252d8cd95a4cb577bf587	includes/templates/default.catalog/views/box_contact_us.inc.php
 fcc950aded31128bc74a5e9fd61795af	includes/templates/default.catalog/views/box_cookie_notice.inc.php
 8af0371f5a33d2611b96867767039db0	includes/templates/default.catalog/views/box_customer_service_links.inc.php
-4f3e935b89ba3ed9e18450fea93db66f	includes/templates/default.catalog/views/box_filter.inc.php
+f67c99843160f52e2333a976ee5b382a	includes/templates/default.catalog/views/box_filter.inc.php
 b5f3674d7a7331948622378b84aae4c0	includes/templates/default.catalog/views/box_information_links.inc.php
 31955883e697e76040db66403f5b529b	includes/templates/default.catalog/views/box_latest_products.inc.php
 d545ed5026e367e906d43f4a2f7827db	includes/templates/default.catalog/views/box_manufacturer_links.inc.php
