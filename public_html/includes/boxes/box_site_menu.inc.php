@@ -28,14 +28,14 @@
 
   // Manufacturers
 
-    $pages_query = database::query(
+    $manufacturers_query = database::query(
       "select id, name from ". DB_TABLE_PREFIX ."manufacturers
       where status
       and featured
       order by name;"
     );
 
-    while ($manufacturer = database::fetch($pages_query)) {
+    while ($manufacturer = database::fetch($manufacturers_query)) {
       $box_site_menu->snippets['manufacturers'][$manufacturer['id']] = [
         'type' => 'manufacturer',
         'id' => $manufacturer['id'],
