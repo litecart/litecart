@@ -68,7 +68,7 @@
       "concat(c.address1, '\\n', c.address2, '\\n', c.postcode, '\\n', c.city) like '%". database::input($_GET['query']) ."%'",
       "c.email like '%". database::input($_GET['query']) ."%'",
       "last_ip like '%". database::input($_GET['query']) ."%'",
-      "last_hostname like '%". database::input($_GET['query']) ."%'",
+      "last_host like '%". database::input($_GET['query']) ."%'",
     ];
   }
 
