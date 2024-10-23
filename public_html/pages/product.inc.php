@@ -45,6 +45,8 @@
   if (!empty($product->image)) {
     $og_image = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, 1200, 630, 'FIT_USE_WHITESPACING');
     document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink(FS_DIR_STORAGE . $og_image) .'">';
+    document::$snippets['head_tags'][] = '<meta property="og:image:width" content="1200">';
+    document::$snippets['head_tags'][] = '<meta property="og:image:height" content="630">';
   }
 
   if (!empty($_GET['category_id'])) {
