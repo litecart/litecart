@@ -187,6 +187,13 @@
 
   if ($log_file && is_file($log_file)) {
 
+    // Truncate a disastrous log file over 1 GB
+    if (filesize($log_file) < 1024e6) {
+      file_put_contents($log_file, '');
+      trigger_error('Truncating a disastrous log a file over 1 GBytes', E_USER_WARNING);
+      return;
+    }
+
     $entries = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($log_file));
 
     if (preg_match_all('#\[(\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/]+)\] (.*?)'. addcslashes(PHP_EOL, "\r\n") .'([^\[]*)#s', $entries, $matches)) {
