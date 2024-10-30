@@ -1349,9 +1349,6 @@
       addItem(item);
     }
 
-    $(modal).find(':input[name="weight_class"]').val('<?php echo settings::get('store_weight_class'); ?>');
-    $(modal).find(':input[name="length_class"]').val('<?php echo settings::get('store_length_class'); ?>');
-
     $.each($(modal).find(':input'), function(i,element){
       var field = $(element).attr('name');
       var value = $(modal).find(':input[name="'+field+'"]').val();
