@@ -16,6 +16,7 @@
 	}
 
 	$box_category_tree = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_category_tree.inc.php');
+
 	$box_category_tree->snippets = [
 		'title' => $main_category ? $main_category->name : language::translate('title_categories', 'Categories'),
 		'main_category' => $main_category ? $main_category->id : 0,

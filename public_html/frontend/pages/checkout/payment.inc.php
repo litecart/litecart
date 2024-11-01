@@ -4,54 +4,68 @@
 	 * This file contains PHP logic that is separated from the HTML view.
 	 * Visual changes can be made to the file found in the template folder:
 	 *
-	 *   ~/frontend/templates/default/partials/box_checkout_payment.inc.php
+	 *   ~/frontend/templates/default/pages/checkout/payment.inc.php
 	 */
 
 	header('X-Robots-Tag: noindex');
 
-	if (settings::get('catalog_only_mode')) return;
+	document::$layout = 'checkout';
 
-	$shopping_cart = &session::$data['checkout']['shopping_cart'];
-
-	if (empty($shopping_cart->data['items'])) return;
-
-	$payment = new mod_payment();
-	if (!$options = $payment->options($shopping_cart)) {
+	if (settings::get('catalog_only_mode')) {
+		return;
+	}
+	
+	if (!empty(session::$data['checkout']['order'])) {
+		$order = &session::$data['checkout']['order'];
+	} else {
 		return;
 	}
 
-	if (!empty($_POST['select_shipping'])) {
-		$payment->select($_POST['payment_option']['id'], $_POST);
+	if (!$order->data['items']) {
+		return;
+	}
 
-		if (route::$selected['route'] != 'f:order_process') {
+	if (!$options = $order->payment->options($order)) {
+		return;
+	}
+
+	if (!empty($_POST['select_payment'])) {
+		$order->payment->select($_POST['payment_option']['id'], $_POST);
+
+		if (route::$selected['route'] != 'f:checkout/process') {
 			header('Location: '. $_SERVER['REQUEST_URI']);
 			exit;
 		}
 	}
 
-	if (!empty($payment->selected['id'])) {
-		if (array_search($payment->selected['id'], array_column($options, 'id')) === false) {
-			$payment->selected = []; // Clear because option is no longer present
+	if (!empty($order->payment->selected['id'])) {
+		if (array_search($order->payment->selected['id'], array_column($options, 'id')) === false) {
+			$order->payment->selected = []; // Clear option no longer being present
 		} else {
-			$payment->select($payment->selected['id'], $payment->selected['userdata']); // Reinstate a present option
+			$order->payment->select($order->payment->selected['id'], $order->payment->selected['userdata']); // Reinstate a present option
 		}
 	}
 
-	if (empty($payment->selected['id'])) {
-		if ($cheapest = $payment->cheapest($shopping_cart)) {
-			$payment->select($cheapest['id']);
+	if (empty($order->payment->selected['id'])) {
+		if ($cheapest = $order->payment->cheapest($order)) {
+			$order->payment->select($cheapest['id']);
 		}
 	}
 
-	if (!empty($payment->selected)) {
-		$_POST['payment_option'] = $payment->selected;
+	if (!empty($order->payment->selected)) {
+		$_POST['payment_option'] = $order->payment->selected;
 	}
 
-	$box_checkout_payment = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_checkout_payment.inc.php');
+	$box_checkout_payment = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/payment.inc.php');
 
 	$box_checkout_payment->snippets = [
-		'selected' => $payment->selected,
+		'selected' => $order->payment->selected,
 		'options' => $options,
 	];
 
-	echo $box_checkout_payment->render();
+	echo $box_checkout_payment;
+
+	// Don't process layout if this is an ajax request
+	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+		exit;
+	}

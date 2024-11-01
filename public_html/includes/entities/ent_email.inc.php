@@ -153,9 +153,11 @@
 		public function add_body($content, $html=false) {
 
 			if (!$content) {
-				trigger_error('Cannot add an email body with empty content', E_USER_WARNING);
+				trigger_error('Cannot add an email body with no content', E_USER_WARNING);
 				return $this;
 			}
+
+			$content = trim($content);
 
 			$view = new ent_view('app://frontend/templates/'.settings::get('template').'/layouts/email.inc.php');
 
@@ -170,7 +172,7 @@
 					'Content-Transfer-Encoding' => '8bit',
 					'Content-Language' => $this->data['language_code'],
 				],
-				'body' => (string)$view,
+				'body' => wordwrap((string)$view, 70, "\r\n"),
 			];
 
 			return $this;
@@ -324,25 +326,21 @@
 
 			// Add "To" header
 			if (!empty($this->data['recipients'])) {
-				$tos = [];
-				foreach ($this->data['recipients'] as $to) {
-					$tos[] = $this->format_contact($to);
-				}
-				$headers['To'] = implode(', ', $tos);
+				$headers['To'] = implode(', ', array_map(function($recipient) {
+					return $this->format_contact($recipient);
+				}, $this->data['recipients']));
 			}
 
 			// Add "Cc" header
 			if (!empty($this->data['ccs'])) {
-				$ccs = [];
-				foreach ($this->data['ccs'] as $cc) {
-					$ccs[] = $this->format_contact($cc);
-				}
-				$headers['Cc'] = implode(', ', $ccs);
+				$headers['Cc'] = implode(', ', array_map(function($recipient) {
+					return $this->format_contact($recipient);
+				}, $this->data['ccs']));
 			}
 
 			// SMTP does not need a header for BCCs, we will add that for PHP mail() later
 
-				// Add "References"
+			// Add "References"
 			if (!empty($this->data['reference'])) {
 				$headers['References'] = $this->data['reference'];
 			}
@@ -364,7 +362,7 @@
 						'--'. $multipart_boundary_string,
 						implode("\r\n", array_map(function($v, $k) { return $k.':'.$v; }, $multipart['headers'], array_keys($multipart['headers']))) . "\r\n",
 						$multipart['body'],
-					]) . "\r\n";
+					]) . "\r\n\r\n";
 				}
 
 				$body .= '--'. $multipart_boundary_string .'--';
@@ -408,10 +406,12 @@
 						$recipients[] = $bcc['email'];
 					}
 
-					array_walk($headers, function (&$v, $k) { $v = "$k: $v"; });
+					array_walk($headers, function (&$v, $k) {
+						$v = "$k: $v";
+					});
 
 					$data = implode("\r\n", $headers) . "\r\n\r\n"
-								. $body;
+					      . $body;
 
 					$result = $smtp->send(settings::get('store_email'), $recipients, $data);
 
@@ -429,18 +429,14 @@
 
 				// PHP mail() needs a header for BCCs
 				if (!empty($this->data['bccs'])) {
-					$bccs = [];
-					foreach ($this->data['bccs'] as $bcc) {
-						$bccs[] = $this->format_contact($bcc);
-					}
-					$headers['Bcc'] = implode(', ', $bccs);
+					$headers['Bcc'] = implode(', ', array_map(function($recipient){
+						return $this->format_contact($recipient);
+					}, $this->data['bccs']));
 				}
 
-				$recipients = [];
-				foreach ($this->data['recipients'] as $recipient) {
-					$recipients[] = $this->format_contact($recipient);
-				}
-				$recipients = implode(', ', $recipients);
+				$recipients = implode(', ', array_map(function($recipient){
+					return $this->format_contact($recipient);
+				}, $this->data['recipients']));
 
 				$subject = mb_encode_mimeheader($this->data['subject']);
 
@@ -452,7 +448,7 @@
 				}
 			}
 
-			if (!empty($result)) {
+			if ($result) {
 				$this->data['status'] = 'sent';
 				$this->data['date_sent'] = date('Y-m-d H:i:s');
 			} else {
@@ -461,7 +457,7 @@
 
 			$this->save();
 
-			return !empty($result);
+			return $result ? true : false;
 		}
 
 		public function delete() {

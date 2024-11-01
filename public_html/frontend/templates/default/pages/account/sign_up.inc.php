@@ -21,7 +21,7 @@
 
 							<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
 							<div class="form-group">
-								<?php echo functions::form_toggle_buttons('type', ['individual' => language::translate('title_individual', 'Individual'), 'business' => language::translate('title_business', 'Business')], empty($_POST['type']) ? 'individual' : true); ?>
+								<?php echo functions::form_toggle('type', ['individual' => language::translate('title_individual', 'Individual'), 'business' => language::translate('title_business', 'Business')], empty($_POST['type']) ? 'individual' : true); ?>
 							</div>
 
 							<div class="business-details" <?php if (empty($_POST['type']) || $_POST['type'] == 'individual') echo 'style="display: none;"'; ?>>
@@ -131,7 +131,7 @@
 							<div class="row">
 								<div class="form-group col-6">
 									<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-									<?php echo functions::form_input_captcha('sign_up'); ?>
+									<?php echo functions::form_captcha('sign_up'); ?>
 								</div>
 							</div>
 							<?php } ?>

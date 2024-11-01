@@ -93,7 +93,7 @@
 
 			<div class="form-group">
 				<label><?php echo language::translate('title_description', 'Description'); ?></label>
-				<?php echo functions::form_input_textarea('description', true); ?>
+				<?php echo functions::form_textarea('description', true); ?>
 			</div>
 
 			<div class="row">

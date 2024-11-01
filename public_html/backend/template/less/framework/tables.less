@@ -17,13 +17,10 @@
 		vertical-align: middle;
 	}
 
-	tbody td {
-		padding: .5em 1em;
-	}
-
 	td, th {
-		line-height: 1.5;
 		color: var(--default-text-color);
+		padding: .5em 1em;
+		line-height: 2;
 
 		&:first-child {
 			padding-inline-start: var(--gutter-size);
@@ -146,17 +143,6 @@
 			&:last-child {
 				padding-inline-end: .5em;
 			}
-		}
-	}
-
-	&.table-dragable {
-		> tbody .grabable {
-			cursor: n-resize;
-			user-select: none;
-		}
-		> tbody > tr.grabbed {
-			user-input: unset;
-			box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 		}
 	}
 

@@ -521,7 +521,7 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label><?php echo language::translate('title_notes', 'Notes'); ?></label>
-						<?php echo functions::form_input_textarea('notes', true, 'style="height: 115px;"'); ?>
+						<?php echo functions::form_textarea('notes', true, 'style="height: 115px;"'); ?>
 					</div>
 				</div>
 			</div>
@@ -1005,7 +1005,7 @@
 
 				<div class="form-group">
 					<label><?php echo language::translate('title_type', 'Type'); ?></label>
-					<?php echo functions::form_toggle_buttons('type', ['product' => language::translate('title_product', 'Product'), 'custom' => language::translate('title_custom', 'Custom'), 'fee' => language::translate('title_fee', 'Fee')], true); ?>
+					<?php echo functions::form_toggle('type', ['product' => language::translate('title_product', 'Product'), 'custom' => language::translate('title_custom', 'Custom'), 'fee' => language::translate('title_fee', 'Fee')], true); ?>
 				</div>
 
 				<div class="row">
@@ -1124,7 +1124,7 @@
 
 				<div class="form-group">
 					<label><?php echo language::translate('title_type', 'Type'); ?></label>
-					<?php echo functions::form_toggle_buttons('type', ['product' => language::translate('title_product', 'Product'), 'custom' => language::translate('title_custom', 'Custom'), 'fee' => language::translate('title_fee', 'Fee')], true); ?>
+					<?php echo functions::form_toggle('type', ['product' => language::translate('title_product', 'Product'), 'custom' => language::translate('title_custom', 'Custom'), 'fee' => language::translate('title_fee', 'Fee')], true); ?>
 				</div>
 
 				<div class="row">
@@ -1487,7 +1487,7 @@
 			'  <?php echo functions::form_input_hidden('comments[new_comment_index][id]', ''); ?>',
 			'  <?php echo functions::form_input_hidden('comments[new_comment_index][author]', 'staff'); ?>',
 			'  <?php echo functions::form_input_hidden('comments[new_comment_index][date_created]', language::strftime('datetime')); ?>',
-			'  <?php echo functions::escape_js(functions::form_input_textarea('comments[new_comment_index][text]', '')); ?>',
+			'  <?php echo functions::escape_js(functions::form_textarea('comments[new_comment_index][text]', '')); ?>',
 			'  <div class="date"><?php echo language::strftime('datetime'); ?></div>',
 			'  <div class="actions">',
 			'    <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('fa-envelope')], true)); ?> </label>',

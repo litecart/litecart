@@ -117,7 +117,7 @@
 			$enabled_languages = [];
 
 			foreach (self::$languages as $language) {
-				if (!empty(administrator::$data['id']) || $language['status'] == 1) {
+				if (administrator::check_login() || $language['status'] == 1) {
 					$enabled_languages[] = $language['code'];
 				}
 			}
@@ -153,8 +153,8 @@
 			}
 
 			// Return language from country (TLD)
-			if (!preg_replace('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
-				
+			if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
+
 				$country = database::query(
 					"select * from ". DB_TABLE_PREFIX ."countries
 					where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
@@ -329,8 +329,8 @@
 				$time_type = IntlDateFormatter::FULL;
 				$pattern = '';
 
-					// %c = Preferred date and time stamp based on locale
-					// Example: Tue Feb 5 00:45:10 2009 for February 5, 2009 at 12:45:10 AM
+				// %c = Preferred date and time stamp based on locale
+				// Example: Tue Feb 5 00:45:10 2009 for February 5, 2009 at 12:45:10 AM
 				switch ($format) {
 
 					case '%c':
@@ -338,14 +338,14 @@
 						$time_type = IntlDateFormatter::SHORT;
 						break;
 
-						// %x = Preferred date representation based on locale, without the time
-						// Example: 02/05/09 for February 5, 2009
+					// %x = Preferred date representation based on locale, without the time
+					// Example: 02/05/09 for February 5, 2009
 					case '%x':
 						$date_type = IntlDateFormatter::SHORT;
 						$time_type = IntlDateFormatter::NONE;
 						break;
 
-						// Localized time format
+					// Localized time format
 					case '%X':
 						$date_type = IntlDateFormatter::NONE;
 						$time_type = IntlDateFormatter::MEDIUM;

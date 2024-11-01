@@ -28,10 +28,15 @@
 				throw new Exception(language::translate('error_missing_code_column', 'Missing column for code'));
 			}
 
+			$installed_language_codes = database::query(
+				"select code from ". DB_TABLE_PREFIX ."languages
+				order by priority;"
+			)->fetch_all('code');
+
 			$language_codes = array_diff(array_keys($csv[0]), ['code']);
 
 			foreach ($language_codes as $language_code) {
-				if (!in_array($language_code, array_keys(language::$languages))) {
+				if (!in_array($language_code, $installed_language_codes)) {
 					throw new Exception('Skipping unknown language ('. $language_code .') which is either missing or disabled');
 				}
 			}
@@ -43,38 +48,30 @@
 			foreach ($csv as $row) {
 				$line++;
 
-				$translation = database::query(
-					"select * from ". DB_TABLE_PREFIX ."translations
-					where code = '". database::input($row['code']) ."'
-					limit 1;"
-				)->fetch();
+				if (preg_match('#^\[([a-z_]+):([0-9]+)\](.*)$#', $row['code'], $matches)) {
 
-				if ($translation) {
+					if (!$collection = $collections[array_search($matches[1], array_column($collections, 'entity'))]) {
+						throw new Exception('Unsupported entity on line '.$line);
+					}
 
 					list($entity, $id, $column) = array_slice($matches, 1);
 
 					foreach ($language_codes as $language_code) {
 
-						if (empty($row[$language_code])) continue;
-						if (empty($_POST['overwrite']) && empty($_POST['append'])) continue;
-						if (empty($translation['text_'.$language_code]) && empty($_POST['append'])) continue;
-						if (!empty($translation['text_'.$language_code]) && empty($_POST['overwrite'])) continue;
-						if (!in_array($language_code, array_keys(language::$languages))) continue;
-
-						database::query(
-							"update ". DB_TABLE_PREFIX ."translations
-							set text_". $language_code ." = '". database::input($row[$language_code], true) ."'
-							where code = '". database::input($row['code']) ."'
+						$translation = database::query(
+							"select * from ". DB_TABLE_PREFIX . $collection['info_table'] ."
+							where `". database::input($collection['entity_column']) ."` = '". database::input($id) ."'
+							and language_code = '". database::input($language_code) ."'
 							limit 1;"
-						);
+						)->fetch();
 
-						if ($translation = database::fetch($translation_query)) {
+						if ($translation) {
 
 							if (empty($row[$language_code])) continue;
-							if (empty($_POST['update']) && empty($_POST['append'])) continue;
+							if (empty($_POST['overwrite']) && empty($_POST['append'])) continue;
 							if (empty($translation['text_'.$language_code]) && empty($_POST['append'])) continue;
 							if (!empty($translation['text_'.$language_code]) && empty($_POST['update'])) continue;
-							if (!in_array($language_code, array_keys(language::$languages))) continue;
+							if (!in_array($language_code, $installed_language_codes)) continue;
 
 							database::query(
 								"update ". DB_TABLE_PREFIX . $collection['info_table'] ."
@@ -87,9 +84,7 @@
 
 						} else {
 
-							if (empty($_POST['append'])) {
-								continue;
-							}
+							if (empty($_POST['append'])) continue;
 
 							database::query(
 								"insert into ". DB_TABLE_PREFIX . $collection['info_table'] ."
@@ -112,11 +107,12 @@
 					if ($translation) {
 
 						foreach ($language_codes as $language_code) {
+
 							if (empty($row[$language_code])) continue;
 							if (empty($_POST['update']) && empty($_POST['append'])) continue;
 							if (empty($translation['text_'.$language_code]) && empty($_POST['append'])) continue;
 							if (!empty($translation['text_'.$language_code]) && empty($_POST['update'])) continue;
-							if (!in_array($language_code, array_keys(language::$languages))) continue;
+							if (!in_array($language_code, $installed_language_codes)) continue;
 
 							database::query(
 								"update ". DB_TABLE_PREFIX ."translations
@@ -130,9 +126,7 @@
 
 					} else {
 
-						if (empty($_POST['insert'])) {
-							continue;
-						}
+						if (empty($_POST['insert'])) continue;
 
 						database::query(
 							"insert into ". DB_TABLE_PREFIX ."translations
@@ -141,11 +135,9 @@
 
 						foreach ($language_codes as $language_code) {
 
-							if (empty($row[$language_code])) {
-								continue;
-							}
+							if (empty($row[$language_code])) continue;
 
-							if (!in_array($language_code, array_keys(language::$languages))) continue;
+							if (!in_array($language_code, $installed_language_codes)) continue;
 
 							database::query(
 								"update ". DB_TABLE_PREFIX ."translations
@@ -325,7 +317,7 @@
 						</div>
 
 						<div class="row">
-							<div class="form-group col-sm-6">
+							<div class="form-group col-md-6">
 								<label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
 								<?php echo functions::form_select('escapechar', ['"' => '" ('. language::translate('text_default', 'default') .')', '\\' => '\\'], true); ?>
 							</div>
@@ -358,7 +350,7 @@
 
 							<div class="form-group">
 								<?php echo language::translate('title_collections', 'Collections'); ?>
-								<?php echo functions::form_select_multiple('collections[]', array_map(function($c) { return [$c['id'], $c['name']]; }, $collections), true); ?>
+								<?php echo functions::form_select('collections[]', array_map(function($c) { return [$c['id'], $c['name']]; }, $collections), true); ?>
 							</div>
 
 						<div class="form-group">
@@ -379,7 +371,7 @@
 						</div>
 
 						<div class="row">
-							<div class="form-group col-sm-6">
+							<div class="form-group col-md-6">
 								<label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
 								<?php echo functions::form_select('escapechar', ['"' => '" ('. language::translate('text_default', 'default') .')', '\\' => '\\'], true); ?>
 							</div>

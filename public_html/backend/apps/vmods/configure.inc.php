@@ -27,7 +27,7 @@
 			throw new Exception(language::translate('error_nothing_to_configure', 'Nothing to configure'));
 		}
 
-		if (!$vmods_settings = @json_decode(file_get_contents('storage://vmods/' . '.settings'), true)) {
+		if (!$vmods_settings = @json_decode(file_get_contents('storage://vmods/.settings'), true)) {
 			$vmods_settings = [];
 		}
 

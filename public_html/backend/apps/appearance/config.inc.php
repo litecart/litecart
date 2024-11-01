@@ -2,7 +2,7 @@
 
 	return [
 		'name' => language::translate('title_appearance', 'Appearance'),
-		'default' => 'template',
+		'default' => 'edit_styling',
 		'priority' => 0,
 
 		'theme' => [
@@ -12,8 +12,8 @@
 
 		'menu' => [
 			[
-				'title' => language::translate('title_template', 'Template'),
-				'doc' => 'template',
+				'title' => language::translate('title_edit_styling', 'Edit Styling'),
+				'doc' => 'edit_styling',
 				'params' => [],
 			],
 			[
@@ -27,16 +27,16 @@
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_edit_styling', 'Edit Styling'),
-				'doc' => 'edit_styling',
+				'title' => language::translate('title_template', 'Template'),
+				'doc' => 'template',
 				'params' => [],
 			],
 		],
 
 		'docs' => [
 			'edit_styling' => 'edit_styling.inc.php',
-			'logotype' => 'logotype.inc.php',
 			'favicon' => 'favicon.inc.php',
+			'logotype' => 'logotype.inc.php',
 			'template' => 'template.inc.php',
 			'template_settings' => 'template_settings.inc.php',
 		],

@@ -3,8 +3,8 @@
 	if (is_file('app://frontend/templates/'. settings::get('template') .'/less/variables.less')) {
 		$stylesheet = 'app://frontend/templates/'. settings::get('template') .'/less/variables.less';
 
-	} else if (is_file('app://includes/templates/'. settings::get('template') .'/css/variables.css')) {
-		$stylesheet = 'app://includes/templates/'. settings::get('template') .'/css/variables.css';
+	} else if (is_file('app://frontend/templates/'. settings::get('template') .'/css/variables.css')) {
+		$stylesheet = 'app://frontend/templates/'. settings::get('template') .'/css/variables.css';
 
 	} else {
 		notices::add('errors', language::translate('error_template_missing_variables_stylesheet', 'This template does not have an editable stylesheet with variables (e.g. variables.css)'));

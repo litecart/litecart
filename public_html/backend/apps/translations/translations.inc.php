@@ -6,7 +6,7 @@
 
 	if (empty($_GET['languages'])) {
 		$all_languages = array_column(language::$languages, 'code');
-		$defined_languages = [settings::get('store_language_code'), language::$selected['code'], settings::get('default_language_code')];
+		$defined_languages = [settings::get('site_language_code'), language::$selected['code'], settings::get('default_language_code')];
 		$_GET['languages'] = array_slice(array_unique(array_merge($defined_languages, $all_languages)), 0, 2);
 	}
 
@@ -314,7 +314,7 @@
 						<small style="color: #999;"><?php echo functions::form_checkbox('translations['.$key.'][html]', '1', true); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
 					</td>
 					<?php foreach ($_GET['languages'] as $language_code) { ?>
-					<td><?php echo functions::form_input_textarea('translations['.$key.'][text_'. $language_code .']', true); ?></td>
+					<td><?php echo functions::form_textarea('translations['.$key.'][text_'. $language_code .']', true); ?></td>
 					<?php } ?>
 				</tr>
 				<?php } ?>
@@ -332,14 +332,14 @@
 				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
 				<ul class="list-inline">
-					<li><?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
+					<li><?php echo functions::form_button_predefined('delete'); ?></li>
 				</ul>
 			</fieldset>
 		</div>
 
 		<div class="card-action">
 			<?php echo functions::form_button('translator_tool', language::translate('title_translator_tool', 'Translator Tool'), 'button', 'class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool" data-width="980px"'); ?>
-			<?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+			<?php echo functions::form_button_predefined('save'); ?>
 		</div>
 
 	<?php echo functions::form_end(); ?>

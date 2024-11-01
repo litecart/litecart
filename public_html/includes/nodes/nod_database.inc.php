@@ -69,7 +69,7 @@
 
 			self::query("SET SESSION sql_mode = '". database::input(implode(',', $sql_modes)) ."';", [], $link);
 			self::query("SET names '". database::input($charset) ."';", [], $link);
-			self::query("SET storage_engine = InnoDB;", [], $link);
+			self::query("SET SESSION storage_engine = InnoDB;", [], $link);
 
 			return self::$_links[$link];
 		}
@@ -296,20 +296,22 @@
 
 			$timestamp = microtime(true);
 
-			if (($result = mysqli_multi_query(self::$_links[$link], $sql)) === false) {
+			if (mysqli_multi_query(self::$_links[$link], $sql) === false) {
 				trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL, E_USER_ERROR);
 			}
 
-			$i = 1;
-			while (mysqli_more_results(self::$_links[$link])) {
-				if (mysqli_next_result(self::$_links[$link]) === false) {
-					trigger_error('Fatal: Query '. $i .' failed', E_USER_ERROR);
+			$results = [];
+
+			do {
+				if ($result = mysqli_store_result(self::$_links[$link])) {
+					$results[] = new database_result($result);
 				}
-				$i++;
-			}
+			} while (mysqli_next_result(self::$_links[$link]));
 
 			self::$stats['queries']++;
 			self::$stats['duration'] += microtime(true) - $timestamp;
+
+			return $results;
 		}
 
 		public static function fetch($result, $column='') {

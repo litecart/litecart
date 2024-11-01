@@ -12,8 +12,11 @@
 #box-checkout {
   padding: 0;
 }
+#box-checkout .logotype {
+  max-width: 250px;
+  max-height: 50px;
+}
 #box-checkout > form > .row {
-  background: #eeeef3;
   height: 100vh;
   grid-gap: 0;
   margin-bottom: 0;
@@ -95,6 +98,12 @@
 #box-checkout-customer .title {
   margin-top: 0;
 }
+#box-checkout-customer .detail {
+  box-sizing: border-box;
+  border-radius: 1em;
+  padding: 1em;
+  border: 1px solid #d5d5d5;
+}
 #box-checkout-customer fieldset {
   border: none;
   padding: 0;
@@ -109,6 +118,7 @@
   display: block;
   position: relative;
   padding: 0.5em;
+  background: var(--input-background-color);
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
   user-select: none;
@@ -126,38 +136,28 @@
   text-align: left;
   transition: all 0.25s ease;
 }
-#box-checkout-shipping .option-wrapper:not(:last-child) .option,
-#box-checkout-payment .option-wrapper:not(:last-child) .option {
-  border-bottom: none;
+#box-checkout-shipping .option:not(:has(input[name$="_option[id]"]:checked)):not(:has(input[name$="_option[id]"][disabled])):hover,
+#box-checkout-payment .option:not(:has(input[name$="_option[id]"]:checked)):not(:has(input[name$="_option[id]"][disabled])):hover {
+  cursor: pointer;
+  backdrop-filter: brightness(0.9);
 }
-#box-checkout-shipping .option-wrapper:first-child:not(:last-child) .option,
-#box-checkout-payment .option-wrapper:first-child:not(:last-child) .option {
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
+#box-checkout-shipping .option:has(input[name$="_option[id]"]:checked),
+#box-checkout-payment .option:has(input[name$="_option[id]"]:checked) {
+  cursor: default;
+  background: #d3d3e1;
+  border-color: #333;
 }
-#box-checkout-shipping .option-wrapper:last-child .option,
-#box-checkout-payment .option-wrapper:last-child .option {
-  border-bottom: 1px solid var(--default-border-color);
-  border-radius: 0 0 var(--border-radius) var(--border-radius);
-}
-#box-checkout-shipping input[name$="_option[id]"]:checked + .option,
-#box-checkout-payment input[name$="_option[id]"]:checked + .option {
-  background: #fff5e1;
-}
-#box-checkout-shipping input[name$="_option[id]"]:checked + .option .thumbnail,
-#box-checkout-payment input[name$="_option[id]"]:checked + .option .thumbnail {
-  border-color: #ffaa00;
-}
-#box-checkout-shipping input[name$="_option[id]"]:checked + .option .name,
-#box-checkout-payment input[name$="_option[id]"]:checked + .option .name {
+#box-checkout-shipping .option:has(input[name$="_option[id]"]:checked) .name,
+#box-checkout-payment .option:has(input[name$="_option[id]"]:checked) .name {
   font-weight: bold;
 }
-#box-checkout-shipping input[name$="_option[id]"]:checked + .option .content,
-#box-checkout-payment input[name$="_option[id]"]:checked + .option .content {
+#box-checkout-shipping .option:has(input[name$="_option[id]"]:checked) .content,
+#box-checkout-payment .option:has(input[name$="_option[id]"]:checked) .content {
   max-height: 200px;
   overflow-y: auto;
 }
-#box-checkout-shipping input[name$="_option[id]"]:checked + .option::after,
-#box-checkout-payment input[name$="_option[id]"]:checked + .option::after {
+#box-checkout-shipping .option:has(input[name$="_option[id]"]:checked)::after,
+#box-checkout-payment .option:has(input[name$="_option[id]"]:checked)::after {
   position: absolute;
   top: 15px;
   right: -25px;
@@ -168,13 +168,13 @@
   text-align: center;
   color: #000;
 }
-#box-checkout-shipping input[name$="_option[id]"]:not(:disabled):not(:checked) + .option,
-#box-checkout-payment input[name$="_option[id]"]:not(:disabled):not(:checked) + .option {
-  cursor: pointer;
-}
-#box-checkout-shipping input[name$="_option[id]"]:disabled + .option,
-#box-checkout-payment input[name$="_option[id]"]:disabled + .option {
+#box-checkout-shipping .option .option:has(input[name$="_option[id]"][disabled]),
+#box-checkout-payment .option .option:has(input[name$="_option[id]"][disabled]) {
   opacity: 0.75;
+}
+#box-checkout-shipping .option + .option,
+#box-checkout-payment .option + .option {
+  margin-top: 1em;
 }
 @media (min-width: 576px) {
   #box-checkout-shipping .option,

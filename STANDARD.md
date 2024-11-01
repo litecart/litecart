@@ -2,7 +2,7 @@
 
 ## Code Compliance
 
- - PHP code must comply with minimum PHP 5.6+ E_STRICT.
+ - PHP code must comply with PHP standards no earlier than 5.6+ E_STRICT.
 
  - HTML code must comply with HTML 5.
 
@@ -18,7 +18,7 @@
 
 ## PHP File Paths
 
-	ALWAYS use Linux/Unix directory separator slash (/) as it also work on Mac and Windows.
+	ALWAYS use Linux/Unix directory separator slash (/) as it also works on Mac and Windows.
 	Windows backslash (\) does not work on Mac or Linux.
 
 	Incorrect:
@@ -115,8 +115,8 @@
 
 ## Indentation
 
-	Code is indented using TAB characters with a tab size of 2 characters width.
-	We recommend controlling indentatons using [.editorconfig](https://editorconfig.org/).
+	Indentations are made using tabs with one tab character per depth level.
+	You can set the size of a tab character to your preference in the [.editorconfig](https://editorconfig.org/) file.
 
 	Incorrect (using multiple spaces):
 
@@ -140,16 +140,16 @@
 
 ## Code Commenting
 
-	Comments should having the same indentation as the code:
+	Comments should have the same indentation as the code:
 
-			// Line describing comment
-			echo 'Hello World!';
+		// Line describing comment
+		echo 'Hello World!';
 
 	Inline side notes are made at the end of the line:
 
-			$array = [
-				'foo' => 'bar', // Side note
-			];
+		$array = [
+			'foo' => 'bar', // Side note
+		];
 
 ## PHP Tags
 
@@ -473,7 +473,7 @@
 
 	Incorrect:
 
-		$string = sprintf('Text with %2$s %1$s', $a, $b);
+		$string = sprintf('Text with %1$s %2$s', $a, $b);
 		$string = str_replace(['%a', %b], [$a, $b], 'Text with %a %b');
 
 	Correct:

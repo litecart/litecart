@@ -22,11 +22,23 @@
 				return;
 			}
 
-			if (empty($method)) $method = 'GET';
-			if (empty($parts['scheme']) || $parts['scheme'] == 'http') $parts['scheme'] = 'tcp';
-			if ($parts['scheme'] == 'https') $parts['scheme'] = 'ssl';
-			if (empty($parts['port'])) $parts['port'] = ($parts['scheme'] == 'ssl') ? 443 : 80;
-			if (empty($parts['path'])) $parts['path'] = '/';
+			if (!$method) {
+				$method = 'GET';
+			}
+
+			if (empty($parts['scheme']) || $parts['scheme'] == 'http') {
+				$parts['scheme'] = 'tcp';
+			} else if ($parts['scheme'] == 'https') {
+				$parts['scheme'] = 'ssl';
+			}
+
+			if (empty($parts['port'])) {
+				$parts['port'] = ($parts['scheme'] == 'ssl') ? 443 : 80;
+			}
+
+			if (empty($parts['path'])) {
+				$parts['path'] = '/';
+			}
 
 			if ($data) {
 				$data = is_array($data) ? http_build_query($data) : $data;
@@ -54,8 +66,11 @@
 				$headers['Connection'] = 'Close';
 			}
 
-			$request_headers = "$method $parts[path]" . ((isset($parts['query'])) ? '?' . $parts['query'] : '') ." HTTP/1.1\r\n"
-											 . "Host: $parts[host]\r\n";
+			$request_headers = implode("\r\n", [
+				"$method $parts[path]" . ((isset($parts['query'])) ? '?' . $parts['query'] : '') ." HTTP/1.1",
+				"Host: $parts[host]",
+				'', // End of headers
+			]);
 
 			foreach ($headers as $key => $value) {
 				$request_headers .= "$key: $value\r\n";
@@ -65,8 +80,17 @@
 
 			$this->last_request = [
 				'timestamp' => time(),
-				'head' => $request_headers,
+				'headers' => $request_headers,
 				'body' => $data,
+			];
+
+			$this->last_response = [
+				'timestamp' => null,
+				'status_code' => null,
+				'headers' => null,
+				'body' => null,
+				'duration' => null,
+				'bytes' => null,
 			];
 
 			if (!$socket = stream_socket_client(strtr('scheme://host:port', $parts), $errno, $errstr, $this->timeout)) {
@@ -106,20 +130,23 @@
 			$this->last_response = [
 				'timestamp' => time(),
 				'status_code' => $status_code,
-				'head' => $response_headers,
+				'headers' => $response_headers,
 				'body' => $response_body,
 				'duration' => round(microtime(true) - $timestamp, 3),
 				'bytes' => strlen($response_headers . "\r\n" . $response_body),
 			];
 
-			file_put_contents(functions::file_realpath('storage://logs/http_request_last-'. $parts['host'] .'.log'),
-				'##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_request['timestamp']) .'] Request ', 70, '#', STR_PAD_RIGHT) . "\r\n\r\n" .
-				$this->last_request['head'] . "\r\n" .
-				$this->last_request['body'] . "\r\n\r\n" .
-				'##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_response['timestamp']) .'] Response — '. $this->last_response['bytes'] .' bytes transferred in '. $this->last_response['duration'] .' s ', 72, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .
-				$this->last_response['head'] . "\r\n" .
-				$this->last_response['body']
-			);
+			file_put_contents(functions::file_realpath('storage://logs/http_request_last-'. $parts['host'] .'.log'), implode("\r\n", [
+				'##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_request['timestamp']) .'] Request ', 70, '#', STR_PAD_RIGHT),
+				'',
+				$this->last_request['headers'],
+				$this->last_request['body'],
+				'',
+				'##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_response['timestamp']) .'] Response — '. $this->last_response['bytes'] .' bytes transferred in '. $this->last_response['duration'] .' s ', 72, '#', STR_PAD_RIGHT),
+				'',
+				$this->last_response['headers'],
+				$this->last_response['body'],
+			]));
 
 			self::$stats['requests']++;
 

@@ -119,6 +119,12 @@
 
 	$store_currency = reference::currency(settings::get('store_currency_code'));
 
+	$statuses = [
+		1 => language::translate('title_enabled', 'Enabled'),
+		-1 => language::translate('title_hidden', 'Hidden'),
+		0 => language::translate('title_disabled', 'Disabled'),
+	];
+
 	// Prefillable currencies
 	if (empty($currency->data['id'])) {
 
@@ -180,11 +186,7 @@
 			<div class="row">
 				<div class="form-group col-md-6">
 					<label><?php echo language::translate('title_status', 'Status'); ?></label>
-					<div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
-						<label class="btn btn-default<?php if (isset($_POST['status']) && $_POST['status'] == 1) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '1', true); ?> <?php echo language::translate('title_enabled', 'Enabled'); ?></label>
-						<label class="btn btn-default<?php if (isset($_POST['status']) && $_POST['status'] == -1) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '-1', true); ?><?php echo language::translate('title_hidden', 'Hidden'); ?></label>
-						<label class="btn btn-default<?php if (empty($_POST['status'])) echo ' active'; ?>"><?php echo functions::form_radio_button('status', '0', true); ?><?php echo language::translate('title_disabled', 'Disabled'); ?></label>
-					</div>
+					<?php echo functions::form_toggle('status', $statuses, true); ?>
 				</div>
 
 				<div class="form-group col-md-6">

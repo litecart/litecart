@@ -19,7 +19,7 @@
 			],
 		];
 
-		$tax_rates = database::query(
+		$result = database::query(
 			"select * from ". DB_TABLE_PREFIX ."tax_classes
 			order by code, name;"
 		)->fetch_all(function($tax_class) use ($customer) {
@@ -28,9 +28,10 @@
 
 	} catch (Exception $e) {
 		http_response_code($e->getCode());
-		notices::add('errors', $e->getMessage());
+		$result = ['error' => $e->getMessage()];
 	}
 
+	ob_end_clean();
 	header('Content-Type: application/json');
-	echo json_encode($tax_rates);
+	echo json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 	exit;

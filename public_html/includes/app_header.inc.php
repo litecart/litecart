@@ -12,7 +12,7 @@
 		require __DIR__ . '/../storage/config.inc.php';
 	}
 
-		// Capture output to buffer
+	// Capture output to buffer
 	ob_start(null, 0, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
 
 	// Virtual File System
@@ -32,7 +32,7 @@
 	// 3rd party autoloader (If present)
 	if (is_file(FS_DIR_APP . 'vendor/autoload.php')) {
 
-			// Some Composer libraries doesn't like streamwrappers, but we don't need app:// for third party libraries.
+		// Some Composer libraries doesn't like streamwrappers, but we don't need app:// for third party libraries.
 		require FS_DIR_APP . 'vendor/autoload.php';
 	}
 

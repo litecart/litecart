@@ -2,65 +2,20 @@
 	{{notices}}
 
 	<div id="content">
-	<div class="row layout">
+		<div class="row layout">
 
-			<div class="col-md-6">
-				<?php echo functions::form_form_begin('shopping_cart_form', 'post'); ?>
+			<div class="col-md-8">
 
-					<section id="box-shopping-cart" class="card">
+				<section id="box-shopping-cart" class="card">
 
-						<div class="card-header">
-							<h2 class="card-title"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></h2>
-						</div>
-
-					<div class="card-body">
-
-						<div class="row">
-							<div class="form-group col-6">
-								<small><?php echo language::translate('title_language', 'Language'); ?></small>
-								<div style="line-height: 2;"><?php echo language::$selected['name']; ?></div>
-							</div>
-
-							<div class="form-group col-6">
-								<small><?php echo language::translate('title_currency', 'Currency'); ?></small>
-								<div style="line-height: 2;"><?php echo currency::$selected['code']; ?></div>
-							</div>
-						</div>
-
-						<div class="row">
-							<div class="form-group col-6">
-								<small><?php echo language::translate('title_country', 'Country'); ?></small>
-								<div style="line-height: 2;"><?php echo customer::$data['different_shipping_address'] ? reference::country(customer::$data['shipping_address']['country_code'])->name : reference::country(customer::$data['country_code'])->name; ?></div>
-							</div>
-
-							<div class="form-group col-6">
-								<small><?php echo language::translate('title_postcode', 'Postal Code'); ?></small>
-								<div style="line-height: 2;"><?php echo customer::$data['different_shipping_address'] ? customer::$data['shipping_address'] : customer::$data['postcode']; ?></div>
-							</div>
-						</div>
-
-						<div>
-							<a class="btn btn-default change" href="<?php echo document::href_ilink('regional_settings', array('redirect_url' => document::link())); ?>" data-toggle="lightbox" data-seamless="true"><?php echo language::translate('title_change', 'Change'); ?></a>
-						</div>
-					</div>
-				</section>
-
-			</div>
-		</div>
-
-		<div class="col-md-9">
-			<div id="content">
-				{{notices}}
-
-				<?php echo functions::form_begin('shopping_cart_form', 'post'); ?>
-
-					<section id="box-shopping-cart" class="card">
+					<?php echo functions::form_begin('shopping_cart_form', 'post'); ?>
 
 						<div class="card-header">
 							<h2 class="card-title"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></h2>
 						</div>
 
 						<div class="card-body">
+
 							<ul class="items list-unstyled">
 								<?php foreach ($items as $key => $item) { ?>
 								<li class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo functions::escape_html($item['name']); ?>" data-price="<?php echo currency::format_raw($item['price']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">

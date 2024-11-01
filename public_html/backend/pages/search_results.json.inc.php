@@ -4,9 +4,9 @@
 
 	try {
 
-			if (empty($_GET['query'])) {
-				throw new Exception('Nothing to search for');
-			}
+		if (empty($_GET['query'])) {
+			throw new Exception('Nothing to search for');
+		}
 
 		$apps = functions::admin_get_apps();
 		$app_themes = array_column($apps, 'theme', 'code');

@@ -23,7 +23,7 @@
 		}
 	}
 
-		// Polyfill for some $_SERVER variables in CLI
+	// Polyfill for some $_SERVER variables in CLI
 	if (!isset($_SERVER['REQUEST_METHOD'])) { // Don't rely on php_sapi_name()
 		$_SERVER['DOCUMENT_ROOT'] = realpath(__DIR__.'/..');
 		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';

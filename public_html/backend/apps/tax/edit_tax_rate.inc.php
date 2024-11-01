@@ -39,10 +39,21 @@
 				throw new Exception(language::translate('error_must_enter_rate', 'You must enter a rate'));
 			}
 
-			if (empty($_POST['rule_companies_with_tax_id'])) $_POST['rule_companies_with_tax_id'] = 0;
-			if (empty($_POST['rule_companies_without_tax_id'])) $_POST['rule_companies_without_tax_id'] = 0;
-			if (empty($_POST['rule_individuals_with_tax_id'])) $_POST['rule_individuals_with_tax_id'] = 0;
-			if (empty($_POST['rule_individuals_without_tax_id'])) $_POST['rule_individuals_without_tax_id'] = 0;
+			if (empty($_POST['rule_companies_with_tax_id'])) {
+				$_POST['rule_companies_with_tax_id'] = 0;
+			}
+
+			if (empty($_POST['rule_companies_without_tax_id'])) {
+				$_POST['rule_companies_without_tax_id'] = 0;
+			}
+
+			if (empty($_POST['rule_individuals_with_tax_id'])) {
+				$_POST['rule_individuals_with_tax_id'] = 0;
+			}
+
+			if (empty($_POST['rule_individuals_without_tax_id'])) {
+				$_POST['rule_individuals_without_tax_id'] = 0;
+			}
 
 			foreach ([
 				'tax_class_id',
@@ -167,7 +178,7 @@
 
 			<div class="card-action">
 				<?php echo functions::form_button_predefined('save'); ?>
-				<?php if (!empty($tax_rate->data['id'])) echo functions::form_button_predefined('delete'); ?>
+				<?php if ($tax_rate->data['id']) echo functions::form_button_predefined('delete'); ?>
 				<?php echo functions::form_button_predefined('cancel'); ?>
 			</div>
 

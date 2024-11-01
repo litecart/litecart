@@ -93,9 +93,9 @@
 						$value = $_SERVER['HTTP_HOST'];
 					}
 
-						//if (function_exists('idn_to_ascii')) {
-						//  $value = idn_to_ascii($value, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
-						//}
+					//if (function_exists('idn_to_ascii')) {
+					//  $value = idn_to_ascii($value, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+					//}
 
 					break;
 

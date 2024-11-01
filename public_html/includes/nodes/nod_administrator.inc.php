@@ -163,9 +163,9 @@
 				exit;
 			}
 
-			if (!empty(session::$data['security_verification']['type']) && session::$data['security_verification']['type'] == '2fa' && session::$data['security_verification']['type'] == '2fa') {
-				if (!in_array(route::$selected['resource'], ['b:verify_identity', 'b:login', 'b:logout'])) {
-					header('Location: ' . document::ilink('b:verify_identity', ['redirect_url' => $_SERVER['REQUEST_URI']]));
+			if (!empty(session::$data['security_verification'])) {
+				if (!in_array(route::$selected['resource'], ['b:login', 'b:logout', 'b:verify'])) {
+					header('Location: ' . document::ilink('b:verify', ['redirect_url' => $_SERVER['REQUEST_URI']]));
 					exit;
 				}
 			}

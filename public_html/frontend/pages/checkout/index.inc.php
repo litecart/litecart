@@ -8,9 +8,13 @@
 	 */
 
 	header('X-Robots-Tag: noindex');
+
 	document::$layout = 'checkout';
 
-	if (settings::get('catalog_only_mode')) return;
+	if (settings::get('catalog_only_mode')) {
+		notice::add('errors', language::translate('warning_no_checkout_in_catalog_only_mode', 'The store is currently in catalog mode only and cannot accept orders.'));
+		return;
+	}
 
 	document::$title[] = language::translate('checkout:head_title', 'Checkout');
 
@@ -21,13 +25,13 @@
 
 		try {
 
-			if (empty(session::$data['checkout']['shopping_cart'])) {
+			if (empty(session::$data['checkout']['order'])) {
 				notices::add('errors', 'Missing order object');
 				header('Location: '. document::ilink('checkout/index'));
 				exit;
 			}
 
-			$shopping_cart = &session::$data['checkout']['shopping_cart'];
+			$session_order = &session::$data['checkout']['order'];
 
 			ob_start();
 			include_once 'app://frontend/pages/checkout/customer.inc.php';
@@ -42,7 +46,7 @@
 			}
 
 			$payment = new mod_payment();
-			if ($payment->options($shopping_cart)) {
+			if ($payment->options($session_order)) {
 
 				if (empty($payment->selected)) {
 					notices::add('errors', language::translate('error_no_payment_method_selected', 'No payment method selected'));
@@ -50,20 +54,20 @@
 					exit;
 				}
 
-				if ($payment_error = $payment->pre_check($shopping_cart)) {
+				if ($payment_error = $payment->pre_check($session_order)) {
 					notices::add('errors', $payment_error);
 					header('Location: '. document::ilink('checkout/index'));
 					exit;
 				}
 
 				if (!empty($_POST['comments'])) {
-					$shopping_cart->data['comments']['session'] = [
+					$session_order->data['comments']['session'] = [
 						'author' => 'customer',
 						'text' => $_POST['comments'],
 					];
 				}
 
-				if ($gateway = $payment->transfer($shopping_cart, (string)document::ilink('checkout/process'))) {
+				if ($gateway = $payment->transfer($session_order, (string)document::ilink('checkout/process'))) {
 
 					if (!empty($gateway['error'])) {
 						notices::add('errors', $gateway['error']);
@@ -91,7 +95,7 @@
 									 . '<script>' . PHP_EOL;
 
 								if (!empty($gateway['delay'])) {
-									echo '  let t=setTimeout(function(){' . PHP_EOL
+									echo '  setTimeout(function(){' . PHP_EOL
 										 . '    document.forms["gateway_form"].submit();' . PHP_EOL
 										 . '  }, '. ($gateway['delay']*1000) .');' . PHP_EOL;
 								} else {
@@ -118,7 +122,7 @@
 				}
 			}
 
-			$shopping_cart->data['processable'] = true;
+			$session_order->data['processable'] = true;
 			header('Location: '. document::ilink('checkout/process'));
 			exit;
 
@@ -128,29 +132,70 @@
 	}
 
 	// Load an existing order
-	if (!empty($_GET['cart_uid']) && !empty($_GET['public_key'])) {
+	if (!empty($_GET['order_id']) && !empty($_GET['public_key'])) {
 
-		if (!empty($_GET['cart_uid'])) {
-			session::$data['checkout']['shopping_cart'] = new ent_shopping_cart($_GET['cart_uid']);
-		}
+		try {
 
-		if (empty($shopping_cart->data['id']) || $_GET['public_key'] != $shopping_cart->data['public_key']) {
-			http_response_code(404);
-			include 'app://frontend/pages/error_document.inc.php';
-			return;
+			$order = database::fetch(
+				"select * from ". DB_TABLE_PREFIX ."orders
+				where id = ". (int)$_GET['order_id'] ."
+				and public_key = '". database::input($_GET['public_key']) ."'
+				limit 1;"
+			)->fetch();
+
+			if (!$order) {
+				http_response_code(404);
+				include 'app://frontend/pages/error_document.inc.php';
+				return;
+			}
+
+			if ($order['order_status_id']) {
+				http_response_code(403);
+				notices::add('errors', language::translate('error_order_already_processed', 'This order has already been processed'));
+				return;
+			}
+
+			session::$data['checkout']['order'] = $order;
+
+			header('Location: '. document::ilink('checkout/index'));
+			exit;
+
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
 		}
 
 	} else {
-		session::$data['checkout']['shopping_cart'] = new ent_shopping_cart(session::$data['cart_uid']);
+		$order = &session::$data['checkout']['order'];
 	}
 
-	$mod_checkout = new mod_checkout();
+	// Do we have an existing order in the session?
+	if (!empty(session::$data['checkout']['order']->data['id'])) {
+		$resume_id = session::$data['checkout']['order']->data['id'];
+	}
 
-	$shopping_cart = &session::$data['checkout']['shopping_cart'];
-	$shopping_cart->data['processable'] = false; // Whether or not it is allowed to be processed in checkout/process
-	$shopping_cart->data['express_checkout'] = $mod_checkout->options($shopping_cart);
+	$order = &session::$data['checkout']['order'];
+
+	if (!empty($shipping->data['selected'])) {
+		$order->data['shipping_option'] = $shipping->data['selected'];
+		$order->data['incoterm'] = $shipping->data['selected']['incoterm'];
+	}
+
+	if (!empty($payment->data['selected'])) {
+		$order->data['payment_option'] = $payment->data['selected'];
+	}
+
+	$order->data['processable'] = false; // Whether or not it is allowed to be processed in checkout/process
 
 	functions::draw_lightbox();
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout.inc.php');
-	echo $_page->render();
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/index.inc.php');
+
+	$_page->snippets = [
+		//'error' => $session_order->validate($shipping, $payment),
+		'selected_shipping' => null,
+		'selected_payment' => null,
+		'consent' => null,
+		'confirm' => !empty($order->payment->data['selected']['confirm']) ? $order->payment->data['selected']['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
+	];
+
+	echo $_page;

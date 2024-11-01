@@ -29,7 +29,7 @@
 
 					$class_name = 'ref_'.$resource;
 
-						//self::$_cache[$resource][$checksum] = new $class_name(...$arguments); // As of PHP 5.6
+					//self::$_cache[$resource][$checksum] = new $class_name(...$arguments); // As of PHP 5.6
 					$reflect = new ReflectionClass($class_name);
 					self::$_cache[$resource][$checksum] = $reflect->newInstanceArgs($arguments);
 

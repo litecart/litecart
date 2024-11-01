@@ -5,6 +5,7 @@
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
+	gap: .5em;
 	margin: 0;
 	padding: .75em 1em;
 	border-radius: var(--border-radius);
@@ -20,14 +21,10 @@
 	.breadcrumb {
 		flex: 0 1 auto;
 
-		&:not(:first-child) {
-			margin-left: .5em;
-		}
-
 		a, span {
 			display: inline-block;
 			background-color: #e0e0e8;
-			border-radius: 2em 0 2em 0;
+			border-radius: var(--border-radius);
 			color: var(--breadcrumbs-text-color);
 			transition: all 50ms linear;
 				//border: 2px solid var(--site-background-color);

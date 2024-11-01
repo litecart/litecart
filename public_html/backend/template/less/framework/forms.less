@@ -116,7 +116,7 @@ input[type="radio"].form-check:not([disabled]):hover,
 	color: var(--input-text-color);
 	overflow-y: auto;
 	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-		//transition: all 50ms;
+	//transition: all 50ms;
 	&[type="color"] {
 		height: 37px;
 	}
@@ -128,7 +128,7 @@ input[type="radio"].form-check:not([disabled]):hover,
 		opacity: 0.5;
 	}
 	&[readonly] {
-		color: #777;
+		color: #999;
 	}
 }
 
@@ -137,13 +137,17 @@ input[type="radio"].form-check:not([disabled]):hover,
 	display: block;
 	width: 100%;
 	padding-inline-end: 2.5em;
-	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-	background-repeat: no-repeat;
-	background-position: right 1em center;
-	background-size: 16px 12px;
 	cursor: default;
 	user-select: none;
 	appearance: none;
+	&:not([multiple]) {
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+		background-repeat: no-repeat;
+		background-position: right 1em center;
+		background-size: 16px 12px;
+		user-select: none;
+		appearance: none;
+	}
 
 	+ .dropdown-menu {
 		min-width: 100%;
@@ -162,35 +166,64 @@ html[dir="rtl"] .form-select {
 }
 
 .form-switch {
-	width: 2em;
-	height: 1em;
-	background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 8 8"><circle r="3" fill="rgba%280, 0, 0, 0.25%29"/></svg>');
-	background-position: left center;
-	border-radius: 2em;
-	margin-top: .25em;
-	vertical-align: top;
-	background-color: var(--whitespace-color);
-	background-repeat: no-repeat;
-	background-size: contain;
-	border: 1px solid rgba(0, 0, 0, .25);
-	transition: background-color .15s ease-in-out,background-position .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-	appearance: none;
-	color-adjust: exact;
+	label {
+	  position: relative;
+		display: inline-block;
+	  background: #ccc;
+	  border-radius: 1em;
+	  width: 4em;
+	  height: 2em;
+	  transition: background 0.25s;
+		&::before {
+			content: "";
+			display: inline-block;
+			background: #fff;
+			border-radius: 50%;
+			width: 1.45em;
+			height: 1.45em;
+			position: absolute;
+			top: .25em;
+			left: .25em;
+			transition: left 0.25s;
+		}
+		&:has(:checked) {
+			background: #2196f3;
+			&::before {
+				left: 2.25em;
+			}
+		}
+	}
+}
 
-	&:active {
-		filter: brightness(90%);
-	}
-	&:checked {
-		background-position: right center;
-		background-color: #666;
-		background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 8 8"><circle r="3" fill="%23fff"/></svg>');
-	}
-	&:focus {
-		outline: 0;
-		border-color: var(--input-border-color-focus);
-	}
-	&:disabled {
-		opacity: .5;
+.form-toggle {
+	display: flex;
+  flex-direction: row;
+  padding: .25em 0;
+  gap: 1em;
+  color: #000;
+  border-radius: var(--border-radius);
+
+	label {
+		flex: 0 0 auto;
+		display: inline-block;
+		border: 1px solid var(--input-border-color);
+		border-radius: var(--border-radius);
+		padding: .5em 1em;
+		text-align: center;
+		&:has(:checked) {
+			border-color: #000;
+		}
+		&:hover:not(:has(:checked)):not(:has(:disabled)) {
+			background: #fff3;
+			cursor: pointer;
+		}
+		&:has(:focus) {
+			outline: 0;
+			border-color: var(--input-border-color-focus);
+		}
+		&:has(:disabled) {
+			opacity: .5;
+		}
 	}
 }
 
@@ -259,12 +292,12 @@ html[dir="rtl"] .form-select {
 	> *:not(:first-child) {
 		border-left: 1px solid var(--input-border-color);
 	}
-		//> *:first-child:is(.btn, .form-select, .form-input) {
+	//> *:first-child:is(.btn, .form-select, .form-input) {
 	> *:first-child {
 		border-start-end-radius: 0;
 		border-end-end-radius: 0;
 	}
-		//> *:last-child:is(.btn, .form-select, .form-input) {
+	//> *:last-child:is(.btn, .form-select, .form-input) {
 	> *:last-child {
 		border-start-start-radius: 0;
 		border-end-start-radius: 0;
@@ -324,11 +357,6 @@ fieldset[disabled] > :not(legend),
 .form-input[disabled],
 .form-select[disabled] {
 	opacity: .5;
-}
-
-[data-toggle="buttons"] input[type="checkbox"],
-[data-toggle="buttons"] input[type="radio"] {
-	display: none;
 }
 
 .form-group .check,

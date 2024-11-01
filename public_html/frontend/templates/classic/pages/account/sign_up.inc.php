@@ -123,7 +123,7 @@
 					<div class="row">
 						<div class="form-group col-6">
 							<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-							<?php echo functions::form_input_captcha('sign_up'); ?>
+							<?php echo functions::form_captcha('sign_up'); ?>
 						</div>
 					</div>
 					<?php } ?>

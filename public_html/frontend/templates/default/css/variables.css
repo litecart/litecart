@@ -49,9 +49,9 @@
   --default-title-color: #333;
   --default-title-border-color: #f0f0f0;
   --default-border-color: #ececf1;
-  --top-navigation-background-color: #000;
-  --top-navigation-text-color: #fff;
-  --navigation-background-color: transparent;
+  --top-bar-background-color: #6e6e81;
+  --top-bar-text-color: #fff;
+  --navigation-background-color: #d6d6e1;
   --navigation-text-color: #333;
   --card-background-color: #fff;
   --card-text-color: var(--default-text-color);
@@ -101,8 +101,8 @@
   --input-background-color: #ececf1;
   --input-border-color: #ebebee;
   --input-border-size: 0px;
-  --input-padding-x: 1em;
-  --input-padding-y: 0.5em;
+  --input-padding-y: 0.75em;
+  --input-padding-x: 1.5em;
   --input-text-color: #444;
   /* Pills */
   --pills-background-color: #fff;
@@ -131,11 +131,11 @@
   --pagination-hover-background-color: var(--primary-background-color);
   --pagination-hover-text-color: #fff;
   /* Footer */
-  --footer-background-color: #e6e6ef;
+  --footer-background-color: transparent;
   --footer-title-color: #333;
   --footer-text-color: #333;
   /* Copyright */
-  --copyright-background-color: #d2d2df;
+  --copyright-background-color: transparent;
   --copyright-text-color: var(--footer-text-color);
   --cookie-notice-background-color: #334c;
   --cookie-notice-text-color: #fff;

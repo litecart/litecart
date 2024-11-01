@@ -615,15 +615,15 @@
 								break;
 
 							case 'top':
-								$find = '#^#s';
+								$find = '#^(\<\?php\R)?#';
 								$indexes = '';
-								$insert = addcslashes($insert, '\\$').'$0';
+								$insert = '$1'.addcslashes($insert, '\\$');
 								break;
 
 							case 'bottom':
-								$find = '#$#s';
+								$find = '#(\R*?\?\>)?\z#';
 								$indexes = '';
-								$insert = '$0'.addcslashes($insert, '\\$');
+								$insert = addcslashes($insert, '\\$').'$1';
 								break;
 
 							case 'replace':

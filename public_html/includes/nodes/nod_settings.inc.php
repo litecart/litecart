@@ -20,10 +20,10 @@
 						if ($setting['value']) {
 							$setting['value'] = json_decode($setting['value'], true);
 
-								if (!empty($setting['value'][language::$selected['code']])) {
+							if (!empty($setting['value'][language::$selected['code']])) {
 								$setting['value'] = $setting['value'][language::$selected['code']];
 
-								} else if (!empty($setting['value']['en'])) {
+							} else if (!empty($setting['value']['en'])) {
 								$setting['value'] = $setting['value']['en'];
 
 							} else {
@@ -40,8 +40,6 @@
 				self::$_cache[$setting['key']] = $setting['value'];
 			});
 		}
-
-		######################################################################
 
 		public static function get(string $key, $fallback=null) {
 
@@ -78,20 +76,20 @@
 						} else if (!empty($value['en'])) {
 							$setting['value'] = $setting['value']['en'];
 
-					} else {
-							$setting['value'] = '';
-					}
+						} else {
+								$setting['value'] = '';
+						}
 
 					} else {
 						$setting['value'] = [];
-				}
+					}
 
 					break;
 
 				}
 
 			return self::$_cache[$key] = $setting['value'];
-			}
+		}
 
 		public static function set($key, $value) {
 			self::$_cache[$key] = $value;

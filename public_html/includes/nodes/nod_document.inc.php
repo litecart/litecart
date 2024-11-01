@@ -10,19 +10,40 @@
 		public static $javascript = [];
 		public static $jsenv = [];
 		public static $layout = 'default';
+		public static $schema = [];
 		public static $settings = [];
 		public static $snippets = [];
 		public static $style = [];
 		public static $title = [];
 
 		public static function init() {
+
+			// Set schema
+			self::$schema['website'] = [
+				'@context' => 'https://schema.org/',
+				'@type' => 'Website',
+				'name' => settings::get('store_name'),
+				'url' => self::ilink(''),
+				'countryOfOrigin' => settings::get('store_country_code'),
+			];
+
+			self::$schema['organization'] = [
+				'@context' => 'https://schema.org/',
+				'@type' => 'Organization',
+				'name' => settings::get('store_name'),
+				'url' => self::ilink(''),
+				'logo' => self::rlink(FS_DIR_STORAGE . 'images/logotype.png'),
+				'email' => settings::get('store_email'),
+				'availableLanguage' => array_column(language::$languages, 'name'),
+			];
+
 			event::register('before_capture', [__CLASS__, 'before_capture']);
 			event::register('after_capture', [__CLASS__, 'after_capture']);
 		}
 
 		public static function before_capture() {
 
-				//self::$snippets['nonce'] = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(32/62))), 0, 32);
+			//self::$snippets['nonce'] = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(32/62))), 0, 32);
 
 			header('Content-Security-Policy: frame-ancestors \'self\';'); // Clickjacking Protection
 			header('Access-Control-Allow-Origin: '. self::ilink('')); // Only allow HTTP POST data from own domain
@@ -105,7 +126,7 @@
 				'url' => self::ilink('f:'),
 			];
 
-			if (!empty(administrator::$data['id'])) {
+			if (administrator::check_login()) {
 				self::$jsenv['backend'] = [
 					'path' => WS_DIR_APP . BACKEND_ALIAS .'/',
 					'url' => self::ilink('b:'),
@@ -247,10 +268,10 @@
 				$javascript = implode(PHP_EOL, [
 					'<script>',
 					//'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from parser bypassing in 2024?
-						//'$(document).ready(function() {',
+					//'$(document).ready(function() {',
 					implode(PHP_EOL . PHP_EOL, $javascript),
-						//'});',
-						//'/*]]>*/-->',
+					//'});',
+					//'/*]]>*/-->',
 					'</script>',
 				]) . PHP_EOL;
 
@@ -277,11 +298,11 @@
 			switch (route::$selected['endpoint']) {
 
 				case 'backend':
-				$_page = new ent_view('app://backend/template/layouts/'.self::$layout.'.inc.php');
+					$_page = new ent_view('app://backend/template/layouts/'.self::$layout.'.inc.php');
 					break;
 
 				default:
-				$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/layouts/'.self::$layout.'.inc.php');
+					$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/layouts/'.self::$layout.'.inc.php');
 					break;
 			}
 
@@ -315,6 +336,15 @@
 			// Add canonical URL
 			if (!empty(self::$canonical)) {
 				$_page->snippets['head_tags'][] = '<link rel="canonical" href="'. functions::escape_attr(self::$canonical) .'">';
+			}
+
+			// Prepare JSON Schema
+			if (!empty(self::$schema)) {
+				$_page->snippets['head_tags']['schema_json'] = implode(PHP_EOL, [
+					'<script type="application/ld+json">',
+					json_encode(array_values(self::$schema), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+					'</script>',
+				]);
 			}
 
 			// Prepare internal styles

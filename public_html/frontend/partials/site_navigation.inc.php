@@ -103,6 +103,13 @@
 		cache::set($site_navigation_cache_token, $site_navigation->snippets);
 	}
 
+	// Regional Settings
+
+	$site_navigation->snippets['regional_settings'] = [
+		'title' => 'sv / SE / SEK',
+		'link' => document::ilink('regional_settings'),
+	];
+
 	// Shopping Cart
 
 	$site_navigation->snippets['shopping_cart'] = [

@@ -23,7 +23,7 @@
 			}
 
 			if ($_SERVER['REMOTE_ADDR'] != self::$data['last_ip_address']
-				|| $_SERVER['HTTP_USER_AGENT'] != self::$data['last_user_agent']) {
+			|| $_SERVER['HTTP_USER_AGENT'] != self::$data['last_user_agent']) {
 				self::$data['last_ip_address'] = $_SERVER['REMOTE_ADDR'];
 				self::$data['last_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 				self::regenerate_id();

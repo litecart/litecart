@@ -36,9 +36,8 @@
 	$administrators = database::query(
 		"select * from ". DB_TABLE_PREFIX ."administrators
 		order by username;"
-	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
+	)->fetch_page(function($administrator){
 
-	foreach ($administrators as $key => $administrator) {
 		try {
 
 			if ($administrator['date_valid_from'] && $administrator['date_valid_from'] > date('Y-m-d H:i:s')) {
@@ -49,12 +48,15 @@
 				throw new Exception(strtr(language::translate('text_account_expired_at_x', 'The account expired at %datetime and can no longer be used'), ['%datetime' => language::strftime('datetime', $administrator['date_valid_to'])]));
 			}
 
-			$administrators[$key]['warning'] = null;
+			$administrator['warning'] = null;
 
 		} catch (Exception $e) {
-			$administrators[$key]['warning'] = $e->getMessage();
+			$administrator['warning'] = $e->getMessage();
 		}
-	}
+	
+		return $administrator;
+	
+	}, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
 <style>

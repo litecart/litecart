@@ -160,7 +160,7 @@
 
 		<div class="form-group">
 			<label><?php echo language::translate('title_recipients', 'Recipients'); ?></label>
-			<?php echo functions::form_input_textarea('recipients', '', 'style="height: 480px;"'); ?>
+			<?php echo functions::form_textarea('recipients', '', 'style="height: 480px;"'); ?>
 		</div>
 
 		<?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'submit', 'class="btn btn-default btn-block"'); ?>

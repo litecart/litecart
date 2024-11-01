@@ -7,10 +7,10 @@
 	 *   ~/frontend/templates/default/partials/box_brand_links.inc.php
 	 */
 
-	$box_brand_links_cache_token = cache::token('box_brand_links', ['language', fallback($_GET['brand_id'])]);
-	if (cache::capture($box_brand_links_cache_token)) {
+	$box_brand_links = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_brand_links.inc.php');
 
-		$box_brand_links = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_brand_links.inc.php');
+	$box_brand_links_cache_token = cache::token('box_brand_links', ['language']);
+	if (!$box_brand_links->snippets['brands'] = cache::get($box_brand_links_cache_token)) {
 
 		$box_brand_links->snippets['brands'] = database::query(
 			"select b.id, b.name, b.date_created from ". DB_TABLE_PREFIX ."brands b
@@ -27,9 +27,18 @@
 			];
 		});
 
-		if ($box_brand_links->snippets['brands']) {
-			echo $box_brand_links->render();
-		}
+		cache::set($box_brand_links_cache_token, $box_brand_links->snippets['brands']);
+	}
 
-		cache::end_capture($box_brand_links_cache_token);
+  if (!empty($_GET['brand_id'])) {
+    foreach ($box_brand_links->snippets['brands'] as $key => $brand) {
+      if ($brand['id'] == $_GET['brand_id']) {
+        $box_brand_links->snippets['brands'][$key]['active'] = true;
+        break;
+      }
+    }
+  }
+
+	if ($box_brand_links->snippets['brands']) {
+		echo $box_brand_links->render();
 	}

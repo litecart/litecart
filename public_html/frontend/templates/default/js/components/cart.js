@@ -1,10 +1,11 @@
-	// Listing: Add to cart animation
-	$('.listing.products .product btn[name="add_cart_product"]').on('click', function(e) {
+	// Listing: Add to cart
+	$('.listing.products .product button[name="add_cart_product"]').on('click', function(e) {
 		e.preventDefault();
 
 		let $button = $(this),
 			$target = $('#site-navigation .shopping-cart'),
-			$product = $button.closest('.product'),
+			$product = $button.closest('.product');
+
 			$object = $('<div id="animated-cart-item"></div>').css({
 				position: 'absolute',
 				top: $button.offset().top,
@@ -35,7 +36,7 @@
 			.animate({
 				opacity: 0
 			}, {
-				duration: 100,
+				duration: 250,
 				complete: function(){
 					$object.remove();
 					$target.addClass('open');
@@ -80,7 +81,7 @@
 			.animate({
 				opacity: 0
 			}, {
-				duration: 100,
+				duration: 250,
 				complete: function(){
 					$object.remove();
 					$target.addClass('open');
@@ -95,6 +96,7 @@
 	// Update cart / Keep alive
 	if (typeof(window._env) !== 'undefined') {
 		window.updateCart = function(data) {
+
 			$.ajax({
 				url: window._env.platform.url + 'ajax/cart.json',
 				type: data ? 'post' : 'get',
@@ -102,13 +104,16 @@
 				cache: false,
 				async: true,
 				dataType: 'json',
+
 				beforeSend: function(jqXHR) {
 					jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'));
 				},
+
 				error: function(jqXHR, textStatus, errorThrown) {
 					$('#animated-cart-item').remove();
 					if (data) alert('Error while updating cart');
 				},
+
 				success: function(result) {
 
 					if (result.alert) {

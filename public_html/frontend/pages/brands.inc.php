@@ -31,6 +31,7 @@
 				'name' => $brand['name'],
 				'image' => $brand['image'] ? 'storage://images/' . $brand['image'] : '',
 				'link' => document::ilink('brand', ['brand_id' => $brand['id']]),
+				'active' => false,
 			];
 		});
 

@@ -223,7 +223,7 @@ table.data-table td {
 					</table>
 
 					<div class="btn-group">
-						<?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
+						<?php echo functions::form_button_predefined('delete'); ?>
 					</div>
 
 				<?php echo functions::form_end(); ?>

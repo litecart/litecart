@@ -21,6 +21,6 @@
 	}
 
 	function escape_mysql_fulltext($string) {
-			//  #[+\-><\(\)~*\"@]+#
+		//return preg_replace('#[+\-><\(\)~*\"@]+#', '\\\$0', $string);
 		return preg_replace('#[\x00\x0A\x0D\x1A\x22\x27\x3F\x5C\x5F]#u', '\\\$0', $string);
 	}

@@ -8,9 +8,5 @@
 			'options' => [
 				'redirect' => false,
 			],
-			'rewrite' => function(ent_link $link, $language_code) {
-				$link->path = ''; // Remove index file for site root
-				return $link;
-			}
 		],
 	];

@@ -86,11 +86,11 @@
 							'%user_agent' => $_SERVER['HTTP_USER_AGENT'],
 						];
 
-						$subject = language::translate('administrator_account_blocked:email_subject', 'Administrator Account Blocked');
+						$subject = language::translate('title_administrator_account_blocked', 'Administrator Account Blocked');
 						$message = strtr(language::translate('administrator_account_blocked:email_body', implode("\r\n", [
-							'Your administrator account %username has been blocked until %expires because of too many invalid attempts.',
+							'Your administrator account %username has been blocked until %expires because of too many invalid login attempts.',
 							'',
-							'Client: %hostname (%ip_address)',
+							'Client: %ip_address (%hostname)',
 							'%user_agent',
 							'',
 							'%store_name',
@@ -121,6 +121,7 @@
 
 			if (!empty($administrator['last_ip_address']) && $administrator['last_ip_address'] != $_SERVER['REMOTE_ADDR']) {
 				notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_ip', 'Your account was previously used by another IP address %ip_address (%hostname). If this was not you then your login credentials might be compromised.'), [
+					'%username' => $administrator['username'],
 					'%ip_address' => $administrator['last_ip_address'],
 					'%hostname' => $administrator['last_hostname'],
 				]));
@@ -131,7 +132,6 @@
 				set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 					last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
-					known_ips = '". database::input(implode(',', $administrator['known_ips'])) ."',
 					login_attempts = 0,
 					total_logins = total_logins + 1,
 					date_login = '". date('Y-m-d H:i:s') ."'
@@ -144,11 +144,12 @@
 			session::$data['administrator_security_timestamp'] = time();
 			session::regenerate_id();
 
-			if (!in_array($_SERVER['REMOTE_ADDR'], $administrator['known_ips']) && !empty($administrator['two_factor_auth'])) {
+			unset(session::$data['security_verification']);
+
+			if (!in_array($_SERVER['REMOTE_ADDR'], $administrator['known_ips']) && !empty($administrator['two_factor_auth']) && !empty($administrator['email'])) {
 
 				session::$data['security_verification'] = [
-					'type' => '2fa',
-					'code' => functions::password_generate(6, 0, 0, 6, 0),
+					'code' => mt_rand(100000, 999999),
 					'expires' => strtotime('+15 minutes'),
 					'attempts' => 0,
 				];
@@ -162,9 +163,9 @@
 				notices::add('notices', language::translate('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
 
 				if (!empty($_POST['redirect_url'])) {
-					header('Location: '. document::ilink('verify_identity'));
+					header('Location: '. document::ilink('verify', ['redirect_url' => $_POST['redirect_url']]));
 				} else {
-					header('Location: '. document::ilink('verify_identity', ['redirect_url' => $_POST['redirect_url']]));
+					header('Location: '. document::ilink('verify'));
 				}
 
 				exit;

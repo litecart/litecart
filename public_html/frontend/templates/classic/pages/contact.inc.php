@@ -28,14 +28,14 @@
 
 						<div class="form-group">
 							<label><?php echo language::translate('title_message', 'Message'); ?></label>
-							<?php echo functions::form_input_textarea('message', true, 'required style="height: 250px;"'); ?>
+							<?php echo functions::form_textarea('message', true, 'required style="height: 250px;"'); ?>
 						</div>
 
 						<?php if (settings::get('captcha_enabled')) { ?>
 						<div class="row">
 							<div class="form-group col-md-6">
 								<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-								<?php echo functions::form_input_captcha('contact_us'); ?>
+								<?php echo functions::form_captcha('contact_us'); ?>
 							</div>
 						</div>
 						<?php } ?>

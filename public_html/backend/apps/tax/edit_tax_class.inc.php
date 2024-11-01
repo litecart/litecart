@@ -92,7 +92,7 @@
 
 			<div class="card-action">
 				<?php echo functions::form_button_predefined('save'); ?>
-				<?php if (!empty($tax_class->data['id'])) echo functions::form_button_predefined('delete'); ?>
+				<?php if ($tax_class->data['id']) echo functions::form_button_predefined('delete'); ?>
 				<?php echo functions::form_button_predefined('cancel'); ?>
 			</div>
 

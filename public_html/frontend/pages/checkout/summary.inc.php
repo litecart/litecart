@@ -4,22 +4,32 @@
 	 * This file contains PHP logic that is separated from the HTML view.
 	 * Visual changes can be made to the file found in the template folder:
 	 *
-	 *   ~/frontend/templates/default/partials/box_checkout_summary.inc.php
+	 *   ~/frontend/templates/default/pages/checkout/summary.inc.php
 	 */
 
 	header('X-Robots-Tag: noindex');
 
-	if (settings::get('catalog_only_mode')) return;
+	document::$layout = 'checkout';
 
-	$shopping_cart = &session::$data['checkout']['shopping_cart'];
+	if (settings::get('catalog_only_mode')) {
+		return;
+	}
 
-	if (empty($shopping_cart->data['items'])) return;
+	if (!empty(session::$data['checkout']['order'])) {
+		$order = &session::$data['checkout']['order'];
+	} else {
+		return;
+	}
 
-	$box_checkout_summary = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_checkout_summary.inc.php');
+	if (empty($order->data['items'])) {
+		return;
+	}
+
+	$box_checkout_summary = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/summary.inc.php');
 
 	$box_checkout_summary->snippets = [
-		'shopping_cart' => $shopping_cart->data,
-		'error' => $shopping_cart->validate(),
+		'order' => $order->data,
+		'error' => $order->validate(),
 		'consent' => null,
 		'confirm' => !empty($payment->selected['confirm']) ? $payment->selected['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
 	];
@@ -48,3 +58,8 @@
 	]);
 
 	echo $box_checkout_summary->render();
+
+	// Don't process layout if this is an ajax request
+	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+		exit;
+	}

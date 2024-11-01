@@ -4,32 +4,32 @@
 
 	stats::start_watch('after_content');
 
-		// Site the captured output buffer
+	// Site the captured output buffer
 	document::$content = ob_get_contents();
 	ob_clean();
 
-		// Run after capture processes
+	// Run after capture processes
 	event::fire('after_capture');
 
-		// Run prepare output processes
+	// Run prepare output processes
 	event::fire('prepare_output');
 
-		// Run before output processes
+	// Run before output processes
 	event::fire('before_output');
 
 	stats::stop_watch('after_content');
 
-		// Output page
+	// Output page
 	echo document::render();
 
-		// Run after processes
+	// Run after processes
 	event::fire('shutdown');
 
-		// Execute background jobs
+	// Execute background jobs
 	if (date('Ymdh', strtotime(settings::get('jobs_last_run'))) != date('Ymdh')) {
 		if (strtotime(settings::get('jobs_last_push')) < strtotime('-5 minutes')) {
 
-				// To avoid this push method, set up a cron job calling https://www.yoursite.com/index.php/push_jobs
+			// To avoid this push method, set up a cron job calling https://www.yoursite.com/index.php/push_jobs
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."settings

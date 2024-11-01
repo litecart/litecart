@@ -396,7 +396,7 @@ textarea.warning {
 
 												<div class="form-group col-md-6">
 													<label><?php echo language::translate('title_match_type', 'Match Type'); ?></label>
-													<?php echo functions::form_toggle_buttons('files['.$f.'][operations]['.$o.'][type]', $type_options, (!isset($_POST['files'][$f]['operations'][$o]['type']) || $_POST['files'][$f]['operations'][$o]['type'] == '') ? 'multiline' : true); ?>
+													<?php echo functions::form_toggle('files['.$f.'][operations]['.$o.'][type]', $type_options, (!isset($_POST['files'][$f]['operations'][$o]['type']) || $_POST['files'][$f]['operations'][$o]['type'] == '') ? 'multiline' : true); ?>
 												</div>
 
 												<div class="form-group col-md-3">
@@ -629,7 +629,7 @@ textarea.warning {
 
 			<div class="form-group col-md-6">
 				<label><?php echo language::translate('title_match_type', 'Match Type'); ?></label>
-				<?php echo functions::form_toggle_buttons('files[current_tab_index][operations][new_operation_index][type]', $type_options, 'multiline'); ?>
+				<?php echo functions::form_toggle('files[current_tab_index][operations][new_operation_index][type]', $type_options, 'multiline'); ?>
 			</div>
 
 			<div class="form-group col-md-3">

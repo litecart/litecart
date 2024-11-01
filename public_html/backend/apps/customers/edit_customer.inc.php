@@ -211,7 +211,7 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label><?php echo language::translate('title_notes', 'Notes'); ?></label>
-						<?php echo functions::form_input_textarea('notes', true, 'style="height: 450px;"'); ?>
+						<?php echo functions::form_textarea('notes', true, 'style="height: 450px;"'); ?>
 					</div>
 
 					<?php if (!empty($customer->data['id'])) { ?>

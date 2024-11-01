@@ -78,20 +78,6 @@
 		});
 	}, 60e3);
 
-	// Toggle Buttons (data-toggle="buttons")
-
-$('body').on('click', '[data-toggle="buttons"] :checkbox', function(){
-	if ($(this).is(':checked')) {
-		$(this).closest('.btn').addClass('active');
-	} else {
-		$(this).closest('.btn').removeClass('active');
-	}
-});
-
-$('body').on('click', '[data-toggle="buttons"] :radio', function(){
-	$(this).closest('.btn').addClass('active').siblings().removeClass('active');
-});
-
 /*
  * jQuery Category Picker
  * by LiteCart
@@ -277,6 +263,75 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
 	}
 
 }();
+
+// Dragmove
+
+$('style').first().append([
+	'.dragmove-horizontal {',
+	'  cursor: e-resize;',
+	'  user-select: none;',
+	'}',
+	'.dragmove-vertical {',
+	'  cursor: n-resize;',
+	'  user-select: none;',
+	'}',
+	'.dragmove-vertical.grabbed,',
+	'.dragmove-horizontal.grabbed	{',
+	'  user-input: unset;',
+	'  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);',
+	'}',
+].join('\n'));
+
+$('body').on('click', '.dragmove', function(e){
+	e.preventDefault();
+	return false;
+});
+
+$('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e){
+
+	let $item = $(e.target).closest('.dragmove'),
+		sy = e.pageY,
+		drag;
+
+	if ($(e.target).is('.dragmove')) {
+		$item = $(e.target);
+	}
+
+	let index = $item.index();
+
+	$item.addClass('grabbed');
+	$item.closest('tbody').css('user-input', 'unset');
+
+	function move(e) {
+
+		if (!drag && Math.abs(e.pageY - sy) < 10) return;
+		drag = true;
+
+		$item.siblings().each(function() {
+
+			let s = $(this), i = s.index(), y = s.offset().top;
+
+			if (e.pageY >= y && e.pageY < y + s.outerHeight()) {
+				if (i < $item.index()) s.insertAfter($item);
+				else s.insertBefore($item);
+				return false;
+			}
+		});
+	}
+
+	function up(e) {
+
+		if (drag && index != $item.index()) {
+			drag = false;
+		}
+
+		$(document).off('mousemove', move).off('mouseup', up);
+		$item.removeClass('grabbed');
+		$item.closest('tbody').css('user-input', '');
+	}
+
+	$(document).mousemove(move).mouseup(up);
+});
 
 
 /* ========================================================================
@@ -603,144 +658,145 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
 		}
 	});
 
-	// Alerts
-	$('body').on('click', '.alert .close', function(e){
-		e.preventDefault();
-		$(this).closest('.alert').fadeOut('fast', function(){
-			$(this).remove()
-		});
+// Alerts
+$('body').on('click', '.alert .close', function(e){
+	e.preventDefault();
+	$(this).closest('.alert').fadeOut('fast', function(){
+		$(this).remove()
 	});
+});
 
-	$('#sidebar input[name="filter"]').on({
+// Filter
+$('#sidebar input[name="filter"]').on({
 
-		'input': function(){
+	'input': function(){
 
-			let query = $(this).val();
+		let query = $(this).val();
 
-			if ($(this).val() == '') {
-				$('#box-apps-menu .app').css('display', 'block');
-				return;
+		if ($(this).val() == '') {
+			$('#box-apps-menu .app').css('display', 'block');
+			return;
+		}
+
+		$('#box-apps-menu .app').each(function(){
+			var regex = new RegExp(''+ query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')  +'', 'ig');
+			console.log()
+			if (regex.test($(this).text())) {
+				$(this).show();
+			} else {
+				$(this).hide();
 			}
+		});
+	}
+});
 
-			$('#box-apps-menu .app').each(function(){
-				var regex = new RegExp(''+ query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')  +'', 'ig');
-				console.log()
-				if (regex.test($(this).text())) {
-					$(this).show();
-				} else {
-					$(this).hide();
-				}
+// AJAX Search
+let timer_ajax_search = null;
+let xhr_search = null;
+
+$('#search input[name="query"]').on({
+
+	'focus': function(){
+		if ($(this).val()) {
+			$('#search.dropdown').addClass('open');
+		}
+	},
+
+	'blur': function(){
+		if (!$('#search').filter(':hover').length) {
+			$('#search.dropdown').removeClass('open');
+		} else {
+			$('#search.dropdown').on('blur', function(){
+				$('#search.dropdown').removeClass('open');
 			});
 		}
-	});
+	},
 
-	// AJAX Search
-	let timer_ajax_search = null;
-	let xhr_search = null;
+	'input': function(){
 
-	$('#search input[name="query"]').on({
-
-		'focus': function(){
-			if ($(this).val()) {
-				$('#search.dropdown').addClass('open');
-			}
-		},
-
-		'blur': function(){
-			if (!$('#search').filter(':hover').length) {
-				$('#search.dropdown').removeClass('open');
-			} else {
-				$('#search.dropdown').on('blur', function(){
-					$('#search.dropdown').removeClass('open');
-				});
-			}
-		},
-
-		'input': function(){
-
-			if (xhr_search) {
-				xhr_search.abort();
-			}
-
-			let $searchField = $(this);
-
-			if ($searchField.val()) {
-
-				$('#search .results').html([
-					'<div class="loader-wrapper text-center">',
-					'  <div class="loader" style="width: 48px; height: 48px;"></div>',
-					'</div>'
-				].join('\n'));
-
-				$('#search.dropdown').addClass('open');
-
-			} else {
-				$('#search .results').html('');
-				$('#search.dropdown').removeClass('open');
-				return;
-			}
-
-			clearTimeout(timer_ajax_search);
-
-			timer_ajax_search = setTimeout(function() {
-				xhr_search = $.ajax({
-					type: 'get',
-					async: true,
-					cache: false,
-					url: window._env.backend.url + 'search_results.json?query=' + $searchField.val(),
-					dataType: 'json',
-
-					beforeSend: function(jqXHR) {
-						jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
-					},
-
-					error: function(jqXHR, textStatus, errorThrown) {
-						$('#search .results').text(textStatus + ': ' + errorThrown);
-					},
-
-					success: function(json) {
-
-						$('#search .results').html('');
-
-						if (!$('#search input[name="query"]').val()) {
-							$('#search .results').html('Search');
-							return;
-						}
-
-						$.each(json, function(i, group){
-
-							if (group.results.length) {
-
-								$('#search .results').append(
-									'<h4>'+ group.name +'</h4>' +
-									'<ul class="flex flex-rows" data-group="'+ group.name +'"></ul>'
-								);
-
-								$.each(group.results, function(i, result){
-
-									var $li = $([
-										'<li class="result">',
-										'  <a class="list-group-item" href="'+ result.link +'" style="border-inline-start: 3px solid '+ group.theme.color +'; background: '+ group.theme.color +'11;">',
-										'    <small class="id float-end">#'+ result.id +'</small>',
-										'    <div class="title">'+ result.title +'</div>',
-										'    <div class="description"><small>'+ result.description +'</small></div>',
-										'  </a>',
-										'</li>'
-									].join('\n'));
-
-									$('#search .results ul[data-group="'+ group.name +'"]').append($li);
-								});
-							}
-						});
-
-						if ($('#search .results').html() == '') {
-							$('#search .results').html('<p class="text-center no-results"><em>:(</em></p>');
-						}
-					},
-				});
-			}, 500);
+		if (xhr_search) {
+			xhr_search.abort();
 		}
-	});
+
+		let $searchField = $(this);
+
+		if ($searchField.val()) {
+
+			$('#search .results').html([
+				'<div class="loader-wrapper text-center">',
+				'  <div class="loader" style="width: 48px; height: 48px;"></div>',
+				'</div>'
+			].join('\n'));
+
+			$('#search.dropdown').addClass('open');
+
+		} else {
+			$('#search .results').html('');
+			$('#search.dropdown').removeClass('open');
+			return;
+		}
+
+		clearTimeout(timer_ajax_search);
+
+		timer_ajax_search = setTimeout(function() {
+			xhr_search = $.ajax({
+				type: 'get',
+				async: true,
+				cache: false,
+				url: window._env.backend.url + 'search_results.json?query=' + $searchField.val(),
+				dataType: 'json',
+
+				beforeSend: function(jqXHR) {
+					jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
+				},
+
+				error: function(jqXHR, textStatus, errorThrown) {
+					$('#search .results').text(textStatus + ': ' + errorThrown);
+				},
+
+				success: function(json) {
+
+					$('#search .results').html('');
+
+					if (!$('#search input[name="query"]').val()) {
+						$('#search .results').html('Search');
+						return;
+					}
+
+					$.each(json, function(i, group){
+
+						if (group.results.length) {
+
+							$('#search .results').append(
+								'<h4>'+ group.name +'</h4>' +
+								'<ul class="flex flex-rows" data-group="'+ group.name +'"></ul>'
+							);
+
+							$.each(group.results, function(i, result){
+
+								var $li = $([
+									'<li class="result">',
+									'  <a class="list-group-item" href="'+ result.link +'" style="border-inline-start: 3px solid '+ group.theme.color +'; background: '+ group.theme.color +'11;">',
+									'    <small class="id float-end">#'+ result.id +'</small>',
+									'    <div class="title">'+ result.title +'</div>',
+									'    <div class="description"><small>'+ result.description +'</small></div>',
+									'  </a>',
+									'</li>'
+								].join('\n'));
+
+								$('#search .results ul[data-group="'+ group.name +'"]').append($li);
+							});
+						}
+					});
+
+					if ($('#search .results').html() == '') {
+						$('#search .results').html('<p class="text-center no-results"><em>:(</em></p>');
+					}
+				},
+			});
+		}, 500);
+	}
+});
 
 	// Tabs (data-toggle="tab")
 +function($) {
@@ -793,84 +849,49 @@ $('body').on('click', '[data-toggle="buttons"] :radio', function(){
 	});
 }(jQuery);
 
-	// Data-Table Toggle Checkboxes
-	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
-		$(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
-			$(this).prop('checked', !$(this).prop('checked')).trigger('change');
-		});
-		return false;
+// Data-Table Toggle Checkboxes
+$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
+	$(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
+		$(this).prop('checked', !$(this).prop('checked')).trigger('change');
 	});
+	return false;
+});
 
-	$('body').on('click', '.data-table tbody tr', function(e) {
-		if ($(e.target).is('a') || $(e.target).closest('a').length) return;
-		if ($(e.target).is('.btn, :input, th, .fa-star, .fa-star-o')) return;
-		$(this).find(':checkbox, :radio').first().trigger('click');
-	});
+$('body').on('click', '.data-table tbody tr', function(e) {
+	if ($(e.target).is('a') || $(e.target).closest('a').length) return;
+	if ($(e.target).is('.btn, :input, th, .fa-star, .fa-star-o')) return;
+	$(this).find(':checkbox, :radio').first().trigger('click');
+});
 
-	// Data-Table Shift Check Multiple Checkboxes
-	let lastTickedCheckbox = null;
-	$('.data-table td:first-child :checkbox').on('click', function(e){
+// Data-Table Shift Check Multiple Checkboxes
+let lastTickedCheckbox = null;
+$('.data-table td:first-child :checkbox').on('click', function(e){
 
-		let $chkboxes = $('.data-table td:first-child :checkbox');
+	let $chkboxes = $('.data-table td:first-child :checkbox');
 
-		if (!lastTickedCheckbox) {
-			lastTickedCheckbox = this;
-			return;
-		}
-
-		if (e.shiftKey) {
-			let start = $chkboxes.index(this);
-			let end = $chkboxes.index(lastTickedCheckbox);
-			$chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastTickedCheckbox.checked);
-		}
-
+	if (!lastTickedCheckbox) {
 		lastTickedCheckbox = this;
+		return;
+	}
+
+	if (e.shiftKey) {
+		let start = $chkboxes.index(this);
+		let end = $chkboxes.index(lastTickedCheckbox);
+		$chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastTickedCheckbox.checked);
+	}
+
+	lastTickedCheckbox = this;
+});
+
+// Data-Table Sorting (Page Reload)
+$('.table-sortable thead th[data-sort]').on('click', function(){
+	let params = {};
+
+	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
+		params[key] = value;
 	});
 
-	// Data-Table Dragable
-	$('body').on('click', '.table-dragable tbody .grabable', function(e){
-		e.preventDefault();
-		return false;
-	});
+	params.sort = $(this).data('sort');
 
-	$('body').on('mousedown', '.table-dragable tbody .grabable', function(e){
-		let tr = $(e.target).closest('tr'), sy = e.pageY, drag;
-		if ($(e.target).is('tr')) tr = $(e.target);
-		let index = tr.index();
-		$(tr).addClass('grabbed');
-		$(tr).closest('tbody').css('unser-input', 'unset');
-		function move(e) {
-			if (!drag && Math.abs(e.pageY - sy) < 10) return;
-			drag = true;
-			tr.siblings().each(function() {
-				let s = $(this), i = s.index(), y = s.offset().top;
-				if (e.pageY >= y && e.pageY < y + s.outerHeight()) {
-					if (i < tr.index()) s.insertAfter(tr);
-					else s.insertBefore(tr);
-					return false;
-				}
-			});
-		}
-		function up(e) {
-			if (drag && index != tr.index()) {
-				drag = false;
-			}
-			$(document).off('mousemove', move).off('mouseup', up);
-			$(tr).removeClass('grabbed');
-			$(tr).closest('tbody').css('unser-input', '');
-		}
-		$(document).mousemove(move).mouseup(up);
-	});
-
-	// Data-Table Sorting (Page Reload)
-	$('.table-sortable thead th[data-sort]').on('click', function(){
-		let params = {};
-
-		window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
-			params[key] = value;
-		});
-
-		params.sort = $(this).data('sort');
-
-		window.location.search = $.param(params);
-	});
+	window.location.search = $.param(params);
+});

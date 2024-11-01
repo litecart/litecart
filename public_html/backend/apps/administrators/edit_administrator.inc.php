@@ -28,7 +28,15 @@
 			}
 
 			if (!empty($_POST['two_factor_auth']) && empty($_POST['email'])) {
-				throw new Exception(language::translate('error_email_required_for_two_factor_authenticatoin', 'An email address is required for two-factor authentication'));
+				throw new Exception(language::translate('error_email_required_for_two_factor_authentication', 'An email address is required for two-factor authentication'));
+			}
+
+			if (!empty($_POST['password']) && empty($_POST['confirmed_password'])) {
+				throw new Exception(language::translate('error_must_enter_confirmed_password', 'You must confirm the password'));
+			}
+
+			if (!empty($_POST['password']) && $_POST['password'] != $_POST['confirmed_password']) {
+				throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
 			}
 
 			if (empty($_POST['apps'])) {
@@ -106,7 +114,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('administrator_form', 'post', false, false, 'autocomplete="off" style="max-width: 1200px;"'); ?>
+		<?php echo functions::form_begin('administrator_form', 'post', false, false, 'autocomplete="off"'); ?>
 
 			<div class="row">
 
@@ -123,7 +131,6 @@
 						</div>
 					</div>
 
-
 					<div class="row">
 						<div class="form-group col-sm-6">
 							<label><?php echo language::translate('title_email', 'Email'); ?></label>
@@ -131,15 +138,20 @@
 						</div>
 
 						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
-							<?php echo functions::form_input_password_unmaskable('password', '', 'autocomplete="new-password"'); ?>
+							<label><?php echo language::translate('title_two_factor_authentication', 'Two-Factor Authentication'); ?></label>
+							<?php echo functions::form_toggle('two_factor_auth', 'e/d', true); ?>
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_two_factor_authentication', 'Two-Factor Authentication'); ?></label>
-							<?php echo functions::form_toggle('two_factor_auth', 'e/d', true); ?>
+							<label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
+							<?php echo functions::form_input_password_unmaskable('password', '', 'autocomplete="new-password"'); ?>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
+							<?php echo functions::form_input_password_unmaskable('confirmed_password', '', 'autocomplete="new-password"'); ?>
 						</div>
 					</div>
 

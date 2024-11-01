@@ -12,10 +12,16 @@
 }
 
 #box-checkout {
+	//background: #eeeef3;
 	padding: 0;
+
+	.logotype {
+		max-width: 250px;
+		max-height: 50px;
+	}
+
 	> form {
 		> .row {
-			background: #eeeef3;
 			height: 100vh;
 			grid-gap: 0;
 			margin-bottom: 0;
@@ -107,6 +113,12 @@
 	.title {
 		margin-top: 0;
 	}
+	.detail {
+		box-sizing: border-box;
+		border-radius: 1em;
+		padding: 1em;
+		border: 1px solid #d5d5d5;
+	}
 	fieldset {
 		border: none;
 		padding: 0;
@@ -124,6 +136,7 @@
 		display: block;
 		position: relative;
 		padding: .5em;
+		background: var(--input-background-color);
 		border: 1px solid var(--default-border-color);
 		border-radius: var(--border-radius);
 		user-select: none;
@@ -139,24 +152,17 @@
 			text-align: left;
 			transition: all 0.25s ease;
 		}
-	}
 
-	.option-wrapper:not(:last-child) .option {
-		border-bottom: none;
-	}
-	.option-wrapper:first-child:not(:last-child) .option {
-		border-radius: var(--border-radius) var(--border-radius) 0 0;
-	}
-	.option-wrapper:last-child .option {
-		border-bottom: 1px solid var(--default-border-color);
-		border-radius: 0 0 var(--border-radius) var(--border-radius);
-	}
+		&:not(:has(input[name$="_option[id]"]:checked)):not(:has(input[name$="_option[id]"][disabled])):hover {
+			cursor: pointer;
+			backdrop-filter: brightness(.9);
+		}
 
-	input[name$="_option[id]"] {
-		&:checked + .option {
-			background: #fff5e1;
+		&:has(input[name$="_option[id]"]:checked) {
+			cursor: default;
+			background: #d3d3e1;
+			border-color: #333;
 			.thumbnail {
-				border-color: #ffaa00;
 			}
 			.name {
 				font-weight: bold;
@@ -177,17 +183,17 @@
 				color: #000;
 			}
 		}
-		&:not(:disabled):not(:checked) + .option {
-			cursor: pointer;
-		}
-		&:disabled + .option {
+
+		.option:has(input[name$="_option[id]"][disabled]) {
 			opacity: .75;
 		}
-	}
 
-	@media(min-width: @media-breakpoint-sm) {
-		.option {
-			padding: 1em;
+		+ .option {
+			margin-top: 1em;
+		}
+
+		@media(min-width: @media-breakpoint-sm) {
+				padding: 1em;
 		}
 	}
 }

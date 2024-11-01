@@ -53,8 +53,7 @@ Done! Node.js should now have installed all necessary libraries. You can now exe
     npm run phplint       (Check PHP scripts for syntax errors)
     npm run watch         (Watch for changes in .less and .js and update minified versions on the fly)
     npm run hash          (Update checksums.md5 for all tracked files)
-
-    npm update    (Update your node modules to newer versions)
+    npm run update        (Update your node modules to newer versions)
 
 
 # How To Make a Git Pull Request

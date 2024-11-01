@@ -7,10 +7,10 @@
 	 *   ~/frontend/templates/default/partials/site_footer.inc.php
 	 */
 
-	$site_footer_cache_token = cache::token('store_footer', ['language', 'login', 'region']);
-	if (cache::capture($site_footer_cache_token)) {
+	$site_footer = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/site_footer.inc.php');
 
-		$site_footer = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/site_footer.inc.php');
+	$site_footer_cache_token = cache::token('store_footer', ['language', 'login', 'region']);
+	if (!$site_footer->snippets = cache::get($site_footer_cache_token)) {
 
 		$site_footer->snippets = [
 			'pages' => [],
@@ -54,7 +54,7 @@
 			];
 		});
 
-			// Social media
+		// Social media
 		foreach ([
 			'facebook',
 			'instagram',
@@ -74,7 +74,7 @@
 			];
 		}
 
-		echo $site_footer->render();
-
-		cache::end_capture($site_footer_cache_token);
+		cache::set($site_footer_cache_token, $site_footer->snippets);
 	}
+
+	echo $site_footer->render();

@@ -70,17 +70,11 @@
 			</li>
 
 			<li>
-				<div class="btn-group" data-toggle="buttons">
-					<label class="btn btn-default btn-sm<?php if (empty($_COOKIE['condensed'])) echo ' active'; ?>" type="button" value="0"><input type="radio" name="condensed" value="0"<?php if (empty($_COOKIE['condensed'])) echo ' checked'; ?>> <?php echo functions::draw_fonticon('fa-compress'); ?></label>
-					<label class="btn btn-default btn-sm<?php if (!empty($_COOKIE['condensed'])) echo ' active'; ?>" type="button" value="1"><input type="radio" name="condensed" value="1"<?php if (!empty($_COOKIE['condensed'])) echo ' checked'; ?>> <?php echo functions::draw_fonticon('fa-expand'); ?></label>
-				</div>
+				<?php echo functions::form_toggle('condensed', ['0' => functions::draw_fonticon('fa-compress'), '1' => functions::draw_fonticon('fa-expand')]); ?>
 			</li>
 
 			<li>
-				<div class="btn-group" data-toggle="buttons">
-					<label class="btn btn-default btn-sm<?php if (empty($_COOKIE['dark_mode'])) echo ' active'; ?>" title="<?php echo functions::escape_html(language::translate('title_light', 'Light')); ?>"><input type="radio" name="dark_mode" value="0"<?php if (empty($_COOKIE['dark_mode'])) echo ' checked'; ?>> <?php echo functions::draw_fonticon('fa-sun-o'); ?></label>
-					<label class="btn btn-default btn-sm<?php if (!empty($_COOKIE['dark_mode'])) echo ' active'; ?>" title="<?php echo functions::escape_html(language::translate('title_dark', 'Dark')); ?>"><input type="radio" name="dark_mode" value="1"<?php if (!empty($_COOKIE['dark_mode'])) echo ' checked'; ?>> <?php echo functions::draw_fonticon('fa-moon-o'); ?></label>
-				</div>
+				<?php echo functions::form_toggle('dark_mode', ['0' => functions::draw_fonticon('fa-sun-o'), '1' => functions::draw_fonticon('fa-moon-o')]); ?>
 			</li>
 
 			<li class="language dropdown">

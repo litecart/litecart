@@ -4,26 +4,37 @@
 	 * This file contains PHP logic that is separated from the HTML view.
 	 * Visual changes can be made to the file found in the template folder:
 	 *
-	 *   ~/frontend/templates/default/partials/box_checkout_shipping.inc.php
+	 *   ~/frontend/templates/default/pages/checkout/shipping.inc.php
 	 */
 
 	header('X-Robots-Tag: noindex');
 
-	if (settings::get('catalog_only_mode')) return;
+	document::$layout = 'checkout';
 
-	$shopping_cart = &session::$data['checkout']['shopping_cart'];
+	if (settings::get('catalog_only_mode')) {
+		return;
+	}
 
-	if (empty($shopping_cart->data['items'])) return;
+	if (!empty(session::$data['checkout']['order'])) {
+		$order = &session::$data['checkout']['order'];
+	} else {
+		return;
+	}
 
-	if (!$options = $shopping_cart->shipping->options()) {
+	if (!$order->data['items']) {
+		return;
+	}
+
+	if (!$options = $order->shipping->options()) {
+		throw new Exception('No shipping options available');
 		return;
 	}
 
 	if (!empty($_POST['select_shipping'])) {
-		$shopping_cart->shipping->select($_POST['shipping_option']['id'], $_POST);
+		$order->shipping->select($_POST['shipping_option']['id'], $_POST);
 
-		if (!empty($shopping_cart->shipping->selected['incoterm'])) {
-			$shopping_cart->data['incoterm'] = $shopping_cart->shipping->selected['incoterm'];
+		if (!empty($order->shipping->selected['incoterm'])) {
+			$order->data['incoterm'] = $order->shipping->selected['incoterm'];
 		}
 
 		if (route::$selected['route'] != 'f:checkout/process') {
@@ -32,29 +43,35 @@
 		}
 	}
 
-	if (!empty($shopping_cart->shipping->selected['id'])) {
-		if (array_search($shopping_cart->shipping->selected['id'], array_column($options, 'id')) === false) {
-			$shopping_cart->shipping->selected = []; // Clear because option is no longer present
+	if (!empty($order->shipping->selected['id'])) {
+		if (array_search($order->shipping->selected['id'], array_column($options, 'id')) === false) {
+			$order->shipping->selected = []; // Clear option no longer being present
 		} else {
-			$shopping_cart->shipping->select($shopping_cart->shipping->selected['id'], $shopping_cart->shipping->selected['userdata']); // Reinstate a present option
+			$order->shipping->select($order->shipping->selected['id'], $order->shipping->selected['userdata']); // Reinstate a present option
 		}
 	}
 
-	if (empty($shopping_cart->shipping->selected['id'])) {
-		if ($cheapest = $shopping_cart->shipping->cheapest($shopping_cart->data['items'], $shopping_cart->data['currency_code'], $shopping_cart->data['customer'])) {
-			$shopping_cart->shipping->select($cheapest['id'], $_POST);
+	if (empty($order->shipping->selected['id'])) {
+		if ($cheapest = $order->shipping->cheapest($order->data['items'], $order->data['currency_code'], $order->data['customer'])) {
+			$order->shipping->select($cheapest['id'], $_POST);
 		}
 	}
 
-	if (!empty($shopping_cart->shipping->selected)) {
-		$_POST['shipping_option'] = $shopping_cart->shipping->selected;
+	if (!empty($order->shipping->selected)) {
+		$_POST['shipping_option'] = $order->shipping->selected;
 	}
 
-	$box_checkout_shipping = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_checkout_shipping.inc.php');
+	$box_checkout_shipping = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/shipping.inc.php');
 
 	$box_checkout_shipping->snippets = [
-		'selected' => $shopping_cart->shipping->selected,
+		'selected' => $order->shipping->selected,
 		'options' => $options,
 	];
 
-	echo $box_checkout_shipping->render();
+	echo $box_checkout_shipping;
+
+	// Don't process layout if this is an ajax request
+	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+		exit;
+	}
+

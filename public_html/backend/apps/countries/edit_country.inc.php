@@ -35,7 +35,9 @@
 				throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 			}
 
-			if (empty($_POST['zones'])) $_POST['zones'] = [];
+			if (empty($_POST['zones'])) {
+				$_POST['zones'] = [];
+			}
 
 			foreach ($_POST['zones'] as $zone) {
 				if (empty($zone['code']) || empty($zone['name'])) {
@@ -146,7 +148,7 @@
 
 					<div class="form-group">
 						<label><?php echo language::translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>) <a href="https://en.wikipedia.org/wiki/Address_(geography)" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-						<?php echo functions::form_input_textarea('address_format', true, 'style="height: 150px;"'); ?>
+						<?php echo functions::form_textarea('address_format', true, 'style="height: 150px;"'); ?>
 					</div>
 
 					<div class="row">
@@ -196,7 +198,11 @@
 								<td><?php echo functions::form_input_hidden('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
 								<td><?php echo functions::form_input_text('zones['. $key .'][code]', true); ?></td>
 								<td><?php echo functions::form_input_text('zones['. $key .'][name]', true); ?></td>
-								<td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+								<td class="text-end">
+									<a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
+										<?php echo functions::draw_fonticon('remove'); ?>
+									</a>
+								</td>
 							</tr>
 							<?php } ?>
 						</tbody>
@@ -211,7 +217,7 @@
 
 			<div class="card-action">
 				<?php echo functions::form_button_predefined('save'); ?>
-				<?php if (!empty($country->data['id'])) echo functions::form_button_predefined('delete'); ?>
+				<?php if ($country->data['id']) echo functions::form_button_predefined('delete'); ?>
 				<?php echo functions::form_button_predefined('cancel'); ?>
 			</div>
 

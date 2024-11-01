@@ -4,17 +4,29 @@
 	 * This file contains PHP logic that is separated from the HTML view.
 	 * Visual changes can be made to the file found in the template folder:
 	 *
-	 *   ~/frontend/templates/default/partials/box_checkout_customer.inc.php
+	 *   ~/frontend/templates/default/pages/checkout/customer.inc.php
 	 */
 
 	header('X-Robots-Tag: noindex');
 
-	$shopping_cart = &session::$data['checkout']['shopping_cart'];
+	document::$layout = 'checkout';
 
-	if (empty($shopping_cart->data['items'])) return;
+	if (settings::get('catalog_only_mode')) {
+		return;
+	}
+
+	if (!empty(session::$data['checkout']['order'])) {
+		$order = &session::$data['checkout']['order'];
+	} else {
+		return;
+	}
+
+	if (empty($order->data['items'])) {
+		return;
+	}
 
 	if (file_get_contents('php://input') == '') {
-		foreach ($shopping_cart->data['customer'] as $key => $value) {
+		foreach ($order->data['customer'] as $key => $value) {
 			$_POST['customer'][$key] = $value;
 		}
 	}
@@ -66,14 +78,17 @@
 							throw new Exception(language::translate('error_missing_password', 'You must enter a password'));
 						}
 
-						if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']){
+						if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']) {
 							throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
 						}
 					}
 
 					$mod_customer = new mod_customer();
 					$result = $mod_customer->validate($_POST['customer']);
-					if (!empty($result['error'])) throw new Exception($result['error']);
+
+					if (!empty($result['error'])) {
+						throw new Exception($result['error']);
+					}
 
 				} catch(Exception $e) {
 					notices::add('errors', $e->getMessage());
@@ -87,7 +102,7 @@
 			'different_shipping_address',
 		] as $field) {
 			if (isset($_POST['customer'][$field])) {
-				$shopping_cart->data['customer'][$field] = $_POST['customer'][$field];
+				$order->data['customer'][$field] = $_POST['customer'][$field];
 			}
 		}
 
@@ -106,7 +121,7 @@
 			'phone',
 		] as $field) {
 			if (isset($_POST['billing_address'][$field])) {
-				$shopping_cart->data['billing_address'][$field] = $_POST['billing_address'][$field];
+				$order->data['billing_address'][$field] = $_POST['billing_address'][$field];
 			}
 		}
 
@@ -124,34 +139,32 @@
 			'zone_code',
 			'phone',
 		] as $field) {
-			if (!empty($shopping_cart->data['different_shipping_address']) && settings::get('customer_shipping_address')) {
+			if (settings::get('customer_shipping_address') && !empty($order->data['different_shipping_address'])) {
 				if (isset($_POST['shipping_address'][$field])) {
-					$shopping_cart->data['shipping_address'][$field] = $_POST['shipping_address'][$field];
+					$order->data['shipping_address'][$field] = $_POST['shipping_address'][$field];
 				} else {
-					$shopping_cart->data['shipping_address'][$field] = '';
+					$order->data['shipping_address'][$field] = '';
 				}
 			} else {
 				if (isset($_POST['billing_address'][$field])) {
-					$shopping_cart->data['shipping_address'][$field] = $_POST['billing_address'][$field];
+					$order->data['shipping_address'][$field] = $_POST['billing_address'][$field];
 				} else {
-					$shopping_cart->data['shipping_address'][$field] = '';
+					$order->data['shipping_address'][$field] = '';
 				}
 			}
 		}
-
-		$shopping_cart->save();
 
 		if (empty(notices::$data['errors'])) {
 
 			// Save details to account
 			if (!empty(customer::$data['id']) && !empty($_POST['save_to_account'])) {
 				$customer = new ent_customer(customer::$data['id']);
-				$customer->data = array_replace_recursive(array_intersect_key($shopping_cart->data['customer'], $customer->data));
+				$customer->data = array_replace_recursive(array_intersect_key($order->data['customer'], $customer->data));
 				$customer->save();
 			}
 
 			// Create customer account
-			if (settings::get('accounts_enabled') && empty($shopping_cart->data['customer']['id']) && !empty($shopping_cart->data['customer']['email'])) {
+			if (settings::get('accounts_enabled') && empty($order->data['customer']['id']) && !empty($order->data['customer']['email'])) {
 				if (settings::get('register_guests') || !empty($_POST['sign_up'])) {
 
 					if (!database::query(
@@ -161,7 +174,7 @@
 					)->num_rows) {
 
 						$customer = new ent_customer();
-						$customer->data = array_replace($customer->data, array_intersect_key($shopping_cart->data['customer'], $customer->data));
+						$customer->data = array_replace($customer->data, array_intersect_key($order->data['customer'], $customer->data));
 
 						$customer->set_password($_POST['password']);
 
@@ -190,8 +203,8 @@
 						database::query(
 							"update ". DB_TABLE_PREFIX ."customers
 							set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-									last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
-									last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
+								last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+								last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
 							where id = ". (int)$customer->data['id'] ."
 							limit 1;"
 						);
@@ -213,24 +226,24 @@
 
 	$account_exists = false;
 	if (settings::get('accounts_enabled')) {
-		if (empty($shopping_cart->data['customer']['id'])){
-			if (!empty($shopping_cart->data['customer']['email'])) {
-				if (database::query(
-					"select id from ". DB_TABLE_PREFIX ."customers
-					where email = '". database::input($shopping_cart->data['customer']['email']) ."'
-					limit 1;"
-				)->num_rows) {
-					$account_exists = true;
-				}
+		if (empty($order->data['customer']['id']) && !empty($order->data['customer']['email'])) {
+			if (database::query(
+				"select id from ". DB_TABLE_PREFIX ."customers
+				where email = '". database::input($order->data['customer']['email']) ."'
+				limit 1;"
+			)->num_rows) {
+				$account_exists = true;
 			}
 		}
 	}
 
 	$subscribed_to_newsletter = false;
-	if (!empty($shopping_cart->data['customer']['email'])) {
+
+	if (!empty($order->data['customer']['email'])) {
 		if (database::query(
 			"select id from ". DB_TABLE_PREFIX ."newsletter_recipients
-			where lower(email) = lower('". database::input($shopping_cart->data['customer']['email']) ."');"
+			where lower(email) = lower('". database::input($order->data['customer']['email']) ."')
+			limit 1;"
 		)->num_rows) {
 			$subscribed_to_newsletter = true;
 		}
@@ -238,9 +251,16 @@
 
 	functions::draw_lightbox();
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_checkout_customer.inc.php');
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/customer.inc.php');
+
 	$_page->snippets = [
 		'account_exists' => $account_exists,
 		'subscribed_to_newsletter' => $subscribed_to_newsletter,
 	];
-	echo $_page->render();
+
+	echo $_page;
+
+	// Don't process layout if this is an ajax request
+	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+		exit;
+	}

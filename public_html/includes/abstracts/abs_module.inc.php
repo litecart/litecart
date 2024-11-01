@@ -27,10 +27,10 @@
 
 			if ($module) {
 
-					// Decode settings
+				// Decode settings
 				$settings = json_decode($module['settings'], true);
 
-					// Set settings to object
+				// Set settings to object
 				foreach ($this->settings() as $setting) {
 					$setting['key'] = rtrim($setting['key'], '[]');
 					$this->settings[$setting['key']] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
@@ -46,6 +46,6 @@
 			}
 		}
 
-			// Last destination method handler for prevent throwing errors if called methods are not defined
+		// Last destination method handler for prevent throwing errors if called methods are not defined
 		public function __call($name, $arguments) {}
 	}

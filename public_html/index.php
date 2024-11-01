@@ -31,7 +31,7 @@
 	// Initialize endpoint
 	if (!empty(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend') {
 		require 'app://backend/init.inc.php';
-		} else {
+	} else {
 		require 'app://frontend/init.inc.php';
 	}
 

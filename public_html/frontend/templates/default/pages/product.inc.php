@@ -222,15 +222,15 @@ form[name="buy_now_form"] .dropdown-menu .image {
 										</a>
 
 										<a class="facebook btn btn-default" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>">
-											<?php echo functions::draw_fonticon('fa-facebook-square fa-lg', 'style="color: #3b5998;"'); ?>
+											<?php echo functions::draw_fonticon('fa-facebook fa-lg', 'style="color: #3b5998;"'); ?>
 										</a>
 
-										<a class="twitter btn btn-default" href="<?php echo document::href_link('https://twitter.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>">
-											<?php echo functions::draw_fonticon('fa-twitter-square fa-lg', 'style="color: #55acee;"'); ?>
+										<a class="x btn btn-default" href="<?php echo document::href_link('https://twitter.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>">
+											<?php echo functions::draw_fonticon('fa-twitter fa-lg', 'style="color: #000;"'); ?>
 										</a>
 
 										<a class="pinterest btn btn-default" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Pinterest'); ?>">
-											<?php echo functions::draw_fonticon('fa-pinterest-square fa-lg', 'style="color: #bd081c;"'); ?>
+											<?php echo functions::draw_fonticon('fa-pinterest fa-lg', 'style="color: #bd081c;"'); ?>
 										</a>
 									</div>
 

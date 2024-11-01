@@ -83,19 +83,6 @@
 		$('a[data-toggle="tab"][href="' + document.location.hash + '"]').trigger('click');
 	}
 
-	// Bootstrap Compatible (data-toggle="buttons")
-	$('body').on('click', '[data-toggle="buttons"] input[type="checkbox"]', function(){
-		if ($(this).is(':checked')) {
-			$(this).closest('.btn').addClass('active');
-		} else {
-			$(this).closest('.btn').removeClass('active');
-		}
-	});
-
-	$('body').on('click', '[data-toggle="buttons"] input[type="radio"]', function(){
-		$(this).closest('.btn').addClass('active').siblings().removeClass('active');
-	});
-
 	// Data-Table Toggle Checkboxes
 	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"]', function() {
 		$(this).closest('.data-table').find('tbody :checkbox').each(function() {
@@ -182,21 +169,29 @@
 			cache: false,
 			async: true,
 			dataType: 'json',
+
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'));
 			},
+
 			error: function(jqXHR, textStatus, errorThrown) {
 				if (data) alert('Error while updating cart');
 			},
+
 			success: function(json) {
+
 				if (json['alert']) alert(json['alert']);
+
 				$('#cart .items').html('');
+
 				if (json['items']) {
 					$.each(json['items'], function(i, item){
 						$('#cart .items').append('<li><a href="'+ item.link +'">'+ item.quantity +' x '+ item.name +' - '+ item.formatted_price +'</a></li>');
 					});
+
 					$('#cart .items').append('<li class="dropdown-divider"></li>');
 				}
+
 				$('#cart .items').append('<li><a href="' + window._env.platform.url + 'checkout"><i class="fa fa-shopping-cart"></i> ' + json['text_total'] + ': <span class="formatted-value">'+ json['formatted_value'] +'</a></li>');
 				$('#cart .quantity').html(json['quantity'] ? json['quantity'] : '');
 				$('#cart .formatted_value').html(json['formatted_value']);

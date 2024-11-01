@@ -40,7 +40,7 @@
 		return in_array(false, $results) ? false : true;
 	}
 
-		// PHP doesn't always clean up temp files, so let's create a function that does
+	// PHP doesn't always clean up temp files, so let's create a function that does
 	function file_create_tempfile($data='', $extension='') {
 
 		while (!isset($tmp_file) || is_file($tmp_file)) {
@@ -171,7 +171,9 @@
 
 	function file_relative_path($target, $base = FS_DIR_APP) {
 
-		if ($base === null) $base = getcwd();
+		if ($base === null) {
+			$base = getcwd();
+		}
 
 		$base = explode('/', rtrim(str_replace('\\', '/', file_realpath($base)), '/'));
 		$target = explode('/', rtrim(str_replace('\\', '/', file_realpath($target)), '/'));
@@ -261,7 +263,7 @@
 			'?'  => '.',
 		]);
 
-			// Resolve some glob flags into regex
+		// Resolve some glob flags into regex
 		if ($flags & GLOB_BRACE) {
 
 			$regex = preg_replace_callback('#\{[^\}]+\}#', function($matches) {

@@ -4,12 +4,14 @@
 	 * This file contains PHP logic that is separated from the HTML view.
 	 * Visual changes can be made to the file found in the template folder:
 	 *
-	 *   ~/frontend/templates/default/pages/order_success.inc.php
+	 *   ~/frontend/templates/default/pages/checkout/success.inc.php
 	 */
 
 	header('X-Robots-Tag: noindex');
 
-	if (settings::get('catalog_only_mode')) return;
+	if (settings::get('catalog_only_mode')) {
+		return;
+	}
 
 	document::$title[] = language::translate('title_order_success', 'Order Success');
 
@@ -45,4 +47,4 @@
 		'order_success_modules_output' => $order_module->success($order),
 	];
 
-	echo $_page->render();
+	echo $_page;

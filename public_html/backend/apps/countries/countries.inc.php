@@ -6,6 +6,7 @@
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
 		try {
+
 			if (empty($_POST['countries'])) {
 				throw new Exception(language::translate('error_must_select_countries', 'You must select countries'));
 			}
@@ -77,7 +78,7 @@
 
 			<tbody>
 				<?php foreach ($countries as $country) { ?>
-				<tr class="<?php if (empty($country['status'])) echo 'semi-transparent'; ?>">
+				<tr class="<?php echo empty($country['status']) ? 'semi-transparent' : ''; ?>">
 					<td><?php echo functions::form_checkbox('countries['. $country['iso_code_2'] .']', $country['iso_code_2']); ?></td>
 					<td><?php echo functions::draw_fonticon($country['status'] ? 'on' : 'off'); ?></td>
 					<td><?php echo $country['id']; ?></td>

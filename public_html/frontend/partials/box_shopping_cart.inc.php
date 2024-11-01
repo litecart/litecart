@@ -10,6 +10,7 @@
 	if (settings::get('catalog_only_mode')) return;
 
 	$box_shopping_cart = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_shopping_cart.inc.php');
+
 	$box_shopping_cart->snippets = [
 		'items' => [],
 		'link' => document::ilink('shopping_cart'),

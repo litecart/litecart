@@ -57,7 +57,7 @@
 			'content' => (string)$_content,
 		];
 
-		echo $_page->render();
+		echo $_page;
 
 	// Display the start page
 	} else {

@@ -44,7 +44,10 @@
 	$currencies = database::query(
 		"select * from ". DB_TABLE_PREFIX ."currencies
 		order by field(status, 1, -1, 0), priority, name;"
-	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
+	)->fetch_all();
+
+	// Number of Rows
+	$num_rows = count($currencies);
 
 ?>
 <div class="card card-app">
@@ -90,7 +93,11 @@
 					<td class="text-center"><?php if ($currency['code'] == settings::get('default_currency_code')) echo functions::draw_fonticon('fa-check'); ?></td>
 					<td class="text-center"><?php if ($currency['code'] == settings::get('store_currency_code')) echo functions::draw_fonticon('fa-check'); ?></td>
 					<td class="text-center"><?php echo $currency['priority']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_currency', ['currency_code' => $currency['code']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end">
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_currency', ['currency_code' => $currency['code']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
+							<?php echo functions::draw_fonticon('edit'); ?>
+						</a>
+					</td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -114,12 +121,6 @@
 		</div>
 
 	<?php echo functions::form_end(); ?>
-
-	<?php if ($num_pages > 1) { ?>
-	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
-	</div>
-	<?php } ?>
 </div>
 
 <script>

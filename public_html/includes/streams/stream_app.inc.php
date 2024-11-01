@@ -1,7 +1,7 @@
 <?php
 
 	class stream_app {
-		private $_directory;
+		private $_directory = [];
 		private $_stream;
 		public $context;
 
@@ -9,7 +9,7 @@
 			$path = $this->_resolve_path($path);
 			$this->_directory = opendir($path);
 			return true;
-			}
+		}
 
 		public function dir_readdir() {
 

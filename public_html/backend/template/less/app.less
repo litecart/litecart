@@ -11,8 +11,8 @@ body {
 #sidebar {
 	flex: 0 0 var(--sidebar-width);
 	background-color: var(--sidebar-background-color);
+	box-shadow: 0 1px 1rem rgba(0, 0, 0, .05);
 	padding: var(--gutter-size);
-	box-shadow: 0 1px 1rem rgba(0,0,0,0.05);
 
 	.logotype {
 		display: block;
@@ -295,16 +295,16 @@ body {
 
 .app-icon {
 	display: inline-flex;
-		//width: fit-content;
+	//width: fit-content;
 	padding: .33em;
 	margin-inline-end: .33em;
 	line-height: 100%;
-		//border-radius: var(--border-radius);
+	//border-radius: var(--border-radius);
 	background: var(--app-color);
 	color: #fff;
-		//clip-path: circle(50%);
-		//clip-path: polygon(50% 0%, 83% 12%, 100% 43%, 94% 78%, 68% 100%, 32% 100%, 6% 78%, 0% 43%, 17% 12%);
-		//clip-path: xywh(0 0 100% 100% round var(--border-radius) 0); // 2-rounded corners
+	//clip-path: circle(50%);
+	//clip-path: polygon(50% 0%, 83% 12%, 100% 43%, 94% 78%, 68% 100%, 32% 100%, 6% 78%, 0% 43%, 17% 12%);
+	//clip-path: xywh(0 0 100% 100% round var(--border-radius) 0); // 2-rounded corners
 	clip-path: xywh(0 0 100% 100% round var(--border-radius)); // Standard
 	place-items: center;
 	aspect-ratio: 1;

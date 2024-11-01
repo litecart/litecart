@@ -8,8 +8,6 @@
 		public $cleanup = false;
 		private $_parsers = [];
 
-		public static $time_elapsed = 0;
-
 		public function __construct($view='') {
 
 			if ($view) {
@@ -21,9 +19,10 @@
 				// Relative path
 				} else {
 					$this->view = 'app://frontend/templates/'. settings::get('template') .'/' . preg_replace('#\.inc\.php$#', '', $view) . '.inc.php';
+				}
+
 				if (!is_file($this->view)) {
-						$this->view = 'app://frontend/templates/default/'. $view;
-					}
+					$this->view = 'app://frontend/templates/default/'. $view;
 				}
 			}
 
@@ -82,12 +81,12 @@
 			return $this->render();
 		}
 
-			// Render and make it stick
+		// Render and make it stick
 		public function stitch($view=null, $cleanup=null) {
 			return $this->html = $this->render($view, $cleanup);
 		}
 
-			// Render but don't make it stick
+		// Render but don't make it stick
 		public function render($view=null, $cleanup=null) {
 
 			if ($view) {
@@ -99,9 +98,10 @@
 				// Relative path
 				} else {
 					$this->view = 'app://frontend/template/' . preg_replace('#^(.*?)(\.inc\.php)?$#', '$1.inc.php', $view);
-					if (!is_file($this->view)) {
-						$this->view = 'app://frontend/template/'. $view;
-					}
+				}
+
+				if (!is_file($this->view)) {
+					$this->view = 'app://frontend/template/'. $view;
 				}
 
 			} else {
@@ -114,7 +114,7 @@
 
 			$html = $this->html;
 
-				// Load and process view in an isolated scope
+			// Load and process view in an isolated scope
 			if ($view) {
 				$html = (function(){
 					ob_start();
@@ -138,7 +138,7 @@
 			}
 
 			if ($cleanup) {
-					//$html = preg_replace('#'. preg_quote($this->wrapper[0], '#') .'(if|each) .*?'. preg_quote($this->wrapper[0], '#') .'\1'. preg_quote($this->wrapper[1], '#') .'#', '', $html);
+				//$html = preg_replace('#'. preg_quote($this->wrapper[0], '#') .'(if|each) .*?'. preg_quote($this->wrapper[0], '#') .'\1'. preg_quote($this->wrapper[1], '#') .'#', '', $html);
 				$html = preg_replace('#'. preg_quote($this->wrapper[0], '#') .'.*?'. preg_quote($this->wrapper[1], '#') .'#', '', $html);
 				$html = str_replace(['\\{\\{', '\\}\\}'], ['{{', '}}'], $html); // Unescape escaped wrappers
 			}

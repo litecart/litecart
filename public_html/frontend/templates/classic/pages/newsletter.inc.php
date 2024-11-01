@@ -36,7 +36,7 @@
 						<div class="row">
 							<div class="form-group col-xs-6">
 								<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-								<?php echo functions::form_input_captcha('newsletter_subscribe', 'required'); ?>
+								<?php echo functions::form_captcha('newsletter_subscribe', 'required'); ?>
 							</div>
 						</div>
 						<?php } ?>

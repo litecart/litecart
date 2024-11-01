@@ -58,7 +58,7 @@
 
 							<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
 							<div class="form-group">
-								<?php echo functions::form_toggle_buttons('type', ['individual' => language::translate('title_individual', 'Individual'), 'company' => language::translate('title_company', 'Company')], empty($_POST['type']) ? 'individual' : true); ?>
+								<?php echo functions::form_toggle('type', ['individual' => language::translate('title_individual', 'Individual'), 'company' => language::translate('title_company', 'Company')], empty($_POST['type']) ? 'individual' : true); ?>
 							</div>
 
 							<div class="company-details" <?php echo (empty($_POST['type']) || $_POST['type'] == 'individual') ? 'style="display: none;"' : ''; ?>>

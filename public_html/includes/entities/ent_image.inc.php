@@ -1,6 +1,6 @@
 <?php
 
-		//! The original imagecopyresampled function is broken. This is a fixed version of it.
+	//! The original imagecopyresampled function is broken. This is a fixed version of it.
 	/*!
 	 *  \param dst_im Destination image
 	 *  \param src_im Source image
@@ -43,7 +43,9 @@
 				$this->_data['library'] = $library;
 			}
 
-			$this->_whitespace = preg_split('#\s*,\s*#', settings::get('image_whitespace_color'), -1, PREG_SPLIT_NO_EMPTY);
+			if (settings::get('image_whitespace_color')) {
+				$this->_whitespace = preg_split('#\s*,\s*#', settings::get('image_whitespace_color'), -1, PREG_SPLIT_NO_EMPTY);
+			}
 		}
 
 		public function &__get($name) {
@@ -373,9 +375,9 @@
 						switch ($clipping) {
 
 							case 'FIT':
-							//$result = $this->_image->scaleImage($max_width, $max_height, true);
-							//return $this->_image->adaptiveResizeImage($max_width, $max_height, true);
-						return $this->_image->thumbnailImage($max_width, $max_height, true);
+								//$result = $this->_image->scaleImage($max_width, $max_height, true);
+								//return $this->_image->adaptiveResizeImage($max_width, $max_height, true);
+								return $this->_image->thumbnailImage($max_width, $max_height, true);
 
 							case 'FIT_ONLY_BIGGER':
 								if ($this->width <= $max_width && $this->height <= $max_height) return true;
@@ -384,7 +386,7 @@
 							case 'FIT_USE_WHITESPACING':
 								return $this->_image->thumbnailImage($max_width, $max_height, true, true);
 
-							case 'fit_only_bigger_use_whitespacing':
+							case 'FIT_ONLY_BIGGER_USE_WHITESPACING':
 								if ($this->width <= $max_width && $this->height <= $max_height) {
 									$_newimage = new Imagick();
 									$_newimage->newImage($max_width, $max_height, 'rgba('.$this->_whitespace[0].','.$this->_whitespace[1].','.$this->_whitespace[2].',0)');
@@ -427,7 +429,7 @@
 						case 'CROP':
 						case 'CROP_ONLY_BIGGER':
 
-								// Calculate dimensions
+							// Calculate dimensions
 							$new_width = $max_width;
 							$new_height = $max_height;
 
@@ -440,10 +442,10 @@
 								}
 							}
 
-								// Create output image container
+							// Create output image container
 							$_resized = ImageCreateTrueColor($new_width, $new_height);
 
-								// Calculate destination dimensional ratio
+							// Calculate destination dimensional ratio
 							$destination_ratio = $new_width / $new_height;
 
 							ImageAlphaBlending($_resized, true);
@@ -451,7 +453,7 @@
 
 							ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
 
-								// Perform resample
+							// Perform resample
 							if (($this->width / $new_width) > ($this->height / $new_height)) {
 								$result = ImageCopyResampledFixed($_resized, $this->_image, 0, 0, round(($this->width - $new_width * $this->height / $new_height) / 2), 0, $new_width, $new_height, round($this->height * $destination_ratio), $this->height, $this->_whitespace);
 							} else {
@@ -462,11 +464,11 @@
 
 						case 'STRETCH':
 
-								// Calculate dimensions
+							// Calculate dimensions
 							$new_width = ((int)$max_width == 0) ? $this->width : $max_width;
 							$new_height = ((int)$max_height == 0) ? $this->height : $max_height;
 
-								// Create output image container
+							// Create output image container
 							$_resized = ImageCreateTrueColor($new_width, $new_height);
 
 							ImageAlphaBlending($_resized, true);
@@ -474,7 +476,7 @@
 
 							ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
 
-								// Perform resample
+							// Perform resample
 							$result = ImageCopyResampledFixed($_resized, $this->_image, round(($max_width - $new_width) / 2), round(($max_height - $new_height) / 2), 0, 0, $new_width, $new_height, $this->width, $this->height, $this->_whitespace);
 
 							break;
@@ -494,46 +496,46 @@
 
 							if (in_array($clipping, ['FIT_ONLY_BIGGER', 'FIT_ONLY_BIGGER_USE_WHITESPACING'])) {
 								if ($new_width > $new_height) {
-							if ($new_width > $this->width) {
-								$new_width = $this->width;
-								$new_height = round($new_width / $ratio);
-							}
+									if ($new_width > $this->width) {
+										$new_width = $this->width;
+										$new_height = round($new_width / $ratio);
+									}
 								} else {
-							if ($new_height > $this->height) {
-								$new_height = $this->height;
-								$new_width = round($new_height * $ratio);
-							}
+									if ($new_height > $this->height) {
+										$new_height = $this->height;
+										$new_width = round($new_height * $ratio);
+									}
 								}
 							}
 
 							if (in_array($clipping, ['FIT_USE_WHITESPACING', 'FIT_ONLY_BIGGER_USE_WHITESPACING'])) {
 
-							// Create output image container
+								// Create output image container
 								$_resized = ImageCreateTrueColor($max_width, $max_height);
 
 								ImageAlphaBlending($_resized, true);
 								ImageSaveAlpha($_resized, true);
 
 								// Fill with whitespace color
-							ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
+								ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
 
-									// Make whitespace color transparent
-									//ImageColorTransparent($_resized, ImageColorAllocate($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2]));
+								// Make whitespace color transparent
+								//ImageColorTransparent($_resized, ImageColorAllocate($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2]));
 
-							// Perform resample
+								// Perform resample
 								$result = ImageCopyResampledFixed($_resized, $this->_image, round(($max_width - $new_width) / 2), round(($max_height - $new_height) / 2), 0, 0, $new_width, $new_height, $this->width, $this->height, $this->_whitespace);
 
 							} else {
 
-					// Create output image container
-					$_resized = ImageCreateTrueColor($new_width, $new_height);
+								// Create output image container
+								$_resized = ImageCreateTrueColor($new_width, $new_height);
 
-					ImageAlphaBlending($_resized, true);
-					ImageSaveAlpha($_resized, true);
+								ImageAlphaBlending($_resized, true);
+								ImageSaveAlpha($_resized, true);
 
-					ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
+								ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
 
-					// Perform resample
+								// Perform resample
 								$result = ImageCopyResampledFixed($_resized, $this->_image, round(($max_width - $new_width) / 2), round(($max_height - $new_height) / 2), 0, 0, $new_width, $new_height, $this->width, $this->height, $this->_whitespace);
 							}
 
@@ -567,7 +569,7 @@
 					switch($filter) {
 
 						case 'blur':
-								//return $this->_image->gaussianBlurImage(2, 3);
+							//return $this->_image->gaussianBlurImage(2, 3);
 							return $this->_image->blurImage(2, 3);
 
 						case 'contrast':
@@ -605,7 +607,7 @@
 
 						case 'blur':
 							ImageFilter($this->_image, IMG_FILTER_GAUSSIAN_BLUR);
-								//ImageFilter($this->_image, IMG_FILTER_SELECTIVE_BLUR);
+							//ImageFilter($this->_image, IMG_FILTER_SELECTIVE_BLUR);
 							return true;
 
 						case 'pixelate':
@@ -677,7 +679,7 @@
 						return false;
 					}
 
-						//$result = ImageCropAuto($this->_image, IMG_CROP_THRESHOLD, 100, ImageColorAt($this->_image, 0, 0));
+					//$result = ImageCropAuto($this->_image, IMG_CROP_THRESHOLD, 100, ImageColorAt($this->_image, 0, 0));
 					$result = ImageCropAuto($this->_image, IMG_CROP_SIDES);
 
 					$this->data['width'] = ImageSX($this->_image);
@@ -713,8 +715,8 @@
 						$_watermark->readImage($watermark);
 
 						if ($_watermark->getImageWidth() > round($this->width/5) || $_watermark->getImageHeight() > round($this->height/5)) {
-						$_watermark->thumbnailImage(round($this->width/5), round($this->height/5), true);
-					}
+							$_watermark->thumbnailImage(round($this->width/5), round($this->height/5), true);
+						}
 
 						switch ($align_x) {
 
@@ -817,6 +819,11 @@
 			}
 		}
 
+		public function write($destination, $quality=90, $interlaced=false) {
+			trigger_error(__CLASS__.'->write() is deprecated. Instead, use '.__CLASS__.'->save()', E_USER_DEPRECATED);
+			return $this->save($destination, $quality, $interlaced);
+		}
+
 		public function save($destination='', $quality=90, $interlaced=false) {
 
 			settype($quality, 'integer');
@@ -867,12 +874,12 @@
 					switch ($type) {
 
 						case 'jpg':
-							 $this->_image->setImageCompression(Imagick::COMPRESSION_JPEG);
-							 break;
+							$this->_image->setImageCompression(Imagick::COMPRESSION_JPEG);
+							break;
 
 						default:
-							 $this->_image->setImageCompression(Imagick::COMPRESSION_ZIP);
-							 break;
+							$this->_image->setImageCompression(Imagick::COMPRESSION_ZIP);
+							break;
 					}
 
 					$this->_image->setImageCompressionQuality((int)$quality);

@@ -1,5 +1,7 @@
 <?php
 
+	ini_set('memory_limit', -1);
+
 	breadcrumbs::reset();
 	breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), WS_DIR_ADMIN);
 	breadcrumbs::add(language::translate('title_about', 'About'), document::link());
@@ -7,6 +9,7 @@
 	if (isset($_POST['delete'])) {
 
 		try {
+
 			if (empty($_POST['errors'])) {
 				throw new Exception(language::translate('error_must_select_errors', 'You must select errors'));
 			}
@@ -31,14 +34,14 @@
 		}
 	}
 
-		// CPU Usage
+	// CPU Usage
 	if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
 		if (function_exists('sys_getloadavg')) {
 			$cpu_usage = round(sys_getloadavg()[0], 2);
 		}
 	}
 
-		// Memory Usage
+	// Memory Usage
 	if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
 
 		if (@is_readable('/proc/meminfo')) {
@@ -62,7 +65,7 @@
 		}
 	}
 
-		// Server Uptime
+	// Server Uptime
 	if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
 		if (@is_readable('/proc/uptime')) {
 			$raw_uptime = round((float)file_get_contents('/proc/uptime'));
@@ -83,10 +86,15 @@
 		}
 	}
 
-		// Errors
+	// Errors
 	$errors = [];
 
 	if ($log_file = ini_get('error_log')) {
+			
+		if (($filesize = filesize($log_file)) > 1024e6) {
+			notices::add('warnings', language::translate('warning_truncating_extremely_large_log_file', 'Truncating an extremely large log file') .' ('. language::number_format($filesize / (1024 * 1024)) .' Mbytes)');
+			file_put_contents($logfile, '');
+		}
 
 		$entries = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($log_file));
 
@@ -105,7 +113,7 @@
 					];
 				} else {
 					$errors[$checksum]['occurrences']++;
-						//$rows[$checksum]['backtrace'] = $matches[3][$i];
+					//$rows[$checksum]['backtrace'] = $matches[3][$i];
 					$errors[$checksum]['last_occurrence'] = strtotime($matches[1][$i]);
 				}
 			}
@@ -119,7 +127,7 @@
 		});
 	}
 
-		// Render view
+	// Render view
 	$_page = new ent_view('app://backend/template/pages/about.inc.php');
 
 	$_page->snippets = [

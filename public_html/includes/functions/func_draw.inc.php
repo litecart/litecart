@@ -53,7 +53,7 @@
 			$banners[$key]['output'] = $output;
 		}
 
-			// Banner Click Tracking
+		// Banner Click Tracking
 		document::$javascript['banner-click-tracking'] = implode(PHP_EOL, [
 			'  var mouseOverAd = false;',
 			'  $(\'.banner[data-id]\').hover(function(){',
@@ -83,59 +83,72 @@
 		return $output;
 	}
 
-	function draw_fonticon($class, $parameters=null) {
+	function draw_fonticon($class, $parameters='') {
 
 		switch(true) {
 
 			// Bootstrap Icons
 			case (substr($class, 0, 3) == 'bi-'):
 				document::$head_tags['bootstrap-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">';
-				return '<i class="bi '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : '') .'></i>';
+				return '<i class="bi '. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 
 			// Fontawesome 4
 			case (substr($class, 0, 3) == 'fa-'):
-					//document::$head_tags['fontawesome'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">'; // Uncomment if removed from lib_document
-				return '<i class="fa '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : '') .'></i>';
+				//document::$head_tags['fontawesome'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">'; // Uncomment if removed from lib_document
+				return '<i class="fa '. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+
+			// Fontawesome 5
+			case (substr($class, 0, 7) == 'far fa-'):
+			case (substr($class, 0, 7) == 'fab fa-'):
+			case (substr($class, 0, 7) == 'fas fa-'):
+				//document::$head_tags['fontawesome5'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">';
+				return '<i class="'. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 
 			// Foundation
 			case (substr($class, 0, 3) == 'fi-'):
 				document::$head_tags['foundation-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation-icons/latest/foundation-icons.min.css">';
-				return '<i class="'. $class .'"'. (!empty($parameters) ? ' ' . $parameters : '') .'></i>';
+				return '<i class="'. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 
 			// Glyphicon
 			case (substr($class, 0, 10) == 'glyphicon-'):
-					//document::$head_tags['foundation-icons'] = '<link rel="stylesheet" href="'/path/to/glyphicon.min.css">'; // Not embedded in release
-				return '<span class="glyphicon '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : '') .'></span>';
+				//document::$head_tags['glyphicon'] = '<link rel="stylesheet" href="'/path/to/glyphicon.min.css">'; // Not embedded in release
+				return '<span class="glyphicon '. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></span>';
 
 			// Ion Icons
 			case (substr($class, 0, 4) == 'ion-'):
 				document::$head_tags['ionicons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/latest/css/ionicons.min.css">';
-				return '<i class="'. $class .'"'. (!empty($parameters) ? ' ' . $parameters : '') .'></i>';
+				return '<i class="'. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 
 			// Material Design Icons
 			case (substr($class, 0, 4) == 'mdi-'):
 				document::$head_tags['material-design-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">';
-				return '<i class="mdi '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : '') .'></i>';
+				return '<i class="mdi '. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 		}
 
 		switch ($class) {
 			case 'add':         return draw_fonticon('fa-plus');
 			case 'cancel':      return draw_fonticon('fa-times');
 			case 'company':     return draw_fonticon('fa-building', 'style="color: #888;"');
+			case 'delete':      return draw_fonticon('fa-trash-o');
+			case 'download':    return draw_fonticon('fa-download');
 			case 'edit':        return draw_fonticon('fa-pencil');
-			case 'fail':        return draw_fonticon('fa-times', 'color: #c00;"');
+			case 'failed':      return draw_fonticon('fa-times', 'style="color: #c00;"');
+			case 'false':       return draw_fonticon('fa-times', 'style="color: #c00;"');
 			case 'folder':      return draw_fonticon('fa-folder', 'style="color: #cc6;"');
 			case 'folder-open': return draw_fonticon('fa-folder-open', 'style="color: #cc6;"');
 			case 'remove':      return draw_fonticon('fa-times', 'style="color: #c33;"');
-			case 'delete':      return draw_fonticon('fa-trash-o');
 			case 'move-up':     return draw_fonticon('fa-arrow-up', 'style="color: #39c;"');
 			case 'move-down':   return draw_fonticon('fa-arrow-down', 'style="color: #39c;"');
 			case 'ok':          return draw_fonticon('fa-check', 'style="color: #8c4;"');
 			case 'on':          return draw_fonticon('fa-circle', 'style="color: #8c4;"');
 			case 'off':         return draw_fonticon('fa-circle', 'style="color: #f64;"');
+			case 'print':       return draw_fonticon('fa-print', 'style="color: #ded90f;"');
+			case 'remove':      return draw_fonticon('fa-times', 'style="color: #c00;"');
 			case 'semi-off':    return draw_fonticon('fa-circle', 'style="color: #ded90f;"');
 			case 'save':        return draw_fonticon('fa-floppy-o');
 			case 'send':        return draw_fonticon('fa-paper-plane');
+			case 'success':     return draw_fonticon('fa-check', 'style="color: #8c4;"');
+			case 'true':        return draw_fonticon('fa-check', 'style="color: #8c4;"');
 			case 'user':        return draw_fonticon('fa-user', 'style="color: #888"');
 			case 'warning':     return draw_fonticon('fa-exclamation-triangle', 'color: #c00;"');
 			default: trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING); return;
@@ -189,6 +202,10 @@
 			}
 		}
 
+		if (empty($aspect_ratio)) {
+			$aspect_ratio = functions::image_aspect_ratio($width, $height);
+		}
+
 		switch (strtolower($clipping)) {
 
 			case '':
@@ -219,12 +236,11 @@
 		$thumbnail = functions::image_thumbnail($image, $width, $height);
 		$thumbnail_2x = functions::image_thumbnail($image, $width*2, $height*2);
 
-
 		if ($width && $height) {
 			if (preg_match('#style="#', $parameters)) {
-				$parameters = preg_replace('#style="(.*?)"#', 'style="$1 aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"', $parameters);
+				$parameters = preg_replace('#style="(.*?)"#', 'style="$1 aspect-ratio: '. $aspect_ratio .';"', $parameters);
 			} else {
-				$parameters .= ' style="aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"';
+				$parameters .= ' style="aspect-ratio: '. $aspect_ratio .';"';
 			}
 		}
 
@@ -261,6 +277,7 @@
 
 		$listing_product->snippets = [
 			'product_id' => $product['id'],
+			'num_stock_options' => $product['num_stock_options'],
 			'code' => $product['code'],
 			'sku' => fallback($product['sku'], ''),
 			'gtin' => fallback($product['gtin'], ''),

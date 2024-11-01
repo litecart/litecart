@@ -31,16 +31,15 @@ ErrorDocument 500 "Internal Server Error"
 
   # Redirect www to non-www
   #RewriteCond %{HTTP_HOST} ^www\.(.*)$
-  #RewriteCond %{REQUEST_METHOD} !=POST
-  #RewriteCond %{REQUEST_URI} !^/\.well-known/
   #RewriteCond %{HTTP_HOST} !^static\.
+  #RewriteCond %{REQUEST_METHOD} !=POST
   #RewriteCond %{REQUEST_URI} !^/\.well-known/
   #RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
   # Redirect from any alias domain to primary domain
   #RewriteCond %{REQUEST_METHOD} !=POST
-  #RewriteCond %{HTTP_HOST} !^www\.mydomain\.com
   #RewriteCond %{HTTP_HOST} !^static\.
+  #RewriteCond %{HTTP_HOST} !^www\.mydomain\.com
   #RewriteCond %{REQUEST_URI} !^/\.well-known/
   #RewriteRule ^ https://www.mydomain.com%{REQUEST_URI} [R=301,L]
 

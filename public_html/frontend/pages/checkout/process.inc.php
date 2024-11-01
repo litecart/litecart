@@ -4,39 +4,41 @@
 
 	document::$layout = 'checkout';
 
-	if (settings::get('catalog_only_mode')) return;
+	if (settings::get('catalog_only_mode')) {
+		return;
+	}
 
-	if (empty(session::$data['checkout']['shopping_cart'])) {
-		notices::add('errors', 'Missing shopping cart object');
+	if (empty(session::$data['checkout']['order'])) {
+		notices::add('errors', 'Missing order object');
 		header('Location: '. document::ilink('checkout/index'));
 		exit;
 	}
 
-	$shopping_cart = &session::$data['checkout']['shopping_cart'];
+	$order = &session::$data['checkout']['order'];
 
-	if (empty($shopping_cart->data['processable'])) {
+	if (empty($order->data['processable'])) {
 		notices::add('errors', 'The shopping cart is not yet processable for creating an order');
 		header('Location: '. document::ilink('checkout/index'));
 		exit;
 	}
 
-	if ($error_message = $shopping_cart->validate()) {
+	if ($error_message = $order->validate()) {
 		notices::add('errors', $error_message);
 		header('Location: '. document::ilink('checkout/index'));
 		exit;
 	}
 
 	// If there is an amount to pay
-	if (currency::format_raw($shopping_cart->data['total'], $shopping_cart->data['currency_code'], $shopping_cart->data['currency_value']) > 0) {
+	if (currency::format_raw($order->data['total'], $order->data['currency_code'], $order->data['currency_value']) > 0) {
 
 		// Refresh the shopping cart if it's in the database in case a callback have tampered with it
-		if (!empty($shopping_cart->data['id'])) {
-			$shopping_cart->load($shopping_cart->data['id']);
+		if (!empty($order->data['id'])) {
+			$order->load($order->data['id']);
 		}
 
 		// Verify transaction
-		if ($payment->modules && count($payment->options($shopping_cart)) > 0) {
-			$result = $shopping_cart->payment->verify($shopping_cart);
+		if ($payment->modules && count($payment->options($order)) > 0) {
+			$result = $order->payment->verify($order);
 
 			// If payment error
 			if (!empty($result['error'])) {
@@ -58,7 +60,7 @@
 		'payment_option',
 	];
 
-	$order->data = array_replace($shopping_cart->data, array_intersect_key($shopping_cart->data, array_flip($fields)));
+	$order->data = array_replace($order->data, array_intersect_key($order->data, array_flip($fields)));
 	$order->data['currency_value'] = currency::$currencies[$order->data['currency_code']]['value'];
 	$order->data['unread'] = true;
 
@@ -95,8 +97,9 @@
 	$order->save();
 
 	// Clean up cart
-	$shopping_cart->delete();
-	session::$data['checkout']['shopping_cart'] = null;
+	cart::clear();
+
+	session::$data['checkout']['order'] = null;
 
 	// Send order confirmation email
 	if (settings::get('send_order_confirmation')) {

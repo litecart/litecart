@@ -65,6 +65,23 @@
 				case 'main_category':
 				case 'ancestor':
 
+					$this->_data['ancestor'] = database::query(
+						"select t2.id from (
+							select @r as _id,
+								(select @r := parent_id from ". DB_TABLE_PREFIX ."categories where id = _id) as parent_id,
+								@l := @l + 1
+							from (
+								select @r := ". (int)$this->id .", @l := 0) vars,
+								". DB_TABLE_PREFIX ."categories h
+								where @r <> 0
+							) T1
+							join  ". DB_TABLE_PREFIX ."categories t2 on (T1._id = t2.id)
+						limit 1;"
+					)->fetch(function($category){
+						return reference::category($category['id'], $this->_language_codes[0]);
+					});
+
+					$this->_data['main_category'] = &$this->_data['ancestor'];
 					$this->_data['ancestor'] = $this;
 
 					while ($this->_data['ancestor']->parent_id) {

@@ -7,10 +7,10 @@
 	 *   ~/frontend/templates/default/partials/box_brand_logotypes.inc.php
 	 */
 
-	$box_brand_logotypes_cache_token = cache::token('box_brand_logotypes', []);
-	if (cache::capture($box_brand_logotypes_cache_token)) {
+	 $box_brand_logotypes = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_brand_logotypes.inc.php');
 
-		$box_brand_logotypes = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_brand_logotypes.inc.php');
+	$box_brand_logotypes_cache_token = cache::token('box_brand_logotypes');
+	if (!$box_brand_logotypes->snippets['brands'] = cache::get($box_brand_logotypes_cache_token)) {
 
 		$box_brand_logotypes->snippets['brands'] = database::query(
 			"select id, image, name from ". DB_TABLE_PREFIX ."brands
@@ -26,9 +26,9 @@
 			];
 		});
 
-		if ($box_brand_logotypes->snippets['brands']) {
-			echo $box_brand_logotypes->render();
-		}
+		cache::set($box_brand_logotypes_cache_token, $box_brand_logotypes->snippets['brands']);
+	}
 
-		cache::end_capture($box_brand_logotypes_cache_token);
+	if ($box_brand_logotypes->snippets['brands']) {
+		echo $box_brand_logotypes->render();
 	}

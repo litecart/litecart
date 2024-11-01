@@ -52,5 +52,4 @@
 		}
 	}
 
-	// Output
 	echo $box_recently_viewed_products->render();

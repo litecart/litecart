@@ -14,15 +14,13 @@
 
 <div id="page">
 	<header>
-		<?php include 'app://frontend/partials/site_top_navigation.inc.php'; ?>
+		<?php include 'app://frontend/partials/site_top_bar.inc.php'; ?>
 		<?php include 'app://frontend/partials/site_navigation.inc.php'; ?>
 	</header>
 
 	{{content}}
 
-	<footer>
-		<?php include 'app://frontend/partials/site_footer.inc.php'; ?>
-	</footer>
+	<?php include 'app://frontend/partials/site_footer.inc.php'; ?>
 </div>
 
 <?php if (document::$settings['scroll_up']) { ?>
