@@ -1,4 +1,4 @@
-7f39cc429a89049938bb2353c0d078f5	admin/about.php
+bea63bd40f293489986e9051137e0602	admin/about.php
 6294cd437ab6cd00c8f0cfd60b39b731	admin/addons.widget/addons.inc.php
 5d89f353269fba5822e8ca9eda49cb19	admin/addons.widget/config.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/addons.widget/index.html
@@ -226,7 +226,7 @@ e6cc47dff8152e7131cc0aa1937d7761	includes/boxes/box_manufacturer_logotypes.inc.p
 dbf868daacd201eb9378e01c232952af	includes/boxes/box_newsletter_subscribe.inc.php
 ef7eb684af5b095b31dc97de052c5e85	includes/boxes/box_popular_products.inc.php
 8a897cd2a31efd57ca3a99d14ec73e29	includes/boxes/box_recently_viewed_products.inc.php
-0b2c5910559f4c56703ef9eec3f2c120	includes/boxes/box_similar_products.inc.php
+c73e11ba3fc8fc37075be16b05dc11b2	includes/boxes/box_similar_products.inc.php
 8c894fe6172e020d39bb05715f9f9627	includes/boxes/box_site_footer.inc.php
 b4806f71b682a0a0754ade967716ed0b	includes/boxes/box_site_menu.inc.php
 02426a41d7e9ae11739c7f6b17165126	includes/boxes/box_slides.inc.php
@@ -303,7 +303,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/modules/customer/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/jobs/index.html
 0d8922e924a461eb2a793593d775bf79	includes/modules/jobs/job_cache_cleaner.inc.php
-549b8f03c31535fa42951cadec8b1380	includes/modules/jobs/job_error_reporter.inc.php
+b40efa27ddc8e50d2d5f8f21c87662ec	includes/modules/jobs/job_error_reporter.inc.php
 6f2198bf9353c343073884e3590afb13	includes/modules/jobs/job_mysql_optimizer.inc.php
 ad531c8df27d488f161cd717e63e2769	includes/modules/mod_customer.inc.php
 8c0d1942348d27e0f36e31e32269ad62	includes/modules/mod_jobs.inc.php
@@ -388,7 +388,7 @@ e05147ba59974d9bef67a6dbc7ba5a60	includes/templates/default.admin/less/framework
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/less/index.html
 4b83a8cea0c3b6c120ecb54211ab66a5	includes/templates/default.admin/less/printable.less
 7c126d997abac845705b61783ccc0213	includes/templates/default.admin/less/variables.less
-9af3494cf44a54e4bb1fb0417d4bd331	includes/templates/default.admin/pages/about.inc.php
+0063dc10aab8fee3d3a790db559a30dc	includes/templates/default.admin/pages/about.inc.php
 b6fc7003936788dd0d2fa113c8f31734	includes/templates/default.admin/pages/doc.inc.php
 c350d51cd1b3329cd7f3f4a376746a97	includes/templates/default.admin/pages/error_document.inc.php
 a44293fb0c76113c22724302a0356131	includes/templates/default.admin/pages/login.inc.php
