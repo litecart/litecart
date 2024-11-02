@@ -132,7 +132,9 @@
             </tr>
             <tr>
               <th>Enabled Modules</th>
-              <td><?php echo !empty($web_server['loaded_modules']) ? implode(', ', $web_server['loaded_modules']) : '<em>n/a</em>'; ?></td>
+              <td style="columns: 125px auto;">
+                <div><?php echo !empty($web_server['loaded_modules']) ? implode('</div><div>', $web_server['loaded_modules']) : '<em>None</em>'; ?></div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -154,7 +156,9 @@
             </tr>
             <tr>
               <th>PHP Extensions</th>
-              <td style="columns: 100px auto;"><div><?php echo !empty($php['loaded_extensions']) ? implode('</div><div>', $php['loaded_extensions']) : '<em>None</em>'; ?></div></td>
+              <td style="columns: 125px auto;">
+                <div><?php echo !empty($php['loaded_extensions']) ? implode('</div><div>', $php['loaded_extensions']) : '<em>None</em>'; ?></div>
+              </td>
             </tr>
             <tr>
               <th>Disabled PHP Functions</th>
