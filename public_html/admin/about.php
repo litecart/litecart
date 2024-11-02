@@ -188,7 +188,7 @@
   if ($log_file && is_file($log_file)) {
 
     // Truncate a disastrous log file over 1 GB
-    if (filesize($log_file) < 1024e6) {
+    if (filesize($log_file) > 1024e6) {
       file_put_contents($log_file, '');
       trigger_error('Truncating a disastrous log a file over 1 GBytes', E_USER_WARNING);
       return;

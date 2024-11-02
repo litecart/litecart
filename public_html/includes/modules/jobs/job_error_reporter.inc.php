@@ -21,10 +21,10 @@
         if (!is_file($log_file)) return;
 
       // Make sure this is not an urgent matter of a huge log file (100+ MB)
-        if (filesize($log_file) < 100e6) {
+        if (filesize($log_file) > 100e6) {
 
         // Truncate a disastrous log file over 1 GB
-        if (filesize($log_file) < 1024e6) {
+        if (filesize($log_file) > 1024e6) {
           file_put_contents($log_file, '');
           trigger_error('Truncating a disastrous log a file over 1 GBytes', E_USER_WARNING);
           return;
