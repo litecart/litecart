@@ -12,10 +12,10 @@
 
     public function process($force, $last_run) {
 
-      if (empty($force)) {
+    // Abort if no log file is set
+      if (!$log_file = ini_get('error_log')) return;
 
-      // Abort if no log file is set
-        if (!$log_file = ini_get('error_log')) return;
+      if (empty($force)) {
 
       // Abort if log file is missing
         if (!is_file($log_file)) return;
