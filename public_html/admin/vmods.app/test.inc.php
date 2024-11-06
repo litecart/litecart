@@ -1,15 +1,18 @@
 <?php
-  $_GET['debug'] = true;
-  $_GET['vmod'] = basename($_GET['vmod']);
 
-  breadcrumbs::add($_GET['vmod']);
+  $_GET['debug'] = true;
 
   try {
 
-    if (empty($_GET['vmod'])) throw new Exception('No vmod provided');
-    if (!is_file(FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod']))) throw new Exception('The vmod does not exist');
+    if (empty($_GET['vmod_id'])) {
+      throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
+    }
 
-    $file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod']);
+    if (!is_file($file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod_id']) . '.xml')) {
+      if (!is_file($file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod_id']) . '.disabled')) {
+        throw new Exception(language::translate('error_file_not_found', 'The file could not be found'));
+      }
+    }
 
     $dom = new \DOMDocument('1.0', 'UTF-8');
     $dom->preserveWhiteSpace = false;
@@ -122,6 +125,10 @@
       }
     }
   }
+
+  breadcrumbs::add(language::translate('title_vMods', 'vMods'), document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
+  breadcrumbs::add($vmod['name']);
+  breadcrumbs::add(language::translate('title_test', 'Test'), document::link());
 
 ?>
 <div class="card card-app">

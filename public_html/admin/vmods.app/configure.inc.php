@@ -1,14 +1,18 @@
 <?php
-	$_GET['vmod'] = basename($_GET['vmod']);
 
 	try {
-		if (empty($_GET['vmod'])) throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
 
-		$file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod']);
+    if (empty($_GET['vmod_id'])) {
+      throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
+    }
 
-		if (!is_file($file)) throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
+    if (!is_file($file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod_id']) . '.xml')) {
+      if (!is_file($file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod_id']) . '.disabled')) {
+        throw new Exception(language::translate('error_file_not_found', 'The file could not be found'));
+      }
+    }
 
-// Load XML
+  // Load XML
 
 		if (!$xml = simplexml_load_file($file)) {
       throw new Exception(language::translate('error_invalid_xml', 'Invalid XML'));
@@ -28,7 +32,7 @@
 
 		$id = pathinfo($file, PATHINFO_FILENAME);
 
-// Build Settings
+  // Build Settings
 
 		$settings = [];
     foreach ($xml->setting as $setting) {
@@ -64,7 +68,9 @@
 		}
 	}
 
-	breadcrumbs::add(basename($_GET['vmod']));
+  breadcrumbs::add(language::translate('title_vMods', 'vMods'), document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
+  breadcrumbs::add($xml->name);
+  breadcrumbs::add(language::translate('title_configure', 'Configure'), document::link());
 ?>
 <style>
 pre {

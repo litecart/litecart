@@ -1,12 +1,15 @@
 <?php
 
   try {
-    if (empty($_GET['vmod'])) throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMmod'));
 
-    $file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod']);
+    if (empty($_GET['vmod_id'])) {
+      throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
+    }
 
-    if (!is_file($file)) {
-      throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
+    if (!is_file($file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod_id']) . '.xml')) {
+      if (!is_file($file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod_id']) . '.disabled')) {
+        throw new Exception(language::translate('error_file_not_found', 'The file could not be found'));
+      }
     }
 
     header('Cache-Control: must-revalidate');

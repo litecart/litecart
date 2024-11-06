@@ -12,23 +12,22 @@
 
     public function process($force, $last_run) {
 
-    // Abort if no log file is set
-      if (!$log_file = ini_get('error_log')) return;
+    // Abort if log file is not set or missing
+      if (!$log_file = ini_get('error_log') || !is_file($log_file)) {
+        return;
+      }
 
       if (empty($force)) {
 
-      // Abort if log file is missing
-        if (!is_file($log_file)) return;
-
-      // Make sure this is not an urgent matter of a huge log file (100+ MB)
-        if (filesize($log_file) > 100e6) {
-
-        // Truncate a disastrous log file over 1 GB
-        if (filesize($log_file) > 1024e6) {
+        // Truncate a large log file over 512 MB
+        if (filesize($log_file) > 512e6) {
           file_put_contents($log_file, '');
-          trigger_error('Truncating a disastrous log a file over 1 GBytes', E_USER_WARNING);
+          trigger_error('Truncating a large log file over 512 MBytes', E_USER_WARNING);
           return;
         }
+
+      // Make sure this is NOT an urgent matter of a huge log file (100+ MB)
+        if (filesize($log_file) < 100e6) {
 
         // Abort if disabled
           if (empty($this->settings['status'])) return;

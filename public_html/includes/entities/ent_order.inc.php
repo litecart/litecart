@@ -455,7 +455,7 @@
         }
       }
 
-      list($module_id, $option_id) = preg_split('#:#', $this->data['payment_option']['id']);
+      list($module_id, $option_id) = $this->data['payment_option']['id'] ? preg_split('#:#', $this->data['payment_option']['id'], 2) : ['', ''];
       $payment_modules = new mod_payment();
       $payment_modules->run('after_save', $module_id, $this);
 
@@ -656,7 +656,7 @@
 
         if (!empty($this->data['shipping_option']['id'])) {
 
-          list($module_id, $option_id) = explode(':', $this->data['shipping_option']['id']);
+          list($module_id, $option_id) = $this->data['shipping_option']['id'] ? preg_split('#:#', $this->data['shipping_option']['id'], 2) : ['', ''];
 
           if (empty($shipping->data['options'][$module_id]['options'][$option_id])) {
             return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
@@ -680,7 +680,7 @@
 
         if (!empty($this->data['payment_option']['id'])) {
 
-          list($module_id, $option_id) = explode(':', $this->data['payment_option']['id']);
+          list($module_id, $option_id) = $this->data['payment_option']['id'] ? preg_split('#:#', $this->data['payment_option']['id'], 2) : ['', ''];
 
           if (empty($payment->data['options'][$module_id]['options'][$option_id])) {
             return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
