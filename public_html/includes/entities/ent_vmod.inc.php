@@ -4,10 +4,10 @@
     public $data;
     public $previous;
 
-    public function __construct($filename=null) {
+    public function __construct($file=null) {
 
-      if (!empty($filename)) {
-        $this->load(basename($filename));
+      if (!empty($file)) {
+        $this->load($file);
       } else {
         $this->reset();
       }
@@ -17,18 +17,18 @@
 
       $this->data = [
         'id' => null,
-        'status' => null,
-        'name' => null,
-        'description' => null,
-        'version' => null,
-        'author' => null,
+        'status' => 0,
+        'name' => '',
+        'description' => '',
+        'version' => '',
+        'author' => '',
         'settings' => [],
         'aliases' => [],
         'files' => [],
         'install' => '',
         'uninstall' => '',
         'upgrades' => [],
-        'filename' => null,
+        'file' => null,
         'date_updated' => null,
         'date_created' => null,
       ];
@@ -36,15 +36,20 @@
       $this->previous = $this->data;
     }
 
-    public function load($filename) {
+    public function load($file) {
 
-      if (!is_file(FS_DIR_STORAGE . 'vmods/'. $filename)) {
-        throw new Exception('Invalid vMod ('. $filename .')');
+      // If absolute path is not provided, search for the file in the vmods directory
+      if (!preg_match('#^(\w:)?/#', str_replace('\\', '/', $file))) {
+        $file = FS_DIR_STORAGE . 'vmods/' . $file;
+      }
+
+      if (!is_file($file)) {
+        throw new Exception('Invalid vMod ('. $file .')');
       }
 
       $this->reset();
 
-      $xml = file_get_contents(FS_DIR_STORAGE . 'vmods/'. $filename);
+      $xml = file_get_contents($file);
       $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
 
       $dom = new \DOMDocument('1.0', 'UTF-8');
@@ -54,11 +59,11 @@
         throw new Exception(libxml_get_errors());
       }
 
-      $this->data['id'] = preg_replace('#\.(xml|disabled)?$#', '', $filename);
-      $this->data['status'] = !preg_match('#\.disabled$#', $filename) ? '1' : '0';
-      $this->data['filename'] = $filename;
-      $this->data['date_created'] = date('Y-m-d H:i:s', filectime(FS_DIR_STORAGE . 'vmods/' . $filename));
-      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime(FS_DIR_STORAGE . 'vmods/' . $filename));
+      $this->data['id'] = preg_replace('#\.(xml|disabled)?$#', '', basename($file));
+      $this->data['status'] = !preg_match('#\.disabled$#', $file) ? '1' : '0';
+      $this->data['file'] = $file;
+      $this->data['date_created'] = date('Y-m-d H:i:s', filectime($file));
+      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime($file));
 
       switch ($dom->documentElement->tagName) {
 
@@ -71,7 +76,7 @@
           break;
 
         default:
-          throw new \Exception("File ($filename) is not a valid vmod or vQmod");
+          throw new \Exception("File ($file) is not a valid vmod or vQmod");
       }
 
       $this->previous = $this->data;
@@ -85,17 +90,26 @@
       $this->data['author'] = !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '';
 
       if ($install_node = $dom->getElementsByTagName('install')->item(0)) {
-        $this->data['install'] = preg_replace('#\R*(.*)\s*#', '$1', $install_node->textContent);
+        $install = $install_node->textContent;
+        $install = preg_replace('#^(\r\n?|\n)#s', '', $install); // Trim beginning of CDATA
+        $install = preg_replace('#(\r\n?|\n)[\t ]*$#s', '', $install); // Trim end of CDATA
+        $this->data['install'] = $install;
       }
 
       if ($uninstall_node = $dom->getElementsByTagName('uninstall')->item(0)) {
-        $this->data['uninstall'] = preg_replace('#\R*(.*)\s*#', '$1', $uninstall_node->textContent);
+        $uninstall = $uninstall_node->textContent;
+        $uninstall = preg_replace('#^(\r\n?|\n)#s', '', $uninstall); // Trim beginning of CDATA
+        $uninstall = preg_replace('#(\r\n?|\n)[\t ]*$#s', '', $uninstall); // Trim end of CDATA
+        $this->data['uninstall'] = $uninstall;
       }
 
       foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
+        $upgrade = $upgrade_node->textContent;
+        $upgrade = preg_replace('#^(\r\n?|\n)#s', '', $upgrade); // Trim beginning of CDATA
+        $upgrade = preg_replace('#(\r\n?|\n)[\t ]*$#s', '', $upgrade); // Trim end of CDATA
         $this->data['upgrades'][] = [
           'version' => $upgrade_node->getAttribute('version'),
-          'script' => preg_replace('#\R*(.*)\s*#', '$1', $upgrade_node->textContent),
+          'script' => $upgrade,
         ];
       }
 
@@ -268,7 +282,17 @@
 
     public function save() {
 
-      $this->data['filename'] = basename($this->data['id']) . (!empty($this->data['status']) ? '.xml' : '.disabled');
+      if (!empty($this->data['file'])) {
+        $this->data['file'] = dirname($this->data['file']) .'/'. basename($this->data['id']) . ($this->data['status'] ? '.xml' : '.disabled');
+
+      } else {
+
+        if (is_file($file = FS_DIR_STORAGE . 'vmods/' . $this->data['id'] . ($this->data['status'] ? '.xml' : '.disabled'))) {
+          throw new Exception('vMod already exists');
+        }
+
+        $this->data['file'] = $file;
+      }
 
       $dom = new DomDocument('1.0', 'UTF-8');
       $dom->preserveWhiteSpace = false;
@@ -402,32 +426,22 @@
       $xml = preg_replace('#^( +<(alias|setting|install|uninstall|upgrade|file|operation|insert)[^>]*>)#m', PHP_EOL . '$1', $xml); // Add some empty lines
       $xml = preg_replace('#(\r\n?|\n){3,}#', PHP_EOL . PHP_EOL, $xml); // Remove exceeding line breaks
 
-      if (!empty($this->previous['filename'])) {
-         rename(FS_DIR_STORAGE . 'vmods/' . $this->previous['filename'], FS_DIR_STORAGE . 'vmods/' . $this->data['filename']);
+      if (!empty($this->previous['file']) && $this->data['file'] != $this->previous['file']) {
+        rename($this->previous['file'], $this->data['file']);
       }
 
-      file_put_contents(FS_DIR_STORAGE . 'vmods/' . $this->data['filename'], $xml);
+      file_put_contents($this->data['file'], $xml);
 
       $this->previous = $this->data;
 
       cache::clear_cache('vmods');
     }
 
-    public function delete($cleanup=false) {
+    public function delete() {
 
-      if (empty($this->previous['filename'])) return;
+      if (empty($this->previous['file'])) return;
 
-      if (!empty($this->data['uninstall'])) {
-
-        $tmp_file = stream_get_meta_data(tmpfile())['uri'];
-        file_put_contents($tmp_file, "<?php\r\n" . $this->data['uninstall']);
-
-        (function() {
-          include func_get_arg(0);
-        })($tmp_file);
-      }
-
-      unlink(FS_DIR_STORAGE . 'vmods/' . $this->previous['filename']);
+      unlink($this->previous['file']);
 
       $this->reset();
 

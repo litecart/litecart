@@ -68,12 +68,11 @@
       //}
 
     // Load installed
-      foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $installed) {
-        list($id, $version) = preg_split('#;#', $installed);
-        self::$_installed[] = [
-          'id' => $id,
-          'version' => $version,
-        ];
+      foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+        list($id, $version) = preg_split('#;#', trim($line));
+        if (!isset(self::$_installed[$id]) || version_compare($version, self::$_installed[$id], '>')) {
+          self::$_installed[$id] = $version;
+        }
       }
 
     // Load settings
@@ -313,7 +312,7 @@
         }
 
       // Load modification if it is installed
-        if (in_array($vmod['id'], array_column(self::$_installed, 'id'))) {
+        if (isset(self::$_installed[$vmod['id']])) {
 
           self::$_modifications[$vmod['id']] = $vmod;
 
@@ -340,69 +339,59 @@
         // Run upgrades if a previous version is installed
           if (!empty($dom->getElementsByTagName('upgrade'))) {
 
-            if ($installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
-              if ($installed_version < $vmod['version']) {
+            if (version_compare($vmod['version'], self::$_installed[$vmod['id']], '>')) {
 
-              // Gather upgrade scripts
-                $upgrades = [];
+            // Gather upgrade scripts
+              $upgrades = [];
 
-                foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
+              foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
 
-                  $upgrade_version = $upgrade_node->getAttribute('version');
+                $upgrade_version = $upgrade_node->getAttribute('version');
 
-                  if (version_compare($vmod['version'], $upgrade_version, '<=')) {
-                    $upgrades[] = [
-                      'version' => $upgrade_version,
-                      'script' => $upgrade_node->textContent,
-                    ];
-                  }
+                if (version_compare($vmod['version'], $upgrade_version, '<=')) {
+                  $upgrades[] = [
+                    'version' => $upgrade_version,
+                    'script' => $upgrade_node->textContent,
+                  ];
                 }
-
-                uasort($upgrades, function($a, $b){
-                  return version_compare($a['version'], $b['version']);
-                });
-
-                require_once vmod::check(FS_DIR_APP . 'includes/compatibility.inc.php');
-                require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
-
-              // Execute upgrade scripts
-                foreach ($upgrades as $upgrade) {
-
-                  if (version_compare($upgrade['version'], $installed_version, '<=')) continue;
-
-                // Exceute upgrade in an isolated scope
-                  $tmp_file = stream_get_meta_data(tmpfile())['uri'];
-                  file_put_contents($tmp_file, "<?php" . PHP_EOL . $upgrade['script']);
-
-                // Exceute upgrade in an isolated scope
-                  (function() {
-                    include func_get_arg(0);
-                  })($tmp_file);
-
-                  foreach (self::$_installed as $key => $installed) {
-                    if ($installed['id'] == $vmod['id']) {
-                      self::$_installed[$key]['version'] = $upgrade['version'];
-                      break;
-                    }
-                  }
-                }
-
-                foreach (self::$_installed as $key => $installed) {
-                  if ($installed['id'] == $vmod['id']) {
-                    self::$_installed[$key]['version'] = $vmod['version'];
-                    break;
-                  }
-                }
-
-                $new_contents = implode(PHP_EOL, array_map(function($vmod){
-                  return $vmod['id'] .';'. $vmod['version'];
-                }, self::$_installed));
-
-                file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
-
-                header('Location: '. $_SERVER['REQUEST_URI']);
-                exit;
               }
+
+              uasort($upgrades, function($a, $b){
+                return version_compare($a['version'], $b['version']);
+              });
+
+              require_once vmod::check(FS_DIR_APP . 'includes/compatibility.inc.php');
+              require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
+
+            // Execute upgrade scripts
+              foreach ($upgrades as $upgrade) {
+
+                if (version_compare($upgrade['version'], $installed_version, '<=')) continue;
+
+              // Exceute upgrade in an isolated scope
+                $tmp_file = stream_get_meta_data(tmpfile())['uri'];
+                file_put_contents($tmp_file, "<?php" . PHP_EOL . $upgrade['script']);
+
+              // Exceute upgrade in an isolated scope
+                (function() {
+                  include func_get_arg(0);
+                })($tmp_file);
+
+                self::$_installed[$vmod['id']] = $upgrade['version'];
+              }
+
+              self::$_installed[$vmod['id']] = $vmod['version'];
+
+              ksort(self::$_installed);
+
+              $new_contents = implode(PHP_EOL, array_map(function($id, $version){
+                return $id .';'. $version;
+              }, array_keys(self::$_installed), self::$_installed));
+
+              file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
+
+              header('Location: '. $_SERVER['REQUEST_URI']);
+              exit;
             }
           }
 
@@ -428,10 +417,7 @@
             exit;
           }
 
-          self::$_installed[] = [
-            'id' => $vmod['id'],
-            'version' => $vmod['version'],
-          ];
+          self::$_installed[$vmod['id']] = $vmod['version'];
         }
 
       } catch (\Exception $e) {

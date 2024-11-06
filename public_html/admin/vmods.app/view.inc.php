@@ -1,17 +1,16 @@
 <?php
-  $_GET['vmod'] = basename($_GET['vmod']);
-
-  breadcrumbs::add(language::translate('title_vMods', 'vMods'), document::href_link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
-  breadcrumbs::add(language::translate('title_view_vMod', 'View vMod') .' '. basename($_GET['vmod']));
-
-  document::$snippets['title'][] = language::translate('title_view_vmod', 'View vMod');
 
   try {
-    if (empty($_GET['vmod'])) throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
 
-    $file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod']);
+    if (empty($_GET['vmod_id'])) {
+      throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
+    }
 
-    if (!is_file($file)) throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
+    if (!is_file($file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod_id']) . '.xml')) {
+      if (!is_file($file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod_id']) . '.disabled')) {
+        throw new Exception(language::translate('error_file_not_found', 'The file could not be found'));
+      }
+    }
 
     $directives = [];
 
@@ -36,7 +35,12 @@
     return;
   }
 
-  breadcrumbs::add(basename($_GET['vmod']));
+  document::$snippets['title'][] = language::translate('title_view_vmod', 'View vMod');
+
+  breadcrumbs::add(language::translate('title_vMods', 'vMods'), document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
+  breadcrumbs::add(language::translate($xml->name));
+  breadcrumbs::add(language::translate('title_view', 'View'), document::link());
+
 ?>
 <style>
 pre {
@@ -86,17 +90,19 @@ pre {
             <pre><code><?php echo functions::escape_html($operation->find); ?></code></pre>
           </div>
 
-
           <div class="insert">
 <?php
   switch($operation->insert->attributes()['position']) {
+
     case 'replace':
       echo '** Replace with **';
       break;
+
     case 'before':
     case 'ibefore':
       echo '** Before that, add **';
       break;
+
     case 'after':
     case 'iafter':
       echo '** After that, add **';
