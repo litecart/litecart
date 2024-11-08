@@ -208,6 +208,7 @@
             'backtrace' => $matches[3][$i],
             'occurrences' => 1,
             'last_occurrence' => strtotime($matches[1][$i]),
+            'critical' => preg_match('#(Parse|Fatal) error:#s', $matches[2][$i]) ? true : false,
           ];
         } else {
           $errors[$checksum]['occurrences']++;
