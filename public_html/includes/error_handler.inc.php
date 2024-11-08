@@ -64,14 +64,15 @@
     }
 
     if (filter_var(ini_get('log_errors'), FILTER_VALIDATE_BOOLEAN)) {
-      error_log(
-        strip_tags($output . $backtrace_output) .
-        "Request: {$_SERVER['REQUEST_METHOD']} {$_SERVER['REQUEST_URI']} {$_SERVER['SERVER_PROTOCOL']}" . PHP_EOL .
-        "Host: {$_SERVER['HTTP_HOST']}" . PHP_EOL .
-        "Client: {$_SERVER['REMOTE_ADDR']} (". gethostbyaddr($_SERVER['REMOTE_ADDR']) .")" . PHP_EOL .
-        "User Agent: {$_SERVER['HTTP_USER_AGENT']}" . PHP_EOL .
-        (!empty($_SERVER['HTTP_REFERER']) ? "Referer: {$_SERVER['HTTP_REFERER']}" . PHP_EOL : '')
-      );
+      error_log(implode(PHP_EOL, array_filter([
+        strip_tags($output . $backtrace_output),
+        'Request: '. $_SERVER['REQUEST_METHOD'] .' '. $_SERVER['REQUEST_URI'] .' '. $_SERVER['SERVER_PROTOCOL'],
+        'Host: '. $_SERVER['HTTP_HOST'],
+        'Client: '. $_SERVER['REMOTE_ADDR'] .' ('. gethostbyaddr($_SERVER['REMOTE_ADDR']) .')',
+        'User Agent: '. $_SERVER['HTTP_USER_AGENT'],
+        'Elapsed Time: '. number_format((microtime(true) - SCRIPT_START_TIME) * 1000, 0, '.', ' ') .' ms',
+        !empty($_SERVER['HTTP_REFERER']) ? 'Referer: '. $_SERVER['HTTP_REFERER'] : '',
+      ])));
     }
 
     if (in_array($errno, [E_PARSE, E_ERROR, E_COMPILE_ERROR, E_CORE_ERROR, E_USER_ERROR])) {
