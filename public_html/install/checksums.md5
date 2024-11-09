@@ -1,4 +1,4 @@
-bea63bd40f293489986e9051137e0602	admin/about.php
+8000dab235054d3e0c2642996cb4738e	admin/about.php
 6294cd437ab6cd00c8f0cfd60b39b731	admin/addons.widget/addons.inc.php
 5d89f353269fba5822e8ca9eda49cb19	admin/addons.widget/config.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/addons.widget/index.html
@@ -73,7 +73,7 @@ e365a6941f560c327713d6018b7ae6f8	admin/modules.app/modules.inc.php
 857e5f2a3ebe0b627477ed45f94f12f7	admin/modules.app/run_job.inc.php
 1c36b8727040eeadb6f4d208dfbba7d0	admin/orders.app/add_product.inc.php
 381895587d3476f5387c80a618b4bdf9	admin/orders.app/config.inc.php
-f11b51603e6aff6b35c97c6493e1cd56	admin/orders.app/edit_order.inc.php
+546a2caa68770736735c069ff0dc9961	admin/orders.app/edit_order.inc.php
 f72453607eebe58a502240853f63a125	admin/orders.app/edit_order_status.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.app/index.html
 99724974d208aaad962c8326d86ab408	admin/orders.app/order_statuses.inc.php
@@ -221,7 +221,7 @@ cdbd33f68cddae7b8ccea67f8ed66860	includes/boxes/box_cookie_notice.inc.php
 e448f0eb71bf9b6f04313769823dea28	includes/boxes/box_filter.inc.php
 6d9443858be3f011ec96081e3eb81f0e	includes/boxes/box_information_links.inc.php
 28ea8973375888b6df17db882c40b47c	includes/boxes/box_latest_products.inc.php
-20633e1d77ad73f442ce81c105533a41	includes/boxes/box_manufacturer_links.inc.php
+157e4647fbdc6ed19071751759213363	includes/boxes/box_manufacturer_links.inc.php
 e6cc47dff8152e7131cc0aa1937d7761	includes/boxes/box_manufacturer_logotypes.inc.php
 dbf868daacd201eb9378e01c232952af	includes/boxes/box_newsletter_subscribe.inc.php
 ef7eb684af5b095b31dc97de052c5e85	includes/boxes/box_popular_products.inc.php
@@ -259,7 +259,7 @@ f544238e0e4478eca32c9cd6db82f0bf	includes/entities/ent_user.inc.php
 39c3cd84791b801a24b8fccd1b3bddbb	includes/entities/ent_view.inc.php
 8d971569f285249be27f92b085c8c630	includes/entities/ent_vmod.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
-41c659b7ab31476627fc64e0e976bc6f	includes/error_handler.inc.php
+1933401fc243d79d8abbbfd68a54be4b	includes/error_handler.inc.php
 988f26d135e78b5006307b43dac28557	includes/functions/func_admin.inc.php
 923d14bfa0810ac0f2299727965e0c6b	includes/functions/func_captcha.inc.php
 b8fb6ac6e8de79811c5f966b17de6859	includes/functions/func_catalog.inc.php
@@ -293,7 +293,7 @@ f3476e50ac9875d2a35710214ea1df58	includes/library/lib_notices.inc.php
 0850b503230348b03bad874ef4fe28a8	includes/library/lib_route.inc.php
 b344447a2b2717d0a1de8cd31d5e7a1f	includes/library/lib_session.inc.php
 544aa2b79ea8ed599bff2487acf96a16	includes/library/lib_settings.inc.php
-e55c4e3c60a1c0fcf239316f28ca17e3	includes/library/lib_stats.inc.php
+de58bae5a02e10829fc26c320d59dfb9	includes/library/lib_stats.inc.php
 2ef8f2d0104760068c5eb270b5794127	includes/library/lib_tax.inc.php
 276f4681818eceffdd130c3ef40f272a	includes/library/lib_user.inc.php
 6d3398e8d3bea70e5272e2692591cdf0	includes/library/lib_vmod.inc.php
@@ -388,7 +388,7 @@ e05147ba59974d9bef67a6dbc7ba5a60	includes/templates/default.admin/less/framework
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/less/index.html
 4b83a8cea0c3b6c120ecb54211ab66a5	includes/templates/default.admin/less/printable.less
 7c126d997abac845705b61783ccc0213	includes/templates/default.admin/less/variables.less
-0063dc10aab8fee3d3a790db559a30dc	includes/templates/default.admin/pages/about.inc.php
+052410ea2a9cdd31e6abaec260da11d9	includes/templates/default.admin/pages/about.inc.php
 b6fc7003936788dd0d2fa113c8f31734	includes/templates/default.admin/pages/doc.inc.php
 c350d51cd1b3329cd7f3f4a376746a97	includes/templates/default.admin/pages/error_document.inc.php
 a44293fb0c76113c22724302a0356131	includes/templates/default.admin/pages/login.inc.php
@@ -504,7 +504,7 @@ bf01eda3d9d5a2bf8ed19702ede55c94	includes/templates/default.catalog/views/box_ch
 a2494a3ecaeac23a11bd39caa9d1f0b9	includes/templates/default.catalog/views/box_checkout_shipping.inc.php
 f5874d6737d1484697bd147fc83911bc	includes/templates/default.catalog/views/box_checkout_summary.inc.php
 21565d86b5b252d8cd95a4cb577bf587	includes/templates/default.catalog/views/box_contact_us.inc.php
-fcc950aded31128bc74a5e9fd61795af	includes/templates/default.catalog/views/box_cookie_notice.inc.php
+b0dcebd357a970f318bde1282e4e8598	includes/templates/default.catalog/views/box_cookie_notice.inc.php
 8af0371f5a33d2611b96867767039db0	includes/templates/default.catalog/views/box_customer_service_links.inc.php
 f67c99843160f52e2333a976ee5b382a	includes/templates/default.catalog/views/box_filter.inc.php
 b5f3674d7a7331948622378b84aae4c0	includes/templates/default.catalog/views/box_information_links.inc.php
