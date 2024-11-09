@@ -23,13 +23,13 @@
 										<div class="col-8">
 
 											<div class="row">
-												<div class="col-4 col-md-2">
-													<a href="<?php echo functions::escape_html($item['link']); ?>" class="float-start" style="max-width: 64px; margin-inline-end: 1em;">
-														<img class="thumbnail" src="<?php echo document::href_rlink($item['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink($item['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink($item['image']['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $item['image']['viewport']['ratio']; ?>;" alt="">
+												<div class="col-4 col-md-3">
+													<a href="<?php echo functions::escape_html($item['link']); ?>" class="float-start" style="max-width: 96px; margin-inline-end: 1em;">
+														<?php echo functions::draw_thumbnail($item['image']['original'], 96, 0, 'product'); ?>
 													</a>
 												</div>
 
-												<div class="col-8 col-md-10">
+												<div class="col-8 col-md-9">
 													<div class="row">
 														<div class="col-md-6">
 															<div><strong><a href="<?php echo functions::escape_html($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>
@@ -45,7 +45,7 @@
 																	<?php echo $item['quantity_unit_name']; ?>
 																</div>
 																<?php } else { ?>
-																	<?php echo !empty($item['quantity_unit']->decimals) ? functions::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0"') : functions::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
+																<?php echo !empty($item['quantity_unit']->decimals) ? functions::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0"') : functions::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
 																<?php } ?>
 																<?php echo functions::form_button('update_cart_item', [$key, functions::draw_fonticon('fa-refresh')], 'submit', 'title="'. functions::escape_attr(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
 															</div>
@@ -72,267 +72,81 @@
 								<?php } ?>
 							</ul>
 
-							<div class="subtotal text-end">
+							<div class="subtotal text-lg text-end">
 								<?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format($subtotal['value'] + $subtotal['tax']) : currency::format($subtotal['value']); ?></strong>
 							</div>
-					</section>
+						</div>
 
-				 <?php echo functions::form_form_end(); ?>
+					<?php echo functions::form_end(); ?>
+				</section>
+
 			</div>
 
-			<div class="col-md-6">
-				<section id="box-customer-details" class="card">
+			<div class="col-md-4">
 
-					<div class="card-body">
+				<section id="box-shopping-cart" class="card">
 
-					<fieldset id="express-checkout">
-						<legend><?php echo language::translate('title_express_checkkout', 'Express Checkout'); ?></legend>
+					<?php echo functions::form_begin('shopping_cart_form', 'post'); ?>
 
-						<div class="options">
-							<a class="option btn btn-default btn-lg" href="">Checkout using Paypal</a>
+						<div class="card-header">
+							<h2 class="card-title"><?php echo language::translate('title_checkout', 'Checkout'); ?></h2>
 						</div>
-					</fieldset>
 
-					<div class="strikethrough-divider">
-						<span>Or</span>
-					</div>
+						<div class="card-body">
 
-						<?php if (settings::get('accounts_enabled') && empty($shopping_cart->data['customer']['id'])) { ?>
-						<div class="float-end">
-							<a class="btn btn-outline" href="<?php echo document::ilink('account/sign_in', ['redirect_url' => document::ilink('checkout/index')]) ?>" data-toggle="lightbox" data-require-window-width="768" data-seamless="true"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
-						</div>
-						<?php } ?>
+							<div class="row">
+								<div class="form-group col-4">
+									<small><?php echo language::translate('title_language', 'Language'); ?></small>
+									<div style="line-height: 2;"><?php echo language::$selected['name']; ?></div>
+								</div>
 
-						<h2 class="title"><?php echo language::translate('title_customer_details', 'Customer Details'); ?></h2>
+								<div class="form-group col-4">
+									<small><?php echo language::translate('title_currency', 'Currency'); ?></small>
+									<div style="line-height: 2;"><?php echo currency::$selected['code']; ?></div>
+								</div>
 
-						<?php if ($account_exists) { ?>
-						<div class="alert alert-default">
-							<?php echo functions::draw_fonticon('fa-info-circle'); ?> <?php echo language::translate('notice_existing_customer_account_will_be_used', 'We have an existing customer account that will be used for this order'); ?>
-						</div>
-						<?php } ?>
+								<div class="form-group col-4">
+									<a class="btn btn-default change" href="<?php echo document::href_ilink('regional_settings', ['redirect_url' => document::link()]); ?>" data-toggle="lightbox" data-seamless="true"><?php echo language::translate('title_change', 'Change'); ?></a>
+								</div>
+							</div>
 
-						<div class="address billing-address">
+							<div class="row">
+								<div class="form-group col-8">
+									<small><?php echo language::translate('title_country', 'Country'); ?></small>
+									<div style="line-height: 2;"><?php echo functions::form_select_country('country_code', true); ?></div>
+								</div>
 
-							<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
+								<div class="form-group col-4">
+									<small><?php echo language::translate('title_postcode', 'Postal Code'); ?></small>
+									<div style="line-height: 2;"><?php echo functions::form_input_text('postcode'); ?></div>
+								</div>
+							</div>
+
 							<div class="form-group">
-								<?php echo functions::form_toggle_buttons('billing_address[type]', ['individual' => language::translate('title_individual', 'Individual'), 'business' => language::translate('title_business', 'Business')], empty($_POST['billing_address']['type']) ? 'individual' : true); ?>
+								<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+								<?php echo functions::form_input_email('billing_address[email]', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
 							</div>
 
-							<div class="business-details" <?php if (empty($_POST['billing_address']['type']) || $_POST['billing_address']['type'] == 'individual') echo 'style="display: none;"'; ?>>
-								<div class="row">
-									<?php if (settings::get('customer_field_company')) { ?>
-									<div class="form-group col-6">
-										<label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
-										<?php echo functions::form_input_text('billing_address[company]', true); ?>
-									</div>
-									<?php } ?>
-
-									<?php if (settings::get('customer_field_tax_id')) { ?>
-									<div class="form-group col-6">
-										<label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
-										<?php echo functions::form_input_text('billing_address[tax_id]', true); ?>
-									</div>
-									<?php } ?>
-								</div>
-							</div>
-							<?php } ?>
-
-							<div class="row">
-								<div class="form-group col-6">
-									<label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-									<?php echo functions::form_input_text('billing_address[firstname]', true, 'required'); ?>
-								</div>
-
-								<div class="form-group col-6">
-									<label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-									<?php echo functions::form_input_text('billing_address[lastname]', true, 'required'); ?>
-								</div>
+							<div>
+								<?php echo functions::form_button('checkout', language::translate('title_continue_to_checkout', 'Continue To Checkout') .' '. functions::draw_fonticon('fa-arrow-right'), 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>
 							</div>
 
-							<div class="row">
-								<div class="form-group col-6">
-									<label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-									<?php echo functions::form_input_text('billing_address[address1]', true, 'required'); ?>
-								</div>
-
-								<div class="form-group col-6">
-									<label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-									<?php echo functions::form_input_text('billing_address[address2]', true); ?>
-								</div>
+							<div class="strikethrough-divider">
+								<span><?php echo language::translate('text_or_checkout_with', 'Or checkout with'); ?></span>
 							</div>
 
-							<div class="row">
-								<div class="form-group col-6">
-									<label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-									<?php echo functions::form_input_text('billing_address[postcode]', true); ?>
-								</div>
-
-								<div class="form-group col-6">
-									<label><?php echo language::translate('title_city', 'City'); ?></label>
-									<?php echo functions::form_input_text('billing_address[city]', true); ?>
-								</div>
+							<div id="express-checkout">
+								<a class="option btn btn-default btn-lg btn-block" href=""><?php echo functions::draw_fonticon('fa-paypal'); ?> Paypal</a>
 							</div>
 
-							<div class="row">
-								<div class="form-group col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
-									<label><?php echo language::translate('title_country', 'Country'); ?></label>
-									<?php echo functions::form_select_country('billing_address[country_code]', true); ?>
-								</div>
-
-								<?php if (settings::get('customer_field_zone')) { ?>
-								<div class="form-group col-6">
-									<label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-									<?php echo functions::form_select_zone('billing_address[zone_code]', fallback($_POST['billing_address']['country_code']), true); ?>
-								</div>
-								<?php } ?>
-							</div>
-
-							<div class="row">
-								<div class="form-group col-6">
-									<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-									<?php echo functions::form_input_email('billing_address[email]', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
-								</div>
-
-								<div class="form-group col-6">
-									<label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
-									<?php echo functions::form_input_phone('billing_address[phone]', true, 'required'); ?>
-								</div>
-							</div>
 						</div>
 
-						<?php if (!$subscribed_to_newsletter) { ?>
-						<div class="form-group">
-							<?php echo functions::form_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
-						</div>
-						<?php } ?>
+					<?php echo functions::form_end(); ?>
 
-						<?php if (settings::get('customer_shipping_address')) { ?>
-						<div class="address shipping-address">
+				</section>
 
-							<h3><?php echo functions::form_checkbox('different_shipping_address', ['1', language::translate('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['different_shipping_address']) ? '1' : true, 'style="margin: 0px;"'); ?></h3>
-
-							<fieldset<?php if (empty($_POST['different_shipping_address'])) echo ' style="display: none;" disabled'; ?>>
-
-								<?php if (settings::get('customer_field_company')) { ?>
-								<div class="row">
-									<div class="form-group col-6">
-									<label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
-										<?php echo functions::form_input_text('shipping_address[company]', true); ?>
-									</div>
-								</div>
-								<?php } ?>
-
-								<div class="row">
-									<div class="form-group col-6">
-										<label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-										<?php echo functions::form_input_text('shipping_address[firstname]', true); ?>
-									</div>
-
-									<div class="form-group col-6">
-										<label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-										<?php echo functions::form_input_text('shipping_address[lastname]', true); ?>
-									</div>
-								</div>
-
-								<div class="row">
-									<div class="form-group col-6">
-										<label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-										<?php echo functions::form_input_text('shipping_address[address1]', true); ?>
-									</div>
-
-									<div class="form-group col-6">
-										<label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-										<?php echo functions::form_input_text('shipping_address[address2]', true); ?>
-									</div>
-								</div>
-
-								<div class="row">
-									<div class="form-group col-6">
-										<label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-										<?php echo functions::form_input_text('shipping_address[postcode]', true); ?>
-									</div>
-
-									<div class="form-group col-6">
-										<label><?php echo language::translate('title_city', 'City'); ?></label>
-										<?php echo functions::form_input_text('shipping_address[city]', true); ?>
-									</div>
-								</div>
-
-								<div class="row">
-									<div class="form-group col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
-										<label><?php echo language::translate('title_country', 'Country'); ?></label>
-										<?php echo functions::form_select_country('shipping_address[country_code]', true); ?>
-									</div>
-
-									<?php if (settings::get('customer_field_zone')) { ?>
-									<div class="form-group col-6">
-										<label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-										<?php echo functions::form_select_zone('shipping_address[zone_code]', fallback($_POST['shipping_address']['country_code'], $_POST['billing_address']['country_code']), true); ?>
-									</div>
-									<?php } ?>
-								</div>
-
-								<div class="row">
-									<div class="form-group col-6">
-										<label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
-										<?php echo functions::form_input_phone('shipping_address[phone]', true); ?>
-									</div>
-								</div>
-
-							</fieldset>
-						</div>
-						<?php } ?>
-
-						<?php if (settings::get('accounts_enabled') && empty($shopping_cart->data['customer']['id'])) { ?>
-
-						<?php if (!empty(customer::$data['id'])) { ?>
-						<div class="form-group">
-							<?php echo functions::form_checkbox('save_to_account', ['1', language::translate('title_save_details_to_my_account', 'Save details to my account')], true, 'style="margin: 0px;"'); ?>
-						</div>
-						<?php } ?>
-
-						<div class="account">
-
-							<?php if (!$account_exists) { ?>
-							<h3><?php echo functions::form_checkbox('sign_up', ['1', language::translate('title_sign_up', 'Sign Up')], (!empty($_POST['customer']['sign_up']) || settings::get('register_guests')) ? '1': true, 'style="margin: 0px;"' . (settings::get('register_guests') ? ' disabled' : '')); ?></h3>
-							<?php if (settings::get('register_guests')) echo functions::form_input_hidden('sign_up', '1'); ?>
-
-							<fieldset<?php if (empty($_POST['customer']['sign_up'])) echo ' style="display: none;" disabled'; ?>>
-
-								<div class="row">
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label><?php echo language::translate('title_desired_password', 'Desired Password'); ?></label>
-											<?php echo functions::form_input_password('password', '', 'autocomplete="new-password"'); ?>
-										</div>
-									</div>
-
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-											<?php echo functions::form_input_password('confirmed_password', '', 'autocomplete="off"'); ?>
-										</div>
-									</div>
-								</div>
-
-							</fieldset>
-							<?php } ?>
-						</div>
-						<?php } ?>
-
-						<div>
-							<button class="btn btn-block btn-default" name="save_customer_details" type="submit" disabled><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button>
-						</div>
-
-							<div class="text-end">
-								<a class="btn btn-success btn-lg" href="<?php echo document::href_ilink('checkout/index'); ?>"><?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?> <?php echo functions::draw_fonticon('fa-chevron-right'); ?></a>
-							</div>
-						</div>
-					</section>
-
-				<?php echo functions::form_end(); ?>
+			</div>
 		</div>
-	</div>
 	</div>
 </main>
 
@@ -565,10 +379,11 @@
 
 					let formdata = $('#box-customer-details :input').serialize() + '&autosave=true';
 
-					$('#box-checkout').trigger('update', [{component: 'customer', data: formdata, refresh: true}])
-														.trigger('update', [{component: 'shipping', refresh: true}])
-														.trigger('update', [{component: 'payment', refresh: true}])
-														.trigger('update', [{component: 'summary'}]);
+					$('#box-checkout')
+						.trigger('update', [{component: 'customer', data: formdata, refresh: true}])
+						.trigger('update', [{component: 'shipping', refresh: true}])
+						.trigger('update', [{component: 'payment', refresh: true}])
+						.trigger('update', [{component: 'summary'}]);
 
 					$('#box-customer-details').data('checksum', $('#box-customer-details :input').serialize());
 					$('#box-customer-details :input').first().trigger('input');
@@ -588,10 +403,11 @@
 
 		let formdata = $('#box-customer-details :input').serialize() + '&save_customer_details=true';
 
-		$('#box-checkout').trigger('update', [{component: 'customer', data: formdata, refresh: true}])
-											.trigger('update', [{component: 'shipping', refresh: true}])
-											.trigger('update', [{component: 'payment', refresh: true}])
-											.trigger('update', [{component: 'summary'}]);
+		$('#box-checkout')
+			.trigger('update', [{component: 'customer', data: formdata, refresh: true}])
+			.trigger('update', [{component: 'shipping', refresh: true}])
+			.trigger('update', [{component: 'payment', refresh: true}])
+			.trigger('update', [{component: 'summary'}]);
 
 		$('#box-customer-details').data('checksum', $('#box-customer-details :input').serialize());
 		$('#box-customer-details :input').first().trigger('input');

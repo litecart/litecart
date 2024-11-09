@@ -2,29 +2,32 @@
 
 	@set_time_limit(300);
 
-	language::set(settings::get('store_language_code'));
+	language::set(settings::get('site_language_code'));
 
-	$output = implode(PHP_EOL, [
+	$output = [
 		'<?xml version="1.0" encoding="'. mb_http_output() .'"?>',
 		'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
-		'  <url>',
-		'    <loc>'. document::ilink('') .'</loc>',
+	];
 
-		implode(PHP_EOL, functions::array_each(language::$languages, function($language) {
-			if ($language['url_type'] == 'none') return;
-			return '    <xhtml:link rel="alternate" hreflang="'. $language['code'] .'" href="'. document::href_ilink('', [], false, [], $language['code']) .'" />';
-		})),
+	$hreflangs = array_map(function($language){
+		if ($language['url_type'] == 'none') return;
+		return '		<xhtml:link rel="alternate" hreflang="'. $language['code'] .'" href="'. document::href_ilink('', [], false, [], $language['code']) .'">';
+	}, language::$languages);
 
-		'    <lastmod>'. date('Y-m-d') .'</lastmod>',
-		'    <changefreq>daily</changefreq>',
-		'    <priority>1.0</priority>',
-		'  </url>',
-	]) . PHP_EOL;
+	$output[] = implode(PHP_EOL, [
+		'	<url>',
+		'		<loc>'. document::ilink('') .'</loc>',
+		$hreflangs,
+		'		<lastmod>'. date('Y-m-d') .'</lastmod>',
+		'		<changefreq>daily</changefreq>',
+		'		<priority>1.0</priority>',
+		'	</url>',
+	]);
 
 	$category_iterator = function($parent_id=0) use (&$category_iterator, &$output) {
 		functions::catalog_categories_query($parent_id)->each(function($category) use (&$category_iterator, &$output) {
 
-			$output .= implode(PHP_EOL, array_filter([
+			$output[] .= implode(PHP_EOL, array_filter([
 				'  <url>',
 				'    <loc>'. document::ilink('category', ['category_id' => $category['id']]) .'</loc>',
 
@@ -57,7 +60,7 @@
 		order by id;"
 	)->each(function($product) use (&$output) {
 
-		$output .= implode(PHP_EOL, array_filter([
+		$output[] = implode(PHP_EOL, array_filter([
 			'  <url>',
 			'    <loc>'. document::ilink('product', ['product_id' => $product['id']]) .'</loc>',
 
@@ -85,9 +88,9 @@
 		])) . PHP_EOL;
 	});
 
-	$output .= '</urlset>';
+	$output[] = '</urlset>';
 
 	ob_clean();
 	header('Content-type: application/xml; charset='. mb_http_output());
-	echo $output;
+	echo implode(PHP_EOL, $output);
 	exit;

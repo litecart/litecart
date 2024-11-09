@@ -107,7 +107,7 @@
 			<div class="row">
 				<div class="form-group col-md-7">
 					<label><?php echo language::translate('title_description', 'Description'); ?></label>
-					<?php echo functions::form_input_textarea('description', true, 'style="height: 60px;"'); ?>
+					<?php echo functions::form_textarea('description', true, 'style="height: 60px;"'); ?>
 				</div>
 			</div>
 

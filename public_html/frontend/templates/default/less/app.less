@@ -1,4 +1,3 @@
-	// Media Sizes
 @import "framework/media.less";
 
 body {
@@ -441,11 +440,13 @@ body {
 
 	.category, .brand, .product {
 		position: relative;
-
-		flex: 1 1;
-
 		color: inherit;
 		text-decoration: none;
+
+		> a {
+			display: flex;
+			flex-direction: column;
+		}
 	}
 
 	.brand {
@@ -517,11 +518,6 @@ body {
 			}
 		}
 
-		.link {
-			display: block;
-			text-decoration: none;
-		}
-
 		.image-wrapper {
 			background: var(--whitespace-color);
 
@@ -548,17 +544,17 @@ body {
 		}
 
 		.info {
-			padding-bottom: 1em;
+			padding: 1em;
 		}
 
 		.name {
 			display: flex;
 			justify-content: center;
 			align-content: center;
-			text-align: center;
 			flex-direction: column;
 			height: 40px;
 			line-height: 125%;
+			font-weight: 500;
 		}
 
 		.brand {
@@ -575,13 +571,7 @@ body {
 			overflow: hidden;
 		}
 
-		.description {
-			margin: 1rem;
-			font-size: .85em;
-		}
-
-		.price-wrapper {
-			text-align: center;
+		.price {
 			.price {
 				color: #333;
 				white-space: nowrap;
@@ -610,10 +600,10 @@ body {
 			border-radius: 1em;
 			margin: 0 -1px -1px -1px;
 			box-shadow: 0 0 .5em 0 rgba(0,0,0,.15);
-				//background: rgba(0, 0, 0, .15);
-				//text-decoration: none;
-				//color: inherit;
-				//opacity: 0.5;
+			//background: rgba(0, 0, 0, .15);
+			//text-decoration: none;
+			//color: inherit;
+			//opacity: 0.5;
 
 			.btn {
 				padding: var(--input-padding-y);
@@ -633,26 +623,28 @@ body {
 
 	&.columns .product {
 		.info {
-			padding: .5em;
+			display: none;
 			text-align: center;
 		}
 
-		.description {
-			font-size: .9em;
+		.short-description {
+			display: none;
+			margin: 1rem;
+			font-size: .85em;
 		}
 
-		.price-wrapper {
+		.price {
 			position: initial;
+			text-align: center;
 		}
 	}
 
 	&.rows .product {
-		grid-column: 1/-1;
-		min-height: 175px;
+		.link {
+			flex-direction: row;
+			min-height: 175px;
+		}
 		.info {
-			position: absolute;
-			top: 0;
-			left: ~"calc(100px + 1rem)";
 			padding: .5rem;
 			@media (min-width: (@media-breakpoint-sm)) {
 				left: ~"calc(160px + 1rem)";
@@ -668,14 +660,8 @@ body {
 				max-width: 175px;
 			}
 		}
-		.price-wrapper {
-			position: absolute;
-			bottom: 0;
-			right: 0;
-			font-size: 1.25em;
+		.price {
 			background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 20%,rgba(255,255,255,1) 100%);
-			padding: .5rem;
-			padding-inline-start: 2rem;
 		}
 		@media (min-width: (@media-breakpoint-sm)) {
 			height: auto;
@@ -781,7 +767,7 @@ body {
 		}
 	}
 
-	.price-wrapper {
+	.price {
 		font-size: 1.75em;
 	}
 	.regular-price {

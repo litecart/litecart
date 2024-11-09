@@ -15,7 +15,7 @@
 		<li class="item">
 			<div class="row">
 
-				<div class="col-3">
+				<div class="col-2">
 					<?php echo functions::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. functions::escape_attr($item['name']) .'"'); ?>
 				</div>
 
@@ -31,7 +31,7 @@
 					</div>
 				</div>
 
-				<div class="col-1 text-end">
+				<div class="col-2 text-end">
 					<button class="btn btn-danger btn-sm" name="remove_cart_item" type="submit" value="<?php echo functions::escape_html($key); ?>"><?php echo functions::draw_fonticon('delete'); ?></button>
 				</div>
 			</div>
@@ -44,7 +44,11 @@
 
 		<li><hr></li>
 
-		<li><a class="btn btn-success btn-lg" href="{{link|escape}}"><?php echo language::translate('title_go_to_chekout', 'Go To Checkout'); ?></a></li>
+		<li style="margin-top: 2em;">
+			<a class="btn btn-success btn-lg" href="{{link|escape}}">
+				<?php echo language::translate('title_go_to_chekout', 'Go To Checkout'); ?>
+			</a>
+		</li>
 	</ul>
 </div>
 

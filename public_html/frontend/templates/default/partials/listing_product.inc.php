@@ -7,15 +7,23 @@
 		</div>
 
 		<div class="info">
-			<div class="name">{{name}}</div>
+
+			<div class="name">
+				{{name}}
+			</div>
+
+			<div class="short-description">
+				{{short_description}}
+			</div>
 
 			<div class="price-wrapper">
 				<?php if ($campaign_price) { ?>
 				<del class="regular-price">{{regular_price|money}}</del> <strong class="campaign-price">{{campaign_price|money}}</strong>
 				<?php } else { ?>
-				<span class="price">{{regular_price|money}}</span>
+				<span class="regular-price">{{final_price|money}}</span>
 				<?php } ?>
 			</div>
+
 		</div>
 	</a>
 
@@ -24,8 +32,20 @@
 			<?php echo functions::draw_fonticon('fa-search-plus'); ?>
 		</button>
 
-		<button name="add_cart_product" class="preview btn btn-success btn-sm">
+		<button name="add_to_wishlist" class="wishlist btn btn-default btn-sm">
+			<?php echo functions::draw_fonticon('fa-heart'); ?>
+		</button>
+
+		<?php if (!$num_stock_options) { ?>
+		<button name="add_cart_product" class="add-to-cart btn btn-success btn-sm">
 			<?php echo functions::draw_fonticon('fa-shopping-cart'); ?>
 		</button>
+		<?php } ?>
+
+		<?php if ($num_stock_options) { ?>
+		<div class="text-center">
+			<?php echo $num_stock_options; ?>
+		</div>
+		<?php } ?>
 	</div>
 </article>

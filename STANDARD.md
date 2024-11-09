@@ -2,7 +2,7 @@
 
 ## Code Compliance
 
- - PHP code must comply with PHP standards no earlier than 5.6+ E_STRICT.
+ - PHP code must comply with modern PHP standards no earlier than 5.6+ E_STRICT.
 
  - HTML code must comply with HTML 5.
 
@@ -18,7 +18,7 @@
 
 ## PHP File Paths
 
-	ALWAYS use Linux/Unix directory separator slash (/) as it also works on Mac and Windows.
+	ALWAYS use Linux directory separator slash (/) as it works universally on all OS (Linux, Mac and Windows).
 	Windows backslash (\) does not work on Mac or Linux.
 
 	Incorrect:
@@ -271,8 +271,8 @@
 
 ## No Variable Duplication
 
-	No variable duplication should be used. Unless there is a certain need for duplicating variables.
-	One common case for variable duplication is during santizing.
+	No variable duplication. Unless there is a certain need for duplicating variables.
+	A common case for variable duplication is during santizing.
 
 	Incorrect:
 
@@ -285,6 +285,28 @@
 		$_POST['name'] = strtolower(trim($_POST['name']));  // We most likely will not ever use the unsanitized data
 
 
+## No One-Time Variables
+
+	Creating variables for one-time use should be avoided (unless it serves purpose).
+
+	Incorrect:
+
+		$array = ['foo', 'bar'];
+
+		foreach ($array as $item) {
+			echo $item;
+		}
+
+	Correct:
+
+		foreach ([
+			'foo',
+			'bar',
+		] as $item) {
+			echo $item;
+		}
+
+
 ## Naming of CSS IDs and Classes
 
 	Same rules as the naming of variables but we use dash - for separating words rather than underscore _.
@@ -292,16 +314,16 @@
 
 	Incorrect:
 
-		<div id="dummmyBox" class="box box-white">
+		<div id="dummmyBox" class="white-box">
 			<div class="box-title">...</div>
 			<div class="box-text">...</div>
 		</div>
 
 	Correct:
 
-		<div id="box-dummy" class="box white">
-			<div class="title">...</div>
-			<div class="text">...</div>
+		<div id="box-dummy" class="box box-white">
+			<div class="box-title">...</div>
+			<div class="box-body">...</div>
 		</div>
 
 	How to reference a class:
@@ -351,6 +373,16 @@
 		if (condition) {
 			...
 		} else {
+			...
+		}
+
+	Edge-Case:
+
+		if (condition) {
+			...
+		}
+
+		else {
 			...
 		}
 

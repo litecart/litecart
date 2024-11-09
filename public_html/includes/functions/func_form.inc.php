@@ -21,6 +21,7 @@
 
 			// Get array node
 			$node = $superglobal;
+
 			foreach ($parts as $part) {
 				if (!isset($node[$part])) continue 2;
 				$node = $node[$part];

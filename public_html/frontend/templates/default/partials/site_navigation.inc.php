@@ -136,7 +136,7 @@
 							<li class="dropdown-item item">
 
 								<div class="row">
-									<div class="col-3">
+									<div class="col-2">
 										<?php echo functions::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. functions::escape_attr($item['name']) .'"'); ?>
 									</div>
 
@@ -148,7 +148,7 @@
 										</div>
 									</div>
 
-									<div class="col-1 text-end">
+									<div class="col-2 text-end">
 										<?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
 									</div>
 								</div>
@@ -175,12 +175,13 @@
 							<li class="dropdown-item item">
 
 								<div class="row">
-									<div class="col-3">
+									<div class="col-2">
 										<?php echo functions::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. functions::escape_attr($item['name']) .'"'); ?>
 									</div>
 
 									<div class="col-8">
 										<div>
+											<span class=*""quantity"><?php echo $item['quantity']; ?></span> &times;
 											<a class="name" href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>">
 												<?php echo $item['name']; ?>
 											</a>
@@ -190,7 +191,7 @@
 										</div>
 									</div>
 
-									<div class="col-1 text-end">
+									<div class="col-2 text-end">
 										<?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
 									</div>
 								</div>
@@ -202,7 +203,7 @@
 								<span><?php echo language::translate('text_your_shopping_cart_is_empty'), 'Your shopping cart is empty'; ?></span>
 							</li>
 
-							<li class="checkout">
+							<li class="checkout" style="margin-top: 2em;">
 								<a class="btn btn-success btn-block" href="<?php echo document::href_ilink('shopping_cart'); ?>">
 									<?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?> <?php echo functions::draw_fonticon('fa-arrow-right'); ?>
 								</a>

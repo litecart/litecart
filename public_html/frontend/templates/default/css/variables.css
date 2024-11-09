@@ -49,10 +49,10 @@
   --default-title-color: #333;
   --default-title-border-color: #f0f0f0;
   --default-border-color: #ececf1;
-  --top-bar-background-color: #6e6e81;
+  --top-bar-background-color: #484860;
   --top-bar-text-color: #fff;
-  --navigation-background-color: #d6d6e1;
-  --navigation-text-color: #333;
+  --navigation-background-color: #a3a3b3;
+  --navigation-text-color: #000;
   --card-background-color: #fff;
   --card-text-color: var(--default-text-color);
   --card-border-color: transparent;

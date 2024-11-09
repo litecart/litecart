@@ -15,17 +15,73 @@
 
 	breadcrumbs::add(language::translate('title_shopping_cart', 'Shopping Cart'), document::ilink('shopping_cart'));
 
-	functions::draw_lightbox();
-
 	if (empty(cart::$items)) {
+
 		echo implode(PHP_EOL, [
-			'<div id="content">',
+			'<main id="content" class="container">',
 			'  <p>'. language::translate('description_no_items_in_cart', 'There are no items in your cart.') .'</p>',
 			'  <div><a class="btn btn-default" href="'. document::href_ilink('') .'">'. language::translate('title_back', 'Back') .'</a></div>',
-			'</div>',
+			'</main>',
 		]);
+
 		return;
 	}
+
+	if (isset($_POST['checkout'])) {
+		try {
+
+			// Do we have an existing order in the session?
+			if (!empty(session::$data['checkout']['order']->data['id'])) {
+				$resume_id = session::$data['checkout']['order']->data['id'];
+			}
+
+			$order = new ent_order();
+
+			// Resume incomplete order in session
+			if (!empty($resume_id)) {
+				if (database::query(
+					"select * from ". DB_TABLE_PREFIX ."orders
+					where id = ". (int)$resume_id ."
+					and order_status_id is null
+					and date_created > '". date('Y-m-d H:i:s', strtotime('-15 minutes')) ."'
+					limit 1;"
+				)->num_rows) {
+					session::$data['checkout']['order'] = new ent_order($resume_id);
+					session::$data['checkout']['order']->reset();
+					session::$data['checkout']['order']->data['id'] = $resume_id;
+				}
+			}
+
+			// Build Order
+			$order->data['weight_unit'] = settings::get('store_weight_unit');
+			$order->data['currency_code'] = currency::$selected['code'];
+			$order->data['currency_value'] = currency::$currencies[currency::$selected['code']]['value'];
+			$order->data['language_code'] = language::$selected['code'];
+			$order->data['customer'] = customer::$data;
+			$order->data['display_prices_including_tax'] = !empty(customer::$data['display_prices_including_tax']) ? true : false;
+
+			foreach (cart::$items as $item) {
+				$order->add_item($item);
+			}
+
+			session::$data['checkout']['order'] = $order;
+
+ 	  	// Collect scraps
+			 if (empty(customer::$data['id'])) {
+        customer::$data = array_replace(customer::$data, array_intersect_key(array_filter(array_diff_key($_POST, array_flip(['id']))), customer::$data));
+      }
+
+			header('Location: '. document::ilink('checkout/index'));
+			exit;
+
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
+		}
+	}
+
+	// Output
+
+	functions::draw_lightbox();
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/shopping_cart.inc.php');
 
@@ -35,7 +91,7 @@
 			'value' => cart::$total['value'],
 			'tax' => cart::$total['tax'],
 		],
-		'display_prices_including_tax' => cart::$cart->data['display_prices_including_tax'],
+		'display_prices_including_tax' => customer::$data['display_prices_including_tax'],
 		'error' => false,
 	];
 
@@ -58,20 +114,28 @@
 			'stock_option_id' => $item['stock_option_id'],
 			'name' => $item['name'],
 			'sku' => $item['sku'],
-			'image' => $item['image'] ? 'storage://images/' . $item['image'] : '',
+			'image' => [
+				'original' => 'storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.png'),
+				'thumbnail' => functions::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.png'), 64, 0, 'product'),
+				'thumbnail_2x' => functions::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.png'), 128, 0, 'product'),
+			],
 			'link' => document::ilink('product', ['product_id' => $item['product_id']]),
 			'display_price' => customer::$data['display_prices_including_tax'] ? $item['price'] + $item['tax'] : $item['price'],
 			'price' => $item['price'],
-			'final_price' => $item['final_price'],
+			'final_price' => $item['price'] ?? 0,
 			'tax' => $item['tax'],
+			'discount' => $item['discount'] ?? 0,
+			'discount_tax' => $item['discount_tax'] ?? 0,
 			'tax_class_id' => $item['tax_class_id'],
 			'quantity' => (float)$item['quantity'],
-			'quantity_unit_name' => $item['quantity_unit_name'],
-			'quantity_min' => $item['quantity_min'],
-			'quantity_max' => $item['quantity_max'],
-			'quantity_step' => $item['quantity_step'],
+			'quantity_unit_name' => $item['quantity_unit_name'] ?? 0,
+			'quantity_min' => $item['quantity_min'] ?? 0,
+			'quantity_max' => $item['quantity_max'] ?? 0,
+			'quantity_step' => $item['quantity_step'] ?? 0,
+			'sum' => $item['sum'] ?? 0,
+			'sum_tax' => $item['sum_tax'] ?? 0,
 			'error' => fallback($item['error']),
 		];
 	}
 
-	echo $_page->render();
+	echo $_page;
