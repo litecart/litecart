@@ -174,10 +174,10 @@ html.dark-mode .operation {
 	background: #232a3e;
 }
 
-.nav-tabs .fa-times {
+.nav-tabs .icon-times {
 	color: #c00;
 }
-.nav-tabs .fa-plus {
+.nav-tabs .icon-plus {
 	color: #0c0;
 }
 
@@ -348,10 +348,10 @@ textarea.warning {
 					<nav class="nav nav-tabs">
 						<?php foreach (array_keys($vmod->data['files']) as $f) { ?>
 						<a class="nav-link" data-toggle="tab" href="#tab-<?php echo $f; ?>">
-							<span class="file"><?php echo functions::escape_html($_POST['files'][$f]['name']); ?></span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times'); ?></span>
+							<span class="file"><?php echo functions::escape_html($_POST['files'][$f]['name']); ?></span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('icon-times'); ?></span>
 						</a>
 						<?php } ?>
-						<a class="nav-link add" href="#"><?php echo functions::draw_fonticon('fa-plus'); ?></a>
+						<a class="nav-link add" href="#"><?php echo functions::draw_fonticon('icon-plus'); ?></a>
 					</nav>
 
 					<div id="files" class="tab-content">
@@ -447,7 +447,7 @@ textarea.warning {
 
 									<div class="text-end">
 										<a class="btn btn-default add" href="#">
-											<?php echo functions::draw_fonticon('fa-plus', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?>
+											<?php echo functions::draw_fonticon('icon-plus', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?>
 										</a>
 									</div>
 
@@ -603,7 +603,7 @@ textarea.warning {
 
 			<div class="col-md-6">
 				<div class="operations"></div>
-				<div><a class="btn btn-default add" href="#"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?></a></div>
+				<div><a class="btn btn-default add" href="#"><?php echo functions::draw_fonticon('icon-plus', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?></a></div>
 			</div>
 		</div>
 
@@ -688,7 +688,7 @@ textarea.warning {
 	$('.nav-tabs .add').on('click', function(e){
 		e.preventDefault();
 
-		let tab = '<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'"><span class="file">new'+ new_tab_index +'</span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times'); ?></span></a>'
+		let tab = '<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'"><span class="file">new'+ new_tab_index +'</span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('icon-times'); ?></span></a>'
 			.replace(/new_tab_index/g, new_tab_index);
 
 		let tab_pane = $('#new-tab-pane-template').html()

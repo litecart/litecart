@@ -41,12 +41,12 @@
 		<nav class="nav nav-pills nav-stacked">
 			<?php if (!empty($_GET['parent_id'])) { ?>
 			<a class="nav-link" href="<?php echo document::href_ilink(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id]); ?>">
-				<?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back', 'Back'); ?>
+				<?php echo functions::draw_fonticon('icon-arrow-left'); ?> <?php echo language::translate('title_back', 'Back'); ?>
 			</a>
 			<?php } ?>
 			<?php foreach ($categories as $category) { ?>
 			<a class="nav-link" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']]); ?>">
-				<?php echo functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"'); ?> <?php echo fallback($category['name'], '[untitled]'); ?>
+				<?php echo functions::draw_fonticon('icon-folder', 'style="color: #cccc66;"'); ?> <?php echo fallback($category['name'], '[untitled]'); ?>
 			</a>
 			<?php } ?>
 		</nav>

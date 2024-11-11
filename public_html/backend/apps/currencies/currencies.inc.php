@@ -66,7 +66,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th><?php echo language::translate('title_code', 'Code'); ?></th>
@@ -90,8 +90,8 @@
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_currency', ['currency_code' => $currency['code']]); ?>"><?php echo $currency['name']; ?></a></td>
 					<td class="text-end"><?php echo language::number_format($currency['value'], 4); ?></td>
 					<td class="text-center"><?php echo currency::format_html(1234.56, false, $currency['code'], 1); ?></td>
-					<td class="text-center"><?php if ($currency['code'] == settings::get('default_currency_code')) echo functions::draw_fonticon('fa-check'); ?></td>
-					<td class="text-center"><?php if ($currency['code'] == settings::get('store_currency_code')) echo functions::draw_fonticon('fa-check'); ?></td>
+					<td class="text-center"><?php if ($currency['code'] == settings::get('default_currency_code')) echo functions::draw_fonticon('icon-check'); ?></td>
+					<td class="text-center"><?php if ($currency['code'] == settings::get('store_currency_code')) echo functions::draw_fonticon('icon-check'); ?></td>
 					<td class="text-center"><?php echo $currency['priority']; ?></td>
 					<td class="text-end">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_currency', ['currency_code' => $currency['code']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>">

@@ -390,7 +390,7 @@
 
 								<div class="col-md-6">
 									<div class="form-group">
-										<?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a>
+										<?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('icon-question'); ?></a>
 										<?php echo functions::form_regional_textarea('technical_data['. $language_code .']', $language_code, true, 'style="height: 640px;"'); ?>
 										<div><?php echo functions::form_checkbox('autofill_technical_data', ['1', language::translate('text_autogenerate_from_attributes', 'Generate from attributes')], ''); ?></div>
 									</div>
@@ -428,7 +428,7 @@
 							</div>
 
 							<div class="form-group col-md-6">
-								<label><?php echo language::translate('title_price_incl_tax', 'Price Incl. Tax'); ?> <a href="#" id="price-incl-tax-tooltip"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a></label>
+								<label><?php echo language::translate('title_price_incl_tax', 'Price Incl. Tax'); ?> <a href="#" id="price-incl-tax-tooltip"><?php echo functions::draw_fonticon('icon-question'); ?></a></label>
 								<?php echo functions::form_input_money('gross_prices['. settings::get('store_currency_code') .']', settings::get('store_currency_code')); ?>
 								<?php foreach (array_diff(array_keys(currency::$currencies), [settings::get('store_currency_code')]) as $currency_code) { ?>
 								<?php echo functions::form_input_money('gross_prices['. $currency_code .']', $currency_code); ?>
@@ -551,13 +551,13 @@
 
 							<div class="float-end">
 								<button name="move-group-up" type="button" class="btn btn-default" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>">
-									<?php echo functions::draw_fonticon('fa-arrow-up', 'style="color: #3399cc;"'); ?>
+									<?php echo functions::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?>
 								</button>
 								<button name="move-group-down" type="button" class="btn btn-default" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>">
-									<?php echo functions::draw_fonticon('fa-arrow-down', 'style="color: #3399cc;"'); ?>
+									<?php echo functions::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?>
 								</button>
 								<button name="remove-group" type="button" class="btn btn-default" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>">
-									<?php echo functions::draw_fonticon('fa-times', 'style="color: #cc3333;"'); ?>
+									<?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?>
 								</button>
 							</div>
 
@@ -777,18 +777,18 @@
 									</td>
 									<td>
 										<div class="input-group">
-                    <?php echo functions::form_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
+                    <?php echo functions::form_button('transfer', functions::draw_fonticon('icon-arrow-left'), 'button'); ?>
                     <?php echo functions::form_input_decimal('stock_options['. $key .'][backordered]', true, 2, 'min="0"'); ?>
 										</div>
 									</td>
 									<td class="text-end">
                   <a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
-                  	<?php echo functions::draw_fonticon('fa-times fa-lg', 'style="color: #c33;"'); ?>
+                  	<?php echo functions::draw_fonticon('icon-times', 'style="color: #c33;"'); ?>
 										</a>
                 </td>
                 <td class="text-end">
                   <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_options'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true"data-max-width="980px"  title="<?php echo language::translate('title_edit', 'Edit'); ?>">
-                  	<?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?>
+                  	<?php echo functions::draw_fonticon('icon-pencil'); ?>
 										</a>
 									</td>
 								</tr>
@@ -799,10 +799,10 @@
 								<tr>
 	                <td colspan="11">
 	                  <a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="980px">
-	                  	<?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?>
+	                  	<?php echo functions::draw_fonticon('icon-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?>
 	                  </a>
 	                  <a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="980px">
-	                  	<?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_existing_stock_item', 'Add Existing Stock Item'); ?>
+	                  	<?php echo functions::draw_fonticon('icon-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_existing_stock_item', 'Add Existing Stock Item'); ?>
 	                  </a>
 									</td>
 								</tr>
@@ -1479,9 +1479,9 @@
       var $output = $([
 				'<li data-group-id="'+ escapeHTML($(groupElement).val()) +'" data-group-name="'+ escapeHTML($(groupElement).find('option:selected').text()) +'">',
 				'  <div class="float-end">',
-				'    <a class="btn btn-default move-group-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-up', 'style="color: #3399cc;"'); ?></a>',
-				'    <a class="btn btn-default move-group-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-down', 'style="color: #3399cc;"'); ?></a>',
-				'    <a class="btn btn-default remove-group" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times', 'style="color: #cc3333;"'); ?></a>',
+				'    <a class="btn btn-default move-group-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
+				'    <a class="btn btn-default move-group-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?></a>',
+				'    <a class="btn btn-default remove-group" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a>',
 				'  </div>',
 				'  <h2>'+ $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"] option:selected').text() +'</h2>',
 				'  <?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
@@ -1562,9 +1562,9 @@
     var $output = $([
 			'<li>',
 			'  <div class="float-end">',
-			'    <a class="move-group-up btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('fa-arrow-up', 'style="color: #3399cc;"'); ?></a>',
-			'    <a class="move-group-down btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('fa-arrow-down', 'style="color: #3399cc;"'); ?></a>',
-			'    <a class="remove-group btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times', 'style="color: #cc3333;"'); ?></a>',
+			'    <a class="move-group-up btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
+			'    <a class="move-group-down btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?></a>',
+			'    <a class="remove-group btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a>',
 			'  </div>',
 			'  <h2>'+ $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"] option:selected').text() +'</h2>',
 			'  <?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
@@ -1707,15 +1707,15 @@
 			'  </td>',
 			'  <td>',
 			'    <div class="input-group">',
-			'      <?php echo functions::escape_js(functions::form_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>',
+			'      <?php echo functions::escape_js(functions::form_button('transfer', functions::draw_fonticon('icon-arrow-left'), 'button')); ?>',
 			'      <?php echo functions::escape_js(functions::form_input_decimal('stock_options[new_stock_item_i][backordered]', '', 2, 'min="0"')); ?>',
 			'    </div>',
 			'  </td>',
 			'  <td class="text-end">',
-			'    <a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times fa-lg', 'style="color: #c33;"')); ?></a>',
+			'    <a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a>',
 			'  </td>',
 			'  <td class="text-end">',
-			'    <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" data-max-width="980px" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>',
+			'    <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" data-max-width="980px" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('icon-pencil'); ?></a>',
 			'  </td>',
 			'</tr>'
 		].join('\n')

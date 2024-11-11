@@ -52,7 +52,7 @@
 				<?php if (!empty($regional_settings)) { ?>
 					<li class="contact">
 						<a class="navbar-item" href="<?php echo functions::escape_attr($regional_settings['link']); ?>">
-						<?php echo functions::draw_fonticon('fa-envelope-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo $regional_settings['title']; ?>
+						<?php echo functions::draw_fonticon('icon-envelope-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo $regional_settings['title']; ?>
 						</a>
 					</li>
 					<?php } ?>
@@ -74,14 +74,14 @@
 
 					<li class="contact">
 						<a class="navbar-item" href="<?php echo document::href_ilink('contact'); ?>">
-							<?php echo functions::draw_fonticon('fa-envelope-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo language::translate('title_contact', 'Contact'); ?>
+							<?php echo functions::draw_fonticon('icon-envelope-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo language::translate('title_contact', 'Contact'); ?>
 						</a>
 					</li>
 
 					<?php if (settings::get('accounts_enabled')) { ?>
 					<?php if (!empty(customer::$data['id'])) { ?>
 					<li class="account dropdown">
-						<a href="#" data-toggle="dropdown"><?php echo functions::draw_fonticon('fa-user-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <span class="hidden-sm"><?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span></a>
+						<a href="#" data-toggle="dropdown"><?php echo functions::draw_fonticon('icon-user-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <span class="hidden-sm"><?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span></a>
 						<ul class="dropdown-menu dropdown-menu-end">
 
 							<li>
@@ -113,7 +113,7 @@
 					<?php } else { ?>
 					<li class="account">
 						<a class="navbar-item" href="<?php echo document::href_ilink('account/sign_in'); ?>">
-							<?php echo functions::draw_fonticon('fa-user-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo language::translate('title_sign_in', 'Sign In'); ?>
+							<?php echo functions::draw_fonticon('icon-user-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo language::translate('title_sign_in', 'Sign In'); ?>
 						</a>
 					</li>
 					<?php } ?>
@@ -205,7 +205,7 @@
 
 							<li class="checkout" style="margin-top: 2em;">
 								<a class="btn btn-success btn-block" href="<?php echo document::href_ilink('shopping_cart'); ?>">
-									<?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?> <?php echo functions::draw_fonticon('fa-arrow-right'); ?>
+									<?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?> <?php echo functions::draw_fonticon('icon-arrow-right'); ?>
 								</a>
 							</li>
 

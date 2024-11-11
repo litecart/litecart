@@ -50,7 +50,7 @@
 			<li>
 				<div>
 					<label class="nav-toggle" for="sidebar-compressed">
-						<?php echo functions::draw_fonticon('fa-bars'); ?>
+						<?php echo functions::draw_fonticon('icon-bars'); ?>
 					</label>
 				</div>
 			</li>
@@ -70,11 +70,11 @@
 			</li>
 
 			<li>
-				<?php echo functions::form_toggle('condensed', ['0' => functions::draw_fonticon('fa-compress'), '1' => functions::draw_fonticon('fa-expand')]); ?>
+				<?php echo functions::form_toggle('condensed', ['0' => functions::draw_fonticon('icon-compress'), '1' => functions::draw_fonticon('icon-expand')]); ?>
 			</li>
 
 			<li>
-				<?php echo functions::form_toggle('dark_mode', ['0' => functions::draw_fonticon('fa-sun-o'), '1' => functions::draw_fonticon('fa-moon-o')]); ?>
+				<?php echo functions::form_toggle('dark_mode', ['0' => functions::draw_fonticon('icon-sun-o'), '1' => functions::draw_fonticon('icon-moon-o')]); ?>
 			</li>
 
 			<li class="language dropdown">
@@ -93,7 +93,7 @@
 			<?php if ($webmail_link = settings::get('webmail_link')) { ?>
 			<li>
 				<a href="<?php echo ($webmail_link != 'https://') ? functions::escape_html($webmail_link) : document::href_ilink('settings/advanced', ['key' => 'webmail_link', 'action' => 'edit']); ?>" target="_blank" title="<?php echo language::translate('title_webmail', 'Webmail'); ?>">
-					<?php echo functions::draw_fonticon('fa-envelope'); ?>
+					<?php echo functions::draw_fonticon('icon-envelope'); ?>
 				</a>
 			</li>
 			<?php } ?>
@@ -101,7 +101,7 @@
 			<?php if ($control_panel_link = settings::get('control_panel_link')) { ?>
 			<li>
 				<a href="<?php echo ($control_panel_link != 'https://') ? functions::escape_html($control_panel_link) : document::href_ilink('settings/advanced', ['key' => 'control_panel_link', 'action' => 'edit']); ?>" target="_blank" title="<?php echo language::translate('title_control_panel', 'Control Panel'); ?>">
-					<?php echo functions::draw_fonticon('fa-cogs'); ?>
+					<?php echo functions::draw_fonticon('icon-cogs'); ?>
 				</a>
 			</li>
 			<?php } ?>
@@ -109,26 +109,26 @@
 			<?php if ($database_admin_link = settings::get('database_admin_link')) { ?>
 			<li>
 				<a href="<?php echo ($database_admin_link != 'https://') ? functions::escape_html($database_admin_link) : document::href_ilink('settings/advanced', ['key' => 'database_admin_link', 'action' => 'edit']); ?>" target="_blank" title="<?php echo language::translate('title_database_manager', 'Database Manager'); ?>">
-					<?php echo functions::draw_fonticon('fa-database'); ?>
+					<?php echo functions::draw_fonticon('icon-database'); ?>
 				</a>
 			</li>
 			<?php } ?>
 
 			<li>
 				<a href="<?php echo document::href_ilink('f:'); ?>" title="<?php echo language::translate('title_frontend', 'Frontend'); ?>">
-					<?php echo functions::draw_fonticon('fa-desktop'); ?> <?php echo language::translate('title_frontend', 'Frontend'); ?>
+					<?php echo functions::draw_fonticon('icon-desktop'); ?> <?php echo language::translate('title_frontend', 'Frontend'); ?>
 				</a>
 			</li>
 
 			<li>
 				<a class="help" href="https://wiki.litecart.net/" target="_blank" title="<?php echo functions::escape_html(language::translate('title_help', 'Help')); ?>">
-					<?php echo functions::draw_fonticon('fa-question-circle'); ?> <?php echo language::translate('title_help', 'Help'); ?>
+					<?php echo functions::draw_fonticon('icon-question'); ?> <?php echo language::translate('title_help', 'Help'); ?>
 				</a>
 			</li>
 
 			<li>
 				<a href="<?php echo document::href_ilink('logout'); ?>" title="<?php echo language::translate('title_sign_out', 'Sign Out'); ?>">
-					<?php echo functions::draw_fonticon('fa-sign-out'); ?> <?php echo language::translate('title_sign_out', 'Sign Out'); ?>
+					<?php echo functions::draw_fonticon('icon-sign-out'); ?> <?php echo language::translate('title_sign_out', 'Sign Out'); ?>
 				</a>
 			</li>
 		</ul>

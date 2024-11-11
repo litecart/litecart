@@ -70,7 +70,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
 					<th><?php echo language::translate('title_zones', 'Zones'); ?></th>
@@ -101,7 +101,7 @@
 			<fieldset id="actions">
 				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-				<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', 'fa-file-copy'); ?>
+				<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', 'icon-file-copy'); ?>
 			</fieldset>
 		</div>
 

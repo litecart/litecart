@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#d4ce12',
-			'icon' => 'fa-th',
+			'icon' => 'icon-th',
 		],
 
 		'search_results' => 'search_results.inc.php',

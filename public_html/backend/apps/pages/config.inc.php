@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#99a785',
-			'icon' => 'fa-file-text',
+			'icon' => 'icon-file-text',
 		],
 
 		'menu' => [

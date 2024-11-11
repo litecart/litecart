@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#e54d80',
-			'icon' => 'fa-adjust',
+			'icon' => 'icon-adjust',
 		],
 
 		'menu' => [

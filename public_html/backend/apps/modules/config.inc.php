@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#c449c5',
-			'icon' => 'fa-cube',
+			'icon' => 'icon-cube',
 		],
 
 		'menu' => [

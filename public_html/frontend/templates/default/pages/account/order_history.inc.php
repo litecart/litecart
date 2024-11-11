@@ -35,7 +35,7 @@
 							<td class="text-center"><?php echo $order['order_status']; ?></td>
 							<td class="text-end"><?php echo $order['total']; ?></td>
 							<td class="text-end"><?php echo $order['date_created']; ?></td>
-							<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo functions::escape_html($order['printable_link']); ?>" target="_blank" title="<?php echo functions::escape_html(language::translate('title_print', 'Print')); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a></td>
+							<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo functions::escape_html($order['printable_link']); ?>" target="_blank" title="<?php echo functions::escape_html(language::translate('title_print', 'Print')); ?>"><?php echo functions::draw_fonticon('icon-print'); ?></a></td>
 						</tr>
 						<?php } ?>
 						</tbody>

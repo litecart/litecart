@@ -212,7 +212,7 @@
 	functions::draw_lightbox();
 ?>
 <style>
-.fa-exclamation-triangle {
+.icon-exclamation-triangle {
 	color: #f00;
 }
 table .thumbnail {
@@ -245,7 +245,7 @@ table .thumbnail {
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th></th>
 					<th class="text-center"><?php echo language::translate('title_id', 'ID'); ?></th>
@@ -263,7 +263,7 @@ table .thumbnail {
 				<tr class="<?php if (empty($product['status'])) echo 'semi-transparent'; ?>">
 					<td><?php echo functions::form_checkbox('products[]', $product['id']); ?></td>
 					<td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
-					<td class="warning"><?php if (!empty($product['warning'])) echo functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_attr($product['warning']) .'"'); ?></td>
+					<td class="warning"><?php if (!empty($product['warning'])) echo functions::draw_fonticon('icon-exclamation-triangle', 'title="'. functions::escape_attr($product['warning']) .'"'); ?></td>
 					<td class="text-center"><?php echo $product['id']; ?></td>
 					<td><?php echo functions::draw_thumbnail('storage://images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, settings::get('product_image_clipping')); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name'] ? $product['name'] : '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
@@ -293,7 +293,7 @@ table .thumbnail {
 						</div>
 					</li>
 					<li>
-						<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'fa-copy'); ?>
+						<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
 					</li>
 					<li>
 						<?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"', 'delete'); ?>

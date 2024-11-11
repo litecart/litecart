@@ -66,7 +66,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<?php if ($cheapest_shipping_fee !== null) { ?>
 					<div class="cheapest-shipping" style="margin: 1em 0;">
-						<?php echo functions::draw_fonticon('fa-truck'); ?> <?php echo strtr(language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">%price</strong>'), ['%price' => currency::format($cheapest_shipping_fee)]); ?>
+						<?php echo functions::draw_fonticon('icon-truck'); ?> <?php echo strtr(language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">%price</strong>'), ['%price' => currency::format($cheapest_shipping_fee)]); ?>
 					</div>
 					<?php } ?>
 
@@ -177,19 +177,19 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<div class="social-bookmarks">
 						<a class="link btn btn-default" href="#">
-							<?php echo functions::draw_fonticon('fa-link', 'style="color: #333;"'); ?>
+							<?php echo functions::draw_fonticon('icon-link', 'style="color: #333;"'); ?>
 						</a>
 
 						<a class="facebook btn btn-default" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>">
-							<?php echo functions::draw_fonticon('fa-facebook fa-lg', 'style="color: #3b5998;"'); ?>
+							<?php echo functions::draw_fonticon('icon-facebook', 'style="color: #3b5998;"'); ?>
 						</a>
 
 						<a class="x btn btn-default" href="<?php echo document::href_link('https://twitter.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>">
-							<?php echo functions::draw_fonticon('fa-twitter fa-lg', 'style="color: #000;"'); ?>
+							<?php echo functions::draw_fonticon('icon-twitter', 'style="color: #000;"'); ?>
 						</a>
 
 						<a class="pinterest btn btn-default" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Pinterest'); ?>">
-							<?php echo functions::draw_fonticon('fa-pinterest fa-lg', 'style="color: #bd081c;"'); ?>
+							<?php echo functions::draw_fonticon('icon-pinterest', 'style="color: #bd081c;"'); ?>
 						</a>
 					</div>
 

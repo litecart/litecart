@@ -137,7 +137,7 @@
 
 							<div class="row">
 								<div class="form-group col-md-6">
-									<label><?php echo language::translate('title_icon', 'Icon'); ?> <a href="https://fontawesome.com/v4.7.0/icons/" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+									<label><?php echo language::translate('title_icon', 'Icon'); ?> <a href="https://fontawesome.com/v4.7.0/icons/" target="_blank"><?php echo functions::draw_fonticon('icon-external-link'); ?></a></label>
 									<?php echo functions::form_input_text('icon', true, 'placeholder="fa-circle-thin"'); ?>
 								</div>
 

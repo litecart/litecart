@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#3090e8',
-			'icon' => 'fa-globe',
+			'icon' => 'icon-globe',
 		],
 
 		'menu' => [],

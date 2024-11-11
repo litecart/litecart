@@ -87,6 +87,10 @@
 
 		switch(true) {
 
+			// LiteCore Fonticons
+			case (substr($class, 0, 5) == 'icon-'):
+				return '<i class="'. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+
 			// Bootstrap Icons
 			case (substr($class, 0, 3) == 'bi-'):
 				document::$head_tags['bootstrap-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">';
@@ -94,14 +98,15 @@
 
 			// Fontawesome 4
 			case (substr($class, 0, 3) == 'fa-'):
-				//document::$head_tags['fontawesome'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">'; // Uncomment if removed from lib_document
+				document::$head_tags['fontawesome4'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/v4-shims.css">';
+				document::$head_tags['fontawesome5'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">';
 				return '<i class="fa '. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 
 			// Fontawesome 5
 			case (substr($class, 0, 7) == 'far fa-'):
 			case (substr($class, 0, 7) == 'fab fa-'):
 			case (substr($class, 0, 7) == 'fas fa-'):
-				//document::$head_tags['fontawesome5'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">';
+				document::$head_tags['fontawesome5'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">';
 				return '<i class="'. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 
 			// Foundation
@@ -126,31 +131,31 @@
 		}
 
 		switch ($class) {
-			case 'add':         return draw_fonticon('fa-plus');
-			case 'cancel':      return draw_fonticon('fa-times');
-			case 'company':     return draw_fonticon('fa-building', 'style="color: #888;"');
-			case 'delete':      return draw_fonticon('fa-trash-o');
-			case 'download':    return draw_fonticon('fa-download');
-			case 'edit':        return draw_fonticon('fa-pencil');
-			case 'failed':      return draw_fonticon('fa-times', 'style="color: #c00;"');
-			case 'false':       return draw_fonticon('fa-times', 'style="color: #c00;"');
-			case 'folder':      return draw_fonticon('fa-folder', 'style="color: #cc6;"');
-			case 'folder-open': return draw_fonticon('fa-folder-open', 'style="color: #cc6;"');
-			case 'remove':      return draw_fonticon('fa-times', 'style="color: #c33;"');
-			case 'move-up':     return draw_fonticon('fa-arrow-up', 'style="color: #39c;"');
-			case 'move-down':   return draw_fonticon('fa-arrow-down', 'style="color: #39c;"');
-			case 'ok':          return draw_fonticon('fa-check', 'style="color: #8c4;"');
-			case 'on':          return draw_fonticon('fa-circle', 'style="color: #8c4;"');
-			case 'off':         return draw_fonticon('fa-circle', 'style="color: #f64;"');
-			case 'print':       return draw_fonticon('fa-print', 'style="color: #ded90f;"');
-			case 'remove':      return draw_fonticon('fa-times', 'style="color: #c00;"');
-			case 'semi-off':    return draw_fonticon('fa-circle', 'style="color: #ded90f;"');
-			case 'save':        return draw_fonticon('fa-floppy-o');
-			case 'send':        return draw_fonticon('fa-paper-plane');
-			case 'success':     return draw_fonticon('fa-check', 'style="color: #8c4;"');
-			case 'true':        return draw_fonticon('fa-check', 'style="color: #8c4;"');
-			case 'user':        return draw_fonticon('fa-user', 'style="color: #888"');
-			case 'warning':     return draw_fonticon('fa-exclamation-triangle', 'color: #c00;"');
+			case 'add':         return draw_fonticon('icon-plus');
+			case 'cancel':      return draw_fonticon('icon-times');
+			case 'company':     return draw_fonticon('icon-building', 'style="color: #888;"');
+			case 'delete':      return draw_fonticon('icon-trash-o');
+			case 'download':    return draw_fonticon('icon-download');
+			case 'edit':        return draw_fonticon('icon-pencil');
+			case 'failed':      return draw_fonticon('icon-times', 'style="color: #c00;"');
+			case 'false':       return draw_fonticon('icon-times', 'style="color: #c00;"');
+			case 'folder':      return draw_fonticon('icon-folder', 'style="color: #cc6;"');
+			case 'folder-open': return draw_fonticon('icon-folder-open', 'style="color: #cc6;"');
+			case 'remove':      return draw_fonticon('icon-times', 'style="color: #c33;"');
+			case 'move-up':     return draw_fonticon('icon-arrow-up', 'style="color: #39c;"');
+			case 'move-down':   return draw_fonticon('icon-arrow-down', 'style="color: #39c;"');
+			case 'ok':          return draw_fonticon('icon-check', 'style="color: #8c4;"');
+			case 'on':          return draw_fonticon('icon-circle', 'style="color: #8c4;"');
+			case 'off':         return draw_fonticon('icon-circle', 'style="color: #f64;"');
+			case 'print':       return draw_fonticon('icon-print', 'style="color: #ded90f;"');
+			case 'remove':      return draw_fonticon('icon-times', 'style="color: #c00;"');
+			case 'semi-off':    return draw_fonticon('icon-circle', 'style="color: #ded90f;"');
+			case 'save':        return draw_fonticon('icon-floppy-o');
+			case 'send':        return draw_fonticon('icon-paper-plane');
+			case 'success':     return draw_fonticon('icon-check', 'style="color: #8c4;"');
+			case 'true':        return draw_fonticon('icon-check', 'style="color: #8c4;"');
+			case 'user':        return draw_fonticon('icon-user', 'style="color: #888"');
+			case 'warning':     return draw_fonticon('icon-exclamation-triangle', 'color: #c00;"');
 			default: trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING); return;
 		}
 	}

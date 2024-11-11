@@ -34,10 +34,10 @@
 	</ol>
 
 	<a class="left carousel-control" href="#box-slides" data-slide="prev">
-		<span class="icon-prev"><?php echo functions::draw_fonticon('fa-chevron-left'); ?></span>
+		<span class="icon-prev"><?php echo functions::draw_fonticon('icon-chevron-left'); ?></span>
 	</a>
 	<a class="right carousel-control" href="#box-slides" data-slide="next">
-		<span class="icon-next"><?php echo functions::draw_fonticon('fa-chevron-right'); ?></span>
+		<span class="icon-next"><?php echo functions::draw_fonticon('icon-chevron-right'); ?></span>
 	</a>
 	<?php } ?>
 </section>

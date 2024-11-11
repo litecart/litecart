@@ -33,7 +33,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
 					<th><?php echo language::translate('title_hidden', 'Hidden'); ?></th>
@@ -48,8 +48,8 @@
 					<td><?php echo functions::form_checkbox('delivery_statuses[]', $sold_out_status['id']); ?></td>
 					<td><?php echo $sold_out_status['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_sold_out_status', ['sold_out_status_id' => $sold_out_status['id']]); ?>"><?php echo $sold_out_status['name']; ?></a></td>
-					<td class="text-center"><?php if (!empty($sold_out_status['hidden'])) echo functions::draw_fonticon('fa-check'); ?></td>
-					<td class="text-center"><?php if (!empty($sold_out_status['orderable'])) echo functions::draw_fonticon('fa-check'); ?></td>
+					<td class="text-center"><?php if (!empty($sold_out_status['hidden'])) echo functions::draw_fonticon('icon-check'); ?></td>
+					<td class="text-center"><?php if (!empty($sold_out_status['orderable'])) echo functions::draw_fonticon('icon-check'); ?></td>
 					<td style="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_sold_out_status', ['sold_out_status_id' => $sold_out_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>

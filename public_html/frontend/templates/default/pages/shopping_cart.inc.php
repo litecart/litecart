@@ -47,7 +47,7 @@
 																<?php } else { ?>
 																<?php echo !empty($item['quantity_unit']->decimals) ? functions::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0"') : functions::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
 																<?php } ?>
-																<?php echo functions::form_button('update_cart_item', [$key, functions::draw_fonticon('fa-refresh')], 'submit', 'title="'. functions::escape_attr(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
+																<?php echo functions::form_button('update_cart_item', [$key, functions::draw_fonticon('icon-refresh')], 'submit', 'title="'. functions::escape_attr(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
 															</div>
 														</div>
 													</div>
@@ -65,7 +65,7 @@
 										</div>
 
 										<div class="col-2 text-end">
-											<td><?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('fa-trash')], 'submit', 'class="btn btn-danger" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
+											<td><?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('icon-trash')], 'submit', 'class="btn btn-danger" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
 										</div>
 									</div>
 								</li>
@@ -128,7 +128,7 @@
 							</div>
 
 							<div>
-								<?php echo functions::form_button('checkout', language::translate('title_continue_to_checkout', 'Continue To Checkout') .' '. functions::draw_fonticon('fa-arrow-right'), 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>
+								<?php echo functions::form_button('checkout', language::translate('title_continue_to_checkout', 'Continue To Checkout') .' '. functions::draw_fonticon('icon-arrow-right'), 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>
 							</div>
 
 							<div class="strikethrough-divider">
@@ -136,7 +136,7 @@
 							</div>
 
 							<div id="express-checkout">
-								<a class="option btn btn-default btn-lg btn-block" href=""><?php echo functions::draw_fonticon('fa-paypal'); ?> Paypal</a>
+								<a class="option btn btn-default btn-lg btn-block" href=""><?php echo functions::draw_fonticon('icon-paypal'); ?> Paypal</a>
 							</div>
 
 						</div>

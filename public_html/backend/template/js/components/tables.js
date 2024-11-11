@@ -8,7 +8,7 @@ $('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table
 
 $('body').on('click', '.data-table tbody tr', function(e) {
 	if ($(e.target).is('a') || $(e.target).closest('a').length) return;
-	if ($(e.target).is('.btn, :input, th, .fa-star, .fa-star-o')) return;
+	if ($(e.target).is('.btn, :input, th, .icon-star, .icon-star-o')) return;
 	$(this).find(':checkbox, :radio').first().trigger('click');
 });
 

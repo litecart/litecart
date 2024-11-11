@@ -31,16 +31,16 @@
 
 			<div class="middle hidden-xs text-center">
 				<a class="btn btn-default btn-lg" href="<?php echo document::href_ilink(''); ?>">
-					<?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back_to_store', 'Back To Store'); ?>
+					<?php echo functions::draw_fonticon('icon-arrow-left'); ?> <?php echo language::translate('title_back_to_store', 'Back To Store'); ?>
 				</a>
 			</div>
 
 			<div class="contact-info hidden-xs">
 				<div class="title"><?php echo language::translate('title_contact', 'Contact'); ?></div>
 				<?php if (settings::get('store_phone')) { ?>
-				<div class="phone"><?php echo functions::draw_fonticon('fa-phone'); ?> <?php echo settings::get('store_phone'); ?></div>
+				<div class="phone"><?php echo functions::draw_fonticon('icon-phone'); ?> <?php echo settings::get('store_phone'); ?></div>
 				<?php } else { ?>
-				<div class="email"><?php echo functions::draw_fonticon('fa-envelope'); ?> <?php echo settings::get('store_email'); ?></div>
+				<div class="email"><?php echo functions::draw_fonticon('icon-envelope'); ?> <?php echo settings::get('store_email'); ?></div>
 				<?php } ?>
 			</div>
 		</div>

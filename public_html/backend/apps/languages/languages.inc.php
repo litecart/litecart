@@ -63,7 +63,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
@@ -87,8 +87,8 @@
 					<td><?php echo $language['code']; ?></td>
 					<td><?php echo $language['code2']; ?></td>
 					<td><?php echo $language['url_type']; ?></td>
-					<td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-					<td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+					<td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('icon-check') : ''; ?></td>
+					<td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? functions::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo $language['priority']; ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_language', ['language_code' => $language['code']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>

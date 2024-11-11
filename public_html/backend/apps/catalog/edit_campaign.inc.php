@@ -139,7 +139,7 @@
 					<td><?php echo functions::form_input_percent('products['.$key.'][percentage]', '', 2, 'style="width: 100px;"'); ?></td>
 					<td class="text-end">
 						<button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
-							<?php echo functions::draw_fonticon('fa-times'); ?>
+							<?php echo functions::draw_fonticon('icon-times'); ?>
 						</button>
 					</td>
 				</tr>
@@ -149,7 +149,7 @@
 
 		<div class="card-body">
 			<a href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>" class="btn btn-default" data-toggle="lightbox" data-max-width="800px" data-callback="add_product">
-				<?php echo functions::draw_fonticon('fa-plus', 'style="margin-right: 0.5em;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?>
+				<?php echo functions::draw_fonticon('icon-plus', 'style="margin-right: 0.5em;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?>
 			</a>
 		</div>
 
@@ -237,7 +237,7 @@
 			'  <td><?php echo functions::escape_js(functions::form_input_percent('products[new_product_i][percentage]', '', 2)); ?></td>',
 			'  <td class="text-end">',
 			'    <button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo language::translate('title_edit', 'Edit'); ?>">',
-			'      <?php echo functions::draw_fonticon('fa-times'); ?>',
+			'      <?php echo functions::draw_fonticon('icon-times'); ?>',
 			'    </button>',
 			'  </td>',
 			'</tr>',

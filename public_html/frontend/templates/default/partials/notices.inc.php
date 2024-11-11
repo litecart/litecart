@@ -8,7 +8,7 @@
 					echo implode(PHP_EOL, [
 						'<div class="alert alert-danger">',
 						'  <a href="#" class="close" data-dismiss="alert">&times;</a>',
-						'  ' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice,
+						'  ' . functions::draw_fonticon('icon-exclamation-triangle') . ' ' . $notice,
 						'</div>',
 					]);
 					break;
@@ -17,7 +17,7 @@
 					echo implode(PHP_EOL, [
 						'<div class="alert alert-warning">',
 						'  <a href="#" class="close" data-dismiss="alert">&times;</a>',
-						'  ' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice,
+						'  ' . functions::draw_fonticon('icon-exclamation-triangle') . ' ' . $notice,
 						'</div>',
 					]);
 					break;
@@ -26,7 +26,7 @@
 					echo implode(PHP_EOL, [
 						'<div class="alert alert-default">',
 						'  <a href="#" class="close" data-dismiss="alert">&times;</a>',
-						'  ' . functions::draw_fonticon('fa-info-circle') . ' ' . $notice,
+						'  ' . functions::draw_fonticon('icon-info') . ' ' . $notice,
 						'</div>',
 					]);
 					break;
@@ -35,7 +35,7 @@
 					echo implode(PHP_EOL, [
 						'<div class="alert alert-success">',
 						'  <a href="#" class="close" data-dismiss="alert">&times;</a>',
-						'  ' . functions::draw_fonticon('fa-check-circle') . ' ' . $notice,
+						'  ' . functions::draw_fonticon('icon-check') . ' ' . $notice,
 						'</div>',
 					]);
 					break;

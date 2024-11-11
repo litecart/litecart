@@ -55,7 +55,7 @@
 	foreach ($order_statuses as $key => $order_status) {
 
 		if (empty($order_status['icon'])) {
-			$order_statuses[$key]['icon'] = 'fa-circle-thin';
+			$order_statuses[$key]['icon'] = 'icon-circle-thin';
 		}
 
 		if (empty($order_status['color'])) {
@@ -99,7 +99,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th></th>
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
@@ -125,13 +125,13 @@
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>
 					<td><?php echo strtr($order_status['state'], $states); ?></td>
 					<td class="text-center"><?php echo strtr($order_status['stock_action'], ['none' => language::translate('title_none', 'None'), 'reserve' => language::translate('title_reserve_stock', 'Reserve Stock'), 'commit' => language::translate('title_commit_stock', 'Commit Stock')]); ?></td>
-					<td class="text-center"><?php echo !empty($order_status['hidden']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
-					<td class="text-center"><?php echo !empty($order_status['is_sale']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
-					<td class="text-center"><?php echo !empty($order_status['is_archived']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
-					<td class="text-center"><?php echo !empty($order_status['is_trackable']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
-					<td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
+					<td class="text-center"><?php echo !empty($order_status['hidden']) ? functions::draw_fonticon('icon-check') : '-'; ?></td>
+					<td class="text-center"><?php echo !empty($order_status['is_sale']) ? functions::draw_fonticon('icon-check') : '-'; ?></td>
+					<td class="text-center"><?php echo !empty($order_status['is_archived']) ? functions::draw_fonticon('icon-check') : '-'; ?></td>
+					<td class="text-center"><?php echo !empty($order_status['is_trackable']) ? functions::draw_fonticon('icon-check') : '-'; ?></td>
+					<td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('icon-check') : '-'; ?></td>
 					<td class="text-center"><?php echo language::number_format($order_status['num_orders'], 0); ?></td>
-					<td class="text-center"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/orders', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
+					<td class="text-center"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/orders', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('icon-external-link'); ?></a></td>
 					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>

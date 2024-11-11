@@ -326,12 +326,12 @@
 
 			<div class="row">
 				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+					<label><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('icon-external-link'); ?></a></label>
 					<?php echo functions::form_input_text('code', true, 'required pattern="[a-z]{2}"'); ?>
 				</div>
 
 				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+					<label><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo functions::draw_fonticon('icon-external-link'); ?></a></label>
 					<?php echo functions::form_input_text('code2', true, 'required pattern="[a-z]{3}"'); ?>
 				</div>
 			</div>
@@ -355,24 +355,24 @@
 
 			<div class="row">
 				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_date_format', 'Date Format'); ?> <a href="https://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+					<label><?php echo language::translate('title_date_format', 'Date Format'); ?> <a href="https://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('icon-external-link'); ?></a></label>
 					<?php echo functions::form_select('format_date', $date_format_options, true); ?>
 				</div>
 
 				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_time_format', 'Time Format'); ?> <a href="https://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+					<label><?php echo language::translate('title_time_format', 'Time Format'); ?> <a href="https://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('icon-external-link'); ?></a></label>
 					<?php echo functions::form_select_optgroup('format_time', $time_format_options, true); ?>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?> <a href="https://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+					<label><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?> <a href="https://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('icon-external-link'); ?></a></label>
 					<?php echo functions::form_select_optgroup('raw_date', $raw_date_options, true); ?>
 				</div>
 
 				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?> <a href="https://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+					<label><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?> <a href="https://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('icon-external-link'); ?></a></label>
 					<?php echo functions::form_select_optgroup('raw_time', $raw_time_options, true); ?>
 				</div>
 			</div>
@@ -431,16 +431,16 @@
 
 	<?php if (!empty($available_languages)) { ?>
 	$('select[name="prefill"]').on('change', function() {
-		
+
 		$.each($(this).find('option:selected').data(), function(key, value) {
-			
+
 			var field_name = key.replace(/([A-Z])/, '_$1').toLowerCase()
 													.replace(/^date_format$/, 'format_date')
 													.replace(/^time_format$/, 'format_time');
-													
+
 			$(':input[name="'+field_name+'"]').not('[type="checkbox"]').not('[type="radio"]').val(value);
 			$('input[name="'+field_name+'"][type="checkbox"][value="'+value+'"], input[name="'+field_name+'"][type="radio"][value="'+value+'"]').prop('checked', true);
-			
+
 			if (key == 'direction') {
 				$('input[name="'+field_name+'"]:checked').parent('.btn').addClass('active').siblings().removeClass('active');
 			}

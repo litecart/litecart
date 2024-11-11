@@ -256,12 +256,12 @@
 	foreach ($orders as $i => $order) {
 
 		if (empty($order['order_status_id'])) {
-			$order['order_status_icon'] = 'fa-minus';
+			$order['order_status_icon'] = 'icon-minus';
 			$order['order_status_color'] = '#ccc';
 		}
 
 		if (empty($order['order_status_icon'])) {
-			$order['order_status_icon'] = 'fa-circle-thin';
+			$order['order_status_icon'] = 'icon-circle-thin';
 		}
 
 		if (empty($order['order_status_color'])) {
@@ -350,10 +350,10 @@ table tr.bold {
 	font-weight: bold;
 }
 
-table .fa-star-o:hover {
+table .icon-star-o:hover {
 	transform: scale(1.5);
 }
-table .fa-star:hover {
+table .icon-star:hover {
 	transform: scale(1.5);
 }
 
@@ -391,7 +391,7 @@ table .fa-star:hover {
 		<table class="table table-striped table-hover table-sortable data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th data-sort="id" class="text-end"><?php echo language::translate('title_order_no', 'Order No'); ?></th>
 					<th></th>
@@ -411,20 +411,20 @@ table .fa-star:hover {
 				<?php foreach ($orders as $order) { ?>
 				<tr class="<?php echo implode(' ', $order['css_classes']); ?>" data-id="<?php echo $order['id']; ?>">
 					<td><?php echo functions::form_checkbox('orders[]', $order['id'], true); ?></td>
-					<td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
+					<td><?php echo functions::draw_fonticon($order['order_status_icon'].'', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
 					<td class="text-end"><?php echo $order['no']; ?></td>
-					<td><?php echo !empty($order['starred']) ? functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?></td>
+					<td><?php echo !empty($order['starred']) ? functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo $order['billing_company'] ? $order['billing_company'] : $order['billing_firstname'] .' '. $order['billing_lastname']; ?><?php if (!$order['customer_id']) echo ' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></a> <span style="opacity: 0.5;"><?php echo $order['billing_tax_id']; ?></span></td>
 					<td><?php if (!empty($order['billing_country_code'])) echo reference::country($order['billing_country_code'])->name; ?></td>
 					<td><?php echo $order['payment_option_name']; ?></td>
 					<td><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
-					<td class="text-center"><?php if (!is_null($order['sufficient_stock'])) echo $order['sufficient_stock'] ? functions::draw_fonticon('fa-check', 'style="color: #88cc44;"') : functions::draw_fonticon('fa-times', 'style="color: #ff6644;"'); ?></td>
+					<td class="text-center"><?php if (!is_null($order['sufficient_stock'])) echo $order['sufficient_stock'] ? functions::draw_fonticon('icon-check', 'style="color: #88cc44;"') : functions::draw_fonticon('icon-times', 'style="color: #ff6644;"'); ?></td>
 					<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
 					<td class="text-end"><?php echo language::strftime('datetime', $order['date_created']); ?></td>
 					<td>
 						<div class="dropdown">
 							<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-								<?php echo functions::draw_fonticon('fa-print'); ?>
+								<?php echo functions::draw_fonticon('icon-print'); ?>
 							</button>
 							<ul class="dropdown-menu dropdown-menu-end">
 								<li>
@@ -441,7 +441,7 @@ table .fa-star:hover {
 						</div>
 					</td>
 					<td>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('icon-pencil'); ?></a>
 					</td>
 				</tr>
 				<?php } ?>
@@ -526,19 +526,19 @@ table .fa-star:hover {
 		$('#actions fieldset').prop('disabled', !$('.data-table :checked').length);
 	}).first().trigger('change');
 
-	$('table').on('click', '.fa-star-o', function(e){
+	$('table').on('click', '.icon-star-o', function(e){
 		e.stopPropagation();
 		let star = this;
 		$.post('', 'star&order_id='+$(star).closest('tr').data('id'), function(data) {
-			$(star).replaceWith('<?php echo functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"'); ?>');
+			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>');
 		});
 		return false;
 	});
 
-	$('table').on('click', '.fa-star', function(e){
+	$('table').on('click', '.icon-star', function(e){
 		let star = this;
 		$.post('', 'unstar&order_id='+$(star).closest('tr').data('id'), function(data) {
-			$(star).replaceWith('<?php echo functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?>');
+			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>');
 		});
 		return false;
 	});

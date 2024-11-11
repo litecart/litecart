@@ -107,7 +107,7 @@
 					<td><?php echo functions::form_input_hidden('zones['. $key .'][country_code]', true); ?> <?php echo reference::country($_POST['zones'][$key]['country_code'])->name; ?></td>
 					<td><?php echo functions::form_input_hidden('zones['. $key .'][zone_code]', true); ?> <?php echo !empty($_POST['zones'][$key]['zone_code']) ? reference::country($_POST['zones'][$key]['country_code'])->zones[$_POST['zones'][$key]['zone_code']]['name'] : '-- '.language::translate('title_all_zones', 'All Zones') .' --'; ?></td>
 					<td><?php echo functions::form_input_hidden('zones['. $key .'][city]', true); ?> <?php echo fallback($_POST['zones'][$key]['city'], '-- '.language::translate('title_all_cities'), 'All Cities') .' --'; ?></td>
-					<td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+					<td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -193,7 +193,7 @@
 			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][country_code]', '')); ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>',
 			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][zone_code]', '')); ?>' + $('select[name="new_zone[zone_code]"] option:selected').text() + '</td>',
 			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][city]', '')); ?>' + $('input[name="new_zone[city]"]').val() + '</td>',
-			'  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"')); ?></a></td>',
+			'  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #cc3333;"')); ?></a></td>',
 			'</tr>'
 		].join('\n')
 			.replace(/new_zone_index/g, 'new_' + new_zone_index++)

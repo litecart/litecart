@@ -201,7 +201,7 @@ h1 {
   <ul class="list-unstyled">
     <li>
       <button name="print" class="btn btn-default btn-lg">
-        <?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
+        <?php echo functions::draw_fonticon('icon-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
       </button>
     </li>
   </ul>

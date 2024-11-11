@@ -194,7 +194,7 @@ h1 {
 </section>
 
 <button name="print" class="btn btn-default btn-lg">
-	<?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
+	<?php echo functions::draw_fonticon('icon-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
 </button>
 
 <script>

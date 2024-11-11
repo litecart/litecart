@@ -60,7 +60,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo language::translate('title_ID', 'ID'); ?></th>
 					<th class="main"><?php echo language::translate('title_Name', 'Name'); ?></th>
 					<th class="text-end"><?php echo language::translate('title_products', 'Products'); ?></th>
@@ -81,7 +81,7 @@
 					<td class="text-end"><?php if (!empty($campaign['date_valid_to'])) echo language::strftime('date', $campaign['date_valid_to']); ?></td>
 					<td class="text-end">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
-							<?php echo functions::draw_fonticon('fa-pencil'); ?>
+							<?php echo functions::draw_fonticon('icon-pencil'); ?>
 						</a>
 					</td>
 				</tr>

@@ -90,7 +90,6 @@
 				'<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon-256x256.png') .'" type="image/png" sizes="256x256">',
 			]);
 			self::$head_tags['manifest'] = '<link rel="manifest" href="'. self::href_ilink('manifest.json') .'">'; // No namespace as relative to endpoint
-			self::$head_tags['fontawesome'] = '<link rel="stylesheet" href="'. self::href_rlink('app://assets/fontawesome/font-awesome.min.css') .'">';
 			self::$foot_tags['jquery'] = '<script src="'. self::href_rlink('app://assets/jquery/jquery-4.0.0.min.js') .'"></script>';
 
 			// Hreflang

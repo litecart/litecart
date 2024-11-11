@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#21a9d2',
-			'icon' => 'fa-flag',
+			'icon' => 'icon-flag',
 		],
 
 		'menu' => [],

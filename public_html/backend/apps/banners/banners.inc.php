@@ -60,7 +60,7 @@
 		<table class="table table-striped data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
@@ -78,7 +78,7 @@
 				<?php foreach ($banners as $banner) { ?>
 				<tr class="<?php echo $banner['status'] ? false : ' semi-transparent'; ?>">
 					<td><?php echo functions::form_checkbox('banners[]', $banner['id']); ?></td>
-					<td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($banner['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
+					<td><?php echo functions::draw_fonticon('icon-circle', 'style="color: '. (!empty($banner['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
 					<td><?php echo $banner['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>"><?php echo $banner['name']; ?></a></td>
 					<td><?php echo $banner['keywords']; ?></td>
@@ -87,7 +87,7 @@
 					<td class="text-end"><?php echo !empty($banner['total_clicks']) ? '1:'.round($banner['total_views']/$banner['total_clicks']) : '-'; ?></td>
 					<td class="text-center"><?php echo $banner['date_valid_from'] ? language::strftime('datetime', $banner['date_valid_from']) : '-'; ?></td>
 					<td class="text-center"><?php echo $banner['date_valid_to'] ? language::strftime('datetime', $banner['date_valid_to']) : '-'; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('icon-pencil'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>

@@ -94,7 +94,7 @@
 		<table class="table table-striped table-hover table-sortable data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th data-sort="id"><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th data-sort="customer" class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
 					<th data-sort="country"><?php echo language::translate('title_country', 'Country'); ?></th>
@@ -115,7 +115,7 @@
 					<td class="text-end"><?php echo $shopping_cart['num_items']; ?></td>
 					<td class="text-end"><?php echo currency::format($shopping_cart['subtotal'], false, $shopping_cart['currency_code']); ?></td>
 					<td class="text-end"><?php echo language::strftime('datetime', $shopping_cart['date_created']); ?></td>
-					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_shopping_cart', ['cart_id' => $shopping_cart['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_shopping_cart', ['cart_id' => $shopping_cart['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('icon-pencil'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>

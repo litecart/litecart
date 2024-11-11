@@ -146,7 +146,7 @@
 					</td>
 					<td class="text-center">
 						<div class="input-group">
-							<?php echo functions::form_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
+							<?php echo functions::form_button('transfer', functions::draw_fonticon('icon-arrow-left'), 'button'); ?>
 							<?php echo functions::form_input_decimal('contents['. $key .'][backordered]', true, 2); ?>
 						</div>
 					</td>
@@ -168,7 +168,7 @@
 					</td>
 					<td class="text-center">
 						<div class="input-group">
-							<?php echo functions::form_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button', 'tabindex="-1"'); ?>
+							<?php echo functions::form_button('transfer', functions::draw_fonticon('icon-arrow-left'), 'button', 'tabindex="-1"'); ?>
 							<?php echo functions::form_input_decimal('new[backordered]', true, 2); ?>
 						</div>
 					</td>
@@ -262,11 +262,11 @@
 			'    </td>',
 			'    <td class="text-center">',
 			'      <div class="input-group">',
-			'        <?php echo functions::escape_js(functions::form_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>',
+			'        <?php echo functions::escape_js(functions::form_button('transfer', functions::draw_fonticon('icon-arrow-left'), 'button')); ?>',
 			'        <?php echo functions::escape_js(functions::form_input_decimal('contents[new_item_index][backordered]', true, 2)); ?>',
 			'      </div>',
 			'    </td>',
-			'    <td class="text-center"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times', 'style="color: #c33;"')); ?></a></td>',
+			'    <td class="text-center"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a></td>',
 			'  </tr>'
 		].join('\n')
 			.replace(/new_item_index/g, 'new_' + new_item_index++)

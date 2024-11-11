@@ -92,7 +92,7 @@
 			</div>
 
 			<div>
-				<?php echo functions::form_toggle('list_style', ['columns' => functions::draw_fonticon('fa-th-large'), 'rows' => functions::draw_fonticon('fa-bars')], true, 'data-token-group="list_style" data-token-title="'. language::translate('title_list_style', 'List Style') .'"'); ?>
+				<?php echo functions::form_toggle('list_style', ['columns' => functions::draw_fonticon('icon-th-large'), 'rows' => functions::draw_fonticon('icon-bars')], true, 'data-token-group="list_style" data-token-title="'. language::translate('title_list_style', 'List Style') .'"'); ?>
 			</div>
 
 		</div>

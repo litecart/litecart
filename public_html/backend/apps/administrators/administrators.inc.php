@@ -53,9 +53,9 @@
 		} catch (Exception $e) {
 			$administrator['warning'] = $e->getMessage();
 		}
-	
+
 		return $administrator;
-	
+
 	}, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
@@ -81,7 +81,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th></th>
 					<th><?php echo language::translate('title_username', 'Username'); ?></th>
@@ -99,7 +99,7 @@
 				<tr class="<?php echo empty($administrator['status']) ? 'semi-transparent' : ''; ?>">
 					<td><?php echo functions::form_checkbox('administrators[]', $administrator['id']); ?></td>
 					<td><?php echo functions::draw_fonticon($administrator['status'] ? 'on' : 'off'); ?></td>
-					<td class="warning"><?php echo !empty($administrator['warning']) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($administrator['warning']) .'"') : ''; ?></td>
+					<td class="warning"><?php echo !empty($administrator['warning']) ? functions::draw_fonticon('icon-exclamation-triangle', 'title="'. functions::escape_html($administrator['warning']) .'"') : ''; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>"><?php echo $administrator['username']; ?></a></td>
 					<td><?php echo $administrator['email']; ?></td>
 					<td><?php echo (json_decode($administrator['apps'], true)) ? language::translate('title_restricted', 'Restricted') : '-'; ?></td>

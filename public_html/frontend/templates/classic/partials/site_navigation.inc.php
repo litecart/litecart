@@ -11,13 +11,13 @@
 
 		<div class="quick-access">
 			<a class="regional-setting text-center" href="<?php echo document::href_ilink('regional_settings'); ?>#box-regional-settings" data-toggle="lightbox" data-seamless="true">
-				<div class="navbar-icon"><?php echo functions::draw_fonticon('fa-globe'); ?></div>
+				<div class="navbar-icon"><?php echo functions::draw_fonticon('icon-globe'); ?></div>
 				<small class="hidden-xs"><?php echo language::$selected['code']; ?> / <?php echo customer::$data['country_code']; ?> / <?php echo currency::$selected['code']; ?></small>
 			</a>
 
 			<?php if (settings::get('accounts_enabled')) { ?>
 			<a class="account text-center" href="<?php echo document::href_ilink('account/edit'); ?>">
-				<div class="navbar-icon"><?php echo functions::draw_fonticon('fa-user-o'); ?></div>
+				<div class="navbar-icon"><?php echo functions::draw_fonticon('icon-user-o'); ?></div>
 				<small class="hidden-xs"><?php echo language::translate('title_account', 'Account'); ?></small>
 			</a>
 			<?php } ?>
@@ -37,14 +37,14 @@
 	<div id="offcanvas" class="offcanvas">
 		<div class="offcanvas-header">
 			<div class="offcanvas-title"><?php echo settings::get('store_name'); ?></div>
-			<button type="button" class="btn btn-default" data-toggle="dismiss"><?php echo functions::draw_fonticon('fa-times'); ?></button>
+			<button type="button" class="btn btn-default" data-toggle="dismiss"><?php echo functions::draw_fonticon('icon-times'); ?></button>
 		</div>
 
 		<div class="offcanvas-body">
 			<ul class="navbar-nav">
 
 				<li class="nav-item">
-					<a class="nav-link" href="<?php echo document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('fa-home hidden-xs hidden-sm'); ?> <span class="hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo language::translate('title_home', 'Home'); ?></span></a>
+					<a class="nav-link" href="<?php echo document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('icon-home hidden-xs hidden-sm'); ?> <span class="hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo language::translate('title_home', 'Home'); ?></span></a>
 				</li>
 
 				<?php if ($categories) { ?>
@@ -106,7 +106,7 @@
 
 				<?php if (settings::get('accounts_enabled')) { ?>
 				<li class="nav-item account dropdown">
-					<a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? functions::escape_html(customer::$data['firstname']) : language::translate('title_sign_in', 'Sign In'); ?></a>
+					<a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('icon-user'); ?> <?php echo !empty(customer::$data['id']) ? functions::escape_html(customer::$data['firstname']) : language::translate('title_sign_in', 'Sign In'); ?></a>
 					<ul class="dropdown-menu dropdown-menu-end">
 						<?php if (!empty(customer::$data['id'])) { ?>
 							<li><a class="nav-link" href="<?php echo document::href_ilink('account/edit'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>

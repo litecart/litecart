@@ -126,7 +126,7 @@
 		<table class="table table-striped table-hover table-sortable data-table">
 			<thead>
 				<tr>
-					<th style="width: 40px;"><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th style="width: 40px;"><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th style="width: 40px;"></th>
 					<th data-sort="id" style="width: 50px;"><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th data-sort="email"><?php echo language::translate('title_email', 'Email'); ?></th>

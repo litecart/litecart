@@ -132,7 +132,7 @@ table tbody .toggle {
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th class="main" style="padding-inline-start: 30px;"><?php echo language::translate('title_title', 'Title'); ?></th>
@@ -173,9 +173,9 @@ table tbody .toggle {
 					<td><?php echo functions::form_checkbox('pages[]', $page['id']); ?></td>
 					<td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
 					<td><?php echo $page['id']; ?></td>
-					<td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
-					<td class="text-center"><?php if (in_array('menu', $page['dock'])) echo functions::draw_fonticon('fa-check'); ?></td>
-					<td class="text-center"><?php if (in_array('information', $page['dock'])) echo functions::draw_fonticon('fa-check'); ?></td>
+					<td><?php echo functions::draw_fonticon('icon-file-o'); ?> <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
+					<td class="text-center"><?php if (in_array('menu', $page['dock'])) echo functions::draw_fonticon('icon-check'); ?></td>
+					<td class="text-center"><?php if (in_array('information', $page['dock'])) echo functions::draw_fonticon('icon-check'); ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 <?php
@@ -210,11 +210,11 @@ table tbody .toggle {
 				if ($page['num_subpages']) {
 					if (!in_array($page['id'], $_GET['expanded'])) {
 						$expanded = array_merge($_GET['expanded'], [$page['id']]);
-						$icon = '<a class="toggle" href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. functions::draw_fonticon('fa-plus-square-o fa-fw') . '</a>';
+						$icon = '<a class="toggle" href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. functions::draw_fonticon('icon-plus-square-o') . '</a>';
 
 					} else {
 						$expanded = array_diff($_GET['expanded'], [$page['id']]);
-						$icon = '<a class="toggle" href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. functions::draw_fonticon('fa-minus-square-o fa-fw') .'</a>';
+						$icon = '<a class="toggle" href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. functions::draw_fonticon('icon-minus-square-o') .'</a>';
 					}
 
 				} else {
@@ -229,8 +229,8 @@ table tbody .toggle {
 						<?php echo $icon; ?>
 						<a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a>
 					</td>
-					<td class="text-center"><?php if (in_array('menu', $page['dock'])) echo functions::draw_fonticon('fa-check'); ?></td>
-					<td class="text-center"><?php if (in_array('information', $page['dock'])) echo functions::draw_fonticon('fa-check'); ?></td>
+					<td class="text-center"><?php if (in_array('menu', $page['dock'])) echo functions::draw_fonticon('icon-check'); ?></td>
+					<td class="text-center"><?php if (in_array('information', $page['dock'])) echo functions::draw_fonticon('icon-check'); ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 <?php

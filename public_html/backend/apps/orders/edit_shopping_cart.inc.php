@@ -208,7 +208,7 @@
 					<div class="form-group col-md-6">
 						<label><?php echo language::translate('title_ip_address', 'IP Address'); ?></label>
 						<div class="form-input">
-							<?php echo $shopping_cart->data['ip_address']; ?> <a href="https://ip-api.com/#<?php echo $shopping_cart->data['ip_address']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a>
+							<?php echo $shopping_cart->data['ip_address']; ?> <a href="https://ip-api.com/#<?php echo $shopping_cart->data['ip_address']; ?>" target="_blank"><?php echo functions::draw_fonticon('icon-external-link'); ?></a>
 						</div>
 					</div>
 					<?php } ?>
@@ -414,7 +414,7 @@
 								<td><?php echo functions::form_input_money('items['. $key .'][price]', $_POST['currency_code'], true); ?></td>
 								<td><?php echo functions::form_input_money('items['. $key .'][discount]', $_POST['currency_code'], true); ?></td>
 								<td><?php echo functions::form_input_money('items['. $key .'][total]', $_POST['currency_code'], true, 'readonly'); ?></td>
-								<td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg fa-fw', 'style="color: #c33;"'); ?></a></td>
+								<td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #c33;"'); ?></a></td>
 								<td><a class="edit btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 							</tr>
 							<?php } ?>
@@ -422,8 +422,8 @@
 						<tfoot>
 							<tr>
 								<td colspan="8">
-									<a class="btn btn-default add-product" href="<?php echo document::href_ilink('catalog/product_picker'); ?>" data-toggle="lightbox" data-seamless="true" data-width="" data-href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
-									<div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
+									<a class="btn btn-default add-product" href="<?php echo document::href_ilink('catalog/product_picker'); ?>" data-toggle="lightbox" data-seamless="true" data-width="" data-href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>"><?php echo functions::draw_fonticon('icon-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
+									<div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('icon-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
 								</td>
 							</tr>
 						</tfoot>
@@ -834,7 +834,7 @@
 			'    <td><?php echo functions::escape_js(functions::form_input_money('items[new_item_index][tax]', $_POST['currency_code'], '')); ?></td>',
 			'    <td class="text-end">',
 			'      <a class="edit" href="#" title="<?php echo functions::escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('edit')); ?></a>',
-			'      <a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times fa-lg fa-fw', 'style="color: #c33;"')); ?></a>',
+			'      <a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a>',
 			'    </td>',
 			'  </tr>'
 		].join('\n')

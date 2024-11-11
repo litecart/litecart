@@ -69,7 +69,7 @@
 			$site_footer->snippets['social_bookmarks'][] = [
 				'type' => $platform,
 				'title' => ucfirst($platform),
-				'icon' => 'fa-'.$platform,
+				'icon' => 'icon-'.$platform,
 				'link' => $link,
 			];
 		}

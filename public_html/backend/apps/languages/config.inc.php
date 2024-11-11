@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#2b6ca2',
-			'icon' => 'fa-comments',
+			'icon' => 'icon-comments',
 		],
 
 		'menu' => [

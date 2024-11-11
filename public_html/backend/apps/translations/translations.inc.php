@@ -295,7 +295,7 @@
 		<table class="table table-striped table-hover table-sortable data-table">
 			<thead>
 				<tr>
-					<th style="width: 50px;"><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th style="width: 50px;"><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th data-sort="id"><?php echo language::translate('title_code', 'code'); ?></th>
 					<?php foreach ($_GET['languages'] as $language_code) { ?><th><?php echo language::$languages[$language_code]['name']; ?></th><?php } ?>
 				</tr>
@@ -372,8 +372,8 @@
 			</div>
 
 			<div class="btn-group btn-block">
-				<a class="btn btn-default" href="https://translate.google.com" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Google Translate</a>
-				<a class="btn btn-default" href="https://www.bing.com/translator" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Bing Translate</a>
+				<a class="btn btn-default" href="https://translate.google.com" target="_blank"><?php echo functions::draw_fonticon('icon-external-link'); ?> Google Translate</a>
+				<a class="btn btn-default" href="https://www.bing.com/translator" target="_blank"><?php echo functions::draw_fonticon('icon-external-link'); ?> Bing Translate</a>
 			</div>
 		</div>
 

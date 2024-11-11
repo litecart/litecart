@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#a8bf2e',
-			'icon' => 'fa-university',
+			'icon' => 'icon-university',
 		],
 
 		'menu' => [

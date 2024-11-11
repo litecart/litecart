@@ -35,12 +35,12 @@
 
 				<?php if (settings::get('store_phone')) { ?>
 				<p class="phone">
-					<?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a>
+					<?php echo functions::draw_fonticon('icon-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a>
 				<p>
 				<?php } ?>
 
 				<p class="email">
-					<?php echo functions::draw_fonticon('fa-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a>
+					<?php echo functions::draw_fonticon('icon-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a>
 				</p>
 			</section>
 
@@ -60,7 +60,7 @@
 				<?php if ($social_bookmarks) { ?>
 				<ul class="buttons list-inline text-center">
 					<?php foreach ($social_bookmarks as $bookmark) { ?>
-					<li><a href="<?php echo functions::escape_html($bookmark['link']); ?>" target="_blank"><?php echo functions::draw_fonticon($bookmark['icon'] .' fa-lg fa-fw', 'title="'. functions::escape_attr($bookmark['title']) .'"'); ?></a></li>
+					<li><a href="<?php echo functions::escape_html($bookmark['link']); ?>" target="_blank"><?php echo functions::draw_fonticon($bookmark['icon'] .'', 'title="'. functions::escape_attr($bookmark['title']) .'"'); ?></a></li>
 					<?php } ?>
 				</ul>
 				<?php } ?>

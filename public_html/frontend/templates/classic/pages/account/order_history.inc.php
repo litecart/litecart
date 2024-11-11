@@ -31,7 +31,7 @@
 						<td class="text-center"><?php echo $order['order_status']; ?></td>
 						<td class="text-end"><?php echo $order['total']; ?></td>
 						<td class="text-end"><?php echo $order['date_created']; ?></td>
-						<td class="text-end"><a href="<?php echo functions::escape_html($order['printable_link']); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-print'); ?></a></td>
+						<td class="text-end"><a href="<?php echo functions::escape_html($order['printable_link']); ?>" target="_blank"><?php echo functions::draw_fonticon('icon-print'); ?></a></td>
 					</tr>
 					<?php } ?>
 				</tbody>

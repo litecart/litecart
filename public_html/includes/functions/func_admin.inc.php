@@ -16,7 +16,7 @@
 				if (!$config = require $directory . 'config.inc.php') continue;
 
 				$config['theme'] = [
-					'icon' => fallback($config['theme']['icon'], 'fa-plus'),
+					'icon' => fallback($config['theme']['icon'], 'icon-plus'),
 					'color' => fallback($config['theme']['color'], '#97a3b5'),
 				];
 

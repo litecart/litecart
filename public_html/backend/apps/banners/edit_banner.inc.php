@@ -193,7 +193,7 @@ table th:last-child {
 			<?php foreach (language::$languages as $language) { ?>
 			'  <td><?php echo functions::form_input_text('values['. $language['code'] .'][new_key_index]', true); ?></td>',
 			<?php } ?>
-			'  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a></td>',
+			'  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a></td>',
 			'</tr>'
 		].join('\n')
 			.replace(/new_key_index/g, 'new_' + new_key_index++)

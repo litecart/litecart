@@ -30,7 +30,7 @@
 <?php include 'app://frontend/partials/site_cookie_notice.inc.php'; ?>
 
 <a id="scroll-up" class="hidden-print" href="#">
-	<?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>
+	<?php echo functions::draw_fonticon('icon-chevron-up fa-3x', 'style="color: #000;"'); ?>
 </a>
 
 {{foot_tags}}

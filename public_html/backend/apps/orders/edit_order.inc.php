@@ -512,7 +512,7 @@
 						<div class="form-group col-md-3">
 							<label><?php echo language::translate('title_hostname', 'Hostname'); ?></label>
 							<div id="hostname" class="form-input">
-								<?php echo $order->data['hostname']; ?> <a class="btn btn-default btn-sm" href="https://ip-api.com/#<?php echo $order->data['ip_address']; ?>" target="_blank" style="margin: -.33em 0;"><?php echo functions::draw_fonticon('fa-external-link'); ?></a>
+								<?php echo $order->data['hostname']; ?> <a class="btn btn-default btn-sm" href="https://ip-api.com/#<?php echo $order->data['ip_address']; ?>" target="_blank" style="margin: -.33em 0;"><?php echo functions::draw_fonticon('icon-external-link'); ?></a>
 							</div>
 						</div>
 					</div>
@@ -853,8 +853,8 @@
 							<div class="date"><?php echo language::strftime('datetime', $_POST['comments'][$key]['date_created']); ?></div>
 
 							<div class="actions">
-								<a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times'); ?></a>
-								<label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
+								<a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('icon-times'); ?></a>
+								<label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('icon-eye-slash'); ?></label>
 							</div>
 						</div>
 						<?php } ?>
@@ -877,7 +877,7 @@
 		<table id="order-lines" class="table table-striped table-hover table-input table-dragable data-table">
 			<thead>
 				<tr>
-					<th style="width: 50px;"><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th style="width: 50px;"><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo language::translate('title_item', 'Item'); ?></th>
 					<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
 					<th style="width: 100px;" class="text-center"><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
@@ -915,14 +915,14 @@
 						<?php echo functions::form_input_hidden('items['.$key.'][tax_class_id]', true); ?>
 					</td>
 					<td class="sku"><?php echo functions::escape_html($_POST['items'][$key]['sku']); ?></td>
-					<td class="text-center"><?php if (isset($_POST['items'][$key]['sufficient_stock'])) echo $item['sufficient_stock'] ? '<span style="color: #88cc44;">'. functions::draw_fonticon('fa-check') .' '. $item['stock_quantity'] .'</span>' : '<span style="color: #ff6644;">'. functions::draw_fonticon('fa-times') .' '. $item['stock_quantity'] .'</span>'; ?></td>
+					<td class="text-center"><?php if (isset($_POST['items'][$key]['sufficient_stock'])) echo $item['sufficient_stock'] ? '<span style="color: #88cc44;">'. functions::draw_fonticon('icon-check') .' '. $item['stock_quantity'] .'</span>' : '<span style="color: #ff6644;">'. functions::draw_fonticon('icon-times') .' '. $item['stock_quantity'] .'</span>'; ?></td>
 					<td><?php echo functions::form_input_decimal('items['.$key.'][quantity]', true, 2); ?></td>
 					<td><?php echo functions::form_input_decimal('items['.$key.'][price]', true); ?></td>
 					<td><?php echo functions::form_input_decimal('items['.$key.'][discount]', true); ?></td>
 					<td class="text-end sum"><?php echo currency::format($_POST['items'][$key]['sum'], false, $_POST['currency_code'], $_POST['currency_value']); ?></td>
 					<td class="text-end sum_tax"><?php echo currency::format($_POST['items'][$key]['sum_tax'], false, $_POST['currency_code'], $_POST['currency_value']); ?></td>
 					<td class="grabable">
-						<?php echo functions::draw_fonticon('fa-arrows-v'); ?>
+						<?php echo functions::draw_fonticon('icon-arrows-v'); ?>
 					</td>
 					<td>
 						<a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
@@ -941,8 +941,8 @@
 					<td colspan="11">
 						<button name="add_product" class="btn btn-default" href="<?php echo document::href_ilink('catalog/product_picker'); ?>" data-toggle="lightbox" data-callback="selectProduct"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></button>
 						<?php echo functions::form_button('add', language::translate('title_add_line_item', 'Add Line Item'), 'button', '', 'add'); ?>
-						<?php echo functions::form_button('return', language::translate('title_return_items', 'Return Items'), 'submit', 'formnovalidate onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'fa-reply'); ?>
-						<?php echo functions::form_button('split', language::translate('title_split_lines_from_order', 'Split Lines From Order'), 'submit', 'formnovalidate onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'fa-clone'); ?>
+						<?php echo functions::form_button('return', language::translate('title_return_items', 'Return Items'), 'submit', 'formnovalidate onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'icon-reply'); ?>
+						<?php echo functions::form_button('split', language::translate('title_split_lines_from_order', 'Split Lines From Order'), 'submit', 'formnovalidate onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'icon-clone'); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -1490,9 +1490,9 @@
 			'  <?php echo functions::escape_js(functions::form_textarea('comments[new_comment_index][text]', '')); ?>',
 			'  <div class="date"><?php echo language::strftime('datetime'); ?></div>',
 			'  <div class="actions">',
-			'    <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('fa-envelope')], true)); ?> </label>',
-			'    <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('fa-eye-slash')], true)); ?></label>',
-			'    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg fa-fw'); ?></a>',
+			'    <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('icon-envelope')], true)); ?> </label>',
+			'    <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('icon-eye-slash')], true)); ?></label>',
+			'    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('icon-times'); ?></a>',
 			'  </div>',
 			'</div>'
 		].join('\n')

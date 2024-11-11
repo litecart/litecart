@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#8fc722',
-			'icon' => 'fa-shopping-cart',
+			'icon' => 'icon-shopping-cart',
 		],
 		'menu' => [
 			[

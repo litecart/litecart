@@ -352,7 +352,7 @@
 	height: 24px;
 	vertical-align: middle;
 }
-.fa-folder, .fa-folder-open, td .thumbnail {
+.icon-folder, .icon-folder-open, td .thumbnail {
 	margin-inline-end: 16px;
 }
 </style>
@@ -383,7 +383,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th></th>
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
@@ -399,7 +399,7 @@
 					<td></td>
 					<td></td>
 					<td>
-						<?php echo functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cc6;"'); ?>
+						<?php echo functions::draw_fonticon('icon-folder-open', 'style="color: #cc6;"'); ?>
 						<a href="'. document::href_ilink(null, [], [], []) .'">
 							<strong>[<?php echo language::translate('title_root', 'Root'); ?>]</strong>
 						</a>
@@ -439,7 +439,7 @@
 			'  <td>'. functions::draw_fonticon($category['status'] ? 'on' : 'off') .'</td>',
 			'  <td></td>',
 			'  <td style="padding-inline-start: '. ($depth+1) .'em;">',
-			'    '. functions::draw_fonticon(in_array('opened', $category['properties']) ? 'fa-folder-open fa-lg' : 'fa-folder fa-lg', 'style="color: #cc6;"'),
+			'    '. functions::draw_fonticon(in_array('opened', $category['properties']) ? 'icon-folder-open' : 'icon-folder', 'style="color: #cc6;"'),
 			'    '. (in_array('active', $category['properties']) ? '<strong>' : '<a class="link" href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'),
 			'      ' . ($category['name'] ? $category['name'] : '[untitled]'),
 			'    '. (in_array('opened', $category['properties']) ? '</strong>' : '</a>'),
@@ -447,12 +447,12 @@
 			'  <td></td>',
 			'  <td>',
 			'    <a class="btn btn-default btn-sm" href="'. document::href_ilink('f:category', ['category_id' => $category['id']]) .'" target="_blank">',
-			'    '.  functions::draw_fonticon('fa-external-link'),
+			'    '.  functions::draw_fonticon('icon-external-link'),
 			'    </a>',
 			'  </td>',
 			'  <td class="text-end">',
 			'    <a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_category', ['category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">',
-			'    '. functions::draw_fonticon('fa-pencil'),
+			'    '. functions::draw_fonticon('icon-pencil'),
 			'    </a>',
 			'  </td>',
 			'</tr>',
@@ -558,7 +558,7 @@
 						'<tr class="'. (!$product['status'] ? ' semi-transparent' : '') .'">',
 						'  <td>'. functions::form_checkbox('products[]', $product['id'], true) .'</td>',
 						'  <td>'. functions::draw_fonticon(!empty($product['status']) ? 'on' : 'off') .'</td>',
-						'  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_attr($warning) .'"') : '') .'</td>',
+						'  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('icon-exclamation-triangle', 'title="'. functions::escape_attr($warning) .'"') : '') .'</td>',
 						'  <td style="padding-inline-start: '. ($depth+2) .'em;">',
 						'    '. empty($display_images) ? functions::draw_thumbnail('storage://images/' . $product['image'], 24, 24, 'fit') : '<span style="margin-inline-start: '. (($depth+1)*16) .'px;"></span>',
 						'    <a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">',
@@ -568,12 +568,12 @@
 						'  <td class="text-end">'. currency::format($product['price']) .'</td>',
 						'  <td>',
 						'    <a class="btn btn-default btn-sm" href="'. document::href_ilink('f:product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">',
-						'    '. functions::draw_fonticon('fa-external-link'),
+						'    '. functions::draw_fonticon('icon-external-link'),
 						'    </a>',
 						'  </td>',
 						'  <td class="text-end">',
 						'    <a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">',
-						'    '. functions::draw_fonticon('fa-pencil'),
+						'    '. functions::draw_fonticon('icon-pencil'),
 						'    </a>',
 						'  </td>',
 						'</tr>',
@@ -632,7 +632,7 @@
 						<div class="btn-group">
 							<?php echo functions::form_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?>
 							<?php echo functions::form_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?>
-							<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'fa-copy'); ?>
+							<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
 						</div>
 					</li>
 					<li>

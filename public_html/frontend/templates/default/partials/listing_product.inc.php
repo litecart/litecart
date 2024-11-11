@@ -29,16 +29,16 @@
 
 	<div class="actions">
 		<button class="preview btn btn-default btn-sm" data-toggle="lightbox" data-target="<?php echo functions::escape_html($link) ?>" data-seamless="true" data-require-window-width="768" data-max-width="980">
-			<?php echo functions::draw_fonticon('fa-search-plus'); ?>
+			<?php echo functions::draw_fonticon('icon-search-plus'); ?>
 		</button>
 
 		<button name="add_to_wishlist" class="wishlist btn btn-default btn-sm">
-			<?php echo functions::draw_fonticon('fa-heart'); ?>
+			<?php echo functions::draw_fonticon('icon-heart'); ?>
 		</button>
 
 		<?php if (!$num_stock_options) { ?>
 		<button name="add_cart_product" class="add-to-cart btn btn-success btn-sm">
-			<?php echo functions::draw_fonticon('fa-shopping-cart'); ?>
+			<?php echo functions::draw_fonticon('icon-shopping-cart'); ?>
 		</button>
 		<?php } ?>
 

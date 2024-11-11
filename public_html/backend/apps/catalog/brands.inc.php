@@ -61,7 +61,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th></th>
 					<th></th>
@@ -76,7 +76,7 @@
 				<tr class="<?php if (empty($brand['status'])) echo 'semi-transparent'; ?>">
 					<td><?php echo functions::form_checkbox('brands[]', $brand['id']); ?></td>
 					<td><?php echo functions::draw_fonticon($brand['status'] ? 'on' : 'off'); ?></td>
-					<td><?php if ($brand['featured']) echo functions::draw_fonticon('fa-star', 'style="color: #ffd700;"'); ?></td>
+					<td><?php if ($brand['featured']) echo functions::draw_fonticon('icon-star', 'style="color: #ffd700;"'); ?></td>
 					<td><?php echo functions::draw_thumbnail('storage://images/' . ($brand['image'] ? $brand['image'] : 'no_image.png'), 16, 16, 'fit', 'style="vertical-align: bottom;"'); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_brand', ['brand_id' => $brand['id']]); ?>"><?php echo $brand['name']; ?></a></td>
 					<td class="text-center"><?php echo (int)$brand['num_products']; ?></td>

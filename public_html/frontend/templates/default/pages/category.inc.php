@@ -36,7 +36,7 @@
 						<?php } ?>
 
 						<nav class="nav nav-pills" style="margin-bottom: 1em;">
-							<a class="nav-item" href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('fa-angle-left'); ?> <?php echo language::translate('title_back', 'Back'); ?></a>
+							<a class="nav-item" href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo language::translate('title_back', 'Back'); ?></a>
 							<?php foreach ($subcategories as $subcategory) { ?><a class="nav-item" href="<?php echo document::href_ilink('category', ['category_id' => $subcategory['id']]); ?>"><?php echo $subcategory['name']; ?></a><?php } ?>
 						</nav>
 

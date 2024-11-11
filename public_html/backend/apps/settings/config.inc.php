@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#757575',
-			'icon' => 'fa-cogs',
+			'icon' => 'icon-cogs',
 		],
 
 		'menu' => [],

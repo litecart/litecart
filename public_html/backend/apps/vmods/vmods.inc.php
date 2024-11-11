@@ -179,7 +179,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink('settings/advanced', ['action' => 'edit', 'key' => 'cache_clear']), language::translate('title_clear_cache', 'Clear Cache'), '', 'fa-external-link'); ?>
+		<?php echo functions::form_button_link(document::ilink('settings/advanced', ['action' => 'edit', 'key' => 'cache_clear']), language::translate('title_clear_cache', 'Clear Cache'), '', 'icon-external-link'); ?>
 		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_vmod'), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?>
 	</div>
 
@@ -188,7 +188,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
 					<th class="text-center"><?php echo language::translate('title_version', 'Version'); ?></th>
@@ -223,16 +223,16 @@
 					</td>
 					<td>
 						<?php if (!empty($vmod['settings'])) { ?>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a>
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('icon-cog'); ?></a>
 						<?php } ?>
 					</td>
 					<td>
 						<?php if ($vmod['type'] == 'vMod') { ?>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a>
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('icon-search'); ?></a>
 						<?php } ?>
 					</td>
 					<td>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/download', ['vmod' => $vmod['id']]); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a>
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/download', ['vmod' => $vmod['id']]); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('icon-download'); ?></a>
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
 					</td>
 				</tr>

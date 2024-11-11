@@ -15,7 +15,7 @@
 		}
 
 		$app_config['theme'] = [
-			'icon' => fallback($app_config['theme']['icon'], 'fa-plus'),
+			'icon' => fallback($app_config['theme']['icon'], 'icon-plus'),
 			'color' => fallback($app_config['theme']['color'], '#97a3b5'),
 		];
 
@@ -39,7 +39,7 @@
 		$_content->snippets = [
 			'app_icon' => implode(PHP_EOL, [
 				'<span class="app-icon">',
-				'	' . functions::draw_fonticon($app_config['theme']['icon'] .' fa-fw'),
+				'	' . functions::draw_fonticon($app_config['theme']['icon']),
 				'</span>',
 			]),
 		];
