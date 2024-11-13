@@ -173,7 +173,7 @@
       // Circumvent floating point precision problem if differing by one 10th of the smallest fraction
 
       $fractions = strpos($value, '.') ? strlen(substr(strrchr($value, '.'), 1)) : 0;
-      $absdiff = abs($value - round((float)$value, 2));
+      $absdiff = abs((float)$value - round((float)$value, 2));
       $offset = (1 / pow(10, $currency['decimals']+1));
 
       if ($fractions < $currency['decimals']) {
@@ -254,7 +254,7 @@
       // Circumvent floating point precision problem if differing by one 10th of the smallest fraction
 
       $fractions = strpos($value, '.') ? strlen(substr(strrchr($value, '.'), 1)) : 0;
-      $absdiff = abs($value - round((float)$value, 2));
+      $absdiff = abs((float)$value - round((float)$value, 2));
       $offset = (1 / pow(10, $decimals+1));
 
       if ($fractions < $decimals) {
