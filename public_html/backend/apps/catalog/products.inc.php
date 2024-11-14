@@ -161,21 +161,21 @@
 		) pp on (pp.product_id = p.id)
 
 		left join (
-			select pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as quantity
+			select pso.id, pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as quantity
 			from ". DB_TABLE_PREFIX ."products_stock_options pso
 			left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 			group by pso.product_id
 		) pso on (pso.product_id = p.id)
 
 		left join (
-			select oi.stock_item_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
+			select oi.stock_option_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
 			left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
 			where o.order_status_id in (
 				select id from ". DB_TABLE_PREFIX ."order_statuses
 				where stock_action = 'reserve'
 			)
-			group by oi.stock_item_id
-		) oi on (oi.stock_item_id = pso.stock_item_id)
+			group by oi.stock_option_id
+		) oi on (oi.stock_option_id = pso.id)
 
 		where true
 		". (!empty($_GET['category_id']) ? "and p.id in (
