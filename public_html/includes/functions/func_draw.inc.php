@@ -139,9 +139,12 @@
 			case 'edit':        return draw_fonticon('icon-pencil');
 			case 'failed':      return draw_fonticon('icon-times', 'style="color: #c00;"');
 			case 'false':       return draw_fonticon('icon-times', 'style="color: #c00;"');
+			case 'female':      return draw_fonticon('icon-female', 'style="color: #e77be9;"');
 			case 'folder':      return draw_fonticon('icon-folder', 'style="color: #cc6;"');
 			case 'folder-open': return draw_fonticon('icon-folder-open', 'style="color: #cc6;"');
+			case 'group':       return draw_fonticon('icon-group', 'style="color: #888;"');
 			case 'remove':      return draw_fonticon('icon-times', 'style="color: #c33;"');
+			case 'male':        return draw_fonticon('icon-male', 'style="color: #0a94c3;"');
 			case 'move-up':     return draw_fonticon('icon-arrow-up', 'style="color: #39c;"');
 			case 'move-down':   return draw_fonticon('icon-arrow-down', 'style="color: #39c;"');
 			case 'ok':          return draw_fonticon('icon-check', 'style="color: #8c4;"');
@@ -149,13 +152,14 @@
 			case 'off':         return draw_fonticon('icon-circle', 'style="color: #f64;"');
 			case 'print':       return draw_fonticon('icon-print', 'style="color: #ded90f;"');
 			case 'remove':      return draw_fonticon('icon-times', 'style="color: #c00;"');
+			case 'secure':      return draw_fonticon('icon-lock');
 			case 'semi-off':    return draw_fonticon('icon-circle', 'style="color: #ded90f;"');
 			case 'save':        return draw_fonticon('icon-floppy-o');
 			case 'send':        return draw_fonticon('icon-paper-plane');
 			case 'success':     return draw_fonticon('icon-check', 'style="color: #8c4;"');
 			case 'true':        return draw_fonticon('icon-check', 'style="color: #8c4;"');
-			case 'user':        return draw_fonticon('icon-user', 'style="color: #888"');
-			case 'warning':     return draw_fonticon('icon-exclamation-triangle', 'color: #c00;"');
+			case 'user':        return draw_fonticon('icon-user', 'style="color: #888;"');
+			case 'warning':     return draw_fonticon('icon-exclamation-triangle', 'style="color: #c00;"');
 			default: trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING); return;
 		}
 	}

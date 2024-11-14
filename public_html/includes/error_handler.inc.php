@@ -4,7 +4,12 @@
 
 		if (!(error_reporting() & $errno)) return;
 
-		$errfile = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', 'app://', str_replace('\\', '/', $errfile));
+		foreach ([
+			FS_DIR_STORAGE => 'storage://',
+			FS_DIR_APP => 'app://',
+		] as $search => $replace) {
+			$errfile = preg_replace('#^'. preg_quote($search, '#') .'#', $replace, str_replace('\\', '/', $errfile));
+		}
 
 		$output = [];
 

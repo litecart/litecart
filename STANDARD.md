@@ -285,9 +285,9 @@
 		$_POST['name'] = strtolower(trim($_POST['name']));  // We most likely will not ever use the unsanitized data
 
 
-## No One-Time Variables
+## Avoid One-Time Variables
 
-	Creating variables for one-time use should be avoided (unless it serves purpose).
+	Creating variables for one-time use should be avoided (unless it serves good purpose).
 
 	Incorrect:
 

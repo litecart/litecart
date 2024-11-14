@@ -1,4 +1,4 @@
-/* Form Input Tags */
+	/* Form Input Tags */
 
 	$('input[data-toggle="tags"]').each(function() {
 
@@ -40,11 +40,11 @@
 				return value != input;
 			});
 
-		 $('.tag .value', $tagField).each(function(){
-			 if ($(this).text() == input) {
-				 $(this).parent('.tag').remove();
-			 }
-		 })
+			$('.tag .value', $tagField).each(function(){
+				if ($(this).text() == input) {
+					$(this).parent('.tag').remove();
+				}
+			})
 
 			$tagField.trigger('change');
 		};

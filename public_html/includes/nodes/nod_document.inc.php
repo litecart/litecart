@@ -190,7 +190,7 @@
 				];
 			}
 
-		self::$head_tags[] = '<script>window._env = '. json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .';</script>';
+			self::$head_tags[] = '<script>window._env = '. json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .';</script>';
 		}
 
 		public static function optimize(&$output) {

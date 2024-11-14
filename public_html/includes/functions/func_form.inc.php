@@ -799,47 +799,57 @@
 			$input = form_reinsert_value($name);
 		}
 
-		switch (true) {
+		if (is_string($options)) {
+			switch ($options) {
 
-			case (is_string($options) && $options == 'a/i'):
-				$options = [
-					'1' => language::translate('title_active', 'Active'),
-					'0' => language::translate('title_inactive', 'Inactive'),
-				];
-				break;
+				case 'a/i':
+					$options = [
+						'1' => language::translate('title_active', 'Active'),
+						'0' => language::translate('title_inactive', 'Inactive'),
+					];
+					break;
 
-			case (is_string($options) && $options == 'e/d'):
-				$options = [
-					'1' => language::translate('title_enabled', 'Enabled'),
-					'0' => language::translate('title_disabled', 'Disabled'),
-				];
-				break;
+				case 'e/d':
+					$options = [
+						'1' => language::translate('title_enabled', 'Enabled'),
+						'0' => language::translate('title_disabled', 'Disabled'),
+					];
+					break;
 
-			case (is_string($options) && $options == 'y/n'):
-				$options = [
-					'1' => language::translate('title_yes', 'Yes'),
-					'0' => language::translate('title_no', 'No'),
-				];
-				break;
+				case 'y/n':
+					$options = [
+						'1' => language::translate('title_yes', 'Yes'),
+						'0' => language::translate('title_no', 'No'),
+					];
+					break;
 
-			case (is_string($options) && $options == 'o/o'):
-				$options = [
-					'1' => language::translate('title_on', 'On'),
-					'0' => language::translate('title_off', 'Off'),
-				];
-				break;
+				case 'o/o':
+					$options = [
+						'1' => language::translate('title_on', 'On'),
+						'0' => language::translate('title_off', 'Off'),
+					];
+					break;
 
-			case (is_string($options) && $options == 't/f'):
-				$options = [
-					'1' => language::translate('title_true', 'True'),
-					'0' => language::translate('title_false', 'False'),
-				];
-				break;
+				case 't/f':
+					$options = [
+						'1' => language::translate('title_true', 'True'),
+						'0' => language::translate('title_false', 'False'),
+					];
+					break;
+
+				default:
+					trigger_error('Invalid option ("'. $options.'")', E_USER_WARNING);
+					$options = [
+						'1' => language::translate('title_true', 'True'),
+						'0' => language::translate('title_false', 'False'),
+					];
+					break;
+			}
 		}
 
 		$html = '<div '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-toggle"' : '') .''. ($parameters ? ' '. $parameters : '') .'>'. PHP_EOL;
 
-		$is_numerical_index = array_is_list($options);
+		$is_numerical_index = (is_array($options) && array_is_list($options)) ? true : false;
 
 		foreach ($options as $key => $option) {
 

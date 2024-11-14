@@ -1,4 +1,4 @@
-	// Tabs (data-toggle="tab")
+// Tabs (data-toggle="tab")
 +function($) {
 	'use strict';
 	$.fn.Tabs = function(){
