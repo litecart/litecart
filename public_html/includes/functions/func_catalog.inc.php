@@ -623,15 +623,15 @@
 				from ". DB_TABLE_PREFIX ."products_stock_options pso
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 				left join (
-					select oi.stock_item_id, sum(oi.quantity) as quantity_reserved
+					select oi.stock_option_id, sum(oi.quantity) as quantity_reserved
 					from ". DB_TABLE_PREFIX ."orders_items oi
 					left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
 					where o.order_status_id in (
 						select id from ". DB_TABLE_PREFIX ."order_statuses
 						where stock_action = 'reserve'
 					)
-					group by oi.stock_item_id
-				) oi on (oi.stock_item_id = pso.stock_item_id)
+					group by oi.stock_option_id
+				) oi on (oi.stock_option_id = pso.id)
 				group by pso.product_id
 			) pso on (pso.product_id = p.id)
 

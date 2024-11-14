@@ -235,6 +235,14 @@
 					}
 				}
 
+				// Set image from stock option
+				if ($stock_option_id) {
+					$stock_option_images = array_column($product->stock_options, 'image', 'id');
+					if (!empty($stock_option_images[$stock_option_id])) {
+						$item['image'] = $stock_option_images[$stock_option_id];
+					}
+				}
+
 				// Remove empty userdata
 				$array_filter_recursive = function($array) use (&$array_filter_recursive) {
 

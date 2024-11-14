@@ -132,7 +132,7 @@
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 				left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = pso.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
 				left join (
-					select product_id, stock_item_id, sum(quantity) as reserved
+					select product_id, stock_option_id, sum(quantity) as reserved
 					from ". DB_TABLE_PREFIX ."orders_items
 					where order_id in (
 						select id from ". DB_TABLE_PREFIX ."orders
@@ -141,8 +141,8 @@
 							where stock_action = 'reserve'
 						)
 					)
-					group by stock_item_id
-				) oi on (oi.product_id = pso.product_id and oi.stock_item_id = pso.stock_item_id)
+					group by stock_option_id
+				) oi on (oi.product_id = pso.product_id and oi.stock_option_id = pso.id)
 				where pso.product_id = ". (int)$this->data['id'] ."
 				order by pso.priority;"
 			)->fetch_all();
