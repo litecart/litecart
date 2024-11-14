@@ -10,6 +10,7 @@
 		public static $javascript = [];
 		public static $jsenv = [];
 		public static $layout = 'default';
+		public static $opengraph = [];
 		public static $schema = [];
 		public static $settings = [];
 		public static $snippets = [];
@@ -18,7 +19,15 @@
 
 		public static function init() {
 
-			// Set schema
+			// Set Default OpenGraph Content
+			self::$opengraph = [
+				'title' => settings::get('store_name'),
+				'type' => 'website',
+				'url' => document::href_ilink(''),
+				'image' => document::href_rlink('storage://images/logotype.png'),
+			];
+
+			// Set Default Schema Data
 			self::$schema['website'] = [
 				'@context' => 'https://schema.org/',
 				'@type' => 'Website',
@@ -344,6 +353,13 @@
 					json_encode(array_values(self::$schema), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
 					'</script>',
 				]);
+			}
+
+			// Prepare OpenGraph Tags
+			if (!empty(self::$opengraph)) {
+				$_page->snippets['head_tags']['opengraph'] = implode(PHP_EOL, array_map(function($property, $content) {
+					return '<meta property="og:'. functions::escape_attr($property) .'" content="'. functions::escape_attr($content) .'">';
+				}, array_keys(self::$opengraph), self::$opengraph));
 			}
 
 			// Prepare internal styles
