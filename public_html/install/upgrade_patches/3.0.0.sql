@@ -257,7 +257,13 @@ CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
 -- -----
 ALTER TABLE `lc_newsletter_recipients`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-CHANGE COLUMN `client_ip` `ip_address` VARCHAR(39) NOT NULL DEFAULT '';
+CHANGE COLUMN `client_ip` `ip_address` VARCHAR(39) NOT NULL DEFAULT '',
+ADD COLUMN `subscribed` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1' AFTER `id`,
+ADD COLUMN `country_code` CHAR(2) NULL AFTER `language_code`,
+ADD COLUMN `language_code` CHAR(2) NULL AFTER `lastname`,
+ADD COLUMN `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() AFTER `user_agent`,
+CHANGE COLUMN `date_created` `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() AFTER `date_updated`,
+ADD INDEX `subscribed` (`subscribed`);
 -- -----
 ALTER TABLE `lc_orders`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -594,6 +600,11 @@ WHERE customer_id = 0;
 UPDATE `lc_categories`
 SET parent_id = NULL
 WHERE parent_id = 0;
+-- -----
+UPDATE `lc_newsletter_recipients` nr
+LEFT JOIN `lc_customers` ON (nr.`customer_id` = c.`id`)
+SET nr.`country_code` = c.`country_code`,
+nr.`date_updated` = nr.`date_created`;
 -- -----
 UPDATE `lc_orders`
 SET order_status_id = NULL

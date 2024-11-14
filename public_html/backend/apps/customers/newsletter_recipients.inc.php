@@ -13,19 +13,61 @@
 			}
 
 			$added = 0;
+			$updated = 0;
+
 			foreach (preg_split('#\R+#', $_POST['recipients']) as $recipient) {
 				if (!functions::validate_email($recipient)) continue;
 
-				database::query(
-					"insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
-					(email, date_created)
-					values ('". database::input($recipient) ."', '". date('Y-m-d H:i:s') ."');"
-				);
+				if (database::query(
+					"select * from ". DB_TABLE_PREFIX ."newsletter_recipients
+					where email = '". database::input(strtolower($recipient_id)) ."'
+					limit 1;"
+				)->num_rows) {
+					$newsletter_recipient = new ent_newsletter_recipient($recipient);
+					$updated++;
+				} else {
+					$newsletter_recipient = new ent_newsletter_recipient();
+					$added++;
+				}
 
-				if (database::affected_rows()) $added++;
+				foreach ([
+					'subscribed',
+					'email',
+				] as $field) {
+					if (isset($_POST[$field])) {
+						$newsletter_recipient->data[$field] = $_POST[$field];
+					}
+				}
+
+				$newsletter_recipient->data['client_id'] = $_SERVER['REMOTE_ADDR'];
+				$newsletter_recipient->data['hostname'] = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+				$newsletter_recipient->data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+
+				$newsletter_recipient->save();
 			}
 
 			notices::add('success', strtr(language::translate('success_added_n_new_recipients', 'Added %n new recipients'), ['%n' => $added]));
+			header('Location: '. document::ilink());
+			exit;
+
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
+		}
+	}
+
+	if (isset($_POST['subscribe']) || isset($_POST['unsubscribe'])) {
+
+		try {
+
+			if (empty($_POST['recipients'])) {
+				throw new Exception(language::translate('error_must_select_recipients', 'You must select recipients'));
+			}
+
+			$newsletter_recipient = new ent_newsletter_recipient($recipient);
+			$newsletter_recipient->data['subscribed'] = isset($_POST['subscribe']) ? 1 : 0;
+			$newsletter_recipient->delete();
+
+			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 			header('Location: '. document::ilink());
 			exit;
 
@@ -42,10 +84,8 @@
 				throw new Exception(language::translate('error_must_select_recipients', 'You must select recipients'));
 			}
 
-			database::query(
-				"delete from ". DB_TABLE_PREFIX ."newsletter_recipients
-				where id in ('". implode("', '", database::input($_POST['recipients'])) ."');"
-			);
+			$newsletter_recipient = new ent_newsletter_recipient($recipient);
+			$newsletter_recipient->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 			header('Location: '. document::ilink());
@@ -64,7 +104,8 @@
 
 		database::query(
 			"select email from ". DB_TABLE_PREFIX ."newsletter_recipients
-			where id
+			where true
+			". ((isset($_GET['subscribed']) && $_GET['subscribed'] != '') ? "and subscribed = ". (int)$_GET['subscribed'] ."" : "") ."
 			". (!empty($_GET['query']) ? "and c.email like '%". database::input($_GET['query']) ."%'" : "") ."
 			order by date_created desc;"
 		)->each(function($recipient) {
@@ -77,10 +118,16 @@
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$recipients = database::query(
 		"select * from ". DB_TABLE_PREFIX ."newsletter_recipients
-		where id
+		where true
 		". (!empty($_GET['query']) ? "and email like '%". database::input($_GET['query']) ."%'" : "") ."
+		". ((isset($_GET['subscribed']) && $_GET['subscribed'] != '') ? "and subscribed = ". (int)$_GET['subscribed'] ."" : "") ."
 		order by date_created desc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
+	$filter_options = [
+		['', '-- '. language::translate('title_all_recipients', 'All Recipients')],
+		['1', language::translate('title_subscribed', 'Subscribed')],
+		['0', language::translate('title_unsubscribed', 'Unsubscribed')],
+	];
 
 	functions::draw_lightbox();
 ?>
@@ -108,9 +155,10 @@
 			<thead>
 				<tr>
 					<th style="width: 50px;"><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th style="width: 50px;"><?php echo language::translate('title_id', 'ID'); ?></th>
+					<th><?php echo language::translate('title_subscribed', 'Subscribed'); ?></th>
 					<th style="width: 480px;"><?php echo language::translate('title_email', 'Email'); ?></th>
 					<th><?php echo language::translate('title_name', 'Name'); ?></th>
+					<th><?php echo language::translate('title_ip_address', 'IP Address'); ?></th>
 					<th style="width: 200px;"><?php echo language::translate('title_hostname', 'Hostname'); ?></th>
 					<th class="text-end" style="width: 200px;"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
 				</tr>
@@ -120,9 +168,10 @@
 				<?php foreach ($recipients as $recipient) { ?>
 				<tr>
 					<td><?php echo functions::form_checkbox('recipients[]', $recipient['id']); ?></td>
-					<td><?php echo $recipient['id']; ?></td>
+					<td class="text-center"><?php echo !empty($recipient['subscribed']) ? functions::draw_fonticon('fa-check', 'style="color: #88cc44;"') : functions::draw_fonticon('fa-times', 'style="color: #ff6644;"'); ?></td>
 					<td><?php echo $recipient['email']; ?></td>
-					<td><?php echo $recipient['name']; ?></td>
+					<td><?php echo functions::escape_html($recipient['name']); ?></td>
+					<td><?php echo $recipient['ip_address']; ?></td>
 					<td><?php echo $recipient['hostname']; ?></td>
 					<td class="text-end"><?php echo language::strftime('datetime', $recipient['date_created']); ?></td>
 				</tr>
@@ -140,9 +189,14 @@
 			<fieldset id="actions" disabled>
 				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-			<div class="btn-group">
-				<?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger"', 'delete'); ?>
-			</div>
+				<div class="flex flex-inline">
+					<div class="btn-group">
+							<?php echo functions::form_draw_button('subscribe', language::translate('title_set_as_subscribed', 'Set As Subscribed'), 'submit', 'class="btn btn-default"', 'fa-check'); ?>
+							<?php echo functions::form_draw_button('unsubscribe', language::translate('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'fa-times'); ?>
+					</div>
+
+					<?php echo functions::form_button_prefdined('delete'); ?>
+				</div>
 			</fieldset>
 		</div>
 
@@ -163,6 +217,14 @@
 			<?php echo functions::form_textarea('recipients', '', 'style="height: 480px;"'); ?>
 		</div>
 
+		<div class="form-group">
+			<?php echo functions::form_toggle('subscribe', [1 => language::translate('title_subscribe', 'Subscribed'), 0 => language::translate('title_unsubscribe', 'Unsubscribed')]); ?>
+			<div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
+				<label class="btn btn-default<?php echo (file_get_contents('php://input') == '' || !empty($_POST['subscribe'])) ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('subscribe', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribed'); ?></label>
+				<label class="btn btn-default<?php echo (file_get_contents('php://input') != '' && empty($_POST['subscribe'])) ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('subscribe', '0', true); ?><?php echo language::translate('title_unsubscribe', 'Unsubscribed'); ?></label>
+			</div>
+		</div>
+
 		<?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'submit', 'class="btn btn-default btn-block"'); ?>
 
 	<?php echo functions::form_end(); ?>
@@ -173,6 +235,10 @@
 		$.featherlight('#modal-add-recipients');
 		$('textarea[name="recipients"]').attr('placeholder', 'user@email.com\nanother@email.com');
 	})
+
+	$('select[name="subscribed"]').change(function(){
+		$(this).closes('form').submit();
+	});
 
 	$('.data-table :checkbox').change(function() {
 		$('#actions').prop('disabled', !$('.data-table :checked').length);

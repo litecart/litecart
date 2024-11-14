@@ -419,14 +419,18 @@ CREATE TABLE `lc_modules` (
 -- -----
 CREATE TABLE `lc_newsletter_recipients` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`subscribed` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
 	`lastname` VARCHAR(64) NOT NULL DEFAULT '',
 	`firstname` VARCHAR(64) NOT NULL DEFAULT '',
 	`email` VARCHAR(128) NOT NULL DEFAULT '',
+	`language_code` CHAR(2) NULL,
+	`country_code` CHAR(2) NULL,
 	`ip_address` VARCHAR(64) NOT NULL DEFAULT '',
 	`hostname` VARCHAR(128) NOT NULL DEFAULT '',
 	`user_agent` VARCHAR(256) NOT NULL DEFAULT '',
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
+	INDEX `subscribed` (`subscribed`),
 	UNIQUE INDEX `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----

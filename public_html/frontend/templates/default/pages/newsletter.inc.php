@@ -32,6 +32,18 @@
 							<?php echo functions::form_input_email('email', true, 'required'); ?>
 						</div>
 
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label><?php echo language::translate('title_country', 'Country'); ?></label>
+								<?php echo functions::form_select_country('country_code', true); ?>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label><?php echo language::translate('title_language', 'Language'); ?></label>
+								<?php echo functions::form_select_language('language_code', true); ?>
+							</div>
+						</div>
+
 						<?php if (settings::get('captcha_enabled')) { ?>
 						<div class="row">
 							<div class="form-group col-xs-6">
@@ -67,6 +79,11 @@
 							<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
 							<?php echo functions::form_input_email('email', true, 'required'); ?>
 						</div>
+
+							<div class="form-group">
+								<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
+								<?php echo functions::form_captcha('newsletter_unsubscribe', 'required'); ?>
+							</div>
 
 						<?php echo functions::form_button('unsubscribe', language::translate('title_unsubscribe', 'Unsubscribe')); ?>
 
