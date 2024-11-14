@@ -257,7 +257,7 @@ textarea.warning {
 						<div class="col-md-4">
 							<div class="form-group">
 								<label><?php echo language::translate('title_status', 'Status'); ?></label>
-								<?php echo functions::form_toggle('status', true, 'e/d'); ?>
+								<?php echo functions::form_toggle('status', 'e/d', true); ?>
 							</div>
 
 							<div class="form-group">

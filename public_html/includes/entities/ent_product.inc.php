@@ -601,7 +601,7 @@
 				$image->resample($width, $height, 'FIT_ONLY_BIGGER');
 			}
 
-			if (!$image->write('storage://images/' . $filename, 90)) return false;
+			if (!$image->save('storage://images/' . $filename, 90)) return false;
 
 			functions::image_delete_cache('storage://images/' . $filename);
 

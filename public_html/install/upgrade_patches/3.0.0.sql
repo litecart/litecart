@@ -601,6 +601,11 @@ UPDATE `lc_categories`
 SET parent_id = NULL
 WHERE parent_id = 0;
 -- -----
+UPDATE `lc_modules`
+SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit')
+WHERE `module_id` = 'sm_zone_weight'
+LIMIT 1;
+-- -----
 UPDATE `lc_newsletter_recipients` nr
 LEFT JOIN `lc_customers` ON (nr.`customer_id` = c.`id`)
 SET nr.`country_code` = c.`country_code`,
@@ -618,13 +623,71 @@ UPDATE `lc_orders`
 SET language_code = NULL
 WHERE language_code = '';
 -- -----
-UPDATE `lc_modules`
-SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit')
-WHERE `module_id` = 'sm_zone_weight'
-LIMIT 1;
--- -----
 UPDATE `lc_orders`
 SET `no` = id;
+-- -----
+UPDATE `lc_orders`
+SET shipping_tax_id = billing_tax_id,
+	shipping_phone = billing_phone,
+	shipping_email = billing_email;
+-- -----
+UPDATE `lc_orders` o
+LEFT JOIN `lc_orders_totals` ot ON (ot.order_id = o.id AND ot.module_id = 'ot_subtotal')
+SET o.subtotal = ot.`amount`,
+o.subtotal_tax = ot.`tax`;
+-- -----
+UPDATE `lc_orders` o
+LEFT JOIN (
+	SELECT order_id, sum(`amount`) as discount, sum(`tax`) as discount_tax
+	FROM `lc_orders_totals`
+	WHERE `amount` < 0
+AND calculate
+	GROUP BY order_id
+) ot ON (ot.order_id = o.id)
+SET o.discount = 0 - if(ot.discount, ot.discount, 0),
+o.discount_tax = 0 - if(ot.discount_tax, ot.discount_tax, 0);
+-- -----
+UPDATE `lc_orders`
+SET total = total / currency_value,
+	total_tax = total_tax / currency_value,
+	subtotal = subtotal / currency_value,
+	subtotal_tax = subtotal_tax / currency_value,
+	discount = discount / currency_value,
+	discount_tax = discount_tax / currency_value,
+	shipping_option_fee = shipping_option_fee / currency_value,
+	shipping_option_tax = shipping_option_tax / currency_value,
+	shipping_purchase_cost = shipping_purchase_cost,
+	shipping_tax_id = shipping_tax_id / currency_value,
+	payment_option_fee = payment_option_fee / currency_value,
+	payment_option_tax = payment_option_tax / currency_value,
+	payment_transaction_fee = payment_transaction_fee / currency_value;
+-- -----
+UPDATE `lc_orders_items` oi
+LEFT JOIN `lc_orders` o ON (o.id = oi.order_id)
+SET oi.price = oi.price / o.currency_value,
+	oi.tax = oi.tax / o.currency_value,
+	oi.discount = oi.discount / o.currency_value,
+	oi.discount_tax = oi.discount_tax / o.currency_value,
+	oi.sum = oi.sum / o.currency_value,
+	oi.sum_tax = oi.sum_tax / o.currency_value;
+-- -----
+UPDATE `lc_orders_items` oi
+LEFT JOIN `lc_orders` o ON (o.id = oi.invoice_id)
+LEFT JOIN `lc_products` p ON (p.id = oi.product_id)
+SET oi.tax_class_id = p.tax_class_id,
+	oi.discount = oi.price * (o.discount/o.total),
+	oi.discount_tax = oi.price * (o.discount_tax/o.total),
+	oi.`sum` = oi.price - (oi.price * (o.discount/o.total)),
+	oi.sum_tax = oi.tax - (oi.tax * (o.discount/o.total));
+-- -----
+UPDATE `lc_orders_items` oi
+LEFT JOIN `lc_products_stock_options` pso ON (pso.product_id = oi.product_id AND pso.attributes = oi.attributes)
+SET oi.stock_option_id = pso.id;
+-- -----
+UPDATE `lc_orders_items`
+SET `type` = 'product',
+	sum = price * quantity,
+	sum_tax = tax * quantity;
 -- -----
 UPDATE `lc_products_to_categories`
 SET `category_id` = NULL
@@ -696,45 +759,6 @@ LIMIT 1;
 UPDATE `lc_settings`
 SET `function` = 'regional_text()'
 WHERE `function` = 'regional_input()';
--- -----
-UPDATE `lc_orders`
-SET shipping_tax_id = billing_tax_id,
-	shipping_phone = billing_phone,
-	shipping_email = billing_email;
--- -----
-UPDATE `lc_orders` o
-LEFT JOIN `lc_orders_totals` ot ON (ot.order_id = o.id AND ot.module_id = 'ot_subtotal')
-SET o.subtotal = ot.`amount`,
-o.subtotal_tax = ot.`tax`;
--- -----
-UPDATE `lc_orders` o
-LEFT JOIN (
-	SELECT order_id, sum(`amount`) as discount, sum(`tax`) as discount_tax
-	FROM `lc_orders_totals`
-	WHERE `amount` < 0
-AND calculate
-	GROUP BY order_id
-) ot ON (ot.order_id = o.id)
-SET o.discount = 0 - if(ot.discount, ot.discount, 0),
-o.discount_tax = 0 - if(ot.discount_tax, ot.discount_tax, 0);
--- -----
-UPDATE `lc_orders_items` oi
-LEFT JOIN `lc_orders` o ON (o.id = oi.invoice_id)
-LEFT JOIN `lc_products` p ON (p.id = oi.product_id)
-SET oi.tax_class_id = p.tax_class_id,
-	oi.discount = oi.price * (o.discount/o.total),
-	oi.discount_tax = oi.price * (o.discount_tax/o.total),
-	oi.`sum` = oi.price - (oi.price * (o.discount/o.total)),
-	oi.sum_tax = oi.tax - (oi.tax * (o.discount/o.total));
--- -----
-UPDATE `lc_orders_items` oi
-LEFT JOIN `lc_products_stock_options` pso ON (pso.product_id = oi.product_id AND pso.attributes = oi.attributes)
-SET oi.stock_option_id = pso.id;
--- -----
-UPDATE `lc_orders_items`
-SET `type` = 'product',
-	sum = price * quantity,
-	sum_tax = tax * quantity;
 -- -----
 UPDATE `lc_settings`
 SET `key` = 'jobs_last_push',

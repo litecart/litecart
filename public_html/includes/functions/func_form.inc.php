@@ -120,7 +120,7 @@
 		}
 
 		if (preg_match('#\[\]$#', $name)) {
-			return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="checkbox" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($value) .'" '. (in_array($value, $input) ? ' checked' : '') . ($parameters ? ' ' . $parameters : '') .'>';
+			return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="checkbox" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($value) .'" '. ((is_array($input) && in_array($value, $input)) ? ' checked' : '') . ($parameters ? ' ' . $parameters : '') .'>';
 		} else {
 			return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="checkbox" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($value) .'" '. (!strcmp($input, $value) ? ' checked' : '') . ($parameters ? ' ' . $parameters : '') .'>';
 		}
@@ -188,7 +188,7 @@
 				return '      <th>'. $column .'<button name="remove_column" class="btn btn default btn-sm">'. functions::draw_fonticon('remove') .'</button></th>';
 			}, $columns)),
 
-			'      <th><button class="btn btn-default btn-sm" name="add_column" type="button">'. functions::draw_fonticon('fa-plus', 'style="color: #6c6;"') .' '.  language::translate('title_add_column', 'Add Column') .'</button></th>',
+			'      <th><button class="btn btn-default btn-sm" name="add_column" type="button">'. functions::draw_fonticon('icon-plus', 'style="color: #6c6;"') .' '.  language::translate('title_add_column', 'Add Column') .'</button></th>',
 			'    </tr>',
 			'  </thead>',
 			'  <tbody>',
@@ -206,7 +206,7 @@
 		$html .= implode(PHP_EOL, [
 			'  <tfoot>',
 			'    <tr>',
-			'      <td colspan="'. (count($columns)+1) .'"><button class="btn btn-default btn-sm" name="add_row" type="button">'. functions::draw_fonticon('fa-plus', 'style="color: #6c6;"') .' '.  language::translate('title_add_row', 'Add Row') .'</button></td>',
+			'      <td colspan="'. (count($columns)+1) .'"><button class="btn btn-default btn-sm" name="add_row" type="button">'. functions::draw_fonticon('icon-plus', 'style="color: #6c6;"') .' '.  language::translate('title_add_row', 'Add Row') .'</button></td>',
 			'    </tr>',
 			'  </tfoot>',
 			'</table>',
@@ -316,7 +316,7 @@
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-icon">'. functions::draw_fonticon('fa-envelope-o fa-fw') .'</span>',
+			'  <span class="input-group-icon">'. functions::draw_fonticon('icon-envelope-o') .'</span>',
 			'  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="email" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'"'. ($parameters ? ' '. $parameters : '') .'>',
 			'</div>',
 		]);
@@ -403,7 +403,7 @@
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-icon">'. functions::draw_fonticon('fa-key fa-fw') .'</span>',
+			'  <span class="input-group-icon">'. functions::draw_fonticon('icon-key') .'</span>',
 			'  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="password" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'"'. ($parameters ? ' '. $parameters : '') .'>',
 			'</div>',
 		]);
@@ -417,9 +417,9 @@
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-icon">'. functions::draw_fonticon('fa-key fa-fw') .'</span>',
+			'  <span class="input-group-icon">'. functions::draw_fonticon('icon-key') .'</span>',
 			'  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="password" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'"'. ($parameters ? ' '. $parameters : '') .'>',
-			'  <button class="btn btn-default" type="button" onclick="$(this).prev().attr(\'type\', ($(this).prev().attr(\'type\') == \'password\') ? \'text\' : \'password\')">'. functions::draw_fonticon('fa-eye') .'</button>',
+			'  <button class="btn btn-default" type="button" onclick="$(this).prev().attr(\'type\', ($(this).prev().attr(\'type\') == \'password\') ? \'text\' : \'password\')">'. functions::draw_fonticon('icon-eye') .'</button>',
 			'</div>',
 		]);
 	}
@@ -442,7 +442,7 @@
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-icon">'. functions::draw_fonticon('fa-phone fa-fw') .'</span>',
+			'  <span class="input-group-icon">'. functions::draw_fonticon('icon-phone') .'</span>',
 			'  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="tel" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'" pattern="\+?([0-9]|-| )+"'. ($parameters ? ' '. $parameters : '') .'>',
 			'</div>',
 		]);
@@ -483,7 +483,7 @@
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-icon">'. functions::draw_fonticon('fa-search fa-fw') .'</span>',
+			'  <span class="input-group-icon">'. functions::draw_fonticon('icon-search') .'</span>',
 			'  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="search" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'"'. ($parameters ? ' '. $parameters : '') .'>',
 			'</div>',
 		]);
@@ -533,7 +533,7 @@
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-icon">'. functions::draw_fonticon('fa-user fa-fw') .'</span>',
+			'  <span class="input-group-icon">'. functions::draw_fonticon('icon-user') .'</span>',
 			'  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="text" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'"'. ($parameters ? ' '. $parameters : '') .'>',
 			'</div>',
 		]);
@@ -864,7 +864,7 @@
 			if (preg_match('#\[\]$#', $name)) {
 				$html .= implode(PHP_EOL, [
 					'  <label>',
-					'    <input type="checkbox" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($option[0]) .'" hidden'. (in_array($option[0], $input) ? ' checked' : '') . (!empty($option[2]) ? ' '. $option[2] : '') .'>'. $option[1],
+					'    <input type="checkbox" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($option[0]) .'" hidden'. ((is_array($input) && in_array($option[0], $input)) ? ' checked' : '') . (!empty($option[2]) ? ' '. $option[2] : '') .'>'. $option[1],
 					'  </label>',
 				]) . PHP_EOL;
 			} else {
@@ -1280,7 +1280,7 @@
 		]);
 
 		if (empty($parent_id)) {
-			$options[] = ['0' => functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') .' ['. language::translate('title_root', 'Root') .']',];
+			$options[] = ['0' => functions::draw_fonticon('icon-folder', 'style="color: #cccc66;"') .' ['. language::translate('title_root', 'Root') .']',];
 		}
 
 		database::query(
@@ -1326,7 +1326,7 @@
 			'  link: "'. document::ilink('b:catalog/categories.json') .'",',
 			'  icons: {',
 			'    folder: \''. functions::draw_fonticon('folder') .'\',',
-			'    back: \''. functions::draw_fonticon('fa-arrow-left') .'\'',
+			'    back: \''. functions::draw_fonticon('icon-arrow-left') .'\'',
 			'  },',
 			'  translations: {',
 			'    search_results: "'. language::translate('title_search_results', 'Search Results') .'",',
