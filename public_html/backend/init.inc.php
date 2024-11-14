@@ -6,6 +6,8 @@
 		administrator::require_login();
 	}
 
+	document::$head_tags['manifest'] = '<link rel="manifest" href="'. document::href_ilink('manifest.json') .'">';
+
 	// Fetch apps
 	$apps = functions::admin_get_apps();
 

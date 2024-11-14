@@ -98,7 +98,7 @@
 				'<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon-192x192.png') .'" type="image/png" sizes="192x192">',
 				'<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon-256x256.png') .'" type="image/png" sizes="256x256">',
 			]);
-			self::$head_tags['manifest'] = '<link rel="manifest" href="'. self::href_ilink('manifest.json') .'">'; // No namespace as relative to endpoint
+
 			self::$foot_tags['jquery'] = '<script src="'. self::href_rlink('app://assets/jquery/jquery-4.0.0.min.js') .'"></script>';
 
 			// Hreflang
