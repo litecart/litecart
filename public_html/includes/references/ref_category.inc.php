@@ -74,8 +74,8 @@
 								select @r := ". (int)$this->id .", @l := 0) vars,
 								". DB_TABLE_PREFIX ."categories h
 								where @r <> 0
-							) T1
-							join  ". DB_TABLE_PREFIX ."categories t2 on (T1._id = t2.id)
+							) t1
+							join  ". DB_TABLE_PREFIX ."categories t2 on (t1._id = t2.id)
 						limit 1;"
 					)->fetch(function($category){
 						return reference::category($category['id'], $this->_language_codes[0]);

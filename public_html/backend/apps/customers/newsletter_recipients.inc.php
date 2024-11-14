@@ -191,11 +191,11 @@
 
 				<div class="flex flex-inline">
 					<div class="btn-group">
-							<?php echo functions::form_draw_button('subscribe', language::translate('title_set_as_subscribed', 'Set As Subscribed'), 'submit', 'class="btn btn-default"', 'fa-check'); ?>
-							<?php echo functions::form_draw_button('unsubscribe', language::translate('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'fa-times'); ?>
+							<?php echo functions::form_button('subscribe', language::translate('title_set_as_subscribed', 'Set As Subscribed'), 'submit', 'class="btn btn-default"', 'fa-check'); ?>
+							<?php echo functions::form_button('unsubscribe', language::translate('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'fa-times'); ?>
 					</div>
 
-					<?php echo functions::form_button_prefdined('delete'); ?>
+					<?php echo functions::form_button_predefined('delete'); ?>
 				</div>
 			</fieldset>
 		</div>
@@ -220,8 +220,12 @@
 		<div class="form-group">
 			<?php echo functions::form_toggle('subscribe', [1 => language::translate('title_subscribe', 'Subscribed'), 0 => language::translate('title_unsubscribe', 'Unsubscribed')]); ?>
 			<div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
-				<label class="btn btn-default<?php echo (file_get_contents('php://input') == '' || !empty($_POST['subscribe'])) ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('subscribe', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribed'); ?></label>
-				<label class="btn btn-default<?php echo (file_get_contents('php://input') != '' && empty($_POST['subscribe'])) ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('subscribe', '0', true); ?><?php echo language::translate('title_unsubscribe', 'Unsubscribed'); ?></label>
+				<label class="btn btn-default<?php echo (file_get_contents('php://input') == '' || !empty($_POST['subscribe'])) ? ' active' : ''; ?>">
+					<?php echo functions::form_radio_button('subscribe', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribed'); ?>
+				</label>
+				<label class="btn btn-default<?php echo (file_get_contents('php://input') != '' && empty($_POST['subscribe'])) ? ' active' : ''; ?>">
+					<?php echo functions::form_radio_button('subscribe', '0', true); ?><?php echo language::translate('title_unsubscribe', 'Unsubscribed'); ?>
+				</label>
 			</div>
 		</div>
 
