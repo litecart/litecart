@@ -37,8 +37,8 @@
 			oi.sku,
 			oi.name,
 			sum(oi.quantity) as total_quantity,
-			sum(oi.price * oi.quantity) as total_sales,
-			sum(oi.tax * oi.quantity) as total_tax
+			sum(oi.price * oi.quantity * o.currency_value) as total_sales,
+			sum(oi.tax * oi.quantity * o.currency_value) as total_tax
 		from ". DB_TABLE_PREFIX ."orders_items oi
 		left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
 		where o.order_status_id in (

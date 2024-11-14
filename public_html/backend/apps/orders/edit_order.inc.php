@@ -13,17 +13,6 @@
 
 		$_POST = $order->data;
 
-		// Convert to local currency
-		foreach (array_keys($_POST['items']) as $key) {
-			$_POST['items'][$key]['price'] = !empty($_POST['items'][$key]['price']) ? $_POST['items'][$key]['price'] / $_POST['currency_value'] : 0;
-			$_POST['items'][$key]['tax'] = !empty($_POST['items'][$key]['tax']) ? $_POST['items'][$key]['tax'] / $_POST['currency_value'] : 0;
-		}
-
-		foreach (array_keys($_POST['order_total']) as $key) {
-			$_POST['order_total'][$key]['amount'] = !empty($_POST['order_total'][$key]['amount']) ? $_POST['order_total'][$key]['amount'] / $_POST['currency_value'] : 0;
-			$_POST['order_total'][$key]['tax'] = !empty($_POST['order_total'][$key]['amount']) ? $_POST['order_total'][$key]['tax'] / $_POST['currency_value'] : 0;
-		}
-
 		if (empty($order->data['id'])) {
 			$_POST['customer']['country_code'] = settings::get('default_country_code');
 		}

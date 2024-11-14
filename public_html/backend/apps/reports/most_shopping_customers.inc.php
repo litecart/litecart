@@ -40,7 +40,7 @@
 
 	$customers_query = database::query(
 		"select
-			sum(o.total - total_tax) as total_amount,
+			sum((o.total - total_tax) * o.currency_value) as total_amount,
 			o.customer_id as id,
 			if(o.billing_company, o.billing_company, concat(o.billing_firstname, ' ', o.billing_lastname)) as name,
 			billing_email as email
