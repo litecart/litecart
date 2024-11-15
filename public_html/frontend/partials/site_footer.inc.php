@@ -60,7 +60,7 @@
 			'instagram',
 			'linkedin',
 			'pinterest',
-			'twitter',
+			'x',
 			'youtube',
 		] as $platform) {
 
@@ -69,7 +69,7 @@
 			$site_footer->snippets['social_bookmarks'][] = [
 				'type' => $platform,
 				'title' => ucfirst($platform),
-				'icon' => 'icon-'.$platform,
+				'icon' => 'icon-brand-'.$platform,
 				'link' => $link,
 			];
 		}

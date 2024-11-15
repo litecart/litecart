@@ -311,19 +311,18 @@
 	}
 }(jQuery);
 
-/* ========================================================================
+/*
  * Bootstrap: carousel.js v3.4.1
  * https://getbootstrap.com/docs/3.4/javascript/#carousel
- * ========================================================================
+ *
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
+ */
 
 +function ($) {
 	'use strict';
 
-		// CAROUSEL CLASS DEFINITION
-		// =========================
+	// CAROUSEL CLASS DEFINITION
 
 	var Carousel = function (element, options) {
 		this.$element    = $(element)
@@ -483,9 +482,7 @@
 		return this
 	}
 
-
-		// CAROUSEL PLUGIN DEFINITION
-		// ==========================
+	// CAROUSEL PLUGIN DEFINITION
 
 	function Plugin(option) {
 		return this.each(function () {
@@ -506,18 +503,14 @@
 	$.fn.carousel             = Plugin
 	$.fn.carousel.Constructor = Carousel
 
-
-		// CAROUSEL NO CONFLICT
-		// ====================
+	// CAROUSEL NO CONFLICT
 
 	$.fn.carousel.noConflict = function () {
 		$.fn.carousel = old
 		return this
 	}
 
-
-		// CAROUSEL DATA-API
-		// =================
+	// CAROUSEL DATA-API
 
 	var clickHandler = function (e) {
 		var $this   = $(this)
@@ -553,19 +546,18 @@
 
 }(jQuery);
 
-/* ========================================================================
+/*
  * Bootstrap: collapse.js v3.4.1
  * https://getbootstrap.com/docs/3.4/javascript/#collapse
- * ========================================================================
+ *
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
+ */
 
 +function ($) {
 	'use strict';
 
-		// COLLAPSE PUBLIC CLASS DEFINITION
-		// ================================
+	// COLLAPSE PUBLIC CLASS DEFINITION
 
 	var Collapse = function (element, options) {
 		this.$element      = $(element)
@@ -716,9 +708,7 @@
 		return $(document).find(target)
 	}
 
-
-		// COLLAPSE PLUGIN DEFINITION
-		// ==========================
+	// COLLAPSE PLUGIN DEFINITION
 
 	function Plugin(option) {
 		return this.each(function () {
@@ -737,18 +727,14 @@
 	$.fn.collapse             = Plugin
 	$.fn.collapse.Constructor = Collapse
 
-
-		// COLLAPSE NO CONFLICT
-		// ====================
+	// COLLAPSE NO CONFLICT
 
 	$.fn.collapse.noConflict = function () {
 		$.fn.collapse = old
 		return this
 	}
 
-
-		// COLLAPSE DATA-API
-		// =================
+	// COLLAPSE DATA-API
 
 	$(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
 		var $this   = $(this)
@@ -764,19 +750,18 @@
 
 }(jQuery);
 
-/* ========================================================================
+/*
  * Bootstrap: dropdown.js v3.4.1
  * https://getbootstrap.com/docs/3.4/javascript/#dropdowns
- * ========================================================================
+ *
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
+ */
 
 +function ($) {
 	'use strict';
 
-		// DROPDOWN CLASS DEFINITION
-		// =========================
+	// DROPDOWN CLASS DEFINITION
 
 	var backdrop = '.dropdown-backdrop'
 	var toggle   = '[data-toggle="dropdown"]'
@@ -832,7 +817,7 @@
 
 		if (!isActive) {
 			if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
-					// if mobile we use a backdrop because click events don't delegate
+				// if mobile we use a backdrop because click events don't delegate
 				$(document.createElement('div'))
 					.addClass('dropdown-backdrop')
 					.insertAfter($parent)
@@ -888,9 +873,7 @@
 		$items.eq(index).trigger('focus')
 	}
 
-
-		// DROPDOWN PLUGIN DEFINITION
-		// ==========================
+	// DROPDOWN PLUGIN DEFINITION
 
 	function Plugin(option) {
 		return this.each(function () {
@@ -907,18 +890,14 @@
 	$.fn.dropdown             = Plugin
 	$.fn.dropdown.Constructor = Dropdown
 
-
-		// DROPDOWN NO CONFLICT
-		// ====================
+	// DROPDOWN NO CONFLICT
 
 	$.fn.dropdown.noConflict = function () {
 		$.fn.dropdown = old
 		return this
 	}
 
-
-		// APPLY TO STANDARD DROPDOWN ELEMENTS
-		// ===================================
+	// APPLY TO STANDARD DROPDOWN ELEMENTS
 
 	$(document)
 		.on('click.bs.dropdown.data-api', clearMenus)
@@ -929,19 +908,18 @@
 
 }(jQuery);
 
-/* ========================================================================
+/*
  * Bootstrap: transition.js v3.4.1
  * https://getbootstrap.com/docs/3.4/javascript/#transitions
- * ========================================================================
+ *
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
+ */
 
 +function ($) {
 	'use strict';
 
-		// CSS TRANSITION SUPPORT (Shoutout: https://modernizr.com/)
-		// ============================================================
+	// CSS TRANSITION SUPPORT (Shoutout: https://modernizr.com/)
 
 	function transitionEnd() {
 		var el = document.createElement('bootstrap')

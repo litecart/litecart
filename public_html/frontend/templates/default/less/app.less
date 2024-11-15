@@ -240,7 +240,7 @@ body {
 	}
 }
 
-#footer {
+#site-footer {
 	background: var(--footer-background-color);
 	color: var(--footer-text-color);
 
@@ -261,12 +261,20 @@ body {
 	}
 
 	.buttons {
-		display: flex;
+		display: inline-flex;
 		justify-content: center;
+		vertical-align: middle;
+		gap: .5em;
+		line-height: 1;
+		font-size: 1.5em;
+
+		> * {
+			aspect-ratio: 1;
+		}
 
 		a {
 			background: #fff;
-			padding: 0.5em;
+			padding: .5em;
 			border-radius: var(--border-radius);
 			&:hover {
 				background: #666;
@@ -304,13 +312,18 @@ body {
 }
 
 #scroll-up {
-	bottom: 30px;
 	display: none;
-	height: 48px;
+	bottom: 1em;
+	right: 1em;
+	width: 2em;
+	height: 2em;
 	opacity: 0.3;
 	position: fixed;
-	right: 30px;
-	width: 48px;
+	font-size: 1.5em;
+	transition: linear all 200ms;
+	&:hover {
+		opacity: 1;
+	}
 }
 
 /* Boxes */
@@ -776,9 +789,11 @@ body {
 	.campaign-price {
 		color: #cc0000;
 	}
+
 	.tax {
 		color: #999;
 	}
+
 	.stock-available {
 		.value {
 			color: #009900;
@@ -794,12 +809,14 @@ body {
 			color: #cc0000;
 		}
 	}
+
 	.social-bookmarks {
 		margin: 1rem 0;
 		a {
 			padding: .5em 1em;
 		}
 	}
+
 	.description {
 		p:first-child {
 			margin-top: 0;
@@ -808,6 +825,7 @@ body {
 			margin-bottom: 0;
 		}
 	}
+
 	.technical-data {
 		table {
 			-webkit-column-break-inside: avoid;

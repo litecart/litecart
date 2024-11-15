@@ -14,7 +14,7 @@
 			<?php foreach ($app['menu'] as $item) { ?>
 			<li class="doc<?php echo $item['active'] ? ' active' : ''; ?>" data-id="<?php echo $item['doc']; ?>">
 				<a href="<?php echo functions::escape_html($item['link']); ?>">
-					<?php echo functions::draw_fonticon((language::$selected['direction'] == 'rtl') ? 'icon-chevron-left' : 'icon-chevron-right'); ?> <span class="name"><?php echo $item['title']; ?></span>
+					<?php echo functions::draw_fonticon((language::$selected['direction'] == 'rtl') ? 'icon-angle-left' : 'icon-angle-right'); ?> <span class="name"><?php echo $item['title']; ?></span>
 				</a>
 			</li>
 			<?php } ?>

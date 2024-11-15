@@ -725,7 +725,7 @@
 
 		if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
 			echo implode(PHP_EOL, [
-				'<form method="get" action="http://twitter.com/intent/tweet" target="_blank">',
+				'<form method="get" action="http://x.com/intent/tweet" target="_blank">',
 				'  <input type="hidden" value="https://www.litecart.net/">',
 				'  <div class="form-group">',
 				'    <div class="input-group">',

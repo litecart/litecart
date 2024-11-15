@@ -203,6 +203,7 @@ body {
 	display: block;
 	margin: ~"calc(var(--gutter-size)/2)" 0;
 	padding: 0;
+	color: var(--sidebar-text-color);
 	//border-top: 1px var(--sidebar-border-color) solid;
 
 	.app {
@@ -211,15 +212,17 @@ body {
 		padding: 0;
 		margin: 2px 0;
 		border-inline-start: 5px solid transparent;
+		border-radius: var(--border-radius);
+
+		&:hover:not(.active) {
+			background: var(--sidebar-background-color-hover);
+		}
 
 		a {
 			display: block;
 			padding: .5em;
 			text-decoration: none;
-
-			&:hover:not(.active) {
-				background: var(--sidebar-background-color-hover);
-			}
+			color: inherit;
 
 			.icon-stack {
 				font-size: 1em;
@@ -228,6 +231,7 @@ body {
 
 		.app-icon {
 			margin-inline-end: 0;
+			font-size: 1.2em;
 		}
 
 		.name {

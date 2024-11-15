@@ -1,4 +1,4 @@
-<footer id="footer" class="hidden-print">
+<footer id="site-footer" class="hidden-print">
 	<div class="container">
 		<div class="row">
 
@@ -50,19 +50,21 @@
 				</div>
 
 				<?php if ($modules) { ?>
-				<ul class="buttons list-inline text-center">
+					<div id="modules" class="buttons">
 					<?php foreach ($modules as $module) { ?>
-					<li><img class="thumbnail responsive" src="<?php echo document::href_rlink($module['icon']); ?>" alt=""></li>
+						<img class="thumbnail responsive" src="<?php echo document::href_rlink($module['icon']); ?>" alt="">
 					<?php } ?>
-				</ul>
+					</div>
 				<?php } ?>
 
 				<?php if ($social_bookmarks) { ?>
-				<ul class="buttons list-inline text-center">
+				<dic id="social-bookmarks" class="buttons">
 					<?php foreach ($social_bookmarks as $bookmark) { ?>
-					<li><a href="<?php echo functions::escape_html($bookmark['link']); ?>" target="_blank"><?php echo functions::draw_fonticon($bookmark['icon'] .'', 'title="'. functions::escape_attr($bookmark['title']) .'"'); ?></a></li>
+					<a href="<?php echo functions::escape_html($bookmark['link']); ?>" target="_blank">
+						<?php echo functions::draw_fonticon($bookmark['icon'] .'', 'title="'. functions::escape_attr($bookmark['title']) .'"'); ?>
+					</a>
 					<?php } ?>
-				</ul>
+				</dic>
 				<?php } ?>
 			</section>
 

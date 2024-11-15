@@ -562,7 +562,7 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('social_media', 'global', 'Instagram Link', 'The link to your Instagram page.', 'instagram_link', '', 'url()', 0, 20, NOW(), NOW()),
 ('social_media', 'global', 'LinkedIn Link', 'The link to your LinkedIn page.', 'linkedin_link', '', 'url()', 0, 30, NOW(), NOW()),
 ('social_media', 'global', 'Pinterest Link', 'The link to your Pinterest page.', 'pinterest_link', '', 'url()', 0, 40, NOW(), NOW()),
-('social_media', 'global', 'Twitter Link', 'The link to your Twitter page.', 'twitter_link', '', 'url()', 0, 50, NOW(), NOW()),
+('social_media', 'global', 'X Link', 'The link to your X page.', 'x_link', '', 'url()', 0, 50, NOW(), NOW()),
 ('social_media', 'global', 'YouTube Link', 'The link to your YouTube channel.', 'youtube_link', '', 'url()', 0, 60, NOW(), NOW());
 -- -----
 INSERT INTO `lc_stock_transactions` (id, name, description)
@@ -620,7 +620,7 @@ SET customer_id = NULL
 WHERE customer_id = 0;
 -- -----
 UPDATE `lc_orders`
-SET language_code = NULL
+SET language_code = NULL,
 WHERE language_code = '';
 -- -----
 UPDATE `lc_orders`
@@ -738,6 +738,12 @@ UPDATE `lc_settings`
 SET `function` = 'select("FIT","CROP")'
 WHERE `key` = 'category_image_clipping'
 LIMIT 1;
+-- -----
+UPDATE `lc_settings`
+SET `title` = 'X Link',
+	`description` = 'The link to your X page.',
+	`key` = 'x_link'
+WHERE `key` = 'twitter_link';
 -- -----
 UPDATE `lc_settings`
 SET `value` = 'FIT'

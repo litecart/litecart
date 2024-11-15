@@ -74,7 +74,7 @@
 			</li>
 
 			<li>
-				<?php echo functions::form_toggle('dark_mode', ['0' => functions::draw_fonticon('icon-sun-o'), '1' => functions::draw_fonticon('icon-moon-o')]); ?>
+				<?php echo functions::form_toggle('dark_mode', ['0' => functions::draw_fonticon('icon-sun'), '1' => functions::draw_fonticon('icon-moon')]); ?>
 			</li>
 
 			<li class="language dropdown">

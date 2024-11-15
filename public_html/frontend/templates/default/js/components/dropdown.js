@@ -1,16 +1,15 @@
-/* ========================================================================
+/*
  * Bootstrap: dropdown.js v3.4.1
  * https://getbootstrap.com/docs/3.4/javascript/#dropdowns
- * ========================================================================
+ *
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
+ */
 
 +function ($) {
 	'use strict';
 
-		// DROPDOWN CLASS DEFINITION
-		// =========================
+	// DROPDOWN CLASS DEFINITION
 
 	let backdrop = '.dropdown-backdrop'
 	let toggle   = '[data-toggle="dropdown"]'
@@ -65,7 +64,7 @@
 
 		if (!isActive) {
 			if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
-					// if mobile we use a backdrop because click events don't delegate
+				// if mobile we use a backdrop because click events don't delegate
 				$(document.createElement('div'))
 					.addClass('dropdown-backdrop')
 					.insertAfter($parent)
@@ -119,8 +118,7 @@
 		$items.eq(index).trigger('focus')
 	}
 
-		// DROPDOWN PLUGIN DEFINITION
-		// ==========================
+	// DROPDOWN PLUGIN DEFINITION
 
 	function Plugin(option) {
 		return this.each(function () {
@@ -137,16 +135,14 @@
 	$.fn.dropdown             = Plugin
 	$.fn.dropdown.Constructor = Dropdown
 
-		// DROPDOWN NO CONFLICT
-		// ====================
+	// DROPDOWN NO CONFLICT
 
 	$.fn.dropdown.noConflict = function () {
 		$.fn.dropdown = old
 		return this
 	}
 
-		// APPLY TO STANDARD DROPDOWN ELEMENTS
-		// ===================================
+	// APPLY TO STANDARD DROPDOWN ELEMENTS
 
 	$(document)
 		.on('click.bs.dropdown.data-api', clearMenus)
@@ -156,7 +152,6 @@
 		.on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
 
 }(jQuery);
-
 
 	// Dropdown Select
 	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
