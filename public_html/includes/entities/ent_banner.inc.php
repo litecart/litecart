@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($banner_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($banner_id)) {
-				$this->load((int)$banner_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -26,24 +26,24 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($banner_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $banner_id)) {
-				throw new Exception('Invalid banner (ID: '. $banner_id .')');
+			if (!preg_match('#^[0-9]+$#', $id)) {
+				throw new Exception('Invalid banner (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$banner = database::query(
 				"select * from ". DB_TABLE_PREFIX ."banners
-				where id = ". (int)$banner_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($banner) {
 				$this->data = array_replace($this->data, array_intersect_key($banner, $this->data));
 			} else {
-				throw new Exception('Could not find banner (ID: '. (int)$banner_id .') in database.');
+				throw new Exception('Could not find banner (ID: '. (int)$id .') in database.');
 			}
 
 			$this->data['languages'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);

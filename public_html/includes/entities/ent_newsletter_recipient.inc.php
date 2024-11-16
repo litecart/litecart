@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($recipient_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($recipient_id)) {
-				$this->load($recipient_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -30,25 +30,25 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($recipient_id) {
+		public function load($id) {
 
-			if (!preg_match('#(^[0-9]+$|@)#', $recipient_id)) {
-				throw new Exception('Invalid newsletter recipient (ID: '. $recipient_id .')');
+			if (!preg_match('#(^[0-9]+$|@)#', $id)) {
+				throw new Exception('Invalid newsletter recipient (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$recipient = database::query(
 				"select * from ". DB_TABLE_PREFIX ."newsletter_recipients
-				". (preg_match('#^[0-9]+$#', $recipient_id) ? "where id = ". (int)$recipient_id ."" : "") ."
-				". (preg_match('#@#', $recipient_id) ? "where lower(email) = '". database::input(strtolower($recipient_id)) ."'" : "") ."
+				". (preg_match('#^[0-9]+$#', $id) ? "where id = ". (int)$id ."" : "") ."
+				". (preg_match('#@#', $id) ? "where lower(email) = '". database::input(strtolower($id)) ."'" : "") ."
 				limit 1;"
 			)->fetch();
 
 			if ($recipient) {
 				$this->data = array_replace($this->data, array_intersect_key($recipient, $this->data));
 			} else {
-				throw new Exception('Could not find newsletter recipient (ID: '. (int)$recipient_id .') in database.');
+				throw new Exception('Could not find newsletter recipient (ID: '. (int)$id .') in database.');
 			}
 
 			$this->previous = $this->data;

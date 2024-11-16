@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($campaign_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($campaign_id)) {
-				$this->load($campaign_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -28,24 +28,24 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($campaign_id) {
+		public function load($id) {
 
-			if (preg_match('#[^0-9]#', $campaign_id)) {
-				throw new Exception('Invalid campaign id ('. $campaign_id .')');
+			if (preg_match('#[^0-9]#', $id)) {
+				throw new Exception('Invalid campaign id ('. $id .')');
 			}
 
 			$this->reset();
 
 			$campaign = database::query(
 				"select * from ". DB_TABLE_PREFIX ."campaigns
-				". (preg_match('#^[0-9]+$#', $campaign_id) ? "where id = ". (int)$campaign_id ."" : "") ."
+				". (preg_match('#^[0-9]+$#', $id) ? "where id = ". (int)$id ."" : "") ."
 				limit 1;"
 			)->fetch();
 
 			if ($campaign) {
 				$this->data = array_replace($this->data, array_intersect_key($campaign, $this->data));
 			} else {
-				throw new Exception('Could not find campaign ('. functions::escape_html($campaign_id) .') in the database.');
+				throw new Exception('Could not find campaign ('. functions::escape_html($id) .') in the database.');
 			}
 
 			$this->data['products'] = database::query(

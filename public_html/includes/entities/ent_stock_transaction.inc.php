@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($transaction_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($transaction_id)) {
-				$this->load($transaction_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -28,15 +28,15 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($transaction_id) {
+		public function load($id) {
 
-			if (!preg_match('#^(system|[0-9]+)$#', $transaction_id)) {
-				throw new Exception('Invalid stock transaction (ID: '. functions::escape_html($transaction_id) .')');
+			if (!preg_match('#^(system|[0-9]+)$#', $id)) {
+				throw new Exception('Invalid stock transaction (ID: '. functions::escape_html($id) .')');
 			}
 
 			$this->reset();
 
-			if ($transaction_id == 'system') {
+			if ($id == 'system') {
 
 				$transaction = database::query(
 					"select * from ". DB_TABLE_PREFIX ."stock_transactions
@@ -56,14 +56,14 @@
 
 			$transaction = database::query(
 				"select * from ". DB_TABLE_PREFIX ."stock_transactions
-				where id = ". (int)$transaction_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($transaction) {
 				$this->data = array_replace($this->data, array_intersect_key($transaction, $this->data));
 			} else {
-				trigger_error('Could not find stock transaction (ID: '. (int)$transaction_id .') in database.', E_USER_ERROR);
+				trigger_error('Could not find stock transaction (ID: '. (int)$id .') in database.', E_USER_ERROR);
 			}
 
 			$this->data['contents'] = database::query(

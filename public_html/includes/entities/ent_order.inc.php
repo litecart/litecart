@@ -6,8 +6,10 @@
 
 		public function __construct($order_id=null) {
 
-			if ($order_id) {
-				$this->load($order_id);
+		public function __construct($id=null) {
+
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -76,24 +78,24 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($order_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $order_id)) {
-				throw new Exception('Invalid order (ID: '. $order_id .')');
+			if (!preg_match('#^[0-9]+$#', $id)) {
+				throw new Exception('Invalid order (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$order = database::query(
 				"select * from ". DB_TABLE_PREFIX ."orders
-				where id = ". (int)$order_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($order) {
 				$this->data = array_replace($this->data, array_intersect_key($order, $this->data));
 			} else {
-				throw new Exception('Could not find order in database (ID: '. (int)$order_id .')');
+				throw new Exception('Could not find order in database (ID: '. (int)$id .')');
 			}
 
 			foreach ($order as $field => $value) {
@@ -126,7 +128,7 @@
 				from ". DB_TABLE_PREFIX ."orders_items oi
 				left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
-				where oi.order_id = ". (int)$order_id ."
+				where oi.order_id = ". (int)$id ."
 				order by oi.id;"
 			)->fetch_all(function($item) {
 				$item['userdata'] = $item['userdata'] ? json_decode($item['userdata'], true) : '';
@@ -145,14 +147,14 @@
 
 			$this->data['order_total'] = database::query(
 				"select * from ". DB_TABLE_PREFIX ."orders_totals
-				where order_id = ". (int)$order_id ."
+				where order_id = ". (int)$id ."
 				order by priority;"
 			)->fetch_all();
 
 			$this->data['comments'] = database::query(
 				"select oc.*, a.username as author_username from ". DB_TABLE_PREFIX ."orders_comments oc
 				left join ". DB_TABLE_PREFIX ."administrators a on (a.id = oc.author_id)
-				where oc.order_id = ". (int)$order_id ."
+				where oc.order_id = ". (int)$id ."
 				order by oc.id;"
 			)->fetch_all();
 

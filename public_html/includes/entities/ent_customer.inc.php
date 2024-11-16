@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($customer_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($customer_id)) {
-				$this->load($customer_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -29,25 +29,25 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($customer_id) {
+		public function load($id) {
 
-			if (!preg_match('#(^[0-9]+$|@)#', $customer_id)) {
-				throw new Exception('Invalid customer (ID: '. $customer_id .')');
+			if (!preg_match('#(^[0-9]+$|@)#', $id)) {
+				throw new Exception('Invalid customer (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$customer = database::query(
 				"select * from ". DB_TABLE_PREFIX ."customers
-				". (preg_match('#^[0-9]+$#', $customer_id) ? "where id = ". (int)$customer_id ."" : "") ."
-				". (preg_match('#@#', $customer_id) ? "where lower(email) = '". database::input(strtolower($customer_id)) ."'" : "") ."
+				". (preg_match('#^[0-9]+$#', $id) ? "where id = ". (int)$id ."" : "") ."
+				". (preg_match('#@#', $id) ? "where lower(email) = '". database::input(strtolower($id)) ."'" : "") ."
 				limit 1;"
 			)->fetch();
 
 			if ($customer) {
 				$this->data = array_replace($this->data, array_intersect_key($customer, $this->data));
 			} else {
-				throw new Exception('Could not find customer (ID: '. (int)$customer_id .') in database.');
+				throw new Exception('Could not find customer (ID: '. (int)$id .') in database.');
 			}
 
 			$this->data['newsletter'] = database::query(

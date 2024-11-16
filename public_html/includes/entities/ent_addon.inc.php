@@ -6,8 +6,7 @@
 
 		public function __construct($id=null) {
 
-			if (!empty($id)) {
-				$id = basename($id);
+			if ($id) {
 				$this->load($id);
 			} else {
 				$this->reset();
@@ -46,6 +45,8 @@
 		public function load($id) {
 
 			$this->reset();
+
+			$id = basename($id);
 
 			if (is_dir($this->data['location'] = 'storage://addons/'. $id .'/')) {
 				$this->data['folder'] = $id;

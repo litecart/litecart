@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($stock_item_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($stock_item_id)) {
-				$this->load((int)$stock_item_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -37,24 +37,24 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($stock_item_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $stock_item_id)) {
-				throw new Exception('Invalid stock transaction (ID: '. functions::escape_html($stock_item_id) .')');
+			if (!preg_match('#^[0-9]+$#', $id)) {
+				throw new Exception('Invalid stock transaction (ID: '. functions::escape_html($id) .')');
 			}
 
 			$this->reset();
 
 			$stock_item = database::query(
 				"select * from ". DB_TABLE_PREFIX ."stock_items
-				where id = ". (int)$stock_item_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($stock_item) {
 				$this->data = array_replace($this->data, array_intersect_key($stock_item, $this->data));
 			} else {
-				trigger_error('Could not find stock item (ID: '. (int)$stock_item_id .') in database.', E_USER_ERROR);
+				trigger_error('Could not find stock item (ID: '. (int)$id .') in database.', E_USER_ERROR);
 			}
 
 			// Info

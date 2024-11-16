@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($supplier_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($supplier_id)) {
-				$this->load($supplier_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -26,24 +26,24 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($supplier_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $supplier_id)) {
-				throw new Exception('Invalid supplier (ID: '. $supplier_id .')');
+			if (!preg_match('#^[0-9]+$#', $id)) {
+				throw new Exception('Invalid supplier (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$supplier = database::query(
 				"select * from ". DB_TABLE_PREFIX ."suppliers
-				where id=". (int)$supplier_id ."
+				where id=". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($supplier) {
 				$this->data = array_replace($this->data, array_intersect_key($supplier, $this->data));
 			} else {
-				throw new Exception('Could not find supplier (ID: '. (int)$supplier_id .') in database.');
+				throw new Exception('Could not find supplier (ID: '. (int)$id .') in database.');
 			}
 
 			$this->previous = $this->data;

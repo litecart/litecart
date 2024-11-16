@@ -6,8 +6,8 @@
 
 		public function __construct($id=null) {
 
-			if (!empty($id)) {
-				$this->load(basename($id));
+			if ($id) {
+				$this->load();
 			} else {
 				$this->reset();
 			}
@@ -39,6 +39,8 @@
 		public function load($id) {
 
 			$this->reset();
+
+			$id = basename($id);
 
 			if (is_file($file = 'storage://vmods/'. $id.'.xml')) {
 				$xml = file_get_contents($file);

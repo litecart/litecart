@@ -7,10 +7,10 @@
 		public $payment;
 		public $order_total;
 
-		public function __construct($shopping_cart_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($shopping_cart_id)) {
-				$this->load($shopping_cart_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -75,22 +75,22 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($shopping_cart_id) {
+		public function load($id) {
 
-			if (!preg_match('#^([0-9]+|[a-f0-9]{13})$#', $shopping_cart_id)) throw new Exception('Invalid shopping cart (ID: '. $shopping_cart_id .')');
+			if (!preg_match('#^([0-9]+|[a-f0-9]{13})$#', $id)) throw new Exception('Invalid shopping cart (ID: '. $id .')');
 
 			$this->reset();
 
 			$shopping_cart = database::query(
 				"select * from ". DB_TABLE_PREFIX ."shopping_carts
-				where ". (preg_match('#^[a-f0-9]{13}$#', $shopping_cart_id) ? "uid = '". database::input($shopping_cart_id) ."'" : "id = '". database::input($shopping_cart_id) ."'") ."
+				where ". (preg_match('#^[a-f0-9]{13}$#', $id) ? "uid = '". database::input($id) ."'" : "id = '". database::input($id) ."'") ."
 				limit 1;"
 			)->fetch();
 
 			if ($shopping_cart) {
 				$this->data = array_replace($this->data, array_intersect_key($shopping_cart, $this->data));
 			} else {
-				throw new Exception('Could not find shopping cart in database (ID: '. $shopping_cart_id .')');
+				throw new Exception('Could not find shopping cart in database (ID: '. $id .')');
 			}
 
 			foreach ($shopping_cart as $field => $value) {

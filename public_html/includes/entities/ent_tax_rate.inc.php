@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($tax_rate_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($tax_rate_id)) {
-				$this->load($tax_rate_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -26,24 +26,24 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($tax_rate_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $tax_rate_id)) {
-				throw new Exception('Invalid tax rate (ID: '. $tax_rate_id .')');
+			if (!preg_match('#^[0-9]+$#', $id)) {
+				throw new Exception('Invalid tax rate (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$tax_rate = database::query(
 				"select * from ". DB_TABLE_PREFIX ."tax_rates
-				where id = ". (int)$tax_rate_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($tax_rate) {
 				$this->data = array_replace($this->data, array_intersect_key($tax_rate, $this->data));
 			} else {
-				throw new Exception('Could not find tax rate (ID: '. (int)$tax_rate_id .') in database.');
+				throw new Exception('Could not find tax rate (ID: '. (int)$id .') in database.');
 			}
 
 			$this->previous = $this->data;

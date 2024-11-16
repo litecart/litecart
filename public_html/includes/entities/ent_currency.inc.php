@@ -6,7 +6,7 @@
 
 		public function __construct($currency_code=null) {
 
-			if (!empty($currency_code)) {
+			if ($currency_code) {
 				$this->load($currency_code);
 			} else {
 				$this->reset();

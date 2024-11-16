@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($tax_class_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($tax_class_id)) {
-				$this->load($tax_class_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -26,24 +26,24 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($tax_class_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $tax_class_id)) {
-				throw new Exception('Invalid tax class (ID: '. $tax_class_id .')');
+			if (!preg_match('#^[0-9]+$#', $id)) {
+				throw new Exception('Invalid tax class (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$tax_class = database::query(
 				"select * from ". DB_TABLE_PREFIX ."tax_classes
-				where id = ". (int)$tax_class_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($tax_class) {
 				$this->data = array_replace($this->data, array_intersect_key($tax_class, $this->data));
 			} else {
-				throw new Exception('Could not find tax class (ID: '. (int)$tax_class_id .') in database.');
+				throw new Exception('Could not find tax class (ID: '. (int)$id .') in database.');
 			}
 
 			$this->previous = $this->data;

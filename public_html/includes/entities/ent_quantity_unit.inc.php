@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($quantity_unit_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($quantity_unit_id)) {
-				$this->load($quantity_unit_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -33,24 +33,24 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($quantity_unit_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $quantity_unit_id)) {
-				throw new Exception('Invalid quantity unit (ID: '. $quantity_unit_id .')');
+			if (!preg_match('#^[0-9]+$#', $id)) {
+				throw new Exception('Invalid quantity unit (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$quantity_unit = database::query(
 				"select * from ". DB_TABLE_PREFIX ."quantity_units
-				where id = ". (int)$quantity_unit_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($quantity_unit) {
 				$this->data = array_replace($this->data, array_intersect_key($quantity_unit, $this->data));
 			} else {
-				throw new Exception('Could not find quantity unit (ID: '. (int)$quantity_unit_id .') in database.');
+				throw new Exception('Could not find quantity unit (ID: '. (int)$id .') in database.');
 			}
 
 			database::query(

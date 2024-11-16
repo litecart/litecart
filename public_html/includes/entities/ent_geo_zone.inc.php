@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($geo_zone_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($geo_zone_id)) {
-				$this->load($geo_zone_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -28,31 +28,31 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($geo_zone_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $geo_zone_id)) {
-				throw new Exception('Invalid geo zone (ID: '. $geo_zone_id .')');
+			if (!preg_match('#^[0-9]+$#', $id)) {
+				throw new Exception('Invalid geo zone (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$geo_zone = database::query(
 				"select * from ". DB_TABLE_PREFIX ."geo_zones
-				where id = ". (int)$geo_zone_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($geo_zone) {
 				$this->data = array_replace($this->data, array_intersect_key($geo_zone, $this->data));
 			} else {
-				throw new Exception('Could not find geo zone (ID: '. (int)$geo_zone_id .') in database.');
+				throw new Exception('Could not find geo zone (ID: '. (int)$id .') in database.');
 			}
 
 			$this->data['zones'] = database::query(
 				"select z2gz.*, c.name as country_name, z.name as zone_name from ". DB_TABLE_PREFIX ."zones_to_geo_zones z2gz
 				left join ". DB_TABLE_PREFIX ."countries c on (c.iso_code_2 = z2gz.country_code)
 				left join ". DB_TABLE_PREFIX ."zones z on (z.code = z2gz.zone_code)
-				where geo_zone_id = ". (int)$geo_zone_id ."
+				where geo_zone_id = ". (int)$id ."
 				order by c.name, z.name;"
 			)->fetch_all(function($zone){
 				if (!$zone['zone_code']) {

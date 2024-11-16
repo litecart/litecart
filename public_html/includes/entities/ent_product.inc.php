@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($product_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($product_id)) {
-				$this->load($product_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -51,9 +51,9 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($product_id) {
+		public function load($id) {
 
-			if (!$product_id) {
+			if (!$id) {
 				throw new Exception('Invalid product (ID: n/a)');
 			}
 
@@ -62,26 +62,26 @@
 			// Product
 			$product = database::query(
 				"select * from ". DB_TABLE_PREFIX ."products
-				where ". (preg_match('#^[0-9]+$#', $product_id) ? "id = ". (int)$product_id : "code = '". database::input($product_id) ."'") ."
+				where ". (preg_match('#^[0-9]+$#', $id) ? "id = ". (int)$id : "code = '". database::input($id) ."'") ."
 				limit 1;"
 			)->fetch();
 
 			if ($product) {
 				$this->data = array_replace($this->data, array_intersect_key($product, $this->data));
 			} else {
-				throw new Exception('Could not find product (ID: '. (int)$product_id .') in database.');
+				throw new Exception('Could not find product (ID: '. (int)$id .') in database.');
 			}
 
 			// Categories
 			$this->data['categories'] = database::query(
 				"select category_id from ". DB_TABLE_PREFIX ."products_to_categories
-				 where product_id = ". (int)$product_id .";"
+				 where product_id = ". (int)$id .";"
 			)->fetch_all('category_id');
 
 			// Info
 			database::query(
 				"select * from ". DB_TABLE_PREFIX ."products_info
-				where product_id = ". (int)$product_id .";"
+				where product_id = ". (int)$id .";"
 			)->each(function($info){
 				foreach ($info as $key => $value) {
 					if (in_array($key, ['id', 'product_id', 'language_code'])) continue;
@@ -121,7 +121,7 @@
 				from ". DB_TABLE_PREFIX ."products_attributes pa
 				left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
 				left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
-				where product_id = ". (int)$product_id ."
+				where product_id = ". (int)$id ."
 				order by priority, group_name, value_name, custom_value;"
 			)->fetch_all();
 

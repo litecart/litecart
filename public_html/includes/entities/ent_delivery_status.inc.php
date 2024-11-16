@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($delivery_status_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($delivery_status_id)) {
-				$this->load($delivery_status_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -33,24 +33,24 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($delivery_status_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $delivery_status_id)) {
-				throw new Exception('Invalid delivery status (ID: '. $delivery_status_id .')');
+			if (!preg_match('#^[0-9]+$#', $id)) {
+				throw new Exception('Invalid delivery status (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$delivery_status = database::query(
 				"select * from ". DB_TABLE_PREFIX ."delivery_statuses
-				where id = ". (int)$delivery_status_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($delivery_status) {
 				$this->data = array_replace($this->data, array_intersect_key($delivery_status, $this->data));
 			} else {
-				throw new Exception('Could not find delivery status (ID: '. (int)$delivery_status_id .') in database.');
+				throw new Exception('Could not find delivery status (ID: '. (int)$id .') in database.');
 			}
 
 			database::query(

@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($sold_out_status_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($sold_out_status_id)) {
-				$this->load($sold_out_status_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -33,24 +33,24 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($sold_out_status_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $sold_out_status_id))  {
-				throw new Exception('Invalid sold out status (ID: '. $sold_out_status_id .')');
+			if (!preg_match('#^[0-9]+$#', $id))  {
+				throw new Exception('Invalid sold out status (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$sold_out_status = database::query(
 				"select * from ". DB_TABLE_PREFIX ."sold_out_statuses
-				where id = ". (int)$sold_out_status_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($sold_out_status) {
 				$this->data = array_replace($this->data, array_intersect_key($sold_out_status, $this->data));
 			} else {
-				throw new Exception('Could not find sold out status (ID: '. (int)$sold_out_status_id .') in database.');
+				throw new Exception('Could not find sold out status (ID: '. (int)$id .') in database.');
 			}
 
 			database::query(

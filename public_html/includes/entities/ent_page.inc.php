@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($page_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($page_id)) {
-				$this->load($page_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -33,24 +33,24 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($page_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $page_id)) {
-				throw new Exception('Invalid page (ID: '. $page_id .')');
+			if (!preg_match('#^[0-9]+$#', $id)) {
+				throw new Exception('Invalid page (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$page = database::query(
 				"select * from ". DB_TABLE_PREFIX ."pages
-				where id = ". (int)$page_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($page) {
 				$this->data = array_replace($this->data, array_intersect_key($page, $this->data));
 			} else {
-				throw new Exception('Could not find page (ID: '. (int)$page_id .') in database.');
+				throw new Exception('Could not find page (ID: '. (int)$id .') in database.');
 			}
 
 			database::query(

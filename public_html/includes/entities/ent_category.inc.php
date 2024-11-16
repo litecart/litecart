@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($category_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($category_id)) {
-				$this->load($category_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -36,29 +36,29 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($category_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $category_id)) {
-				throw new Exception('Invalid category (ID: '. $category_id .')');
+			if (!preg_match('#^[0-9]+$#', $id)) {
+				throw new Exception('Invalid category (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$category = database::query(
 				"select * from ". DB_TABLE_PREFIX ."categories
-				where id=". (int)$category_id ."
+				where id=". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($category) {
 				$this->data = array_replace($this->data, array_intersect_key($category, $this->data));
 			} else {
-				throw new Exception('Could not find category (ID: '. (int)$category_id .') in database.');
+				throw new Exception('Could not find category (ID: '. (int)$id .') in database.');
 			}
 
 			database::query(
 				"select * from ". DB_TABLE_PREFIX ."categories_info
-				where category_id = ". (int)$category_id .";"
+				where category_id = ". (int)$id .";"
 			)->each(function($info){
 				foreach ($info as $key => $value) {
 					if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
@@ -302,7 +302,7 @@
 			foreach ($this->data['products'] as $product_id) {
 				$product = new ent_product($product_id);
 
-				if (($key = array_search($category_id, $product->data['categories'])) !== false) {
+				if (($key = array_search($id, $product->data['categories'])) !== false) {
 					unset($product->data['categories'][$key]);
 				}
 

@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($brand_id='') {
+		public function __construct($id='') {
 
-			if (!empty($brand_id)) {
-				$this->load($brand_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -33,29 +33,29 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($brand_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $brand_id)) {
-				throw new Exception('Invalid brand (ID: '. $brand_id .')');
+			if (!preg_match('#^[0-9]+$#', $id)) {
+				throw new Exception('Invalid brand (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$brand = database::query(
 				"select * from ". DB_TABLE_PREFIX ."brands
-				where id = ". (int)$brand_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($brand) {
 				$this->data = array_replace($this->data, array_intersect_key($brand, $this->data));
 			} else {
-				throw new Exception('Could not find brand (ID: '. (int)$brand_id .') in database.');
+				throw new Exception('Could not find brand (ID: '. (int)$id .') in database.');
 			}
 
 			database::query(
 				"select * from ". DB_TABLE_PREFIX ."brands_info
-				where brand_id = ". (int)$brand_id .";"
+				where brand_id = ". (int)$id .";"
 			)->each(function($info){
 				foreach ($info as $key => $value) {
 					if (in_array($key, ['id', 'brand_id', 'language_code'])) continue;

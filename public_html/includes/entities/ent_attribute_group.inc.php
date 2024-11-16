@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($group_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($group_id)) {
-				$this->load($group_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -35,29 +35,29 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($group_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $group_id)) {
-				throw new Exception('Invalid attribute (ID: '. $group_id .')');
+			if (!preg_match('#^[0-9]+$#', $id)) {
+				throw new Exception('Invalid attribute (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$group = database::query(
 				"select * from ". DB_TABLE_PREFIX ."attribute_groups
-				where id = ". (int)$group_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($group) {
 				$this->data = array_replace($this->data, array_intersect_key($group, $this->data));
 			} else {
-				throw new Exception('Could not find attribute (ID: '. (int)$group_id .') in database.');
+				throw new Exception('Could not find attribute (ID: '. (int)$id .') in database.');
 			}
 
 			database::query(
 				"select name, language_code from ". DB_TABLE_PREFIX ."attribute_groups_info
-				where group_id = ". (int)$group_id .";"
+				where group_id = ". (int)$id .";"
 			)->each(function($info){
 				if (in_array($info['language_code'], ['id', 'group_id', 'language_code'])) return;
 				$this->data['name'][$info['language_code']] = $info['name'];
@@ -65,7 +65,7 @@
 
 			database::query(
 				"select * from ". DB_TABLE_PREFIX ."attribute_values
-				where group_id = ". (int)$group_id ."
+				where group_id = ". (int)$id ."
 				order by priority;"
 			)->each(function($value) {
 

@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($administrator_id=null) {
+		public function __construct($id=null) {
 
-			if ($administrator_id) {
-				$this->load($administrator_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -29,26 +29,26 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($administrator_id) {
+		public function load($id) {
 
-			if (!preg_match('#(^[0-9]+$|^[0-9a-zA-Z_]$|@)#', $administrator_id)){
-				throw new Exception('Invalid administrator (ID: '. $administrator_id .')');
+			if (!preg_match('#(^[0-9]+$|^[0-9a-zA-Z_]$|@)#', $id)){
+				throw new Exception('Invalid administrator (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$administrator = database::query(
 				"select * from ". DB_TABLE_PREFIX ."administrators
-				". (preg_match('#^[0-9]+$#', $administrator_id) ? "where id = ". (int)$administrator_id : "") ."
-				". (!preg_match('#^[0-9]+$#', $administrator_id) ? "where lower(username) = '". database::input(strtolower($administrator_id)) ."'" : "") ."
-				". (preg_match('#@#', $administrator_id) ? "where lower(email) = '". database::input(strtolower($administrator_id)) ."'" : "") ."
+				". (preg_match('#^[0-9]+$#', $id) ? "where id = ". (int)$id : "") ."
+				". (!preg_match('#^[0-9]+$#', $id) ? "where lower(username) = '". database::input(strtolower($id)) ."'" : "") ."
+				". (preg_match('#@#', $id) ? "where lower(email) = '". database::input(strtolower($id)) ."'" : "") ."
 				limit 1;"
 			)->fetch();
 
 			if ($administrator) {
 				$this->data = array_replace($this->data, array_intersect_key($administrator, $this->data));
 			} else {
-				throw new Exception('Could not find administrator (ID: '. (int)$administrator_id .') in database.');
+				throw new Exception('Could not find administrator (ID: '. (int)$id .') in database.');
 			}
 
 			$this->data['apps'] = !empty($this->data['apps']) ? json_decode($this->data['apps'], true) : [];

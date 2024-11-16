@@ -4,10 +4,10 @@
 		public $data;
 		public $previous;
 
-		public function __construct($order_status_id=null) {
+		public function __construct($id=null) {
 
-			if (!empty($order_status_id)) {
-				$this->load($order_status_id);
+			if ($id) {
+				$this->load($id);
 			} else {
 				$this->reset();
 			}
@@ -35,24 +35,24 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($order_status_id) {
+		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $order_status_id)) {
-				throw new Exception('Invalid order status (ID: '. $order_status_id .')');
+			if (!preg_match('#^[0-9]+$#', $id)) {
+				throw new Exception('Invalid order status (ID: '. $id .')');
 			}
 
 			$this->reset();
 
 			$order_status = database::query(
 				"select * from ". DB_TABLE_PREFIX ."order_statuses
-				where id = ". (int)$order_status_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
 			if ($order_status) {
 				$this->data = array_replace($this->data, array_intersect_key($order_status, $this->data));
 			} else {
-				throw new Exception('Could not find order_status (ID: '. (int)$order_status_id .') in database.');
+				throw new Exception('Could not find order_status (ID: '. (int)$id .') in database.');
 			}
 
 			database::query(

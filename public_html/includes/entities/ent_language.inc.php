@@ -6,7 +6,7 @@
 
 		public function __construct($language_code=null) {
 
-			if (!empty($language_code)) {
+			if ($language_code) {
 				$this->load($language_code);
 			} else {
 				$this->reset();
