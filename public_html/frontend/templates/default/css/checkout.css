@@ -136,8 +136,8 @@
   text-align: left;
   transition: all 0.25s ease;
 }
-#box-checkout-shipping .option:not(:has(input[name$="_option[id]"]:checked)):not(:has(input[name$="_option[id]"][disabled])):hover,
-#box-checkout-payment .option:not(:has(input[name$="_option[id]"]:checked)):not(:has(input[name$="_option[id]"][disabled])):hover {
+#box-checkout-shipping .option:hover:not(:has(input[name$="_option[id]"]:checked)):not(:has(input[name$="_option[id]"][disabled])),
+#box-checkout-payment .option:hover:not(:has(input[name$="_option[id]"]:checked)):not(:has(input[name$="_option[id]"][disabled])) {
   cursor: pointer;
   backdrop-filter: brightness(0.9);
 }
@@ -146,6 +146,10 @@
   cursor: default;
   background: #d3d3e1;
   border-color: #333;
+}
+#box-checkout-shipping .option:has(input[name$="_option[id]"]:checked) .thumbnail,
+#box-checkout-payment .option:has(input[name$="_option[id]"]:checked) .thumbnail {
+  padding: 0.5em;
 }
 #box-checkout-shipping .option:has(input[name$="_option[id]"]:checked) .name,
 #box-checkout-payment .option:has(input[name$="_option[id]"]:checked) .name {

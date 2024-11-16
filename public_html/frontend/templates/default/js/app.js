@@ -1,3 +1,10 @@
+/*!
+ * LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built without nonsense.
+ * @link https://www.litecart.net/
+ * @license CC-BY-ND-4.0
+ * @author T. Almroth
+ */
+
 	// Stylesheet Loader
 	$.loadStylesheet = function(url, options) {
 
@@ -72,19 +79,19 @@
 		return false;
 	});
 
-/* ========================================================================
+
+/*
  * Bootstrap: carousel.js v3.4.1
  * https://getbootstrap.com/docs/3.4/javascript/#carousel
- * ========================================================================
+ *
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
+ */
 
 +function ($) {
 	'use strict';
 
-		// CAROUSEL CLASS DEFINITION
-		// =========================
+	// CAROUSEL CLASS DEFINITION
 
 	let Carousel = function (element, options) {
 		this.$element    = $(element)
@@ -244,8 +251,7 @@
 		return this
 	}
 
-		// CAROUSEL PLUGIN DEFINITION
-		// ==========================
+	// CAROUSEL PLUGIN DEFINITION
 
 	function Plugin(option) {
 		return this.each(function () {
@@ -266,26 +272,24 @@
 	$.fn.carousel             = Plugin
 	$.fn.carousel.Constructor = Carousel
 
-		// CAROUSEL NO CONFLICT
-		// ====================
+	// CAROUSEL NO CONFLICT
 
 	$.fn.carousel.noConflict = function () {
 		$.fn.carousel = old
 		return this
 	}
 
-		// CAROUSEL DATA-API
-		// =================
+	// CAROUSEL DATA-API
 
 	let clickHandler = function (e) {
 		let href
 		let $this   = $(this)
 		let $target = $($this.attr('data-target') || $this.closest('.carousel'))
 		if (!$target.hasClass('carousel')) return
-		
+
 		let options = $.extend({}, $target.data(), $this.data())
 		let slideIndex = $this.attr('data-slide-to')
-		
+
 		if (slideIndex) options.interval = false
 
 		Plugin.call($target, options)
@@ -342,7 +346,7 @@
 				height: $target.innerHeight(),
 				borderRadius: 0
 			}, {
-				duration: '1000ms',
+				duration: 1000,
 				easing: 'easeOutCubic'
 			})
 			.animate({
@@ -465,19 +469,19 @@
 		let timerCart = setInterval('updateCart()', 60e3); // Keeps session alive
 	}
 
-/* ========================================================================
+
+/*
  * Bootstrap: dropdown.js v3.4.1
  * https://getbootstrap.com/docs/3.4/javascript/#dropdowns
- * ========================================================================
+ *
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
+ */
 
 +function ($) {
 	'use strict';
 
-		// DROPDOWN CLASS DEFINITION
-		// =========================
+	// DROPDOWN CLASS DEFINITION
 
 	let backdrop = '.dropdown-backdrop'
 	let toggle   = '[data-toggle="dropdown"]'
@@ -532,7 +536,7 @@
 
 		if (!isActive) {
 			if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
-					// if mobile we use a backdrop because click events don't delegate
+				// if mobile we use a backdrop because click events don't delegate
 				$(document.createElement('div'))
 					.addClass('dropdown-backdrop')
 					.insertAfter($parent)
@@ -586,8 +590,7 @@
 		$items.eq(index).trigger('focus')
 	}
 
-		// DROPDOWN PLUGIN DEFINITION
-		// ==========================
+	// DROPDOWN PLUGIN DEFINITION
 
 	function Plugin(option) {
 		return this.each(function () {
@@ -604,16 +607,14 @@
 	$.fn.dropdown             = Plugin
 	$.fn.dropdown.Constructor = Dropdown
 
-		// DROPDOWN NO CONFLICT
-		// ====================
+	// DROPDOWN NO CONFLICT
 
 	$.fn.dropdown.noConflict = function () {
 		$.fn.dropdown = old
 		return this
 	}
 
-		// APPLY TO STANDARD DROPDOWN ELEMENTS
-		// ===================================
+	// APPLY TO STANDARD DROPDOWN ELEMENTS
 
 	$(document)
 		.on('click.bs.dropdown.data-api', clearMenus)
@@ -623,7 +624,6 @@
 		.on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
 
 }(jQuery);
-
 
 	// Dropdown Select
 	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
@@ -651,6 +651,7 @@
 		if ($(e.target).is('th')) return;
 		$(this).find(':checkbox').trigger('click');
 	});
+
 
 /*
  * Momentum Scroll
@@ -787,6 +788,7 @@
 
 }(jQuery);
 
+
 	// Alerts
 	$('body').on('click', '.alert .close', function(e){
 		e.preventDefault();
@@ -794,6 +796,7 @@
 			$(this).remove()
 		});
 	});
+
 
 	// Password Strength
 	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function(){
@@ -819,6 +822,7 @@
 
 		$(this).after(meter);
 	});
+
 
 /*
  * jQuery Placeholders
@@ -866,6 +870,7 @@
 	});
 }(jQuery);
 
+
 	// Number Formatting
   Number.prototype.toText = function(decimals = 0) {
     var n = this,
@@ -895,6 +900,7 @@
 
 		return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x;
 	}
+
 
 	// AJAX Search
 	$('.navbar-search :input').on('focus', function(){
@@ -951,6 +957,7 @@
 		});
 	}).trigger('input');
 
+
 	// Data-Table Toggle Checkboxes
 $('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
 	$(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
@@ -961,9 +968,10 @@ $('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table
 
 $('body').on('click', '.data-table tbody tr', function(e) {
 	if ($(e.target).is('a') || $(e.target).closest('a').length) return;
-	if ($(e.target).is('.btn, :input, th, .fa-star, .fa-star-o')) return;
+	if ($(e.target).is('.btn, :input, th, .icon-star, .icon-star-o')) return;
 	$(this).find(':checkbox, :radio').first().trigger('click');
 });
+
 	// Bootstrap Compatible (data-toggle="tab")
 	$('body').on('click', '[data-toggle="tab"]', function(e) {
 		e.preventDefault();
@@ -983,6 +991,7 @@ $('body').on('click', '.data-table tbody tr', function(e) {
 		$('a[href="' + document.location.hash + '"]').trigger('click');
 	}
 
+
 	// Polyfill for easeOutBounce
 	$.extend($.easing, {
 		easeOutBounce: function (x, t, b, c, d) {
@@ -1000,6 +1009,7 @@ $('body').on('click', '.data-table tbody tr', function(e) {
 			return 1 - Math.pow( 1 - x, 3 );
 		},
 	});
+
 
 $('.listing .product button[name="add_to_wishlist"]').on('click', function(e) {
 

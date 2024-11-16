@@ -1663,6 +1663,32 @@ ul.list-inline {
 ul.list-inline li {
   flex: 0 1 auto;
 }
+.loader {
+  display: inline-block;
+  background: url('../../images/loader.svg');
+  background-size: cover;
+}
+.strikethrough-divider {
+  align-items: center;
+  color: #7e8999;
+  display: flex;
+  font-size: 12px;
+  justify-content: center;
+  margin: 2em 0;
+  width: 100%;
+}
+.strikethrough-divider:before {
+  margin-right: 1em;
+}
+.strikethrough-divider:after {
+  margin-left: 1em;
+}
+.strikethrough-divider:after,
+.strikethrough-divider:before {
+  flex: 1;
+  border-top: 1px solid #d3dce2;
+  content: "";
+}
 /* Nav (Tabs, Pills) - Bootstrap Compatible */
 .nav {
   display: flex;

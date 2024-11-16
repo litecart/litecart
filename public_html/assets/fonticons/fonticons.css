@@ -1,33 +1,32 @@
 @font-face {
-  font-family: 'Fonticons';
-  src: url('fonticons.woff2') format('woff2'),
-  font-weight: normal;
-  font-style: normal;
+	font-family: 'Fonticons';
+	src: url('fonticons.woff2') format('woff2');
+	font-display: swap;
+	font-weight: normal;
+	font-style: normal;
 	unicode-range: U+e000-U+e0a1;
 }
 
 [class^="icon-"]:before, [class*=" icon-"]:before {
 	font-family: "Fonticons";
-	font-display: swap;
-  font-style: normal;
-  font-weight: normal;
 
-  display: inline-block;
-  width: 1em;
+	font-style: normal;
+	font-weight: normal;
 
-  text-align: center;
+	display: inline-block;
+	width: 1em;
 
-  /* For safety - reset parent styles, that can break glyph codes*/
-  font-variant: normal;
-  text-transform: none;
+	text-align: center;
+
+	/* For safety - reset parent styles, that can break glyph codes*/
+	font-variant: normal;
+	text-transform: none;
 
 	text-rendering: auto;
 
-  /* Font smoothing. */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  speak: never;
+	/* Font smoothing. */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 .icon-wrench:before { content: "\e000"; }

@@ -85,6 +85,7 @@
 		});
 	}, 60e3);
 
+
 /*
  * jQuery Category Picker
  * by LiteCart
@@ -250,6 +251,7 @@
 
 }();
 
+
 /*
  * jQuery Context Menu
  * by LiteCart
@@ -271,89 +273,89 @@
 
 }();
 
-// Dragmove
 
-$('style').first().append([
-	'.dragmove-horizontal {',
-	'  cursor: e-resize;',
-	'  user-select: none;',
-	'}',
-	'.dragmove-vertical {',
-	'  cursor: n-resize;',
-	'  user-select: none;',
-	'}',
-	'.dragmove-vertical.grabbed,',
-	'.dragmove-horizontal.grabbed	{',
-	'  user-input: unset;',
-	'  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);',
-	'}',
-].join('\n'));
+	// Dragmove
 
-$('body').on('click', '.dragmove', function(e){
-	e.preventDefault();
-	return false;
-});
+	$('style').first().append([
+		'.dragmove-horizontal {',
+		'  cursor: e-resize;',
+		'  user-select: none;',
+		'}',
+		'.dragmove-vertical {',
+		'  cursor: n-resize;',
+		'  user-select: none;',
+		'}',
+		'.dragmove-vertical.grabbed,',
+		'.dragmove-horizontal.grabbed	{',
+		'  user-input: unset;',
+		'  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);',
+		'}',
+	].join('\n'));
 
-$('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e){
+	$('body').on('click', '.dragmove', function(e){
+		e.preventDefault();
+		return false;
+	});
 
-	let $item = $(e.target).closest('.dragmove'),
-		sy = e.pageY,
-		drag;
+	$('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e){
 
-	if ($(e.target).is('.dragmove')) {
-		$item = $(e.target);
-	}
+		let $item = $(e.target).closest('.dragmove'),
+			sy = e.pageY,
+			drag;
 
-	let index = $item.index();
-
-	$item.addClass('grabbed');
-	$item.closest('tbody').css('user-input', 'unset');
-
-	function move(e) {
-
-		if (!drag && Math.abs(e.pageY - sy) < 10) return;
-		drag = true;
-
-		$item.siblings().each(function() {
-
-			let s = $(this), i = s.index(), y = s.offset().top;
-
-			if (e.pageY >= y && e.pageY < y + s.outerHeight()) {
-				if (i < $item.index()) s.insertAfter($item);
-				else s.insertBefore($item);
-				return false;
-			}
-		});
-	}
-
-	function up(e) {
-
-		if (drag && index != $item.index()) {
-			drag = false;
+		if ($(e.target).is('.dragmove')) {
+			$item = $(e.target);
 		}
 
-		$(document).off('mousemove', move).off('mouseup', up);
-		$item.removeClass('grabbed');
-		$item.closest('tbody').css('user-input', '');
-	}
+		let index = $item.index();
 
-	$(document).mousemove(move).mouseup(up);
-});
+		$item.addClass('grabbed');
+		$item.closest('tbody').css('user-input', 'unset');
+
+		function move(e) {
+
+			if (!drag && Math.abs(e.pageY - sy) < 10) return;
+			drag = true;
+
+			$item.siblings().each(function() {
+
+				let s = $(this), i = s.index(), y = s.offset().top;
+
+				if (e.pageY >= y && e.pageY < y + s.outerHeight()) {
+					if (i < $item.index()) s.insertAfter($item);
+					else s.insertBefore($item);
+					return false;
+				}
+			});
+		}
+
+		function up(e) {
+
+			if (drag && index != $item.index()) {
+				drag = false;
+			}
+
+			$(document).off('mousemove', move).off('mouseup', up);
+			$item.removeClass('grabbed');
+			$item.closest('tbody').css('user-input', '');
+		}
+
+		$(document).mousemove(move).mouseup(up);
+	});
 
 
-/* ========================================================================
+/*
  * Bootstrap: dropdown.js v3.4.1
  * https://getbootstrap.com/docs/3.4/javascript/#dropdowns
- * ========================================================================
+ *
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
+ */
 
 +function () {
 	'use strict';
 
-		// DROPDOWN CLASS DEFINITION
-		// =========================
+	// DROPDOWN CLASS DEFINITION
 
 	var backdrop = '.dropdown-backdrop'
 	var toggle   = '[data-toggle="dropdown"]'
@@ -409,7 +411,7 @@ $('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e
 
 		if (!isActive) {
 			if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
-					// if mobile we use a backdrop because click events don't delegate
+				// if mobile we use a backdrop because click events don't delegate
 				$(document.createElement('div'))
 					.addClass('dropdown-backdrop')
 					.insertAfter($parent)
@@ -465,9 +467,7 @@ $('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e
 		$items.eq(index).trigger('focus')
 	}
 
-
-		// DROPDOWN PLUGIN DEFINITION
-		// ==========================
+	// DROPDOWN PLUGIN DEFINITION
 
 	function Plugin(option) {
 		return this.each(function () {
@@ -484,18 +484,14 @@ $('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e
 	$.fn.dropdown             = Plugin
 	$.fn.dropdown.Constructor = Dropdown
 
-
-		// DROPDOWN NO CONFLICT
-		// ====================
+	// DROPDOWN NO CONFLICT
 
 	$.fn.dropdown.noConflict = function () {
 		$.fn.dropdown = old
 		return this
 	}
 
-
-		// APPLY TO STANDARD DROPDOWN ELEMENTS
-		// ===================================
+	// APPLY TO STANDARD DROPDOWN ELEMENTS
 
 	$(document)
 		.on('click.bs.dropdown.data-api', clearMenus)
@@ -506,6 +502,40 @@ $('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e
 
 }();
 
+	// Form required asterix
+	$(':input[required]').closest('.form-group').addClass('required');
+
+	// Dropdown select
+	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
+		let $dropdown = $(this).closest('.dropdown');
+		let $input = $dropdown.find(':input:checked');
+
+		if (!$dropdown.find(':input:checked').length) return;
+
+		$dropdown.find('li.active').removeClass('active');
+
+		if ($input.data('title')) {
+			$dropdown.find('.form-select').text( $input.data('title') );
+		} else if ($input.closest('.option').find('.title').length) {
+			$dropdown.find('.form-select').text( $input.closest('.option').find('.title').text() );
+		} else {
+			$dropdown.find('.form-select').text( $input.parent().text() );
+		}
+
+		$input.closest('li').addClass('active');
+		$dropdown.trigger('click.bs.dropdown');
+
+	}).trigger('input');
+
+	// Input Number Decimals
+	$('body').on('change', 'input[type="number"][data-decimals]', function(){
+		 var value = parseFloat($(this).val()),
+			 decimals = $(this).data('decimals');
+		if (decimals != '') {
+			$(this).val(value.toFixed(decimals));
+		}
+	});
+
 
 	$('textarea[data-toggle="csv"] + table').on('click', '.remove', function(e) {
 		e.preventDefault();
@@ -515,7 +545,7 @@ $('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e
 	});
 
 	$('textarea[data-toggle="csv"] + table .add-row').on('click', function(e) {
-	 e.preventDefault();
+		e.preventDefault();
 		var n = $(this).closest('table').find('thead th:not(:last-child)').length;
 		$(this).closest('table').find('tbody').append(
 			'<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class="remove" href="#"><i class="fa fa-times" style="color: #d33;"></i></a></td>' +'</tr>'
@@ -523,7 +553,7 @@ $('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e
 	});
 
 	$('textarea[data-toggle="csv"] + table .add-column').on('click', function(e) {
-	 e.preventDefault();
+		e.preventDefault();
 		var table = $(this).closest('table');
 		var title = prompt("Column Title");
 		if (!title) return;
@@ -548,7 +578,7 @@ $('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e
 	});
 
 
-/* Form Input Tags */
+	/* Form Input Tags */
 
 	$('input[data-toggle="tags"]').each(function() {
 
@@ -590,11 +620,11 @@ $('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e
 				return value != input;
 			});
 
-		 $('.tag .value', $tagField).each(function(){
-			 if ($(this).text() == input) {
-				 $(this).parent('.tag').remove();
-			 }
-		 })
+			$('.tag .value', $tagField).each(function(){
+				if ($(this).text() == input) {
+					$(this).parent('.tag').remove();
+				}
+			})
 
 			$tagField.trigger('change');
 		};
@@ -631,39 +661,6 @@ $('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e
 		$(this).hide().after($tagField);
 	});
 
-	// Form required asterix
-	$(':input[required]').closest('.form-group').addClass('required');
-
-	// Dropdown select
-	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
-		let $dropdown = $(this).closest('.dropdown');
-		let $input = $dropdown.find(':input:checked');
-
-		if (!$dropdown.find(':input:checked').length) return;
-
-		$dropdown.find('li.active').removeClass('active');
-
-		if ($input.data('title')) {
-			$dropdown.find('.form-select').text( $input.data('title') );
-		} else if ($input.closest('.option').find('.title').length) {
-			$dropdown.find('.form-select').text( $input.closest('.option').find('.title').text() );
-		} else {
-			$dropdown.find('.form-select').text( $input.parent().text() );
-		}
-
-		$input.closest('li').addClass('active');
-		$dropdown.trigger('click.bs.dropdown');
-
-	}).trigger('input');
-
-	// Input Number Decimals
-	$('body').on('change', 'input[type="number"][data-decimals]', function(){
-		 var value = parseFloat($(this).val()),
-			 decimals = $(this).data('decimals');
-		if (decimals != '') {
-			$(this).val(value.toFixed(decimals));
-		}
-	});
 
 // Alerts
 $('body').on('click', '.alert .close', function(e){
@@ -672,6 +669,7 @@ $('body').on('click', '.alert .close', function(e){
 		$(this).remove()
 	});
 });
+
 
 // Filter
 $('#sidebar input[name="filter"]').on({
@@ -805,7 +803,8 @@ $('#search input[name="query"]').on({
 	}
 });
 
-	// Tabs (data-toggle="tab")
+
+// Tabs (data-toggle="tab")
 +function($) {
 	'use strict';
 	$.fn.Tabs = function(){
@@ -856,49 +855,50 @@ $('#search input[name="query"]').on({
 	});
 }(jQuery);
 
-// Data-Table Toggle Checkboxes
-$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
-	$(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
-		$(this).prop('checked', !$(this).prop('checked')).trigger('change');
+
+	// Data-Table Toggle Checkboxes
+	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
+		$(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
+			$(this).prop('checked', !$(this).prop('checked')).trigger('change');
+		});
+		return false;
 	});
-	return false;
-});
 
-$('body').on('click', '.data-table tbody tr', function(e) {
-	if ($(e.target).is('a') || $(e.target).closest('a').length) return;
-	if ($(e.target).is('.btn, :input, th, .fa-star, .fa-star-o')) return;
-	$(this).find(':checkbox, :radio').first().trigger('click');
-});
+	$('body').on('click', '.data-table tbody tr', function(e) {
+		if ($(e.target).is('a') || $(e.target).closest('a').length) return;
+		if ($(e.target).is('.btn, :input, th, .icon-star, .icon-star-o')) return;
+		$(this).find(':checkbox, :radio').first().trigger('click');
+	});
 
-// Data-Table Shift Check Multiple Checkboxes
-let lastTickedCheckbox = null;
-$('.data-table td:first-child :checkbox').on('click', function(e){
+	// Data-Table Shift Check Multiple Checkboxes
+	let lastTickedCheckbox = null;
+	$('.data-table td:first-child :checkbox').on('click', function(e){
 
-	let $chkboxes = $('.data-table td:first-child :checkbox');
+		let $chkboxes = $('.data-table td:first-child :checkbox');
 
-	if (!lastTickedCheckbox) {
+		if (!lastTickedCheckbox) {
+			lastTickedCheckbox = this;
+			return;
+		}
+
+		if (e.shiftKey) {
+			let start = $chkboxes.index(this);
+			let end = $chkboxes.index(lastTickedCheckbox);
+			$chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastTickedCheckbox.checked);
+		}
+
 		lastTickedCheckbox = this;
-		return;
-	}
-
-	if (e.shiftKey) {
-		let start = $chkboxes.index(this);
-		let end = $chkboxes.index(lastTickedCheckbox);
-		$chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastTickedCheckbox.checked);
-	}
-
-	lastTickedCheckbox = this;
-});
-
-// Data-Table Sorting (Page Reload)
-$('.table-sortable thead th[data-sort]').on('click', function(){
-	let params = {};
-
-	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
-		params[key] = value;
 	});
 
-	params.sort = $(this).data('sort');
+	// Data-Table Sorting (Page Reload)
+	$('.table-sortable thead th[data-sort]').on('click', function(){
+		let params = {};
 
-	window.location.search = $.param(params);
-});
+		window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
+			params[key] = value;
+		});
+
+		params.sort = $(this).data('sort');
+
+		window.location.search = $.param(params);
+	});

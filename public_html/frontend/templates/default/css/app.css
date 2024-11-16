@@ -387,12 +387,6 @@ body main {
   grid-auto-flow: row;
   grid-template-columns: initial;
 }
-.listing h1,
-.listing h2,
-.listing h3 {
-  padding-bottom: 0;
-  border: none;
-}
 .listing a {
   color: inherit;
   text-decoration: none;
@@ -489,6 +483,7 @@ body main {
 }
 .listing .product .info {
   padding: 1em;
+  padding-top: 0;
 }
 .listing .product .name {
   display: flex;
@@ -551,18 +546,8 @@ body main {
     gap: 0.5em;
   }
 }
-.listing.columns .product .info {
-  display: none;
-  text-align: center;
-}
 .listing.columns .product .short-description {
   display: none;
-  margin: 1rem;
-  font-size: 0.85em;
-}
-.listing.columns .product .price {
-  position: initial;
-  text-align: center;
 }
 .listing.rows .product .link {
   flex-direction: row;
@@ -578,6 +563,10 @@ body main {
 }
 .listing.rows .product .name {
   margin: 0;
+}
+.listing.rows .product .short-description {
+  margin: 1rem;
+  font-size: 0.85em;
 }
 .listing.rows .product .image-wrapper {
   display: inline-block;

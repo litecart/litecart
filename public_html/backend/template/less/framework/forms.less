@@ -198,17 +198,19 @@ html[dir="rtl"] .form-select {
 .form-toggle {
 	display: flex;
   flex-direction: row;
-  padding: .25em 0;
+	padding: 0.25em .5em;
   gap: 1em;
   color: #000;
   border-radius: var(--border-radius);
+	padding: 0.25em .5em;
+	background: var(--input-background-color);
 
 	label {
 		flex: 0 0 auto;
 		display: inline-block;
 		border: 1px solid var(--input-border-color);
 		border-radius: var(--border-radius);
-		padding: .5em 1em;
+		padding: .25em .5em;
 		text-align: center;
 		&:has(:checked) {
 			border-color: #000;

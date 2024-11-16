@@ -30,7 +30,7 @@
 				height: $target.innerHeight(),
 				borderRadius: 0
 			}, {
-				duration: '1000ms',
+				duration: 1000,
 				easing: 'easeOutCubic'
 			})
 			.animate({

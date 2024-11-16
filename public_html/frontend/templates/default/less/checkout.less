@@ -12,7 +12,6 @@
 }
 
 #box-checkout {
-	//background: #eeeef3;
 	padding: 0;
 
 	.logotype {
@@ -153,7 +152,7 @@
 			transition: all 0.25s ease;
 		}
 
-		&:not(:has(input[name$="_option[id]"]:checked)):not(:has(input[name$="_option[id]"][disabled])):hover {
+		&:hover:not(:has(input[name$="_option[id]"]:checked)):not(:has(input[name$="_option[id]"][disabled])) {
 			cursor: pointer;
 			backdrop-filter: brightness(.9);
 		}
@@ -163,6 +162,7 @@
 			background: #d3d3e1;
 			border-color: #333;
 			.thumbnail {
+				padding: .5em;
 			}
 			.name {
 				font-weight: bold;
@@ -201,6 +201,7 @@
 .summary.wrapper {
 	height: 100%;
 }
+
 #box-checkout-summary {
 	.alert {
 		padding: var(--input-padding-y) var(--input-padding-x);
