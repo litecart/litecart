@@ -160,7 +160,7 @@
       }
 
       if (!$cancel_url) {
-      	$cancel_url = (string)document::ilink('checkout');
+        $cancel_url = (string)document::ilink('checkout');
       }
 
       return $this->modules[$module_id]->transfer($order, $success_url, $cancel_url);

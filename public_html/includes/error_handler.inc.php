@@ -89,7 +89,7 @@
       $output[] = 'Platform: '. PLATFORM_NAME .'/'. PLATFORM_VERSION;
 
       error_log(html_entity_decode(strip_tags(
-      	implode(PHP_EOL, $output))) . PHP_EOL
+        implode(PHP_EOL, $output))) . PHP_EOL
       );
     }
 

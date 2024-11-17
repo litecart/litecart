@@ -92,28 +92,28 @@
 
   foreach (glob(FS_DIR_STORAGE . 'vmods/*.{xml,disabled}', GLOB_BRACE) as $file) {
 
-		$dom = new \DOMDocument('1.0', 'UTF-8');
-		$dom->preserveWhiteSpace = false;
+    $dom = new \DOMDocument('1.0', 'UTF-8');
+    $dom->preserveWhiteSpace = false;
 
-		if (!$dom->loadXml(file_get_contents($file))) {
-			throw new Exception(libxml_get_last_error());
-		}
+    if (!$dom->loadXml(file_get_contents($file))) {
+      throw new Exception(libxml_get_last_error());
+    }
 
-		switch ($dom->documentElement->tagName) {
+    switch ($dom->documentElement->tagName) {
 
-			case 'vmod': // vMod
-				$vmod = vmod::parse_vmod($dom, $file);
-				break;
+      case 'vmod': // vMod
+        $vmod = vmod::parse_vmod($dom, $file);
+        break;
 
-			case 'modification': // vQmod
-				$vmod = vmod::parse_vqmod($dom, $file);
-				break;
+      case 'modification': // vQmod
+        $vmod = vmod::parse_vqmod($dom, $file);
+        break;
 
-			default:
-				throw new Exception("File ($file) is not a valid vmod or vQmod");
-		}
+      default:
+        throw new Exception("File ($file) is not a valid vmod or vQmod");
+    }
 
-		$vmod = array_merge($vmod, [
+    $vmod = array_merge($vmod, [
       'id' => pathinfo($file, PATHINFO_FILENAME),
       'filename' => pathinfo($file, PATHINFO_BASENAME),
       'status' => preg_match('#\.xml$#', $file) ? true : false,
@@ -124,7 +124,7 @@
       $vmod['version'] = date('Y-m-d', filemtime($file));
     }
 
-	// Check for errors
+  // Check for errors
     try {
 
       foreach (array_keys($vmod['files']) as $key) {
@@ -178,7 +178,7 @@
       $vmod['errors'] = $e->getMessage();
     }
 
-		$vmods[] = $vmod;
+    $vmods[] = $vmod;
   }
 
 // Number of Rows

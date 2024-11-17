@@ -34,7 +34,7 @@
         'search'  => "// Database tables",
         'replace' => "// Database Tables - Backwards Compatibility (LiteCart <2.3)",
       ],
-	    [
+      [
         'search'  => "// Database tables",
         'replace' => "// Database Tables - Backwards Compatibility (LiteCart <2.3)",
       ],

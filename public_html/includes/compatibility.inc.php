@@ -219,10 +219,10 @@
     ini_set('serialize_precision', -1);
   }
 
-	// Polyfill for glob brace on Alpine
-	if (!defined('GLOB_BRACE')) {
-		define('GLOB_BRACE', 0);
-	}
+  // Polyfill for glob brace on Alpine
+  if (!defined('GLOB_BRACE')) {
+    define('GLOB_BRACE', 0);
+  }
 
 // Emulate getallheaders() on non-Apache machines
   if (!function_exists('getallheaders')) {

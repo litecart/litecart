@@ -405,7 +405,7 @@
 
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label><?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a></label>
+                    <label><?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('fa-question'); ?></a></label>
                     <?php echo functions::form_draw_regional_textarea($language_code, 'technical_data['. $language_code .']', true, 'style="height: 480px;"'); ?>
                   </div>
                 </div>

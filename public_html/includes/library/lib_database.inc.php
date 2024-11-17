@@ -2,10 +2,10 @@
 
   class database {
     private static $_links = [];
-		public static $stats = [
-			'duration' => 0,
-			'queries' => 0,
-		];
+    public static $stats = [
+      'duration' => 0,
+      'queries' => 0,
+    ];
 
     public static function init() {
       event::register('shutdown', [__CLASS__, 'disconnect']);
@@ -209,37 +209,37 @@
       self::$stats['duration'] += $duration;
 
       if ($result instanceof mysqli_result) {
-				return new database_result($result);
+        return new database_result($result);
       }
 
       return $result;
     }
 
-		public static function multi_query($sql, $link='default') {
+    public static function multi_query($sql, $link='default') {
 
-			if (!isset(self::$_links[$link])) {
-				self::connect($link);
-			}
+      if (!isset(self::$_links[$link])) {
+        self::connect($link);
+      }
 
-			$timestamp = microtime(true);
+      $timestamp = microtime(true);
 
-			if (mysqli_multi_query(self::$_links[$link], $sql) === false) {
-				trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL, E_USER_ERROR);
-			}
+      if (mysqli_multi_query(self::$_links[$link], $sql) === false) {
+        trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL, E_USER_ERROR);
+      }
 
-			$results = [];
+      $results = [];
 
-			do {
-				if ($result = mysqli_store_result(self::$_links[$link])) {
-					$results[] = new database_result($result);
-				}
-			} while (mysqli_next_result(self::$_links[$link]));
+      do {
+        if ($result = mysqli_store_result(self::$_links[$link])) {
+          $results[] = new database_result($result);
+        }
+      } while (mysqli_next_result(self::$_links[$link]));
 
-			self::$stats['queries']++;
-			self::$stats['duration'] += microtime(true) - $timestamp;
+      self::$stats['queries']++;
+      self::$stats['duration'] += microtime(true) - $timestamp;
 
-			return $results;
-		}
+      return $results;
+    }
 
     public static function fetch($result, $column='') {
       return $result->fetch($column);
@@ -276,7 +276,7 @@
 
     public static function create_variable($field, $value=null) {
 
-			if (!$field) {
+      if (!$field) {
         return null;
       }
 
@@ -323,9 +323,9 @@
         return $input;
       }
 
-			if ($input == '') {
-				return '';
-			}
+      if ($input == '') {
+        return '';
+      }
 
       if (in_array(gettype($input), ['null', 'boolean', 'double', 'integer', 'float'])) {
         return $input;
@@ -352,23 +352,23 @@
       return mysqli_real_escape_string(self::$_links[$link], $input);
     }
 
-		public static function input_fulltext($input, $allowable_tags=false, $trim=true, $link='default') {
+    public static function input_fulltext($input, $allowable_tags=false, $trim=true, $link='default') {
       $input = self::input($input, $allowable_tags, $trim, $link);
-			$input = preg_replace('#[+\-<>\(\)~*\"@; ]+#', ' ', $input);
-			return $input;
+      $input = preg_replace('#[+\-<>\(\)~*\"@; ]+#', ' ', $input);
+      return $input;
     }
 
-		public static function input_like($input, $allowable_tags=false, $trim=true, $link='default') {
+    public static function input_like($input, $allowable_tags=false, $trim=true, $link='default') {
       $input = self::input($input, $allowable_tags, $trim, $link);
-			$input = addcslashes($input, '%_');
-			return $input;
+      $input = addcslashes($input, '%_');
+      return $input;
     }
   }
 
   class database_result {
     private $_result;
 
-		public function __construct(mysqli_result $result) {
+    public function __construct(mysqli_result $result) {
       $this->_result = $result;
     }
 
@@ -389,7 +389,7 @@
     }
 
     public function fields() {
-			$fields = array_column(mysqli_fetch_fields($this->_result), 'name');
+      $fields = array_column(mysqli_fetch_fields($this->_result), 'name');
       return $fields;
     }
 
@@ -416,22 +416,22 @@
 
           case 'object':
             $result = call_user_func_array($filter, [&$row]);
-						if ($result === null) { // Was no result returned?
-							$result = $row;
-						}
+            if ($result === null) { // Was no result returned?
+              $result = $row;
+            }
             break;
 
           default:
             $row = false;
-						break;
+            break;
         }
-			} else {
-				$result = $row;
+      } else {
+        $result = $row;
       }
 
       database::$stats['duration'] += microtime(true) - $timestamp;
 
-			return $result;
+      return $result;
     }
 
     public function fetch_all($filter=null, $index_column=null) {
@@ -462,34 +462,34 @@
 
               case 'object':
                 $result = call_user_func_array($filter, [&$row]);
-								if ($result === null) { // Was no result returned?
-									$result = $row;
-								}
+                if ($result === null) { // Was no result returned?
+                  $result = $row;
+                }
                 break;
 
               default:
                 $result = false;
             }
 
-					} else {
-						$result = $row;
+          } else {
+            $result = $row;
           }
 
           if (empty($result) && !is_numeric($result)) {
-						continue;
-					}
+            continue;
+          }
 
           if ($index_column) {
 
-						if (isset($row[$index_column])) {
-							$rows[$row[$index_column]] = $result;
+            if (isset($row[$index_column])) {
+              $rows[$row[$index_column]] = $result;
           } else {
-							trigger_error('Index column not found in row ('. $index_column .')', E_USER_WARNING);
-							$rows[] = false;
-						}
+              trigger_error('Index column not found in row ('. $index_column .')', E_USER_WARNING);
+              $rows[] = false;
+            }
 
-					} else {
-						$rows[] = $result;
+          } else {
+            $rows[] = $result;
           }
         }
 
@@ -506,36 +506,36 @@
 
       $timestamp = microtime(true);
 
-			if (!is_numeric($page) || $page < 1) {
-				$page = 1;
-			}
+      if (!is_numeric($page) || $page < 1) {
+        $page = 1;
+      }
 
       if (!$items_per_page) {
         $items_per_page = settings::get('data_table_rows_per_page');
       }
 
-			$rows = [];
+      $rows = [];
       $num_rows = mysqli_num_rows($this->_result);
       $num_pages = ceil($num_rows / $items_per_page);
-			$pointer = (((int)$_GET['page']) -1) * $items_per_page;
+      $pointer = (((int)$_GET['page']) -1) * $items_per_page;
 
-			if ($pointer < $num_rows) {
+      if ($pointer < $num_rows) {
 
-				mysqli_data_seek($this->_result, $pointer);
+        mysqli_data_seek($this->_result, $pointer);
 
-				for ($i=0; $i < $items_per_page; $i++) {
+        for ($i=0; $i < $items_per_page; $i++) {
 
-					$row = $this->fetch($filter, $index_column);
-					$pointer++;
+          $row = $this->fetch($filter, $index_column);
+          $pointer++;
 
-					if (!empty($row) || !is_numeric($row)) {
+          if (!empty($row) || !is_numeric($row)) {
         $rows[] = $row;
-					}
+          }
 
-					if ($pointer == $num_rows) {
-						break; // We reached the end of the result set
-					}
-				}
+          if ($pointer == $num_rows) {
+            break; // We reached the end of the result set
+          }
+        }
       }
 
       database::$stats['duration'] += microtime(true) - $timestamp;
