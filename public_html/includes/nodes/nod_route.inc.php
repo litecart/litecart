@@ -65,7 +65,7 @@
 				$route['patterns'] = [$route['pattern']];
 			}
 
-			self::$_routes[$resource] = [
+			self::$_routes[] = [
 				'resource' => $resource,
 				'patterns' => fallback($route['patterns'], ''),
 				'endpoint' => fallback($route['endpoint'], 'frontend'),

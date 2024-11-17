@@ -231,11 +231,14 @@
 
 					if (!$found) {
 						switch ($operation['onerror']) {
+
 							case 'abort':
 								trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $original_file: Search not found [ABORTED]", E_USER_WARNING);
 								continue 3;
+
 							case 'ignore':
 								continue 2;
+
 							case 'warning':
 							default:
 								trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $original_file: Search not found", E_USER_WARNING);

@@ -2181,7 +2181,6 @@
 
 		document::$javascript[] = implode(PHP_EOL, [
 			'window._callback_'.$uid.' = function(item){',
-			' console.log(item);',
 			'  let $input = $(\'#input-'.$uid.'\');',
 			'  var $item = $(\'<div class="item"></div>\').attr("data-id", item.id).html(item.name +\' &mdash; \'+ item.sku +\' [\'+ item.quantity +\']\').append(\'<button class="btn btn-default btn-sm" class="float-end">x</span>\');',
 			'  $input.find(\'.stock-items\').append($item);',

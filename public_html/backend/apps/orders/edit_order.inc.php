@@ -492,10 +492,7 @@
 
 						<div class="form-group col-md-3">
 							<label><?php echo language::translate('title_tax_display', 'Tax Display'); ?></label>
-							<div class="btn-group btn-block" data-toggle="buttons">
-								<label class="btn btn-default<?php if (!empty($_POST['display_prices_including_tax'])) echo ' active'; ?>"><input type="radio" name="display_prices_including_tax" value="1"<?php if (!empty($_POST['display_prices_including_tax'])) echo ' checked'; ?>><?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
-								<label class="btn btn-default<?php if (empty($_POST['display_prices_including_tax'])) echo ' active'; ?>"><input type="radio" name="display_prices_including_tax" value="0"<?php if (empty($_POST['display_prices_including_tax'])) echo ' checked'; ?>><?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
-							</div>
+							<?php echo functions::form_toggle('display_prices_including_tax', ['1' => language::translate('title_incl_tax', 'Incl. Tax'), '0' => language::translate('title_excl_tax', 'Excl. Tax')], true); ?>
 						</div>
 
 						<div class="form-group col-md-3">
