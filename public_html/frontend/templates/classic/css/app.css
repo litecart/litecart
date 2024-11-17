@@ -318,14 +318,19 @@ body.scrolling-down #site-navigation {
   max-height: 200px;
   overflow-y: auto;
 }
+#box-filter .tokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 #box-filter .tokens:not(:empty) {
   padding-top: var(--gutter-y);
 }
 #box-filter .tokens .token {
+  display: inline-block;
   padding: 0.5em 1em;
   border-radius: var(--border-radius);
   cursor: default;
-  margin-inline-end: 0.5em;
 }
 #box-filter .tokens .token[data-group="name"] {
   background: #cbe2b6;
@@ -391,7 +396,7 @@ body.scrolling-down #site-navigation {
 }
 .listing {
   display: grid;
-  grid-gap: calc(var(--gutter-x)/2);
+  grid-gap: var(--gutter-x);
 }
 @media (min-width: 768px) {
   .listing {

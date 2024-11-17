@@ -149,10 +149,10 @@
 	$language_codes = array_unique(array_merge([language::$selected['code']], [settings::get('store_language_code')], array_keys(language::$languages)));
 	$currency_codes = array_unique(array_merge([currency::$selected['code']], [settings::get('store_currency_code')], array_keys(currency::$currencies)));
 
-  $customizations_sort_options = [
-    [language::translate('title_list_order', 'List Order'), 'priority'],
-    [language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'],
-  ];
+	$customizations_sort_options = [
+		[language::translate('title_list_order', 'List Order'), 'priority'],
+		[language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'],
+	];
 
 	functions::draw_lightbox();
 ?>
@@ -712,7 +712,7 @@
 						</div>
 					</div>
 
-          <h3><?php echo language::translate('title_stock_options', 'Stock Options'); ?></h3>
+					<h3><?php echo language::translate('title_stock_options', 'Stock Options'); ?></h3>
 
 					<div style="margin: 0 -2em;">
 						<table id="stock-options" class="table table-striped table-hover data-table">
@@ -734,61 +734,61 @@
 
 							<tbody>
 								<?php if (!empty($_POST['stock_options'])) foreach ($_POST['stock_options'] as $key => $stock_option) { ?>
-              <tr data-stock-item-id="<?php echo $stock_option['stock_item_id']; ?>">
-                <td class="grabable">
-                  <?php echo functions::form_input_hidden('stock_options['.$key.'][id]', true); ?>
-                  <?php echo functions::form_input_hidden('stock_options['.$key.'][stock_item_id]', true); ?>
-                  <?php echo functions::form_input_hidden('stock_options['.$key.'][sku]', true); ?>
-                  <?php echo functions::form_input_hidden('stock_options['.$key.'][weight]', true); ?>
-                  <?php echo functions::form_input_hidden('stock_options['.$key.'][weight_unit]', true); ?>
-                  <?php echo functions::form_input_hidden('stock_options['.$key.'][length]', true); ?>
-                  <?php echo functions::form_input_hidden('stock_options['.$key.'][width]', true); ?>
-                  <?php echo functions::form_input_hidden('stock_options['.$key.'][height]', true); ?>
-                  <?php echo functions::form_input_hidden('stock_options['.$key.'][length_unit]', true); ?>
-                  <span class="name"><?php echo $stock_option['name']; ?></span>
-                </td>
-                <td class="grabable">
-                  <span class="sku"><?php echo $_POST['stock_options'][$key]['sku']; ?></span>
-                </td>
-                <td class="grabable text-end">
-                  <span class="weight"><?php echo (float)$_POST['stock_options'][$key]['weight']; ?></span> <span class="weight_unit"><?php echo $_POST['stock_options'][$key]['weight_unit']; ?></span>
-                </td>
-                <td class="grabable text-end">
-                  <span class="length"><?php echo (float)$_POST['stock_options'][$key]['length']; ?></span> x <span class="width"><?php echo (float)$_POST['stock_options'][$key]['width']; ?></span> x <span class="height"><?php echo (float)$_POST['stock_options'][$key]['height']; ?></span> <span class="length_unit"><?php echo $_POST['stock_options'][$key]['length_unit']; ?></span>
-                </td>
-                <td><?php echo functions::form_select('stock_options['.$key.'][price_operator]', ['+', '*', '%', '='], '+'); ?></td>
+							<tr data-stock-item-id="<?php echo $stock_option['stock_item_id']; ?>">
+								<td class="grabable">
+									<?php echo functions::form_input_hidden('stock_options['.$key.'][id]', true); ?>
+									<?php echo functions::form_input_hidden('stock_options['.$key.'][stock_item_id]', true); ?>
+									<?php echo functions::form_input_hidden('stock_options['.$key.'][sku]', true); ?>
+									<?php echo functions::form_input_hidden('stock_options['.$key.'][weight]', true); ?>
+									<?php echo functions::form_input_hidden('stock_options['.$key.'][weight_unit]', true); ?>
+									<?php echo functions::form_input_hidden('stock_options['.$key.'][length]', true); ?>
+									<?php echo functions::form_input_hidden('stock_options['.$key.'][width]', true); ?>
+									<?php echo functions::form_input_hidden('stock_options['.$key.'][height]', true); ?>
+									<?php echo functions::form_input_hidden('stock_options['.$key.'][length_unit]', true); ?>
+									<span class="name"><?php echo $stock_option['name']; ?></span>
+								</td>
+								<td class="grabable">
+									<span class="sku"><?php echo $_POST['stock_options'][$key]['sku']; ?></span>
+								</td>
+								<td class="grabable text-end">
+									<span class="weight"><?php echo (float)$_POST['stock_options'][$key]['weight']; ?></span> <span class="weight_unit"><?php echo $_POST['stock_options'][$key]['weight_unit']; ?></span>
+								</td>
+								<td class="grabable text-end">
+									<span class="length"><?php echo (float)$_POST['stock_options'][$key]['length']; ?></span> x <span class="width"><?php echo (float)$_POST['stock_options'][$key]['width']; ?></span> x <span class="height"><?php echo (float)$_POST['stock_options'][$key]['height']; ?></span> <span class="length_unit"><?php echo $_POST['stock_options'][$key]['length_unit']; ?></span>
+								</td>
+								<td><?php echo functions::form_select('stock_options['.$key.'][price_operator]', ['+', '*', '%', '='], '+'); ?></td>
 									<td>
-                  <div class="dropdown">
-                    <?php echo functions::form_input_money('stock_options['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
-                    <ul class="dropdown-menu">
-                      <?php foreach (currency::$currencies as $currency) { ?>
-                      <?php if ($currency['code'] == settings::get('store_currency_code')) continue; ?>
-                      <li><?php echo functions::form_input_money('stock_options['.$key.'][price]['. $currency['code'] .']', $currency['code'], true, 'style="width: 125px;"'); ?></li>
-                      <?php } ?>
-                    </ul>
+									<div class="dropdown">
+										<?php echo functions::form_input_money('stock_options['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
+										<ul class="dropdown-menu">
+											<?php foreach (currency::$currencies as $currency) { ?>
+											<?php if ($currency['code'] == settings::get('store_currency_code')) continue; ?>
+											<li><?php echo functions::form_input_money('stock_options['.$key.'][price]['. $currency['code'] .']', $currency['code'], true, 'style="width: 125px;"'); ?></li>
+											<?php } ?>
+										</ul>
 										</div>
 									</td>
-                <td><?php echo functions::form_input_decimal('stock_options['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['stock_options'][$key]) ? (float)$product->data['stock_options'][$key]['quantity'] : '0') .'"'); ?></td>
+								<td><?php echo functions::form_input_decimal('stock_options['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['stock_options'][$key]) ? (float)$product->data['stock_options'][$key]['quantity'] : '0') .'"'); ?></td>
 									<td>
 										<div class="input-group">
-                    <span class="input-group-text">&plusmn;</span>
-                    <?php echo functions::form_input_decimal('stock_options['. $key .'][quantity_adjustment]', true); ?>
+										<span class="input-group-text">&plusmn;</span>
+										<?php echo functions::form_input_decimal('stock_options['. $key .'][quantity_adjustment]', true); ?>
 										</div>
 									</td>
 									<td>
 										<div class="input-group">
-                    <?php echo functions::form_button('transfer', functions::draw_fonticon('icon-arrow-left'), 'button'); ?>
-                    <?php echo functions::form_input_decimal('stock_options['. $key .'][backordered]', true, 2, 'min="0"'); ?>
+										<?php echo functions::form_button('transfer', functions::draw_fonticon('icon-arrow-left'), 'button'); ?>
+										<?php echo functions::form_input_decimal('stock_options['. $key .'][backordered]', true, 2, 'min="0"'); ?>
 										</div>
 									</td>
 									<td class="text-end">
-                  <a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
-                  	<?php echo functions::draw_fonticon('icon-times', 'style="color: #c33;"'); ?>
+									<a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
+										<?php echo functions::draw_fonticon('icon-times', 'style="color: #c33;"'); ?>
 										</a>
-                </td>
-                <td class="text-end">
-                  <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_options'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true"data-max-width="980px"  title="<?php echo language::translate('title_edit', 'Edit'); ?>">
-                  	<?php echo functions::draw_fonticon('icon-pencil'); ?>
+								</td>
+								<td class="text-end">
+									<a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_options'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true"data-max-width="980px"  title="<?php echo language::translate('title_edit', 'Edit'); ?>">
+										<?php echo functions::draw_fonticon('icon-pencil'); ?>
 										</a>
 									</td>
 								</tr>
@@ -797,13 +797,13 @@
 
 							<tfoot>
 								<tr>
-	                <td colspan="11">
-	                  <a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="980px">
-	                  	<?php echo functions::draw_fonticon('icon-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?>
-	                  </a>
-	                  <a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="980px">
-	                  	<?php echo functions::draw_fonticon('icon-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_existing_stock_item', 'Add Existing Stock Item'); ?>
-	                  </a>
+									<td colspan="11">
+										<a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="980px">
+											<?php echo functions::draw_fonticon('icon-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?>
+										</a>
+										<a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="980px">
+											<?php echo functions::draw_fonticon('icon-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_existing_stock_item', 'Add Existing Stock Item'); ?>
+										</a>
 									</td>
 								</tr>
 							</tfoot>
@@ -1341,142 +1341,142 @@
 
 // Customizations
 
-  $('#customizations').on('click', '.remove-group', function(e) {
-    e.preventDefault();
-    $(this).closest('li').remove();
-  });
+	$('#customizations').on('click', '.remove-group', function(e) {
+		e.preventDefault();
+		$(this).closest('li').remove();
+	});
 
-  $('#customizations').on('click', '.move-group-up, .move-group-down', function(e) {
-    e.preventDefault();
-    var row = $(this).closest('li');
-    if ($(this).is('.move-group-up') && $(row).prevAll().length > 0) {
-      $(row).insertBefore($(row).prev());
-    } else if ($(this).is('.move-group-down') && $(row).nextAll().length > 0) {
-      $(row).insertAfter($(row).next());
-    }
-  });
+	$('#customizations').on('click', '.move-group-up, .move-group-down', function(e) {
+		e.preventDefault();
+		var row = $(this).closest('li');
+		if ($(this).is('.move-group-up') && $(row).prevAll().length > 0) {
+			$(row).insertBefore($(row).prev());
+		} else if ($(this).is('.move-group-down') && $(row).nextAll().length > 0) {
+			$(row).insertAfter($(row).next());
+		}
+	});
 
-  $('#customizations').on('click', 'button[name="remove"]', function(e) {
-    e.preventDefault();
-    $(this).closest('tr').remove();
-  });
+	$('#customizations').on('click', 'button[name="remove"]', function(e) {
+		e.preventDefault();
+		$(this).closest('tr').remove();
+	});
 
-  $('#customizations').on('click', 'button[name="move-up"], button[name="move-down"]', function(e) {
+	$('#customizations').on('click', 'button[name="move-up"], button[name="move-down"]', function(e) {
 
-    e.preventDefault();
+		e.preventDefault();
 
-    var $row = $(this).closest('tr');
+		var $row = $(this).closest('tr');
 
-    if ($(this).is('.move-up') && $row.prevAll().length > 0) {
-      $row.insertBefore($row.prev());
-    } else if ($(this).is('.move-down') && $row.nextAll().length > 0) {
-      $row.insertAfter($row.next());
-    }
-  });
+		if ($(this).is('.move-up') && $row.prevAll().length > 0) {
+			$row.insertBefore($row.prev());
+		} else if ($(this).is('.move-down') && $row.nextAll().length > 0) {
+			$row.insertAfter($row.next());
+		}
+	});
 
-  $('body').on('change', '.featherlight select[name="new_predefined_customization[group_id]"]', function(){
-    $.ajax({
-      url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + $(this).val(),
-      type: 'get',
-      cache: true,
-      async: true,
-      dataType: 'json',
-      error: function(jqXHR, textStatus, errorThrown) {
-        alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
-      },
-      success: function(data) {
-        $('select[name="new_predefined_customization[value_id]"]').html('');
-        if ($('select[name="new_predefined_customization[value_id]"]').attr('disabled')) $('select[name="new_predefined_customization[value_id]"]').prop('disabled', false);
-        if (data) {
-          $('select[name="new_predefined_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
-          $.each(data, function(i, zone) {
-            $('select[name="new_predefined_customization[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
-          });
-        } else {
-          $('select[name="new_predefined_customization[value_id]"]').prop('disabled', true);
-        }
-      },
-    });
-  });
+	$('body').on('change', '.featherlight select[name="new_predefined_customization[group_id]"]', function(){
+		$.ajax({
+			url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + $(this).val(),
+			type: 'get',
+			cache: true,
+			async: true,
+			dataType: 'json',
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+			},
+			success: function(data) {
+				$('select[name="new_predefined_customization[value_id]"]').html('');
+				if ($('select[name="new_predefined_customization[value_id]"]').attr('disabled')) $('select[name="new_predefined_customization[value_id]"]').prop('disabled', false);
+				if (data) {
+					$('select[name="new_predefined_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
+					$.each(data, function(i, zone) {
+						$('select[name="new_predefined_customization[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
+					});
+				} else {
+					$('select[name="new_predefined_customization[value_id]"]').prop('disabled', true);
+				}
+			},
+		});
+	});
 
-  $('body').on('change', '.featherlight select[name="new_user_input_customization[group_id]"]', function(){
-    $.ajax({
-      url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + $(this).val(),
-      type: 'get',
-      cache: true,
-      async: true,
-      dataType: 'json',
-      error: function(jqXHR, textStatus, errorThrown) {
-        alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
-      },
-      success: function(data) {
-        $('select[name="new_user_input_customization[value_id]"]').html('');
-        if ($('select[name="new_user_input_customization[value_id]"]').attr('disabled')) $('select[name="new_user_input_customization[value_id]"]').prop('disabled', false);
-        if (data) {
-          $('select[name="new_user_input_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
-          $.each(data, function(i, zone) {
-            $('select[name="new_user_input_customization[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
-          });
-        } else {
-          $('select[name="new_user_input_customization[value_id]"]').prop('disabled', true);
-        }
-      },
-    });
-  });
+	$('body').on('change', '.featherlight select[name="new_user_input_customization[group_id]"]', function(){
+		$.ajax({
+			url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + $(this).val(),
+			type: 'get',
+			cache: true,
+			async: true,
+			dataType: 'json',
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+			},
+			success: function(data) {
+				$('select[name="new_user_input_customization[value_id]"]').html('');
+				if ($('select[name="new_user_input_customization[value_id]"]').attr('disabled')) $('select[name="new_user_input_customization[value_id]"]').prop('disabled', false);
+				if (data) {
+					$('select[name="new_user_input_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
+					$.each(data, function(i, zone) {
+						$('select[name="new_user_input_customization[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
+					});
+				} else {
+					$('select[name="new_user_input_customization[value_id]"]').prop('disabled', true);
+				}
+			},
+		});
+	});
 
-  $('body').on('change', '.featherlight select[name="new_predefined_customization[value_id]"]', function(){
-    $('input[name="new_predefined_customization[custom_value]"]').val('');
-  });
+	$('body').on('change', '.featherlight select[name="new_predefined_customization[value_id]"]', function(){
+		$('input[name="new_predefined_customization[custom_value]"]').val('');
+	});
 
-  $('body').on('keydown', '.featherlight input[name="new_predefined_customization[custom_value]"]', function(){
-    $('select[name="new_predefined_customization[value_id]"]').val('0');
-  });
+	$('body').on('keydown', '.featherlight input[name="new_predefined_customization[custom_value]"]', function(){
+		$('select[name="new_predefined_customization[value_id]"]').val('0');
+	});
 
-  var new_customization_group_i = 1,
-  	new_customization_value_i = 1;
+	var new_customization_group_i = 1,
+		new_customization_value_i = 1;
 
-  $('body').on('click', '.featherlight button[name="add_predefined_customization"]', function(e) {
-    e.preventDefault();
+	$('body').on('click', '.featherlight button[name="add_predefined_customization"]', function(e) {
+		e.preventDefault();
 
-    var groupElement = $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"]'),
+		var groupElement = $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"]'),
 			valueElement = $(this).closest('fieldset').find('select[name="new_predefined_customization[value_id]"]'),
 			customValueElement = $(this).closest('fieldset').find('input[name="new_predefined_customization[custom_value]"]');
 
-    if ($(groupElement).val() == '') {
-      alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
-      return;
-    }
-    if ($(valueElement).val() == '' || $(valueElement).val() == '0') {
-      if ($(customValueElement).val() == '') {
-        alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_value', 'You must select an attribute value')); ?>");
-        return;
-      }
-    } else {
-      if ($(customValueElement).val() != '') {
-        console.log($(valueElement).val(), $(customValueElement).val());
-        alert("<?php echo functions::escape_js(language::translate('error_cannot_define_both_value_and_custom_value', 'You cannot define both a value and a custom value')); ?>");
-        return;
-      }
-    }
+		if ($(groupElement).val() == '') {
+			alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
+			return;
+		}
+		if ($(valueElement).val() == '' || $(valueElement).val() == '0') {
+			if ($(customValueElement).val() == '') {
+				alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_value', 'You must select an attribute value')); ?>");
+				return;
+			}
+		} else {
+			if ($(customValueElement).val() != '') {
+				console.log($(valueElement).val(), $(customValueElement).val());
+				alert("<?php echo functions::escape_js(language::translate('error_cannot_define_both_value_and_custom_value', 'You cannot define both a value and a custom value')); ?>");
+				return;
+			}
+		}
 
-    if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').length) {
-      if ($(customValueElement).val() != '') {
-        if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[custom_value]"][value="'+ escape($(customValueElement).val()) +'"]').length) {
-          alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>");
-          return;
-        }
+		if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').length) {
+			if ($(customValueElement).val() != '') {
+				if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[custom_value]"][value="'+ escape($(customValueElement).val()) +'"]').length) {
+					alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>");
+					return;
+				}
 
-      } else {
-        if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').closest('tr').find('input[name$="[custom_value]"]').val() == $(customValueElement).val()) {
-          alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>");
-          return;
-        }
-      }
-    }
+			} else {
+				if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').closest('tr').find('input[name$="[custom_value]"]').val() == $(customValueElement).val()) {
+					alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>");
+					return;
+				}
+			}
+		}
 
-    if (!$('#customizations input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
+		if (!$('#customizations input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
 
-      var $output = $([
+			var $output = $([
 				'<li data-group-id="'+ escapeHTML($(groupElement).val()) +'" data-group-name="'+ escapeHTML($(groupElement).find('option:selected').text()) +'">',
 				'  <div class="float-end">',
 				'    <a class="btn btn-default move-group-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
@@ -1523,15 +1523,15 @@
 			);
 
 			$('#customizations').append($output);
-    }
+		}
 
-    var $output = $([
+		var $output = $([
 			'<tr data-value-id="'+ escapeHTML($(valueElement).val()) +'" data-value-name="'+ escapeHTML(($(valueElement).val() != 0) ? $(valueElement).find('option:selected').text() : $(customValueElement).val()) +'">',
-      '  <td class="grabable"><?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][value_id]', 'new_value_id')) . functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>',
-      '  <td class="text-center"><?php echo functions::escape_js(functions::form_select('customizations[new_group_id][values][new_customization_value_i][price_operator]', ['+','%','*','='], true)); ?></td>',
-      '  <?php foreach ($currency_codes as $currency_code) echo '<td style="width: 200px;">'. functions::escape_js(functions::form_select_currency($currency_code, 'customizations[new_group_id][values][new_customization_value_i]['. $currency_code. ']', '')) .'</td>'; ?>',
-      '  <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>',
-      '</tr>'
+			'  <td class="grabable"><?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][value_id]', 'new_value_id')) . functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>',
+			'  <td class="text-center"><?php echo functions::escape_js(functions::form_select('customizations[new_group_id][values][new_customization_value_i][price_operator]', ['+','%','*','='], true)); ?></td>',
+			'  <?php foreach ($currency_codes as $currency_code) echo '<td style="width: 200px;">'. functions::escape_js(functions::form_select_currency($currency_code, 'customizations[new_group_id][values][new_customization_value_i]['. $currency_code. ']', '')) .'</td>'; ?>',
+			'  <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>',
+			'</tr>'
 		].join('\n')
 			.replace(/new_customization_value_i/g, 'new_' + new_customization_value_i++)
 			.replace(/new_group_id/g, $(groupElement).val())
@@ -1539,27 +1539,27 @@
 			.replace(/new_custom_value/g, $(customValueElement).val().replace(/"/, '&quot;'))
 		);
 
-    $(':input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('tbody').append($output);
+		$(':input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('tbody').append($output);
 
-    $.featherlight.close();
-  });
+		$.featherlight.close();
+	});
 
-  $('body').on('click', '.featherlight button[name="add_user_input_option"]', function(e) {
-    e.preventDefault();
+	$('body').on('click', '.featherlight button[name="add_user_input_option"]', function(e) {
+		e.preventDefault();
 
-    var groupElement = $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"]');
+		var groupElement = $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"]');
 
-    if ($(groupElement).val() == '') {
-      alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
-      return;
-    }
+		if ($(groupElement).val() == '') {
+			alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
+			return;
+		}
 
-    if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
-      alert("<?php echo functions::escape_js(language::translate('error_group_already_defined', 'This group is already defined')); ?>");
-      return;
-    }
+		if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
+			alert("<?php echo functions::escape_js(language::translate('error_group_already_defined', 'This group is already defined')); ?>");
+			return;
+		}
 
-    var $output = $([
+		var $output = $([
 			'<li>',
 			'  <div class="float-end">',
 			'    <a class="move-group-up btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
@@ -1586,48 +1586,48 @@
 			.replace(/new_group_name/g, $(groupElement).find('option:selected').text())
 		);
 
-    $('#customizations').append($output);
+		$('#customizations').append($output);
 
-    $.featherlight.close();
-  });
+		$.featherlight.close();
+	});
 
 	// Stock
 
-  <?php if (currency::$currencies > 1) { ?>
-  $('#stock-options').on('focusin', 'input[name^="stock_options"][name*="[price]"]', function(){
-    $(this).closest('.dropdown').dropdown();
-  });
-  <?php } ?>
+	<?php if (currency::$currencies > 1) { ?>
+	$('#stock-options').on('focusin', 'input[name^="stock_options"][name*="[price]"]', function(){
+		$(this).closest('.dropdown').dropdown();
+	});
+	<?php } ?>
 
-  $('#stock-options').on('input', 'input[name$="[quantity]"]', function(){
-    var adjustment_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
-    $(adjustment_field).val(parseFloat($(this).val() || 0) - parseFloat($(this).data('quantity') || 0));
-  });
+	$('#stock-options').on('input', 'input[name$="[quantity]"]', function(){
+		var adjustment_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
+		$(adjustment_field).val(parseFloat($(this).val() || 0) - parseFloat($(this).data('quantity') || 0));
+	});
 
-  $('#stock-options').on('input', 'input[name$="[quantity_adjustment]"]', function(){
-    var qty_field = $(this).closest('tr').find('input[name$="[quantity]"]');
-    $(qty_field).val(parseFloat($(qty_field).data('quantity') || 0) + parseFloat($(this).val() || 0));
-  });
+	$('#stock-options').on('input', 'input[name$="[quantity_adjustment]"]', function(){
+		var qty_field = $(this).closest('tr').find('input[name$="[quantity]"]');
+		$(qty_field).val(parseFloat($(qty_field).data('quantity') || 0) + parseFloat($(this).val() || 0));
+	});
 
-  $('#stock-options button[name="transfer"]').on('click', function(){
-    var $quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]'),
-      $backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]');
-    $quantity_field.val(parseFloat($(quantity_field).val() || 0) + parseFloat($(backordered_field).val() || 0)).trigger('input');
-    $backordered_field.val(0);
-  });
+	$('#stock-options button[name="transfer"]').on('click', function(){
+		var $quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]'),
+			$backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]');
+		$quantity_field.val(parseFloat($(quantity_field).val() || 0) + parseFloat($(backordered_field).val() || 0)).trigger('input');
+		$backordered_field.val(0);
+	});
 
-  $('#stock-options').on('click', '.move-up, .move-down', function(e) {
-    e.preventDefault();
-    var row = $(this).closest('tr');
+	$('#stock-options').on('click', '.move-up, .move-down', function(e) {
+		e.preventDefault();
+		var row = $(this).closest('tr');
 
-    if ($(this).is('.move-up') && $(row).prevAll().length > 1) {
-      $(row).insertBefore($(row).prev());
-    } else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
-      $(row).insertAfter($(row).next());
-    }
-  });
+		if ($(this).is('.move-up') && $(row).prevAll().length > 1) {
+			$(row).insertBefore($(row).prev());
+		} else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
+			$(row).insertAfter($(row).next());
+		}
+	});
 
-  $('#stock-options').on('click', '.remove', function(e) {
+	$('#stock-options').on('click', '.remove', function(e) {
 		e.preventDefault();
 		$(this).closest('tr').remove();
 
@@ -1660,9 +1660,9 @@
 	let new_stock_item_i = 1;
 	while ($('input[name="stock_options[new_'+new_stock_item_i+']"]').length) new_stock_item_i++;
 
-  window.upsert_stock_item = function(stock_item) {
+	window.upsert_stock_item = function(stock_item) {
 
-    var $output = $([
+		var $output = $([
 			'<tr data-stock-item-id="'+ stock_item.id +'">',
 			'  <td class="grabable">',
 			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][id]', '')); ?>',
@@ -1723,39 +1723,39 @@
 			.replace(/new_stock_item_i/g, 'new_'+new_stock_item_i)
 		);
 
-    $.each(Object.keys(stock_item), function(i, key){ // Iterate Object.keys() because jQuery.each() doesn't support a property named length
-      switch (key) {
+		$.each(Object.keys(stock_item), function(i, key){ // Iterate Object.keys() because jQuery.each() doesn't support a property named length
+			switch (key) {
 
-        case 'id':
-          key = 'stock_item_id';
-          var value = stock_item.id;
-          break;
+				case 'id':
+					key = 'stock_item_id';
+					var value = stock_item.id;
+					break;
 
-        case 'name':
-          if ($.isPlainObject(stock_item.name)) {
-            var value = stock_item.name.<?php echo language::$selected['code']; ?>;
-          } else {
-            var value = stock_item.name;
-          }
-          break;
+				case 'name':
+					if ($.isPlainObject(stock_item.name)) {
+						var value = stock_item.name.<?php echo language::$selected['code']; ?>;
+					} else {
+						var value = stock_item.name;
+					}
+					break;
 
-        case 'quantity_adjustment':
-          break;
+				case 'quantity_adjustment':
+					break;
 
-        default:
-          var value = stock_item[key];
-          break;
+				default:
+					var value = stock_item[key];
+					break;
 			}
 
-      $output.find(':input[name$="['+ key +']"]').val(value);
-      $output.find('.'+ key).text(value);
+			$output.find(':input[name$="['+ key +']"]').val(value);
+			$output.find('.'+ key).text(value);
 		});
 
-    if ($('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').length) {
-      $('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').replaceWith($output);
+		if ($('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').length) {
+			$('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').replaceWith($output);
 			//alert("<?php echo language::translate('error_item_already_defined', 'This item is already defined'); ?>");
-    } else {
-      $('#stock-options tbody').append($output);
-    }
+		} else {
+			$('#stock-options tbody').append($output);
+		}
 	}
 </script>

@@ -144,7 +144,7 @@
 		if (!isset($_REQUEST['password'])) {
 			$_REQUEST['password'] = '';
 		}
-
+		ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');
 		if (empty($_REQUEST['timezone']) && !empty($_REQUEST['store_time_zone'])) {
 			$_REQUEST['timezone'] = $_REQUEST['store_time_zone']; // Backwards compatible
 

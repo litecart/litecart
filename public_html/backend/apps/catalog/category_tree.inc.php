@@ -319,8 +319,8 @@
 				or match(description) against ('". database::input_fulltext($_GET['query']) ."' in boolean mode)
 			)
 			or id in (
-			  select distinct category_id from ". DB_TABLE_PREFIX ."products_to_categories
-			  where product_id in ('". implode("', '", database::input($matched_products)) ."')
+				select distinct category_id from ". DB_TABLE_PREFIX ."products_to_categories
+				where product_id in ('". implode("', '", database::input($matched_products)) ."')
 			);"
 		)->fetch_all('id');
 

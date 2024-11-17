@@ -112,7 +112,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."campaigns_products
 					set product_id = ". (int)$product['product_id'] .",
-					  ". implode(",".PHP_EOL, array_map(function($currency) use ($product) {
+						". implode(",".PHP_EOL, array_map(function($currency) use ($product) {
 							return $currency['code'] ." = ". (!empty($product[$currency['code']]) ? (float)$product[$currency['code']] : 0);
 						}, currency::$currencies)) ."
 					where id = ". (int)$this->data['id'] ."

@@ -30,14 +30,14 @@
 		cache::set($box_brand_links_cache_token, $box_brand_links->snippets['brands']);
 	}
 
-  if (!empty($_GET['brand_id'])) {
-    foreach ($box_brand_links->snippets['brands'] as $key => $brand) {
-      if ($brand['id'] == $_GET['brand_id']) {
-        $box_brand_links->snippets['brands'][$key]['active'] = true;
-        break;
-      }
-    }
-  }
+	if (!empty($_GET['brand_id'])) {
+		foreach ($box_brand_links->snippets['brands'] as $key => $brand) {
+			if ($brand['id'] == $_GET['brand_id']) {
+				$box_brand_links->snippets['brands'][$key]['active'] = true;
+				break;
+			}
+		}
+	}
 
 	if ($box_brand_links->snippets['brands']) {
 		echo $box_brand_links->render();

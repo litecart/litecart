@@ -7,12 +7,12 @@ LiteCart is a registered trademark, property of founder T. Almroth - [LiteCart A
 
 # How To Install
 
-For an updated version of the upgrade documentation, visit https://www.litecart.net/en/wiki/how_to_install
+For an updated version of the upgrade documentation, visit https://www.litecart.net/wiki/how_to_install
 
 What you need:
 
-  * An Apache2 web server running PHP 5.6 or higher. Latest stable PHP release recommended for best performance.
-  * A MySQL 5.7+ or MariaDB database.
+	* An Apache2 web server running PHP 5.6 or higher. Latest stable PHP release recommended for best performance.
+	* A MySQL 5.7+ or MariaDB database.
 
 ## Installation Instructions
 
@@ -22,13 +22,13 @@ Please note running your own website requires some common sense of web knowledge
 
 2. Transfer the contents of the folder public_html/ in this archive (yes the contents inside the folder - not the folder itself). Transfer it to your website root directory. Using subdirectories is supported but not recommended.
 
-    Example:
+		Example:
 
-    /var/www/
+		/var/www/
 
-    /home/username/public_html/
+		/home/username/public_html/
 
-    C:\xampp\htdocs\
+		C:\xampp\htdocs\
 
 Paths are machine specific, so talk to your web host if you are uncertain where this folder is.
 
@@ -54,8 +54,8 @@ See our wiki article [How To Create a Template](https://www.litecart.net/en/wiki
 
 ## See Also
 
-  - [Official Website](http://www.litecart.net)
-  - [GitHub Repository](https://github.com/litecart/litecart)
-  - [Issue Tracker](https://github.com/litecart/litecart/issues)
-  - [Community Forums](http://www.litecart.net/forums/)
-  - [Community Wiki](http://wiki.litecart.net/)
+	- [Official Website](http://www.litecart.net)
+	- [GitHub Repository](https://github.com/litecart/litecart)
+	- [Issue Tracker](https://github.com/litecart/litecart/issues)
+	- [Community Forums](http://www.litecart.net/forums/)
+	- [Community Wiki](http://wiki.litecart.net/)

@@ -13,7 +13,8 @@
 
 		$output = [];
 
-		switch($errno) {
+		switch ($errno) {
+
 			case E_STRICT:
 				$output[] = "<strong>Strict:</strong> ". htmlspecialchars($errstr) ." in <strong>$errfile</strong> on line <strong>$errline</strong>";
 				break;
@@ -48,7 +49,16 @@
 				break;
 		}
 
-		if ($backtraces = array_slice(debug_backtrace(), 1)) {
+		if ($backtraces = debug_backtrace()) {
+
+			// Remove self from backtrace
+			array_shift($backtraces);
+
+			// Extract trace from exception_handler
+			if (!empty($backtraces[0]['function']) && $backtraces[0]['function'] == 'exception_handler') {
+				$backtraces = array_slice($backtraces[0]['args'][0]->getTrace(), 1);
+			}
+
 			foreach ($backtraces as $backtrace) {
 				if (empty($backtrace['file'])) continue;
 				$backtrace['file'] = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', 'app://', functions::file_realpath($backtrace['file']));
@@ -56,6 +66,7 @@
 			}
 		}
 
+		// Display errors
 		if (filter_var(ini_get('display_errors'), FILTER_VALIDATE_BOOLEAN)) {
 
 			if (isset($_GET['debug'])) {

@@ -110,7 +110,7 @@
 
 			self.$instance = $([
 				'<div class="featherlight featherlight-loading">',
-        '  <div class="featherlight-modal'+ (self.seamless ? ' featherlight-seamless' : '') +'">',
+				'  <div class="featherlight-modal'+ (self.seamless ? ' featherlight-seamless' : '') +'">',
 				'    <div class="featherlight-inner">' + self.loading + '</div>',
 				'  </div>',
 				'</div>'
@@ -146,7 +146,7 @@
 			var self = this,
 				filters = this.constructor.contentFilters,
 				data = self.target || (self.$currentTarget && (self.$currentTarget.attr(name) || self.$currentTarget.attr('href'))) || '',
-        filter = filters[self.type]; // check explicit type like {type: 'image'}
+				filter = filters[self.type]; // check explicit type like {type: 'image'}
 
 			// Check explicit type like data-target="image"
 			if (!filter && data in filters) {
@@ -203,9 +203,9 @@
 			if (self.closeIcon) {
 				self.$instance.find('.featherlight-modal').prepend([
 					'<div class="featherlight-close-icon featherlight-close">',
-				  '  ' + self.closeIcon,
+					'  ' + self.closeIcon,
 					'</div>',
-        ].join('\n'));
+				].join('\n'));
 			}
 
 			return self;
@@ -228,7 +228,7 @@
 
 			if ((!e || !e.isDefaultPrevented()) && self.beforeOpen(e) !== false) {
 
-        if (e) e.preventDefault();
+				if (e) e.preventDefault();
 
 				$('body').addClass('featherlight-open');
 
@@ -318,15 +318,15 @@
 				process: function(url) {
 
 					var self = this,
-            deferred = $.Deferred();
+						deferred = $.Deferred();
 
 					var $img = $('<img>', {
-            src: url,
-            alt: '',
-            complete: function(){
-              deferred.resolve($(this));
-            }
-          });
+						src: url,
+						alt: '',
+						complete: function(){
+							deferred.resolve($(this));
+						}
+					});
 
 					return deferred.promise();
 				}
@@ -335,8 +335,8 @@
 			html: {
 				regex: /^\s*<[\w!][^<]*>/,  // Anything that starts with some kind of valid tag
 				process: function(html) {
-          return $(html);
-        }
+					return $(html);
+				}
 			},
 
 			ajax: {
@@ -362,16 +362,16 @@
 				process: function(url) {
 
 					var self = this,
-            deferred = new $.Deferred();
+						deferred = new $.Deferred();
 
 					var $iframe = $('<iframe/>', {
-            src: url,
+						src: url,
 						complete, function(){
-              // We can't move an <iframe> and avoid reloading it, so let's put it in place ourselves right now:
-              $iframe.show().appendTo(self.$instance.find('.featherlight-modal'));
-              deferred.resolve($iframe);
-            }
-          }).hide();
+							// We can't move an <iframe> and avoid reloading it, so let's put it in place ourselves right now:
+							$iframe.show().appendTo(self.$instance.find('.featherlight-modal'));
+							deferred.resolve($iframe);
+						}
+					}).hide();
 
 					return deferred.promise();
 				}
@@ -379,8 +379,8 @@
 
 			text: {
 				process: function(text) {
-          return $('<div>', {text: text});
-        }
+					return $('<div>', {text: text});
+				}
 			}
 		},
 
@@ -425,9 +425,9 @@
 
 				// ... since we might as well compute the config on the actual target
 				var elementConfig = $.extend({
-          $source: $source,
-          $currentTarget: $target
-        }, self.readElementConfig($source[0]), self.readElementConfig(this), config);
+					$source: $source,
+					$currentTarget: $target
+				}, self.readElementConfig($source[0]), self.readElementConfig(this), config);
 
 				var fl = sharedPersist || $target.data('featherlight-persisted') || new self($modal, elementConfig);
 
@@ -546,40 +546,40 @@
 	$(document).ready(function(){
 
 		// Do auto binding on startup. Meant only to be used by Featherlight and its extensions
-    if (Featherlight.autoBind){
+		if (Featherlight.autoBind){
 
-      var $autobound = $(Featherlight.autoBind);
+			var $autobound = $(Featherlight.autoBind);
 
-      // Bind existing elements
-      $autobound.each(function(){
-        Featherlight.attach($(this));
-      });
+			// Bind existing elements
+			$autobound.each(function(){
+				Featherlight.attach($(this));
+			});
 
-      // If a click propagates to the document level, then we have an item that was added later on
-      $(document).on('click', Featherlight.autoBind, function(e) {
+			// If a click propagates to the document level, then we have an item that was added later on
+			$(document).on('click', Featherlight.autoBind, function(e) {
 
-        if (e.isDefaultPrevented()) {
-          return;
-        }
+				if (e.isDefaultPrevented()) {
+					return;
+				}
 
-        var $cur = $(e.currentTarget),
-          len = $autobound.length;
+				var $cur = $(e.currentTarget),
+					len = $autobound.length;
 
-        $autobound = $autobound.add($cur);
+				$autobound = $autobound.add($cur);
 
-        if (len === $autobound.length) {
-          return; // already bound
-        }
+				if (len === $autobound.length) {
+					return; // already bound
+				}
 
-        // Bind featherlight
-        var data = Featherlight.attach($cur);
+				// Bind featherlight
+				var data = Featherlight.attach($cur);
 
-        // Dispatch event directly
-        if (!data.filter || $(e.target).parentsUntil($cur, data.filter).length > 0) {
-          data.handler(e);
-        }
-      });
-    }
-  });
+				// Dispatch event directly
+				if (!data.filter || $(e.target).parentsUntil($cur, data.filter).length > 0) {
+					data.handler(e);
+				}
+			});
+		}
+	});
 
 }(jQuery));

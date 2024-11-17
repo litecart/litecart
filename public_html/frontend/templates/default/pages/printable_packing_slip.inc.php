@@ -147,19 +147,19 @@ table.items tbody tr:nth-child(11) {
 </section>
 
 <div id="actions">
-  <ul class="list-unstyled">
-    <li>
-      <button name="print" class="btn btn-default btn-lg">
-        <?php echo functions::draw_fonticon('icon-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
-      </button>
-    </li>
-  </ul>
+	<ul class="list-unstyled">
+		<li>
+			<button name="print" class="btn btn-default btn-lg">
+				<?php echo functions::draw_fonticon('icon-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
+			</button>
+		</li>
+	</ul>
 </div>
 
 <script>
 	document.title = "<?php echo functions::escape_js(language::translate('title_packing_slip', 'Packing Slip')); ?> #<?php echo $order['id']; ?>";
 
-  $('#actions button[name="print"]').on('click', function(){
-    window.print();
-  });
+	$('#actions button[name="print"]').on('click', function(){
+		window.print();
+	});
 </script>

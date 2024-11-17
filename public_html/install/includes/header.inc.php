@@ -22,6 +22,12 @@ header {
 	margin: 2em 0;
 }
 
+#logotype {
+	max-width: 300px;
+	max-height: 100px;
+	margin-bottom: 2em;
+}
+
 .glass-edges {
 	margin: 0 auto;
 	margin-bottom: 15px;

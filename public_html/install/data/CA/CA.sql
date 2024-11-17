@@ -11,3 +11,8 @@ INSERT INTO `lc_tax_classes` (`name`, `description`, `date_updated`, `date_creat
 -- -----
 INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `date_updated`, `date_created`) VALUES
 (1, @CA_VAT_ZONE, 'Tax 13%', '', 13, 1, 1, 1, 1, NOW(), NOW());
+-- -----
+UPDATE `lc_settings`
+SET `value` = 'US-Letter'
+WHERE `key` = 'default_print_paper_size'
+LIMIT 1;

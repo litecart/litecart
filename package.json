@@ -40,6 +40,7 @@
 	"scripts": {
 		"archive": "git archive --format=zip --output latest.zip",
 		"build": "gulp build",
+		"changelog": "git log --oneline 'master'..'dev' > changelog.txt",
 		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php",
 		"phplint": "gulp phplint",
 		"test": "gulp test",

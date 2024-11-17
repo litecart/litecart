@@ -4,14 +4,14 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: local(''), url('../fonts/asap-v26-latin-ext_latin-regular.woff2') format('woff2');
+  src: url('../fonts/asap-v30-latin_latin-ext-regular.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Asap';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: local(''), url('../fonts/asap-v26-latin-ext_latin-700.woff2') format('woff2');
+  src: url('../fonts/asap-v30-latin_latin-ext-700.woff2') format('woff2');
 }
 /* Variables */
 :root {

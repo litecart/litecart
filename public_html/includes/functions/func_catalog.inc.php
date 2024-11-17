@@ -265,11 +265,11 @@
 				". (!empty($filter['keywords']) ? "and (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
 				and (p.date_valid_from is null or p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
 				and (p.date_valid_to is null or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
-				". (!empty($filter['purchased']) ? "and p.purchases" : null) ."
-				". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : null) ."
+				". (!empty($filter['purchased']) ? "and p.purchases" : "") ."
+				". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : "") ."
 
-				". ((!empty($sql_inner_sort) && !empty($filter['limit'])) ? "order by " . implode(",", $sql_inner_sort) : null) ."
-				". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : "") ."
+				". ((!empty($sql_inner_sort) && !empty($filter['limit'])) ? "order by " . implode(",", $sql_inner_sort) : "") ."
+				". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") ."
 			) p
 
 			left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
@@ -350,7 +350,7 @@
 			group by p.id
 
 			". (!empty($sql_outer_sort) ? "order by ". implode(",", $sql_outer_sort) : "") ."
-			". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : null) .";"
+			". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") .";"
 		);
 
 		return database::query($query);
@@ -366,6 +366,7 @@
 		if (!empty($filter['categories'])) {
 			$filter['categories'] = array_filter($filter['categories']);
 		}
+		if (empty($filter['sort'])) $filter['sort'] = 'relevance';
 
 		if (!empty($filter['brands'])) {
 			$filter['brands'] = array_filter($filter['brands']);
@@ -643,6 +644,7 @@
 			)
 
 			group by p.id
+			having relevance > 0
 
 			". (!empty($sql_order_by) ? "order by ". $sql_order_by : "") ."
 			". (!empty($filter['limit']) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") .";"

@@ -53,12 +53,12 @@
 			switch (true) {
 
 				case (preg_match('#^b:#', $resource)):
-				  $route['endpoint'] = 'backend';
-				  break;
+					$route['endpoint'] = 'backend';
+					break;
 
 				default:
-  				$route['endpoint'] = 'frontend';
-  				break;
+					$route['endpoint'] = 'frontend';
+					break;
 			}
 
 			if (!isset($route['patterns'])) {

@@ -77,7 +77,7 @@
 					where stock_action = 'reserve'
 				)
 				and oi.stock_option_id in (
-				  select id from ". DB_TABLE_PREFIX ."products_stock_options
+					select id from ". DB_TABLE_PREFIX ."products_stock_options
 					where stock_item_id = ". (int)$this->data['id'] ."
 				);"
 			)->fetch('total_reserved');

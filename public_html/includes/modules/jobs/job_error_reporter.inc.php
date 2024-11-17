@@ -13,7 +13,7 @@
 
 			if (!$force) {
 
-					// Abort if no log file is set
+				// Abort if no log file is set
 				if (!$log_file = ini_get('error_log')) return;
 
 					// Abort if log file is missing
