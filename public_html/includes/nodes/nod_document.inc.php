@@ -141,26 +141,6 @@
 				];
 			}
 
-			self::$jsenv['session'] = [
-				'id' => session::get_id(),
-				'language' => [
-					'code' => language::$selected['code'],
-					'name' => language::$selected['name'],
-					'decimal_point' => language::$selected['decimal_point'],
-					'thousands_separator' => language::$selected['thousands_sep'],
-				],
-				'country' => [
-					'code' => customer::$data['country_code'],
-				],
-				'currency' => [
-					'code' => currency::$selected['code'],
-					'name' => currency::$selected['name'],
-					'decimals' => currency::$selected['decimals'],
-					'prefix' => currency::$selected['prefix'],
-					'suffix' => currency::$selected['suffix'],
-				],
-			];
-
 			self::$jsenv['template'] = [
 				'settings' => self::$settings,
 			];

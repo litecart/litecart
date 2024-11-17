@@ -28,6 +28,8 @@
 				self::$data['last_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 				self::regenerate_id();
 			}
+
+			document::$jsenv['session']['id'] = session::get_id();
 		}
 
 		public static function start() {

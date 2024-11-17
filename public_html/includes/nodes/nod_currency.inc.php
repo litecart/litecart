@@ -18,6 +18,14 @@
 
 			// Identify/set currency
 			self::set();
+
+			document::$jsenv['currency'] = [
+				'code' => &self::$selected['code'],
+				'name' => &self::$selected['name'],
+				'decimals' => &self::$selected['decimals'],
+				'prefix' => &self::$selected['prefix'],
+				'suffix' => &self::$selected['suffix'],
+			];
 		}
 
 		######################################################################

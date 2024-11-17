@@ -33,6 +33,13 @@
 			// Identify/set language
 			self::set();
 
+			document::$jsenv['language'] = [
+				'code' => &self::$selected['code'],
+				'name' => &self::$selected['name'],
+				'decimal_point' => &self::$selected['decimal_point'],
+				'thousands_separator' => &self::$selected['thousands_sep'],
+			];
+
 			self::$_cache_token = cache::token('translations', ['endpoint', 'language']);
 
 			if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {

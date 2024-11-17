@@ -113,6 +113,12 @@
 
 			self::identify();
 
+			document::$jsenv['customer'] = [
+				'id' => &self::$data['id'],
+				'country_code' => &self::$data['country_code'],
+				'display_prices_including_tax' => &self::$data['display_prices_including_tax'],
+			];
+
 			event::register('after_capture', [__CLASS__, 'after_capture']);
 		}
 
