@@ -11,6 +11,7 @@
 		public static $jsenv = [];
 		public static $layout = 'default';
 		public static $opengraph = [];
+		public static $preloads = [];
 		public static $schema = [];
 		public static $settings = [];
 		public static $snippets = [];
@@ -281,8 +282,14 @@
 
 		public static function render() {
 
+			// Preloading of resources
+			foreach (self::$preloads as $link => $type) {
+				header('Link: <'.$link.'>; rel=preload; as='.$type, false);
+			}
+
 			stats::start_watch('rendering');
 
+			// Set view
 			switch (route::$selected['endpoint']) {
 
 				case 'backend':
@@ -429,6 +436,25 @@
 			self::$javascript[$key] = implode(PHP_EOL, array_map(function($line){
 				return '	'.$line;
 			}, $lines));
+		}
+
+		public static function add_preload($url, $type=null) {
+
+			if (!$type) {
+				$path = parse_url($url, PHP_URL_PATH);
+
+				switch (true) {
+					case (preg_match('#\.css$#', $path)):
+						$type = 'style';
+						break;
+
+					case (preg_match('#\.js$#', $path)):
+						$type = 'script';
+						break;
+				}
+			}
+
+			self::$preloads[$link] = $type;
 		}
 
 		public static function ilink($resource=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
