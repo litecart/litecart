@@ -109,8 +109,119 @@ h1 {
 					<th class="text-end"><?php echo language::translate('title_sum', 'Sum'); ?></th>
 				</tr>
 			</thead>
+
 			<tbody>
-				<?php foreach ($order['items'] as $item) { ?>
+				<?php foreach (array_slice($order['items'], 0, $max_first_page_items) as $item) { ?>
+				<tr>
+					<td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
+					<td style="white-space: normal;"><?php echo $item['name']; ?></td>
+					<td><?php echo $item['gtin']; ?></td>
+					<td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
+					<td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['discount'] + $item['discount_tax'] : $item['discount'], false, $order['currency_code'], $order['currency_value']); ?></td>
+					<td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['sum'] + $item['sum_tax'] : $item['sum'], false, $order['currency_code'], $order['currency_value']); ?></td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
+
+		<?php if (count($order['items']) <= $max_first_page_items) { ?>
+		<table class="order-total table data-table">
+			<tbody>
+				<tr>
+					<td class="text-end"><strong><?php echo language::translate('title_subtotal', 'Subtotal'); ?>:</strong></td>
+					<td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $order['subtotal'] + $order['subtotal_tax'] : $order['subtotal'], false, $order['currency_code'], $order['currency_value']); ?></td>
+				</tr>
+
+				<?php foreach ($order['order_total'] as $row) { ?>
+				<?php if (!empty($order['display_prices_including_tax'])) { ?>
+				<tr>
+					<td class="text-end"><?php echo $row['title']; ?>:</td>
+					<td class="text-end"><?php echo currency::format($row['amount'] + $row['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
+				</tr>
+				<?php } else { ?>
+				<tr>
+					<td class="text-end"><?php echo $row['title']; ?>:</td>
+					<td class="text-end"><?php echo currency::format($row['amount'], false, $order['currency_code'], $order['currency_value']); ?></td>
+				</tr>
+				<?php } ?>
+				<?php } ?>
+
+				<?php if (!empty($order['total_tax']) && $order['total_tax'] != 0) { ?>
+				<tr>
+					<td class="text-end"><?php echo !empty($order['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+					<td class="text-end"><?php echo currency::format($order['total_tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
+				</tr>
+				<?php } ?>
+
+				<tr>
+					<td class="text-end"><strong><?php echo language::translate('title_grand_total', 'Grand Total'); ?>:</strong></td>
+					<td class="text-end"><strong><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
+				</tr>
+			</tbody>
+		</table>
+		<?php } ?>
+	</main>
+
+	<footer class="footer">
+
+		<hr>
+
+		<div class="row">
+			<div class="col-3">
+				<div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
+				<div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
+			</div>
+
+			<div class="col-3">
+				<?php if (settings::get('store_phone')) { ?>
+				<div class="label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
+				<div class="value"><?php echo settings::get('store_phone'); ?></div>
+				<?php } ?>
+
+				<?php if (settings::get('store_tax_id')) { ?>
+				<div class="label"><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></div>
+				<div class="value"><?php echo settings::get('store_tax_id'); ?></div>
+				<?php } ?>
+			</div>
+
+			<div class="col-3">
+				<div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
+				<div class="value"><?php echo settings::get('store_email'); ?></div>
+
+				<div class="label"><?php echo language::translate('title_website', 'Website'); ?></div>
+				<div class="value"><?php echo document::ilink(''); ?></div>
+			</div>
+
+			<div class="col-3">
+			</div>
+		</div>
+	</footer>
+
+</section>
+
+<?php if (count($order['items']) > $max_first_page_items) { ?>
+<section class="page" data-size="A4" dir="<?php echo $text_direction; ?>">
+
+	<header>
+		<?php /* No header */ ?>
+	</header>
+
+	<main class="content">
+
+		<table class="items table table-striped data-table">
+			<thead>
+				<tr>
+					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
+					<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
+					<th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
+					<th class="text-end"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+					<th class="text-end"><?php echo language::translate('title_tax', 'Tax'); ?> </th>
+					<th class="text-end"><?php echo language::translate('title_sum', 'Sum'); ?></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<?php foreach (array_slice($order['items'], $max_first_page_items) as $item) { ?>
 				<tr>
 					<td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
 					<td style="white-space: normal;"><?php echo $item['name']; ?></td>
@@ -157,45 +268,11 @@ h1 {
 				</tr>
 			</tbody>
 		</table>
+
 	</main>
 
-	<?php if (count($order['items']) <= 10) { ?>
-	<footer class="footer">
-
-		<hr>
-
-		<div class="row">
-			<div class="col-3">
-				<div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
-				<div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
-			</div>
-
-			<div class="col-3">
-				<?php if (settings::get('store_phone')) { ?>
-				<div class="label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
-				<div class="value"><?php echo settings::get('store_phone'); ?></div>
-				<?php } ?>
-
-				<?php if (settings::get('store_tax_id')) { ?>
-				<div class="label"><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></div>
-				<div class="value"><?php echo settings::get('store_tax_id'); ?></div>
-				<?php } ?>
-			</div>
-
-			<div class="col-3">
-				<div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
-				<div class="value"><?php echo settings::get('store_email'); ?></div>
-
-				<div class="label"><?php echo language::translate('title_website', 'Website'); ?></div>
-				<div class="value"><?php echo document::ilink(''); ?></div>
-			</div>
-
-			<div class="col-3">
-			</div>
-		</div>
-	</footer>
-	<?php } ?>
 </section>
+<?php } ?>
 
 <div id="actions">
 	<ul class="list-unstyled">

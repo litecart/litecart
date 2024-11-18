@@ -60,6 +60,7 @@ table.items tbody tr:nth-child(11) {
 	</header>
 
 	<main class="content">
+
 		<div class="addresses">
 			<div class="row">
 				<div class="col-6">
@@ -88,27 +89,30 @@ table.items tbody tr:nth-child(11) {
 			</div>
 		</div>
 
-		<table class="items table table-striped data-table">
-			<thead>
-				<tr>
-					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
-					<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-					<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ($order['items'] as $item) { ?>
-				<tr>
-					<td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
-					<td><?php echo $item['sku']; ?></td>
-					<td style="white-space: normal;"><?php echo $item['name']; ?></td>
-				</tr>
+		<?php if (count($order['items']) <= $max_first_page_items) { ?>
+			<table class="items table table-striped data-table">
+				<thead>
+					<tr>
+						<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
+						<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
+						<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
+					</tr>
+				</thead>
+
+				<?php foreach (array_slice($order['items'], 0, $max_first_page_items) as $item) { ?>
+				<tbody>
+					<tr>
+						<td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
+						<td><?php echo $item['sku']; ?></td>
+						<td style="white-space: normal;"><?php echo $item['name']; ?></td>
+					</tr>
 				<?php } ?>
 			</tbody>
 		</table>
+		<?php } ?>
+
 	</main>
 
-	<?php if (count($order['items']) <= 10) { ?>
 	<footer class="footer">
 
 		<hr>
@@ -143,8 +147,39 @@ table.items tbody tr:nth-child(11) {
 			</div>
 		</div>
 	</footer>
-	<?php } ?>
+
 </section>
+
+<?php if (count($order['items']) > 10) { ?>
+<section class="page" data-size="A4">
+
+	<header>
+		<?php /* No header */ ?>
+	</header>
+
+	<main class="content">
+		<table class="items table table-striped data-table">
+			<thead>
+				<tr>
+					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
+					<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
+					<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php for ($i=10; $i<count($order['items']); $i++) { ?>
+				<tr>
+					<td><?php echo ($order['items'][$i]['quantity'] > 1) ? '<strong>'. (float)$order['items'][$i]['quantity'].'</strong>' : (float)$order['items'][$i]['quantity']; ?></td>
+					<td><?php echo $order['items'][$i]['sku']; ?></td>
+					<td style="white-space: normal;"><?php echo $order['items'][$i]['name']; ?></td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
+	</main>
+
+</section>
+<?php } ?>
 
 <div id="actions">
 	<ul class="list-unstyled">
