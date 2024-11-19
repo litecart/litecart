@@ -17,7 +17,7 @@
 					</div>
 
 					<div class="card-body">
-						<?php echo functions::form_begin('customer_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+						<?php echo functions::form_begin('customer_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 							<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
 							<div class="form-group">

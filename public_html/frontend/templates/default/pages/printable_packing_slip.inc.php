@@ -181,6 +181,7 @@ table.items tbody tr:nth-child(11) {
 </section>
 <?php } ?>
 
+<?php if (!empty($action_menu)) { ?>
 <div id="actions">
 	<ul class="list-unstyled">
 		<li>
@@ -192,9 +193,8 @@ table.items tbody tr:nth-child(11) {
 </div>
 
 <script>
-	document.title = "<?php echo functions::escape_js(language::translate('title_packing_slip', 'Packing Slip')); ?> #<?php echo $order['id']; ?>";
-
 	$('#actions button[name="print"]').on('click', function(){
 		window.print();
 	});
 </script>
+<?php } ?>

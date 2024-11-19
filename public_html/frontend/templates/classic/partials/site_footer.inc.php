@@ -16,7 +16,7 @@
 							<?php } else { ?>
 							<li><a href="<?php echo document::href_ilink('account/order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
 							<li><a href="<?php echo document::href_ilink('account/edit'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
-							<li><a href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_sign_out', 'Sign Out'); ?></a></li>
+							<li><a href="<?php echo document::href_ilink('account/sign_out'); ?>"><?php echo language::translate('title_sign_out', 'Sign Out'); ?></a></li>
 							<?php } ?>
 						</ul>
 					</section>

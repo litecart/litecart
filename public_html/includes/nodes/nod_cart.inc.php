@@ -110,11 +110,13 @@
 
 			if (!empty(customer::$data['id'])) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."cart_items set
+					"update ". DB_TABLE_PREFIX ."cart_items
 					set cart_uid = '". database::input(self::$data['uid']) ."',
 						customer_id = ". (int)customer::$data['id'] ."
-					where cart_uid = '". database::input(self::$data['uid']) ."'
-					or customer_id = ". (int)customer::$data['id'] .";"
+					where (
+						cart_uid = '". database::input(self::$data['uid']) ."'
+						or customer_id = ". (int)customer::$data['id'] ."
+					);"
 				);
 			}
 

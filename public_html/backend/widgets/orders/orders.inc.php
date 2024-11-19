@@ -9,16 +9,25 @@
 		and os.is_archived = 0
 		order by o.date_created desc, o.id desc
 		limit 10;"
-	)->fetch_all(function($order) {
+	)->fetch_all(function(&$order) {
 
-		if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'icon-circle-thin';
-		if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
+		if (!$order['order_status_icon']) {
+			$order['order_status_icon'] = 'icon-circle-thin';
+		}
+
+		if (!$order['order_status_color']) {
+			$order['order_status_color'] = '#cccccc';
+		}
 
 		$order['classes'] = [];
-		if (empty($order['order_status_id'])) $order['classes'][] = 'semi-transparent';
-		if (!empty($order['unread'])) $order['classes'][] = 'bold';
-
-		return $order;
+		
+		if (!$order['order_status_id']) {
+			$order['classes'][] = 'semi-transparent';
+		}
+	
+		if ($order['unread']) {
+			$order['classes'][] = 'bold';
+		}
 	});
 
 ?>

@@ -4,7 +4,6 @@
 		public $data;
 		public $previous;
 
-		public function __construct($order_id=null) {
 
 		public function __construct($id=null) {
 

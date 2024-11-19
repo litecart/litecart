@@ -26,6 +26,7 @@
 		}
 		@media (min-width: @media-breakpoint-md) {
 			flex: 0 1 auto;
+			margin-inline-end: 1em;
 		}
 	}
 
@@ -88,14 +89,15 @@
 			width: 100%;
 
 			> a {
-					//font-weight: 500;
+				//font-weight: 500;
+				color: inherit;
 			}
 
 			&.open > .navbar-item {
-				background-color: rgba(0, 0, 0, .15) !important;
+				backdrop-filter: brightness(.85);
 			}
 			&:not(.open) > .navbar-item:hover {
-				background-color: rgba(0, 0, 0, .05);
+				backdrop-filter: brightness(.9);
 			}
 			@media (min-width: @media-breakpoint-md) {
 				width: auto;

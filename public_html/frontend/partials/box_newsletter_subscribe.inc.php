@@ -8,5 +8,5 @@
 	 */
 
 	$box_newsletter_subscribe = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_newsletter_subscribe.inc.php');
-	
+
 	echo $box_newsletter_subscribe->render();

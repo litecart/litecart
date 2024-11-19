@@ -1831,6 +1831,7 @@ ul.list-inline li {
 @media (min-width: 768px) {
   .navbar .navbar-brand {
     flex: 0 1 auto;
+    margin-inline-end: 1em;
   }
 }
 .navbar .navbar-menu {
@@ -1891,11 +1892,14 @@ ul.list-inline li {
   list-style: none;
   width: 100%;
 }
+.navbar .navbar-nav > li > a {
+  color: inherit;
+}
 .navbar .navbar-nav > li.open > .navbar-item {
-  background-color: rgba(0, 0, 0, 0.15) !important;
+  backdrop-filter: brightness(0.85);
 }
 .navbar .navbar-nav > li:not(.open) > .navbar-item:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  backdrop-filter: brightness(0.9);
 }
 @media (min-width: 768px) {
   .navbar .navbar-nav > li {

@@ -129,14 +129,12 @@
 			// Load regional settings screen
 			if (route::$selected['endpoint'] == 'frontend') {
 				if (settings::get('regional_settings_screen')) {
-					if (empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
+					if (empty(session::$data['skip_regional_settings_screen'])) {
+
 						if (empty(customer::$data['id'])) {
 							functions::draw_lightbox(document::ilink('regional_settings'));
 						}
 						session::$data['skip_regional_settings_screen'] = true;
-						if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
-							header('Set-Cookie: skip_regional_settings_screen=1; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
-						}
 					}
 				}
 			}

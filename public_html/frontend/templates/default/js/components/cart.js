@@ -31,7 +31,7 @@
 				borderRadius: 0
 			}, {
 				duration: 1000,
-				easing: 'easeOutCubic'
+				easing: 'easeInCubic'
 			})
 			.animate({
 				opacity: 0
@@ -75,8 +75,8 @@
 				height: $target.innerHeight(),
 				borderRadius: 0
 			}, {
-				duration: '1000ms',
-				easing: 'easeOutCubic'
+				duration: 1000,
+				easing: 'easeInCubic'
 			})
 			.animate({
 				opacity: 0

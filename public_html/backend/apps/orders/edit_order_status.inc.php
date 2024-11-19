@@ -23,10 +23,25 @@
 				throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 			}
 
-			if (empty($_POST['notify'])) $_POST['notify'] = 0;
-			if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
-			if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
-			if (empty($_POST['is_trackable'])) $_POST['is_trackable'] = 0;
+			if (empty($_POST['hidden'])) {
+				$_POST['is_sale'] = 0;
+			}
+
+			if (empty($_POST['notify'])) {
+				$_POST['notify'] = 0;
+			}
+
+			if (empty($_POST['is_sale'])) {
+				$_POST['is_sale'] = 0;
+			}
+
+			if (empty($_POST['is_archived'])) {
+				$_POST['is_archived'] = 0;
+			}
+
+			if (empty($_POST['is_trackable'])) {
+				$_POST['is_trackable'] = 0;
+			}
 
 			foreach ([
 				'hidden',
@@ -175,7 +190,7 @@
 
 							<div class="checkbox">
 								<strong><?php echo functions::form_checkbox('is_trackable', ['1', language::translate('text_is_trackable', 'Is trackable')], empty($_POST['is_trackable']) ? '0' : '1'); ?> </strong>
-								<?php echo language::translate('text_will_send_tracking_event_to_shipping_module', 'Will send an event to the shipping module for tracking the shipment.'); ?></label>
+								<?php echo language::translate('text_will_send_tracking_event_to_shipping_module', 'Will send a request to the shipping module for tracking the shipment.'); ?></label>
 							</div>
 						</div>
 

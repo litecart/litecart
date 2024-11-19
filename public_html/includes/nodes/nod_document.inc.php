@@ -157,6 +157,23 @@
 					break;
 			}
 
+			self::$jsenv['session']['id'] = session::get_id();
+
+			document::$jsenv['currency'] = [
+				'code' => &currency::$selected['code'],
+				'name' => &currency::$selected['name'],
+				'decimals' => &currency::$selected['decimals'],
+				'prefix' => &currency::$selected['prefix'],
+				'suffix' => &currency::$selected['suffix'],
+			];
+
+			document::$jsenv['language'] = [
+				'code' => &language::$selected['code'],
+				'name' => &language::$selected['name'],
+				'decimal_point' => &language::$selected['decimal_point'],
+				'thousands_separator' => &language::$selected['thousands_sep'],
+			];
+
 			self::$jsenv['customer'] = [
 				'id' => !empty(customer::$data['id']) ? customer::$data['id'] : null,
 				'name' => !empty(customer::$data['firstname']) ? customer::$data['firstname'] .' '. customer::$data['lastname'] : null,
@@ -183,7 +200,7 @@
 				$stylesheets = [];
 
 				$matches[2] = preg_replace_callback('#<link([^>]*rel="stylesheet"[^>]*)>\R*#is', function($match) use (&$stylesheets) {
-					 $stylesheets[] = trim($match[0]);
+					$stylesheets[] = trim($match[0]);
 				}, $matches[2]);
 
 				// Extract internal styling
@@ -210,7 +227,7 @@
 				$javascript = [];
 
 				$matches[2] = preg_replace_callback('#<script[^>]*(?!src="[^"]+")[^>]*>(.+?)</script>\R*#is', function($match) use (&$javascript) {
-					 $javascript[] = trim($match[1], "\r\n");
+					$javascript[] = trim($match[1], "\r\n");
 				}, $matches[2]);
 
 				return $matches[1] . $matches[2] . $matches[3];
@@ -237,10 +254,10 @@
 
 				$styles = implode(PHP_EOL, [
 					'<style>',
-					 //'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from parser bypassing in 2024?
-					 preg_replace(array_keys($search_replace), array_values($search_replace), implode(PHP_EOL . PHP_EOL, $styles)),
-					 //'/*]]>*/-->',
-					 '</style>',
+					//'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from parser bypassing in 2024?
+					preg_replace(array_keys($search_replace), array_values($search_replace), implode(PHP_EOL . PHP_EOL, $styles)),
+					//'/*]]>*/-->',
+					'</style>',
 				]) . PHP_EOL;
 
 				$output = preg_replace('#</head>#', addcslashes($styles . '</head>', '\\$'), $output, 1);

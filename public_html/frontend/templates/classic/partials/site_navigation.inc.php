@@ -17,7 +17,7 @@
 
 			<?php if (settings::get('accounts_enabled')) { ?>
 			<a class="account text-center" href="<?php echo document::href_ilink('account/edit'); ?>">
-				<div class="navbar-icon"><?php echo functions::draw_fonticon('icon-user-o'); ?></div>
+				<div class="navbar-icon"><?php echo functions::draw_fonticon('icon-user'); ?></div>
 				<small class="hidden-xs"><?php echo language::translate('title_account', 'Account'); ?></small>
 			</a>
 			<?php } ?>
@@ -112,7 +112,7 @@
 							<li><a class="nav-link" href="<?php echo document::href_ilink('account/edit'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
 							<li><a class="nav-link" href="<?php echo document::href_ilink('account/addresses'); ?>"><?php echo language::translate('title_addresses', 'Addresses'); ?></a></li>
 							<li><a class="nav-link" href="<?php echo document::href_ilink('account/order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
-							<li><a class="nav-link" href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
+							<li><a class="nav-link" href="<?php echo document::href_ilink('account/sign_out'); ?>"><?php echo language::translate('title_sign_out', 'Sign Out'); ?></a></li>
 						<?php } else { ?>
 							<li class="nav-item">
 								<?php echo functions::form_begin('sign_in_form', 'post', document::ilink('account/sign_in'), false, 'class="navbar-form"'); ?>

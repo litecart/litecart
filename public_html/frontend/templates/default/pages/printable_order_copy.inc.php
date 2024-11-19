@@ -13,7 +13,7 @@ h1 {
 	margin-top: 4mm;
 }
 
-.billing-address .rounded-rectangle {
+.rounded-rectangle {
 	border: 1px solid #000;
 	border-radius: var(--border-radius);
 	padding: 4mm;
@@ -274,6 +274,7 @@ h1 {
 </section>
 <?php } ?>
 
+<?php if (!empty($action_menu)) { ?>
 <div id="actions">
 	<ul class="list-unstyled">
 		<li>
@@ -285,9 +286,8 @@ h1 {
 </div>
 
 <script>
-	document.title = "<?php echo functions::escape_js(language::translate('title_order', 'Order')); ?> #<?php echo $order['id']; ?>";
-
 	$('#actions button[name="print"]').on('click', function(){
 		window.print();
 	});
 </script>
+<?php } ?>

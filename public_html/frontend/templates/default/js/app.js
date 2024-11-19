@@ -347,7 +347,7 @@
 				borderRadius: 0
 			}, {
 				duration: 1000,
-				easing: 'easeOutCubic'
+				easing: 'easeInCubic'
 			})
 			.animate({
 				opacity: 0
@@ -391,8 +391,8 @@
 				height: $target.innerHeight(),
 				borderRadius: 0
 			}, {
-				duration: '1000ms',
-				easing: 'easeOutCubic'
+				duration: 1000,
+				easing: 'easeInCubic'
 			})
 			.animate({
 				opacity: 0
@@ -994,6 +994,12 @@ $('body').on('click', '.data-table tbody tr', function(e) {
 
 	// Polyfill for easeOutBounce
 	$.extend($.easing, {
+		easeOutCubic: function (x) {
+			return 1 - Math.pow( 1 - x, 3 );
+		},
+		easeInCubic: function (x) {
+			return Math.pow(x, 3);
+		},
 		easeOutBounce: function (x, t, b, c, d) {
 			if ((t/=d) < (1/2.75)) {
 				return c*(7.5625*t*t) + b;
@@ -1004,9 +1010,6 @@ $('body').on('click', '.data-table tbody tr', function(e) {
 			} else {
 				return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
 			}
-		},
-		easeOutCubic: function (x) {
-			return 1 - Math.pow( 1 - x, 3 );
 		},
 	});
 

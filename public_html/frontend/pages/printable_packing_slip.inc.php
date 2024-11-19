@@ -47,7 +47,7 @@
 		}
 
 		document::$layout = 'printable';
-		document::$title[] = language::translate('title_order', 'Order') .' '. $order->data['no'];
+		document::$title[] = [language::translate('title_order', 'Order') .' '. $order->data['no']];
 
 		$session_language = language::$selected['code'];
 		language::set($order->data['language_code']);
@@ -56,6 +56,7 @@
 		$_page->snippets['text_direction'] = !empty(language::$languages[$order->data['language_code']]['direction']) ? language::$languages[$order->data['language_code']]['direction'] : 'ltr';
 		$_page->snippets['order'] = $order->data;
 		$_page->snippets['max_first_page_items'] = 15;
+		$_page->snippets['action_menu'] = true;
 		echo $_page->render();
 
 		language::set($session_language);
