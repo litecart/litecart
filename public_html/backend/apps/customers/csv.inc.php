@@ -58,67 +58,6 @@
 
 				switch ($_POST['type']) {
 
-					case 'addresses':
-
-						// Find address
-						if (!empty($row['id']) && $address = database::query("select id from ". DB_TABLE_PREFIX ."customers_addresses where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
-							$address = new ent_address($address['id']);
-						}
-
-						if (!empty($address->data['id'])) {
-
-							if (empty($_POST['overwrite'])) {
-								echo "Skip updating existing address on line $line" . PHP_EOL;
-								continue 2;
-							}
-
-							echo 'Updating existing address '. ((!empty($row['firstname']) && !empty($row['lastname'])) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
-							$updated++;
-
-						} else {
-
-							if (empty($_POST['insert'])) {
-								echo "Skip inserting new address on line $line" . PHP_EOL;
-								continue 2;
-							}
-
-							echo 'Inserting new address: '. ((!empty($row['firstname']) && !empty($row['lastname'])) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
-							$inserted++;
-
-							if (!empty($row['id'])) {
-								database::query(
-									"insert into ". DB_TABLE_PREFIX ."customers_addresses (id, date_created)
-									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
-								);
-								$address = new ent_address($row['id']);
-							} else {
-								$address = new ent_address();
-							}
-						}
-
-						// Set address data
-						foreach ([
-							'tax_id',
-							'company',
-							'firstname',
-							'lastname',
-							'address1',
-							'address2',
-							'postcode',
-							'city',
-							'country_code',
-							'zone_code',
-							'phone',
-						] as $field) {
-							if (isset($row[$field])) {
-								$address->data[$field] = $row[$field];
-							}
-						}
-
-						$address->save();
-
-						break;
-
 					case 'customers':
 
 						// Find customer

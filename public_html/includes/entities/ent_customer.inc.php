@@ -20,7 +20,11 @@
 			database::query(
 				"show fields from ". DB_TABLE_PREFIX ."customers;"
 			)->each(function($field){
-				$this->data[$field['Field']] = database::create_variable($field);
+				if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
+					$this->data['shipping_address'][$matches[1]] = database::create_variable($field);
+				} else {
+					$this->data[$field['Field']] = database::create_variable($field);
+				}
 			});
 
 			$this->data['status'] = 1;
@@ -42,7 +46,25 @@
 				". (preg_match('#^[0-9]+$#', $id) ? "where id = ". (int)$id ."" : "") ."
 				". (preg_match('#@#', $id) ? "where lower(email) = '". database::input(strtolower($id)) ."'" : "") ."
 				limit 1;"
-			)->fetch();
+			)->fetch(function($customer){
+
+				foreach ($customer as $field => $value) {
+					if (preg_match('#^shipping_(.*)$#', $field, $matches)) {
+						unset($customer['shipping_'.$matches[1]]);
+						$customer['shipping_address'][$matches[1]] = $value;
+					}
+				}
+
+				if (empty($this->data['different_shipping_address'])) {
+
+					foreach (array_keys($this->data['shipping_address']) as $key) {
+						$customer['shipping_address'][$key] = '';
+					}
+
+					$customer['shipping_address']['country_code'] = $customer['country_code'];
+					$customer['shipping_address']['zone_code'] = $customer['zone_code'];
+				}
+			});
 
 			if ($customer) {
 				$this->data = array_replace($this->data, array_intersect_key($customer, $this->data));
@@ -94,8 +116,17 @@
 					country_code = '". database::input($this->data['country_code']) ."',
 					zone_code = '". database::input($this->data['zone_code']) ."',
 					phone = '". database::input($this->data['phone']) ."',
-					default_billing_address_id = ". (int)$this->data['default_billing_address_id'] .",
-					default_shipping_address_id = ". (int)$this->data['default_shipping_address_id'] .",
+					different_shipping_address = '". (!empty($this->data['different_shipping_address']) ? '1' : '0') ."',
+					shipping_company = '". database::input($this->data['shipping_address']['company']) ."',
+					shipping_firstname = '". database::input($this->data['shipping_address']['firstname']) ."',
+					shipping_lastname = '". database::input($this->data['shipping_address']['lastname']) ."',
+					shipping_address1 = '". database::input($this->data['shipping_address']['address1']) ."',
+					shipping_address2 = '". database::input($this->data['shipping_address']['address2']) ."',
+					shipping_postcode = '". database::input($this->data['shipping_address']['postcode']) ."',
+					shipping_city = '". database::input($this->data['shipping_address']['city']) ."',
+					shipping_country_code = '". database::input($this->data['shipping_address']['country_code']) ."',
+					shipping_zone_code = '". database::input($this->data['shipping_address']['zone_code']) ."',
+					shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
 					notes = '". database::input($this->data['notes']) ."',
 					password_reset_token = '". database::input($this->data['password_reset_token']) ."',
 					date_blocked_until = ". (!empty($this->data['date_blocked_until']) ? "'". database::input($this->data['date_blocked_until']) ."'" : "null") .",

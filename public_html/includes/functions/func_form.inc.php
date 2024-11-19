@@ -1089,25 +1089,6 @@
 		}
 	}
 
-	function form_select_address($name, $input=true, $parameters='') {
-
-		$options = database::query(
-			"select * from ". DB_TABLE_PREFIX ."customers_addresses
-			where customer_id = ". (int)customer::$data['id'] ."
-			order by id asc;"
-		)->fetch_all(function($address){
-			$formatted_address = reference::country($address['country_code'])->format_address($address);
-			return [$address['id'], $formatted_address];
-		});
-
-		if (preg_match('#\[\]$#', $name)) {
-			return form_select_multiple($name, $options, $input, $parameters);
-		} else {
-			array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
-			return form_select($name, $options, $input, $parameters);
-		}
-	}
-
 	function form_select_administrator($name, $input=true, $parameters='') {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {

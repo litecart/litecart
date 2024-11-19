@@ -42,16 +42,16 @@
 		}
 
 		if (!isset($_POST['customer']['zone_code'])) {
-			$_POST['billing_address']['zone_code'] = '';
+			$_POST['customer']['zone_code'] = '';
 		}
 
 		if (!isset($_POST['shipping_address']['zone_code'])) {
 			$_POST['shipping_address']['zone_code'] = '';
 		}
 
-		if (empty($_POST['billing_address']['type']) || $_POST['billing_address']['type'] == 'individual') {
-			$_POST['billing_address']['company'] = '';
-			$_POST['billing_address']['tax_id'] = '';
+		if (empty($_POST['customer']['type']) || $_POST['customer']['type'] == 'individual') {
+			$_POST['customer']['company'] = '';
+			$_POST['customer']['tax_id'] = '';
 		}
 
 		// Validate
@@ -120,8 +120,8 @@
 			'zone_code',
 			'phone',
 		] as $field) {
-			if (isset($_POST['billing_address'][$field])) {
-				$order->data['billing_address'][$field] = $_POST['billing_address'][$field];
+			if (isset($_POST['customer'][$field])) {
+				$order->data['customer'][$field] = $_POST['customer'][$field];
 			}
 		}
 
@@ -146,8 +146,8 @@
 					$order->data['shipping_address'][$field] = '';
 				}
 			} else {
-				if (isset($_POST['billing_address'][$field])) {
-					$order->data['shipping_address'][$field] = $_POST['billing_address'][$field];
+				if (isset($_POST['customer'][$field])) {
+					$order->data['shipping_address'][$field] = $_POST['customer'][$field];
 				} else {
 					$order->data['shipping_address'][$field] = '';
 				}
@@ -183,8 +183,8 @@
 						$aliases = [
 							'%store_name' => settings::get('store_name'),
 							'%store_link' => document::ilink(''),
-							'%customer_firstname' => $_POST['billing_address']['firstname'],
-							'%customer_lastname' => $_POST['billing_address']['lastname'],
+							'%customer_firstname' => $_POST['customer']['firstname'],
+							'%customer_lastname' => $_POST['customer']['lastname'],
 							'%customer_email' => $_POST['customer']['email'],
 							'%customer_password' => $_POST['password']
 						];
@@ -193,7 +193,7 @@
 						$message = strtr(language::translate('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email.\r\n\r\n%store_name\r\n\r\n%store_link"), $aliases);
 
 						$email = new ent_email();
-						$email->add_recipient($_POST['customer']['email'], $_POST['billing_address']['firstname'] .' '. $_POST['billing_address']['lastname'])
+						$email->add_recipient($_POST['customer']['email'], $_POST['customer']['firstname'] .' '. $_POST['customer']['lastname'])
 									->set_subject($subject)
 									->add_body($message)
 									->send();

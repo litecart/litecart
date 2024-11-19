@@ -6,7 +6,6 @@
 	<nav class="nav nav-stacked nav-pills">
 		<?php if (!empty(customer::$data['id'])) { ?>
 		<a class="nav-link<?php if (route::$selected['route'] == 'f:edit_account') echo ' active'; ?>" href="<?php echo document::href_ilink('account/edit'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a>
-		<a class="nav-link<?php if (route::$selected['route'] == 'f:addresses') echo ' active'; ?>" href="<?php echo document::href_ilink('account/addresses'); ?>"><?php echo language::translate('title_addresses', 'Addresses'); ?></a>
 		<a class="nav-link<?php if (route::$selected['route'] == 'f:order_history') echo ' active'; ?>" href="<?php echo document::href_ilink('account/order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a>
 		<a class="nav-link" href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_sign_out', 'Sign Out'); ?></a>
 		<?php } else { ?>

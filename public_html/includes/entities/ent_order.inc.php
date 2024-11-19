@@ -28,12 +28,8 @@
 						$this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = database::create_variable($field);
 						break;
 
-					case (preg_match('#^billing_#', $field['Field'])):
-						$this->data['billing_address'][preg_replace('#^(billing_)#', '', $field['Field'])] = database::create_variable($field);
-						break;
-
 					case (preg_match('#^shipping_(?!option)#', $field['Field'])):
-						$this->data['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = database::create_variable($field);
+						$this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = database::create_variable($field);
 						break;
 
 					case (preg_match('#^payment_option#', $field['Field'])):
@@ -105,12 +101,8 @@
 						$this->data['customer'][preg_replace('#^(customer_)#', '', $field)] = $value;
 						break;
 
-					case (preg_match('#^billing_#', $field)):
-						$this->data['billing_address'][preg_replace('#^(billing_)#', '', $field)] = $value;
-						break;
-
 					case (preg_match('#^shipping_(?!option)#', $field)):
-						$this->data['shipping_address'][preg_replace('#^(shipping_)#', '', $field)] = $value;
+						$this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field)] = $value;
 						break;
 
 					case (preg_match('#^payment_option#', $field)):
@@ -185,11 +177,11 @@
 			}
 
 			// Link guests to customer profile
-			if (!$this->data['customer']['id'] && $this->data['billing_address']['email']) {
+			if (!$this->data['customer']['id'] && $this->data['customer']['email']) {
 
 				$customer = database::query(
 					"select id from ". DB_TABLE_PREFIX ."customers
-					where email = '". database::input($this->data['billing_address']['email']) ."'
+					where email = '". database::input($this->data['customer']['email']) ."'
 					limit 1;"
 				)->fetch();
 
@@ -234,29 +226,29 @@
 					unread = ". (int)$this->data['unread'] .",
 					order_status_id = ". ($this->data['order_status_id'] ? (int)$this->data['order_status_id'] : "null") .",
 					customer_id = ". ($this->data['customer']['id'] ? (int)$this->data['customer']['id'] : "null") .",
-					billing_tax_id = '". database::input($this->data['billing_address']['tax_id']) ."',
-					billing_company = '". database::input($this->data['billing_address']['company']) ."',
-					billing_firstname = '". database::input($this->data['billing_address']['firstname']) ."',
-					billing_lastname = '". database::input($this->data['billing_address']['lastname']) ."',
-					billing_address1 = '". database::input($this->data['billing_address']['address1']) ."',
-					billing_address2 = '". database::input($this->data['billing_address']['address2']) ."',
-					billing_city = '". database::input($this->data['billing_address']['city']) ."',
-					billing_postcode = '". database::input($this->data['billing_address']['postcode']) ."',
-					billing_country_code = '". database::input($this->data['billing_address']['country_code']) ."',
-					billing_zone_code = '". database::input($this->data['billing_address']['zone_code']) ."',
-					billing_phone = '". database::input($this->data['billing_address']['phone']) ."',
-					billing_email = '". database::input($this->data['billing_address']['email']) ."',
-					shipping_company = '". database::input($this->data['shipping_address']['company']) ."',
-					shipping_firstname = '". database::input($this->data['shipping_address']['firstname']) ."',
-					shipping_lastname = '". database::input($this->data['shipping_address']['lastname']) ."',
-					shipping_address1 = '". database::input($this->data['shipping_address']['address1']) ."',
-					shipping_address2 = '". database::input($this->data['shipping_address']['address2']) ."',
-					shipping_city = '". database::input($this->data['shipping_address']['city']) ."',
-					shipping_postcode = '". database::input($this->data['shipping_address']['postcode']) ."',
-					shipping_country_code = '". database::input($this->data['shipping_address']['country_code']) ."',
-					shipping_zone_code = '". database::input($this->data['shipping_address']['zone_code']) ."',
-					shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
-					shipping_email = '". database::input($this->data['shipping_address']['email']) ."',
+					customer_tax_id = '". database::input($this->data['customer']['tax_id']) ."',
+					customer_company = '". database::input($this->data['customer']['company']) ."',
+					customer_firstname = '". database::input($this->data['customer']['firstname']) ."',
+					customer_lastname = '". database::input($this->data['customer']['lastname']) ."',
+					customer_address1 = '". database::input($this->data['customer']['address1']) ."',
+					customer_address2 = '". database::input($this->data['customer']['address2']) ."',
+					customer_city = '". database::input($this->data['customer']['city']) ."',
+					customer_postcode = '". database::input($this->data['customer']['postcode']) ."',
+					customer_country_code = '". database::input($this->data['customer']['country_code']) ."',
+					customer_zone_code = '". database::input($this->data['customer']['zone_code']) ."',
+					customer_phone = '". database::input($this->data['customer']['phone']) ."',
+					customer_email = '". database::input($this->data['customer']['email']) ."',
+					shipping_company = '". database::input($this->data['customer']['shipping_address']['company']) ."',
+					shipping_firstname = '". database::input($this->data['customer']['shipping_address']['firstname']) ."',
+					shipping_lastname = '". database::input($this->data['customer']['shipping_address']['lastname']) ."',
+					shipping_address1 = '". database::input($this->data['customer']['shipping_address']['address1']) ."',
+					shipping_address2 = '". database::input($this->data['customer']['shipping_address']['address2']) ."',
+					shipping_city = '". database::input($this->data['customer']['shipping_address']['city']) ."',
+					shipping_postcode = '". database::input($this->data['customer']['shipping_address']['postcode']) ."',
+					shipping_country_code = '". database::input($this->data['customer']['shipping_address']['country_code']) ."',
+					shipping_zone_code = '". database::input($this->data['customer']['shipping_address']['zone_code']) ."',
+					shipping_phone = '". database::input($this->data['customer']['shipping_address']['phone']) ."',
+					shipping_email = '". database::input($this->data['customer']['shipping_address']['email']) ."',
 					shipping_option_id = '". (!empty($this->shipping->selected['id']) ? database::input($this->data['shipping_option']['id']) : '') ."',
 					shipping_option_name = '". (!empty($this->shipping->selected['id']) ? database::input($this->shipping->selected['name']) : '') ."',
 					shipping_option_userdata = '". (!empty($this->shipping->selected['userdata']) ? database::input(json_encode($this->data['shipping_option']['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
@@ -630,7 +622,7 @@
 				'%lastname' => $this->data['billing_address']['lastname'],
 				'%billing_address' => functions::format_address($this->data['customer']),
 				'%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
-				'%shipping_address' => functions::format_address($this->data['shipping_address']),
+				'%shipping_address' => functions::format_address($this->data['customer']['shipping_address']),
 				'%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
 				'%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
 				'%order_items' => null,

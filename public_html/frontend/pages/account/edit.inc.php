@@ -68,12 +68,8 @@
 				}
 			}
 
-			foreach ([
-				'email',
-			] as $field) {
-				if (isset($_POST[$field])) {
-					$customer->data[$field] = $_POST[$field];
-				}
+			if (isset($_POST[$field])) {
+				$customer->data['email'] = $_POST['email'];
 			}
 
 			if (!empty($_POST['new_password'])) {
@@ -203,9 +199,12 @@
 				'country_code',
 				'zone_code',
 				'phone',
+				'email',
 			] as $field) {
-				if (isset($_POST[$field])) {
-					$customer->data['shipping_address'][$field] = $_POST[$field];
+				if (isset($_POST['shipping_address'][$field]) && !empty($_POST['different_shipping_address'])) {
+					$customer->data['shipping_address'][$field] = $_POST['shipping_address'][$field];
+				} else {
+					$customer->data['shipping_address'][$field] = '';
 				}
 			}
 

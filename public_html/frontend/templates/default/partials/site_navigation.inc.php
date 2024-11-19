@@ -91,12 +91,6 @@
 							</li>
 
 							<li>
-								<a class="navbar-item" href="<?php echo document::href_ilink('account/addresses'); ?>">
-									<?php echo language::translate('title_addresses', 'Addresses'); ?>
-								</a>
-							</li>
-
-							<li>
 								<a class="navbar-item" href="<?php echo document::href_ilink('account/order_history'); ?>">
 									<?php echo language::translate('title_order_history', 'Order History'); ?>
 								</a>

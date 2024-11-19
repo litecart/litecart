@@ -77,14 +77,14 @@ table.items tbody tr:nth-child(11) {
 				<div class="col-6 shipping-address">
 					<div class="rounded-rectangle">
 						<div class="label"><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></div>
-						<div class="value"><?php echo nl2br(reference::country($order['shipping_address']['country_code'])->format_address($order['shipping_address'])); ?></div>
+						<div class="value"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])); ?></div>
 					</div>
 
 					<div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
-					<div class="value"><?php echo fallback($order['billing_address']['email'], '-'); ?></div>
+					<div class="value"><?php echo fallback($order['customer']['email'], '-'); ?></div>
 
 					<div class="label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
-					<div class="value"><?php echo fallback($order['shipping_address']['phone'], '-'); ?></div>
+					<div class="value"><?php echo fallback($order['customer']['shipping_address']['phone'], '-'); ?></div>
 				</div>
 			</div>
 		</div>

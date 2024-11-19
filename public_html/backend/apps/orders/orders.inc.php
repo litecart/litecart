@@ -186,10 +186,10 @@
 			"o.id = '". database::input($_GET['query']) ."'",
 			"o.no like '%". database::input($_GET['query']) ."%'",
 			"o.reference like '%". database::input($_GET['query']) ."%'",
-			"o.billing_email like '%". database::input($_GET['query']) ."%'",
-			"o.billing_tax_id like '%". database::input($_GET['query']) ."%'",
+			"o.customer_email like '%". database::input($_GET['query']) ."%'",
+			"o.customer_tax_id like '%". database::input($_GET['query']) ."%'",
 			"o.shipping_tax_id like '%". database::input($_GET['query']) ."%'",
-			"concat(o.billing_company, '\\n', o.billing_firstname, ' ', o.billing_lastname, '\\n', o.billing_address1, '\\n', o.billing_address2, '\\n', o.billing_postcode, '\\n', o.billing_city) like '%". database::input($_GET['query']) ."%'",
+			"concat(o.customer_company, '\\n', o.customer_firstname, ' ', o.customer_lastname, '\\n', o.customer_address1, '\\n', o.customer_address2, '\\n', o.customer_postcode, '\\n', o.customer_city) like '%". database::input($_GET['query']) ."%'",
 			"concat(o.shipping_company, '\\n', o.shipping_firstname, ' ', o.shipping_lastname, '\\n', o.shipping_address1, '\\n', o.shipping_address2, '\\n', o.shipping_postcode, '\\n', o.shipping_city) like '%". database::input($_GET['query']) ."%'",
 			"o.payment_option_id like '%". database::input($_GET['query']) ."%'",
 			"o.payment_option_name like '%". database::input($_GET['query']) ."%'",
@@ -210,10 +210,10 @@
 			$sql_sort = "o.starred desc, o.id desc";
 			break;
 		case 'country':
-			$sql_sort = "o.starred desc, o.billing_country_code";
+			$sql_sort = "o.starred desc, o.customer_country_code";
 			break;
 		case 'customer':
-			$sql_sort = "o.starred desc, if(o.billing_company, o.billing_company, concat(o.billing_firstname, ' ', o.billing_lastname)) asc";
+			$sql_sort = "o.starred desc, if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) asc";
 			break;
 		case 'order_status':
 			$sql_sort = "o.starred desc, field(os.state,'created','on_hold','ready','delayed','processing','dispatched','in_transit','completed','delivered','returning','returned','cancelled'), osi.name";
@@ -414,8 +414,8 @@ table .icon-star:hover {
 					<td><?php echo functions::draw_fonticon($order['order_status_icon'].'', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
 					<td class="text-end"><?php echo $order['no']; ?></td>
 					<td><?php echo !empty($order['starred']) ? functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo $order['billing_company'] ? $order['billing_company'] : $order['billing_firstname'] .' '. $order['billing_lastname']; ?><?php if (!$order['customer_id']) echo ' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></a> <span style="opacity: 0.5;"><?php echo $order['billing_tax_id']; ?></span></td>
-					<td><?php if (!empty($order['billing_country_code'])) echo reference::country($order['billing_country_code'])->name; ?></td>
+					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php if (!$order['customer_id']) echo ' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></a> <span style="opacity: 0.5;"><?php echo $order['customer_tax_id']; ?></span></td>
+					<td><?php if (!empty($order['customer_country_code'])) echo reference::country($order['customer_country_code'])->name; ?></td>
 					<td><?php echo $order['payment_option_name']; ?></td>
 					<td><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
 					<td class="text-center"><?php if (!is_null($order['sufficient_stock'])) echo $order['sufficient_stock'] ? functions::draw_fonticon('icon-check', 'style="color: #88cc44;"') : functions::draw_fonticon('icon-times', 'style="color: #ff6644;"'); ?></td>

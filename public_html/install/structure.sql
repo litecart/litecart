@@ -299,28 +299,6 @@ CREATE TABLE `lc_customers` (
 	UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
-CREATE TABLE `lc_customers_addresses` (
-	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`customer_id` INT(10) UNSIGNED NOT NULL,
-	`type` ENUM('','business','individual') NOT NULL DEFAULT '',
-	`tax_id` VARCHAR(32) NOT NULL DEFAULT '',
-	`company` VARCHAR(64) NOT NULL DEFAULT '',
-	`firstname` VARCHAR(64) NOT NULL DEFAULT '',
-	`lastname` VARCHAR(64) NOT NULL DEFAULT '',
-	`address1` VARCHAR(64) NOT NULL DEFAULT '',
-	`address2` VARCHAR(64) NOT NULL DEFAULT '',
-	`postcode` VARCHAR(8) NOT NULL DEFAULT '',
-	`city` VARCHAR(32) NOT NULL DEFAULT '',
-	`country_code` CHAR(2) NOT NULL DEFAULT '',
-	`zone_code` VARCHAR(8) NOT NULL DEFAULT '',
-	`phone` VARCHAR(24) NOT NULL DEFAULT '',
-	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `customer_id` (`customer_id`) USING BTREE,
-	CONSTRAINT `customer_address_to_customer` FOREIGN KEY (`customer_id`) REFERENCES `lc_customers` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
--- -----
 CREATE TABLE `lc_delivery_statuses` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
