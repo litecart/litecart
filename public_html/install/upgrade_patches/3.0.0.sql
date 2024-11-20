@@ -208,25 +208,37 @@ ADD INDEX `number` (`number`);
 ALTER TABLE `lc_customers`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `tax_id` `billing_tax_id` VARCHAR(32) NOT NULL DEFAULT '',
-CHANGE COLUMN `company` `billing_company` VARCHAR(64) NOT NULL DEFAULT '',
-CHANGE COLUMN `firstname` `billing_firstname` VARCHAR(64) NOT NULL DEFAULT '',
-CHANGE COLUMN `lastname` `billing_lastname` VARCHAR(64) NOT NULL DEFAULT '',
-CHANGE COLUMN `address1` `billing_address1` VARCHAR(64) NOT NULL DEFAULT '',
-CHANGE COLUMN `address2` `billing_address2` VARCHAR(64) NOT NULL DEFAULT '',
-CHANGE COLUMN `postcode` `billing_postcode` VARCHAR(8) NOT NULL DEFAULT '',
-CHANGE COLUMN `city` `billing_city` VARCHAR(32) NOT NULL DEFAULT '',
-CHANGE COLUMN `country_code` `billing_country_code` VARCHAR(4) NOT NULL DEFAULT '',
-CHANGE COLUMN `zone_code` `billing_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
-CHANGE COLUMN `phone` `billing_phone` VARCHAR(24) NOT NULL DEFAULT '',
+CHANGE COLUMN `email` `email` VARCHAR(64) NOT NULL DEFAULT '',
+CHANGE COLUMN `tax_id` `tax_id` VARCHAR(24) NOT NULL DEFAULT '',
+CHANGE COLUMN `company` `company` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `firstname` `firstname` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `lastname` `lastname` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `address1` `address1` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `address2` `address2` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `postcode` `postcode` VARCHAR(16) NOT NULL DEFAULT '',
+CHANGE COLUMN `city` `city` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `country_code` `country_code` CHAR(2) NOT NULL DEFAULT '',
+CHANGE COLUMN `zone_code` `zone_code` VARCHAR(8) NOT NULL DEFAULT '',
+CHANGE COLUMN `phone` `phone` VARCHAR(16) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_company` `shipping_company` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_firstname` `shipping_firstname` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_lastname` `shipping_lastname` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_address1` `shipping_address1` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_address2` `shipping_address2` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_postcode` `shipping_postcode` VARCHAR(16) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_city` `shipping_city` VARCHAR(32) NOT NULL DEFAULT '',
 CHANGE COLUMN `shipping_country_code` `shipping_country_code` CHAR(2) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_zone_code` `shipping_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_country_code` `shipping_country_code` CHAR(2) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_zone_code` `shipping_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_phone` `shipping_phone` VARCHAR(16) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_email` `shipping_email` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `login_attempts` `login_attempts` INT(11) NOT NULL DEFAULT '0',
 CHANGE COLUMN `total_logins` `total_logins` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '',
-ADD COLUMN `default_billing_address_id` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `shipping_phone`,
-ADD COLUMN `default_shipping_address_id` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `default_billing_address_id`;
+ADD COLUMN `shipping_email` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_phone`;
 -- -----
 ALTER TABLE `lc_delivery_statuses`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
@@ -271,18 +283,28 @@ CHANGE COLUMN `starred` `starred` TINYINT(1) UNSIGNED,
 CHANGE COLUMN `unread` `unread` TINYINT(1) UNSIGNED,
 CHANGE COLUMN `order_status_id` `order_status_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `customer_id` `customer_id` INT(10) UNSIGNED NULL,
-CHANGE COLUMN `customer_email` `billing_email` VARCHAR(128) NOT NULL DEFAULT '',
-CHANGE COLUMN `customer_tax_id` `billing_tax_id` VARCHAR(32) NOT NULL DEFAULT '',
-CHANGE COLUMN `customer_company` `billing_company` VARCHAR(64) NOT NULL DEFAULT '',
-CHANGE COLUMN `customer_firstname` `billing_firstname` VARCHAR(64) NOT NULL DEFAULT '',
-CHANGE COLUMN `customer_lastname` `billing_lastname` VARCHAR(64) NOT NULL DEFAULT '',
-CHANGE COLUMN `customer_address1` `billing_address1` VARCHAR(64) NOT NULL DEFAULT '',
-CHANGE COLUMN `customer_address2` `billing_address2` VARCHAR(64) NOT NULL DEFAULT '',
-CHANGE COLUMN `customer_city` `billing_city` VARCHAR(32) NOT NULL DEFAULT '',
-CHANGE COLUMN `customer_postcode` `billing_postcode` VARCHAR(8) NOT NULL DEFAULT '',
-CHANGE COLUMN `customer_country_code` `billing_country_code` VARCHAR(2) NOT NULL DEFAULT '',
-CHANGE COLUMN `customer_zone_code` `billing_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
-CHANGE COLUMN `customer_phone` `billing_phone` VARCHAR(24) NOT NULL DEFAULT '',
+CHANGE COLUMN `customer_email` `customer_email` VARCHAR(64) NOT NULL DEFAULT '',
+CHANGE COLUMN `customer_tax_id` `customer_tax_id` VARCHAR(24) NOT NULL DEFAULT '',
+CHANGE COLUMN `customer_company` `customer_company` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `customer_firstname` `customer_firstname` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `customer_lastname` `customer_lastname` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `customer_address1` `customer_address1` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `customer_address2` `customer_address2` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `customer_city` `customer_city` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `customer_postcode` `customer_postcode` VARCHAR(8) NOT NULL DEFAULT '',
+CHANGE COLUMN `customer_country_code` `customer_country_code` CHAR(2) NOT NULL DEFAULT '',
+CHANGE COLUMN `customer_zone_code` `customer_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
+CHANGE COLUMN `customer_phone` `customer_phone` VARCHAR(16) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_company` `shipping_company` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_firstname` `shipping_firstname` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_lastname` `shipping_lastname` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_address1` `shipping_address1` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_address2` `shipping_address2` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_city` `shipping_city` VARCHAR(32) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_postcode` `shipping_postcode` VARCHAR(8) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_country_code` `shipping_country_code` CHAR(2) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_zone_code` `shipping_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_phone` `shipping_phone` VARCHAR(16) NOT NULL DEFAULT '',
 CHANGE COLUMN `shipping_country_code` `shipping_country_code` CHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `language_code` `language_code` NULL AFTER `reference`,
@@ -290,7 +312,7 @@ CHANGE COLUMN `payment_due` `total` FLOAT(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `tax_total` `total_tax` FLOAT(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `client_ip` `ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 ADD COLUMN `no` VARCHAR(16) NOT NULL DEFAULT '' AFTER `id`,
-ADD COLUMN `shipping_tax_id` VARCHAR(128) NOT NULL DEFAULT '' AFTER `billing_email`,
+ADD COLUMN `shipping_tax_id` VARCHAR(128) NOT NULL DEFAULT '' AFTER `customer_email`,
 ADD COLUMN `shipping_email` VARCHAR(128) NOT NULL DEFAULT '' AFTER `shipping_phone`,
 ADD COLUMN `shipping_option_userdata` VARCHAR(512) NOT NULL DEFAULT '' AFTER `shipping_option_name`,
 ADD COLUMN `shipping_option_fee` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `shipping_option_userdata`,
@@ -538,7 +560,7 @@ INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`
 -- -----
 INSERT IGNORE INTO `lc_customers_addresses`
 (customer_id, tax_id, company, firstname, lastname, address1, address2, postcode, city, country_code, zone_code, phone)
-SELECT DISTINCT id, billing_tax_id, billing_company, billing_firstname, billing_lastname, billing_address1, billing_address2, billing_postcode, billing_city, billing_country_code, billing_zone_code, billing_phone
+SELECT DISTINCT id, customer_tax_id, customer_company, customer_firstname, customer_lastname, customer_address1, customer_address2, customer_postcode, customer_city, customer_country_code, customer_zone_code, customer_phone
 FROM `lc_customers`
 ORDER BY id ASC;
 -- -----
@@ -627,9 +649,9 @@ UPDATE `lc_orders`
 SET `no` = id;
 -- -----
 UPDATE `lc_orders`
-SET shipping_tax_id = billing_tax_id,
-	shipping_phone = billing_phone,
-	shipping_email = billing_email;
+SET shipping_tax_id = customer_tax_id,
+	shipping_phone = customer_phone,
+	shipping_email = customer_email;
 -- -----
 UPDATE `lc_orders` o
 LEFT JOIN `lc_orders_totals` ot ON (ot.order_id = o.id AND ot.module_id = 'ot_subtotal')
@@ -1031,19 +1053,6 @@ ALTER TABLE `lc_zones_to_geo_zones`
 ADD CONSTRAINT `zone_entry_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc_geo_zones` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
 ADD CONSTRAINT `zone_entry_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE CASCADE ON DELETE CASCADE,
 ADD CONSTRAINT `zone_entry_to_zone` FOREIGN KEY (`zone_code`) REFERENCES `lc_zones` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_customers`
-DROP COLUMN `different_shipping_address`,
-DROP COLUMN `shipping_company`,
-DROP COLUMN `shipping_firstname`,
-DROP COLUMN `shipping_lastname`,
-DROP COLUMN `shipping_address1`,
-DROP COLUMN `shipping_address2`,
-DROP COLUMN `shipping_city`,
-DROP COLUMN `shipping_postcode`,
-DROP COLUMN `shipping_country_code`,
-DROP COLUMN `shipping_zone_code`,
-DROP COLUMN `shipping_phone`;
 -- -----
 DROP TABLE `lc_slides`;
 DROP TABLE `lc_slides_info`;

@@ -48,16 +48,16 @@
 				limit 1;"
 			)->fetch(function($customer){
 
-				foreach ($customer as $field => $value) {
-					if (preg_match('#^shipping_(.*)$#', $field, $matches)) {
+				foreach ($customer as $key => $value) {
+					if (preg_match('#^shipping_(.*)$#', $key, $matches)) {
 						unset($customer['shipping_'.$matches[1]]);
 						$customer['shipping_address'][$matches[1]] = $value;
 					}
 				}
 
-				if (empty($this->data['different_shipping_address'])) {
+				if (!$this->data['different_shipping_address']) {
 
-					foreach (array_keys($this->data['shipping_address']) as $key) {
+					foreach ($this->data['shipping_address'] as $key => $value) {
 						$customer['shipping_address'][$key] = '';
 					}
 
@@ -95,7 +95,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."orders
 					set customer_id = ". (int)$this->data['id'] ."
-					where lower(billing_email) = '". database::input(strtolower($this->data['email'])) ."'
+					where lower(email) = '". database::input(strtolower($this->data['email'])) ."'
 					and customer_id = 0;"
 				);
 			}
