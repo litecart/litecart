@@ -29,6 +29,9 @@
   white-space: wrap !important;
   cursor: default;
 }
+#box-error-log td {
+  vertical-align: top;
+}
 </style>
 
 <nav class="nav nav-tabs">
