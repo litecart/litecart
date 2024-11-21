@@ -4,7 +4,9 @@
 
     try {
 
-      if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
+      if (empty($_POST['email'])) {
+        throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
+      }
 
       if (settings::get('captcha_enabled')) {
         $captcha = functions::captcha_get('newsletter_subscribe');
@@ -60,7 +62,16 @@
 
     try {
 
-      if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
+      if (empty($_POST['email'])) {
+        throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
+      }
+
+      if (settings::get('captcha_enabled')) {
+        $captcha = functions::captcha_get('newsletter_unsubscribe');
+        if (!$captcha || empty($_POST['captcha']) || $captcha != $_POST['captcha']) {
+          throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
+        }
+      }
 
       $_POST['email'] = strtolower($_POST['email']);
 

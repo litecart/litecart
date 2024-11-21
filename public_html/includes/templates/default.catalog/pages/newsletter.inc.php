@@ -68,6 +68,15 @@
               <?php echo functions::form_draw_email_field('email', true, 'required'); ?>
             </div>
 
+            <?php if (settings::get('captcha_enabled')) { ?>
+            <div class="row">
+              <div class="form-group">
+                <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
+                <?php echo functions::form_draw_captcha_field('captcha', 'newsletter_unsubscribe', 'required'); ?>
+              </div>
+            </div>
+            <?php } ?>
+
             <?php echo functions::form_draw_button('unsubscribe', language::translate('title_unsubscribe', 'Unsubscribe')); ?>
 
           <?php echo functions::form_draw_form_end(); ?>
