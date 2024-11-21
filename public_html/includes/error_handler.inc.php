@@ -84,7 +84,7 @@
         !empty($_SERVER['HTTP_REFERER']) ? 'Referer: '. $_SERVER['HTTP_REFERER'] : '',
         ]));
       }
-      
+
       $output[] = 'Elapsed Time: '. number_format((microtime(true) - SCRIPT_TIMESTAMP_START) * 1000, 0, '.', ' ') .' ms';
       $output[] = 'Platform: '. PLATFORM_NAME .'/'. PLATFORM_VERSION;
 
