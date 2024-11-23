@@ -134,11 +134,11 @@
 
 <script>
 	$('select[name$="new_zone[zone_code]"][disabled]').each(function() {
-		$(this).html('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
-	});
+		$(this).html('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>')
+	})
 
-	$('select[name="new_zone[country_code]"]').on('change', function() {
-		let zone_field = $(this).closest('tr').find('select[name="new_zone[zone_code]"]');
+	$('select[name="new_zone[country_code]"]').on('change', () => {
+		let zone_field = $(this).closest('tr').find('select[name="new_zone[zone_code]"]')
 
 		$.ajax({
 			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
@@ -147,45 +147,45 @@
 			async: true,
 			dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+				alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message)
 			},
 			success: function(data) {
-				$(zone_field).html('');
+				$(zone_field).html('')
 				if (data) {
-					$(zone_field).append('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
+					$(zone_field).append('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>')
 					$.each(data, function(i, zone) {
-						$(zone_field).append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
-					});
-					$(zone_field).prop('disabled', false);
+						$(zone_field).append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
+					})
+					$(zone_field).prop('disabled', false)
 				} else {
-					$(zone_field).append('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
-					$(zone_field).prop('disabled', true);
+					$(zone_field).append('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>')
+					$(zone_field).prop('disabled', true)
 				}
 			}
-		});
-	});
+		})
+	})
 
-	let new_zone_index = 0;
-	while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++;
+	let new_zone_index = 0
+	while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++
 
 	$('tfoot button[name="add"]', function(e) {
-		e.preventDefault();
+		e.preventDefault()
 
-		if ($('select[name="country[code]"]').val() == '') return;
+		if ($('select[name="country[code]"]').val() == '') return
 
-		let row = $(this).closest('tr');
+		let row = $(this).closest('tr')
 
-		let found = false;
+		let found = false
 		$.each($('form[name="form_geo_zone"] tbody tr'), function(i, current_row){
 			if ($(current_row).find(':input[name$="[country_code]"]').val() == $(':input[name="new_zone[country_code]"]').val()
 			 && $(current_row).find(':input[name$="[zone_code]"]').val() == $(':input[name="new_zone[zone_code]"]').val()
 			 && $(current_row).find(':input[name$="[city]"]').val() == $(':input[name="new_zone[city]"]').val()) {
-				 found = true;
-				 return;
+				 found = true
+				 return
 			 }
-		});
+		})
 
-		if (found) return;
+		if (found) return
 
 		let $output = $([
 			'<tr>',
@@ -197,23 +197,23 @@
 			'</tr>'
 		].join('\n')
 			.replace(/new_zone_index/g, 'new_' + new_zone_index++)
-		);
+		)
 
-		$(this).closest('table').find('tbody').append($output);
+		$(this).closest('table').find('tbody').append($output)
 
-		$('tfoot :input[name$="[country_code]"]').val($(':input[name="new_zone[country_code]"]').val());
-		$('tfoot :input[name$="[zone_code]"]').val($(':input[name="new_zone[zone_code]"]').val());
-		$('tfoot :input[name$="[city]"]').val($(':input[name="new_zone[city]"]').val());
+		$('tfoot :input[name$="[country_code]"]').val($(':input[name="new_zone[country_code]"]').val())
+		$('tfoot :input[name$="[zone_code]"]').val($(':input[name="new_zone[zone_code]"]').val())
+		$('tfoot :input[name$="[city]"]').val($(':input[name="new_zone[city]"]').val())
 
 		if ($(':input[name="new_zone[city]"]').val() == '') {
-			$(':input[name="new_zone[zone_code]"]').val('');
+			$(':input[name="new_zone[zone_code]"]').val('')
 		}
 
-		$(':input[name="new_zone[city]"]').val('');
-	});
+		$(':input[name="new_zone[city]"]').val('')
+	})
 
 	$('form[name="form_geo_zone"]').on('click', '.remove', function(e) {
-		e.preventDefault();
-		$(this).closest('tr').remove();
-	});
+		e.preventDefault()
+		$(this).closest('tr').remove()
+	})
 </script>

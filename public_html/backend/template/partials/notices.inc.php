@@ -27,6 +27,6 @@
 
 <script>
 	setTimeout(function(){
-		$('#notices').fadeOut('slow');
-	}, 20e3);
+		$('#notices').fadeOut('slow')
+	}, 20e3)
 </script>

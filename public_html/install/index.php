@@ -276,11 +276,11 @@
 <script src="<?php echo WS_DIR_APP; ?>assets/jquery/jquery-4.0.0.min.js"></script>
 <script src="<?php echo WS_DIR_APP; ?>assets/featherlight/featherlight.min.js"></script>
 <script>
-	$.featherlight.autoBind = '[data-toggle="lightbox"]';
-	$.featherlight.defaults.loading = '<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>';
-	$.featherlight.defaults.closeIcon = '&#x2716;';
-	$.featherlight.defaults.targetAttr = 'data-target';
-	$.featherlight('#modal-warning-existing-installation');
+	$.featherlight.autoBind = '[data-toggle="lightbox"]'
+	$.featherlight.defaults.loading = '<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>'
+	$.featherlight.defaults.closeIcon = '&#x2716;'
+	$.featherlight.defaults.targetAttr = 'data-target'
+	$.featherlight('#modal-warning-existing-installation')
 </script>
 <?php } ?>
 

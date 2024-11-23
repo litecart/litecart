@@ -559,14 +559,14 @@
 <script>
 
 	$('select[name="currency_code"]').change(function(e){
-		$('input[name="currency_value"]').val($(this).find('option:selected').data('value'));
-		$('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text($(this).val());
-		calculate_total();
-	});
+		$('input[name="currency_value"]').val($(this).find('option:selected').data('value'))
+		$('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text($(this).val())
+		calculate_total()
+	})
 
 	// Customer
 
-	$('#customer-details button[name="get_address"]').on('click', function() {
+	$('#customer-details button[name="get_address"]').on('click', () => {
 		$.ajax({
 			url: '<?php echo document::ilink('customers/get_address.json'); ?>',
 			type: 'post',
@@ -575,43 +575,43 @@
 			async: false,
 			dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown) {
-				if (console) console.warn(errorThrown.message);
+				if (console) console.warn(errorThrown.message)
 			},
 			success: function(data) {
 				$.each(data, function(key, value) {
 					if (key.match(/^shipping_address/)) {
 						$.each(value, function(key, value) {
-							if ($('*[name="shipping_address['+key+']"]').length) $('*[name="shipping_address['+key+']"]').val(value).trigger('change');
-						});
+							if ($('*[name="shipping_address['+key+']"]').length) $('*[name="shipping_address['+key+']"]').val(value).trigger('change')
+						})
 					} else {
-						if ($('*[name="billing_address['+key+']"]').length) $('*[name="billing_address['+key+']"]').val(value).trigger('change');
+						if ($('*[name="billing_address['+key+']"]').length) $('*[name="billing_address['+key+']"]').val(value).trigger('change')
 					}
-				});
+				})
 			},
-		});
-	});
+		})
+	})
 
 	$('#customer-details select[name="billing_address[country_code]"]').change(function() {
 
 		if ($(this).find('option:selected').data('tax-id-format')) {
-			$('input[name="billing_address[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
+			$('input[name="billing_address[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
 		} else {
-			$('input[name="billing_address[tax_id]"]').removeAttr('pattern');
+			$('input[name="billing_address[tax_id]"]').removeAttr('pattern')
 		}
 
 		if ($(this).find('option:selected').data('postcode-format')) {
-			$('input[name="billing_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
+			$('input[name="billing_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'))
 		} else {
-			$('input[name="billing_address[postcode]"]').removeAttr('pattern');
+			$('input[name="billing_address[postcode]"]').removeAttr('pattern')
 		}
 
 		if ($(this).find('option:selected').data('phone-code')) {
-			$('input[name="billing_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+			$('input[name="billing_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'))
 		} else {
-			$('input[name="billing_address[phone]"]').removeAttr('placeholder');
+			$('input[name="billing_address[phone]"]').removeAttr('placeholder')
 		}
 
-		$('body').css('cursor', 'wait');
+		$('body').css('cursor', 'wait')
 		$.ajax({
 			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
@@ -619,44 +619,44 @@
 			async: false,
 			dataType: 'json',
 			success: function(data) {
-				$('select[name="billing_address[zone_code]"]').html('');
-				if ($('select[name="billing_address[zone_code]"]').is(':disabled')) $('select[name="billing_address[zone_code]"]').prop('disabled', false);
+				$('select[name="billing_address[zone_code]"]').html('')
+				if ($('select[name="billing_address[zone_code]"]').is(':disabled')) $('select[name="billing_address[zone_code]"]').prop('disabled', false)
 				if (data) {
 					$.each(data, function(i, zone) {
-						$('select[name="billing_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
-					});
+						$('select[name="billing_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
+					})
 				} else {
-					$('select[name="billing_address[zone_code]"]').prop('disabled', true);
+					$('select[name="billing_address[zone_code]"]').prop('disabled', true)
 				}
 			},
 			complete: function() {
-				$('body').css('cursor', 'auto');
+				$('body').css('cursor', 'auto')
 			}
-		});
-	});
+		})
+	})
 
-	$('#customer-details button[name="copy_billing_address"]').on('click', function(){
-		fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone'];
+	$('#customer-details button[name="copy_billing_address"]').on('click', () => {
+		fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone']
 		$.each(fields, function(key, field){
-			$('*[name="shipping_address['+ field +']"]').val($('*[name="billing_address['+ field +']"]').val()).trigger('change');
-		});
-	});
+			$('*[name="shipping_address['+ field +']"]').val($('*[name="billing_address['+ field +']"]').val()).trigger('change')
+		})
+	})
 
 	$('#customer-details select[name="shipping_address[country_code]"]').change(function(){
 
 		if ($(this).find('option:selected').data('postcode-format')) {
-			$('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
+			$('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'))
 		} else {
-			$('input[name="shipping_address[postcode]"]').removeAttr('pattern');
+			$('input[name="shipping_address[postcode]"]').removeAttr('pattern')
 		}
 
 		if ($(this).find('option:selected').data('phone-code')) {
-			$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+			$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'))
 		} else {
-			$('input[name="shipping_address[phone]"]').removeAttr('placeholder');
+			$('input[name="shipping_address[phone]"]').removeAttr('placeholder')
 		}
 
-		$('body').css('cursor', 'wait');
+		$('body').css('cursor', 'wait')
 		$.ajax({
 			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
@@ -664,56 +664,56 @@
 			async: true,
 			dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown) {
-					//alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
+					//alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message)
 			},
 			success: function(data) {
-				$('select[name="shipping_address[zone_code]"]').html('');
-				if ($('select[name="shipping_address[zone_code]"]').is(':disabled')) $('select[name="shipping_address[zone_code]"]').prop('disabled', false);
+				$('select[name="shipping_address[zone_code]"]').html('')
+				if ($('select[name="shipping_address[zone_code]"]').is(':disabled')) $('select[name="shipping_address[zone_code]"]').prop('disabled', false)
 				if (data) {
 					$.each(data, function(i, zone) {
-						$('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
-					});
+						$('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
+					})
 				} else {
-					$('select[name="shipping_address[zone_code]]"]').prop('disabled', true);
+					$('select[name="shipping_address[zone_code]]"]').prop('disabled', true)
 				}
 			},
 			complete: function() {
-				$('body').css('cursor', 'auto');
+				$('body').css('cursor', 'auto')
 			}
-		});
-	});
+		})
+	})
 
 	if ($('select[name="billing_address[country_code]"] option:selected').data('tax-id-format')) {
-		$('input[name="billing_address[tax_id]"]').attr('pattern', $('select[name="country_code"] option:selected').data('tax-id-format'));
+		$('input[name="billing_address[tax_id]"]').attr('pattern', $('select[name="country_code"] option:selected').data('tax-id-format'))
 	} else {
-		$('input[name="billing_address[tax_id]"]').removeAttr('pattern');
+		$('input[name="billing_address[tax_id]"]').removeAttr('pattern')
 	}
 
 	if ($('select[name="billing_address[country_code]"] option:selected').data('postcode-format')) {
-		$('input[name="billing_address[postcode]"]').attr('pattern', $('select[name="billing_address[country_code]"] option:selected').data('postcode-format'));
+		$('input[name="billing_address[postcode]"]').attr('pattern', $('select[name="billing_address[country_code]"] option:selected').data('postcode-format'))
 	} else {
-		$('input[name="billing_address[postcode]"]').removeAttr('pattern');
+		$('input[name="billing_address[postcode]"]').removeAttr('pattern')
 	}
 
 	if ($('select[name="billing_address[country_code]"] option:selected').data('phone-code')) {
-		$('input[name="billing_address[phone]"]').attr('placeholder', '+' + $('select[name="billing_address[country_code]"] option:selected').data('phone-code'));
+		$('input[name="billing_address[phone]"]').attr('placeholder', '+' + $('select[name="billing_address[country_code]"] option:selected').data('phone-code'))
 	} else {
-		$('input[name="billing_address[phone]"]').removeAttr('placeholder');
+		$('input[name="billing_address[phone]"]').removeAttr('placeholder')
 	}
 
 	if ($('select[name="shipping_address[country_code]"] option:selected').data('postcode-format')) {
-		$('input[name="shipping_address[postcode]"]').attr('pattern', $('select[name="shipping_address[country_code]"] option:selected').data('postcode-format'));
+		$('input[name="shipping_address[postcode]"]').attr('pattern', $('select[name="shipping_address[country_code]"] option:selected').data('postcode-format'))
 	} else {
-		$('input[name="shipping_address[postcode]"]').removeAttr('pattern');
+		$('input[name="shipping_address[postcode]"]').removeAttr('pattern')
 	}
 
 	if ($('select[name="shipping_address[country_code]"] option:selected').data('phone-code')) {
-		$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $('select[name="shipping_address[country_code]"] option:selected').data('phone-code'));
+		$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $('select[name="shipping_address[country_code]"] option:selected').data('phone-code'))
 	} else {
-		$('input[name="shipping_address[phone]"]').removeAttr('placeholder');
+		$('input[name="shipping_address[phone]"]').removeAttr('placeholder')
 	}
 
-	$('select[name="language_code"], select[name="currency_code"], input[name="currency_value"], :input[name^="customer"]').on('input', function(){
+	$('select[name="language_code"], select[name="currency_code"], input[name="currency_value"], :input[name^="customer"]').on('input', () => {
 		let params = {
 			language_code: $('select[name="language_code"]').val(),
 			currency_code: $('select[name="currency_code"]').val(),
@@ -734,90 +734,90 @@
 			}
 		}
 
-		$('.add-product').attr('href', $('.add-product').data('href') +'?'+ $.param(params));
-	});
+		$('.add-product').attr('href', $('.add-product').data('href') +'?'+ $.param(params))
+	})
 
-	$(':input[name^="customer"]').first().trigger('input');
+	$(':input[name^="customer"]').first().trigger('input')
 
 	// Shopping cart items
 
-	$('#shopping-cart-items').on('click', '.edit', function(){
-		$.featherlight('#modal-edit-cart-item');
+	$('#shopping-cart-items').on('click', '.edit', () => {
+		$.featherlight('#modal-edit-cart-item')
 
 		let modal = $('.featherlight.active'),
-			row = $(this).closest('tr');
+			row = $(this).closest('tr')
 
-		$(modal).data('row', row);
+		$(modal).data('row', row)
 
 		$.each($(modal).find(':input'), function(i,element){
-			let field = $(element).attr('name');
-			let value = $(row).find(':input[name$="['+field+']"]').val();
-			if ($(modal).find(':input[name="'+field+'"]').attr('type') == 'number') value = parseFloat(value);
-			$(modal).find(':input[name="'+field+'"]').val(value);
-		});
-	});
+			let field = $(element).attr('name')
+			let value = $(row).find(':input[name$="['+field+']"]').val()
+			if ($(modal).find(':input[name="'+field+'"]').attr('type') == 'number') value = parseFloat(value)
+			$(modal).find(':input[name="'+field+'"]').val(value)
+		})
+	})
 
-	$('#shopping-cart-items .add-custom-item').on('click', function(){
-		$.featherlight('#modal-add-cart-item');
+	$('#shopping-cart-items .add-custom-item').on('click', () => {
+		$.featherlight('#modal-add-cart-item')
 
 		let modal = $('.featherlight.active'),
-			row = $(this).closest('tr');
+			row = $(this).closest('tr')
 
-		$(modal).data('row', '');
-	});
+		$(modal).data('row', '')
+	})
 
 	$('#modal-edit-cart-item button[name="ok"]').on('click', function(e){
 
-		let modal = $('.featherlight.active');
-		let row = $(modal).data('row');
+		let modal = $('.featherlight.active')
+		let row = $(modal).data('row')
 		let fields = [
 			'name',
 			'price',
 			'tax',
-		];
+		]
 
 		if (row == '') {
-			let item = {};
+			let item = {}
 			$.each($(modal).find(':input'), function(i,element){
-				let field = $(element).attr('name');
-				item[field] = $(modal).find(':input[name="'+field+'"]').val();
-			});
-			addItem(item);
+				let field = $(element).attr('name')
+				item[field] = $(modal).find(':input[name="'+field+'"]').val()
+			})
+			addItem(item)
 		}
 
 		$.each($(modal).find(':input'), function(i,element){
-			let field = $(element).attr('name');
-			let value = $(modal).find(':input[name="'+field+'"]').val();
-			$(row).find(':input[name$="['+field+']"]').val(value).trigger('keyup');
-			$(row).find('.'+field).text(value);
-		});
+			let field = $(element).attr('name')
+			let value = $(modal).find(':input[name="'+field+'"]').val()
+			$(row).find(':input[name$="['+field+']"]').val(value).trigger('keyup')
+			$(row).find('.'+field).text(value)
+		})
 
-		$.featherlight.close();
-	});
+		$.featherlight.close()
+	})
 
 	$('#modal-add-cart-item button[name="ok"]').on('click', function(e){
 
-		let modal = $('.featherlight.active');
-		let row = $(modal).data('row');
-		let item = {};
+		let modal = $('.featherlight.active')
+		let row = $(modal).data('row')
+		let item = {}
 		let fields = [
 			'name',
 			'price',
 			'tax',
-		];
+		]
 
 		$.each($(modal).find(':input'), function(i,element){
-			let field = $(element).attr('name');
-			item[field] = $(modal).find(':input[name="'+field+'"]').val();
-		});
+			let field = $(element).attr('name')
+			item[field] = $(modal).find(':input[name="'+field+'"]').val()
+		})
 
-		addItem(item);
+		addItem(item)
 
-		$.featherlight.close();
-	});
+		$.featherlight.close()
+	})
 
-	let new_item_index = 0;
-	while ($(':input[name^="items['+new_item_index+']"]').length) new_item_index++;
+	let new_item_index = 0
+	while ($(':input[name^="items['+new_item_index+']"]').length) new_item_index++
 
 	window.addItem = function(item) {
 
@@ -839,46 +839,46 @@
 			'  </tr>'
 		].join('\n')
 			.replace(/new_item_index/g, 'new_' + new_item_index++)
-		);
+		)
 
-		$('*[name$="[product_id]"]', $output).val(item.product_id);
-		$('*[name$="[stock_option_id]"]', $output).val(item.stock_option_id);
-		$('*[name$="[name]"]', $output).val(item.name);
-		$('*[name$="[quantity]"]', $output).val(item.quantity);
-		$('*[name$="[price]"]', $output).val(item.price);
-		$('*[name$="[tax]"]', $output).val(item.tax);
-		$('[data-type="currency"]', $output).parent().find('.input-group-text').text($(':input[name="currency_code"]').val());
+		$('*[name$="[product_id]"]', $output).val(item.product_id)
+		$('*[name$="[stock_option_id]"]', $output).val(item.stock_option_id)
+		$('*[name$="[name]"]', $output).val(item.name)
+		$('*[name$="[quantity]"]', $output).val(item.quantity)
+		$('*[name$="[price]"]', $output).val(item.price)
+		$('*[name$="[tax]"]', $output).val(item.tax)
+		$('[data-type="currency"]', $output).parent().find('.input-group-text').text($(':input[name="currency_code"]').val())
 
-		$('#shopping-cart-items tbody').append($output);
+		$('#shopping-cart-items tbody').append($output)
 
-		calculate_total();
+		calculate_total()
 	}
 
 	$('#shopping-cart-items').on('click', '.remove', function(e) {
-		e.preventDefault();
-		$(this).closest('tr').remove();
-	});
+		e.preventDefault()
+		$(this).closest('tr').remove()
+	})
 
 	function calculate_total() {
 
-		let subtotal = 0;
+		let subtotal = 0
 		$('input[name^="items["][name$="[price]"]').each(function() {
-			subtotal += parseFloat($(this).val()) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
-		});
+			subtotal += parseFloat($(this).val()) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val())
+		})
 
-		subtotal = parseFloat(subtotal.toFixed($('select[name="currency_code"] option:selected').data('decimals')));
-		$('#box-shopping-cart-items .subtotal .value').val(subtotal.toMoney());
+		subtotal = parseFloat(subtotal.toFixed($('select[name="currency_code"] option:selected').data('decimals')))
+		$('#box-shopping-cart-items .subtotal .value').val(subtotal.toMoney())
 
-		let subtotal_tax = 0;
+		let subtotal_tax = 0
 		$('input[name^="items["][name$="[tax]"]').each(function() {
-			subtotal_tax += parseFloat($(this).val()) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
-		});
+			subtotal_tax += parseFloat($(this).val()) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val())
+		})
 
-		subtotal_tax = parseFloat(subtotal_tax.toFixed($('select[name="currency_code"] option:selected').data('decimals')));
-		$('#box-shopping-cart-items .subtotal .tax').val(subtotal_tax.toMoney());
+		subtotal_tax = parseFloat(subtotal_tax.toFixed($('select[name="currency_code"] option:selected').data('decimals')))
+		$('#box-shopping-cart-items .subtotal .tax').val(subtotal_tax.toMoney())
 	}
 
-	$('body').on('click keyup', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="shopping_cart_total"][name$="[value]"], input[name^="shopping_cart_total"][name$="[tax]"], input[name^="shopping_cart_total"][name$="[calculate]"], #shopping-cart-items a.remove, #shopping-cart-total a.remove', function() {
-		calculate_total();
-	});
+	$('body').on('click keyup', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="shopping_cart_total"][name$="[value]"], input[name^="shopping_cart_total"][name$="[tax]"], input[name^="shopping_cart_total"][name$="[calculate]"], #shopping-cart-items a.remove, #shopping-cart-total a.remove', () => {
+		calculate_total()
+	})
 </script>

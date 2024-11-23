@@ -71,12 +71,12 @@
 
 <script>
 	if ($('#regional-settings .title').parents('.modal')) {
-		$('#regional-settings .title').closest('.modal').find('.modal-title').text($('#regional-settings .title').text());
-		$('#regional-settings .title').remove();
+		$('#regional-settings .title').closest('.modal').find('.modal-title').text($('#regional-settings .title').text())
+		$('#regional-settings .title').remove()
 	}
 
 	$('select[name="country_code"]').change(function(){
-		$('body').css('cursor', 'wait');
+		$('body').css('cursor', 'wait')
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
@@ -84,24 +84,24 @@
 			async: true,
 			dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown) {
-				if (console) console.warn(errorThrown.message);
+				if (console) console.warn(errorThrown.message)
 			},
 			success: function(data) {
-				$('select[name="zone_code"]').html('');
+				$('select[name="zone_code"]').html('')
 				if ($('select[name="zone_code"]').attr('disabled')) {
-					$('select[name="zone_code"]').removeAttr('disabled');
+					$('select[name="zone_code"]').removeAttr('disabled')
 				}
 				if (data) {
 					$.each(data, function(i, zone) {
-						$('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
-					});
+						$('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
+					})
 				} else {
-					$('select[name="zone_code"]').attr('disabled', 'disabled');
+					$('select[name="zone_code"]').attr('disabled', 'disabled')
 				}
 			},
 			complete: function() {
-				$('body').css('cursor', 'auto');
+				$('body').css('cursor', 'auto')
 			}
-		});
-	});
+		})
+	})
 </script>

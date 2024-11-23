@@ -139,47 +139,47 @@
 </main>
 
 <script>
-	$('#box-create-account').on('change', ':input', function() {
-		if ($(this).val() == '') return;
+	$('#box-create-account').on('change', ':input', () => {
+		if ($(this).val() == '') return
 
-		$('body').css('cursor', 'wait');
+		$('body').css('cursor', 'wait')
 
 		$.getJSON(
 			'<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
 			$('.billing-address :input').serialize(),
 			function(data) {
-				if (data['alert']) alert(data['alert']);
+				if (data['alert']) alert(data['alert'])
 				$.each(data, function(key, value) {
-					$('.billing-address :input[name="'+key+'"]').val(value);
-				});
+					$('.billing-address :input[name="'+key+'"]').val(value)
+				})
 			}
 		).always(function(){
-			$('body').css('cursor', 'auto');
-		});
-	});
+			$('body').css('cursor', 'auto')
+		})
+	})
 
 	$('select[name="country_code"]').change(function(e) {
 
 		if ($(this).find('option:selected').data('tax-id-format')) {
-			$('input[name="tax_id"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
+			$('input[name="tax_id"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
 		} else {
-			$('input[name="tax_id"]').removeAttr('pattern');
+			$('input[name="tax_id"]').removeAttr('pattern')
 		}
 
 		if ($(this).find('option:selected').data('postcode-format')) {
-			$('input[name="postcode"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
+			$('input[name="postcode"]').attr('pattern', $(this).find('option:selected').data('postcode-format'))
 		} else {
-			$('input[name="postcode"]').removeAttr('pattern');
+			$('input[name="postcode"]').removeAttr('pattern')
 		}
 
 		if ($(this).find('option:selected').data('phone-code')) {
-			$('input[name="phone"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+			$('input[name="phone"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'))
 		} else {
-			$('input[name="phone"]').removeAttr('placeholder');
+			$('input[name="phone"]').removeAttr('placeholder')
 		}
 
 		<?php if (settings::get('customer_field_zone')) { ?>
-		$('body').css('cursor', 'wait');
+		$('body').css('cursor', 'wait')
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
@@ -187,41 +187,41 @@
 			async: true,
 			dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown) {
-				if (console) console.warn(errorThrown.message);
+				if (console) console.warn(errorThrown.message)
 			},
 			success: function(data) {
-				$("select[name='zone_code']").html('');
+				$("select[name='zone_code']").html('')
 				if (data.length) {
-					$('select[name="zone_code"]').prop('disabled', false);
+					$('select[name="zone_code"]').prop('disabled', false)
 					$.each(data, function(i, zone) {
-						$('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
-					});
+						$('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
+					})
 				} else {
-					$('select[name="zone_code"]').prop('disabled', true);
+					$('select[name="zone_code"]').prop('disabled', true)
 				}
 			},
 			complete: function() {
-				$('body').css('cursor', 'auto');
+				$('body').css('cursor', 'auto')
 			}
-		});
+		})
 		<?php } ?>
-	});
+	})
 
 	if ($('select[name="country_code"] option:selected').data('tax-id-format')) {
-		$('input[name="tax_id"]').attr('pattern', $('select[name="country_code"] option:selected').data('tax-id-format'));
+		$('input[name="tax_id"]').attr('pattern', $('select[name="country_code"] option:selected').data('tax-id-format'))
 	} else {
-		$('input[name="tax_id"]').removeAttr('pattern');
+		$('input[name="tax_id"]').removeAttr('pattern')
 	}
 
 	if ($('select[name="country_code"] option:selected').data('postcode-format')) {
-		$('input[name="postcode"]').attr('pattern', $('select[name="country_code"] option:selected').data('postcode-format'));
+		$('input[name="postcode"]').attr('pattern', $('select[name="country_code"] option:selected').data('postcode-format'))
 	} else {
-		$('input[name="postcode"]').removeAttr('pattern');
+		$('input[name="postcode"]').removeAttr('pattern')
 	}
 
 	if ($('select[name="country_code"] option:selected').data('phone-code')) {
-		$('input[name="phone"]').attr('placeholder', '+' + $('select[name="country_code"] option:selected').data('phone-code'));
+		$('input[name="phone"]').attr('placeholder', '+' + $('select[name="country_code"] option:selected').data('phone-code'))
 	} else {
-		$('input[name="phone"]').removeAttr('placeholder');
+		$('input[name="phone"]').removeAttr('placeholder')
 	}
 </script>

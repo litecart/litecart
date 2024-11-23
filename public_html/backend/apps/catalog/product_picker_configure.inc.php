@@ -161,10 +161,10 @@
 
 <script>
 	$('form[name="form_add_product"] button[name="ok"]').off('click').on('click', function(e){
-		e.preventDefault();
+		e.preventDefault()
 
 		let $form = $(this).closest('form'),
-			callback = $.featherlight.current().$currentTarget.data('callback');
+			callback = $.featherlight.current().$currentTarget.data('callback')
 			item = {
 				id: '',
 				product_id: $form.find(':input[name="product_id"]').val(),
@@ -182,9 +182,9 @@
 				quantity: parseFloat($form.find(':input[name="quantity"]').val() || 0),
 				price: parseFloat($form.find(':input[name="price"]').val() || 0),
 				tax: parseFloat($form.find(':input[name="tax"]').val() || 0)
-			};
+			}
 
-		window[callback](product);
-		$.featherlight.close();
-	});
+		window[callback](product)
+		$.featherlight.close()
+	})
 </script>

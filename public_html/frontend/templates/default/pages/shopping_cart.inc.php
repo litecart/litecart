@@ -152,74 +152,74 @@
 
 <script>
 	<?php if (!empty(notices::$data['errors'])) { ?>
-	alert("<?php echo functions::escape_js(notices::$data['errors'][0]); notices::$data['errors'] = []; ?>");
+	alert("<?php echo functions::escape_js(notices::$data['errors'][0]); notices::$data['errors'] = []; ?>")
 	<?php } ?>
 
 	$('input[name="billing_address[type]"]').change(function(){
 		if ($(this).val() == 'business') {
-			$('.business-details :input').prop('disabled', false);
-			$('.business-details').slideDown('fast');
+			$('.business-details :input').prop('disabled', false)
+			$('.business-details').slideDown('fast')
 		} else {
-			$('.business-details :input').prop('disabled', true);
-			$('.business-details').slideUp('fast');
+			$('.business-details :input').prop('disabled', true)
+			$('.business-details').slideUp('fast')
 		}
-	}).first().trigger('change');
+	}).first().trigger('change')
 
 	if ($('select[name="billing_address[country_code]"] option:selected').data('tax-id-format')) {
-		$('input[name="billing_address[tax_id]"]').attr('pattern', $('select[name="billing_address[country_code]"] option:selected').data('tax-id-format'));
+		$('input[name="billing_address[tax_id]"]').attr('pattern', $('select[name="billing_address[country_code]"] option:selected').data('tax-id-format'))
 	} else {
-		$('input[name="billing_address[tax_id]"]').removeAttr('pattern');
+		$('input[name="billing_address[tax_id]"]').removeAttr('pattern')
 	}
 
 	if ($('select[name="billing_address[country_code]"] option:selected').data('postcode-format')) {
-		$('input[name="billing_address[postcode]"]').attr('pattern', $('select[name="billing_address[country_code]"] option:selected').data('postcode-format'));
+		$('input[name="billing_address[postcode]"]').attr('pattern', $('select[name="billing_address[country_code]"] option:selected').data('postcode-format'))
 	} else {
-		$('input[name="billing_address[postcode]"]').removeAttr('pattern');
+		$('input[name="billing_address[postcode]"]').removeAttr('pattern')
 	}
 
 	if ($('select[name="billing_address[country_code]"] option:selected').data('phone-code')) {
-		$('input[name="billing_address[phone]"]').attr('placeholder', '+' + $('select[name="billing_address[country_code]"] option:selected').data('phone-code'));
+		$('input[name="billing_address[phone]"]').attr('placeholder', '+' + $('select[name="billing_address[country_code]"] option:selected').data('phone-code'))
 	} else {
-		$('input[name="billing_address[phone]"]').removeAttr('placeholder');
+		$('input[name="billing_address[phone]"]').removeAttr('placeholder')
 	}
 
 	if ($('select[name="shipping_address[country_code]"] option:selected').data('postcode-format')) {
-		$('input[name="shipping_address[postcode]"]').attr('pattern', $('select[name="shipping_address[country_code]"] option:selected').data('postcode-format'));
+		$('input[name="shipping_address[postcode]"]').attr('pattern', $('select[name="shipping_address[country_code]"] option:selected').data('postcode-format'))
 	} else {
-		$('input[name="shipping_address[postcode]"]').removeAttr('pattern');
+		$('input[name="shipping_address[postcode]"]').removeAttr('pattern')
 	}
 
 	if ($('select[name="shipping_address[country_code]"] option:selected').data('phone-code')) {
-		$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $('select[name="shipping_address[country_code]"] option:selected').data('phone-code'));
+		$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $('select[name="shipping_address[country_code]"] option:selected').data('phone-code'))
 	} else {
-		$('input[name="shipping_address[phone]"]').removeAttr('placeholder');
+		$('input[name="shipping_address[phone]"]').removeAttr('placeholder')
 	}
 
-	$('input[name="sign_up"]:checkbox').trigger('change');
+	$('input[name="sign_up"]:checkbox').trigger('change')
 
 	// Toggles
 
 	$('#box-customer-details input[name="billing_address[different_shipping_address]"]').on('change', function(e){
 		if (this.checked == true) {
-			$('#box-customer-details .shipping-address fieldset').prop('disabled', false).slideDown('fast');
+			$('#box-customer-details .shipping-address fieldset').prop('disabled', false).slideDown('fast')
 		} else {
-			$('#box-customer-details .shipping-address fieldset').prop('disabled', true).slideUp('fast');
+			$('#box-customer-details .shipping-address fieldset').prop('disabled', true).slideUp('fast')
 		}
-	});
+	})
 
-	$('#box-customer-details input[name="sign_up"]').on('change', function(){
+	$('#box-customer-details input[name="sign_up"]').on('change', () => {
 		if (this.checked == true) {
-			$('#box-customer-details .account fieldset').prop('disabled', false).slideDown('fast');
+			$('#box-customer-details .account fieldset').prop('disabled', false).slideDown('fast')
 		} else {
-			$('#box-customer-details .account fieldset').prop('disabled', true).slideUp('fast');
+			$('#box-customer-details .account fieldset').prop('disabled', true).slideUp('fast')
 		}
-	});
+	})
 
 	// Get Address
 
-	$('#box-customer-details .billing-address :input').on('change', function() {
-		if ($(this).val() == '') return;
-		console.log('Get address (Trigger: '+ $(this).attr('name') +')');
+	$('#box-customer-details .billing-address :input').on('change', () => {
+		if ($(this).val() == '') return
+		console.log('Get address (Trigger: '+ $(this).attr('name') +')')
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
 			type: 'post',
@@ -228,19 +228,19 @@
 			async: true,
 			dataType: 'json',
 			success: function(data) {
-				if (data['alert']) alert(data['alert']);
+				if (data['alert']) alert(data['alert'])
 				$.each(data, function(key, value) {
 					if ($('.billing-address :input[name="billing_address['+key+']"]').length && $('.billing-address :input[name="billing_address['+key+']"]').val() == '') {
-						$('.billing-address :input[name="billing_address['+key+']"]').val(value).trigger('input');
+						$('.billing-address :input[name="billing_address['+key+']"]').val(value).trigger('input')
 					}
-				});
+				})
 			},
-		});
-	});
+		})
+	})
 
-	$('#box-customer-details .shipping-address :input').on('change', function() {
-		if ($(this).val() == '') return;
-		console.log('Get address (Trigger: '+ $(this).attr('name') +')');
+	$('#box-customer-details .shipping-address :input').on('change', () => {
+		if ($(this).val() == '') return
+		console.log('Get address (Trigger: '+ $(this).attr('name') +')')
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
 			type: 'post',
@@ -249,40 +249,40 @@
 			async: true,
 			dataType: 'json',
 			success: function(data) {
-				if (data['alert']) alert(data['alert']);
+				if (data['alert']) alert(data['alert'])
 				$.each(data, function(key, value) {
 					if ($('.shipping-address :input[name="shipping_address['+key+']"]').length && $('.shipping-address :input[name="shipping_address['+key+']"]').val() == '') {
-						$('.shipping-address :input[name="shipping_address['+key+']"]').val(value).trigger('input');
+						$('.shipping-address :input[name="shipping_address['+key+']"]').val(value).trigger('input')
 					}
-				});
+				})
 			},
-		});
-	});
+		})
+	})
 
 	// Fields
 
 	$('#box-customer-details select[name="billing_address[country_code]"]').on('input', function(e) {
 
 		if ($(this).find('option:selected').data('tax-id-format')) {
-			$('input[name="billing_address[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
+			$('input[name="billing_address[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
 		} else {
-			$('input[name="billing_address[tax_id]"]').removeAttr('pattern');
+			$('input[name="billing_address[tax_id]"]').removeAttr('pattern')
 		}
 
 		if ($(this).find('option:selected').data('postcode-format')) {
-			$('input[name="billing_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
+			$('input[name="billing_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'))
 		} else {
-			$('input[name="billing_address[postcode]"]').removeAttr('pattern');
+			$('input[name="billing_address[postcode]"]').removeAttr('pattern')
 		}
 
 		if ($(this).find('option:selected').data('phone-code')) {
-			$('input[name="billing_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+			$('input[name="billing_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'))
 		} else {
-			$('input[name="billing_address[phone]"]').removeAttr('placeholder');
+			$('input[name="billing_address[phone]"]').removeAttr('placeholder')
 		}
 
 		<?php if (settings::get('customer_field_zone')) { ?>
-		$('body').css('cursor', 'wait');
+		$('body').css('cursor', 'wait')
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
@@ -290,39 +290,39 @@
 			async: true,
 			dataType: 'json',
 			success: function(data) {
-				$('select[name="billing_address[zone_code]"]').html('');
+				$('select[name="billing_address[zone_code]"]').html('')
 				if (data.length) {
-					$('select[name="billing_address[zone_code]"]').prop('disabled', false);
+					$('select[name="billing_address[zone_code]"]').prop('disabled', false)
 					$.each(data, function(i, zone) {
-						$('select[name="billing_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
-					});
+						$('select[name="billing_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
+					})
 				} else {
-					$('select[name="billing_address[zone_code]"]').prop('disabled', true);
+					$('select[name="billing_address[zone_code]"]').prop('disabled', true)
 				}
 			},
 			complete: function() {
-				$('body').css('cursor', 'auto');
+				$('body').css('cursor', 'auto')
 			}
-		});
+		})
 		<?php } ?>
-	});
+	})
 
 	$('#box-customer-details select[name="shipping_address[country_code]"]').on('input', function(e) {
 
 		if ($(this).find('option:selected').data('postcode-format')) {
-			$('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
+			$('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'))
 		} else {
-			$('input[name="shipping_address[postcode]"]').removeAttr('pattern');
+			$('input[name="shipping_address[postcode]"]').removeAttr('pattern')
 		}
 
 		if ($(this).find('option:selected').data('phone-code')) {
-			$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+			$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'))
 		} else {
-			$('input[name="shipping_address[phone]"]').removeAttr('placeholder');
+			$('input[name="shipping_address[phone]"]').removeAttr('placeholder')
 		}
 
 		<?php if (settings::get('customer_field_zone')) { ?>
-		$('body').css('cursor', 'wait');
+		$('body').css('cursor', 'wait')
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
@@ -330,87 +330,87 @@
 			async: false,
 			dataType: 'json',
 			success: function(data) {
-				$('select[name="shipping_address[zone_code]"]').html('');
+				$('select[name="shipping_address[zone_code]"]').html('')
 				if (data.length) {
-					$('select[name="shipping_address[zone_code]"]').prop('disabled', false);
+					$('select[name="shipping_address[zone_code]"]').prop('disabled', false)
 					$.each(data, function(i, zone) {
-						$('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
-					});
+						$('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
+					})
 				} else {
-					$('select[name="shipping_address[zone_code]"]').prop('disabled', true);
+					$('select[name="shipping_address[zone_code]"]').prop('disabled', true)
 				}
 			},
 			complete: function() {
-				$('body').css('cursor', 'auto');
+				$('body').css('cursor', 'auto')
 			}
-		});
+		})
 		<?php } ?>
-	});
+	})
 
 	// Checksum
 
-	$('#box-customer-details').data('checksum', $('#box-customer-details :input').serialize());
+	$('#box-customer-details').data('checksum', $('#box-customer-details :input').serialize())
 
 	$('#box-customer-details :input').on('input change', function(e) {
 		if ($('#box-customer-details :input').serialize() != $('#box-customer-details').data('checksum')) {
-			$('#box-customer-details').prop('changed', true);
-			$('#box-customer-details button[name="save_customer_details"]').prop('disabled', false);
+			$('#box-customer-details').prop('changed', true)
+			$('#box-customer-details button[name="save_customer_details"]').prop('disabled', false)
 		} else {
-			$('#box-customer-details').prop('changed', false);
-			$('#box-customer-details button[name="save_customer_details"]').prop('disabled', true);
+			$('#box-customer-details').prop('changed', false)
+			$('#box-customer-details button[name="save_customer_details"]').prop('disabled', true)
 		}
-	});
+	})
 
 	// Prevent losing form focus when clicking the label of a checkbox
 	$('#box-customer-details .form-check').on('click', function(e){
-		$(this).find(':checkbox').trigger('focusin').trigger('focus');
-	});
+		$(this).find(':checkbox').trigger('focusin').trigger('focus')
+	})
 
 	// Auto-Save
 
-	let timerSubmitCustomer;
+	let timerSubmitCustomer
 
-	$('#box-customer-details').on('focusout', function() {
+	$('#box-customer-details').on('focusout', () => {
 		timerSubmitCustomer = setTimeout(function() {
 			if ($(this).not(':focus')) {
 				if ($('#box-customer-details').prop('changed')) {
 
-					console.log('Autosaving customer details');
+					console.log('Autosaving customer details')
 
-					let formdata = $('#box-customer-details :input').serialize() + '&autosave=true';
+					let formdata = $('#box-customer-details :input').serialize() + '&autosave=true'
 
 					$('#box-checkout')
 						.trigger('update', [{component: 'customer', data: formdata, refresh: true}])
 						.trigger('update', [{component: 'shipping', refresh: true}])
 						.trigger('update', [{component: 'payment', refresh: true}])
-						.trigger('update', [{component: 'summary'}]);
+						.trigger('update', [{component: 'summary'}])
 
-					$('#box-customer-details').data('checksum', $('#box-customer-details :input').serialize());
-					$('#box-customer-details :input').first().trigger('input');
+					$('#box-customer-details').data('checksum', $('#box-customer-details :input').serialize())
+					$('#box-customer-details :input').first().trigger('input')
 				}
 			}
-		}, 200);
-	});
+		}, 200)
+	})
 
-	$('#box-customer-details').on('focusin', function() {
-		clearTimeout(timerSubmitCustomer);
-	});
+	$('#box-customer-details').on('focusin', () => {
+		clearTimeout(timerSubmitCustomer)
+	})
 
 	// Process Data
 
 	$('#box-customer-details button[name="save_customer_details"]').on('click', function(e){
-		e.preventDefault();
+		e.preventDefault()
 
-		let formdata = $('#box-customer-details :input').serialize() + '&save_customer_details=true';
+		let formdata = $('#box-customer-details :input').serialize() + '&save_customer_details=true'
 
 		$('#box-checkout')
 			.trigger('update', [{component: 'customer', data: formdata, refresh: true}])
 			.trigger('update', [{component: 'shipping', refresh: true}])
 			.trigger('update', [{component: 'payment', refresh: true}])
-			.trigger('update', [{component: 'summary'}]);
+			.trigger('update', [{component: 'summary'}])
 
-		$('#box-customer-details').data('checksum', $('#box-customer-details :input').serialize());
-		$('#box-customer-details :input').first().trigger('input');
-	});
+		$('#box-customer-details').data('checksum', $('#box-customer-details :input').serialize())
+		$('#box-customer-details :input').first().trigger('input')
+	})
 
 </script>

@@ -149,12 +149,12 @@
 <script>
 	$('input[name="query"]').keypress(function(e) {
 		if (e.which == 13) {
-			e.preventDefault();
-			$(this).closest('form').submit();
+			e.preventDefault()
+			$(this).closest('form').submit()
 		}
-	});
+	})
 
 	$('.data-table :checkbox').change(function() {
-		$('#actions').prop('disabled', !$('.data-table :checked').length);
-	}).first().trigger('change');
+		$('#actions').prop('disabled', !$('.data-table :checked').length)
+	}).first().trigger('change')
 </script>

@@ -51,9 +51,9 @@ body {
 </main>
 
 <script>
-	$('#print').on('click', function(){
-		$('#order-copy').get(0).contentWindow.print();
+	$('#print').on('click', () => {
+		$('#order-copy').get(0).contentWindow.print()
 	})
 	// Scroll to last comment
-	$("#comments").animate({scrollTop: $('#comments').prop('scrollHeight')}, 2000);
+	$("#comments").animate({scrollTop: $('#comments').prop('scrollHeight')}, 2000)
 </script>

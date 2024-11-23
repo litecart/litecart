@@ -202,35 +202,35 @@ form[name="buy_now_form"] .dropdown-menu .image {
 <script>
 	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', function(e) {
 
-		var regular_price = <?php echo currency::format_raw($regular_price); ?>;
-		var sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>;
-		var tax = <?php echo currency::format_raw($total_tax); ?>;
+		var regular_price = <?php echo currency::format_raw($regular_price); ?>
+		var sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>
+		var tax = <?php echo currency::format_raw($total_tax); ?>
 
 		$(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function(){
-			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
-			if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
-			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
-		});
+			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
+			if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
+			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust')
+		})
 
 		$(this).find('select option:checked').each(function(){
-			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
-			if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
-			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
-		});
+			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
+			if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
+			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust')
+		})
 
 		$(this).find('input[type!="radio"][type!="checkbox"]').each(function(){
 			if ($(this).val() != '') {
-				if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
-				if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
-				if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+				if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
+				if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
+				if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust')
 			}
-		});
+		})
 
-		$(this).find('.regular-price').text(regular_price.toMoney());
-		$(this).find('.campaign-price').text(sales_price.toMoney());
-		$(this).find('.price').text(sales_price.toMoney());
-		$(this).find('.total-tax').text(tax.toMoney());
-	});
+		$(this).find('.regular-price').text(regular_price.toMoney())
+		$(this).find('.campaign-price').text(sales_price.toMoney())
+		$(this).find('.price').text(sales_price.toMoney())
+		$(this).find('.total-tax').text(tax.toMoney())
+	})
 
 	$('#box-product form[name="buy_now_form"] .options :input').change(function(){
 
@@ -242,23 +242,23 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			cache: false,
 
 			error: function(jqXHR, textStatus, errorThrown) {
-				console.log('error', errorThrown);
+				console.log('error', errorThrown)
 			},
 
 			success: function(data){
 				if (data.status == 'ok') {
-					$('.stock-notice').text(data.notice).removeClass('warning');
+					$('.stock-notice').text(data.notice).removeClass('warning')
 				} else if (data.status == 'warning') {
-					$('.stock-notice').text(data.notice).addClass('warning');
+					$('.stock-notice').text(data.notice).addClass('warning')
 				} else {
-					$('.stock-notice').html('');
+					$('.stock-notice').html('')
 				}
 			}
-		});
-	});
+		})
+	})
 
 	$('#box-product[data-id="{{product_id}}"] .social-bookmarks .link').off().on('click', function(e){
-		e.preventDefault();
-		prompt("<?php echo language::translate('text_link_to_this_product', 'Link to this product'); ?>", '{{link}}');
-	});
+		e.preventDefault()
+		prompt("<?php echo language::translate('text_link_to_this_product', 'Link to this product'); ?>", '{{link}}')
+	})
 </script>

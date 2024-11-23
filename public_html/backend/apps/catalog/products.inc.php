@@ -313,19 +313,19 @@ table .thumbnail {
 
 <script>
 	$('input[name="category_id"]').change(function(e) {
-		$(this).closest('form').submit();
-	});
+		$(this).closest('form').submit()
+	})
 
 	$('.data-table :checkbox').change(function() {
-		$('#actions').prop('disabled', !$('.data-table :checked').length);
-	}).first().trigger('change');
+		$('#actions').prop('disabled', !$('.data-table :checked').length)
+	}).first().trigger('change')
 
 	$('form[name="search_form"]').on('input change', function(e) {
-		e.preventDefault();
+		e.preventDefault()
 		$.get('', $(this).serialize(), function(response) {
-			$('.data-table tbody').html( $(response).find('.data-table tbody').html() );
-			$('.data-table tfoot').html( $(response).find('.data-table tfoot').html() );
-			$('.card-footer').after( $(response).find('.card-footer').html() ).remove();
-		});
-	});
+			$('.data-table tbody').html( $(response).find('.data-table tbody').html() )
+			$('.data-table tfoot').html( $(response).find('.data-table tfoot').html() )
+			$('.card-footer').after( $(response).find('.card-footer').html() ).remove()
+		})
+	})
 </script>

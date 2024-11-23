@@ -58,10 +58,10 @@
 			'  var mouseOverAd = false;',
 			'  $(\'.banner[data-id]\').hover(function(){',
 			'    mouseOverAd = $(this).data("id");',
-			'  }, function(){',
+			'  }, () => {',
 			'    mouseOverAd = false;',
 			'  });',
-			'  $(\'.banner[data-id]\').on(\'click\', function(){',
+			'  $(\'.banner[data-id]\').on(\'click\', () => {',
 			'    $.post("'. document::ilink('ajax/bct') .'", "banner_id=" + $(this).data("id"));',
 			'  });',
 			'  $(window).blur(function(){',
@@ -375,7 +375,7 @@
 			}
 		}
 
-		$js[] = '});';
+		$js[] = '})';
 
 		document::$javascript['featherlight-'.$selector] = implode(PHP_EOL, $js);
 	}

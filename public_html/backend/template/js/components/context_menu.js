@@ -8,13 +8,13 @@
 	$.fn.contextMenu = function(config){
 		this.each(function(){
 
-			this.config = config;
+			this.config = config
 
-			self = this;
+			self = this
 
 			$(this).on('contextmenu').on({
-			});
-		});
+			})
+		})
 	}
 
-}();
+}()

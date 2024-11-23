@@ -16,10 +16,10 @@
 				scrollX = 0,
 				clicked = false,
 				dragging = false,
-				momentumID = null;
+				momentumID = null
 
 			if ($(this).width() <= 768) {
-				$content.css('overflow', 'auto');
+				$content.css('overflow', 'auto')
 			}
 
 			let momentumLoop = function() {
@@ -27,7 +27,7 @@
 				if (direction == 'left') {
 					$content.scrollLeft($content.scrollLeft() - velX); // Apply the velocity to the scroll position
 				} else {
-					$content.scrollLeft($content.scrollLeft() + velX);
+					$content.scrollLeft($content.scrollLeft() + velX)
 				}
 
 				velX *= 1 - 5 / 100; // Slow down the velocity 5%
@@ -41,54 +41,54 @@
 
 				'click': function(e) {
 					if (dragging) {
-						e.preventDefault();
+						e.preventDefault()
 					}
-					dragging = false;
+					dragging = false
 				},
 
 				'mousemove': function(e) {
-					if (!clicked) return;
+					if (!clicked) return
 
-					dragging = true;
+					dragging = true
 
 					let prevScrollLeft = $content.scrollLeft(); // Store the previous scroll position
-						currentDrag = (clickX - e.pageX);
+						currentDrag = (clickX - e.pageX)
 
-					$content.scrollLeft(scrollX + (clickX - e.pageX));
+					$content.scrollLeft(scrollX + (clickX - e.pageX))
 
 					if (currentDrag > 0) {
-						direction = 'right';
+						direction = 'right'
 					} else {
-						direction = 'left';
+						direction = 'left'
 					}
 
 					velX = Math.abs($content.scrollLeft() - prevScrollLeft); // Compare change in position to work out drag speed
 				},
 
 				'mousedown': function(e) {
-					e.preventDefault();
-					clicked = true;
-					scrollX = $content.scrollLeft();
-					clickX = e.pageX;
-					$content.css('cursor', 'grabbing');
+					e.preventDefault()
+					clicked = true
+					scrollX = $content.scrollLeft()
+					clickX = e.pageX
+					$content.css('cursor', 'grabbing')
 				},
 
 				'mouseup': function(e) {
-					e.preventDefault();
-					self = this;
-					clicked = false;
-					cancelAnimationFrame(momentumID);
-					momentumID = requestAnimationFrame(momentumLoop);
-					$content.css('cursor', '');
+					e.preventDefault()
+					self = this
+					clicked = false
+					cancelAnimationFrame(momentumID)
+					momentumID = requestAnimationFrame(momentumLoop)
+					$content.css('cursor', '')
 				},
 
 				'mouseleave': function(e) {
-					clicked = false;
-					$content.css('cursor', '');
+					clicked = false
+					$content.css('cursor', '')
 				}
-			});
+			})
 
-			$(window).on('resize', function(){
+			$(window).on('resize', () => {
 
 				if ($content.prop('scrollWidth') > ($self.outerWidth() + 20)) {
 
@@ -97,38 +97,38 @@
 						$self.append(
 							'<button name="left" class="btn btn-default" type="button"><i class="fa fa-chevron-left"></i></button>' +
 							'<button name="right" class="btn btn-default" type="button"><i class="fa fa-chevron-right"></i></button>'
-						);
+						)
 
 						$self.on('click', 'button[name="left"], button[name="right"]', function(e) {
 							if (direction != $(this).attr('name')) {
-								velX = 0;
+								velX = 0
 							}
-							cancelAnimationFrame(momentumID);
-							velX += Math.round($self.outerWidth() * 0.03);
-							direction = $(this).attr('name');
-							momentumID = requestAnimationFrame(momentumLoop);
+							cancelAnimationFrame(momentumID)
+							velX += Math.round($self.outerWidth() * 0.03)
+							direction = $(this).attr('name')
+							momentumID = requestAnimationFrame(momentumLoop)
 
-						});
+						})
 					}
 
 				} else {
-					$self.find('button[name="left"], button[name="right"]').remove();
+					$self.find('button[name="left"], button[name="right"]').remove()
 				}
 
 				/*
 				if ($(window).width() > ($self.outerWidth() + 45)) {
-					$self.find('button[name="left"]').css('left', '');
-					$self.find('button[name="right"]').css('right', '');
+					$self.find('button[name="left"]').css('left', '')
+					$self.find('button[name="right"]').css('right', '')
 				} else {
-					$self.find('button[name="left"]').css('left', 0);
-					$self.find('button[name="right"]').css('right', 0);
+					$self.find('button[name="left"]').css('left', 0)
+					$self.find('button[name="right"]').css('right', 0)
 				}
 				*/
 
-			}).trigger('resize');
-		});
+			}).trigger('resize')
+		})
 	}
 
-	$('[data-toggle*="momentumScroll"]').momentumScroll();
+	$('[data-toggle*="momentumScroll"]').momentumScroll()
 
-}(jQuery);
+}(jQuery)

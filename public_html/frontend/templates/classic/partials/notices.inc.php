@@ -39,18 +39,18 @@
 
 <script>
 	setTimeout(function(){
-		$('#notices .alert').not('.alert-danger');
-	}, 20000);
+		$('#notices .alert').not('.alert-danger')
+	}, 20000)
 
-	$('#notices .alert').on('mouseout', function() {
-		$(this).stop().fadeTo(15e3, 0, function(){
-			$(this).slideUp('fast', function(){
-				$(this).remove();
-			});
-		});
-	}).trigger('mouseout');
+	$('#notices .alert').on('mouseout', () => {
+		$(this).stop().fadeTo(15e3, 0, () => {
+			$(this).slideUp('fast', () => {
+				$(this).remove()
+			})
+		})
+	}).trigger('mouseout')
 
-	$('#notices .alert').on('mouseover', function() {
-		$(this).stop().fadeTo(200, 1);
-	});
+	$('#notices .alert').on('mouseover', () => {
+		$(this).stop().fadeTo(200, 1)
+	})
 </script>

@@ -14,55 +14,55 @@
 		'  user-input: unset;',
 		'  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);',
 		'}',
-	].join('\n'));
+	].join('\n'))
 
 	$('body').on('click', '.dragmove', function(e){
-		e.preventDefault();
-		return false;
-	});
+		e.preventDefault()
+		return false
+	})
 
 	$('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e){
 
 		let $item = $(e.target).closest('.dragmove'),
 			sy = e.pageY,
-			drag;
+			drag
 
 		if ($(e.target).is('.dragmove')) {
-			$item = $(e.target);
+			$item = $(e.target)
 		}
 
-		let index = $item.index();
+		let index = $item.index()
 
-		$item.addClass('grabbed');
-		$item.closest('tbody').css('user-input', 'unset');
+		$item.addClass('grabbed')
+		$item.closest('tbody').css('user-input', 'unset')
 
 		function move(e) {
 
-			if (!drag && Math.abs(e.pageY - sy) < 10) return;
-			drag = true;
+			if (!drag && Math.abs(e.pageY - sy) < 10) return
+			drag = true
 
 			$item.siblings().each(function() {
 
-				let s = $(this), i = s.index(), y = s.offset().top;
+				let s = $(this), i = s.index(), y = s.offset().top
 
 				if (e.pageY >= y && e.pageY < y + s.outerHeight()) {
-					if (i < $item.index()) s.insertAfter($item);
-					else s.insertBefore($item);
-					return false;
+					if (i < $item.index()) s.insertAfter($item)
+					else s.insertBefore($item)
+					return false
 				}
-			});
+			})
 		}
 
 		function up(e) {
 
 			if (drag && index != $item.index()) {
-				drag = false;
+				drag = false
 			}
 
-			$(document).off('mousemove', move).off('mouseup', up);
-			$item.removeClass('grabbed');
-			$item.closest('tbody').css('user-input', '');
+			$(document).off('mousemove', move).off('mouseup', up)
+			$item.removeClass('grabbed')
+			$item.closest('tbody').css('user-input', '')
 		}
 
-		$(document).mousemove(move).mouseup(up);
-	});
+		$(document).mousemove(move).mouseup(up)
+	})

@@ -678,114 +678,114 @@ textarea.warning {
 <script>
 	// Tabs
 
-	let new_tab_index = 1;
-	while ($('.tab-pane[id="tab-'+new_tab_index+'"]').length) new_tab_index++;
+	let new_tab_index = 1
+	while ($('.tab-pane[id="tab-'+new_tab_index+'"]').length) new_tab_index++
 
 	$('.nav-tabs').on('click', '[data-toggle="tab"]', function(e) {
-		$($(this).attr('href')).find(':input[name$="[content]"]').trigger('input');
-	});
+		$($(this).attr('href')).find(':input[name$="[content]"]').trigger('input')
+	})
 
 	$('.nav-tabs .add').on('click', function(e){
-		e.preventDefault();
+		e.preventDefault()
 
 		let tab = '<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'"><span class="file">new'+ new_tab_index +'</span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('icon-times'); ?></span></a>'
-			.replace(/new_tab_index/g, new_tab_index);
+			.replace(/new_tab_index/g, new_tab_index)
 
 		let tab_pane = $('#new-tab-pane-template').html()
-			.replace(/new_tab_index/g, new_tab_index++);
+			.replace(/new_tab_index/g, new_tab_index++)
 
-		$tab_pane = $(tab_pane).hide();
+		$tab_pane = $(tab_pane).hide()
 
-		$(this).before(tab);
-		$('#files').append($tab_pane);
+		$(this).before(tab)
+		$('#files').append($tab_pane)
 
-		$(this).prev().trigger('click');
-	});
+		$(this).prev().trigger('click')
+	})
 
 	$('.nav-tabs').on('click', '.remove', function(e) {
-		e.preventDefault();
+		e.preventDefault()
 
-		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false;
+		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false
 
 		let $tab = $(this).closest('.nav-link'),
-			tab_pane = $(this).closest('.nav-link').attr('href');
+			tab_pane = $(this).closest('.nav-link').attr('href')
 
 		if ($tab.prev('[data-toggle="tab"]').length) {
-			$tab.prev('[data-toggle="tab"]').trigger('click');
+			$tab.prev('[data-toggle="tab"]').trigger('click')
 
 		} else if ($tab.next('[data-toggle="tab"]').length) {
-			$tab.next('[data-toggle="tab"').trigger('click');
+			$tab.next('[data-toggle="tab"').trigger('click')
 		}
 
-		$(tab_pane).remove();
-		$(this).closest('.nav-link').remove();
-	});
+		$(tab_pane).remove()
+		$(this).closest('.nav-link').remove()
+	})
 
 	// Operations
 
 	let reindex_operations = function($operations) {
-		let index = 1;
+		let index = 1
 		$operations.find('.operation').each(function(i, operation){
-			$(operation).find('.number').text(index++);
-		});
+			$(operation).find('.number').text(index++)
+		})
 	}
 
 	$('#files').on('change', ':input[name$="[type]"]', function(e) {
-		e.preventDefault();
-		let match_type = $(this).val();
+		e.preventDefault()
+		let match_type = $(this).val()
 
 		$(this).closest('.operation').find(':input[name$="[content]"]').each(function(i, field){
 			switch (match_type) {
 
 				case 'inline':
 				case 'regex':
-					var $newfield = $('<input class="form-code" name="'+ $(field).attr('name') +'" type="text">').val($(field).val());
-					$(field).replaceWith($newfield);
-					break;
+					var $newfield = $('<input class="form-code" name="'+ $(field).attr('name') +'" type="text">').val($(field).val())
+					$(field).replaceWith($newfield)
+					break
 
 				default:
-					var $newfield = $('<textarea class="form-code" name="'+ $(field).attr('name') +'"></textarea>').val($(field).val());
-					$(field).replaceWith($newfield);
-					break;
+					var $newfield = $('<textarea class="form-code" name="'+ $(field).attr('name') +'"></textarea>').val($(field).val())
+					$(field).replaceWith($newfield)
+					break
 			}
-		});
+		})
 
-		$(this).closest('.operation').find(':input[name$="[find][content]"]').trigger('input');
-	});
-
-	$('#files').on('change', ':input[name$="[method]"]', function(e) {
-		e.preventDefault();
-
-		let method = $(this).val();
-
-		if ($.inArray(method, ['top', 'bottom', 'all']) != -1) {
-			$(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', true);
-		} else {
-			$(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', false);
-		}
-	});
-
-	$('#files :input[name$="[method]"]').trigger('change');
-
-	$('body').on('input', 'textarea.form-code', function() {
-		$(this).css('height', '');
-		$(this).css('height', Math.min(this.scrollHeight + 10, 250) + 'px');
+		$(this).closest('.operation').find(':input[name$="[find][content]"]').trigger('input')
 	})
 
-	$('textarea.form-code').trigger('input');
+	$('#files').on('change', ':input[name$="[method]"]', function(e) {
+		e.preventDefault()
 
-	$('.tab-content').on('input', ':input[name^="files"][name$="[name]"]', function(){
+		let method = $(this).val()
+
+		if ($.inArray(method, ['top', 'bottom', 'all']) != -1) {
+			$(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', true)
+		} else {
+			$(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', false)
+		}
+	})
+
+	$('#files :input[name$="[method]"]').trigger('change')
+
+	$('body').on('input', 'textarea.form-code', () => {
+		$(this).css('height', '')
+		$(this).css('height', Math.min(this.scrollHeight + 10, 250) + 'px')
+	})
+
+	$('textarea.form-code').trigger('input')
+
+	$('.tab-content').on('input', ':input[name^="files"][name$="[name]"]', () => {
 		let $tab_pane = $(this).closest('.tab-pane'),
 		 tab_index = $(this).closest('.tab-pane').attr('id').replace(/^tab-/, ''),
-		 tab_name = $tab_pane.find('input[name$="[name]"]').val();
+		 tab_name = $tab_pane.find('input[name$="[name]"]').val()
 
-		$('a[href="#tab-'+ tab_index +'"] .file').text(tab_name);
+		$('a[href="#tab-'+ tab_index +'"] .file').text(tab_name)
 
 		let file_pattern = $(this).closest('.row').find(':input[name^="files"][name$="[name]"]').val(),
-			url = '<?php echo document::ilink(__APP__.'/sources', ['pattern' => 'thepattern']); ?>'.replace(/thepattern/, file_pattern);
+			url = '<?php echo document::ilink(__APP__.'/sources', ['pattern' => 'thepattern']); ?>'.replace(/thepattern/, file_pattern)
 
 		$.get(url, function(result) {
-			$tab_pane.find('.sources').html('');
+			$tab_pane.find('.sources').html('')
 
 			$.each(result, function(file, source_code){
 
@@ -794,65 +794,65 @@ textarea.warning {
 					'  <div class="form-code"></div>' +
 					'  <div class="filename"></div>' +
 					'</div>'
-				);
+				)
 
-				$script.find('.form-code').text(source_code);
-				$script.find('.filename').text(file);
-				$tab_pane.find('.sources').append($script);
-			});
+				$script.find('.form-code').text(source_code)
+				$script.find('.filename').text(file)
+				$tab_pane.find('.sources').append($script)
+			})
 
-			$tab_pane.find(':input[name$="[find][content]"]').trigger('input');
-		});
-	});
+			$tab_pane.find(':input[name$="[find][content]"]').trigger('input')
+		})
+	})
 
-	$(':input[name^="files"][name$="[name]"]').trigger('input');
+	$(':input[name^="files"][name$="[name]"]').trigger('input')
 
-	let new_operation_index = $(':input[name$="[find][content]"]').length || 0;
+	let new_operation_index = $(':input[name$="[find][content]"]').length || 0
 
 	$('#files').on('click', '.add', function(e) {
-		e.preventDefault();
+		e.preventDefault()
 
 		let $operations = $(this).closest('.tab-pane').find('.operations'),
-			tab_index = $(this).closest('.tab-pane').data('tab-index');
+			tab_index = $(this).closest('.tab-pane').data('tab-index')
 
 		 let output = $('#new-operation-template').html()
 			 .replace(/current_tab_index/g, tab_index)
-			 .replace(/new_operation_index/g, new_operation_index++);
+			 .replace(/new_operation_index/g, new_operation_index++)
 
-		$operations.append(output);
-		reindex_operations($operations);
-	});
+		$operations.append(output)
+		reindex_operations($operations)
+	})
 
 	$('#files').on('click', '.move-up, .move-down', function(e) {
-		e.preventDefault();
+		e.preventDefault()
 
 		let $row = $(this).closest('.operation'),
-			$operations = $(this).closest('.operations');
+			$operations = $(this).closest('.operations')
 
 		if ($(this).is('.move-up') && $row.prevAll().length > 0) {
-			$row.insertBefore($row.prev());
+			$row.insertBefore($row.prev())
 		} else if ($(this).is('.move-down') && $row.nextAll().length > 0) {
-			$row.insertAfter($row.next());
+			$row.insertAfter($row.next())
 		}
 
-		reindex_operations($operations);
-	});
+		reindex_operations($operations)
+	})
 
 	$('#files').on('click', '.remove', function(e) {
-		e.preventDefault();
+		e.preventDefault()
 
-		let $operations = $(this).closest('.operations');
+		let $operations = $(this).closest('.operations')
 
-		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return;
+		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return
 
-		$(this).closest('.operation').remove();
-		reindex_operations($operations);
+		$(this).closest('.operation').remove()
+		reindex_operations($operations)
 
-		$operations.find(':input[name$="[find][content]"]').trigger('input');
-	});
+		$operations.find(':input[name$="[find][content]"]').trigger('input')
+	})
 
 	// Validate operation
-	$('#files').on('input', ':input[name*="[find]"]', function() {
+	$('#files').on('input', ':input[name*="[find]"]', () => {
 
 		let $tab = $(this).closest('.tab-pane'),
 			$operation = $(this).closest('.operation'),
@@ -863,109 +863,109 @@ textarea.warning {
 			offset_before = $operation.find(':input[name$="[offset-before]"]').val(),
 			offset_after = $operation.find(':input[name$="[offset-after]"]').val()
 			onerror = $operation.find(':input[name$="[onerror]"]').val(),
-			regex_flags = 's';
+			regex_flags = 's'
 
 		try {
 
 			switch (method) {
 
 				case 'top':
-					find = '^';
-					break;
+					find = '^'
+					break
 
 				case 'bottom':
-					find = '$';
-					break;
+					find = '$'
+					break
 
 				case 'all':
-					find = '^.*$';
-					break;
+					find = '^.*$'
+					break
 
 				case 'before':
 				case 'after':
 				case 'replace':
 
 				// Trim
-				find = find.trim();
+				find = find.trim()
 
 				// Cook the regex pattern
 					if (type == 'regex') {
 
-						find_operators = 'g'+find.substr(find.lastIndexOf(find.substr(0, 1))+1);
-						find = find.substr(1, find.lastIndexOf(find.substr(0, 1))-1);
+						find_operators = 'g'+find.substr(find.lastIndexOf(find.substr(0, 1))+1)
+						find = find.substr(1, find.lastIndexOf(find.substr(0, 1))-1)
 
 					} else if (type == 'inline') {
 
-						find = find.replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&");
+						find = find.replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&")
 
 					} else {
 
 						// Whitespace
-						find = find.split(/\r\n?|\n/);
+						find = find.split(/\r\n?|\n/)
 
 						for (let i=0; i < find.length; i++) {
 							if (find[i] = find[i].trim()) {
-								find[i] = '[ \t]*'+ find[i].replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&") +'[ \t]*(?:\r\n?|\n|$)';
+								find[i] = '[ \t]*'+ find[i].replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&") +'[ \t]*(?:\r\n?|\n|$)'
 							} else if (i != (find.length -1)) {
-								find[i] = '[ \t]*(?:\r\n?|\n)';
+								find[i] = '[ \t]*(?:\r\n?|\n)'
 							}
 						}
-						find = find.join('');
+						find = find.join('')
 
 						// Offset
 						if (offset_before != '') {
-							find = '(?:.*?(?:\r\n?|\n)){'+ offset_before +'}'+ find;
+							find = '(?:.*?(?:\r\n?|\n)){'+ offset_before +'}'+ find
 						}
 
 						if (offset_after != '') {
-							find = find + '(?:.*?(?:\r\n?|\n|$)){0,'+ offset_after +'}';
+							find = find + '(?:.*?(?:\r\n?|\n|$)){0,'+ offset_after +'}'
 						}
 					}
 
-					regex_flags = 'gm';
+					regex_flags = 'gm'
 
-					break;
+					break
 
 				default:
-					throw new Error('Unknown error');
+					throw new Error('Unknown error')
 			}
 
-			$.each($tab.find('.script'), function(){
+			$.each($tab.find('.script'), () => {
 
 				let regex = new RegExp(find, regex_flags),
 					source = $(this).find('.form-code').text(),
-					matches = (source.match(regex) || []).length;
+					matches = (source.match(regex) || []).length
 
 				if (!matches) {
-					throw new Error('Failed matching content');
+					throw new Error('Failed matching content')
 				}
 
 				if (indexes && Math.max(indexes) > (matches+1)) {
-					throw new Error('Failed matching an index');
+					throw new Error('Failed matching an index')
 				}
-			});
+			})
 
-			$operation.find(':input[name$="[find][content]"]').removeAttr('title').removeClass('warning');
+			$operation.find(':input[name$="[find][content]"]').removeAttr('title').removeClass('warning')
 
 		} catch (err) {
 			if (onerror != 'ignore') {
-				$operation.find(':input[name$="[find][content]"]').attr('title', err.message).addClass('warning');
+				$operation.find(':input[name$="[find][content]"]').attr('title', err.message).addClass('warning')
 			}
 		}
 
 		if ($tab.find(':input.warning').length) {
-			$('.nav-link[href="#'+ $tab.attr('id') +'"]').addClass('warning');
+			$('.nav-link[href="#'+ $tab.attr('id') +'"]').addClass('warning')
 		} else {
-			$('.nav-link[href="#'+ $tab.attr('id') +'"]').removeClass('warning');
+			$('.nav-link[href="#'+ $tab.attr('id') +'"]').removeClass('warning')
 		}
-	});
+	})
 
 	// Aliases
 
-	let new_alias_index = 0;
-	while ($(':input[name^="aliases['+new_alias_index+']"]').length) new_alias_index++;
+	let new_alias_index = 0
+	while ($(':input[name^="aliases['+new_alias_index+']"]').length) new_alias_index++
 
-	$('button[name="add_alias"]').on('click', function(){
+	$('button[name="add_alias"]').on('click', () => {
 
 		let output = [
 			'<fieldset class="alias">',
@@ -992,35 +992,35 @@ textarea.warning {
 			'  </div>',
 			'</fieldset>'
 		].join('\n')
-		.replace(/new_alias_index/g, 'new_' + new_alias_index++);
+		.replace(/new_alias_index/g, 'new_' + new_alias_index++)
 
-		$('.aliases').append(output);
-	});
+		$('.aliases').append(output)
+	})
 
 	$('#aliases').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
-		e.preventDefault();
+		e.preventDefault()
 
-		let $row = $(this).closest('.alias');
+		let $row = $(this).closest('.alias')
 
 		if ($(this).is('button[name$="[move_up]"]') && $row.prevAll().length > 0) {
-			$row.insertBefore($row.prev());
+			$row.insertBefore($row.prev())
 		} else if ($(this).is('button[name$="[move_down]"]') && $row.nextAll().length > 0) {
-			$row.insertAfter($row.next());
+			$row.insertAfter($row.next())
 		}
-	});
+	})
 
 	$('#aliases').on('click', 'button[name$="[remove]"]', function(e) {
-		e.preventDefault();
+		e.preventDefault()
 
-		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return;
-		$(this).closest('.alias').remove();
-	});
+		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return
+		$(this).closest('.alias').remove()
+	})
 
 	// Settings
-	let new_setting_index = 0;
-	while ($(':input[name^="settings['+new_setting_index+']"]').length) new_setting_index++;
+	let new_setting_index = 0
+	while ($(':input[name^="settings['+new_setting_index+']"]').length) new_setting_index++
 
-	$('button[name="add_setting"]').on('click', function(){
+	$('button[name="add_setting"]').on('click', () => {
 
 		let output = [
 			'<fieldset class="setting">',
@@ -1064,35 +1064,35 @@ textarea.warning {
 			'  </div>',
 			'</fieldset>'
 		].join('\n')
-		.replace(/new_setting_index/g, 'new_' + new_setting_index++);
+		.replace(/new_setting_index/g, 'new_' + new_setting_index++)
 
-		$('#settings').append(output);
-	});
+		$('#settings').append(output)
+	})
 
 	$('#settings').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
-		e.preventDefault();
+		e.preventDefault()
 
-		let $row = $(this).closest('.setting');
+		let $row = $(this).closest('.setting')
 
 		if ($(this).is('button[name$="[move_up]"]') && $row.prevAll().length > 0) {
-			$row.insertBefore($row.prev());
+			$row.insertBefore($row.prev())
 		} else if ($(this).is('button[name$="[move_down]"]') && $row.nextAll().length > 0) {
-			$row.insertAfter($row.next());
+			$row.insertAfter($row.next())
 		}
-	});
+	})
 
 	$('#settings').on('click', 'button[name$="[remove]"]', function(e) {
-		e.preventDefault();
+		e.preventDefault()
 
-		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return;
-		$(this).closest('.setting').remove();
-	});
+		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return
+		$(this).closest('.setting').remove()
+	})
 
 	// Upgrade Patches
-	let new_upgrade_patch_index = 0;
-	while ($(':input[name^="upgrades['+new_upgrade_patch_index+']"]').length) new_upgrade_patch_index++;
+	let new_upgrade_patch_index = 0
+	while ($(':input[name^="upgrades['+new_upgrade_patch_index+']"]').length) new_upgrade_patch_index++
 
-	$('button[name="add_patch"]').on('click', function(){
+	$('button[name="add_patch"]').on('click', () => {
 
 		let output = [
 			'<fieldset class="upgrade">',
@@ -1107,17 +1107,17 @@ textarea.warning {
 			'  </div>',
 			'</fieldset>'
 		].join('\n')
-		.replace(/new_upgrade_patch_index/g, 'new_' + new_upgrade_patch_index);
+		.replace(/new_upgrade_patch_index/g, 'new_' + new_upgrade_patch_index)
 
-		$('.upgrades').append(output);
-	});
+		$('.upgrades').append(output)
+	})
 
 	$('.card-action button[name="delete"]').on('click', function(e){
-		e.preventDefault();
-		$.featherlight('#modal-uninstall');
-	});
+		e.preventDefault()
+		$.featherlight('#modal-uninstall')
+	})
 
 	$('body').on('click', '.featherlight button[name="cancel"]', function(e){
-		$.featherlight.close();
-	});
+		$.featherlight.close()
+	})
 </script>

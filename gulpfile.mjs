@@ -80,7 +80,7 @@ gulp.task('js-backend', function() {
     .pipe(gulp.dest('public_html/backend/template/js/', { overwrite: true }))
 })
 
-gulp.task('js-frontend', function() {
+gulp.task('js-frontend', () => {
   return gulp
     .src('public_html/frontend/templates/default/js/components/*.js')
     .pipe(sourcemaps.init())
@@ -94,7 +94,7 @@ gulp.task('js-frontend', function() {
 })
 
 // Task to compile and minify Chartist SCSS
-gulp.task('sass-chartist', function() {
+gulp.task('sass-chartist', () => {
   return gulp
     .src('public_html/assets/chartist/chartist.scss', { allowEmpty: true })
     .pipe(sass().on('error', sass.logError))
@@ -107,7 +107,7 @@ gulp.task('sass-chartist', function() {
 })
 
 // Task to compile and minify Trumbowyg SCSS
-gulp.task('sass-trumbowyg', function() {
+gulp.task('sass-trumbowyg', () => {
   return gulp
     .src('public_html/assets/trumbowyg/ui/*.scss')
     .pipe(sass().on('error', sass.logError))
@@ -120,7 +120,7 @@ gulp.task('sass-trumbowyg', function() {
 })
 
 // Lint PHP files
-gulp.task('phplint', function() {
+gulp.task('phplint', () => {
   return gulp
     .src(paths.php)
     .pipe(phplint())
@@ -128,7 +128,7 @@ gulp.task('phplint', function() {
 })
 
 // Watch files for changes
-gulp.task('watch', function() {
+gulp.task('watch', () => {
   gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('sass-chartist'))
   gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('sass-trumbowyg'))
   gulp.watch('public_html/backend/template/less/**/*.less', gulp.series('less-backend'))
@@ -140,3 +140,5 @@ gulp.task('watch', function() {
 // Task aliases
 gulp.task('build', gulp.series('js-backend', 'js-frontend', 'less-backend', 'less-frontend', 'sass-chartist', 'sass-trumbowyg'))
 gulp.task('default', gulp.series('build', 'watch'))
+
+gulp.task('fonticons')()

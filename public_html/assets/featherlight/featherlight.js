@@ -7,58 +7,58 @@
 **/
 
 (function($) {
-	'use strict';
+	'use strict'
 
 	if (typeof $ === 'undefined') {
 		if ('console' in window) {
-			window.console.error('Featherlight requires jQuery.');
+			window.console.error('Featherlight requires jQuery.')
 		}
-		return;
+		return
 	}
 
 	if ($.fn.jquery.match(/-ajax/)) {
 		if ('console' in window) {
-			window.console.info('Featherlight needs regular jQuery, not the slim version.');
+			window.console.info('Featherlight needs regular jQuery, not the slim version.')
 		}
-		return;
+		return
 	}
 
 	function Featherlight($modal, config) {
 		if (this instanceof Featherlight) {  // called with new
-			this.id = Featherlight.id++;
-			this.setup($modal, config);
+			this.id = Featherlight.id++
+			this.setup($modal, config)
 		} else {
-			var fl = new Featherlight($modal, config);
-			fl.open();
-			return fl;
+			var fl = new Featherlight($modal, config)
+			fl.open()
+			return fl
 		}
 	}
 
 	var opened = [],
 		pruneOpened = function(remove) {
 			opened = $.grep(opened, function(fl) {
-				return fl !== remove && fl.$instance.closest('body').length > 0;
-			});
-			return opened;
-		};
+				return fl !== remove && fl.$instance.closest('body').length > 0
+			})
+			return opened
+		}
 
 	// Document wide key handler
 	var toggleGlobalEvents = function(newState) {
 		if (Featherlight._globalHandlerInstalled !== newState) {
-			Featherlight._globalHandlerInstalled = newState;
+			Featherlight._globalHandlerInstalled = newState
 
-			var eventMap = {keyup: 'onKeyUp', resize: 'onResize'};
-			var events = $.map(eventMap, function(_, name) { return name+'.featherlight'; } ).join(' ');
+			var eventMap = {keyup: 'onKeyUp', resize: 'onResize'}
+			var events = $.map(eventMap, function(_, name) { return name+'.featherlight'; } ).join(' ')
 
 			$(window)[newState ? 'on' : 'off'](events, function(e) {
-				$.each(Featherlight.opened().reverse(), function() {
+				$.each(Featherlight.opened().reverse(), () => {
 					if (!e.isDefaultPrevented()) {
 						if (this[eventMap[e.type]](e) === false) {
-							e.preventDefault(); e.stopPropagation(); return false;
+							e.preventDefault(); e.stopPropagation(); return false
 						}
 					}
-				});
-			});
+				})
+			})
 		}
 	}
 
@@ -102,11 +102,11 @@
 
 			// Make all arguments optional
 			if (typeof target === 'object' && target instanceof $ === false && !config) {
-				config = target;
-				target = undefined;
+				config = target
+				target = undefined
 			}
 
-			var self = $.extend(this, config, {target: target});
+			var self = $.extend(this, config, {target: target})
 
 			self.$instance = $([
 				'<div class="featherlight featherlight-loading">',
@@ -114,33 +114,33 @@
 				'    <div class="featherlight-inner">' + self.loading + '</div>',
 				'  </div>',
 				'</div>'
-			].join('\n'));
+			].join('\n'))
 
 			// Close when click on backdrop/anywhere/null or closebox
 			self.$instance.on('click.featherlight', function(e) {
 
 				if (e.isDefaultPrevented()) {
-					return;
+					return
 				}
 
 				switch (true) {
 					case (self.closeOnClick === 'backdrop' && $(e.target).is('.featherlight')):
 					case (self.closeOnClick === 'anywhere'):
 					case ($(e.target).is('.featherlight-close')):
-						self.close(e);
-						e.preventDefault();
-						break;
+						self.close(e)
+						e.preventDefault()
+						break
 				}
-			});
+			})
 
-			return this;
+			return this
 		},
 
 		// This method prepares the modal and converts it into a jQuery object or a promise
 		getContent: function(){
 
 			if (this.persist !== false && this.$modal) {
-				return this.$modal;
+				return this.$modal
 			}
 
 			var self = this,
@@ -150,126 +150,126 @@
 
 			// Check explicit type like data-target="image"
 			if (!filter && data in filters) {
-				filter = filters[data];
+				filter = filters[data]
 			}
 
 			// Check explicity type & content like {image: 'photo.jpg'}
 			if (!filter) {
 				for (var filterName in filters) {
 					if (self[filterName]) {
-						filter = filters[filterName];
-						data = self[filterName];
+						filter = filters[filterName]
+						data = self[filterName]
 					}
 				}
 			}
 
 			// Otherwise it's implicit, run checks
 			if (!filter) {
-				var target = data;
-				data = null;
+				var target = data
+				data = null
 
-				$.each(self.contentFilters, function() {
-					filter = filters[this];
+				$.each(self.contentFilters, () => {
+					filter = filters[this]
 					if (filter.test) {
-						data = filter.test(target);
+						data = filter.test(target)
 					}
 					if (!data && filter.regex && target.match && target.match(filter.regex)) {
-						data = target;
+						data = target
 					}
-					return !data;
-				});
+					return !data
+				})
 
 				if (!data) {
 					if ('console' in window) {
-						window.console.error('Featherlight: No content filter found ' + (target ? ' for "' + target + '"' : ' (no target specified)'));
+						window.console.error('Featherlight: No content filter found ' + (target ? ' for "' + target + '"' : ' (no target specified)'))
 					}
-					return false;
+					return false
 				}
 			}
 
 			// Process it
-			return filter.process.call(self, data);
+			return filter.process.call(self, data)
 		},
 
 		// sets the content of $instance to $modal
 		setContent: function($modal){
-			var self = this;
+			var self = this
 
-			self.$instance.removeClass('featherlight-loading');
+			self.$instance.removeClass('featherlight-loading')
 
-			self.$modal = $modal.show();
-			self.$instance.find('.featherlight-modal').html(self.$modal);
+			self.$modal = $modal.show()
+			self.$instance.find('.featherlight-modal').html(self.$modal)
 
 			if (self.closeIcon) {
 				self.$instance.find('.featherlight-modal').prepend([
 					'<div class="featherlight-close-icon featherlight-close">',
 					'  ' + self.closeIcon,
 					'</div>',
-				].join('\n'));
+				].join('\n'))
 			}
 
-			return self;
+			return self
 		},
 
 		/* opens the lightbox. "this" contains $instance with the lightbox, and with the config.
 			Returns a promise that is resolved after is successfully opened. */
 		open: function(e){
-			var self = this;
+			var self = this
 
 			if (e && (e.ctrlKey || e.shiftKey)) {
-				return false;
+				return false
 			}
 
 			if (self.requireWindowWidth && self.requireWindowWidth > $(window).width()) {
-				return false;
+				return false
 			}
 
-			self.$instance.hide().appendTo('body');
+			self.$instance.hide().appendTo('body')
 
 			if ((!e || !e.isDefaultPrevented()) && self.beforeOpen(e) !== false) {
 
-				if (e) e.preventDefault();
+				if (e) e.preventDefault()
 
-				$('body').addClass('featherlight-open');
+				$('body').addClass('featherlight-open')
 
-				$('.featherlight').removeClass('active');
-				self.$instance.addClass('active');
+				$('.featherlight').removeClass('active')
+				self.$instance.addClass('active')
 
-				var $modal = self.getContent();
+				var $modal = self.getContent()
 
 				if ($modal) {
-					opened.push(self);
+					opened.push(self)
 
-					toggleGlobalEvents(true);
+					toggleGlobalEvents(true)
 
-					self.$instance.show();
-					self.beforeContent(e);
+					self.$instance.show()
+					self.beforeContent(e)
 
 					// Set modal and show
 					return $.when($modal)
 						.always(function($modal){
-							self.setContent($modal);
+							self.setContent($modal)
 							if (self.width) {
-								self.$modal.parent().css('width', self.width);
+								self.$modal.parent().css('width', self.width)
 							}
 							if (self.height) {
-								self.$modal.parent().css('height', self.height);
+								self.$modal.parent().css('height', self.height)
 							}
 							if (self.maxWidth) {
-								self.$modal.parent().css('max-width', self.maxWidth);
+								self.$modal.parent().css('max-width', self.maxWidth)
 							}
 							if (self.maxHeight) {
-								self.$modal.parent().css('max-height', self.maxHeight);
+								self.$modal.parent().css('max-height', self.maxHeight)
 							}
-							self.afterContent(e);
+							self.afterContent(e)
 						})
 						.then(self.$instance.promise())
 						// Call afterOpen after show() is done
-						.done(function(){ self.afterOpen(e); });
+						.done(function(){ self.afterOpen(e); })
 				}
 			}
-			self.$instance.detach();
-			return $.Deferred().reject().promise();
+			self.$instance.detach()
+			return $.Deferred().reject().promise()
 		},
 
 		/* closes the lightbox. "this" contains $instance with the lightbox, and with the config
@@ -277,30 +277,30 @@
 		close: function(e){
 
 			var self = this,
-				deferred = $.Deferred();
+				deferred = $.Deferred()
 
 			if (self.beforeClose(e) === false) {
-				deferred.reject();
+				deferred.reject()
 
 			} else {
 				if (pruneOpened(self).length === 0) {
-					toggleGlobalEvents(false);
+					toggleGlobalEvents(false)
 				}
 
-				self.$instance.hide().detach();
-				self.afterClose(e);
-				deferred.resolve();
+				self.$instance.hide().detach()
+				self.afterClose(e)
+				deferred.resolve()
 
-				$('.featherlight:not(.active)').filter(':last').addClass('active');
+				$('.featherlight:not(.active)').filter(':last').addClass('active')
 
 				if ($('.featherlight').length === 0) {
-					$('body').removeClass('featherlight-open');
+					$('body').removeClass('featherlight-open')
 				}
 			}
 
-			return deferred.promise();
+			return deferred.promise()
 		},
-	};
+	}
 
 	$.extend(Featherlight, {
 		id: 0, // Used to id single featherlight instances
@@ -318,24 +318,24 @@
 				process: function(url) {
 
 					var self = this,
-						deferred = $.Deferred();
+						deferred = $.Deferred()
 
 					var $img = $('<img>', {
 						src: url,
 						alt: '',
 						complete: function(){
-							deferred.resolve($(this));
+							deferred.resolve($(this))
 						}
-					});
+					})
 
-					return deferred.promise();
+					return deferred.promise()
 				}
 			},
 
 			html: {
 				regex: /^\s*<[\w!][^<]*>/,  // Anything that starts with some kind of valid tag
 				process: function(html) {
-					return $(html);
+					return $(html)
 				}
 			},
 
@@ -344,17 +344,17 @@
 				process: function(url)  {
 
 					var self = this,
-						deferred = $.Deferred();
+						deferred = $.Deferred()
 
 					// we are using load so one can specify a target with: url.html #targetelement
 					var $container = $('<div></div>').load(url.replace('#', ' #'), function(response, status){
 						if (status !== 'error') {
-							deferred.resolve($container.contents());
+							deferred.resolve($container.contents())
 						}
-						deferred.reject();
-					});
+						deferred.reject()
+					})
 
-					return deferred.promise();
+					return deferred.promise()
 				}
 			},
 
@@ -362,24 +362,24 @@
 				process: function(url) {
 
 					var self = this,
-						deferred = new $.Deferred();
+						deferred = new $.Deferred()
 
 					var $iframe = $('<iframe/>', {
 						src: url,
-						complete, function(){
+						complete, () => {
 							// We can't move an <iframe> and avoid reloading it, so let's put it in place ourselves right now:
-							$iframe.show().appendTo(self.$instance.find('.featherlight-modal'));
-							deferred.resolve($iframe);
+							$iframe.show().appendTo(self.$instance.find('.featherlight-modal'))
+							deferred.resolve($iframe)
 						}
-					}).hide();
+					}).hide()
 
-					return deferred.promise();
+					return deferred.promise()
 				}
 			},
 
 			text: {
 				process: function(text) {
-					return $('<div>', {text: text});
+					return $('<div>', {text: text})
 				}
 			}
 		},
@@ -389,79 +389,79 @@
 		// Read element's data attributes
 		readElementConfig: function(element) {
 
-			if (!element) return;
+			if (!element) return
 
 			var config = $(element).data(),
-				functionAttributes = ['beforeOpen', 'afterOpen', 'beforeContent', 'afterContent', 'beforeClose', 'afterClose'];
+				functionAttributes = ['beforeOpen', 'afterOpen', 'beforeContent', 'afterContent', 'beforeClose', 'afterClose']
 
 			$.each(functionAttributes, function(i, e){
 				if (config[e] !== undefined) {
-					config[e] = new Function(config[e]);
+					config[e] = new Function(config[e])
 				}
-			});
+			})
 
-			return config;
+			return config
 		},
 
 		attach: function($source, $modal, config) {
 
-			var self = this;
+			var self = this
 
 			if (typeof $modal === 'object' && $modal instanceof $ === false && !config) {
-				config = $modal;
-				$modal = undefined;
+				config = $modal
+				$modal = undefined
 			}
 
 			// Make a copy
-			config = $.extend({}, config);
+			config = $.extend({}, config)
 
 			/* Only for openTrigger and filter ... */
 			var tempConfig = $.extend({}, self.defaults, self.readElementConfig($source[0]), config),
-				sharedPersist;
+				sharedPersist
 
 			var handler = function(e) {
 
-				var $target = $(e.currentTarget);
+				var $target = $(e.currentTarget)
 
 				// ... since we might as well compute the config on the actual target
 				var elementConfig = $.extend({
 					$source: $source,
 					$currentTarget: $target
-				}, self.readElementConfig($source[0]), self.readElementConfig(this), config);
+				}, self.readElementConfig($source[0]), self.readElementConfig(this), config)
 
-				var fl = sharedPersist || $target.data('featherlight-persisted') || new self($modal, elementConfig);
+				var fl = sharedPersist || $target.data('featherlight-persisted') || new self($modal, elementConfig)
 
 				if (fl.persist === 'shared') {
-					sharedPersist = fl;
+					sharedPersist = fl
 				} else if (fl.persist !== false) {
-					$target.data('featherlight-persisted', fl);
+					$target.data('featherlight-persisted', fl)
 				}
 
 				if (elementConfig.$currentTarget.blur) {
 					elementConfig.$currentTarget.blur(); // Otherwise 'enter' key might trigger the dialog again
 				}
 
-				fl.open(e);
-			};
+				fl.open(e)
+			}
 
-			$source.on(tempConfig.openTrigger+'.featherlight', tempConfig.filter, handler);
+			$source.on(tempConfig.openTrigger+'.featherlight', tempConfig.filter, handler)
 
-			return {filter: tempConfig.filter, handler: handler};
+			return {filter: tempConfig.filter, handler: handler}
 		},
 
 		current: function() {
-			var all = this.opened();
-			return all[all.length - 1] || null;
+			var all = this.opened()
+			return all[all.length - 1] || null
 		},
 
 		opened: function() {
-			var self = this;
-			pruneOpened();
-			return $.grep(opened, function(fl) { return fl instanceof self; } );
+			var self = this
+			pruneOpened()
+			return $.grep(opened, function(fl) { return fl instanceof self; } )
 		},
 
 		close: function(e) {
-			var cur = this.current();
+			var cur = this.current()
 			if (cur) { return cur.close(e); }
 		},
 
@@ -472,75 +472,75 @@
 				switch (e.keyCode) {
 					case 27:
 					if (this.closeOnEsc) {
-						$.featherlight.close(e);
+						$.featherlight.close(e)
 					}
-					return false;
+					return false
 				}
 
-				return _super(e);
+				return _super(e)
 			},
 
 			onResize: function(_super, e){
-				return _super(e);
+				return _super(e)
 			},
 
 			beforeOpen: function(_super, e) {
 
 				// Remember focus:
-				this._previouslyActive = document.activeElement;
+				this._previouslyActive = document.activeElement
 
 				// Disable tabbing:
 				// See http://stackoverflow.com/questions/1599660/which-html-elements-can-receive-focus
 				this._$previouslyTabbable = $('a, input, select, textarea, iframe, button, iframe, [contentEditable=true]')
 					.not('[tabindex]')
-					.not(this.$instance.find('button'));
+					.not(this.$instance.find('button'))
 
-				this._$previouslyWithTabIndex = $('[tabindex]').not('[tabindex="-1"]');
+				this._$previouslyWithTabIndex = $('[tabindex]').not('[tabindex="-1"]')
 				this._previousWithTabIndices = this._$previouslyWithTabIndex.map(function(_i, element) {
-					return $(element).attr('tabindex');
-				});
+					return $(element).attr('tabindex')
+				})
 
-				this._$previouslyWithTabIndex.add(this._$previouslyTabbable).attr('tabindex', -1);
+				this._$previouslyWithTabIndex.add(this._$previouslyTabbable).attr('tabindex', -1)
 
 				if (document.activeElement.blur) {
-					document.activeElement.blur();
+					document.activeElement.blur()
 				}
 
-				return _super(e);
+				return _super(e)
 			},
 
 			afterContent: function(_super, e){
-				this.$instance.find('[autofocus]:not([disabled])').trigger('focus');
-				this.onResize(e);
-				return _super(e);
+				this.$instance.find('[autofocus]:not([disabled])').trigger('focus')
+				this.onResize(e)
+				return _super(e)
 			},
 
 			afterClose: function(_super, e) {
 
-				var self = this;
+				var self = this
 
 				// Restore focus
-				this._$previouslyTabbable.removeAttr('tabindex');
+				this._$previouslyTabbable.removeAttr('tabindex')
 				this._$previouslyWithTabIndex.each(function(i, element) {
-					$(element).attr('tabindex', self._previousWithTabIndices[i]);
-				});
+					$(element).attr('tabindex', self._previousWithTabIndices[i])
+				})
 
-				this._previouslyActive.trigger('focus');
+				this._previouslyActive.trigger('focus')
 
-				this.$instance.off('next.featherlight previous.featherlight');
+				this.$instance.off('next.featherlight previous.featherlight')
 
-				return _super(e);
+				return _super(e)
 			}
 		}
-	});
+	})
 
-	$.featherlight = Featherlight;
+	$.featherlight = Featherlight
 
 	// Bind jQuery elements to trigger featherlight
 	$.fn.featherlight = function($modal, config) {
-		Featherlight.attach(this, $modal, config);
-		return this;
-	};
+		Featherlight.attach(this, $modal, config)
+		return this
+	}
 
 	// Bind featherlight on ready if config autoBind is set
 	$(document).ready(function(){
@@ -548,38 +548,38 @@
 		// Do auto binding on startup. Meant only to be used by Featherlight and its extensions
 		if (Featherlight.autoBind){
 
-			var $autobound = $(Featherlight.autoBind);
+			var $autobound = $(Featherlight.autoBind)
 
 			// Bind existing elements
 			$autobound.each(function(){
-				Featherlight.attach($(this));
-			});
+				Featherlight.attach($(this))
+			})
 
 			// If a click propagates to the document level, then we have an item that was added later on
 			$(document).on('click', Featherlight.autoBind, function(e) {
 
 				if (e.isDefaultPrevented()) {
-					return;
+					return
 				}
 
 				var $cur = $(e.currentTarget),
-					len = $autobound.length;
+					len = $autobound.length
 
-				$autobound = $autobound.add($cur);
+				$autobound = $autobound.add($cur)
 
 				if (len === $autobound.length) {
 					return; // already bound
 				}
 
 				// Bind featherlight
-				var data = Featherlight.attach($cur);
+				var data = Featherlight.attach($cur)
 
 				// Dispatch event directly
 				if (!data.filter || $(e.target).parentsUntil($cur, data.filter).length > 0) {
-					data.handler(e);
+					data.handler(e)
 				}
-			});
+			})
 		}
-	});
+	})
 
-}(jQuery));
+}(jQuery))

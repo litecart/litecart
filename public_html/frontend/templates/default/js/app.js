@@ -59,7 +59,7 @@
 
 
 	// Off-Canvas Sidebar (data-toggle="offcanvas-collapse")
-	$('[data-toggle="offcanvas"]').on('click', function() {
+	$('[data-toggle="offcanvas"]').on('click', () => {
 		$(this).closest('.navbar').toggleClass('expanded');
 		$('body').toggleClass('offcanvas-open', $(this).closest('.navbar').hasClass('expanded'));
 		$('body').css('overflow', $(this).closest('.navbar').hasClass('expanded') ? 'hidden' : '');
@@ -74,7 +74,7 @@
 		}
 	});
 
-	$('#scroll-up').on('click', function(){
+	$('#scroll-up').on('click', () => {
 		$('html, body').animate({scrollTop: 0}, 1000, 'easeOutBounce');
 		return false;
 	});
@@ -743,7 +743,7 @@
 				}
 			});
 
-			$(window).on('resize', function(){
+			$(window).on('resize', () => {
 
 				if ($content.prop('scrollWidth') > ($self.outerWidth() + 20)) {
 
@@ -792,14 +792,14 @@
 	// Alerts
 	$('body').on('click', '.alert .close', function(e){
 		e.preventDefault();
-		$(this).closest('.alert').fadeOut('fast', function(){
+		$(this).closest('.alert').fadeOut('fast', () => {
 			$(this).remove()
 		});
 	});
 
 
 	// Password Strength
-	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function(){
+	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', () => {
 
 		$(this).siblings('meter').remove();
 
@@ -863,7 +863,7 @@
 
 	$('.placeholder').Placeholder();
 
-	$(window).on('resize', function(){
+	$(window).on('resize', () => {
 		$.each(Placeholders, function(i, placeholder) {
 			placeholder.refresh();
 		});
@@ -903,7 +903,7 @@
 
 
 	// AJAX Search
-	$('.navbar-search :input').on('focus', function(){
+	$('.navbar-search :input').on('focus', () => {
 		$(this).closest('.dropdown').addClass('open');
 	});
 
@@ -912,7 +912,7 @@
 	});
 
 	let xhrAjaxSearch;
-	$('.navbar-search :input').on('input', function(){
+	$('.navbar-search :input').on('input', () => {
 
 		let $navbar_search = $(this).closest('.navbar-search');
 
@@ -959,7 +959,7 @@
 
 
 	// Data-Table Toggle Checkboxes
-$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
+$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', () => {
 	$(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
 		$(this).prop('checked', !$(this).prop('checked')).trigger('change');
 	});

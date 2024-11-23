@@ -35,17 +35,17 @@
 </div>
 
 <script>
-	$('#modal-product-picker input[name="query"]').trigger('focus');
+	$('#modal-product-picker input[name="query"]').trigger('focus')
 
-	var xhr_product_picker = null;
-	$('#modal-product-picker input[name="query"]').on('input', function(){
+	var xhr_product_picker = null
+	$('#modal-product-picker input[name="query"]').on('input', () => {
 
-		let $modal = $('#modal-product-picker');
+		let $modal = $('#modal-product-picker')
 
 		if ($(this).val() == '') {
-			$modal.find('tbody').html('');
-			xhr_product_picker = null;
-			return;
+			$modal.find('tbody').html('')
+			xhr_product_picker = null
+			return
 		}
 
 		xhr_product_picker = $.ajax({
@@ -55,14 +55,14 @@
 			url: '<?php echo document::ilink('catalog/products.json'); ?>?query=' + $(this).val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
-				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
+				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
-				console.error(textStatus + ': ' + errorThrown);
+				console.error(textStatus + ': ' + errorThrown)
 			},
 			success: function(json) {
 
-				$('tbody', $modal).html('');
+				$('tbody', $modal).html('')
 
 				if (!json) {
 
@@ -70,9 +70,9 @@
 						'<tr>',
 						'  <td colspan="7"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td>',
 						'</tr>'
-					].join('\n'));
+					].join('\n'))
 
-					$('tbody', $modal).html($output);
+					$('tbody', $modal).html($output)
 				}
 
 				$.each(json, function(i, row){
@@ -87,51 +87,51 @@
 						'  <td class="text-end">' + row.reserved + '</td>',
 						'  <td>' + row.date_created + '</td>',
 						'</tr>'
-					].join('\n'));
+					].join('\n'))
 
-					$row.data(row);
+					$row.data(row)
 
-					console.log($modal.find('tbody').length);
-					$modal.find('tbody').append($row);
-				});
+					console.log($modal.find('tbody').length)
+					$modal.find('tbody').append($row)
+				})
 
 				if (!$modal.find('tbody tr').length) {
-					$modal.find('tbody').html('<tr><td colspan="6"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
+					$modal.find('tbody').html('<tr><td colspan="6"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>')
 				}
 			},
-		});
-	}).trigger('input').trigger('focus');
+		})
+	}).trigger('input').trigger('focus')
 
-	$('#modal-product-picker tbody').on('click', 'td', function() {
+	$('#modal-product-picker tbody').on('click', 'td', () => {
 
 		let $row = $(this).closest('tr'),
 			callback = $.featherlight.current().$currentTarget.data('callback'),
 			expand = <?php echo (isset($_GET['collect']) && array_intersect(['price', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
-			product = $row.data();
+			product = $row.data()
 
 		if (expand || $row.data('stock_option')) {
 			callback = function(product){
-				$.featherlight('<?php echo document::ilink(__APP__.'/product_picker_configure', ['callback' => @$_GET['callback']]);?>&product_id='+ product.id);
+				$.featherlight('<?php echo document::ilink(__APP__.'/product_picker_configure', ['callback' => @$_GET['callback']]);?>&product_id='+ product.id)
 			}
 		}
 
 		if (callback) {
 
 			if (typeof callback == 'function') {
-				callback(product);
+				callback(product)
 			} else {
-				window[callback](product);
+				window[callback](product)
 			}
 
 		} else if ($.featherlight.current().$currentTarget.closest('.input-group').length) {
-			let $field = $.featherlight.current().$currentTarget.closest('.input-group');
-			$field.find(':input').val(product.id).trigger('change');
-			$field.find('.id').text(product.id);
-			$field.find('.name').text(product.name);
+			let $field = $.featherlight.current().$currentTarget.closest('.input-group')
+			$field.find(':input').val(product.id).trigger('change')
+			$field.find('.id').text(product.id)
+			$field.find('.name').text(product.name)
 		}
 
 		if ($.featherlight.opened) {
-			$.featherlight.close();
+			$.featherlight.close()
 		}
-	});
+	})
 </script>

@@ -149,8 +149,8 @@
 
 <script>
 	$('input[name^="title"]').on('input', function(e){
-		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
-		$('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
-		$('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
-	}).trigger('input');
+		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1]
+		$('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5)
+		$('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val())
+	}).trigger('input')
 </script>

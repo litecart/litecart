@@ -220,11 +220,11 @@
 </div>
 
 <script>
-	$('.navbar .navbar-toggle').on('click', function(){
-		$(this).closest('.navbar').toggleClass('expanded');
-	});
+	$('.navbar .navbar-toggle').on('click', () => {
+		$(this).closest('.navbar').toggleClass('expanded')
+	})
 
-	$('#site-navigation .search').on('click', function(){
-		$(this).find('input[name="query"]').trigger('focus');
-	});
+	$('#site-navigation .search').on('click', () => {
+		$(this).find('input[name="query"]').trigger('focus')
+	})
 </script>

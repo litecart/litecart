@@ -95,11 +95,13 @@
 									 . '<script>' . PHP_EOL;
 
 								if (!empty($gateway['delay'])) {
-									echo '  setTimeout(function(){' . PHP_EOL
-										 . '    document.forms["gateway_form"].submit();' . PHP_EOL
-										 . '  }, '. ($gateway['delay']*1000) .');' . PHP_EOL;
+									echo implode(PHP_EOL, [
+										'  setTimeout(function(){',
+										'    document.forms["gateway_form"].submit()',
+										'  }, '. ($gateway['delay'] * 1000) .')',
+									]) . PHP_EOL;
 								} else {
-									echo '  document.forms["gateway_form"].submit();' . PHP_EOL;
+									echo '  document.forms["gateway_form"].submit()' . PHP_EOL;
 								}
 
 								echo '</script>';

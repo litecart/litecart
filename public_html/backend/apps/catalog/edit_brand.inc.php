@@ -207,24 +207,24 @@
 
 <script>
 	$('input[name="name"]').on('input', function(e){
-		$('input[name^="head_title"]').attr('placeholder', $(this).val());
-		$('input[name^="h1_title"]').attr('placeholder', $(this).val());
-	}).trigger('input');
+		$('input[name^="head_title"]').attr('placeholder', $(this).val())
+		$('input[name^="h1_title"]').attr('placeholder', $(this).val())
+	}).trigger('input')
 
 	$('input[name="image"]').change(function(e) {
 		if ($(this).val() != '') {
-			let oFReader = new FileReader();
-			oFReader.readAsDataURL(this.files[0]);
+			let oFReader = new FileReader()
+			oFReader.readAsDataURL(this.files[0])
 			oFReader.onload = function(e){
-				$('#image img').attr('src', e.target.result);
-			};
+				$('#image img').attr('src', e.target.result)
+			}
 		} else {
-			$('#image img').attr('src', '<?php echo functions::draw_thumbnail('storage://images/' . $brand->data['image'], 400, 100); ?>');
+			$('#image img').attr('src', '<?php echo functions::draw_thumbnail('storage://images/' . $brand->data['image'], 400, 100); ?>')
 		}
-	});
+	})
 
 	$('input[name^="short_description"]').on('input', function(e){
-		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
-		$('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
-	}).trigger('input');
+		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1]
+		$('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val())
+	}).trigger('input')
 </script>

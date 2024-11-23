@@ -1,7 +1,7 @@
 	// Alerts
 	$('body').on('click', '.alert .close', function(e){
 		e.preventDefault();
-		$(this).closest('.alert').fadeOut('fast', function(){$(this).remove()});
+		$(this).closest('.alert').fadeOut('fast', () => {$(this).remove()});
 	});
 
 	// Form required asterix
@@ -25,7 +25,7 @@
 
 	// Detect scroll direction
 	let lastScrollTop = 0;
-	$(document).on('scroll', function(){
+	$(document).on('scroll', () => {
 		 var scrollTop = $(this).scrollTop();
 		 if (scrollTop > lastScrollTop) {
 			 $('body').addClass('scrolling-down');
@@ -64,7 +64,7 @@
 			$(this).find('[data-toggle="tab"]:first').addClass('active');
 		}
 
-		$(this).on('select', '[data-toggle="tab"]', function() {
+		$(this).on('select', '[data-toggle="tab"]', () => {
 			$(this).siblings().removeClass('active');
 			$(this).addClass('active');
 			$($(this).attr('href')).show().siblings().hide();
@@ -84,7 +84,7 @@
 	}
 
 	// Data-Table Toggle Checkboxes
-	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"]', function() {
+	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"]', () => {
 		$(this).closest('.data-table').find('tbody :checkbox').each(function() {
 			$(this).prop('checked', !$(this).prop('checked'));
 		});
@@ -120,7 +120,7 @@
 	});
 
 	// Password Strength
-	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function(){
+	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', () => {
 
 		$(this).siblings('meter').remove();
 
@@ -153,7 +153,7 @@
 		}
 	});
 
-	$('#scroll-up').on('click', function(){
+	$('#scroll-up').on('click', () => {
 		$('html, body').animate({scrollTop: 0}, 1000, 'swing');
 		return false;
 	});

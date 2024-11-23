@@ -67,73 +67,73 @@
 </div>
 
 <script>
-	$('body').on('input', '#box-filter form[name="filter_form"] :input', function(){
-		$('#box-filter .tokens').html('');
+	$('body').on('input', '#box-filter form[name="filter_form"] :input', () => {
+		$('#box-filter .tokens').html('')
 
 		$.each($('#box-filter input[data-token-title][type="search"]'), function(i,el) {
-			if (!$(this).val()) return;
+			if (!$(this).val()) return
 
-			var $token = $('<span class="token"></span>');
+			var $token = $('<span class="token"></span>')
 
 			$token.attr('data-group', $(el).data('token-group'))
 				.attr('data-name', $(el).attr('name'))
 				.attr('data-value', $(el).val())
 				.text($(el).data('token-title') +': '+ $(el).val())
-				.append('<a href="#" class="remove">×</a></span>');
+				.append('<a href="#" class="remove">×</a></span>')
 
-			$('#box-filter .tokens').append($token);
-		});
+			$('#box-filter .tokens').append($token)
+		})
 
 		$.each($('#box-filter input[data-token-title][type="checkbox"]:checked, #box-filter input[data-token-title][type="radio"]:checked'), function(i,el) {
-			if (!$(this).val()) return;
+			if (!$(this).val()) return
 
-			var $token = $('<span class="token"></span>');
+			var $token = $('<span class="token"></span>')
 
 			$token.attr('data-group', $(el).data('token-group'))
 				.attr('data-name', $(el).attr('name'))
 				.attr('data-value', $(el).val())
 				.text($(el).data('token-title') +': '+ $(el).data('token-value'))
-				.append('<a href="#" class="remove">×</a></span>');
+				.append('<a href="#" class="remove">×</a></span>')
 
-			$('#box-filter .tokens').append($token);
-		});
-	});
+			$('#box-filter .tokens').append($token)
+		})
+	})
 
-	$('#box-filter form[name="filter_form"] input[name="product_name"]').trigger('input');
+	$('#box-filter form[name="filter_form"] input[name="product_name"]').trigger('input')
 
-	var xhr_filter = null;
-	$('body').on('input', '#box-filter form[name="filter_form"]', function(){
-		if (xhr_filter) xhr_filter.abort();
-		var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize());
-		history.replaceState(null, null, url);
-		$('.listing.products').hide();
+	var xhr_filter = null
+	$('body').on('input', '#box-filter form[name="filter_form"]', () => {
+		if (xhr_filter) xhr_filter.abort()
+		var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize())
+		history.replaceState(null, null, url)
+		$('.listing.products').hide()
 		xhr_filter = $.ajax({
 			type: 'get',
 			url: url.href,
 			dataType: 'html',
 			success: function(response){
-				var content = $('.listing.products', response).html();
-				var classes = $('.listing.products', response).attr('class');
-				var pagination = $('.pagination', response).length ? $('.pagination', response).html() : '';
-				console.log($('.listing.products').length);
-				$('.listing.products').html(content).attr('class', classes).show();
-				$('.pagination').html(pagination);
+				var content = $('.listing.products', response).html()
+				var classes = $('.listing.products', response).attr('class')
+				var pagination = $('.pagination', response).length ? $('.pagination', response).html() : ''
+				console.log($('.listing.products').length)
+				$('.listing.products').html(content).attr('class', classes).show()
+				$('.pagination').html(pagination)
 			}
-		});
-	});
+		})
+	})
 
 	$('body').on('click', '#box-filter form[name="filter_form"] .tokens .remove', function(e){
-		e.preventDefault();
-		var token = $(this).closest('.token');
+		e.preventDefault()
+		var token = $(this).closest('.token')
 		switch ($(':input[name="'+ $(token).data('name') +'"]').attr('type')) {
 			case 'radio':
 			case 'checkbox':
-				$(':input[name="'+ $(token).data('name') +'"][value="'+ $(token).data('value') +'"]').prop('checked', false).trigger('input');
-				break;
+				$(':input[name="'+ $(token).data('name') +'"][value="'+ $(token).data('value') +'"]').prop('checked', false).trigger('input')
+				break
 			case 'text':
 			case 'search':
-				$(':input[name="'+ $(token).data('name') +'"]').val('').trigger('input');
-				break;
+				$(':input[name="'+ $(token).data('name') +'"]').val('').trigger('input')
+				break
 		}
-	});
+	})
 </script>

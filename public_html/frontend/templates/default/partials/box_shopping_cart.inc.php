@@ -54,7 +54,7 @@
 
 <script>
 	$('#cart > a').on('click', function(e){
-		e.preventDefault();
-		$('body').toggleClass('cart-open');
-	});
+		e.preventDefault()
+		$('body').toggleClass('cart-open')
+	})
 </script>

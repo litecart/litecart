@@ -88,30 +88,30 @@
 
 <script>
 	$('#box-checkout-cart button[name="remove_cart_item"]').on('click', function(e){
-		e.preventDefault();
+		e.preventDefault()
 		let data = [
 			'token=' + $(':input[name="token"]').val(),
 			$(this).closest('td').find(':input').serialize(),
 			'remove_cart_item=' + $(this).val(),
-		].join('&');
-		queueUpdateTask('cart', data, true);
-		queueUpdateTask('customer', true, true);
-		queueUpdateTask('shipping', true, true);
-		queueUpdateTask('payment', true, true);
-		queueUpdateTask('summary', true, true);
-	});
+		].join('&')
+		queueUpdateTask('cart', data, true)
+		queueUpdateTask('customer', true, true)
+		queueUpdateTask('shipping', true, true)
+		queueUpdateTask('payment', true, true)
+		queueUpdateTask('summary', true, true)
+	})
 
 	$('#box-checkout-cart button[name="update_cart_item"]').on('click', function(e){
-		e.preventDefault();
+		e.preventDefault()
 		let data = [
 			'token=' + $(':input[name="token"]').val(),
 			$(this).closest('td').find(':input').serialize(),
 			'update_cart_item=' + $(this).val(),
-		].join('&');
-		queueUpdateTask('cart', data, true);
-		queueUpdateTask('customer', true, true);
-		queueUpdateTask('shipping', true, true);
-		queueUpdateTask('payment', true, true);
-		queueUpdateTask('summary', true, true);
-	});
+		].join('&')
+		queueUpdateTask('cart', data, true)
+		queueUpdateTask('customer', true, true)
+		queueUpdateTask('shipping', true, true)
+		queueUpdateTask('payment', true, true)
+		queueUpdateTask('summary', true, true)
+	})
 </script>

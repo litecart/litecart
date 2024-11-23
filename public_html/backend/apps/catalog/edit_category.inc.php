@@ -330,55 +330,55 @@
 	// Init
 
 	<?php if (!empty($category->data['id'])) { ?>
-	$('select[name="parent_id"] option[value="<?php echo $category->data['id']; ?>"]').prop('disabled', true);
+	$('select[name="parent_id"] option[value="<?php echo $category->data['id']; ?>"]').prop('disabled', true)
 	<?php } ?>
 
 
 	// Cross Referencing
 
-	$('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').on('input change', function(){
-		$('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
-	});
+	$('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').on('input change', () => {
+		$('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val())
+	})
 
 	// Image
 
 	$('input[name="image"]').change(function(e) {
 		if ($(this).val() != '') {
-			var oFReader = new FileReader();
-			oFReader.readAsDataURL(this.files[0]);
+			var oFReader = new FileReader()
+			oFReader.readAsDataURL(this.files[0])
 			oFReader.onload = function(e){
-				$('#image img').attr('src', e.target.result);
-			};
+				$('#image img').attr('src', e.target.result)
+			}
 		} else {
-			$('#image img').attr('src', '<?php echo document::rlink(functions::image_thumbnail(FS_DIR_STORAGE . $category->data['image'], 480, 0)); ?>');
+			$('#image img').attr('src', '<?php echo document::rlink(functions::image_thumbnail(FS_DIR_STORAGE . $category->data['image'], 480, 0)); ?>')
 		}
-	});
+	})
 
 	// Head Title & H1 Title
 
 	$('input[name^="name"]').on('input', function(e){
-		var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
-		$('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
-		$('input[name="name['+language_code+']"]').not(this).val($(this).val());
-		$('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
-		$('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
-	}).trigger('input');
+		var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1]
+		$('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5)
+		$('input[name="name['+language_code+']"]').not(this).val($(this).val())
+		$('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val())
+		$('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val())
+	}).trigger('input')
 
 	// Meta Description
 
 	$('input[name^="short_description"]').on('input', function(e){
-		var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
-		$('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
-	}).trigger('input');
+		var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1]
+		$('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val())
+	}).trigger('input')
 
 	// Filters
 
-	var new_attribute_filter_i = 0;
-	$('#tab-filters button[name="add"]').on('click', function(){
+	var new_attribute_filter_i = 0
+	$('#tab-filters button[name="add"]').on('click', () => {
 
 		if ($('select[name="new_attribute_group"]').val() == '') {
-			alert("<?php echo functions::escape_html(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
-			return;
+			alert("<?php echo functions::escape_html(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>")
+			return
 		}
 
 		let output = [
@@ -394,30 +394,30 @@
 			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>',
 			'  </td>',
 			'</tr>',
-	 ].join('\n');
+	 ].join('\n')
 
-		while ($('input[name="filters[new_'+new_attribute_filter_i+']"]').length) new_attribute_filter_i++;
-		output = output.replace(/new_attribute_filter_i/g, 'new_' + new_attribute_filter_i);
-		output = output.replace(/new_attribute_group_id/g, $('select[name="new_attribute_group"] option:selected').val());
-		output = output.replace(/new_attribute_group_name/g, $('select[name="new_attribute_group"] option:selected').text());
-		new_attribute_filter_i++;
+		while ($('input[name="filters[new_'+new_attribute_filter_i+']"]').length) new_attribute_filter_i++
+		output = output.replace(/new_attribute_filter_i/g, 'new_' + new_attribute_filter_i)
+		output = output.replace(/new_attribute_group_id/g, $('select[name="new_attribute_group"] option:selected').val())
+		output = output.replace(/new_attribute_group_name/g, $('select[name="new_attribute_group"] option:selected').text())
+		new_attribute_filter_i++
 
-		$('#tab-filters tbody').append(output);
-	});
+		$('#tab-filters tbody').append(output)
+	})
 
 	$('#tab-filters').on('click', '.move-up, .move-down', function(event) {
-		event.preventDefault();
-		var row = $(this).closest('tr');
+		event.preventDefault()
+		var row = $(this).closest('tr')
 
 		if ($(this).is('.move-up') && $(row).prevAll().length) {
-			$(row).insertBefore($(row).prev());
+			$(row).insertBefore($(row).prev())
 		} else if ($(this).is('.move-down') && $(row).nextAll().length) {
-			$(row).insertAfter($(row).next());
+			$(row).insertAfter($(row).next())
 		}
-	});
+	})
 
 	$('#tab-filters').on('click', '.remove', function(e) {
-		e.preventDefault();
-		$(this).closest('tr').remove();
-	});
+		e.preventDefault()
+		$(this).closest('tr').remove()
+	})
 </script>

@@ -48,5 +48,5 @@ body {
 
 <script>
 	// Scroll to last comment
-	$("#comments").animate({scrollTop: $('#comments').prop('scrollHeight')}, 2000);
+	$("#comments").animate({scrollTop: $('#comments').prop('scrollHeight')}, 2000)
 </script>

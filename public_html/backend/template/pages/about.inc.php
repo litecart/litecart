@@ -254,16 +254,16 @@
 			cache: false,
 			dataType: 'html',
 			success: function(result){
-				var $cpu_usage = $('meter.cpu-usage', result);
-				var $memory_usage = $('meter.memory-usage', result);
+				var $cpu_usage = $('meter.cpu-usage', result)
+				var $memory_usage = $('meter.memory-usage', result)
 				$('meter.cpu-usage').replaceWith($cpu_usage)
 				$('meter.memory-usage').replaceWith($memory_usage)
 			},
-		});
-	}, 3000);
+		})
+	}, 3000)
 	<?php } ?>
 
 	$('.data-table :checkbox').change(function() {
-		$('#actions').prop('disabled', !$('.data-table :checked').length);
-	}).first().trigger('change');
+		$('#actions').prop('disabled', !$('.data-table :checked').length)
+	}).first().trigger('change')
 </script>

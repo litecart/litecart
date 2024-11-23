@@ -6,9 +6,9 @@
 			href: url
 				//onload: callback,
 				//onerror: fallback
-		});
+		})
 
-		$('<link/>', options).appendTo('head');
+		$('<link/>', options).appendTo('head')
 	}
 
 	// JavaScript Loader
@@ -18,10 +18,10 @@
 			method: 'GET',
 			dataType: 'script',
 			cache: true
-		});
+		})
 
-		return jQuery.ajax(url, options);
-	};
+		return jQuery.ajax(url, options)
+	}
 
 	// Escape HTML
 	function escapeHTML(string) {
@@ -32,11 +32,11 @@
 				'"': '&quot;',
 				"'": '&#39;',
 				'/': '&#x2F;'
-		};
+		}
 		return String(string).replace(/[&<>"'\/]/g, function (s) {
-				return entityMap[s];
-		});
-	};
+				return entityMap[s]
+		})
+	}
 
 	// Money Formatting
 	Number.prototype.toMoney = function(use_html = false) {
@@ -50,9 +50,9 @@
 			s = n < 0 ? '-' : '',
 			i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
 			f = n - i,
-			j = (j = i.length) > 3 ? j % 3 : 0;
+			j = (j = i.length) > 3 ? j % 3 : 0
 
-		return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x;
+		return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x
 	}
 
 		// Money Formatting (HTML)
@@ -66,7 +66,7 @@
 		s = n < 0 ? '-' : '',
 		i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
 		f = n - i,
-		j = (j = i.length) > 3 ? j % 3 : 0;
+		j = (j = i.length) > 3 ? j % 3 : 0
 
 	}
 
@@ -75,5 +75,5 @@
 		$.get({
 			url: window._env.platform.path + 'ajax/cart.json',
 			cache: false
-		});
-	}, 60e3);
+		})
+	}, 60e3)

@@ -235,16 +235,16 @@
 </div>
 
 <script>
-	$('button[name="add_recipients"]').on('click', function(){
-		$.featherlight('#modal-add-recipients');
-		$('textarea[name="recipients"]').attr('placeholder', 'user@email.com\nanother@email.com');
+	$('button[name="add_recipients"]').on('click', () => {
+		$.featherlight('#modal-add-recipients')
+		$('textarea[name="recipients"]').attr('placeholder', 'user@email.com\nanother@email.com')
 	})
 
 	$('select[name="subscribed"]').change(function(){
-		$(this).closes('form').submit();
-	});
+		$(this).closes('form').submit()
+	})
 
 	$('.data-table :checkbox').change(function() {
-		$('#actions').prop('disabled', !$('.data-table :checked').length);
-	}).first().trigger('change');
+		$('#actions').prop('disabled', !$('.data-table :checked').length)
+	}).first().trigger('change')
 </script>

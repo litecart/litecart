@@ -56,17 +56,17 @@
 
 <script>
 	$('#modal-category-picker').on('click', 'a', function(e){
-		e.preventDefault();
-		$('.modal-body').load($(this).attr('href')+' .modal-body');
-	});
+		e.preventDefault()
+		$('.modal-body').load($(this).attr('href')+' .modal-body')
+	})
 
-	$('#modal-category-picker').on('click', 'button[name="select"]', function() {
+	$('#modal-category-picker').on('click', 'button[name="select"]', () => {
 		let field = $.featherlight.current().$currentTarget.closest('.input-group'),
-			id = $(this).data('id'), name = $(this).data('name');
+			id = $(this).data('id'), name = $(this).data('name')
 
-		$(field).find(':input').val(id).trigger('change');
-		$(field).find('.name').text(name);
-		$(field).find('a').attr('href', $(field).find('a').attr('href').replace(/(parent_id)=\d*/, '$1='+id));
-		$.featherlight.close();
-	});
+		$(field).find(':input').val(id).trigger('change')
+		$(field).find('.name').text(name)
+		$(field).find('a').attr('href', $(field).find('a').attr('href').replace(/(parent_id)=\d*/, '$1='+id))
+		$.featherlight.close()
+	})
 </script>

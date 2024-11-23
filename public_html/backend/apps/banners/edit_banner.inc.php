@@ -168,24 +168,24 @@ table th:last-child {
 </div>
 
 <script>
-	$('.data-table').on('input', ':input[name^="keys"]', function(){
+	$('.data-table').on('input', ':input[name^="keys"]', () => {
 
-		let key = $(this).val();
-		let row = $(this).closest('tr');
+		let key = $(this).val()
+		let row = $(this).closest('tr')
 
-		$(this).attr('name', $(this).attr('name').replace(/^keys\[([^\]]+)?\]/, 'keys['+ key +']'));
+		$(this).attr('name', $(this).attr('name').replace(/^keys\[([^\]]+)?\]/, 'keys['+ key +']'))
 
 		$.each($(row).find(':input[name^="values["]'), function(i, field) {
-			let matches = $(field).attr('name').match(/^values\[(.*?)\]\[(.*?)\]$/);
-			$(field).attr('name', 'values['+ matches[1] +']['+ key +']');
-		});
-	});
+			let matches = $(field).attr('name').match(/^values\[(.*?)\]\[(.*?)\]$/)
+			$(field).attr('name', 'values['+ matches[1] +']['+ key +']')
+		})
+	})
 
-	let new_key_index = 0;
+	let new_key_index = 0
 	while ($(':input[name^="keys['+new_key_index+']"]').length) new_key_index++
 
 	$('.data-table .add').on('click', function(e){
-		e.preventDefault();
+		e.preventDefault()
 
 		let $output = $([
 			'<tr>',
@@ -197,23 +197,23 @@ table th:last-child {
 			'</tr>'
 		].join('\n')
 			.replace(/new_key_index/g, 'new_' + new_key_index++)
-		);
+		)
 
-		$('.data-table tbody').append(output);
-	});
+		$('.data-table tbody').append(output)
+	})
 
 	$('.data-table').on('click', '.remove', function(e){
-		e.preventDefault();
-		$(this).closest('tr').remove();
-	});
+		e.preventDefault()
+		$(this).closest('tr').remove()
+	})
 
 	$('a.tracker-wrapper-help').on('click', function(e){
-		e.preventDefault();
+		e.preventDefault()
 		alert([
 			"Encapsulates the code with a div wrapper and makes it trackable.",
 			"",
 			"When disabled use the following parameters on an element for tracking:",
 			"id=\"banner-$uid\" class=\"banner ...\""
-		].join('\n'));
-	});
+		].join('\n'))
+	})
 </script>

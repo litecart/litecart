@@ -166,63 +166,63 @@
 
 	$('#campaigns').on('focus', 'input[name^="campaigns"]', function(e) {
 		if($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
-			$(this).closest('.dropdown').addClass('open');
+			$(this).closest('.dropdown').addClass('open')
 	 }
-	});
+	})
 
 	$('#campaigns').on('blur', '.dropdown', function(e) {
-		$(this).removeClass('open');
-	});
+		$(this).removeClass('open')
+	})
 
-	$('#campaigns').on('input', 'input[name^="campaigns"][name$="[percentage]"]', function() {
+	$('#campaigns').on('input', 'input[name^="campaigns"][name$="[percentage]"]', () => {
 		let parent = $(this).closest('tr'),
-			value = 0;
+			value = 0
 
 		<?php foreach (currency::$currencies as $currency) { ?>
 		if ($('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').val() > 0) {
-			value = parseFloat($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
-			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value);
+			value = parseFloat($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>)
+			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value)
 		} else {
-			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val("");
+			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val("")
 		}
 		<?php } ?>
 
 		<?php foreach (currency::$currencies as $currency) { ?>
-		value = parseFloat($(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
-		$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value);
+		value = parseFloat($(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>)
+		$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value)
 		<?php } ?>
-	});
+	})
 
-	$('#campaigns').on('input', 'input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
-		let parent = $(this).closest('tr');
-		let percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
-		percentage = percentage.toFixed(2);
-		$(parent).find('input[name$="[percentage]"]').val(percentage);
+	$('#campaigns').on('input', 'input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', () => {
+		let parent = $(this).closest('tr')
+		let percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100
+		percentage = percentage.toFixed(2)
+		$(parent).find('input[name$="[percentage]"]').val(percentage)
 
 		<?php foreach (currency::$currencies as $currency) { ?>
-		value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>;
-		value = value.toFixed(<?php echo $currency['decimals']; ?>);
-		$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value);
+		value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>
+		value = value.toFixed(<?php echo $currency['decimals']; ?>)
+		$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value)
 		if ($(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
-			$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val('');
+			$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val('')
 		}
 		<?php } ?>
-	});
+	})
 
-	$('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').trigger('input');
+	$('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').trigger('input')
 
 	$('button[name="remove"]').on('click', function(e){
-		e.preventDefault();
+		e.preventDefault()
 		if (confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
-			$(this).closest('tr').remove();
+			$(this).closest('tr').remove()
 		}
-	});
+	})
 
-	var new_product_i = 0;
-	while ($('input[name="products[new_product_'+new_product_i+'][product_id]"]').length) new_product_i++;
+	var new_product_i = 0
+	while ($('input[name="products[new_product_'+new_product_i+'][product_id]"]').length) new_product_i++
 
 	window.add_product = function(product) {
-		var key = $('table tbody tr').length;
+		var key = $('table tbody tr').length
 
 		$output = $([
 			'<tr>',
@@ -244,8 +244,8 @@
 		].join('\n')
 			.replace(/new_product_i/g, 'new_product_'+new_product_i++)
 			.replace(/new_product_id/g, product.id)
-		);
+		)
 
-		$('table tbody').append($output);
+		$('table tbody').append($output)
 	}
 </script>

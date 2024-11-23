@@ -15,23 +15,23 @@
 
 <script>
 	<?php if (!isset($_COOKIE['cookies_accepted'])) { ?>
-	$('#box-cookie-notice button[name="accept_cookies"]').on('click', function(){
-		$('#box-cookie-notice').fadeOut();
-		document.cookie = 'cookies_accepted=1; Max-Age=' + (365 * 24 * 60 * 60 * 1000) +'; Path=<?php echo WS_DIR_APP; ?>; SameSite=Lax';
-		$('document').trigger('cookiesAccepted');
-	});
+	$('#box-cookie-notice button[name="accept_cookies"]').on('click', () => {
+		$('#box-cookie-notice').fadeOut()
+		document.cookie = 'cookies_accepted=1; Max-Age=' + (365 * 24 * 60 * 60 * 1000) +'; Path=<?php echo WS_DIR_APP; ?>; SameSite=Lax'
+		$('document').trigger('cookiesAccepted')
+	})
 
-	$('#box-cookie-notice button[name="reject_cookies"]').on('click', function(){
-		$('#box-cookie-notice').fadeOut();
-		document.cookie = 'cookies_accepted=0; Expires=0; Path=<?php echo WS_DIR_APP; ?>; SameSite=Lax';
-	});
+	$('#box-cookie-notice button[name="reject_cookies"]').on('click', () => {
+		$('#box-cookie-notice').fadeOut()
+		document.cookie = 'cookies_accepted=0; Expires=0; Path=<?php echo WS_DIR_APP; ?>; SameSite=Lax'
+	})
 	<?php } ?>
 
-	$(document).on('cookiesAccepted', function(){
+	$(document).on('cookiesAccepted', () => {
 			// Run code here for when cookies are accepted
-	});
+	})
 
 	if (document.cookie.match(/cookies_accepted=1/)) {
-		$(document).trigger('cookiesAccepted');
+		$(document).trigger('cookiesAccepted')
 	}
 </script>

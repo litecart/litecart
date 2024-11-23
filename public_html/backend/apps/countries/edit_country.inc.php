@@ -226,7 +226,7 @@
 </div>
 
 <script>
-	$('#address-format-hint').on('click', function() {
+	$('#address-format-hint').on('click', () => {
 		alert(
 			'<?php echo language::translate('title_syntax', 'Syntax'); ?>:\n\n' +
 			'%company, %firstname, %lastname, \n' +
@@ -234,15 +234,15 @@
 			'%postcode %city\n' +
 			'%zone_code, %zone_name\n' +
 			'%country_number, %country_code, %country_code_3, %country_name, %country_domestic_name\n'
-		);
-	});
+		)
+	})
 
-	let new_zone_index = 0;
-	while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++;
+	let new_zone_index = 0
+	while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++
 
 	$('form[name="country_form"] .add').on('click', function(event) {
-		event.preventDefault();
-		if ($('select[name="country[code]"]').find('option:selected').val() == '') return;
+		event.preventDefault()
+		if ($('select[name="country[code]"]').find('option:selected').val() == '') return
 
 		let output = [
 			'<tr>',
@@ -255,13 +255,13 @@
 			.replace(/new_zone_index/g, 'new_' + new_zone_index++)
 			.replace(/new_zone_code/g, $('input[name="zone[code]"]').val()
 			.replace(/new_zone_name/g, $('input[name="zone[name]"]').val()
-		);
+		)
 
-		$(this).closest('table').find('tbody').append(output);
-	});
+		$(this).closest('table').find('tbody').append(output)
+	})
 
 	$('form[name="country_form"]').on('click', '.remove', function(event) {
-		event.preventDefault();
-		$(this).closest('tr').remove();
-	});
+		event.preventDefault()
+		$(this).closest('tr').remove()
+	})
 </script>

@@ -528,7 +528,7 @@
 	}).trigger('input');
 
 	// Input Number Decimals
-	$('body').on('change', 'input[type="number"][data-decimals]', function(){
+	$('body').on('change', 'input[type="number"][data-decimals]', () => {
 		 var value = parseFloat($(this).val()),
 			 decimals = $(this).data('decimals');
 		if (decimals != '') {
@@ -633,7 +633,7 @@
 			return value;
 		});
 
-		$.each(tags, function(){
+		$.each(tags, () => {
 			$tagField.add(this);
 		});
 
@@ -645,7 +645,7 @@
 			}
 		});
 
-		$tagField.on('blur', '.input', function(){
+		$tagField.on('blur', '.input', () => {
 			$tagField.add($(this).text());
 			$(this).text('');
 		});
@@ -654,7 +654,7 @@
 			$tagField.remove($(this).siblings('.value').text());
 		});
 
-		$tagField.on('change', function(){
+		$tagField.on('change', () => {
 			$originalInput.val($tagField.tags.join(','));
 		});
 
@@ -665,7 +665,7 @@
 // Alerts
 $('body').on('click', '.alert .close', function(e){
 	e.preventDefault();
-	$(this).closest('.alert').fadeOut('fast', function(){
+	$(this).closest('.alert').fadeOut('fast', () => {
 		$(this).remove()
 	});
 });
@@ -711,7 +711,7 @@ $('#search input[name="query"]').on({
 		if (!$('#search').filter(':hover').length) {
 			$('#search.dropdown').removeClass('open');
 		} else {
-			$('#search.dropdown').on('blur', function(){
+			$('#search.dropdown').on('blur', () => {
 				$('#search.dropdown').removeClass('open');
 			});
 		}
@@ -817,7 +817,7 @@ $('#search input[name="query"]').on({
 			this.$element.find('[data-toggle="tab"]').each(function(){
 				let $link = $(this);
 
-				$link.on('select', function(){
+				$link.on('select', () => {
 					self.$element.find('.active').removeClass('active');
 
 					if ($link.hasClass('nav-link')) {
@@ -850,14 +850,14 @@ $('#search input[name="query"]').on({
 		$('[data-toggle="tab"][href="' + document.location.hash +'"]').trigger('select');
 	}
 
-	$(document).on('ajaxcomplete', function(){
+	$(document).on('ajaxcomplete', () => {
 		$('.nav-tabs').Tabs();
 	});
 }(jQuery);
 
 
 	// Data-Table Toggle Checkboxes
-	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
+	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', () => {
 		$(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
 			$(this).prop('checked', !$(this).prop('checked')).trigger('change');
 		});
@@ -891,7 +891,7 @@ $('#search input[name="query"]').on({
 	});
 
 	// Data-Table Sorting (Page Reload)
-	$('.table-sortable thead th[data-sort]').on('click', function(){
+	$('.table-sortable thead th[data-sort]').on('click', () => {
 		let params = {};
 
 		window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
