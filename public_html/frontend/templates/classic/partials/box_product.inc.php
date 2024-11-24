@@ -270,7 +270,7 @@
 	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', function(e) {
 
 		var regular_price = <?php echo currency::format_raw($regular_price); ?>
-		var sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>
+		var sales_price = <?php echo currency::format_raw($campaign_price ?: $regular_price); ?>
 		var tax = <?php echo currency::format_raw($total_tax); ?>
 
 		$(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function(){

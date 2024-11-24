@@ -280,7 +280,7 @@
 		$files = [];
 
 		// Open directory
-		$dh = opendir($basedir ? $basedir : './');
+		$dh = opendir($basedir ?: './');
 
 		// Step through each file in directory
 		while ($file = readdir($dh)) {

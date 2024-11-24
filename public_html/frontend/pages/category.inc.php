@@ -47,8 +47,8 @@
 		return;
 	}
 
-	document::$title[] = $category->head_title ? $category->head_title : $category->name;
-	document::$description = $category->meta_description ? $category->meta_description : strip_tags($category->short_description);
+	document::$title[] = $category->head_title ?: $category->name;
+	document::$description = $category->meta_description ?: strip_tags($category->short_description);
 
 	document::$head_tags['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', ['category_id' => $category->id]) .'">';
 
@@ -76,9 +76,9 @@
 			'name' => $category->name,
 			'short_description' => $category->short_description,
 			'description' => (!empty($category->description) && trim(strip_tags($category->description))) ? $category->description : '',
-			'h1_title' => $category->h1_title ? $category->h1_title : $category->name,
-			'head_title' => $category->head_title ? $category->head_title : $category->name,
-			'meta_description' => $category->meta_description ? $category->meta_description : $category->short_description,
+			'h1_title' => $category->h1_title ?: $category->name,
+			'head_title' => $category->head_title ?: $category->name,
+			'meta_description' => $category->meta_description ?: $category->short_description,
 			'image' => ($category->image ? 'storage://images/' . $category->image : ''),
 			'main_category' => [
 				'id' => $category->main_category->id,

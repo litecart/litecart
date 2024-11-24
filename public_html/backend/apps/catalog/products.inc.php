@@ -265,8 +265,8 @@ table .thumbnail {
 					<td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
 					<td class="warning"><?php if (!empty($product['warning'])) echo functions::draw_fonticon('icon-exclamation-triangle', 'title="'. functions::escape_attr($product['warning']) .'"'); ?></td>
 					<td class="text-center"><?php echo $product['id']; ?></td>
-					<td><?php echo functions::draw_thumbnail('storage://images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, settings::get('product_image_clipping')); ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name'] ? $product['name'] : '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
+					<td><?php echo functions::draw_thumbnail('storage://images/' . ($product['image'] ?: 'no_image.png'), 64, 64, settings::get('product_image_clipping')); ?></td>
+					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name'] ?: '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
 					<td><?php echo $product['code']; ?></td>
 					<td class="text-center"><?php echo $product['num_stock_options']; ?></td>
 					<td class="text-end"><?php echo language::strftime('datetime', $product['date_created']); ?></td>

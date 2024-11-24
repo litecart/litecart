@@ -40,8 +40,8 @@
 		return;
 	}
 
-	document::$title[] = $brand->head_title ? $brand->head_title : $brand->name;
-	document::$description = $brand->meta_description ? $brand->meta_description : strip_tags($brand->short_description);
+	document::$title[] = $brand->head_title ?: $brand->name;
+	document::$description = $brand->meta_description ?: strip_tags($brand->short_description);
 
 	document::$head_tags['canonical'] = '<link rel="canonical" href="'. document::href_ilink('brand', ['brand_id' => (int)$brand->id], false) .'">';
 
@@ -55,7 +55,7 @@
 
 		$_page->snippets = [
 			'id' => $brand->id,
-			'title' => $brand->h1_title ? $brand->h1_title : $brand->name,
+			'title' => $brand->h1_title ?: $brand->name,
 			'name' => $brand->name,
 			'description' => $brand->description,
 			'link' => $brand->link,

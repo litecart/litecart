@@ -33,7 +33,7 @@
 						throw new Exception('Invalid email or the account has been removed');
 					}
 
-					$checksum = sha1($administrator['username'] . $administrator['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+					$checksum = sha1($administrator['username'] . $administrator['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ?: ''));
 
 					if ($checksum != $key) {
 

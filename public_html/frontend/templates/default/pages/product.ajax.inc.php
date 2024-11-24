@@ -10,7 +10,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 }
 </style>
 
-<article id="box-product" data-id="{{product_id}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
+<article id="box-product" data-id="{{product_id}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($campaign_price ?: $regular_price); ?>">
 
 	<div class="card">
 		<div class="card-body">
@@ -161,7 +161,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 							<label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
 							<div style="display: flex">
 								<div class="input-group" style="flex: 0 1 150px;">
-									<?php echo !empty($quantity_unit['decimals']) ? functions::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ? $quantity_min : '1') .'" max="'. ($quantity_max ? $quantity_max : '') .'" step="'. ($quantity_step ? $quantity_step : '') .'"') : functions::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ? $quantity_min : '1') .'" max="'. ($quantity_max ? $quantity_max : '') .'" step="'. ($quantity_step ? $quantity_step : '') .'"'); ?>
+									<?php echo !empty($quantity_unit['decimals']) ? functions::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"') : functions::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"'); ?>
 									<?php if (!empty($quantity_unit['name'])) echo '<div class="input-group-text">'. $quantity_unit['name'] .'</div>'; ?>
 								</div>
 
@@ -203,7 +203,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', function(e) {
 
 		var regular_price = <?php echo currency::format_raw($regular_price); ?>
-		var sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>
+		var sales_price = <?php echo currency::format_raw($campaign_price ?: $regular_price); ?>
 		var tax = <?php echo currency::format_raw($total_tax); ?>
 
 		$(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function(){

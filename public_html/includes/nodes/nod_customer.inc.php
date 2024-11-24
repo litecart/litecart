@@ -29,7 +29,7 @@
 						throw new Exception('Invalid email or the account has been removed');
 					}
 
-					$checksum = sha1($customer['email'] . $customer['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+					$checksum = sha1($customer['email'] . $customer['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ?: ''));
 
 					if ($checksum != $key) {
 						if (++$customer['login_attempts'] < 3) {

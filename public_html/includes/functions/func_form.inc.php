@@ -1416,7 +1416,7 @@
 			)->fetch();
 
 			if ($customer) {
-				$account_name = $customer['company'] ? $customer['company'] : $customer['firstname'] .' '. $customer['lastname'];
+				$account_name = $customer['company'] ?: $customer['firstname'] .' '. $customer['lastname'];
 			} else {
 				$account_name = '<em>'. language::translate('title_unknown', 'Unknown') .'</em>';
 			}
@@ -1449,7 +1449,7 @@
 			"select id, email, company, firstname, lastname from ". DB_TABLE_PREFIX ."customers
 			order by email;"
 		)->fetch_all(function($customer) {
-			return [$customer['id'], $customer['email'], 'data-name="'. functions::escape_attr($customer['company'] ? $customer['company'] : $customer['firstname'] .' '. $customer['lastname']) .'"'];
+			return [$customer['id'], $customer['email'], 'data-name="'. functions::escape_attr($customer['company'] ?: $customer['firstname'] .' '. $customer['lastname']) .'"'];
 		});
 
 		if (preg_match('#\[\]$#', $name)) {
@@ -1609,7 +1609,7 @@
 		return implode(PHP_EOL, [
 			'<div class="form-input"'. ($parameters ? ' ' . $parameters : '') .'>',
 			'  ' . form_input_hidden($name, true),
-			'  <span class="value">'. ($input ? $input : '('. language::translate('title_none', 'None') .')') .'</span> <a href="'. document::href_ilink('b:files/file_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>',
+			'  <span class="value">'. ($input ?: '('. language::translate('title_none', 'None') .')') .'</span> <a href="'. document::href_ilink('b:files/file_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>',
 			'</div>',
 		]);
 

@@ -41,8 +41,8 @@
 		limit 1;"
 	);
 
-	document::$title[] = $product->head_title ? $product->head_title : $product->name;
-	document::$description = $product->meta_description ? $product->meta_description : strip_tags($product->short_description);
+	document::$title[] = $product->head_title ?: $product->name;
+	document::$description = $product->meta_description ?: strip_tags($product->short_description);
 
 	document::$head_tags['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'">';
 

@@ -86,7 +86,7 @@
 					<td><?php echo $country['iso_code_1']; ?></td>
 					<td><?php echo $country['iso_code_2']; ?></td>
 					<td><?php echo $country['iso_code_3']; ?></td>
-					<td class="text-center"><?php echo $country['num_zones'] ? $country['num_zones'] : '-'; ?></td>
+					<td class="text-center"><?php echo $country['num_zones'] ?: '-'; ?></td>
 					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_country', ['country_code' => $country['iso_code_2']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>

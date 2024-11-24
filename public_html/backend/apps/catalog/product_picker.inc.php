@@ -81,7 +81,7 @@
 						'<tr>',
 						'  <td>' + row.id + '</td>',
 						'  <td>' + row.name + '</td>',
-						'  <td class="text-center">' + (row.num_stock_options ? row.num_stock_options : '-') + '</td>',
+						'  <td class="text-center">' + (row.num_stock_options ?: '-') + '</td>',
 						'  <td class="text-end">' + row.price.formatted + '</td>',
 						'  <td class="text-end">' + row.quantity + '</td>',
 						'  <td class="text-end">' + row.reserved + '</td>',

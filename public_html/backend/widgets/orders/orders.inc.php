@@ -20,11 +20,11 @@
 		}
 
 		$order['classes'] = [];
-		
+
 		if (!$order['order_status_id']) {
 			$order['classes'][] = 'semi-transparent';
 		}
-	
+
 		if ($order['unread']) {
 			$order['classes'][] = 'bold';
 		}
@@ -58,7 +58,7 @@
 			<tr class="<?php echo implode(' ', $order['classes']); ?>">
 				<td><?php echo functions::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
 				<td class="text-center"><?php echo $order['no']; ?></td>
-				<td><a class="link" href="<?php echo document::href_ilink('orders/edit_order', ['order_id' => $order['id']]); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?></a></td>
+				<td><a class="link" href="<?php echo document::href_ilink('orders/edit_order', ['order_id' => $order['id']]); ?>"><?php echo $order['customer_company'] ?: $order['customer_firstname'] .' '. $order['customer_lastname']; ?></a></td>
 				<td><?php echo ($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>
 				<td><?php echo $order['payment_option_name']; ?></td>
 				<td><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>

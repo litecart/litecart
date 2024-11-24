@@ -352,7 +352,7 @@
 	$account_name = '('. language::translate('title_guest', 'Guest') .')';
 	if (!empty($_POST['customer']['id'])) {
 		$customer = reference::customer((int)$_POST['customer']['id']);
-		$account_name = $customer->company ? $customer->company : $customer->firstname .' '. $customer->lastname;
+		$account_name = $customer->company ?: $customer->firstname .' '. $customer->lastname;
 	}
 ?>
 <style>

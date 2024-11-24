@@ -176,7 +176,7 @@
 				'tax' => $product->tax,
 				'tax_class_id' => $product->tax_class_id,
 				'quantity' => $quantity,
-				'quantity_min' => $product->quantity_min ? $product->quantity_min : '0',
+				'quantity_min' => $product->quantity_min ?: '0',
 				'quantity_max' => ($product->quantity_max > 0) ? $product->quantity_max : null,
 				'quantity_step' => ($product->quantity_step > 0) ? $product->quantity_step : null,
 				'quantity_unit' => [
