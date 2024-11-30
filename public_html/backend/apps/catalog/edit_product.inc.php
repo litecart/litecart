@@ -301,7 +301,7 @@
 <?php
 	if ($product->data['images']) {
 		$image = current($product->data['images']);
-		echo functions::draw_thumbnail('storage://images/' . ($image['filename'] ?  $image['filename'] : 'no_image.png'), 480, 0, 'product', 'id="main-image"');
+		echo functions::draw_thumbnail('storage://images/' . ($image['filename'] ?  $image['filename'] : 'no_image.svg'), 480, 0, 'product', 'id="main-image"');
 		reset($product->data['images']);
 	}
 ?>
@@ -903,7 +903,7 @@
 		let $output = $([
 			'<div class="image form-group">',
 			'  <div class="float-start">',
-			'    <?php echo functions::draw_thumbnail('storage://images/no_image.png', 64, 0, 'product'); ?>',
+			'    <?php echo functions::draw_thumbnail('storage://images/no_image.svg', 64, 0, 'product'); ?>',
 			'  </div>',
 			'  ',
 			'  <div class="input-group">',
@@ -940,7 +940,7 @@
 			return
 		}
 
-		$('#tab-general .main-image').attr('src', '<?php echo document::href_rlink(functions::draw_thumbnail('storage://images/no_image.png', 360, 0, 'product')); ?>')
+		$('#tab-general .main-image').attr('src', '<?php echo document::href_rlink(functions::draw_thumbnail('storage://images/no_image.svg', 360, 0, 'product')); ?>')
 	}
 
 	// Technical Data

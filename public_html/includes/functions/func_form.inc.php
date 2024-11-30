@@ -1977,7 +1977,7 @@
 			$option = implode(PHP_EOL, [
 				'<div class="flex flex-gap" style="gap: 1em;">',
 				'  <div style="flex: 0 0 auto;">',
-				'  '. ($has_images ? functions::draw_thumbnail('storage://images/' . fallback($stock_option['image'], 'no_image.png'), 0, 64, 'product') : ''),
+				'  '. ($has_images ? functions::draw_thumbnail('storage://images/' . fallback($stock_option['image'], 'no_image.svg'), 0, 64, 'product') : ''),
 				'  </div>',
 				'  <div class="flex-grow">',
 				'    <div class="name">'. $stock_option['name'] .' ['. $stock_option['sku'] .']</div>',

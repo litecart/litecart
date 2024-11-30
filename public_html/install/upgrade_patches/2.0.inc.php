@@ -6,7 +6,6 @@
 		FS_DIR_ADMIN . 'sales.widget/',
 		FS_DIR_STORAGE . 'data/errors.log',
 		FS_DIR_STORAGE . 'data/performance.log',
-		FS_DIR_STORAGE . 'images/no_image.png',
 		FS_DIR_STORAGE . 'images/icons/',
 		FS_DIR_APP . 'ext/fancybox/',
 		FS_DIR_APP . 'ext/jqplot/',
@@ -57,10 +56,6 @@
 		FS_DIR_APP . 'includes/templates/default.catalog/views/printable_order_copy.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/views/printable_packing_slip.inc.php',
 		FS_DIR_APP . 'includes/column_left.inc.php',
-	]);
-
-	perform_action('copy', [
-		FS_DIR_APP . 'install/data/default/public_html/images/no_image.png' => FS_DIR_STORAGE . 'images/no_image.png',
 	]);
 
 	perform_action('modify', [

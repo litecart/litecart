@@ -115,9 +115,9 @@
 			'name' => $item['name'],
 			'sku' => $item['sku'],
 			'image' => [
-				'original' => 'storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.png'),
-				'thumbnail' => functions::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.png'), 64, 0, 'product'),
-				'thumbnail_2x' => functions::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.png'), 128, 0, 'product'),
+				'original' => 'storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg'),
+				'thumbnail' => functions::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg'), 64, 0, 'product'),
+				'thumbnail_2x' => functions::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg'), 128, 0, 'product'),
 			],
 			'link' => document::ilink('product', ['product_id' => $item['product_id']]),
 			'display_price' => customer::$data['display_prices_including_tax'] ? $item['price'] + $item['tax'] : $item['price'],

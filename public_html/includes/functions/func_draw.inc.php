@@ -180,7 +180,7 @@
 	function draw_thumbnail($image, $width=0, $height=0, $clipping='fit', $parameters='') {
 
 		if (!is_file($image)) {
-			$image = 'storage://images/no_image.png';
+			$image = 'storage://images/no_image.svg';
 		}
 
 		if (!$width && !$height) {

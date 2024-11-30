@@ -432,6 +432,7 @@
 	perform_action('copy', [
 		FS_DIR_APP . 'install/data/default/storage/images/favicon*' => FS_DIR_STORAGE . 'images/',
 		FS_DIR_APP . 'install/data/default/storage/images/stock_items/' => FS_DIR_STORAGE . 'images/stock_items/',
+		FS_DIR_APP . 'install/data/default/storage/images/no_image.svg/' => FS_DIR_STORAGE . 'images/',
 	]);
 
 	perform_action('modify', [

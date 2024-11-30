@@ -14,7 +14,7 @@
 	}
 
 	if (preg_match('#\.(a?png|avif|gif|jpg|png|svg|webp)$#', route::$request)) {
-		echo file_get_contents('images/no_image.png');
+		echo file_get_contents('images/no_image.svg');
 		exit;
 	}
 
