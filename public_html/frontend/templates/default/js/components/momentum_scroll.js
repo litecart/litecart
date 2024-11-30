@@ -39,14 +39,14 @@
 
 			$content.on({
 
-				'click': function(e) {
+				'click': (e) => {
 					if (dragging) {
 						e.preventDefault()
 					}
 					dragging = false
 				},
 
-				'mousemove': function(e) {
+				'mousemove': (e) => {
 					if (!clicked) return
 
 					dragging = true
@@ -65,7 +65,7 @@
 					velX = Math.abs($content.scrollLeft() - prevScrollLeft); // Compare change in position to work out drag speed
 				},
 
-				'mousedown': function(e) {
+				'mousedown': (e) => {
 					e.preventDefault()
 					clicked = true
 					scrollX = $content.scrollLeft()
@@ -73,7 +73,7 @@
 					$content.css('cursor', 'grabbing')
 				},
 
-				'mouseup': function(e) {
+				'mouseup': (e) => {
 					e.preventDefault()
 					self = this
 					clicked = false
@@ -82,7 +82,7 @@
 					$content.css('cursor', '')
 				},
 
-				'mouseleave': function(e) {
+				'mouseleave': (e) => {
 					clicked = false
 					$content.css('cursor', '')
 				}
@@ -99,7 +99,7 @@
 							'<button name="right" class="btn btn-default" type="button"><i class="fa fa-chevron-right"></i></button>'
 						)
 
-						$self.on('click', 'button[name="left"], button[name="right"]', function(e) {
+						$self.on('click', 'button[name="left"], button[name="right"]', (e) => {
 							if (direction != $(this).attr('name')) {
 								velX = 0
 							}

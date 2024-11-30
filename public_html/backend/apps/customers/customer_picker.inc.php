@@ -54,13 +54,10 @@
 			cache: false,
 			url: '<?php echo document::ilink('customers/customers.json'); ?>?query=' + $(this).val(),
 			dataType: 'json',
-			beforeSend: function(jqXHR) {
+			beforeSend: (jqXHR) => {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
 			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				console.error(textStatus + ': ' + errorThrown)
-			},
-			success: function(json) {
+			success: (json) => {
 
 				$('#modal-customer-picker .results tbody').html('')
 
@@ -72,7 +69,7 @@
 						'  <td class="name">' + row.name + '</td>',
 						'  <td class="email">' + row.email + '</td>',
 						'  <td class="date-created">' + row.date_created + '</td>',
-						'  <td></td>' +
+						'  <td></td>',
 						'</tr>'
 					].join('\n'))
 

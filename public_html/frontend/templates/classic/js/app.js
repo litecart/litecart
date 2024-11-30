@@ -70,7 +70,7 @@
 			$($(this).attr('href')).show().siblings().hide();
 		});
 
-		$(this).on('click', '[data-toggle="tab"]', function(e) {
+		$(this).on('click', '[data-toggle="tab"]', (e) => {
 			e.preventDefault();
 			$(this).trigger('select');
 			history.replaceState({}, '', location.toString().replace(/#.*$/, '') + $(this).attr('href'));
@@ -91,7 +91,7 @@
 		return false;
 	});
 
-	$('.data-table tbody tr').on('click', function(e) {
+	$('.data-table tbody tr').on('click', (e) => {
 		if ($(e.target).is(':input')) return;
 		if ($(e.target).is('a, a *')) return;
 		if ($(e.target).is('th')) return;
@@ -170,15 +170,15 @@
 			async: true,
 			dataType: 'json',
 
-			beforeSend: function(jqXHR) {
+			beforeSend: (jqXHR) => {
 				jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'));
 			},
 
-			error: function(jqXHR, textStatus, errorThrown) {
+			error: (jqXHR, textStatus, errorThrown) => {
 				if (data) alert('Error while updating cart');
 			},
 
-			success: function(json) {
+			success: (json) => {
 
 				if (json['alert']) alert(json['alert']);
 
@@ -206,7 +206,7 @@
 	setTimeout('updateCart', 60e3); // Keeps session alive
 
 	// Add to cart animation
-	$('body').on('submit', 'form[name="buy_now_form"]', function(e) {
+	$('body').on('submit', 'form[name="buy_now_form"]', (e) => {
 		e.preventDefault();
 		var form = $(this);
 		$(this).find('button[name="add_cart_product"]').animate_from_to('#cart', {

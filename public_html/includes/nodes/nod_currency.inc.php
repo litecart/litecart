@@ -7,7 +7,7 @@
 		public static function init() {
 
 			// Bind selected to session
-			if (!isset(session::$data['currency']) || !is_array(session::$data['currency'])){
+			if (!isset(session::$data['currency']) || !is_array(session::$data['currency'])) {
 				session::$data['currency'] = [];
 			}
 

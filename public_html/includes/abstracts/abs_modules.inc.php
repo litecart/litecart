@@ -23,7 +23,7 @@
 				". (!empty($filter) ? "and module_id in ('". implode("', '", database::input($filter)) ."')" : "") .";"
 			)->each(function($module) use ($type) {
 
-				// If module no longer exists, remove traces
+				// Remove traces if module no longer exists
 				if (!is_file('app://includes/modules/'.$type.'/'.$module['module_id'].'.inc.php')) {
 
 					// Remove deleted modules

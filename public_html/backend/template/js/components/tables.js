@@ -6,7 +6,7 @@
 		return false
 	})
 
-	$('body').on('click', '.data-table tbody tr', function(e) {
+	$('body').on('click', '.data-table tbody tr', (e) => {
 		if ($(e.target).is('a') || $(e.target).closest('a').length) return
 		if ($(e.target).is('.btn, :input, th, .icon-star, .icon-star-o')) return
 		$(this).find(':checkbox, :radio').first().trigger('click')

@@ -346,14 +346,23 @@
 .warning .fa {
 	color: #f00;
 }
+
 .thumbnail {
 	display: inline-block;
 	width: 24px;
 	height: 24px;
 	vertical-align: middle;
 }
-.icon-folder, .icon-folder-open, td .thumbnail {
+
+.icon-folder,
+.icon-folder-open,
+td .thumbnail {
 	margin-inline-end: 16px;
+}
+
+table .icon-folder,
+table .icon-folder-open {
+	font-size: 1.5em;
 }
 </style>
 
@@ -383,7 +392,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th></th>
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
@@ -447,7 +456,7 @@
 			'  <td></td>',
 			'  <td>',
 			'    <a class="btn btn-default btn-sm" href="'. document::href_ilink('f:category', ['category_id' => $category['id']]) .'" target="_blank">',
-			'    '.  functions::draw_fonticon('icon-external-link'),
+			'    '.  functions::draw_fonticon('icon-square-out'),
 			'    </a>',
 			'  </td>',
 			'  <td class="text-end">',
@@ -568,7 +577,7 @@
 						'  <td class="text-end">'. currency::format($product['price']) .'</td>',
 						'  <td>',
 						'    <a class="btn btn-default btn-sm" href="'. document::href_ilink('f:product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">',
-						'    '. functions::draw_fonticon('icon-external-link'),
+						'    '. functions::draw_fonticon('icon-square-out'),
 						'    </a>',
 						'  </td>',
 						'  <td class="text-end">',

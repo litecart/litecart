@@ -15,10 +15,6 @@
 
 		switch ($errno) {
 
-			case E_STRICT:
-				$output[] = "<strong>Strict:</strong> ". htmlspecialchars($errstr) ." in <strong>$errfile</strong> on line <strong>$errline</strong>";
-				break;
-
 			case E_NOTICE:
 			case E_USER_NOTICE:
 				$output[] = "<strong>Notice:</strong> ". htmlspecialchars($errstr) ." in <strong>$errfile</strong> on line <strong>$errline</strong>";

@@ -162,7 +162,7 @@
 
 	$('#box-create-account').on('change', ':input', () => {
 		if ($(this).val() == '') return
-		$('body').css('cursor', 'wait')
+
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
 			type: 'post',
@@ -170,10 +170,10 @@
 			cache: false,
 			async: true,
 			dataType: 'json',
-			error: function(jqXHR, textStatus, errorThrown) {
+			(jqXHR, textStatus, errorThrown) {
 				if (console) console.warn(errorThrown.message)
 			},
-			success: function(data) {
+			success: (data) => {
 				if (data['alert']) {
 					alert(data['alert'])
 					return
@@ -182,9 +182,6 @@
 					console.log(key +' '+ value)
 					if ($('input[name="'+key+'"]').length && $('input[name="'+key+'"]').val() == '') $('input[name="'+key+'"]').val(data[key])
 				})
-			},
-			complete: function() {
-				$('body').css('cursor', 'auto')
 			}
 		})
 	})
@@ -210,17 +207,14 @@
 		}
 
 		<?php if (settings::get('customer_field_zone')) { ?>
-		$('body').css('cursor', 'wait')
+
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,
 			dataType: 'json',
-			error: function(jqXHR, textStatus, errorThrown) {
-				if (console) console.warn(errorThrown.message)
-			},
-			success: function(data) {
+			success: (data) => {
 				$("select[name='zone_code']").html('')
 				if (data.length) {
 					$('select[name="zone_code"]').prop('disabled', false)
@@ -230,9 +224,6 @@
 				} else {
 					$('select[name="zone_code"]').prop('disabled', true)
 				}
-			},
-			complete: function() {
-				$('body').css('cursor', 'auto')
 			}
 		})
 		<?php } ?>

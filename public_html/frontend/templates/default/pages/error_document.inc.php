@@ -24,9 +24,17 @@
 	{{notices}}
 
 	<article id="box-error-document" class="text-center">
+
 		<div class="title">{{title}}</div>
+
 		<div class="code">HTTP {{code}}</div>
+
 		<p class="description">{{description}}</p>
-		<div><a class="btn btn-default" href="<?php echo document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('icon-home'); ?> <?php echo language::translate('title_home', 'Home'); ?></a></div>
+
+		<div>
+			<a class="btn btn-default" href="<?php echo document::href_ilink(''); ?>">
+				<?php echo functions::draw_fonticon('icon-home'); ?> <?php echo language::translate('title_home', 'Home'); ?>
+			</a>
+		</div>
 	</article>
 </main>

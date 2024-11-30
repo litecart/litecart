@@ -69,7 +69,7 @@
 		define('WS_DIR_STORAGE', WS_DIR_APP); // Prior to 2.5.x
 	}
 
-	error_reporting(version_compare(PHP_VERSION, '5.6.0', '<') ? E_ALL | E_STRICT : E_ALL);
+	error_reporting(E_ALL);
 	ini_set('ignore_repeated_errors', 'On');
 	ini_set('log_errors', 'Off');
 	ini_set('display_errors', 'On');

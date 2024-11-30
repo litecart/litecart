@@ -15,11 +15,11 @@
 
 			$(this).find('.dropdown input[type="search"]').on({
 
-				'focus': function(e){
+				'focus': (e) => {
 					$(self).find('.dropdown').addClass('open')
 				},
 
-				'input': function(e){
+				'input': (e) => {
 						let dropdownMenu = $(self).find('.dropdown-menu')
 
 						$(dropdownMenu).html('')
@@ -53,16 +53,16 @@
 							url: self.config.link + '&query=' + $(this).val(),
 							dataType: 'json',
 
-							beforeSend: function(jqXHR) {
+							beforeSend: (jqXHR) => {
 								jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
 							},
 
-							error: function(jqXHR, textStatus, errorThrown) {
+							error: (jqXHR, textStatus, errorThrown) => {
 								if (errorThrown == 'abort') return
 								alert(errorThrown)
 							},
 
-							success: function(result) {
+							success: (result) => {
 
 								if (!result.subcategories.length) {
 									$(dropdownMenu).html('<li class="dropdown-item text-center no-results"><em>:(</em></li>')

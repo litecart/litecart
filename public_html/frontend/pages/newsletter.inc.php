@@ -11,7 +11,7 @@
 
 		try {
 
-			if (empty($_POST['email'])) {
+			if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 				throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
 			}
 
@@ -89,7 +89,7 @@
 
 		try {
 
-			if (empty($_POST['email'])) {
+			if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 				throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
 			}
 

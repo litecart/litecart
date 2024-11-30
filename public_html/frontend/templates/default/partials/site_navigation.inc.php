@@ -10,11 +10,11 @@
 			</div>
 
 			<nav class="navbar-menu">
-				<ul class="navbar-nav" style="margin-inline-start: .5em;">
+				<ul class="navbar-nav">
 
 					<?php if ($categories) { ?>
 					<li class="categories dropdown">
-						<a class="navbar-item" href="#" data-toggle="dropdown"><?php echo language::translate('title_categories', 'Categories'); ?></a>
+						<a class="navbar-item" href="#" data-toggle="dropdown"><?php echo language::translate('title_catalog', 'Catalog'); ?></a>
 						<ul class="dropdown-menu">
 							<?php foreach ($categories as $item) { ?>
 							<li>
@@ -38,11 +38,8 @@
 
 				<div class="navbar-search" data-hint="<?php echo functions::escape_html(''); ?>">
 					<?php echo functions::form_begin('search_form', 'get', document::ilink('search')); ?>
-					<div class="navbar-link dropdown">
+					<div class="navbar-link">
 						<?php echo functions::form_input_search('query', true, 'autocomplete="off" placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
-						<ul class="dropdown-menu">
-							<li> Hello</li>
-						</ul>
 					</div>
 					<?php echo functions::form_end(); ?>
 				</div>
@@ -59,7 +56,9 @@
 
 					<?php if ($pages) { ?>
 					<li class="information dropdown">
-						<a class="navbar-item" href="#" data-toggle="dropdown"><?php echo language::translate('title_information', 'Information'); ?></a>
+						<a class="navbar-item" href="#" data-toggle="dropdown">
+							<?php echo language::translate('title_information', 'Information'); ?>
+						</a>
 						<ul class="dropdown-menu">
 							<?php foreach ($pages as $item) { ?>
 							<li>
@@ -78,15 +77,30 @@
 						</a>
 					</li>
 
-					<?php if (settings::get('accounts_enabled')) { ?>
+				</ul>
+
+				<ul class="navbar-nav">
+
+				<?php if (settings::get('accounts_enabled')) { ?>
 					<?php if (!empty(customer::$data['id'])) { ?>
 					<li class="account dropdown">
-						<a href="#" data-toggle="dropdown"><?php echo functions::draw_fonticon('icon-user-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <span class="hidden-sm"><?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span></a>
+
+						<a class="navbar-item" href="#" data-toggle="dropdown">
+							<?php echo functions::draw_fonticon('icon-user hidden-xs hidden-sm hidden-md hidden-lg'); ?>
+							<span class="hidden-sm"><?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span>
+						</a>
+
 						<ul class="dropdown-menu dropdown-menu-end">
 
 							<li>
 								<a class="navbar-item" href="<?php echo document::href_ilink('account/edit'); ?>">
 									<?php echo language::translate('title_edit_account', 'Edit Account'); ?>
+								</a>
+							</li>
+
+							<li>
+								<a class="navbar-item" href="<?php echo document::href_ilink('account/addresses'); ?>">
+									<?php echo language::translate('title_addresses', 'Addresses'); ?>
 								</a>
 							</li>
 
@@ -97,8 +111,8 @@
 							</li>
 
 							<li>
-								<a class="navbar-item" href="<?php echo document::href_ilink('logout'); ?>">
-									<?php echo language::translate('title_logout', 'Logout'); ?>
+								<a class="navbar-item" href="<?php echo document::href_ilink('account/sign_out'); ?>">
+									<?php echo language::translate('title_sign_out', 'Sign Out'); ?>
 								</a>
 							</li>
 
@@ -107,15 +121,11 @@
 					<?php } else { ?>
 					<li class="account">
 						<a class="navbar-item" href="<?php echo document::href_ilink('account/sign_in'); ?>">
-							<?php echo functions::draw_fonticon('icon-user-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo language::translate('title_sign_in', 'Sign In'); ?>
+							<?php echo functions::draw_fonticon('icon-user hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo language::translate('title_sign_in', 'Sign In'); ?>
 						</a>
 					</li>
 					<?php } ?>
 					<?php } ?>
-
-				</ul>
-
-				<ul class="navbar-nav">
 
 					<li class="wishlist<?php if (!empty($wishlist['items'])) echo ' filled'; ?> dropdown">
 						<a class="navbar-item" href="#" data-toggle="dropdown">

@@ -115,10 +115,12 @@
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
+
 		<div class="card-filter">
 			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
 			<?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
 		</div>
+
 	<?php echo functions::form_end(); ?>
 
 	<?php echo functions::form_begin('customers_form', 'post'); ?>
@@ -126,7 +128,7 @@
 		<table class="table table-striped table-hover table-sortable data-table">
 			<thead>
 				<tr>
-					<th style="width: 40px;"><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th style="width: 40px;"><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th style="width: 40px;"></th>
 					<th data-sort="id" style="width: 50px;"><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th data-sort="email"><?php echo language::translate('title_email', 'Email'); ?></th>
@@ -140,7 +142,7 @@
 
 			<tbody>
 				<?php foreach ($customers as $customer) { ?>
-				<tr class="<?php if (empty($customer['status'])) echo 'semi-transparent'; ?>">
+				<tr class="<?php echo empty($customer['status']) ? 'semi-transparent' : ''; ?>">
 					<td><?php echo functions::form_checkbox('customers[]', $customer['id']); ?></td>
 					<td><?php echo functions::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
 					<td><?php echo $customer['id']; ?></td>

@@ -244,8 +244,10 @@ body {
 	background: var(--footer-background-color);
 	color: var(--footer-text-color);
 
-	@media (min-width: (@media-breakpoint-sm)) {
-		padding: 1.5rem .5rem;
+	> .container {
+		border-top: 1px solid;
+		border-image-slice: 1;
+		border-image-source: linear-gradient(to left, #97989f00, #89849269, #97989f00);
 	}
 
 	* {
@@ -283,11 +285,15 @@ body {
 		}
 	}
 
-	.logotype img {
-		max-width: 320px;
-		max-height: 60px;
-		filter: grayscale(.9);
+	.facility img {
+		filter: grayscale(.75);
 		margin-bottom: var(--gutter-size);
+		border-radius: var(--border-radius);
+		overflow: hidden;
+		transition: all 250ms linear;
+		&:hover {
+			filter: grayscale(0);
+		}
 	}
 
 	.title {
@@ -487,7 +493,7 @@ body {
 			padding: .5em;
 			transition: all 100ms linear;
 			&:hover {
-				background: #fff3;
+				background: #fff6;
 				border: 1px solid #e2e2e9;
 			}
 		}

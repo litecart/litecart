@@ -293,7 +293,7 @@
 			cache: false,
 			async: true,
 			dataType: 'json',
-			success: function(data) {
+			success: (data) => {
 				if (data['alert']) alert(data['alert'])
 				$.each(data, function(key, value) {
 					if ($('.billing-address :input[name="billing_address['+key+']"]').length && $('.billing-address :input[name="billing_address['+key+']"]').val() == '') {
@@ -327,14 +327,14 @@
 		}
 
 		<?php if (settings::get('customer_field_zone')) { ?>
-		$('body').css('cursor', 'wait')
+
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,
 			dataType: 'json',
-			success: function(data) {
+			success: (data) => {
 				$('select[name="billing_address[zone_code]"]').html('')
 				if (data.length) {
 					$('select[name="billing_address[zone_code]"]').prop('disabled', false)
@@ -344,9 +344,6 @@
 				} else {
 					$('select[name="billing_address[zone_code]"]').prop('disabled', true)
 				}
-			},
-			complete: function() {
-				$('body').css('cursor', 'auto')
 			}
 		})
 		<?php } ?>
@@ -367,14 +364,14 @@
 		}
 
 		<?php if (settings::get('customer_field_zone')) { ?>
-		$('body').css('cursor', 'wait')
+
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: false,
 			dataType: 'json',
-			success: function(data) {
+			success: (data) => {
 				$('select[name="shipping_address[zone_code]"]').html('')
 				if (data.length) {
 					$('select[name="shipping_address[zone_code]"]').prop('disabled', false)
@@ -384,9 +381,6 @@
 				} else {
 					$('select[name="shipping_address[zone_code]"]').prop('disabled', true)
 				}
-			},
-			complete: function() {
-				$('body').css('cursor', 'auto')
 			}
 		})
 		<?php } ?>

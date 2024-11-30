@@ -192,7 +192,7 @@
 		lineSmooth: true,
 		axisY: {
 			offset: 60,
-			labelInterpolationFnc: function(value) {
+			labelInterpolationFnc: (value) => {
 				return new Intl.NumberFormat('<?php echo language::$selected['code']; ?>').format(value)
 			}
 		}
@@ -241,7 +241,7 @@
 		seriesBarDistance: 10,
 		axisY: {
 			offset: 60,
-			labelInterpolationFnc: function(value) {
+			labelInterpolationFnc: (value) => {
 				return new Intl.NumberFormat('<?php echo language::$selected['code']; ?>').format(value)
 			}
 		}

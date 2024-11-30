@@ -13,9 +13,9 @@
 			href: url,
 			//onload: callback,
 			//onerror: fallback
-		});
+		})
 
-		$('<link>', options).appendTo('head');
+		$('<link>', options).appendTo('head')
 	}
 
 	// JavaScript Loader
@@ -25,59 +25,59 @@
 			method: 'GET',
 			dataType: 'script',
 			cache: true
-		});
+		})
 
-		return jQuery.ajax(url, options);
-	};
+		return jQuery.ajax(url, options)
+	}
 
 	// Keep-alive
 	let keepAlive = setInterval(function(){
 		$.get({
 			url: window._env.platform.path + 'ajax/cart.json',
 			cache: false
-		});
-	}, 60e3);
+		})
+	}, 60e3)
 
 	// Form required asterix
-	$(':input[required]').closest('.form-group').addClass('required');
+	$(':input[required]').closest('.form-group').addClass('required')
 
 	// Sidebar parallax effect
 	if (typeof(window._env) !== 'undefined' && window._env.template.settings.sidebar_parallax_effect == true) {
 
-		let $sidebar = $('#sidebar');
+		let $sidebar = $('#sidebar')
 			//let sidebar_max_offset = $sidebar.parent().height() - $sidebar.height() - 200; // Failsafe 30
 
 		$(window).on('resize scroll', function(e){
 			if ($(window).width() >= 768 && ($sidebar.parent().height() - $sidebar.height()) > 500) {
-				let offset = $(this).scrollTop() * .6;
-				if (offset > 0) $sidebar.css('margin-top', offset + 'px');
+				let offset = $(this).scrollTop() * .6
+				if (offset > 0) $sidebar.css('margin-top', offset + 'px')
 			} else {
-				$sidebar.css('margin-top', 0);
+				$sidebar.css('margin-top', 0)
 			}
-		}).trigger('resize');
+		}).trigger('resize')
 	}
 
 
 	// Off-Canvas Sidebar (data-toggle="offcanvas-collapse")
 	$('[data-toggle="offcanvas"]').on('click', () => {
-		$(this).closest('.navbar').toggleClass('expanded');
-		$('body').toggleClass('offcanvas-open', $(this).closest('.navbar').hasClass('expanded'));
-		$('body').css('overflow', $(this).closest('.navbar').hasClass('expanded') ? 'hidden' : '');
-	});
+		$(this).closest('.navbar').toggleClass('expanded')
+		$('body').toggleClass('offcanvas-open', $(this).closest('.navbar').hasClass('expanded'))
+		$('body').css('overflow', $(this).closest('.navbar').hasClass('expanded') ? 'hidden' : '')
+	})
 
 	// Scroll Up
 	$(window).scroll(function(){
 		if ($(this).scrollTop() > 300) {
-			$('#scroll-up').fadeIn();
+			$('#scroll-up').fadeIn()
 		} else {
-			$('#scroll-up').fadeOut();
+			$('#scroll-up').fadeOut()
 		}
-	});
+	})
 
 	$('#scroll-up').on('click', () => {
-		$('html, body').animate({scrollTop: 0}, 1000, 'easeOutBounce');
-		return false;
-	});
+		$('html, body').animate({scrollTop: 0}, 1000, 'easeOutBounce')
+		return false
+	})
 
 
 /*
@@ -89,7 +89,7 @@
  */
 
 +function ($) {
-	'use strict';
+	'use strict'
 
 	// CAROUSEL CLASS DEFINITION
 
@@ -312,15 +312,15 @@
 		})
 	})
 
-}(jQuery);
+}(jQuery)
 
 	// Listing: Add to cart
-	$('.listing.products .product button[name="add_cart_product"]').on('click', function(e) {
-		e.preventDefault();
+	$('.listing.products .product button[name="add_cart_product"]').on('click', (e) => {
+		e.preventDefault()
 
 		let $button = $(this),
 			$target = $('#site-navigation .shopping-cart'),
-			$product = $button.closest('.product');
+			$product = $button.closest('.product')
 
 			$object = $('<div id="animated-cart-item"></div>').css({
 				position: 'absolute',
@@ -333,9 +333,9 @@
 				borderRadius: 'var(--border-radius)',
 				padding: '.5em',
 				zIndex: '999999',
-			});
+			})
 
-			updateCart('product_id='+ $product.data('id') +'&add_cart_product=true');
+			updateCart('product_id='+ $product.data('id') +'&add_cart_product=true')
 
 			$object
 			.appendTo('body')
@@ -354,15 +354,15 @@
 			}, {
 				duration: 250,
 				complete: function(){
-					$object.remove();
-					$target.addClass('open');
+					$object.remove()
+					$target.addClass('open')
 				}
-			});
-	});
+			})
+	})
 
 	// Add to cart animation
-	$('body').on('submit', 'form[name="buy_now_form"]', function(e) {
-		e.preventDefault();
+	$('body').on('submit', 'form[name="buy_now_form"]', (e) => {
+		e.preventDefault()
 
 		let $form = $(this),
 			$button = $(this).find('button[type="submit"]'),
@@ -378,9 +378,9 @@
 				borderRadius: 'var(--border-radius)',
 				padding: '.5em',
 				zIndex: '999999',
-			});
+			})
 
-		updateCart($form.serialize() + '&add_cart_product=true');
+		updateCart($form.serialize() + '&add_cart_product=true')
 
 		$object
 			.appendTo('body')
@@ -399,15 +399,15 @@
 			}, {
 				duration: 250,
 				complete: function(){
-					$object.remove();
-					$target.addClass('open');
+					$object.remove()
+					$target.addClass('open')
 				}
-			});
-	});
+			})
+	})
 
-	$('body').on('click', 'button[name="remove_cart_item"]', function(e) {
-		updateCart('remove_cart_item='+ $(this).val());
-	});
+	$('body').on('click', 'button[name="remove_cart_item"]', (e) => {
+		updateCart('remove_cart_item='+ $(this).val())
+	})
 
 	// Update cart / Keep alive
 	if (typeof(window._env) !== 'undefined') {
@@ -421,27 +421,27 @@
 				async: true,
 				dataType: 'json',
 
-				beforeSend: function(jqXHR) {
-					jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'));
+				beforeSend: (jqXHR) => {
+					jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'))
 				},
 
-				error: function(jqXHR, textStatus, errorThrown) {
-					$('#animated-cart-item').remove();
-					if (data) alert('Error while updating cart');
+				error: (jqXHR, textStatus, errorThrown) => {
+					$('#animated-cart-item').remove()
+					if (data) alert('Error while updating cart')
 				},
 
-				success: function(result) {
+				success: (result) => {
 
 					if (result.alert) {
-						$('#animated-cart-item').remove();
-						alert(result.alert);
+						$('#animated-cart-item').remove()
+						alert(result.alert)
 					}
 
-					$('#site-navigation .shopping-cart .badge').text(result.items.length);
-					$('#site-navigation .shopping-cart').toggleClass('filled', result.items.length ? true : false);
-					$('#site-navigation .shopping-cart ul .item').remove();
+					$('#site-navigation .shopping-cart .badge').text(result.items.length)
+					$('#site-navigation .shopping-cart').toggleClass('filled', result.items.length ? true : false)
+					$('#site-navigation .shopping-cart ul .item').remove()
 
-					let html = '';
+					let html = ''
 					$.each(result.items, function(key, item){
 						html += [
 							'<li class="item">',
@@ -458,12 +458,12 @@
 							'    </div>',
 							'  </div>',
 							'</li>'
-						].join('\n');
-					});
+						].join('\n')
+					})
 
-					$('#site-navigation .shopping-cart ul').prepend(html);
+					$('#site-navigation .shopping-cart ul').prepend(html)
 				}
-			});
+			})
 		}
 
 		let timerCart = setInterval('updateCart()', 60e3); // Keeps session alive
@@ -645,7 +645,7 @@
 		$dropdown.trigger('click.bs.dropdown');
 	});
 
-	$('.data-table tbody tr').on('click', function(e) {
+	$('.data-table tbody tr').on('click', (e) => {
 		if ($(e.target).is(':input')) return;
 		if ($(e.target).is('a, a *')) return;
 		if ($(e.target).is('th')) return;
@@ -671,10 +671,10 @@
 				scrollX = 0,
 				clicked = false,
 				dragging = false,
-				momentumID = null;
+				momentumID = null
 
 			if ($(this).width() <= 768) {
-				$content.css('overflow', 'auto');
+				$content.css('overflow', 'auto')
 			}
 
 			let momentumLoop = function() {
@@ -682,7 +682,7 @@
 				if (direction == 'left') {
 					$content.scrollLeft($content.scrollLeft() - velX); // Apply the velocity to the scroll position
 				} else {
-					$content.scrollLeft($content.scrollLeft() + velX);
+					$content.scrollLeft($content.scrollLeft() + velX)
 				}
 
 				velX *= 1 - 5 / 100; // Slow down the velocity 5%
@@ -694,54 +694,54 @@
 
 			$content.on({
 
-				'click': function(e) {
+				'click': (e) => {
 					if (dragging) {
-						e.preventDefault();
+						e.preventDefault()
 					}
-					dragging = false;
+					dragging = false
 				},
 
-				'mousemove': function(e) {
-					if (!clicked) return;
+				'mousemove': (e) => {
+					if (!clicked) return
 
-					dragging = true;
+					dragging = true
 
 					let prevScrollLeft = $content.scrollLeft(); // Store the previous scroll position
-						currentDrag = (clickX - e.pageX);
+						currentDrag = (clickX - e.pageX)
 
-					$content.scrollLeft(scrollX + (clickX - e.pageX));
+					$content.scrollLeft(scrollX + (clickX - e.pageX))
 
 					if (currentDrag > 0) {
-						direction = 'right';
+						direction = 'right'
 					} else {
-						direction = 'left';
+						direction = 'left'
 					}
 
 					velX = Math.abs($content.scrollLeft() - prevScrollLeft); // Compare change in position to work out drag speed
 				},
 
-				'mousedown': function(e) {
-					e.preventDefault();
-					clicked = true;
-					scrollX = $content.scrollLeft();
-					clickX = e.pageX;
-					$content.css('cursor', 'grabbing');
+				'mousedown': (e) => {
+					e.preventDefault()
+					clicked = true
+					scrollX = $content.scrollLeft()
+					clickX = e.pageX
+					$content.css('cursor', 'grabbing')
 				},
 
-				'mouseup': function(e) {
-					e.preventDefault();
-					self = this;
-					clicked = false;
-					cancelAnimationFrame(momentumID);
-					momentumID = requestAnimationFrame(momentumLoop);
-					$content.css('cursor', '');
+				'mouseup': (e) => {
+					e.preventDefault()
+					self = this
+					clicked = false
+					cancelAnimationFrame(momentumID)
+					momentumID = requestAnimationFrame(momentumLoop)
+					$content.css('cursor', '')
 				},
 
-				'mouseleave': function(e) {
-					clicked = false;
-					$content.css('cursor', '');
+				'mouseleave': (e) => {
+					clicked = false
+					$content.css('cursor', '')
 				}
-			});
+			})
 
 			$(window).on('resize', () => {
 
@@ -752,58 +752,58 @@
 						$self.append(
 							'<button name="left" class="btn btn-default" type="button"><i class="fa fa-chevron-left"></i></button>' +
 							'<button name="right" class="btn btn-default" type="button"><i class="fa fa-chevron-right"></i></button>'
-						);
+						)
 
-						$self.on('click', 'button[name="left"], button[name="right"]', function(e) {
+						$self.on('click', 'button[name="left"], button[name="right"]', (e) => {
 							if (direction != $(this).attr('name')) {
-								velX = 0;
+								velX = 0
 							}
-							cancelAnimationFrame(momentumID);
-							velX += Math.round($self.outerWidth() * 0.03);
-							direction = $(this).attr('name');
-							momentumID = requestAnimationFrame(momentumLoop);
+							cancelAnimationFrame(momentumID)
+							velX += Math.round($self.outerWidth() * 0.03)
+							direction = $(this).attr('name')
+							momentumID = requestAnimationFrame(momentumLoop)
 
-						});
+						})
 					}
 
 				} else {
-					$self.find('button[name="left"], button[name="right"]').remove();
+					$self.find('button[name="left"], button[name="right"]').remove()
 				}
 
 				/*
 				if ($(window).width() > ($self.outerWidth() + 45)) {
-					$self.find('button[name="left"]').css('left', '');
-					$self.find('button[name="right"]').css('right', '');
+					$self.find('button[name="left"]').css('left', '')
+					$self.find('button[name="right"]').css('right', '')
 				} else {
-					$self.find('button[name="left"]').css('left', 0);
-					$self.find('button[name="right"]').css('right', 0);
+					$self.find('button[name="left"]').css('left', 0)
+					$self.find('button[name="right"]').css('right', 0)
 				}
 				*/
 
-			}).trigger('resize');
-		});
+			}).trigger('resize')
+		})
 	}
 
-	$('[data-toggle*="momentumScroll"]').momentumScroll();
+	$('[data-toggle*="momentumScroll"]').momentumScroll()
 
-}(jQuery);
+}(jQuery)
 
 
 	// Alerts
 	$('body').on('click', '.alert .close', function(e){
-		e.preventDefault();
+		e.preventDefault()
 		$(this).closest('.alert').fadeOut('fast', () => {
 			$(this).remove()
-		});
-	});
+		})
+	})
 
 
 	// Password Strength
 	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', () => {
 
-		$(this).siblings('meter').remove();
+		$(this).siblings('meter').remove()
 
-		if ($(this).val() == '') return;
+		if ($(this).val() == '') return
 
 		let numbers = ($(this).val().match(/[0-9]/g) || []).length,
 		 lowercases = ($(this).val().match(/[a-z]/g) || []).length,
@@ -811,17 +811,17 @@
 		 symbols =   ($(this).val().match(/[^\w]/g) || []).length,
 
 		 score = (numbers * 9) + (lowercases * 11.25) + (uppercases * 11.25) + (symbols * 15)
-					 + (numbers ? 10 : 0) + (lowercases ? 10 : 0) + (uppercases ? 10 : 0) + (symbols ? 10 : 0);
+					 + (numbers ? 10 : 0) + (lowercases ? 10 : 0) + (uppercases ? 10 : 0) + (symbols ? 10 : 0)
 
 		let meter = $('<meter min="0" low="80" high="120" optimum="150" max="150" value="'+ score +'"></meter>').css({
 			position: 'absolute',
 			bottom: '-1em',
 			width: '100%',
 			height: '1em'
-		});
+		})
 
-		$(this).after(meter);
-	});
+		$(this).after(meter)
+	})
 
 
 /*
@@ -831,44 +831,44 @@
 
 +function($) {
 
-	let Placeholders = [];
+	let Placeholders = []
 
 	$.fn.Placeholder = function(options){
 		this.each(function(){
 
-			this.$element = $(this);
+			this.$element = $(this)
 
 			this.settings = $.extend({
 				aspectRatio: "1:1",
-			}, options, this.$element.data());
+			}, options, this.$element.data())
 
 			this.refresh = function(){
 				let width = this.$element.width(),
-					height = width / this.settings.aspectRatio.replace(/^([0-9]*):[0-9]*$/, '$1') * this.settings.aspectRatio.replace(/^[0-9]*:([0-9]*)$/, '$1');
+					height = width / this.settings.aspectRatio.replace(/^([0-9]*):[0-9]*$/, '$1') * this.settings.aspectRatio.replace(/^[0-9]*:([0-9]*)$/, '$1')
 
-				width = Math.round(width);
-				height = Math.round(height);
+				width = Math.round(width)
+				height = Math.round(height)
 
 				this.$element.text(width + '\u00d7' + height + ' (' +  this.settings.aspectRatio + ')')
 					.css('font-size', Math.round(height/10) + 'px')
 					.width('100%')
-					.height(height);
+					.height(height)
 			}
 
-			this.refresh();
+			this.refresh()
 
-			Placeholders.push(this);
-		});
+			Placeholders.push(this)
+		})
 	}
 
-	$('.placeholder').Placeholder();
+	$('.placeholder').Placeholder()
 
 	$(window).on('resize', () => {
 		$.each(Placeholders, function(i, placeholder) {
-			placeholder.refresh();
-		});
-	});
-}(jQuery);
+			placeholder.refresh()
+		})
+	})
+}(jQuery)
 
 
 	// Number Formatting
@@ -880,9 +880,9 @@
 			s = n < 0 ? '-' : '',
 			i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
 			f = n - i,
-			j = (j = i.length) > 3 ? j % 3 : 0;
+			j = (j = i.length) > 3 ? j % 3 : 0
 
-		return s + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + ((c && f) ? d + Math.abs(f).toFixed(c).slice(2) : '');
+		return s + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + ((c && f) ? d + Math.abs(f).toFixed(c).slice(2) : '')
 	}
 
 	// Money Formatting
@@ -896,37 +896,37 @@
 			s = n < 0 ? '-' : '',
 			i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
 			f = n - i,
-			j = (j = i.length) > 3 ? j % 3 : 0;
+			j = (j = i.length) > 3 ? j % 3 : 0
 
-		return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x;
+		return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x
 	}
 
 
 	// AJAX Search
 	$('.navbar-search :input').on('focus', () => {
-		$(this).closest('.dropdown').addClass('open');
-	});
+		$(this).closest('.dropdown').addClass('open')
+	})
 
 	$('.navbar-search :input').blur(function(){
-		$(this).closest('.dropdown').removeClass('open');
-	});
+		$(this).closest('.dropdown').removeClass('open')
+	})
 
-	let xhrAjaxSearch;
+	let xhrAjaxSearch
 	$('.navbar-search :input').on('input', () => {
 
-		let $navbar_search = $(this).closest('.navbar-search');
+		let $navbar_search = $(this).closest('.navbar-search')
 
 		if (xhrAjaxSearch) {
-			xhrAjaxSearch.abort();
+			xhrAjaxSearch.abort()
 		}
 
-		$navbar_search.find('.dropdown-menu').html('');
+		$navbar_search.find('.dropdown-menu').html('')
 
 		if (!$(this).val()) {
 			$navbar_search.find('.dropdown-menu').append(
 				$('<li></li>').text($navbar_search.data('hint'))
-			);
-			return;
+			)
+			return
 		}
 
 		xhrAjaxSearch = $.ajax({
@@ -936,10 +936,10 @@
 			cache: false,
 			async: true,
 			dataType: 'json',
-			beforeSend: function(jqXHR) {
-				jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'));
+			beforeSend: (jqXHR) => {
+				jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'))
 			},
-			success: function(results) {
+			success: (results) => {
 				if (results) {
 					$.each(results, function(i, result){
 						$.each(result, function(i, row){
@@ -947,85 +947,85 @@
 								'<li><a href="'+ row.url +'">',
 								'  <img src="'+ row.thumbnail +'" style="height: 1em;"> ' + row.name,
 								'</a></li>',
-							].join('\n'));
-						});
-					});
+							].join('\n'))
+						})
+					})
 				} else {
-					$navbar_search.find('.dropdown-menu').html('<li>:(</li>');
+					$navbar_search.find('.dropdown-menu').html('<li>:(</li>')
 				}
 			}
-		});
-	}).trigger('input');
+		})
+	}).trigger('input')
 
 
 	// Data-Table Toggle Checkboxes
 $('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', () => {
 	$(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
-		$(this).prop('checked', !$(this).prop('checked')).trigger('change');
-	});
-	return false;
-});
+		$(this).prop('checked', !$(this).prop('checked')).trigger('change')
+	})
+	return false
+})
 
-$('body').on('click', '.data-table tbody tr', function(e) {
-	if ($(e.target).is('a') || $(e.target).closest('a').length) return;
-	if ($(e.target).is('.btn, :input, th, .icon-star, .icon-star-o')) return;
-	$(this).find(':checkbox, :radio').first().trigger('click');
-});
+$('body').on('click', '.data-table tbody tr', (e) => {
+	if ($(e.target).is('a') || $(e.target).closest('a').length) return
+	if ($(e.target).is('.btn, :input, th, .icon-star, .icon-star-o')) return
+	$(this).find(':checkbox, :radio').first().trigger('click')
+})
 
 	// Bootstrap Compatible (data-toggle="tab")
-	$('body').on('click', '[data-toggle="tab"]', function(e) {
-		e.preventDefault();
-		$(this).closest('ul').find('li').removeClass('active');
-		$(this).closest('li').addClass('active');
-		$($(this).attr('href')).show().siblings().hide();
-	});
+	$('body').on('click', '[data-toggle="tab"]', (e) => {
+		e.preventDefault()
+		$(this).closest('ul').find('li').removeClass('active')
+		$(this).closest('li').addClass('active')
+		$($(this).attr('href')).show().siblings().hide()
+	})
 
 	$('.nav-tabs').each(function(){
 		if (!$(this).find('li.active').length) {
-			$(this).find('li:first').addClass('active');
+			$(this).find('li:first').addClass('active')
 		}
-	});
+	})
 
-	$('.nav-tabs .active a').trigger('click');
+	$('.nav-tabs .active a').trigger('click')
 	if (document.location.hash != '') {
-		$('a[href="' + document.location.hash + '"]').trigger('click');
+		$('a[href="' + document.location.hash + '"]').trigger('click')
 	}
 
 
 	// Polyfill for easeOutBounce
 	$.extend($.easing, {
 		easeOutCubic: function (x) {
-			return 1 - Math.pow( 1 - x, 3 );
+			return 1 - Math.pow( 1 - x, 3 )
 		},
 		easeInCubic: function (x) {
-			return Math.pow(x, 3);
+			return Math.pow(x, 3)
 		},
 		easeOutBounce: function (x, t, b, c, d) {
 			if ((t/=d) < (1/2.75)) {
-				return c*(7.5625*t*t) + b;
+				return c*(7.5625*t*t) + b
 			} else if (t < (2/2.75)) {
-				return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
+				return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b
 			} else if (t < (2.5/2.75)) {
-				return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+				return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b
 			} else {
-				return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
+				return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b
 			}
 		},
-	});
+	})
 
 
-$('.listing .product button[name="add_to_wishlist"]').on('click', function(e) {
+$('.listing .product button[name="add_to_wishlist"]').on('click', (e) => {
 
 	// Prevent the form from submitting
-	e.preventDefault();
+	e.preventDefault()
 
 	// Get the form and button
-	let $product = $(this).closest('.product');
+	let $product = $(this).closest('.product')
 
 	if (!$product.data('in-wishlist')) {
-		action = 'add';
+		action = 'add'
 	} else {
-		action = 'remove';
+		action = 'remove'
 	}
 
 	$.ajax({
@@ -1035,11 +1035,11 @@ $('.listing .product button[name="add_to_wishlist"]').on('click', function(e) {
 		cache: false,
 		async: true,
 		dataType: 'json',
-		success: function(result) {
+		success: (result) => {
 			if (result.status == 'ok') {
-				$product.data('in-wishlist', result.added ? '1' : '0');
+				$product.data('in-wishlist', result.added ? '1' : '0')
 			}
 		}
-	});
+	})
 
-});
+})

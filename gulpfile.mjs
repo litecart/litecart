@@ -27,7 +27,7 @@ const banner = [
 ].join('\n')
 
 // Compile LESS files
-gulp.task('less-backend', function() {
+gulp.task('less-backend', () => {
 
   gulp
     .src('public_html/backend/template/less/vari*bles.less') // non-globstar pattern will fail on some windows paths
@@ -46,7 +46,7 @@ gulp.task('less-backend', function() {
     .pipe(gulp.dest('public_html/backend/template/css', { overwrite: true }))
 })
 
-gulp.task('less-frontend', function() {
+gulp.task('less-frontend', () => {
 
   gulp
     .src('public_html/frontend/templates/default/less/vari*bles.less') // non-globstar pattern will fail on some windows paths
@@ -67,7 +67,7 @@ gulp.task('less-frontend', function() {
 })
 
 // Build and uglify JS files
-gulp.task('js-backend', function() {
+gulp.task('js-backend', () => {
   return gulp
     .src('public_html/backend/template/js/components/*.js')
     .pipe(concat('app.js', {'newLine': '\r\n\r\n'}))
@@ -140,5 +140,3 @@ gulp.task('watch', () => {
 // Task aliases
 gulp.task('build', gulp.series('js-backend', 'js-frontend', 'less-backend', 'less-frontend', 'sass-chartist', 'sass-trumbowyg'))
 gulp.task('default', gulp.series('build', 'watch'))
-
-gulp.task('fonticons')()

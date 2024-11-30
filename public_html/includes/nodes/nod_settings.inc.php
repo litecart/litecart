@@ -77,7 +77,7 @@
 							$setting['value'] = $setting['value']['en'];
 
 						} else {
-								$setting['value'] = '';
+							$setting['value'] = '';
 						}
 
 					} else {
@@ -86,7 +86,7 @@
 
 					break;
 
-				}
+			}
 
 			return self::$_cache[$key] = $setting['value'];
 		}

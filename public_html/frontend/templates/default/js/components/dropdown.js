@@ -173,7 +173,7 @@
 		$dropdown.trigger('click.bs.dropdown');
 	});
 
-	$('.data-table tbody tr').on('click', function(e) {
+	$('.data-table tbody tr').on('click', (e) => {
 		if ($(e.target).is(':input')) return;
 		if ($(e.target).is('a, a *')) return;
 		if ($(e.target).is('th')) return;

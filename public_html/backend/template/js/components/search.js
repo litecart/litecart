@@ -78,15 +78,15 @@ $('#search input[name="query"]').on({
 				url: window._env.backend.url + 'search_results.json?query=' + $searchField.val(),
 				dataType: 'json',
 
-				beforeSend: function(jqXHR) {
+				beforeSend: (jqXHR) => {
 					jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
 				},
 
-				error: function(jqXHR, textStatus, errorThrown) {
+				error: (jqXHR, textStatus, errorThrown) => {
 					$('#search .results').text(textStatus + ': ' + errorThrown)
 				},
 
-				success: function(json) {
+				success: (json) => {
 
 					$('#search .results').html('')
 

@@ -267,7 +267,7 @@
 </article>
 
 <script>
-	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', function(e) {
+	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', (e) => {
 
 		var regular_price = <?php echo currency::format_raw($regular_price); ?>
 		var sales_price = <?php echo currency::format_raw($campaign_price ?: $regular_price); ?>
@@ -307,12 +307,7 @@
 			data: $(this).closest('form').serialize(),
 			dataType: 'json',
 			cache: false,
-
-			error: function(jqXHR, textStatus, errorThrown) {
-				console.log('error', errorThrown)
-			},
-
-			success: function(data){
+			success: (data) => {
 				if (data.status == 'ok') {
 					$('.stock-notice').text(data.notice).removeClass('warning').removeClass('notice')
 				} else if (data.status == 'warning') {

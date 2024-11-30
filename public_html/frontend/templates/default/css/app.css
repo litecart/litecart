@@ -211,10 +211,10 @@ body main {
   background: var(--footer-background-color);
   color: var(--footer-text-color);
 }
-@media (min-width: 576px) {
-  #site-footer {
-    padding: 1.5rem 0.5rem;
-  }
+#site-footer > .container {
+  border-top: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to left, #97989f00, #89849269, #97989f00);
 }
 #site-footer * {
   color: inherit;
@@ -245,11 +245,15 @@ body main {
   background: #666;
   color: #fff;
 }
-#site-footer .logotype img {
-  max-width: 320px;
-  max-height: 60px;
-  filter: grayscale(0.9);
+#site-footer .facility img {
+  filter: grayscale(0.75);
   margin-bottom: var(--gutter-size);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  transition: all 250ms linear;
+}
+#site-footer .facility img:hover {
+  filter: grayscale(0);
 }
 #site-footer .title {
   border-color: #999;
@@ -431,7 +435,7 @@ body main {
   transition: all 100ms linear;
 }
 .listing .category .link:hover {
-  background: #fff3;
+  background: #fff6;
   border: 1px solid #e2e2e9;
 }
 .listing .category .caption {

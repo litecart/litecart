@@ -149,7 +149,7 @@
 							</div>
 
 							<div class="form-group">
-								<label><?php echo language::translate('title_google_taxonomy_id', 'Google Taxonomy ID'); ?> <a href="https://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt" target="_blank"><?php echo functions::draw_fonticon('icon-external-link'); ?></a></label>
+								<label><?php echo language::translate('title_google_taxonomy_id', 'Google Taxonomy ID'); ?> <a href="https://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
 								<?php echo functions::form_input_number('google_taxonomy_id', true); ?>
 							</div>
 
@@ -416,7 +416,7 @@
 		}
 	})
 
-	$('#tab-filters').on('click', '.remove', function(e) {
+	$('#tab-filters').on('click', '.remove', (e) => {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})

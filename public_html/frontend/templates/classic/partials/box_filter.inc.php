@@ -111,7 +111,7 @@
 			type: 'get',
 			url: url.href,
 			dataType: 'html',
-			success: function(response){
+			success: (response) => {
 				var content = $('.listing.products', response).html()
 				var classes = $('.listing.products', response).attr('class')
 				var pagination = $('.pagination', response).length ? $('.pagination', response).html() : ''

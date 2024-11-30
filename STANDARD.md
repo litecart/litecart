@@ -2,7 +2,7 @@
 
 ## Code Compliance
 
- - PHP code must comply with modern PHP standards no earlier than 5.6+ E_STRICT.
+ - PHP code must comply with modern PHP standards no earlier than 5.6+.
 
  - HTML code must comply with HTML 5.
 

@@ -60,7 +60,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-check-square-o checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo language::translate('title_ID', 'ID'); ?></th>
 					<th class="main"><?php echo language::translate('title_Name', 'Name'); ?></th>
 					<th class="text-end"><?php echo language::translate('title_products', 'Products'); ?></th>

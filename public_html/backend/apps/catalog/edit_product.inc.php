@@ -799,10 +799,10 @@
 								<tr>
 									<td colspan="11">
 										<a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="980px">
-											<?php echo functions::draw_fonticon('icon-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?>
+											<?php echo functions::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?>
 										</a>
 										<a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="980px">
-											<?php echo functions::draw_fonticon('icon-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_existing_stock_item', 'Add Existing Stock Item'); ?>
+											<?php echo functions::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_existing_stock_item', 'Add Existing Stock Item'); ?>
 										</a>
 									</td>
 								</tr>
@@ -879,7 +879,7 @@
 
 	// Images
 
-	$('#images').on('click', '.move-up, .move-down', function(e) {
+	$('#images').on('click', '.move-up, .move-down', (e) => {
 		e.preventDefault()
 		let row = $(this).closest('.form-group')
 
@@ -891,13 +891,13 @@
 		refreshMainImage()
 	})
 
-	$('#images').on('click', '.remove', function(e) {
+	$('#images').on('click', '.remove', (e) => {
 		e.preventDefault()
 		$(this).closest('.form-group').remove()
 		refreshMainImage()
 	})
 
-	$('#images .add').on('click', function(e) {
+	$('#images .add').on('click', (e) => {
 		e.preventDefault()
 
 		let $output = $([
@@ -919,7 +919,7 @@
 		refreshMainImage()
 	})
 
-	$('#images').on('change', 'input[type="file"]', function(e) {
+	$('#images').on('change', 'input[type="file"]', (e) => {
 		let img = $(this).closest('.form-group').find('img')
 		let oFReader = new FileReader()
 
@@ -1059,20 +1059,20 @@
 		})
 	}
 
-	$('#price-incl-tax-tooltip').on('click', function(e) {
+	$('#price-incl-tax-tooltip').on('click', (e) => {
 		e.preventDefault()
 		alert('<?php echo str_replace(["\r", "\n", "'"], ["", "", "\\'"], language::translate('tooltip_field_price_incl_tax', 'This field helps you calculate net price based on the tax rates set for the store region. The prices stored in the database are always excluding tax.')); ?>')
 	})
 
 	// Campaigns
 
-	$('#campaigns').on('focus', 'input[name^="campaigns"]', function(e) {
+	$('#campaigns').on('focus', 'input[name^="campaigns"]', (e) => {
 		if($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
 			$(this).closest('.dropdown').addClass('open')
 	 }
 	})
 
-	$('#campaigns').on('blur', '.dropdown', function(e) {
+	$('#campaigns').on('blur', '.dropdown', (e) => {
 		$(this).removeClass('open')
 	})
 
@@ -1113,7 +1113,7 @@
 
 	$('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').trigger('input')
 
-	$('#campaigns').on('click', '.remove', function(e) {
+	$('#campaigns').on('click', '.remove', (e) => {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})
@@ -1121,7 +1121,7 @@
 	let new_campaign_index = 0
 	while ($(':input[name^="campaigns['+new_campaign_index+']"]').length) new_campaign_index++
 
-	$('#campaigns').on('click', '.add', function(e) {
+	$('#campaigns').on('click', '.add', (e) => {
 		e.preventDefault()
 
 		let $output = $([
@@ -1193,10 +1193,7 @@
 			cache: true,
 			async: true,
 			dataType: 'json',
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message)
-			},
-			success: function(data) {
+			success: (data) => {
 				$('select[name="new_attribute[value_id]"]').html('')
 				if (data) {
 					$('select[name="new_attribute[value_id]"]').prop('disabled', false)
@@ -1268,7 +1265,7 @@
 		$('select[name="new_attribute[group_id]"]').val('').trigger('change')
 	})
 
-	$('#tab-attributes tbody').on('click', '.remove', function(e) {
+	$('#tab-attributes tbody').on('click', '.remove', (e) => {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})
@@ -1341,12 +1338,12 @@
 
 // Customizations
 
-	$('#customizations').on('click', '.remove-group', function(e) {
+	$('#customizations').on('click', '.remove-group', (e) => {
 		e.preventDefault()
 		$(this).closest('li').remove()
 	})
 
-	$('#customizations').on('click', '.move-group-up, .move-group-down', function(e) {
+	$('#customizations').on('click', '.move-group-up, .move-group-down', (e) => {
 		e.preventDefault()
 		var row = $(this).closest('li')
 		if ($(this).is('.move-group-up') && $(row).prevAll().length > 0) {
@@ -1356,12 +1353,12 @@
 		}
 	})
 
-	$('#customizations').on('click', 'button[name="remove"]', function(e) {
+	$('#customizations').on('click', 'button[name="remove"]', (e) => {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})
 
-	$('#customizations').on('click', 'button[name="move-up"], button[name="move-down"]', function(e) {
+	$('#customizations').on('click', 'button[name="move-up"], button[name="move-down"]', (e) => {
 
 		e.preventDefault()
 
@@ -1381,10 +1378,7 @@
 			cache: true,
 			async: true,
 			dataType: 'json',
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message)
-			},
-			success: function(data) {
+			success: (data) => {
 				$('select[name="new_predefined_customization[value_id]"]').html('')
 				if ($('select[name="new_predefined_customization[value_id]"]').attr('disabled')) $('select[name="new_predefined_customization[value_id]"]').prop('disabled', false)
 				if (data) {
@@ -1406,10 +1400,8 @@
 			cache: true,
 			async: true,
 			dataType: 'json',
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message)
-			},
-			success: function(data) {
+
+			success: (data) => {
 				$('select[name="new_user_input_customization[value_id]"]').html('')
 				if ($('select[name="new_user_input_customization[value_id]"]').attr('disabled')) $('select[name="new_user_input_customization[value_id]"]').prop('disabled', false)
 				if (data) {
@@ -1435,7 +1427,7 @@
 	var new_customization_group_i = 1,
 		new_customization_value_i = 1
 
-	$('body').on('click', '.featherlight button[name="add_predefined_customization"]', function(e) {
+	$('body').on('click', '.featherlight button[name="add_predefined_customization"]', (e) => {
 		e.preventDefault()
 
 		var groupElement = $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"]'),
@@ -1544,7 +1536,7 @@
 		$.featherlight.close()
 	})
 
-	$('body').on('click', '.featherlight button[name="add_user_input_option"]', function(e) {
+	$('body').on('click', '.featherlight button[name="add_user_input_option"]', (e) => {
 		e.preventDefault()
 
 		var groupElement = $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"]')
@@ -1616,7 +1608,7 @@
 		$backordered_field.val(0)
 	})
 
-	$('#stock-options').on('click', '.move-up, .move-down', function(e) {
+	$('#stock-options').on('click', '.move-up, .move-down', (e) => {
 		e.preventDefault()
 		var row = $(this).closest('tr')
 
@@ -1627,7 +1619,7 @@
 		}
 	})
 
-	$('#stock-options').on('click', '.remove', function(e) {
+	$('#stock-options').on('click', '.remove', (e) => {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 

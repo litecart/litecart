@@ -32,10 +32,10 @@
 			cache: false,
 			async: true,
 			dataType: 'json',
-			beforeSend: function(jqXHR) {
+			beforeSend: (jqXHR) => {
 				jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'))
 			},
-			success: function(results) {
+			success: (results) => {
 				if (results) {
 					$.each(results, function(i, result){
 						$.each(result, function(i, row){

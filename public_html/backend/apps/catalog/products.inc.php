@@ -245,7 +245,7 @@ table .thumbnail {
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th></th>
 					<th class="text-center"><?php echo language::translate('title_id', 'ID'); ?></th>
@@ -320,7 +320,7 @@ table .thumbnail {
 		$('#actions').prop('disabled', !$('.data-table :checked').length)
 	}).first().trigger('change')
 
-	$('form[name="search_form"]').on('input change', function(e) {
+	$('form[name="search_form"]').on('input change', (e) => {
 		e.preventDefault()
 		$.get('', $(this).serialize(), function(response) {
 			$('.data-table tbody').html( $(response).find('.data-table tbody').html() )

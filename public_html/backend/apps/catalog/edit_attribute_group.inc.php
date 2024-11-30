@@ -126,7 +126,7 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('icon-plus', 'style="color: #6c6;"'); ?></a></td>
+					<td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('icon-plus'); ?></a></td>
 				</tr>
 			</tfoot>
 		</table>
@@ -146,7 +146,7 @@
 	let new_value_index = 0
 	while ($(':input[name^="values['+new_value_index+']"]').length) new_value_index++
 
-	$('form[name="attribute_form"]').on('click', '.add', function(e) {
+	$('form[name="attribute_form"]').on('click', '.add', (e) => {
 		e.preventDefault()
 
 <?php
@@ -166,7 +166,7 @@
 		$(this).closest('table').find('tbody').append(output)
 	})
 
-	$('form[name="attribute_form"]').on('click', '.remove', function(e) {
+	$('form[name="attribute_form"]').on('click', '.remove', (e) => {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})

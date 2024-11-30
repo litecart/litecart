@@ -134,7 +134,7 @@
 			case 'add':         return draw_fonticon('icon-plus');
 			case 'cancel':      return draw_fonticon('icon-times');
 			case 'company':     return draw_fonticon('icon-building', 'style="color: #888;"');
-			case 'delete':      return draw_fonticon('icon-trash-o');
+			case 'delete':      return draw_fonticon('icon-trash');
 			case 'download':    return draw_fonticon('icon-download');
 			case 'edit':        return draw_fonticon('icon-pencil');
 			case 'failed':      return draw_fonticon('icon-times', 'style="color: #c00;"');

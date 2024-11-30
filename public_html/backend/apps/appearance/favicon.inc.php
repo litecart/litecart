@@ -11,6 +11,7 @@
 	if (isset($_POST['upload'])) {
 
 		try {
+
 			if (empty($_FILES['image'])) {
 				throw new Exception(language::translate('error_missing_image', 'You must select an image'));
 			}

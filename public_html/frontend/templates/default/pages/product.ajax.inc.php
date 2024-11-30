@@ -15,28 +15,30 @@ form[name="buy_now_form"] .dropdown-menu .image {
 	<div class="card">
 		<div class="card-body">
 			<div class="row layout" style="margin-bottom: 0;">
-				<div class="col-sm-4 col-md-6">
-					<div class="images row">
+				<div class="col-sm-4">
+					<div class="images">
 
-						<div class="col-12">
-							<a class="main-image" href="<?php echo document::href_rlink($image); ?>" data-toggle="lightbox" data-gallery="product">
-								<?php echo functions::draw_thumbnail($image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
-								{{sticker}}
-							</a>
-						</div>
+						<a class="main-image" href="<?php echo document::href_rlink($image); ?>" data-toggle="lightbox" data-gallery="product">
+							<?php echo functions::draw_thumbnail($image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
+							{{sticker}}
+						</a>
 
-						<?php foreach ($extra_images as $extra_image) { ?>
-						<div class="col-4">
-							<a class="extra-image" href="<?php echo document::href_rlink($extra_image); ?>" data-toggle="lightbox" data-gallery="product">
-								<?php echo functions::draw_thumbnail($extra_image, 160, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
-							</a>
+						<?php if ($extra_images) { ?>
+						<div class="row">
+							<?php foreach ($extra_images as $extra_image) { ?>
+							<div class="col-6">
+								<a class="extra-image" href="<?php echo document::href_rlink($extra_image); ?>" data-toggle="lightbox" data-gallery="product">
+									<?php echo functions::draw_thumbnail($extra_image, 160, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
+								</a>
+							</div>
+							<?php } ?>
 						</div>
 						<?php } ?>
 
 					</div>
 				</div>
 
-				<div class="col-sm-8 col-md-6">
+				<div class="col-sm-8">
 					<h1 class="title">{{name}}</h1>
 
 					<?php if ($short_description) { ?>
@@ -200,11 +202,11 @@ form[name="buy_now_form"] .dropdown-menu .image {
 </article>
 
 <script>
-	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', function(e) {
+	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', (e) => {
 
-		var regular_price = <?php echo currency::format_raw($regular_price); ?>
-		var sales_price = <?php echo currency::format_raw($campaign_price ?: $regular_price); ?>
-		var tax = <?php echo currency::format_raw($total_tax); ?>
+		var regular_price = <?php echo currency::format_raw($regular_price); ?>,
+			sales_price = <?php echo currency::format_raw($campaign_price ?: $regular_price); ?>,
+			tax = <?php echo currency::format_raw($total_tax); ?>
 
 		$(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function(){
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
@@ -240,12 +242,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			data: $(this).closest('form').serialize(),
 			dataType: 'json',
 			cache: false,
-
-			error: function(jqXHR, textStatus, errorThrown) {
-				console.log('error', errorThrown)
-			},
-
-			success: function(data){
+			success: (data) => {
 				if (data.status == 'ok') {
 					$('.stock-notice').text(data.notice).removeClass('warning')
 				} else if (data.status == 'warning') {

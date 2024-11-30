@@ -139,6 +139,7 @@
 	</div>
 
 	<div class="card-action">
+		<?php echo functions::form_button('add_recipients', language::translate('title_add_recipients', 'Add Recipients'), 'button', '', 'add'); ?>
 		<?php echo functions::form_button_link(document::ilink(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"'); ?>
 	</div>
 
@@ -154,7 +155,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th style="width: 50px;"><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th style="width: 50px;"><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo language::translate('title_subscribed', 'Subscribed'); ?></th>
 					<th style="width: 480px;"><?php echo language::translate('title_email', 'Email'); ?></th>
 					<th><?php echo language::translate('title_name', 'Name'); ?></th>
@@ -191,8 +192,8 @@
 
 				<div class="flex flex-inline">
 					<div class="btn-group">
-							<?php echo functions::form_button('subscribe', language::translate('title_set_as_subscribed', 'Set As Subscribed'), 'submit', 'class="btn btn-default"', 'fa-check'); ?>
-							<?php echo functions::form_button('unsubscribe', language::translate('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'fa-times'); ?>
+						<?php echo functions::form_button('subscribe', language::translate('title_set_as_subscribed', 'Set As Subscribed'), 'submit', 'class="btn btn-default"', 'fa-check'); ?>
+						<?php echo functions::form_button('unsubscribe', language::translate('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'fa-times'); ?>
 					</div>
 
 					<?php echo functions::form_button_predefined('delete'); ?>
@@ -218,15 +219,7 @@
 		</div>
 
 		<div class="form-group">
-			<?php echo functions::form_toggle('subscribe', [1 => language::translate('title_subscribe', 'Subscribed'), 0 => language::translate('title_unsubscribe', 'Unsubscribed')]); ?>
-			<div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
-				<label class="btn btn-default<?php echo (file_get_contents('php://input') == '' || !empty($_POST['subscribe'])) ? ' active' : ''; ?>">
-					<?php echo functions::form_radio_button('subscribe', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribed'); ?>
-				</label>
-				<label class="btn btn-default<?php echo (file_get_contents('php://input') != '' && empty($_POST['subscribe'])) ? ' active' : ''; ?>">
-					<?php echo functions::form_radio_button('subscribe', '0', true); ?><?php echo language::translate('title_unsubscribe', 'Unsubscribed'); ?>
-				</label>
-			</div>
+			<?php echo functions::form_toggle('subscribe', [1 => language::translate('title_subscribe', 'Subscribed'), 0 => language::translate('title_unsubscribe', 'Unsubscribed')], '1'); ?>
 		</div>
 
 		<?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'submit', 'class="btn btn-default btn-block"'); ?>

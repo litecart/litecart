@@ -36,7 +36,7 @@
 
 			if (empty($_POST['newsletter'])) $_POST['newsletter'] = 0;
 
-			if (empty($_POST['email'])) {
+			if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 				throw new Exception(language::translate('error_missing_email', 'You must enter an email address.'));
 			}
 
@@ -111,8 +111,6 @@
 			$mod_customer = new mod_customer();
 			$result = $mod_customer->validate($_POST);
 			if (!empty($result['error'])) throw new Exception($result['error']);
-
-
 
 			$address = new ent_customer_address();
 

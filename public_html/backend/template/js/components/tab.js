@@ -23,7 +23,7 @@
 					$($link.attr('href')).show().siblings().hide()
 				})
 
-				$link.on('click', function(e) {
+				$link.on('click', (e) => {
 					e.preventDefault()
 					history.replaceState(null, null, this.hash)
 					$link.trigger('select')

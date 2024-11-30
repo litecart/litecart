@@ -13,9 +13,9 @@
 			href: url
 				//onload: callback,
 				//onerror: fallback
-		});
+		})
 
-		$('<link/>', options).appendTo('head');
+		$('<link/>', options).appendTo('head')
 	}
 
 	// JavaScript Loader
@@ -25,10 +25,10 @@
 			method: 'GET',
 			dataType: 'script',
 			cache: true
-		});
+		})
 
-		return jQuery.ajax(url, options);
-	};
+		return jQuery.ajax(url, options)
+	}
 
 	// Escape HTML
 	function escapeHTML(string) {
@@ -39,11 +39,11 @@
 				'"': '&quot;',
 				"'": '&#39;',
 				'/': '&#x2F;'
-		};
+		}
 		return String(string).replace(/[&<>"'\/]/g, function (s) {
-				return entityMap[s];
-		});
-	};
+				return entityMap[s]
+		})
+	}
 
 	// Money Formatting
 	Number.prototype.toMoney = function(use_html = false) {
@@ -57,9 +57,9 @@
 			s = n < 0 ? '-' : '',
 			i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
 			f = n - i,
-			j = (j = i.length) > 3 ? j % 3 : 0;
+			j = (j = i.length) > 3 ? j % 3 : 0
 
-		return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x;
+		return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x
 	}
 
 		// Money Formatting (HTML)
@@ -73,7 +73,7 @@
 		s = n < 0 ? '-' : '',
 		i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
 		f = n - i,
-		j = (j = i.length) > 3 ? j % 3 : 0;
+		j = (j = i.length) > 3 ? j % 3 : 0
 
 	}
 
@@ -82,8 +82,8 @@
 		$.get({
 			url: window._env.platform.path + 'ajax/cart.json',
 			cache: false
-		});
-	}, 60e3);
+		})
+	}, 60e3)
 
 
 /*
@@ -96,29 +96,29 @@
 	$.fn.categoryPicker = function(config){
 		this.each(function(){
 
-			this.xhr = null;
-			this.config = config;
+			this.xhr = null
+			this.config = config
 
-			self = this;
+			self = this
 
 			$(this).find('.dropdown input[type="search"]').on({
 
-				'focus': function(e){
-					$(self).find('.dropdown').addClass('open');
+				'focus': (e) => {
+					$(self).find('.dropdown').addClass('open')
 				},
 
-				'input': function(e){
-						let dropdownMenu = $(self).find('.dropdown-menu');
+				'input': (e) => {
+						let dropdownMenu = $(self).find('.dropdown-menu')
 
-						$(dropdownMenu).html('');
+						$(dropdownMenu).html('')
 
-						if (self.xhr) self.xhr.abort();
+						if (self.xhr) self.xhr.abort()
 
 						if ($(this).val() == '') {
 
 							$.getJSON(self.config.link, function(result) {
 
-								$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>');
+								$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>')
 
 								$.each(result.subcategories, function(i, category) {
 									$(dropdownMenu).append(
@@ -127,11 +127,11 @@
 										'  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
 										'  <div><button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button></div>' +
 										'</li>'
-									);
-								});
-							});
+									)
+								})
+							})
 
-							return;
+							return
 						}
 
 						self.xhr = $.ajax({
@@ -141,23 +141,23 @@
 							url: self.config.link + '&query=' + $(this).val(),
 							dataType: 'json',
 
-							beforeSend: function(jqXHR) {
-								jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
+							beforeSend: (jqXHR) => {
+								jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
 							},
 
-							error: function(jqXHR, textStatus, errorThrown) {
-								if (errorThrown == 'abort') return;
-								alert(errorThrown);
+							error: (jqXHR, textStatus, errorThrown) => {
+								if (errorThrown == 'abort') return
+								alert(errorThrown)
 							},
 
-							success: function(result) {
+							success: (result) => {
 
 								if (!result.subcategories.length) {
-									$(dropdownMenu).html('<li class="dropdown-item text-center no-results"><em>:(</em></li>');
-									return;
+									$(dropdownMenu).html('<li class="dropdown-item text-center no-results"><em>:(</em></li>')
+									return
 								}
 
-								$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ self.config.translations.search_results +'</h3></li>');
+								$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ self.config.translations.search_results +'</h3></li>')
 
 								$.each(result.subcategories, function(i, category) {
 									$(dropdownMenu).append(
@@ -166,21 +166,21 @@
 										'  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
 										'  <div><button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button></div>' +
 										'</li>'
-									);
-								});
+									)
+								})
 							},
-						});
+						})
 					}
-			});
+			})
 
 			$(this).on('click', '.dropdown-menu .dropdown-item a', function(e){
-				e.preventDefault();
+				e.preventDefault()
 
-				let dropdownMenu = $(this).closest('.dropdown-menu');
+				let dropdownMenu = $(this).closest('.dropdown-menu')
 
 				$.getJSON($(this).data('link'), function(result) {
 
-					$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>');
+					$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>')
 
 					if (result.id) {
 						$(dropdownMenu).append(
@@ -188,7 +188,7 @@
 							'  ' + self.config.icons.back +
 							'  <a href="#" data-link="'+ self.config.link +'?parent_id='+ result.parent.id +'" style="flex-grow: 1;">'+ result.parent.name +'</a>' +
 							'</li>'
-						);
+						)
 					}
 
 					$.each(result.subcategories, function(i, category) {
@@ -198,25 +198,25 @@
 							'  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
 							'  <div><button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button></div>' +
 							'</li>'
-						);
-					});
-				});
-			});
+						)
+					})
+				})
+			})
 
 			$(this).on('click', '.dropdown-menu .dropdown-item button.add', function(e){
-				e.preventDefault();
+				e.preventDefault()
 
 				let category = $(this).closest('li'),
-						abort = false;
+						abort = false
 
 				$(self).find('input[name="'+ self.config.inputName +'"]').each(function(){
 					if ($(this).val() == category.data('id')) {
-						abort = true;
-						return;
+						abort = true
+						return
 					}
-				});
+				})
 
-				if (abort) return;
+				if (abort) return
 
 				$(self).find('.categories').append(
 					'<li class="dropdown-item" style="display: flex; align-items: center;">' +
@@ -224,32 +224,32 @@
 					'  <div style="flex-grow: 1;">' + self.config.icons.folder +' '+ $(category).data('name') +'</div>' +
 					'  <div><button class="remove btn btn-default btn-sm" type="button">'+ self.config.translations.remove +'</button></div>' +
 					'</li>'
-				);
+				)
 
-				$(self).trigger('change');
+				$(self).trigger('change')
 
-				$('.dropdown.open').removeClass('open');
+				$('.dropdown.open').removeClass('open')
 
-				return false;
-			});
+				return false
+			})
 
 			$(this).find('.categories').on('click', '.remove', function(e){
-				$(this).closest('li').remove();
-				$(self).trigger('change');
-			});
+				$(this).closest('li').remove()
+				$(self).trigger('change')
+			})
 
 			$('body').on('mousedown', function(e){
 				if ($('.dropdown.open').has(e.target).length === 0) {
-					$('.dropdown.open').removeClass('open');
+					$('.dropdown.open').removeClass('open')
 				}
-			});
+			})
 
-			$(this).find('input[type="search"]').trigger('input');
+			$(this).find('input[type="search"]').trigger('input')
 
-		});
+		})
 	}
 
-}();
+}()
 
 
 /*
@@ -262,16 +262,16 @@
 	$.fn.contextMenu = function(config){
 		this.each(function(){
 
-			this.config = config;
+			this.config = config
 
-			self = this;
+			self = this
 
 			$(this).on('contextmenu').on({
-			});
-		});
+			})
+		})
 	}
 
-}();
+}()
 
 
 	// Dragmove
@@ -290,58 +290,58 @@
 		'  user-input: unset;',
 		'  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);',
 		'}',
-	].join('\n'));
+	].join('\n'))
 
 	$('body').on('click', '.dragmove', function(e){
-		e.preventDefault();
-		return false;
-	});
+		e.preventDefault()
+		return false
+	})
 
 	$('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e){
 
 		let $item = $(e.target).closest('.dragmove'),
 			sy = e.pageY,
-			drag;
+			drag
 
 		if ($(e.target).is('.dragmove')) {
-			$item = $(e.target);
+			$item = $(e.target)
 		}
 
-		let index = $item.index();
+		let index = $item.index()
 
-		$item.addClass('grabbed');
-		$item.closest('tbody').css('user-input', 'unset');
+		$item.addClass('grabbed')
+		$item.closest('tbody').css('user-input', 'unset')
 
 		function move(e) {
 
-			if (!drag && Math.abs(e.pageY - sy) < 10) return;
-			drag = true;
+			if (!drag && Math.abs(e.pageY - sy) < 10) return
+			drag = true
 
 			$item.siblings().each(function() {
 
-				let s = $(this), i = s.index(), y = s.offset().top;
+				let s = $(this), i = s.index(), y = s.offset().top
 
 				if (e.pageY >= y && e.pageY < y + s.outerHeight()) {
-					if (i < $item.index()) s.insertAfter($item);
-					else s.insertBefore($item);
-					return false;
+					if (i < $item.index()) s.insertAfter($item)
+					else s.insertBefore($item)
+					return false
 				}
-			});
+			})
 		}
 
 		function up(e) {
 
 			if (drag && index != $item.index()) {
-				drag = false;
+				drag = false
 			}
 
-			$(document).off('mousemove', move).off('mouseup', up);
-			$item.removeClass('grabbed');
-			$item.closest('tbody').css('user-input', '');
+			$(document).off('mousemove', move).off('mouseup', up)
+			$item.removeClass('grabbed')
+			$item.closest('tbody').css('user-input', '')
 		}
 
-		$(document).mousemove(move).mouseup(up);
-	});
+		$(document).mousemove(move).mouseup(up)
+	})
 
 
 /*
@@ -353,7 +353,7 @@
  */
 
 +function () {
-	'use strict';
+	'use strict'
 
 	// DROPDOWN CLASS DEFINITION
 
@@ -500,89 +500,89 @@
 		.on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
 		.on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
 
-}();
+}()
 
 	// Form required asterix
-	$(':input[required]').closest('.form-group').addClass('required');
+	$(':input[required]').closest('.form-group').addClass('required')
 
 	// Dropdown select
 	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
-		let $dropdown = $(this).closest('.dropdown');
-		let $input = $dropdown.find(':input:checked');
+		let $dropdown = $(this).closest('.dropdown')
+		let $input = $dropdown.find(':input:checked')
 
-		if (!$dropdown.find(':input:checked').length) return;
+		if (!$dropdown.find(':input:checked').length) return
 
-		$dropdown.find('li.active').removeClass('active');
+		$dropdown.find('li.active').removeClass('active')
 
 		if ($input.data('title')) {
-			$dropdown.find('.form-select').text( $input.data('title') );
+			$dropdown.find('.form-select').text( $input.data('title') )
 		} else if ($input.closest('.option').find('.title').length) {
-			$dropdown.find('.form-select').text( $input.closest('.option').find('.title').text() );
+			$dropdown.find('.form-select').text( $input.closest('.option').find('.title').text() )
 		} else {
-			$dropdown.find('.form-select').text( $input.parent().text() );
+			$dropdown.find('.form-select').text( $input.parent().text() )
 		}
 
-		$input.closest('li').addClass('active');
-		$dropdown.trigger('click.bs.dropdown');
+		$input.closest('li').addClass('active')
+		$dropdown.trigger('click.bs.dropdown')
 
-	}).trigger('input');
+	}).trigger('input')
 
 	// Input Number Decimals
 	$('body').on('change', 'input[type="number"][data-decimals]', () => {
 		 var value = parseFloat($(this).val()),
-			 decimals = $(this).data('decimals');
+			 decimals = $(this).data('decimals')
 		if (decimals != '') {
-			$(this).val(value.toFixed(decimals));
+			$(this).val(value.toFixed(decimals))
 		}
-	});
+	})
 
 
-	$('textarea[data-toggle="csv"] + table').on('click', '.remove', function(e) {
-		e.preventDefault();
-		var parent = $(this).closest('tbody');
-		$(this).closest('tr').remove();
-		$(parent).trigger('keyup');
-	});
+	$('textarea[data-toggle="csv"] + table').on('click', '.remove', (e) => {
+		e.preventDefault()
+		var parent = $(this).closest('tbody')
+		$(this).closest('tr').remove()
+		$(parent).trigger('keyup')
+	})
 
-	$('textarea[data-toggle="csv"] + table .add-row').on('click', function(e) {
-		e.preventDefault();
-		var n = $(this).closest('table').find('thead th:not(:last-child)').length;
+	$('textarea[data-toggle="csv"] + table .add-row').on('click', (e) => {
+		e.preventDefault()
+		var n = $(this).closest('table').find('thead th:not(:last-child)').length
 		$(this).closest('table').find('tbody').append(
 			'<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class="remove" href="#"><i class="fa fa-times" style="color: #d33;"></i></a></td>' +'</tr>'
-		).trigger('keyup');
-	});
+		).trigger('keyup')
+	})
 
-	$('textarea[data-toggle="csv"] + table .add-column').on('click', function(e) {
-		e.preventDefault();
-		var table = $(this).closest('table');
-		var title = prompt("Column Title");
-		if (!title) return;
-		$(table).find('thead tr th:last-child:last-child').before('<th>'+ title +'</th>');
-		$(table).find('tbody tr td:last-child:last-child').before('<td contenteditable></td>');
-		$(table).find('tfoot tr td').attr('colspan', $(this).closest('table').find('tfoot tr td').attr('colspan') + 1);
-		$(this).trigger('keyup');
-	});
+	$('textarea[data-toggle="csv"] + table .add-column').on('click', (e) => {
+		e.preventDefault()
+		var table = $(this).closest('table')
+		var title = prompt("Column Title")
+		if (!title) return
+		$(table).find('thead tr th:last-child:last-child').before('<th>'+ title +'</th>')
+		$(table).find('tbody tr td:last-child:last-child').before('<td contenteditable></td>')
+		$(table).find('tfoot tr td').attr('colspan', $(this).closest('table').find('tfoot tr td').attr('colspan') + 1)
+		$(this).trigger('keyup')
+	})
 
-	$('textarea[data-toggle="csv"] + table').on('keyup', function(e) {
+	$('textarea[data-toggle="csv"] + table').on('keyup', (e) => {
 		var csv = $(this).find('thead tr, tbody tr').map(function (i, row) {
 				return $(row).find('th:not(:last-child),td:not(:last-child)').map(function (j, col) {
-					var text = $(col).text();
+					var text = $(col).text()
 					if (/('|,)/.test(text)) {
-						return '"'+ text.replace(/"/g, '""') +'"';
+						return '"'+ text.replace(/"/g, '""') +'"'
 					} else {
-						return text;
+						return text
 					}
-				}).get().join(',');
-			}).get().join('\r\n');
-		$(this).next('textarea').val(csv);
-	});
+				}).get().join(',')
+			}).get().join('\r\n')
+		$(this).next('textarea').val(csv)
+	})
 
 
 	/* Form Input Tags */
 
 	$('input[data-toggle="tags"]').each(function() {
 
-		let $originalInput = $(this);
+		let $originalInput = $(this)
 
 		let $tagField = $(
 			'<div class="form-input">\
@@ -590,85 +590,85 @@
 					<span class="input" contenteditable></span>\
 				</ul>\
 			</div>'
-		);
+		)
 
-		$tagField.tags = [];
+		$tagField.tags = []
 
 		$tagField.add = function(input){
 
-			input = input.trim();
+			input = input.trim()
 
-			if (!input) return;
+			if (!input) return
 
-			$tagField.tags.push(input);
+			$tagField.tags.push(input)
 
 			let $tag = $(
 				'<li class="tag">\
 					<span class="value"></span>\
 					<span class="remove">x</span>\
-				</li>');
+				</li>')
 
-			$('.value', $tag).text(input);
-			$('.input', $tagField).before($tag);
+			$('.value', $tag).text(input)
+			$('.input', $tagField).before($tag)
 
-			$tagField.trigger('change');
-		};
+			$tagField.trigger('change')
+		}
 
 		$tagField.remove = function(input){
 
 			$tagField.tags = $.grep($tagField.tags, function(value) {
-				return value != input;
-			});
+				return value != input
+			})
 
 			$('.tag .value', $tagField).each(function(){
 				if ($(this).text() == input) {
-					$(this).parent('.tag').remove();
+					$(this).parent('.tag').remove()
 				}
 			})
 
-			$tagField.trigger('change');
-		};
+			$tagField.trigger('change')
+		}
 
 		let tags = $.grep($originalInput.val().split(/\s*,\s*/), function(value) {
-			return value;
-		});
+			return value
+		})
 
 		$.each(tags, () => {
-			$tagField.add(this);
-		});
+			$tagField.add(this)
+		})
 
 		$tagField.on('keypress', '.input', function(e){
 			if (e.which == 44 || e.which == 13) { // Comma or enter
-				e.preventDefault();
-				$tagField.add($(this).text());
-				$(this).text('');
+				e.preventDefault()
+				$tagField.add($(this).text())
+				$(this).text('')
 			}
-		});
+		})
 
 		$tagField.on('blur', '.input', () => {
-			$tagField.add($(this).text());
-			$(this).text('');
-		});
+			$tagField.add($(this).text())
+			$(this).text('')
+		})
 
 		$tagField.on('click', '.remove', function(e){
-			$tagField.remove($(this).siblings('.value').text());
-		});
+			$tagField.remove($(this).siblings('.value').text())
+		})
 
 		$tagField.on('change', () => {
-			$originalInput.val($tagField.tags.join(','));
-		});
+			$originalInput.val($tagField.tags.join(','))
+		})
 
-		$(this).hide().after($tagField);
-	});
+		$(this).hide().after($tagField)
+	})
 
 
 // Alerts
 $('body').on('click', '.alert .close', function(e){
-	e.preventDefault();
+	e.preventDefault()
 	$(this).closest('.alert').fadeOut('fast', () => {
 		$(this).remove()
-	});
-});
+	})
+})
 
 
 // Filter
@@ -676,54 +676,54 @@ $('#sidebar input[name="filter"]').on({
 
 	'input': function(){
 
-		let query = $(this).val();
+		let query = $(this).val()
 
 		if ($(this).val() == '') {
-			$('#box-apps-menu .app').css('display', 'block');
-			return;
+			$('#box-apps-menu .app').css('display', 'block')
+			return
 		}
 
 		$('#box-apps-menu .app').each(function(){
-			var regex = new RegExp(''+ query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')  +'', 'ig');
+			var regex = new RegExp(''+ query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')  +'', 'ig')
 			console.log()
 			if (regex.test($(this).text())) {
-				$(this).show();
+				$(this).show()
 			} else {
-				$(this).hide();
+				$(this).hide()
 			}
-		});
+		})
 	}
-});
+})
 
 // AJAX Search
-let timer_ajax_search = null;
-let xhr_search = null;
+let timer_ajax_search = null
+let xhr_search = null
 
 $('#search input[name="query"]').on({
 
 	'focus': function(){
 		if ($(this).val()) {
-			$('#search.dropdown').addClass('open');
+			$('#search.dropdown').addClass('open')
 		}
 	},
 
 	'blur': function(){
 		if (!$('#search').filter(':hover').length) {
-			$('#search.dropdown').removeClass('open');
+			$('#search.dropdown').removeClass('open')
 		} else {
 			$('#search.dropdown').on('blur', () => {
-				$('#search.dropdown').removeClass('open');
-			});
+				$('#search.dropdown').removeClass('open')
+			})
 		}
 	},
 
 	'input': function(){
 
 		if (xhr_search) {
-			xhr_search.abort();
+			xhr_search.abort()
 		}
 
-		let $searchField = $(this);
+		let $searchField = $(this)
 
 		if ($searchField.val()) {
 
@@ -731,17 +731,17 @@ $('#search input[name="query"]').on({
 				'<div class="loader-wrapper text-center">',
 				'  <div class="loader" style="width: 48px; height: 48px;"></div>',
 				'</div>'
-			].join('\n'));
+			].join('\n'))
 
-			$('#search.dropdown').addClass('open');
+			$('#search.dropdown').addClass('open')
 
 		} else {
-			$('#search .results').html('');
-			$('#search.dropdown').removeClass('open');
-			return;
+			$('#search .results').html('')
+			$('#search.dropdown').removeClass('open')
+			return
 		}
 
-		clearTimeout(timer_ajax_search);
+		clearTimeout(timer_ajax_search)
 
 		timer_ajax_search = setTimeout(function() {
 			xhr_search = $.ajax({
@@ -751,21 +751,21 @@ $('#search input[name="query"]').on({
 				url: window._env.backend.url + 'search_results.json?query=' + $searchField.val(),
 				dataType: 'json',
 
-				beforeSend: function(jqXHR) {
-					jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
+				beforeSend: (jqXHR) => {
+					jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
 				},
 
-				error: function(jqXHR, textStatus, errorThrown) {
-					$('#search .results').text(textStatus + ': ' + errorThrown);
+				error: (jqXHR, textStatus, errorThrown) => {
+					$('#search .results').text(textStatus + ': ' + errorThrown)
 				},
 
-				success: function(json) {
+				success: (json) => {
 
-					$('#search .results').html('');
+					$('#search .results').html('')
 
 					if (!$('#search input[name="query"]').val()) {
-						$('#search .results').html('Search');
-						return;
+						$('#search .results').html('Search')
+						return
 					}
 
 					$.each(json, function(i, group){
@@ -775,7 +775,7 @@ $('#search input[name="query"]').on({
 							$('#search .results').append(
 								'<h4>'+ group.name +'</h4>' +
 								'<ul class="flex flex-rows" data-group="'+ group.name +'"></ul>'
-							);
+							)
 
 							$.each(group.results, function(i, result){
 
@@ -787,118 +787,118 @@ $('#search input[name="query"]').on({
 									'    <div class="description"><small>'+ result.description +'</small></div>',
 									'  </a>',
 									'</li>'
-								].join('\n'));
+								].join('\n'))
 
-								$('#search .results ul[data-group="'+ group.name +'"]').append($li);
-							});
+								$('#search .results ul[data-group="'+ group.name +'"]').append($li)
+							})
 						}
-					});
+					})
 
 					if ($('#search .results').html() == '') {
-						$('#search .results').html('<p class="text-center no-results"><em>:(</em></p>');
+						$('#search .results').html('<p class="text-center no-results"><em>:(</em></p>')
 					}
 				},
-			});
-		}, 500);
+			})
+		}, 500)
 	}
-});
+})
 
 
 // Tabs (data-toggle="tab")
 +function($) {
-	'use strict';
+	'use strict'
 	$.fn.Tabs = function(){
 		this.each(function(){
 
-			let self = this;
+			let self = this
 
-			this.$element = $(this);
+			this.$element = $(this)
 
 			this.$element.find('[data-toggle="tab"]').each(function(){
-				let $link = $(this);
+				let $link = $(this)
 
 				$link.on('select', () => {
-					self.$element.find('.active').removeClass('active');
+					self.$element.find('.active').removeClass('active')
 
 					if ($link.hasClass('nav-link')) {
-						$link.addClass('active');
+						$link.addClass('active')
 					}
 
-					$link.closest('.nav-item').addClass('active');
+					$link.closest('.nav-item').addClass('active')
 
-					$($link.attr('href')).show().siblings().hide();
-				});
+					$($link.attr('href')).show().siblings().hide()
+				})
 
-				$link.on('click', function(e) {
-					e.preventDefault();
-					history.replaceState(null, null, this.hash);
-					$link.trigger('select');
-				});
-			});
+				$link.on('click', (e) => {
+					e.preventDefault()
+					history.replaceState(null, null, this.hash)
+					$link.trigger('select')
+				})
+			})
 
 			if (!this.$element.find('.active').length) {
-				this.$element.find('[data-toggle="tab"]').first().select();
+				this.$element.find('[data-toggle="tab"]').first().select()
 			} else {
-				this.$element.find('[data-toggle="tab"].active').select();
+				this.$element.find('[data-toggle="tab"].active').select()
 			}
-		});
+		})
 	}
 
-	$('.nav-tabs').Tabs();
+	$('.nav-tabs').Tabs()
 
 	if (document.location.hash && document.location.hash.match(/^#tab-/)) {
-		$('[data-toggle="tab"][href="' + document.location.hash +'"]').trigger('select');
+		$('[data-toggle="tab"][href="' + document.location.hash +'"]').trigger('select')
 	}
 
 	$(document).on('ajaxcomplete', () => {
-		$('.nav-tabs').Tabs();
-	});
-}(jQuery);
+		$('.nav-tabs').Tabs()
+	})
+}(jQuery)
 
 
 	// Data-Table Toggle Checkboxes
 	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', () => {
 		$(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
-			$(this).prop('checked', !$(this).prop('checked')).trigger('change');
-		});
-		return false;
-	});
+			$(this).prop('checked', !$(this).prop('checked')).trigger('change')
+		})
+		return false
+	})
 
-	$('body').on('click', '.data-table tbody tr', function(e) {
-		if ($(e.target).is('a') || $(e.target).closest('a').length) return;
-		if ($(e.target).is('.btn, :input, th, .icon-star, .icon-star-o')) return;
-		$(this).find(':checkbox, :radio').first().trigger('click');
-	});
+	$('body').on('click', '.data-table tbody tr', (e) => {
+		if ($(e.target).is('a') || $(e.target).closest('a').length) return
+		if ($(e.target).is('.btn, :input, th, .icon-star, .icon-star-o')) return
+		$(this).find(':checkbox, :radio').first().trigger('click')
+	})
 
 	// Data-Table Shift Check Multiple Checkboxes
-	let lastTickedCheckbox = null;
+	let lastTickedCheckbox = null
 	$('.data-table td:first-child :checkbox').on('click', function(e){
 
-		let $chkboxes = $('.data-table td:first-child :checkbox');
+		let $chkboxes = $('.data-table td:first-child :checkbox')
 
 		if (!lastTickedCheckbox) {
-			lastTickedCheckbox = this;
-			return;
+			lastTickedCheckbox = this
+			return
 		}
 
 		if (e.shiftKey) {
-			let start = $chkboxes.index(this);
-			let end = $chkboxes.index(lastTickedCheckbox);
-			$chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastTickedCheckbox.checked);
+			let start = $chkboxes.index(this)
+			let end = $chkboxes.index(lastTickedCheckbox)
+			$chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastTickedCheckbox.checked)
 		}
 
-		lastTickedCheckbox = this;
-	});
+		lastTickedCheckbox = this
+	})
 
 	// Data-Table Sorting (Page Reload)
 	$('.table-sortable thead th[data-sort]').on('click', () => {
-		let params = {};
+		let params = {}
 
 		window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
-			params[key] = value;
-		});
+			params[key] = value
+		})
 
-		params.sort = $(this).data('sort');
+		params.sort = $(this).data('sort')
 
-		window.location.search = $.param(params);
-	});
+		window.location.search = $.param(params)
+	})

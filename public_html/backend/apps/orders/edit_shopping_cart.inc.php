@@ -208,7 +208,7 @@
 					<div class="form-group col-md-6">
 						<label><?php echo language::translate('title_ip_address', 'IP Address'); ?></label>
 						<div class="form-input">
-							<?php echo $shopping_cart->data['ip_address']; ?> <a href="https://ip-api.com/#<?php echo $shopping_cart->data['ip_address']; ?>" target="_blank"><?php echo functions::draw_fonticon('icon-external-link'); ?></a>
+							<?php echo $shopping_cart->data['ip_address']; ?> <a href="https://ip-api.com/#<?php echo $shopping_cart->data['ip_address']; ?>" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a>
 						</div>
 					</div>
 					<?php } ?>
@@ -422,8 +422,8 @@
 						<tfoot>
 							<tr>
 								<td colspan="8">
-									<a class="btn btn-default add-product" href="<?php echo document::href_ilink('catalog/product_picker'); ?>" data-toggle="lightbox" data-seamless="true" data-width="" data-href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>"><?php echo functions::draw_fonticon('icon-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
-									<div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('icon-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
+									<a class="btn btn-default add-product" href="<?php echo document::href_ilink('catalog/product_picker'); ?>" data-toggle="lightbox" data-seamless="true" data-width="" data-href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>"><?php echo functions::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
+									<div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
 								</td>
 							</tr>
 						</tfoot>
@@ -574,10 +574,7 @@
 			cache: true,
 			async: false,
 			dataType: 'json',
-			error: function(jqXHR, textStatus, errorThrown) {
-				if (console) console.warn(errorThrown.message)
-			},
-			success: function(data) {
+			success: (data) => {
 				$.each(data, function(key, value) {
 					if (key.match(/^shipping_address/)) {
 						$.each(value, function(key, value) {
@@ -611,14 +608,14 @@
 			$('input[name="billing_address[phone]"]').removeAttr('placeholder')
 		}
 
-		$('body').css('cursor', 'wait')
+
 		$.ajax({
 			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: false,
 			dataType: 'json',
-			success: function(data) {
+			success: (data) => {
 				$('select[name="billing_address[zone_code]"]').html('')
 				if ($('select[name="billing_address[zone_code]"]').is(':disabled')) $('select[name="billing_address[zone_code]"]').prop('disabled', false)
 				if (data) {
@@ -628,9 +625,6 @@
 				} else {
 					$('select[name="billing_address[zone_code]"]').prop('disabled', true)
 				}
-			},
-			complete: function() {
-				$('body').css('cursor', 'auto')
 			}
 		})
 	})
@@ -656,17 +650,14 @@
 			$('input[name="shipping_address[phone]"]').removeAttr('placeholder')
 		}
 
-		$('body').css('cursor', 'wait')
+
 		$.ajax({
 			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,
 			dataType: 'json',
-			error: function(jqXHR, textStatus, errorThrown) {
-					//alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message)
-			},
-			success: function(data) {
+			success: (data) => {
 				$('select[name="shipping_address[zone_code]"]').html('')
 				if ($('select[name="shipping_address[zone_code]"]').is(':disabled')) $('select[name="shipping_address[zone_code]"]').prop('disabled', false)
 				if (data) {
@@ -676,9 +667,6 @@
 				} else {
 					$('select[name="shipping_address[zone_code]]"]').prop('disabled', true)
 				}
-			},
-			complete: function() {
-				$('body').css('cursor', 'auto')
 			}
 		})
 	})
@@ -854,7 +842,7 @@
 		calculate_total()
 	}
 
-	$('#shopping-cart-items').on('click', '.remove', function(e) {
+	$('#shopping-cart-items').on('click', '.remove', (e) => {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})

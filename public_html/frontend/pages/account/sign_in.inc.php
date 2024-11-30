@@ -30,7 +30,7 @@
 
 		try {
 
-			if (empty($_POST['email'])) {
+			if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 				throw new Exception(language::translate('error_must_enter_your_email_Address', 'You must enter your email address'));
 			}
 

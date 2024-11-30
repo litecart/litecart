@@ -197,7 +197,7 @@
 </datalist>
 
 <script>
-	$('input[name="new[sku]"]').on('input', function(e) {
+	$('input[name="new[sku]"]').on('input', (e) => {
 		let row = $(this).closest('tr')
 
 		if ($('datalist#available-stock-items option[value="'+ $(this).val() +'"]').length) {
@@ -224,7 +224,7 @@
 		}
 	})
 
-	$('body').on('click', '#transaction-contents .remove', function(e) {
+	$('body').on('click', '#transaction-contents .remove', (e) => {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})
@@ -232,7 +232,7 @@
 	let new_item_index = 0
 	while ($(':input[name^="contents['+new_item_index+']"]').length) new_item_index++
 
-	$('table tfoot button[name="add"]').on('click', function(e) {
+	$('table tfoot button[name="add"]').on('click', (e) => {
 		e.preventDefault()
 
 		let row = $(this).closest('tr')

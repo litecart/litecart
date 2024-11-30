@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#b97631',
-			'icon' => 'icon-pie-chart',
+			'icon' => 'icon-chart-pie',
 		],
 
 		'menu' => [

@@ -50,11 +50,30 @@
 				$_POST['newsletter'] = 0;
 			}
 
+			if (empty($_POST['company'])) {
+				$_POST['company'] = '';
+			}
+
+			if (empty($_POST['tax_id'])) {
+				$_POST['tax_id'] = '';
+			}
+
 			foreach ([
 				'code',
 				'status',
 				'email',
 				'password',
+				'tax_id',
+				'company',
+				'firstname',
+				'lastname',
+				'address1',
+				'address2',
+				'postcode',
+				'city',
+				'country_code',
+				'zone_code',
+				'phone',
 				'newsletter',
 				'notes',
 				'different_shipping_address',
@@ -64,21 +83,21 @@
 				}
 			}
 
-      foreach ([
-        'company',
-        'firstname',
-        'lastname',
-        'address1',
-        'address2',
-        'postcode',
-        'city',
-        'country_code',
-        'zone_code',
-        'phone',
-        'email',
-      ] as $field) {
-        $customer->data['shipping_address'][$field] = !empty($_POST['shipping_address'][$field]) ? $_POST['shipping_address'][$field] : '';
-      }
+			foreach ([
+				'company',
+				'firstname',
+				'lastname',
+				'address1',
+				'address2',
+				'postcode',
+				'city',
+				'country_code',
+				'zone_code',
+				'phone',
+				'email',
+			] as $field) {
+				$customer->data['shipping_address'][$field] = !empty($_POST['shipping_address'][$field]) ? $_POST['shipping_address'][$field] : '';
+			}
 
 			$customer->save();
 

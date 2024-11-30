@@ -681,7 +681,7 @@ textarea.warning {
 	let new_tab_index = 1
 	while ($('.tab-pane[id="tab-'+new_tab_index+'"]').length) new_tab_index++
 
-	$('.nav-tabs').on('click', '[data-toggle="tab"]', function(e) {
+	$('.nav-tabs').on('click', '[data-toggle="tab"]', (e) => {
 		$($(this).attr('href')).find(':input[name$="[content]"]').trigger('input')
 	})
 
@@ -702,7 +702,7 @@ textarea.warning {
 		$(this).prev().trigger('click')
 	})
 
-	$('.nav-tabs').on('click', '.remove', function(e) {
+	$('.nav-tabs').on('click', '.remove', (e) => {
 		e.preventDefault()
 
 		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false
@@ -730,7 +730,7 @@ textarea.warning {
 		})
 	}
 
-	$('#files').on('change', ':input[name$="[type]"]', function(e) {
+	$('#files').on('change', ':input[name$="[type]"]', (e) => {
 		e.preventDefault()
 		let match_type = $(this).val()
 
@@ -753,7 +753,7 @@ textarea.warning {
 		$(this).closest('.operation').find(':input[name$="[find][content]"]').trigger('input')
 	})
 
-	$('#files').on('change', ':input[name$="[method]"]', function(e) {
+	$('#files').on('change', ':input[name$="[method]"]', (e) => {
 		e.preventDefault()
 
 		let method = $(this).val()
@@ -809,7 +809,7 @@ textarea.warning {
 
 	let new_operation_index = $(':input[name$="[find][content]"]').length || 0
 
-	$('#files').on('click', '.add', function(e) {
+	$('#files').on('click', '.add', (e) => {
 		e.preventDefault()
 
 		let $operations = $(this).closest('.tab-pane').find('.operations'),
@@ -823,7 +823,7 @@ textarea.warning {
 		reindex_operations($operations)
 	})
 
-	$('#files').on('click', '.move-up, .move-down', function(e) {
+	$('#files').on('click', '.move-up, .move-down', (e) => {
 		e.preventDefault()
 
 		let $row = $(this).closest('.operation'),
@@ -838,7 +838,7 @@ textarea.warning {
 		reindex_operations($operations)
 	})
 
-	$('#files').on('click', '.remove', function(e) {
+	$('#files').on('click', '.remove', (e) => {
 		e.preventDefault()
 
 		let $operations = $(this).closest('.operations')
@@ -997,7 +997,7 @@ textarea.warning {
 		$('.aliases').append(output)
 	})
 
-	$('#aliases').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
+	$('#aliases').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', (e) => {
 		e.preventDefault()
 
 		let $row = $(this).closest('.alias')
@@ -1009,7 +1009,7 @@ textarea.warning {
 		}
 	})
 
-	$('#aliases').on('click', 'button[name$="[remove]"]', function(e) {
+	$('#aliases').on('click', 'button[name$="[remove]"]', (e) => {
 		e.preventDefault()
 
 		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return
@@ -1069,7 +1069,7 @@ textarea.warning {
 		$('#settings').append(output)
 	})
 
-	$('#settings').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
+	$('#settings').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', (e) => {
 		e.preventDefault()
 
 		let $row = $(this).closest('.setting')
@@ -1081,7 +1081,7 @@ textarea.warning {
 		}
 	})
 
-	$('#settings').on('click', 'button[name$="[remove]"]', function(e) {
+	$('#settings').on('click', 'button[name$="[remove]"]', (e) => {
 		e.preventDefault()
 
 		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return

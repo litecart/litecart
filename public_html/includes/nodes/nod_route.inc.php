@@ -247,14 +247,12 @@
 			if (count($lines) >= 100) {
 
 				$email = new ent_email();
-				$email->add_recipient(settings::get('store_email'))
-					->set_subject('[Not Found Report] '. settings::get('store_name'))
+				$email->add_recipient(settings::get('site_email'))
+					->set_subject('[Not Found Report] '. settings::get('site_name'))
 					->add_body(
 						wordwrap("This is a list of the last 100 requests made to your website that did not have a destination. Most of these reports usually contain scans and attacks by evil robots. But some URLs may be indexed by search engines requiring a redirect to a proper destination.", 72, "\r\n") . "\r\n\r\n" .
 						PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n" .
-						implode("\r\n", array_map($lines, function($line){
-							return wordwrap($line);
-						}))
+						implode("\r\n", array_map($lines, 'wordwrap'))
 					)
 					->send();
 
@@ -275,10 +273,22 @@
 				return '';
 			}
 
-			$path = preg_replace('#/+#', '/', $path); // Replace multiple slashes
+			// Sanitize URL
+			$path = filter_var($path, FILTER_SANITIZE_URL);
 
+			foreach ([
+				'#[:\'\*"]#' => '', // Remove bad characters
+				'#\.#' => '', // Remove hidden resource definition
+				'#//+#' => '/', // Replace multiple directory separators
+			] as $pattern => $replace) {
+				$path = preg_replace($pattern, $replace, $path);
+			}
+
+			$path = functions::file_resolve_path($path);
+
+			// Remove language prefix
 			if ($path = urldecode(parse_url($path, PHP_URL_PATH))) {
-				$path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $path);
+				$path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')(/|$))?#', '', $path);
 			}
 
 			if (!$path) {

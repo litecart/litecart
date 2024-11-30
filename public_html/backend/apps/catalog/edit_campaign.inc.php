@@ -164,13 +164,13 @@
 
 <script>
 
-	$('#campaigns').on('focus', 'input[name^="campaigns"]', function(e) {
+	$('#campaigns').on('focus', 'input[name^="campaigns"]', (e) => {
 		if($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
 			$(this).closest('.dropdown').addClass('open')
 	 }
 	})
 
-	$('#campaigns').on('blur', '.dropdown', function(e) {
+	$('#campaigns').on('blur', '.dropdown', (e) => {
 		$(this).removeClass('open')
 	})
 

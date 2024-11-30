@@ -188,7 +188,7 @@
 				return '      <th>'. $column .'<button name="remove_column" class="btn btn default btn-sm">'. functions::draw_fonticon('remove') .'</button></th>';
 			}, $columns)),
 
-			'      <th><button class="btn btn-default btn-sm" name="add_column" type="button">'. functions::draw_fonticon('icon-plus', 'style="color: #6c6;"') .' '.  language::translate('title_add_column', 'Add Column') .'</button></th>',
+			'      <th><button class="btn btn-default btn-sm" name="add_column" type="button">'. functions::draw_fonticon('icon-plus') .' '.  language::translate('title_add_column', 'Add Column') .'</button></th>',
 			'    </tr>',
 			'  </thead>',
 			'  <tbody>',
@@ -206,7 +206,7 @@
 		$html .= implode(PHP_EOL, [
 			'  <tfoot>',
 			'    <tr>',
-			'      <td colspan="'. (count($columns)+1) .'"><button class="btn btn-default btn-sm" name="add_row" type="button">'. functions::draw_fonticon('icon-plus', 'style="color: #6c6;"') .' '.  language::translate('title_add_row', 'Add Row') .'</button></td>',
+			'      <td colspan="'. (count($columns)+1) .'"><button class="btn btn-default btn-sm" name="add_row" type="button">'. functions::draw_fonticon('icon-plus') .' '.  language::translate('title_add_row', 'Add Row') .'</button></td>',
 			'    </tr>',
 			'  </tfoot>',
 			'</table>',
@@ -214,14 +214,14 @@
 		]);
 
 		document::$javascript['table2csv'] = implode(PHP_EOL, [
-			'$(\'table[data-toggle="csv"]\').on(\'click\', \'button[name="remove_row"]\', function(e) {',
+			'$(\'table[data-toggle="csv"]\').on(\'click\', \'button[name="remove_row"]\', (e) => {',
 			'  e.preventDefault();',
 			'  var parent = $(this).closest(\'tbody\');',
 			'  $(this).closest(\'tr\').remove();',
 			'  $(parent).trigger(\'input\');',
 			'});',
 			'',
-			'$(\'table[data-toggle="csv"] button[name="add_row"]\').on(\'click\', function(e) {',
+			'$(\'table[data-toggle="csv"] button[name="add_row"]\').on(\'click\', (e) => {',
 			'  e.preventDefault();',
 			'  var n = $(this).closest(\'table\').find(\'thead th:not(:last-child)\').length;',
 			'  $(this).closest(\'table\').find(\'tbody\').append(',
@@ -229,7 +229,7 @@
 			'  ).trigger(\'input\');',
 			'});',
 			'',
-			'$(\'table[data-toggle="csv"] button[name="add_column"]\').on(\'click\', function(e) {',
+			'$(\'table[data-toggle="csv"] button[name="add_column"]\').on(\'click\', (e) => {',
 			'  e.preventDefault();',
 			'  var $table = $(this).closest(\'table\');',
 			'  var title = prompt("'. functions::escape_js(language::translate('title_column_title', 'Column Title')) .'");',
@@ -240,7 +240,7 @@
 			'  $(this).trigger(\'input\');',
 			'});',
 			'',
-			'$(\'table[data-toggle="csv"]\').on(\'input\', function(e) {',
+			'$(\'table[data-toggle="csv"]\').on(\'input\', (e) => {',
 			'   var csv = $(this).find(\'thead tr, tbody tr\').map(function (i, row) {',
 			'      return $(row).find(\'th:not(:last-child),td:not(:last-child)\').map(function (j, col) {',
 			'        var text = $(col).text();',

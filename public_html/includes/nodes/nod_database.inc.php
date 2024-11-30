@@ -37,7 +37,7 @@
 				}
 
 				if (($duration = microtime(true) - $timestamp) > 1) {
-					error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, 'app://logs/performance.log');
+					error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, 'storage://logs/performance.log');
 				}
 
 				self::$stats['duration'] += $duration;
@@ -575,11 +575,11 @@
 			return $rows;
 		}
 
-		public function fetch_page($filter=null, $index_column=null, $page=1, $items_per_page=null, &$num_rows=null, &$num_pages=null) {
+		public function fetch_page($filter=null, $index_column=null, &$page=1, $items_per_page=null, &$num_rows=null, &$num_pages=null) {
 
 			$timestamp = microtime(true);
 
-			if (!is_numeric($page) || $page < 1) {
+			if (empty($page) || !is_numeric($page) || $page < 1) {
 				$page = 1;
 			}
 

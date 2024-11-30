@@ -428,6 +428,7 @@
 </style>
 
 <?php echo functions::form_begin('form_order', 'post'); ?>
+
 	<div class="card card-app">
 		<div class="card-header">
 			<div class="card-title">
@@ -498,7 +499,7 @@
 						<div class="form-group col-md-3">
 							<label><?php echo language::translate('title_hostname', 'Hostname'); ?></label>
 							<div id="hostname" class="form-input">
-								<?php echo $order->data['hostname']; ?> <a class="btn btn-default btn-sm" href="https://ip-api.com/#<?php echo $order->data['ip_address']; ?>" target="_blank" style="margin: -.33em 0;"><?php echo functions::draw_fonticon('icon-external-link'); ?></a>
+								<?php echo $order->data['hostname']; ?> <a class="btn btn-default btn-sm" href="https://ip-api.com/#<?php echo $order->data['ip_address']; ?>" target="_blank" style="margin: -.33em 0;"><?php echo functions::draw_fonticon('icon-square-out'); ?></a>
 							</div>
 						</div>
 					</div>
@@ -863,7 +864,7 @@
 		<table id="order-lines" class="table table-striped table-hover table-input table-dragable data-table">
 			<thead>
 				<tr>
-					<th style="width: 50px;"><?php echo functions::draw_fonticon('icon-check-square-o', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th style="width: 50px;"><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo language::translate('title_item', 'Item'); ?></th>
 					<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
 					<th style="width: 100px;" class="text-center"><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
@@ -1224,19 +1225,18 @@
 	Number.prototype.toMoney = function(html) {
 
 		var n = this,
-		c = $('select[name="currency_code"] option:selected').val()
-		d = $('select[name="currency_code"] option:selected').data('decimals'),
-		p = _env.session.language.decimal_point,
-		t = _env.session.language.thousands_separator,
-		b = $('select[name="currency_code"] option:selected').data('prefix'),
-		e = $('select[name="currency_code"] option:selected').data('suffix'),
-		s = n < 0 ? '-' : '',
-		i = parseInt(n = Math.abs(+n || 0).toFixed(d)) + '',
-		f = n - i,
-		j = (j = i.length) > 3 ? j % 3 : 0
+			c = $('select[name="currency_code"] option:selected').val()
+			d = $('select[name="currency_code"] option:selected').data('decimals'),
+			p = _env.session.language.decimal_point,
+			t = _env.session.language.thousands_separator,
+			b = $('select[name="currency_code"] option:selected').data('prefix'),
+			e = $('select[name="currency_code"] option:selected').data('suffix'),
+			s = n < 0 ? '-' : '',
+			i = parseInt(n = Math.abs(+n || 0).toFixed(d)) + '',
+			f = n - i,
+			j = (j = i.length) > 3 ? j % 3 : 0
 
 		if (html) {
-
 			return '<span class="currency-amount"><small class="currency">'+ c +'</small> '+ s + b + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (d ? '<span class="decimals">' + p + Math.abs(f).toFixed(d).slice(2) + '</span>' : '') + e + '</span>'
 		}
 
@@ -1267,10 +1267,7 @@
 			cache: true,
 			async: false,
 			dataType: 'json',
-			error: function(jqXHR, textStatus, errorThrown) {
-				console.warn(errorThrown.message)
-			},
-			success: function(data) {
+			success: (data) => {
 				$.each(data, function(key, value) {
 					if (key.match(/^billing_address/)) {
 						$.each(value, function(key, value) {
@@ -1308,17 +1305,13 @@
 			$('input[name="billing_address[phone]"]').removeAttr('placeholder')
 		}
 
-		$('body').css('cursor', 'wait')
 		$.ajax({
 			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: false,
 			dataType: 'json',
-			error: function(jqXHR, textStatus, errorThrown) {
-					//alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message)
-			},
-			success: function(data) {
+			success: (data) => {
 				$('select[name="billing_address[zone_code]"]').html('')
 				if ($('select[name="billing_address[zone_code]"]').is(':disabled')) $('select[name="billing_address[zone_code]"]').prop('disabled', false)
 				if (data) {
@@ -1330,9 +1323,6 @@
 				}
 				$('select[name="billing_address[zone_code]"]').trigger('change')
 			},
-			complete: function() {
-				$('body').css('cursor', 'auto')
-			}
 		})
 	})
 
@@ -1370,10 +1360,7 @@
 			cache: true,
 			async: true,
 			dataType: 'json',
-			error: function(jqXHR, textStatus, errorThrown) {
-					//alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message)
-			},
-			success: function(data) {
+			success: (data) => {
 				$('select[name="shipping_address[zone_code]"]').html('')
 				if ($('select[name="shipping_address[zone_code]"]').is(':disabled')) $('select[name="shipping_address[zone_code]"]').prop('disabled', false)
 				if (data) {
@@ -1384,9 +1371,6 @@
 					$('select[name="shipping_address[zone_code]]"]').prop('disabled', true)
 				}
 				$('select[name="billing_address[zone_code]"]').trigger('change')
-			},
-			complete: function() {
-				$('body').css('cursor', 'auto')
 			}
 		})
 	})
@@ -1463,9 +1447,11 @@
 	}).trigger('input')
 
 	let new_comment_index = 0
-	while ($(':input[name^="comments['+new_comment_index+']"]').length) new_comment_index++
+	while ($(':input[name^="comments['+new_comment_index+']"]').length) {
+		new_comment_index++
+	}
 
-	$('#box-comments .add').on('click', function(e) {
+	$('#box-comments .add').on('click', (e) => {
 		e.preventDefault()
 
 		let $output = $([
@@ -1478,7 +1464,7 @@
 			'  <div class="actions">',
 			'    <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('icon-envelope')], true)); ?> </label>',
 			'    <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('icon-eye-slash')], true)); ?></label>',
-			'    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('icon-times'); ?></a>',
+			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('icon-times'); ?></a>',
 			'  </div>',
 			'</div>'
 		].join('\n')
@@ -1489,20 +1475,20 @@
 		$(this).closest('#box-comments .bubbles textarea:last-child').trigger('focus')
 	})
 
-	$('#box-comments').on('click', ':input[name$="[hidden]"]', function(e) {
+	$('#box-comments').on('click', ':input[name$="[hidden]"]', (e) => {
 		$(this).closest('.bubble').find(':input[name$="[notify]"]').prop('checked', false).trigger('change')
 	})
 
-	$('#box-comments').on('click', ':input[name$="[notify]"]', function(e) {
+	$('#box-comments').on('click', ':input[name$="[notify]"]', (e) => {
 		$(this).closest('.bubble').find(':input[name$="[hidden]"]').prop('checked', false).trigger('change')
 	})
 
-	$('#box-comments').on('click', '.remove', function(e) {
+	$('#box-comments').on('click', '.remove', (e) => {
 		e.preventDefault()
 		$(this).closest('.bubble').remove()
 	})
 
-	$('#box-comments .bubbles').on('change', 'input[name^="comments"][name$="[hidden]"]', function(e) {
+	$('#box-comments .bubbles').on('change', 'input[name^="comments"][name$="[hidden]"]', (e) => {
 		if ($(this).is(':checked')) {
 			$(this).closest('.bubble').addClass('semi-transparent')
 		} else {
@@ -1527,7 +1513,7 @@
 			cache: true,
 			async: false,
 			dataType: 'json',
-			success: function(data) {
+			success: (data) => {
 				tax_rates = []
 				$.each(data, function(i, tax_rate) {
 					tax_rates[tax_rate.tax_class_id] = tax_rate.rate
@@ -1642,7 +1628,7 @@
 		$(modal).data('row', '')
 	})
 
-	$('#order-lines').on('click', '.remove', function(e) {
+	$('#order-lines').on('click', '.remove', (e) => {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})

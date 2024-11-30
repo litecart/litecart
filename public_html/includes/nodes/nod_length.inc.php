@@ -59,18 +59,24 @@
 			],
 		];
 
-		public static function convert($value, $from='', $to='') {
+		public static function convert($value, $from, $to) {
 
-			if ((float)$value == 0) return 0;
+			if ((float)$value == 0) {
+				return 0;
+			}
 
-			if ($from == $to) return (float)$value;
+			if ($from == $to) {
+				return (float)$value;
+			}
 
 			if (!isset(self::$units[$from])) {
-				$from = settings::get('store_length_unit');
+				trigger_error('The unit '. $from .' is not a valid length class.', E_USER_WARNING);
+				return false;
 			}
 
 			if (!isset(self::$units[$to])) {
-				$to = settings::get('store_length_unit');
+				trigger_error('The unit '. $to .' is not a valid length class.', E_USER_WARNING);
+				return false;
 			}
 
 			if ((float)self::$units[$from]['value'] == 0 || (float)self::$units[$to]['value'] == 0) {
@@ -84,13 +90,12 @@
 
 			if (!isset(self::$units[$unit])) {
 				trigger_error('Invalid length unit ('. $unit .')', E_USER_WARNING);
-				return;
+				return language::number_format((float)$value, 2);
 			}
 
 			$decimals = self::$units[$unit]['decimals'];
 
 			$formatted_value = language::number_format((float)$value, (int)$decimals) .' '. self::$units[$unit]['unit'];
-			$formatted_value = preg_replace('#'. preg_quote(language::$selected['decimal_point'], '#') .'0+$#', '', $formatted_value);
 
 			return $formatted_value;
 		}

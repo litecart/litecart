@@ -23,7 +23,9 @@
 		}
 
 		function __destruct() {
-			if (is_resource($this->_socket)) $this->disconnect();
+			if (is_resource($this->_socket)) {
+				$this->disconnect();
+			}
 		}
 
 		public function connect() {
@@ -114,7 +116,9 @@
 
 			$response = $buffer = '';
 			while (substr($buffer, 3, 1) != ' ') {
-				if (!$buffer = fgets($this->_socket, 256)) throw new Exception('No response from socket');
+				if (!$buffer = fgets($this->_socket, 256)) {
+					throw new Exception('No response from socket');
+				}
 				fwrite($this->_log_handle, "< $buffer");
 				$response .= $buffer;
 			}

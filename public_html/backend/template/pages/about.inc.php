@@ -214,7 +214,7 @@
 			<table class="table table-striped data-table">
 				<thead>
 					<tr>
-						<th><?php echo functions::draw_fonticon('icon-check-square-o checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+						<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
 						<th class="main"><?php echo language::translate('title_error', 'Error'); ?></th>
 						<th><?php echo language::translate('title_occurrences', 'Occurrences'); ?></th>
 						<th><?php echo language::translate('title_last_occurrence', 'Last Occurrence'); ?></th>
@@ -253,7 +253,7 @@
 		$.ajax({
 			cache: false,
 			dataType: 'html',
-			success: function(result){
+			success: (result) => {
 				var $cpu_usage = $('meter.cpu-usage', result)
 				var $memory_usage = $('meter.memory-usage', result)
 				$('meter.cpu-usage').replaceWith($cpu_usage)

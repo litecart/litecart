@@ -436,9 +436,6 @@ hr {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   color: var(--card-text-color);
 }
-.card:last-child {
-  margin-bottom: 0;
-}
 .card .card-header,
 .card .card-body,
 .card .card-footer {
@@ -1723,7 +1720,7 @@ ul.list-inline li {
   text-decoration: none;
 }
 .nav .nav-item:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: brightness(0.95);
 }
 .nav .nav-item.disabled {
   color: rgba(119, 119, 119, 0.25);
@@ -1826,7 +1823,7 @@ ul.list-inline li {
   display: block;
   max-width: 250px;
   max-height: 48px;
-  padding: 0.5em 0.75em;
+  padding: 0.5em 1em;
 }
 @media (min-width: 768px) {
   .navbar .navbar-brand {

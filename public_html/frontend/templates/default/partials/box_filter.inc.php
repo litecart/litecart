@@ -128,7 +128,7 @@
 			type: 'get',
 			url: url.href,
 			dataType: 'html',
-			success: function(response){
+			success: (response) => {
 				let html = $('section.listing.products', response)[0].outerHTML
 				$('section.listing.products').replaceWith(html).fadeIn('fast')
 			}

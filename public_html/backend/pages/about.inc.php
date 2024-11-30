@@ -20,7 +20,9 @@
 
 			foreach ($_POST['errors'] as $error) {
 				$content = preg_replace('#\[\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/]+\] '. preg_quote($error, '#') . addcslashes(PHP_EOL, "\r\n") .'[^\[]*#s', '', $content, -1, $count);
-				if (!$count) throw new Exception('Failed deleting error from log');
+				if (!$count) {
+					throw new Exception('Failed deleting error from log');
+				}
 			}
 
 			file_put_contents($log_file, $content);
@@ -90,7 +92,7 @@
 	$errors = [];
 
 	if ($log_file = ini_get('error_log')) {
-			
+
 		if (($filesize = filesize($log_file)) > 1024e6) {
 			notices::add('warnings', language::translate('warning_truncating_extremely_large_log_file', 'Truncating an extremely large log file') .' ('. language::number_format($filesize / (1024 * 1024)) .' Mbytes)');
 			file_put_contents($logfile, '');

@@ -45,7 +45,7 @@
 				throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database.'));
 			}
 
-			if (empty($_POST['email'])) {
+			if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 				throw new Exception(language::translate('error_email_missing', 'You must enter an email address.'));
 			}
 
@@ -220,5 +220,5 @@
 		}
 	}
 
-	$_page = new ent_view('app://frontend/templates/'. settings::get('template') .'/pages/edit_account.inc.php');
+	$_page = new ent_view('app://frontend/templates/'. settings::get('template') .'/pages/account/edit.inc.php');
 	echo $_page->render();

@@ -146,10 +146,7 @@
 			cache: true,
 			async: true,
 			dataType: 'json',
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message)
-			},
-			success: function(data) {
+			success: (data) => {
 				$(zone_field).html('')
 				if (data) {
 					$(zone_field).append('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>')
@@ -168,7 +165,7 @@
 	let new_zone_index = 0
 	while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++
 
-	$('tfoot button[name="add"]', function(e) {
+	$('tfoot button[name="add"]', (e) => {
 		e.preventDefault()
 
 		if ($('select[name="country[code]"]').val() == '') return
@@ -212,7 +209,7 @@
 		$(':input[name="new_zone[city]"]').val('')
 	})
 
-	$('form[name="form_geo_zone"]').on('click', '.remove', function(e) {
+	$('form[name="form_geo_zone"]').on('click', '.remove', (e) => {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})

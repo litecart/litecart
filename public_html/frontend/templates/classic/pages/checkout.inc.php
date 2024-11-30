@@ -128,20 +128,20 @@
 			url: url,
 			data: task.data,
 			dataType: 'html',
-			beforeSend: function(jqXHR) {
+			beforeSend: (jqXHR) => {
 				jqXHR.overrideMimeType('text/html;charset=<?php echo mb_http_output(); ?>')
 			},
-			error: function(jqXHR, textStatus, errorThrown) {
+			error: (jqXHR, textStatus, errorThrown) => {
 				$('#box-checkout .'+ task.component +'.wrapper').html('An unexpected error occurred, try reloading the page.')
 			},
-			success: function(html) {
+			success: (html) => {
 				if (task.refresh) $('#box-checkout .'+ task.component +'.wrapper').html(html).fadeTo('fast', 1)
 				if (task.component == 'summary') {
 					$(':input[name="comments"]').val(comments)
 					$(':input[name="terms_agreed"]').prop('checked', terms_agreed)
 				}
 			},
-			complete: function(html) {
+			complete: (html) => {
 				if (!updateQueue.length) {
 					$('body > .loader-wrapper').fadeOut('fast', () => {
 						$(this).remove()

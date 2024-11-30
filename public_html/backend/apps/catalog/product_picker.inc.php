@@ -54,13 +54,10 @@
 			cache: false,
 			url: '<?php echo document::ilink('catalog/products.json'); ?>?query=' + $(this).val(),
 			dataType: 'json',
-			beforeSend: function(jqXHR) {
+			beforeSend: (jqXHR) => {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
 			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				console.error(textStatus + ': ' + errorThrown)
-			},
-			success: function(json) {
+			success: (json) => {
 
 				$('tbody', $modal).html('')
 

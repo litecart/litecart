@@ -294,11 +294,11 @@ if (preg_match('#[:\t]#', $line)) {
 </main>
 
 <script>
-	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', function(e) {
+	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', (e) => {
 
-		var regular_price = <?php echo currency::format_raw($regular_price); ?>
-		var sales_price = <?php echo currency::format_raw($campaign_price ?: $regular_price); ?>
-		var tax = <?php echo currency::format_raw($total_tax); ?>
+		var regular_price = <?php echo currency::format_raw($regular_price); ?>,
+			sales_price = <?php echo currency::format_raw($campaign_price ?: $regular_price); ?>,
+			tax = <?php echo currency::format_raw($total_tax); ?>
 
 		$(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function(){
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
@@ -334,12 +334,7 @@ if (preg_match('#[:\t]#', $line)) {
 			data: $(this).closest('form').serialize(),
 			dataType: 'json',
 			cache: false,
-
-			error: function(jqXHR, textStatus, errorThrown) {
-				console.log('error', errorThrown)
-			},
-
-			success: function(data){
+			success: (data) => {
 				if (data.status == 'ok') {
 					$('.stock-notice').text(data.notice).removeClass('warning')
 				} else if (data.status == 'warning') {
