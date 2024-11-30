@@ -101,20 +101,24 @@
 			],
 		];
 
-		public static function convert($value, $from='', $to='') {
+		public static function convert($value, $from, $to) {
 
-			if ($value == 0) return 0;
+			if ($value == 0) {
+				return 0;
+			}
 
-			if ($from == $to) return $value;
+			if ($from == $to) {
+				return (float)$value;
+			}
 
 			if (!isset(self::$units[$from])) {
 				trigger_error('Invalid volume unit ('. $from .')', E_USER_WARNING);
-				return;
+				return false;
 			}
 
 			if (!isset(self::$units[$to])) {
 				trigger_error('Invalid volume unit ('. $to .')', E_USER_WARNING);
-				return;
+				return false;
 			}
 
 			if (self::$units[$from]['value'] == 0 || self::$units[$to]['value'] == 0) {
@@ -128,13 +132,12 @@
 
 			if (!isset(self::$units[$unit])) {
 				trigger_error('Invalid volume unit ('. $unit .')', E_USER_WARNING);
-				return;
+				return language::number_format((float)$value, 2);
 			}
 
 			$decimals = self::$units[$unit]['decimals'];
 
 			$formatted_value = language::number_format((float)$value, (int)$decimals) .' '. self::$units[$unit]['unit'];
-			$formatted_value = preg_replace('#'. preg_quote(language::$selected['decimal_point'], '#') .'0+$#', '', $formatted_value);
 
 			return $formatted_value;
 		}

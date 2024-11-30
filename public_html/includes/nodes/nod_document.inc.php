@@ -180,15 +180,7 @@
 				'email' => !empty(customer::$data['email']) ? customer::$data['email'] : null,
 			];
 
-			if (!empty(administrator::$data['id'])) {
-				self::$jsenv['administrator'] = [
-					'id' => administrator::$data['id'],
-					'username' => administrator::$data['username'],
-					'email' => !empty(administrator::$data['email']) ? administrator::$data['email'] : null,
-				];
-			}
-
-			self::$head_tags[] = '<script>window._env = '. json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .'</script>';
+			self::$head_tags[] = '<script>window._env='. json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .'</script>';
 		}
 
 		public static function optimize(&$output) {

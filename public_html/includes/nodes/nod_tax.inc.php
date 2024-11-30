@@ -71,7 +71,7 @@
 						break;
 
 					default:
-						trigger_error('Unknown preset for customer', E_USER_WARNING);
+						trigger_error('Unknown preset for customer ('. functions::escape_html($customer) .')', E_USER_WARNING);
 						break;
 				}
 			}

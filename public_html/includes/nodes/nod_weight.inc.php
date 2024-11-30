@@ -41,18 +41,24 @@
 			],
 		];
 
-		public static function convert($value, $from='', $to='') {
+		public static function convert($value, $from, $to) {
 
-			if ($value == 0) return 0;
+			if ($value == 0) {
+				return 0;
+			}
 
-			if ($from == $to) return $value;
+			if ($from == $to) {
+				return (float)$value;
+			}
 
 			if (!isset(self::$units[$from])) {
-				$from = settings::get('store_weight_unit');
+				trigger_error('The unit '. $from .' is not a valid weight class.', E_USER_WARNING);
+				return false;
 			}
 
 			if (!isset(self::$units[$to])) {
-				$to = settings::get('store_weight_unit');
+				trigger_error('The unit '. $to .' is not a valid weight class.', E_USER_WARNING);
+				return false;
 			}
 
 			if (self::$units[$from]['value'] == 0 || self::$units[$to]['value'] == 0) {
@@ -66,13 +72,12 @@
 
 			if (!isset(self::$units[$unit])) {
 				trigger_error('Invalid weight unit ('. $unit .')', E_USER_WARNING);
-				return;
+				return language::number_format((float)$value, 2);
 			}
 
 			$decimals = self::$units[$unit]['decimals'];
 
-			$formatted_value = language::number_format($value, $decimals) .' '. self::$units[$unit]['unit'];
-			$formatted_value = preg_replace('#'. preg_quote(language::$selected['decimal_point'], '#') .'0+$#', '', $formatted_value);
+			$formatted_value = language::number_format((float)$value, $decimals) .' '. self::$units[$unit]['unit'];
 
 			return $formatted_value;
 		}
