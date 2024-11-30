@@ -175,7 +175,7 @@ table th:last-child {
 
 		$(this).attr('name', $(this).attr('name').replace(/^keys\[([^\]]+)?\]/, 'keys['+ key +']'))
 
-		$.each($(row).find(':input[name^="values["]'), function(i, field) {
+		$.each($(row).find(':input[name^="values["]'), (i, field) => {
 			let matches = $(field).attr('name').match(/^values\[(.*?)\]\[(.*?)\]$/)
 			$(field).attr('name', 'values['+ matches[1] +']['+ key +']')
 		})
@@ -184,7 +184,7 @@ table th:last-child {
 	let new_key_index = 0
 	while ($(':input[name^="keys['+new_key_index+']"]').length) new_key_index++
 
-	$('.data-table .add').on('click', function(e){
+	$('.data-table .add').on('click', (e) => {
 		e.preventDefault()
 
 		let $output = $([
@@ -202,12 +202,12 @@ table th:last-child {
 		$('.data-table tbody').append(output)
 	})
 
-	$('.data-table').on('click', '.remove', function(e){
+	$('.data-table').on('click', '.remove', (e) => {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})
 
-	$('a.tracker-wrapper-help').on('click', function(e){
+	$('a.tracker-wrapper-help').on('click', (e) => {
 		e.preventDefault()
 		alert([
 			"Encapsulates the code with a div wrapper and makes it trackable.",

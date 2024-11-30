@@ -247,12 +247,12 @@
 </div>
 
 <script>
-	$('input[name="apps_toggle"]').change(function(){
+	$('input[name="apps_toggle"]').on('change', () => {
 		$('input[name^="apps"][name$="[status]"]').prop('disabled', !$(this).is(':checked'))
 		$('input[name^="apps"][name$="[docs][]"]').prop('disabled', !$(this).is(':checked'))
 	}).trigger('change')
 
-	$('input[name^="apps"][name$="[status]"]').change(function(){
+	$('input[name^="apps"][name$="[status]"]').on('change', () => {
 		if ($(this).prop('checked')) {
 			if (!$(this).closest('[data-app]').find('ul :input:checked').length) {
 				$(this).closest('[data-app]').find('ul :input').prop('checked', true)
@@ -262,13 +262,13 @@
 		}
 	})
 
-	$('input[name^="apps"][name$="[docs][]"]').change(function() {
+	$('input[name^="apps"][name$="[docs][]"]').on('change', function() {
 		if ($(this).is(':checked')) {
 			$(this).closest('ul').closest('[data-app]').children().not('ul').find(':input').prop('checked', true)
 		}
 	})
 
-	$('input[name="widgets_toggle"]').change(function(){
+	$('input[name="widgets_toggle"]').on('change', () => {
 		$('input[name^="widgets["]').prop('disabled', !$(this).is(':checked'))
 	}).trigger('change')
 </script>

@@ -9,7 +9,7 @@
 </ul>
 
 <script>
-	$('body').on('click', '.pagination a', function(e){
+	$('body').on('click', '.pagination a', (e) => {
 		e.preventDefault()
 		let container = '#'+$(this).closest('[id]').attr('id')
 		let page = $(this).closest('li').data('page')
@@ -20,7 +20,7 @@
 		})
 	})
 
-	$(window).on('popstate', function(e){
+	$(window).on('popstate', (e) => {
 		let container = '#'+$('.pagination').closest('[id]').attr('id')
 		$(container).load(location.href + ' ' + container)
 	})

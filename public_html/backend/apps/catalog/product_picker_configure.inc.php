@@ -160,7 +160,7 @@
 </div>
 
 <script>
-	$('form[name="form_add_product"] button[name="ok"]').off('click').on('click', function(e){
+	$('form[name="form_add_product"] button[name="ok"]').off('click').on('click', (e) => {
 		e.preventDefault()
 
 		let $form = $(this).closest('form'),

@@ -75,7 +75,7 @@
 		$('#regional-settings .title').remove()
 	}
 
-	$('select[name="country_code"]').change(function(){
+	$('select[name="country_code"]').on('change', () => {
 
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -89,7 +89,7 @@
 					$('select[name="zone_code"]').removeAttr('disabled')
 				}
 				if (data) {
-					$.each(data, function(i, zone) {
+					$.each(data, (i, zone) => {
 						$('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {

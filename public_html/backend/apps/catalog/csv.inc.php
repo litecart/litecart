@@ -293,7 +293,7 @@
 						}
 
 						// Sort values
-						uasort($attribute_group->data['values'], function($a, $b){
+						uasort($attribute_group->data['values'], function($a, $b) {
 							if (!isset($a['priority'])) $a['priority'] = '';
 							if (!isset($b['priority'])) $b['priority'] = '';
 
@@ -1510,7 +1510,7 @@
 </div>
 
 <script>
-	$('form[name="export_form"] input[name="type"]').change(function(){
+	$('form[name="export_form"] input[name="type"]').on('change', () => {
 		let dependencies = $(this).data('dependencies') ? $(this).data('dependencies').split(',') : []
 		$('form[name="export_form"] select[name="currency_code"]').prop('disabled', ($.inArray('currency', dependencies) === -1))
 		$('form[name="export_form"] select[name="language_code"]').prop('disabled', ($.inArray('language', dependencies) === -1))
@@ -1522,7 +1522,7 @@
 		if ($(this).is(':checked') && !confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false
 	})
 
-	$('form[name="import_form"] input[name="insert"]').change(function(){
+	$('form[name="import_form"] input[name="insert"]').on('change', () => {
 		$('form[name="import_form"] input[name="reset"]').prop('checked', false).prop('disabled', !$(this).is(':checked'))
 	}).trigger('change')
 </script>

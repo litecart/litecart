@@ -3,7 +3,7 @@
 		$(this).closest('.dropdown').addClass('open')
 	})
 
-	$('.navbar-search :input').blur(function(){
+	$('.navbar-search :input').on('blur', () => {
 		$(this).closest('.dropdown').removeClass('open')
 	})
 
@@ -37,8 +37,8 @@
 			},
 			success: (results) => {
 				if (results) {
-					$.each(results, function(i, result){
-						$.each(result, function(i, row){
+					$.each(results, (i, rows) => {
+						$.each(rows, (i, row) => {
 							$navbar_search.find('.dropdown-menu').append([
 								'<li><a href="'+ row.url +'">',
 								'  <img src="'+ row.thumbnail +'" style="height: 1em;"> ' + row.name,
@@ -51,4 +51,4 @@
 				}
 			}
 		})
-	}).trigger('input')
+	}).trigger('input') // Init

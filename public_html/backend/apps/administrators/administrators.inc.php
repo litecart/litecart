@@ -139,7 +139,7 @@
 </div>
 
 <script>
-	$('.data-table :checkbox').change(function() {
+	$('.data-table :checkbox').on('change', () => {
 		$('#actions').prop('disabled', !$('.data-table :checked').length)
 	}).first().trigger('change')
 </script>

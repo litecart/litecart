@@ -36,7 +36,7 @@
 
 	var opened = [],
 		pruneOpened = function(remove) {
-			opened = $.grep(opened, function(fl) {
+			opened = $.grep(opened, (fl) => {
 				return fl !== remove && fl.$instance.closest('body').length > 0
 			})
 			return opened
@@ -48,7 +48,9 @@
 			Featherlight._globalHandlerInstalled = newState
 
 			var eventMap = {keyup: 'onKeyUp', resize: 'onResize'}
-			var events = $.map(eventMap, function(_, name) { return name+'.featherlight'; } ).join(' ')
+			var events = $.map(eventMap, (_, name) => {
+				return name+'.featherlight';
+			}).join(' ')
 
 			$(window)[newState ? 'on' : 'off'](events, (e) => {
 				$.each(Featherlight.opened().reverse(), () => {
@@ -265,7 +267,7 @@
 						})
 						.then(self.$instance.promise())
 						// Call afterOpen after show() is done
-						.done(function(){ self.afterOpen(e); })
+						.done(() => { self.afterOpen(e); })
 				}
 			}
 			self.$instance.detach()
@@ -347,7 +349,7 @@
 						deferred = $.Deferred()
 
 					// we are using load so one can specify a target with: url.html #targetelement
-					var $container = $('<div></div>').load(url.replace('#', ' #'), function(response, status){
+					var $container = $('<div></div>').load(url.replace('#', ' #'), (response, status) => {
 						if (status !== 'error') {
 							deferred.resolve($container.contents())
 						}
@@ -394,7 +396,7 @@
 			var config = $(element).data(),
 				functionAttributes = ['beforeOpen', 'afterOpen', 'beforeContent', 'afterContent', 'beforeClose', 'afterClose']
 
-			$.each(functionAttributes, function(i, e){
+			$.each(functionAttributes, (i, e) => {
 				if (config[e] !== undefined) {
 					config[e] = new Function(config[e])
 				}
@@ -457,7 +459,7 @@
 		opened: function() {
 			var self = this
 			pruneOpened()
-			return $.grep(opened, function(fl) { return fl instanceof self; } )
+			return $.grep(opened, (fl) => { return fl instanceof self; } )
 		},
 
 		close: (e) => {
@@ -543,7 +545,7 @@
 	}
 
 	// Bind featherlight on ready if config autoBind is set
-	$(document).ready(function(){
+	$(document).ready(() => {
 
 		// Do auto binding on startup. Meant only to be used by Featherlight and its extensions
 		if (Featherlight.autoBind){
@@ -551,7 +553,7 @@
 			var $autobound = $(Featherlight.autoBind)
 
 			// Bind existing elements
-			$autobound.each(function(){
+			$autobound.each(() => {
 				Featherlight.attach($(this))
 			})
 

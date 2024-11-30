@@ -685,7 +685,7 @@ textarea.warning {
 		$($(this).attr('href')).find(':input[name$="[content]"]').trigger('input')
 	})
 
-	$('.nav-tabs .add').on('click', function(e){
+	$('.nav-tabs .add').on('click', (e) => {
 		e.preventDefault()
 
 		let tab = '<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'"><span class="file">new'+ new_tab_index +'</span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('icon-times'); ?></span></a>'
@@ -784,10 +784,10 @@ textarea.warning {
 		let file_pattern = $(this).closest('.row').find(':input[name^="files"][name$="[name]"]').val(),
 			url = '<?php echo document::ilink(__APP__.'/sources', ['pattern' => 'thepattern']); ?>'.replace(/thepattern/, file_pattern)
 
-		$.get(url, function(result) {
+		$.get(url, (result) => {
 			$tab_pane.find('.sources').html('')
 
-			$.each(result, function(file, source_code){
+			$.each(result, (file, source_code) => {
 
 				var $script = $(
 					'<div class="script">' +
@@ -1112,12 +1112,12 @@ textarea.warning {
 		$('.upgrades').append(output)
 	})
 
-	$('.card-action button[name="delete"]').on('click', function(e){
+	$('.card-action button[name="delete"]').on('click', (e) => {
 		e.preventDefault()
 		$.featherlight('#modal-uninstall')
 	})
 
-	$('body').on('click', '.featherlight button[name="cancel"]', function(e){
+	$('body').on('click', '.featherlight button[name="cancel"]', (e) => {
 		$.featherlight.close()
 	})
 </script>

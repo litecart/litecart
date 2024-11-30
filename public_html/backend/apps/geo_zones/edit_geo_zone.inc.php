@@ -150,7 +150,7 @@
 				$(zone_field).html('')
 				if (data) {
 					$(zone_field).append('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>')
-					$.each(data, function(i, zone) {
+					$.each(data, (i, zone) => {
 						$(zone_field).append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 					$(zone_field).prop('disabled', false)
@@ -173,7 +173,7 @@
 		let row = $(this).closest('tr')
 
 		let found = false
-		$.each($('form[name="form_geo_zone"] tbody tr'), function(i, current_row){
+		$.each($('form[name="form_geo_zone"] tbody tr'), (i, current_row) => {
 			if ($(current_row).find(':input[name$="[country_code]"]').val() == $(':input[name="new_zone[country_code]"]').val()
 			 && $(current_row).find(':input[name$="[zone_code]"]').val() == $(':input[name="new_zone[zone_code]"]').val()
 			 && $(current_row).find(':input[name$="[city]"]').val() == $(':input[name="new_zone[city]"]').val()) {

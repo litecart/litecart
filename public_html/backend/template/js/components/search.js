@@ -10,7 +10,7 @@ $('#sidebar input[name="filter"]').on({
 			return
 		}
 
-		$('#box-apps-menu .app').each(function(){
+		$('#box-apps-menu .app').each(() => {
 			var regex = new RegExp(''+ query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')  +'', 'ig')
 			console.log()
 			if (regex.test($(this).text())) {
@@ -95,7 +95,7 @@ $('#search input[name="query"]').on({
 						return
 					}
 
-					$.each(json, function(i, group){
+					$.each(json, (i, group) => {
 
 						if (group.results.length) {
 
@@ -104,7 +104,7 @@ $('#search input[name="query"]').on({
 								'<ul class="flex flex-rows" data-group="'+ group.name +'"></ul>'
 							)
 
-							$.each(group.results, function(i, result){
+							$.each(group.results, (i, result) => {
 
 								var $li = $([
 									'<li class="result">',

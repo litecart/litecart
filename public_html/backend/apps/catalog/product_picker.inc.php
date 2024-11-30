@@ -72,7 +72,7 @@
 					$('tbody', $modal).html($output)
 				}
 
-				$.each(json, function(i, row){
+				$.each(json, (i, row) => {
 
 					let $row = $([
 						'<tr>',

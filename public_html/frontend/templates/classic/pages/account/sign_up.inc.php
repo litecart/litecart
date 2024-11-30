@@ -149,16 +149,16 @@
 			$('.billing-address :input').serialize(),
 			function(data) {
 				if (data['alert']) alert(data['alert'])
-				$.each(data, function(key, value) {
+				$.each(data, (key, value) => {
 					$('.billing-address :input[name="'+key+'"]').val(value)
 				})
 			}
-		).always(function(){
+		).always(() => {
 			$('body').css('cursor', 'auto')
 		})
 	})
 
-	$('select[name="country_code"]').change(function(e) {
+	$('select[name="country_code"]').on('change', (e) => {
 
 		if ($(this).find('option:selected').data('tax-id-format')) {
 			$('input[name="tax_id"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
@@ -190,7 +190,7 @@
 				$("select[name='zone_code']").html('')
 				if (data.length) {
 					$('select[name="zone_code"]').prop('disabled', false)
-					$.each(data, function(i, zone) {
+					$.each(data, (i, zone) => {
 						$('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {

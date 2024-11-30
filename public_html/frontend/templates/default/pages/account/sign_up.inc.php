@@ -150,7 +150,7 @@
 </main>
 
 <script>
-	$('input[name="type"]').change(function(){
+	$('input[name="type"]').on('change', () => {
 		if ($(this).val() == 'business') {
 			$('.business-details :input').prop('disabled', false)
 			$('.business-details').slideDown('fast')
@@ -178,7 +178,7 @@
 					alert(data['alert'])
 					return
 				}
-				$.each(data, function(key, value) {
+				$.each(data, (key, value) => {
 					console.log(key +' '+ value)
 					if ($('input[name="'+key+'"]').length && $('input[name="'+key+'"]').val() == '') $('input[name="'+key+'"]').val(data[key])
 				})
@@ -186,7 +186,7 @@
 		})
 	})
 
-	$('select[name="country_code"]').change(function(e) {
+	$('select[name="country_code"]').on('change', (e) => {
 
 		if ($(this).find('option:selected').data('tax-id-format')) {
 			$('input[name="tax_id"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
@@ -218,7 +218,7 @@
 				$("select[name='zone_code']").html('')
 				if (data.length) {
 					$('select[name="zone_code"]').prop('disabled', false)
-					$.each(data, function(i, zone) {
+					$.each(data, (i, zone) => {
 						$('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {

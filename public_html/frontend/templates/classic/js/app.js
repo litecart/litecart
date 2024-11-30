@@ -1,5 +1,5 @@
 	// Alerts
-	$('body').on('click', '.alert .close', function(e){
+	$('body').on('click', '.alert .close', (e) => {
 		e.preventDefault();
 		$(this).closest('.alert').fadeOut('fast', () => {$(this).remove()});
 	});
@@ -42,7 +42,7 @@
 			var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
 			var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
 
-			$(window).on('resize scroll', function(e){
+			$(window).on('resize scroll', (e) => {
 				if (sidebar_max_offset) {
 					var parallax_rate = 0.4;
 
@@ -59,7 +59,7 @@
 	}
 
 	// Tabs (data-toggle="tab")
-	$('.nav-tabs').each(function(){
+	$('.nav-tabs').each(() => {
 		if (!$(this).find('.active').length) {
 			$(this).find('[data-toggle="tab"]:first').addClass('active');
 		}
@@ -99,7 +99,7 @@
 	});
 
 	// Offcanvas
-	$('[data-toggle="offcanvas"]').on('click', function(e){
+	$('[data-toggle="offcanvas"]').on('click', (e) => {
 		e.preventDefault();
 		var target = $(this).data('target');
 		if ($(target).hasClass('show')) {
@@ -113,7 +113,7 @@
 		}
 	});
 
-	$('.offcanvas [data-toggle="dismiss"]').on('click', function(e){
+	$('.offcanvas [data-toggle="dismiss"]').on('click', (e) => {
 		$('.offcanvas').removeClass('show');
 		$('[data-toggle="offcanvas"]').removeClass('toggled');
 		$('body').removeClass('has-offcanvas');
@@ -145,7 +145,7 @@
 	});
 
 	// Scroll Up
-	$(window).scroll(function(){
+	$(window).scroll(() => {
 		if ($(this).scrollTop() > 100) {
 			$('#scroll-up').fadeIn();
 		} else {
@@ -185,7 +185,7 @@
 				$('#cart .items').html('');
 
 				if (json['items']) {
-					$.each(json['items'], function(i, item){
+					$.each(json['items'], (i, item) => {
 						$('#cart .items').append('<li><a href="'+ item.link +'">'+ item.quantity +' x '+ item.name +' - '+ item.formatted_price +'</a></li>');
 					});
 
@@ -235,7 +235,7 @@
  */
 +function ($) {
 	$.fn.animate_from_to = function(targetElm, options){
-		return this.each(function(){
+		return this.each(() => {
 			animate_from_to(this, targetElm, options);
 		});
 	};

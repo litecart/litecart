@@ -87,7 +87,7 @@
 </section>
 
 <script>
-	$('#box-checkout-cart button[name="remove_cart_item"]').on('click', function(e){
+	$('#box-checkout-cart button[name="remove_cart_item"]').on('click', (e) => {
 		e.preventDefault()
 		let data = [
 			'token=' + $(':input[name="token"]').val(),
@@ -101,7 +101,7 @@
 		queueUpdateTask('summary', true, true)
 	})
 
-	$('#box-checkout-cart button[name="update_cart_item"]').on('click', function(e){
+	$('#box-checkout-cart button[name="update_cart_item"]').on('click', (e) => {
 		e.preventDefault()
 		let data = [
 			'token=' + $(':input[name="token"]').val(),

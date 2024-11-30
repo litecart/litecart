@@ -38,7 +38,7 @@
 </div>
 
 <script>
-	setTimeout(function(){
+	setTimeout(() => {
 		$('#notices .alert').not('.alert-danger')
 	}, 20000)
 

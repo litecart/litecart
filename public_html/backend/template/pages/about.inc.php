@@ -249,7 +249,7 @@
 
 <script>
 	<?php if (!empty($machine['cpu_usage']) || !empty($machine['memory_usage'])) { ?>
-	setInterval(function(){
+	setInterval(() => {
 		$.ajax({
 			cache: false,
 			dataType: 'html',
@@ -263,7 +263,7 @@
 	}, 3000)
 	<?php } ?>
 
-	$('.data-table :checkbox').change(function() {
+	$('.data-table :checkbox').on('change', function() {
 		$('#actions').prop('disabled', !$('.data-table :checked').length)
 	}).first().trigger('change')
 </script>

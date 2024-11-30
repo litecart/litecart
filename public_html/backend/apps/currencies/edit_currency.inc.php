@@ -259,7 +259,7 @@
 <?php if (!empty($available_currencies)) { ?>
 <script>
 	$('select[name="prefill"]').on('change', () => {
-		$.each($(this).find('option:selected').data(), function(key, value) {
+		$.each($(this).find('option:selected').data(), (key, value) => {
 			var field_name = key.replace(/([A-Z])/, '_$1').toLowerCase()
 			$(':input[name="'+field_name+'"]').val(value)
 		})

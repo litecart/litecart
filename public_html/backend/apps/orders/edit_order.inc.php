@@ -1245,12 +1245,12 @@
 
 	// Order
 
-	$('select[name="order_status_id"]').change(function(e){
+	$('select[name="order_status_id"]').on('change', (e) => {
 		let color = $(this).find('option:selected').data('color')
 		$(this).css('box-shadow', color ? '0 0 0px 2px'+ color +'cc' : '')
 	}).trigger('change')
 
-	$('select[name="currency_code"]').change(function(e){
+	$('select[name="currency_code"]').on('change', (e) => {
 		$('input[type="number"][data-type="currency"]').data('decimals', $(this).find('option:selected').data('decimals'))
 		$('input[name="currency_value"]').val($(this).find('option:selected').data('value'))
 		$('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text($(this).val())
@@ -1268,13 +1268,13 @@
 			async: false,
 			dataType: 'json',
 			success: (data) => {
-				$.each(data, function(key, value) {
+				$.each(data, (key, value) => {
 					if (key.match(/^billing_address/)) {
-						$.each(value, function(key, value) {
+						$.each(value, (key, value) => {
 							if ($(':input[name="billing_address['+key+']"]').length) $(':input[name="billing_address['+key+']"]').val(value).trigger('change')
 						})
 					} else if (key.match(/^shipping_address/)) {
-						$.each(value, function(key, value) {
+						$.each(value, (key, value) => {
 							if ($(':input[name="shipping_address['+key+']"]').length) $(':input[name="shipping_address['+key+']"]').val(value).trigger('change')
 						})
 					} else {
@@ -1285,7 +1285,7 @@
 		})
 	})
 
-	$('#customer-details select[name="billing_address[country_code]"]').change(function() {
+	$('#customer-details select[name="billing_address[country_code]"]').on('change', function() {
 
 		if ($(this).find('option:selected').data('tax-id-format')) {
 			$('input[name="billing_address[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
@@ -1315,7 +1315,7 @@
 				$('select[name="billing_address[zone_code]"]').html('')
 				if ($('select[name="billing_address[zone_code]"]').is(':disabled')) $('select[name="billing_address[zone_code]"]').prop('disabled', false)
 				if (data) {
-					$.each(data, function(i, zone) {
+					$.each(data, (i, zone) => {
 						$('select[name="billing_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -1328,12 +1328,12 @@
 
 	$('#customer-details button[name="copy_billing_address"]').on('click', () => {
 		fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone']
-		$.each(fields, function(key, field){
+		$.each(fields, (key, field) => {
 			$('*[name="shipping_address['+ field +']"]').val($('*[name="billing_address['+ field +']"]').val()).trigger('change')
 		})
 	})
 
-	$('#customer-details select[name="shipping_address[country_code]"]').change(function(){
+	$('#customer-details select[name="shipping_address[country_code]"]').on('change', () => {
 
 		if ($(this).find('option:selected').data('tax-id-format')) {
 			$('input[name="shipping_address[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
@@ -1364,7 +1364,7 @@
 				$('select[name="shipping_address[zone_code]"]').html('')
 				if ($('select[name="shipping_address[zone_code]"]').is(':disabled')) $('select[name="shipping_address[zone_code]"]').prop('disabled', false)
 				if (data) {
-					$.each(data, function(i, zone) {
+					$.each(data, (i, zone) => {
 						$('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -1501,7 +1501,7 @@
 	let tax_rates = []
 
 	function get_tax(tax_class_id) {
-		$.each(tax_rates, function(i, tax_rate) {
+		$.each(tax_rates, (i, tax_rate) => {
 			if (tax_class_id == i) return tax_rate
 		})
 	}
@@ -1515,7 +1515,7 @@
 			dataType: 'json',
 			success: (data) => {
 				tax_rates = []
-				$.each(data, function(i, tax_rate) {
+				$.each(data, (i, tax_rate) => {
 					tax_rates[tax_rate.tax_class_id] = tax_rate.rate
 				})
 			},
@@ -1567,7 +1567,7 @@
 		$modal.find('h2').text("<?php echo functions::escape_js(language::translate('title_edit_line_item', 'Edit Line Item')); ?>")
 
 			// Insert values into modal
-		$.each($modal.find(':input'), function(i, element){
+		$.each($modal.find(':input'), (i, element) => {
 
 			let field = $(element).attr('name')
 			let value = $row.find(':input[name$="['+field+']"]').val()
@@ -1608,7 +1608,7 @@
 
 		let url = '<?php echo document::ilink(__APP__.'/add_product'); ?>?' + $.param(params)
 
-		$.get(url, function(content) {
+		$.get(url, (content) => {
 			$('.featherlight-modal').html(content)
 		}, 'html')
 	}
@@ -1665,7 +1665,7 @@
 		$output.find('.length_unit').text(item.length_unit)
 	}
 
-	$('#modal-edit-line-item button[name="ok"]').on('click', function(e){
+	$('#modal-edit-line-item button[name="ok"]').on('click', (e) => {
 
 		let $modal = $('.featherlight.active')
 		let $row = $(modal).data('row')
@@ -1717,7 +1717,7 @@
 			$('#order-lines tbody').append($output)
 		}
 
-		$.each($modal.find(':input'), function(i, $element){
+		$.each($modal.find(':input'), (i, $element) => {
 			let field = $element.attr('name')
 			let value = $modal.find(':input[name="'+field+'"]').val()
 			$row.find(':input[name$="['+field+']"]').val(value).trigger('keyup')

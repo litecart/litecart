@@ -6,7 +6,7 @@
 +function() {
 
 	$.fn.categoryPicker = function(config){
-		this.each(function(){
+		this.each(() => {
 
 			this.xhr = null
 			this.config = config
@@ -28,11 +28,11 @@
 
 						if ($(this).val() == '') {
 
-							$.getJSON(self.config.link, function(result) {
+							$.getJSON(self.config.link, (result) => {
 
 								$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>')
 
-								$.each(result.subcategories, function(i, category) {
+								$.each(result.subcategories, (i, category) => {
 									$(dropdownMenu).append(
 										'<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
 										'  ' + self.config.icons.folder +
@@ -71,7 +71,7 @@
 
 								$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ self.config.translations.search_results +'</h3></li>')
 
-								$.each(result.subcategories, function(i, category) {
+								$.each(result.subcategories, (i, category) => {
 									$(dropdownMenu).append(
 										'<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
 										'  ' + self.config.icons.folder +
@@ -85,12 +85,12 @@
 					}
 			})
 
-			$(this).on('click', '.dropdown-menu .dropdown-item a', function(e){
+			$(this).on('click', '.dropdown-menu .dropdown-item a', (e) => {
 				e.preventDefault()
 
 				let dropdownMenu = $(this).closest('.dropdown-menu')
 
-				$.getJSON($(this).data('link'), function(result) {
+				$.getJSON($(this).data('link'), (result) => {
 
 					$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>')
 
@@ -103,7 +103,7 @@
 						)
 					}
 
-					$.each(result.subcategories, function(i, category) {
+					$.each(result.subcategories, (i, category) => {
 						$(dropdownMenu).append(
 							'<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
 							'  ' + self.config.icons.folder +
@@ -115,13 +115,13 @@
 				})
 			})
 
-			$(this).on('click', '.dropdown-menu .dropdown-item button.add', function(e){
+			$(this).on('click', '.dropdown-menu .dropdown-item button.add', (e) => {
 				e.preventDefault()
 
 				let category = $(this).closest('li'),
 						abort = false
 
-				$(self).find('input[name="'+ self.config.inputName +'"]').each(function(){
+				$(self).find('input[name="'+ self.config.inputName +'"]').each(() => {
 					if ($(this).val() == category.data('id')) {
 						abort = true
 						return
@@ -145,12 +145,12 @@
 				return false
 			})
 
-			$(this).find('.categories').on('click', '.remove', function(e){
+			$(this).find('.categories').on('click', '.remove', (e) => {
 				$(this).closest('li').remove()
 				$(self).trigger('change')
 			})
 
-			$('body').on('mousedown', function(e){
+			$('body').on('mousedown', (e) => {
 				if ($('.dropdown.open').has(e.target).length === 0) {
 					$('.dropdown.open').removeClass('open')
 				}

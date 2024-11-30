@@ -2,7 +2,7 @@
 	$(':input[required]').closest('.form-group').addClass('required')
 
 	// Dropdown select
-	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
+	$('.dropdown .form-select + .dropdown-menu :input').on('input', (e) => {
 		let $dropdown = $(this).closest('.dropdown')
 		let $input = $dropdown.find(':input:checked')
 

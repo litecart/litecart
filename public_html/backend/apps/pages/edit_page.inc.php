@@ -13,7 +13,7 @@
 	document::$title[] = !empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page');
 
 	breadcrumbs::add(language::translate('title_pages', 'Pages'), document::ilink(__APP__.'/pages'));
-	breadcrumbs::add(!empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page'), document::ilink());	
+	breadcrumbs::add(!empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
@@ -148,7 +148,7 @@
 </div>
 
 <script>
-	$('input[name^="title"]').on('input', function(e){
+	$('input[name^="title"]').on('input', (e) => {
 		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1]
 		$('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5)
 		$('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val())

@@ -2,13 +2,13 @@
 +function($) {
 	'use strict'
 	$.fn.Tabs = function(){
-		this.each(function(){
+		this.each(() => {
 
 			let self = this
 
 			this.$element = $(this)
 
-			this.$element.find('[data-toggle="tab"]').each(function(){
+			this.$element.find('[data-toggle="tab"]').each(() => {
 				let $link = $(this)
 
 				$link.on('select', () => {

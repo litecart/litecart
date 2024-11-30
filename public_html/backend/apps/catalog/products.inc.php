@@ -312,17 +312,17 @@ table .thumbnail {
 </div>
 
 <script>
-	$('input[name="category_id"]').change(function(e) {
+	$('input[name="category_id"]').on('change', (e) => {
 		$(this).closest('form').submit()
 	})
 
-	$('.data-table :checkbox').change(function() {
+	$('.data-table :checkbox').on('change', function() {
 		$('#actions').prop('disabled', !$('.data-table :checked').length)
 	}).first().trigger('change')
 
 	$('form[name="search_form"]').on('input change', (e) => {
 		e.preventDefault()
-		$.get('', $(this).serialize(), function(response) {
+		$.get('', $(this).serialize(), (response) => {
 			$('.data-table tbody').html( $(response).find('.data-table tbody').html() )
 			$('.data-table tfoot').html( $(response).find('.data-table tfoot').html() )
 			$('.card-footer').after( $(response).find('.card-footer').html() ).remove()

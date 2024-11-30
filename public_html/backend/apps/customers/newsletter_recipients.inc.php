@@ -233,11 +233,11 @@
 		$('textarea[name="recipients"]').attr('placeholder', 'user@email.com\nanother@email.com')
 	})
 
-	$('select[name="subscribed"]').change(function(){
+	$('select[name="subscribed"]').on('change', () => {
 		$(this).closes('form').submit()
 	})
 
-	$('.data-table :checkbox').change(function() {
+	$('.data-table :checkbox').on('change', function() {
 		$('#actions').prop('disabled', !$('.data-table :checked').length)
 	}).first().trigger('change')
 </script>

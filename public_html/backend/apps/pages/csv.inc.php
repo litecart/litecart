@@ -280,7 +280,7 @@
 		if ($(this).is(':checked') && !confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false
 	})
 
-	$('form[name="import_form"] input[name="insert"]').change(function(){
+	$('form[name="import_form"] input[name="insert"]').on('change', () => {
 		$('form[name="import_form"] input[name="reset"]').prop('checked', false).prop('disabled', !$(this).is(':checked'))
 	}).trigger('change')
 </script>

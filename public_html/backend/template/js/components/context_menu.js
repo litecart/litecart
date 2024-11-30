@@ -6,7 +6,7 @@
 +function() {
 
 	$.fn.contextMenu = function(config){
-		this.each(function(){
+		this.each(() => {
 
 			this.config = config
 

@@ -155,7 +155,7 @@
 	alert("<?php echo functions::escape_js(notices::$data['errors'][0]); notices::$data['errors'] = []; ?>")
 	<?php } ?>
 
-	$('input[name="billing_address[type]"]').change(function(){
+	$('input[name="billing_address[type]"]').on('change', () => {
 		if ($(this).val() == 'business') {
 			$('.business-details :input').prop('disabled', false)
 			$('.business-details').slideDown('fast')
@@ -199,7 +199,7 @@
 
 	// Toggles
 
-	$('#box-customer-details input[name="billing_address[different_shipping_address]"]').on('change', function(e){
+	$('#box-customer-details input[name="billing_address[different_shipping_address]"]').on('change', (e) => {
 		if (this.checked == true) {
 			$('#box-customer-details .shipping-address fieldset').prop('disabled', false).slideDown('fast')
 		} else {
@@ -229,7 +229,7 @@
 			dataType: 'json',
 			success: (data) => {
 				if (data['alert']) alert(data['alert'])
-				$.each(data, function(key, value) {
+				$.each(data, (key, value) => {
 					if ($('.billing-address :input[name="billing_address['+key+']"]').length && $('.billing-address :input[name="billing_address['+key+']"]').val() == '') {
 						$('.billing-address :input[name="billing_address['+key+']"]').val(value).trigger('input')
 					}
@@ -250,7 +250,7 @@
 			dataType: 'json',
 			success: (data) => {
 				if (data['alert']) alert(data['alert'])
-				$.each(data, function(key, value) {
+				$.each(data, (key, value) => {
 					if ($('.shipping-address :input[name="shipping_address['+key+']"]').length && $('.shipping-address :input[name="shipping_address['+key+']"]').val() == '') {
 						$('.shipping-address :input[name="shipping_address['+key+']"]').val(value).trigger('input')
 					}
@@ -293,7 +293,7 @@
 				$('select[name="billing_address[zone_code]"]').html('')
 				if (data.length) {
 					$('select[name="billing_address[zone_code]"]').prop('disabled', false)
-					$.each(data, function(i, zone) {
+					$.each(data, (i, zone) => {
 						$('select[name="billing_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -330,7 +330,7 @@
 				$('select[name="shipping_address[zone_code]"]').html('')
 				if (data.length) {
 					$('select[name="shipping_address[zone_code]"]').prop('disabled', false)
-					$.each(data, function(i, zone) {
+					$.each(data, (i, zone) => {
 						$('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -356,7 +356,7 @@
 	})
 
 	// Prevent losing form focus when clicking the label of a checkbox
-	$('#box-customer-details .form-check').on('click', function(e){
+	$('#box-customer-details .form-check').on('click', (e) => {
 		$(this).find(':checkbox').trigger('focusin').trigger('focus')
 	})
 
@@ -392,7 +392,7 @@
 
 	// Process Data
 
-	$('#box-customer-details button[name="save_customer_details"]').on('click', function(e){
+	$('#box-customer-details button[name="save_customer_details"]').on('click', (e) => {
 		e.preventDefault()
 
 		let formdata = $('#box-customer-details :input').serialize() + '&save_customer_details=true'

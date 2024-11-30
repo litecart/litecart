@@ -301,11 +301,11 @@ table tbody .toggle {
 		}
 	})
 
-	$('form[name="search_form"] select').change(function(){
+	$('form[name="search_form"] select').on('change', () => {
 		$(this).closest('form').submit()
 	})
 
-	$('.data-table :checkbox').change(function() {
+	$('.data-table :checkbox').on('change', function() {
 		$('#actions').prop('disabled', !$('.data-table :checked').length)
 	}).first().trigger('change')
 </script>

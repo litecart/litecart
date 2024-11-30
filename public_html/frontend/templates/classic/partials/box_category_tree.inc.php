@@ -44,9 +44,9 @@
 		'<li class="toggle"><a href="#" data-toggle="showall"><?php echo functions::draw_fonticon(((language::$selected['direction'] == 'rtl') ? 'icon-chevron-right' : 'icon-chevron-left') .''); ?> <?php echo language::translate('title_show_all', 'Show All'); ?></a></li>'
 	)
 
-	$('#box-category-tree > ul.compact').on('click', 'a[data-toggle="showall"]', function(e){
+	$('#box-category-tree > ul.compact').on('click', 'a[data-toggle="showall"]', (e) => {
 		e.preventDefault()
-		$(this).parent().slideUp(function(){
+		$(this).parent().slideUp(() => {
 			$(this).remove()
 		})
 		$('#box-category-tree > ul > li:hidden').slideDown()

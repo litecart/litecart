@@ -61,7 +61,7 @@
 
 				$('#modal-customer-picker .results tbody').html('')
 
-				$.each(json, function(i, row){
+				$.each(json, (i, row) => {
 
 					$row = $([
 						'<tr>',

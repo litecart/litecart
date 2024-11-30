@@ -6,11 +6,15 @@
 			$keywords = preg_split('#\s*,\s*#', $keywords, -1, PREG_SPLIT_NO_EMPTY);
 		}
 
+		$sql_where_keywords = "(". implode(" or ", array_map(function($k){
+			return "find_in_set('". database::input($k) ."', keywords)";
+		}, $keywords)) .")";
+
 		$banners = database::query(
 			"select * from ". DB_TABLE_PREFIX ."banners
 			where status
 			and (image != '' or html != '')
-			and (". implode(" or ", array_map(function($k){ return "find_in_set('". database::input($k) ."', keywords)"; }, $keywords)) .")
+			and $sql_where_keywords
 			order by rand()
 			". ($limit ? "limit ". (int)$limit : '') .";"
 		)->fetch_all();
@@ -55,20 +59,22 @@
 
 		// Banner Click Tracking
 		document::$javascript['banner-click-tracking'] = implode(PHP_EOL, [
-			'  var mouseOverAd = false;',
-			'  $(\'.banner[data-id]\').hover(function(){',
-			'    mouseOverAd = $(this).data("id");',
-			'  }, () => {',
-			'    mouseOverAd = false;',
-			'  });',
-			'  $(\'.banner[data-id]\').on(\'click\', () => {',
-			'    $.post("'. document::ilink('ajax/bct') .'", "banner_id=" + $(this).data("id"));',
-			'  });',
-			'  $(window).blur(function(){',
-			'    if (mouseOverAd){',
-			'      $.post("'. document::ilink('ajax/bct') .'", "banner_id=" + mouseOverAd);',
-			'    }',
-			'  });',
+			'var mouseOverAd = false;',
+			'$(\'.banner[data-id]\').hover(() => {',
+			'  mouseOverAd = $(this).data("id");',
+			'}, () => {',
+			'  mouseOverAd = false;',
+			'});',
+			'',
+			'$(\'.banner[data-id]\').on(\'click\', () => {',
+			'  $.post("'. document::ilink('ajax/bct') .'", "banner_id=" + $(this).data("id"));',
+			'});',
+			'',
+			'$(window).on(\'blur\', () => {',
+			'  if (mouseOverAd){',
+			'    $.post("'. document::ilink('ajax/bct') .'", "banner_id=" + mouseOverAd);',
+			'  }',
+			'});',
 		]);
 
 		if (count($banners) == 1) {

@@ -228,7 +228,7 @@
 		prompt("<?php echo language::translate('title_cron_job_configuration', 'Cron Job Configuration'); ?>", "*/5 * * * * curl --silent <?php echo document::ilink('f:push_jobs'); ?> &>/dev/null")
 	})
 
-	$('.data-table :checkbox').change(function() {
+	$('.data-table :checkbox').on('change', function() {
 		$('#actions').prop('disabled', !$('.data-table :checked').length)
 	}).first().trigger('change')
 </script>

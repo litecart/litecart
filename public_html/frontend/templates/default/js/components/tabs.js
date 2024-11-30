@@ -6,7 +6,7 @@
 		$($(this).attr('href')).show().siblings().hide()
 	})
 
-	$('.nav-tabs').each(function(){
+	$('.nav-tabs').each(() => {
 		if (!$(this).find('li.active').length) {
 			$(this).find('li:first').addClass('active')
 		}

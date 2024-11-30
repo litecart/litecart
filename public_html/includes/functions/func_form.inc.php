@@ -145,7 +145,7 @@
 		}
 
 		document::$javascript[] = implode(PHP_EOL, [
-			'$(\'textarea[name="'. $name .'"]\').on(\'keydown\', function(e){',
+			'$(\'textarea[name="'. $name .'"]\').on(\'keydown\', (e) => {',
 			'  if (e.keyCode != 9) return;',
 			'  e.preventDefault();',
 			' var start = this.selectionStart, end = this.selectionEnd;',

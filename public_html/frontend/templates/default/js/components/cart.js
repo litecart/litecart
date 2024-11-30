@@ -126,7 +126,7 @@
 					$('#site-navigation .shopping-cart ul .item').remove()
 
 					let html = ''
-					$.each(result.items, function(key, item){
+					$.each(result.items, (key, item) => {
 						html += [
 							'<li class="item">',
 							'  <div class="row">',

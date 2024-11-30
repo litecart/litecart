@@ -273,19 +273,19 @@
 		var sales_price = <?php echo currency::format_raw($campaign_price ?: $regular_price); ?>
 		var tax = <?php echo currency::format_raw($total_tax); ?>
 
-		$(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function(){
+		$(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(() => {
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
 			if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
 			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust')
 		})
 
-		$(this).find('select option:checked').each(function(){
+		$(this).find('select option:checked').each(() => {
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
 			if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
 			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust')
 		})
 
-		$(this).find('input[type!="radio"][type!="checkbox"]').each(function(){
+		$(this).find('input[type!="radio"][type!="checkbox"]').each(() => {
 			if ($(this).val() != '') {
 				if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
 				if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
@@ -299,7 +299,7 @@
 		$(this).find('.total-tax').text(tax.toMoney())
 	})
 
-	$('#box-product form[name="buy_now_form"] .options :input').change(function(){
+	$('#box-product form[name="buy_now_form"] .options :input').on('change', () => {
 
 		$.ajax({
 			type: 'post',
@@ -321,7 +321,7 @@
 		})
 	})
 
-	$('#box-product[data-id="<?php echo $product_id; ?>"] .social-bookmarks .link').off().on('click', function(e){
+	$('#box-product[data-id="<?php echo $product_id; ?>"] .social-bookmarks .link').off().on('click', (e) => {
 		e.preventDefault()
 		prompt("<?php echo language::translate('text_link_to_this_product', 'Link to this product'); ?>", '<?php echo $link; ?>')
 	})

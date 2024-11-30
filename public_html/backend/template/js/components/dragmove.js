@@ -16,12 +16,12 @@
 		'}',
 	].join('\n'))
 
-	$('body').on('click', '.dragmove', function(e){
+	$('body').on('click', '.dragmove', (e) => {
 		e.preventDefault()
 		return false
 	})
 
-	$('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e){
+	$('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', (e) => {
 
 		let $item = $(e.target).closest('.dragmove'),
 			sy = e.pageY,

@@ -70,7 +70,7 @@
 	$('body').on('input', '#box-filter form[name="filter_form"] :input', () => {
 		$('#box-filter .tokens').html('')
 
-		$.each($('#box-filter input[data-token-title][type="search"]'), function(i,el) {
+		$.each($('#box-filter input[data-token-title][type="search"]'), (i,el) => {
 			if (!$(this).val()) return
 
 			var $token = $('<span class="token"></span>')
@@ -84,7 +84,7 @@
 			$('#box-filter .tokens').append($token)
 		})
 
-		$.each($('#box-filter input[data-token-title][type="checkbox"]:checked, #box-filter input[data-token-title][type="radio"]:checked'), function(i,el) {
+		$.each($('#box-filter input[data-token-title][type="checkbox"]:checked, #box-filter input[data-token-title][type="radio"]:checked'), (i,el) => {
 			if (!$(this).val()) return
 
 			var $token = $('<span class="token"></span>')
@@ -122,7 +122,7 @@
 		})
 	})
 
-	$('body').on('click', '#box-filter form[name="filter_form"] .tokens .remove', function(e){
+	$('body').on('click', '#box-filter form[name="filter_form"] .tokens .remove', (e) => {
 		e.preventDefault()
 		var token = $(this).closest('.token')
 		switch ($(':input[name="'+ $(token).data('name') +'"]').attr('type')) {

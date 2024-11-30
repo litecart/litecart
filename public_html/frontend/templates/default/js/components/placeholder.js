@@ -8,7 +8,7 @@
 	let Placeholders = []
 
 	$.fn.Placeholder = function(options){
-		this.each(function(){
+		this.each(() => {
 
 			this.$element = $(this)
 
@@ -38,7 +38,7 @@
 	$('.placeholder').Placeholder()
 
 	$(window).on('resize', () => {
-		$.each(Placeholders, function(i, placeholder) {
+		$.each(Placeholders, (i, placeholder) => {
 			placeholder.refresh()
 		})
 	})

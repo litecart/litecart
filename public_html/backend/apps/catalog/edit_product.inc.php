@@ -841,24 +841,24 @@
 
 	$('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').first().trigger('input')
 
-	$('input[name^="name"]').on('input', function(e){
+	$('input[name^="name"]').on('input', (e) => {
 		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1]
 		$('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val())
 		$('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val())
 	})
 
-	$('input[name^="short_description"]').on('input', function(e){
+	$('input[name^="short_description"]').on('input', (e) => {
 		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1]
 		$('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val())
 	})
 
 	// Default Category
 
-	$('[data-toggle="category-picker"]').change(function(){
+	$('[data-toggle="category-picker"]').on('change', () => {
 		let default_category_id = $('select[name="default_category_id"] option:selected').val()
 
 		$('select[name="default_category_id"]').html('')
-		$.each($(this).find(':input[name="categories[]"]'), function(category){
+		$.each($(this).find(':input[name="categories[]"]'), (category) => {
 			$('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'">'+ unescape($(this).data('name')) +'</option>')
 		})
 
@@ -945,12 +945,12 @@
 
 	// Technical Data
 
-	$('a.technical-data-hint').on('click', function(e){
+	$('a.technical-data-hint').on('click', (e) => {
 		e.preventDefault()
 		alert('Syntax:\n\nTitle1\nProperty1: Value1\nProperty2: Value2\n\nTitle2\nProperty3: Value3...')
 	})
 
-	$('input[name="autogenerate_techdata"]').change(function(){
+	$('input[name="autogenerate_techdata"]').on('change', () => {
 		if ($(this).is(':checked')) {
 			$('textarea[name^="technical_data"]').prop('disabled', true)
 		} else {
@@ -991,7 +991,7 @@
 	}
 
 	// Update prices
-	$('select[name="tax_class_id"]').change('input', () => {
+	$('select[name="tax_class_id"]').on('change', 'input', () => {
 		$('input[name^="prices"]').trigger('input')
 	})
 
@@ -1044,7 +1044,7 @@
 			gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').attr('placeholder')
 		}
 
-		$.each(currencies, function(i,currency_code){
+		$.each(currencies, (i, currency_code) => {
 			if (currency_code == '<?php echo settings::get('store_currency_code'); ?>') return
 
 			let currency_decimals = get_currency_decimals(currency_code),
@@ -1179,7 +1179,7 @@
 
 	// Attributes
 
-	$('select[name="new_attribute[group_id]"]').change(function(){
+	$('select[name="new_attribute[group_id]"]').on('change', () => {
 
 		if ($(this).val() == '') {
 			$('select[name="new_attribute[value_id]"]').html('').prop('disabled', true)
@@ -1199,7 +1199,7 @@
 					$('select[name="new_attribute[value_id]"]').prop('disabled', false)
 					$(':input[name="new_attribute[custom_value]"]').prop('disabled', false)
 					$('select[name="new_attribute[value_id]"]').append('<option value="0">-- <?php echo language::translate('title_select', 'Select'); ?> --</option>')
-					$.each(data, function(i, zone) {
+					$.each(data, (i, zone) => {
 						$('select[name="new_attribute[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -1272,7 +1272,7 @@
 
 	// Quantity Unit
 
-	$('select[name="quantity_unit_id"]').change(function(){
+	$('select[name="quantity_unit_id"]').on('change', () => {
 		if ($('option:selected', this).data('decimals') === undefined) return
 
 		let decimals = $('option:selected', this).data('decimals')
@@ -1282,11 +1282,11 @@
 		$('input[name="quantity_step"]').val( parseFloat($('input[name="quantity_step"]').val() || 0).toFixed(decimals) )
 		$('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val() || 0).toFixed(decimals) )
 
-		$('input[name^="stock_options"][name$="[quantity]"]').each(function(){
+		$('input[name^="stock_options"][name$="[quantity]"]').each(() => {
 			$(this).val( parseFloat($(this).val() || 0).toFixed(decimals) )
 		})
 
-		$('input[name^="stock_options"][name$="[quantity_adjustment]"]').each(function(){
+		$('input[name^="stock_options"][name$="[quantity_adjustment]"]').each(() => {
 			$(this).val( parseFloat($(this).val() || 0).toFixed(decimals) )
 		})
 	}).trigger('change')
@@ -1329,7 +1329,7 @@
 
 	$('select[name="quantity_unit_id"]').on('change', () => {
 		let decimals = parseInt($('select[name="quantity_unit_id"] option:selected').data('decimals'))
-		$('input[name$="[quantity]"], input[name$="[quantity_adjustment]"], input[name$="[backordered]"]').each(function(){
+		$('input[name$="[quantity]"], input[name$="[quantity_adjustment]"], input[name$="[backordered]"]').each(() => {
 			if ($(this).val() != '') {
 				$(this).val( parseFloat($(this).val()).toFixed(decimals) )
 			}
@@ -1383,7 +1383,7 @@
 				if ($('select[name="new_predefined_customization[value_id]"]').attr('disabled')) $('select[name="new_predefined_customization[value_id]"]').prop('disabled', false)
 				if (data) {
 					$('select[name="new_predefined_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>')
-					$.each(data, function(i, zone) {
+					$.each(data, (i, zone) => {
 						$('select[name="new_predefined_customization[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -1406,7 +1406,7 @@
 				if ($('select[name="new_user_input_customization[value_id]"]').attr('disabled')) $('select[name="new_user_input_customization[value_id]"]').prop('disabled', false)
 				if (data) {
 					$('select[name="new_user_input_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>')
-					$.each(data, function(i, zone) {
+					$.each(data, (i, zone) => {
 						$('select[name="new_user_input_customization[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -1715,7 +1715,7 @@
 			.replace(/new_stock_item_i/g, 'new_'+new_stock_item_i)
 		)
 
-		$.each(Object.keys(stock_item), function(i, key){ // Iterate Object.keys() because jQuery.each() doesn't support a property named length
+		$.each(Object.keys(stock_item), (i, key) => { // Iterate Object.keys() because jQuery.each() doesn't support a property named length
 			switch (key) {
 
 				case 'id':

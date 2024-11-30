@@ -533,32 +533,32 @@ table .icon-star:hover {
 		}
 	})
 
-	$('form[name="search_form"] select').change(function(){
+	$('form[name="search_form"] select').on('change', () => {
 		$(this).closest('form').submit()
 	})
 
-	$('.data-table :checkbox').change(function() {
+	$('.data-table :checkbox').on('change', function() {
 		$('#actions fieldset').prop('disabled', !$('.data-table :checked').length)
 	}).first().trigger('change')
 
-	$('table').on('click', '.icon-star-o', function(e){
+	$('table').on('click', '.icon-star-o', (e) => {
 		e.stopPropagation()
 		let star = this
-		$.post('', 'star&order_id='+$(star).closest('tr').data('id'), function(data) {
+		$.post('', 'star&order_id='+$(star).closest('tr').data('id'), (data) => {
 			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>')
 		})
 		return false
 	})
 
-	$('table').on('click', '.icon-star', function(e){
+	$('table').on('click', '.icon-star', (e) => {
 		let star = this
-		$.post('', 'unstar&order_id='+$(star).closest('tr').data('id'), function(data) {
+		$.post('', 'unstar&order_id='+$(star).closest('tr').data('id'), (data) => {
 			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>')
 		})
 		return false
 	})
 
-	$('#actions button').on('click', function(e){
+	$('#actions button').on('click', (e) => {
 		if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
 			e.preventDefault()
 			return false

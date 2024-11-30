@@ -240,8 +240,8 @@
 	let new_zone_index = 0
 	while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++
 
-	$('form[name="country_form"] .add').on('click', function(event) {
-		event.preventDefault()
+	$('form[name="country_form"] .add').on('click', (e) => {
+		e.preventDefault()
 		if ($('select[name="country[code]"]').find('option:selected').val() == '') return
 
 		let output = [
@@ -260,8 +260,8 @@
 		$(this).closest('table').find('tbody').append(output)
 	})
 
-	$('form[name="country_form"]').on('click', '.remove', function(event) {
-		event.preventDefault()
+	$('form[name="country_form"]').on('click', '.remove', (e) => {
+		e.preventDefault()
 		$(this).closest('tr').remove()
 	})
 </script>

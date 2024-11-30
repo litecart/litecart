@@ -39,7 +39,7 @@
 
 	window.queueUpdateTask = function(component, data, refresh) {
 
-		updateQueue = jQuery.grep(updateQueue, function(tasks) {
+		updateQueue = jQuery.grep(updateQueue, (tasks) => {
 			return (tasks.component == component) ? false : true
 		})
 
@@ -157,7 +157,7 @@
 
 	// Customer Form: Process Data
 
-	$('#box-checkout .customer.wrapper').on('click', 'button[name="save_customer_details"]', function(e){
+	$('#box-checkout .customer.wrapper').on('click', 'button[name="save_customer_details"]', (e) => {
 		e.preventDefault()
 		let data = [
 			$('#box-checkout-customer :input').serialize(),

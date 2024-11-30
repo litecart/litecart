@@ -55,7 +55,7 @@
 </div>
 
 <script>
-	$('#modal-category-picker').on('click', 'a', function(e){
+	$('#modal-category-picker').on('click', 'a', (e) => {
 		e.preventDefault()
 		$('.modal-body').load($(this).attr('href')+' .modal-body')
 	})

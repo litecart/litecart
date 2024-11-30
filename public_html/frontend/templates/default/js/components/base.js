@@ -24,7 +24,7 @@
 	}
 
 	// Keep-alive
-	let keepAlive = setInterval(function(){
+	let keepAlive = setInterval(() => {
 		$.get({
 			url: window._env.platform.path + 'ajax/cart.json',
 			cache: false
@@ -40,7 +40,7 @@
 		let $sidebar = $('#sidebar')
 			//let sidebar_max_offset = $sidebar.parent().height() - $sidebar.height() - 200; // Failsafe 30
 
-		$(window).on('resize scroll', function(e){
+		$(window).on('resize scroll', (e) => {
 			if ($(window).width() >= 768 && ($sidebar.parent().height() - $sidebar.height()) > 500) {
 				let offset = $(this).scrollTop() * .6
 				if (offset > 0) $sidebar.css('margin-top', offset + 'px')
@@ -59,7 +59,7 @@
 	})
 
 	// Scroll Up
-	$(window).scroll(function(){
+	$(window).scroll(() => {
 		if ($(this).scrollTop() > 300) {
 			$('#scroll-up').fadeIn()
 		} else {

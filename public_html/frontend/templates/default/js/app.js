@@ -31,7 +31,7 @@
 	}
 
 	// Keep-alive
-	let keepAlive = setInterval(function(){
+	let keepAlive = setInterval(() => {
 		$.get({
 			url: window._env.platform.path + 'ajax/cart.json',
 			cache: false
@@ -47,7 +47,7 @@
 		let $sidebar = $('#sidebar')
 			//let sidebar_max_offset = $sidebar.parent().height() - $sidebar.height() - 200; // Failsafe 30
 
-		$(window).on('resize scroll', function(e){
+		$(window).on('resize scroll', (e) => {
 			if ($(window).width() >= 768 && ($sidebar.parent().height() - $sidebar.height()) > 500) {
 				let offset = $(this).scrollTop() * .6
 				if (offset > 0) $sidebar.css('margin-top', offset + 'px')
@@ -66,7 +66,7 @@
 	})
 
 	// Scroll Up
-	$(window).scroll(function(){
+	$(window).scroll(() => {
 		if ($(this).scrollTop() > 300) {
 			$('#scroll-up').fadeIn()
 		} else {
@@ -442,7 +442,7 @@
 					$('#site-navigation .shopping-cart ul .item').remove()
 
 					let html = ''
-					$.each(result.items, function(key, item){
+					$.each(result.items, (key, item) => {
 						html += [
 							'<li class="item">',
 							'  <div class="row">',
@@ -626,7 +626,7 @@
 }(jQuery);
 
 	// Dropdown Select
-	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
+	$('.dropdown .form-select + .dropdown-menu :input').on('input', (e) => {
 
 		let $dropdown = $(this).closest('.dropdown');
 		let $input = $dropdown.find(':input:checked');
@@ -790,7 +790,7 @@
 
 
 	// Alerts
-	$('body').on('click', '.alert .close', function(e){
+	$('body').on('click', '.alert .close', (e) => {
 		e.preventDefault()
 		$(this).closest('.alert').fadeOut('fast', () => {
 			$(this).remove()
@@ -834,7 +834,7 @@
 	let Placeholders = []
 
 	$.fn.Placeholder = function(options){
-		this.each(function(){
+		this.each(() => {
 
 			this.$element = $(this)
 
@@ -864,7 +864,7 @@
 	$('.placeholder').Placeholder()
 
 	$(window).on('resize', () => {
-		$.each(Placeholders, function(i, placeholder) {
+		$.each(Placeholders, (i, placeholder) => {
 			placeholder.refresh()
 		})
 	})
@@ -907,7 +907,7 @@
 		$(this).closest('.dropdown').addClass('open')
 	})
 
-	$('.navbar-search :input').blur(function(){
+	$('.navbar-search :input').on('blur', () => {
 		$(this).closest('.dropdown').removeClass('open')
 	})
 
@@ -941,8 +941,8 @@
 			},
 			success: (results) => {
 				if (results) {
-					$.each(results, function(i, result){
-						$.each(result, function(i, row){
+					$.each(results, (i, rows) => {
+						$.each(rows, (i, row) => {
 							$navbar_search.find('.dropdown-menu').append([
 								'<li><a href="'+ row.url +'">',
 								'  <img src="'+ row.thumbnail +'" style="height: 1em;"> ' + row.name,
@@ -955,7 +955,7 @@
 				}
 			}
 		})
-	}).trigger('input')
+	}).trigger('input') // Init
 
 
 	// Data-Table Toggle Checkboxes
@@ -980,7 +980,7 @@ $('body').on('click', '.data-table tbody tr', (e) => {
 		$($(this).attr('href')).show().siblings().hide()
 	})
 
-	$('.nav-tabs').each(function(){
+	$('.nav-tabs').each(() => {
 		if (!$(this).find('li.active').length) {
 			$(this).find('li:first').addClass('active')
 		}

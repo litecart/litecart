@@ -402,7 +402,7 @@
 	$('form[name="filter_form"]').on('input', ':input', () => {
 		$('#tokens').html('')
 
-		$.each($('form[name="filter_form"] input[type="checkbox"]:checked, form[name="filter_form"] input[type="radio"]:checked'), function(i,el) {
+		$.each($('form[name="filter_form"] input[type="checkbox"]:checked, form[name="filter_form"] input[type="radio"]:checked'), (i,el) => {
 			if (!$(this).val()) return
 
 			var $token = $('<span class="token"></span>')
@@ -422,7 +422,7 @@
 
 	$('form[name="filter_form"] :input').first().trigger('input')
 
-	$('#tokens').on('click', '.remove', function(e){
+	$('#tokens').on('click', '.remove', (e) => {
 
 		e.preventDefault()
 		var token = $(this).closest('.token')
@@ -450,12 +450,12 @@
 
 	// Translator Tool
 
-	$('.data-table :checkbox').change(function() {
+	$('.data-table :checkbox').on('change', function() {
 		$('#actions').prop('disabled', !$('.data-table :checked').length)
 	}).first().trigger('change')
 
 
-	$('#translator-tool select').change(function(e){
+	$('#translator-tool select').on('change', (e) => {
 
 		var $modal = $(this).closest('.featherlight'),
 			from_language_code = $modal.find('select[name="from_language_code"]').val(),
@@ -464,7 +464,7 @@
 
 		if (!from_language_code || !to_language_code) return
 
-		$.each($(':input[name^="translations"][name$="[text_'+ from_language_code +']"]'), function(i){
+		$.each($(':input[name^="translations"][name$="[text_'+ from_language_code +']"]'), (i) => {
 			var source = $(this).val(),
 				translation = $(this).closest('tr').find(':input[name^="translations"][name$="[text_'+ to_language_code +']"]').val()
 
@@ -478,7 +478,7 @@
 		$modal.find(':input[name="source"]').val(translations).select()
 	})
 
-	$('#translator-tool :input[name="source"]').on('focus', function(e){
+	$('#translator-tool :input[name="source"]').on('focus', (e) => {
 		$(this).select()
 	})
 
@@ -493,7 +493,7 @@
 			return false
 		}
 
-		$.each(translated, function(i){
+		$.each(translated, (i) => {
 
 			var matches = translated[i].trim().match(/^\[([0-9]+)\] = (.*)$/),
 				index = matches[1],

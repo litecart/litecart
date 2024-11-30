@@ -342,7 +342,7 @@
 
 	// Image
 
-	$('input[name="image"]').change(function(e) {
+	$('input[name="image"]').on('change', (e) => {
 		if ($(this).val() != '') {
 			var oFReader = new FileReader()
 			oFReader.readAsDataURL(this.files[0])
@@ -356,7 +356,7 @@
 
 	// Head Title & H1 Title
 
-	$('input[name^="name"]').on('input', function(e){
+	$('input[name^="name"]').on('input', (e) => {
 		var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1]
 		$('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5)
 		$('input[name="name['+language_code+']"]').not(this).val($(this).val())
@@ -366,7 +366,7 @@
 
 	// Meta Description
 
-	$('input[name^="short_description"]').on('input', function(e){
+	$('input[name^="short_description"]').on('input', (e) => {
 		var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1]
 		$('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val())
 	}).trigger('input')
@@ -405,8 +405,8 @@
 		$('#tab-filters tbody').append(output)
 	})
 
-	$('#tab-filters').on('click', '.move-up, .move-down', function(event) {
-		event.preventDefault()
+	$('#tab-filters').on('click', '.move-up, .move-down', (e) => {
+		e.preventDefault()
 		var row = $(this).closest('tr')
 
 		if ($(this).is('.move-up') && $(row).prevAll().length) {

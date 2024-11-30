@@ -124,7 +124,7 @@
 </div>
 
 <script>
-	$('.data-table input[name^="currencies["]').change(function() {
+	$('.data-table input[name^="currencies["]').on('change', function() {
 		if ($('.data-table input[name^="currencies["]:checked').length > 0) {
 			$('fieldset').prop('disabled', false)
 		} else {

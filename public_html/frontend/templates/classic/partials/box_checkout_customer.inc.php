@@ -265,7 +265,7 @@
 
 	// Customer Form: Toggles
 
-	$('#box-checkout-customer input[name="different_shipping_address"]').change(function(e){
+	$('#box-checkout-customer input[name="different_shipping_address"]').on('change', (e) => {
 		if (this.checked == true) {
 			$('#box-checkout-customer .shipping-address fieldset').removeAttr('disabled').slideDown('fast')
 		} else {
@@ -273,7 +273,7 @@
 		}
 	})
 
-	$('#box-checkout-customer input[name="sign_up"]').change(function(){
+	$('#box-checkout-customer input[name="sign_up"]').on('change', () => {
 		if (this.checked == true) {
 			$('#box-checkout-customer .account fieldset').removeAttr('disabled').slideDown('fast')
 		} else {
@@ -283,7 +283,7 @@
 
 	// Customer Form: Get Address
 
-	$('#box-checkout-customer .billing-address :input').change(function(){
+	$('#box-checkout-customer .billing-address :input').on('change', () => {
 		if ($(this).val() == '') return
 		if (console) console.log('Get address (Trigger: '+ $(this).attr('name') +')')
 		$.ajax({
@@ -295,7 +295,7 @@
 			dataType: 'json',
 			success: (data) => {
 				if (data['alert']) alert(data['alert'])
-				$.each(data, function(key, value) {
+				$.each(data, (key, value) => {
 					if ($('.billing-address :input[name="billing_address['+key+']"]').length && $('.billing-address :input[name="billing_address['+key+']"]').val() == '') {
 						$('.billing-address :input[name="billing_address['+key+']"]').val(value)
 					}
@@ -306,7 +306,7 @@
 
 	// Customer Form: Fields
 
-	$('#box-checkout-customer select[name="billing_address[country_code]"]').change(function() {
+	$('#box-checkout-customer select[name="billing_address[country_code]"]').on('change', function() {
 
 		if ($(this).find('option:selected').data('tax-id-format')) {
 			$('input[name="billing_address[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
@@ -338,7 +338,7 @@
 				$('select[name="billing_address[zone_code]"]').html('')
 				if (data.length) {
 					$('select[name="billing_address[zone_code]"]').prop('disabled', false)
-					$.each(data, function(i, zone) {
+					$.each(data, (i, zone) => {
 						$('select[name="billing_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -349,7 +349,7 @@
 		<?php } ?>
 	})
 
-	$('#box-checkout-customer select[name="shipping_address[country_code]"]').change(function(){
+	$('#box-checkout-customer select[name="shipping_address[country_code]"]').on('change', () => {
 
 		if ($(this).find('option:selected').data('postcode-format')) {
 			$('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'))
@@ -375,7 +375,7 @@
 				$('select[name="shipping_address[zone_code]"]').html('')
 				if (data.length) {
 					$('select[name="shipping_address[zone_code]"]').prop('disabled', false)
-					$.each(data, function(i, zone) {
+					$.each(data, (i, zone) => {
 						$('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
