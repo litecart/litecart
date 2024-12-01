@@ -3,9 +3,9 @@
 <head>
 <title>{{title}}</title>
 <meta charset="{{charset}}">
-<link rel="stylesheet" href="<?php echo document::href_rlink('app://backend/template/css/variables.css'); ?>">
-<link rel="stylesheet" href="<?php echo document::href_rlink('app://backend/template/css/framework.min.css'); ?>">
-<link rel="stylesheet" href="<?php echo document::href_rlink('app://backend/template/css/printable.min.css'); ?>">
+<?php echo functions::draw_style('app://backend/template/css/variables.css'); ?>
+<?php echo functions::draw_style('app://backend/template/css/framework.min.css'); ?>
+<?php echo functions::draw_style('app://backend/template/css/printable.min.css'); ?>
 {{head_tags}}
 {{style}}
 </head>

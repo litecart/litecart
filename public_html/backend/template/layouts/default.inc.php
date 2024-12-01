@@ -5,9 +5,9 @@
 <meta charset="{{charset}}">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=1600">
-<link rel="stylesheet" href="<?php echo document::href_rlink('app://backend/template/css/variables.css'); ?>">
-<link rel="stylesheet" href="<?php echo document::href_rlink('app://backend/template/css/framework.min.css'); ?>">
-<link rel="stylesheet" href="<?php echo document::href_rlink('app://backend/template/css/app.min.css'); ?>">
+<?php echo functions::draw_style('app://backend/template/css/variables.css'); ?>
+<?php echo functions::draw_style('app://backend/template/css/framework.min.css'); ?>
+<?php echo functions::draw_style('app://backend/template/css/app.min.css'); ?>
 {{head_tags}}
 {{style}}
 <style>
@@ -146,7 +146,7 @@
 </div>
 
 {{foot_tags}}
-<script src="<?php echo document::href_rlink('app://backend/template/js/app.min.js'); ?>"></script>
+<?php echo functions::draw_script('app://backend/template/js/app.min.js'); ?>
 
 <script>
 	$('button[name="font_size"]').on('click', function() {

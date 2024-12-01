@@ -5,10 +5,10 @@
 <meta charset="{{charset}}">
 <meta name="description" content="{{description}}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/css/variables.css'); ?>">
-<link rel="stylesheet" href="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/css/framework.min.css'); ?>">
-<link rel="stylesheet" href="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/css/app.min.css'); ?>">
-<link rel="stylesheet" href="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/css/checkout.min.css'); ?>">
+<?php echo functions::draw_style('app://frontend/templates/'.settings::get('template').'/css/variables.css'); ?>
+<?php echo functions::draw_style('app://frontend/templates/'.settings::get('template').'/css/framework.min.css'); ?>
+<?php echo functions::draw_style('app://frontend/templates/'.settings::get('template').'/css/app.min.css'); ?>
+<?php echo functions::draw_style('app://frontend/templates/'.settings::get('template').'/css/checkout.min.css'); ?>
 {{head_tags}}
 </head>
 <body>
@@ -16,6 +16,6 @@
 {{content}}
 
 {{foot_tags}}
-<script src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template').'/js/app.min.js'); ?>"></script>
+<?php echo functions::draw_sscript('app://frontend/templates/'.settings::get('template').'/js/app.min.js'); ?>
 </body>
 </html>
