@@ -73,6 +73,7 @@
       "o.uid = '". database::input($_GET['query']) ."'",
       "o.reference like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
       "o.customer_email like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.customer_phone like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
       "o.customer_tax_id like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
       "concat(o.customer_company, '\\n', o.customer_firstname, ' ', o.customer_lastname, '\\n', o.customer_address1, '\\n', o.customer_address2, '\\n', o.customer_postcode, '\\n', o.customer_city) like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
       "concat(o.shipping_company, '\\n', o.shipping_firstname, ' ', o.shipping_lastname, '\\n', o.shipping_address1, '\\n', o.shipping_address2, '\\n', o.shipping_postcode, '\\n', o.shipping_city) like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",

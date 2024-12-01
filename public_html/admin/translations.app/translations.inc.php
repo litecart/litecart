@@ -14,7 +14,7 @@
 
   breadcrumbs::add(language::translate('title_translations', 'Translations'));
 
-  $collections = include __DIR__.'/collections.inc.php';
+  $collections = include FS_DIR_ADMIN . 'translations.app/collections.inc.php';
 
   if (isset($_POST['save'])) {
     try {
@@ -34,7 +34,9 @@
         if ($translation['entity'] == 'translation') {
           database::query(
             "update ". DB_TABLE_PREFIX ."translations
-            set ". implode(', ' . PHP_EOL, array_map(function($language_code) use($translation) { return "text_$language_code = '". database::input($translation['text_'.$language_code], !empty($translation['html'])) ."'"; }, $_GET['languages'])) .",
+            set ". implode(', ' . PHP_EOL, array_map(function($language_code) use($translation) {
+                return "text_$language_code = '". database::input($translation['text_'.$language_code], !empty($translation['html'])) ."'";
+              }, $_GET['languages'])) .",
               html = ". (!empty($translation['html']) ? 1 : 0) ."
             where code = '". database::input($translation['code']) ."'
             limit 1;"

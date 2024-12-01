@@ -10,9 +10,28 @@
     }
 
     public static function after_capture() {
-      if (($page_parse_time = microtime(true) - SCRIPT_TIMESTAMP_START) > 5) {
-        notices::add('warnings', sprintf(language::translate('text_long_execution_time', 'We apologize for the inconvenience that the server seems temporary overloaded right now.'), number_format($page_parse_time, 1, ',', ' ')));
-        error_log('Warning: Long page execution time '. number_format($page_parse_time, 3, ',', ' ') .' s - '. $_SERVER['REQUEST_URI']);
+
+      if (($page_parse_time = microtime(true) - SCRIPT_TIMESTAMP_START) > 10) {
+        if (!empty(route::$selected['resource']) && route::$selected['resource'] != 'push_jobs') {
+
+          $output = ['Long execution time 10+ seconds'];
+
+          if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
+            $output[] = 'Command: '. implode(' ', $GLOBALS['argv']);
+          } else {
+            $output = array_merge($output, array_filter([
+            'Request: '. $_SERVER['REQUEST_METHOD'] .' '. $_SERVER['REQUEST_URI'] .' '. $_SERVER['SERVER_PROTOCOL'],
+            'Host: '. $_SERVER['HTTP_HOST'],
+            'Client: '. $_SERVER['REMOTE_ADDR'] .' ('. gethostbyaddr($_SERVER['REMOTE_ADDR']) .')',
+            'User Agent: '. $_SERVER['HTTP_USER_AGENT'],
+            !empty($_SERVER['HTTP_REFERER']) ? 'Referer: '. $_SERVER['HTTP_REFERER'] : '',
+            ]));
+          }
+
+          $output[] = 'Elapsed Time: '. number_format((microtime(true) - SCRIPT_TIMESTAMP_START) * 1000, 0, '.', ' ') .' ms';
+
+          error_log(implode(PHP_EOL, $output) . PHP_EOL);
+        }
       }
     }
 

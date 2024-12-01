@@ -32,6 +32,6 @@
     notices::add('errors', $e->getMessage());
   }
 
-	header('Content-Type: application/json');
-	echo json_encode($tax_rates);
-	exit;
+  header('Content-Type: application/json');
+  echo json_encode($tax_rates);
+  exit;

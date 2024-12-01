@@ -169,7 +169,18 @@
     $currency = currency::$currencies[$currency_code];
 
     if ($value != '') {
-      if (strlen(substr(strrchr($value, '.'), 1)) < $currency['decimals']) {
+
+      // Circumvent floating point precision problem if differing by one 10th of the smallest fraction
+
+      $fractions = strpos($value, '.') ? strlen(substr(strrchr($value, '.'), 1)) : 0;
+      $absdiff = abs((float)$value - round((float)$value, 2));
+      $offset = (1 / pow(10, $currency['decimals']+1));
+
+      if ($fractions < $currency['decimals']) {
+        $value = number_format((float)$value, $currency['decimals'], '.', '');
+      } else if ($absdiff > $offset) {
+        $value = number_format((float)$value, $currency['decimals']+2, '.', '');
+      } else {
         $value = number_format((float)$value, $currency['decimals'], '.', '');
       }
     }
@@ -239,8 +250,19 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     if ($value != '') {
-      if (strlen(substr(strrchr($value, '.'), 1)) < $decimals) {
-        $value = number_format((float)$value, (int)$decimals, '.', '');
+
+      // Circumvent floating point precision problem if differing by one 10th of the smallest fraction
+
+      $fractions = strpos($value, '.') ? strlen(substr(strrchr($value, '.'), 1)) : 0;
+      $absdiff = abs((float)$value - round((float)$value, 2));
+      $offset = (1 / pow(10, $decimals+1));
+
+      if ($fractions < $decimals) {
+        $value = number_format((float)$value, $decimals, '.', '');
+      } else if ($absdiff > $offset) {
+        $value = number_format((float)$value, $decimals+2, '.', '');
+      } else {
+        $value = number_format((float)$value, $decimals, '.', '');
       }
     }
 

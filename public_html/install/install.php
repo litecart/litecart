@@ -3,7 +3,7 @@
   if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
     if (!isset($argv[1]) || $argv[1] == 'help' || $argv[1] == '-h' || $argv[1] == '--help' || $argv[1] == '/?') {
-      echo "\nLiteCart® 2.6.0\n"
+      echo "\nLiteCart® 2.6.1\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -139,7 +139,7 @@
 
     ### Environment > Set #########################################
 
-    error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
+    error_reporting(E_ALL);
     ini_set('ignore_repeated_errors', 'Off');
     ini_set('log_errors', 'Off');
     ini_set('display_errors', 'On');
@@ -683,10 +683,10 @@
     echo PHP_EOL . '<h2>Complete</h2>' . PHP_EOL
        . '<p>Installation complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL . PHP_EOL
        . '<p>You may now log in to the <a href="../'. $_REQUEST['admin_folder'] .'/">admin panel</a> and start configuring your store.</p>' . PHP_EOL . PHP_EOL
-       . '<p>Check out the <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> website for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>' . PHP_EOL . PHP_EOL;
+       . '<p>Check out the <a href="https://www.litecart.net/wiki/" target="_blank">LiteCart Wiki</a> website for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>' . PHP_EOL . PHP_EOL;
 
     if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
-      echo '<form method="get" action="http://twitter.com/intent/tweet" target="_blank">' . PHP_EOL
+      echo '<form method="get" action="https://twitter.com/intent/tweet" target="_blank">' . PHP_EOL
          . '  <input type="hidden" value="https://www.litecart.net/">' . PHP_EOL
          . '  <div class="form-group">' . PHP_EOL
          . '    <div class="input-group">' . PHP_EOL

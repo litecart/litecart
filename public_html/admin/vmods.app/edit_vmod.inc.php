@@ -1,7 +1,15 @@
 <?php
 
-  if (!empty($_GET['vmod'])) {
-    $vmod = new ent_vmod($_GET['vmod']);
+  if (!empty($_GET['vmod_id'])) {
+
+    if (!is_file($file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod_id']) . '.xml')) {
+      if (!is_file($file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod_id']) . '.disabled')) {
+        throw new Exception(language::translate('error_file_not_found', 'The file could not be found'));
+      }
+    }
+
+    $vmod = new ent_vmod($file);
+
   } else {
     $vmod = new ent_vmod();
   }
@@ -51,7 +59,7 @@
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 
       if (isset($_POST['quicksave'])) {
-        header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'edit_vmod', 'vmod' => $vmod->data['filename']], ['app']));
+        header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'edit_vmod', 'vmod_id' => $vmod->data['id']], ['app']));
       } else {
         header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
       }
@@ -71,22 +79,55 @@
         throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vmod'));
       }
 
-      if (!empty($_POST['cleanup'])) {
-
-        if (!$vmods_settings = @json_decode(file_get_contents(FS_DIR_STORAGE . 'vmods/' . '.settings'), true)) {
-          $vmods_settings = [];
+    // Load installed
+      foreach (file(FS_DIR_STORAGE .'vmods/.installed', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+        list($id, $version) = preg_split('#;#', trim($line));
+        if (!isset($_installed[$id]) || version_compare($version, $installed[$id], '>')) {
+          $installed[$id] = $version;
         }
-
-        if (isset($vmods_settings[$vmod->data['id']])) {
-          unset($vmods_settings[$vmod->data['id']]);
-          file_put_contents(FS_DIR_STORAGE . 'vmods/' . '.settings', json_encode($vmods_settings, JSON_UNESCAPED_SLASHES), LOCK_EX);
-        }
-
-        $vmod->delete(true);
-
-      } else {
-        $vmod->delete();
       }
+
+    // If vmod is installed
+      if (isset($installed[$vmod->data['id']])) {
+
+        if (!empty($_POST['cleanup'])) {
+
+          unset($installed[$vmod->data['id']]);
+
+        // Remove settings
+          if (!$settings = @json_decode(file_get_contents(FS_DIR_STORAGE . 'vmods/' . '.settings'), true)) {
+            $settings = [];
+          }
+
+          if (isset($settings[$vmod->data['id']])) {
+            unset($settings[$vmod->data['id']]);
+            file_put_contents(FS_DIR_STORAGE . 'vmods/' . '.settings', json_encode($settings, JSON_UNESCAPED_SLASHES), LOCK_EX);
+          }
+
+        // Run uninstall commands
+          if (!empty($vmod->previous['uninstall'])) {
+
+            $tmp_file = stream_get_meta_data(tmpfile())['uri'];
+            file_put_contents($tmp_file, "<?php\r\n" . $vmod->previous['uninstall']);
+
+            (function() {
+              include func_get_arg(0);
+            })($tmp_file);
+          }
+
+        // Update installed file
+          ksort($installed);
+
+          $new_contents = implode(PHP_EOL, array_map(function($id, $version){
+            return $id .';'. $version;
+          }, array_keys($installed), $installed));
+
+          file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
+        }
+      }
+
+    // Delete add-on
+      $vmod->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));

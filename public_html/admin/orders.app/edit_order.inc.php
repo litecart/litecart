@@ -135,7 +135,7 @@
       if (!empty($_POST['send_order_copy'])) {
 
         $bccs = [];
-        foreach (preg_split('#[\s;,]+#', settings::get('send_order_copy'), -1, PREG_SPLIT_NO_EMPTY) as $email) {
+        foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy'), -1, PREG_SPLIT_NO_EMPTY) as $email) {
           $bccs[] = $email;
         }
 

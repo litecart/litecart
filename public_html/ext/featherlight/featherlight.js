@@ -72,11 +72,11 @@
 			var eventMap = {keyup: 'onKeyUp', resize: 'onResize'};
 			var events = $.map(eventMap, function(_, name) { return name+'.'+Featherlight.prototype.namespace; } ).join(' ');
 
-			$(window)[newState ? 'on' : 'off'](events, function(event) {
+			$(window)[newState ? 'on' : 'off'](events, function(e) {
 				$.each(Featherlight.opened().reverse(), function() {
-					if (!event.isDefaultPrevented()) {
-						if (this[eventMap[event.type]](event) === false) {
-							event.preventDefault(); event.stopPropagation(); return false;
+					if (!e.isDefaultPrevented()) {
+						if (this[eventMap[e.type]](e) === false) {
+							e.preventDefault(); e.stopPropagation(); return false;
 						}
 					}
 				});
@@ -136,16 +136,16 @@
 			].join(''));
 
 			/* close when click on backdrop/anywhere/null or closebox */
-			self.$instance.on('click.'+self.namespace, function(event) {
-				if (event.isDefaultPrevented()) {
+			self.$instance.on('click.'+self.namespace, function(e) {
+				if (e.isDefaultPrevented()) {
 					return;
 				}
 				switch (true) {
-					case (self.closeOnClick === 'backdrop' && $(event.target).is('.'+self.namespace)):
+					case (self.closeOnClick === 'backdrop' && $(e.target).is('.'+self.namespace)):
 					case (self.closeOnClick === 'anywhere'):
-					case ($(event.target).is('.'+self.namespace+'-close' + (self.otherClose ? ',' + self.otherClose : ''))):
-					self.close(event);
-					event.preventDefault();
+					case ($(e.target).is('.'+self.namespace+'-close' + (self.otherClose ? ',' + self.otherClose : ''))):
+					self.close(e);
+					e.preventDefault();
 					break;
 				}
 			});
@@ -235,10 +235,10 @@
 
 		/* opens the lightbox. "this" contains $instance with the lightbox, and with the config.
 			Returns a promise that is resolved after is successfully opened. */
-		open: function(event){
+		open: function(e){
 			var self = this;
 
-			if (event && (event.ctrlKey || event.shiftKey)) {
+			if (e && (e.ctrlKey || e.shiftKey)) {
 				return false;
 			}
 
@@ -248,15 +248,15 @@
 
 			self.$instance.hide().appendTo('body');
 
-			if ((!event || !event.isDefaultPrevented()) && self.beforeOpen(event) !== false) {
+			if ((!e || !e.isDefaultPrevented()) && self.beforeOpen(e) !== false) {
 
 				$('body').addClass('featherlight-open');
 
 				$('.featherlight').removeClass('active');
 				self.$instance.addClass('active');
 
-				if (event){
-					event.preventDefault();
+				if (e){
+					e.preventDefault();
 				}
 				var $content = self.getContent();
 
@@ -266,7 +266,7 @@
 					toggleGlobalEvents(true);
 
 					self.$instance.show();
-					self.beforeContent(event);
+					self.beforeContent(e);
 
 					/* Set content and show */
 					return $.when($content)
@@ -284,11 +284,11 @@
 							if (self.maxHeight) {
 								self.$content.parent().css('max-height', self.maxHeight);
 							}
-							self.afterContent(event);
+							self.afterContent(e);
 						})
 						.then(self.$instance.promise())
 						/* Call afterOpen after show() is done */
-						.done(function(){ self.afterOpen(event); });
+						.done(function(){ self.afterOpen(e); });
 				}
 			}
 			self.$instance.detach();
@@ -297,11 +297,11 @@
 
 		/* closes the lightbox. "this" contains $instance with the lightbox, and with the config
 			returns a promise, resolved after the lightbox is successfully closed. */
-		close: function(event){
+		close: function(e){
 			var self = this,
 				deferred = $.Deferred();
 
-			if (self.beforeClose(event) === false) {
+			if (self.beforeClose(e) === false) {
 				deferred.reject();
 			} else {
 
@@ -310,7 +310,7 @@
 				}
 
 				self.$instance.hide().detach();
-				self.afterClose(event);
+				self.afterClose(e);
 				deferred.resolve();
 
 				$('.featherlight:not(.active)').filter(':last').addClass('active');
@@ -326,7 +326,7 @@
 		   [Warning: guru-level]
 		   Used be extensions that want to let users specify callbacks but
 		   also need themselves to use the callbacks.
-		   The argument 'chain' has callback names as keys and function(super, event)
+		   The argument 'chain' has callback names as keys and function(super, e)
 		   as values. That function is meant to call `super` at some point.
 		*/
 		chainCallbacks: function(chain) {
@@ -374,7 +374,7 @@
 
 			ajax: {
 				regex: /./,            /* At this point, any content is assumed to be an URL */
-				process: function(url)  {
+				process: function(url) {
 					var self = this,
 						deferred = $.Deferred();
 					/* we are using load so one can specify a target with: url.html #targetelement */
@@ -459,8 +459,8 @@
 				tempConfig = $.extend({}, self.defaults, self.readElementConfig($source[0]), config),
 				sharedPersist;
 
-			var handler = function(event) {
-				var $target = $(event.currentTarget);
+			var handler = function(e) {
+				var $target = $(e.currentTarget);
 				/* ... since we might as well compute the config on the actual target */
 				var elementConfig = $.extend(
 					{$source: $source, $currentTarget: $target},
@@ -476,7 +476,7 @@
 				if (elementConfig.$currentTarget.blur) {
 					elementConfig.$currentTarget.blur(); // Otherwise 'enter' key might trigger the dialog again
 				}
-				fl.open(event);
+				fl.open(e);
 			};
 
 			$source.on(tempConfig.openTrigger+'.'+tempConfig.namespace, tempConfig.filter, handler);
@@ -495,9 +495,9 @@
 			return $.grep(opened, function(fl) { return fl instanceof self; } );
 		},
 
-		close: function(event) {
+		close: function(e) {
 			var cur = this.current();
-			if (cur) { return cur.close(event); }
+			if (cur) { return cur.close(e); }
 		},
 
 		/* Does the auto binding on startup.
@@ -512,11 +512,11 @@
 					self.attach($(this));
 				});
 				/* If a click propagates to the document level, then we have an item that was added later on */
-				$(document).on('click', self.autoBind, function(event) {
-					if (event.isDefaultPrevented()) {
+				$(document).on('click', self.autoBind, function(e) {
+					if (e.isDefaultPrevented()) {
 						return;
 					}
-					var $cur = $(event.currentTarget);
+					var $cur = $(e.currentTarget);
 					var len = $autobound.length;
 					$autobound = $autobound.add($cur);
 					if(len === $autobound.length) {
@@ -525,8 +525,8 @@
 					/* Bind featherlight */
 					var data = self.attach($cur);
 					/* Dispatch event directly */
-					if (!data.filter || $(event.target).parentsUntil($cur, data.filter).length > 0) {
-						data.handler(event);
+					if (!data.filter || $(e.target).parentsUntil($cur, data.filter).length > 0) {
+						data.handler(e);
 					}
 				});
 			}
@@ -536,19 +536,19 @@
 		   Private to Featherlight.
 		*/
 		_callbackChain: {
-			onKeyUp: function(_super, event){
+			onKeyUp: function(_super, e){
 
-				switch (event.keyCode) {
+				switch (e.keyCode) {
 					case 27:
 					if (this.closeOnEsc) {
-						$.featherlight.close(event);
+						$.featherlight.close(e);
 					}
 					return false;
 				}
-					return _super(event);
+					return _super(e);
 			},
 
-			beforeOpen: function(_super, event) {
+			beforeOpen: function(_super, e) {
 
 				// Remember focus:
 				this._previouslyActive = document.activeElement;
@@ -570,20 +570,20 @@
 					document.activeElement.blur();
 				}
 
-				return _super(event);
+				return _super(e);
 			},
 
-			onResize: function(_super, event){
-				return _super(event);
+			onResize: function(_super, e){
+				return _super(e);
 			},
 
-			afterContent: function(_super, event){
+			afterContent: function(_super, e){
 				this.$instance.find('[autofocus]:not([disabled])').focus();
-				this.onResize(event);
-				return _super(event);
+				this.onResize(e);
+				return _super(e);
 			},
 
-			afterClose: function(_super, event) {
+			afterClose: function(_super, e) {
 
 				var self = this;
 
@@ -594,7 +594,7 @@
 				});
 
 				this._previouslyActive.focus();
-				return _super(event);
+				return _super(e);
 			}
 		}
 	});

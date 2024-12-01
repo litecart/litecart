@@ -60,11 +60,11 @@
         throw new Exception('Could not find email (ID: '. (int)$email_id .') in database.');
       }
 
-      $this->data['sender'] = json_decode($email['sender'], true);
-      $this->data['recipients'] = json_decode($email['recipients'], true);
-      $this->data['ccs'] = json_decode($email['ccs'], true);
-      $this->data['bccs'] = json_decode($email['bccs'], true);
-      $this->data['multiparts'] = json_decode($email['multiparts'], true);
+      $this->data['sender'] = $email['sender'] ? json_decode($email['sender'], true) : [];
+      $this->data['recipients'] = $email['recipients'] ? json_decode($email['recipients'], true) : [];
+      $this->data['ccs'] = $email['ccs'] ? json_decode($email['ccs'], true) : [];
+      $this->data['bccs'] = $email['bccs'] ? json_decode($email['bccs'], true) : [];
+      $this->data['multiparts'] = $email['multiparts'] ? json_decode($email['multiparts'], true) : [];
 
       $this->previous = $this->data;
 
@@ -272,6 +272,13 @@
         return false;
       }
 
+      if (!$this->data['multiparts']) {
+        trigger_error('Cannot send email with an empty body', E_USER_WARNING);
+        $this->data['status'] = 'error';
+        $this->save();
+        return false;
+      }
+
     // Prepare headers
       $headers = [
         'Date' => date('r'),
@@ -328,11 +335,6 @@
       } else {
         $headers = array_merge($headers, $this->data['multiparts'][0]['headers']);
         $body .= $this->data['multiparts'][0]['body'];
-      }
-
-      if (empty($body)) {
-        trigger_error('Cannot send email with an empty body', E_USER_WARNING);
-        return false;
       }
 
     // Deliver via SMTP

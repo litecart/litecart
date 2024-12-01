@@ -9,7 +9,7 @@
   if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
     if (!isset($argv[1]) || $argv[1] == 'help' || $argv[1] == '-h' || $argv[1] == '--help' || $argv[1] == '/?') {
-      echo "\nLiteCart® 2.6.0\n"
+      echo "\nLiteCart® 2.6.1\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -54,7 +54,7 @@
   if (!defined('WS_DIR_APP')) define('WS_DIR_APP', WS_DIR_HTTP_HOME); // Prior to 2.2.x
   if (!defined('WS_DIR_STORAGE')) define('WS_DIR_STORAGE', WS_DIR_APP); // Prior to 2.5.x
 
-  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
+  error_reporting(E_ALL);
   ini_set('ignore_repeated_errors', 'On');
   ini_set('log_errors', 'Off');
   ini_set('display_errors', 'On');

@@ -12,23 +12,22 @@
 
     public function process($force, $last_run) {
 
-    // Abort if no log file is set
-      if (!$log_file = ini_get('error_log')) return;
+    // Abort if log file is not set or missing
+      if (!$log_file = ini_get('error_log') || !is_file($log_file)) {
+        return;
+      }
 
       if (empty($force)) {
 
-      // Abort if log file is missing
-        if (!is_file($log_file)) return;
-
-      // Make sure this is not an urgent matter of a huge log file (100+ MB)
-        if (filesize($log_file) > 100e6) {
-
-        // Truncate a disastrous log file over 1 GB
-        if (filesize($log_file) > 1024e6) {
+        // Truncate a large log file over 512 MB
+        if (filesize($log_file) > 512e6) {
           file_put_contents($log_file, '');
-          trigger_error('Truncating a disastrous log a file over 1 GBytes', E_USER_WARNING);
+          trigger_error('Truncating a large log file over 512 MBytes', E_USER_WARNING);
           return;
         }
+
+      // Make sure this is NOT an urgent matter of a huge log file (100+ MB)
+        if (filesize($log_file) < 100e6) {
 
         // Abort if disabled
           if (empty($this->settings['status'])) return;
@@ -61,7 +60,7 @@
         }
       }
 
-    // Disable RAM memory limit usage (in case we are dealing with some major big)
+    // Disable RAM memory limit usage (in case we are dealing with something major big)
       ini_set('memory_limit', -1);
 
       if (!$contents = file_get_contents($log_file)) return;
@@ -79,6 +78,7 @@
             'error' => $matches[2][$i],
             'backtrace' => trim($matches[3][$i], "\n"),
             'last_occurrence' => $matches[1][$i],
+            'critical' => preg_match('#(Parse|Fatal) error:#s', $matches[2][$i]) ? true : false,
           ];
 
           if (isset($occurrences[$checksum])) {
@@ -88,6 +88,20 @@
           }
         }
       }
+
+      uasort($errors, function($a, $b) {
+
+        if ($a['critical'] == $b['critical']) {
+
+          if ($a['occurrences'] == $b['occurrences']) {
+            return ($a['last_occurrence'] > $b['last_occurrence']) ? -1 : 1;
+          }
+
+          return ($a['occurrences'] > $b['occurrences']) ? -1 : 1;
+        }
+
+        return ($a['critical'] > $b['critical']) ? -1 : 1;
+      });
 
       $buffer = '';
       foreach ($errors as $checksum => $error) {
@@ -134,7 +148,7 @@
         [
           'key' => 'frequency',
           'default_value' => 'Weekly',
-          'title' => language::translate(__CLASS__.':title_frequency', 'Report Frequency'),
+          'title' => language::translate(__CLASS__.':title_frequency', 'Frequency'),
           'description' => language::translate(__CLASS__.':description_frequency', 'How often the reports should be sent.'),
           'function' => 'radio("Hourly","Daily","Weekly","Monthly")',
         ],

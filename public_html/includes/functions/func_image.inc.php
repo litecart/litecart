@@ -83,8 +83,8 @@
           $filename = implode([
             sha1(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)))),
             $options['trim'] ? '_t' : '',
-            ($options['width'] && $options['height']) ? '_'.(int)$options['width'] .'x'. (int)$options['height'] : '',
-            ($options['width'] && $options['height']) ? $clipping_filename_flag : '',
+            ($options['width'] || $options['height']) ? '_'.(int)$options['width'] .'x'. (int)$options['height'] : '',
+            ($options['width'] || $options['height']) ? $clipping_filename_flag : '',
             $options['watermark'] ? '_wm' : '',
             settings::get('image_thumbnail_interlaced') ? '_i' : '',
             '.'.$extension,

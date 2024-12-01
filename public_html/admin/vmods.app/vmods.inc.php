@@ -11,11 +11,11 @@
       foreach ($_POST['vmods'] as $vmod) {
 
         if (!empty($_POST['enable'])) {
-          if (!is_file(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled')) continue;
-          rename(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled', FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml');
+          if (!is_file(FS_DIR_STORAGE . 'vmods/' . basename($vmod) .'.disabled')) continue;
+          rename(FS_DIR_STORAGE . 'vmods/' . basename($vmod) .'.disabled', FS_DIR_STORAGE . 'vmods/' . basename($vmod) .'.xml');
         } else {
-          if (!is_file(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml')) continue;
-          rename(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml', FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled');
+          if (!is_file(FS_DIR_STORAGE . 'vmods/' . basename($vmod) .'.xml')) continue;
+          rename(FS_DIR_STORAGE . 'vmods/' . basename($vmod) .'.xml', FS_DIR_STORAGE . 'vmods/' . basename($vmod) .'.disabled');
         }
       }
 
@@ -92,28 +92,29 @@
 
   foreach (glob(FS_DIR_STORAGE . 'vmods/*.{xml,disabled}', GLOB_BRACE) as $file) {
 
-		$dom = new \DOMDocument('1.0', 'UTF-8');
-		$dom->preserveWhiteSpace = false;
+    $dom = new \DOMDocument('1.0', 'UTF-8');
+    $dom->preserveWhiteSpace = false;
 
-		if (!$dom->loadXml(file_get_contents($file))) {
-			throw new Exception(libxml_get_last_error());
-		}
+    if (!$dom->loadXml(file_get_contents($file))) {
+      throw new Exception(libxml_get_last_error());
+    }
 
-		switch ($dom->documentElement->tagName) {
+    switch ($dom->documentElement->tagName) {
 
-			case 'vmod': // vMod
-				$vmod = vmod::parse_vmod($dom, $file);
-				break;
+      case 'vmod': // vMod
+        $vmod = vmod::parse_vmod($dom, $file);
+        break;
 
-			case 'modification': // vQmod
-				$vmod = vmod::parse_vqmod($dom, $file);
-				break;
+      case 'modification': // vQmod
+        $vmod = vmod::parse_vqmod($dom, $file);
+        break;
 
-			default:
-				throw new Exception("File ($file) is not a valid vmod or vQmod");
-		}
+      default:
+        throw new Exception("File ($file) is not a valid vmod or vQmod");
+    }
 
-		$vmod = array_merge($vmod, [
+    $vmod = array_merge($vmod, [
+      'id' => pathinfo($file, PATHINFO_FILENAME),
       'filename' => pathinfo($file, PATHINFO_BASENAME),
       'status' => preg_match('#\.xml$#', $file) ? true : false,
       'errors' => null,
@@ -123,7 +124,7 @@
       $vmod['version'] = date('Y-m-d', filemtime($file));
     }
 
-	// Check for errors
+  // Check for errors
     try {
 
       foreach (array_keys($vmod['files']) as $key) {
@@ -138,8 +139,10 @@
 
             if (!$found) {
               switch ($operation['onerror']) {
+
                 case 'ignore':
                   continue 2;
+
                 case 'abort':
                 case 'warning':
                 default:
@@ -175,7 +178,7 @@
       $vmod['errors'] = $e->getMessage();
     }
 
-		$vmods[] = $vmod;
+    $vmods[] = $vmod;
   }
 
 // Number of Rows
@@ -217,13 +220,13 @@
         <tr class="<?php echo $vmod['status'] ? null : 'semi-transparent'; ?>">
           <td><?php echo functions::form_draw_checkbox('vmods[]', $vmod['filename']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($vmod['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
-          <td><a class="link" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'edit_vmod', 'vmod' => $vmod['filename']], ['app']); ?>"><?php echo $vmod['name']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'edit_vmod', 'vmod_id' => $vmod['id']], ['app']); ?>"><?php echo $vmod['name']; ?></a></td>
           <td class="text-center"><?php echo $vmod['version']; ?></td>
           <td><?php echo $vmod['filename']; ?></td>
           <td><?php echo $vmod['author']; ?></td>
           <td class="text-center"><?php echo $vmod['type']; ?></td>
           <td class="text-center">
-            <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'test', 'vmod' => $vmod['filename']], ['app']); ?>">
+            <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'test', 'vmod_id' => $vmod['id']], ['app']); ?>">
               <?php if (empty($vmod['errors'])) { ?>
               <span style="color: #8c4"><?php echo functions::draw_fonticon('ok'); ?> <?php echo language::translate('title_ok', 'OK'); ?></span>
               <?php } else { ?>
@@ -231,10 +234,10 @@
               <?php } ?>
             </a>
           </td>
-          <td><?php if (!empty($vmod['settings'])) { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'configure', 'vmod' => $vmod['filename']], ['app']); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?> <?php echo language::translate('title_configure', 'Configure'); ?></a><?php } ?></td>
+          <td><?php if (!empty($vmod['settings'])) { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'configure', 'vmod_id' => $vmod['id']], ['app']); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?> <?php echo language::translate('title_configure', 'Configure'); ?></a><?php } ?></td>
           <td>
-            <a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'download', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo functions::escape_html(language::translate('title_download', 'Download')); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a>
-            <a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'edit_vmod', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
+            <a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'download', 'vmod_id' => $vmod['id']], ['app']); ?>" title="<?php echo functions::escape_html(language::translate('title_download', 'Download')); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a>
+            <a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'edit_vmod', 'vmod_id' => $vmod['id']], ['app']); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
           </td>
         </tr>
         <?php } ?>

@@ -123,41 +123,6 @@
 
       if (!empty(self::$route) && is_file($page)) {
         include vmod::check($page);
-
-      } else {
-        $request = new ent_link(document::link());
-
-        http_response_code(404);
-
-      // Don't return an error page for content with a defined extension (presumably static)
-        if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html?|php)$#', $request->path)) exit;
-
-        $not_found_file = FS_DIR_STORAGE . 'logs/not_found.log';
-
-        $lines = is_file($not_found_file) ? file($not_found_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : [];
-        $lines[] = $request->path;
-        $lines = array_unique($lines);
-
-        sort($lines);
-
-        if (count($lines) >= 500) {
-          $email = new ent_email();
-          $email->add_recipient(settings::get('store_email'))
-                ->set_subject('[Not Found Report] '. settings::get('store_name'))
-                ->add_body(
-                  wordwrap("This is a list of the last 500 requests made to your website that did not have a destination. Most of these reports usually contain scans and attacks by malicious robots. But some URLs may be indexed by search engines requiring a redirect to a proper destination.", 150, "\r\n") . "\r\n\r\n" .
-                  PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n" .
-                  implode("\r\n", $lines)
-                )
-                ->send();
-          file_put_contents($not_found_file, '');
-        } else {
-          file_put_contents($not_found_file, implode(PHP_EOL, $lines) . PHP_EOL);
-        }
-
-        include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
-        include vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
-        exit;
       }
     }
 

@@ -754,11 +754,11 @@
     public function write($destination, $quality=90, $interlaced=false) {
 
       if (is_file($destination)) {
-        throw new Exception('Destination already exists ('. $destination .')');
+        throw new Exception('Destination already exists');
       }
 
       if (is_dir($destination)) {
-        throw new Exception('Destination is a folder: ('. $destination .')');
+        throw new Exception('Destination is a folder');
       }
 
       if (!is_writable(pathinfo($destination, PATHINFO_DIRNAME))) {

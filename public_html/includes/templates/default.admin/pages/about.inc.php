@@ -22,16 +22,32 @@
 #box-about meter {
   width: 500px;
 }
+#box-error-log tr.critical {
+  background: #c002;
+}
 #box-error-log td {
   white-space: wrap !important;
   cursor: default;
 }
+#box-error-log td {
+  vertical-align: top;
+}
 </style>
 
 <nav class="nav nav-tabs">
-    <a class="nav-link active" data-toggle="tab" href="#tab-system"><?php echo language::translate('title_system', 'System'); ?></a>
-    <a class="nav-link" data-toggle="tab" href="#tab-errors"><?php echo language::translate('title_error_log', 'Error Log'); ?></a>
-    <a class="nav-link" data-toggle="tab" href="#tab-logs"><?php echo language::translate('title_error_logs', 'Logs'); ?></a>
+
+    <a class="nav-link active" data-toggle="tab" href="#tab-system">
+      <?php echo language::translate('title_system', 'System'); ?>
+    </a>
+
+    <a class="nav-link" data-toggle="tab" href="#tab-errors">
+      <?php echo language::translate('title_error_log', 'Error Log'); ?>
+    </a>
+
+    <a class="nav-link" data-toggle="tab" href="#tab-logs">
+      <?php echo language::translate('title_error_logs', 'Logs'); ?>
+    </a>
+
   </nav>
 
   <div class="tab-content">
@@ -226,7 +242,7 @@
 
             <tbody>
               <?php foreach ($errors as $error) { ?>
-              <tr>
+              <tr<?php echo $error['critical'] ? ' class="critical"' : ''; ?>>
                 <td><?php echo functions::form_draw_checkbox('errors[]', $error['error'], !empty($_POST['parse']) ? 'disabled' : ''); ?></td>
                 <td style="white-space: normal;"><?php echo functions::escape_html($error['error']); ?><br />
                   <div class="backtrace">
