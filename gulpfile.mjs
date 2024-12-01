@@ -106,6 +106,23 @@ gulp.task('sass-chartist', function() {
     .pipe(gulp.dest('public_html/assets/chartist/', { overwrite: true }))
 })
 
+// Task to compile and minify Featherlight
+gulp.task('featherlight', function() {
+
+  gulp
+    .src(['public_html/assets/featherlight/featherli*ht.less'])
+    .pipe(less())
+    .pipe(cleancss())
+    .pipe(rename({ extname: '.min.css' }))
+    .pipe(gulp.dest('public_html/assets/featherlight/', { overwrite: true }))
+
+    return gulp
+    .src(['public_html/assets/featherlight/featherli*ht.js'])
+    .pipe(uglify())
+    .pipe(rename({ extname: '.min.js' }))
+    .pipe(gulp.dest('public_html/assets/featherlight/', { overwrite: true }))
+})
+
 // Task to compile and minify Trumbowyg SCSS
 gulp.task('sass-trumbowyg', function() {
   return gulp
@@ -138,5 +155,5 @@ gulp.task('watch', () => {
 })
 
 // Task aliases
-gulp.task('build', gulp.series('js-backend', 'js-frontend', 'less-backend', 'less-frontend', 'sass-chartist', 'sass-trumbowyg'))
+gulp.task('build', gulp.series('js-backend', 'js-frontend', 'less-backend', 'less-frontend', 'featherlight', 'sass-chartist', 'sass-trumbowyg'))
 gulp.task('default', gulp.series('build', 'watch'))
