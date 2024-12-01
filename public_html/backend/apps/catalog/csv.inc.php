@@ -1510,7 +1510,7 @@
 </div>
 
 <script>
-	$('form[name="export_form"] input[name="type"]').on('change', () => {
+	$('form[name="export_form"] input[name="type"]').on('change', function() {
 		let dependencies = $(this).data('dependencies') ? $(this).data('dependencies').split(',') : []
 		$('form[name="export_form"] select[name="currency_code"]').prop('disabled', ($.inArray('currency', dependencies) === -1))
 		$('form[name="export_form"] select[name="language_code"]').prop('disabled', ($.inArray('language', dependencies) === -1))
@@ -1518,11 +1518,11 @@
 
 	$('form[name="export_form"] input[name="type"]:checked').trigger('change')
 
-	$('form[name="import_form"] input[name="reset"]').on('click', () => {
+	$('form[name="import_form"] input[name="reset"]').on('click', function() {
 		if ($(this).is(':checked') && !confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false
 	})
 
-	$('form[name="import_form"] input[name="insert"]').on('change', () => {
+	$('form[name="import_form"] input[name="insert"]').on('change', function() {
 		$('form[name="import_form"] input[name="reset"]').prop('checked', false).prop('disabled', !$(this).is(':checked'))
 	}).trigger('change')
 </script>

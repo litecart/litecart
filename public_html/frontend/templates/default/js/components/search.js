@@ -1,14 +1,14 @@
 	// AJAX Search
-	$('.navbar-search :input').on('focus', () => {
+	$('.navbar-search :input').on('focus', function() {
 		$(this).closest('.dropdown').addClass('open')
 	})
 
-	$('.navbar-search :input').on('blur', () => {
+	$('.navbar-search :input').on('blur', function() {
 		$(this).closest('.dropdown').removeClass('open')
 	})
 
 	let xhrAjaxSearch
-	$('.navbar-search :input').on('input', () => {
+	$('.navbar-search :input').on('input', function() {
 
 		let $navbar_search = $(this).closest('.navbar-search')
 
@@ -32,13 +32,13 @@
 			cache: false,
 			async: true,
 			dataType: 'json',
-			beforeSend: (jqXHR) => {
+			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'))
 			},
-			success: (results) => {
+			success: function(results) {
 				if (results) {
-					$.each(results, (i, rows) => {
-						$.each(rows, (i, row) => {
+					$.each(results, function(i, rows) {
+						$.each(rows, function(i, row) {
 							$navbar_search.find('.dropdown-menu').append([
 								'<li><a href="'+ row.url +'">',
 								'  <img src="'+ row.thumbnail +'" style="height: 1em;"> ' + row.name,

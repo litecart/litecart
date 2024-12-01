@@ -10,7 +10,7 @@ $('#sidebar input[name="filter"]').on({
 			return
 		}
 
-		$('#box-apps-menu .app').each(() => {
+		$('#box-apps-menu .app').each(function() {
 			var regex = new RegExp(''+ query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')  +'', 'ig')
 			console.log()
 			if (regex.test($(this).text())) {
@@ -38,7 +38,7 @@ $('#search input[name="query"]').on({
 		if (!$('#search').filter(':hover').length) {
 			$('#search.dropdown').removeClass('open')
 		} else {
-			$('#search.dropdown').on('blur', () => {
+			$('#search.dropdown').on('blur', function() {
 				$('#search.dropdown').removeClass('open')
 			})
 		}
@@ -78,15 +78,15 @@ $('#search input[name="query"]').on({
 				url: window._env.backend.url + 'search_results.json?query=' + $searchField.val(),
 				dataType: 'json',
 
-				beforeSend: (jqXHR) => {
+				beforeSend: function(jqXHR) {
 					jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
 				},
 
-				error: (jqXHR, textStatus, errorThrown) => {
+				error: function(jqXHR, textStatus, errorThrown) {
 					$('#search .results').text(textStatus + ': ' + errorThrown)
 				},
 
-				success: (json) => {
+				success: function(json) {
 
 					$('#search .results').html('')
 
@@ -95,7 +95,7 @@ $('#search input[name="query"]').on({
 						return
 					}
 
-					$.each(json, (i, group) => {
+					$.each(json, function(i, group) {
 
 						if (group.results.length) {
 
@@ -104,7 +104,7 @@ $('#search input[name="query"]').on({
 								'<ul class="flex flex-rows" data-group="'+ group.name +'"></ul>'
 							)
 
-							$.each(group.results, (i, result) => {
+							$.each(group.results, function(i, result) {
 
 								var $li = $([
 									'<li class="result">',

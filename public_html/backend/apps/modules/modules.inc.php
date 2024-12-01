@@ -224,7 +224,7 @@
 </div>
 
 <script>
-	$('#cron-example').on('click', () => {
+	$('#cron-example').on('click', function() {
 		prompt("<?php echo language::translate('title_cron_job_configuration', 'Cron Job Configuration'); ?>", "*/5 * * * * curl --silent <?php echo document::ilink('f:push_jobs'); ?> &>/dev/null")
 	})
 

@@ -249,11 +249,11 @@
 
 <script>
 	<?php if (!empty($machine['cpu_usage']) || !empty($machine['memory_usage'])) { ?>
-	setInterval(() => {
+	setInterval(function() {
 		$.ajax({
 			cache: false,
 			dataType: 'html',
-			success: (result) => {
+			success: function(result) {
 				var $cpu_usage = $('meter.cpu-usage', result)
 				var $memory_usage = $('meter.memory-usage', result)
 				$('meter.cpu-usage').replaceWith($cpu_usage)

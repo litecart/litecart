@@ -2,7 +2,7 @@
 	$(':input[required]').closest('.form-group').addClass('required')
 
 	// Dropdown select
-	$('.dropdown .form-select + .dropdown-menu :input').on('input', (e) => {
+	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e) {
 		let $dropdown = $(this).closest('.dropdown')
 		let $input = $dropdown.find(':input:checked')
 
@@ -24,7 +24,7 @@
 	}).trigger('input')
 
 	// Input Number Decimals
-	$('body').on('change', 'input[type="number"][data-decimals]', () => {
+	$('body').on('change', 'input[type="number"][data-decimals]', function() {
 		 var value = parseFloat($(this).val()),
 			 decimals = $(this).data('decimals')
 		if (decimals != '') {

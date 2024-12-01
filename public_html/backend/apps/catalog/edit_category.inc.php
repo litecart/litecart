@@ -336,13 +336,13 @@
 
 	// Cross Referencing
 
-	$('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').on('input change', () => {
+	$('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').on('input change', function() {
 		$('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val())
 	})
 
 	// Image
 
-	$('input[name="image"]').on('change', (e) => {
+	$('input[name="image"]').on('change', function(e) {
 		if ($(this).val() != '') {
 			var oFReader = new FileReader()
 			oFReader.readAsDataURL(this.files[0])
@@ -356,7 +356,7 @@
 
 	// Head Title & H1 Title
 
-	$('input[name^="name"]').on('input', (e) => {
+	$('input[name^="name"]').on('input', function(e) {
 		var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1]
 		$('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5)
 		$('input[name="name['+language_code+']"]').not(this).val($(this).val())
@@ -366,7 +366,7 @@
 
 	// Meta Description
 
-	$('input[name^="short_description"]').on('input', (e) => {
+	$('input[name^="short_description"]').on('input', function(e) {
 		var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1]
 		$('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val())
 	}).trigger('input')
@@ -374,7 +374,7 @@
 	// Filters
 
 	var new_attribute_filter_i = 0
-	$('#tab-filters button[name="add"]').on('click', () => {
+	$('#tab-filters button[name="add"]').on('click', function() {
 
 		if ($('select[name="new_attribute_group"]').val() == '') {
 			alert("<?php echo functions::escape_html(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>")
@@ -405,7 +405,7 @@
 		$('#tab-filters tbody').append(output)
 	})
 
-	$('#tab-filters').on('click', '.move-up, .move-down', (e) => {
+	$('#tab-filters').on('click', '.move-up, .move-down', function(e) {
 		e.preventDefault()
 		var row = $(this).closest('tr')
 
@@ -416,7 +416,7 @@
 		}
 	})
 
-	$('#tab-filters').on('click', '.remove', (e) => {
+	$('#tab-filters').on('click', '.remove', function(e) {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})

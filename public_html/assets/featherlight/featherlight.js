@@ -36,7 +36,7 @@
 
 	var opened = [],
 		pruneOpened = function(remove) {
-			opened = $.grep(opened, (fl) => {
+			opened = $.grep(opened, function(fl) {
 				return fl !== remove && fl.$instance.closest('body').length > 0
 			})
 			return opened
@@ -48,12 +48,12 @@
 			Featherlight._globalHandlerInstalled = newState
 
 			var eventMap = {keyup: 'onKeyUp', resize: 'onResize'}
-			var events = $.map(eventMap, (_, name) => {
+			var events = $.map(eventMap, function(_, name) {
 				return name+'.featherlight';
 			}).join(' ')
 
-			$(window)[newState ? 'on' : 'off'](events, (e) => {
-				$.each(Featherlight.opened().reverse(), () => {
+			$(window)[newState ? 'on' : 'off'](events, function(e) {
+				$.each(Featherlight.opened().reverse(), function() {
 					if (!e.isDefaultPrevented()) {
 						if (this[eventMap[e.type]](e) === false) {
 							e.preventDefault(); e.stopPropagation(); return false
@@ -100,7 +100,7 @@
 		/*** Methods ***/
 
 		// Setup iterates over a single instance of featherlight and prepares the backdrop and binds the events
-		setup: (target, config) => {
+		setup: function(target, config){
 
 			// Make all arguments optional
 			if (typeof target === 'object' && target instanceof $ === false && !config) {
@@ -119,7 +119,7 @@
 			].join('\n'))
 
 			// Close when click on backdrop/anywhere/null or closebox
-			self.$instance.on('click.featherlight', (e) => {
+			self.$instance.on('click.featherlight', function(e) {
 
 				if (e.isDefaultPrevented()) {
 					return
@@ -170,7 +170,7 @@
 				var target = data
 				data = null
 
-				$.each(self.contentFilters, () => {
+				$.each(self.contentFilters, function() {
 					filter = filters[this]
 					if (filter.test) {
 						data = filter.test(target)
@@ -194,7 +194,7 @@
 		},
 
 		// sets the content of $instance to $modal
-		setContent: ($modal) => {
+		setContent: function($modal) {
 			var self = this
 
 			self.$instance.removeClass('featherlight-loading')
@@ -215,7 +215,7 @@
 
 		/* opens the lightbox. "this" contains $instance with the lightbox, and with the config.
 			Returns a promise that is resolved after is successfully opened. */
-		open: (e) => {
+		open: function(e){
 			var self = this
 
 			if (e && (e.ctrlKey || e.shiftKey)) {
@@ -267,7 +267,7 @@
 						})
 						.then(self.$instance.promise())
 						// Call afterOpen after show() is done
-						.done(() => { self.afterOpen(e); })
+						.done(function(){ self.afterOpen(e); })
 				}
 			}
 			self.$instance.detach()
@@ -276,7 +276,7 @@
 
 		/* closes the lightbox. "this" contains $instance with the lightbox, and with the config
 			returns a promise, resolved after the lightbox is successfully closed. */
-		close: (e) => {
+			close: function(e){
 
 			var self = this,
 				deferred = $.Deferred()
@@ -311,13 +311,13 @@
 
 			jquery: {
 				regex: /^[#.]\w/,         // Anything that starts with a class name or identifiers
-				test: (element) => { return element instanceof $ && element; },
-				process: (element) => { return this.persist !== false ? $(element) : $(element).clone(true); }
+				test: function(element) { return element instanceof $ && element; },
+				process: function(element) { return this.persist !== false ? $(element) : $(element).clone(true); }
 			},
 
 			image: {
 				regex: /\.(a?png|avif|bmp|gif|ico|jpe?g|jp2|svg|tiff?|webp)(\?\S*)?$/i,
-				process: (url) => {
+				process: function(url) {
 
 					var self = this,
 						deferred = $.Deferred()
@@ -336,20 +336,20 @@
 
 			html: {
 				regex: /^\s*<[\w!][^<]*>/,  // Anything that starts with some kind of valid tag
-				process: (html) => {
+				process: function(html) {
 					return $(html)
 				}
 			},
 
 			ajax: {
 				regex: /./,  // At this point, any content is assumed to be an URL
-				process: (url) => {
+				process: function(url) {
 
 					var self = this,
 						deferred = $.Deferred()
 
 					// we are using load so one can specify a target with: url.html #targetelement
-					var $container = $('<div></div>').load(url.replace('#', ' #'), (response, status) => {
+					var $container = $('<div></div>').load(url.replace('#', ' #'), function(response, status){
 						if (status !== 'error') {
 							deferred.resolve($container.contents())
 						}
@@ -361,14 +361,14 @@
 			},
 
 			iframe: {
-				process: (url) => {
+				process: function(url) {
 
 					var self = this,
 						deferred = new $.Deferred()
 
 					var $iframe = $('<iframe/>', {
 						src: url,
-						complete, () => {
+						complete: function() {
 							// We can't move an <iframe> and avoid reloading it, so let's put it in place ourselves right now:
 							$iframe.show().appendTo(self.$instance.find('.featherlight-modal'))
 							deferred.resolve($iframe)
@@ -380,7 +380,7 @@
 			},
 
 			text: {
-				process: (text) => {
+				process: function(text) {
 					return $('<div>', {text: text})
 				}
 			}
@@ -389,23 +389,23 @@
 		/*** Class Methods ***/
 
 		// Read element's data attributes
-		readElementConfig: (element) => {
+		readElementConfig: function(element) {
 
 			if (!element) return
 
 			var config = $(element).data(),
 				functionAttributes = ['beforeOpen', 'afterOpen', 'beforeContent', 'afterContent', 'beforeClose', 'afterClose']
 
-			$.each(functionAttributes, (i, e) => {
-				if (config[e] !== undefined) {
-					config[e] = new Function(config[e])
+			$.each(functionAttributes, function(i, event){
+				if (config[event] !== undefined) {
+					config[event] = new Function(config[event])
 				}
 			})
 
 			return config
 		},
 
-		attach: ($source, $modal, config) => {
+		attach: function($source, $modal, config) {
 
 			var self = this
 
@@ -459,17 +459,17 @@
 		opened: function() {
 			var self = this
 			pruneOpened()
-			return $.grep(opened, (fl) => { return fl instanceof self; } )
+			return $.grep(opened, function(fl) { return fl instanceof self; } );
 		},
 
-		close: (e) => {
+		close: function(e) {
 			var cur = this.current()
 			if (cur) { return cur.close(e); }
 		},
 
 		// Featherlight uses the onKeyUp callback to intercept the escape key. Private to Featherlight.
 		_callbackChain: {
-			onKeyUp: (_super, e) => {
+			onKeyUp: function(_super, e){
 
 				switch (e.keyCode) {
 					case 27:
@@ -482,11 +482,11 @@
 				return _super(e)
 			},
 
-			onResize: (_super, e) => {
+			onResize: function(_super, e){
 				return _super(e)
 			},
 
-			beforeOpen: (_super, e) => {
+			beforeOpen: function(_super, e){
 
 				// Remember focus:
 				this._previouslyActive = document.activeElement
@@ -511,13 +511,13 @@
 				return _super(e)
 			},
 
-			afterContent: (_super, e) => {
+			afterContent: function(_super, e){
 				this.$instance.find('[autofocus]:not([disabled])').trigger('focus')
 				this.onResize(e)
 				return _super(e)
 			},
 
-			afterClose: (_super, e) => {
+			afterClose: function(_super, e){
 
 				var self = this
 
@@ -545,7 +545,7 @@
 	}
 
 	// Bind featherlight on ready if config autoBind is set
-	$(document).ready(() => {
+	$(document).ready(function(){
 
 		// Do auto binding on startup. Meant only to be used by Featherlight and its extensions
 		if (Featherlight.autoBind){
@@ -553,12 +553,12 @@
 			var $autobound = $(Featherlight.autoBind)
 
 			// Bind existing elements
-			$autobound.each(() => {
+			$autobound.each(function(){
 				Featherlight.attach($(this))
 			})
 
 			// If a click propagates to the document level, then we have an item that was added later on
-			$(document).on('click', Featherlight.autoBind, (e) => {
+			$(document).on('click', Featherlight.autoBind, function(e){
 
 				if (e.isDefaultPrevented()) {
 					return

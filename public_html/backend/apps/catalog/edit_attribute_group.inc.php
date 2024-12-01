@@ -146,7 +146,7 @@
 	let new_value_index = 0
 	while ($(':input[name^="values['+new_value_index+']"]').length) new_value_index++
 
-	$('form[name="attribute_form"]').on('click', '.add', (e) => {
+	$('form[name="attribute_form"]').on('click', '.add', function(e) {
 		e.preventDefault()
 
 <?php
@@ -166,7 +166,7 @@
 		$(this).closest('table').find('tbody').append(output)
 	})
 
-	$('form[name="attribute_form"]').on('click', '.remove', (e) => {
+	$('form[name="attribute_form"]').on('click', '.remove', function(e) {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})

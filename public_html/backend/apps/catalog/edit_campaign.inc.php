@@ -164,17 +164,17 @@
 
 <script>
 
-	$('#campaigns').on('focus', 'input[name^="campaigns"]', (e) => {
+	$('#campaigns').on('focus', 'input[name^="campaigns"]', function(e) {
 		if($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
 			$(this).closest('.dropdown').addClass('open')
 	 }
 	})
 
-	$('#campaigns').on('blur', '.dropdown', (e) => {
+	$('#campaigns').on('blur', '.dropdown', function(e) {
 		$(this).removeClass('open')
 	})
 
-	$('#campaigns').on('input', 'input[name^="campaigns"][name$="[percentage]"]', () => {
+	$('#campaigns').on('input', 'input[name^="campaigns"][name$="[percentage]"]', function() {
 		let parent = $(this).closest('tr'),
 			value = 0
 
@@ -193,7 +193,7 @@
 		<?php } ?>
 	})
 
-	$('#campaigns').on('input', 'input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', () => {
+	$('#campaigns').on('input', 'input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
 		let parent = $(this).closest('tr')
 		let percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100
 		percentage = percentage.toFixed(2)
@@ -211,7 +211,7 @@
 
 	$('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').trigger('input')
 
-	$('button[name="remove"]').on('click', (e) => {
+	$('button[name="remove"]').on('click', function(e) {
 		e.preventDefault()
 		if (confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
 			$(this).closest('tr').remove()

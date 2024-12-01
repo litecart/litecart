@@ -40,7 +40,7 @@
 	$('#modal-customer-picker input[name="query"]').trigger('focus')
 
 	var xhr_customer_picker = null
-	$('#modal-customer-picker input[name="query"]').on('input', () => {
+	$('#modal-customer-picker input[name="query"]').on('input', function() {
 
 		if ($(this).val() == '') {
 			$('#modal-customer-picker .results tbody').html('')
@@ -54,14 +54,14 @@
 			cache: false,
 			url: '<?php echo document::ilink('customers/customers.json'); ?>?query=' + $(this).val(),
 			dataType: 'json',
-			beforeSend: (jqXHR) => {
+			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
 			},
-			success: (json) => {
+			success: function(json) {
 
 				$('#modal-customer-picker .results tbody').html('')
 
-				$.each(json, (i, row) => {
+				$.each(json, function(i, row) {
 
 					$row = $([
 						'<tr>',
@@ -89,7 +89,7 @@
 		})
 	})
 
-	$('#modal-customer-picker tbody').on('click', 'td', () => {
+	$('#modal-customer-picker tbody').on('click', 'td', function() {
 
 		let $row = $(this).closest('tr'),
 			callback = $.featherlight.current().$currentTarget.data('callback'),
@@ -120,7 +120,7 @@
 		}
 	})
 
-	$('#modal-customer-picker .set-guest').on('click', () => {
+	$('#modal-customer-picker .set-guest').on('click', function() {
 
 		let field = $.featherlight.current().$currentTarget.closest('.form-input')
 

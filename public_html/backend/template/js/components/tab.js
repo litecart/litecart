@@ -2,16 +2,16 @@
 +function($) {
 	'use strict'
 	$.fn.Tabs = function(){
-		this.each(() => {
+		this.each(function() {
 
 			let self = this
 
 			this.$element = $(this)
 
-			this.$element.find('[data-toggle="tab"]').each(() => {
+			this.$element.find('[data-toggle="tab"]').each(function() {
 				let $link = $(this)
 
-				$link.on('select', () => {
+				$link.on('select', function() {
 					self.$element.find('.active').removeClass('active')
 
 					if ($link.hasClass('nav-link')) {
@@ -23,7 +23,7 @@
 					$($link.attr('href')).show().siblings().hide()
 				})
 
-				$link.on('click', (e) => {
+				$link.on('click', function(e) {
 					e.preventDefault()
 					history.replaceState(null, null, this.hash)
 					$link.trigger('select')
@@ -44,7 +44,7 @@
 		$('[data-toggle="tab"][href="' + document.location.hash +'"]').trigger('select')
 	}
 
-	$(document).on('ajaxcomplete', () => {
+	$(document).on('ajaxcomplete', function() {
 		$('.nav-tabs').Tabs()
 	})
 }(jQuery)

@@ -192,7 +192,7 @@
 		lineSmooth: true,
 		axisY: {
 			offset: 60,
-			labelInterpolationFnc: (value) => {
+			labelInterpolationFnc: function(value) {
 				return new Intl.NumberFormat('<?php echo language::$selected['code']; ?>').format(value)
 			}
 		}
@@ -214,7 +214,7 @@
 		// Offset x1 a tiny amount so that the straight stroke gets a bounding box
 		// Straight lines don't get a bounding box
 		// Last remark on -> http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox
-	chart1.on('draw', (ctx) => {
+	chart1.on('draw', function(ctx) {
 		if(ctx.type === 'bar') {
 			ctx.element.attr({
 				x1: ctx.x1 + 0.001
@@ -223,7 +223,7 @@
 	})
 
 		// Create the gradient definition on created event (always after chart re-render)
-	chart1.on('created', (ctx) => {
+	chart1.on('created', function(ctx) {
 		let defs = ctx.svg.elem('defs')
 		defs.elem('linearGradient', { id: 'gradient', x1: 0, y1: 1, x2: 0, y2: 0 })
 		.elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .7)' })
@@ -241,7 +241,7 @@
 		seriesBarDistance: 10,
 		axisY: {
 			offset: 60,
-			labelInterpolationFnc: (value) => {
+			labelInterpolationFnc: function(value) {
 				return new Intl.NumberFormat('<?php echo language::$selected['code']; ?>').format(value)
 			}
 		}
@@ -263,7 +263,7 @@
 		// Offset x1 a tiny amount so that the straight stroke gets a bounding box
 		// Straight lines don't get a bounding box
 		// Last remark on -> http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox
-	chart2.on('draw', (ctx) => {
+	chart2.on('draw', function(ctx) {
 		if(ctx.type === 'bar') {
 			ctx.element.attr({
 				x1: ctx.x1 + 0.001
@@ -272,7 +272,7 @@
 	})
 
 		// Create the gradient definition on created event (always after chart re-render)
-	chart2.on('created', (ctx) => {
+	chart2.on('created', function(ctx) {
 		let defs = ctx.svg.elem('defs')
 		defs.elem('linearGradient', { id: 'gradient2', x1: 0, y1: 1, x2: 0, y2: 0 })
 		.elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .7)' })

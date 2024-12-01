@@ -533,7 +533,7 @@ table .icon-star:hover {
 		}
 	})
 
-	$('form[name="search_form"] select').on('change', () => {
+	$('form[name="search_form"] select').on('change', function() {
 		$(this).closest('form').submit()
 	})
 
@@ -541,7 +541,7 @@ table .icon-star:hover {
 		$('#actions fieldset').prop('disabled', !$('.data-table :checked').length)
 	}).first().trigger('change')
 
-	$('table').on('click', '.icon-star-o', (e) => {
+	$('table').on('click', '.icon-star', function(e) {
 		e.stopPropagation()
 		let star = this
 		$.post('', 'star&order_id='+$(star).closest('tr').data('id'), (data) => {
@@ -550,7 +550,7 @@ table .icon-star:hover {
 		return false
 	})
 
-	$('table').on('click', '.icon-star', (e) => {
+	$('table').on('click', '.icon-star-solid', function(e) {
 		let star = this
 		$.post('', 'unstar&order_id='+$(star).closest('tr').data('id'), (data) => {
 			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>')
@@ -558,7 +558,7 @@ table .icon-star:hover {
 		return false
 	})
 
-	$('#actions button').on('click', (e) => {
+	$('#actions button').on('click', function(e) {
 		if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
 			e.preventDefault()
 			return false

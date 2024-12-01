@@ -149,13 +149,13 @@
 <script src="<?php echo document::href_rlink('app://backend/template/js/app.min.js'); ?>"></script>
 
 <script>
-	$('button[name="font_size"]').on('click', () => {
+	$('button[name="font_size"]').on('click', function() {
 		let new_size = parseInt($(':root').css('--default-text-size').split('px')[0]) + (($(this).val() == 'increase') ? 1 : -1)
 		$(':root').css('--default-text-size', new_size + 'px')
 		document.cookie = 'font_size='+ new_size +';Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000'
 	})
 
-	$('input[name="condensed"]').on('click', () => {
+	$('input[name="condensed"]').on('click', function() {
 		if ($(this).val() == 1) {
 			document.cookie = 'condensed=1;Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000'
 			$('html').addClass('condensed')
@@ -165,7 +165,7 @@
 		}
 	})
 
-	$('input[name="dark_mode"]').on('click', () => {
+	$('input[name="dark_mode"]').on('click', function() {
 		if ($(this).val() == 1) {
 			document.cookie = 'dark_mode=1;Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000'
 			$('html').addClass('dark-mode')

@@ -152,7 +152,7 @@
 </main>
 
 <script>
-	$('input[name="type"]').on('change', () => {
+	$('input[name="type"]').on('change', function() {
 		if ($(this).val() == 'company') {
 			$('.company-details :input').prop('disabled', false)
 			$('.company-details').slideDown('fast')
@@ -162,7 +162,7 @@
 		}
 	}).first().trigger('change')
 
-	$('form[name="customer_form"]').on('input', ':input', () => {
+	$('form[name="customer_form"]').on('input', ':input', function() {
 		if ($(this).val() == '') return
 
 		$.ajax({
@@ -172,12 +172,12 @@
 			cache: false,
 			async: true,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				if (data['alert']) {
 					alert(data['alert'])
 					return
 				}
-				$.each(data, (key, value) => {
+				$.each(data, function(key, value) {
 					console.log(key +' '+ value)
 					if ($('input[name="'+key+'"]').length && $('input[name="'+key+'"]').val() == '') $('input[name="'+key+'"]').val(data[key])
 				})
@@ -185,7 +185,7 @@
 		})
 	})
 
-	$('select[name="country_code"]').on('change', (e) => {
+	$('select[name="country_code"]').on('change', function(e) {
 
 		if ($(this).find('option:selected').data('tax-id-format')) {
 			$('input[name="tax_id"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
@@ -212,11 +212,11 @@
 			cache: true,
 			async: true,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				$("select[name='zone_code']").html('')
 				if (data.length) {
 					$('select[name="zone_code"]').prop('disabled', false)
-					$.each(data, (i, zone) => {
+					$.each(data, function(i, zone) {
 						$('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {

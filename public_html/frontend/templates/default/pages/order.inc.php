@@ -51,7 +51,7 @@ body {
 </main>
 
 <script>
-	$('#print').on('click', () => {
+	$('#print').on('click', function() {
 		$('#order-copy').get(0).contentWindow.print()
 	})
 	// Scroll to last comment

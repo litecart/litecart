@@ -137,7 +137,7 @@
 		$(this).html('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>')
 	})
 
-	$('select[name="new_zone[country_code]"]').on('change', () => {
+	$('select[name="new_zone[country_code]"]').on('change', function() {
 		let zone_field = $(this).closest('tr').find('select[name="new_zone[zone_code]"]')
 
 		$.ajax({
@@ -146,11 +146,11 @@
 			cache: true,
 			async: true,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				$(zone_field).html('')
 				if (data) {
 					$(zone_field).append('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>')
-					$.each(data, (i, zone) => {
+					$.each(data, function(i, zone) {
 						$(zone_field).append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 					$(zone_field).prop('disabled', false)
@@ -165,7 +165,7 @@
 	let new_zone_index = 0
 	while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++
 
-	$('tfoot button[name="add"]', (e) => {
+	$('tfoot button[name="add"]', function(e) {
 		e.preventDefault()
 
 		if ($('select[name="country[code]"]').val() == '') return
@@ -173,7 +173,7 @@
 		let row = $(this).closest('tr')
 
 		let found = false
-		$.each($('form[name="form_geo_zone"] tbody tr'), (i, current_row) => {
+		$.each($('form[name="form_geo_zone"] tbody tr'), function(i, current_row) {
 			if ($(current_row).find(':input[name$="[country_code]"]').val() == $(':input[name="new_zone[country_code]"]').val()
 			 && $(current_row).find(':input[name$="[zone_code]"]').val() == $(':input[name="new_zone[zone_code]"]').val()
 			 && $(current_row).find(':input[name$="[city]"]').val() == $(':input[name="new_zone[city]"]').val()) {
@@ -209,7 +209,7 @@
 		$(':input[name="new_zone[city]"]').val('')
 	})
 
-	$('form[name="form_geo_zone"]').on('click', '.remove', (e) => {
+	$('form[name="form_geo_zone"]').on('click', '.remove', function(e) {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})

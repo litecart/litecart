@@ -27,7 +27,7 @@ const banner = [
 ].join('\n')
 
 // Compile LESS files
-gulp.task('less-backend', () => {
+gulp.task('less-backend', function() {
 
   gulp
     .src('public_html/backend/template/less/vari*bles.less') // non-globstar pattern will fail on some windows paths
@@ -46,7 +46,7 @@ gulp.task('less-backend', () => {
     .pipe(gulp.dest('public_html/backend/template/css', { overwrite: true }))
 })
 
-gulp.task('less-frontend', () => {
+gulp.task('less-frontend', function() {
 
   gulp
     .src('public_html/frontend/templates/default/less/vari*bles.less') // non-globstar pattern will fail on some windows paths
@@ -67,7 +67,7 @@ gulp.task('less-frontend', () => {
 })
 
 // Build and uglify JS files
-gulp.task('js-backend', () => {
+gulp.task('js-backend', function() {
   return gulp
     .src('public_html/backend/template/js/components/*.js')
     .pipe(concat('app.js', {'newLine': '\r\n\r\n'}))
@@ -80,7 +80,7 @@ gulp.task('js-backend', () => {
     .pipe(gulp.dest('public_html/backend/template/js/', { overwrite: true }))
 })
 
-gulp.task('js-frontend', () => {
+gulp.task('js-frontend', function() {
   return gulp
     .src('public_html/frontend/templates/default/js/components/*.js')
     .pipe(sourcemaps.init())
@@ -94,7 +94,7 @@ gulp.task('js-frontend', () => {
 })
 
 // Task to compile and minify Chartist SCSS
-gulp.task('sass-chartist', () => {
+gulp.task('sass-chartist', function() {
   return gulp
     .src('public_html/assets/chartist/chartist.scss', { allowEmpty: true })
     .pipe(sass().on('error', sass.logError))
@@ -107,7 +107,7 @@ gulp.task('sass-chartist', () => {
 })
 
 // Task to compile and minify Trumbowyg SCSS
-gulp.task('sass-trumbowyg', () => {
+gulp.task('sass-trumbowyg', function() {
   return gulp
     .src('public_html/assets/trumbowyg/ui/*.scss')
     .pipe(sass().on('error', sass.logError))

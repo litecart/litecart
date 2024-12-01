@@ -396,7 +396,7 @@
 
 	// Init
 
-	$('input[name="type"]').on('change', () => {
+	$('input[name="type"]').on('change', function() {
 		if ($(this).val() == 'company') {
 			$('.company-details :input').prop('disabled', false)
 			$('.company-details').slideDown('fast')
@@ -437,7 +437,7 @@
 
 // Init (Shipping address)
 
-	$('input[name="different_shipping_address"]').on('change', (e) => {
+	$('input[name="different_shipping_address"]').on('change', function(e) {
 		if (this.checked == true) {
 			$('fieldset.shipping-address').prop('disabled', false).slideDown('fast')
 		} else {
@@ -473,7 +473,7 @@
 
 // Get Address
 
-	$('form[name="customer_form"]').on('change', ':input', () => {
+	$('form[name="customer_form"]').on('change', ':input', function() {
 		if ($(this).val() == '') return
 
 		$.ajax({
@@ -483,12 +483,12 @@
 			cache: false,
 			async: true,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				if (data['alert']) {
 					alert(data['alert'])
 					return
 				}
-				$.each(data, (key, value) => {
+				$.each(data, function(key, value) {
 					console.log(key +' '+ value)
 					if ($('input[name="'+key+'"]').length && $('input[name="'+key+'"]').val() == '') $('input[name="'+key+'"]').val(data[key])
 				})
@@ -498,7 +498,7 @@
 
 	// Get Address (Shipping address)
 
-	$('form[name="customer_form"]').on('change', ':input', () => {
+	$('form[name="customer_form"]').on('change', ':input', function() {
 
 		if ($(this).val() == '') return
 
@@ -509,12 +509,12 @@
 			cache: false,
 			async: true,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				if (data['alert']) {
 					alert(data['alert'])
 					return
 				}
-				$.each(data, (key, value) => {
+				$.each(data, function(key, value) {
 					if ($('input[name="shipping_address['+key+']"]').length && $('input[name="shipping_address['+key+']"]').val() == '') {
 						$('input[name="shipping_address['+key+']"]').val(data[key])
 					}
@@ -525,7 +525,7 @@
 
 	// On change country
 
-	$('select[name="country_code"]').on('change', (e) => {
+	$('select[name="country_code"]').on('change', function(e) {
 
 		if ($(this).find('option:selected').data('tax-id-format')) {
 			$('input[name="tax_id"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
@@ -552,11 +552,11 @@
 			cache: true,
 			async: true,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				$('select[name="zone_code"]').html('')
 				if (data.length) {
 					$('select[name="zone_code"]').prop('disabled', false)
-					$.each(data, (i, zone) => {
+					$.each(data, function(i, zone) {
 						$('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -568,7 +568,7 @@
 
 // On change country (Shipping address)
 
-	$('select[name="shipping_address[country_code]"]').on('change', (e) => {
+	$('select[name="shipping_address[country_code]"]').on('change', function(e) {
 
 		if ($(this).find('option:selected').data('postcode-format')) {
 			$('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'))
@@ -589,11 +589,11 @@
 			cache: true,
 			async: true,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				$('select[name="shipping_address[zone_code]"]').html('')
 				if (data.length) {
 					$('select[name="shipping_address[zone_code]"]').prop('disabled', false)
-					$.each(data, (i, zone) => {
+					$.each(data, function(i, zone) {
 						$('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -603,7 +603,7 @@
 		})
 	})
 
-	$('input[name="different_shipping_address"]').on('change', (e) => {
+	$('input[name="different_shipping_address"]').on('change', function(e) {
 		if (this.checked == true) {
 			$('#shipping-address').slideDown('fast')
 		} else {

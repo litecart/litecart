@@ -39,14 +39,14 @@
 
 			$content.on({
 
-				'click': (e) => {
+				'click': function(e) {
 					if (dragging) {
 						e.preventDefault()
 					}
 					dragging = false
 				},
 
-				'mousemove': (e) => {
+				'mousemove': function(e) {
 					if (!clicked) return
 
 					dragging = true
@@ -65,7 +65,7 @@
 					velX = Math.abs($content.scrollLeft() - prevScrollLeft); // Compare change in position to work out drag speed
 				},
 
-				'mousedown': (e) => {
+				'mousedown': function(e) {
 					e.preventDefault()
 					clicked = true
 					scrollX = $content.scrollLeft()
@@ -73,7 +73,7 @@
 					$content.css('cursor', 'grabbing')
 				},
 
-				'mouseup': (e) => {
+				'mouseup': function(e) {
 					e.preventDefault()
 					self = this
 					clicked = false
@@ -82,13 +82,13 @@
 					$content.css('cursor', '')
 				},
 
-				'mouseleave': (e) => {
+				'mouseleave': function(e) {
 					clicked = false
 					$content.css('cursor', '')
 				}
 			})
 
-			$(window).on('resize', () => {
+			$(window).on('resize', function() {
 
 				if ($content.prop('scrollWidth') > ($self.outerWidth() + 20)) {
 
@@ -99,7 +99,7 @@
 							'<button name="right" class="btn btn-default" type="button"><i class="fa fa-chevron-right"></i></button>'
 						)
 
-						$self.on('click', 'button[name="left"], button[name="right"]', (e) => {
+						$self.on('click', 'button[name="left"], button[name="right"]', function(e) {
 							if (direction != $(this).attr('name')) {
 								velX = 0
 							}

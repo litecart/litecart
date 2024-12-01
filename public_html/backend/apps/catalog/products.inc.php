@@ -312,7 +312,7 @@ table .thumbnail {
 </div>
 
 <script>
-	$('input[name="category_id"]').on('change', (e) => {
+	$('input[name="category_id"]').on('change', function(e) {
 		$(this).closest('form').submit()
 	})
 
@@ -320,9 +320,9 @@ table .thumbnail {
 		$('#actions').prop('disabled', !$('.data-table :checked').length)
 	}).first().trigger('change')
 
-	$('form[name="search_form"]').on('input change', (e) => {
+	$('form[name="search_form"]').on('input change', function(e) {
 		e.preventDefault()
-		$.get('', $(this).serialize(), (response) => {
+		$.get('', $(this).serialize(), function(response) {
 			$('.data-table tbody').html( $(response).find('.data-table tbody').html() )
 			$('.data-table tfoot').html( $(response).find('.data-table tfoot').html() )
 			$('.card-footer').after( $(response).find('.card-footer').html() ).remove()

@@ -265,7 +265,7 @@
 
 	// Customer Form: Toggles
 
-	$('#box-checkout-customer input[name="different_shipping_address"]').on('change', (e) => {
+	$('#box-checkout-customer input[name="different_shipping_address"]').on('change', function(e) {
 		if (this.checked == true) {
 			$('#box-checkout-customer .shipping-address fieldset').removeAttr('disabled').slideDown('fast')
 		} else {
@@ -273,7 +273,7 @@
 		}
 	})
 
-	$('#box-checkout-customer input[name="sign_up"]').on('change', () => {
+	$('#box-checkout-customer input[name="sign_up"]').on('change', function() {
 		if (this.checked == true) {
 			$('#box-checkout-customer .account fieldset').removeAttr('disabled').slideDown('fast')
 		} else {
@@ -283,7 +283,7 @@
 
 	// Customer Form: Get Address
 
-	$('#box-checkout-customer .billing-address :input').on('change', () => {
+	$('#box-checkout-customer .billing-address :input').on('change', function() {
 		if ($(this).val() == '') return
 		if (console) console.log('Get address (Trigger: '+ $(this).attr('name') +')')
 		$.ajax({
@@ -293,9 +293,9 @@
 			cache: false,
 			async: true,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				if (data['alert']) alert(data['alert'])
-				$.each(data, (key, value) => {
+				$.each(data, function(key, value) {
 					if ($('.billing-address :input[name="billing_address['+key+']"]').length && $('.billing-address :input[name="billing_address['+key+']"]').val() == '') {
 						$('.billing-address :input[name="billing_address['+key+']"]').val(value)
 					}
@@ -334,11 +334,11 @@
 			cache: true,
 			async: true,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				$('select[name="billing_address[zone_code]"]').html('')
 				if (data.length) {
 					$('select[name="billing_address[zone_code]"]').prop('disabled', false)
-					$.each(data, (i, zone) => {
+					$.each(data, function(i, zone) {
 						$('select[name="billing_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -349,7 +349,7 @@
 		<?php } ?>
 	})
 
-	$('#box-checkout-customer select[name="shipping_address[country_code]"]').on('change', () => {
+	$('#box-checkout-customer select[name="shipping_address[country_code]"]').on('change', function() {
 
 		if ($(this).find('option:selected').data('postcode-format')) {
 			$('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'))
@@ -371,11 +371,11 @@
 			cache: true,
 			async: false,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				$('select[name="shipping_address[zone_code]"]').html('')
 				if (data.length) {
 					$('select[name="shipping_address[zone_code]"]').prop('disabled', false)
-					$.each(data, (i, zone) => {
+					$.each(data, function(i, zone) {
 						$('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -390,7 +390,7 @@
 
 	let customer_form_changed = false
 	let customer_form_checksum = $('#box-checkout-customer :input').serialize()
-	$('#box-checkout-customer').on('input change', () => {
+	$('#box-checkout-customer').on('input change', function() {
 		if ($('#box-checkout-customer :input').serialize() != customer_form_checksum) {
 			if (customer_form_checksum == null) return
 			customer_form_changed = true
@@ -404,7 +404,7 @@
 	// Customer Form: Auto-Save
 
 	let timerSubmitCustomer
-	$('#box-checkout-customer').on('focusout', () => {
+	$('#box-checkout-customer').on('focusout', function() {
 		timerSubmitCustomer = setTimeout(
 			function() {
 				if (!$(this).is(':focus')) {
@@ -421,7 +421,7 @@
 		)
 	})
 
-	$('#box-checkout-customer').on('focusin', () => {
+	$('#box-checkout-customer').on('focusin', function() {
 		clearTimeout(timerSubmitCustomer)
 	})
 </script>

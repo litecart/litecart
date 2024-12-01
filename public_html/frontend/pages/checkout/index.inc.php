@@ -96,7 +96,7 @@
 
 								if (!empty($gateway['delay'])) {
 									echo implode(PHP_EOL, [
-										'  setTimeout(() => {',
+										'  setTimeout(function() {',
 										'    document.forms["gateway_form"].submit()',
 										'  }, '. ($gateway['delay'] * 1000) .')',
 									]) . PHP_EOL;

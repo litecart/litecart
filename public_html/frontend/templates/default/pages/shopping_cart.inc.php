@@ -155,7 +155,7 @@
 	alert("<?php echo functions::escape_js(notices::$data['errors'][0]); notices::$data['errors'] = []; ?>")
 	<?php } ?>
 
-	$('input[name="billing_address[type]"]').on('change', () => {
+	$('input[name="billing_address[type]"]').on('change', function() {
 		if ($(this).val() == 'business') {
 			$('.business-details :input').prop('disabled', false)
 			$('.business-details').slideDown('fast')
@@ -199,7 +199,7 @@
 
 	// Toggles
 
-	$('#box-customer-details input[name="billing_address[different_shipping_address]"]').on('change', (e) => {
+	$('#box-customer-details input[name="billing_address[different_shipping_address]"]').on('change', function(e) {
 		if (this.checked == true) {
 			$('#box-customer-details .shipping-address fieldset').prop('disabled', false).slideDown('fast')
 		} else {
@@ -207,7 +207,7 @@
 		}
 	})
 
-	$('#box-customer-details input[name="sign_up"]').on('change', () => {
+	$('#box-customer-details input[name="sign_up"]').on('change', function() {
 		if (this.checked == true) {
 			$('#box-customer-details .account fieldset').prop('disabled', false).slideDown('fast')
 		} else {
@@ -217,7 +217,7 @@
 
 	// Get Address
 
-	$('#box-customer-details .billing-address :input').on('change', () => {
+	$('#box-customer-details .billing-address :input').on('change', function() {
 		if ($(this).val() == '') return
 		console.log('Get address (Trigger: '+ $(this).attr('name') +')')
 		$.ajax({
@@ -227,9 +227,9 @@
 			cache: false,
 			async: true,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				if (data['alert']) alert(data['alert'])
-				$.each(data, (key, value) => {
+				$.each(data, function(key, value) {
 					if ($('.billing-address :input[name="billing_address['+key+']"]').length && $('.billing-address :input[name="billing_address['+key+']"]').val() == '') {
 						$('.billing-address :input[name="billing_address['+key+']"]').val(value).trigger('input')
 					}
@@ -238,7 +238,7 @@
 		})
 	})
 
-	$('#box-customer-details .shipping-address :input').on('change', () => {
+	$('#box-customer-details .shipping-address :input').on('change', function() {
 		if ($(this).val() == '') return
 		console.log('Get address (Trigger: '+ $(this).attr('name') +')')
 		$.ajax({
@@ -248,9 +248,9 @@
 			cache: false,
 			async: true,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				if (data['alert']) alert(data['alert'])
-				$.each(data, (key, value) => {
+				$.each(data, function(key, value) {
 					if ($('.shipping-address :input[name="shipping_address['+key+']"]').length && $('.shipping-address :input[name="shipping_address['+key+']"]').val() == '') {
 						$('.shipping-address :input[name="shipping_address['+key+']"]').val(value).trigger('input')
 					}
@@ -261,7 +261,7 @@
 
 	// Fields
 
-	$('#box-customer-details select[name="billing_address[country_code]"]').on('input', (e) => {
+	$('#box-customer-details select[name="billing_address[country_code]"]').on('input', function(e) {
 
 		if ($(this).find('option:selected').data('tax-id-format')) {
 			$('input[name="billing_address[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
@@ -289,11 +289,11 @@
 			cache: true,
 			async: true,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				$('select[name="billing_address[zone_code]"]').html('')
 				if (data.length) {
 					$('select[name="billing_address[zone_code]"]').prop('disabled', false)
-					$.each(data, (i, zone) => {
+					$.each(data, function(i, zone) {
 						$('select[name="billing_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -304,7 +304,7 @@
 		<?php } ?>
 	})
 
-	$('#box-customer-details select[name="shipping_address[country_code]"]').on('input', (e) => {
+	$('#box-customer-details select[name="shipping_address[country_code]"]').on('input', function(e) {
 
 		if ($(this).find('option:selected').data('postcode-format')) {
 			$('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'))
@@ -326,11 +326,11 @@
 			cache: true,
 			async: false,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				$('select[name="shipping_address[zone_code]"]').html('')
 				if (data.length) {
 					$('select[name="shipping_address[zone_code]"]').prop('disabled', false)
-					$.each(data, (i, zone) => {
+					$.each(data, function(i, zone) {
 						$('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -345,7 +345,7 @@
 
 	$('#box-customer-details').data('checksum', $('#box-customer-details :input').serialize())
 
-	$('#box-customer-details :input').on('input change', (e) => {
+	$('#box-customer-details :input').on('input change', function(e) {
 		if ($('#box-customer-details :input').serialize() != $('#box-customer-details').data('checksum')) {
 			$('#box-customer-details').prop('changed', true)
 			$('#box-customer-details button[name="save_customer_details"]').prop('disabled', false)
@@ -356,7 +356,7 @@
 	})
 
 	// Prevent losing form focus when clicking the label of a checkbox
-	$('#box-customer-details .form-check').on('click', (e) => {
+	$('#box-customer-details .form-check').on('click', function(e) {
 		$(this).find(':checkbox').trigger('focusin').trigger('focus')
 	})
 
@@ -364,7 +364,7 @@
 
 	let timerSubmitCustomer
 
-	$('#box-customer-details').on('focusout', () => {
+	$('#box-customer-details').on('focusout', function() {
 		timerSubmitCustomer = setTimeout(function() {
 			if ($(this).not(':focus')) {
 				if ($('#box-customer-details').prop('changed')) {
@@ -386,13 +386,13 @@
 		}, 200)
 	})
 
-	$('#box-customer-details').on('focusin', () => {
+	$('#box-customer-details').on('focusin', function() {
 		clearTimeout(timerSubmitCustomer)
 	})
 
 	// Process Data
 
-	$('#box-customer-details button[name="save_customer_details"]').on('click', (e) => {
+	$('#box-customer-details button[name="save_customer_details"]').on('click', function(e) {
 		e.preventDefault()
 
 		let formdata = $('#box-customer-details :input').serialize() + '&save_customer_details=true'

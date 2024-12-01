@@ -38,7 +38,7 @@
 	$('#modal-product-picker input[name="query"]').trigger('focus')
 
 	var xhr_product_picker = null
-	$('#modal-product-picker input[name="query"]').on('input', () => {
+	$('#modal-product-picker input[name="query"]').on('input', function() {
 
 		let $modal = $('#modal-product-picker')
 
@@ -54,10 +54,10 @@
 			cache: false,
 			url: '<?php echo document::ilink('catalog/products.json'); ?>?query=' + $(this).val(),
 			dataType: 'json',
-			beforeSend: (jqXHR) => {
+			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
 			},
-			success: (json) => {
+			success: function(json) {
 
 				$('tbody', $modal).html('')
 
@@ -72,7 +72,7 @@
 					$('tbody', $modal).html($output)
 				}
 
-				$.each(json, (i, row) => {
+				$.each(json, function(i, row) {
 
 					let $row = $([
 						'<tr>',
@@ -99,7 +99,7 @@
 		})
 	}).trigger('input').trigger('focus')
 
-	$('#modal-product-picker tbody').on('click', 'td', () => {
+	$('#modal-product-picker tbody').on('click', 'td', function() {
 
 		let $row = $(this).closest('tr'),
 			callback = $.featherlight.current().$currentTarget.data('callback'),

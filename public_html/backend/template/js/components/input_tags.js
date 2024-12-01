@@ -36,11 +36,11 @@
 
 		$tagField.remove = function(input){
 
-			$tagField.tags = $.grep($tagField.tags, (value) => {
+			$tagField.tags = $.grep($tagField.tags, function(value) {
 				return value != input
 			})
 
-			$('.tag .value', $tagField).each(() => {
+			$('.tag .value', $tagField).each(function() {
 				if ($(this).text() == input) {
 					$(this).parent('.tag').remove()
 				}
@@ -49,15 +49,15 @@
 			$tagField.trigger('change')
 		}
 
-		let tags = $.grep($originalInput.val().split(/\s*,\s*/), (value) => {
+		let tags = $.grep($originalInput.val().split(/\s*,\s*/), function(value) {
 			return value
 		})
 
-		$.each(tags, () => {
+		$.each(tags, function() {
 			$tagField.add(this)
 		})
 
-		$tagField.on('keypress', '.input', (e) => {
+		$tagField.on('keypress', '.input', function(e) {
 			if (e.which == 44 || e.which == 13) { // Comma or enter
 				e.preventDefault()
 				$tagField.add($(this).text())
@@ -65,16 +65,16 @@
 			}
 		})
 
-		$tagField.on('blur', '.input', () => {
+		$tagField.on('blur', '.input', function() {
 			$tagField.add($(this).text())
 			$(this).text('')
 		})
 
-		$tagField.on('click', '.remove', (e) => {
+		$tagField.on('click', '.remove', function(e) {
 			$tagField.remove($(this).siblings('.value').text())
 		})
 
-		$tagField.on('change', () => {
+		$tagField.on('change', function() {
 			$originalInput.val($tagField.tags.join(','))
 		})
 

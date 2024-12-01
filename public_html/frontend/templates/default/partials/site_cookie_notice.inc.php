@@ -12,18 +12,18 @@
 </div>
 
 <script>
-	$('button[name="accept_cookies"]').on('click', () => {
+	$('button[name="accept_cookies"]').on('click', function() {
 		$('#box-cookie-notice').fadeOut()
 		document.cookie = 'cookies_accepted=1; Max-Age=' + (365 * 24 * 60 * 60) +'; Path=<?php echo WS_DIR_APP; ?>; SameSite=Lax'
 		$('document').trigger('cookiesAccepted')
 	})
 
-	$('button[name="reject_cookies"]').on('click', () => {
+	$('button[name="reject_cookies"]').on('click', function() {
 		$('#box-cookie-notice').fadeOut()
 		document.cookie = 'cookies_accepted=0; Expires=0; Path=<?php echo WS_DIR_APP; ?>; SameSite=Lax'
 	})
 
-	$(document).on('cookiesAccepted', () => {
+	$(document).on('cookiesAccepted', function() {
 			// Run code here for when cookies are accepted
 	})
 

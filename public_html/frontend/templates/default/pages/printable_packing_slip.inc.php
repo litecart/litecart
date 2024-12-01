@@ -193,7 +193,7 @@ table.items tbody tr:nth-child(11) {
 </div>
 
 <script>
-	$('#actions button[name="print"]').on('click', () => {
+	$('#actions button[name="print"]').on('click', function() {
 		window.print()
 	})
 </script>

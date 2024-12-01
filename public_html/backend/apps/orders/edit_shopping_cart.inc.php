@@ -558,7 +558,7 @@
 
 <script>
 
-	$('select[name="currency_code"]').on('change', (e) => {
+	$('select[name="currency_code"]').on('change', function(e) {
 		$('input[name="currency_value"]').val($(this).find('option:selected').data('value'))
 		$('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text($(this).val())
 		calculate_total()
@@ -566,7 +566,7 @@
 
 	// Customer
 
-	$('#customer-details button[name="get_address"]').on('click', () => {
+	$('#customer-details button[name="get_address"]').on('click', function() {
 		$.ajax({
 			url: '<?php echo document::ilink('customers/get_address.json'); ?>',
 			type: 'post',
@@ -574,10 +574,10 @@
 			cache: true,
 			async: false,
 			dataType: 'json',
-			success: (data) => {
-				$.each(data, (key, value) => {
+			success: function(data) {
+				$.each(data, function(key, value) {
 					if (key.match(/^shipping_address/)) {
-						$.each(value, (key, value) => {
+						$.each(value, function(key, value) {
 							if ($('*[name="shipping_address['+key+']"]').length) $('*[name="shipping_address['+key+']"]').val(value).trigger('change')
 						})
 					} else {
@@ -615,11 +615,11 @@
 			cache: true,
 			async: false,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				$('select[name="billing_address[zone_code]"]').html('')
 				if ($('select[name="billing_address[zone_code]"]').is(':disabled')) $('select[name="billing_address[zone_code]"]').prop('disabled', false)
 				if (data) {
-					$.each(data, (i, zone) => {
+					$.each(data, function(i, zone) {
 						$('select[name="billing_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -629,14 +629,14 @@
 		})
 	})
 
-	$('#customer-details button[name="copy_billing_address"]').on('click', () => {
+	$('#customer-details button[name="copy_billing_address"]').on('click', function() {
 		fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone']
-		$.each(fields, (key, field) => {
+		$.each(fields, function(key, field) {
 			$('*[name="shipping_address['+ field +']"]').val($('*[name="billing_address['+ field +']"]').val()).trigger('change')
 		})
 	})
 
-	$('#customer-details select[name="shipping_address[country_code]"]').on('change', () => {
+	$('#customer-details select[name="shipping_address[country_code]"]').on('change', function() {
 
 		if ($(this).find('option:selected').data('postcode-format')) {
 			$('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'))
@@ -657,11 +657,11 @@
 			cache: true,
 			async: true,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				$('select[name="shipping_address[zone_code]"]').html('')
 				if ($('select[name="shipping_address[zone_code]"]').is(':disabled')) $('select[name="shipping_address[zone_code]"]').prop('disabled', false)
 				if (data) {
-					$.each(data, (i, zone) => {
+					$.each(data, function(i, zone) {
 						$('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
@@ -701,7 +701,7 @@
 		$('input[name="shipping_address[phone]"]').removeAttr('placeholder')
 	}
 
-	$('select[name="language_code"], select[name="currency_code"], input[name="currency_value"], :input[name^="customer"]').on('input', () => {
+	$('select[name="language_code"], select[name="currency_code"], input[name="currency_value"], :input[name^="customer"]').on('input', function() {
 		let params = {
 			language_code: $('select[name="language_code"]').val(),
 			currency_code: $('select[name="currency_code"]').val(),
@@ -729,7 +729,7 @@
 
 	// Shopping cart items
 
-	$('#shopping-cart-items').on('click', '.edit', () => {
+	$('#shopping-cart-items').on('click', '.edit', function() {
 		$.featherlight('#modal-edit-cart-item')
 
 		let modal = $('.featherlight.active'),
@@ -737,7 +737,7 @@
 
 		$(modal).data('row', row)
 
-		$.each($(modal).find(':input'), (i,element) => {
+		$.each($(modal).find(':input'), function(i,element) {
 			let field = $(element).attr('name')
 			let value = $(row).find(':input[name$="['+field+']"]').val()
 			if ($(modal).find(':input[name="'+field+'"]').attr('type') == 'number') value = parseFloat(value)
@@ -745,7 +745,7 @@
 		})
 	})
 
-	$('#shopping-cart-items .add-custom-item').on('click', () => {
+	$('#shopping-cart-items .add-custom-item').on('click', function() {
 		$.featherlight('#modal-add-cart-item')
 
 		let modal = $('.featherlight.active'),
@@ -754,7 +754,7 @@
 		$(modal).data('row', '')
 	})
 
-	$('#modal-edit-cart-item button[name="ok"]').on('click', (e) => {
+	$('#modal-edit-cart-item button[name="ok"]').on('click', function(e) {
 
 		let modal = $('.featherlight.active')
 		let row = $(modal).data('row')
@@ -766,14 +766,14 @@
 
 		if (row == '') {
 			let item = {}
-			$.each($(modal).find(':input'), (i,element) => {
+			$.each($(modal).find(':input'), function(i,element) {
 				let field = $(element).attr('name')
 				item[field] = $(modal).find(':input[name="'+field+'"]').val()
 			})
 			addItem(item)
 		}
 
-		$.each($(modal).find(':input'), (i,element) => {
+		$.each($(modal).find(':input'), function(i,element) {
 			let field = $(element).attr('name')
 			let value = $(modal).find(':input[name="'+field+'"]').val()
 			$(row).find(':input[name$="['+field+']"]').val(value).trigger('keyup')
@@ -783,7 +783,7 @@
 		$.featherlight.close()
 	})
 
-	$('#modal-add-cart-item button[name="ok"]').on('click', (e) => {
+	$('#modal-add-cart-item button[name="ok"]').on('click', function(e) {
 
 		let modal = $('.featherlight.active')
 		let row = $(modal).data('row')
@@ -794,7 +794,7 @@
 			'tax',
 		]
 
-		$.each($(modal).find(':input'), (i,element) => {
+		$.each($(modal).find(':input'), function(i,element) {
 			let field = $(element).attr('name')
 			item[field] = $(modal).find(':input[name="'+field+'"]').val()
 		})
@@ -842,7 +842,7 @@
 		calculate_total()
 	}
 
-	$('#shopping-cart-items').on('click', '.remove', (e) => {
+	$('#shopping-cart-items').on('click', '.remove', function(e) {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})
@@ -866,7 +866,7 @@
 		$('#box-shopping-cart-items .subtotal .tax').val(subtotal_tax.toMoney())
 	}
 
-	$('body').on('click keyup', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="shopping_cart_total"][name$="[value]"], input[name^="shopping_cart_total"][name$="[tax]"], input[name^="shopping_cart_total"][name$="[calculate]"], #shopping-cart-items a.remove, #shopping-cart-total a.remove', () => {
+	$('body').on('click keyup', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="shopping_cart_total"][name$="[value]"], input[name^="shopping_cart_total"][name$="[tax]"], input[name^="shopping_cart_total"][name$="[calculate]"], #shopping-cart-items a.remove, #shopping-cart-total a.remove', function() {
 		calculate_total()
 	})
 </script>

@@ -301,7 +301,7 @@ table tbody .toggle {
 		}
 	})
 
-	$('form[name="search_form"] select').on('change', () => {
+	$('form[name="search_form"] select').on('change', function() {
 		$(this).closest('form').submit()
 	})
 

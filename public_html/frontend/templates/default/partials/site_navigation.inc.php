@@ -230,11 +230,11 @@
 </div>
 
 <script>
-	$('.navbar .navbar-toggle').on('click', () => {
+	$('.navbar .navbar-toggle').on('click', function() {
 		$(this).closest('.navbar').toggleClass('expanded')
 	})
 
-	$('#site-navigation .search').on('click', () => {
+	$('#site-navigation .search').on('click', function() {
 		$(this).find('input[name="query"]').trigger('focus')
 	})
 </script>

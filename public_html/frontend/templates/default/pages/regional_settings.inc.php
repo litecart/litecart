@@ -84,7 +84,7 @@
 		$('#regional-settings .title').remove()
 	}
 
-	$('select[name="country_code"]').on('change', () => {
+	$('select[name="country_code"]').on('change', function() {
 
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -92,11 +92,11 @@
 			cache: true,
 			async: true,
 			dataType: 'json',
-			success: (data) => {
+			success: function(data) {
 				$('select[name="zone_code"]').html('')
 				if ($('select[name="zone_code"]').is(':disabled')) $('select[name="zone_code"]').prop('disabled', false)
 				if (data) {
-					$.each(data, (i, zone) => {
+					$.each(data, function(i, zone) {
 						$('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {

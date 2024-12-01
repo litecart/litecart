@@ -254,7 +254,7 @@ hr {
 </button>
 
 <script>
-	$('button[name="print"]').on('click', () => {
+	$('button[name="print"]').on('click', function() {
 		window.print()
 	})
 </script>

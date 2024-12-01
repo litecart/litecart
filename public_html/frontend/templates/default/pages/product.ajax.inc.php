@@ -202,25 +202,25 @@ form[name="buy_now_form"] .dropdown-menu .image {
 </article>
 
 <script>
-	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', (e) => {
+	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', function(e) {
 
 		var regular_price = <?php echo currency::format_raw($regular_price); ?>,
 			sales_price = <?php echo currency::format_raw($campaign_price ?: $regular_price); ?>,
 			tax = <?php echo currency::format_raw($total_tax); ?>
 
-		$(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(() => {
+		$(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function() {
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
 			if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
 			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust')
 		})
 
-		$(this).find('select option:checked').each(() => {
+		$(this).find('select option:checked').each(function() {
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
 			if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
 			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust')
 		})
 
-		$(this).find('input[type!="radio"][type!="checkbox"]').each(() => {
+		$(this).find('input[type!="radio"][type!="checkbox"]').each(function() {
 			if ($(this).val() != '') {
 				if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
 				if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
@@ -234,7 +234,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 		$(this).find('.total-tax').text(tax.toMoney())
 	})
 
-	$('#box-product form[name="buy_now_form"] .options :input').on('change', () => {
+	$('#box-product form[name="buy_now_form"] .options :input').on('change', function() {
 
 		$.ajax({
 			type: 'post',
@@ -242,7 +242,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			data: $(this).closest('form').serialize(),
 			dataType: 'json',
 			cache: false,
-			success: (data) => {
+			success: function(data) {
 				if (data.status == 'ok') {
 					$('.stock-notice').text(data.notice).removeClass('warning')
 				} else if (data.status == 'warning') {
@@ -254,7 +254,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 		})
 	})
 
-	$('#box-product[data-id="{{product_id}}"] .social-bookmarks .link').off().on('click', (e) => {
+	$('#box-product[data-id="{{product_id}}"] .social-bookmarks .link').off().on('click', function(e) {
 		e.preventDefault()
 		prompt("<?php echo language::translate('text_link_to_this_product', 'Link to this product'); ?>", '{{link}}')
 	})

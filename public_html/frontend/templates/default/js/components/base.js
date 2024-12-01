@@ -24,7 +24,7 @@
 	}
 
 	// Keep-alive
-	let keepAlive = setInterval(() => {
+	let keepAlive = setInterval(function() {
 		$.get({
 			url: window._env.platform.path + 'ajax/cart.json',
 			cache: false
@@ -40,7 +40,7 @@
 		let $sidebar = $('#sidebar')
 			//let sidebar_max_offset = $sidebar.parent().height() - $sidebar.height() - 200; // Failsafe 30
 
-		$(window).on('resize scroll', (e) => {
+		$(window).on('resize scroll', function(e) {
 			if ($(window).width() >= 768 && ($sidebar.parent().height() - $sidebar.height()) > 500) {
 				let offset = $(this).scrollTop() * .6
 				if (offset > 0) $sidebar.css('margin-top', offset + 'px')
@@ -52,14 +52,14 @@
 
 
 	// Off-Canvas Sidebar (data-toggle="offcanvas-collapse")
-	$('[data-toggle="offcanvas"]').on('click', () => {
+	$('[data-toggle="offcanvas"]').on('click', function() {
 		$(this).closest('.navbar').toggleClass('expanded')
 		$('body').toggleClass('offcanvas-open', $(this).closest('.navbar').hasClass('expanded'))
 		$('body').css('overflow', $(this).closest('.navbar').hasClass('expanded') ? 'hidden' : '')
 	})
 
 	// Scroll Up
-	$(window).scroll(() => {
+	$(window).scroll(function() {
 		if ($(this).scrollTop() > 300) {
 			$('#scroll-up').fadeIn()
 		} else {
@@ -67,7 +67,7 @@
 		}
 	})
 
-	$('#scroll-up').on('click', () => {
+	$('#scroll-up').on('click', function() {
 		$('html, body').animate({scrollTop: 0}, 1000, 'easeOutBounce')
 		return false
 	})

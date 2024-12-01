@@ -247,12 +247,12 @@
 </div>
 
 <script>
-	$('input[name="apps_toggle"]').on('change', () => {
+	$('input[name="apps_toggle"]').on('change', function() {
 		$('input[name^="apps"][name$="[status]"]').prop('disabled', !$(this).is(':checked'))
 		$('input[name^="apps"][name$="[docs][]"]').prop('disabled', !$(this).is(':checked'))
 	}).trigger('change')
 
-	$('input[name^="apps"][name$="[status]"]').on('change', () => {
+	$('input[name^="apps"][name$="[status]"]').on('change', function() {
 		if ($(this).prop('checked')) {
 			if (!$(this).closest('[data-app]').find('ul :input:checked').length) {
 				$(this).closest('[data-app]').find('ul :input').prop('checked', true)
@@ -268,7 +268,7 @@
 		}
 	})
 
-	$('input[name="widgets_toggle"]').on('change', () => {
+	$('input[name="widgets_toggle"]').on('change', function() {
 		$('input[name^="widgets["]').prop('disabled', !$(this).is(':checked'))
 	}).trigger('change')
 </script>

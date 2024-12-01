@@ -1,5 +1,5 @@
 	// Listing: Add to cart
-	$('.listing.products .product button[name="add_cart_product"]').on('click', (e) => {
+	$('.listing.products .product button[name="add_cart_product"]').on('click', function(e) {
 		e.preventDefault()
 
 		let $button = $(this),
@@ -45,7 +45,7 @@
 	})
 
 	// Add to cart animation
-	$('body').on('submit', 'form[name="buy_now_form"]', (e) => {
+	$('body').on('submit', 'form[name="buy_now_form"]', function(e) {
 		e.preventDefault()
 
 		let $form = $(this),
@@ -89,7 +89,7 @@
 			})
 	})
 
-	$('body').on('click', 'button[name="remove_cart_item"]', (e) => {
+	$('body').on('click', 'button[name="remove_cart_item"]', function(e) {
 		updateCart('remove_cart_item='+ $(this).val())
 	})
 
@@ -105,16 +105,16 @@
 				async: true,
 				dataType: 'json',
 
-				beforeSend: (jqXHR) => {
+				beforeSend: function(jqXHR) {
 					jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'))
 				},
 
-				error: (jqXHR, textStatus, errorThrown) => {
+				error: function(jqXHR, textStatus, errorThrown) {
 					$('#animated-cart-item').remove()
 					if (data) alert('Error while updating cart')
 				},
 
-				success: (result) => {
+				success: function(result) {
 
 					if (result.alert) {
 						$('#animated-cart-item').remove()
@@ -126,7 +126,7 @@
 					$('#site-navigation .shopping-cart ul .item').remove()
 
 					let html = ''
-					$.each(result.items, (key, item) => {
+					$.each(result.items, function(key, item) {
 						html += [
 							'<li class="item">',
 							'  <div class="row">',

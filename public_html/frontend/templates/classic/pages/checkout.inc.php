@@ -39,7 +39,7 @@
 
 	window.queueUpdateTask = function(component, data, refresh) {
 
-		updateQueue = jQuery.grep(updateQueue, (tasks) => {
+		updateQueue = jQuery.grep(updateQueue, function(tasks) {
 			return (tasks.component == component) ? false : true
 		})
 
@@ -128,22 +128,22 @@
 			url: url,
 			data: task.data,
 			dataType: 'html',
-			beforeSend: (jqXHR) => {
+			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=<?php echo mb_http_output(); ?>')
 			},
-			error: (jqXHR, textStatus, errorThrown) => {
+			error: function(jqXHR, textStatus, errorThrown) {
 				$('#box-checkout .'+ task.component +'.wrapper').html('An unexpected error occurred, try reloading the page.')
 			},
-			success: (html) => {
+			success: function(html) {
 				if (task.refresh) $('#box-checkout .'+ task.component +'.wrapper').html(html).fadeTo('fast', 1)
 				if (task.component == 'summary') {
 					$(':input[name="comments"]').val(comments)
 					$(':input[name="terms_agreed"]').prop('checked', terms_agreed)
 				}
 			},
-			complete: (html) => {
+			complete: function(html) {
 				if (!updateQueue.length) {
-					$('body > .loader-wrapper').fadeOut('fast', () => {
+					$('body > .loader-wrapper').fadeOut('fast', function() {
 						$(this).remove()
 					})
 				}
@@ -157,7 +157,7 @@
 
 	// Customer Form: Process Data
 
-	$('#box-checkout .customer.wrapper').on('click', 'button[name="save_customer_details"]', (e) => {
+	$('#box-checkout .customer.wrapper').on('click', 'button[name="save_customer_details"]', function(e) {
 		e.preventDefault()
 		let data = [
 			$('#box-checkout-customer :input').serialize(),
@@ -174,7 +174,7 @@
 
 	// Shipping Form: Process Data
 
-	$('#box-checkout .shipping.wrapper').on('click', '.option:not(.active):not(.disabled)', () => {
+	$('#box-checkout .shipping.wrapper').on('click', '.option:not(.active):not(.disabled)', function() {
 		$('#box-checkout-shipping .option').removeClass('active')
 		$(this).find('input[name="shipping_address[option_id]"]').prop('checked', true).trigger('change')
 		$(this).addClass('active')
@@ -190,7 +190,7 @@
 
 	// Payment Form: Process Data
 
-	$('#box-checkout .payment.wrapper').on('click', '.option:not(.active):not(.disabled)', () => {
+	$('#box-checkout .payment.wrapper').on('click', '.option:not(.active):not(.disabled)', function() {
 		$('#box-checkout-payment .option').removeClass('active')
 		$(this).find('input[name="payment[option_id]"]').prop('checked', true).trigger('change')
 		$(this).addClass('active')

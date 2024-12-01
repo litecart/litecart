@@ -53,7 +53,7 @@
 </div>
 
 <script>
-	$('#cart > a').on('click', (e) => {
+	$('#cart > a').on('click', function(e) {
 		e.preventDefault()
 		$('body').toggleClass('cart-open')
 	})

@@ -226,7 +226,7 @@
 </div>
 
 <script>
-	$('#address-format-hint').on('click', () => {
+	$('#address-format-hint').on('click', function() {
 		alert(
 			'<?php echo language::translate('title_syntax', 'Syntax'); ?>:\n\n' +
 			'%company, %firstname, %lastname, \n' +
@@ -240,7 +240,7 @@
 	let new_zone_index = 0
 	while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++
 
-	$('form[name="country_form"] .add').on('click', (e) => {
+	$('form[name="country_form"] .add').on('click', function(e) {
 		e.preventDefault()
 		if ($('select[name="country[code]"]').find('option:selected').val() == '') return
 
@@ -260,7 +260,7 @@
 		$(this).closest('table').find('tbody').append(output)
 	})
 
-	$('form[name="country_form"]').on('click', '.remove', (e) => {
+	$('form[name="country_form"]').on('click', '.remove', function(e) {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})

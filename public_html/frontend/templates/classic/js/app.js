@@ -1,7 +1,7 @@
 	// Alerts
-	$('body').on('click', '.alert .close', (e) => {
+	$('body').on('click', '.alert .close', function(e) {
 		e.preventDefault();
-		$(this).closest('.alert').fadeOut('fast', () => {$(this).remove()});
+		$(this).closest('.alert').fadeOut('fast', function() {$(this).remove()});
 	});
 
 	// Form required asterix
@@ -25,7 +25,7 @@
 
 	// Detect scroll direction
 	let lastScrollTop = 0;
-	$(document).on('scroll', () => {
+	$(document).on('scroll', function() {
 		 var scrollTop = $(this).scrollTop();
 		 if (scrollTop > lastScrollTop) {
 			 $('body').addClass('scrolling-down');
@@ -42,7 +42,7 @@
 			var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
 			var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
 
-			$(window).on('resize scroll', (e) => {
+			$(window).on('resize scroll', function(e) {
 				if (sidebar_max_offset) {
 					var parallax_rate = 0.4;
 
@@ -59,18 +59,18 @@
 	}
 
 	// Tabs (data-toggle="tab")
-	$('.nav-tabs').each(() => {
+	$('.nav-tabs').each(function() {
 		if (!$(this).find('.active').length) {
 			$(this).find('[data-toggle="tab"]:first').addClass('active');
 		}
 
-		$(this).on('select', '[data-toggle="tab"]', () => {
+		$(this).on('select', '[data-toggle="tab"]', function() {
 			$(this).siblings().removeClass('active');
 			$(this).addClass('active');
 			$($(this).attr('href')).show().siblings().hide();
 		});
 
-		$(this).on('click', '[data-toggle="tab"]', (e) => {
+		$(this).on('click', '[data-toggle="tab"]', function(e) {
 			e.preventDefault();
 			$(this).trigger('select');
 			history.replaceState({}, '', location.toString().replace(/#.*$/, '') + $(this).attr('href'));
@@ -84,14 +84,14 @@
 	}
 
 	// Data-Table Toggle Checkboxes
-	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"]', () => {
+	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"]', function() {
 		$(this).closest('.data-table').find('tbody :checkbox').each(function() {
 			$(this).prop('checked', !$(this).prop('checked'));
 		});
 		return false;
 	});
 
-	$('.data-table tbody tr').on('click', (e) => {
+	$('.data-table tbody tr').on('click', function(e) {
 		if ($(e.target).is(':input')) return;
 		if ($(e.target).is('a, a *')) return;
 		if ($(e.target).is('th')) return;
@@ -99,7 +99,7 @@
 	});
 
 	// Offcanvas
-	$('[data-toggle="offcanvas"]').on('click', (e) => {
+	$('[data-toggle="offcanvas"]').on('click', function(e) {
 		e.preventDefault();
 		var target = $(this).data('target');
 		if ($(target).hasClass('show')) {
@@ -113,14 +113,14 @@
 		}
 	});
 
-	$('.offcanvas [data-toggle="dismiss"]').on('click', (e) => {
+	$('.offcanvas [data-toggle="dismiss"]').on('click', function(e) {
 		$('.offcanvas').removeClass('show');
 		$('[data-toggle="offcanvas"]').removeClass('toggled');
 		$('body').removeClass('has-offcanvas');
 	});
 
 	// Password Strength
-	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', () => {
+	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function() {
 
 		$(this).siblings('meter').remove();
 
@@ -145,7 +145,7 @@
 	});
 
 	// Scroll Up
-	$(window).scroll(() => {
+	$(window).scroll(function() {
 		if ($(this).scrollTop() > 100) {
 			$('#scroll-up').fadeIn();
 		} else {
@@ -153,7 +153,7 @@
 		}
 	});
 
-	$('#scroll-up').on('click', () => {
+	$('#scroll-up').on('click', function() {
 		$('html, body').animate({scrollTop: 0}, 1000, 'swing');
 		return false;
 	});
@@ -170,22 +170,22 @@
 			async: true,
 			dataType: 'json',
 
-			beforeSend: (jqXHR) => {
+			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'));
 			},
 
-			error: (jqXHR, textStatus, errorThrown) => {
+			error: function(jqXHR, textStatus, errorThrown) {
 				if (data) alert('Error while updating cart');
 			},
 
-			success: (json) => {
+			success: function(json) {
 
 				if (json['alert']) alert(json['alert']);
 
 				$('#cart .items').html('');
 
 				if (json['items']) {
-					$.each(json['items'], (i, item) => {
+					$.each(json['items'], function(i, item) {
 						$('#cart .items').append('<li><a href="'+ item.link +'">'+ item.quantity +' x '+ item.name +' - '+ item.formatted_price +'</a></li>');
 					});
 
@@ -206,7 +206,7 @@
 	setTimeout('updateCart', 60e3); // Keeps session alive
 
 	// Add to cart animation
-	$('body').on('submit', 'form[name="buy_now_form"]', (e) => {
+	$('body').on('submit', 'form[name="buy_now_form"]', function(e) {
 		e.preventDefault();
 		var form = $(this);
 		$(this).find('button[name="add_cart_product"]').animate_from_to('#cart', {
@@ -235,7 +235,7 @@
  */
 +function ($) {
 	$.fn.animate_from_to = function(targetElm, options){
-		return this.each(() => {
+		return this.each(function() {
 			animate_from_to(this, targetElm, options);
 		});
 	};

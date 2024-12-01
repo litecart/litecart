@@ -71,7 +71,7 @@
 	}
 
 	// Keep-alive
-	let keepAlive = setInterval(() => {
+	let keepAlive = setInterval(function() {
 		$.get({
 			url: window._env.platform.path + 'ajax/cart.json',
 			cache: false

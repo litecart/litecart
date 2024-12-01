@@ -399,10 +399,10 @@
 
 <script>
 
-	$('form[name="filter_form"]').on('input', ':input', () => {
+	$('form[name="filter_form"]').on('input', ':input', function() {
 		$('#tokens').html('')
 
-		$.each($('form[name="filter_form"] input[type="checkbox"]:checked, form[name="filter_form"] input[type="radio"]:checked'), (i,el) => {
+		$.each($('form[name="filter_form"] input[type="checkbox"]:checked, form[name="filter_form"] input[type="radio"]:checked'), function(i,el) {
 			if (!$(this).val()) return
 
 			var $token = $('<span class="token"></span>')
@@ -416,13 +416,13 @@
 		})
 	})
 
-	$('form[name="filter_form"]').on('change', ':input', () => {
+	$('form[name="filter_form"]').on('change', ':input', function() {
 		$('form[name="filter_form"]').submit()
 	})
 
 	$('form[name="filter_form"] :input').first().trigger('input')
 
-	$('#tokens').on('click', '.remove', (e) => {
+	$('#tokens').on('click', '.remove', function(e) {
 
 		e.preventDefault()
 		var token = $(this).closest('.token')
@@ -444,7 +444,7 @@
 	})
 
 
-	$('textarea[name^="translations"]').on('input', () => {
+	$('textarea[name^="translations"]').on('input', function() {
 		$(this).height('auto').height($(this).prop('scrollHeight') + 'px')
 	}).trigger('input')
 
@@ -455,7 +455,7 @@
 	}).first().trigger('change')
 
 
-	$('#translator-tool select').on('change', (e) => {
+	$('#translator-tool select').on('change', function(e) {
 
 		var $modal = $(this).closest('.featherlight'),
 			from_language_code = $modal.find('select[name="from_language_code"]').val(),
@@ -464,7 +464,7 @@
 
 		if (!from_language_code || !to_language_code) return
 
-		$.each($(':input[name^="translations"][name$="[text_'+ from_language_code +']"]'), (i) => {
+		$.each($(':input[name^="translations"][name$="[text_'+ from_language_code +']"]'), function(i) {
 			var source = $(this).val(),
 				translation = $(this).closest('tr').find(':input[name^="translations"][name$="[text_'+ to_language_code +']"]').val()
 
@@ -478,11 +478,11 @@
 		$modal.find(':input[name="source"]').val(translations).select()
 	})
 
-	$('#translator-tool :input[name="source"]').on('focus', (e) => {
+	$('#translator-tool :input[name="source"]').on('focus', function(e) {
 		$(this).select()
 	})
 
-	$('#translator-tool button[name="prefill_fields"]').on('click', () => {
+	$('#translator-tool button[name="prefill_fields"]').on('click', function() {
 		var $modal = $(this).closest('.featherlight'),
 			 translated = $modal.find(':input[name="result"]').val().trim()
 
@@ -493,7 +493,7 @@
 			return false
 		}
 
-		$.each(translated, (i) => {
+		$.each(translated, function(i) {
 
 			var matches = translated[i].trim().match(/^\[([0-9]+)\] = (.*)$/),
 				index = matches[1],

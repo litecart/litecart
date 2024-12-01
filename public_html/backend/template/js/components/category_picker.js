@@ -6,7 +6,7 @@
 +function() {
 
 	$.fn.categoryPicker = function(config){
-		this.each(() => {
+		this.each(function() {
 
 			this.xhr = null
 			this.config = config
@@ -15,11 +15,11 @@
 
 			$(this).find('.dropdown input[type="search"]').on({
 
-				'focus': (e) => {
+				'focus': function(e) {
 					$(self).find('.dropdown').addClass('open')
 				},
 
-				'input': (e) => {
+				'input': function(e) {
 						let dropdownMenu = $(self).find('.dropdown-menu')
 
 						$(dropdownMenu).html('')
@@ -28,11 +28,11 @@
 
 						if ($(this).val() == '') {
 
-							$.getJSON(self.config.link, (result) => {
+							$.getJSON(self.config.link, function(result) {
 
 								$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>')
 
-								$.each(result.subcategories, (i, category) => {
+								$.each(result.subcategories, function(i, category) {
 									$(dropdownMenu).append(
 										'<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
 										'  ' + self.config.icons.folder +
@@ -53,16 +53,16 @@
 							url: self.config.link + '&query=' + $(this).val(),
 							dataType: 'json',
 
-							beforeSend: (jqXHR) => {
+							beforeSend: function(jqXHR) {
 								jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
 							},
 
-							error: (jqXHR, textStatus, errorThrown) => {
+							error: function(jqXHR, textStatus, errorThrown) {
 								if (errorThrown == 'abort') return
 								alert(errorThrown)
 							},
 
-							success: (result) => {
+							success: function(result) {
 
 								if (!result.subcategories.length) {
 									$(dropdownMenu).html('<li class="dropdown-item text-center no-results"><em>:(</em></li>')
@@ -71,7 +71,7 @@
 
 								$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ self.config.translations.search_results +'</h3></li>')
 
-								$.each(result.subcategories, (i, category) => {
+								$.each(result.subcategories, function(i, category) {
 									$(dropdownMenu).append(
 										'<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
 										'  ' + self.config.icons.folder +
@@ -85,12 +85,12 @@
 					}
 			})
 
-			$(this).on('click', '.dropdown-menu .dropdown-item a', (e) => {
+			$(this).on('click', '.dropdown-menu .dropdown-item a', function(e) {
 				e.preventDefault()
 
 				let dropdownMenu = $(this).closest('.dropdown-menu')
 
-				$.getJSON($(this).data('link'), (result) => {
+				$.getJSON($(this).data('link'), function(result) {
 
 					$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>')
 
@@ -103,7 +103,7 @@
 						)
 					}
 
-					$.each(result.subcategories, (i, category) => {
+					$.each(result.subcategories, function(i, category) {
 						$(dropdownMenu).append(
 							'<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
 							'  ' + self.config.icons.folder +
@@ -115,13 +115,13 @@
 				})
 			})
 
-			$(this).on('click', '.dropdown-menu .dropdown-item button.add', (e) => {
+			$(this).on('click', '.dropdown-menu .dropdown-item button.add', function(e) {
 				e.preventDefault()
 
 				let category = $(this).closest('li'),
 						abort = false
 
-				$(self).find('input[name="'+ self.config.inputName +'"]').each(() => {
+				$(self).find('input[name="'+ self.config.inputName +'"]').each(function() {
 					if ($(this).val() == category.data('id')) {
 						abort = true
 						return
@@ -145,12 +145,12 @@
 				return false
 			})
 
-			$(this).find('.categories').on('click', '.remove', (e) => {
+			$(this).find('.categories').on('click', '.remove', function(e) {
 				$(this).closest('li').remove()
 				$(self).trigger('change')
 			})
 
-			$('body').on('mousedown', (e) => {
+			$('body').on('mousedown', function(e) {
 				if ($('.dropdown.open').has(e.target).length === 0) {
 					$('.dropdown.open').removeClass('open')
 				}

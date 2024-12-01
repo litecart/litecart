@@ -154,7 +154,7 @@
 }(jQuery);
 
 	// Dropdown Select
-	$('.dropdown .form-select + .dropdown-menu :input').on('input', (e) => {
+	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e) {
 
 		let $dropdown = $(this).closest('.dropdown');
 		let $input = $dropdown.find(':input:checked');
@@ -173,7 +173,7 @@
 		$dropdown.trigger('click.bs.dropdown');
 	});
 
-	$('.data-table tbody tr').on('click', (e) => {
+	$('.data-table tbody tr').on('click', function(e) {
 		if ($(e.target).is(':input')) return;
 		if ($(e.target).is('a, a *')) return;
 		if ($(e.target).is('th')) return;

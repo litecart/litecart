@@ -681,11 +681,11 @@ textarea.warning {
 	let new_tab_index = 1
 	while ($('.tab-pane[id="tab-'+new_tab_index+'"]').length) new_tab_index++
 
-	$('.nav-tabs').on('click', '[data-toggle="tab"]', (e) => {
+	$('.nav-tabs').on('click', '[data-toggle="tab"]', function(e) {
 		$($(this).attr('href')).find(':input[name$="[content]"]').trigger('input')
 	})
 
-	$('.nav-tabs .add').on('click', (e) => {
+	$('.nav-tabs .add').on('click', function(e) {
 		e.preventDefault()
 
 		let tab = '<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'"><span class="file">new'+ new_tab_index +'</span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('icon-times'); ?></span></a>'
@@ -702,7 +702,7 @@ textarea.warning {
 		$(this).prev().trigger('click')
 	})
 
-	$('.nav-tabs').on('click', '.remove', (e) => {
+	$('.nav-tabs').on('click', '.remove', function(e) {
 		e.preventDefault()
 
 		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false
@@ -730,7 +730,7 @@ textarea.warning {
 		})
 	}
 
-	$('#files').on('change', ':input[name$="[type]"]', (e) => {
+	$('#files').on('change', ':input[name$="[type]"]', function(e) {
 		e.preventDefault()
 		let match_type = $(this).val()
 
@@ -753,7 +753,7 @@ textarea.warning {
 		$(this).closest('.operation').find(':input[name$="[find][content]"]').trigger('input')
 	})
 
-	$('#files').on('change', ':input[name$="[method]"]', (e) => {
+	$('#files').on('change', ':input[name$="[method]"]', function(e) {
 		e.preventDefault()
 
 		let method = $(this).val()
@@ -767,14 +767,14 @@ textarea.warning {
 
 	$('#files :input[name$="[method]"]').trigger('change')
 
-	$('body').on('input', 'textarea.form-code', () => {
+	$('body').on('input', 'textarea.form-code', function() {
 		$(this).css('height', '')
 		$(this).css('height', Math.min(this.scrollHeight + 10, 250) + 'px')
 	})
 
 	$('textarea.form-code').trigger('input')
 
-	$('.tab-content').on('input', ':input[name^="files"][name$="[name]"]', () => {
+	$('.tab-content').on('input', ':input[name^="files"][name$="[name]"]', function() {
 		let $tab_pane = $(this).closest('.tab-pane'),
 		 tab_index = $(this).closest('.tab-pane').attr('id').replace(/^tab-/, ''),
 		 tab_name = $tab_pane.find('input[name$="[name]"]').val()
@@ -784,10 +784,10 @@ textarea.warning {
 		let file_pattern = $(this).closest('.row').find(':input[name^="files"][name$="[name]"]').val(),
 			url = '<?php echo document::ilink(__APP__.'/sources', ['pattern' => 'thepattern']); ?>'.replace(/thepattern/, file_pattern)
 
-		$.get(url, (result) => {
+		$.get(url, function(result) {
 			$tab_pane.find('.sources').html('')
 
-			$.each(result, (file, source_code) => {
+			$.each(result, function(file, source_code) {
 
 				var $script = $(
 					'<div class="script">' +
@@ -809,7 +809,7 @@ textarea.warning {
 
 	let new_operation_index = $(':input[name$="[find][content]"]').length || 0
 
-	$('#files').on('click', '.add', (e) => {
+	$('#files').on('click', '.add', function(e) {
 		e.preventDefault()
 
 		let $operations = $(this).closest('.tab-pane').find('.operations'),
@@ -823,7 +823,7 @@ textarea.warning {
 		reindex_operations($operations)
 	})
 
-	$('#files').on('click', '.move-up, .move-down', (e) => {
+	$('#files').on('click', '.move-up, .move-down', function(e) {
 		e.preventDefault()
 
 		let $row = $(this).closest('.operation'),
@@ -838,7 +838,7 @@ textarea.warning {
 		reindex_operations($operations)
 	})
 
-	$('#files').on('click', '.remove', (e) => {
+	$('#files').on('click', '.remove', function(e) {
 		e.preventDefault()
 
 		let $operations = $(this).closest('.operations')
@@ -852,7 +852,7 @@ textarea.warning {
 	})
 
 	// Validate operation
-	$('#files').on('input', ':input[name*="[find]"]', () => {
+	$('#files').on('input', ':input[name*="[find]"]', function() {
 
 		let $tab = $(this).closest('.tab-pane'),
 			$operation = $(this).closest('.operation'),
@@ -930,7 +930,7 @@ textarea.warning {
 					throw new Error('Unknown error')
 			}
 
-			$.each($tab.find('.script'), () => {
+			$.each($tab.find('.script'), function() {
 
 				let regex = new RegExp(find, regex_flags),
 					source = $(this).find('.form-code').text(),
@@ -965,7 +965,7 @@ textarea.warning {
 	let new_alias_index = 0
 	while ($(':input[name^="aliases['+new_alias_index+']"]').length) new_alias_index++
 
-	$('button[name="add_alias"]').on('click', () => {
+	$('button[name="add_alias"]').on('click', function() {
 
 		let output = [
 			'<fieldset class="alias">',
@@ -997,7 +997,7 @@ textarea.warning {
 		$('.aliases').append(output)
 	})
 
-	$('#aliases').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', (e) => {
+	$('#aliases').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
 		e.preventDefault()
 
 		let $row = $(this).closest('.alias')
@@ -1009,7 +1009,7 @@ textarea.warning {
 		}
 	})
 
-	$('#aliases').on('click', 'button[name$="[remove]"]', (e) => {
+	$('#aliases').on('click', 'button[name$="[remove]"]', function(e) {
 		e.preventDefault()
 
 		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return
@@ -1020,7 +1020,7 @@ textarea.warning {
 	let new_setting_index = 0
 	while ($(':input[name^="settings['+new_setting_index+']"]').length) new_setting_index++
 
-	$('button[name="add_setting"]').on('click', () => {
+	$('button[name="add_setting"]').on('click', function() {
 
 		let output = [
 			'<fieldset class="setting">',
@@ -1069,7 +1069,7 @@ textarea.warning {
 		$('#settings').append(output)
 	})
 
-	$('#settings').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', (e) => {
+	$('#settings').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
 		e.preventDefault()
 
 		let $row = $(this).closest('.setting')
@@ -1081,7 +1081,7 @@ textarea.warning {
 		}
 	})
 
-	$('#settings').on('click', 'button[name$="[remove]"]', (e) => {
+	$('#settings').on('click', 'button[name$="[remove]"]', function(e) {
 		e.preventDefault()
 
 		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return
@@ -1092,7 +1092,7 @@ textarea.warning {
 	let new_upgrade_patch_index = 0
 	while ($(':input[name^="upgrades['+new_upgrade_patch_index+']"]').length) new_upgrade_patch_index++
 
-	$('button[name="add_patch"]').on('click', () => {
+	$('button[name="add_patch"]').on('click', function() {
 
 		let output = [
 			'<fieldset class="upgrade">',
@@ -1112,12 +1112,12 @@ textarea.warning {
 		$('.upgrades').append(output)
 	})
 
-	$('.card-action button[name="delete"]').on('click', (e) => {
+	$('.card-action button[name="delete"]').on('click', function(e) {
 		e.preventDefault()
 		$.featherlight('#modal-uninstall')
 	})
 
-	$('body').on('click', '.featherlight button[name="cancel"]', (e) => {
+	$('body').on('click', '.featherlight button[name="cancel"]', function(e) {
 		$.featherlight.close()
 	})
 </script>

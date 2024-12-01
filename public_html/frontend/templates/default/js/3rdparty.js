@@ -8,6 +8,6 @@
 	}
 
 	// Execute third party code here that needs cookie consent
-	$(document).on('cookiesAccepted', () => {
+	$(document).on('cookiesAccepted', function() {
 			// ...
 	});

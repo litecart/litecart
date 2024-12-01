@@ -26,7 +26,7 @@
 </div>
 
 <script>
-	setTimeout(() => {
+	setTimeout(function() {
 		$('#notices').fadeOut('slow')
 	}, 20e3)
 </script>

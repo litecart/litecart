@@ -145,7 +145,7 @@
 		}
 
 		document::$javascript[] = implode(PHP_EOL, [
-			'$(\'textarea[name="'. $name .'"]\').on(\'keydown\', (e) => {',
+			'$(\'textarea[name="'. $name .'"]\').on(\'keydown\', function(e) {',
 			'  if (e.keyCode != 9) return;',
 			'  e.preventDefault();',
 			' var start = this.selectionStart, end = this.selectionEnd;',
@@ -214,14 +214,14 @@
 		]);
 
 		document::$javascript['table2csv'] = implode(PHP_EOL, [
-			'$(\'table[data-toggle="csv"]\').on(\'click\', \'button[name="remove_row"]\', (e) => {',
+			'$(\'table[data-toggle="csv"]\').on(\'click\', \'button[name="remove_row"]\', function(e) {',
 			'  e.preventDefault();',
 			'  var parent = $(this).closest(\'tbody\');',
 			'  $(this).closest(\'tr\').remove();',
 			'  $(parent).trigger(\'input\');',
 			'});',
 			'',
-			'$(\'table[data-toggle="csv"] button[name="add_row"]\').on(\'click\', (e) => {',
+			'$(\'table[data-toggle="csv"] button[name="add_row"]\').on(\'click\', function(e) {',
 			'  e.preventDefault();',
 			'  var n = $(this).closest(\'table\').find(\'thead th:not(:last-child)\').length;',
 			'  $(this).closest(\'table\').find(\'tbody\').append(',
@@ -229,7 +229,7 @@
 			'  ).trigger(\'input\');',
 			'});',
 			'',
-			'$(\'table[data-toggle="csv"] button[name="add_column"]\').on(\'click\', (e) => {',
+			'$(\'table[data-toggle="csv"] button[name="add_column"]\').on(\'click\', function(e) {',
 			'  e.preventDefault();',
 			'  var $table = $(this).closest(\'table\');',
 			'  var title = prompt("'. functions::escape_js(language::translate('title_column_title', 'Column Title')) .'");',
@@ -240,7 +240,7 @@
 			'  $(this).trigger(\'input\');',
 			'});',
 			'',
-			'$(\'table[data-toggle="csv"]\').on(\'input\', (e) => {',
+			'$(\'table[data-toggle="csv"]\').on(\'input\', function(e) {',
 			'   var csv = $(this).find(\'thead tr, tbody tr\').map(function (i, row) {',
 			'      return $(row).find(\'th:not(:last-child),td:not(:last-child)\').map(function (j, col) {',
 			'        var text = $(col).text();',

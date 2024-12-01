@@ -197,7 +197,7 @@
 </datalist>
 
 <script>
-	$('input[name="new[sku]"]').on('input', (e) => {
+	$('input[name="new[sku]"]').on('input', function(e) {
 		let row = $(this).closest('tr')
 
 		if ($('datalist#available-stock-items option[value="'+ $(this).val() +'"]').length) {
@@ -209,7 +209,7 @@
 		}
 	})
 
-	$('body').on('click', 'button[name="transfer"]', () => {
+	$('body').on('click', 'button[name="transfer"]', function() {
 		let quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]'),
 			backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]')
 
@@ -224,7 +224,7 @@
 		}
 	})
 
-	$('body').on('click', '#transaction-contents .remove', (e) => {
+	$('body').on('click', '#transaction-contents .remove', function(e) {
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})
@@ -232,7 +232,7 @@
 	let new_item_index = 0
 	while ($(':input[name^="contents['+new_item_index+']"]').length) new_item_index++
 
-	$('table tfoot button[name="add"]').on('click', (e) => {
+	$('table tfoot button[name="add"]').on('click', function(e) {
 		e.preventDefault()
 
 		let row = $(this).closest('tr')
@@ -289,7 +289,7 @@
 		$('input[name="new[sku]"]').trigger('focus')
 	})
 
-	$('button[name="save"]').on('click', () => {
+	$('button[name="save"]').on('click', function() {
 		if ($('input[name="new[sku]"]').val() != '' && $('input[name="new[quantity_adjustment]"]').val() != '') {
 			$('button[name="add"]').trigger('click')
 		}

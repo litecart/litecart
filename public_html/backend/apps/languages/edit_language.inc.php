@@ -421,7 +421,7 @@
 <datalist id="available-languages"></datalist>
 
 <script>
-	$('input[name="url_type"]').on('change', () => {
+	$('input[name="url_type"]').on('change', function() {
 		if ($('input[name="url_type"][value="domain"]:checked').length) {
 			$('input[name="domain_name"]').prop('disabled', false)
 		} else {
@@ -430,9 +430,9 @@
 	}).first().trigger('change')
 
 	<?php if (!empty($available_languages)) { ?>
-	$('select[name="prefill"]').on('change', () => {
+	$('select[name="prefill"]').on('change', function() {
 
-		$.each($(this).find('option:selected').data(), (key, value) => {
+		$.each($(this).find('option:selected').data(), function(key, value) {
 
 			var field_name = key
 				.replace(/([A-Z])/, '_$1')
