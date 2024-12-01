@@ -18,7 +18,7 @@
 	route::load('app://frontend/routes/url_*.inc.php');
 	route::load('app://backend/routes/url_*.inc.php');
 
-	// Append last destination route
+	// Append a route for last destination
 	route::add('*', [
 		'pattern' => '#^(.+)$#',
 		'endpoint' => 'frontend',

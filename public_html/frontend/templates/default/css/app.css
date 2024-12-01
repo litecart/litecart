@@ -210,8 +210,6 @@ body main {
 #site-footer {
   background: var(--footer-background-color);
   color: var(--footer-text-color);
-}
-#site-footer > .container {
   border-top: 1px solid;
   border-image-slice: 1;
   border-image-source: linear-gradient(to left, #97989f00, #89849269, #97989f00);

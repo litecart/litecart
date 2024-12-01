@@ -5,14 +5,14 @@
 
 		public static function init() {
 
-				if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
-					self::reset();
-				}
+			if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
+				self::reset();
+			}
 
 			// Bind customer to session
 			self::$data = &session::$data['customer'];
 
-			// Login remembered customer automatically
+			// Sign in a remembered customer
 			if (empty(self::$data['id']) && !empty($_COOKIE['customer_remember_me']) && empty($_POST)) {
 
 				try {
@@ -108,7 +108,7 @@
 
 					notices::add('errors', $e->getMessage());
 
-					header('Location: '. document::ilink('login'));
+					header('Location: '. document::ilink('f:account/sign_in'));
 					exit;
 				}
 			}
@@ -151,7 +151,7 @@
 			)->fetch_all('iso_code_2');
 
 			// Unset non supported country
-			if (!in_array(self::$data['country_code'], $countries)){
+			if (!in_array(self::$data['country_code'], $countries)) {
 				self::$data['country_code'] = '';
 			}
 
@@ -166,6 +166,13 @@
 			if (empty(self::$data['country_code'])) {
 				if (!empty($_COOKIE['country_code']) && in_array($_COOKIE['country_code'], $countries)) {
 					self::$data['country_code'] = $_COOKIE['country_code'];
+				}
+			}
+
+			// Get country from HTTP header (CloudFlare)
+			if (empty(self::$data['country_code'])) {
+				if (!empty($_SERVER['HTTP_CF_IPCOUNTRY']) && in_array($_SERVER['HTTP_CF_IPCOUNTRY'], $countries)) {
+					self::$data['country_code'] = $_SERVER['HTTP_CF_IPCOUNTRY'];
 				}
 			}
 
@@ -185,16 +192,9 @@
 						limit 1;"
 					)->fetch();
 
-					if (!empty($country['iso_code_2'])){
+					if (!empty($country['iso_code_2'])) {
 						self::$data['country_code'] = $country['iso_code_2'];
 					}
-				}
-			}
-
-			// Get country from HTTP header (CloudFlare)
-			if (empty(self::$data['country_code'])) {
-				if (!empty($_SERVER['HTTP_CF_IPCOUNTRY']) && in_array($_SERVER['HTTP_CF_IPCOUNTRY'], $countries)) {
-					self::$data['country_code'] = $_SERVER['HTTP_CF_IPCOUNTRY'];
 				}
 			}
 
@@ -288,13 +288,13 @@
 			session::$data['customer'] = $customer;
 		}
 
-		public static function load($customer_id) {
+		public static function load($id) {
 
 			self::reset();
 
 			$customer = database::query(
 				"select * from ". DB_TABLE_PREFIX ."customers
-				where id = ". (int)$customer_id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch(function(&$customer){
 
@@ -312,10 +312,11 @@
 		}
 
 		public static function require_login() {
+
 			if (!self::check_login()) {
 				notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
 				$redirect_url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
-				header('Location: ' . document::ilink('f:login', ['redirect_url' => $redirect_url]));
+				header('Location: ' . document::ilink('f:account/sign_in', ['redirect_url' => $redirect_url]));
 				exit;
 			}
 		}

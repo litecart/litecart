@@ -137,7 +137,7 @@ gulp.task('sass-trumbowyg', function() {
 })
 
 // Lint PHP files
-gulp.task('phplint', () => {
+gulp.task('phplint', function() {
   return gulp
     .src(paths.php)
     .pipe(phplint())
@@ -145,7 +145,7 @@ gulp.task('phplint', () => {
 })
 
 // Watch files for changes
-gulp.task('watch', () => {
+gulp.task('watch', function() {
   gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('sass-chartist'))
   gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('sass-trumbowyg'))
   gulp.watch('public_html/backend/template/less/**/*.less', gulp.series('less-backend'))

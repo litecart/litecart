@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#e54d80',
-			'icon' => 'icon-adjust',
+			'icon' => 'icon-palette',
 		],
 
 		'menu' => [

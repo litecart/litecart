@@ -1662,7 +1662,7 @@ ul.list-inline li {
 }
 .loader {
   display: inline-block;
-  background: url('../../images/loader.svg');
+  background: url('../images/loader.svg');
   background-size: cover;
 }
 .strikethrough-divider {

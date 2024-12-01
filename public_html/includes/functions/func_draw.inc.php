@@ -333,23 +333,23 @@
 
 	function draw_lightbox($selector='', $parameters=[]) {
 
-		document::load_style('app://assets/featherlight/featherlight.min.css', 'featherlight');
-		document::load_script('app://assets/featherlight/featherlight.min.js', 'featherlight');
-		document::$javascript['featherlight'] = implode(PHP_EOL, [
+		document::load_style('app://assets/featherlight/featherlight.min.css');
+		document::load_script('app://assets/featherlight/featherlight.min.js');
+		document::add_script([
 			'$.featherlight.autoBind = \'[data-toggle="lightbox"]\';',
 			'$.featherlight.defaults.loading = \'<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>\';',
 			'$.featherlight.defaults.closeIcon = \'&#x2716;\';',
 			'$.featherlight.defaults.targetAttr = \'data-target\';',
 		]);
 
-		$selector = str_replace("'", '"', $selector);
-
-		if (empty($selector)) return;
-
 		if (preg_match('#^(https?:)?//#', $selector)) {
 			$js = ['$.featherlight(\''. $selector .'\', {'];
-		} else {
+
+		} else if (!empty($selector)) {
 			$js = ['$(\''. $selector .'\').featherlight({'];
+
+		} else {
+			$js = ['$.featherlight({'];
 		}
 
 		foreach ($parameters as $key => $value) {
@@ -383,7 +383,7 @@
 
 		$js[] = '})';
 
-		document::$javascript['featherlight-'.$selector] = implode(PHP_EOL, $js);
+		document::add_script($js, 'featherlight-'. $selector);
 	}
 
 	function draw_pagination($pages) {

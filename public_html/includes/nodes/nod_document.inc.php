@@ -414,26 +414,30 @@
 			self::$foot_tags[$key] = $tags;
 		}
 
-		public static function load_style($urls, $key=null) {
+		public static function load_style($files, $key=null) {
 
-			if (!is_array($urls)) {
-				$urls = [$urls];
+			if (!is_array($files)) {
+				$files = [$files];
 			}
 
-			self::$head_tags[$key] = implode(PHP_EOL, array_map(function($url){
-				if ($url) return '<link rel="stylesheet" href="'. self::href_rlink($url) .'">';
-			}, $urls));
+			foreach ($files as $file) {
+				self::$head_tags[$key] = '<link rel="stylesheet" integrity="sha256-'. base64_encode(hash_file('sha256', $file, true)) .'" href="'. self::href_rlink($file) .'">';
+			}
 		}
 
-		public static function load_script($urls, $key=null) {
+		public static function load_script($files, $key=null) {
 
-			if (!is_array($urls)) {
-				$urls = [$urls];
+			if (!is_array($files)) {
+				$files = [$files];
 			}
 
-			self::$foot_tags[$key] = implode(PHP_EOL, array_map(function($url){
-				if ($url) return '<script src="'. self::href_rlink($url) .'"></script>';
-			}, $urls));
+			$scripts = [];
+
+			foreach ($files as $file) {
+				$scripts[] = '<script integrity="sha256-'. base64_encode(hash_file('sha256', $file, true)) .'" src="'. self::href_rlink($file) .'"></script>';
+			}
+
+			self::$foot_tags[$key] = implode(PHP_EOL, $scripts);
 		}
 
 		public static function add_script($lines, $key=null) {
@@ -540,7 +544,11 @@
 				$webpath = preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', str_replace('\\', '/', $resource));
 			}
 
-			return self::link($webpath, is_file($resource) ? ['_' => filemtime($resource)] : []);
+			if (is_file($resource)) {
+				self::link($webpath, ['_' => filemtime($resource)]);
+			}
+
+			return self::link($webpath);
 		}
 
 		public static function href_rlink($resource) {

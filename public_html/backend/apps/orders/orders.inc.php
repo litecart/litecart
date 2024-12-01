@@ -227,7 +227,7 @@
 			$sql_sort = "o.starred desc, if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) asc";
 			break;
 		case 'order_status':
-			$sql_sort = "o.starred desc, field(os.state,'created','on_hold','ready','delayed','processing','dispatched','in_transit','completed','delivered','returning','returned','cancelled'), osi.name";
+			$sql_sort = "o.starred desc, field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'dispatched', 'in_transit', 'completed', 'delivered', 'returning', 'returned', 'cancelled'), osi.name";
 			break;
 		case 'payment_method':
 			$sql_sort = "o.starred desc, o.payment_option_name asc";
@@ -365,10 +365,10 @@ table tr.bold {
 	font-weight: bold;
 }
 
-table .icon-star-o:hover {
+table .icon-star:hover {
 	transform: scale(1.5);
 }
-table .icon-star:hover {
+table .icon-star-solid:hover {
 	transform: scale(1.5);
 }
 
@@ -428,7 +428,7 @@ table .icon-star:hover {
 					<td><?php echo functions::form_checkbox('orders[]', $order['id'], true); ?></td>
 					<td><?php echo functions::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
 					<td class="text-center"><?php echo $order['no']; ?></td>
-					<td><?php echo !empty($order['starred']) ? functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?></td>
+					<td><?php echo !empty($order['starred']) ? functions::draw_fonticon('icon-star-solid', 'style="color: #f2b01e;"') : functions::draw_fonticon('icon-star', 'style="color: #ccc;"'); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo $order['customer_company'] ?: $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php if (!$order['customer_id']) echo ' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></a> <span style="opacity: 0.5;"><?php echo $order['customer_tax_id']; ?></span></td>
 					<td><?php if (!empty($order['customer_country_code'])) echo reference::country($order['customer_country_code'])->name; ?></td>
 					<td><?php echo $order['payment_option_name']; ?></td>
@@ -544,16 +544,16 @@ table .icon-star:hover {
 	$('table').on('click', '.icon-star', function(e) {
 		e.stopPropagation()
 		let star = this
-		$.post('', 'star&order_id='+$(star).closest('tr').data('id'), (data) => {
-			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>')
+		$.post('', 'star&order_id='+$(star).closest('tr').data('id'), function(data) {
+			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star-solid', 'style="color: #f2b01e;"'); ?>')
 		})
 		return false
 	})
 
 	$('table').on('click', '.icon-star-solid', function(e) {
 		let star = this
-		$.post('', 'unstar&order_id='+$(star).closest('tr').data('id'), (data) => {
-			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>')
+		$.post('', 'unstar&order_id='+$(star).closest('tr').data('id'), function(data) {
+			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star', 'style="color: #ccc;"'); ?>')
 		})
 		return false
 	})

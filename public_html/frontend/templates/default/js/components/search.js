@@ -51,4 +51,4 @@
 				}
 			}
 		})
-	}).trigger('input') // Init
+	})

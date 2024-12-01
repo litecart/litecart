@@ -6,16 +6,16 @@
  */
 
 	// Stylesheet Loader
-	$.loadStylesheet = function(url, options) {
+	$.loadStylesheet = function(url, options, callback, fallback) {
 
 		options = $.extend(options || {}, {
 			rel: 'stylesheet',
-			href: url
-				//onload: callback,
-				//onerror: fallback
+			href: url,
+			onload: callback,
+			onerror: fallback
 		})
 
-		$('<link/>', options).appendTo('head')
+		$('<link>', options).appendTo('head')
 	}
 
 	// JavaScript Loader
@@ -32,21 +32,29 @@
 
 	// Escape HTML
 	function escapeHTML(string) {
+
 		let entityMap = {
-				'&': '&amp;',
-				'<': '&lt;',
-				'>': '&gt;',
-				'"': '&quot;',
-				"'": '&#39;',
-				'/': '&#x2F;'
+			'&': '&amp;',
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;',
+			"'": '&#39;',
+			'/': '&#x2F;',
+			'`': '&#x60;',
 		}
+
 		return String(string).replace(/[&<>"'\/]/g, function (s) {
-				return entityMap[s]
+			return entityMap[s]
 		})
 	}
 
+	// Escape HTML
+	function escapeAttr(string) {
+		return escapeHTML(string).replace(/\r\n?|\n/g, '\\n')
+	}
+
 	// Money Formatting
-	Number.prototype.toMoney = function(use_html = false) {
+	Number.prototype.toMoney = function() {
 		var n = this,
 			c = _env.session.currency.decimals,
 			d = _env.session.language.decimal_point,
@@ -62,23 +70,8 @@
 		return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x
 	}
 
-		// Money Formatting (HTML)
-	Number.prototype.toMoneyHTML = function(currency_code) {
-		var n = this,
-		c = _env.session.currency.decimals,
-		d = _env.session.language.decimal_point,
-		t = _env.session.language.thousands_separator,
-		p = _env.session.currency.prefix,
-		x = _env.session.currency.suffix,
-		s = n < 0 ? '-' : '',
-		i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
-		f = n - i,
-		j = (j = i.length) > 3 ? j % 3 : 0
-
-	}
-
 	// Keep-alive
-	let keepAlive = setInterval(() => {
+	let keepAlive = setInterval(function() {
 		$.get({
 			url: window._env.platform.path + 'ajax/cart.json',
 			cache: false
@@ -94,7 +87,7 @@
 +function() {
 
 	$.fn.categoryPicker = function(config){
-		this.each(() => {
+		this.each(function() {
 
 			this.xhr = null
 			this.config = config
@@ -103,11 +96,11 @@
 
 			$(this).find('.dropdown input[type="search"]').on({
 
-				'focus': (e) => {
+				'focus': function(e) {
 					$(self).find('.dropdown').addClass('open')
 				},
 
-				'input': (e) => {
+				'input': function(e) {
 						let dropdownMenu = $(self).find('.dropdown-menu')
 
 						$(dropdownMenu).html('')
@@ -116,11 +109,11 @@
 
 						if ($(this).val() == '') {
 
-							$.getJSON(self.config.link, (result) => {
+							$.getJSON(self.config.link, function(result) {
 
 								$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>')
 
-								$.each(result.subcategories, (i, category) => {
+								$.each(result.subcategories, function(i, category) {
 									$(dropdownMenu).append(
 										'<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
 										'  ' + self.config.icons.folder +
@@ -141,16 +134,16 @@
 							url: self.config.link + '&query=' + $(this).val(),
 							dataType: 'json',
 
-							beforeSend: (jqXHR) => {
+							beforeSend: function(jqXHR) {
 								jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
 							},
 
-							error: (jqXHR, textStatus, errorThrown) => {
+							error: function(jqXHR, textStatus, errorThrown) {
 								if (errorThrown == 'abort') return
 								alert(errorThrown)
 							},
 
-							success: (result) => {
+							success: function(result) {
 
 								if (!result.subcategories.length) {
 									$(dropdownMenu).html('<li class="dropdown-item text-center no-results"><em>:(</em></li>')
@@ -159,7 +152,7 @@
 
 								$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ self.config.translations.search_results +'</h3></li>')
 
-								$.each(result.subcategories, (i, category) => {
+								$.each(result.subcategories, function(i, category) {
 									$(dropdownMenu).append(
 										'<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
 										'  ' + self.config.icons.folder +
@@ -173,12 +166,12 @@
 					}
 			})
 
-			$(this).on('click', '.dropdown-menu .dropdown-item a', (e) => {
+			$(this).on('click', '.dropdown-menu .dropdown-item a', function(e) {
 				e.preventDefault()
 
 				let dropdownMenu = $(this).closest('.dropdown-menu')
 
-				$.getJSON($(this).data('link'), (result) => {
+				$.getJSON($(this).data('link'), function(result) {
 
 					$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>')
 
@@ -191,7 +184,7 @@
 						)
 					}
 
-					$.each(result.subcategories, (i, category) => {
+					$.each(result.subcategories, function(i, category) {
 						$(dropdownMenu).append(
 							'<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
 							'  ' + self.config.icons.folder +
@@ -203,13 +196,13 @@
 				})
 			})
 
-			$(this).on('click', '.dropdown-menu .dropdown-item button.add', (e) => {
+			$(this).on('click', '.dropdown-menu .dropdown-item button.add', function(e) {
 				e.preventDefault()
 
 				let category = $(this).closest('li'),
 						abort = false
 
-				$(self).find('input[name="'+ self.config.inputName +'"]').each(() => {
+				$(self).find('input[name="'+ self.config.inputName +'"]').each(function() {
 					if ($(this).val() == category.data('id')) {
 						abort = true
 						return
@@ -233,12 +226,12 @@
 				return false
 			})
 
-			$(this).find('.categories').on('click', '.remove', (e) => {
+			$(this).find('.categories').on('click', '.remove', function(e) {
 				$(this).closest('li').remove()
 				$(self).trigger('change')
 			})
 
-			$('body').on('mousedown', (e) => {
+			$('body').on('mousedown', function(e) {
 				if ($('.dropdown.open').has(e.target).length === 0) {
 					$('.dropdown.open').removeClass('open')
 				}
@@ -260,7 +253,7 @@
 +function() {
 
 	$.fn.contextMenu = function(config){
-		this.each(() => {
+		this.each(function() {
 
 			this.config = config
 
@@ -292,12 +285,12 @@
 		'}',
 	].join('\n'))
 
-	$('body').on('click', '.dragmove', (e) => {
+	$('body').on('click', '.dragmove', function(e) {
 		e.preventDefault()
 		return false
 	})
 
-	$('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', (e) => {
+	$('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e) {
 
 		let $item = $(e.target).closest('.dragmove'),
 			sy = e.pageY,
@@ -506,7 +499,7 @@
 	$(':input[required]').closest('.form-group').addClass('required')
 
 	// Dropdown select
-	$('.dropdown .form-select + .dropdown-menu :input').on('input', (e) => {
+	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e) {
 		let $dropdown = $(this).closest('.dropdown')
 		let $input = $dropdown.find(':input:checked')
 
@@ -528,7 +521,7 @@
 	}).trigger('input')
 
 	// Input Number Decimals
-	$('body').on('change', 'input[type="number"][data-decimals]', () => {
+	$('body').on('change', 'input[type="number"][data-decimals]', function() {
 		 var value = parseFloat($(this).val()),
 			 decimals = $(this).data('decimals')
 		if (decimals != '') {
@@ -537,14 +530,14 @@
 	})
 
 
-	$('textarea[data-toggle="csv"] + table').on('click', '.remove', (e) => {
+	$('textarea[data-toggle="csv"] + table').on('click', '.remove', function(e) {
 		e.preventDefault()
 		var parent = $(this).closest('tbody')
 		$(this).closest('tr').remove()
 		$(parent).trigger('keyup')
 	})
 
-	$('textarea[data-toggle="csv"] + table .add-row').on('click', (e) => {
+	$('textarea[data-toggle="csv"] + table .add-row').on('click', function(e) {
 		e.preventDefault()
 		var n = $(this).closest('table').find('thead th:not(:last-child)').length
 		$(this).closest('table').find('tbody').append(
@@ -552,7 +545,7 @@
 		).trigger('keyup')
 	})
 
-	$('textarea[data-toggle="csv"] + table .add-column').on('click', (e) => {
+	$('textarea[data-toggle="csv"] + table .add-column').on('click', function(e) {
 		e.preventDefault()
 		var table = $(this).closest('table')
 		var title = prompt("Column Title")
@@ -563,7 +556,7 @@
 		$(this).trigger('keyup')
 	})
 
-	$('textarea[data-toggle="csv"] + table').on('keyup', (e) => {
+	$('textarea[data-toggle="csv"] + table').on('keyup', function(e) {
 		var csv = $(this).find('thead tr, tbody tr').map(function (i, row) {
 				return $(row).find('th:not(:last-child),td:not(:last-child)').map(function (j, col) {
 					var text = $(col).text()
@@ -616,11 +609,11 @@
 
 		$tagField.remove = function(input){
 
-			$tagField.tags = $.grep($tagField.tags, (value) => {
+			$tagField.tags = $.grep($tagField.tags, function(value) {
 				return value != input
 			})
 
-			$('.tag .value', $tagField).each(() => {
+			$('.tag .value', $tagField).each(function() {
 				if ($(this).text() == input) {
 					$(this).parent('.tag').remove()
 				}
@@ -629,15 +622,15 @@
 			$tagField.trigger('change')
 		}
 
-		let tags = $.grep($originalInput.val().split(/\s*,\s*/), (value) => {
+		let tags = $.grep($originalInput.val().split(/\s*,\s*/), function(value) {
 			return value
 		})
 
-		$.each(tags, () => {
+		$.each(tags, function() {
 			$tagField.add(this)
 		})
 
-		$tagField.on('keypress', '.input', (e) => {
+		$tagField.on('keypress', '.input', function(e) {
 			if (e.which == 44 || e.which == 13) { // Comma or enter
 				e.preventDefault()
 				$tagField.add($(this).text())
@@ -645,16 +638,16 @@
 			}
 		})
 
-		$tagField.on('blur', '.input', () => {
+		$tagField.on('blur', '.input', function() {
 			$tagField.add($(this).text())
 			$(this).text('')
 		})
 
-		$tagField.on('click', '.remove', (e) => {
+		$tagField.on('click', '.remove', function(e) {
 			$tagField.remove($(this).siblings('.value').text())
 		})
 
-		$tagField.on('change', () => {
+		$tagField.on('change', function() {
 			$originalInput.val($tagField.tags.join(','))
 		})
 
@@ -663,9 +656,9 @@
 
 
 // Alerts
-$('body').on('click', '.alert .close', (e) => {
+$('body').on('click', '.alert .close', function(e) {
 	e.preventDefault()
-	$(this).closest('.alert').fadeOut('fast', () => {
+	$(this).closest('.alert').fadeOut('fast', function() {
 		$(this).remove()
 	})
 })
@@ -683,7 +676,7 @@ $('#sidebar input[name="filter"]').on({
 			return
 		}
 
-		$('#box-apps-menu .app').each(() => {
+		$('#box-apps-menu .app').each(function() {
 			var regex = new RegExp(''+ query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')  +'', 'ig')
 			console.log()
 			if (regex.test($(this).text())) {
@@ -711,7 +704,7 @@ $('#search input[name="query"]').on({
 		if (!$('#search').filter(':hover').length) {
 			$('#search.dropdown').removeClass('open')
 		} else {
-			$('#search.dropdown').on('blur', () => {
+			$('#search.dropdown').on('blur', function() {
 				$('#search.dropdown').removeClass('open')
 			})
 		}
@@ -751,15 +744,15 @@ $('#search input[name="query"]').on({
 				url: window._env.backend.url + 'search_results.json?query=' + $searchField.val(),
 				dataType: 'json',
 
-				beforeSend: (jqXHR) => {
+				beforeSend: function(jqXHR) {
 					jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
 				},
 
-				error: (jqXHR, textStatus, errorThrown) => {
+				error: function(jqXHR, textStatus, errorThrown) {
 					$('#search .results').text(textStatus + ': ' + errorThrown)
 				},
 
-				success: (json) => {
+				success: function(json) {
 
 					$('#search .results').html('')
 
@@ -768,7 +761,7 @@ $('#search input[name="query"]').on({
 						return
 					}
 
-					$.each(json, (i, group) => {
+					$.each(json, function(i, group) {
 
 						if (group.results.length) {
 
@@ -777,7 +770,7 @@ $('#search input[name="query"]').on({
 								'<ul class="flex flex-rows" data-group="'+ group.name +'"></ul>'
 							)
 
-							$.each(group.results, (i, result) => {
+							$.each(group.results, function(i, result) {
 
 								var $li = $([
 									'<li class="result">',
@@ -808,16 +801,16 @@ $('#search input[name="query"]').on({
 +function($) {
 	'use strict'
 	$.fn.Tabs = function(){
-		this.each(() => {
+		this.each(function() {
 
 			let self = this
 
 			this.$element = $(this)
 
-			this.$element.find('[data-toggle="tab"]').each(() => {
+			this.$element.find('[data-toggle="tab"]').each(function() {
 				let $link = $(this)
 
-				$link.on('select', () => {
+				$link.on('select', function() {
 					self.$element.find('.active').removeClass('active')
 
 					if ($link.hasClass('nav-link')) {
@@ -829,7 +822,7 @@ $('#search input[name="query"]').on({
 					$($link.attr('href')).show().siblings().hide()
 				})
 
-				$link.on('click', (e) => {
+				$link.on('click', function(e) {
 					e.preventDefault()
 					history.replaceState(null, null, this.hash)
 					$link.trigger('select')
@@ -850,29 +843,29 @@ $('#search input[name="query"]').on({
 		$('[data-toggle="tab"][href="' + document.location.hash +'"]').trigger('select')
 	}
 
-	$(document).on('ajaxcomplete', () => {
+	$(document).on('ajaxcomplete', function() {
 		$('.nav-tabs').Tabs()
 	})
 }(jQuery)
 
 
 	// Data-Table Toggle Checkboxes
-	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', () => {
+	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
 		$(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
 			$(this).prop('checked', !$(this).prop('checked')).trigger('change')
 		})
 		return false
 	})
 
-	$('body').on('click', '.data-table tbody tr', (e) => {
+	$('body').on('click', '.data-table tbody tr', function(e) {
 		if ($(e.target).is('a') || $(e.target).closest('a').length) return
-		if ($(e.target).is('.btn, :input, th, .icon-star, .icon-star-o')) return
+		if ($(e.target).is('.btn, :input, th, .icon-star, .icon-star-solid')) return
 		$(this).find(':checkbox, :radio').first().trigger('click')
 	})
 
 	// Data-Table Shift Check Multiple Checkboxes
 	let lastTickedCheckbox = null
-	$('.data-table td:first-child :checkbox').on('click', (e) => {
+	$('.data-table td:first-child :checkbox').on('click', function(e) {
 
 		let $chkboxes = $('.data-table td:first-child :checkbox')
 
@@ -891,10 +884,10 @@ $('#search input[name="query"]').on({
 	})
 
 	// Data-Table Sorting (Page Reload)
-	$('.table-sortable thead th[data-sort]').on('click', () => {
+	$('.table-sortable thead th[data-sort]').on('click', function() {
 		let params = {}
 
-		window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, (str, key, value) => {
+		window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
 			params[key] = value
 		})
 
