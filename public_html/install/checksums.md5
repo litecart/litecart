@@ -1,4 +1,4 @@
-8000dab235054d3e0c2642996cb4738e	admin/about.php
+ead49d41f3ba0cd4624ca21571113239	admin/about.php
 6294cd437ab6cd00c8f0cfd60b39b731	admin/addons.widget/addons.inc.php
 5d89f353269fba5822e8ca9eda49cb19	admin/addons.widget/config.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/addons.widget/index.html
@@ -77,7 +77,7 @@ e365a6941f560c327713d6018b7ae6f8	admin/modules.app/modules.inc.php
 f72453607eebe58a502240853f63a125	admin/orders.app/edit_order_status.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.app/index.html
 99724974d208aaad962c8326d86ab408	admin/orders.app/order_statuses.inc.php
-f6ddfc430c4df2c3c8fa08f4df77e3d3	admin/orders.app/orders.inc.php
+f89dbf10d04e70afda7391af59764329	admin/orders.app/orders.inc.php
 54223f4dcd61dbdfaf465bc3c26f861d	admin/orders.app/product_picker.inc.php
 1133a502b6a64250fc3a847b3bbd9863	admin/orders.widget/config.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.widget/index.html
@@ -137,7 +137,7 @@ d41d8cd98f00b204e9800998ecf8427e	data/index.html
 930b04e1da4bf8cca10f4fa8b8805cbe	ext/chartist/LICENSE
 964a7d4326816a3f6f73f2d3cf3c4baf	ext/chartist/chartist.min.css
 99317865faa23e2128c3306e67f39a6c	ext/chartist/chartist.min.js
-a55a0e307dc2aefaf2f47755ffe3677d	ext/featherlight/featherlight.js
+0baa7bbfe81ce234b5ad1914e500e3ec	ext/featherlight/featherlight.js
 0189732ea4f737efb866c082018264f6	ext/featherlight/featherlight.less
 eaeaa8ee7f50423015fdbb41e11d1ff0	ext/featherlight/featherlight.min.css
 0eec770b524602c0efaba09141c731ff	ext/featherlight/featherlight.min.js
@@ -240,7 +240,7 @@ e4e9a80e4ca667f1841e1683968f8290	includes/entities/ent_currency.inc.php
 b5771c7eff986dd9acd60aba2b7cdab0	includes/entities/ent_delivery_status.inc.php
 3298a9350f4ae34ee1f7ded9693d21b5	includes/entities/ent_email.inc.php
 969b581645fe1da64dea674feecbab77	includes/entities/ent_geo_zone.inc.php
-3949b9bb7c6c09ed503c0dd9edd670b8	includes/entities/ent_image.inc.php
+3145eecf067a60d5322c23ae3043c0d4	includes/entities/ent_image.inc.php
 9bb8ed44705f055da33628dee6e5f190	includes/entities/ent_language.inc.php
 197f5cd84c0f915da7109f091b42db36	includes/entities/ent_link.inc.php
 07c9eba067bccda3b28cf602d3e833bd	includes/entities/ent_manufacturer.inc.php
@@ -259,7 +259,7 @@ f544238e0e4478eca32c9cd6db82f0bf	includes/entities/ent_user.inc.php
 39c3cd84791b801a24b8fccd1b3bddbb	includes/entities/ent_view.inc.php
 8d971569f285249be27f92b085c8c630	includes/entities/ent_vmod.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
-158cbeb6caf87d74dc0e4953e9c9989c	includes/error_handler.inc.php
+2a306d634c9741d7bce6dfe8e5f6deb5	includes/error_handler.inc.php
 988f26d135e78b5006307b43dac28557	includes/functions/func_admin.inc.php
 923d14bfa0810ac0f2299727965e0c6b	includes/functions/func_captcha.inc.php
 b8fb6ac6e8de79811c5f966b17de6859	includes/functions/func_catalog.inc.php
@@ -286,7 +286,7 @@ b9808552044b6f33524ad9b4804db9c0	includes/library/lib_customer.inc.php
 3990fc1cbc97b937ba36f56098599615	includes/library/lib_document.inc.php
 b4401ef3e46e288212dfc2fd3eb1d165	includes/library/lib_event.inc.php
 ea8d7ddb2524ec3236c7099e10854816	includes/library/lib_functions.inc.php
-db3890d7bf18a56a2322b5299ca2e534	includes/library/lib_language.inc.php
+bdc3685ab496ac5e7b564f2bca2c1bd8	includes/library/lib_language.inc.php
 33ec4eec961dcf00c305fec2fb8a54ef	includes/library/lib_length.inc.php
 f3476e50ac9875d2a35710214ea1df58	includes/library/lib_notices.inc.php
 5da2710ce3c640103fdb11bb1fb3dc46	includes/library/lib_reference.inc.php
@@ -303,7 +303,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/modules/customer/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/jobs/index.html
 0d8922e924a461eb2a793593d775bf79	includes/modules/jobs/job_cache_cleaner.inc.php
-ab65d1a45e8f024b7e1adf5676561d59	includes/modules/jobs/job_error_reporter.inc.php
+a34eaec79a896847e212137206a1d4e9	includes/modules/jobs/job_error_reporter.inc.php
 6f2198bf9353c343073884e3590afb13	includes/modules/jobs/job_mysql_optimizer.inc.php
 ad531c8df27d488f161cd717e63e2769	includes/modules/mod_customer.inc.php
 77a400d3d79cc169045badd15e338510	includes/modules/mod_jobs.inc.php
@@ -531,8 +531,8 @@ f9d8be06239f09f565a93421d9643fff	includes/wrappers/wrap_http.inc.php
 afd2000ef7ba4b934765a9cf2d40aeb6	includes/wrappers/wrap_smtp.inc.php
 891ca69bfdad7ea42fc35ba130c00a56	index.php
 db7b7a833baf1b6f47160530e9a9bc9f	install/clean.sql
-2c767af22d8225eb4839cf179674a7db	install/config
-787ea9e91dbf6020397edb7dc669dee2	install/data.sql
+537d76f832f5e95c8e81f2bdbe462659	install/config
+fd93ba03934d4477cd8add96e009e8ec	install/data.sql
 2b2639ce48f7d6723c0768bcf39ca725	install/data/AU/AU.sql
 9a133ec15a84f54a925d396fd0e270c3	install/data/CA/CA.sql
 80a156bc4202b15b747be924bad59315	install/data/DE/DE.sql
@@ -580,9 +580,9 @@ faab49ec26407cd72a7a6984fa943ad7	install/htaccess
 88c129a1bab3911671153318af96e38c	install/includes/functions.inc.php
 a37bf7b37ad3919a13f46de67748afed	install/includes/header.inc.php
 9f92b7ccb4e69a595440c999a7ed69a2	install/index.php
-3140fe422394cda2e90f3323b7864141	install/install.php
+8971ce5ef105fd1c449564c92e845fed	install/install.php
 f536c43fea445645643573caaf50a895	install/structure.sql
-bba99d6f8ffc3e2fbb75e5ac7bfbdc6b	install/upgrade.php
+8694922ade92aad5f287ac04b7538e6f	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
 e40d16965a907467b8a8249a35927faf	install/upgrade_patches/1.0.1.4.inc.php
 9560e70752a13b7a22ec65231e1b61e0	install/upgrade_patches/1.0.1.5.inc.php
@@ -692,8 +692,8 @@ ab7ba686349fc0fd50570c6e0bf03299	install/upgrade_patches/2.5.2.sql
 4b62b45560195ccef0a8c7e46a7200e8	install/upgrade_patches/2.5.5.sql
 c84802588edcf08935a6b2a68c3dbc33	install/upgrade_patches/2.6.0.inc.php
 0d118d9f99301a91c70ad71dd552c2b7	install/upgrade_patches/2.6.0.sql
-055a20495072108c3db18d0907cc8cbe	install/upgrade_patches/2.6.1.inc.php
-fdf64e0bef8f2bcab8c7ea3585ecf5b5	install/upgrade_patches/2.6.1.sql
+5918e4a321207bf610e0ae5548e072fd	install/upgrade_patches/2.6.1.inc.php
+cd37a7f25119ad9ac30f171d57ef6db2	install/upgrade_patches/2.6.1.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
 70df41f74e6b15be767a8052f14b4036	pages/ajax/cart.json.inc.php

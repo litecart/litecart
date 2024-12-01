@@ -152,12 +152,12 @@
         }
       }
 
-    // Return language from URI query
+    // Return language from URL query
       if (!empty($_GET['language'])) {
         if (in_array($_GET['language'], $all_languages)) return $_GET['language'];
       }
 
-    // Return language from URI path
+    // Return language from URL path
       $code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_APP))));
       if (in_array($code, $all_languages)) return $code;
 
