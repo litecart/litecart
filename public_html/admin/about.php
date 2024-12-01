@@ -219,10 +219,17 @@
     }
 
     uasort($errors, function($a, $b) {
-      if ($a['occurrences'] == $b['occurrences']) {
-        return ($a['last_occurrence'] > $b['last_occurrence']) ? -1 : 1;
+
+      if ($a['critical'] == $b['critical']) {
+
+        if ($a['occurrences'] == $b['occurrences']) {
+          return ($a['last_occurrence'] > $b['last_occurrence']) ? -1 : 1;
+        }
+
+        return ($a['occurrences'] > $b['occurrences']) ? -1 : 1;
       }
-      return ($a['occurrences'] > $b['occurrences']) ? -1 : 1;
+
+      return ($a['critical'] > $b['critical']) ? -1 : 1;
     });
   }
 
