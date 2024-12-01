@@ -362,7 +362,8 @@ td .thumbnail {
 
 table .icon-folder,
 table .icon-folder-open {
-	font-size: 1.5em;
+	font-size: 1.25em;
+	line-height: 0.8;
 }
 </style>
 

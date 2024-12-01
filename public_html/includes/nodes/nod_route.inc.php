@@ -247,8 +247,8 @@
 			if (count($lines) >= 100) {
 
 				$email = new ent_email();
-				$email->add_recipient(settings::get('site_email'))
-					->set_subject('[Not Found Report] '. settings::get('site_name'))
+				$email->add_recipient(settings::get('store_email'))
+					->set_subject('[Not Found Report] '. settings::get('store_name'))
 					->add_body(
 						wordwrap("This is a list of the last 100 requests made to your website that did not have a destination. Most of these reports usually contain scans and attacks by evil robots. But some URLs may be indexed by search engines requiring a redirect to a proper destination.", 72, "\r\n") . "\r\n\r\n" .
 						PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n" .

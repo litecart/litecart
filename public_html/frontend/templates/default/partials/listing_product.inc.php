@@ -33,7 +33,7 @@
 		</button>
 
 		<button name="add_to_wishlist" class="wishlist btn btn-default btn-sm">
-			<?php echo functions::draw_fonticon('icon-heart'); ?>
+			<?php echo functions::draw_fonticon('icon-heart-o'); ?>
 		</button>
 
 		<?php if (!$num_stock_options) { ?>

@@ -6,7 +6,7 @@
 
 	if (empty($_GET['languages'])) {
 		$all_languages = array_column(language::$languages, 'code');
-		$defined_languages = [settings::get('site_language_code'), language::$selected['code'], settings::get('default_language_code')];
+		$defined_languages = [settings::get('store_language_code'), language::$selected['code'], settings::get('default_language_code')];
 		$_GET['languages'] = array_slice(array_unique(array_merge($defined_languages, $all_languages)), 0, 2);
 	}
 

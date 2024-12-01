@@ -414,27 +414,38 @@
 			self::$foot_tags[$key] = $tags;
 		}
 
-		public static function load_style($files, $key=null) {
+		public static function load_style($resources, $key=null) {
 
-			if (!is_array($files)) {
-				$files = [$files];
+			if (!is_array($resources)) {
+				$resources = [$resources];
 			}
 
-			foreach ($files as $file) {
-				self::$head_tags[$key] = '<link rel="stylesheet" integrity="sha256-'. base64_encode(hash_file('sha256', $file, true)) .'" href="'. self::href_rlink($file) .'">';
+			$styles = [];
+			foreach ($resources as $resource) {
+				if (preg_match('#^(app|storage)://#', $resource)) {
+					$styles[] = '<link rel="stylesheet" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" href="'. self::href_rlink($resource) .'">';
+				} else {
+					$styles[] = '<link rel="stylesheet" href="'. self::href_link($resource) .'">';
+				}
 			}
+
+			self::$head_tags[$key] = implode(PHP_EOL, $styles);
 		}
 
-		public static function load_script($files, $key=null) {
+		public static function load_script($resources, $key=null) {
 
-			if (!is_array($files)) {
-				$files = [$files];
+			if (!is_array($resources)) {
+				$resources = [$resources];
 			}
 
 			$scripts = [];
 
-			foreach ($files as $file) {
-				$scripts[] = '<script integrity="sha256-'. base64_encode(hash_file('sha256', $file, true)) .'" src="'. self::href_rlink($file) .'"></script>';
+			foreach ($resources as $resource) {
+				if (preg_match('#^(app|storage)://#', $resource)) {
+					$scripts[] = '<script integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" src="'. self::href_rlink($resource) .'"></script>';
+				} else {
+					$scripts[] = '<script src="'. self::href_link($resource) .'"></script>';
+				}
 			}
 
 			self::$foot_tags[$key] = implode(PHP_EOL, $scripts);
@@ -530,10 +541,6 @@
 				return '';
 			}
 
-			if (is_file($resource)) {
-				$resource = functions::file_realpath($resource);
-			}
-
 			if (preg_match('#^app://#', $resource)) {
 				$webpath = preg_replace('#^app://#', WS_DIR_APP, $resource);
 
@@ -545,7 +552,7 @@
 			}
 
 			if (is_file($resource)) {
-				self::link($webpath, ['_' => filemtime($resource)]);
+				return self::link($webpath, ['_' => filemtime($resource)]);
 			}
 
 			return self::link($webpath);

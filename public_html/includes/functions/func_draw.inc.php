@@ -176,12 +176,12 @@
 			case 'move-up':     return draw_fonticon('icon-arrow-up', 'style="color: #39c;"');
 			case 'move-down':   return draw_fonticon('icon-arrow-down', 'style="color: #39c;"');
 			case 'ok':          return draw_fonticon('icon-check', 'style="color: #8c4;"');
-			case 'on':          return draw_fonticon('icon-circle', 'style="color: #8c4;"');
-			case 'off':         return draw_fonticon('icon-circle', 'style="color: #f64;"');
+			case 'on':          return draw_fonticon('icon-circle-o-solid', 'style="color: #8c4;"');
+			case 'off':         return draw_fonticon('icon-circle-solid', 'style="color: #f64;"');
 			case 'print':       return draw_fonticon('icon-print', 'style="color: #ded90f;"');
 			case 'remove':      return draw_fonticon('icon-times', 'style="color: #c00;"');
 			case 'secure':      return draw_fonticon('icon-lock');
-			case 'semi-off':    return draw_fonticon('icon-circle', 'style="color: #ded90f;"');
+			case 'semi-off':    return draw_fonticon('icon-circle-solid', 'style="color: #ded90f;"');
 			case 'save':        return draw_fonticon('icon-floppy-o');
 			case 'send':        return draw_fonticon('icon-paper-plane');
 			case 'success':     return draw_fonticon('icon-check', 'style="color: #8c4;"');

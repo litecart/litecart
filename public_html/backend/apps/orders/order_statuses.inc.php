@@ -55,7 +55,7 @@
 	foreach ($order_statuses as $key => $order_status) {
 
 		if (empty($order_status['icon'])) {
-			$order_statuses[$key]['icon'] = 'icon-circle-thin';
+			$order_statuses[$key]['icon'] = 'icon-circle-o-thin';
 		}
 
 		if (empty($order_status['color'])) {

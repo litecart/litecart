@@ -2,7 +2,7 @@
 
 	@set_time_limit(300);
 
-	language::set(settings::get('site_language_code'));
+	language::set(settings::get('store_language_code'));
 
 	$output = [
 		'<?xml version="1.0" encoding="'. mb_http_output() .'"?>',
