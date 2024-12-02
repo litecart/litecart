@@ -12,11 +12,11 @@
         'replace' => '',
         'regex'   => false,
       ],
-    ],
-    [
-      'search'  => '<FilesMatch "\.(a?png|avif|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">',
-      'replace' => '<FilesMatch "\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">',
-      'regex'   => false,
+      [
+        'search'  => '<FilesMatch "\.(a?png|avif|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">',
+        'replace' => '<FilesMatch "\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">',
+        'regex'   => false,
+      ],
     ],
     FS_DIR_APP . 'includes/config.inc.php' => [
       [
