@@ -123,6 +123,19 @@
 
       if (!empty(self::$route) && is_file($page)) {
         include vmod::check($page);
+
+    // Display a 404 error
+      } else {
+        $request = new ent_link(document::link());
+
+        http_response_code(404);
+
+      // Don't return an error page for content with a defined extension (presumably static)
+        if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html?|php)$#', $request->path)) exit;
+
+        include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+        include vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
+        exit;
       }
     }
 
