@@ -263,9 +263,20 @@ CREATE TABLE `lc_currencies` (
 	KEY `number` (`number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
+CREATE TABLE `lc_customer_groups` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`type` ENUM('retail', 'wholesale') NOT NULL DEFAULT 'retail',
+	`name` VARCHAR(32) NOT NULL DEFAULT '',
+	`description` VARCHAR(256) NOT NULL DEFAULT '',
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`)
+);
+-- -----
 CREATE TABLE `lc_customers` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
+	`group_id` INT(1) UNSIGNED NULL,
 	`code` VARCHAR(32) NOT NULL DEFAULT '',
 	`email` VARCHAR(64) NOT NULL DEFAULT '',
 	`password_hash` VARCHAR(255) NOT NULL DEFAULT '',
@@ -306,7 +317,11 @@ CREATE TABLE `lc_customers` (
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
-	UNIQUE KEY `email` (`email`)
+	UNIQUE KEY `email` (`email`),
+	INDEX `group_id` (`group_id`),
+	CONSTRAINT `customer_to_customer_group` FOREIGN KEY (`group_id`) REFERENCES `lc_customer_groups` (`id`) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+-- -----
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_delivery_statuses` (

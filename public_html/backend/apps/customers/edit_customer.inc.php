@@ -61,6 +61,7 @@
 			foreach ([
 				'code',
 				'status',
+				'group_id',
 				'email',
 				'password',
 				'tax_id',
@@ -180,6 +181,11 @@
 							<label><?php echo language::translate('title_code', 'Code'); ?></label>
 							<?php echo functions::form_input_text('code', true); ?>
 						</div>
+					</div>
+
+					<div class="form-group">
+						<label><?php echo language::translate('title_customer_group', 'Customer Group'); ?></label>
+						<?php echo functions::form_select_customer_group('group_id', true); ?>
 					</div>
 
 					<div class="row">
@@ -414,15 +420,9 @@
 
 	if ($('select[name="country_code"]').find('option:selected').data('postcode-format') != '') {
 		var postcode_format = $('select[name="country_code"]').find('option:selected').data('postcode-format')
-		$('input[name="postcode"]')
-			.attr('pattern', postcode_format)
-			.prop('required', true)
-			.closest('td').find('.required').show()
+		$('input[name="postcode"]').attr('pattern', postcode_format)
 	} else {
-		$('input[name="postcode"]')
-			.removeAttr('pattern')
-			.prop('required', false)
-			.closest('td').find('.required').hide()
+		$('input[name="postcode"]').removeAttr('pattern')
 	}
 
 	if ($('select[name="country_code"]').find('option:selected').data('phone-code') != '') {

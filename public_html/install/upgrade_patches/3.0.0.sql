@@ -46,6 +46,16 @@ CREATE TABLE `lc_campaigns_products` (
 	CONSTRAINT `campaign_price_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
+CREATE TABLE IF NOT EXISTS `lc_customer_groups` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`type` ENUM('retail', 'wholesale') NOT NULL DEFAULT 'retail',
+	`name` VARCHAR(32) NOT NULL DEFAULT '',
+	`description` VARCHAR(256) NOT NULL DEFAULT '',
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`)
+);
+-- -----
 CREATE TABLE `lc_customers_addresses` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`customer_id` INT(10) UNSIGNED NULL,
@@ -238,7 +248,9 @@ CHANGE COLUMN `total_logins` `total_logins` INT(10) UNSIGNED NOT NULL DEFAULT '0
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '',
-ADD COLUMN `shipping_email` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_phone`;
+ADD COLUMN `shipping_email` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_phone`,
+ADD COLUMN `group_id` INT UNSIGNED NULL AFTER `id`,
+ADD INDEX `group_id` (`group_id`);
 -- -----
 ALTER TABLE `lc_delivery_statuses`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
@@ -558,6 +570,9 @@ INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`
 (0, 'Middle', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Middle</div>', '', '', 'middle', 0, 0, NULL, NULL, NOW(), NOW()),
 (0, 'Right', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: seashell;">Right</div>', '', '', 'right', 0, 0, NULL, NULL, NOW(), NOW());
 -- -----
+INSERT INTO `lc_customer_groups` (`id`, `type`, `name`, `description`, `date_updated`, `date_created`)
+VALUES (NULL, 'retail', 'Default', '', NOW(), NOW());
+-- -----
 INSERT IGNORE INTO `lc_customers_addresses`
 (customer_id, tax_id, company, firstname, lastname, address1, address2, postcode, city, country_code, zone_code, phone)
 SELECT DISTINCT id, customer_tax_id, customer_company, customer_firstname, customer_lastname, customer_address1, customer_address2, customer_postcode, customer_city, customer_country_code, customer_zone_code, customer_phone
@@ -861,6 +876,12 @@ WHERE product_id NOT IN (
 	SELECT id from `lc_products`
 );
 -- -----
+UPDATE `lc_customers`
+SET `group_id` = NULL
+WHERE `group_id` NOT IN (
+	SELECT id from `lc_customer_groups`
+);
+-- -----
 DELETE FROM `lc_categories_info`
 WHERE category_id NOT IN (
 	SELECT code from `lc_categories`
@@ -976,6 +997,9 @@ ADD CONSTRAINT `category_image_to_category` FOREIGN KEY (`category_id`) REFERENC
 ALTER TABLE `lc_categories_info`
 ADD CONSTRAINT `category_info_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
 ADD CONSTRAINT `category_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
+-- -----
+ALTER TABLE `lc_customers`
+ADD CONSTRAINT `customer_to_customer_group` FOREIGN KEY (`group_id`) REFERENCES `lc_customer_groups` (`id`) ON UPDATE CASCADE ON DELETE SET NULL;
 -- -----
 ALTER TABLE `lc_delivery_statuses_info`
 ADD CONSTRAINT `delivery_status_info_to_delivery_status` FOREIGN KEY (`delivery_status_id`) REFERENCES `lc_delivery_statuses` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,

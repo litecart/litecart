@@ -934,6 +934,9 @@
 			case 'customer':
 				return form_select_customer($name, $input, $parameters);
 
+			case 'customer_groups':
+				return form_select_customer_group($name, $input);
+
 			case 'country':
 				return form_select_country($name, $input, $parameters);
 
@@ -1428,6 +1431,27 @@
 			'  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$input .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_ilink('b:customers/customer_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>',
 			'</div>',
 		]);
+	}
+
+	function form_select_customer_group($name, $input=true, $parameters='') {
+
+		if (!administrator::check_login()) {
+			throw new ErrorException('Must be logged in to use form_select_customer_group()');
+		}
+
+		$options = database::query(
+			"select * from ". DB_TABLE_PREFIX ."customer_groups
+			order by name asc;"
+		)->fetch_all(function($group){
+			return [$group['id'], $group['name']];
+		});
+
+		if (preg_match('#\[\]$#', $name)) {
+			return form_select_multiple($name, $options, $input, $parameters);
+		} else {
+			array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
+			return form_select($name, $options, $input, $parameters);
+		}
 	}
 
 	function form_select_multiple_customers($name, $input=true, $parameters='') {

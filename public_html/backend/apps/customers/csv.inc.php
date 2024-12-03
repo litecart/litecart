@@ -30,6 +30,15 @@
 
 				switch ($_POST['type']) {
 
+					case 'customer_groups':
+
+						database::multi_query(
+							"truncate ". DB_TABLE_PREFIX ."customer_groups;
+							update ". DB_TABLE_PREFIX ."customers set group_id = null;"
+						);
+
+						break;
+
 					case 'customers':
 
 						database::multi_query(
@@ -57,6 +66,59 @@
 				$line++;
 
 				switch ($_POST['type']) {
+
+					case 'customer_groups':
+
+						// Find group
+						if (!empty($row['id']) && $address = database::query("select id from ". DB_TABLE_PREFIX ."customer_groups where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
+							$group = new ent_customer_group($address['id']);
+						}
+
+						if (!empty($group->data['id'])) {
+
+							if (empty($_POST['overwrite'])) {
+								echo "Skip updating existing address on line $line" . PHP_EOL;
+								continue 2;
+							}
+
+							echo 'Updating existing group '. ((!empty($row['name'])) ? $row['name'] : "on line $line") . PHP_EOL;
+							$updated++;
+
+						} else {
+
+							if (empty($_POST['insert'])) {
+								echo "Skip inserting new address on line $line" . PHP_EOL;
+								continue 2;
+							}
+
+							echo 'Inserting new address: '. ((!empty($row['name'])) ? $row['name'] : "on line $line") . PHP_EOL;
+							$inserted++;
+
+							if (!empty($row['id'])) {
+								database::query(
+									"insert into ". DB_TABLE_PREFIX ."customer_groups (id, date_created)
+									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
+								);
+								$group = new ent_customer_group($row['id']);
+							} else {
+								$group = new ent_customer_group();
+							}
+						}
+
+						// Set group data
+						foreach ([
+							'type',
+							'name',
+							'description',
+						] as $field) {
+							if (isset($row[$field])) {
+								$group->data[$field] = $row[$field];
+							}
+						}
+
+						$group->save();
+
+						break;
 
 					case 'customers':
 
@@ -105,6 +167,7 @@
 						// Set customer data
 						foreach ([
 							'code',
+							'group_id',
 							'email',
 							'tax_id',
 							'company',
@@ -241,6 +304,19 @@
 
 					break;
 
+				case 'customer_groups':
+
+					$csv = database::query(
+						"select * from ". DB_TABLE_PREFIX ."customer_groups
+						order by date_created asc;"
+					)->export($result)->fetch_all();
+
+					if (!$csv) {
+						$csv = [array_fill_keys($result->fields(), '')];
+					}
+
+					break;
+
 				case 'newsletter_recipients':
 
 					$csv = database::query(
@@ -310,6 +386,7 @@
 							<label><?php echo language::translate('title_type', 'Type'); ?></label>
 							<div class="form-input">
 								<?php echo functions::form_radio_button('type', ['addresses', language::translate('title_addresses', 'Addresses')], true); ?>
+								<?php echo functions::form_radio_button('type', ['customer_groups', language::translate('title_customer Groups', 'Customer Groups')], true); ?>
 								<?php echo functions::form_radio_button('type', ['customers', language::translate('title_customers', 'Customers')], true); ?>
 								<?php echo functions::form_radio_button('type', ['newsletter_recipients', language::translate('title_newsletter_recipients', 'Newsletter Recipients')], true); ?>
 							</div>
@@ -364,6 +441,7 @@
 							<label><?php echo language::translate('title_type', 'Type'); ?></label>
 							<div class="form-input">
 								<?php echo functions::form_radio_button('type', ['addresses', language::translate('title_addresses', 'Addresses')], true); ?>
+								<?php echo functions::form_radio_button('type', ['customer_groups', language::translate('title_customer Groups', 'Customer Groups')], true); ?>
 								<?php echo functions::form_radio_button('type', ['customers', language::translate('title_customers', 'Customers')], true); ?>
 								<?php echo functions::form_radio_button('type', ['newsletter_recipients', language::translate('title_newsletter_recipients', 'Newsletter Recipients')], true); ?>
 							</div>

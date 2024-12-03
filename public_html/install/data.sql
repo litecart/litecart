@@ -255,6 +255,9 @@ INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decim
 (1, 'USD', '840', 'US Dollars', 1, 2, '$', '', 0, NOW(), NOW()),
 (1, 'EUR', '978', 'Euros', 1.173, 2, '', ' €', 0, NOW(), NOW());
 -- -----
+INSERT INTO `lc_customer_groups` (`id`, `type`, `name`, `description`, `date_updated`, `date_created`)
+VALUES (NULL, 'retail', 'Default', '', NOW(), NOW());
+-- -----
 INSERT INTO `lc_delivery_statuses` (`id`, `date_updated`, `date_created`) VALUES
 (1, NOW(), NOW()),
 (2, NOW(), NOW());
@@ -345,9 +348,10 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('defaults', 'global', 'Default Language', 'The default language, if not identified.', 'default_language_code', 'en', 'language()', 1, 10, NOW(), NOW()),
 ('defaults', 'global', 'Default Currency', 'The default currency, if not identified.', 'default_currency_code', 'USD', 'currency()', 1, 11, NOW(), NOW()),
 ('defaults', 'global', 'Default Country', 'The default country, if not otherwise set.', 'default_country_code', '{STORE_COUNTRY_CODE}', 'country()', 1, 12, NOW(), NOW()),
-('defaults', 'global', 'Default Zone', 'The default zone, if not otherwise set.', 'default_zone_code', '', 'zone("default_country_code")', 0, 13, NOW(), NOW()),
-('defaults', 'local', 'Default Tax Class', 'The default tax class that will be preset when creating new products.', 'default_tax_class_id', '1', 'tax_class()', 0, 14, NOW(), NOW()),
-('defaults', 'global', 'Default Display Prices Including Tax', 'Display prices including tax by default.', 'default_display_prices_including_tax', '1', 'toggle()', 0, 15, NOW(), NOW()),
+('defaults', 'local', 'Default Customer Group', 'The default customer group for new customers.', 'default_customer_group_id', '1', 'customer_group()', 1, 13, NOW(), NOW()),
+('defaults', 'global', 'Default Zone', 'The default zone, if not otherwise set.', 'default_zone_code', '', 'zone("default_country_code")', 0, 14, NOW(), NOW()),
+('defaults', 'local', 'Default Tax Class', 'The default tax class that will be preset when creating new products.', 'default_tax_class_id', '1', 'tax_class()', 0, 15, NOW(), NOW()),
+('defaults', 'global', 'Default Display Prices Including Tax', 'Display prices including tax by default.', 'default_display_prices_including_tax', '1', 'toggle()', 0, 16, NOW(), NOW()),
 ('defaults', 'global', 'Default Quantity Unit', 'The default quantity unit, if not otherwise set.', 'default_quantity_unit_id', '1', 'quantity_unit()', 0, 16, NOW(), NOW()),
 ('defaults', 'global', 'Default Sold Out Status', 'The default sold-out status, if not otherwise set.', 'default_sold_out_status_id', '1', 'sold_out_status()', 0, 17, NOW(), NOW()),
 ('defaults', 'global', 'Default Delivery Status', 'The default delivery status, if not otherwise set.', 'default_delivery_status_id', '1', 'delivery_status()', 0, 18, NOW(), NOW()),

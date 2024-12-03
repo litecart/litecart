@@ -88,6 +88,10 @@
 			$sql_sort = "c.firstname, c.lastname";
 			break;
 
+		case 'group':
+			$sql_sort = "c.group_id, c.email";
+			break;
+
 		default:
 			$sql_sort = "c.date_created desc, c.id desc";
 			break;
@@ -95,9 +99,11 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$customers = database::query(
-		"select c.* from ". DB_TABLE_PREFIX ."customers c
+		"select c.*, cg.name as group_name from ". DB_TABLE_PREFIX ."customers c
+		left join ". DB_TABLE_PREFIX ."customer_groups cg on (c.group_id = cg.id)
 		where c.id
 		". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
+		". (!empty($_GET['group_id']) ? "and c.group_id = ". (int)$_GET['group_id'] : "") ."
 		order by $sql_sort;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
@@ -116,6 +122,7 @@
 	<?php echo functions::form_begin('search_form', 'get'); ?>
 
 		<div class="card-filter">
+			<div><?php echo functions::form_select_customer_group('group_id', true, 'style="min-width: 200px;"'); ?></div>
 			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
 			<?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
 		</div>
@@ -133,7 +140,8 @@
 					<th data-sort="email"><?php echo language::translate('title_email', 'Email'); ?></th>
 					<th data-sort="name"><?php echo language::translate('title_name', 'Name'); ?></th>
 					<th data-sort="company"><?php echo language::translate('title_company_name', 'Company Name'); ?></th>
-					<th><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></th>
+					<th class="main"><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></th>
+					<th class="text-center" data-sort="group"><?php echo language::translate('title_customer_group', 'Customer Group'); ?></th>
 					<th data-sort="date_created" class="text-end"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
 					<th style="width: 50px;"></th>
 				</tr>
@@ -149,6 +157,7 @@
 					<td><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></td>
 					<td><?php echo $customer['company']; ?></td>
 					<td><?php echo $customer['last_hostname']; ?></td>
+					<td class="text-center"><?php echo $customer['group_name']; ?></td>
 					<td class="text-end"><?php echo language::strftime('datetime', $customer['date_created']); ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
@@ -157,7 +166,9 @@
 
 			<tfoot>
 				<tr>
-					<td colspan="9"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo language::number_format($num_rows); ?></td>
+					<td colspan="10">
+						<?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo language::number_format($num_rows); ?>
+					</td>
 				</tr>
 			</tfoot>
 		</table>
@@ -186,6 +197,11 @@
 </div>
 
 <script>
+	$('select[name="group_id"] option[value=""]').text('-- <?php echo language::translate('title_all', 'All'); ?> --');
+	$('select[name="group_id"]').on('change', function() {
+		$(this).closest('form').submit();
+	});
+
 	$('.data-table :checkbox').on('change', function() {
 		$('#actions').prop('disabled', !$('.data-table :checked').length)
 	}).first().trigger('change')

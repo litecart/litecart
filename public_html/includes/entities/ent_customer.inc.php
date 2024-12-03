@@ -28,6 +28,7 @@
 			});
 
 			$this->data['status'] = 1;
+			$this->data['group_id'] = settings::get('default_customer_group_id');
 			$this->data['newsletter'] = '';
 
 			$this->previous = $this->data;
@@ -104,6 +105,7 @@
 				"update ". DB_TABLE_PREFIX ."customers
 				set code = '". database::input($this->data['code']) ."',
 					status = '". (!empty($this->data['status']) ? '1' : '0') ."',
+					group_id = ". (int)$this->data['group_id'] .",
 					email = '". database::input(strtolower($this->data['email'])) ."',
 					tax_id = '". database::input($this->data['tax_id']) ."',
 					company = '". database::input($this->data['company']) ."',
