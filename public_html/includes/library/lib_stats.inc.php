@@ -5,36 +5,6 @@
     private static $_watches;
     public static $data;
 
-    public static function init() {
-      event::register('after_capture', [__CLASS__, 'after_capture']);
-    }
-
-    public static function after_capture() {
-
-      if (($page_parse_time = microtime(true) - SCRIPT_TIMESTAMP_START) > 10) {
-        if (!empty(route::$selected['resource']) && route::$selected['resource'] != 'push_jobs') {
-
-          $output = ['Long execution time 10+ seconds'];
-
-          if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
-            $output[] = 'Command: '. implode(' ', $GLOBALS['argv']);
-          } else {
-            $output = array_merge($output, array_filter([
-            'Request: '. $_SERVER['REQUEST_METHOD'] .' '. $_SERVER['REQUEST_URI'] .' '. $_SERVER['SERVER_PROTOCOL'],
-            'Host: '. $_SERVER['HTTP_HOST'],
-            'Client: '. $_SERVER['REMOTE_ADDR'] .' ('. gethostbyaddr($_SERVER['REMOTE_ADDR']) .')',
-            'User Agent: '. $_SERVER['HTTP_USER_AGENT'],
-            !empty($_SERVER['HTTP_REFERER']) ? 'Referer: '. $_SERVER['HTTP_REFERER'] : '',
-            ]));
-          }
-
-          $output[] = 'Elapsed Time: '. number_format((microtime(true) - SCRIPT_TIMESTAMP_START) * 1000, 0, '.', ' ') .' ms';
-
-          error_log(implode(PHP_EOL, $output) . PHP_EOL);
-        }
-      }
-    }
-
     public static function start_watch($id) {
       if (!isset(self::$_watches[$id])) {
         self::$_watches[$id] = microtime(true);
@@ -45,6 +15,7 @@
 
       if (!isset(self::$_watches[$id])) {
         trigger_error('Cannot stop a non-existing timer ('. $id .')', E_USER_NOTICE);
+        return;
       }
 
       $elapsed = microtime(true) - self::$_watches[$id];
@@ -81,6 +52,22 @@
         '-->',
       ]);
 
-      return $output;
+      if (($page_parse_time = microtime(true) - SCRIPT_TIMESTAMP_START) > 10) {
+        error_log(implode(PHP_EOL, array_filter([
+          'Warning: Long script running time '. (floor($page_parse_time / 10 ) * 10) .'+ s',
+          $output,
+          'Elapsed Time: '. number_format($page_parse_time, 0, '.', ' ') .' s',
+          ($_SERVER['SERVER_SOFTWARE'] == 'CLI') ? 'Command: '. implode(' ', $GLOBALS['argv']) : '',
+          !empty($_SERVER['REQUEST_URI']) ? 'Request: '. $_SERVER['REQUEST_METHOD'] .' '. $_SERVER['REQUEST_URI'] .' '. $_SERVER['SERVER_PROTOCOL'] : '',
+          !empty($_SERVER['HTTP_HOST']) ? 'Host: '. $_SERVER['HTTP_HOST'] : '',
+          !empty($_SERVER['REMOTE_ADDR']) ? 'Client: '. $_SERVER['REMOTE_ADDR'] .' ('. gethostbyaddr($_SERVER['REMOTE_ADDR']) .')' : '',
+          !empty($_SERVER['HTTP_USER_AGENT']) ? 'User Agent: '. $_SERVER['HTTP_USER_AGENT'] : '',
+          !empty($_SERVER['HTTP_REFERER']) ? 'Referer: '. $_SERVER['HTTP_REFERER'] : '',
+        ])) . PHP_EOL);
+      }
+
+      if (class_exists('user', false) && user::check_login()) {
+        return $output;
+      }
     }
   }

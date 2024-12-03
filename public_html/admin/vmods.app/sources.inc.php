@@ -34,6 +34,7 @@
     $results = [];
   }
 
+  ob_clean();
   header('Content-Type: application/json');
   echo json_encode($results, JSON_UNESCAPED_SLASHES);
   exit;

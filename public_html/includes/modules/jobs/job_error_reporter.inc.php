@@ -13,7 +13,7 @@
     public function process($force, $last_run) {
 
     // Abort if log file is not set or missing
-      if (!$log_file = ini_get('error_log') || !is_file($log_file)) {
+      if ((!$log_file = ini_get('error_log')) || !is_file($log_file)) {
         return;
       }
 
@@ -68,23 +68,22 @@
       $contents = preg_replace('#(\r\n?|\n)#', "\n", $contents);
 
       $errors = [];
-      $occurrences = [];
 
       if (preg_match_all('#\[(\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/_]+)\] ([^\n]*)((?:(?!\n\[|$).)*)#s', $contents, $matches)) {
         foreach (array_keys($matches[0]) as $i) {
           $checksum = md5($matches[2][$i]);
 
-          $errors[$checksum] = [
-            'error' => $matches[2][$i],
-            'backtrace' => trim($matches[3][$i], "\n"),
-            'last_occurrence' => $matches[1][$i],
-            'critical' => preg_match('#(Parse|Fatal) error:#s', $matches[2][$i]) ? true : false,
-          ];
-
-          if (isset($occurrences[$checksum])) {
-            $occurrences[$checksum]++;
+          if (!isset($errors[$checksum])) {
+            $errors[$checksum] = [
+              'error' => $matches[2][$i],
+              'backtrace' => trim($matches[3][$i], "\n"),
+              'occurrences' => 1,
+              'last_occurrence' => $matches[1][$i],
+              'critical' => preg_match('#(Parse|Fatal) error:#s', $matches[2][$i]) ? true : false,
+            ];
           } else {
-            $occurrences[$checksum] = 1;
+            $errors[$checksum]['occurrences']++;
+            $errors[$checksum]['last_occurrence'] = strtotime($matches[1][$i]);
           }
         }
       }
@@ -105,7 +104,7 @@
 
       $buffer = '';
       foreach ($errors as $checksum => $error) {
-        $buffer .= "[$error[last_occurrence]] ". ($occurrences[$checksum] > 1 ? "[$occurrences[$checksum] times] " : "") ."$error[error]\n"
+        $buffer .= "[$error[last_occurrence]] ". ($error['occurrences'] > 1 ? "[$error[occurrences] times] " : "") ."$error[error]\n"
                  . (!empty($error['backtrace']) ? "$error[backtrace]\n\n" : "\n");
       }
 

@@ -1,5 +1,10 @@
 <?php
 
+// Delete some files
+  perform_action('delete', [
+    FS_DIR_STORAGE . 'logs/not_found.log',
+  ], 'skip');
+
   perform_action('modify', [
     FS_DIR_APP . '.htaccess' => [
       [
