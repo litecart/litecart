@@ -4,8 +4,8 @@
 
 		public static function __callstatic($function, $arguments) {
 
-			// Renamed functions
-			$search_replace = [
+			// Reroute deprecated or renamed functions
+			foreach ([
 				'#^form_draw_currency_field$#' => 'form_select_currency',
 				'#^form_draw_customer_field$#' => 'form_select_customer',
 				'#^form_draw_product_field$#' => 'form_select_product',
@@ -26,9 +26,7 @@
 				'#^form_draw_(.*?)s_list$#' => 'form_select_$1',
 				'#^form_draw_form_(begin|end)$#' => 'form_$1',
 				'#^form_draw_(.*?)_field$#' => 'form_input_$1',
-			];
-
-			foreach ($search_replace as $search => $replace) {
+			] as $search => $replace) {
 				if (preg_match($search, $function)) {
 					$new_function = preg_replace($search, $replace, $function);
 					trigger_error('Function '. $function.'() has been renamed to '. $new_function .'()', E_USER_DEPRECATED);

@@ -55,7 +55,7 @@
 			if (($page_parse_time = microtime(true) - SCRIPT_TIMESTAMP_START) > 10) {
 				error_log(implode(PHP_EOL, array_filter([
 					'Warning: Long script running time '. (floor($page_parse_time / 10 ) * 10) .'+ s',
-					//$output,
+					$output,
 					'Elapsed Time: '. number_format($page_parse_time, 0, '.', ' ') .' s',
 					($_SERVER['SERVER_SOFTWARE'] == 'CLI') ? 'Command: '. implode(' ', $GLOBALS['argv']) : '',
 					!empty($_SERVER['REQUEST_URI']) ? 'Request: '. $_SERVER['REQUEST_METHOD'] .' '. $_SERVER['REQUEST_URI'] .' '. $_SERVER['SERVER_PROTOCOL'] : '',

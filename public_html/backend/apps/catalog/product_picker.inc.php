@@ -28,7 +28,7 @@
 					<th><?php echo language::translate('title_date_created', 'Date Created'); ?></th>
 				</tr>
 			</thead>
-			<tbody />
+			<tbody></tbody>
 		</table>
 	</div>
 
@@ -57,44 +57,43 @@
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
 			},
-			success: function(json) {
+			success: function(result) {
 
 				$('tbody', $modal).html('')
 
-				if (!json) {
+				if (!result.length) {
 
 					var $output = $([
 						'<tr>',
-						'  <td colspan="7"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td>',
+						'  <td colspan="7">',
+						'    <em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em>',
+						'  </td>',
 						'</tr>'
 					].join('\n'))
 
 					$('tbody', $modal).html($output)
+					return
 				}
 
-				$.each(json, function(i, row) {
+				$.each(result, function(i, product) {
 
 					let $row = $([
 						'<tr>',
-						'  <td>' + row.id + '</td>',
-						'  <td>' + row.name + '</td>',
-						'  <td class="text-center">' + (row.num_stock_options ?: '-') + '</td>',
-						'  <td class="text-end">' + row.price.formatted + '</td>',
-						'  <td class="text-end">' + row.quantity + '</td>',
-						'  <td class="text-end">' + row.reserved + '</td>',
-						'  <td>' + row.date_created + '</td>',
+						'  <td>' + product.id + '</td>',
+						'  <td>' + product.name + '</td>',
+						'  <td class="text-center">' + (product.num_stock_options || '-') + '</td>',
+						'  <td class="text-end">' + product.price.formatted + '</td>',
+						'  <td class="text-end">' + product.quantity + '</td>',
+						'  <td class="text-end">' + product.reserved + '</td>',
+						'  <td>' + product.date_created + '</td>',
 						'</tr>'
 					].join('\n'))
 
-					$row.data(row)
+					$row.data(product)
 
-					console.log($modal.find('tbody').length)
 					$modal.find('tbody').append($row)
 				})
 
-				if (!$modal.find('tbody tr').length) {
-					$modal.find('tbody').html('<tr><td colspan="6"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>')
-				}
 			},
 		})
 	}).trigger('input').trigger('focus')

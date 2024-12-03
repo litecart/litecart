@@ -94,12 +94,12 @@
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."campaigns_products
 				where campaign_id = ". (int)$this->data['id'] ."
-				and product_id not in ('". implode("', '", database::input(array_column($this->data['products'], 'product_id'))) ."');"
+				and id not in ('". implode("', '", database::input(array_column($this->data['products'], 'id'))) ."');"
 			);
 
 			foreach ($this->data['products'] as $key => $product) {
 
-				if (empty($product['product_id'])) {
+				if (empty($product['id'])) {
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."campaigns_products
 						(campaign_id, product_id)
@@ -109,13 +109,16 @@
 					$this->data['products'][$key]['id'] = $product['id'] = database::insert_id();
 				}
 
+				$sql_prices = implode(",".PHP_EOL, array_map(function($currency) use ($product) {
+					return $currency['code'] ." = ". (!empty($product[$currency['code']]) ? (float)$product[$currency['code']] : 0);
+				}, currency::$currencies));
+
 				database::query(
 					"update ". DB_TABLE_PREFIX ."campaigns_products
 					set product_id = ". (int)$product['product_id'] .",
-						". implode(",".PHP_EOL, array_map(function($currency) use ($product) {
-							return $currency['code'] ." = ". (!empty($product[$currency['code']]) ? (float)$product[$currency['code']] : 0);
-						}, currency::$currencies)) ."
-					where id = ". (int)$this->data['id'] ."
+						$sql_prices
+					where campaign_id = ". (int)$this->data['id'] ."
+					and id = ". (int)$product['id'] ."
 					limit 1;"
 				);
 			}

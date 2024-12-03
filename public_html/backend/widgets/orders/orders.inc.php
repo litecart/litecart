@@ -12,7 +12,7 @@
 	)->fetch_all(function(&$order) {
 
 		if (!$order['order_status_icon']) {
-			$order['order_status_icon'] = 'icon-circle-thin';
+			$order['order_status_icon'] = 'icon-circle-o';
 		}
 
 		if (!$order['order_status_color']) {

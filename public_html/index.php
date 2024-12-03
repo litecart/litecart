@@ -1,16 +1,16 @@
 <?php
 
-/*!
- * LiteCart® 3.0.0
- *
- * This application is provided free without warranty.
- *
- * @author    LiteCart Dev Team <development@litecart.net>
- * @license   https://creativecommons.org/licenses/by-nd/4.0/ CC BY-ND 4.0
- * @link      https://www.litecart.net/ Official Website
- *
- * LiteCart is a registered trademark, property of T. Almroth.
- */
+	/*!
+	 * LiteCart® 3.0.0
+	 *
+	 * This application is provided free without warranty.
+	 *
+	 * @author    LiteCart Dev Team <development@litecart.net>
+	 * @license   https://creativecommons.org/licenses/by-nd/4.0/ CC BY-ND 4.0
+	 * @link      https://www.litecart.net/ Official Website
+	 *
+	 * LiteCart is a registered trademark, property of T. Almroth.
+	 */
 
 	require_once 'includes/app_header.inc.php';
 

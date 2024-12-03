@@ -77,7 +77,7 @@
 ?>
 <div class="card card-app">
 	<div class="card-header">
-	<div class="card-title">
+		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($campaign->data['id']) ? language::translate('title_edit_campaign', 'Edit Campaign') : language::translate('title_create_new_campaign', 'Create New Campaign'); ?>
 		</div>
 	</div>
@@ -92,11 +92,11 @@
 						<label><?php echo language::translate('title_status', 'Status'); ?></label>
 						<?php echo functions::form_toggle('status', 'e/d', true); ?>
 					</div>
-				</div>
 
-				<div class="form-group">
-					<label><?php echo language::translate('title_name', 'Name'); ?></label>
-					<?php echo functions::form_input_text('name', true); ?>
+					<div class="form-group col-md-6">
+						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+						<?php echo functions::form_input_text('name', true); ?>
+					</div>
 				</div>
 
 				<div class="row">
@@ -164,71 +164,76 @@
 
 <script>
 
+	const store_currency_code = '<?php echo settings::get('store_currency_code'); ?>'
+	const currencies = <?php echo json_encode(currency::$currencies); ?>
+
 	$('#campaigns').on('focus', 'input[name^="campaigns"]', function(e) {
-		if($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
+		if ($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
 			$(this).closest('.dropdown').addClass('open')
-	 }
+	 	}
 	})
 
 	$('#campaigns').on('blur', '.dropdown', function(e) {
 		$(this).removeClass('open')
 	})
 
-	$('#campaigns').on('input', 'input[name^="campaigns"][name$="[percentage]"]', function() {
-		let parent = $(this).closest('tr'),
-			value = 0
+	$('#campaigns').on('input', 'input[name$="[percentage]"]', function() {
+		let $row = $(this).closest('tr'),
+			amount = 0
 
-		<?php foreach (currency::$currencies as $currency) { ?>
-		if ($('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').val() > 0) {
-			value = parseFloat($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>)
-			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value)
-		} else {
-			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val("")
-		}
-		<?php } ?>
+		$.each(currencies, function(i, currency) {
 
-		<?php foreach (currency::$currencies as $currency) { ?>
-		value = parseFloat($(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>)
-		$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value)
-		<?php } ?>
+			if ($('input[name$="['+currency.code+']"]').val() > 0) {
+				amount = Number($('input[name$="['+store_currency_code+']"]').val() * (100 - $(this).val()) / 100).toFixed(currency.decimals)
+				$row.find('input[name$="['+currency.code+']"]').val(amount)
+			} else {
+				$row.find('input[name$="['+currency.code+']"]').val('')
+			}
+
+			amount = Number($row.find('input[name$="['+store_currency_code+']"]').val() / currency.value).toFixed(currency.decimals)
+
+			$row.find('input[name$="['+currency.code+']"]').attr('placeholder', amount)
+		})
 	})
 
-	$('#campaigns').on('input', 'input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
-		let parent = $(this).closest('tr')
-		let percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100
-		percentage = percentage.toFixed(2)
-		$(parent).find('input[name$="[percentage]"]').val(percentage)
+	$('#campaigns').on('input', 'input[name$="['+store_currency_code+']"]', function() {
 
-		<?php foreach (currency::$currencies as $currency) { ?>
-		value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>
-		value = value.toFixed(<?php echo $currency['decimals']; ?>)
-		$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value)
-		if ($(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
-			$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val('')
-		}
-		<?php } ?>
+		let $row = $(this).closest('tr'),
+			percentage = Number(($('input[name$="['+store_currency_code+']"]').val() - $(this).val()) / $('input[name$="['+store_currency_code+']"]').val() * 100).toFixed(2)
+
+		$row.find('input[name$="[percentage]"]').val(percentage)
+
+		$.each(currencies, function(i, currency) {
+
+			amount = Number($row.find('input[name$="['+store_currency_code+']"]').val() / currency.value).toFixed(currency.decimals)
+
+			$row.find('input[name$="['+currency.code+']"]').attr('placeholder', amount)
+
+			if ($row.find('input[name$="['+currency.code+']"]').val() == 0) {
+				$row.find('input[name$="['+currency.code+']"]').val('')
+			}
+		})
 	})
 
-	$('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').trigger('input')
+	$('input[name$="['+store_currency_code+']"]').trigger('input')
 
 	$('button[name="remove"]').on('click', function(e) {
 		e.preventDefault()
-		if (confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
+		//if (confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
 			$(this).closest('tr').remove()
-		}
+		//}
 	})
 
 	var new_product_i = 0
-	while ($('input[name="products[new_product_'+new_product_i+'][product_id]"]').length) new_product_i++
+	while ($('input[name^="products[new_product_'+new_product_i+']"]').length) new_product_i++
 
 	window.add_product = function(product) {
-		var key = $('table tbody tr').length
 
 		$output = $([
 			'<tr>',
 			'  <td>',
-			'    <?php echo functions::form_input_hidden('products[new_product_i][product_id]', 'new_product_id'); ?>',
-			'    <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => 'new_product_id']); ?>">',
+			'    <?php echo functions::form_input_hidden('products[new_product_i][product_id]', 'product.id'); ?>',
+			'    <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => 'product.id']); ?>">',
 			'      ' + product.name,
 			'		 </a>',
 			'  </td>',
@@ -242,8 +247,8 @@
 			'  </td>',
 			'</tr>',
 		].join('\n')
-			.replace(/new_product_i/g, 'new_product_'+new_product_i++)
-			.replace(/new_product_id/g, product.id)
+			.replace(/new_product_i/g, 'new_'+new_product_i++)
+			.replace(/product\.id/g, product.id)
 		)
 
 		$('table tbody').append($output)

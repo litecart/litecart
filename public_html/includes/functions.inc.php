@@ -44,8 +44,8 @@
 	}
 
 	// Return the first non-nil variable
-	function coalesce(&...$args) { // ... as of PHP 5.6
-		foreach ($args as $arg) {
+	function coalesce() {
+		foreach (func_get_args() as $arg) {
 			if (!nil($arg)) return $arg;
 		}
 	}
@@ -73,7 +73,7 @@
 	}
 
 	// Check if request was loaded via AJAX
-	function is_ajax_load() {
+	function is_ajax_request() {
 		return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
 	}
 

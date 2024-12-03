@@ -8,7 +8,7 @@
 		])) {
 			
 			if (administrator::check_login()) {
-				
+
 				notices::add('notices', strtr('%message [<a href="%link">%preview</a>]', [
 					'%message' => language::translate('reminder_store_in_maintenance_mode', 'The store is in maintenance mode.'),
 					'%preview' => language::translate('title_preview', 'Preview'),

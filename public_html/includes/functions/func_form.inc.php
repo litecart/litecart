@@ -981,10 +981,13 @@
 				return form_select_page($name, $input, $parameters);
 
 			case 'password':
-				return form_input_password($name, $input);
+				return form_input_password($name, $input, $parameters);
 
 			case 'password_unmaskable':
-				return form_input_password_unmaskable($name, $input);
+				return form_input_password_unmaskable($name, $input, $parameters);
+
+			case 'payment_term':
+				return form_select_payment_term($name, $input, $parameters);
 
 			case 'percent':
 				return form_input_percent($name, $input);
@@ -994,9 +997,6 @@
 
 			case 'product':
 				return form_select_product($name, $input, $parameters);
-
-			case 'payment_term':
-				return form_select_payment_term($name, $input, $parameters);
 
 			case 'quantity_unit':
 				return form_select_quantity_unit($name, $input, $parameters);
@@ -1840,8 +1840,8 @@
 			where type = 'payment'
 			and status;"
 		)->fetch_all(function($module) {
-			$module = new $module();
-			return [$module['id'], $module['name']];
+			$module = new $module['module_id'];
+			return [$module->id, $module->name];
 		});
 
 		if (preg_match('#\[\]$#', $name)) {
