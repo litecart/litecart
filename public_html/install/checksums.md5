@@ -125,7 +125,7 @@ bdf2a56b9eb2289873511131ad67dfba	admin/vmods.app/configure.inc.php
 79cae0304e5caeaa5f916036b6b5b8d8	admin/vmods.app/download.inc.php
 ecd4658acd61fb7c9e8ecfd1aced3c0b	admin/vmods.app/edit_vmod.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/vmods.app/index.html
-ec27c480c9062b44b5890cf0d1affe58	admin/vmods.app/sources.inc.php
+01e411106d7d834bcf57672da0947254	admin/vmods.app/sources.inc.php
 e29a3c7552e7618f89022648ac59fcb5	admin/vmods.app/test.inc.php
 f47385762d9deb7fff76ef6bcc7c2d34	admin/vmods.app/view.inc.php
 f0089e7dfec6e92a805cf32d452e6e0b	admin/vmods.app/vmods.inc.php
@@ -293,7 +293,7 @@ f3476e50ac9875d2a35710214ea1df58	includes/library/lib_notices.inc.php
 cd2dd7ebe9c3ac92da318654691b98e4	includes/library/lib_route.inc.php
 b344447a2b2717d0a1de8cd31d5e7a1f	includes/library/lib_session.inc.php
 544aa2b79ea8ed599bff2487acf96a16	includes/library/lib_settings.inc.php
-67835536559bdfc0b8d7e62663b684dd	includes/library/lib_stats.inc.php
+f1ad80cca7cb2afb7d65cfe2c7bd74c2	includes/library/lib_stats.inc.php
 2ef8f2d0104760068c5eb270b5794127	includes/library/lib_tax.inc.php
 276f4681818eceffdd130c3ef40f272a	includes/library/lib_user.inc.php
 6d3398e8d3bea70e5272e2692591cdf0	includes/library/lib_vmod.inc.php
@@ -303,7 +303,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/modules/customer/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/jobs/index.html
 0d8922e924a461eb2a793593d775bf79	includes/modules/jobs/job_cache_cleaner.inc.php
-a34eaec79a896847e212137206a1d4e9	includes/modules/jobs/job_error_reporter.inc.php
+18682a4984f91e0bc96d8477f2239c28	includes/modules/jobs/job_error_reporter.inc.php
 6f2198bf9353c343073884e3590afb13	includes/modules/jobs/job_mysql_optimizer.inc.php
 ad531c8df27d488f161cd717e63e2769	includes/modules/mod_customer.inc.php
 77a400d3d79cc169045badd15e338510	includes/modules/mod_jobs.inc.php
@@ -692,7 +692,7 @@ ab7ba686349fc0fd50570c6e0bf03299	install/upgrade_patches/2.5.2.sql
 4b62b45560195ccef0a8c7e46a7200e8	install/upgrade_patches/2.5.5.sql
 c84802588edcf08935a6b2a68c3dbc33	install/upgrade_patches/2.6.0.inc.php
 0d118d9f99301a91c70ad71dd552c2b7	install/upgrade_patches/2.6.0.sql
-2b2c1906aae7be9493243da63aabe4c0	install/upgrade_patches/2.6.1.inc.php
+7b4bafa25947467027c750c9aea527d3	install/upgrade_patches/2.6.1.inc.php
 cd37a7f25119ad9ac30f171d57ef6db2	install/upgrade_patches/2.6.1.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
