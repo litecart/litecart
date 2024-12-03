@@ -51,7 +51,7 @@
 			break;
 
 		default:
-			trigger_error('Unknown module type ('. __DOC__ .')', E_USER_ERROR);
+			throw new ErrorException('Unknown module type ('. __DOC__ .')');
 	}
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {

@@ -261,7 +261,7 @@
 						$tmp = preg_replace($operation['find']['pattern'], $operation['insert'], $tmp, -1, $count);
 
 						if (!$count && $operation['onerror'] != 'skip') {
-							trigger_error("Vmod failed to perform insert", E_USER_ERROR);
+							throw new ErrorException("Vmod failed to perform insert");
 							continue 2;
 						}
 					}
@@ -273,12 +273,12 @@
 			// Create cache folder for modified files if missing
 			if (!is_dir(FS_DIR_STORAGE . 'vmods/.cache/')) {
 				if (!mkdir(FS_DIR_STORAGE . 'vmods/.cache/', 0777)) {
-					throw new \Exception('The modifications cache directory could not be created', E_USER_ERROR);
+					throw new ErrorException('The modifications cache directory could not be created');
 				}
 			}
 
 			if (!is_writable(FS_DIR_STORAGE . 'vmods/.cache/')) {
-				throw new \Exception('The modifications cache directory is not writable', E_USER_ERROR);
+				throw new ErrorException('The modifications cache directory is not writable');
 			}
 
 			// Return original if nothing was modified
@@ -315,7 +315,7 @@
 
 				// Get XML file contents
 				if (!$xml = file_get_contents($file)) {
-					throw new \Exception('Could not read file', E_USER_ERROR);
+					throw new ErrorException('Could not read file');
 				}
 
 				// Normalize line endings

@@ -33,7 +33,7 @@
 				}
 
 				if (!mysqli_real_connect(self::$_links[$link], $server, $username, $password, $database)) {
-					trigger_error('Could not connect to database: '. mysqli_connect_errno() .' - '. mysqli_connect_error(), E_USER_ERROR);
+					throw new ErrorException('Could not connect to database: '. mysqli_connect_errno() .' - '. mysqli_connect_error());
 				}
 
 				if (($duration = microtime(true) - $timestamp) > 1) {
@@ -44,7 +44,7 @@
 			}
 
 			if (!is_object(self::$_links[$link])) {
-				trigger_error('Invalid database link', E_USER_ERROR);
+				throw new ErrorException('Invalid database link');
 			}
 
 			if (!empty($charset)) {
@@ -96,7 +96,7 @@
 		public static function set_option($option, $value, $link='default') {
 
 			if (!$result = mysqli_options(self::$_links[$link], $option, $value)) {
-				trigger_error('Could not set option '. $option .' to '. $value, E_USER_ERROR);
+				throw new ErrorException('Could not set option '. $option .' to '. $value);
 			}
 
 			return true;
@@ -253,11 +253,11 @@
 									break;
 
 								default:
-									trigger_error('Unsupported parameter type ('. gettype($flattened[$param]) .')', E_USER_ERROR);
+								throw new ErrorException('Unsupported parameter type ('. gettype($flattened[$param]) .')');
 							}
 
 						} else {
-							trigger_error('Unmatched parameter name ('. $param .')', E_USER_ERROR);
+							throw new ErrorException('Unmatched parameter name ('. $param .')');
 						}
 
 						// Commit replacement
@@ -271,7 +271,7 @@
 
 			if (($result = mysqli_query(self::$_links[$link], $sql)) === false) {
 					$error_message = mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\s+#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . $sql . PHP_EOL;
-					trigger_error($error_message, E_USER_ERROR);
+					throw new ErrorException($error_message);
 			}
 
 			if (($duration = microtime(true) - $timestamp) > 3) {
@@ -297,7 +297,7 @@
 			$timestamp = microtime(true);
 
 			if (mysqli_multi_query(self::$_links[$link], $sql) === false) {
-				trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL, E_USER_ERROR);
+				throw new ErrorException(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL);
 			}
 
 			$results = [];

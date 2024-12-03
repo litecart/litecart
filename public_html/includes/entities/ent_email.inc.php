@@ -237,7 +237,7 @@
 			$name = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $name));
 
 			if (!functions::validate_email($email)) {
-				trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
+				throw new ErrorException('Invalid email address ('. $email .')');
 			}
 
 			$this->data['ccs'][] = [
@@ -258,7 +258,7 @@
 			$name = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $name));
 
 			if (!functions::validate_email($email)) {
-				trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
+				throw new ErrorException('Invalid email address ('. $email .')');
 			}
 
 			$this->data['bccs'][] = [

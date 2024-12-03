@@ -1390,7 +1390,7 @@
 	function form_select_customer($name, $input=true, $parameters='') {
 
 		if (empty(administrator::$data['id'])) {
-			trigger_error('Must be logged in to use form_select_customer()', E_USER_ERROR);
+			throw new ErrorException('Must be logged in to use form_select_customer()');
 		}
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
@@ -1433,7 +1433,7 @@
 	function form_select_multiple_customers($name, $input=true, $parameters='') {
 
 		if (empty(administrator::$data['id'])) {
-			trigger_error('Must be logged in to use form_select_multiple_customers()', E_USER_ERROR);
+			throw new ErrorException('Must be logged in to use form_select_multiple_customers()');
 		}
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {

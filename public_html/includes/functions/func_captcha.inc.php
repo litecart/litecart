@@ -22,7 +22,7 @@
 				break;
 
 			default:
-				trigger_error('Unknown captcha set.', E_USER_ERROR);
+				throw new ErrorException('Unknown captcha set.');
 		}
 
 		$code = '';
@@ -30,7 +30,9 @@
 			$code .= substr($possible, mt_rand(0, strlen($possible) -1), 1);
 		}
 
-		$image = imagecreate($config['width'], $config['height']) or trigger_error('Cannot initialize new GD image stream', E_USER_ERROR);
+		if (!$image = imagecreate($config['width'], $config['height'])) {
+			throw new ErrorException('Cannot initialize new GD image stream');
+		}
 
 		// Set colors
 		$background_color = imagecolorallocate($image, 255, 255, 255);

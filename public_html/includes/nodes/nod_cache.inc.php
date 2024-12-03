@@ -318,7 +318,7 @@
 		public static function capture($token, $max_age=900, $force_cache=false) {
 
 			if (isset(self::$_recorders[$token['id']])) {
-				trigger_error('Cache recorder already initiated ('. $token['id'] .')', E_USER_ERROR);
+				throw new ErrorException('Cache recorder already initiated ('. $token['id'] .')');
 			}
 
 			if ($data = self::get($token, $max_age, $force_cache)) {

@@ -36,7 +36,7 @@
 			break;
 
 		default:
-			trigger_error('Unknown module type', E_USER_ERROR);
+			throw new ErrorException('Unknown module type');
 	}
 
 	$module = new ent_module($module_id);

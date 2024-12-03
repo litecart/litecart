@@ -161,7 +161,6 @@
 				break;
 
 			default:
-				trigger_error("Unknown action ($action)", E_USER_ERROR);
-
+				throw new ErrorException("Unknown action ($action)");
 		}
 	}
