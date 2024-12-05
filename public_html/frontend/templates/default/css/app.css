@@ -519,7 +519,7 @@ body main {
   font-weight: normal;
   white-space: nowrap;
 }
-.listing .product .price .campaign-price {
+.listing .product .price .final-price {
   font-weight: bold;
   color: #cc0000;
   white-space: nowrap;
@@ -692,7 +692,7 @@ body main {
 #box-product .regular-price {
   font-size: 0.75em;
 }
-#box-product .campaign-price {
+#box-product .final-price {
   color: #cc0000;
 }
 #box-product .tax {

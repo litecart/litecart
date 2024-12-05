@@ -1,18 +1,18 @@
-<div id="cart" class="dropdown">
+<div id="cart" class="dropdown dropdown-end">
 
 	<a href="{{link|escape}}">
 		<img class="image" src="{{template_path}}images/<?php echo !empty($num_items) ? 'cart_filled.svg' : 'cart.svg'; ?>" alt="">
 		<div class="badge quantity"><?php if ($num_items) echo $num_items; ?></div>
 	</a>
 
-	<ul class="dropdown-menu dropdown-menu-right">
+	<ul class="dropdown-menu">
 
-		<li>
+		<li class="dropdown-menu-item">
 			<h2><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></h2>
 		</li>
 
 		<?php foreach ($items as $key => $item) { ?>
-		<li class="item">
+		<li class="dropdown-menu-item item">
 			<div class="row">
 
 				<div class="col-2">
@@ -40,7 +40,10 @@
 		<?php } ?>
 
 		<li class="new-item"></li>
-		<li class="text-end"><?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <?php echo currency::format(cart::$total['amount']); ?></li>
+
+		<li class="dropdown-menu-item text-end">
+			<?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <?php echo currency::format(cart::$total['amount']); ?>
+		</li>
 
 		<li><hr></li>
 

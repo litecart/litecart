@@ -3,7 +3,8 @@
 	function catalog_categories_query($parent_id=null) {
 
 		$query = database::query(
-			"select c.id, c.parent_id, c.image, ci.name, ci.short_description, c.priority, c.date_updated from ". DB_TABLE_PREFIX ."categories c
+			"select c.id, c.parent_id, c.image, ci.name, ci.short_description, c.priority, c.date_updated
+			from ". DB_TABLE_PREFIX ."categories c
 
 			left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
 
@@ -213,47 +214,26 @@
 			$sql_where_attributes = implode(PHP_EOL, $sql_where_attributes);
 		}
 
-		$sql_where_prices = [];
 		if (!empty($filter['price_ranges']) && is_array($filter['price_ranges'])) {
-			foreach ($filter['price_ranges'] as $price_range) {
-				list($min,$max) = explode('-', $price_range);
-				$sql_where_prices[] = "(if(pc.campaign_price, pc.campaign_price, pp.price) >= ". (float)$min ." and if(pc.campaign_price, pc.campaign_price, pp.price) <= ". (float)$max .")";
-			}
-			$sql_where_prices = "and (". implode(" or ", $sql_where_prices) .")";
+			$sql_where_prices = "and (". implode(" or ", array_map(function($range){
+				list($min, $max) = explode('-', $range);
+				return "(final_price between ". (float)$min ." and ". (float)$max .")";
+			}, $filter['price_ranges'])) .")";
 		}
 
+		$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
+			return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)";
+		}, currency::$currencies)) .")";
+
 		$query = (
-			"select
-				p.*,
-				pi.name,
-				pi.short_description,
-				b.id as brand_id,
-				b.name as brand_name,
-				pp.price,
-				pc.campaign_price,
-				if(pc.campaign_price,
-				pc.campaign_price, pp.price) as final_price,
-				ifnull(pso.num_stock_options, 0) as num_stock_options,
-				pso.quantity,
-				pso.quantity_available,
-				pa.attributes,
-				ss.hidden
+			"select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name,
+				pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price,
+				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.quantity, pso.quantity_available,
+				pa.attributes, ss.hidden
 
 			from (
-				select
-					p.id,
-					p.delivery_status_id,
-					p.sold_out_status_id,
-					p.code,
-					p.brand_id,
-					p.keywords,
-					p.image,
-					p.recommended_price,
-					p.tax_class_id,
-					p.quantity_unit_id,
-					p.views,
-					p.purchases,
-					p.date_created
+				select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, p.keywords, p.image,
+				  p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.views, p.purchases, p.date_created
 
 				from ". DB_TABLE_PREFIX ."products p
 
@@ -278,31 +258,21 @@
 
 			left join (
 				select
-					product_id,
-					group_concat(concat(group_id, '-', if(custom_value != '',
-					custom_value, value_id)) separator ',') as attributes
+					product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
 				from ". DB_TABLE_PREFIX ."products_attributes
 				group by product_id
 				order by id
 			) pa on (p.id = pa.product_id)
 
 			left join (
-				select
-					product_id,
-					coalesce(
-						". implode(", ", array_map(function($currency){
-							return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)";
-						}, currency::$currencies)) ."
-					) as price
+				select product_id, $sql_column_price as price
 				from ". DB_TABLE_PREFIX ."products_prices
+				where customer_group_id is null
+				and min_quantity = 1
 			) pp on (pp.product_id = p.id)
 
 			left join (
-				select product_id, min(coalesce(
-					". implode(", ", array_map(function($currency){
-						return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)";
-					}, currency::$currencies)) ."
-				)) as campaign_price
+				select product_id, $sql_column_price as campaign_price
 				from ". DB_TABLE_PREFIX ."campaigns_products
 				where campaign_id in (
 					select id from ". DB_TABLE_PREFIX ."campaigns
@@ -311,18 +281,17 @@
 					and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."')
 				)
 				group by product_id
+				order by $sql_column_price asc
 				limit 1
 			) pc on (pc.product_id = p.id)
 
 			left join (
-				select
-					pso.product_id,
-					pso.id as stock_option_id,
-					count(pso.id) as num_stock_options,
-					sum(si.quantity) as quantity,
-					(si.quantity - oi.quantity_reserved) as quantity_available
+				select pso.product_id, pso.id as stock_option_id, count(pso.id) as num_stock_options,
+					sum(si.quantity) as quantity, (si.quantity - oi.quantity_reserved) as quantity_available
 				from ". DB_TABLE_PREFIX ."products_stock_options pso
+
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+
 				left join (
 					select oi.stock_option_id, sum(oi.quantity) as quantity_reserved
 					from ". DB_TABLE_PREFIX ."orders_items oi
@@ -336,14 +305,13 @@
 				group by pso.product_id
 			) pso on (pso.product_id = p.id)
 
-
 			left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
 
 			where (p.id
 				and (ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)
-				". (!empty($filter['sql_where']) ? "and (". $filter['sql_where'] .")" : null) ."
-				". (!empty($filter['product_name']) ? "and pi.name like '%". database::input($filter['product_name']) ."%'" : null) ."
-				". (!empty($filter['campaign']) ? "and campaign_price > 0" : null) ."
+				". (!empty($filter['sql_where']) ? "and (". $filter['sql_where'] .")" : "") ."
+				". (!empty($filter['product_name']) ? "and pi.name like '%". database::input($filter['product_name']) ."%'" : "") ."
+				". (!empty($filter['campaign']) ? "and campaign_price > 0" : "") ."
 				". fallback($sql_where_prices) ."
 			)
 
@@ -535,38 +503,17 @@
 			}
 		}
 
+		$sql_column_price = "coalesce(". implode(", ", array_map(function($currency){
+			return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)";
+		}, currency::$currencies)) . ")";
+
 		$query = (
-			"select
-				p.*,
-				pi.name,
-				pi.short_description,
-				b.id as brand_id,
-				b.name as brand_name,
-				pp.price,
-				pc.campaign_price,
-				if(pc.campaign_price,
-				pc.campaign_price, pp.price) as final_price,
-				ifnull(pso.num_stock_options, 0) as num_stock_options,
-				pso.quantity,
-				pso.quantity_available,
-				pa.attributes
+			"select	p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name,
+			pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price,
+			ifnull(pso.num_stock_options, 0) as num_stock_options, pso.quantity, pso.quantity_available, pa.attributes
 
 			from (
-				select
-					id,
-					delivery_status_id,
-					sold_out_status_id,
-					code,
-					brand_id,
-					keywords,
-					image,
-					recommended_price,
-					tax_class_id,
-					quantity_unit_id,
-					views,
-					purchases,
-					date_created,
-					(". implode(" + ", $sql_select_relevance) .") as relevance
+				select id, delivery_status_id,	sold_out_status_id,	code,	brand_id,	keywords,	image, recommended_price, tax_class_id, quantity_unit_id, views, purchases, date_created, (". implode(" + ", $sql_select_relevance) .") as relevance
 				from ". DB_TABLE_PREFIX ."products p
 				where status
 				". (!empty($sql_inner_where) ? implode(" and ", $sql_inner_where) : "")."
@@ -587,22 +534,14 @@
 			) pa on (p.id = pa.product_id)
 
 			left join (
-				select
-					product_id,
-					coalesce(
-						". implode(", ", array_map(function($currency){
-							return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)";
-						}, currency::$currencies)) ."
-					) as price
+				select product_id, $sql_column_price as price
 				from ". DB_TABLE_PREFIX ."products_prices
+				where customer_group_id is null
+				and min_quantity = 1
 			) pp on (pp.product_id = p.id)
 
 			left join (
-				select product_id, min(coalesce(
-					". implode(", ", array_map(function($currency){
-						return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)";
-					}, currency::$currencies)) ."
-				)) as campaign_price
+				select product_id, $sql_column_price as campaign_price
 				from ". DB_TABLE_PREFIX ."campaigns_products
 				where campaign_id in (
 					select id from ". DB_TABLE_PREFIX ."campaigns
@@ -611,16 +550,12 @@
 					and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."')
 				)
 				group by product_id
+				order by $sql_column_price asc
 				limit 1
 			) pc on (pc.product_id = p.id)
 
 			left join (
-				select
-					pso.product_id,
-					pso.id as stock_option_id,
-					count(pso.id) as num_stock_options,
-					sum(si.quantity) as quantity,
-					(si.quantity - oi.quantity_reserved) as quantity_available
+				select pso.product_id, pso.id as stock_option_id, count(pso.id) as num_stock_options, sum(si.quantity) as quantity, (si.quantity - oi.quantity_reserved) as quantity_available
 				from ". DB_TABLE_PREFIX ."products_stock_options pso
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 				left join (

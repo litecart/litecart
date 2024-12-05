@@ -158,7 +158,7 @@
 					<th style="width: 50px;"><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo language::translate('title_subscribed', 'Subscribed'); ?></th>
 					<th style="width: 480px;"><?php echo language::translate('title_email', 'Email'); ?></th>
-					<th><?php echo language::translate('title_name', 'Name'); ?></th>
+					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
 					<th><?php echo language::translate('title_ip_address', 'IP Address'); ?></th>
 					<th style="width: 200px;"><?php echo language::translate('title_hostname', 'Hostname'); ?></th>
 					<th class="text-end" style="width: 200px;"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>

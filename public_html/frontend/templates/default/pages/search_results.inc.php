@@ -41,12 +41,14 @@
 
 							<div>
 								<div class="dropdown">
+
 									<div class="form-select" data-toggle="dropdown">
 										<?php echo language::translate('title_sort_by', 'Sort By'); ?>
 									</div>
+
 									<ul class="dropdown-menu">
 										<?php foreach ($sort_alternatives as $key => $title) { ?>
-										<li>
+										<li class="dropdown-menu-item">
 											<?php echo functions::form_radio_button('sort', [$key, $title], true); ?>
 										</li>
 										<?php } ?>

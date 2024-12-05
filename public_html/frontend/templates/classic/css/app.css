@@ -573,7 +573,7 @@ body.scrolling-down #site-navigation {
   font-weight: normal;
   white-space: nowrap;
 }
-.listing .product .price-wrapper .campaign-price {
+.listing .product .price-wrapper .final-price {
   font-weight: bold;
   color: #c00;
   white-space: nowrap;
@@ -670,7 +670,7 @@ body.scrolling-down #site-navigation {
 #box-product .price-wrapper .recommended-price {
   font-size: 0.75em;
 }
-#box-product .price-wrapper .campaign-price {
+#box-product .price-wrapper .final-price {
   color: #cc0000;
 }
 #box-product .tax {

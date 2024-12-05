@@ -10,13 +10,7 @@
 			<h4 class="name"><?php echo $name; ?></h4>
 			<div class="brand-name"><?php echo !empty($brand['name']) ? $brand['name'] : '&nbsp;'; ?></div>
 			<div class="description"><?php echo $short_description; ?></div>
-			<div class="price-wrapper">
-				<?php if ($campaign_price) { ?>
-				<del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
-				<?php } else { ?>
-				<span class="price"><?php echo currency::format($regular_price); ?></span>
-				<?php } ?>
-			</div>
+			<?php echo functions::draw_price_tag($regular_price, $campaign_price, $recommended_price); ?>
 		</div>
 	</a>
 

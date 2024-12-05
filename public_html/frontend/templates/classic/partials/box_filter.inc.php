@@ -12,7 +12,7 @@
 				</div>
 				<ul class="dropdown-menu">
 					<?php foreach ($brands as $brand) { ?>
-					<li>
+					<li class="dropdown-menu-item">
 						<label class="option"><?php echo functions::form_checkbox('brands[]', $brand['id'], true, 'data-token-group="brand" data-token-title="'. language::translate('title_brand', 'Brand') .'" data-token-value="'. $brand['name'] .'"'); ?>
 							<span class="title"><?php echo $brand['name']; ?></span>
 						</label>
@@ -29,7 +29,7 @@
 				</div>
 				<ul class="dropdown-menu">
 					<?php foreach ($group['values'] as $value) { ?>
-					<li>
+					<li class="dropdown-menu-item">
 						<label class="option"><?php echo !empty($group['select_multiple']) ? functions::form_checkbox('attributes['. $group['id'] .'][]', $value['id'], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_attr($group['name']) .'" data-token-value="'. functions::escape_attr($value['value']) .'"') : functions::form_radio_button('attributes['. $group['id'] .'][]', $value['id'], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_attr($group['name']) .'" data-token-value="'. functions::escape_attr($value['value']) .'"'); ?>
 							<span class="title"><?php echo $value['value']; ?></span>
 						</label>
@@ -45,7 +45,7 @@
 				</div>
 				<ul class="dropdown-menu">
 					<?php foreach ($sort_alternatives as $key => $title) { ?>
-					<li>
+					<li class="dropdown-menu-item">
 						<label class="option">
 							<?php echo functions::form_radio_button('sort', $key, true); ?>
 							<span class="title"><?php echo $title; ?></span>

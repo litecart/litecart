@@ -91,11 +91,26 @@
 
 			// Prices
 			database::query(
-				"select * from ". DB_TABLE_PREFIX ."products_prices
-				where product_id = ". (int)$this->data['id'] .";"
+				"select pp.*, cg.name as customer_group_name
+				from ". DB_TABLE_PREFIX ."products_prices pp
+				left join ". DB_TABLE_PREFIX ."customer_groups cg on (cg.id = pp.customer_group_id)
+				where pp.product_id = ". (int)$this->data['id'] .";"
 			)->each(function($price){
 				foreach (array_keys(currency::$currencies) as $currency_code) {
-					$this->data['prices'][$currency_code] = $price[$currency_code];
+					$price[$currency_code] = $price[$currency_code];
+				}
+				$this->data['prices'][] = $price;
+			});
+
+			// Sort prices
+			uasort($this->data['prices'], function($a, $b) {
+
+				if ($a['customer_group_id'] != $b['customer_group_id']) {
+					return ($a['customer_group_id'] > $b['customer_group_id']) ? -1 : 1;
+				}
+
+				if ($a['min_quantity'] != $b['min_quantity']) {
+					return ($a['min_quantity'] > $b['min_quantity']) ? -1 : 1;
 				}
 			});
 
@@ -299,27 +314,38 @@
 				);
 			}
 
-			// Prices
-			foreach (array_keys(currency::$currencies) as $currency_code) {
+			// Delete prices
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."products_prices
+				where product_id = ". (int)$this->data['id'] ."
+				and id not in ('". implode("', '", array_column($this->data['prices'], 'id')) ."');"
+			);
 
-				if (!database::query(
-					"select * from ". DB_TABLE_PREFIX ."products_prices
-					where product_id = ". (int)$this->data['id'] ."
-					limit 1;"
-				)->num_rows) {
+			// Update prices
+			foreach ($this->data['prices'] as $key => $price) {
+
+				if (empty($price['id'])) {
+
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."products_prices
 						(product_id)
 						values (". (int)$this->data['id'] .");"
 					);
+
+					$this->data['prices'][$key]['id'] = $price['id'] = database::insert_id();
 				}
+
+				$sql_prices = implode("," . PHP_EOL, array_map(function($currency) use ($price) {
+					return "`". database::input($currency['code']) ."` = ". (isset($price[$currency['code']]) ? (float)$price[$currency['code']] : "null");
+				}, currency::$currencies));
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."products_prices
-					set ". implode(',' . PHP_EOL, array_map(function($currency) {
-						return "`". database::input($currency['code']) ."` = ". (isset($this->data['prices'][$currency['code']]) ? (float)$this->data['prices'][$currency['code']] : 0);
-					}, currency::$currencies)) ."
+					set customer_group_id = ". (!empty($price['customer_group_id']) ? (int)$price['customer_group_id'] : "null") .",
+						min_quantity = ". (!empty($price['min_quantity']) ? (int)$price['min_quantity'] : 1) .",
+						$sql_prices
 					where product_id = ". (int)$this->data['id'] ."
+					and id = ". (int)$price['id'] ."
 					limit 1;"
 				);
 			}
@@ -328,7 +354,7 @@
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."campaigns_products
 				where product_id = ". (int)$this->data['id'] ."
-				and id not in ('". implode("', '", array_column($this->data['campaigns'], 'campaign_id')) ."');"
+				and id not in ('". implode("', '", array_column($this->data['campaigns'], 'id')) ."');"
 			);
 
 			// Update campaigns
@@ -339,19 +365,22 @@
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."campaigns_products
 						(campaign_id, product_id)
-						values (". (int)$this->data['campaign_id'] ."". (int)$this->data['id'] .");"
+						values (". (int)$this->data['campaign_id'] .", ". (int)$this->data['id'] .");"
 					);
 
 					$this->data['campaigns'][$key]['id'] = $campaign['id'] = database::insert_id();
 				}
 
+				$sql_prices = implode("," . PHP_EOL, array_map(function($currency) use ($campaign) {
+					return "`". database::input($currency['code']) ."` = ". (isset($campaign[$currency['code']]) ? (float)$campaign[$currency['code']] : "null");
+				}, currency::$currencies));
+
 				database::query(
 					"update ". DB_TABLE_PREFIX ."products_campaigns
-					set ". implode("," . PHP_EOL, array_map(function($currency) use ($campaign) {
-						return "`". database::input($currency['code']) ."` = ". (isset($campaign[$currency['code']]) ? (float)$campaign[$currency['code']] : 0);
-					}, currency::$currencies)) ."
+					set $sql_prices
 					where product_id = ". (int)$this->data['id'] ."
-					and id = ". (int)$campaign['campaign_id'] ."
+					and campaign_id = ". (int)$campaign['campaign_id'] ."
+					and id = ". (int)$campaign['id'] ."
 					limit 1;"
 				);
 			}

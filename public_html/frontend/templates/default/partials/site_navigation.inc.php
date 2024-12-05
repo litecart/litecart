@@ -17,7 +17,7 @@
 						<a class="navbar-item" href="#" data-toggle="dropdown"><?php echo language::translate('title_catalog', 'Catalog'); ?></a>
 						<ul class="dropdown-menu">
 							<?php foreach ($categories as $item) { ?>
-							<li>
+							<li class="dropdown-menu-item">
 								<a class="navbar-item" href="<?php echo functions::escape_html($item['link']); ?>">
 									<?php echo $item['title']; ?>
 								</a>
@@ -41,7 +41,7 @@
 					<div class="navbar-link dropdown">
 						<?php echo functions::form_input_search('query', true, 'autocomplete="off" placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
 						<ul class="dropdown-menu">
-							<li>...</li>
+							<li class="dropdown-menu-item">...</li>
 						</ul>
 					</div>
 					<?php echo functions::form_end(); ?>
@@ -64,7 +64,7 @@
 						</a>
 						<ul class="dropdown-menu">
 							<?php foreach ($pages as $item) { ?>
-							<li>
+							<li class="dropdown-menu-item">
 								<a class="navbar-item" href="<?php echo functions::escape_html($item['link']); ?>">
 									<?php echo $item['title']; ?>
 								</a>
@@ -86,14 +86,14 @@
 
 				<?php if (settings::get('accounts_enabled')) { ?>
 					<?php if (!empty(customer::$data['id'])) { ?>
-					<li class="account dropdown">
+					<li class="account dropdown dropdown-end">
 
 						<a class="navbar-item" href="#" data-toggle="dropdown">
 							<?php echo functions::draw_fonticon('icon-user hidden-xs hidden-sm hidden-md hidden-lg'); ?>
 							<span class="hidden-sm"><?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span>
 						</a>
 
-						<ul class="dropdown-menu dropdown-menu-end">
+						<ul class="dropdown-menu">
 
 							<li>
 								<a class="navbar-item" href="<?php echo document::href_ilink('account/edit'); ?>">
@@ -130,14 +130,14 @@
 					<?php } ?>
 					<?php } ?>
 
-					<li class="wishlist<?php if (!empty($wishlist['items'])) echo ' filled'; ?> dropdown">
+					<li class="wishlist<?php if (!empty($wishlist['items'])) echo ' filled'; ?> dropdown dropdown-end">
 						<a class="navbar-item" href="#" data-toggle="dropdown">
 							<img class="img-responsive hidden-xs" src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($wishlist['items']) ? 'wishlist_filled.svg' : 'wishlist.svg')); ?>">
 							<span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo language::translate('title_wishlist', 'Wishlist'); ?></span>
 							<span class="badge"><?php echo $wishlist['num_items']; ?></span>
 						</a>
 
-						<ul class="dropdown-menu dropdown-menu-end" style="max-width: 480px;">
+						<ul class="dropdown-content" style="max-width: 480px;">
 
 							<?php foreach ($wishlist['items'] as $key => $item) { ?>
 							<li class="dropdown-item item">
@@ -170,14 +170,14 @@
 						</ul>
 					</li>
 
-					<li class="shopping-cart<?php if (!empty($shopping_cart['items'])) echo ' filled'; ?> dropdown">
+					<li class="shopping-cart<?php if (!empty($shopping_cart['items'])) echo ' filled'; ?> dropdown dropdown-end">
 						<a class="navbar-item" href="#" data-toggle="dropdown">
 							<img class="img-responsive hidden-xs" src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($shopping_cart['items']) ? 'cart_filled.svg' : 'cart.svg')); ?>">
 							<span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></span>
 							<span class="badge"><?php echo $shopping_cart['num_items']; ?></span>
 						</a>
 
-						<ul class="dropdown-menu dropdown-menu-end" style="max-width: 480px;">
+						<ul class="dropdown-content" style="max-width: 480px;">
 							<?php foreach ($shopping_cart['items'] as $key => $item) { ?>
 							<li class="dropdown-item item">
 

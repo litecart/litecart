@@ -70,18 +70,18 @@
 			</li>
 
 			<li>
-				<?php echo functions::form_toggle('condensed', ['0' => functions::draw_fonticon('icon-compress'), '1' => functions::draw_fonticon('icon-expand')]); ?>
+				<?php echo functions::form_toggle('condensed', [['0', functions::draw_fonticon('icon-compress')], ['1', functions::draw_fonticon('icon-expand')]], isset($_COOKIE['condensed']) ? $_COOKIE['condensed'] : ''); ?>
 			</li>
 
 			<li>
-				<?php echo functions::form_toggle('dark_mode', ['0' => functions::draw_fonticon('icon-sun'), '1' => functions::draw_fonticon('icon-moon')]); ?>
+				<?php echo functions::form_toggle('dark_mode', [['0', functions::draw_fonticon('icon-sun')], ['1', functions::draw_fonticon('icon-moon')]], isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] : ''); ?>
 			</li>
 
 			<li class="language dropdown">
 				<a href="#" data-toggle="dropdown"><span style="font-family: monospace" title="<?php echo functions::escape_html(language::$selected['name']); ?>"><?php echo language::$selected['code']; ?><span> <b class="caret"></b></a>
 				<ul class="dropdown-menu">
 					<?php foreach (language::$languages as $language) { ?>
-					<li>
+					<li class="dropdown-menu-item">
 						<a href="<?php echo document::href_ilink(null, [], [], [], $language['code']); ?>">
 							<?php echo $language['name']; ?>
 						</a>
@@ -115,7 +115,7 @@
 			<?php } ?>
 
 			<li>
-				<a href="<?php echo document::href_ilink('f:'); ?>" title="<?php echo language::translate('title_frontend', 'Frontend'); ?>">
+				<a href="<?php echo document::href_ilink('f:'); ?>" target="_blank" title="<?php echo language::translate('title_frontend', 'Frontend'); ?>">
 					<?php echo functions::draw_fonticon('icon-desktop'); ?> <?php echo language::translate('title_frontend', 'Frontend'); ?>
 				</a>
 			</li>

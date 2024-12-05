@@ -116,12 +116,12 @@
 
 					database::query(
 						"alter table ". DB_TABLE_PREFIX ."campaigns_products
-						change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` float(11, 4) not null;"
+						change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` float(10, 4) unsigned null;"
 					);
 
 					database::query(
 						"alter table ". DB_TABLE_PREFIX ."products_prices
-						change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` float(11, 4) not null;"
+						change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` float(10, 4) unsigned null;"
 					);
 				}
 
@@ -133,7 +133,7 @@
 				)->num_rows) {
 					database::query(
 						"alter table ". DB_TABLE_PREFIX ."campaigns_products
-						add `". database::input($this->data['code']) ."` float(11, 4) not null;"
+						add `". database::input($this->data['code']) ."` float(10, 4) unsigned null;"
 					);
 				}
 
@@ -143,7 +143,7 @@
 				)->num_rows) {
 					database::query(
 						"alter table ". DB_TABLE_PREFIX ."products_prices
-						add `". database::input($this->data['code']) ."` float(11, 4) not null;"
+						add `". database::input($this->data['code']) ."` float(10, 4) unsigned null;"
 					);
 				}
 

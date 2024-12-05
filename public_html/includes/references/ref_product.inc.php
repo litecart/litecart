@@ -4,9 +4,9 @@
 
 		protected $_language_codes;
 		protected $_currency_codes;
-		protected $_customer_id;
+		protected $_customer_group_id;
 
-		function __construct($product_id, $language_code=null, $currency_code=null, $customer_id=null) {
+		function __construct($product_id, $language_code=null, $currency_code=null, $customer_group_id=null) {
 
 			if (!$language_code) {
 				$language_code = language::$selected['code'];
@@ -16,13 +16,13 @@
 				$currency_code = currency::$selected['code'];
 			}
 
-			if (!$customer_id) {
-				$customer_id = customer::$data['id'];
+			if (!$customer_group_id) {
+				$customer_group_id = customer::$data['group_id'];
 			}
 
 			$this->_data['id'] = (int)$product_id;
 
-			$this->_customer_id = $customer_id;
+			$this->_customer_group_id = $customer_group_id;
 
 			$this->_language_codes = array_unique([
 				$language_code,
@@ -164,10 +164,31 @@
 
 				case 'final_price':
 
+					// Regular Price
 					$this->_data['final_price'] = $this->price;
 
+					// Campaign Price
 					if (isset($this->campaign['price']) && $this->campaign['price'] > 0 && $this->campaign['price'] < $this->_data['final_price']) {
 						$this->_data['final_price'] = $this->campaign['price'];
+					}
+
+					// Customer Group Price
+					if ($this->_customer_group_id) {
+
+						$customer_price = (float)database::query(
+							"select coalesce(
+								". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
+							) / min_quantity as customer_price
+							from ". DB_TABLE_PREFIX ."products_prices
+							where product_id = ". (int)$this->_data['id'] ."
+							and customer_group_id = ". (int)$this->_customer_group_id ."
+							order by min_quantity asc
+							limit 1;"
+						)->fetch('customer_price');
+
+						if ($customer_price && $customer_price < $this->_data['final_price']) {
+							$this->_data['final_price'] = $customer_price;
+						}
 					}
 
 					break;
@@ -355,11 +376,13 @@
 					$this->_data['price'] = (float)database::query(
 						"select coalesce(
 							". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
-						) price
+						) / min_quantity as regular_price
 						from ". DB_TABLE_PREFIX ."products_prices
 						where product_id = ". (int)$this->_data['id'] ."
+						and customer_group_id is null
+						order by min_quantity asc
 						limit 1;"
-					)->fetch('price');
+					)->fetch('regular_price');
 
 					break;
 

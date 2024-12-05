@@ -284,6 +284,37 @@
 		return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="thumbnail '. functions::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($thumbnail) .'" srcset="'. document::href_rlink($thumbnail) .' 1x, '. document::href_rlink($thumbnail_2x) .' 2x"'. ($parameters ? ' '. $parameters : '') .'>';
 	}
 
+	function draw_price_tag($regular_price, $final_price=null, $recommended_price=null, $currency_code=null) {
+
+		$price_tag = [];
+
+		if (!isset($regular_price)) {
+			if (isset($final_price)) {
+				$regular_price = $final_price;
+			} else {
+				return;
+			}
+		}
+
+		if (!isset($currency_code)) {
+			$currency_code = currency::$selected['code'];
+		}
+
+		$price_tag[] = '<div class="price-tag">';
+
+		if ($recommended_price > 0 && $recommended_price < $regular_price) {
+			$price_tag[] = '<del class="recommended-price">'. currency::format($recommended_price) .'</del> <strong class="price">'. currency::format($regular_price) .'</strong>';
+		} else if ($regular_price > $final_price) {
+			$price_tag[] = '  <del class="regular-price">'. currency::format($regular_price) .'</del> <strong class="sale-price">'. currency::format($final_price) .'</strong>';
+		} else {
+			$price_tag[] = '<span class="price">'. currency::format($final_price) .'</span>';
+		}
+
+		$price_tag[] = '</div>';
+
+		return implode(PHP_EOL, $price_tag);
+	}
+
 	function draw_listing_category($category, $view='views/listing_category') {
 
 		$listing_category = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/listing_category.inc.php');
@@ -325,14 +356,14 @@
 			'sticker' => $sticker,
 			'brand' => [],
 			'short_description' => $product['short_description'],
-			'quantity' => $product['quantity'],
+			'quantity' => isset($product['quantity']) ? $product['quantity'] : null,
 			'quantity_unit_id' => $product['quantity_unit_id'],
-			'quantity_available' => $product['quantity_available'],
-			'recommended_price' => tax::get_price($product['recommended_price'], $product['tax_class_id']),
-			'regular_price' => tax::get_price($product['price'], $product['tax_class_id']),
-			'campaign_price' => $product['campaign_price'] ? tax::get_price($product['campaign_price'], $product['tax_class_id']) : null,
-			'final_price' => tax::get_price($product['final_price'], $product['tax_class_id']),
-			'tax' => tax::get_tax($product['price'], $product['tax_class_id']),
+			'quantity_available' => isset($product['quantity_available']) ? $product['quantity_available'] : null,
+			'recommended_price' => isset($product['recommended_price']) ? tax::get_price($product['recommended_price'], $product['tax_class_id']) : null,
+			'regular_price' => isset($product['price']) ? tax::get_price($product['price'], $product['tax_class_id']) : null,
+			'campaign_price' => isset($product['campaign_price']) ? tax::get_price($product['campaign_price'], $product['tax_class_id']) : null,
+			'final_price' => isset($product['final_price']) ? tax::get_price($product['final_price'], $product['tax_class_id']) : null,
+			'tax' => isset($product['price']) ? tax::get_tax($product['price'], $product['tax_class_id']) : null,
 			'tax_class_id' => $product['tax_class_id'],
 			'delivery_status_id' => $product['delivery_status_id'],
 			'sold_out_status_id' => $product['sold_out_status_id'],
@@ -364,10 +395,12 @@
 			'$.featherlight.defaults.targetAttr = \'data-target\';',
 		]);
 
+		if (!$selector && !$parameters) return;
+
 		if (preg_match('#^(https?:)?//#', $selector)) {
 			$js = ['$.featherlight(\''. $selector .'\', {'];
 
-		} else if (!empty($selector)) {
+		} else if ($selector) {
 			$js = ['$(\''. $selector .'\').featherlight({'];
 
 		} else {

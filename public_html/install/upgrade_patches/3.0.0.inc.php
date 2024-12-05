@@ -936,3 +936,37 @@
 	database::query(
 		"drop table ". DB_TABLE_PREFIX ."products_campaigns;"
 	);
+
+	// Make price columns nullable
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."currencies;"
+	)->each(function($currency) {
+		database::query(
+			"alter table ". DB_TABLE_PREFIX ."products_prices
+			change column `". $currency['code'] ."` `". $currency['code'] ."` float(10,4) unsigned null;"
+		);
+	});
+
+	// Make all 11 digit unsigned integers standard int(10) unsigned
+	database::query(
+		"select * from information_schema
+		where TABLE_SCHEMA = '". database::input(DB_DATABASE) ."'
+		and COLUMN_TYPE = 'int(11) unsigned';"
+	)->each(function($column) {
+		database::query(
+			"alter table `". database::input($column['TABLE_NAME']) ."`
+			change column `". database::input($column['COLUMN_NAME']) ."` `". database::input($column['COLUMN_NAME']) ."` int(10) unsigned ". ($column['IS_NULLABLE'] == 'YES' ? "null" : "not null") . " ". ($column['COLUMN_DEFAULT'] ? "default ". $column['COLUMN_DEFAULT'] : "") .";"
+		);
+	});
+
+	// Make all 11 digit unsigned floating points standard float(10,4) unsigned
+	database::query(
+		"select * from information_schema
+		where TABLE_SCHEMA = '". database::input(DB_DATABASE) ."'
+		and COLUMN_TYPE = 'float(11,4) unsigned';"
+	)->each(function($column) {
+		database::query(
+			"alter table `". database::input($column['TABLE_NAME']) ."`
+			change column `". database::input($column['COLUMN_NAME']) ."` `". database::input($column['COLUMN_NAME']) ."` float(10,4) unsigned ". ($column['IS_NULLABLE'] == 'YES' ? "null" : "not null") . " ". ($column['COLUMN_DEFAULT'] ? "default ". $column['COLUMN_DEFAULT'] : "") .";"
+		);
+	});

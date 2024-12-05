@@ -131,15 +131,7 @@
 						<?php echo functions::form_input_hidden('stock_option_id', $stock_options[0]['stock_option_id']); ?>
 						<?php } ?>
 
-						<div class="price-wrapper">
-							<?php if ($campaign_price) { ?>
-							<del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
-							<?php } else if ($recommended_price) { ?>
-							<del class="recommended-price"><?php echo currency::format($recommended_price); ?></del> <strong class="price"><?php echo currency::format($regular_price); ?></strong>
-							<?php } else { ?>
-							<span class="price"><?php echo currency::format($final_price); ?></span>
-							<?php } ?>
-						</div>
+						<?php echo functions::draw_price_tag($regular_price, $final_price, $recommended_price); ?>
 
 						<?php if ($tax_rates) { ?>
 						<div class="tax" style="margin-bottom: 1em;">
@@ -270,32 +262,32 @@
 	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', function(e) {
 
 		var regular_price = <?php echo currency::format_raw($regular_price); ?>
-		var sales_price = <?php echo currency::format_raw($campaign_price ?: $regular_price); ?>
+		var final_price = <?php echo currency::format_raw($final_price ?: $regular_price); ?>
 		var tax = <?php echo currency::format_raw($total_tax); ?>
 
 		$(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function() {
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
-			if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
+			if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust')
 			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust')
 		})
 
 		$(this).find('select option:checked').each(function() {
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
-			if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
+			if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust')
 			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust')
 		})
 
 		$(this).find('input[type!="radio"][type!="checkbox"]').each(function() {
 			if ($(this).val() != '') {
 				if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
-				if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
+				if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust')
 				if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust')
 			}
 		})
 
 		$(this).find('.regular-price').text(regular_price.toMoney())
-		$(this).find('.campaign-price').text(sales_price.toMoney())
-		$(this).find('.price').text(sales_price.toMoney())
+		$(this).find('.final-price').text(final_price.toMoney())
+		$(this).find('.price').text(final_price.toMoney())
 		$(this).find('.total-tax').text(tax.toMoney())
 	})
 

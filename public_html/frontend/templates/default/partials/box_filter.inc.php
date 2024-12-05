@@ -51,12 +51,14 @@
 			<?php if ($brands) { ?>
 			<div>
 				<div class="dropdown">
+
 					<div class="form-select" data-toggle="dropdown">
 						<?php echo language::translate('title_brands', 'Brands'); ?>
 					</div>
+
 					<ul class="dropdown-menu">
 						<?php foreach ($brands as $brand) { ?>
-						<li><?php echo functions::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, 'data-token-group="brand" data-token-title="'. language::translate('title_brand', 'Brand') .'" data-token-value="'. $brand['name'] .'"'); ?></li>
+						<li class="dropdown-menu-item"><?php echo functions::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, 'data-token-group="brand" data-token-title="'. language::translate('title_brand', 'Brand') .'" data-token-value="'. $brand['name'] .'"'); ?></li>
 						<?php } ?>
 					</ul>
 				</div>
@@ -66,12 +68,16 @@
 			<?php if ($attributes) foreach ($attributes as $group) { ?>
 			<div>
 				<div class="dropdown">
+
 					<div class="form-select" data-toggle="dropdown">
 						<?php echo $group['name']; ?>
 					</div>
+
 					<ul class="dropdown-menu">
 						<?php foreach ($group['values'] as $value) { ?>
-						<li><?php echo !empty($group['select_multiple']) ? functions::form_checkbox('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_attr($group['name']) .'" data-token-value="'. functions::escape_attr($value['value']) .'"') : functions::form_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_attr($group['name']) .'" data-token-value="'. functions::escape_attr($value['value']) .'"'); ?></li>
+						<li class="dropdown-menu-item">
+							<?php echo !empty($group['select_multiple']) ? functions::form_checkbox('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_attr($group['name']) .'" data-token-value="'. functions::escape_attr($value['value']) .'"') : functions::form_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_attr($group['name']) .'" data-token-value="'. functions::escape_attr($value['value']) .'"'); ?>
+						</li>
 						<?php } ?>
 					</ul>
 				</div>
@@ -80,12 +86,16 @@
 
 			<div>
 				<div class="dropdown">
+
 					<div class="form-select" data-toggle="dropdown">
 						<?php echo language::translate('title_sort_by', 'Sort By'); ?>
 					</div>
+
 					<ul class="dropdown-menu">
 						<?php foreach ($sort_alternatives as $key => $title) { ?>
-						<li><?php echo functions::form_radio_button('sort', [$key, $title], true); ?></li>
+						<li class="dropdown-menu-item">
+							<?php echo functions::form_radio_button('sort', [$key, $title], true); ?>
+						</li>
 						<?php } ?>
 					</ul>
 				</div>

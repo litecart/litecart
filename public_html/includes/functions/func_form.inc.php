@@ -92,14 +92,14 @@
 			}
 
 			if (preg_match('#\[\]$#', $name)) {
-				$html .= '<li class="option">' . functions::form_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
+				$html .= '<li class="dropdown-menu-item option">' . functions::form_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
 			} else {
-				$html .= '<li class="option">' . functions::form_radio_button($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
+				$html .= '<li class="dropdown-menu-item option">' . functions::form_radio_button($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
 			}
 		}
 
 		$html .= '  </ul>' . PHP_EOL
-					 . '</div>';
+					. '</div>';
 
 		return $html;
 	}
@@ -463,7 +463,7 @@
 			$input = form_reinsert_value($name);
 		}
 
-		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-radio"' : '') .' type="checkbox" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($value) .'" '. (!strcmp($input, $value) ? ' checked' : '') . ($parameters ? ' ' . $parameters : '') .'>';
+		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-radio"' : '') .' type="radio" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($value) .'" '. (!strcmp($input, $value) ? ' checked' : '') . ($parameters ? ' ' . $parameters : '') .'>';
 	}
 
 	function form_input_range($name, $input=true, $min='', $max='', $step='', $parameters='') {
@@ -790,7 +790,7 @@
 
 	function form_toggle($name, $options='t/f', $input=true, $parameters='') {
 
-		if (strpos($input, '/') === true) {
+		if (strpos($input, '/') !== false) {
 			trigger_error('Passing type as 3rd parameter in form_toggle() is deprecated. Use instead form_toggle($name, $type, $input, $parameters)', E_USER_DEPRECATED);
 			list($type, $input) = [$input, $type];
 		}
@@ -1456,7 +1456,7 @@
 
 	function form_select_multiple_customers($name, $input=true, $parameters='') {
 
-		if (empty(administrator::$data['id'])) {
+		if (!administrator::check_login()) {
 			throw new ErrorException('Must be logged in to use form_select_multiple_customers()');
 		}
 

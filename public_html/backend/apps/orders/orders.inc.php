@@ -432,25 +432,21 @@ table .icon-star-o:hover {
 					<td><?php echo $order['payment_option_name']; ?></td>
 					<td class="text-center"><?php if (!is_null($order['sufficient_stock'])) echo $order['sufficient_stock'] ? functions::draw_fonticon('icon-check', 'style="color: #88cc44;"') : functions::draw_fonticon('icon-times', 'style="color: #ff6644;"'); ?></td>
 					<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
-					<td><?php echo functions::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?> <?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
+					<td class="text-center"><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
 					<td class="text-end"><?php echo language::strftime('datetime', $order['date_created']); ?></td>
 					<td>
-						<div class="dropdown">
+						<div class="dropdown dropdown-end">
 							<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
 								<?php echo functions::draw_fonticon('icon-print'); ?>
 							</button>
-							<ul class="dropdown-menu dropdown-menu-end">
-								<li>
-									<a class="dropdown-item" href="<?php echo  document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank">
-										<?php echo functions::escape_html(language::translate('title_packing_slip', 'Packing Slip')); ?>
-									</a>
-								</li>
-								<li>
-									<a class="dropdown-item" href="<?php echo document::href_ilink('f:printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="">
-										<?php echo functions::escape_html(language::translate('title_order_copy', 'Order Copy')); ?>
-									</a>
-								</li>
-							</ul>
+							<nav class="dropdown-menu">
+								<a class="dropdown-item" href="<?php echo  document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank">
+									<?php echo functions::escape_html(language::translate('title_packing_slip', 'Packing Slip')); ?>
+								</a>
+								<a class="dropdown-item" href="<?php echo document::href_ilink('f:printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="">
+									<?php echo functions::escape_html(language::translate('title_order_copy', 'Order Copy')); ?>
+								</a>
+							</nav>
 						</div>
 					</td>
 					<td>

@@ -105,9 +105,9 @@
 				<?php } ?>
 
 				<?php if (settings::get('accounts_enabled')) { ?>
-				<li class="nav-item account dropdown">
+				<li class="nav-item account dropdown dropdown-end">
 					<a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('icon-user'); ?> <?php echo !empty(customer::$data['id']) ? functions::escape_html(customer::$data['firstname']) : language::translate('title_sign_in', 'Sign In'); ?></a>
-					<ul class="dropdown-menu dropdown-menu-end">
+					<ul class="dropdown-menu">
 						<?php if (!empty(customer::$data['id'])) { ?>
 							<li><a class="nav-link" href="<?php echo document::href_ilink('account/edit'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
 							<li><a class="nav-link" href="<?php echo document::href_ilink('account/addresses'); ?>"><?php echo language::translate('title_addresses', 'Addresses'); ?></a></li>

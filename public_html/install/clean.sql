@@ -14,6 +14,10 @@ DROP TABLE IF EXISTS `lc_brands`;
 -- -----
 DROP TABLE IF EXISTS `lc_brands_info`;
 -- -----
+DROP TABLE IF EXISTS `lc_campaigns`;
+-- -----
+DROP TABLE IF EXISTS `lc_campaigns_products`;
+-- -----
 DROP TABLE IF EXISTS `lc_categories`;
 -- -----
 DROP TABLE IF EXISTS `lc_categories_filters`;

@@ -47,7 +47,7 @@ CREATE TABLE `lc_campaigns_products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE IF NOT EXISTS `lc_customer_groups` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`type` ENUM('retail', 'wholesale') NOT NULL DEFAULT 'retail',
 	`name` VARCHAR(32) NOT NULL DEFAULT '',
 	`description` VARCHAR(256) NOT NULL DEFAULT '',
@@ -412,15 +412,15 @@ CHANGE COLUMN `delivery_status_id` `delivery_status_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `sold_out_status_id` `sold_out_status_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `default_category_id` `default_category_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `keywords` `keywords` VARCHAR(256) NOT NULL DEFAULT '',
-CHANGE COLUMN `quantity_min` `quantity_min` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '1.0000',
-CHANGE COLUMN `quantity_max` `quantity_max` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
-CHANGE COLUMN `quantity_step` `quantity_step` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+CHANGE COLUMN `quantity_min` `quantity_min` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '1.0000',
+CHANGE COLUMN `quantity_max` `quantity_max` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+CHANGE COLUMN `quantity_step` `quantity_step` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `quantity_unit_id` `quantity_unit_id` INT(10) UNSIGNED NULL,
-CHANGE COLUMN `weight` `weight` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `weight` `weight` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
-CHANGE COLUMN `dim_x` `length` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `dim_y` `width` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `dim_z` `height` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `dim_x` `length` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `dim_y` `width` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `dim_z` `height` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `tax_class_id` `tax_class_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `views`  `views` INT(10) UNSIGNED NOT NULL DEFAULT '0',
@@ -458,19 +458,23 @@ CHANGE COLUMN `product_id` `product_id` INT(10) UNSIGNED NOT NULL,
 CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
 -- -----
 ALTER TABLE `lc_products_prices`
-CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-CHANGE COLUMN `product_id` `product_id` INT(10) UNSIGNED NOT NULL;
+CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT FIRST,
+CHANGE COLUMN `product_id` `product_id` INT(10) UNSIGNED NOT NULL AFTER `id`,
+ADD COLUMN `customer_group_id` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `product_id`,
+ADD COLUMN `min_quantity` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '1' AFTER `customer_group_id`,
+ADD INDEX `customer_group_id` (`customer_group_id`),
+ADD INDEX `min_quantity` (`min_quantity`);
 -- -----
 ALTER TABLE `lc_products_stock_options`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `product_id` `product_id` INT(10) UNSIGNED NOT NULL,
 CHANGE COLUMN `combination` `attributes` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `sku` `sku` VARCHAR(32) NOT NULL DEFAULT '',
-CHANGE COLUMN `weight` `weight` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `weight` `weight` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
-CHANGE COLUMN `dim_x` `length` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `dim_y` `width` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `dim_z` `height` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `dim_x` `length` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `dim_y` `width` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `dim_z` `height` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 ADD COLUMN `stock_item_id` INT(10) UNSIGNED NOT NULL AFTER `product_id`,
 ADD COLUMN `purchase_price` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `length_unit`,
@@ -1045,6 +1049,9 @@ ADD CONSTRAINT `product_info_to_language` FOREIGN KEY (`language_code`) REFERENC
 -- -----
 ALTER TABLE `lc_products_images`
 ADD CONSTRAINT `product_price_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+-- -----
+ALTER TABLE `lc_products_prices`
+ADD CONSTRAINT `product_price_to_customer_group` FOREIGN KEY (`customer_group_id`) REFERENCES `lc_customer_groups` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 -- -----
 ALTER TABLE `lc_products_to_categories`
 ADD CONSTRAINT `product_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,

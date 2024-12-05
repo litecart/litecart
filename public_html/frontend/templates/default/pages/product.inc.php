@@ -171,13 +171,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 										<div class="col-xl-4">
 
-											<div class="price-wrapper">
-												<?php if ($campaign_price) { ?>
-												<del class="regular-price">{{regular_price|money}}</del> <strong class="campaign-price">{{campaign_price|money}}</strong>
-												<?php } else { ?>
-												<span class="price">{{regular_price|money}}</span>
-												<?php } ?>
-											</div>
+											<?php echo functions::draw_price_tag($regular_price, $final_price, $recommended_price); ?>
 
 											<div class="tax" style="margin: 0 0 1em 0;">
 											<?php if ($tax_rates) { ?>
@@ -297,32 +291,32 @@ if (preg_match('#[:\t]#', $line)) {
 	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', function(e) {
 
 		var regular_price = <?php echo currency::format_raw($regular_price); ?>,
-			sales_price = <?php echo currency::format_raw($campaign_price ?: $regular_price); ?>,
+			final_price = <?php echo currency::format_raw($final_price); ?>,
 			tax = <?php echo currency::format_raw($total_tax); ?>
 
 		$(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function() {
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
-			if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
+			if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust')
 			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust')
 		})
 
 		$(this).find('select option:checked').each(function() {
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
-			if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
+			if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust')
 			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust')
 		})
 
 		$(this).find('input[type!="radio"][type!="checkbox"]').each(function() {
 			if ($(this).val() != '') {
 				if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust')
-				if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust')
+				if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust')
 				if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust')
 			}
 		})
 
 		$(this).find('.regular-price').text(regular_price.toMoney())
-		$(this).find('.campaign-price').text(sales_price.toMoney())
-		$(this).find('.price').text(sales_price.toMoney())
+		$(this).find('.final-price').text(final_price.toMoney())
+		$(this).find('.price').text(final_price.toMoney())
 		$(this).find('.total-tax').text(tax.toMoney())
 	})
 
