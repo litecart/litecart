@@ -205,7 +205,7 @@ body.scrolling-down #site-navigation {
   color: #fff;
   position: absolute;
   top: 15px;
-  right: -10px;
+  inset-inline-end: -10px;
   width: 2em;
   animation: pulsating 1.5s linear infinite;
   font-size: 10px;
@@ -221,7 +221,7 @@ body.scrolling-down #site-navigation {
 @media (max-width: calc(992px)) {
   #cart #cart .badge {
     top: 15px;
-    right: 0;
+    inset-inline-end: 0;
   }
 }
 #sidebar {
@@ -289,7 +289,7 @@ body.scrolling-down #site-navigation {
   height: 48px;
   opacity: 0.3;
   position: fixed;
-  right: 30px;
+  inset-inline-end: 30px;
   width: 48px;
 }
 #box-brand-logotypes li {
@@ -510,7 +510,7 @@ body.scrolling-down #site-navigation {
 .listing .product .image-wrapper .sticker {
   position: absolute;
   top: 1em;
-  left: 0;
+  inset-inline-start: 0;
   padding: 0.25em 1em;
   font-size: 0.85em;
   font-weight: bold;
@@ -648,7 +648,7 @@ body.scrolling-down #site-navigation {
 }
 #box-product .main-image .sticker {
   top: 1em;
-  left: 0;
+  inset-inline-start: 0;
   padding: 0.25em 1em;
   position: absolute;
   text-transform: uppercase;

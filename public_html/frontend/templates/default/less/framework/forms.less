@@ -173,7 +173,7 @@ input[type="number"] {
 			width: .7rem;
 			height: .7rem;
 			position: absolute;
-			left: 0;
+			inset-inline-start: 0;
 			top: 0;
 			transition: background .2s, border .2s, box-shadow .2s, color .2s, left .2s;
 		}
@@ -183,14 +183,14 @@ input[type="number"] {
 		background: #254461;
 		border-color: #254461;
 		&:before {
-			left: 11px;
+			inset-inline-start: 11px;
 		}
 	}
 }
 
 .form-input-feedback {
 	position: absolute;
-	right: 24px;
+	inset-inline-end: 24px;
 	top: 35px;
 }
 

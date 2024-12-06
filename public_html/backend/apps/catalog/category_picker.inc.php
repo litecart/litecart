@@ -23,7 +23,7 @@
 
 	<div class="modal-body">
 
-		<button class="btn btn-default" name="select" type="button" data-id="<?php echo !empty($_GET['parent_id']) ? (int)$_GET['parent_id'] : '0'; ?>" data-name="<?php echo !empty($_GET['parent_id']) ? reference::category($_GET['parent_id'])->name : language::translate('title_root', 'Root'); ?>" style="position: absolute; right: 1.5em; margin-inline-start: 1em;">
+		<button class="btn btn-default" name="select" type="button" data-id="<?php echo !empty($_GET['parent_id']) ? (int)$_GET['parent_id'] : '0'; ?>" data-name="<?php echo !empty($_GET['parent_id']) ? reference::category($_GET['parent_id'])->name : language::translate('title_root', 'Root'); ?>" style="position: absolute; inset-inline-end: 1.5em; margin-inline-start: 1em;">
 			<?php echo language::translate('title_select', 'Select'); ?>
 		</button>
 

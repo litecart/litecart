@@ -199,7 +199,7 @@ body.scrolling-down #site-navigation {
 		color: #fff;
 		position: absolute;
 		top: 15px;
-		right: -10px;
+		inset-inline-end: -10px;
 		width: 2em;
 		animation: pulsating 1.5s linear infinite;
 		font-size: 10px;
@@ -215,7 +215,7 @@ body.scrolling-down #site-navigation {
 	@media (max-width: calc(@media-breakpoint-md)) {
 		#cart .badge {
 			top: 15px;
-			right: 0;
+			inset-inline-end: 0;
 		}
 	}
 }
@@ -292,6 +292,6 @@ body.scrolling-down #site-navigation {
 	height: 48px;
 	opacity: 0.3;
 	position: fixed;
-	right: 30px;
+	inset-inline-end: 30px;
 	width: 48px;
 }

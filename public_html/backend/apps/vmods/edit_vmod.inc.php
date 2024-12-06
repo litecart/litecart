@@ -188,7 +188,7 @@ html.dark-mode .operation {
 	position: absolute;
 	display: inline-block;
 	top: 1px;
-	right: 2em;
+	inset-inline-end: 2em;
 	padding: .5em 1em;
 	border-radius: 0 0 4px 4px;
 	background: #fff3;

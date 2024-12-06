@@ -58,7 +58,7 @@
 	.card-action {
 		position: absolute;
 		top: var(--gutter-size);
-		right: var(--gutter-size);
+		inset-inline-end: var(--gutter-size);
 		display: flex;
 		gap: .5em;
 	}
@@ -88,13 +88,8 @@
 
 	#actions {
 		width: fit-content;
-		margin-right: auto;
+		margin-inline-end: auto;
 	}
-}
-
-[dir="rtl"] .card .card-action {
-	left: var(--gutter-size);
-	right: auto;
 }
 
 .featherlight .card-app {
@@ -104,6 +99,6 @@
 	.card-action {
 		//position: initial !important;
 		//top: auto;
-		//right: auto;
+		//inset-inline-end: auto;
 	}
 }

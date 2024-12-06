@@ -1,26 +1,8 @@
 /* Grid - Bootstrap Compatible */
-.float-start, .float-left {
-	float: left;
-}
-.float-end, .float-right {
-	float: right;
-}
-
-/* Workaround as inline-start and inline-end are not yet supported by browsers */
-html[dir="rtl"] {
-	.float-start {
-		float: right;
-	}
-	.float-end {
-		float: left;
-	}
-}
-
-.twelve-eighty {
-	min-width: 320px;
-	max-width: 1280px;
-	margin: 0 auto;
-}
+.float-left { float: left; }
+.float-right { float: right; }
+.float-start { float: inline-start; }
+.float-end { float: inline-end; }
 
 .container {
 	width: 100%;

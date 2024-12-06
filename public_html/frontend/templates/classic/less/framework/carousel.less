@@ -41,7 +41,7 @@
 		display: block;
 	}
 	> .active {
-		left: 0;
+		inset-inline-start: 0;
 	}
 	> .next,
 	> .prev {
@@ -50,20 +50,20 @@
 		width: 100%;
 	}
 	> .next {
-		left: 100%;
+		inset-inline-start: 100%;
 	}
 	> .prev {
-		left: -100%;
+		inset-inline-start: -100%;
 	}
 	> .next.left,
 	> .prev.right {
-		left: 0;
+		inset-inline-start: 0;
 	}
 	> .active.left {
-		left: -100%;
+		inset-inline-start: -100%;
 	}
 	> .active.right {
-		left: 100%;
+		inset-inline-start: 100%;
 	}
 
 	@media all and (transform-3d) {
@@ -74,18 +74,18 @@
 		}
 		> .item.next,
 		.carousel-inner > .item.active.right {
-			left: 0;
+			inset-inline-start: 0;
 			transform: translate3d(100%, 0, 0);
 		}
 		> .item.prev,
 		> .item.active.left {
-			left: 0;
+			inset-inline-start: 0;
 			transform: translate3d(-100%, 0, 0);
 		}
 		> .item.next.left,
 		> .item.prev.right,
 		> .item.active {
-			left: 0;
+			inset-inline-start: 0;
 			transform: translate3d(0, 0, 0);
 		}
 	}
@@ -93,9 +93,9 @@
 
 .carousel-caption {
 	position: absolute;
+	left: 15%;
 	right: 15%;
 	bottom: var(--gutter-y);
-	left: 15%;
 	z-index: 10;
 	color: #fff;
 	text-align: center;
@@ -106,8 +106,8 @@
 	}
 
 	@media screen and (min-width: @media-breakpoint-sm) {
-		right: 20%;
 		left: 20%;
+		right: 20%;
 		padding-bottom: 30px;
 	}
 }
@@ -116,7 +116,7 @@
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	left: 0;
+	inset-inline-start: 0;
 	width: 15%;
 	font-size: 20px;
 	color: #fff !important;
@@ -130,8 +130,8 @@
 		border-radius: var(--border-radius) 0 0 var(--border-radius);
 	}
 	&.right {
-		right: 0;
-		left: auto;
+		inset-inline-start: auto;
+		inset-inline-end: 0;
 		background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.25));
 		border-radius: 0 var(--border-radius) var(--border-radius) 0;
 	}
@@ -150,11 +150,11 @@
 		margin-top: -10px;
 	}
 	.icon-prev {
-		left: 50%;
+		inset-inline-start: 50%;
 		margin-inline-start: -10px;
 	}
 	.icon-next {
-		right: 50%;
+		inset-inline-end: 50%;
 		margin-inline-end: -10px;
 	}
 	.icon-prev,
@@ -185,7 +185,7 @@
 .carousel-indicators {
 	position: absolute;
 	bottom: var(--gutter-y);
-	left: 50%;
+	inset-inline-start: 50%;
 	z-index: 15;
 	width: 60%;
 	padding-inline-start: 0;

@@ -137,7 +137,7 @@
 	<div class="card-action">
 
 		<?php if ($type == 'job') { ?>
-		<button id="cron-example" class="btn btn-default" type="button" style="margin-right: 1em;">
+		<button id="cron-example" class="btn btn-default" type="button" style="margin-inline-end: 1em;">
 			<?php echo functions::draw_fonticon('icon-info'); ?> <?php echo language::translate('title_cron_job', 'Cron Job'); ?>
 		</button>
 		<?php } ?>

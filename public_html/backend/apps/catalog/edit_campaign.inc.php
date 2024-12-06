@@ -149,7 +149,7 @@
 
 		<div class="card-body">
 			<a href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>" class="btn btn-default" data-toggle="lightbox" data-max-width="800px" data-callback="add_product">
-				<?php echo functions::draw_fonticon('icon-plus', 'style="margin-right: 0.5em;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?>
+				<?php echo functions::draw_fonticon('icon-plus', 'style="margin-inline-end: .5em;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?>
 			</a>
 		</div>
 

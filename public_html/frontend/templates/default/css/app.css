@@ -97,7 +97,7 @@ body main {
 #site-navigation .wishlist .badge {
   position: absolute;
   bottom: 12px;
-  left: 12px;
+  inset-inline-start: 12px;
 }
 #site-navigation .wishlist .badge,
 #site-navigation .wishlist .checkout {
@@ -157,7 +157,7 @@ body main {
 #site-navigation .shopping-cart .badge {
   position: absolute;
   bottom: 12px;
-  right: 32px;
+  inset-inline-end: 32px;
 }
 #site-navigation .shopping-cart .badge,
 #site-navigation .shopping-cart .checkout {
@@ -274,7 +274,7 @@ body main {
 #scroll-up {
   display: none;
   bottom: 1em;
-  right: 1em;
+  inset-inline-end: 1em;
   width: 2em;
   height: 2em;
   opacity: 0.3;
@@ -528,7 +528,7 @@ body main {
   position: absolute;
   display: none;
   top: 1em;
-  right: 1em;
+  inset-inline-end: 1em;
   padding: 0.5em;
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(3px);
@@ -560,7 +560,7 @@ body main {
 }
 @media (min-width: 576px) {
   .listing.rows .product .info {
-    left: calc(160px + 1rem);
+    inset-inline-start: calc(160px + 1rem);
   }
 }
 .listing.rows .product .name {
@@ -621,10 +621,10 @@ body main {
   padding: 0;
 }
 [data-toggle="momentumScroll"] button[name="left"] {
-  left: -20px;
+  inset-inline-start: -20px;
 }
 [data-toggle="momentumScroll"] button[name="right"] {
-  right: -20px;
+  inset-inline-end: -20px;
 }
 [data-toggle="momentumScroll"] .listing {
   display: flex;

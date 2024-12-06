@@ -5,7 +5,7 @@
 .input-wrapper .remaining {
 	position: absolute;
 	bottom: .5em;
-	right: .5em;
+	inset-inline-end: .5em;
 	color: #999;
 }
 </style>

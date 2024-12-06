@@ -108,7 +108,7 @@ body {
 		.badge {
 			position: absolute;
 			bottom: 12px;
-			left: 12px;
+			inset-inline-start: 12px;
 		}
 		.badge, .checkout {
 			display: none;
@@ -179,7 +179,7 @@ body {
 		.badge {
 			position: absolute;
 			bottom: 12px;
-			right: 32px;
+			inset-inline-end: 32px;
 		}
 		.badge, .checkout {
 			display: none;
@@ -317,7 +317,7 @@ body {
 #scroll-up {
 	display: none;
 	bottom: 1em;
-	right: 1em;
+	inset-inline-end: 1em;
 	width: 2em;
 	height: 2em;
 	opacity: 0.3;
@@ -605,7 +605,7 @@ body {
 			position: absolute;
 			display: none;
 			top: 1em;
-			right: 1em;
+			inset-inline-end: 1em;
 			padding: .5em;
 			background: rgba(255, 255, 255, 0.75);
 			backdrop-filter: blur(3px);
@@ -647,7 +647,7 @@ body {
 		.info {
 			padding: .5rem;
 			@media (min-width: (@media-breakpoint-sm)) {
-				left: ~"calc(160px + 1rem)";
+				inset-inline-start: ~"calc(160px + 1rem)";
 			}
 		}
 		.name {
@@ -709,10 +709,10 @@ body {
 		padding: 0;
 	}
 	button[name="left"] {
-		left: -20px;
+		inset-inline-start: -20px;
 	}
 	button[name="right"] {
-		right: -20px;
+		inset-inline-end: -20px;
 	}
 }
 

@@ -39,7 +39,7 @@
 		padding: 2em;
 		.right {
 			max-width: 640px;
-			margin-right: auto;
+			margin-inline-end: auto;
 		}
 	}
 }
@@ -69,11 +69,11 @@
 	background: var(--default-border-color);
 }
 .strikethrough-divider > span:before {
-	right: 100%;
-	margin-right: 1em;
+	inset-inline-end: 100%;
+	margin-inline-end: 1em;
 }
 .strikethrough-divider > span:after {
-	left: 100%;
+	inset-inline-start: 100%;
 	margin-left: 1em;
 }
 
@@ -174,7 +174,7 @@
 		 &::after {
 				position: absolute;
 				top: 15px;
-				right: -25px;
+				inset-inline-end: -25px;
 				transform: rotate(45deg);
 				background: #ffaa00;
 				width: 100px;

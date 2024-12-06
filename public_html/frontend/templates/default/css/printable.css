@@ -112,7 +112,7 @@ hr {
     display: block;
     position: fixed;
     top: 1cm;
-    right: 1cm;
+    inset-inline-end: 1cm;
     font-size: 1.25em;
     z-index: 999999;
   }

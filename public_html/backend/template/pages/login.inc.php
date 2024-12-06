@@ -18,7 +18,7 @@ html.dark-mode body {
 	display: none;
 	position: absolute !important;
 	top: 50%;
-	left: 50%;
+	inset-inline-start: 50%;
 	margin-top: -64px;
 	margin-inline-start: -64px;
 }

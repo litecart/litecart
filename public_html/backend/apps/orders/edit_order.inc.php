@@ -374,7 +374,7 @@
 #box-comments .bubbles .private {
 	position: absolute;
 	top: 0.5em;
-	right: 2.5em;
+	inset-inline-end: 2.5em;
 	cursor: pointer;
 }
 #box-comments .bubble {
@@ -383,7 +383,7 @@
 #box-comments .bubbles .notify  {
 	position: absolute;
 	top: 0.5em;
-	right: 4em;
+	inset-inline-end: 4em;
 	cursor: pointer;
 }
 #box-comments .bubbles .private input[name$="[hidden]"],

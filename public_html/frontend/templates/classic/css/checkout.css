@@ -171,7 +171,7 @@
     position: absolute;
     display: inline-block;
     top: var(--gutter-y);
-    right: var(--gutter-x);
+    inset-inline-end: var(--gutter-x);
   }
 }
 #box-checkout-summary table {

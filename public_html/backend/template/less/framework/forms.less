@@ -184,13 +184,13 @@ html[dir="rtl"] .form-select {
 			height: 1.45em;
 			position: absolute;
 			top: .25em;
-			left: .25em;
+			inset-inline-start: .25em;
 			transition: left 0.25s;
 		}
 		&:has(:checked) {
 			background: #2196f3;
 			&::before {
-				left: 2.25em;
+				inset-inline-start: 2.25em;
 			}
 		}
 	}
@@ -288,7 +288,7 @@ html[dir="rtl"] .form-select {
 		padding: var(--input-padding-y) 1em;
 	}
 	.btn {
-		border-right: 0;
+		border-inline-end: 0;
 		border-top: 0;
 		border: 0;
 	}

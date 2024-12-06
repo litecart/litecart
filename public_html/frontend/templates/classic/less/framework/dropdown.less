@@ -28,7 +28,7 @@
 		position: absolute;
 		visibility: hidden;
 		top: 100%;
-		left: 0;
+		inset-inline-start: 0;
 		min-width: 160px;
 		margin: 0;
 		padding: 0;
@@ -43,12 +43,6 @@
 		transform: rotateX(-25deg);
 		transition: 250ms;
 		opacity: 0;
-
-		&.dropdown-menu-end,
-		&.dropdown-menu-right {
-			right: 0;
-			left: auto;
-		}
 
 		.dropdown-divider {
 			height: 1px;
@@ -107,7 +101,7 @@
 	.dropdown {
 		.dropdown-menu {
 			top: 0;
-			left: 100%;
+			inset-inline-start: 100%;
 		}
 	}
 
@@ -127,12 +121,6 @@
 html[dir="rtl"] {
 	.dropdown [data-toggle="dropdown"] {
 		background-position: left 1em center;
-	}
-	@media (min-width: @media-breakpoint-sm) {
-		.dropdown-menu-end {
-			left: 0;
-			right: auto;
-		}
 	}
 }
 

@@ -53,7 +53,7 @@ h1 {
 	html:hover button[name="print"] {
 		position: fixed;
 		top: 0cm;
-		right: 1cm;
+		inset-inline-end: 1cm;
 		display: block;
 		margin: 5mm auto;
 		z-index: 999999;
