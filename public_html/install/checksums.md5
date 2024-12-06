@@ -341,7 +341,7 @@ d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 086e68bcb7bfd173df5ff538ad747044	includes/templates/default.admin/css/app.min.css
 ae6294757123e0f9e5edc467ef71f0ee	includes/templates/default.admin/css/app.min.css.map
 85874922142af4eebc65b93f816f4520	includes/templates/default.admin/css/framework.min.css
-9f58ceaf4a4fa94802a2c022540862bf	includes/templates/default.admin/css/framework.min.css.map
+cc84567bbd80a4000f80b559b43351cd	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 22ce4b29af0998bcd3552f0909816301	includes/templates/default.admin/css/printable.min.css
 6cf60f82ca84f46a3b2ce776669c507d	includes/templates/default.admin/css/printable.min.css.map
@@ -401,9 +401,9 @@ e8555f57751a7db6818507bf43a8c777	includes/templates/default.admin/views/box_apps
 84848afc682861161212c580be3adf8a	includes/templates/default.catalog/css/app.css
 161bdadd0a7650968cd87f962c3e6fad	includes/templates/default.catalog/css/app.min.css
 096a80d524efccd65b4f6fc92b5e4c75	includes/templates/default.catalog/css/app.min.css.map
-3ef1259bfbe917531b19cf91f36ebfbe	includes/templates/default.catalog/css/checkout.css
-89df9aed11506cbf3fc6bff54720308b	includes/templates/default.catalog/css/checkout.min.css
-a1822b38e13fd26331d20e50b789a230	includes/templates/default.catalog/css/checkout.min.css.map
+d7cf66257f5f1e0de3bb925f1bb0e483	includes/templates/default.catalog/css/checkout.css
+58079619be241103e4b71082306f98e7	includes/templates/default.catalog/css/checkout.min.css
+ad4ffa73cc27cf9295cb4fb196373aef	includes/templates/default.catalog/css/checkout.min.css.map
 71b4e0371dc743f6d07bba83b004fa98	includes/templates/default.catalog/css/framework.css
 806587d22b2c2a47fa16830ba9d4c3d8	includes/templates/default.catalog/css/framework.min.css
 74bf340b3c79a4f6e1b5a1cad4340959	includes/templates/default.catalog/css/framework.min.css.map
@@ -435,7 +435,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/less/app/ind
 cd80f4d55bc9c548afaa83c38e1d9df6	includes/templates/default.catalog/less/app/listing.less
 12b09ee51b4c5912ea017f7922b68c50	includes/templates/default.catalog/less/app/product.less
 8fc8a94e8886fcdf78a1dd9ba7d97155	includes/templates/default.catalog/less/app/theme.less
-b7e0555c14e30fdee747eb12f673458b	includes/templates/default.catalog/less/checkout.less
+ca13c68c93175fb2e4cc0357baab04bd	includes/templates/default.catalog/less/checkout.less
 0722273aa39d2d1ca2d68fe307b87352	includes/templates/default.catalog/less/framework.less
 453f03f795b73056a0402ed9b00909dc	includes/templates/default.catalog/less/framework/animations.less
 efd255bb8f1d4d80594d5defdde1d1f5	includes/templates/default.catalog/less/framework/base.less
