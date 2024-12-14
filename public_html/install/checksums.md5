@@ -128,7 +128,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/vmods.app/index.html
 01e411106d7d834bcf57672da0947254	admin/vmods.app/sources.inc.php
 e29a3c7552e7618f89022648ac59fcb5	admin/vmods.app/test.inc.php
 f47385762d9deb7fff76ef6bcc7c2d34	admin/vmods.app/view.inc.php
-f0089e7dfec6e92a805cf32d452e6e0b	admin/vmods.app/vmods.inc.php
+c2d9ed0bf8fc182a59b65d6e07b5ccfc	admin/vmods.app/vmods.inc.php
 7b826d48fc08e701f454eb6f0ed16cc0	cache/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	cache/index.html
 62bac9360222fee7de79173307177c9e	data/.htaccess
@@ -401,12 +401,12 @@ e8555f57751a7db6818507bf43a8c777	includes/templates/default.admin/views/box_apps
 84848afc682861161212c580be3adf8a	includes/templates/default.catalog/css/app.css
 161bdadd0a7650968cd87f962c3e6fad	includes/templates/default.catalog/css/app.min.css
 096a80d524efccd65b4f6fc92b5e4c75	includes/templates/default.catalog/css/app.min.css.map
-d7cf66257f5f1e0de3bb925f1bb0e483	includes/templates/default.catalog/css/checkout.css
-58079619be241103e4b71082306f98e7	includes/templates/default.catalog/css/checkout.min.css
-ad4ffa73cc27cf9295cb4fb196373aef	includes/templates/default.catalog/css/checkout.min.css.map
+085a8c4615f8df653fc450f648134b39	includes/templates/default.catalog/css/checkout.css
+7df0f21f449de8401e7c234e047d33c3	includes/templates/default.catalog/css/checkout.min.css
+e3c473427983ed128962f71b7911f6f0	includes/templates/default.catalog/css/checkout.min.css.map
 71b4e0371dc743f6d07bba83b004fa98	includes/templates/default.catalog/css/framework.css
 806587d22b2c2a47fa16830ba9d4c3d8	includes/templates/default.catalog/css/framework.min.css
-74bf340b3c79a4f6e1b5a1cad4340959	includes/templates/default.catalog/css/framework.min.css.map
+e2d28e40578ff826b0cdb9f776dec0a3	includes/templates/default.catalog/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/css/index.html
 398d153407f9597ea7cd562106389037	includes/templates/default.catalog/css/printable.css
 cd2ac68d14994b19ad88e1f7a9294617	includes/templates/default.catalog/css/printable.min.css
