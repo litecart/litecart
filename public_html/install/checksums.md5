@@ -248,7 +248,7 @@ b5771c7eff986dd9acd60aba2b7cdab0	includes/entities/ent_delivery_status.inc.php
 fcda4a648519bc266e0deadec1e356ce	includes/entities/ent_order.inc.php
 8fecf25d0a1c5ec72b93d6c4a5bfa56b	includes/entities/ent_order_status.inc.php
 1e5b8f0574a83afbcaa7478051a5d93f	includes/entities/ent_page.inc.php
-35969e1d99646a6d76ae5f8c2f701da2	includes/entities/ent_product.inc.php
+7e6a9ebafe0b62896cd8207f7c5ce0d8	includes/entities/ent_product.inc.php
 aa87afeecada037373f0974772ec0f83	includes/entities/ent_quantity_unit.inc.php
 f43cca7c9ec857d675ff15e13fd31751	includes/entities/ent_slide.inc.php
 6db60ead9d530edd0069129b8875c75e	includes/entities/ent_sold_out_status.inc.php
