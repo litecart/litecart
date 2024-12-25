@@ -207,7 +207,7 @@ d41d8cd98f00b204e9800998ecf8427e	images/slides/index.html
 17fd4de7d9e88047254c3fdd7371afa3	includes/abstracts/abs_module.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/abstracts/index.html
 7e22b2ca1492f3d218b0a51e15a48bb7	includes/app_footer.inc.php
-c1483be61a152c4338f0fd71565dd329	includes/app_header.inc.php
+d294e074a86ccf1d687c80e838f4026c	includes/app_header.inc.php
 3890d7e516018476f92a12ec88ff8b5f	includes/autoloader.inc.php
 3762e4cb2077d20baa72f956c45735b6	includes/boxes/box_account_links.inc.php
 1261bb2e9890d2b077b7943070c7981a	includes/boxes/box_also_purchased_products.inc.php
@@ -529,7 +529,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
 f9d8be06239f09f565a93421d9643fff	includes/wrappers/wrap_http.inc.php
 afd2000ef7ba4b934765a9cf2d40aeb6	includes/wrappers/wrap_smtp.inc.php
-891ca69bfdad7ea42fc35ba130c00a56	index.php
+7fdb50700585457cd5db07b275f6d686	index.php
 db7b7a833baf1b6f47160530e9a9bc9f	install/clean.sql
 537d76f832f5e95c8e81f2bdbe462659	install/config
 fd93ba03934d4477cd8add96e009e8ec	install/data.sql
@@ -580,9 +580,9 @@ faab49ec26407cd72a7a6984fa943ad7	install/htaccess
 88c129a1bab3911671153318af96e38c	install/includes/functions.inc.php
 a37bf7b37ad3919a13f46de67748afed	install/includes/header.inc.php
 9f92b7ccb4e69a595440c999a7ed69a2	install/index.php
-8971ce5ef105fd1c449564c92e845fed	install/install.php
+af6e784c04e95ccf315ce8e8cb8a3f18	install/install.php
 7da88375795788781d8d29cc11de87b6	install/structure.sql
-8694922ade92aad5f287ac04b7538e6f	install/upgrade.php
+70e44364ebc14e268f5a66e137c764d4	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
 e40d16965a907467b8a8249a35927faf	install/upgrade_patches/1.0.1.4.inc.php
 9560e70752a13b7a22ec65231e1b61e0	install/upgrade_patches/1.0.1.5.inc.php
