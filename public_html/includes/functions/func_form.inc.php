@@ -868,6 +868,9 @@
       case 'upload':
         return form_draw_file_field($name, $parameters);
 
+      case 'url':
+        return form_draw_url_field($name, $parameters);
+
       case 'user':
         return form_draw_users_list($name, $input, false, $parameters);
 
