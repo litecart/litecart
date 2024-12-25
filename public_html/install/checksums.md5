@@ -232,7 +232,7 @@ b4806f71b682a0a0754ade967716ed0b	includes/boxes/box_site_menu.inc.php
 02426a41d7e9ae11739c7f6b17165126	includes/boxes/box_slides.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/boxes/index.html
 ac376100ebf12c2336683d4b4bc74f4f	includes/compatibility.inc.php
-9bf839c569768e8cc7a40e780e488be3	includes/entities/ent_attribute_group.inc.php
+6a226853bc2fcdb38978ee0c2184d339	includes/entities/ent_attribute_group.inc.php
 4c414da3bbc933f90f2ab0add9a5bfa9	includes/entities/ent_category.inc.php
 662622331ecfe2ed88856fae16c5b6e4	includes/entities/ent_country.inc.php
 e4e9a80e4ca667f1841e1683968f8290	includes/entities/ent_currency.inc.php

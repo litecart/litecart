@@ -260,11 +260,18 @@
 
     // Check products for options
       $products_options_query = database::query(
-        "select id from ". DB_TABLE_PREFIX ."products_attributes
+        "select id from ". DB_TABLE_PREFIX ."products_options
         where group_id = ". (int)$this->data['id'] .";"
       );
 
       if (database::num_rows($products_options_query)) throw new Exception('Cannot delete group linked to products');
+
+      $products_options_values_query = database::query(
+        "select id from ". DB_TABLE_PREFIX ."products_options_values
+        where group_id = ". (int)$this->data['id'] .";"
+      );
+
+      if (database::num_rows($products_options_values_query)) throw new Exception('Cannot delete group linked to products');
 
       $this->data['values'] = [];
       $this->save();
