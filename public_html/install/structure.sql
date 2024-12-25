@@ -556,10 +556,11 @@ CREATE TABLE `lc_products_attributes` (
   `value_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `custom_value` VARCHAR(256) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id` (`id`, `product_id`, `group_id`, `value_id`),
+  UNIQUE INDEX `product_attribute` (`product_id`, `group_id`, `value_id`, `custom_value`),
   KEY `product_id` (`product_id`),
   KEY `group_id` (`group_id`),
-  KEY `value_id` (`value_id`)
+  KEY `value_id` (`value_id`),
+  KEY `custom_value` (`custom_value`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- -----
 CREATE TABLE `lc_products_campaigns` (

@@ -581,7 +581,7 @@ faab49ec26407cd72a7a6984fa943ad7	install/htaccess
 a37bf7b37ad3919a13f46de67748afed	install/includes/header.inc.php
 9f92b7ccb4e69a595440c999a7ed69a2	install/index.php
 8971ce5ef105fd1c449564c92e845fed	install/install.php
-f536c43fea445645643573caaf50a895	install/structure.sql
+7da88375795788781d8d29cc11de87b6	install/structure.sql
 8694922ade92aad5f287ac04b7538e6f	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
 e40d16965a907467b8a8249a35927faf	install/upgrade_patches/1.0.1.4.inc.php
@@ -694,6 +694,7 @@ c84802588edcf08935a6b2a68c3dbc33	install/upgrade_patches/2.6.0.inc.php
 0d118d9f99301a91c70ad71dd552c2b7	install/upgrade_patches/2.6.0.sql
 7b4bafa25947467027c750c9aea527d3	install/upgrade_patches/2.6.1.inc.php
 cd37a7f25119ad9ac30f171d57ef6db2	install/upgrade_patches/2.6.1.sql
+efde53b551d640866e056691c28beccc	install/upgrade_patches/2.6.2.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
 70df41f74e6b15be767a8052f14b4036	pages/ajax/cart.json.inc.php
