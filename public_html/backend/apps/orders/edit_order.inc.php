@@ -13,6 +13,30 @@
 
 		$_POST = $order->data;
 
+		// Convert to local currency
+		foreach (array_keys($_POST['items']) as $key) {
+			$_POST['items'][$key]['price'] = $_POST['items'][$key]['price'] / $_POST['currency_value'];
+			$_POST['items'][$key]['tax'] = $_POST['items'][$key]['tax'] / $_POST['currency_value'];
+			$_POST['items'][$key]['discount'] = $_POST['items'][$key]['discount'] / $_POST['currency_value'];
+			$_POST['items'][$key]['discount_tax'] = $_POST['items'][$key]['discount_tax'] / $_POST['currency_value'];
+			$_POST['items'][$key]['sum'] = $_POST['items'][$key]['sum'] / $_POST['currency_value'];
+			$_POST['items'][$key]['sum_tax'] = $_POST['items'][$key]['sum_tax'] / $_POST['currency_value'];
+		}
+
+		foreach (array_keys($_POST['order_total']) as $key) {
+			$_POST['order_total'][$key]['value'] = $_POST['order_total'][$key]['value'] / $_POST['currency_value'];
+			$_POST['order_total'][$key]['tax'] = $_POST['order_total'][$key]['tax'] / $_POST['currency_value'];
+		}
+
+		$_POST['subtotal'] = $_POST['subtotal'] / $_POST['currency_value'];
+		$_POST['subtotal_tax'] = $_POST['subtotal_tax'] / $_POST['currency_value'];
+
+		$_POST['discount'] = $_POST['discount'] / $_POST['currency_value'];
+		$_POST['discount_tax'] = $_POST['discount_tax'] / $_POST['currency_value'];
+
+		$_POST['total'] = $_POST['total'] / $_POST['currency_value'];
+		$_POST['total_tax'] = $_POST['total_tax'] / $_POST['currency_value'];
+
 		if (empty($order->data['id'])) {
 			$_POST['customer']['country_code'] = settings::get('default_country_code');
 		}
@@ -148,37 +172,33 @@
 
 			if (!empty($_POST['items'])) {
 				foreach (array_keys($_POST['items']) as $key) {
-					$_POST['items'][$key]['price'] = !empty($_POST['items'][$key]['price']) ? $_POST['items'][$key]['price'] * $_POST['currency_value'] : 0;
-					$_POST['items'][$key]['tax'] = !empty($_POST['items'][$key]['tax']) ? $_POST['items'][$key]['tax'] * $_POST['currency_value'] : 0;
-				}
-
-				foreach (array_keys($_POST['order_total']) as $key) {
-					if (empty($_POST['order_total'][$key]['calculate'])) {
-						$_POST['order_total'][$key]['calculate'] = false;
-					}
-					$_POST['order_total'][$key]['amount'] = $_POST['order_total'][$key]['amount'] * $_POST['currency_value'];
-					$_POST['order_total'][$key]['tax'] = $_POST['order_total'][$key]['tax'] * $_POST['currency_value'];
+					$_POST['items'][$key]['price'] = !empty($_POST['items'][$key]['price']) ? (float)$_POST['items'][$key]['price'] * (float)$_POST['currency_value'] : 0;
+					$_POST['items'][$key]['tax'] = !empty($_POST['items'][$key]['tax']) ? (float)$_POST['items'][$key]['tax'] * (float)$_POST['currency_value'] : 0;
+					$_POST['items'][$key]['discount'] = !empty($_POST['items'][$key]['price']) ? (float)$_POST['items'][$key]['discount'] * (float)$_POST['currency_value'] : 0;
+					$_POST['items'][$key]['discount_tax'] = !empty($_POST['items'][$key]['price']) ? (float)$_POST['items'][$key]['discount_tax'] * (float)$_POST['currency_value'] : 0;
+					$_POST['items'][$key]['sum'] = !empty($_POST['items'][$key]['price']) ? (float)$_POST['items'][$key]['sum'] * (float)$_POST['currency_value'] : 0;
+					$_POST['items'][$key]['sum_tax'] = !empty($_POST['items'][$key]['price']) ? (float)$_POST['items'][$key]['sum_tax'] * (float)$_POST['currency_value'] : 0;
 				}
 			}
 
-			if (!empty($_POST['billing_address']['save']) || !empty($_POST['shipping_address']['save'])) {
+			if (!empty($_POST['customer']['save']) || !empty($_POST['shipping_address']['save'])) {
 
 				if (!empty($_POST['customer']['id'])) {
 					$customer = new ent_customer($_POST['customer']['id']);
 
 				} else if ($customer = database::query(
 					"select id from ". DB_TABLE_PREFIX ."customers
-					where email = '". database::input($_POST['billing_address']['email']) ."'
+					where email = '". database::input($_POST['customer']['email']) ."'
 					limit 1;"
 				)->fetch()) {
 					$customer = new ent_customer($customer['id']);
 
 				} else {
 					$customer = new ent_customer();
-					$customer->data['email'] = $_POST['billing_address']['email'];
+					$customer->data['email'] = $_POST['customer']['email'];
 				}
 
-				if (!empty($_POST['billing_address']['save'])) {
+				if (!empty($_POST['customer']['save'])) {
 					foreach ([
 						'tax_id',
 						'company',
@@ -193,8 +213,8 @@
 						'phone',
 						'email',
 					] as $field) {
-						if (isset($_POST['billing_address'][$field])) {
-							$customer->data['billing_address'][$field] = $_POST['billing_address'][$field];
+						if (isset($_POST['customer'][$field])) {
+							$customer->data['customer'][$field] = $_POST['customer'][$field];
 						}
 					}
 				}
@@ -221,6 +241,7 @@
 				}
 
 				$customer->save();
+
 				$order->data['customer']['id'] = $customer->data['id'];
 			}
 
@@ -252,13 +273,6 @@
 
 			foreach ([
 				'id',
-			] as $field) {
-				if (isset($_POST['customer'][$field])) {
-					$order->data['customer'][$field] = $_POST['customer'][$field];
-				}
-			}
-
-			foreach ([
 				'tax_id',
 				'company',
 				'firstname',
@@ -272,8 +286,8 @@
 				'phone',
 				'email',
 			] as $field) {
-				if (isset($_POST['billing_address'][$field])) {
-					$order->data['billing_address'][$field] = $_POST['billing_address'][$field];
+				if (isset($_POST['customer'][$field])) {
+					$order->data['customer'][$field] = $_POST['customer'][$field];
 				}
 			}
 
@@ -305,7 +319,7 @@
 					$bccs[] = $email;
 				}
 
-				$order->email_order_copy($order->data['billing_address']['email'], $bccs, $order->data['language_code']);
+				$order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['language_code']);
 			}
 
 			if (!empty($_GET['redirect_url'])) {
@@ -536,77 +550,77 @@
 							<div class="row">
 								<div class="form-group col-md-6">
 									<label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
-									<?php echo functions::form_input_text('billing_address[company]', true); ?>
+									<?php echo functions::form_input_text('customer[company]', true); ?>
 								</div>
 
 								<div class="form-group col-md-6">
 									<label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
-									<?php echo functions::form_input_text('billing_address[tax_id]', true); ?>
+									<?php echo functions::form_input_text('customer[tax_id]', true); ?>
 								</div>
 							</div>
 
 							<div class="row">
 								<div class="form-group col-md-6">
 									<label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-									<?php echo functions::form_input_text('billing_address[firstname]', true); ?>
+									<?php echo functions::form_input_text('customer[firstname]', true); ?>
 								</div>
 
 								<div class="form-group col-md-6">
 									<label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-									<?php echo functions::form_input_text('billing_address[lastname]', true); ?>
+									<?php echo functions::form_input_text('customer[lastname]', true); ?>
 								</div>
 							</div>
 
 							<div class="row">
 								<div class="form-group col-md-6">
 									<label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-									<?php echo functions::form_input_text('billing_address[address1]', true); ?>
+									<?php echo functions::form_input_text('customer[address1]', true); ?>
 								</div>
 
 								<div class="form-group col-md-6">
 									<label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-									<?php echo functions::form_input_text('billing_address[address2]', true); ?>
+									<?php echo functions::form_input_text('customer[address2]', true); ?>
 								</div>
 							</div>
 
 							<div class="row">
 								<div class="form-group col-md-6">
 									<label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-									<?php echo functions::form_input_text('billing_address[postcode]', true); ?>
+									<?php echo functions::form_input_text('customer[postcode]', true); ?>
 								</div>
 
 								<div class="form-group col-md-6">
 									<label><?php echo language::translate('title_city', 'City'); ?></label>
-									<?php echo functions::form_input_text('billing_address[city]', true); ?>
+									<?php echo functions::form_input_text('customer[city]', true); ?>
 								</div>
 							</div>
 
 							<div class="row">
 								<div class="form-group col-md-6">
 									<label><?php echo language::translate('title_country', 'Country'); ?></label>
-									<?php echo functions::form_select_country('billing_address[country_code]', true); ?>
+									<?php echo functions::form_select_country('customer[country_code]', true); ?>
 								</div>
 
 								<div class="form-group col-md-6">
 									<label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-									<?php echo form_select_zone('billing_address[zone_code]', fallback($_POST['billing_address']['country_code']), true); ?>
+									<?php echo form_select_zone('customer[zone_code]', fallback($_POST['customer']['country_code']), true); ?>
 								</div>
 							</div>
 
 							<div class="row">
 								<div class="form-group col-md-6">
 									<label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
-									<?php echo functions::form_input_phone('billing_address[phone]', true); ?>
+									<?php echo functions::form_input_phone('customer[phone]', true); ?>
 								</div>
 
 								<div class="form-group col-md-6">
 									<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-									<?php echo functions::form_input_email('billing_address[email]', true, 'required'); ?>
+									<?php echo functions::form_input_email('customer[email]', true, 'required'); ?>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<?php echo functions::form_checkbox('billing_address[save]', ['1', language::translate('text_save_details_to_customer_database', 'Save details to customer database')], true); ?>
+								<?php echo functions::form_checkbox('customer[save]', ['1', language::translate('text_save_details_to_customer_database', 'Save details to customer database')], true); ?>
 							</div>
 						</div>
 
@@ -625,7 +639,7 @@
 
 								<div class="form-group col-md-6">
 									<label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
-									<?php echo functions::form_input_text('billing_address[tax_id]', true); ?>
+									<?php echo functions::form_input_text('customer[tax_id]', true); ?>
 								</div>
 							</div>
 
@@ -900,6 +914,7 @@
 						<?php echo functions::form_input_hidden('items['.$key.'][height]', true); ?>
 						<?php echo functions::form_input_hidden('items['.$key.'][length_unit]', true); ?>
 						<?php echo functions::form_input_hidden('items['.$key.'][tax_class_id]', true); ?>
+						<?php echo functions::form_input_hidden('items['.$key.'][tax_rate]', true); ?>
 					</td>
 					<td class="sku"><?php echo functions::escape_html($_POST['items'][$key]['sku']); ?></td>
 					<td class="text-center"><?php if (isset($_POST['items'][$key]['sufficient_stock'])) echo $item['sufficient_stock'] ? '<span style="color: #88cc44;">'. functions::draw_fonticon('icon-check') .' '. $item['stock_quantity'] .'</span>' : '<span style="color: #ff6644;">'. functions::draw_fonticon('icon-times') .' '. $item['stock_quantity'] .'</span>'; ?></td>
@@ -1269,40 +1284,40 @@
 			dataType: 'json',
 			success: function(data) {
 				$.each(data, function(key, value) {
-					if (key.match(/^billing_address/)) {
+					if (key.match(/^customer/)) {
 						$.each(value, function(key, value) {
-							if ($(':input[name="billing_address['+key+']"]').length) $(':input[name="billing_address['+key+']"]').val(value).trigger('change')
+							if ($(':input[name="customer['+key+']"]').length) $(':input[name="customer['+key+']"]').val(value).trigger('change')
 						})
 					} else if (key.match(/^shipping_address/)) {
 						$.each(value, function(key, value) {
 							if ($(':input[name="shipping_address['+key+']"]').length) $(':input[name="shipping_address['+key+']"]').val(value).trigger('change')
 						})
 					} else {
-						if ($(':input[name="billing_address['+key+']"]').length) $(':input[name="billing_address['+key+']"]').val(value).trigger('change')
+						if ($(':input[name="customer['+key+']"]').length) $(':input[name="customer['+key+']"]').val(value).trigger('change')
 					}
 				})
 			},
 		})
 	})
 
-	$('#customer-details select[name="billing_address[country_code]"]').on('change', function() {
+	$('#customer-details select[name="customer[country_code]"]').on('change', function() {
 
 		if ($(this).find('option:selected').data('tax-id-format')) {
-			$('input[name="billing_address[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
+			$('input[name="customer[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
 		} else {
-			$('input[name="billing_address[tax_id]"]').removeAttr('pattern')
+			$('input[name="customer[tax_id]"]').removeAttr('pattern')
 		}
 
 		if ($(this).find('option:selected').data('postcode-format')) {
-			$('input[name="billing_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'))
+			$('input[name="customer[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'))
 		} else {
-			$('input[name="billing_address[postcode]"]').removeAttr('pattern')
+			$('input[name="customer[postcode]"]').removeAttr('pattern')
 		}
 
 		if ($(this).find('option:selected').data('phone-code')) {
-			$('input[name="billing_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'))
+			$('input[name="customer[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'))
 		} else {
-			$('input[name="billing_address[phone]"]').removeAttr('placeholder')
+			$('input[name="customer[phone]"]').removeAttr('placeholder')
 		}
 
 		$.ajax({
@@ -1312,16 +1327,16 @@
 			async: false,
 			dataType: 'json',
 			success: function(data) {
-				$('select[name="billing_address[zone_code]"]').html('')
-				if ($('select[name="billing_address[zone_code]"]').is(':disabled')) $('select[name="billing_address[zone_code]"]').prop('disabled', false)
+				$('select[name="customer[zone_code]"]').html('')
+				if ($('select[name="customer[zone_code]"]').is(':disabled')) $('select[name="customer[zone_code]"]').prop('disabled', false)
 				if (data) {
 					$.each(data, function(i, zone) {
-						$('select[name="billing_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
+						$('select[name="customer[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
 					})
 				} else {
-					$('select[name="billing_address[zone_code]"]').prop('disabled', true)
+					$('select[name="customer[zone_code]"]').prop('disabled', true)
 				}
-				$('select[name="billing_address[zone_code]"]').trigger('change')
+				$('select[name="customer[zone_code]"]').trigger('change')
 			},
 		})
 	})
@@ -1329,7 +1344,7 @@
 	$('#customer-details button[name="copy_billing_address"]').on('click', function() {
 		fields = ['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone']
 		$.each(fields, function(key, field) {
-			$('*[name="shipping_address['+ field +']"]').val($('*[name="billing_address['+ field +']"]').val()).trigger('change')
+			$('*[name="shipping_address['+ field +']"]').val($('*[name="customer['+ field +']"]').val()).trigger('change')
 		})
 	})
 
@@ -1370,27 +1385,27 @@
 				} else {
 					$('select[name="shipping_address[zone_code]]"]').prop('disabled', true)
 				}
-				$('select[name="billing_address[zone_code]"]').trigger('change')
+				$('select[name="customer[zone_code]"]').trigger('change')
 			}
 		})
 	})
 
-	if ($('select[name="billing_address[country_code]"] option:selected').data('tax-id-format')) {
-		$('input[name="billing_address[tax_id]"]').attr('pattern', $('select[name="country_code"] option:selected').data('tax-id-format'))
+	if ($('select[name="customer[country_code]"] option:selected').data('tax-id-format')) {
+		$('input[name="customer[tax_id]"]').attr('pattern', $('select[name="country_code"] option:selected').data('tax-id-format'))
 	} else {
-		$('input[name="billing_address[tax_id]"]').removeAttr('pattern')
+		$('input[name="customer[tax_id]"]').removeAttr('pattern')
 	}
 
-	if ($('select[name="billing_address[country_code]"] option:selected').data('postcode-format')) {
-		$('input[name="billing_address[postcode]"]').attr('pattern', $('select[name="billing_address[country_code]"] option:selected').data('postcode-format'))
+	if ($('select[name="customer[country_code]"] option:selected').data('postcode-format')) {
+		$('input[name="customer[postcode]"]').attr('pattern', $('select[name="customer[country_code]"] option:selected').data('postcode-format'))
 	} else {
-		$('input[name="billing_address[postcode]"]').removeAttr('pattern')
+		$('input[name="customer[postcode]"]').removeAttr('pattern')
 	}
 
-	if ($('select[name="billing_address[country_code]"] option:selected').data('phone-code')) {
-		$('input[name="billing_address[phone]"]').attr('placeholder', '+' + $('select[name="billing_address[country_code]"] option:selected').data('phone-code'))
+	if ($('select[name="customer[country_code]"] option:selected').data('phone-code')) {
+		$('input[name="customer[phone]"]').attr('placeholder', '+' + $('select[name="customer[country_code]"] option:selected').data('phone-code'))
 	} else {
-		$('input[name="billing_address[phone]"]').removeAttr('placeholder')
+		$('input[name="customer[phone]"]').removeAttr('placeholder')
 	}
 
 	if ($('select[name="shipping_address[country_code]"] option:selected').data('tax-id-format')) {
@@ -1418,13 +1433,11 @@
 			currency_value: $('input[name="currency_value"]').val(),
 			customer: {
 				id: $(':input[name="customer[id]"]').val(),
-				billing_address: {
-					tax_id: $('input[name="billing_address[tax_id]"]').val(),
-					company: $('input[name="billing_address[company]"]').val(),
-					country_code: $('select[name="billing_address[country_code]"]').val(),
-					zone_code: $('select[name="billing_address[zone_code]"]').val(),
-					city: $('select[name="billing_address[city]"]').val(),
-				},
+				tax_id: $('input[name="customer[tax_id]"]').val(),
+				company: $('input[name="customer[company]"]').val(),
+				country_code: $('select[name="customer[country_code]"]').val(),
+				zone_code: $('select[name="customer[zone_code]"]').val(),
+				city: $('select[name="customer[city]"]').val(),
 				shipping_address: {
 					tax_id: $('input[name="shipping_address[tax_id]"]').val(),
 					company: $('input[name="shipping_address[company]"]').val(),
@@ -1592,11 +1605,11 @@
 			currency_value: $('input[name="currency_value"]').val(),
 			customer: {
 				id: $(':input[name="customer[id]"]').val(),
-				tax_id: $('input[name="billing_address[tax_id]"]').val(),
-				company: $('input[name="billing_address[company]"]').val(),
-				country_code: $('select[name="billing_address[country_code]"]').val(),
-				zone_code: $('select[name="billing_address[zone_code]"]').val(),
-				city: $('select[name="billing_address[city]"]').val(),
+				tax_id: $('input[name="customer[tax_id]"]').val(),
+				company: $('input[name="customer[company]"]').val(),
+				country_code: $('select[name="customer[country_code]"]').val(),
+				zone_code: $('select[name="customer[zone_code]"]').val(),
+				city: $('select[name="customer[city]"]').val(),
 				shipping_address: {
 					company: $('input[name="shipping_address[company]"]').val(),
 					country_code: $('select[name="shipping_address[country_code]"]').val(),

@@ -169,7 +169,7 @@
 				<?php foreach ($recipients as $recipient) { ?>
 				<tr>
 					<td><?php echo functions::form_checkbox('recipients[]', $recipient['id']); ?></td>
-					<td class="text-center"><?php echo !empty($recipient['subscribed']) ? functions::draw_fonticon('fa-check', 'style="color: #88cc44;"') : functions::draw_fonticon('fa-times', 'style="color: #ff6644;"'); ?></td>
+					<td class="text-center"><?php echo !empty($recipient['subscribed']) ? functions::draw_fonticon('icon-check', 'style="color: #88cc44;"') : functions::draw_fonticon('icon-times', 'style="color: #ff6644;"'); ?></td>
 					<td><?php echo $recipient['email']; ?></td>
 					<td><?php echo functions::escape_html($recipient['name']); ?></td>
 					<td><?php echo $recipient['ip_address']; ?></td>
@@ -192,8 +192,8 @@
 
 				<div class="flex flex-inline">
 					<div class="btn-group">
-						<?php echo functions::form_button('subscribe', language::translate('title_set_as_subscribed', 'Set As Subscribed'), 'submit', 'class="btn btn-default"', 'fa-check'); ?>
-						<?php echo functions::form_button('unsubscribe', language::translate('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'fa-times'); ?>
+						<?php echo functions::form_button('subscribe', language::translate('title_set_as_subscribed', 'Set As Subscribed'), 'submit', 'class="btn btn-default"', 'icon-check'); ?>
+						<?php echo functions::form_button('unsubscribe', language::translate('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'icon-times'); ?>
 					</div>
 
 					<?php echo functions::form_button_predefined('delete'); ?>

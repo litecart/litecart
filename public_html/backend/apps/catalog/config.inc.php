@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#d4ce12',
-			'icon' => 'icon-th',
+			'icon' => 'icon-folder-tree',
 		],
 
 		'search_results' => 'search_results.inc.php',

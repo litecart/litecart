@@ -14,6 +14,7 @@
 			preg_match('#^([^_]+)#', $module_id, $matches);
 
 			switch ($matches[1]) {
+
 				case 'cm':
 					$type = 'customer';
 					break;

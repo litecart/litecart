@@ -65,12 +65,12 @@
 				<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
 				<td class="text-end"><?php echo language::strftime('datetime', $order['date_created']); ?></td>
 				<td class="text-end">
-					<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="<?php echo language::translate('title_packing_slip', 'Packing Slip'); ?>"><?php echo functions::draw_fonticon('icon-file-text-o'); ?></a>
+					<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="<?php echo language::translate('title_packing_slip', 'Packing Slip'); ?>"><?php echo functions::draw_fonticon('icon-file-text'); ?></a>
 					<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('f:printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="<?php echo language::translate('title_order_copy', 'Order Copy'); ?>"><?php echo functions::draw_fonticon('icon-print'); ?></a>
 					<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('orders/edit_order', ['order_id' => $order['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
 				</td>
 			</tr>
-		<?php } ?>
+			<?php } ?>
 		</tbody>
 	</table>
 </div>

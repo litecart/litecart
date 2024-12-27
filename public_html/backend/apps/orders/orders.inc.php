@@ -8,10 +8,6 @@
 		$_GET['order_status_id'] = '';
 	}
 
-	if (empty($_GET['sort'])) {
-		$_GET['sort'] = 'date_created';
-	}
-
 	if (!empty($_GET['date_from'])) {
 		$_GET['date_from'] = date('Y-m-d', strtotime($_GET['date_from']));
 	}
@@ -20,27 +16,9 @@
 		$_GET['date_to'] = date('Y-m-d', strtotime($_GET['date_to']));
 	}
 
-	if (!empty($_GET['date_from']) && !empty($_GET['date_to']) && $_GET['date_from'] > $_GET['date_to']) {
-		list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
+	if (empty($_GET['sort'])) {
+		$_GET['sort'] = 'date_created';
 	}
-
-	if (!empty($_GET['date_from'])) {
-
-		$date_first_order = database::query(
-			"select min(date_created) from ". DB_TABLE_PREFIX ."orders limit 1;"
-		)->fetch('min(date_created)');
-
-		if (!empty($date_first_order)) {
-			$date_first_order = date('Y-m-d', strtotime($date_first_order));
-		} else {
-			$date_first_order = date('Y-m-d');
-		}
-
-		if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
-	}
-
-	if (!empty($_GET['date_from']) && $_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
-	if (!empty($_GET['date_to']) && $_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
 
 	document::$title[] = language::translate('title_orders', 'Orders');
 
@@ -85,7 +63,6 @@
 
 					break;
 
-					// Book Shipping
 				case 'book_shipping':
 
 					foreach ($_POST['orders'] as $order_id) {
@@ -123,7 +100,6 @@
 
 					break;
 
-					// Book Shipping
 				case 'cancel_payment':
 
 					foreach ($_POST['orders'] as $order_id) {
@@ -161,17 +137,18 @@
 
 					break;
 
-					// Perform Action from Order Module
+				// Perform Action from Order Module
 				default:
 
 					list($module_id, $action_id) = explode(':', $_POST['order_action']);
 
-					$order_action = new mod_order();
-					$actions = $order_action->actions();
+					$actions = (new mod_order())->actions();
 
 					if (!method_exists($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function'])) {
 						throw new Exception(language::translate('error_method_doesnt_exist', 'The method doesn\'t exist'));
 					}
+
+					sort($_POST['orders']);
 
 					if ($result = call_user_func([$order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']], $_POST['orders'])) {
 						echo $result;
@@ -217,21 +194,27 @@
 	}
 
 	switch($_GET['sort']) {
+
 		case 'id':
 			$sql_sort = "o.starred desc, o.id desc";
 			break;
+
 		case 'country':
 			$sql_sort = "o.starred desc, o.customer_country_code";
 			break;
+
 		case 'customer':
 			$sql_sort = "o.starred desc, if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) asc";
 			break;
+
 		case 'order_status':
 			$sql_sort = "o.starred desc, field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'dispatched', 'in_transit', 'completed', 'delivered', 'returning', 'returned', 'cancelled'), osi.name";
 			break;
+
 		case 'payment_method':
 			$sql_sort = "o.starred desc, o.payment_option_name asc";
 			break;
+
 		default:
 			$sql_sort = "if(o.starred, 1, 0) desc, o.date_created desc, o.id desc";
 			break;
@@ -251,7 +234,7 @@
 			break;
 
 		default:
-			$sql_where_order_status = "and o.order_status_id = ". (int)$_GET['order_status_id'];
+			$sql_where_order_status = "and o.order_status_id = ". (!empty($_GET['order_status_id']) ? (int)$_GET['order_status_id'] : '');
 			break;
 	}
 
@@ -284,6 +267,7 @@
 		}
 
 		$order['css_classes'] = [];
+
 		if (empty($order['order_status_id'])) {
 			$order['css_classes'][]= 'semi-transparent';
 		}
@@ -349,13 +333,12 @@
 	});
 
 	// Actions
-	$order_actions = [];
+	$actions = [];
 
 	$mod_order = new mod_order();
 	if ($modules = $mod_order->actions()) {
-
 		foreach ($modules as $module) {
-			$order_actions[] = $module;
+			$actions[] = $module;
 		}
 	}
 
@@ -472,7 +455,9 @@ table .icon-star-o:hover {
 						<div class="form-group">
 							<div class="input-group">
 								<?php echo functions::form_select_order_status('order_status_id', true); ?>
-								<button class="btn btn-default" name="action" value="set_order_status" type="submit" formtarget="_self"><?php echo language::translate('title_set', 'Set'); ?></button>
+								<button class="btn btn-default" name="action" value="set_order_status" type="submit" formtarget="_self">
+									<?php echo language::translate('title_set', 'Set'); ?>
+								</button>
 							</div>
 						</div>
 					</fieldset>
@@ -496,7 +481,7 @@ table .icon-star-o:hover {
 					</fieldset>
 				</li>
 
-				<?php foreach ($order_actions as $module) { ?>
+				<?php foreach ($actions as $module) { ?>
 				<li>
 					<fieldset title="<?php echo functions::escape_html($module['description']); ?>">
 						<legend><?php echo $module['name']; ?></legend>

@@ -76,20 +76,17 @@ gulp.task('js-backend', function() {
     .pipe(sourcemaps.init())
     .pipe(uglify())
     .pipe(rename({ extname: '.min.js' }))
-    .pipe(sourcemaps.write('.', { includeContent: false }))
     .pipe(gulp.dest('public_html/backend/template/js/', { overwrite: true }))
 })
 
 gulp.task('js-frontend', function() {
   return gulp
     .src('public_html/frontend/templates/default/js/components/*.js')
-    .pipe(sourcemaps.init())
     .pipe(concat('app.js', {'newLine': '\r\n\r\n'}))
     .pipe(header(banner, { pkg: packageData }))
     .pipe(gulp.dest('public_html/frontend/templates/default/js/', { overwrite: true }))
     .pipe(uglify())
     .pipe(rename({ extname: '.min.js' }))
-    .pipe(sourcemaps.write('.', { includeContent: false }))
     .pipe(gulp.dest('public_html/frontend/templates/default/js/', { overwrite: true }))
 })
 
@@ -147,6 +144,7 @@ gulp.task('phplint', function() {
 // Watch files for changes
 gulp.task('watch', function() {
   gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('sass-chartist'))
+  gulp.watch('public_html/assets/featherlight/*.{js,less}', gulp.series('sass-trumbowyg'))
   gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('sass-trumbowyg'))
   gulp.watch('public_html/backend/template/less/**/*.less', gulp.series('less-backend'))
   gulp.watch('public_html/backend/template/js/components/*.js', gulp.series('js-backend'))

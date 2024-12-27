@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#c14a4a',
-			'icon' => 'icon-book',
+			'icon' => 'icon-dictionary',
 		],
 
 		'menu' => [

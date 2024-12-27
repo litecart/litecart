@@ -24,10 +24,6 @@
 		$_GET['date_to'] = date('Y-m-d');
 	}
 
-	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
-		$_GET['page'] = 1;
-	}
-
 	// Table Rows
 	$rows = [];
 
@@ -105,8 +101,8 @@ form[name="filter_form"] li {
 						<?php echo functions::form_input_date('date_to', true); ?>
 					</div>
 				</li>
-				<li><?php echo functions::form_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
-				<li><?php echo functions::form_button('download', language::translate('title_download', 'Download')); ?></li>
+				<li><?php echo functions::form_button('filter', functions::draw_fonticon('icon-funnel') .' '. language::translate('title_filter_now', 'Filter')); ?></li>
+				<li><?php echo functions::form_button('download', functions::draw_fonticon('icon-download') .' '. language::translate('title_download', 'Download')); ?></li>
 			</ul>
 		<?php echo functions::form_end(); ?>
 	</div>

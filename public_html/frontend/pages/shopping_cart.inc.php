@@ -15,7 +15,7 @@
 
 	breadcrumbs::add(language::translate('title_shopping_cart', 'Shopping Cart'), document::ilink('shopping_cart'));
 
-	if (empty(cart::$items)) {
+	if (!cart::$items) {
 
 		echo implode(PHP_EOL, [
 			'<main id="content" class="container">',

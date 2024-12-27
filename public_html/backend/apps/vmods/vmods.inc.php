@@ -37,7 +37,7 @@
 			}
 
 			foreach ($_POST['vmods'] as $vmod) {
-				$vmod = new ent_vmod($vmod);
+				$vmod = new ent_vmod(pathinfo($vmod, PATHINFO_BASENAME));
 				$vmod->delete();
 			}
 
@@ -205,9 +205,9 @@
 			<tbody>
 				<?php foreach ($vmods as $vmod) { ?>
 				<tr class="<?php echo $vmod['status'] ? null : 'semi-transparent'; ?>">
-					<td><?php echo functions::form_checkbox('vmods[]', $vmod['id']); ?></td>
+					<td><?php echo functions::form_checkbox('vmods[]', $vmod['filename']); ?></td>
 					<td><?php echo functions::draw_fonticon($vmod['status'] ? 'on' : 'off'); ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['id']]); ?>"><?php echo $vmod['name']; ?></a></td>
+					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['filename']]); ?>"><?php echo $vmod['name']; ?></a></td>
 					<td class="text-center"><?php echo $vmod['version']; ?></td>
 					<td><?php echo $vmod['filename']; ?></td>
 					<td><?php echo $vmod['author']; ?></td>

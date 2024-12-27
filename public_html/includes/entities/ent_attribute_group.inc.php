@@ -176,11 +176,13 @@
 			foreach ($this->data['values'] as $key => $value) {
 
 				if (empty($value['id'])) {
+
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."attribute_values
 						(group_id, date_created)
 						values (". (int)$this->data['id'] .", '". ($this->data['values'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
 					);
+
 					$value['id'] = $this->data['values'][$key]['id'] = database::insert_id();
 				}
 
@@ -194,26 +196,26 @@
 
 				foreach (array_keys(language::$languages) as $language_code) {
 
-					$value_info = database::query(
+					$info = database::query(
 						"select id from ". DB_TABLE_PREFIX ."attribute_values_info
 						where value_id = ". (int)$value['id'] ."
 						and language_code = '". database::input($language_code) ."'
 						limit 1;"
 					)->fetch();
 
-					if (!$value_info) {
+					if (!$info) {
 						database::query(
 							"insert into ". DB_TABLE_PREFIX ."attribute_values_info
 							(value_id, language_code)
 							values ('". $value['id'] ."', '". database::input($language_code) ."');"
 						);
-						$value_info['id'] = database::insert_id();
+						$info['id'] = database::insert_id();
 					}
 
 					database::query(
 						"update ". DB_TABLE_PREFIX ."attribute_values_info
 						set name = '". (isset($value['name'][$language_code]) ? database::input($value['name'][$language_code]) : '') ."'
-						where id = ". (int)$value_info['id'] ."
+						where id = ". (int)$info['id'] ."
 						and value_id = ". (int)$value['id'] ."
 						and language_code = '". database::input($language_code) ."'
 						limit 1;"
@@ -231,22 +233,18 @@
 			if (!$this->data['id']) return;
 
 			// Check category filters for attribute
-			$num_category_filters = database::query(
+			if (database::query(
 				"select id from ". DB_TABLE_PREFIX ."categories_filters
 				where group_id = ". (int)$this->data['id'] .";"
-			)->num_rows;
-
-			if ($num_category_filters) {
+			)->num_rows) {
 				throw new Exception('Cannot delete group linked to products');
 			}
 
 			// Check products for attribute
-			$num_product_attributes = database::query(
+			if (database::query(
 				"select id from ". DB_TABLE_PREFIX ."products_attributes
 				where group_id = ". (int)$this->data['id'] .";"
-			)->num_rows;
-
-			if ($num_product_attributes) {
+			)->num_rows) {
 				throw new Exception('Cannot delete group linked to products');
 			}
 

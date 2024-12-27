@@ -237,7 +237,7 @@ hr {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
-/* Breadcrumbs - Bootstrap Compatible */
+/* Breadcrumbs */
 .breadcrumbs {
   background: #dcdce5;
   display: flex;
@@ -247,11 +247,7 @@ hr {
   margin: 0;
   padding: 0.75em 1em;
   border-radius: var(--border-radius);
-}
-@media (min-width: 768px) {
-  .breadcrumbs {
-    margin: 0 0 var(--gutter-size) 0;
-  }
+  margin-bottom: 2em;
 }
 .breadcrumbs:is(ul) {
   list-style: none;
@@ -283,7 +279,7 @@ hr {
 .breadcrumbs .breadcrumb:not(:last-child) span {
   padding-right: 1.5em;
 }
-/* Buttons & Button Groups - Bootstrap Compatible */
+/* Buttons & Button Groups */
 .btn {
   cursor: pointer;
   display: inline-block;
@@ -496,7 +492,7 @@ hr {
 .featherlight .card {
   margin-bottom: 0;
 }
-/* Carousel - Bootstrap Compatible */
+/* Carousel */
 .carousel {
   position: relative;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
@@ -1183,7 +1179,7 @@ fieldset[disabled] > :not(legend),
 .form-select[disabled] {
   opacity: 0.5;
 }
-/* Grid - Bootstrap Compatible */
+/* Grid */
 .float-left {
   float: left;
 }
@@ -1638,7 +1634,7 @@ img.crop {
   width: 100%;
   object-fit: cover;
 }
-/* Lists - Bootstrap Compatible */
+/* Lists */
 ul.list-unstyled {
   display: flex;
   flex-flow: column wrap;
@@ -1687,7 +1683,7 @@ ul.list-inline li {
   border-top: 1px solid #d3dce2;
   content: "";
 }
-/* Nav (Tabs, Pills) - Bootstrap Compatible */
+/* Nav (Tabs, Pills) */
 .nav {
   display: flex;
   flex-direction: row;
@@ -1803,7 +1799,7 @@ ul.list-inline li {
 .tab-content .tab-pane > .title {
   margin-top: 0;
 }
-/* Navbar - Bootstrap Compatible */
+/* Navbar */
 .navbar {
   display: flex;
   flex-direction: row;
@@ -2052,7 +2048,7 @@ ul.list-inline li {
 body.navbar-expanded {
   overflow: hidden;
 }
-/* Notices (Alerts) - Bootstrap Compatible */
+/* Notices (Alerts) */
 .alert {
   border-radius: var(--border-radius);
   margin-bottom: var(--gutter-size);
@@ -2090,7 +2086,7 @@ body.navbar-expanded {
   color: var(--danger-notice-text-color);
   border: 1px solid var(--danger-notice-border-color);
 }
-/* Pagination - Bootstrap Compatible */
+/* Pagination */
 .pagination {
   display: flex;
   padding-inline-start: 0;
@@ -2160,7 +2156,7 @@ body.navbar-expanded {
   font-weight: bold;
   color: #666;
 }
-/* Tables - Bootstrap Compatible */
+/* Tables */
 .table {
   width: 100%;
   max-width: 100%;
@@ -2292,7 +2288,7 @@ body.navbar-expanded {
 .table > thead:first-child > tr:first-child > td {
   border-top: 0;
 }
-/* Typography - Bootstrap Compatible */
+/* Typography */
 .text-muted {
   opacity: 0.75;
 }

@@ -6,7 +6,7 @@
 
 	<?php if (count($items) > 1) { ?>
 	<ol class="carousel-indicators">
-		<?php foreach ($items as $key => $item) echo '<li data-target="#box-leaderboard" data-slide-to="'. $key .'"'. (($key == 0) ? ' class="active"' : '') .'></li>'; ?>
+		<?php foreach ($items as $key => $item) echo '<li data-target="#box-jumbotron" data-slide-to="'. $key .'"'. (($key == 0) ? ' class="active"' : '') .'></li>'; ?>
 	</ol>
 
 	<a class="left carousel-control" href="#" data-slide="prev">

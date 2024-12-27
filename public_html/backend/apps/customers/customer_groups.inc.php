@@ -40,7 +40,7 @@
 		<table class="table table-striped data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle'); ?></th>
+					<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle'); ?></th>
 					<th><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
 					<th class="tect-center"><?php echo language::translate('title_customers', 'Customers'); ?></th>

@@ -10,14 +10,19 @@
 	}
 
 	$_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
-	$_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
+	$_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : null;
 
 	if ($_GET['date_from'] > $_GET['date_to']) {
 		list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
 	}
 
-	$date_first_order = database::query("select min(date_created) from ". DB_TABLE_PREFIX ."orders limit 1;")->fetch();
-	$date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
+	$date_first_order = database::query(
+		"select min(date_created) as min_date
+		from ". DB_TABLE_PREFIX ."orders
+		limit 1;"
+	)->fetch(function($result){
+		return date('Y-m-d', strtotime($result['min_date']));
+	});
 
 	if (empty($date_first_order)) {
 		$date_first_order = date('Y-m-d');
@@ -40,10 +45,10 @@
 
 	$customers_query = database::query(
 		"select
-			sum((o.total - total_tax) * o.currency_value) as total_amount,
+			sum(o.total - total_tax) as total_amount,
 			o.customer_id as id,
-			if(o.billing_company, o.billing_company, concat(o.billing_firstname, ' ', o.billing_lastname)) as name,
-			billing_email as email
+			if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) as name,
+			customer_email as email
 		from ". DB_TABLE_PREFIX ."orders o
 		where o.order_status_id in (
 			select id from ". DB_TABLE_PREFIX ."order_statuses
@@ -51,7 +56,7 @@
 		)
 		". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : '') ."
 		". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : '') ."
-		group by if(o.customer_id, o.customer_id, o.billing_email)
+		group by if(o.customer_id, o.customer_id, o.customer_email)
 		order by total_amount desc;"
 	);
 
@@ -102,8 +107,8 @@ form[name="filter_form"] li {
 						<?php echo functions::form_input_date('date_to', true); ?>
 					</div>
 				</li>
-				<li><?php echo functions::form_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
-				<li><?php echo functions::form_button('download', language::translate('title_download', 'Download')); ?></li>
+				<li><?php echo functions::form_button('filter', functions::draw_fonticon('icon-funnel') .' '. language::translate('title_filter_now', 'Filter')); ?></li>
+				<li><?php echo functions::form_button('download', functions::draw_fonticon('icon-download') .' '. language::translate('title_download', 'Download')); ?></li>
 			</ul>
 		<?php echo functions::form_end(); ?>
 	</div>

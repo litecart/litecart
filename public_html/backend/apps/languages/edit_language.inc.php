@@ -63,10 +63,6 @@
 				throw new Exception(language::translate('error_cannot_set_disabled_store_language', 'You cannot set a disabled language as store language.'));
 			}
 
-			if (!preg_grep('#'. preg_quote($_POST['charset'], '#') .'#i', mb_list_encodings())) {
-				throw new Exception(strtr(language::translate('error_not_a_supported_charset', '%charset is not a supported character set'), ['%charset' => fallback($_POST['charset'], 'NULL')]));
-			}
-
 			if (!setlocale(LC_ALL, preg_split('#\s*,\s*#', $_POST['locale'], -1, PREG_SPLIT_NO_EMPTY))) {
 				throw new Exception(strtr(language::translate('error_not_a_valid_system_locale', '%locale is not a valid system locale on this machine'), ['%locale' => fallback($_POST['locale'], 'NULL')]));
 			}
@@ -89,7 +85,6 @@
 				'code2',
 				'name',
 				'direction',
-				'charset',
 				'locale',
 				'url_type',
 				'domain_name',

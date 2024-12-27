@@ -133,6 +133,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 							</div>
 							<?php } ?>
 
+							<?php if (isset($final_price)) { ?>
 							<?php echo functions::form_begin('buy_now_form', 'post'); ?>
 
 								<fieldset class="buy_now" style="margin: 1em 0;">
@@ -173,6 +174,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 											<?php echo functions::draw_price_tag($regular_price, $final_price, $recommended_price); ?>
 
+											<?php if ($total_tax) { ?>
 											<div class="tax" style="margin: 0 0 1em 0;">
 											<?php if ($tax_rates) { ?>
 												<?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax">{{total_tax|money}}</span>
@@ -180,6 +182,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 												<?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
 											<?php } ?>
 											</div>
+											<?php } ?>
 
 										</div>
 									</div>
@@ -187,23 +190,42 @@ form[name="buy_now_form"] .dropdown-menu .image {
 								</fieldset>
 
 							<?php echo functions::form_end(); ?>
+							<?php } ?>
+
+							<h3><?php echo language::translate('title_share_this_product', 'Share This Product'); ?>:</h3>
 
 							<div class="social-bookmarks">
-								<a class="link btn btn-default" href="#">
+
+								<a class="link btn btn-default" href="#" title="<?php echo functions::escape_html(language::translate('text_share_link', 'Share Link')); ?>">
 									<?php echo functions::draw_fonticon('icon-link', 'style="color: #333;"'); ?>
 								</a>
 
-								<a class="facebook btn btn-default" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>">
+								<a class="btn btn-default" href="<?php echo 'mailto:user@email.com?', http_build_query(['subject' => language::translate('text_is_this_a_product_for_you', 'Is this a product for you?'), 'body' => document::ilink()]); ?>" title="<?php echo functions::escape_html(language::translate('text_share_via_email', 'Share via Email')); ?>">
+									<?php echo functions::draw_fonticon('icon-envelope', 'style="color: #333;"'); ?>
+								</a>
+
+								<?php /* Requires appId
+								<a class="x btn btn-default" href="<?php echo document::href_link('fb-messenger://share/', ['link' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(language::translate('text_share_via_s', 'Share via %s'), ['%s' => 'Messenger'])); ?>">
+									<?php echo functions::draw_fonticon('icon-brand-messenger', 'style="color: #000;"'); ?>
+								</a>
+								 */ ?>
+
+								<a class="x btn btn-default" href="<?php echo document::href_link('https://wa.me/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(language::translate('text_share_via_s', 'Share via %s'), ['%s' => 'WhatsApp'])); ?>">
+									<?php echo functions::draw_fonticon('icon-brand-whatsapp', 'style="color: #000;"'); ?>
+								</a>
+
+								<a class="facebook btn btn-default" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(language::translate('text_share_on_s', 'Share on %s'), ['%s' => 'Facebook'])); ?>">
 									<?php echo functions::draw_fonticon('icon-brand-facebook', 'style="color: #3b5998;"'); ?>
 								</a>
 
-								<a class="x btn btn-default" href="<?php echo document::href_link('https://x.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'X'); ?>">
+								<a class="x btn btn-default" href="<?php echo document::href_link('https://x.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(language::translate('text_share_on_s', 'Share on %s'), ['%s' => 'X'])); ?>">
 									<?php echo functions::draw_fonticon('icon-brand-x', 'style="color: #000;"'); ?>
 								</a>
 
-								<a class="pinterest btn btn-default" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Pinterest'); ?>">
+								<a class="pinterest btn btn-default" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(language::translate('text_share_on_s', 'Share on %s'), ['%s' => 'Pinterest'])); ?>">
 									<?php echo functions::draw_fonticon('icon-brand-pinterest', 'style="color: #bd081c;"'); ?>
 								</a>
+
 							</div>
 
 						</div>

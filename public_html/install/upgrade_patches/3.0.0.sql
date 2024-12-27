@@ -523,6 +523,56 @@ CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `sold_out_status_id` `sold_out_status_id` INT(10) UNSIGNED NOT NULL,
 CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
 -- -----
+CREATE TABLE `lc_stock_items` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`product_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`brand_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`supplier_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`sku` VARCHAR(32) NOT NULL DEFAULT '',
+	`mpn` VARCHAR(32) NOT NULL DEFAULT '',
+	`gtin` VARCHAR(32) NOT NULL DEFAULT '',
+	`shelf` VARCHAR(32) NOT NULL DEFAULT '',
+	`taric` VARCHAR(16) NOT NULL DEFAULT '',
+	`image` VARCHAR(512) NOT NULL DEFAULT '',
+	`weight` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
+	`length` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`width` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`height` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`length_unit` VARCHAR(2) NOT NULL DEFAULT '',
+	`quantity` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`backordered` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`purchase_price` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`purchase_price_currency_code` VARCHAR(3) NOT NULL DEFAULT '',
+	`file` VARCHAR(256) NULL,
+	`filename` VARCHAR(64) NULL,
+	`mime_type` VARCHAR(32) NULL,
+	`downloads` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`priority` INT(11) NOT NULL DEFAULT '0',
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `mpn` (`mpn`) USING BTREE,
+	INDEX `gtin` (`gtin`) USING BTREE,
+	INDEX `sku` (`sku`) USING BTREE,
+	INDEX `product_id` (`product_id`) USING BTREE,
+	INDEX `brand_id` (`brand_id`) USING BTREE,
+	INDEX `supplier_id` (`supplier_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+-- -----
+CREATE TABLE `lc_stock_items_info` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`stock_item_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`language_code` VARCHAR(2) NOT NULL DEFAULT '',
+	`name` VARCHAR(128) NOT NULL DEFAULT '',
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `stock_option_id` (`stock_item_id`) USING BTREE,
+	INDEX `language_code` (`language_code`) USING BTREE,
+	FULLTEXT INDEX `name` (`name`),
+	CONSTRAINT `stock_item_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE NO ACTION,
+	CONSTRAINT `stock_item_info_to_stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+-- -----
 ALTER TABLE `lc_suppliers`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 -- -----
@@ -567,7 +617,7 @@ CHANGE COLUMN `city` `city` VARCHAR(32) NULL;
 -- -----
 INSERT IGNORE INTO `lc_banners`
 (`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `date_valid_from`, `date_valid_to`)
-SELECT id, status, name, languages, '', replace(image, 'slides/', 'banners/'), '', 'leaderboard', date_valid_from, date_valid_to FROM `lc_slides`;
+SELECT id, status, name, languages, '', replace(image, 'slides/', 'banners/'), '', 'jumbotron', date_valid_from, date_valid_to FROM `lc_slides`;
 -- -----
 INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
 (0, 'Left', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Left</div>', '', '', 'left', 0, 0, NULL, NULL, NOW(), NOW()),
@@ -688,29 +738,29 @@ AND calculate
 SET o.discount = 0 - if(ot.discount, ot.discount, 0),
 o.discount_tax = 0 - if(ot.discount_tax, ot.discount_tax, 0);
 -- -----
-UPDATE `lc_orders`
-SET total = total / currency_value,
-	total_tax = total_tax / currency_value,
-	subtotal = subtotal / currency_value,
-	subtotal_tax = subtotal_tax / currency_value,
-	discount = discount / currency_value,
-	discount_tax = discount_tax / currency_value,
-	shipping_option_fee = shipping_option_fee / currency_value,
-	shipping_option_tax = shipping_option_tax / currency_value,
-	shipping_purchase_cost = shipping_purchase_cost,
-	shipping_tax_id = shipping_tax_id / currency_value,
-	payment_option_fee = payment_option_fee / currency_value,
-	payment_option_tax = payment_option_tax / currency_value,
-	payment_transaction_fee = payment_transaction_fee / currency_value;
+UPDATE `lc_order_statuses` set icon = 'icon-money-bill' where icon = 'fa-money';
 -- -----
-UPDATE `lc_orders_items` oi
-LEFT JOIN `lc_orders` o ON (o.id = oi.order_id)
-SET oi.price = oi.price / o.currency_value,
-	oi.tax = oi.tax / o.currency_value,
-	oi.discount = oi.discount / o.currency_value,
-	oi.discount_tax = oi.discount_tax / o.currency_value,
-	oi.sum = oi.sum / o.currency_value,
-	oi.sum_tax = oi.sum_tax / o.currency_value;
+UPDATE `lc_order_statuses` set icon = 'icon-clock' where icon = 'fa-clock-o';
+-- -----
+UPDATE `lc_order_statuses` set icon = 'icon-cog' where icon = 'fa-cog';
+-- -----
+UPDATE `lc_order_statuses` set icon = 'icon-home' where icon = 'fa-home';
+-- -----
+UPDATE `lc_order_statuses` set icon = 'icon-truck' where icon = 'fa-truck';
+-- -----
+UPDATE `lc_order_statuses` set icon = 'icon-times' where icon = 'fa-times';
+-- -----
+UPDATE `lc_order_statuses` set icon = 'icon-plus' where icon = 'fa-plus';
+-- -----
+UPDATE `lc_order_statuses` set icon = 'icon-pause' where icon = 'fa-pause';
+-- -----
+UPDATE `lc_order_statuses` set icon = 'icon-hourglass-half' where icon = 'fa-hourglass-half';
+-- -----
+UPDATE `lc_order_statuses` set icon = 'icon-undo' where icon = 'fa-undo';
+-- -----
+UPDATE `lc_order_statuses` set icon = 'icon-building' where icon = 'fa-building';
+-- -----
+UPDATE `lc_order_statuses` set icon = 'icon-exclamation' where icon = 'fa-exclamation';
 -- -----
 UPDATE `lc_orders_items` oi
 LEFT JOIN `lc_orders` o ON (o.id = oi.invoice_id)

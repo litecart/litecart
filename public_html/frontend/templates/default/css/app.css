@@ -538,7 +538,9 @@ body main {
 }
 .listing .product .actions .btn {
   padding: var(--input-padding-y);
-  width: 2.5em;
+  border: 1px solid var(--default-border-color);
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
   line-height: 1;
 }
 @media (min-width: 576px) {

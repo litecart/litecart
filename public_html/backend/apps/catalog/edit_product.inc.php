@@ -1103,6 +1103,8 @@
 		})
 	}
 
+	// Prices
+
 	$('#price-incl-tax-tooltip').on('click', function(e) {
 		e.preventDefault()
 		alert('<?php echo str_replace(["\r", "\n", "'"], ["", "", "\\'"], language::translate('tooltip_field_price_incl_tax', 'This field helps you calculate net price based on the tax rates set for the store region. The prices stored in the database are always excluding tax.')); ?>')

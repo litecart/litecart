@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#a8bf2e',
-			'icon' => 'icon-university',
+			'icon' => 'icon-bank',
 		],
 
 		'menu' => [

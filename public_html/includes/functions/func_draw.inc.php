@@ -111,54 +111,50 @@
 		return $tag;
 	}
 
-	function draw_fonticon($class, $parameters='') {
+	function draw_fonticon($icon, $parameters='') {
 
 		switch(true) {
 
 			// LiteCore Fonticons
-			case (substr($class, 0, 5) == 'icon-'):
-				return '<i class="'. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+			case (preg_match('#^icon-#', $icon)):
+				return '<i class="'. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 
 			// Bootstrap Icons
-			case (substr($class, 0, 3) == 'bi-'):
+			case (preg_match('#^bi-#', $icon)):
 				document::$head_tags['bootstrap-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">';
-				return '<i class="bi '. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+				return '<i class="bi '. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 
 			// Fontawesome 4
-			case (substr($class, 0, 3) == 'fa-'):
+			case (preg_match('#^fa-#', $icon)):
+				trigger_error('Fontawesome 4 icon `'. functions::escape_html($icon) .'` is deprecated. Please use Fontawesome 5 instead.', E_USER_DEPRECATED);
 				document::$head_tags['fontawesome4'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/v4-shims.css">';
 				document::$head_tags['fontawesome5'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">';
-				return '<i class="fa '. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+				return '<i class="fa '. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 
 			// Fontawesome 5
-			case (substr($class, 0, 7) == 'far fa-'):
-			case (substr($class, 0, 7) == 'fab fa-'):
-			case (substr($class, 0, 7) == 'fas fa-'):
+			case (preg_match('#^far fa-#', $icon)):
+			case (preg_match('#^fab fa-#', $icon)):
+			case (preg_match('#^fas fa-#', $icon)):
 				document::$head_tags['fontawesome5'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">';
-				return '<i class="'. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+				return '<i class="'. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 
 			// Foundation
-			case (substr($class, 0, 3) == 'fi-'):
+			case (preg_match('#^fi-#', $icon)):
 				document::$head_tags['foundation-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation-icons/latest/foundation-icons.min.css">';
-				return '<i class="'. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
-
-			// Glyphicon
-			case (substr($class, 0, 10) == 'glyphicon-'):
-				//document::$head_tags['glyphicon'] = '<link rel="stylesheet" href="'/path/to/glyphicon.min.css">'; // Not embedded in release
-				return '<span class="glyphicon '. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></span>';
+				return '<i class="'. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 
 			// Ion Icons
-			case (substr($class, 0, 4) == 'ion-'):
+			case (preg_match('#^ion-#', $icon)):
 				document::$head_tags['ionicons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/latest/css/ionicons.min.css">';
-				return '<i class="'. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+				return '<i class="'. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 
 			// Material Design Icons
-			case (substr($class, 0, 4) == 'mdi-'):
+			case (preg_match('#^mdi-#', $icon)):
 				document::$head_tags['material-design-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">';
-				return '<i class="mdi '. $class .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+				return '<i class="mdi '. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 		}
 
-		switch ($class) {
+		switch ($icon) {
 			case 'add':         return draw_fonticon('icon-plus');
 			case 'cancel':      return draw_fonticon('icon-times');
 			case 'company':     return draw_fonticon('icon-building', 'style="color: #888;"');
@@ -176,19 +172,19 @@
 			case 'move-up':     return draw_fonticon('icon-arrow-up', 'style="color: #39c;"');
 			case 'move-down':   return draw_fonticon('icon-arrow-down', 'style="color: #39c;"');
 			case 'ok':          return draw_fonticon('icon-check', 'style="color: #8c4;"');
-			case 'on':          return draw_fonticon('icon-circle-o-solid', 'style="color: #8c4;"');
-			case 'off':         return draw_fonticon('icon-circle-solid', 'style="color: #f64;"');
+			case 'on':          return draw_fonticon('icon-bullet', 'style="color: #8c4;"');
+			case 'off':         return draw_fonticon('icon-bullet', 'style="color: #f64;"');
 			case 'print':       return draw_fonticon('icon-print', 'style="color: #ded90f;"');
 			case 'remove':      return draw_fonticon('icon-times', 'style="color: #c00;"');
 			case 'secure':      return draw_fonticon('icon-lock');
-			case 'semi-off':    return draw_fonticon('icon-circle-solid', 'style="color: #ded90f;"');
-			case 'save':        return draw_fonticon('icon-floppy-o');
+			case 'semi-off':    return draw_fonticon('icon-bullet', 'style="color: #ded90f;"');
+			case 'save':        return draw_fonticon('icon-memory-card');
 			case 'send':        return draw_fonticon('icon-paper-plane');
 			case 'success':     return draw_fonticon('icon-check', 'style="color: #8c4;"');
 			case 'true':        return draw_fonticon('icon-check', 'style="color: #8c4;"');
 			case 'user':        return draw_fonticon('icon-user', 'style="color: #888;"');
 			case 'warning':     return draw_fonticon('icon-exclamation-triangle', 'style="color: #c00;"');
-			default: trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING); return;
+			default: trigger_error('Unknown font icon ('. $icon .')', E_USER_WARNING); return;
 		}
 	}
 

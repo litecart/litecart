@@ -303,14 +303,14 @@
 				);
 			}
 
-			// Delete items
+			// Delete order items
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."orders_items
 				where order_id = ". (int)$this->data['id'] ."
 				and id not in ('". implode("', '", array_column($this->data['items'], 'id')) ."');"
 			);
 
-			// Insert/update items
+			// Insert/update order items
 			$i = 0;
 			foreach ($this->data['items'] as $key => $item) {
 
@@ -353,6 +353,7 @@
 						price = ". (float)$item['price'] .",
 						tax = ". (float)$item['tax'] .",
 						tax_class_id = ". (int)$item['tax_class_id'] .",
+						tax_rate = ". ($item['tax_rate'] ? (float)$item['tax_rate'] : "null") .",
 						discount = ". (float)$this->data['discount'] .",
 						discount_tax = ". (float)$this->data['discount_tax'] .",
 						sum = ". (float)$this->data['sum'] .",
@@ -410,7 +411,7 @@
 						values (". (int)$this->data['id'] .");"
 					);
 
-					$row['id'] = $this->data['order_total'][$key]['id'] = database::insert_id();
+					$this->data['order_total'][$key]['id'] = $row['id'] = database::insert_id();
 				}
 
 				database::query(
@@ -418,8 +419,9 @@
 					set title = '". database::input($row['title']) ."',
 					module_id = '". database::input($row['module_id']) ."',
 					value = ". (float)$row['amount'] .",
-					tax = ". (float)$row['tax'] .",
 					tax_class_id = ". (int)$item['tax_class_id'] .",
+					tax_rate = ". ($item['tax_rate'] ? (float)$row['tax_rate'] : "null") .",
+					tax = ". (float)$row['tax'] .",
 					calculate = ". (!empty($row['calculate']) ? 1 : 0) .",
 					priority = ". ++$i ."
 					where id = ". (int)$row['id'] ."
@@ -602,6 +604,217 @@
 			$this->data['total'] += ($item['price'] + $item['tax']) * $item['quantity'];
 			$this->data['total_tax'] += $item['tax'] * $item['quantity'];
 			$this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
+		}
+
+    public function validate($shipping = null, $payment = null) {
+
+			// Items
+
+			if (empty($this->data['items'])) {
+				return language::translate('error_order_missing_items', 'The order does not contain any items');
+			}
+
+			foreach ($this->data['items'] as $item) {
+				if (!empty($item['error'])) {
+					return language::translate('error_cart_contains_errors', 'Your cart contains errors');
+				}
+			}
+
+			if ($this->data['total'] < 0) {
+				return language::translate('error_total_cannot_be_a_negative_amount', 'The total cannot be a negative amount');
+			}
+
+			// Customer Details
+
+			try {
+
+				if (empty($this->data['customer']['firstname'])) {
+					throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
+				}
+
+				if (empty($this->data['customer']['lastname'])) {
+					throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
+				}
+
+				if (empty($this->data['customer']['address1'])) {
+					throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
+				}
+
+				if (empty($this->data['customer']['city'])) {
+					throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
+				}
+
+				if (empty($this->data['customer']['country_code'])) {
+					throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
+				}
+
+				if (empty($this->data['customer']['email'])) {
+					throw new Exception(language::translate('error_missing_email', 'You must enter an email address.'));
+				}
+
+				if (empty($this->data['customer']['phone'])) {
+					throw new Exception(language::translate('error_missing_phone', 'You must enter a phone number.'));
+				}
+
+				if (!functions::validate_email($this->data['customer']['email'])) {
+					throw new Exception(language::translate('error_invalid_email_address', 'Invalid email address'));
+				}
+
+				if (reference::country($this->data['customer']['country_code'])->tax_id_format) {
+					if (!empty($this->data['customer']['tax_id'])) {
+						if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->tax_id_format .'#i', $this->data['customer']['tax_id'])) {
+							throw new Exception(language::translate('error_invalid_tax_id_format', 'Invalid tax ID format'));
+						}
+					}
+				}
+
+				if (reference::country($this->data['customer']['country_code'])->postcode_format) {
+					if (!empty($this->data['customer']['postcode'])) {
+						if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->postcode_format .'#i', $this->data['customer']['postcode'])) {
+							throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format'));
+						}
+					} else {
+						throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode'));
+					}
+				}
+
+				if (settings::get('customer_field_zone') && reference::country($this->data['customer']['country_code'])->zones) {
+					if (empty($this->data['customer']['zone_code']) && reference::country($this->data['customer']['country_code'])->zones) {
+						throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
+					}
+				}
+
+				if (empty($this->data['customer']['id'])) {
+					$customer_query = database::query(
+						"select id from ". DB_TABLE_PREFIX ."customers
+						where email = '". database::input($this->data['customer']['email']) ."'
+						and status = 0
+						limit 1;"
+					);
+
+					if (database::num_rows($customer_query)) {
+						throw new Exception(language::translate('error_customer_account_is_disabled', 'The customer account is disabled'));
+					}
+				}
+
+			} catch (Exception $e) {
+				return language::translate('title_customer_details', 'Customer Details') .': '. $e->getMessage();
+			}
+
+			try {
+
+				if (!empty($this->data['customer']['different_shipping_address'])) {
+
+					if (empty($this->data['customer']['shipping_address']['firstname'])) {
+						throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
+					}
+
+					if (empty($this->data['customer']['shipping_address']['lastname'])) {
+						throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
+					}
+
+					if (empty($this->data['customer']['shipping_address']['address1'])) {
+						throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
+					}
+
+					if (empty($this->data['customer']['shipping_address']['city'])) {
+						throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
+					}
+
+					if (empty($this->data['customer']['shipping_address']['country_code'])) {
+						throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
+					}
+
+					if (reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format) {
+						if (!empty($this->data['customer']['shipping_address']['postcode'])) {
+							if (!preg_match('#'. reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format .'#i', $this->data['customer']['shipping_address']['postcode'])) {
+								throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format.'));
+							}
+						} else {
+							throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
+						}
+					}
+
+					if (settings::get('customer_field_zone') && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) {
+						if (empty($this->data['customer']['shipping_address']['zone_code']) && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) {
+							return language::translate('error_missing_zone', 'You must select a zone.');
+						}
+					}
+				}
+
+			} catch (Exception $e) {
+				return language::translate('title_shipping_address', 'Shipping Address') .': '. $e->getMessage();
+			}
+
+			// Additional Customer Validation
+
+			$mod_customer = new mod_customer();
+			$result = $mod_customer->validate($this->data['customer']);
+
+			if (!empty($result['error'])) {
+				return $result['error'];
+			}
+
+			// Shipping Option
+
+			if (!empty($shipping->modules) && count($shipping->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
+
+				if (!empty($this->data['shipping_option']['id'])) {
+
+					list($module_id, $option_id) = $this->data['shipping_option']['id'] ? preg_split('#:#', $this->data['shipping_option']['id'], 2) : ['', ''];
+
+					if (empty($shipping->data['options'][$module_id]['options'][$option_id])) {
+						return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
+					}
+
+					if (!empty($shipping->data['options'][$module_id]['options'][$option_id]['error'])) {
+						return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains errors');
+					}
+
+					if ($error = $shipping->run('validate', $module_id, $this)) {
+						return $error;
+					}
+
+				} else {
+					return language::translate('error_no_shipping_method_selected', 'No shipping method selected');
+				}
+			}
+
+			// Payment Option
+
+			if (!empty($payment->modules) && count($payment->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
+
+				if (!empty($this->data['payment_option']['id'])) {
+
+					list($module_id, $option_id) = $this->data['payment_option']['id'] ? preg_split('#:#', $this->data['payment_option']['id'], 2) : ['', ''];
+
+					if (empty($payment->data['options'][$module_id]['options'][$option_id])) {
+						return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
+					}
+
+					if (!empty($payment->data['options'][$module_id]['options'][$option_id]['error'])) {
+						return language::translate('error_payment_method_contains_error', 'The selected payment method contains errors');
+					}
+
+					if ($error = $payment->run('validate', $module_id, $this)) {
+						return $error;
+					}
+
+				} else {
+					return language::translate('error_no_payment_method_selected', 'No payment method selected');
+				}
+			}
+
+			// Additional Order Validation
+
+			$mod_order = new mod_order();
+			$result = $mod_order->validate($this);
+
+			if (!empty($result['error'])) {
+				return $result['error'];
+			}
+
+			return false;
 		}
 
 		public function send_order_copy($recipient, $ccs=[], $bccs=[], $language_code='') {

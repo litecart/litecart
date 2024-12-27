@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#8fc722',
-			'icon' => 'icon-shopping-cart',
+			'icon' => 'icon-cash-register',
 		],
 		'menu' => [
 			[
@@ -20,11 +20,6 @@
 				'doc' => 'order_statuses',
 				'params' => [],
 			],
-			[
-				'title' => language::translate('title_shopping_carts', 'Shopping Carts'),
-				'doc' => 'shopping_carts',
-				'params' => [],
-			],
 		],
 
 		'docs' => [
@@ -33,8 +28,6 @@
 			'order_statuses' => 'order_statuses.inc.php',
 			'edit_order_status' => 'edit_order_status.inc.php',
 			'add_product' => 'add_product.inc.php',
-			'shopping_carts' => 'shopping_carts.inc.php',
-			'edit_shopping_cart' => 'edit_shopping_cart.inc.php',
 		],
 
 		'search_results' => 'search_results.inc.php',

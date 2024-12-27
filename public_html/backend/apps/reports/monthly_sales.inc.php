@@ -24,11 +24,11 @@
 	$rows = database::query(
 		"select
 			group_concat(o.id) as order_ids,
-			sum(o.total * o.currency_value) - sum(o.total_tax * o.currency_value) as total_sales,
-			sum(o.total_tax * o.currency_value) as total_tax,
-			sum(o.subtotal * o.currency_value) as total_subtotal,
-			sum(otsf.amount * o.currency_value) as total_shipping_fees,
-			sum(otpf.amount * o.currency_value) as total_payment_fees,
+			sum(o.total) - sum(o.total_tax) as total_sales,
+			sum(o.total_tax) as total_tax,
+			sum(o.subtotal) as total_subtotal,
+			sum(otsf.amount) as total_shipping_fees,
+			sum(otpf.amount) as total_payment_fees,
 			date_format(o.date_created, '%Y-%m') as `year_month`
 		from ". DB_TABLE_PREFIX ."orders o
 		left join (
@@ -89,8 +89,8 @@ form[name="filter_form"] li {
 						<?php echo functions::form_input_date('date_to'); ?>
 					</div>
 				</li>
-				<li><?php echo functions::form_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
-				<li><?php echo functions::form_button('download', language::translate('title_download', 'Download')); ?></li>
+				<li><?php echo functions::form_button('filter', functions::draw_fonticon('icon-funnel') .' '. language::translate('title_filter_now', 'Filter')); ?></li>
+				<li><?php echo functions::form_button('download', functions::draw_fonticon('icon-download') .' '. language::translate('title_download', 'Download')); ?></li>
 			</ul>
 		<?php echo functions::form_end(); ?>
 	</div>

@@ -847,6 +847,9 @@
 
 			$type = strtolower(pathinfo($destination, PATHINFO_EXTENSION));
 
+			$destination = preg_replace('#^storage://#', FS_DIR_STORAGE, $destination);
+			$destination = preg_replace('#^app://#', FS_DIR_APP, $destination);
+
 			if (!$type) {
 				$type = $this->type;
 			}

@@ -136,7 +136,7 @@
 							</div>
 
 							<div id="express-checkout">
-								<a class="option btn btn-default btn-lg btn-block" href=""><?php echo functions::draw_fonticon('icon-paypal'); ?> Paypal</a>
+								<a class="option btn btn-default btn-lg btn-block" href=""><?php echo functions::draw_fonticon('icon-brand-paypal'); ?> Paypal</a>
 							</div>
 
 						</div>

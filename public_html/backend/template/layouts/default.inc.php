@@ -116,12 +116,12 @@
 
 			<li>
 				<a href="<?php echo document::href_ilink('f:'); ?>" target="_blank" title="<?php echo language::translate('title_frontend', 'Frontend'); ?>">
-					<?php echo functions::draw_fonticon('icon-desktop'); ?> <?php echo language::translate('title_frontend', 'Frontend'); ?>
+					<?php echo functions::draw_fonticon('icon-display'); ?> <?php echo language::translate('title_frontend', 'Frontend'); ?>
 				</a>
 			</li>
 
 			<li>
-				<a class="help" href="https://wiki.litecart.net/" target="_blank" title="<?php echo functions::escape_html(language::translate('title_help', 'Help')); ?>">
+				<a class="help" href="https://www.litecart.net/wiki/" target="_blank" title="<?php echo functions::escape_html(language::translate('title_help', 'Help')); ?>">
 					<?php echo functions::draw_fonticon('icon-question'); ?> <?php echo language::translate('title_help', 'Help'); ?>
 				</a>
 			</li>

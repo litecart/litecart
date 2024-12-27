@@ -46,6 +46,15 @@
 
 		try {
 
+			if (database::query(
+				"select id from ". DB_TABLE_PREFIX ."customers
+				where id != ". (int)$customer->data['id'] ."
+				and email like '". database::input($_POST['email']) ."'
+				limit 1;"
+			)->num_rows) {
+				throw new Exception(language::translate('error_email_already_in_use_for_another_account', 'The email address is already in use for another account'));
+			}
+
 			if (empty($_POST['newsletter'])) {
 				$_POST['newsletter'] = 0;
 			}

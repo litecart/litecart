@@ -1,8 +1,13 @@
 <?php
 
-	if (is_file(FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/less/variables.less')) {
-		$stylesheet = FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/less/variables.less';
+	if (is_file($file = FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/.development')) {
+		$developement = file_get_contents($file);
+	} else {
+		$development = false;
+	}
 
+	if ($development = 'advanced' && is_file(FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/less/variables.less')) {
+		$stylesheet = FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/less/variables.less';
 	} else if (is_file(FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/css/variables.css')) {
 		$stylesheet = FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/css/variables.css';
 

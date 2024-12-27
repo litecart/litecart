@@ -21,24 +21,25 @@
 	</a>
 
 	<div class="actions">
-		<button class="preview btn btn-default btn-sm" data-toggle="lightbox" data-target="<?php echo functions::escape_html($link) ?>" data-seamless="true" data-require-window-width="768" data-max-width="980">
-			<?php echo functions::draw_fonticon('icon-search-plus'); ?>
+		<button class="preview btn btn-default btn-sm" data-toggle="lightbox" data-target="<?php echo functions::escape_html($link) ?>" data-seamless="true" data-require-window-width="768" data-max-width="980" title="<?php echo language::translate('title_view_product', 'View Product'); ?>">
+			<?php echo functions::draw_fonticon('icon-zoom-in'); ?>
 		</button>
 
-		<button name="add_to_wishlist" class="wishlist btn btn-default btn-sm">
+		<button class="wishlist btn btn-default btn-sm" name="add_to_wishlist" title="<?php echo language::translate('title_add_to_favourites', 'Add To Favourites'); ?>">
 			<?php echo functions::draw_fonticon('icon-heart-o'); ?>
 		</button>
 
 		<?php if (!$num_stock_options) { ?>
-		<button name="add_cart_product" class="add-to-cart btn btn-success btn-sm">
+		<button class="add-to-cart btn btn-success btn-sm" name="add_cart_product" title="<?php echo language::translate('title_add_to_cart', 'Add To Cart'); ?>">
 			<?php echo functions::draw_fonticon('icon-shopping-cart'); ?>
 		</button>
 		<?php } ?>
 
 		<?php if ($num_stock_options) { ?>
-		<div class="text-center">
-			<?php echo $num_stock_options; ?>
-		</div>
+		<a class="view-options btn btn-default btn-sm" title="<?php echo language::translate('title_view_options', 'View Options'); ?>">
+			<?php echo functions::draw_fonticon('icon-copy'); ?>
+			<?php //echo $num_stock_options; ?>
+		</a>
 		<?php } ?>
 	</div>
 </article>

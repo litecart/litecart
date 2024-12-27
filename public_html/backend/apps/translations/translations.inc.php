@@ -209,7 +209,28 @@
 
 	<?php echo functions::form_begin('filter_form', 'get'); ?>
 		<div class="card-filter">
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+
+
+		<div class="dropdown">
+
+			<div class="form-select" data-toggle="dropdown">
+				<?php echo language::translate('title_collections', 'Collections'); ?>
+			</div>
+
+			<ul class="dropdown-menu">
+				<?php foreach ($collections as $collection) { ?>
+				<li class="dropdown-menu-item">
+					<label class="option"><?php echo functions::form_checkbox('collections[]', $collection['id'], true); ?>
+						<span class="title"><?php echo $collection['name']; ?></span>
+					</label>
+				</li>
+				<?php } ?>
+			</ul>
+			</div>
+
+			<div class="expandable">
+				<?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?>
+			</div>
 
 			<div class="dropdown">
 
@@ -245,23 +266,6 @@
 							<span class="title"><?php echo language::translate('title_backend', 'Backend'); ?></span>
 						</label>
 					</li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-
-				<div class="form-select" data-toggle="dropdown">
-					<?php echo language::translate('title_collections', 'Collections'); ?>
-				</div>
-
-				<ul class="dropdown-menu">
-					<?php foreach ($collections as $collection) { ?>
-					<li class="dropdown-menu-item">
-						<label class="option"><?php echo functions::form_checkbox('collections[]', $collection['id'], true); ?>
-							<span class="title"><?php echo $collection['name']; ?></span>
-						</label>
-					</li>
-					<?php } ?>
 				</ul>
 			</div>
 

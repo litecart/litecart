@@ -2,9 +2,9 @@
 	<div id="content">
 		{{notices}}
 
-		<?php if ($leaderboard = functions::draw_banner('leaderboard')) { ?>
-		<div id="box-leaderboard" style="margin-bottom: 2em;">
-			<?php echo $leaderboard; ?>
+		<?php if ($jumbotron = functions::draw_banner('jumbotron')) { ?>
+		<div id="box-jumbotron" style="margin-bottom: 2em;">
+			<?php echo $jumbotron; ?>
 		</div>
 		<?php } ?>
 

@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#4dcac3',
-			'icon' => 'icon-plug',
+			'icon' => 'icon-power-plug',
 		],
 
 		'menu' => [],

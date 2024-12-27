@@ -356,6 +356,7 @@
 		FS_DIR_APP . 'pages/reset_password.inc.php',
 		FS_DIR_APP . 'pages/search.inc.php',
 		FS_DIR_APP . 'vqmod/.htaccess',
+		FS_DIR_APP . 'robots.txt',
 	]);
 
 	perform_action('move', [
