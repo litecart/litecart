@@ -539,6 +539,21 @@
 		]);
 	}
 
+	function form_input_week($name, $input=true, $parameters='') {
+
+		if ($input === true) {
+			$input = form_reinsert_value($name);
+		}
+
+		if ($input && !in_array(substr($input, 0, 10), ['0000-00-00', '1970-01-01'])) {
+			$input = date('Y-\WW', strtotime($input));
+		} else {
+			$input = '';
+		}
+
+		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="week" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'" maxlength="7" pattern="[0-9]{4}-W[0-9]{2}" placeholder="YYYY-WW"'. ($parameters ? ' '. $parameters : '') .'>';
+	}
+
 	function form_input_wysiwyg($name, $input=true, $parameters='') {
 
 		if ($input === true) {
