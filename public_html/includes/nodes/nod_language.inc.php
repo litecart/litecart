@@ -106,8 +106,12 @@
 			}
 
 			// Set system locale
-			if (!setlocale(LC_TIME, preg_split('#\s*,\s*#', self::$selected['locale'], -1, PREG_SPLIT_NO_EMPTY))) {
-				trigger_error('Warning: Failed setting locale '. self::$selected['locale'] .' for '. self::$selected['code'], E_USER_WARNING);
+			if (self::$selected['locale'] && !setlocale(LC_TIME, preg_split('#\s*,\s*#', self::$selected['locale'], -1, PREG_SPLIT_NO_EMPTY))) {
+				trigger_error('Warning: Failed setting locale '. self::$selected['locale'] .' for '. self::$selected['name'], E_USER_WARNING);
+			}
+
+			if (self::$selected['locale_intl'] && !locale_set_default(self::$selected['locale_intl'])) {
+				trigger_error('Warning: Failed setting intl locale '. self::$selected['locale_intl'] .' for '. self::$selected['name'], E_USER_WARNING);
 			}
 		}
 

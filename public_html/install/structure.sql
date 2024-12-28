@@ -384,6 +384,7 @@ CREATE TABLE `lc_languages` (
 	`name` VARCHAR(32) NOT NULL DEFAULT '',
 	`direction` ENUM('ltr','rtl') NOT NULL DEFAULT 'ltr',
 	`locale` VARCHAR(64) NOT NULL DEFAULT '',
+	`locale_intl` VARCHAR(16) NOT NULL DEFAULT '',
 	`url_type` VARCHAR(16) NOT NULL DEFAULT '',
 	`domain_name` VARCHAR(64) NOT NULL DEFAULT '',
 	`raw_date` VARCHAR(32) NOT NULL DEFAULT '',

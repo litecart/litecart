@@ -91,6 +91,7 @@
 					name = '". database::input($this->data['name']) ."',
 					direction = '". database::input($this->data['direction']) ."',
 					locale = '". database::input($this->data['locale']) ."',
+					locale_intl = '". database::input($this->data['locale_intl']) ."',
 					url_type = '". database::input($this->data['url_type']) ."',
 					domain_name = '". database::input($this->data['domain_name']) ."',
 					raw_date = '". database::input($this->data['raw_date']) ."',

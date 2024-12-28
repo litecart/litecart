@@ -63,11 +63,15 @@
 				throw new Exception(language::translate('error_cannot_set_disabled_store_language', 'You cannot set a disabled language as store language.'));
 			}
 
-			if (!setlocale(LC_ALL, preg_split('#\s*,\s*#', $_POST['locale'], -1, PREG_SPLIT_NO_EMPTY))) {
+			if (!empty($_POST['locale']) && !setlocale(LC_ALL, preg_split('#\s*,\s*#', $_POST['locale'], -1, PREG_SPLIT_NO_EMPTY))) {
 				throw new Exception(strtr(language::translate('error_not_a_valid_system_locale', '%locale is not a valid system locale on this machine'), ['%locale' => fallback($_POST['locale'], 'NULL')]));
 			}
 
 			setlocale(LC_ALL, preg_split('#\s*,\s*#', language::$selected['locale'], -1, PREG_SPLIT_NO_EMPTY)); // Restore
+
+			if (!empty($_POST['locale_intl']) && !in_array($_POST['locale_intl'], ResourceBundle::getLocales(''))) {
+				throw new Exception(language::translate('error_not_a_valid_intl_locale', '%locale is not a valid PHP Intl locale'));
+			}
 
 			##########
 
@@ -86,6 +90,7 @@
 				'name',
 				'direction',
 				'locale',
+				'locale_intl',
 				'url_type',
 				'domain_name',
 				'raw_date',
@@ -320,20 +325,24 @@
 			</div>
 
 			<div class="row">
-				<div class="form-group col-md-6">
+				<div class="form-group col-md-3">
 					<label><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
 					<?php echo functions::form_input_text('code', true, 'required pattern="[a-z]{2}"'); ?>
 				</div>
 
-				<div class="form-group col-md-6">
+				<div class="form-group col-md-3">
 					<label><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
 					<?php echo functions::form_input_text('code2', true, 'required pattern="[a-z]{3}"'); ?>
 				</div>
-			</div>
 
-			<div class="form-group">
-				<label><?php echo language::translate('title_system_locale', 'System Locale'); ?></label>
-				<?php echo functions::form_input_text('locale', true, 'placeholder="en_US.utf8, en-US.UTF-8, english"'); ?>
+				<div class="form-group col-md-3">
+					<label><?php echo language::translate('title_system_locale', 'System Locale'); ?></label>
+					<?php echo functions::form_select_system_locale('locale', true); ?>
+				</div>
+				<div class="form-group col-md-3">
+					<label><?php echo language::translate('title_php_int_locale', 'PHP Intl Locale'); ?></label>
+					<?php echo functions::form_select_locale_intl('locale_intl', true); ?>
+				</div>
 			</div>
 
 			<div class="row">

@@ -1759,6 +1759,51 @@
 		}
 	}
 
+	function form_select_locale_intl($name, $input=true, $parameters='') {
+
+		if ($input === true) {
+			$input = form_reinsert_value($name);
+		}
+
+		if (!class_exists('ResourceBundle')) {
+			trigger_error('The PHP extension "intl" is required to use form_select_locale()', E_USER_WARNING);
+			return form_input_text($name, $input, $parameters . ($parameters ? ' ' : '') .'placeholder="en_US.utf8, en-US.UTF-8, english"');
+		}
+
+		$options = array_map(function($locale){
+			return [$locale];
+		}, ResourceBundle::getLocales(''));
+
+		if (preg_match('#\[\]$#', $name)) {
+			return form_select_multiple($name, $options, $input, $parameters);
+		} else {
+			array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
+			return form_select($name, $options, $input, $parameters);
+		}
+	}
+
+	function form_select_system_locale($name, $input=true, $parameters='') {
+
+		if ($input === true) {
+			$input = form_reinsert_value($name);
+		}
+
+		if (preg_match('#^WIN#i', PHP_OS)) {
+			return form_input_text($name, $input, $parameters . ($parameters ? ' ' : '') .'placeholder="en-US,english"');
+		}
+
+		$options = array_map(function($locale){
+			return [$locale];
+		}, preg_split('#\R+#', shell_exec('locale -a'), -1, PREG_SPLIT_NO_EMPTY));
+
+		if (preg_match('#\[\]$#', $name)) {
+			return form_select_multiple($name, $options, $input, $parameters);
+		} else {
+			array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
+			return form_select($name, $options, $input, $parameters);
+		}
+	}
+
 	function form_select_mysql_collation($name, $input=true, $parameters='') {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
