@@ -454,7 +454,7 @@
 							'      ' + $('<div class="price"></div>').text(item.formatted_price).prop('outerHTML'),
 							'    </div>',
 							'    <div class="col-2 text-end">',
-							'      ' + $('<button class="btn btn-danger btn-sm" name="remove_cart_item" type="submit"><i class="fa fa-trash"></i></button>').val(item.key).prop('outerHTML'),
+							'      ' + $('<button class="btn btn-danger btn-sm" name="remove_cart_item" type="submit"><i class="icon icon-trash"></i></button>').val(item.key).prop('outerHTML'),
 							'    </div>',
 							'  </div>',
 							'</li>'

@@ -8,7 +8,7 @@
 		return '</form>';
 	}
 
-	function form_reinsert_value($name, $array_value=null) {
+	function form_reinsert_value($name) {
 
 		if (!$name) return;
 

@@ -16,6 +16,6 @@
 {{content}}
 
 {{foot_tags}}
-<?php echo functions::draw_sscript('app://frontend/templates/'.settings::get('template').'/js/app.min.js'); ?>
+<?php echo functions::draw_script('app://frontend/templates/'.settings::get('template').'/js/app.min.js'); ?>
 </body>
 </html>

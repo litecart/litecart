@@ -160,7 +160,7 @@
 			case 'company':     return draw_fonticon('icon-building', 'style="color: #888;"');
 			case 'delete':      return draw_fonticon('icon-trash');
 			case 'download':    return draw_fonticon('icon-download');
-			case 'edit':        return draw_fonticon('icon-pencil');
+			case 'edit':        return draw_fonticon('icon-pen');
 			case 'failed':      return draw_fonticon('icon-times', 'style="color: #c00;"');
 			case 'false':       return draw_fonticon('icon-times', 'style="color: #c00;"');
 			case 'female':      return draw_fonticon('icon-female', 'style="color: #e77be9;"');

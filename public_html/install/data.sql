@@ -384,7 +384,6 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('listings', 'local', 'Popular Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_popular_products_num_items', '10', 'number()', 0, 18, NOW(), NOW()),
 ('listings', 'local', 'Campaign Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_campaign_products_num_items', '10', 'number()', 0, 19, NOW(), NOW()),
 ('listings', 'local', 'Also Purchased Products Box: Number of Items', 'The maximum number of items to be display in the box.', 'box_also_purchased_products_num_items', '4', 'number()', 0, 20, NOW(), NOW()),
-('listings', 'local', 'Auto Decimals', 'Don\'t show decimals for integers. Will turn 99.00 into 99 but leave 99.99.', 'auto_decimals', '1', 'toggle("e/d")', 0, 21, NOW(), NOW()),
 ('listings', 'global', 'Show Product Count In Category Tree', 'Show the number of products inside each category in the category tree.', 'category_tree_product_count', '0', 'toggle("y/n")', 0, 22, NOW(), NOW()),
 ('legal', 'global', 'Cookie Policy', 'Select a page for the cookie policy or leave blank to disable.', 'cookie_policy', '', 'page()', 0, 10, NOW(), NOW()),
 ('legal', 'local', 'Privacy Policy', 'Select a page for the privacy policy consent or leave blank to disable.', 'privacy_policy', '', 'page()', 0, 11, NOW(), NOW()),

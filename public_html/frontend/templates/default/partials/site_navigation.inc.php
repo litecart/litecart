@@ -211,7 +211,7 @@
 							</li>
 
 							<li class="checkout" style="margin-top: 2em;">
-								<a class="btn btn-success btn-block" href="<?php echo document::href_ilink('shopping_cart'); ?>">
+								<a class="btn btn-success btn-block btn-lg" href="<?php echo document::href_ilink('shopping_cart'); ?>">
 									<?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?> <?php echo functions::draw_fonticon('icon-arrow-right'); ?>
 								</a>
 							</li>

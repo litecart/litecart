@@ -55,7 +55,7 @@
 					<td><?php echo $group['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_customer_group', ['group_id' => $group['id']]); ?>"><?php echo $group['name']; ?></a></td>
 					<td><?php echo language::number_format($group['num_customers']); ?></td>
-					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_link(__APP__.'/edit_customer_group', ['group_id' => $group['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('icon-pencil'); ?></a></td>
+					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_link(__APP__.'/edit_customer_group', ['group_id' => $group['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('icon-pen'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>

@@ -161,8 +161,8 @@
 	function image_relative_file($file) {
 
 		$file = str_replace('\\', '/', $file);
-		$file = preg_replace('#^(app://|'. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
 		$file = preg_replace('#^(storage://|'. preg_quote(FS_DIR_STORAGE, '#') .')#', '', $file);
+		$file = preg_replace('#^(app://|'. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
 
 		return preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $file);
 	}

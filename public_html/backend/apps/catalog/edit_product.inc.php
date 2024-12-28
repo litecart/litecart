@@ -832,7 +832,7 @@
 								</td>
 								<td class="text-end">
 									<a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_options'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true"data-max-width="980px"  title="<?php echo language::translate('title_edit', 'Edit'); ?>">
-										<?php echo functions::draw_fonticon('icon-pencil'); ?>
+										<?php echo functions::draw_fonticon('icon-pen'); ?>
 										</a>
 									</td>
 								</tr>
@@ -1863,7 +1863,7 @@
 			'    <a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a>',
 			'  </td>',
 			'  <td class="text-end">',
-			'    <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" data-max-width="980px" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('icon-pencil'); ?></a>',
+			'    <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" data-max-width="980px" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('icon-pen'); ?></a>',
 			'  </td>',
 			'</tr>'
 		].join('\n')

@@ -899,7 +899,7 @@ DELETE FROM `lc_orders_totals`
 WHERE module_id = 'ot_subtotal';
 -- -----
 DELETE FROM `lc_settings`
-WHERE `key` IN ('cache_system_breakpoint', 'development_mode', 'jobs_interval', 'jobs_last_push', 'round_amounts', 'store_template_admin', 'store_template_admin_settings');
+WHERE `key` IN ('auto_decimals', 'cache_system_breakpoint', 'development_mode', 'jobs_interval', 'jobs_last_push', 'round_amounts', 'store_template_admin', 'store_template_admin_settings');
 -- -----
 DELETE FROM `lc_modules`
 WHERE `module_id` = 'ot_subtotal'

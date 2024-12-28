@@ -1,5 +1,5 @@
 import gulp from 'gulp'
-import cleancss from 'gulp-clean-css'
+import cleancss from '@sequencemedia/gulp-clean-css'
 import concat from 'gulp-concat'
 import header from 'gulp-header'
 import less from 'gulp-less'
