@@ -15,11 +15,11 @@
 		return;
 	}
 
-	if (!empty(session::$data['checkout']['order'])) {
-		$order = &session::$data['checkout']['order'];
-	} else {
+	if (empty(session::$data['checkout']['order'])) {
 		return;
 	}
+
+	$order = &session::$data['checkout']['order'];
 
 	if (empty($order->data['items'])) {
 		return;
@@ -98,16 +98,6 @@
 
 		// Customer
 		foreach ([
-			'email',
-			'different_shipping_address',
-		] as $field) {
-			if (isset($_POST['customer'][$field])) {
-				$order->data['customer'][$field] = $_POST['customer'][$field];
-			}
-		}
-
-		// Billing address
-		foreach ([
 			'tax_id',
 			'company',
 			'firstname',
@@ -119,6 +109,8 @@
 			'country_code',
 			'zone_code',
 			'phone',
+			'email',
+			'different_shipping_address',
 		] as $field) {
 			if (isset($_POST['customer'][$field])) {
 				$order->data['customer'][$field] = $_POST['customer'][$field];
@@ -254,10 +246,11 @@
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/customer.inc.php');
 
 	$_page->snippets = [
+		'order' => $order->data,
 		'account_exists' => $account_exists,
 		'subscribed_to_newsletter' => $subscribed_to_newsletter,
 	];
-
+var_dump($order->data['customer']);
 	echo $_page;
 
 	// Don't process layout if this is an ajax request

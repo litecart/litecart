@@ -271,7 +271,7 @@
 
 			if (($result = mysqli_query(self::$_links[$link], $sql)) === false) {
 					$error_message = mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\s+#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . $sql . PHP_EOL;
-					throw new ErrorException($error_message);
+					throw new ErrorException('MySQL Error: ' . mysqli_errno(self::$_links[$link]));
 			}
 
 			if (($duration = microtime(true) - $timestamp) > 3) {
@@ -297,7 +297,8 @@
 			$timestamp = microtime(true);
 
 			if (mysqli_multi_query(self::$_links[$link], $sql) === false) {
-				throw new ErrorException(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL);
+				//throw new ErrorException(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL);
+				throw new ErrorException('MySQL Error: ' . mysqli_errno(self::$_links[$link]));
 			}
 
 			$results = [];

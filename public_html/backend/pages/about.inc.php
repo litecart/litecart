@@ -113,6 +113,7 @@
 						'backtrace' => $matches[3][$i],
 						'occurrences' => 1,
 						'last_occurrence' => strtotime($matches[1][$i]),
+						'critical' => preg_match('#(Parse|Fatal) error:#s', $matches[2][$i]) ? true : false,
 					];
 				} else {
 					$errors[$checksum]['occurrences']++;
@@ -123,14 +124,17 @@
 		}
 
 		uasort($errors, function($a, $b) {
-			if ($a['occurrences'] == $b['occurrences']) {
-				return ($a['last_occurrence'] > $b['last_occurrence']) ? -1 : 1;
-			}
-			return ($a['occurrences'] > $b['occurrences']) ? -1 : 1;
-		});
 
-		unset($entries); // Free memory
-		ini_set('memory_limit', $iniatial_memory_limit); // Restore memory limit
+			if ($a['critical'] != $b['critical']) {
+				return ($a['critical'] > $b['critical']) ? -1 : 1;
+			}
+
+			if ($a['occurrences'] != $b['occurrences']) {
+				return ($a['occurrences'] > $b['occurrences']) ? -1 : 1;
+			}
+
+			return ($a['last_occurrence'] > $b['last_occurrence']) ? -1 : 1;
+		});
 	}
 
 	// Render view

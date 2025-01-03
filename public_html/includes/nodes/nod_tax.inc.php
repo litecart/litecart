@@ -33,7 +33,7 @@
 			return $tax;
 		}
 
-		public static function get_rates(int $tax_class_id, $customer=null) {
+		public static function get_rates($tax_class_id, $customer=null) {
 
 			if (empty($tax_class_id)) return [];
 
@@ -67,7 +67,14 @@
 						break;
 
 					case 'customer':
-						$customer = customer::$data;
+
+						$customer = [
+							'tax_id' => !empty(customer::$data['tax_id']) ? true : false,
+							'company' => !empty(customer::$data['company']) ? true : false,
+							'country_code' => customer::$data['country_code'],
+							'zone_code' => customer::$data['zone_code'],
+							'city' => customer::$data['city'],
+						];
 						break;
 
 					default:

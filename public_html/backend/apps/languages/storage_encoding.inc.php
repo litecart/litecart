@@ -59,6 +59,15 @@
 				}
 			}
 
+			if (!empty($_POST['engine'])) {
+				foreach ($_POST['tables'] as $table) {
+					database::query(
+						"alter table `". DB_DATABASE ."`.`". $table ."`
+						engine=". database::input($_POST['engine']) .";"
+					);
+				}
+			}
+
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 			header('Location: '. document::ilink());
 			exit;
@@ -117,6 +126,11 @@
 
 				<div class="form-group">
 					<?php echo functions::form_checkbox('set_database_default', ['1', language::translate('text_also_set_as_database_default', 'Also set as database default (when new tables are created)')], true); ?>
+				</div>
+
+				<div class="form-group">
+					<label><?php echo language::translate('title_engine', 'Engine'); ?></label>
+					<?php echo functions::form_select_mysql_engine('engine'); ?>
 				</div>
 			</div>
 

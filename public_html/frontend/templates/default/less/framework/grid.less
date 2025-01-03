@@ -63,12 +63,10 @@
 	grid-template-columns: repeat(12, 1fr);
 	grid-gap: 1em;
 	&:not(last-child){
-		margin-bottom: var(--gutter-size);
 	}
 	&.layout {
 		@media (min-width: @media-breakpoint-lg) {
 			grid-gap: var(--gutter-size);
-			margin-bottom: var(--gutter-size);
 		}
 	}
 	&.half-gutter {
@@ -89,7 +87,6 @@
 	}
 	@media (min-width: @media-breakpoint-sm) {
 		grid-gap: var(--gutter-size);
-		margin-bottom: 1rem;
 	}
 }
 

@@ -189,7 +189,14 @@
 						<div class="form-group col-md-6">
 							<label><?php echo language::translate('title_last_active', 'Last Active'); ?></label>
 							<?php echo functions::form_input_text('date_active', true, 'readonly'); ?>
+						</div>
 					</div>
+
+					<div class="form-group col-md-6">
+						<label><?php echo language::translate('title_known_ip_addresses', 'Known IP Addresses'); ?></label>
+						<div class="form-input" disabled>
+							<?php echo str_replace(',', ', ', $administrator->data['known_ips']); ?>
+						</div>
 					</div>
 					<?php } ?>
 				</div>

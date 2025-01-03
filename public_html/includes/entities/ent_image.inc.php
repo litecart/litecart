@@ -1,7 +1,8 @@
 <?php
 
-	//! The original imagecopyresampled function is broken. This is a fixed version of it.
 	/*!
+	 * The original imagecopyresampled function is broken. This is a fixed version of it.
+	 *
 	 *  \param dst_im Destination image
 	 *  \param src_im Source image
 	 *  \param dstX X coordinate of the top left corner of the destination area
@@ -562,7 +563,7 @@
 				$this->load();
 			}
 
-			switch($this->_library) {
+			switch ($this->_library) {
 
 				case 'imagick':
 

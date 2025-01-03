@@ -966,12 +966,12 @@ textarea {
 input[type="number"] {
   text-align: end;
 }
+.form-group {
+  margin-bottom: 1em;
+}
 .form-group.required label::after {
   content: ' *';
   color: #f00;
-}
-.form-group:not([class*=col-]):not(:last-child) {
-  margin-bottom: 1em;
 }
 .form-group > label:not(.form-check) {
   display: block;
@@ -1276,15 +1276,10 @@ fieldset[disabled] > :not(legend),
   grid-template-columns: repeat(12, 1fr);
   grid-gap: 1em;
 }
-.grid:not(last-child),
-.row:not(last-child) {
-  margin-bottom: var(--gutter-size);
-}
 @media (min-width: 992px) {
   .grid.layout,
   .row.layout {
     grid-gap: var(--gutter-size);
-    margin-bottom: var(--gutter-size);
   }
 }
 .grid.half-gutter,
@@ -1312,7 +1307,6 @@ fieldset[disabled] > :not(legend),
   .grid,
   .row {
     grid-gap: var(--gutter-size);
-    margin-bottom: 1rem;
   }
 }
 .col-1 {

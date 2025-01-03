@@ -39,10 +39,9 @@
 				<div class="navbar-search" data-hint="<?php echo functions::escape_html(''); ?>">
 					<?php echo functions::form_begin('search_form', 'get', document::ilink('search')); ?>
 					<div class="navbar-link dropdown">
-						<?php echo functions::form_input_search('query', true, 'autocomplete="off" placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
-						<div class="dropdown-content">
-							...
-						</div>
+						<?php echo functions::form_input_search('query', true, 'autocomplete="off" placeholder="'. language::translate('title_search', 'Search') .'&hellip;"'); ?>
+						<ul class="dropdown-menu" style="left: 0; right: 0;">
+						</ul>
 					</div>
 					<?php echo functions::form_end(); ?>
 				</div>
@@ -52,7 +51,7 @@
 				<?php if (!empty($regional_settings)) { ?>
 					<li class="contact">
 						<a class="navbar-item" href="<?php echo functions::escape_attr($regional_settings['link']); ?>">
-						<?php echo functions::draw_fonticon('icon-envelope-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo $regional_settings['title']; ?>
+						<?php echo functions::draw_fonticon('icon-envelope hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo $regional_settings['title']; ?>
 						</a>
 					</li>
 					<?php } ?>
@@ -76,7 +75,7 @@
 
 					<li class="contact">
 						<a class="navbar-item" href="<?php echo document::href_ilink('contact'); ?>">
-							<?php echo functions::draw_fonticon('icon-envelope-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo language::translate('title_contact', 'Contact'); ?>
+							<?php echo functions::draw_fonticon('icon-envelope hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo language::translate('title_contact', 'Contact'); ?>
 						</a>
 					</li>
 

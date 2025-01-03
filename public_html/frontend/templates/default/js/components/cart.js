@@ -125,9 +125,8 @@
 					$('#site-navigation .shopping-cart').toggleClass('filled', result.items.length ? true : false)
 					$('#site-navigation .shopping-cart ul .item').remove()
 
-					let html = ''
 					$.each(result.items, function(key, item) {
-						html += [
+						$('#site-navigation .shopping-cart ul').append([
 							'<li class="item">',
 							'  <div class="row">',
 							'    <div class="col-2">',
@@ -142,10 +141,8 @@
 							'    </div>',
 							'  </div>',
 							'</li>'
-						].join('\n')
+						].join('\n'))
 					})
-
-					$('#site-navigation .shopping-cart ul').prepend(html)
 				}
 			})
 		}

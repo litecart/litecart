@@ -26,6 +26,6 @@
 	];
 
 	ob_clean();
-	header('Content-type: text/plain; charset='. mb_http_output());
+	header('Content-type: application/json; charset='. mb_http_output());
 	echo json_encode($json, JSON_UNESCAPED_SLASHES);
 	exit;

@@ -4,17 +4,21 @@
 
 !public_html/**/index.html
 !public_html/**/.htaccess
+!public_html/vendor/composer.json
 
+migrations/.migrated
+public_html/.well-known/*
+public_html/cgi-bin/*
 public_html/storage/*
 public_html/vendor/*
 
-composer.lock
-package-lock.json
 public_html/.htaccess
 public_html/.user.ini
 public_html/favicon.ico
+public_html/google*.html
 public_html/php.ini
 public_html/robots.txt
+package-lock.json
 
 #####################
 # Development files #

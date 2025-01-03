@@ -30,6 +30,24 @@
 		return jQuery.ajax(url, options)
 	}
 
+	// Escape HTML
+	function escapeHTML(string) {
+
+		let entityMap = {
+			'&': '&amp;',
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;',
+			"'": '&#39;',
+			'/': '&#x2F;',
+			'`': '&#x60;',
+		}
+
+		return String(string).replace(/[&<>"'\/]/g, function (s) {
+			return entityMap[s]
+		})
+	}
+
 	// Keep-alive
 	let keepAlive = setInterval(function() {
 		$.get({
@@ -441,9 +459,8 @@
 					$('#site-navigation .shopping-cart').toggleClass('filled', result.items.length ? true : false)
 					$('#site-navigation .shopping-cart ul .item').remove()
 
-					let html = ''
 					$.each(result.items, function(key, item) {
-						html += [
+						$('#site-navigation .shopping-cart ul').append([
 							'<li class="item">',
 							'  <div class="row">',
 							'    <div class="col-2">',
@@ -458,10 +475,8 @@
 							'    </div>',
 							'  </div>',
 							'</li>'
-						].join('\n')
+						].join('\n'))
 					})
-
-					$('#site-navigation .shopping-cart ul').prepend(html)
 				}
 			})
 		}
@@ -735,6 +750,7 @@ $('.dropdown').on('click', 'a', function(e) {
 
 
 	// AJAX Search
+
 	$('.navbar-search :input').on('focus', function() {
 		$(this).closest('.dropdown').addClass('open')
 	})
@@ -746,13 +762,14 @@ $('.dropdown').on('click', 'a', function(e) {
 	let xhrAjaxSearch
 	$('.navbar-search :input').on('input', function() {
 
-		let $navbar_search = $(this).closest('.navbar-search')
+		let $navbar_search = $(this).closest('.navbar-search'),
+			$dropdown = $navbar_search.find('.dropdown-menu')
+
+		$navbar_search.find('.dropdown-menu').html('')
 
 		if (xhrAjaxSearch) {
 			xhrAjaxSearch.abort()
 		}
-
-		$navbar_search.find('.dropdown-menu').html('')
 
 		if (!$(this).val()) {
 			$navbar_search.find('.dropdown-menu').append(
@@ -764,26 +781,44 @@ $('.dropdown').on('click', 'a', function(e) {
 		xhrAjaxSearch = $.ajax({
 			url: window._env.platform.url + 'ajax/search_results.json',
 			type: 'get',
-			data: {query: $(this).val()},
+			data: { query: $(this).val() },
 			cache: false,
 			async: true,
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'))
 			},
-			success: function(results) {
-				if (results) {
-					$.each(results, function(i, rows) {
-						$.each(rows, function(i, row) {
-							$navbar_search.find('.dropdown-menu').append([
-								'<li><a href="'+ row.url +'">',
-								'  <img src="'+ row.thumbnail +'" style="height: 1em;"> ' + row.name,
-								'</a></li>',
-							].join('\n'))
-						})
+			success: function(result) {
+
+				if (!result) {
+					dropdown.html('<li>:(</li>')
+					return
+				}
+
+				if (result.categories && result.categories.length) {
+					$.each(result.products, function(i, product) {
+
+						let $item = $([
+							'<li class="dropdown-menu-item"><a class="dropdown-menu-link" href="'+ escapeHTML(category.link) +'">',
+							'  <img src="'+ escapeHTML(less-featherlight.thumbnail) +'" style="height: 1em;"> ' + escapeHTML(category.name),
+							'</a></li>',
+						].join('\n'))
+
+						$dropdown.append($item)
 					})
-				} else {
-					$navbar_search.find('.dropdown-menu').html('<li>:(</li>')
+				}
+
+				if (result.products && result.products.length) {
+					$.each(result.products, function(i, product) {
+
+						let $item = $([
+							'<li class="dropdown-menu-item"><a class="dropdown-menu-link" href="'+ escapeHTML(product.link) +'">',
+							'  <img src="'+ escapeHTML(product.image.thumbnail) +'" style="height: 1em;"> ' + escapeHTML(product.name),
+							'</a></li>',
+						].join('\n'))
+
+						$dropdown.append($item)
+					})
 				}
 			}
 		})
@@ -847,9 +882,9 @@ $('body').on('click', '.data-table tbody tr', function(e) {
 	})
 
 
-$('.listing .product button[name="add_to_wishlist"]').on('click', function(e) {
+// Wishlist
 
-	// Prevent the form from submitting
+$('.listing .product button[name="add_to_wishlist"]').on('click', function(e) {
 	e.preventDefault()
 
 	// Get the form and button
@@ -864,7 +899,10 @@ $('.listing .product button[name="add_to_wishlist"]').on('click', function(e) {
 	$.ajax({
 		url: window._env.platform.url + 'ajax/wishlist.json',
 		type: 'post',
-		data: 'action='+ action +'&product_id=' + $product.data('product-id'),
+		data: {
+			'action': action,
+			'product_id': $product.data('product-id')
+		},
 		cache: false,
 		async: true,
 		dataType: 'json',

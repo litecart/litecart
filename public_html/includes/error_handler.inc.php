@@ -56,6 +56,7 @@
 			}
 
 			foreach ($backtraces as $backtrace) {
+
 				if (empty($backtrace['file'])) continue;
 				$backtrace['file'] = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', 'app://', functions::file_realpath($backtrace['file']));
 				$output[] = " → <strong>$backtrace[file]</strong> on line <strong>$backtrace[line]</strong> in <strong>$backtrace[function]()</strong>";

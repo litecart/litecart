@@ -43,7 +43,7 @@
   --sidebar-background-color: #dde0e9;
   --sidebar-background-color-hover: #e5e7ef66;
   --sidebar-doc-background-color-hover: #d2d6e366;
-  --sidebar-doc-background-color-active: #d2d6e3;
+  --sidebar-doc-background-color-active: var(--app-color);
   --sidebar-border-color: var(--default-border-color);
   --sidebar-text-color: #333;
   --sidebar-width: 20rem;
@@ -187,7 +187,7 @@ html.dark-mode {
   --button-default-background-color-active: #1a2133;
   --button-default-border-color: #434e67;
   --button-default-text-color: #acb6c2;
-  --button-danger-background-color: #a93e3a;
+  --button-danger-background-color: #e15954;
   --button-danger-background-color-hover: #bd3d38;
   --button-danger-background-color-active: #a93e3a;
   --button-danger-border-color: rgba(0, 0, 0, 0.1);

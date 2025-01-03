@@ -19,7 +19,7 @@
 				throw new Exception(language::translate('error_invalid_image', 'The image is invalid'));
 			}
 
-			$filename = 'logotype.png';
+			$filename = 'logotype.svg';
 
 			if (is_file('storage://images/' . $filename)) {
 				unlink('storage://images/' . $filename);
@@ -53,7 +53,7 @@
 		<?php echo functions::form_begin('logotype_form', 'post', false, true); ?>
 
 			<div style="max-width: 480px;">
-				<img class="thumbnail fit" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="" style="margin: 0 0 2em 0;">
+				<img class="thumbnail fit" src="<?php echo document::href_rlink('storage://images/logotype.svg'); ?>" alt="" style="margin: 0 0 2em 0;">
 			</div>
 
 			<div class="form-group" style="max-width: 480px;">

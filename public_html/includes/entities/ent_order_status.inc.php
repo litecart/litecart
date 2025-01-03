@@ -117,12 +117,16 @@
 				)->fetch();
 
 				if (!$order_status_info) {
+
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."order_statuses_info
 						(order_status_id, language_code)
 						values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
 					);
-					$order_status_info['id'] = database::insert_id();
+
+					$order_status_info = [
+						'id' => database::insert_id(),
+					];
 				}
 
 				database::query(

@@ -29,7 +29,7 @@
 
 			$this->data['status'] = 1;
 			$this->data['group_id'] = settings::get('default_customer_group_id');
-			$this->data['newsletter'] = '';
+			$this->data['newsletter'] = 0;
 
 			$this->previous = $this->data;
 		}

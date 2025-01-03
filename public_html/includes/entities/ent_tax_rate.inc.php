@@ -23,6 +23,8 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
+			$this->data['addrress_type'] = 'shipping';
+
 			$this->previous = $this->data;
 		}
 

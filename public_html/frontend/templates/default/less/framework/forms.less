@@ -29,12 +29,10 @@ input[type="number"] {
 }
 
 .form-group {
+	margin-bottom: 1em;
 	&.required label::after {
 		content: ' *';
 		color: #f00;
-	}
-	&:not([class*=col-]):not(:last-child) {
-		margin-bottom: 1em;
 	}
 	> label:not(.form-check) {
 		display: block;

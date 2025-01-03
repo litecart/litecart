@@ -1,4 +1,5 @@
 	// AJAX Search
+
 	$('.navbar-search :input').on('focus', function() {
 		$(this).closest('.dropdown').addClass('open')
 	})
@@ -10,13 +11,14 @@
 	let xhrAjaxSearch
 	$('.navbar-search :input').on('input', function() {
 
-		let $navbar_search = $(this).closest('.navbar-search')
+		let $navbar_search = $(this).closest('.navbar-search'),
+			$dropdown = $navbar_search.find('.dropdown-menu')
+
+		$navbar_search.find('.dropdown-menu').html('')
 
 		if (xhrAjaxSearch) {
 			xhrAjaxSearch.abort()
 		}
-
-		$navbar_search.find('.dropdown-menu').html('')
 
 		if (!$(this).val()) {
 			$navbar_search.find('.dropdown-menu').append(
@@ -28,26 +30,44 @@
 		xhrAjaxSearch = $.ajax({
 			url: window._env.platform.url + 'ajax/search_results.json',
 			type: 'get',
-			data: {query: $(this).val()},
+			data: { query: $(this).val() },
 			cache: false,
 			async: true,
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'))
 			},
-			success: function(results) {
-				if (results) {
-					$.each(results, function(i, rows) {
-						$.each(rows, function(i, row) {
-							$navbar_search.find('.dropdown-menu').append([
-								'<li><a href="'+ row.url +'">',
-								'  <img src="'+ row.thumbnail +'" style="height: 1em;"> ' + row.name,
-								'</a></li>',
-							].join('\n'))
-						})
+			success: function(result) {
+
+				if (!result) {
+					dropdown.html('<li>:(</li>')
+					return
+				}
+
+				if (result.categories && result.categories.length) {
+					$.each(result.products, function(i, product) {
+
+						let $item = $([
+							'<li class="dropdown-menu-item"><a class="dropdown-menu-link" href="'+ escapeHTML(category.link) +'">',
+							'  <img src="'+ escapeHTML(less-featherlight.thumbnail) +'" style="height: 1em;"> ' + escapeHTML(category.name),
+							'</a></li>',
+						].join('\n'))
+
+						$dropdown.append($item)
 					})
-				} else {
-					$navbar_search.find('.dropdown-menu').html('<li>:(</li>')
+				}
+
+				if (result.products && result.products.length) {
+					$.each(result.products, function(i, product) {
+
+						let $item = $([
+							'<li class="dropdown-menu-item"><a class="dropdown-menu-link" href="'+ escapeHTML(product.link) +'">',
+							'  <img src="'+ escapeHTML(product.image.thumbnail) +'" style="height: 1em;"> ' + escapeHTML(product.name),
+							'</a></li>',
+						].join('\n'))
+
+						$dropdown.append($item)
+					})
 				}
 			}
 		})

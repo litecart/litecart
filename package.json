@@ -35,7 +35,7 @@
 	},
 	"type": "module",
 	"engines": {
-		"node": ">=19"
+		"node": ">=23"
 	},
 	"scripts": {
 		"archive": "git archive --format=zip --output latest.zip",
@@ -47,6 +47,7 @@
 		"uglify": "gulp replace",
 		"watch": "gulp watch",
 		"update": "ncu -u && npm install",
-		"dependencies": "npm list --depth=1"
+		"dependencies": "npm list --depth=1",
+		"dedupe": "npm dedupe"
 	}
 }

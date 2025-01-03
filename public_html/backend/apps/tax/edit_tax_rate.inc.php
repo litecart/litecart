@@ -8,10 +8,6 @@
 
 	if (!$_POST) {
 		$_POST = $tax_rate->data;
-
-		if (empty($tax_rate->data['id'])) {
-			$_POST['address_type'] = 'shipping';
-		}
 	}
 
 	document::$title[] = !empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_create_new_tax_rate', 'Create New Tax Rate');

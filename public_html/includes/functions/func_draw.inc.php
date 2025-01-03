@@ -89,28 +89,6 @@
 		return $output;
 	}
 
-	function draw_style($href) {
-
-		if (preg_match('#^(app|storage)://#', $href)) {
-			$tag = '<link rel="stylesheet" integrity="sha256-'. base64_encode(hash_file('sha256', $href, true)) .'" href="'. document::href_rlink($href) .'">';
-		} else {
-			$tag = '<link rel="stylesheet" href="'. document::href_link($href) .'">';
-		}
-
-		return $tag;
-	}
-
-	function draw_script($src) {
-
-		if (preg_match('#^(app|storage)://#', $src)) {
-			$tag = '<script integrity="sha256-'. base64_encode(hash_file('sha256', $src, true)) .'" src="'. document::href_rlink($src) .'"></script>';
-		} else {
-			$tag = '<script src="'. document::href_link($src) .'">'. $content .'</script>';
-		}
-
-		return $tag;
-	}
-
 	function draw_fonticon($icon, $parameters='') {
 
 		switch(true) {
@@ -199,6 +177,28 @@
 		}
 
 		return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="'. functions::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($image) .'" '. ($parameters ? ' '. $parameters : '') .'>';
+	}
+
+	function draw_script($src) {
+
+		if (preg_match('#^(app|storage)://#', $src)) {
+			$tag = '<script integrity="sha256-'. base64_encode(hash_file('sha256', $src, true)) .'" src="'. document::href_rlink($src) .'"></script>';
+		} else {
+			$tag = '<script src="'. document::href_link($src) .'">'. $content .'</script>';
+		}
+
+		return $tag;
+	}
+
+	function draw_style($href) {
+
+		if (preg_match('#^(app|storage)://#', $href)) {
+			$tag = '<link rel="stylesheet" integrity="sha256-'. base64_encode(hash_file('sha256', $href, true)) .'" href="'. document::href_rlink($href) .'">';
+		} else {
+			$tag = '<link rel="stylesheet" href="'. document::href_link($href) .'">';
+		}
+
+		return $tag;
 	}
 
 	function draw_thumbnail($image, $width=0, $height=0, $clipping='fit', $parameters='') {

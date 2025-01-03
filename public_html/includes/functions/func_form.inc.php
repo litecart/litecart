@@ -215,43 +215,43 @@
 
 		document::$javascript['table2csv'] = implode(PHP_EOL, [
 			'$(\'table[data-toggle="csv"]\').on(\'click\', \'button[name="remove_row"]\', function(e) {',
-			'  e.preventDefault();',
-			'  var parent = $(this).closest(\'tbody\');',
-			'  $(this).closest(\'tr\').remove();',
-			'  $(parent).trigger(\'input\');',
-			'});',
+			'  e.preventDefault()',
+			'  var parent = $(this).closest(\'tbody\')',
+			'  $(this).closest(\'tr\').remove()',
+			'  $(parent).trigger(\'input\')',
+			'})',
 			'',
 			'$(\'table[data-toggle="csv"] button[name="add_row"]\').on(\'click\', function(e) {',
 			'  e.preventDefault();',
-			'  var n = $(this).closest(\'table\').find(\'thead th:not(:last-child)\').length;',
+			'  var n = $(this).closest(\'table\').find(\'thead th:not(:last-child)\').length',
 			'  $(this).closest(\'table\').find(\'tbody\').append(',
 			'    \'<tr>\' + (\'<td contenteditable></td>\'.repeat(n)) + \'<td><button name="remove_row" class="btn btn default btn-sm">'. functions::draw_fonticon('remove') .'</button></td>\' +\'</tr>\'',
-			'  ).trigger(\'input\');',
-			'});',
+			'  ).trigger(\'input\')',
+			'})',
 			'',
 			'$(\'table[data-toggle="csv"] button[name="add_column"]\').on(\'click\', function(e) {',
-			'  e.preventDefault();',
-			'  var $table = $(this).closest(\'table\');',
-			'  var title = prompt("'. functions::escape_js(language::translate('title_column_title', 'Column Title')) .'");',
-			'  if (!title) return;',
-			'  $table.find(\'thead tr th:last-child:last-child\').before(\'<th>\'+ title +\'<button name="remove_column" class="btn btn default btn-sm">'. functions::draw_fonticon('remove') .'</button></th>\');',
-			'  $table.find(\'tbody tr td:last-child:last-child\').before(\'<td contenteditable></td>\');',
-			'  $table.find(\'tfoot tr td\').attr(\'colspan\', $(this).closest(\'table\').find(\'tfoot tr td\').attr(\'colspan\') + 1);',
-			'  $(this).trigger(\'input\');',
+			'  e.preventDefault()',
+			'  var $table = $(this).closest(\'table\')',
+			'  var title = prompt("'. functions::escape_js(language::translate('title_column_title', 'Column Title')) .'")',
+			'  if (!title) return',
+			'  $table.find(\'thead tr th:last-child:last-child\').before(\'<th>\'+ title +\'<button name="remove_column" class="btn btn default btn-sm">'. functions::draw_fonticon('remove') .'</button></th>\')',
+			'  $table.find(\'tbody tr td:last-child:last-child\').before(\'<td contenteditable></td>\')',
+			'  $table.find(\'tfoot tr td\').attr(\'colspan\', $(this).closest(\'table\').find(\'tfoot tr td\').attr(\'colspan\') + 1)',
+			'  $(this).trigger(\'input\')',
 			'});',
 			'',
 			'$(\'table[data-toggle="csv"]\').on(\'input\', function(e) {',
 			'   var csv = $(this).find(\'thead tr, tbody tr\').map(function (i, row) {',
 			'      return $(row).find(\'th:not(:last-child),td:not(:last-child)\').map(function (j, col) {',
-			'        var text = $(col).text();',
+			'        var text = $(col).text()',
 			'        if (/(\'|,)/.test(text)) {',
-			'          return "\\"\'"+ text.replace(/"/g, "\\"\"") +"\\"";',
+			'          return "\\"\'"+ text.replace(/"/g, "\\"\"") +"\\""',
 			'        } else {',
-			'          return text;',
+			'          return text',
 			'        }',
-			'      }).get().join(\',\');',
-			'    }).get().join(\'\\r\\n\');',
-			'  $(this).next(\'textarea\').val(csv);',
+			'      }).get().join(\',\')',
+			'    }).get().join(\'\\r\\n\')',
+			'  $(this).next(\'textarea\').val(csv)',
 			'});',
 		]);
 
@@ -316,7 +316,7 @@
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-icon">'. functions::draw_fonticon('icon-envelope-o') .'</span>',
+			'  <span class="input-group-icon">'. functions::draw_fonticon('icon-envelope') .'</span>',
 			'  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="email" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'"'. ($parameters ? ' '. $parameters : '') .'>',
 			'</div>',
 		]);
@@ -1096,8 +1096,8 @@
 				return form_input_wysiwyg($input, $name, $parameters);
 
 			case 'zone':
-				$option = !empty($options) ? $options[0] : '';
-					//if (empty($option)) $option = settings::get('store_country_code');
+				$option = $options ? $options[0] : '';
+				//if (empty($option)) $option = settings::get('store_country_code');
 				return form_select_zone($name, $option, $input, $parameters);
 
 			default:
@@ -1774,7 +1774,7 @@
 		}
 	}
 
-	function form_select_locale_intl($name, $input=true, $parameters='') {
+	function form_select_intl_locale($name, $input=true, $parameters='') {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);

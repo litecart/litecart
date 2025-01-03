@@ -168,13 +168,13 @@ html[dir="rtl"] .form-select {
 
 .form-switch {
 	label {
-	  position: relative;
+		position: relative;
 		display: inline-block;
-	  background: #ccc;
-	  border-radius: 1em;
-	  width: 4em;
-	  height: 2em;
-	  transition: background 0.25s;
+		background: #ccc;
+		border-radius: 1em;
+		width: 4em;
+		height: 2em;
+		transition: background 0.25s;
 		&::before {
 			content: "";
 			display: inline-block;
@@ -198,23 +198,21 @@ html[dir="rtl"] .form-select {
 
 .form-toggle {
 	display: flex;
-  flex-direction: row;
-	padding: 0.25em .5em;
-  gap: 1em;
-  color: #000;
-  border-radius: var(--border-radius);
-	padding: 0.25em .5em;
+	flex-direction: row;
+	padding: 0.5em .5em;
+	gap: 1em;
+	color: #000;
+	border-radius: var(--border-radius);
 	background: var(--input-background-color);
 
 	label {
 		flex: 0 0 auto;
 		display: inline-block;
-		border: 1px solid var(--input-border-color);
 		border-radius: var(--border-radius);
-		padding: .25em .5em;
+		padding: .25em .75em;
 		text-align: center;
 		&:has(:checked) {
-			border-color: #000;
+			background: var(--input-toggle-background-color);
 		}
 		&:hover:not(:has(:checked)):not(:has(:disabled)) {
 			background: #fff3;
@@ -285,7 +283,8 @@ html[dir="rtl"] .form-select {
 	}
 	.input-group-icon {
 		flex: 0 1 auto;
-		padding: var(--input-padding-y) 1em;
+		padding: var(--input-padding-y) var(--input-padding-x);
+		color: #555;
 	}
 	.btn {
 		border-inline-end: 0;

@@ -104,7 +104,7 @@ gulp.task('sass-chartist', function() {
 })
 
 // Task to compile and minify Featherlight
-gulp.task('featherlight', function() {
+gulp.task('less-featherlight', function() {
 
   gulp
     .src(['public_html/assets/featherlight/featherli*ht.less'])
@@ -144,7 +144,7 @@ gulp.task('phplint', function() {
 // Watch files for changes
 gulp.task('watch', function() {
   gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('sass-chartist'))
-  gulp.watch('public_html/assets/featherlight/*.{js,less}', gulp.series('sass-trumbowyg'))
+  gulp.watch('public_html/assets/featherlight/*.{js,less}', gulp.series('less-featherlight'))
   gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('sass-trumbowyg'))
   gulp.watch('public_html/backend/template/less/**/*.less', gulp.series('less-backend'))
   gulp.watch('public_html/backend/template/js/components/*.js', gulp.series('js-backend'))
@@ -153,5 +153,16 @@ gulp.task('watch', function() {
 })
 
 // Task aliases
-gulp.task('build', gulp.series('js-backend', 'js-frontend', 'less-backend', 'less-frontend', 'featherlight', 'sass-chartist', 'sass-trumbowyg'))
-gulp.task('default', gulp.series('build', 'watch'))
+gulp.task('build', gulp.series(
+  'js-backend',
+  'js-frontend',
+  'less-backend',
+  'less-frontend',
+  'less-featherlight',
+  'sass-chartist',
+  'sass-trumbowyg',  'watch',
+))
+
+gulp.task('default', gulp.series(
+  'build',
+))
