@@ -182,11 +182,27 @@
 							'phone',
 							'newsletter',
 							'notes',
-							'default_billing_address_id',
-							'default_shipping_address_id',
 						] as $field) {
 							if (isset($row[$field])) {
 								$customer->data[$field] = $row[$field];
+							}
+						}
+
+						// Set customer shipping data
+						foreach ([
+							'shipping_company',
+							'shipping_firstname',
+							'shipping_lastname',
+							'shipping_address1',
+							'shipping_address2',
+							'shipping_postcode',
+							'shipping_city',
+							'shipping_country_code',
+							'shipping_zone_code',
+							'shipping_phone',
+						] as $field) {
+							if (isset($row[$field])) {
+								$customer->data['shipping_address'][$field] = $row[$field];
 							}
 						}
 

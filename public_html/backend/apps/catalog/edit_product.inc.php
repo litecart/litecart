@@ -1167,7 +1167,7 @@
 			value = parseFloat($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>)
 			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value)
 		} else {
-			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val("")
+			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val('')
 		}
 		<?php } ?>
 
@@ -1279,7 +1279,7 @@
 			value = parseFloat($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>)
 			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value)
 		} else {
-			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val("")
+			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val('')
 		}
 		<?php } ?>
 

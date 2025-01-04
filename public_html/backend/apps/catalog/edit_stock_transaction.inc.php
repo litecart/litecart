@@ -35,7 +35,9 @@
 				'description',
 				'contents',
 			] as $field) {
-				if (isset($_POST[$field])) $stock_transaction->data[$field] = $_POST[$field];
+				if (isset($_POST[$field])) {
+					$stock_transaction->data[$field] = $_POST[$field];
+				}
 			}
 
 			$stock_transaction->save();
