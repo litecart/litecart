@@ -80,14 +80,18 @@
 		<?php echo functions::form_begin('supplier_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
 			<div class="row">
-				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_code', 'Code'); ?></label>
-					<?php echo functions::form_input_text('code', true); ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo language::translate('title_code', 'Code'); ?></label>
+						<?php echo functions::form_input_text('code', true); ?>
+					</div>
 				</div>
 
-				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_name', 'Name'); ?></label>
-					<?php echo functions::form_input_text('name', true); ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+						<?php echo functions::form_input_text('name', true); ?>
+					</div>
 				</div>
 			</div>
 
@@ -97,14 +101,18 @@
 			</div>
 
 			<div class="row">
-				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-					<?php echo functions::form_input_email('email', true, 'email', ''); ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+						<?php echo functions::form_input_email('email', true, 'email', ''); ?>
+					</div>
 				</div>
 
-				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
-					<?php echo functions::form_input_text('phone', true); ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
+						<?php echo functions::form_input_text('phone', true); ?>
+					</div>
 				</div>
 			</div>
 

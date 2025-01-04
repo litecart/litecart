@@ -87,14 +87,18 @@
 	<div class="card-body">
 
 		<div class="row">
-			<div class="form-group col-md-6">
-				<label><?php echo language::translate('title_code', 'Code'); ?></label>
-				<?php echo functions::form_input_text('code', true); ?>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label><?php echo language::translate('title_code', 'Code'); ?></label>
+					<?php echo functions::form_input_text('code', true); ?>
+				</div>
 			</div>
 
-			<div class="form-group col-md-6">
-				<label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
-				<?php echo functions::form_select('sort', $sort_options, true); ?>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
+					<?php echo functions::form_select('sort', $sort_options, true); ?>
+				</div>
 			</div>
 		</div>
 

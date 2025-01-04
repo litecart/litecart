@@ -78,28 +78,36 @@
 		<?php echo functions::form_begin('pages_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
 			<div class="row">
-				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_status', 'Status'); ?></label>
-					<?php echo functions::form_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo language::translate('title_status', 'Status'); ?></label>
+						<?php echo functions::form_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
+					</div>
 				</div>
-				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-					<?php echo functions::form_input_number('priority', true); ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+						<?php echo functions::form_input_number('priority', true); ?>
+					</div>
 				</div>
 			</div>
 
 			<div class="row">
-				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_dock', 'Dock'); ?></label>
-					<div>
-						<?php echo functions::form_checkbox('dock[]', ['menu', language::translate('text_dock_in_site_menu', 'Dock in site menu')], true); ?>
-						<?php echo functions::form_checkbox('dock[]', ['information', language::translate('text_dock_in_information', 'Dock in information')], true); ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo language::translate('title_dock', 'Dock'); ?></label>
+						<div>
+							<?php echo functions::form_checkbox('dock[]', ['menu', language::translate('text_dock_in_site_menu', 'Dock in site menu')], true); ?>
+							<?php echo functions::form_checkbox('dock[]', ['information', language::translate('text_dock_in_information', 'Dock in information')], true); ?>
+						</div>
 					</div>
 				</div>
 
-				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_parent', 'Parent'); ?></label>
-					<?php echo functions::form_select_page('parent_id', true); ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo language::translate('title_parent', 'Parent'); ?></label>
+						<?php echo functions::form_select_page('parent_id', true); ?>
+					</div>
 				</div>
 			</div>
 

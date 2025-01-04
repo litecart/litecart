@@ -86,28 +86,36 @@
 		<?php echo functions::form_begin('form_stock_transaction', 'post'); ?>
 
 			<div class="row">
-				<div class="form-group col-md-3">
-					<label><?php echo language::translate('title_name', 'Name'); ?></label>
-					<?php echo functions::form_input_text('name', true); ?>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+						<?php echo functions::form_input_text('name', true); ?>
+					</div>
 				</div>
 
 				<?php if (!empty($stock_transaction->data['id'])) { ?>
-				<div class="form-group col-md-2">
-					<label><?php echo language::translate('title_updated', 'Updated'); ?></label>
-					<div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['date_updated'])); ?></div>
+				<div class="col-md-2">
+					<div class="form-group">
+						<label><?php echo language::translate('title_updated', 'Updated'); ?></label>
+						<div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['date_updated'])); ?></div>
+					</div>
 				</div>
 
-				<div class="form-group col-md-2">
-					<label><?php echo language::translate('title_created', 'Created'); ?></label>
-					<div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['date_created'])); ?></div>
+				<div class="col-md-2">
+					<div class="form-group">
+						<label><?php echo language::translate('title_created', 'Created'); ?></label>
+						<div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['date_created'])); ?></div>
+					</div>
 				</div>
 				<?php } ?>
 			</div>
 
 			<div class="row">
-				<div class="form-group col-md-7">
-					<label><?php echo language::translate('title_description', 'Description'); ?></label>
-					<?php echo functions::form_textarea('description', true, 'style="height: 60px;"'); ?>
+				<div class="col-md-7">
+					<div class="form-group">
+						<label><?php echo language::translate('title_description', 'Description'); ?></label>
+						<?php echo functions::form_textarea('description', true, 'style="height: 60px;"'); ?>
+					</div>
 				</div>
 			</div>
 

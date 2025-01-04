@@ -120,82 +120,104 @@
 
 				<div class="col-md-8">
 					<div class="row">
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_status', 'Status'); ?></label>
-							<?php echo functions::form_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_status', 'Status'); ?></label>
+								<?php echo functions::form_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
+							</div>
 						</div>
-
-						<div class="form-group col-sm-6">
-							<label><?php echo language::translate('title_username', 'Username'); ?></label>
-							<?php echo functions::form_input_text('username', true, 'autocomplete="off" required'); ?>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-sm-6">
-							<label><?php echo language::translate('title_email', 'Email'); ?></label>
-							<?php echo functions::form_input_email('email', true, 'autocomplete="off"'); ?>
-						</div>
-
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_two_factor_authentication', 'Two-Factor Authentication'); ?></label>
-							<?php echo functions::form_toggle('two_factor_auth', 'e/d', true); ?>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_username', 'Username'); ?></label>
+								<?php echo functions::form_input_text('username', true, 'autocomplete="off" required'); ?>
+							</div>
 						</div>
 					</div>
 
 					<div class="row">
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
-							<?php echo functions::form_input_password_unmaskable('password', '', 'autocomplete="new-password"'); ?>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_email', 'Email'); ?></label>
+								<?php echo functions::form_input_email('email', true, 'autocomplete="off"'); ?>
+							</div>
 						</div>
-
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-							<?php echo functions::form_input_password_unmaskable('confirmed_password', '', 'autocomplete="new-password"'); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_two_factor_authentication', 'Two-Factor Authentication'); ?></label>
+								<?php echo functions::form_toggle('two_factor_auth', 'e/d', true); ?>
+							</div>
 						</div>
 					</div>
 
 					<div class="row">
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_valid_from', 'Valid From'); ?></label>
-							<?php echo functions::form_input_datetime('date_valid_from', true); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
+								<?php echo functions::form_input_password_unmaskable('password', '', 'autocomplete="new-password"'); ?>
+							</div>
 						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
+								<?php echo functions::form_input_password_unmaskable('confirmed_password', '', 'autocomplete="new-password"'); ?>
+							</div>
+						</div>
+					</div>
 
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_valid_to', 'Valid To'); ?></label>
-							<?php echo functions::form_input_datetime('date_valid_to', true); ?>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_valid_from', 'Valid From'); ?></label>
+								<?php echo functions::form_input_datetime('date_valid_from', true); ?>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_valid_to', 'Valid To'); ?></label>
+								<?php echo functions::form_input_datetime('date_valid_to', true); ?>
+							</div>
 						</div>
 					</div>
 
 					<?php if (!empty($administrator->data['id'])) { ?>
 					<div class="row">
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_last_ip_address', 'Last IP Address'); ?></label>
-							<?php echo functions::form_input_text('last_ip_address', true, 'readonly'); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_last_ip_address', 'Last IP Address'); ?></label>
+								<?php echo functions::form_input_text('last_ip_address', true, 'readonly'); ?>
+							</div>
 						</div>
-
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></label>
-							<?php echo functions::form_input_text('last_hostname', true, 'readonly'); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></label>
+								<?php echo functions::form_input_text('last_hostname', true, 'readonly'); ?>
+							</div>
 						</div>
 					</div>
 
 					<div class="row">
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
-							<?php echo functions::form_input_text('date_login', true, 'readonly'); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
+								<?php echo functions::form_input_text('date_login', true, 'readonly'); ?>
+							</div>
 						</div>
-
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_last_active', 'Last Active'); ?></label>
-							<?php echo functions::form_input_text('date_active', true, 'readonly'); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_last_active', 'Last Active'); ?></label>
+								<?php echo functions::form_input_text('date_active', true, 'readonly'); ?>
+							</div>
 						</div>
 					</div>
 
-					<div class="form-group col-md-6">
-						<label><?php echo language::translate('title_known_ip_addresses', 'Known IP Addresses'); ?></label>
-						<div class="form-input" disabled>
-							<?php echo str_replace(',', ', ', $administrator->data['known_ips']); ?>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_known_ip_addresses', 'Known IP Addresses'); ?></label>
+								<div class="form-input" disabled>
+									<?php echo str_replace(',', ', ', $administrator->data['known_ips']); ?>
+								</div>
+							</div>
 						</div>
 					</div>
 					<?php } ?>

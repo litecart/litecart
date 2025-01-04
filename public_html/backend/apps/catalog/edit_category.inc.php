@@ -155,14 +155,17 @@
 
 							<?php if (!empty($category->data['id'])) { ?>
 							<div class="row">
-								<div class="form-group col-md-6">
-									<label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
-									<div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_updated'])); ?></div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
+										<div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_updated'])); ?></div>
+									</div>
 								</div>
-
-								<div class="form-group col-md-6">
-									<label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
-									<div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_created'])); ?></div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
+										<div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_created'])); ?></div>
+									</div>
 								</div>
 							</div>
 							<?php } ?>
@@ -256,14 +259,17 @@
 							</div>
 
 							<div class="row">
-								<div class="form-group col-md-6">
-									<label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-									<?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true); ?>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
+										<?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true); ?>
+									</div>
 								</div>
-
-								<div class="form-group col-md-6">
-									<label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-									<?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
+										<?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
+									</div>
 								</div>
 							</div>
 

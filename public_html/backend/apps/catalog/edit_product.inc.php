@@ -249,14 +249,18 @@
 
 							<?php if (!empty($product->data['id'])) { ?>
 							<div class="row">
-								<div class="form-group col-md-6">
-									<label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
-									<div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($product->data['date_updated'])); ?></div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
+										<div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($product->data['date_updated'])); ?></div>
+									</div>
 								</div>
 
-								<div class="form-group col-md-6">
-									<label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
-									<div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($product->data['date_created'])); ?></div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
+										<div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($product->data['date_created'])); ?></div>
+									</div>
 								</div>
 							</div>
 							<?php } ?>
@@ -376,14 +380,18 @@
 									</div>
 
 									<div class="row">
-										<div class="form-group col-md-6">
-											<label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-											<?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true); ?>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
+												<?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true); ?>
+											</div>
 										</div>
 
-										<div class="form-group col-md-6">
-											<label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-											<?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
+												<?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -405,14 +413,18 @@
 				<div id="tab-prices" class="tab-pane">
 
 					<div class="row" style="max-width: 640px;">
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_recommended_price', 'Recommended Price'); ?> / MSRP</label>
-							<?php echo functions::form_input_money('recommended_price', settings::get('store_currency_code'), true); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_recommended_price', 'Recommended Price'); ?> / MSRP</label>
+								<?php echo functions::form_input_money('recommended_price', settings::get('store_currency_code'), true); ?>
+							</div>
 						</div>
 
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
-							<?php echo functions::form_select_tax_class('tax_class_id', true); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
+								<?php echo functions::form_select_tax_class('tax_class_id', true); ?>
+							</div>
 						</div>
 					</div>
 
@@ -607,22 +619,28 @@
 							<?php echo functions::form_input_hidden('customizations['.$group_id.'][id]', true) . functions::form_input_hidden('customizations['.$group_id.'][group_id]', true) . functions::form_input_hidden('customizations['.$group_id.'][name]', true); ?>
 
 							<div class="row">
-								<div class="form-group col-sm-4 col-md-2">
-									<label><?php echo language::translate('title_function', 'Function'); ?></label>
-									<?php echo functions::form_select('customizations['.$group_id.'][function]', in_array($customization['function'], ['select', 'radio', 'checkbox']) ? ['select', 'radio', 'checkbox'] : ['text', 'textarea'], true); ?>
+								<div class="col-sm-4 col-md-2">
+									<div class="form-group">
+										<label><?php echo language::translate('title_function', 'Function'); ?></label>
+										<?php echo functions::form_select('customizations['.$group_id.'][function]', in_array($customization['function'], ['select', 'radio', 'checkbox']) ? ['select', 'radio', 'checkbox'] : ['text', 'textarea'], true); ?>
+									</div>
 								</div>
 
 								<?php if (in_array($customization['function'], ['select', 'radio', 'checkbox'])) { ?>
-								<div class="form-group col-sm-4 col-md-2">
-									<label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
-									<?php echo functions::form_select('customizations['.$group_id.'][sort]', $customizations_sort_options, true); ?>
+								<div class="col-sm-4 col-md-2">
+									<div class="form-group">
+										<label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
+										<?php echo functions::form_select('customizations['.$group_id.'][sort]', $customizations_sort_options, true); ?>
+									</div>
 								</div>
 								<?php } ?>
 
-								<div class="form-group col-sm-4 col-md-2">
-									<label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>
-									<div class="checkbox">
-										<label><?php echo functions::form_checkbox('customizations['.$group_id.'][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>
+								<div class="col-sm-4 col-md-2">
+									<div class="form-group">
+										<label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>
+										<div class="checkbox">
+											<label><?php echo functions::form_checkbox('customizations['.$group_id.'][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -680,22 +698,28 @@
 						<fieldset style="max-width: 960px;">
 							<legend><?php echo language::translate('title_add_predefined_option', 'Add Predefined Option'); ?></legend>
 							<div class="row" style="margin-bottom: 0;">
-								<div class="form-group col-md-3">
-									<label><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></label>
-									<?php echo functions::form_select_attribute_group('new_predefined_customization[group_id]', ''); ?>
+								<div class="col-md-3">
+									<div class="form-group">
+										<label><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></label>
+										<?php echo functions::form_select_attribute_group('new_predefined_customization[group_id]', ''); ?>
+									</div>
 								</div>
 
-								<div class="form-group col-md-3">
-									<label><?php echo language::translate('title_value', 'Value'); ?></label>
-									<?php echo functions::form_select('new_predefined_customization[value_id]', [['','']], '', 'disabled'); ?>
+								<div class="col-md-3">
+									<div class="form-group">
+										<label><?php echo language::translate('title_value', 'Value'); ?></label>
+										<?php echo functions::form_select('new_predefined_customization[value_id]', [['','']], '', 'disabled'); ?>
+									</div>
 								</div>
 
-								<div class="form-group col-md-3">
-									<label><?php echo language::translate('title_custom_value', 'Custom Value'); ?></label>
-									<?php echo functions::form_input_text('new_predefined_customization[custom_value]', ''); ?>
+								<div class="col-md-3">
+									<div class="form-group">
+										<label><?php echo language::translate('title_custom_value', 'Custom Value'); ?></label>
+										<?php echo functions::form_input_text('new_predefined_customization[custom_value]', ''); ?>
+									</div>
 								</div>
 
-								<div class="form-group col-md-3" style="align-self: end;">
+								<div class="col-md-3" style="align-self: end;">
 									<?php echo functions::form_button('add_predefined_customization', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
 								</div>
 							</div>
@@ -706,11 +730,13 @@
 						<fieldset>
 							<legend><?php echo language::translate('title_add_user_input_option', 'Add User Input Option'); ?></legend>
 							<div class="row" style="margin-bottom: 0;">
-								<div class="form-group col-md-8">
-									<label><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></label>
-									<?php echo functions::form_select_attribute_group('new_user_input_customization[group_id]', ''); ?>
+								<div class="col-md-8">
+									<div class="form-group">
+										<label><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></label>
+										<?php echo functions::form_select_attribute_group('new_user_input_customization[group_id]', ''); ?>
+									</div>
 								</div>
-								<div class="form-group col-md-4" style="align-self: end;">
+								<div class="col-md-4" style="align-self: end;">
 									<?php echo functions::form_button('add_user_input_customization', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
 								</div>
 							</div>
@@ -721,36 +747,48 @@
 				<div id="tab-stock" class="tab-pane">
 
 					<div class="row" style="max-width: 640px;">
-						<div class="form-group col-md-3">
-							<label><?php echo language::translate('title_min_order_qty', 'Min. Order Qty'); ?></label>
-							<?php echo functions::form_input_decimal('quantity_min', true, 2, 'min="0"'); ?>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label><?php echo language::translate('title_min_order_qty', 'Min. Order Qty'); ?></label>
+								<?php echo functions::form_input_decimal('quantity_min', true, 2, 'min="0"'); ?>
+							</div>
 						</div>
 
-						<div class="form-group col-md-3">
-							<label><?php echo language::translate('title_max_order_quantity', 'Max. Order Qty'); ?></label>
-							<?php echo functions::form_input_decimal('quantity_max', true, 2, 'min="0"'); ?>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label><?php echo language::translate('title_max_order_quantity', 'Max. Order Qty'); ?></label>
+								<?php echo functions::form_input_decimal('quantity_max', true, 2, 'min="0"'); ?>
+							</div>
 						</div>
 
-						<div class="form-group col-md-3">
-							<label><?php echo language::translate('title_quantity_step', 'Quantity Step'); ?></label>
-							<?php echo functions::form_input_decimal('quantity_step', true, 2, 'min="0"'); ?>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label><?php echo language::translate('title_quantity_step', 'Quantity Step'); ?></label>
+								<?php echo functions::form_input_decimal('quantity_step', true, 2, 'min="0"'); ?>
+							</div>
 						</div>
 
-						<div class="form-group col-md-3">
-							<label><?php echo language::translate('title_quantity_unit', 'Quantity Unit'); ?></label>
-							<?php echo functions::form_select_quantity_unit('quantity_unit_id', true); ?>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label><?php echo language::translate('title_quantity_unit', 'Quantity Unit'); ?></label>
+								<?php echo functions::form_select_quantity_unit('quantity_unit_id', true); ?>
+							</div>
 						</div>
 					</div>
 
 					<div class="row" style="max-width: 640px;">
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></label>
-							<?php echo functions::form_select_delivery_status('delivery_status_id', true); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></label>
+								<?php echo functions::form_select_delivery_status('delivery_status_id', true); ?>
+							</div>
 						</div>
 
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_sold_out_status', 'Sold Out Status'); ?></label>
-							<?php echo functions::form_select_sold_out_status('sold_out_status_id', true); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_sold_out_status', 'Sold Out Status'); ?></label>
+								<?php echo functions::form_select_sold_out_status('sold_out_status_id', true); ?>
+							</div>
 						</div>
 					</div>
 
@@ -1634,18 +1672,24 @@
 				'  <h2>'+ $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"] option:selected').text() +'</h2>',
 				'  <?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
 				'  <div class="row">',
-				'    <div class="form-group col-sm-4 col-md-2">',
-				'      <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
-				'      <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][function]', ['select', 'radio', 'checkbox'], 'select')); ?>',
+				'    <div class="col-sm-4 col-md-2">',
+				'      <div class="form-group">',
+				'        <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
+				'        <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][function]', ['select', 'radio', 'checkbox'], 'select')); ?>',
+				'      </div>',
 				'    </div>',
-				'    <div class="form-group col-sm-4 col-md-2">',
-				'      <label><?php echo functions::escape_js(language::translate('title_sort_values', 'Sort Values')); ?></label>',
-				'      <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][sort]', $customizations_sort_options, 'custom')); ?>',
+				'    <div class="col-sm-4 col-md-2">',
+				'      <div class="form-group">',
+				'        <label><?php echo functions::escape_js(language::translate('title_sort_values', 'Sort Values')); ?></label>',
+				'        <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][sort]', $customizations_sort_options, 'custom')); ?>',
+				'      </div>',
 				'    </div>',
-				'    <div class="form-group col-sm-4 col-md-2">',
-				'      <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
-				'      <div class="checkbox">',
-				'        <label><?php echo functions::form_checkbox('customizations[new_group_id][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
+				'    <div class="col-sm-4 col-md-2">',
+				'      <div class="form-group">',
+				'        <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
+				'        <div class="checkbox">',
+				'          <label><?php echo functions::form_checkbox('customizations[new_group_id][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
+				'        </div>',
 				'      </div>',
 				'    </div>',
 				'  </div>',
@@ -1717,14 +1761,18 @@
 			'  <h2>'+ $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"] option:selected').text() +'</h2>',
 			'  <?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
 			'  <div class="row">',
-			'    <div class="form-group col-sm-4 col-md-2">',
-			'      <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
-			'      <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][function]', ['text', 'textarea'], 'text')); ?>',
+			'    <div class="col-sm-4 col-md-2">',
+			'      <div class="form-group">',
+			'        <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
+			'        <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][function]', ['text', 'textarea'], 'text')); ?>',
+			'      </div>',
 			'    </div>',
-			'    <div class="form-group col-sm-4 col-md-2">',
-			'      <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
-			'      <div class="checkbox">',
-			'        <label><?php echo functions::form_checkbox('customizations[new_group_id][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
+			'    <div class="col-sm-4 col-md-2">',
+			'      <div class="form-group">',
+			'        <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
+			'        <div class="checkbox">',
+			'          <label><?php echo functions::form_checkbox('customizations[new_group_id][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
+			'        </div>',
 			'      </div>',
 			'    </div>',
 			'  </div>',

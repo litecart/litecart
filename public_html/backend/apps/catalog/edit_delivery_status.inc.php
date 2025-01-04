@@ -75,15 +75,21 @@
 		<?php echo functions::form_begin('delivery_status_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
 			<div class="row">
-				<div class="form-group col-md-8">
-					<label><?php echo language::translate('title_name', 'Name'); ?></label>
-					<?php foreach (array_keys(language::$languages) as $language_code)  echo functions::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
+				<div class="col-md-8">
+					<div class="form-group">
+						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+						<?php foreach (array_keys(language::$languages) as $language_code)  echo functions::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
+					</div>
 				</div>
 			</div>
 
-			<div class="form-group">
-				<label><?php echo language::translate('title_description', 'Description'); ?></label>
-				<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 50px;"'); ?>
+			<div class="row">
+				<div class="col-md-8">
+					<div class="form-group">
+						<label><?php echo language::translate('title_description', 'Description'); ?></label>
+						<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 50px;"'); ?>
+					</div>
+				</div>
 			</div>
 
 			<div class="card-action">

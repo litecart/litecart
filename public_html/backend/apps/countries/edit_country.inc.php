@@ -111,38 +111,50 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="row">
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_status', 'Status'); ?></label>
-							<?php echo functions::form_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1'); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_status', 'Status'); ?></label>
+								<?php echo functions::form_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1'); ?>
+							</div>
 						</div>
 
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_number', 'Number'); ?> (ISO 3166-1 numeric) <a href="https://en.wikipedia.org/wiki/ISO_3166-1_numeric" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
-							<?php echo functions::form_input_text('iso_code_1', true, 'required pattern="[0-9]{3}"'); ?>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-2) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
-							<?php echo functions::form_input_text('iso_code_2', true, 'required pattern="[A-Z]{2}"'); ?>
-						</div>
-
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-3) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
-							<?php echo functions::form_input_text('iso_code_3', true, 'required pattern="[A-Z]{3}"'); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_number', 'Number'); ?> (ISO 3166-1 numeric) <a href="https://en.wikipedia.org/wiki/ISO_3166-1_numeric" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+								<?php echo functions::form_input_text('iso_code_1', true, 'required pattern="[0-9]{3}"'); ?>
+							</div>
 						</div>
 					</div>
 
 					<div class="row">
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_name', 'Name'); ?></label>
-							<?php echo functions::form_input_text('name', true); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-2) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+								<?php echo functions::form_input_text('iso_code_2', true, 'required pattern="[A-Z]{2}"'); ?>
+							</div>
 						</div>
 
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_domestic_name', 'Domestic Name'); ?></label>
-							<?php echo functions::form_input_text('domestic_name', true); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-3) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+								<?php echo functions::form_input_text('iso_code_3', true, 'required pattern="[A-Z]{3}"'); ?>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_name', 'Name'); ?></label>
+								<?php echo functions::form_input_text('name', true); ?>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_domestic_name', 'Domestic Name'); ?></label>
+								<?php echo functions::form_input_text('domestic_name', true); ?>
+							</div>
 						</div>
 					</div>
 
@@ -152,31 +164,41 @@
 					</div>
 
 					<div class="row">
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_tax_id_format', 'Tax ID Format'); ?> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
-							<?php echo functions::form_input_text('tax_id_format', true); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_tax_id_format', 'Tax ID Format'); ?> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+								<?php echo functions::form_input_text('tax_id_format', true); ?>
+							</div>
 						</div>
 
-						<div class="form-group col-md-6">
-							<label><?php echo language::translate('title_postcode_format', 'Postcode Format'); ?> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
-							<?php echo functions::form_input_text('postcode_format', true); ?>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label><?php echo language::translate('title_postcode_format', 'Postcode Format'); ?> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+								<?php echo functions::form_input_text('postcode_format', true); ?>
+							</div>
 						</div>
 					</div>
 
 					<div class="row">
-						<div class="form-group col-md-4">
-							<label><?php echo language::translate('title_language_code', 'Language Code'); ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
-							<?php echo functions::form_input_text('language_code', true); ?>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label><?php echo language::translate('title_language_code', 'Language Code'); ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+								<?php echo functions::form_input_text('language_code', true); ?>
+							</div>
 						</div>
 
-						<div class="form-group col-md-4">
-							<label><?php echo language::translate('title_currency_code', 'Currency Code'); ?> <a href="https://en.wikipedia.org/wiki/List_of_countries_and_capitals_with_currency_and_language" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
-							<?php echo functions::form_input_text('currency_code', true); ?>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label><?php echo language::translate('title_currency_code', 'Currency Code'); ?> <a href="https://en.wikipedia.org/wiki/List_of_countries_and_capitals_with_currency_and_language" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+								<?php echo functions::form_input_text('currency_code', true); ?>
+							</div>
 						</div>
 
-						<div class="form-group col-md-4">
-							<label><?php echo language::translate('title_phone_country_code', 'Phone Country Code'); ?> <a href="https://en.wikipedia.org/wiki/List_of_country_calling_codes" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
-							<?php echo functions::form_input_text('phone_code', true); ?>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label><?php echo language::translate('title_phone_country_code', 'Phone Country Code'); ?> <a href="https://en.wikipedia.org/wiki/List_of_country_calling_codes" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+								<?php echo functions::form_input_text('phone_code', true); ?>
+							</div>
 						</div>
 					</div>
 				</div>

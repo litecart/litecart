@@ -95,30 +95,38 @@
 						<div class="card-body">
 
 							<div class="row">
-								<div class="form-group col-4">
-									<small><?php echo language::translate('title_language', 'Language'); ?></small>
-									<div style="line-height: 2;"><?php echo language::$selected['name']; ?></div>
+								<div class="col-4">
+									<div class="form-group">
+										<small><?php echo language::translate('title_language', 'Language'); ?></small>
+										<div style="line-height: 2;"><?php echo language::$selected['name']; ?></div>
+									</div>
 								</div>
 
-								<div class="form-group col-4">
-									<small><?php echo language::translate('title_currency', 'Currency'); ?></small>
-									<div style="line-height: 2;"><?php echo currency::$selected['code']; ?></div>
+								<div class="col-4">
+									<div class="form-group">
+										<small><?php echo language::translate('title_currency', 'Currency'); ?></small>
+										<div style="line-height: 2;"><?php echo currency::$selected['code']; ?></div>
+									</div>
 								</div>
 
-								<div class="form-group col-4">
+								<div class="col-4">
 									<a class="btn btn-default change" href="<?php echo document::href_ilink('regional_settings', ['redirect_url' => document::link()]); ?>" data-toggle="lightbox" data-seamless="true"><?php echo language::translate('title_change', 'Change'); ?></a>
 								</div>
 							</div>
 
 							<div class="row">
-								<div class="form-group col-8">
-									<small><?php echo language::translate('title_country', 'Country'); ?></small>
-									<div style="line-height: 2;"><?php echo functions::form_select_country('country_code', true); ?></div>
+								<div class="col-8">
+									<div class="form-group">
+										<small><?php echo language::translate('title_country', 'Country'); ?></small>
+										<div style="line-height: 2;"><?php echo functions::form_select_country('country_code', true); ?></div>
+									</div>
 								</div>
 
-								<div class="form-group col-4">
-									<small><?php echo language::translate('title_postcode', 'Postal Code'); ?></small>
-									<div style="line-height: 2;"><?php echo functions::form_input_text('postcode'); ?></div>
+								<div class="col-4">
+									<div class="form-group">
+										<small><?php echo language::translate('title_postcode', 'Postal Code'); ?></small>
+										<div style="line-height: 2;"><?php echo functions::form_input_text('postcode'); ?></div>
+									</div>
 								</div>
 							</div>
 

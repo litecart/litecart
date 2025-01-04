@@ -16,14 +16,18 @@
 					<?php echo functions::form_begin('newsletter_subscribe_form', 'post', document::ilink('newsletter')); ?>
 
 						<div class="row">
-							<div class="form-group col-md-6">
-								<label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-								<?php echo functions::form_input_text('firstname', true); ?>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
+									<?php echo functions::form_input_text('firstname', true); ?>
+								</div>
 							</div>
 
-							<div class="form-group col-md-6">
-								<label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-								<?php echo functions::form_input_text('lastname', true); ?>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
+									<?php echo functions::form_input_text('lastname', true); ?>
+								</div>
 							</div>
 						</div>
 
@@ -34,9 +38,11 @@
 
 						<?php if (settings::get('captcha_enabled')) { ?>
 						<div class="row">
-							<div class="form-group col-xs-6">
-								<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-								<?php echo functions::form_captcha('newsletter_subscribe', 'required'); ?>
+							<div class="col-xs-6">
+								<div class="form-group">
+									<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
+									<?php echo functions::form_captcha('newsletter_subscribe', 'required'); ?>
+								</div>
 							</div>
 						</div>
 						<?php } ?>

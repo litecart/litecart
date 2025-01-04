@@ -70,19 +70,25 @@
 		<div class="card-body">
 
 			<div class="row" style="max-width: 640px;">
-				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_code', 'Code'); ?></label>
-					<?php echo functions::form_input_text('code', true); ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo language::translate('title_code', 'Code'); ?></label>
+						<?php echo functions::form_input_text('code', true); ?>
+					</div>
 				</div>
 
-				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_name', 'Name'); ?></label>
-					<?php echo functions::form_input_text('name', true); ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+						<?php echo functions::form_input_text('name', true); ?>
+					</div>
 				</div>
 
-				<div class="form-group col-md-12">
-					<label><?php echo language::translate('title_description', 'Description'); ?></label>
-					<?php echo functions::form_input_text('description', true); ?>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label><?php echo language::translate('title_description', 'Description'); ?></label>
+						<?php echo functions::form_input_text('description', true); ?>
+					</div>
 				</div>
 			</div>
 

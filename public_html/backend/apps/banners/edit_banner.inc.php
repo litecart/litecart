@@ -103,14 +103,18 @@ table th:last-child {
 		<?php echo functions::form_begin('banner_form', 'post', '', true, 'style="max-width: 640px;"'); ?>
 
 			<div class="row">
-				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_status', 'Status'); ?></label>
-					<?php echo functions::form_toggle('status', 'e/d', true); ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo language::translate('title_status', 'Status'); ?></label>
+						<?php echo functions::form_toggle('status', 'e/d', true); ?>
+					</div>
 				</div>
 
-				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_name', 'Name'); ?></label>
-					<?php echo functions::form_input_text('name', true); ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+						<?php echo functions::form_input_text('name', true); ?>
+					</div>
 				</div>
 			</div>
 
@@ -146,14 +150,18 @@ table th:last-child {
 			</div>
 
 			<div class="row">
-				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></label>
-					<?php echo functions::form_input_datetime('date_valid_from', true); ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></label>
+						<?php echo functions::form_input_datetime('date_valid_from', true); ?>
+					</div>
 				</div>
 
-				<div class="form-group col-md-6">
-					<label><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></label>
-					<?php echo functions::form_input_datetime('date_valid_to', true); ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></label>
+						<?php echo functions::form_input_datetime('date_valid_to', true); ?>
+					</div>
 				</div>
 			</div>
 

@@ -11,31 +11,49 @@
 
 					<?php echo functions::form_begin('contact_form', 'post'); ?>
 
-						<div class="form-group">
-							<label><?php echo language::translate('title_name', 'Name'); ?></label>
-							<?php echo functions::form_input_text('name', true, 'required'); ?>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label><?php echo language::translate('title_name', 'Name'); ?></label>
+									<?php echo functions::form_input_text('name', true, 'required'); ?>
+								</div>
+							</div>
 						</div>
 
-						<div class="form-group">
-							<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-							<?php echo functions::form_input_email('email', true, 'required'); ?>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+									<?php echo functions::form_input_email('email', true, 'required'); ?>
+								</div>
+							</div>
 						</div>
 
-						<div class="form-group">
-							<label><?php echo language::translate('title_subject', 'Subject'); ?></label>
-							<?php echo functions::form_input_text('subject', true, 'required'); ?>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label><?php echo language::translate('title_subject', 'Subject'); ?></label>
+									<?php echo functions::form_input_text('subject', true, 'required'); ?>
+								</div>
+							</div>
 						</div>
 
-						<div class="form-group">
-							<label><?php echo language::translate('title_message', 'Message'); ?></label>
-							<?php echo functions::form_textarea('message', true, 'required style="height: 250px;"'); ?>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label><?php echo language::translate('title_message', 'Message'); ?></label>
+									<?php echo functions::form_textarea('message', true, 'required style="height: 250px;"'); ?>
+								</div>
+							</div>
 						</div>
 
 						<?php if (settings::get('captcha_enabled')) { ?>
 						<div class="row">
-							<div class="form-group col-md-6">
-								<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-								<?php echo functions::form_captcha('contact_us'); ?>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
+									<?php echo functions::form_captcha('contact_us'); ?>
+								</div>
 							</div>
 						</div>
 						<?php } ?>

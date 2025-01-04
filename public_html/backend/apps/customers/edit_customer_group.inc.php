@@ -69,14 +69,18 @@
 		<?php echo functions::form_begin('customer_group_form', 'post', null, false, 'style="max-width: 640px;"'); ?>
 
 			<div class="row">
-				<div class="form-group col-md-4">
-					<label><?php echo language::translate('title_type', 'Type'); ?></label>
-					<?php echo functions::form_select('type', $type_options, true); ?>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label><?php echo language::translate('title_type', 'Type'); ?></label>
+						<?php echo functions::form_select('type', $type_options, true); ?>
+					</div>
 				</div>
 
-				<div class="form-group col-md-8">
-					<label><?php echo language::translate('title_name', 'Name'); ?></label>
-					<?php echo functions::form_input_text('name', true); ?>
+				<div class="col-md-8">
+					<div class="form-group">
+						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+						<?php echo functions::form_input_text('name', true); ?>
+					</div>
 				</div>
 			</div>
 

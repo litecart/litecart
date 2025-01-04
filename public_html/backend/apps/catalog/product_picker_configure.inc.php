@@ -86,28 +86,38 @@
 
 				<div class="col-md-8">
 
-					<div class="form-group">
-						<label><?php echo language::translate('title_name', 'Name'); ?></label>
-						<?php echo functions::form_input_text('name', true, (!isset($_GET['collect']) || !in_array('name', $_GET['collect'])) ? 'readonly' : ''); ?>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label><?php echo language::translate('title_name', 'Name'); ?></label>
+								<?php echo functions::form_input_text('name', true, (!isset($_GET['collect']) || !in_array('name', $_GET['collect'])) ? 'readonly' : ''); ?>
+							</div>
+						</div>
 					</div>
 
 					<div class="row">
 						<?php if (isset($_GET['collect']) && in_array('quantity', $_GET['collect'])) { ?>
-						<div class="form-group col-md-4">
-							<label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
-							<?php echo functions::form_input_decimal('quantity', 1); ?>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
+								<?php echo functions::form_input_decimal('quantity', 1); ?>
+							</div>
 						</div>
 						<?php } ?>
 
 						<?php if (isset($_GET['collect']) && in_array('price', $_GET['collect'])) { ?>
-						<div class="form-group col-md-4">
-							<label><?php echo language::translate('title_price', 'Price'); ?></label>
-							<?php echo functions::form_input_money('price', $_GET['currency_code'], true); ?>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label><?php echo language::translate('title_price', 'Price'); ?></label>
+								<?php echo functions::form_input_money('price', $_GET['currency_code'], true); ?>
+							</div>
 						</div>
 
-						<div class="form-group col-md-4">
-							<label><?php echo language::translate('title_tax', 'Tax'); ?></label>
-							<?php echo functions::form_input_money('tax', $_GET['currency_code'], true); ?>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label><?php echo language::translate('title_tax', 'Tax'); ?></label>
+								<?php echo functions::form_input_money('tax', $_GET['currency_code'], true); ?>
+							</div>
 						</div>
 						<?php } ?>
 					</div>
