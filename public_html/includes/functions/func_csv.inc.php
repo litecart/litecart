@@ -34,6 +34,9 @@
       $output .= implode($delimiter, $row) . $eol; // Don't use fputcsv(); as the EOL and escape char cannot be customized
     }
 
+  // Remove last empty line
+    $output = rtrim($output, $eol);
+
   // Convert charset
     $output = language::convert_characters($output, language::$selected['charset'], $charset);
 
