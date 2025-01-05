@@ -94,6 +94,7 @@
         bccs = '". database::input(json_encode($this->data['bccs'], JSON_UNESCAPED_SLASHES)) ."',
         subject = '". database::input($this->data['subject']) ."',
         multiparts = '". database::input(json_encode($this->data['multiparts'], JSON_UNESCAPED_SLASHES), true) ."',
+        error = ". (!empty($this->data['error']) ? "'". database::input($this->data['error']) ."'" : "null") .",
         date_scheduled = ". (!empty($this->data['date_scheduled']) ? "'". database::input($this->data['date_scheduled']) ."'" : "null") .",
         date_sent = ". (!empty($this->data['date_sent']) ? "'". database::input($this->data['date_sent']) ."'" : "null") .",
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
@@ -265,82 +266,79 @@
 
       if (!settings::get('email_status')) return;
 
-      $this->save();
+      try {
 
-      if ($this->data['status'] == 'sent') {
-        trigger_error('Email already marked as sent', E_USER_WARNING);
-        return false;
-      }
-
-      if (!$this->data['multiparts']) {
-        trigger_error('Cannot send email with an empty body', E_USER_WARNING);
-        $this->data['status'] = 'error';
         $this->save();
-        return false;
-      }
 
-    // Prepare headers
-      $headers = [
-        'Date' => date('r'),
-        'From' => $this->format_contact(['name' => settings::get('store_name'), 'email' => settings::get('store_email')]),
-        'Sender' => $this->format_contact($this->data['sender']),
-        'Reply-To' => $this->format_contact($this->data['sender']),
-        'Return-Path' => settings::get('store_email'),
-        'MIME-Version' => '1.0',
-        'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
-        'X-Sender' => $this->format_contact($this->data['sender']),
-      ];
-
-    // Add "To" header
-      if (!empty($this->data['recipients'])) {
-        $tos = [];
-        foreach ($this->data['recipients'] as $to) {
-          $tos[] = $this->format_contact($to);
-        }
-        $headers['To'] = implode(', ', $tos);
-      }
-
-    // Add "Cc" header
-      if (!empty($this->data['ccs'])) {
-        $ccs = [];
-        foreach ($this->data['ccs'] as $cc) {
-          $ccs[] = $this->format_contact($cc);
-        }
-        $headers['Cc'] = implode(', ', $ccs);
-      }
-
-    // SMTP does not need a header for BCCs, we will add that for PHP mail() later
-
-    // Prepare subject
-      $headers['Subject'] = mb_encode_mimeheader($this->data['subject']);
-
-      if (count($this->data['multiparts']) > 1) {
-        $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
-        $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
-      }
-
-      $body = '';
-
-    // Prepare several multiparts
-      if (count($this->data['multiparts']) > 1) {
-        foreach ($this->data['multiparts'] as $multipart) {
-          $body .= '--'. $multipart_boundary_string . "\r\n"
-                 . implode("\r\n", array_map(function($v, $k) { return $k.':'.$v; }, $multipart['headers'], array_keys($multipart['headers']))) . "\r\n\r\n"
-                 . $multipart['body'] . "\r\n\r\n";
+        if ($this->data['status'] == 'sent') {
+          trigger_error('Email already marked as sent', E_USER_WARNING);
+          return false;
         }
 
-        $body .= '--'. $multipart_boundary_string .'--';
+        if (!$this->data['multiparts']) {
+          throw new Exception('Cannot send email with an empty body');
+        }
 
-    // Prepare one multipart only
-      } else {
-        $headers = array_merge($headers, $this->data['multiparts'][0]['headers']);
-        $body .= $this->data['multiparts'][0]['body'];
-      }
+      // Prepare headers
+        $headers = [
+          'Date' => date('r'),
+          'From' => $this->format_contact(['name' => settings::get('store_name'), 'email' => settings::get('store_email')]),
+          'Sender' => $this->format_contact($this->data['sender']),
+          'Reply-To' => $this->format_contact($this->data['sender']),
+          'Return-Path' => settings::get('store_email'),
+          'MIME-Version' => '1.0',
+          'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
+          'X-Sender' => $this->format_contact($this->data['sender']),
+        ];
 
-    // Deliver via SMTP
-      if (settings::get('smtp_status')) {
+      // Add "To" header
+        if (!empty($this->data['recipients'])) {
+          $tos = [];
+          foreach ($this->data['recipients'] as $to) {
+            $tos[] = $this->format_contact($to);
+          }
+          $headers['To'] = implode(', ', $tos);
+        }
 
-        try {
+      // Add "Cc" header
+        if (!empty($this->data['ccs'])) {
+          $ccs = [];
+          foreach ($this->data['ccs'] as $cc) {
+            $ccs[] = $this->format_contact($cc);
+          }
+          $headers['Cc'] = implode(', ', $ccs);
+        }
+
+      // SMTP does not need a header for BCCs, we will add that for PHP mail() later
+
+      // Prepare subject
+        $headers['Subject'] = mb_encode_mimeheader($this->data['subject']);
+
+        if (count($this->data['multiparts']) > 1) {
+          $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
+          $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
+        }
+
+        $body = '';
+
+      // Prepare several multiparts
+        if (count($this->data['multiparts']) > 1) {
+          foreach ($this->data['multiparts'] as $multipart) {
+            $body .= '--'. $multipart_boundary_string . "\r\n"
+                  . implode("\r\n", array_map(function($v, $k) { return $k.':'.$v; }, $multipart['headers'], array_keys($multipart['headers']))) . "\r\n\r\n"
+                  . $multipart['body'] . "\r\n\r\n";
+          }
+
+          $body .= '--'. $multipart_boundary_string .'--';
+
+      // Prepare one multipart only
+        } else {
+          $headers = array_merge($headers, $this->data['multiparts'][0]['headers']);
+          $body .= $this->data['multiparts'][0]['body'];
+        }
+
+      // Deliver via SMTP
+        if (settings::get('smtp_status')) {
 
           $smtp = new wrap_smtp(
             settings::get('smtp_host'),
@@ -372,51 +370,56 @@
 
           $result = $smtp->send(settings::get('store_email'), $recipients, $data);
 
-        } catch(Exception $e) {
-          trigger_error('Failed sending email "'. $this->data['subject'] .'": '. $e->getMessage(), E_USER_WARNING);
-        }
+          $smtp->disconnect();
 
-        $smtp->disconnect();
+      // Deliver via PHP mail()
+        } else {
 
-    // Deliver via PHP mail()
-      } else {
+          unset($headers['To']);
+          unset($headers['Subject']);
 
-        unset($headers['To']);
-        unset($headers['Subject']);
-
-      // PHP mail() needs a header for BCCs
-        if (!empty($this->data['bccs'])) {
-          $bccs = [];
-          foreach ($this->data['bccs'] as $bcc) {
-            $bccs[] = $this->format_contact($bcc);
+        // PHP mail() needs a header for BCCs
+          if (!empty($this->data['bccs'])) {
+            $bccs = [];
+            foreach ($this->data['bccs'] as $bcc) {
+              $bccs[] = $this->format_contact($bcc);
+            }
+            $headers['Bcc'] = implode(', ', $bccs);
           }
-          $headers['Bcc'] = implode(', ', $bccs);
+
+          $recipients = [];
+          foreach ($this->data['recipients'] as $recipient) {
+            $recipients[] = $this->format_contact($recipient);
+          }
+          $recipients = implode(', ', $recipients);
+
+          $subject = mb_encode_mimeheader($this->data['subject']);
+
+          array_walk($headers, function (&$v, $k) { $v = "$k: $v"; });
+          $headers = implode("\r\n", $headers);
+
+          if (!$result = mail($recipients, $subject, $body, $headers)) {
+            trigger_error('Failed sending email "'. $this->data['subject'] .'"', E_USER_WARNING);
+          }
         }
 
-        $recipients = [];
-        foreach ($this->data['recipients'] as $recipient) {
-          $recipients[] = $this->format_contact($recipient);
+        if (!empty($result)) {
+          $this->data['status'] = 'sent';
+          $this->data['date_sent'] = date('Y-m-d H:i:s');
+        } else {
+          $this->data['status'] = 'error';
         }
-        $recipients = implode(', ', $recipients);
 
-        $subject = mb_encode_mimeheader($this->data['subject']);
+        $this->save();
 
-        array_walk($headers, function (&$v, $k) { $v = "$k: $v"; });
-        $headers = implode("\r\n", $headers);
+      } catch (Exception $e) {
 
-        if (!$result = mail($recipients, $subject, $body, $headers)) {
-          trigger_error('Failed sending email "'. $this->data['subject'] .'"', E_USER_WARNING);
-        }
-      }
+        trigger_error('Failed sending email "'. $this->data['subject'] .'": '. $e->getMessage(), E_USER_WARNING);
 
-      if (!empty($result)) {
-        $this->data['status'] = 'sent';
-        $this->data['date_sent'] = date('Y-m-d H:i:s');
-      } else {
         $this->data['status'] = 'error';
+        $this->data['error'] = $e->getMessage();
+        $this->save();
       }
-
-      $this->save();
 
       return !empty($result) ? true : false;
     }
