@@ -90,7 +90,7 @@
         '%country_code' => $this->iso_code_2,
         '%country_code_3' => $this->iso_code_3,
         '%country_name' => $this->name,
-        '%country_comestic_name' => $this->domestic_name,
+        '%country_domestic_name' => $this->domestic_name ? $this->domestic_name : $this->name,
         '%zone_code' => !empty($address['zone_code']) ? $address['zone_code'] : '',
         '%zone_name' => (!empty($address['zone_code']) && !empty($this->zones[$address['zone_code']])) ? $this->zones[$address['zone_code']]['name'] : '',
       ];
