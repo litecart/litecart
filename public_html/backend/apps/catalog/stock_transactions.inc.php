@@ -1,4 +1,5 @@
 <?php
+
 	if (!isset($_GET['page'])) $_GET['page'] = 1;
 
 	// Table Rows, Total Number of Rows, Total Number of Pages

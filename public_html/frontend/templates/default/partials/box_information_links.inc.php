@@ -1,4 +1,5 @@
 <?php
+
 	$draw_page = function($page, $page_path, $depth=1) use (&$draw_page) {
 
 		$output = [

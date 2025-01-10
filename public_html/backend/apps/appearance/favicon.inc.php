@@ -32,8 +32,9 @@
 			$image->setBackgroundColor(new ImagickPixel('transparent'));
 			$image->readImage($_FILES['image']['tmp_name']);
 
-			$geo = $image->getImageGeometry();
-			if (256 / $geo['width'] * $geo['height'] > 256) {
+			$geometry = $image->getImageGeometry();
+
+			if (256 / $geometry['width'] * $geometry['height'] > 256) {
 				$image->scaleImage(256, 0);
 			} else {
 				$image->scaleImage(0, 256);

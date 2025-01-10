@@ -13,6 +13,7 @@
 			}
 
 			if ($_POST['template'] != settings::get('template')) {
+
 				database::query(
 					"update ". DB_TABLE_PREFIX ."settings
 					set `value` = '". database::input($_POST['template']) ."',

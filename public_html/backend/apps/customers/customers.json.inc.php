@@ -35,7 +35,7 @@
 
 	header('Link: ' . implode(', ', $pagination));
 
-	ob_end_clean();
+	ob_clean();
 	header('Content-Type: application/json');
 	echo json_encode($customers, JSON_UNESCAPED_SLASHES);
 	exit;

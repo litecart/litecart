@@ -1,4 +1,5 @@
 <?php
+
 	document::$layout = 'ajax';
 
 	try {

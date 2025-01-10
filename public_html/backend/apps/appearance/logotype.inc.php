@@ -19,17 +19,17 @@
 				throw new Exception(language::translate('error_invalid_image', 'The image is invalid'));
 			}
 
-			$filename = 'logotype.svg';
+			$file = 'storage://images/' . $filename;
 
-			if (is_file('storage://images/' . $filename)) {
-				unlink('storage://images/' . $filename);
+			if (is_file($file)) {
+				unlink($file);
 			}
 
-			functions::image_delete_cache('storage://images/' . $filename);
+			functions::image_delete_cache($file);
 
 			$image->resample(512, 512, 'FIT_ONLY_BIGGER');
 
-			if (!$image->save('storage://images/' . $filename)) {
+			if (!$image->save($file)) {
 				throw new Exception(language::translate('error_failed_uploading_image', 'The uploaded image failed saving to disk. Make sure permissions are set.'));
 			}
 

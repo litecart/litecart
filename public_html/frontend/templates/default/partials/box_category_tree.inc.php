@@ -1,4 +1,5 @@
 <?php
+
 	$draw_branch = function($category) use (&$draw_branch, &$trail) {
 
 		$output = [

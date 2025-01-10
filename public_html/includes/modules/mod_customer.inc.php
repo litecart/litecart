@@ -49,7 +49,9 @@
 
 				$result = $module->validate($fields);
 
-				if (!empty($result['error'])) return $result;
+				if (!empty($result['error'])) {
+					return $result;
+				}
 
 				if (is_array($result)) {
 					$fields = array_replace($fields, array_intersect_key($result, array_flip($fields)));

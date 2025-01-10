@@ -19,7 +19,7 @@
 		header('Content-Length: ' . filesize($file));
 		header('Expires: 0');
 
-		ob_end_clean();
+		ob_clean();
 		readfile(FS_DIR_STORAGE . 'vmods/' . basename($file['vmod']));
 		exit;
 

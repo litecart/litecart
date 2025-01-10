@@ -38,7 +38,7 @@
 			include_once 'app://frontend/pages/checkout/shipping.inc.php';
 			include_once 'app://frontend/pages/checkout/payment.inc.php';
 			include_once 'app://frontend/pages/checkout/summary.inc.php';
-			ob_end_clean();
+			ob_clean();
 
 			if (!empty(notices::$data['errors'])) {
 				header('Location: '. document::ilink('checkout/index'));

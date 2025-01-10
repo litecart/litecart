@@ -6,6 +6,7 @@
 	 */
 
 	class database {
+
 		private static $_links = [];
 		public static $stats = [
 			'duration' => 0,
@@ -111,6 +112,7 @@
 			}
 
 			$errors = false;
+
 			foreach (array_keys($links) as $link) {
 				if (!is_object($link)) {
 					$errors = true;

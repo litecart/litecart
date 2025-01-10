@@ -6,7 +6,7 @@
 		$category = new ent_category();
 	}
 
-	if (empty($_POST)) {
+	if (!$_POST) {
 		$_POST = $category->data;
 
 		if (empty($category->data['id']) && !empty($_GET['parent_id'])) {
@@ -70,7 +70,9 @@
 				}
 			}
 
-			if (!empty($_POST['delete_image'])) $category->delete_image();
+			if (!empty($_POST['delete_image'])) {
+				$category->delete_image();
+			}
 
 			if (!empty($_FILES['image']['tmp_name'])) {
 				$category->save_image($_FILES['image']['tmp_name']);

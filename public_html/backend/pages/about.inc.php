@@ -135,6 +135,9 @@
 
 			return ($a['last_occurrence'] > $b['last_occurrence']) ? -1 : 1;
 		});
+
+		unset($entries);
+		ini_set('memory_limit', $iniatial_memory_limit);
 	}
 
 	// Render view

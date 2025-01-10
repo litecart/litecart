@@ -24,6 +24,7 @@
 			}
 
 			if (empty($banner->data['id'])) {
+
 				if (empty($_POST['html']) && empty($_FILES['image'])) {
 					throw new Exception(language::translate('error_must_upload_image_or_enter_html', 'You must upload an image or enter HTML'));
 				}

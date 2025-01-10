@@ -1,5 +1,7 @@
 <?php
+
 	document::$layout = 'ajax';
+
 ?>
 <style>
 #modal-customer-picker tbody > tr {

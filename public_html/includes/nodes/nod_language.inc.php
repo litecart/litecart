@@ -77,7 +77,9 @@
 
 		public static function set($code='') {
 
-			if (empty($code)) $code = self::identify();
+			if (!$code) {
+				$code = self::identify();
+			}
 
 			if (!isset(self::$languages[$code])) {
 				trigger_error('Cannot set unsupported language ('. $code .')', E_USER_WARNING);

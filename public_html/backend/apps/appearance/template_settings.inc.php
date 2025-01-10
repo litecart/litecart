@@ -9,7 +9,9 @@
 	// Get template settings structure
 	$settings = include 'app://frontend/templates/' . settings::get('template') .'/config.inc.php';
 
-	if (empty($settings)) $settings = [];
+	if (!$settings) {
+		$settings = [];
+	}
 
 	// Insert template settings
 	$saved_settings = json_decode(settings::get('template_settings'), true);
@@ -42,7 +44,7 @@
 		}
 	}
 
-	if (empty($_POST) && isset($_GET['action']) && $_GET['action'] == 'edit') {
+	if (!$_POST && isset($_GET['action']) && $_GET['action'] == 'edit') {
 		foreach ($settings as $setting) {
 			$_POST['settings'][$setting['key']] = $setting['value'];
 		}

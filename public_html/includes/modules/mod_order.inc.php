@@ -10,11 +10,15 @@
 
 			$actions = [];
 
-			if (empty($this->modules)) return;
+			if (!$this->modules) {
+				return;
+			}
 
 			foreach ($this->modules as $module) {
 
-				if (!method_exists($module, 'actions')) continue;
+				if (!method_exists($module, 'actions')) {
+					continue;
+				}
 
 				$result = $module->actions();
 
@@ -43,7 +47,9 @@
 
 		public function validate($order) {
 
-			if (empty($this->modules)) return;
+			if (!$this->modules) {
+				return;
+			}
 
 			foreach ($this->modules as $module_id => $module) {
 				if (method_exists($this->modules[$module_id], 'validate')) {
@@ -54,7 +60,9 @@
 
 		public function success($order) {
 
-			if (empty($this->modules)) return;
+			if (!$this->modules) {
+				return;
+			}
 
 			$output = '';
 

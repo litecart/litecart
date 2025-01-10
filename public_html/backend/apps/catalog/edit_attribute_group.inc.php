@@ -19,7 +19,10 @@
 	if (isset($_POST['save'])) {
 
 		try {
-			if (empty($_POST['values'])) $_POST['values'] = [];
+
+			if (empty($_POST['values'])) {
+				$_POST['values'] = [];
+			}
 
 			foreach ($_POST['values'] as $value) {
 				foreach ($value['name'] as $name) {

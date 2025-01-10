@@ -1,4 +1,5 @@
 <?php
+
 	$_GET['vmod'] = basename($_GET['vmod']);
 
 	try {

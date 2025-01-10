@@ -115,7 +115,7 @@
 			<?php } ?>
 
 			<li>
-				<a href="<?php echo document::href_ilink('f:'); ?>" target="_blank" title="<?php echo language::translate('title_frontend', 'Frontend'); ?>">
+				<a href="<?php echo document::href_ilink('f:'); ?>" title="<?php echo language::translate('title_frontend', 'Frontend'); ?>">
 					<?php echo functions::draw_fonticon('icon-display'); ?> <?php echo language::translate('title_frontend', 'Frontend'); ?>
 				</a>
 			</li>

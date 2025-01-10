@@ -1,5 +1,8 @@
 <?php
-	if (empty($_GET['module_id'])) die('Unknown module id');
+
+	if (empty($_GET['module_id'])) {
+		die('Unknown module id');
+	}
 
 	$module_id = basename($_GET['module_id']);
 
@@ -85,7 +88,7 @@
 		}
 	}
 
-	if (empty($_POST) && !empty($module->data['id'])) {
+	if (!$_POST && !empty($module->data['id'])) {
 		notices::add('notices', language::translate('text_make_changes_necessary_to_install', 'Make any changes necessary to continue installation'));
 	}
 

@@ -1,4 +1,5 @@
 <?php
+
 	$_GET['vmod'] = basename($_GET['vmod']);
 
 	breadcrumbs::add(language::translate('title_vMods', 'vMods'), document::href_ilink(__APP__.'/vmods'));

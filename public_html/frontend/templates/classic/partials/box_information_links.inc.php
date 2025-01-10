@@ -1,4 +1,5 @@
 <?php
+
 	$draw_page = function($page, $page_path, $depth) use (&$draw_page) {
 		echo '<li class="page" data-id="'. (int)$page['id'] .'">' . PHP_EOL
 			 . '  <a class="nav-link'. (!empty($page['opened']) ? ' opened' : '') . (!empty($page['active']) ? ' active' : '') .'" href="'. functions::escape_attr($page['link']) .'">'. $page['title'] .'</a>' . PHP_EOL;

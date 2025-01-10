@@ -1,5 +1,8 @@
 <?php
-	if (!isset($_GET['page'])) $_GET['page'] = 1;
+
+	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+		$_GET['page'] = 1;
+	}
 
 	document::$title[] = language::translate('title_banners', 'Banners');
 
@@ -13,7 +16,7 @@
 				throw new Exception(language::translate('error_must_select_banners', 'You must select banners'));
 			}
 
-			foreach (array_keys($_POST['banners']) as $banner_id) {
+			foreach ($_POST['banners'] as $banner_id) {
 
 				$banner = new ent_banner($banner_id);
 				$banner->data['status'] = !empty($_POST['enable']) ? 1 : 0;

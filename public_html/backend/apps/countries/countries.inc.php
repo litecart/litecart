@@ -1,4 +1,5 @@
 <?php
+
 	document::$title[] = language::translate('title_countries', 'Countries');
 
 	breadcrumbs::add(language::translate('title_countries', 'Countries'), document::ilink());

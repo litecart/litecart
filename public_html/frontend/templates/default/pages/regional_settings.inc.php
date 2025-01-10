@@ -1,4 +1,5 @@
 <?php
+
 	$currency_options = ['' => '-- '. language::translate('title_select', 'Select') .' --'];
 	foreach ($currencies as $currency) {
 		$currency_options[$currency['code']] = $currency['name'];
