@@ -53,7 +53,6 @@
 				'language_code' => language::$selected['code'],
 				'incoterm' => settings::get('default_incoterm'),
 				'items' => [],
-				'order_total' => [],
 				'comments' => [],
 				'subtotal' => 0,
 				'subtotal_tax' => 0,
@@ -136,11 +135,6 @@
 				return $item;
 			});
 
-			$this->data['order_total'] = database::query(
-				"select * from ". DB_TABLE_PREFIX ."orders_totals
-				where order_id = ". (int)$id ."
-				order by priority;"
-			)->fetch_all();
 
 			$this->data['comments'] = database::query(
 				"select oc.*, a.username as author_username from ". DB_TABLE_PREFIX ."orders_comments oc
@@ -392,44 +386,6 @@
 				}
 			};
 
-			// Delete order total rows
-			database::query(
-				"delete from ". DB_TABLE_PREFIX ."orders_totals
-				where order_id = ". (int)$this->data['id'] ."
-				and id not in ('". implode("', '", array_column($this->data['order_total'], 'id')) ."');"
-			);
-
-			// Insert/update order total
-			$i = 0;
-			foreach ($this->data['order_total'] as $key => $row) {
-
-				if (empty($row['id'])) {
-
-					database::query(
-						"insert into ". DB_TABLE_PREFIX ."orders_totals
-						(order_id)
-						values (". (int)$this->data['id'] .");"
-					);
-
-					$this->data['order_total'][$key]['id'] = $row['id'] = database::insert_id();
-				}
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."orders_totals
-					set title = '". database::input($row['title']) ."',
-					module_id = '". database::input($row['module_id']) ."',
-					value = ". (float)$row['amount'] .",
-					tax_class_id = ". (int)$item['tax_class_id'] .",
-					tax_rate = ". ($item['tax_rate'] ? (float)$row['tax_rate'] : "null") .",
-					tax = ". (float)$row['tax'] .",
-					calculate = ". (!empty($row['calculate']) ? 1 : 0) .",
-					priority = ". ++$i ."
-					where id = ". (int)$row['id'] ."
-					and order_id = ". (int)$this->data['id'] ."
-					limit 1;"
-				);
-			}
-
 			// Delete comments
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."orders_comments
@@ -535,12 +491,6 @@
 				$this->data['sum'] += ($item['price'] - (float)$item['discount']) * (float)$item['quantity'];
 				$this->data['sum_tax'] += ((float)$item['tax'] - (float)$item['discount_tax']) * (float)$item['quantity'];
 				$this->data['weight_total'] += (float)weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * abs($item['quantity']);
-			}
-
-			foreach ($this->data['order_total'] as $row) {
-				if (empty($row['calculate'])) continue;
-				$this->data['total'] += (float)$row['amount'] + (float)$row['tax'];
-				$this->data['total_tax'] += (float)$row['tax'];
 			}
 		}
 
@@ -993,10 +943,9 @@
 			$order_modules->delete($this->previous);
 
 			database::query(
-				"delete o, oi, ot, oc
+				"delete o, oi, oc
 				from ". DB_TABLE_PREFIX ."orders o
 				left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.order_id = o.id)
-				left join ". DB_TABLE_PREFIX ."orders_totals ot on (ot.order_id = o.id)
 				left join ". DB_TABLE_PREFIX ."orders_comments oc on (oc.order_id = o.id)
 				where o.id = ". (int)$this->data['id'] .";"
 			);

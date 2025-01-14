@@ -62,8 +62,6 @@ DROP TABLE IF EXISTS `lc_order_statuses_info`;
 -- -----
 DROP TABLE IF EXISTS `lc_orders_tax`;
 -- -----
-DROP TABLE IF EXISTS `lc_orders_totals`;
--- -----
 DROP TABLE IF EXISTS `lc_pages`;
 -- -----
 DROP TABLE IF EXISTS `lc_pages_info`;

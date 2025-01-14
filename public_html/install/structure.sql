@@ -572,21 +572,6 @@ CREATE TABLE `lc_orders_items` (
 	CONSTRAINT `order_item_to_stock_option` FOREIGN KEY (`stock_option_id`) REFERENCES `lc_products_stock_options` (`id`) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
-CREATE TABLE `lc_orders_totals` (
-	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`order_id` INT(10) UNSIGNED NOT NULL,
-	`module_id` VARCHAR(32) NOT NULL DEFAULT '',
-	`title` VARCHAR(128) NOT NULL DEFAULT '',
-	`amount` FLOAT(10,4) NOT NULL DEFAULT '0.0000',
-	`tax` FLOAT(10,4) NOT NULL DEFAULT '0.0000',
-	`tax_rate` FLOAT(6,4) UNSIGNED NOT NULL DEFAULT '0.0000',
-	`calculate` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-	`priority` INT(11) NOT NULL DEFAULT '0',
-	PRIMARY KEY (`id`),
-	KEY `order_id` (`order_id`),
-	CONSTRAINT `order_total_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
--- -----
 CREATE TABLE `lc_order_statuses` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`state` ENUM('','created','on_hold','ready','delayed','processing','completed','dispatched','in_transit','delivered','returning','returned','cancelled','fraud','other') NOT NULL DEFAULT '',

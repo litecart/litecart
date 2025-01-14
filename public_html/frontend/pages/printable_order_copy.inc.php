@@ -56,7 +56,7 @@
 		$_page->snippets['text_direction'] = !empty(language::$languages[$order->data['language_code']]['direction']) ? language::$languages[$order->data['language_code']]['direction'] : 'ltr';
 		$_page->snippets['order'] = $order->data;
 		$_page->snippets['action_menu'] = true;
-		$_page->snippets['max_first_page_items'] = 10;
+		$_page->snippets['items_per_page'] = 20;
 		echo $_page->render();
 
 		language::set($session_language);

@@ -23,11 +23,6 @@
 			$_POST['items'][$key]['sum_tax'] = $_POST['items'][$key]['sum_tax'] / $_POST['currency_value'];
 		}
 
-		foreach (array_keys($_POST['order_total']) as $key) {
-			$_POST['order_total'][$key]['value'] = $_POST['order_total'][$key]['value'] / $_POST['currency_value'];
-			$_POST['order_total'][$key]['tax'] = $_POST['order_total'][$key]['tax'] / $_POST['currency_value'];
-		}
-
 		$_POST['subtotal'] = $_POST['subtotal'] / $_POST['currency_value'];
 		$_POST['subtotal_tax'] = $_POST['subtotal_tax'] / $_POST['currency_value'];
 
@@ -162,10 +157,6 @@
 				$_POST['items'] = [];
 			}
 
-			if (empty($_POST['order_total'])) {
-				$_POST['order_total'] = [];
-			}
-
 			if (empty($_POST['comments'])) {
 				$_POST['comments'] = [];
 			}
@@ -251,7 +242,6 @@
 				'currency_code',
 				'currency_value',
 				'items',
-				'order_total',
 				'order_status_id',
 				'shipping_tracking_id',
 				'shipping_tracking_url',

@@ -38,6 +38,20 @@ h1 {
 .page .footer .row {
 	margin-bottom: 0;
 }
+#invoice-total {
+	gap: 4mm;
+}
+#invoice-total .summary {
+	text-align: end;
+	border: 1px solid #000;
+	border-radius: var(--border-radius);
+	padding: 2mm 4mm;
+	margin: 0;
+}
+#grand-total {
+	font-weight: bold;
+	border-width: 2px !important;
+}
 </style>
 
 <section class="page" data-size="A4" dir="<?php echo $text_direction; ?>">
@@ -111,7 +125,32 @@ h1 {
 			</thead>
 
 			<tbody>
-				<?php foreach (array_slice($order['items'], 0, $max_first_page_items) as $item) { ?>
+				<?php $i=0; foreach ($order['items'] as $item) { ?>
+				<?php if (++$i % $items_per_page == 0) { ?>
+			</tbody>
+		</table>
+	</main>
+</section>
+
+<section class="page" data-size="A4" dir="<?php echo $text_direction; ?>">
+	<header>
+		<?php /* No header */ ?>
+	</header>
+	<main class="content">
+		<table class="items table table-striped data-table">
+			<thead>
+				<tr>
+					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
+					<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
+					<th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
+					<th class="text-end"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+					<th class="text-end"><?php echo language::translate('title_tax', 'Tax'); ?> </th>
+					<th class="text-end"><?php echo language::translate('title_sum', 'Sum'); ?></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<?php } ?>
 				<tr>
 					<td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
 					<td style="white-space: normal;"><?php echo $item['name']; ?></td>
@@ -124,42 +163,28 @@ h1 {
 			</tbody>
 		</table>
 
-		<?php if (count($order['items']) <= $max_first_page_items) { ?>
-		<table class="order-total table data-table">
-			<tbody>
-				<tr>
-					<td class="text-end"><strong><?php echo language::translate('title_subtotal', 'Subtotal'); ?>:</strong></td>
-					<td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $order['subtotal'] + $order['subtotal_tax'] : $order['subtotal'], false, $order['currency_code'], $order['currency_value']); ?></td>
-				</tr>
+		<div id="invoice-total" class="flex flex-columns">
 
-				<?php foreach ($order['order_total'] as $row) { ?>
-				<?php if (!empty($order['display_prices_including_tax'])) { ?>
-				<tr>
-					<td class="text-end"><?php echo $row['title']; ?>:</td>
-					<td class="text-end"><?php echo currency::format($row['amount'] + $row['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
-				</tr>
-				<?php } else { ?>
-				<tr>
-					<td class="text-end"><?php echo $row['title']; ?>:</td>
-					<td class="text-end"><?php echo currency::format($row['amount'], false, $order['currency_code'], $order['currency_value']); ?></td>
-				</tr>
-				<?php } ?>
-				<?php } ?>
+			<div id="subtotal" class="summary">
+				<div class="title"><?php echo language::translate('title_subtotal', 'Subtotal'); ?></div>
+				<div class="amount"><?php echo currency::format($_POST['discount'] ?? 0, true, $order['currency_code'], $order['currency_value']); ?></div>
+			</div>
 
-				<?php if (!empty($order['total_tax']) && $order['total_tax'] != 0) { ?>
-				<tr>
-					<td class="text-end"><?php echo !empty($order['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
-					<td class="text-end"><?php echo currency::format($order['total_tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
-				</tr>
-				<?php } ?>
+			<div id="total-discount" class="summary">
+				<div class="title"><?php echo language::translate('title_total_discount', 'Total Discount'); ?></div>
+				<div class="amount"><?php echo currency::format($_POST['discount'] ?? 0, true, $order['currency_code'], $order['currency_value']); ?></div>
+			</div>
 
-				<tr>
-					<td class="text-end"><strong><?php echo language::translate('title_grand_total', 'Grand Total'); ?>:</strong></td>
-					<td class="text-end"><strong><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
-				</tr>
-			</tbody>
-		</table>
-		<?php } ?>
+			<div id="total-tax" class="summary">
+				<div class="title"><?php echo language::translate('title_total_tax', 'Total Tax'); ?></div>
+				<div class="amount"><?php echo currency::format($_POST['total_tax'] ?? 0, true, $order['currency_code'], $order['currency_value']); ?></div>
+			</div>
+
+			<div id="grand-total" class="summary">
+				<div class="title"><?php echo language::translate('title_grand_total', 'Grand Total'); ?></div>
+				<div class="amount"><?php echo currency::format_html($_POST['total'] ?? 0, true, $order['currency_code'], $order['currency_value']); ?></div>
+			</div>
+		</div>
 	</main>
 
 	<footer class="footer">

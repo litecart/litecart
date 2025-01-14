@@ -23,11 +23,6 @@
 			$return_doc = 'order';
 			break;
 
-		case (preg_match('#^ot_#', $module_id)):
-			$type = 'order_total';
-			$return_doc = 'order_total';
-			break;
-
 		case (preg_match('#^pm_#', $module_id)):
 			$type = 'payment';
 			$return_doc = 'payment';

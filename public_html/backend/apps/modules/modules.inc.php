@@ -26,14 +26,6 @@
 			$edit_doc = 'edit_order';
 			break;
 
-		case 'order_total':
-			$title = language::translate('title_order_total_modules', 'Order Total Modules');
-			$files = functions::file_search('app://includes/modules/order_total/*.inc.php');
-			$mod_class = new mod_order_total();
-			$type = 'order_total';
-			$edit_doc = 'edit_order_total';
-			break;
-
 		case 'payment':
 			$title = language::translate('title_payment_modules', 'Payment Modules');
 			$files = functions::file_search('app://includes/modules/payment/*.inc.php');

@@ -188,12 +188,6 @@ hr {
 
 		<table class="order-total table data-table">
 			<tbody>
-				<?php foreach ($order['order_total'] as $row) { ?>
-				<tr>
-					<td class="text-end"><?php echo $row['title']; ?>:</td>
-					<td class="text-end"><?php echo currency::format($order['display_prices_including_tax'] ? ($row['amount'] + $row['tax']) : $row['amount'], false, $order['currency_code'], $order['currency_value']); ?></td>
-				</tr>
-				<?php } ?>
 
 				<?php if ($order['total_tax'] != 0) { ?>
 				<tr>

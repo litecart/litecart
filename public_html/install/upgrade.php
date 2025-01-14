@@ -1,4 +1,5 @@
 <?php
+
 	// Automatic upgrade: upgrade.php?upgrade=true&redirect={url}
 
 	@set_time_limit(900);
@@ -612,4 +613,5 @@ input[name="development_type"]:checked + div {
 	<button class="btn btn-success btn-block" type="submit" name="upgrade" value="true" onclick="if(!confirm('Warning! The procedure cannot be undone.')) return false;" style="font-size: 1.5em; padding: 0.5em;">Upgrade To <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></button>
 </form>
 <?php
+
 	require('includes/footer.inc.php');

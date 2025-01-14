@@ -5,7 +5,6 @@
 		public $previous;
 		public $shipping;
 		public $payment;
-		public $order_total;
 
 		public function __construct($id=null) {
 
@@ -61,7 +60,6 @@
 				'incoterm' => settings::get('default_incoterm'),
 				'items' => [],
 				'num_items' => 0,
-				'order_total' => [],
 				'subtotal' => 0,
 				'subtotal_tax' => 0,
 				'total' => 0,
@@ -435,24 +433,6 @@
 				$this->data['subtotal_tax'] += $item['tax'] * $item['quantity'];
 				$this->data['total'] += $item['price'] * $item['quantity'];
 				$this->data['total_tax'] += $item['tax'] * $item['quantity'];
-			}
-
-			$this->data['order_total'] = [];
-			foreach ($this->order_total->process() as $row) {
-
-				$this->data['order_total'][] = [
-					'id' => null,
-					'module_id' => $row['module_id'],
-					'title' =>  $row['title'],
-					'amount' => $row['amount'],
-					'tax' => $row['tax'],
-					'calculate' => !empty($row['calculate']) ? 1 : 0,
-				];
-
-				if (!empty($row['calculate'])) {
-					$this->data['total'] += $item['price'] * $item['quantity'];
-					$this->data['total_tax'] += $item['tax'] * $item['quantity'];
-				}
 			}
 		}
 

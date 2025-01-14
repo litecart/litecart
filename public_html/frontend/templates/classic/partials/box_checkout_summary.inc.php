@@ -17,12 +17,6 @@
 
 	<table class="table table-striped table-bordered data-table">
 		<tbody>
-			<?php foreach ($order_total as $row) { ?>
-			<tr>
-				<td class="text-end" style="white-space: normal;"><strong><?php echo $row['title']; ?>:</strong></td>
-				<td class="text-end"><?php echo !empty(customer::$data['display_prices_including_tax']) ? currency::format($row['value'] + $row['tax'], false) : currency::format($row['value'], false); ?></td>
-			</tr>
-			<?php } ?>
 
 			<?php if ($tax_total) { ?>
 			<tr>

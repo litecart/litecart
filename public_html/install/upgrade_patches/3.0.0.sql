@@ -643,6 +643,12 @@ FROM `lc_customers`
 WHERE different_shipping_address = 1
 ORDER BY id ASC;
 -- -----
+INSERT INTO `lc_order_items`
+(order_id, sku, name, quantity, price, tax_class_id, tax_rate)
+SELECT order_id, module_id, `title`, 1, amount, tax_class_id, tax_rate from `lc_orders_totals`
+WHERE calculate
+ORDER BY order_id, priority;
+-- -----
 INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES
 ('social_media', 'Social Media', 'Social media related settings.', 30);
 -- -----
@@ -729,6 +735,19 @@ UPDATE `lc_orders` o
 LEFT JOIN `lc_orders_totals` ot ON (ot.order_id = o.id AND ot.module_id = 'ot_subtotal')
 SET o.subtotal = ot.`amount`,
 o.subtotal_tax = ot.`tax`;
+-- -----
+UPDATE `lc_orders` o
+LEFT JOIN `lc_orders_totals` ot ON (ot.order_id = o.id AND ot.module_id = 'ot_shipping_fee')
+SET o.shipping_option_fee = ot.`amount`,
+o.shipping_option_tax = ot.`tax`;
+-- -----
+UPDATE `lc_orders` o
+LEFT JOIN `lc_orders_totals` ot ON (ot.order_id = o.id AND ot.module_id = 'ot_payment_fee')
+SET o.payment_option_fee = ot.`amount`,
+o.payment_option_tax = ot.`tax`;
+-- -----
+DELETE FROM `lc_orders_totals`
+WHERE `module_id` IN ('ot_subtotal', 'ot_shipping_fee', 'ot_payment_fee');
 -- -----
 UPDATE `lc_orders` o
 LEFT JOIN (
@@ -896,9 +915,6 @@ DROP COLUMN `list_style`;
 ALTER TABLE `lc_orders_items`
 DROP COLUMN `tax`;
 -- -----
-DELETE FROM `lc_orders_totals`
-WHERE module_id = 'ot_subtotal';
--- -----
 DELETE FROM `lc_settings`
 WHERE `key` IN ('auto_decimals', 'cache_system_breakpoint', 'development_mode', 'jobs_interval', 'jobs_last_push', 'round_amounts', 'store_template_admin', 'store_template_admin_settings');
 -- -----
@@ -971,9 +987,6 @@ WHERE order_id NOT IN (SELECT id from `lc_orders`);
 UPDATE `lc_orders_items`
 SET product_id = NULL
 WHERE product_id NOT IN (SELECT id from `lc_products`);
--- -----
-DELETE FROM `lc_orders_totals`
-WHERE order_id NOT IN (SELECT id from `lc_orders`);
 -- -----
 DELETE FROM `lc_order_statuses_info`
 WHERE order_status_id NOT IN (SELECT id from `lc_order_statuses`)
@@ -1074,9 +1087,6 @@ ADD CONSTRAINT `order_item_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_ord
 ADD CONSTRAINT `order_item_to_products` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE SET NULL,
 ADD CONSTRAINT `order_item_to_stock_option` FOREIGN KEY (`stock_option_id`) REFERENCES `lc_products_stock_options` (`id`) ON UPDATE CASCADE ON DELETE SET NULL;
 -- -----
-ALTER TABLE `lc_orders_totals`
-ADD CONSTRAINT `order_total_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
 ALTER TABLE `lc_order_statuses_info`
 ADD CONSTRAINT `order_status_info_to_order` FOREIGN KEY (`order_status_id`) REFERENCES `lc_order_statuses` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
 ADD CONSTRAINT `order_status_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
@@ -1138,5 +1148,9 @@ ADD CONSTRAINT `zone_entry_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `
 ADD CONSTRAINT `zone_entry_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE CASCADE ON DELETE CASCADE,
 ADD CONSTRAINT `zone_entry_to_zone` FOREIGN KEY (`zone_code`) REFERENCES `lc_zones` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
 -- -----
+DROP TABLE `lc_orders_totals`;
+-- -----
 DROP TABLE `lc_slides`;
+-- -----
 DROP TABLE `lc_slides_info`;
+-- -----
