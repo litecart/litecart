@@ -97,6 +97,47 @@
 			notices::add('errors', $e->getMessage());
 		}
 	}
+
+	// Prefillable Countries
+	if (empty($country->data['id'])) {
+
+		// Get all existing countries
+		$existing_countries = database::query(
+			"select iso_code_2 from ". DB_TABLE_PREFIX ."countries;"
+		)->fetch_all('iso_code_2');
+
+		// Get countries from i18n repository
+		$client = new http_client();
+		$result = $client->call('GET', 'https://raw.githubusercontent.com/litecart/i18n/master/countries.csv');
+		$available_countries = functions::csv_decode($result);
+
+		// Filter already added
+		$available_countries = array_filter($available_countries, function($a) use ($existing_countries) {
+			return !in_array($a['iso_code_2'], $existing_countries);
+		});
+
+		// Sort by code
+		uasort($available_countries, function($a, $b){
+			return ($a['iso_code_2'] < $b['iso_code_2']) ? -1 : 1;
+		});
+
+		if ($available_countries) {
+
+			$prefillable_country_options = [['', '-- '. language::translate('title_select', 'Select') .' --']];
+
+			// Append to array of options
+			foreach ($available_countries as $available_country) {
+				$prefillable_country_options[] = [
+					$available_country['iso_code_2'],
+					$available_country['iso_code_2'] .' &ndash; '. $available_country['name'],
+					implode(' ', array_map(function($k, $v){
+						return 'data-'. str_replace('_', '-', $k) .'="'. functions::escape_attr($v) .'"';
+					}, array_keys($available_country), array_values($available_country))),
+				];
+			}
+		}
+	}
+
 ?>
 <div class="card card-app">
 	<div class="card-header">
@@ -110,6 +151,14 @@
 
 			<div class="grid">
 				<div class="col-lg-6">
+
+					<?php if (!empty($prefillable_country_options)) { ?>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('text_prefill_from_the_web', 'Prefill from the web'); ?></div>
+						<?php echo functions::form_select('prefill', $prefillable_country_options, ''); ?>
+					</label>
+					<?php } ?>
+
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
@@ -286,4 +335,21 @@
 		e.preventDefault()
 		$(this).closest('tr').remove()
 	})
+
+	<?php if (!empty($available_countries)) { ?>
+	$('select[name="prefill"]').on('change', function() {
+
+		$.each($(this).find('option:selected').data(), function(key, value) {
+
+			var field_name = key.replace(/([A-Z])/, '_$1').toLowerCase()
+
+			$(':input[name="'+field_name+'"]').not('[type="checkbox"]').not('[type="radio"]').val(value)
+			$('input[name="'+field_name+'"][type="checkbox"][value="'+value+'"], input[name="'+field_name+'"][type="radio"][value="'+value+'"]').prop('checked', true)
+
+			if (key == 'direction') {
+				$('input[name="'+field_name+'"]:checked').parent('.btn').addClass('active').siblings().removeClass('active')
+			}
+		})
+	})
+	<?php } ?>
 </script>
