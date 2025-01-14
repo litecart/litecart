@@ -5,78 +5,78 @@
  * @author T. Almroth
  */
 
-	// Stylesheet Loader
-	$.loadStylesheet = function(url, options, callback, fallback) {
+// Stylesheet Loader
+$.loadStylesheet = function(url, options, callback, fallback) {
 
-		options = $.extend(options || {}, {
-			rel: 'stylesheet',
-			href: url,
-			onload: callback,
-			onerror: fallback
-		})
+	options = $.extend(options || {}, {
+		rel: 'stylesheet',
+		href: url,
+		onload: callback,
+		onerror: fallback
+	})
 
-		$('<link>', options).appendTo('head')
+	$('<link>', options).appendTo('head')
+}
+
+// JavaScript Loader
+$.loadScript = function(url, options) {
+
+	options = $.extend(options || {}, {
+		method: 'GET',
+		dataType: 'script',
+		cache: true
+	})
+
+	return jQuery.ajax(url, options)
+}
+
+// Escape HTML
+function escapeHTML(string) {
+
+	let entityMap = {
+		'&': '&amp;',
+		'<': '&lt;',
+		'>': '&gt;',
+		'"': '&quot;',
+		"'": '&#39;',
+		'/': '&#x2F;',
+		'`': '&#x60;',
 	}
 
-	// JavaScript Loader
-	$.loadScript = function(url, options) {
+	return String(string).replace(/[&<>"'\/]/g, function (s) {
+		return entityMap[s]
+	})
+}
 
-		options = $.extend(options || {}, {
-			method: 'GET',
-			dataType: 'script',
-			cache: true
-		})
+// Escape HTML
+function escapeAttr(string) {
+	return escapeHTML(string).replace(/\r\n?|\n/g, '\\n')
+}
 
-		return jQuery.ajax(url, options)
-	}
+// Money Formatting
+Number.prototype.toMoney = function() {
+	var n = this,
+		c = _env.session.currency.decimals,
+		d = _env.session.language.decimal_point,
+		t = _env.session.language.thousands_separator,
+		p = _env.session.currency.prefix,
+		x = _env.session.currency.suffix,
+		u = _env.session.currency.code,
+		s = n < 0 ? '-' : '',
+		i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
+		f = n - i,
+		j = (j = i.length) > 3 ? j % 3 : 0
 
-	// Escape HTML
-	function escapeHTML(string) {
+	return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x
+}
 
-		let entityMap = {
-			'&': '&amp;',
-			'<': '&lt;',
-			'>': '&gt;',
-			'"': '&quot;',
-			"'": '&#39;',
-			'/': '&#x2F;',
-			'`': '&#x60;',
-		}
-
-		return String(string).replace(/[&<>"'\/]/g, function (s) {
-			return entityMap[s]
-		})
-	}
-
-	// Escape HTML
-	function escapeAttr(string) {
-		return escapeHTML(string).replace(/\r\n?|\n/g, '\\n')
-	}
-
-	// Money Formatting
-	Number.prototype.toMoney = function() {
-		var n = this,
-			c = _env.session.currency.decimals,
-			d = _env.session.language.decimal_point,
-			t = _env.session.language.thousands_separator,
-			p = _env.session.currency.prefix,
-			x = _env.session.currency.suffix,
-			u = _env.session.currency.code,
-			s = n < 0 ? '-' : '',
-			i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
-			f = n - i,
-			j = (j = i.length) > 3 ? j % 3 : 0
-
-		return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x
-	}
-
-	// Keep-alive
-	let keepAlive = setInterval(function() {
-		$.get({
-			url: window._env.platform.path + 'ajax/cart.json',
-			cache: false
-		})
-	}, 60e3)
+// Keep-alive
+let keepAlive = setInterval(function() {
+	$.get({
+		url: window._env.platform.path + 'ajax/cart.json',
+		cache: false
+	})
+}, 60e3)
 
 
 
@@ -268,74 +268,74 @@
 }()
 
 
-	// Dragmove
+// Dragmove
 
-	$('style').first().append([
-		'.dragmove-horizontal {',
-		'  cursor: e-resize;',
-		'  user-select: none;',
-		'}',
-		'.dragmove-vertical {',
-		'  cursor: n-resize;',
-		'  user-select: none;',
-		'}',
-		'.dragmove-vertical.grabbed,',
-		'.dragmove-horizontal.grabbed	{',
-		'  user-input: unset;',
-		'  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);',
-		'}',
-	].join('\n'))
+$('style').first().append([
+	'.dragmove-horizontal {',
+	'  cursor: e-resize;',
+	'  user-select: none;',
+	'}',
+	'.dragmove-vertical {',
+	'  cursor: n-resize;',
+	'  user-select: none;',
+	'}',
+	'.dragmove-vertical.grabbed,',
+	'.dragmove-horizontal.grabbed	{',
+	'  user-input: unset;',
+	'  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);',
+	'}',
+].join('\n'))
 
-	$('body').on('click', '.dragmove', function(e) {
-		e.preventDefault()
-		return false
-	})
+$('body').on('click', '.dragmove', function(e) {
+	e.preventDefault()
+	return false
+})
 
-	$('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e) {
+$('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e) {
 
-		let $item = $(e.target).closest('.dragmove'),
-			sy = e.pageY,
-			drag
+	let $item = $(e.target).closest('.dragmove'),
+		sy = e.pageY,
+		drag
 
-		if ($(e.target).is('.dragmove')) {
-			$item = $(e.target)
-		}
+	if ($(e.target).is('.dragmove')) {
+		$item = $(e.target)
+	}
 
-		let index = $item.index()
+	let index = $item.index()
 
-		$item.addClass('grabbed')
-		$item.closest('tbody').css('user-input', 'unset')
+	$item.addClass('grabbed')
+	$item.closest('tbody').css('user-input', 'unset')
 
-		function move(e) {
+	function move(e) {
 
-			if (!drag && Math.abs(e.pageY - sy) < 10) return
-			drag = true
+		if (!drag && Math.abs(e.pageY - sy) < 10) return
+		drag = true
 
-			$item.siblings().each(function() {
+		$item.siblings().each(function() {
 
-				let s = $(this), i = s.index(), y = s.offset().top
+			let s = $(this), i = s.index(), y = s.offset().top
 
-				if (e.pageY >= y && e.pageY < y + s.outerHeight()) {
-					if (i < $item.index()) s.insertAfter($item)
-					else s.insertBefore($item)
-					return false
-				}
-			})
-		}
-
-		function up(e) {
-
-			if (drag && index != $item.index()) {
-				drag = false
+			if (e.pageY >= y && e.pageY < y + s.outerHeight()) {
+				if (i < $item.index()) s.insertAfter($item)
+				else s.insertBefore($item)
+				return false
 			}
+		})
+	}
 
-			$(document).off('mousemove', move).off('mouseup', up)
-			$item.removeClass('grabbed')
-			$item.closest('tbody').css('user-input', '')
+	function up(e) {
+
+		if (drag && index != $item.index()) {
+			drag = false
 		}
 
-		$(document).mousemove(move).mouseup(up)
-	})
+		$(document).off('mousemove', move).off('mouseup', up)
+		$item.removeClass('grabbed')
+		$item.closest('tbody').css('user-input', '')
+	}
+
+	$(document).mousemove(move).mouseup(up)
+})
 
 
 // Dropdown
@@ -353,164 +353,167 @@ $('.dropdown').on('click', 'a', function(e) {
 })
 
 
-	// Form required asterix
-	$(':input[required]').closest('.form-group').addClass('required')
+// Required input asterix
+$(':input[required]').closest('.form-group').addClass('required')
 
-	// Dropdown select
-	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e) {
-		let $dropdown = $(this).closest('.dropdown')
-		let $input = $dropdown.find(':input:checked')
+// Dropdown Select
+$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e) {
 
-		if (!$dropdown.find(':input:checked').length) return
+	let $dropdown = $(this).closest('.dropdown')
+	let $input = $dropdown.find(':input:checked')
 
-		$dropdown.find('li.active').removeClass('active')
+	if (!$dropdown.find(':input:checked').length) return
 
-		if ($input.data('title')) {
-			$dropdown.find('.form-select').text( $input.data('title') )
-		} else if ($input.closest('.option').find('.title').length) {
-			$dropdown.find('.form-select').text( $input.closest('.option').find('.title').text() )
-		} else {
-			$dropdown.find('.form-select').text( $input.parent().text() )
-		}
+	$dropdown.find('li.active').removeClass('active')
 
-		$input.closest('li').addClass('active')
-		$dropdown.trigger('click.bs.dropdown')
+	if ($input.data('title')) {
+		$dropdown.find('.form-select').text( $input.data('title') )
+	} else if ($input.closest('.option').find('.title').length) {
+		$dropdown.find('.form-select').text( $input.closest('.option').find('.title').text() )
+	} else {
+		$dropdown.find('.form-select').text( $input.parent().text() )
+	}
 
-	}).trigger('input')
+	$input.closest('li').addClass('active')
+	$dropdown.trigger('click.bs.dropdown')
 
-	// Input Number Decimals
-	$('body').on('change', 'input[type="number"][data-decimals]', function() {
-		 var value = parseFloat($(this).val()),
-			 decimals = $(this).data('decimals')
-		if (decimals != '') {
-			$(this).val(value.toFixed(decimals))
-		}
-	})
+}).trigger('input')
 
-
-	$('textarea[data-toggle="csv"] + table').on('click', '.remove', function(e) {
-		e.preventDefault()
-		var parent = $(this).closest('tbody')
-		$(this).closest('tr').remove()
-		$(parent).trigger('keyup')
-	})
-
-	$('textarea[data-toggle="csv"] + table .add-row').on('click', function(e) {
-		e.preventDefault()
-		var n = $(this).closest('table').find('thead th:not(:last-child)').length
-		$(this).closest('table').find('tbody').append(
-			'<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class="remove" href="#"><i class="fa fa-times" style="color: #d33;"></i></a></td>' +'</tr>'
-		).trigger('keyup')
-	})
-
-	$('textarea[data-toggle="csv"] + table .add-column').on('click', function(e) {
-		e.preventDefault()
-		var table = $(this).closest('table')
-		var title = prompt("Column Title")
-		if (!title) return
-		$(table).find('thead tr th:last-child:last-child').before('<th>'+ title +'</th>')
-		$(table).find('tbody tr td:last-child:last-child').before('<td contenteditable></td>')
-		$(table).find('tfoot tr td').attr('colspan', $(this).closest('table').find('tfoot tr td').attr('colspan') + 1)
-		$(this).trigger('keyup')
-	})
-
-	$('textarea[data-toggle="csv"] + table').on('keyup', function(e) {
-		var csv = $(this).find('thead tr, tbody tr').map(function (i, row) {
-				return $(row).find('th:not(:last-child),td:not(:last-child)').map(function (j, col) {
-					var text = $(col).text()
-					if (/('|,)/.test(text)) {
-						return '"'+ text.replace(/"/g, '""') +'"'
-					} else {
-						return text
-					}
-				}).get().join(',')
-			}).get().join('\r\n')
-		$(this).next('textarea').val(csv)
-	})
+// Input Number Decimals
+$('body').on('change', 'input[type="number"][data-decimals]', function() {
+		var value = parseFloat($(this).val()),
+			decimals = $(this).data('decimals')
+	if (decimals != '') {
+		$(this).val(value.toFixed(decimals))
+	}
+})
 
 
-	/* Form Input Tags */
+// CSV Input
 
-	$('input[data-toggle="tags"]').each(function() {
+$('textarea[data-toggle="csv"] + table').on('click', '.remove', function(e) {
+	e.preventDefault()
+	var parent = $(this).closest('tbody')
+	$(this).closest('tr').remove()
+	$(parent).trigger('keyup')
+})
 
-		let $originalInput = $(this)
+$('textarea[data-toggle="csv"] + table .add-row').on('click', function(e) {
+	e.preventDefault()
+	var n = $(this).closest('table').find('thead th:not(:last-child)').length
+	$(this).closest('table').find('tbody').append(
+		'<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class="remove" href="#"><i class="fa fa-times" style="color: #d33;"></i></a></td>' +'</tr>'
+	).trigger('keyup')
+})
 
-		let $tagField = $(
-			'<div class="form-input">\
-				<ul class="tokens">\
-					<span class="input" contenteditable></span>\
-				</ul>\
-			</div>'
-		)
+$('textarea[data-toggle="csv"] + table .add-column').on('click', function(e) {
+	e.preventDefault()
+	var table = $(this).closest('table')
+	var title = prompt("Column Title")
+	if (!title) return
+	$(table).find('thead tr th:last-child:last-child').before('<th>'+ title +'</th>')
+	$(table).find('tbody tr td:last-child:last-child').before('<td contenteditable></td>')
+	$(table).find('tfoot tr td').attr('colspan', $(this).closest('table').find('tfoot tr td').attr('colspan') + 1)
+	$(this).trigger('keyup')
+})
 
-		$tagField.tags = []
-
-		$tagField.add = function(input){
-
-			input = input.trim()
-
-			if (!input) return
-
-			$tagField.tags.push(input)
-
-			let $tag = $(
-				'<li class="tag">\
-					<span class="value"></span>\
-					<span class="remove">x</span>\
-				</li>')
-
-			$('.value', $tag).text(input)
-			$('.input', $tagField).before($tag)
-
-			$tagField.trigger('change')
-		}
-
-		$tagField.remove = function(input){
-
-			$tagField.tags = $.grep($tagField.tags, function(value) {
-				return value != input
-			})
-
-			$('.tag .value', $tagField).each(function() {
-				if ($(this).text() == input) {
-					$(this).parent('.tag').remove()
+$('textarea[data-toggle="csv"] + table').on('keyup', function(e) {
+	var csv = $(this).find('thead tr, tbody tr').map(function (i, row) {
+			return $(row).find('th:not(:last-child),td:not(:last-child)').map(function (j, col) {
+				var text = $(col).text()
+				if (/('|,)/.test(text)) {
+					return '"'+ text.replace(/"/g, '""') +'"'
+				} else {
+					return text
 				}
-			})
+			}).get().join(',')
+		}).get().join('\r\n')
+	$(this).next('textarea').val(csv)
+})
 
-			$tagField.trigger('change')
-		}
 
-		let tags = $.grep($originalInput.val().split(/\s*,\s*/), function(value) {
-			return value
+// Form Input Tags
+
+$('input[data-toggle="tags"]').each(function() {
+
+	let $originalInput = $(this)
+
+	let $tagField = $(
+		'<div class="form-input">\
+			<ul class="tokens">\
+				<span class="input" contenteditable></span>\
+			</ul>\
+		</div>'
+	)
+
+	$tagField.tags = []
+
+	$tagField.add = function(input){
+
+		input = input.trim()
+
+		if (!input) return
+
+		$tagField.tags.push(input)
+
+		let $tag = $(
+			'<li class="tag">\
+				<span class="value"></span>\
+				<span class="remove">x</span>\
+			</li>')
+
+		$('.value', $tag).text(input)
+		$('.input', $tagField).before($tag)
+
+		$tagField.trigger('change')
+	}
+
+	$tagField.remove = function(input){
+
+		$tagField.tags = $.grep($tagField.tags, function(value) {
+			return value != input
 		})
 
-		$.each(tags, function() {
-			$tagField.add(this)
-		})
-
-		$tagField.on('keypress', '.input', function(e) {
-			if (e.which == 44 || e.which == 13) { // Comma or enter
-				e.preventDefault()
-				$tagField.add($(this).text())
-				$(this).text('')
+		$('.tag .value', $tagField).each(function() {
+			if ($(this).text() == input) {
+				$(this).parent('.tag').remove()
 			}
 		})
 
-		$tagField.on('blur', '.input', function() {
+		$tagField.trigger('change')
+	}
+
+	let tags = $.grep($originalInput.val().split(/\s*,\s*/), function(value) {
+		return value
+	})
+
+	$.each(tags, function() {
+		$tagField.add(this)
+	})
+
+	$tagField.on('keypress', '.input', function(e) {
+		if (e.which == 44 || e.which == 13) { // Comma or enter
+			e.preventDefault()
 			$tagField.add($(this).text())
 			$(this).text('')
-		})
-
-		$tagField.on('click', '.remove', function(e) {
-			$tagField.remove($(this).siblings('.value').text())
-		})
-
-		$tagField.on('change', function() {
-			$originalInput.val($tagField.tags.join(','))
-		})
-
-		$(this).hide().after($tagField)
+		}
 	})
+
+	$tagField.on('blur', '.input', function() {
+		$tagField.add($(this).text())
+		$(this).text('')
+	})
+
+	$tagField.on('click', '.remove', function(e) {
+		$tagField.remove($(this).siblings('.value').text())
+	})
+
+	$tagField.on('change', function() {
+		$originalInput.val($tagField.tags.join(','))
+	})
+
+	$(this).hide().after($tagField)
+})
 
 
 // Alerts
@@ -523,6 +526,7 @@ $('body').on('click', '.alert .close', function(e) {
 
 
 // Filter
+
 $('#sidebar input[name="filter"]').on({
 
 	'input': function(){
@@ -547,6 +551,7 @@ $('#sidebar input[name="filter"]').on({
 })
 
 // AJAX Search
+
 let timer_ajax_search = null
 let xhr_search = null
 
@@ -656,8 +661,10 @@ $('#search input[name="query"]').on({
 
 
 // Tabs (data-toggle="tab")
+
 +function($) {
 	'use strict'
+
 	$.fn.Tabs = function(){
 		this.each(function() {
 
@@ -704,52 +711,53 @@ $('#search input[name="query"]').on({
 	$(document).on('ajaxcomplete', function() {
 		$('.nav-tabs').Tabs()
 	})
+
 }(jQuery)
 
 
-	// Data-Table Toggle Checkboxes
-	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
-		$(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
-			$(this).prop('checked', !$(this).prop('checked')).trigger('change')
-		})
-		return false
+// Data-Table Toggle Checkboxes
+$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
+	$(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
+		$(this).prop('checked', !$(this).prop('checked')).trigger('change')
 	})
+	return false
+})
 
-	$('body').on('click', '.data-table tbody tr', function(e) {
-		if ($(e.target).is('a') || $(e.target).closest('a').length) return
-		if ($(e.target).is('.btn, :input, th, .icon-star, .icon-star-o')) return
-		$(this).find(':checkbox, :radio').first().trigger('click')
-	})
+$('body').on('click', '.data-table tbody tr', function(e) {
+	if ($(e.target).is('a') || $(e.target).closest('a').length) return
+	if ($(e.target).is('.btn, :input, th, .icon-star, .icon-star-o')) return
+	$(this).find(':checkbox, :radio').first().trigger('click')
+})
 
-	// Data-Table Shift Check Multiple Checkboxes
-	let lastTickedCheckbox = null
-	$('.data-table td:first-child :checkbox').on('click', function(e) {
+// Data-Table Shift Check Multiple Checkboxes
+let lastTickedCheckbox = null
+$('.data-table td:first-child :checkbox').on('click', function(e) {
 
-		let $chkboxes = $('.data-table td:first-child :checkbox')
+	let $chkboxes = $('.data-table td:first-child :checkbox')
 
-		if (!lastTickedCheckbox) {
-			lastTickedCheckbox = this
-			return
-		}
-
-		if (e.shiftKey) {
-			let start = $chkboxes.index(this)
-			let end = $chkboxes.index(lastTickedCheckbox)
-			$chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastTickedCheckbox.checked)
-		}
-
+	if (!lastTickedCheckbox) {
 		lastTickedCheckbox = this
+		return
+	}
+
+	if (e.shiftKey) {
+		let start = $chkboxes.index(this)
+		let end = $chkboxes.index(lastTickedCheckbox)
+		$chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastTickedCheckbox.checked)
+	}
+
+	lastTickedCheckbox = this
+})
+
+// Data-Table Sorting (Page Reload)
+$('.table-sortable thead th[data-sort]').on('click', function() {
+	let params = {}
+
+	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
+		params[key] = value
 	})
 
-	// Data-Table Sorting (Page Reload)
-	$('.table-sortable thead th[data-sort]').on('click', function() {
-		let params = {}
+	params.sort = $(this).data('sort')
 
-		window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
-			params[key] = value
-		})
-
-		params.sort = $(this).data('sort')
-
-		window.location.search = $.param(params)
-	})
+	window.location.search = $.param(params)
+})

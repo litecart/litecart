@@ -727,12 +727,12 @@
 			echo implode(PHP_EOL, [
 				'<form method="get" action="http://x.com/intent/tweet" target="_blank">',
 				'  <input type="hidden" value="https://www.litecart.net/">',
-				'  <div class="form-group">',
-				'    <div class="input-group">',
+				'  <label class="form-group">',
+				'    <div class="form-label">',
 				'      <input type="text" class="form-input" name="text" value="Woohoo! I just installed #LiteCart and I am super excited! :)">',
 				'      <button class="btn btn-primary" type="submit">Tweet!</button>',
 				'    </div>',
-				'  </div>',
+				'  </label>',
 				'</form>',
 			]);
 		}

@@ -91,6 +91,7 @@
 				'direction',
 				'locale',
 				'locale_intl',
+				'mysql_collation',
 				'url_type',
 				'domain_name',
 				'raw_date',

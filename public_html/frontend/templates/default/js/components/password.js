@@ -1,24 +1,25 @@
-	// Password Strength
-	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function() {
+// Password Strength
 
-		$(this).siblings('meter').remove()
+$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function() {
 
-		if ($(this).val() == '') return
+	$(this).siblings('meter').remove()
 
-		let numbers = ($(this).val().match(/[0-9]/g) || []).length,
-		 lowercases = ($(this).val().match(/[a-z]/g) || []).length,
-		 uppercases = ($(this).val().match(/[A-Z]/g) || []).length,
-		 symbols =   ($(this).val().match(/[^\w]/g) || []).length,
+	if ($(this).val() == '') return
 
-		 score = (numbers * 9) + (lowercases * 11.25) + (uppercases * 11.25) + (symbols * 15)
-					 + (numbers ? 10 : 0) + (lowercases ? 10 : 0) + (uppercases ? 10 : 0) + (symbols ? 10 : 0)
+	let numbers = ($(this).val().match(/[0-9]/g) || []).length,
+		lowercases = ($(this).val().match(/[a-z]/g) || []).length,
+		uppercases = ($(this).val().match(/[A-Z]/g) || []).length,
+		symbols =   ($(this).val().match(/[^\w]/g) || []).length,
 
-		let meter = $('<meter min="0" low="80" high="120" optimum="150" max="150" value="'+ score +'"></meter>').css({
-			position: 'absolute',
-			bottom: '-1em',
-			width: '100%',
-			height: '1em'
-		})
+		score = (numbers * 9) + (lowercases * 11.25) + (uppercases * 11.25) + (symbols * 15)
+					+ (numbers ? 10 : 0) + (lowercases ? 10 : 0) + (uppercases ? 10 : 0) + (symbols ? 10 : 0)
 
-		$(this).after(meter)
+	let meter = $('<meter min="0" low="80" high="120" optimum="150" max="150" value="'+ score +'"></meter>').css({
+		position: 'absolute',
+		bottom: '-1em',
+		width: '100%',
+		height: '1em'
 	})
+
+	$(this).after(meter)
+})

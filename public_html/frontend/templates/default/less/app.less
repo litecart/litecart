@@ -303,6 +303,7 @@ body {
 
 #copyright {
 	background: var(--copyright-background-color);
+	box-shadow: inset 0 1em 1em 0px #0001;
 	.notice {
 		color: var(--copyright-text-color);
 		padding: 1rem;
@@ -513,6 +514,7 @@ body {
 	.product {
 		background: var(--whitespace-color);
 		font-size: ~"calc(var(--default-text-size) - 1px)";
+		padding: .5em;
 
 		//transform: scale(1);
 		transition: all 100ms linear;
@@ -533,10 +535,6 @@ body {
 		.image-wrapper {
 			background: var(--whitespace-color);
 
-			.thumbnail {
-				padding: .5rem;
-			}
-
 			.sticker {
 				position: absolute;
 				top: 1em;
@@ -553,11 +551,6 @@ body {
 					background: rgba(237, 60, 50, 0.9);
 				}
 			}
-		}
-
-		.info {
-			padding: 1em;
-			padding-top: 0;
 		}
 
 		.name {

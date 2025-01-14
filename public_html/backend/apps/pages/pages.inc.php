@@ -136,7 +136,7 @@ table tbody .toggle {
 					<th></th>
 					<th><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th class="main" style="padding-inline-start: 30px;"><?php echo language::translate('title_title', 'Title'); ?></th>
-					<th><?php echo language::translate('title_store_menu', 'Store Menu'); ?></th>
+					<th><?php echo language::translate('title_site_navigation', 'Site Navigation'); ?></th>
 					<th><?php echo language::translate('title_information', 'Information'); ?></th>
 					<th></th>
 				</tr>

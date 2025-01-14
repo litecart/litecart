@@ -33,6 +33,10 @@
 			// Identify/set language
 			self::set();
 
+			if (!empty(self::$selected['database_connection_collation'])) {
+				database::query("set names '". databse::input(strtok(self::$selected['database_connection_collation'], '_')) ."' collate '". databse::input(self::$selected['database_connection_collation']) ."';");
+			}
+
 			self::$_cache_token = cache::token('translations', ['endpoint', 'language']);
 
 			if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {

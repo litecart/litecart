@@ -1,4 +1,5 @@
 // Filter
+
 $('#sidebar input[name="filter"]').on({
 
 	'input': function(){
@@ -23,6 +24,7 @@ $('#sidebar input[name="filter"]').on({
 })
 
 // AJAX Search
+
 let timer_ajax_search = null
 let xhr_search = null
 

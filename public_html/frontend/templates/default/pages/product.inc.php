@@ -256,37 +256,37 @@ form[name="buy_now_form"] .dropdown-menu .image {
 							<div class="technical-data" <?php if (!$description) echo 'style="columns: 2 auto;"'; ?>>
 								<table class="table table-striped table-hover">
 <?php
-foreach ($technical_data as $line) {
+	foreach ($technical_data as $line) {
 
-if (preg_match('#[:\t]#', $line)) {
+		if (preg_match('#[:\t]#', $line)) {
 
-	@list($key, $value) = preg_split('#([:\t]+)#', $line, -1, PREG_SPLIT_NO_EMPTY);
+			@list($key, $value) = preg_split('#([:\t]+)#', $line, -1, PREG_SPLIT_NO_EMPTY);
 
-	echo implode(PHP_EOL, [
-		'  <tr>',
-		'    <td>'. trim($key) .'</td>',
-		'    <td>'. trim($value) .'</td>',
-		'  </tr>',
-	]);
+			echo implode(PHP_EOL, [
+				'  <tr>',
+				'    <td>'. trim($key) .'</td>',
+				'    <td>'. trim($value) .'</td>',
+				'  </tr>',
+			]);
 
-} else if (trim($line) != '') {
-	echo implode(PHP_EOL, [
-		'  <thead>',
-		'    <tr>',
-		'      <th colspan="2">'. $line .'</th>',
-		'    </tr>',
-		'  </thead>',
-		'  <tbody>',
-	]);
+		} else if (trim($line) != '') {
+			echo implode(PHP_EOL, [
+				'  <thead>',
+				'    <tr>',
+				'      <th colspan="2">'. $line .'</th>',
+				'    </tr>',
+				'  </thead>',
+				'  <tbody>',
+			]);
 
-} else {
-	echo implode(PHP_EOL, [
-		' </tbody>',
-		'</table>',
-		'<table class="table table-striped table-hover">',
-	]);
-}
-}
+		} else {
+			echo implode(PHP_EOL, [
+				' </tbody>',
+				'</table>',
+				'<table class="table table-striped table-hover">',
+			]);
+		}
+	}
 ?>
 									</table>
 								</div>

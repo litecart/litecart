@@ -258,6 +258,7 @@ body main {
 }
 #copyright {
   background: var(--copyright-background-color);
+  box-shadow: inset 0 1em 1em 0px #0001;
 }
 #copyright .notice {
   color: var(--copyright-text-color);
@@ -448,6 +449,7 @@ body main {
 .listing .product {
   background: var(--whitespace-color);
   font-size: calc(var(--default-text-size) - 1px);
+  padding: 0.5em;
   transition: all 100ms linear;
   border: 1px solid transparent;
   border-radius: var(--border-radius);
@@ -461,9 +463,6 @@ body main {
 }
 .listing .product .image-wrapper {
   background: var(--whitespace-color);
-}
-.listing .product .image-wrapper .thumbnail {
-  padding: 0.5rem;
 }
 .listing .product .image-wrapper .sticker {
   position: absolute;
@@ -480,10 +479,6 @@ body main {
 }
 .listing .product .image-wrapper .sticker.sale {
   background: rgba(237, 60, 50, 0.9);
-}
-.listing .product .info {
-  padding: 1em;
-  padding-top: 0;
 }
 .listing .product .name {
   display: flex;

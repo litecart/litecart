@@ -1,18 +1,19 @@
-	// Bootstrap Compatible (data-toggle="tab")
-	$('body').on('click', '[data-toggle="tab"]', function(e) {
-		e.preventDefault()
-		$(this).closest('ul').find('li').removeClass('active')
-		$(this).closest('li').addClass('active')
-		$($(this).attr('href')).show().siblings().hide()
-	})
+// Tabs
 
-	$('.nav-tabs').each(function() {
-		if (!$(this).find('li.active').length) {
-			$(this).find('li:first').addClass('active')
-		}
-	})
+$('body').on('click', '[data-toggle="tab"]', function(e) {
+	e.preventDefault()
+	$(this).closest('ul').find('li').removeClass('active')
+	$(this).closest('li').addClass('active')
+	$($(this).attr('href')).show().siblings().hide()
+})
 
-	$('.nav-tabs .active a').trigger('click')
-	if (document.location.hash != '') {
-		$('a[href="' + document.location.hash + '"]').trigger('click')
+$('.nav-tabs').each(function() {
+	if (!$(this).find('li.active').length) {
+		$(this).find('li:first').addClass('active')
 	}
+})
+
+$('.nav-tabs .active a').trigger('click')
+if (document.location.hash != '') {
+	$('a[href="' + document.location.hash + '"]').trigger('click')
+}

@@ -39,6 +39,7 @@
 
 	</div>
 </section>
+
 <script>
 	$('form[name="newsletter_subscribe_form"]').submit(function(e){
 		e.preventDefault()

@@ -29,6 +29,7 @@ input[type="number"] {
 }
 
 .form-group {
+	display: block;
 	margin-bottom: 1em;
 	&.required label::after {
 		content: ' *';
@@ -37,6 +38,11 @@ input[type="number"] {
 	> label:not(.form-check) {
 		display: block;
 	}
+}
+
+.form-label {
+	display: block;
+	margin-bottom: .25em;
 }
 
 .form-check {

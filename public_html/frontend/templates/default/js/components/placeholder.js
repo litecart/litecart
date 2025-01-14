@@ -1,7 +1,4 @@
-/*
- * jQuery Placeholders
- * by LiteCart
- */
+// jQuery Placeholders by LiteCart
 
 +function($) {
 
@@ -42,4 +39,5 @@
 			placeholder.refresh()
 		})
 	})
+
 }(jQuery)

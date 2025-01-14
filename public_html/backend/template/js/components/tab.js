@@ -1,6 +1,8 @@
 // Tabs (data-toggle="tab")
+
 +function($) {
 	'use strict'
+
 	$.fn.Tabs = function(){
 		this.each(function() {
 
@@ -47,4 +49,5 @@
 	$(document).on('ajaxcomplete', function() {
 		$('.nav-tabs').Tabs()
 	})
+
 }(jQuery)

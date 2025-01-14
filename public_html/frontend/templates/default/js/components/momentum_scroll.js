@@ -95,8 +95,8 @@
 					if (!$self.find('button[name="left"], button[name="right"]').length) {
 
 						$self.append(
-							'<button name="left" class="btn btn-default" type="button"><i class="fa fa-chevron-left"></i></button>' +
-							'<button name="right" class="btn btn-default" type="button"><i class="fa fa-chevron-right"></i></button>'
+							'<button name="left" class="btn btn-default" type="button"><i class="icon-chevron-left"></i></button>' +
+							'<button name="right" class="btn btn-default" type="button"><i class="icon-chevron-right"></i></button>'
 						)
 
 						$self.on('click', 'button[name="left"], button[name="right"]', function(e) {

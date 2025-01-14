@@ -465,8 +465,7 @@
 		}
 
 		public function fields() {
-			$fields = array_column(mysqli_fetch_fields($this->_result), 'name');
-			return $fields;
+			return array_column(mysqli_fetch_fields($this->_result), 'name');
 		}
 
 		public function fetch($filter=null) {

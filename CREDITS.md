@@ -11,9 +11,13 @@
 ## Fonts
 
 * Fira Sans - Google Fonts - Free for commercial use - https://www.googlefonts.com/
-* Fontawesome - MIT License - https://www.fontawesome.io/
 * Inter - Google Fonts - Free for commercial use - https://www.googlefonts.com/
 * Reprobate (captcha) - Handwriting of Mike Sedillo - Free for commercial use - https://www.apostrophiclab.com/
+
+## Font Icons
+
+* Fontawesome - MIT License - https://www.fontawesome.io/
+* Material Symbols - Apache License Version 2.0 - https://fonts.google.com/icons
 
 ## JavaScripts
 
