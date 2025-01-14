@@ -1,10 +1,10 @@
 <footer id="site-footer" class="hidden-print">
-	<div class="container">
+	<div class="container my-2">
 
-		<div class="row">
+		<div class="grid">
 			<div class="col-md-9">
 
-				<div class="row">
+				<div class="grid">
 
 					<?php if (settings::get('accounts_enabled')) { ?>
 					<section class="account col-6 col-sm-4">

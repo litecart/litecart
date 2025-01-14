@@ -1,5 +1,5 @@
 <main id="main" class="container">
-	<div class="row layout">
+	<div class="grid">
 		<div class="col-md-3">
 			<div id="sidebar">
 				<?php include 'app://frontend/partials/box_account_links.inc.php'; ?>
@@ -10,7 +10,7 @@
 			<div id="content">
 				{{notices}}
 
-				<div class="row">
+				<div class="grid">
 				<section id="box-login" class="card col-md-6" style="margin-bottom: 0;">
 
 					<div class="card-header">
@@ -21,17 +21,19 @@
 						<?php echo functions::form_begin('sign_in_form', 'post', document::ilink('account/sign_in')); ?>
 							<?php echo functions::form_input_hidden('redirect_url', true); ?>
 
-							<div class="form-group">
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
 								<?php echo functions::form_input_email('email', true, 'placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
-							</div>
+							</label>
 
-							<div class="form-group">
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_password', 'Password'); ?></div>
 								<?php echo functions::form_input_password('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
-							</div>
+							</label>
 
-							<div class="form-group">
+							<label class="form-group">
 								<?php echo functions::form_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
-							</div>
+							</label>
 
 							<div>
 								<?php echo functions::form_button('sign_in', language::translate('title_sign_in', 'Sign In'), 'submit', 'class="btn btn-default btn-block"'); ?>

@@ -1,4 +1,4 @@
-<div class="container pb-0">
+<div class="container my-2">
 	<div id="site-navigation">
 
 		<div class="navbar">
@@ -48,8 +48,8 @@
 
 				<ul class="navbar-nav">
 
-				<?php if (!empty($regional_settings)) { ?>
-					<li class="contact">
+					<?php if (!empty($regional_settings)) { ?>
+					<li class="regional-settings">
 						<a class="navbar-item" href="<?php echo functions::escape_attr($regional_settings['link']); ?>">
 						<?php echo functions::draw_fonticon('icon-envelope hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo $regional_settings['title']; ?>
 						</a>
@@ -141,7 +141,7 @@
 							<?php foreach ($wishlist['items'] as $key => $item) { ?>
 							<li class="dropdown-item item">
 
-								<div class="row">
+								<div class="grid">
 									<div class="col-2">
 										<?php echo functions::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. functions::escape_attr($item['name']) .'"'); ?>
 									</div>
@@ -180,7 +180,7 @@
 							<?php foreach ($shopping_cart['items'] as $key => $item) { ?>
 							<li class="dropdown-item item">
 
-								<div class="row">
+								<div class="grid">
 									<div class="col-2">
 										<?php echo functions::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. functions::escape_attr($item['name']) .'"'); ?>
 									</div>
@@ -219,14 +219,14 @@
 					</li>
 				</ul>
 			</nav>
-		</div>
 
-		<div class="navbar-toggle">
-			<button type="button" class="btn btn-default navbar-toggler hidden-md hidden-lg hidden-xl hidden-xxl" data-toggle="offcanvas" data-target="#offcanvas">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
+			<div class="navbar-toggle">
+				<button type="button" class="btn btn-default navbar-toggler hidden-md hidden-lg hidden-xl hidden-xxl" data-toggle="offcanvas" data-target="#offcanvas">
+					<span class="navbar-toggler-bar"></span>
+					<span class="navbar-toggler-bar"></span>
+					<span class="navbar-toggler-bar"></span>
+				</button>
+			</div>
 		</div>
 	</div>
 </div>

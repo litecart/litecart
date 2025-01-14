@@ -55,15 +55,15 @@
 
 		<?php echo functions::form_begin('file_form', 'post'); ?>
 
-			<div class="form-group" style="max-width: 800px;">
-					<label><?php echo language::translate('title_file', 'File'); ?></label>
-					<div class="form-input" readonly><?php echo preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $stylesheet); ?></div>
-				</div>
+			<label class="form-group" style="max-width: 800px;">
+				<div class="form-label"><?php echo language::translate('title_file', 'File'); ?></div>
+				<div class="form-input" readonly><?php echo preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $stylesheet); ?></div>
+			</label>
 
-			<div class="form-group">
-				<label><?php echo language::translate('title_content', 'Content'); ?></label>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_content', 'Content'); ?></div>
 				<?php echo functions::form_input_code('content', true); ?>
-			</div>
+			</label>
 
 			<div class="card-action">
 				<?php echo functions::form_button_predefined('save'); ?>

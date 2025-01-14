@@ -16,9 +16,9 @@
 	<h2 style="margin-top: 0;"><?php echo language::translate('title_customers', 'Customers'); ?></h2>
 
 	<div class="modal-body">
-		<div class="form-group">
-			<?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_attr(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
-		</div>
+		<label class="form-group">
+			<div class="form-label"><?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_attr(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?></div>
+		</label>
 
 		<div class="form-group results table-responsive">
 			<table class="table table-striped table-hover data-table">

@@ -58,7 +58,9 @@
 
 					<ul class="dropdown-menu">
 						<?php foreach ($brands as $brand) { ?>
-						<li class="dropdown-menu-item"><?php echo functions::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, 'data-token-group="brand" data-token-title="'. language::translate('title_brand', 'Brand') .'" data-token-value="'. $brand['name'] .'"'); ?></li>
+						<li class="dropdown-menu-item">
+							<?php echo functions::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, 'data-token-group="brand" data-token-title="'. language::translate('title_brand', 'Brand') .'" data-token-value="'. $brand['name'] .'"'); ?>
+						</li>
 						<?php } ?>
 					</ul>
 				</div>

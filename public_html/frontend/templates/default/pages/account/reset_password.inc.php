@@ -1,7 +1,7 @@
 <main id="main" class="container">
 	{{notices}}
 
-	<div class="row layout">
+	<div class="grid">
 		<div class="col-md-3">
 			<div id="sidebar">
 				<?php include 'app://frontend/partials/box_account_links.inc.php'; ?>
@@ -20,33 +20,33 @@
 					<div class="card-body">
 						<?php echo functions::form_begin('reset_password_form', 'post', null, false, 'style="max-width: 480px;"'); ?>
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
 								<?php echo functions::form_input_email('email', true); ?>
-							</div>
+							</label>
 
 							<?php if (isset($_REQUEST['reset_token'])) { ?>
-							<div class="form-group">
-								<label><?php echo language::translate('title_reset_token', 'Reset Token'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_reset_token', 'Reset Token'); ?></div>
 								<?php echo functions::form_input_text('reset_token', true); ?>
-							</div>
+							</label>
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_new_password', 'New Password'); ?></div>
 								<?php echo functions::form_input_password('new_password', ''); ?>
-							</div>
+							</label>
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_confirmed_password', 'Confirmed Password'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_confirmed_password', 'Confirmed Password'); ?></div>
 								<?php echo functions::form_input_password('confirmed_password', ''); ?>
-							</div>
+							</label>
 							<?php } ?>
 
 							<?php if (settings::get('captcha_enabled')) { ?>
-							<div class="form-group">
-								<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></div>
 								<?php echo functions::form_captcha('reset_password'); ?>
-							</div>
+							</label>
 							<?php } ?>
 
 							<?php echo functions::form_button('reset_password', language::translate('title_reset_password', 'Reset Password')); ?>

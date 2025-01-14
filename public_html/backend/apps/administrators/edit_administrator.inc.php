@@ -116,108 +116,108 @@
 	<div class="card-body">
 		<?php echo functions::form_begin('administrator_form', 'post', false, false, 'autocomplete="off"'); ?>
 
-			<div class="row">
+			<div class="grid">
 
 				<div class="col-md-8">
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_status', 'Status'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
 								<?php echo functions::form_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
-							</div>
+							</label>
 						</div>
 						<div class="col-sm-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_username', 'Username'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_username', 'Username'); ?></div>
 								<?php echo functions::form_input_text('username', true, 'autocomplete="off" required'); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-sm-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_email', 'Email'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_email', 'Email'); ?></div>
 								<?php echo functions::form_input_email('email', true, 'autocomplete="off"'); ?>
-							</div>
+							</label>
 						</div>
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_two_factor_authentication', 'Two-Factor Authentication'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_two_factor_authentication', 'Two-Factor Authentication'); ?></div>
 								<?php echo functions::form_toggle('two_factor_auth', 'e/d', true); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_new_password', 'New Password'); ?></div>
 								<?php echo functions::form_input_password_unmaskable('password', '', 'autocomplete="new-password"'); ?>
-							</div>
+							</label>
 						</div>
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></div>
 								<?php echo functions::form_input_password_unmaskable('confirmed_password', '', 'autocomplete="new-password"'); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_valid_from', 'Valid From'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_valid_from', 'Valid From'); ?></div>
 								<?php echo functions::form_input_datetime('date_valid_from', true); ?>
-							</div>
+							</label>
 						</div>
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_valid_to', 'Valid To'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_valid_to', 'Valid To'); ?></div>
 								<?php echo functions::form_input_datetime('date_valid_to', true); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
 					<?php if (!empty($administrator->data['id'])) { ?>
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_last_ip_address', 'Last IP Address'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_last_ip_address', 'Last IP Address'); ?></div>
 								<?php echo functions::form_input_text('last_ip_address', true, 'readonly'); ?>
-							</div>
+							</label>
 						</div>
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></div>
 								<?php echo functions::form_input_text('last_hostname', true, 'readonly'); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_last_login', 'Last Login'); ?></div>
 								<?php echo functions::form_input_text('date_login', true, 'readonly'); ?>
-							</div>
+							</label>
 						</div>
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_last_active', 'Last Active'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_last_active', 'Last Active'); ?></div>
 								<?php echo functions::form_input_text('date_active', true, 'readonly'); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_known_ip_addresses', 'Known IP Addresses'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_known_ip_addresses', 'Known IP Addresses'); ?></div>
 								<div class="form-input" disabled>
 									<?php echo str_replace(',', ', ', $administrator->data['known_ips']); ?>
 								</div>
-							</div>
+							</label>
 						</div>
 					</div>
 					<?php } ?>

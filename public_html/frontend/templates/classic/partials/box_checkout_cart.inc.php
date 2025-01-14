@@ -7,7 +7,7 @@
 		</div>
 
 		<div class="col-9 col-sm-10 col-md-11">
-			<div class="row">
+			<div class="grid">
 				<div class="col-sm-8">
 					{{translate "title_item", "Item"}}
 				</div>
@@ -27,7 +27,7 @@
 		<?php foreach ($items as $key => $item) { ?>
 		<li class="item" data-id="{{item.product_id}}" data-sku="{{item.sku}}" data-name="{{$item.name}}" data-price="<?php echo currency::format_raw($item['price']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-3 col-sm-2 col-md-1">
 					<a href="{{$item.link}}" class="thumbnail float-start" style="margin-inline-end: 1em;">
 						<img class="responsive" src="<?php echo document::href_rlink($item['image']['thumbnail']); ?>" alt="">
@@ -36,7 +36,7 @@
 
 				<div class="col-9 col-sm-10 col-md-11">
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-sm-4">
 
 							<div class="name"><a href="{{$item.link}}" style="color: inherit;">{{item.name}}</a></div>

@@ -7,7 +7,7 @@
 		<section id="box-checkout">
 			<div class="cart wrapper"></div>
 
-			<div class="row" style="grid-gap: 2rem;">
+			<div class="grid" style="grid-gap: 2rem;">
 				<div class="col-md-6">
 					<div class="customer wrapper"></div>
 				</div>

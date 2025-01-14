@@ -7,13 +7,15 @@
 		<?php echo functions::form_begin('sign_in_form', 'post', document::ilink('account/sign_in')); ?>
 			<?php echo functions::form_input_hidden('redirect_url', fallback($_GET['redirect_url'], document::ilink(''))); ?>
 
-			<div class="form-group">
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
 				<?php echo functions::form_input_email('email', true, 'required placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
-			</div>
+			</label>
 
-			<div class="form-group">
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_password', 'Password'); ?></div>
 				<?php echo functions::form_input_password('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
-			</div>
+			</label>
 
 			<div class="btn-group btn-block">
 				<?php echo functions::form_button('sign_in', language::translate('title_sign_in', 'Sign In')); ?>

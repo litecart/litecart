@@ -2,7 +2,7 @@
 
 	<div class="card">
 		<div class="card-body">
-			<div class="row" style="margin: 0;">
+			<div class="grid" style="margin: 0;">
 				<div class="col-md-6">
 					<div class="images row">
 
@@ -123,10 +123,10 @@
 						<?php echo functions::form_input_hidden('product_id', $product_id); ?>
 
 						<?php if (count($stock_options) > 1) { ?>
-						<div class="form-group">
-							<label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
+						<label class="form-group">
+							<div class="form-label"><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></div>
 							<?php echo form_select_product_stock_option('stock_option_id', $product_id, true); ?>
-						</div>
+						</label>
 						<?php } else if (count($stock_options) == 1) { ?>
 						<?php echo functions::form_input_hidden('stock_option_id', $stock_options[0]['stock_option_id']); ?>
 						<?php } ?>
@@ -146,8 +146,8 @@
 						<?php } ?>
 
 						<?php if (!settings::get('catalog_only_mode') && (!isset($quantity_available) || $quantity_available > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>
-						<div class="form-group" style="margin-bottom: 0;">
-							<label><?php echo language::translate('title_quantity_available', 'Quantity Available'); ?></label>
+						<label class="form-group" style="margin-bottom: 0;">
+							<div class="form-label"><?php echo language::translate('title_quantity_available', 'Quantity Available'); ?></div>
 							<div style="display: flex">
 						<div class="input-group" style="flex: 0 1 150px;">
 							<?php echo !empty($quantity_unit['decimals']) ? functions::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. (float)$quantity_min .'"' . ($quantity_max ? 'max="'. (float)$quantity_max .'"' : '') . ($quantity_step ? 'step="'. (float)$quantity_step .'"' : '')) : functions::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. (int)$quantity_min .'"'. ($quantity_max ? 'max="'. (int)$quantity_max .'"' : '') . ($quantity_step ? 'step="'. (int)$quantity_step .'"' : '')); ?>
@@ -158,7 +158,7 @@
 									<?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity_available <= 0 && !$orderable) ? ' disabled' : '') .'>'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
 								</div>
 							</div>
-						</div>
+						</label>
 						<?php } ?>
 
 						<div class="stock-notice"></div>
@@ -198,7 +198,7 @@
 	<?php if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') { ?>
 	<div class="card">
 		<div class="card-body">
-			<div class="row">
+			<div class="grid">
 
 				<?php if ($description) { ?>
 				<div class="col-md-<?php echo ($description && $technical_data) ? 6 : 12; ?>">

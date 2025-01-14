@@ -27,7 +27,7 @@
 
 				<p><?php echo language::translate('box_newsletter_subscribe:description', 'Get the latest news and offers straight to your inbox. Sign up now.'); ?></p>
 
-				<div class="form-group">
+				<div class="form-label">
 					<div style="display: flex; flex-direction: row; gap: 1em">
 						<?php echo functions::form_input_email('email', true, 'placeholder="'. functions::escape_attr(language::translate('text_enter_your_email_address', 'Enter your email address')) .'" required'); ?>
 						<?php echo functions::form_button('subscribe', language::translate('title_subscribe', 'Subscribe')); ?>

@@ -1,6 +1,6 @@
 <main id="main" class="container">
 
-	<div class="row layout">
+	<div class="grid">
 
 		<div class="col-md-8">
 			<section id="box-contact-us" class="card">
@@ -11,40 +11,42 @@
 
 					<?php echo functions::form_begin('contact_form', 'post'); ?>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-md-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_name', 'Name'); ?></label>
+								<div class="form-label">
+									<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 									<?php echo functions::form_input_text('name', true, 'required'); ?>
-								</div>
+								 </div>
 							</div>
 
 							<div class="col-md-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+								<div class="form-label">
+									<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
 									<?php echo functions::form_input_email('email', true, 'required'); ?>
-								</div>
+								 </div>
 							</div>
 						</div>
 
-						<div class="form-group">
-							<label><?php echo language::translate('title_subject', 'Subject'); ?></label>
+						<div class="form-label">
+							<div class="form-label"><?php echo language::translate('title_subject', 'Subject'); ?></div>
 							<?php echo functions::form_input_text('subject', true, 'required'); ?>
-						</div>
+						 </div>
 
-						<div class="form-group">
-							<label><?php echo language::translate('title_message', 'Message'); ?></label>
+						<div class="form-label">
+							<div class="form-label"><?php echo language::translate('title_message', 'Message'); ?></div>
 							<?php echo functions::form_textarea('message', true, 'required style="height: 250px;"'); ?>
-						</div>
+						 </div>
 
 						<?php if (settings::get('captcha_enabled')) { ?>
-						<div class="form-group" style="max-width: 250px;">
-							<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
+						<div class="form-label" style="max-width: 250px;">
+							<div class="form-label"><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></div>
 							<?php echo functions::form_captcha('contact_us'); ?>
-						</div>
+						 </div>
 						<?php } ?>
 
-						<p><?php echo functions::form_button('send', language::translate('title_send', 'Send'), 'submit', 'style="font-weight: bold;"'); ?></p>
+						<div>
+							<?php echo functions::form_button('send', language::translate('title_send', 'Send'), 'submit', 'style="font-weight: bold;"'); ?>
+						</div>
 
 					<?php echo functions::form_end(); ?>
 				</div>
@@ -59,13 +61,21 @@
 				</div>
 
 				<div class="card-body">
-					<p class="address"><?php echo nl2br(settings::get('store_postal_address')); ?></p>
+
+					<div class="address">
+						<?php echo nl2br(settings::get('store_postal_address')); ?>
+					</div>
 
 					<?php if (settings::get('store_phone')) { ?>
-					<p class="phone"><?php echo functions::draw_fonticon('icon-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a></p>
+					<div class="phone">
+						<?php echo functions::draw_fonticon('icon-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a>
+					</div>
 					<?php } ?>
 
-					<p class="email"><?php echo functions::draw_fonticon('icon-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a></p>
+					<div class="email">
+						<?php echo functions::draw_fonticon('icon-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a>
+					</div>
+
 				</div>
 
 			</article>

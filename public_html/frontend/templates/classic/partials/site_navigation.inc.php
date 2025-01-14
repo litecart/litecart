@@ -118,23 +118,24 @@
 								<?php echo functions::form_begin('sign_in_form', 'post', document::ilink('account/sign_in'), false, 'class="navbar-form"'); ?>
 									<?php echo functions::form_input_hidden('redirect_url', document::link()); ?>
 
-									<div class="form-group">
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
 										<?php echo functions::form_input_email('email', true, 'required placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
-									</div>
+									</label>
 
-									<div class="form-group">
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_password', 'Password'); ?></div>
 										<?php echo functions::form_input_password('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
-									</div>
+									</label>
 
 									<div class="form-group">
-										<div class="checkbox text-start">
-											<label><?php echo functions::form_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
-										</div>
+										<?php echo functions::form_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')]); ?>
 									</div>
 
 									<div class="btn-group btn-block">
 										<?php echo functions::form_button('sign_in', language::translate('title_sign_in', 'Sign In')); ?>
 									</div>
+
 								<?php echo functions::form_end(); ?>
 							</li>
 							<li class="nav-item text-center">

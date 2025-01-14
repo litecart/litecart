@@ -80,51 +80,51 @@
 		<?php echo functions::form_begin('form_add_product', 'post'); ?>
 			<?php echo functions::form_input_hidden('product_id', $product->id); ?>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-4">
 					<?php echo functions::draw_thumbnail('storage://images/' . $product->image, 320, 0, 'product'); ?>
 				</div>
 
 				<div class="col-md-8">
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-4">
-							<div class="form-group">
-								<label><?php echo language::translate('title_name', 'Name'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 								<?php echo functions::form_input_text('name', true, (!isset($_GET['collect']) || !in_array('name', $_GET['collect'])) ? 'readonly' : ''); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="grid">
 						<?php if (isset($_GET['collect']) && in_array('quantity', $_GET['collect'])) { ?>
 						<div class="col-md-4">
-							<div class="form-group">
-								<label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_quantity', 'Quantity'); ?></div>
 								<?php echo functions::form_input_decimal('quantity', 1); ?>
-							</div>
+							</label>
 						</div>
 						<?php } ?>
 
 						<?php if (isset($_GET['collect']) && in_array('price', $_GET['collect'])) { ?>
 						<div class="col-md-4">
-							<div class="form-group">
-								<label><?php echo language::translate('title_price', 'Price'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_price', 'Price'); ?></div>
 								<?php echo functions::form_input_money('price', $_GET['currency_code'], true); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-4">
-							<div class="form-group">
-								<label><?php echo language::translate('title_tax', 'Tax'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_tax', 'Tax'); ?></div>
 								<?php echo functions::form_input_money('tax', $_GET['currency_code'], true); ?>
-							</div>
+							</label>
 						</div>
 						<?php } ?>
 					</div>
 
 					<?php if (isset($_GET['collect']) && in_array('stock_option', $_GET['collect'])) { ?>
-					<div class="form-group">
+					<label class="form-group">
 						<?php if (!empty($product->stock_options)) { ?>
 						<table class="table table-default table-striped data-table">
 							<thead>
@@ -154,7 +154,7 @@
 							</tfoot>
 						</table>
 						<?php } ?>
-					</div>
+					</label>
 					<?php } ?>
 
 					<div class="card-action">

@@ -213,14 +213,15 @@
 <div id="modal-add-recipients" class="modal fade" style="width: 640px; display: none;">
 	<?php echo functions::form_begin('recipients_form', 'post'); ?>
 
-		<div class="form-group">
-			<label><?php echo language::translate('title_recipients', 'Recipients'); ?></label>
+		<label class="form-group">
+			<div class="form-label"><?php echo language::translate('title_recipients', 'Recipients'); ?></div>
 			<?php echo functions::form_textarea('recipients', '', 'style="height: 480px;"'); ?>
-		</div>
+		</label>
 
-		<div class="form-group">
+		<label class="form-group">
+			<div class="form-label"><?php echo language::translate('title_subscribed', 'Subscribed'); ?></div>
 			<?php echo functions::form_toggle('subscribe', [1 => language::translate('title_subscribe', 'Subscribed'), 0 => language::translate('title_unsubscribe', 'Unsubscribed')], '1'); ?>
-		</div>
+		</label>
 
 		<?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'submit', 'class="btn btn-default btn-block"'); ?>
 

@@ -224,43 +224,43 @@
 			<div class="tab-content">
 				<div id="tab-general" class="tab-pane active" style="max-width: 1400px;">
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-4">
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_status', 'Status'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
 								<?php echo functions::form_toggle('status', 'e/d', true); ?>
-							</div>
+							</label>
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_brand', 'Brand'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_brand', 'Brand'); ?></div>
 								<?php echo functions::form_select_brand('brand_id', true); ?>
-							</div>
+							</label>
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_categories', 'Categories'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_categories', 'Categories'); ?></div>
 								<?php echo functions::form_select_category('categories[]', true, 'style="max-height: 480px;"'); ?>
-							</div>
+							</label>
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_default_category', 'Default Category'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_default_category', 'Default Category'); ?></div>
 								<?php echo functions::form_select('default_category_id', [], true); ?>
-							</div>
+							</label>
 
 							<?php if (!empty($product->data['id'])) { ?>
-							<div class="row">
+							<div class="grid">
 								<div class="col-md-6">
-									<div class="form-group">
-										<label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_date_updated', 'Date Updated'); ?></div>
 										<div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($product->data['date_updated'])); ?></div>
-									</div>
+									</label>
 								</div>
 
 								<div class="col-md-6">
-									<div class="form-group">
-										<label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_date_created', 'Date Created'); ?></div>
 										<div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($product->data['date_created'])); ?></div>
-									</div>
+									</label>
 								</div>
 							</div>
 							<?php } ?>
@@ -268,40 +268,40 @@
 
 						<div class="col-md-4">
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_name', 'Name'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 								<?php echo functions::form_regional_text('name['. language::$selected['code'] .']', language::$selected['code'], true); ?>
-							</div>
+							</label>
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_code', 'Code'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_code', 'Code'); ?></div>
 								<?php echo functions::form_input_text('code', true); ?>
-							</div>
+							</label>
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_price', 'Price'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_price', 'Price'); ?></div>
 								<?php echo functions::form_input_money('prices['.settings::get('store_currency_code').']', settings::get('store_currency_code'), true); ?>
-							</div>
+							</label>
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_keywords', 'Keywords'); ?></div>
 								<?php echo functions::form_input_tags('keywords', true); ?>
-							</div>
+							</label>
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></div>
 								<?php echo functions::form_input_datetime('date_valid_from', true); ?>
-							</div>
+							</label>
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></div>
 								<?php echo functions::form_input_datetime('date_valid_to', true); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-4">
-							<div class="form-group">
-								<label><?php echo language::translate('title_images', 'Images'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_images', 'Images'); ?></div>
 <?php
 	if ($product->data['images']) {
 		$image = current($product->data['images']);
@@ -309,13 +309,13 @@
 		reset($product->data['images']);
 	}
 ?>
-							</div>
+							</label>
 
 							<div id="images">
 
 								<div class="images">
 									<?php if (!empty($_POST['images'])) foreach (array_keys($_POST['images']) as $key) { ?>
-									<div class="image form-group">
+									<label class="form-group image">
 										<?php echo functions::form_input_hidden('images['.$key.'][id]', true); ?>
 										<?php echo functions::form_input_hidden('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
 
@@ -329,15 +329,15 @@
 											<a class="btn btn-default btn-sm move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></a>
 											<a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></a>
 										</div>
-									</div>
+									</label>
 									<?php } ?>
 								</div>
 
 								<div class="new-images"></div>
 
-								<div class="form-group">
+								<label class="form-group">
 									<a href="#" class="add btn btn-default btn-sm"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_image', 'Add Image'); ?></a>
-								</div>
+								</label>
 							</div>
 						</div>
 					</div>
@@ -356,49 +356,49 @@
 						<?php foreach ($language_codes as $language_code) { ?>
 						<div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 
-							<div class="row">
+							<div class="grid">
 								<div class="col-md-6">
 
-									<div class="form-group">
-										<label><?php echo language::translate('title_name', 'Name'); ?></label>
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 										<?php echo functions::form_regional_text('name['. $language_code .']', $language_code, true); ?>
-									</div>
+									</label>
 
-									<div class="form-group">
-										<label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_short_description', 'Short Description'); ?></div>
 										<?php echo functions::form_regional_text('short_description['. $language_code .']', $language_code, true); ?>
-									</div>
+									</label>
 
-									<div class="form-group">
-										<label><?php echo language::translate('title_description', 'Description'); ?></label>
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
 										<?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 250px;"'); ?>
-									</div>
+									</label>
 
-									<div class="form-group">
-										<label><?php echo language::translate('title_synonyms', 'Synonyms'); ?></label>
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_synonyms', 'Synonyms'); ?></div>
 										<?php echo functions::form_input_tags('synonyms['. $language_code .']', true); ?>
-									</div>
+									</label>
 
-									<div class="row">
+									<div class="grid">
 										<div class="col-md-6">
-											<div class="form-group">
-												<label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
+											<label class="form-group">
+												<div class="form-label"><?php echo language::translate('title_head_title', 'Head Title'); ?></div>
 												<?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true); ?>
-											</div>
+											</label>
 										</div>
 
 										<div class="col-md-6">
-											<div class="form-group">
-												<label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
+											<label class="form-group">
+												<div class="form-label"><?php echo language::translate('title_meta_description', 'Meta Description'); ?></div>
 												<?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
-											</div>
+											</label>
 										</div>
 									</div>
 								</div>
 
 								<div class="col-md-6">
 									<div class="form-group">
-										<?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('icon-question'); ?></a>
+										<div class="form-label"><?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('icon-question'); ?></a></div>
 										<?php echo functions::form_regional_textarea('technical_data['. $language_code .']', $language_code, true, 'style="height: 640px;"'); ?>
 										<div><?php echo functions::form_checkbox('autofill_technical_data', ['1', language::translate('text_autogenerate_from_attributes', 'Generate from attributes')], ''); ?></div>
 									</div>
@@ -412,19 +412,19 @@
 
 				<div id="tab-prices" class="tab-pane">
 
-					<div class="row" style="max-width: 640px;">
+					<div class="grid" style="max-width: 640px;">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_recommended_price', 'Recommended Price'); ?> / MSRP</label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_recommended_price', 'Recommended Price'); ?> / MSRP</div>
 								<?php echo functions::form_input_money('recommended_price', settings::get('store_currency_code'), true); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_tax_class', 'Tax Class'); ?></div>
 								<?php echo functions::form_select_tax_class('tax_class_id', true); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
@@ -588,9 +588,18 @@
 
 						<tfoot>
 							<tr>
-								<td><?php echo functions::form_select_attribute_group('new_attribute[group_id]', ''); ?></td>
-								<td><?php echo functions::form_select('new_attribute[value_id]', [], ''); ?></td>
-								<td><?php echo functions::form_input_text('new_attribute[custom_value]', ''); ?></td>
+								<td><label class="form-group">
+	<div class="form-label"><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></div>
+	<?php echo functions::form_select_attribute_group('new_attribute[group_id]', ''); ?>
+</label></td>
+								<td><label class="form-group">
+	<div class="form-label"><?php echo language::translate('title_value', 'Value'); ?></div>
+	<?php echo functions::form_select('new_attribute[value_id]', [], ''); ?>
+</label></td>
+								<td><label class="form-group">
+	<div class="form-label"><?php echo language::translate('title_custom_value', 'Custom Value'); ?></div>
+	<?php echo functions::form_input_text('new_attribute[custom_value]', ''); ?>
+</label></td>
 								<td><?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
 							</tr>
 						</tfoot>
@@ -618,29 +627,27 @@
 							<h2><?php echo $customization['name']; ?></h2>
 							<?php echo functions::form_input_hidden('customizations['.$group_id.'][id]', true) . functions::form_input_hidden('customizations['.$group_id.'][group_id]', true) . functions::form_input_hidden('customizations['.$group_id.'][name]', true); ?>
 
-							<div class="row">
+							<div class="grid">
 								<div class="col-sm-4 col-md-2">
-									<div class="form-group">
-										<label><?php echo language::translate('title_function', 'Function'); ?></label>
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_function', 'Function'); ?></div>
 										<?php echo functions::form_select('customizations['.$group_id.'][function]', in_array($customization['function'], ['select', 'radio', 'checkbox']) ? ['select', 'radio', 'checkbox'] : ['text', 'textarea'], true); ?>
-									</div>
+									</label>
 								</div>
 
 								<?php if (in_array($customization['function'], ['select', 'radio', 'checkbox'])) { ?>
 								<div class="col-sm-4 col-md-2">
-									<div class="form-group">
-										<label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_sort_values', 'Sort Values'); ?></div>
 										<?php echo functions::form_select('customizations['.$group_id.'][sort]', $customizations_sort_options, true); ?>
-									</div>
+									</label>
 								</div>
 								<?php } ?>
 
 								<div class="col-sm-4 col-md-2">
 									<div class="form-group">
-										<label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>
-										<div class="checkbox">
-											<label><?php echo functions::form_checkbox('customizations['.$group_id.'][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>
-										</div>
+										<div class="form-label"><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></div>
+										<?php echo functions::form_checkbox('customizations['.$group_id.'][required]', ['1', language::translate('title_required', 'Required')], true); ?>
 									</div>
 								</div>
 							</div>
@@ -697,27 +704,21 @@
 					<div id="modal-predefined-customization" style="display: none;">
 						<fieldset style="max-width: 960px;">
 							<legend><?php echo language::translate('title_add_predefined_option', 'Add Predefined Option'); ?></legend>
-							<div class="row" style="margin-bottom: 0;">
-								<div class="col-md-3">
-									<div class="form-group">
-										<label><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></label>
-										<?php echo functions::form_select_attribute_group('new_predefined_customization[group_id]', ''); ?>
-									</div>
-								</div>
+							<div class="grid" style="margin-bottom: 0;">
+									<div class="col-md-3"><label class="form-group">
+	<div class="form-label"><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></div>
+	<?php echo functions::form_select_attribute_group('new_predefined_customization[group_id]', ''); ?>
+</label></div>
 
-								<div class="col-md-3">
-									<div class="form-group">
-										<label><?php echo language::translate('title_value', 'Value'); ?></label>
-										<?php echo functions::form_select('new_predefined_customization[value_id]', [['','']], '', 'disabled'); ?>
-									</div>
-								</div>
+									<div class="col-md-3"><label class="form-group">
+	<div class="form-label"><?php echo language::translate('title_value', 'Value'); ?></div>
+	<?php echo functions::form_select('new_predefined_customization[value_id]', [['','']], '', 'disabled'); ?>
+</label></div>
 
-								<div class="col-md-3">
-									<div class="form-group">
-										<label><?php echo language::translate('title_custom_value', 'Custom Value'); ?></label>
-										<?php echo functions::form_input_text('new_predefined_customization[custom_value]', ''); ?>
-									</div>
-								</div>
+									<div class="col-md-3"><label class="form-group">
+	<div class="form-label"><?php echo language::translate('title_custom_value', 'Custom Value'); ?></div>
+	<?php echo functions::form_input_text('new_predefined_customization[custom_value]', ''); ?>
+</label></div>
 
 								<div class="col-md-3" style="align-self: end;">
 									<?php echo functions::form_button('add_predefined_customization', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
@@ -729,13 +730,11 @@
 					<div id="modal-user-input-customization" style="display: none;">
 						<fieldset>
 							<legend><?php echo language::translate('title_add_user_input_option', 'Add User Input Option'); ?></legend>
-							<div class="row" style="margin-bottom: 0;">
-								<div class="col-md-8">
-									<div class="form-group">
-										<label><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></label>
-										<?php echo functions::form_select_attribute_group('new_user_input_customization[group_id]', ''); ?>
-									</div>
-								</div>
+							<div class="grid" style="margin-bottom: 0;">
+								<div class="col-md-8"><label class="form-group">
+	<div class="form-label"><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></div>
+	<?php echo functions::form_select_attribute_group('new_user_input_customization[group_id]', ''); ?>
+</label></div>
 								<div class="col-md-4" style="align-self: end;">
 									<?php echo functions::form_button('add_user_input_customization', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
 								</div>
@@ -746,49 +745,49 @@
 
 				<div id="tab-stock" class="tab-pane">
 
-					<div class="row" style="max-width: 640px;">
+					<div class="grid" style="max-width: 640px;">
 						<div class="col-md-3">
-							<div class="form-group">
-								<label><?php echo language::translate('title_min_order_qty', 'Min. Order Qty'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_min_order_qty', 'Min. Order Qty'); ?></div>
 								<?php echo functions::form_input_decimal('quantity_min', true, 2, 'min="0"'); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-3">
-							<div class="form-group">
-								<label><?php echo language::translate('title_max_order_quantity', 'Max. Order Qty'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_max_order_quantity', 'Max. Order Qty'); ?></div>
 								<?php echo functions::form_input_decimal('quantity_max', true, 2, 'min="0"'); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-3">
-							<div class="form-group">
-								<label><?php echo language::translate('title_quantity_step', 'Quantity Step'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_quantity_step', 'Quantity Step'); ?></div>
 								<?php echo functions::form_input_decimal('quantity_step', true, 2, 'min="0"'); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-3">
-							<div class="form-group">
-								<label><?php echo language::translate('title_quantity_unit', 'Quantity Unit'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_quantity_unit', 'Quantity Unit'); ?></div>
 								<?php echo functions::form_select_quantity_unit('quantity_unit_id', true); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
-					<div class="row" style="max-width: 640px;">
+					<div class="grid" style="max-width: 640px;">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></div>
 								<?php echo functions::form_select_delivery_status('delivery_status_id', true); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_sold_out_status', 'Sold Out Status'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_sold_out_status', 'Sold Out Status'); ?></div>
 								<?php echo functions::form_select_sold_out_status('sold_out_status_id', true); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
@@ -1071,7 +1070,7 @@
 			<?php foreach ($currency_codes as $currency_code) echo 'case \''. $currency_code .'\': return '. ($currency['decimals']+2) .';' . PHP_EOL; ?>
 		}
 	}
-
+/*
 	// Update prices
 	$('select[name="tax_class_id"]').on('change', 'input', function() {
 		$('input[name^="prices"]').trigger('input')
@@ -1140,6 +1139,8 @@
 			$('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', currency_gross_price)
 		})
 	}
+
+*/
 
 	// Prices
 
@@ -1598,6 +1599,8 @@
 			success: function(data) {
 				$('select[name="new_user_input_customization[value_id]"]').html('')
 				if ($('select[name="new_user_input_customization[value_id]"]').attr('disabled')) $('select[name="new_user_input_customization[value_id]"]').prop('disabled', false)
+
+
 				if (data) {
 					$('select[name="new_user_input_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>')
 					$.each(data, function(i, zone) {
@@ -1632,10 +1635,10 @@
 			alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>")
 			return
 		}
+
 		if ($(valueElement).val() == '' || $(valueElement).val() == '0') {
 			if ($(customValueElement).val() == '') {
 				alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_value', 'You must select an attribute value')); ?>")
-				return
 			}
 		} else {
 			if ($(customValueElement).val() != '') {
@@ -1651,7 +1654,6 @@
 					alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>")
 					return
 				}
-
 			} else {
 				if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').closest('tr').find('input[name$="[custom_value]"]').val() == $(customValueElement).val()) {
 					alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>")
@@ -1671,7 +1673,7 @@
 				'  </div>',
 				'  <h2>'+ $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"] option:selected').text() +'</h2>',
 				'  <?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
-				'  <div class="row">',
+				'  <div class="grid">',
 				'    <div class="col-sm-4 col-md-2">',
 				'      <div class="form-group">',
 				'        <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
@@ -1686,9 +1688,8 @@
 				'    </div>',
 				'    <div class="col-sm-4 col-md-2">',
 				'      <div class="form-group">',
-				'        <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
-				'        <div class="checkbox">',
-				'          <label><?php echo functions::form_checkbox('customizations[new_group_id][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
+				'        <label class="form-label"><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
+				'          <?php echo functions::escape_js(functions::form_checkbox('customizations[new_group_id][required]', ['1', language::translate('title_required', 'Required')], true)); ?>',
 				'        </div>',
 				'      </div>',
 				'    </div>',
@@ -1760,7 +1761,7 @@
 			'  </div>',
 			'  <h2>'+ $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"] option:selected').text() +'</h2>',
 			'  <?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
-			'  <div class="row">',
+			'  <div class="grid">',
 			'    <div class="col-sm-4 col-md-2">',
 			'      <div class="form-group">',
 			'        <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
@@ -1770,9 +1771,7 @@
 			'    <div class="col-sm-4 col-md-2">',
 			'      <div class="form-group">',
 			'        <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
-			'        <div class="checkbox">',
-			'          <label><?php echo functions::form_checkbox('customizations[new_group_id][required]', '1', true); ?> <?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
-			'        </div>',
+			'        <?php echo functions::escape_js(functions::form_checkbox('customizations[new_group_id][required]', ['1', language::translate('title_required', 'Required')], true)); ?>',
 			'      </div>',
 			'    </div>',
 			'  </div>',

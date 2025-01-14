@@ -13,7 +13,7 @@
 
 		<?php foreach ($items as $key => $item) { ?>
 		<li class="dropdown-menu-item item">
-			<div class="row">
+			<div class="grid">
 
 				<div class="col-2">
 					<?php echo functions::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. functions::escape_attr($item['name']) .'"'); ?>

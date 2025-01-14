@@ -152,7 +152,7 @@
 			<fieldset id="actions">
 				<legend><?php echo language::translate('text_change_status_for_orders', 'Change status for orders'); ?></legend>
 
-				<div class="row">
+				<div class="grid">
 					<div class="col-md-2">
 						<label><?php echo language::translate('title_from_order_status', 'From Order Status'); ?></label>
 						<?php echo functions::form_select_order_status('from_order_status_id', true); ?>

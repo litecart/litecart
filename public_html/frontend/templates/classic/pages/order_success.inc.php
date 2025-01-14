@@ -2,7 +2,7 @@
 	<div id="content">
 		{{notices}}
 
-		<div class="row">
+		<div class="grid">
 			<div class="col-md-6">
 				<section id="box-order-success" class="card" data-id="<?php echo $order['id']; ?>" data-total="<?php echo currency::format_raw($order['total'], $order['currency_code']); ?>" data-total-tax="<?php echo currency::format_raw($order['total_tax'], $order['currency_code']); ?>" data-currency-code="<?php echo $order['currency_code']; ?>" data-transaction-id="<?php echo $order['payment_transaction_id']; ?>">
 

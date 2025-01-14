@@ -14,7 +14,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 	<div class="card">
 		<div class="card-body">
-			<div class="row layout" style="margin-bottom: 0;">
+			<div class="grid" style="margin-bottom: 0;">
 				<div class="col-sm-4">
 					<div class="images">
 
@@ -24,7 +24,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						</a>
 
 						<?php if ($extra_images) { ?>
-						<div class="row">
+						<div class="grid">
 							<?php foreach ($extra_images as $extra_image) { ?>
 							<div class="col-6">
 								<a class="extra-image" href="<?php echo document::href_rlink($extra_image); ?>" data-toggle="lightbox" data-gallery="product">
@@ -114,18 +114,18 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 						<?php } else { ?>
 						<?php if ($sold_out_status) { ?>
-							<div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>">
-								<?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
-								<span class="value"><?php echo $sold_out_status['name']; ?></span>
-							</div>
+						<div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>">
+							<?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
+							<span class="value"><?php echo $sold_out_status['name']; ?></span>
+						</div>
 
-							<?php } else { ?>
-							<div class="stock-unavailable">
-								<?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
-								<span class="value"><?php echo language::translate('title_sold_out', 'Sold Out'); ?></span>
-							</div>
-							<?php } ?>
-							<?php } ?>
+						<?php } else { ?>
+						<div class="stock-unavailable">
+							<?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
+							<span class="value"><?php echo language::translate('title_sold_out', 'Sold Out'); ?></span>
+						</div>
+						<?php } ?>
+						<?php } ?>
 					</div>
 					<?php } ?>
 
@@ -134,10 +134,10 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						<?php echo functions::form_input_hidden('product_id', $product_id); ?>
 
 						<?php if (count($stock_options) > 1) { ?>
-						<div class="form-group">
-							<label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
+						<label class="form-group">
+							<div class="form-label"><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></div>
 							<?php echo form_select_product_stock_option('stock_option_id', $product_id, true); ?>
-						</div>
+						</label>
 						<?php } else if (count($stock_options) == 1) { ?>
 						<?php echo functions::form_input_hidden('stock_option_id', $stock_options[0]['stock_option_id']); ?>
 						<?php } ?>
@@ -153,8 +153,8 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						</div>
 
 						<?php if (!settings::get('catalog_only_mode')) { ?>
-						<div class="form-group">
-							<label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
+						<label class="form-group">
+							<div class="form-label"><?php echo language::translate('title_quantity', 'Quantity'); ?></div>
 							<div style="display: flex">
 								<div class="input-group" style="flex: 0 1 150px;">
 									<?php echo !empty($quantity_unit['decimals']) ? functions::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"') : functions::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"'); ?>
@@ -165,7 +165,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									<?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity_available <= 0 && !$orderable) ? ' disabled' : '') .'>'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
 								</div>
 							</div>
-						</div>
+						</label>
 						<?php } ?>
 
 						<?php echo functions::form_end(); ?>

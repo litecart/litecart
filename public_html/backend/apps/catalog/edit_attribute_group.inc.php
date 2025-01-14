@@ -89,26 +89,26 @@
 
 	<div class="card-body">
 
-		<div class="row">
+		<div class="grid">
 			<div class="col-md-6">
-				<div class="form-group">
-					<label><?php echo language::translate('title_code', 'Code'); ?></label>
+				<label class="form-group">
+					<div class="form-label"><?php echo language::translate('title_code', 'Code'); ?></div>
 					<?php echo functions::form_input_text('code', true); ?>
-				</div>
+				</label>
 			</div>
 
 			<div class="col-md-6">
-				<div class="form-group">
-					<label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
+				<label class="form-group">
+					<div class="form-label"><?php echo language::translate('title_sort_values', 'Sort Values'); ?></div>
 					<?php echo functions::form_select('sort', $sort_options, true); ?>
-				</div>
+				</label>
 			</div>
 		</div>
 
-		<div class="form-group">
-			<label><?php echo language::translate('title_name', 'Name'); ?></label>
+		<label class="form-group">
+			<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 			<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true); ?>
-		</div>
+		</label>
 
 		<h2><?php echo language::translate('title_values', 'Values'); ?></h2>
 

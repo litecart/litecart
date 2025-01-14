@@ -247,7 +247,7 @@
 		</table>
 
 		<div class="card-body">
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
 					<fieldset id="actions" disabled>
 						<legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>

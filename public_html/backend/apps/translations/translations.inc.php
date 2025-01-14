@@ -315,7 +315,7 @@
 					</td>
 					<td>
 						<pre><?php echo functions::escape_html($translation['code']); ?></pre>
-						<small style="color: #999;"><?php echo functions::form_checkbox('translations['.$key.'][html]', '1', true); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
+						<small style="color: #999;"><?php echo functions::form_checkbox('translations['.$key.'][html]', ['1', language::translate('text_html_enabled', 'HTML enabled')], true); ?></small>
 					</td>
 					<?php foreach ($_GET['languages'] as $language_code) { ?>
 					<td><?php echo functions::form_textarea('translations['.$key.'][text_'. $language_code .']', true); ?></td>
@@ -358,22 +358,22 @@
 <div id="translator-tool" style="display: none;">
 	<h2><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></h2>
 
-	<div class="row">
+	<div class="grid">
 		<div class="col-md-6">
-			<div class="form-group">
-				<label><?php echo language::translate('title_from_language', 'From Language'); ?></label>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_from_language', 'From Language'); ?></div>
 				<?php echo functions::form_select('from_language_code', $language_options, $_GET['languages'][0]); ?>
-			</div>
+			</label>
 
-			<div class="form-group">
-				<label><?php echo language::translate('title_to_language', 'To Language'); ?></label>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_to_language', 'To Language'); ?></div>
 				<?php echo functions::form_select('to_language_code', $language_options); ?>
-			</div>
+			</label>
 
-			<div class="form-group">
-				<label><?php echo language::translate('text_copy_below_to_translation_service', 'Copy below to translation service'); ?></label>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('text_copy_below_to_translation_service', 'Copy below to translation service'); ?></div>
 				<textarea class="form-input" name="source" style="height: 320px;" readonly></textarea>
-			</div>
+			</label>
 
 			<div class="btn-group btn-block">
 
@@ -389,10 +389,10 @@
 		</div>
 
 		<div class="col-md-6">
-			<div class="form-group">
-				<label><?php echo language::translate('text_paste_your_translated_result_below', 'Paste your translated result below'); ?></label>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('text_paste_your_translated_result_below', 'Paste your translated result below'); ?></div>
 				<textarea class="form-input" name="result" style="height: 455px;"></textarea>
-			</div>
+			</label>
 
 			<div>
 				<button type="button" class="btn btn-primary" name="prefill_fields"><?php echo language::translate('title_prefill_fields', 'Prefill Fields'); ?></button>

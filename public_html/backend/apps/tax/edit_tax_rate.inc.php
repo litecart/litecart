@@ -109,67 +109,67 @@
 	<div class="card-body">
 		<?php echo functions::form_begin('tax_rate_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_code', 'Code'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_code', 'Code'); ?></div>
 						<?php echo functions::form_input_text('code', true); ?>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 						<?php echo functions::form_input_text('name', true); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 
-			<div class="form-group">
-				<label><?php echo language::translate('title_description', 'Description'); ?></label>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
 				<?php echo functions::form_input_text('description', true); ?>
-			</div>
+			</label>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-4">
-					<div class="form-group">
-						<label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_tax_class', 'Tax Class'); ?></div>
 						<?php echo functions::form_select_tax_class('tax_class_id', true); ?>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-5">
-					<div class="form-group">
-						<label><?php echo language::translate('title_geo_zone', 'Geo Zone'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_geo_zone', 'Geo Zone'); ?></div>
 						<?php echo functions::form_select_geo_zone('geo_zone_id', true); ?>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-3">
-					<div class="form-group">
-						<label><?php echo language::translate('title_rate', 'Rate'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_rate', 'Rate'); ?></div>
 						<div class="input-group">
 							<?php echo functions::form_input_decimal('rate', true, 4); ?>
 							<span class="input-group-text">%</span>
 						</div>
-					</div>
+					</label>
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-5">
-					<div class="form-group">
-						<label><?php echo language::translate('title_address_type', 'Address Type'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_address_type', 'Address Type'); ?></div>
 						<div>
 							<?php echo functions::form_radio_button('address_type', ['shipping', language::translate('title_shipping_address', 'Shipping Address')], true); ?>
 							<?php echo functions::form_radio_button('address_type', ['payment', language::translate('title_payment_address', 'Payment Address')], true); ?>
 						</div>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-7">
-					<div class="form-group">
-						<label><?php echo language::translate('title_conditions', 'Conditions'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_conditions', 'Conditions'); ?></div>
 						<div class="radio">
 							<label><?php echo functions::form_checkbox('rule_companies_with_tax_id', ['1', language::translate('text_applies_to_companies_with_tax_id', 'Applies to companies with a tax ID')], true); ?></label>
 						</div>
@@ -182,7 +182,7 @@
 						<div class="radio">
 							<label><?php echo functions::form_checkbox('rule_individuals_without_tax_id', ['1', language::translate('rule_applies_to_individuals_without_tax_id', 'Applies to individuals without a tax ID')], true); ?></label>
 						</div>
-					</div>
+					</label>
 				</div>
 			</div>
 

@@ -19,7 +19,9 @@
 
 		try {
 
-			if (empty($_POST['zones'])) $_POST['zones'] = [];
+			if (empty($_POST['zones'])) {
+				$_POST['zones'] = [];
+			}
 
 			foreach ([
 				'code',
@@ -69,26 +71,26 @@
 	<?php echo functions::form_begin('form_geo_zone', 'post'); ?>
 		<div class="card-body">
 
-			<div class="row" style="max-width: 640px;">
+			<div class="grid" style="max-width: 640px;">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_code', 'Code'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_code', 'Code'); ?></div>
 						<?php echo functions::form_input_text('code', true); ?>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 						<?php echo functions::form_input_text('name', true); ?>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-12">
-					<div class="form-group">
-						<label><?php echo language::translate('title_description', 'Description'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
 						<?php echo functions::form_input_text('description', true); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 
@@ -171,12 +173,10 @@
 	let new_zone_index = 0
 	while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++
 
-	$('tfoot button[name="add"]', function(e) {
+	$('tfoot button[name="add"]').on('click', function(e) {
 		e.preventDefault()
 
 		if ($('select[name="country[code]"]').val() == '') return
-
-		let row = $(this).closest('tr')
 
 		let found = false
 		$.each($('form[name="form_geo_zone"] tbody tr'), function(i, current_row) {

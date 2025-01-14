@@ -63,13 +63,15 @@ html.dark-mode body {
 
 				<h1><?php echo language::translate('title_sign_in', 'Sign In'); ?></h1>
 
-				<div class="form-group">
+				<label class="form-group">
 					<?php echo functions::form_input_username('username', true, 'placeholder="'. language::translate('title_username_or_email_address', 'Username or Email Address') .'"'); ?>
-				</div>
+					<div class="form-label"></div>
+				</label>
 
-				<div class="form-group">
+				<label class="form-group">
 					<?php echo functions::form_input_password('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'" autocomplete="current-password"'); ?>
-				</div>
+					<div class="form-label"></div>
+				</label>
 
 				<div class="form-group">
 					<?php echo functions::form_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
@@ -77,7 +79,7 @@ html.dark-mode body {
 			</div>
 
 			<div class="card-footer">
-				<div class="row">
+				<div class="grid">
 					<div class="col-md-6 text-start">
 						<a class="btn btn-hover-outline btn-lg" href="<?php echo document::href_ilink('f:'); ?>">
 							<?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo language::translate('title_go_to_frontend', 'Go To Frontend'); ?>

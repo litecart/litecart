@@ -1368,7 +1368,7 @@
 
 	<div class="card-body">
 
-		<div class="row" style="max-width: 980px;">
+		<div class="grid" style="max-width: 1200px;">
 
 			<div class="col-lg-6">
 				<?php echo functions::form_begin('import_form', 'post', '', true); ?>
@@ -1376,8 +1376,8 @@
 					<fieldset>
 						<legend><?php echo language::translate('title_import', 'Import'); ?></legend>
 
-						<div class="form-group">
-							<label><?php echo language::translate('title_type', 'Type'); ?></label>
+						<label class="form-group">
+							<div class="form-label"><?php echo language::translate('title_type', 'Type'); ?></div>
 							<div class="form-input">
 								<?php echo functions::form_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
 								<?php echo functions::form_radio_button('type', ['brands', language::translate('title_brands', 'Brands')], true); ?>
@@ -1388,42 +1388,42 @@
 								<?php echo functions::form_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true); ?>
 								<?php echo functions::form_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
 							</div>
-						</div>
+						</label>
 
-						<div class="form-group">
-							<label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
+						<label class="form-group">
+							<div class="form-label"><?php echo language::translate('title_csv_file', 'CSV File'); ?></div>
 							<?php echo functions::form_input_file('file', 'accept=".csv, .dsv, .tab, .tsv"'); ?>
-						</div>
+						</label>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_delimiter', 'Delimiter'); ?></div>
 									<?php echo functions::form_select('delimiter', ['' => language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ',' => ',',  ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
-								</div>
+								</label>
 							</div>
 
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_enclosure', 'Enclosure'); ?></div>
 									<?php echo functions::form_select('enclosure', ['"' => '" ('. language::translate('text_default', 'default') .')'], true); ?>
-								</div>
+								</label>
 							</div>
 						</div>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_escape_character', 'Escape Character'); ?></div>
 									<?php echo functions::form_select('escapechar', ['"' => '" ('. language::translate('text_default', 'default') .')', '\\' => '\\'], true); ?>
-								</div>
+								</label>
 							</div>
 
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_charset', 'Charset'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_charset', 'Charset'); ?></div>
 									<?php echo functions::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
-								</div>
+								</label>
 							</div>
 						</div>
 
@@ -1445,8 +1445,8 @@
 					<fieldset>
 						<legend><?php echo language::translate('title_export', 'Export'); ?></legend>
 
-						<div class="form-group">
-							<label><?php echo language::translate('title_type', 'Type'); ?></label>
+						<label class="form-group">
+							<div class="form-label"><?php echo language::translate('title_type', 'Type'); ?></div>
 							<div class="form-input">
 								<?php echo functions::form_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
 								<?php echo functions::form_radio_button('type', ['brands', language::translate('title_brands', 'Brands')], true, 'data-dependencies="language"'); ?>
@@ -1457,69 +1457,69 @@
 								<?php echo functions::form_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true, 'data-dependencies="language"'); ?>
 								<?php echo functions::form_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
 							</div>
-						</div>
+						</label>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_language', 'Language'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_language', 'Language'); ?></div>
 									<?php echo functions::form_select_language('language_code', true, 'required'); ?>
-								</div>
+								</label>
 							</div>
 
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_currency', 'Currency'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_currency', 'Currency'); ?></div>
 									<?php echo functions::form_select_currency('currency_code', true, 'required'); ?>
-								</div>
+								</label>
 							</div>
 						</div>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_delimiter', 'Delimiter'); ?></div>
 									<?php echo functions::form_select('delimiter', [',' => ', ('. language::translate('text_default', 'default') .')', ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
-								</div>
+								</label>
 							</div>
 
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_enclosure', 'Enclosure'); ?></div>
 									<?php echo functions::form_select('enclosure', ['"' => '" ('. language::translate('text_default', 'default') .')'], true); ?>
-								</div>
+								</label>
 							</div>
 						</div>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_escape_character', 'Escape Character'); ?></div>
 									<?php echo functions::form_select('escapechar', ['"' => '" ('. language::translate('text_default', 'default') .')', '\\' => '\\'], true); ?>
-								</div>
+								</label>
 							</div>
 
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_charset', 'Charset'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_charset', 'Charset'); ?></div>
 									<?php echo functions::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
-								</div>
+								</label>
 							</div>
 						</div>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_line_ending', 'Line Ending'); ?></div>
 									<?php echo functions::form_select('eol', ['Win', 'Mac', 'Linux'], true); ?>
-								</div>
+								</label>
 							</div>
 
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_output', 'Output'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_output', 'Output'); ?></div>
 									<?php echo functions::form_select('output', ['screen' => language::translate('title_screen', 'Screen'), 'file' => language::translate('title_file', 'File')], true); ?>
-								</div>
+								</label>
 							</div>
 						</div>
 

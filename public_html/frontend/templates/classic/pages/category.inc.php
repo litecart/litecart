@@ -15,7 +15,7 @@
 
 				<article id="box-category">
 
-					<div class="row">
+					<div class="grid">
 						<?php if ($_GET['page'] == 1 && $image) { ?>
 						<div class="hidden-xs hidden-sm col-md-4">
 							<?php echo functions::draw_thumbnail($image, 320, 0, 'category'); ?>

@@ -72,7 +72,7 @@
 
 	<div class="card-body table-responsive">
 
-		<div class="row">
+		<div class="grid">
 			<div class="col-md-6">
 
 				<table class="table table-striped table-hover data-table">

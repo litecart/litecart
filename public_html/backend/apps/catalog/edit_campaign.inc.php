@@ -87,35 +87,35 @@
 		<div class="card-body">
 			<div style="max-width: 640px;">
 
-				<div class="row">
+				<div class="grid">
 					<div class="col-md-6">
-						<div class="form-group">
-							<label><?php echo language::translate('title_status', 'Status'); ?></label>
+						<label class="form-group">
+							<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
 							<?php echo functions::form_toggle('status', 'e/d', true); ?>
-						</div>
+						</label>
 					</div>
 
 					<div class="col-md-6">
-						<div class="form-group">
-							<label><?php echo language::translate('title_name', 'Name'); ?></label>
+						<label class="form-group">
+							<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 							<?php echo functions::form_input_text('name', true); ?>
-						</div>
+						</label>
 					</div>
 				</div>
 
-				<div class="row">
+				<div class="grid">
 					<div class="col-md-6">
-						<div class="form-group">
-							<label><?php echo language::translate('title_valid_from', 'Valid From'); ?></label>
+						<label class="form-group">
+							<div class="form-label"><?php echo language::translate('title_valid_from', 'Valid From'); ?></div>
 							<?php echo functions::form_input_datetime('date_valid_from', true); ?>
-						</div>
+						</label>
 					</div>
 
 					<div class="col-md-6">
-						<div class="form-group">
-							<label><?php echo language::translate('title_valid_to', 'Valid To'); ?></label>
+						<label class="form-group">
+							<div class="form-label"><?php echo language::translate('title_valid_to', 'Valid To'); ?></div>
 							<?php echo functions::form_input_datetime('date_valid_to', true); ?>
-						</div>
+						</label>
 					</div>
 				</div>
 

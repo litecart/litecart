@@ -2,7 +2,7 @@
 	{{breadcrumbs}}
 	{{notices}}
 
-	<div class="row layout">
+	<div class="grid">
 		<div class="col-md-6">
 
 			<section id="box-newsletter-subscribe" class="card">
@@ -15,60 +15,58 @@
 
 					<?php echo functions::form_begin('newsletter_subscribe_form', 'post', document::ilink('newsletter')); ?>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-md-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_firstname', 'First Name'); ?></div>
 									<?php echo functions::form_input_text('firstname', true); ?>
-								</div>
+								 </label>
 							</div>
 
 							<div class="col-md-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_lastname', 'Last Name'); ?></div>
 									<?php echo functions::form_input_text('lastname', true); ?>
-								</div>
+								 </label>
 							</div>
 						</div>
 
-						<div class="form-group">
-							<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+						<label class="form-group">
+							<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
 							<?php echo functions::form_input_email('email', true, 'required'); ?>
-						</div>
+						 </label>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-md-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_country', 'Country'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_country', 'Country'); ?></div>
 									<?php echo functions::form_select_country('country_code', true); ?>
-								</div>
+								 </label>
 							</div>
 
 							<div class="col-md-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_language', 'Language'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_language', 'Language'); ?></div>
 									<?php echo functions::form_select_language('language_code', true); ?>
-								</div>
+								 </label>
 							</div>
 						</div>
 
 						<?php if (settings::get('captcha_enabled')) { ?>
-						<div class="row">
+						<div class="grid">
 							<div class="col-xs-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></div>
 									<?php echo functions::form_captcha('newsletter_subscribe', 'required'); ?>
-								</div>
+								 </label>
 							</div>
 						</div>
 						<?php } ?>
 
 						<?php if ($consent) { ?>
-						<p class="consent">
-							<div class="checkbox">
-								<?php echo '<label>'. functions::form_checkbox('terms_agreed', '1', true, 'required') .' '. $consent .'</label>'; ?>
-							</div>
-						</p>
+						<div class="form-group consent">
+							<?php echo functions::form_checkbox('terms_agreed', ['1', $consent], true, 'required') .'</label>'; ?>
+						</div>
 						<?php } ?>
 
 						<?php echo functions::form_button('subscribe', language::translate('title_subscribe', 'Subscribe')); ?>
@@ -85,15 +83,15 @@
 
 					<?php echo functions::form_begin('newsletter_unsubscribe_form', 'post', document::ilink('newsletter')); ?>
 
-						<div class="form-group">
-							<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+						<label class="form-group">
+							<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
 							<?php echo functions::form_input_email('email', true, 'required'); ?>
-						</div>
+						 </label>
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-								<?php echo functions::form_captcha('newsletter_unsubscribe', 'required'); ?>
-							</div>
+						<label class="form-group">
+							<div class="form-label"><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></div>
+							<?php echo functions::form_captcha('newsletter_unsubscribe', 'required'); ?>
+						 </label>
 
 						<?php echo functions::form_button('unsubscribe', language::translate('title_unsubscribe', 'Unsubscribe')); ?>
 

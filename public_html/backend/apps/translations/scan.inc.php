@@ -177,7 +177,7 @@ table.data-table td {
 	</div>
 
 	<div class="card-body">
-		<div class="row">
+		<div class="grid">
 			<div class="col-md-4">
 				<?php echo functions::form_begin('scan_form', 'post'); ?>
 

@@ -12,9 +12,10 @@
 	<h2><?php echo language::translate('title_products', 'Products'); ?></h2>
 
 	<div class="modal-body">
-		<div class="form-group">
+		<label class="form-group">
+			<div class="form-label"><?php echo language::translate('title_search', 'Search'); ?></div>
 			<?php echo functions::form_input_text('query', true, 'placeholder="'. functions::escape_attr(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
-		</div>
+		 </label>
 
 		<table class="table table-striped table-hover data-table">
 			<thead>

@@ -1,4 +1,5 @@
 <?php
+
 	$currency_options = ['' => '-- '. language::translate('title_select', 'Select') .' --'];
 	foreach ($currencies as $currency) {
 		$currency_options[$currency['code']] = $currency['name'];
@@ -17,38 +18,38 @@
 			<?php echo functions::form_begin('region_form', 'post', document::ilink('regional_settings', ['redirect_url' => document::link()]), false, 'style="max-width: 480px;"'); ?>
 
 				<?php if (count($languages) > 1) { ?>
-				<div class="form-group">
-					<label><?php echo language::translate('title_language', 'Language'); ?></label>
+				<label class="form-group">
+					<div class="form-label"><?php echo language::translate('title_language', 'Language'); ?></div>
 					<?php echo functions::form_select('language_code', $language_options, language::$selected['code']); ?>
-				</div>
+				</label>
 				<?php } ?>
 
 				<?php if (count($currencies) > 1) { ?>
-				<div class="form-group">
-					<label><?php echo language::translate('title_currency', 'Currency'); ?></label>
+				<label class="form-group">
+					<div class="form-label"><?php echo language::translate('title_currency', 'Currency'); ?></div>
 					<?php echo functions::form_select('currency_code', $currency_options, currency::$selected['code']); ?>
-				</div>
+				</label>
 				<?php } ?>
 
-				<div class="form-group">
-					<label><?php echo language::translate('title_country', 'Country'); ?></label>
+				<label class="form-group">
+					<div class="form-label"><?php echo language::translate('title_country', 'Country'); ?></div>
 					<?php echo functions::form_select_country('country_code', customer::$data['country_code']); ?>
-				</div>
+				</label>
 
-				<div class="form-group">
-					<label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
+				<label class="form-group">
+					<div class="form-label"><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></div>
 					<?php echo functions::form_select_zone('zone_code', customer::$data['country_code'], customer::$data['zone_code']); ?>
-				</div>
+				</label>
 
-				<div class="form-group">
-					<label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
+				<label class="form-group">
+					<div class="form-label"><?php echo language::translate('title_postcode', 'Postal Code'); ?></div>
 					<?php echo functions::form_input_text('postcode', customer::$data['postcode']); ?>
-				</div>
+				</label>
 
-				<div class="form-group">
-					<label><?php echo language::translate('title_display_prices_including_tax', 'Display Prices Including Tax'); ?></label>
+				<label class="form-group">
+					<div class="form-label"><?php echo language::translate('title_display_prices_including_tax', 'Display Prices Including Tax'); ?></div>
 					<?php echo functions::form_toggle('display_prices_including_tax', 'y/n', customer::$data['display_prices_including_tax'] ? '1' : '0'); ?>
-				</div>
+				</label>
 
 				<?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-default btn-block"'); ?>
 
@@ -68,10 +69,10 @@
 				<ul class="items list-unstyled">
 					<?php foreach ($items as $key => $item) { ?>
 					<li class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo functions::escape_html($item['name']); ?>" data-price="<?php echo currency::format_raw($item['price']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">
-						<div class="row">
+						<div class="grid">
 							<div class="col-8">
 
-								<div class="row">
+								<div class="grid">
 									<div class="col-4 col-md-2">
 										<a href="<?php echo functions::escape_html($item['link']); ?>" class="thumbnail float-start" style="max-width: 64px; margin-inline-end: 1em;">
 											<img src="<?php echo document::href_rlink($item['image']['thumbnail']); ?>" alt="">
@@ -79,7 +80,7 @@
 									</div>
 
 									<div class="col-8 col-md-10">
-										<div class="row">
+										<div class="grid">
 											<div class="col-md-6">
 												<div><strong><a href="<?php echo functions::escape_html($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>
 												<?php if (!empty($item['error'])) echo '<div class="error">'. $item['error'] .'</div>'; ?>

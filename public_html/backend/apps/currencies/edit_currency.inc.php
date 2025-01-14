@@ -177,89 +177,89 @@
 		<?php echo functions::form_begin('currency_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
 			<?php if (!empty($prefillable_currency_options)) { ?>
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('text_prefill_from_the_web', 'Prefill from the web'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('text_prefill_from_the_web', 'Prefill from the web'); ?></div>
 						<?php echo functions::form_select('prefill', $prefillable_currency_options, ''); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 			<?php } ?>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_status', 'Status'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
 						<?php echo functions::form_toggle('status', $statuses, true); ?>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 						<?php echo functions::form_input_text('name', true); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_code', 'Code'); ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_code', 'Code'); ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></div>
 						<?php echo functions::form_input_text('code', true, 'required pattern="[A-Z]{3}"'); ?>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_number', 'Number'); ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_number', 'Number'); ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></div>
 						<?php echo functions::form_input_text('number', true, 'required pattern="[0-9]{3}"'); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_value', 'Value'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_value', 'Value'); ?></div>
 						<div class="input-group">
 							<?php echo functions::form_input_decimal('value', true, 4); ?>
 							<span class="input-group-text"><?php echo $store_currency->code; ?></span>
 						</div>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_decimals', 'Decimals'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_decimals', 'Decimals'); ?></div>
 						<?php echo functions::form_input_number('decimals', true); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_prefix', 'Prefix'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_prefix', 'Prefix'); ?></div>
 						<?php echo functions::form_input_text('prefix', true); ?>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_suffix', 'Suffix'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_suffix', 'Suffix'); ?></div>
 						<?php echo functions::form_input_text('suffix', true); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_priority', 'Priority'); ?></div>
 						<?php echo functions::form_input_number('priority', true); ?>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-6">

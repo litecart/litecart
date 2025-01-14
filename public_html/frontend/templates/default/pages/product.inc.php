@@ -20,7 +20,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 			<div class="card">
 				<div class="card-body">
-					<div class="row layout" style="margin-bottom: 0;">
+					<div class="grid" style="margin-bottom: 0;">
 						<div class="col-md-6">
 							<div class="images row">
 
@@ -143,19 +143,19 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									<?php echo functions::form_input_hidden('product_id', $product_id); ?>
 
 									<?php if (count($stock_options) > 1) { ?>
-									<div class="form-group">
-										<label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></div>
 										<?php echo form_select_product_stock_option('stock_option_id', $product_id, true); ?>
-									</div>
+									</label>
 									<?php } else if (count($stock_options) == 1) { ?>
 									<?php echo functions::form_input_hidden('stock_option_id', $stock_options[0]['stock_option_id']); ?>
 									<?php } ?>
 
-									<div class="row" style="margin-bottom: 0;">
+									<div class="grid" style="margin-bottom: 0;">
 										<div class="col-xl-8">
 											<?php if (!settings::get('catalog_only_mode')) { ?>
-											<div class="form-group">
-												<label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
+											<label class="form-group">
+												<div class="form-label"><?php echo language::translate('title_quantity', 'Quantity'); ?></div>
 												<div style="display: flex">
 													<div class="input-group" style="flex: 0 1 150px;">
 														<?php echo !empty($quantity_unit['decimals']) ? functions::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"') : functions::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"'); ?>
@@ -166,7 +166,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 														<?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity_available <= 0 && !$orderable) ? ' disabled' : '') .'>'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
 													</div>
 												</div>
-											</div>
+											</label>
 											<?php } ?>
 										</div>
 
@@ -237,7 +237,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			<?php if ($description || $technical_data) { ?>
 			<div class="card" style="margin: var(--gutter-size) 0;">
 				<div class="card-body">
-					<div class="row layout" style="margin-bottom: 0;">
+					<div class="grid" style="margin-bottom: 0;">
 
 						<?php if ($description) { ?>
 						<div class="col-md-<?php echo ($technical_data) ? 6 : 12; ?>">

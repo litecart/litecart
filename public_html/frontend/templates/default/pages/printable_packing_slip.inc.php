@@ -46,7 +46,7 @@ table.items tbody tr:nth-child(11) {
 
 <section class="page" data-size="A4">
 	<header class="header">
-		<div class="row">
+		<div class="grid">
 			<div class="col-6">
 				<?php echo functions::draw_image('storage://images/logotype.png', 0, 0, null, 'class="logotype" alt="'. functions::escape_attr(settings::get('store_name')) .'"'); ?>
 			</div>
@@ -62,7 +62,7 @@ table.items tbody tr:nth-child(11) {
 	<main class="content">
 
 		<div class="addresses">
-			<div class="row">
+			<div class="grid">
 				<div class="col-6">
 					<div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
 					<div class="value"><?php echo fallback($order['shipping_option']['name'], '-'); ?></div>
@@ -117,7 +117,7 @@ table.items tbody tr:nth-child(11) {
 
 		<hr>
 
-		<div class="row">
+		<div class="grid">
 			<div class="col-3">
 				<div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
 				<div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>

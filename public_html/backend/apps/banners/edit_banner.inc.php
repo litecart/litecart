@@ -103,66 +103,66 @@ table th:last-child {
 	<div class="card-body">
 		<?php echo functions::form_begin('banner_form', 'post', '', true, 'style="max-width: 640px;"'); ?>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_status', 'Status'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
 						<?php echo functions::form_toggle('status', 'e/d', true); ?>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 						<?php echo functions::form_input_text('name', true); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 
-			<div class="form-group">
-				<label><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></label>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></div>
 				<div><?php echo functions::form_select_language('languages[]', true); ?></div>
-			</div>
+			</label>
 
-			<div class="form-group">
-				<label><?php echo language::translate('title_image', 'Image'); ?></label>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_image', 'Image'); ?></div>
 				<?php echo functions::form_input_file('image', 'accept="image/*"'); ?>
 				<?php if (!empty($banner->data['image'])) echo '<div>' . $banner->data['image'] .'</div>'; ?>
-			</div>
+			</label>
 
-			<div class="form-group">
-				<label><?php echo language::translate('title_link', 'Link'); ?></label>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_link', 'Link'); ?></div>
 				<?php echo functions::form_input_url('link', true); ?>
-			</div>
+			</label>
 
-			<div class="form-group">
-				<label><?php echo language::translate('title_html', 'HTML'); ?></label>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_html', 'HTML'); ?></div>
 				<div class="form-input" style="padding: 0;">
 					<?php echo functions::form_input_code('html', true, 'placeholder="'. functions::escape_attr('<a href="$target_url"><img class="responsive" src="$image_url"></a>') .'" style="height: 150px;"'); ?>
 					<div style="padding: 0.5em; background: #efefef;">
 						<?php echo language::translate('title_aliases', 'Aliases'); ?>: <em>$uid, $key, $language_code, $image_url, $target_url</em>
 					</div>
 				</div>
-			</div>
+			</label>
 
-			<div class="form-group">
-				<label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_keywords', 'Keywords'); ?></div>
 				<?php echo functions::form_input_tags('keywords', true); ?>
-			</div>
+			</label>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></div>
 						<?php echo functions::form_input_datetime('date_valid_from', true); ?>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></div>
 						<?php echo functions::form_input_datetime('date_valid_to', true); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 

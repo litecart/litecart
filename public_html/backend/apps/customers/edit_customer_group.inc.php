@@ -68,26 +68,26 @@
 
 		<?php echo functions::form_begin('customer_group_form', 'post', null, false, 'style="max-width: 640px;"'); ?>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-4">
-					<div class="form-group">
-						<label><?php echo language::translate('title_type', 'Type'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_type', 'Type'); ?></div>
 						<?php echo functions::form_select('type', $type_options, true); ?>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-8">
-					<div class="form-group">
-						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 						<?php echo functions::form_input_text('name', true); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 
-			<div class="form-group">
-				<label><?php echo language::translate('title_description', 'Description'); ?></label>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
 				<?php echo functions::form_textarea('description', true); ?>
-			</div>
+			</label>
 
 			<div class="card-action">
 				<?php echo functions::form_button_predefined('save'); ?>

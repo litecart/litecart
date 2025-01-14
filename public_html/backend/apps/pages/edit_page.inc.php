@@ -77,37 +77,37 @@
 	<div class="card-body">
 		<?php echo functions::form_begin('pages_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_status', 'Status'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
 						<?php echo functions::form_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
-					</div>
+					</label>
 				</div>
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_priority', 'Priority'); ?></div>
 						<?php echo functions::form_input_number('priority', true); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_dock', 'Dock'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_dock', 'Dock'); ?></div>
 						<div>
-							<?php echo functions::form_checkbox('dock[]', ['menu', language::translate('text_dock_in_site_menu', 'Dock in site menu')], true); ?>
-							<?php echo functions::form_checkbox('dock[]', ['information', language::translate('text_dock_in_information', 'Dock in information')], true); ?>
+							<?php echo functions::form_radio_button('dock', ['menu', language::translate('text_dock_in_site_navigation_menu', 'Dock in site navigation menu')], true); ?>
+							<?php echo functions::form_radio_button('dock', ['information', language::translate('text_dock_in_information', 'Dock in information')], true); ?>
 						</div>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_parent', 'Parent'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_parent', 'Parent'); ?></div>
 						<?php echo functions::form_select_page('parent_id', true); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 
@@ -122,25 +122,25 @@
 			<div class="tab-content">
 				<?php foreach (array_keys(language::$languages) as $language_code) { ?>
 				<div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
-					<div class="form-group">
-						<label><?php echo language::translate('title_title', 'Title'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_title', 'Title'); ?></div>
 						<?php echo functions::form_regional_text('title['. $language_code .']', $language_code, true, ''); ?>
-					</div>
+					</label>
 
-					<div class="form-group">
-						<label><?php echo language::translate('title_content', 'Content'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_content', 'Content'); ?></div>
 						<?php echo functions::form_regional_wysiwyg('content['. $language_code .']', $language_code, true, 'style="height: 400px;"'); ?>
-					</div>
+					</label>
 
-					<div class="form-group">
-						<label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_head_title', 'Head Title'); ?></div>
 						<?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true); ?>
-					</div>
+					</label>
 
-					<div class="form-group">
-						<label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_meta_description', 'Meta Description'); ?></div>
 						<?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
-					</div>
+					</label>
 				</div>
 				<?php } ?>
 			</div>

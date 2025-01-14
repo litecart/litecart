@@ -126,61 +126,61 @@
 	<div class="card-body">
 		<?php echo functions::form_begin('order_status_form', 'post'); ?>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_name', 'Name'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 								<?php foreach ($language_codes as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-6">
 
-							<div class="row">
+							<div class="grid">
 								<div class="col-md-8">
-									<div class="form-group">
-										<label><?php echo language::translate('title_order_state', 'State'); ?></label>
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_order_state', 'State'); ?></div>
 										<?php echo functions::form_select('state', $states, true); ?>
-									</div>
+									</label>
 								</div>
 
 								<div class="col-md-4">
-									<div class="form-group">
-										<label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_priority', 'Priority'); ?></div>
 										<?php echo functions::form_input_number('priority', true); ?>
-									</div>
+									</label>
 								</div>
 							</div>
 
-							<div class="row">
+							<div class="grid">
 								<div class="col-md-6">
-									<div class="form-group">
-										<label><?php echo language::translate('title_icon', 'Icon'); ?> <a href="https://fontawesome.com/v4.7.0/icons/" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_font_icon', 'Font Icon'); ?></div>
 										<?php echo functions::form_input_text('icon', true, 'placeholder="fa-circle-thin"'); ?>
-									</div>
+									</label>
 								</div>
 
 								<div class="col-md-6">
-									<div class="form-group">
-										<label><?php echo language::translate('title_color', 'Color'); ?></label>
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_color', 'Color'); ?></div>
 										<?php echo functions::form_input_color('color', empty($_POST['color']) ? '#cccccc' : true, 'placeholder="#cccccc"'); ?>
-									</div>
+									</label>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div class="form-group">
-						<label><?php echo language::translate('title_description', 'Description'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
 						<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 50px;"'); ?>
-					</div>
+					</label>
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_properties', 'Properties'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_properties', 'Properties'); ?></div>
 
 								<div>
 									<strong><?php echo functions::form_checkbox('hidden', ['1', language::translate('text_hidden', 'Hidden')], empty($_POST['hidden']) ? '0' : '1'); ?></strong>
@@ -201,12 +201,12 @@
 									<strong><?php echo functions::form_checkbox('is_trackable', ['1', language::translate('text_is_trackable', 'Is trackable')], empty($_POST['is_trackable']) ? '0' : '1'); ?> </strong>
 									<?php echo language::translate('text_will_send_tracking_event_to_shipping_module', 'Will send a request to the shipping module for tracking the shipment.'); ?></label>
 								</div>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_stock_action', 'Stock Action'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_stock_action', 'Stock Action'); ?></div>
 
 								<div>
 									<strong><?php echo functions::form_radio_button('stock_action', ['none', language::translate('title_none', 'None')], empty($_POST['stock_action']) ? 'none' : true); ?></strong>
@@ -222,16 +222,16 @@
 									<strong><?php echo functions::form_radio_button('stock_action', ['commit', language::translate('title_commit_stock', 'Commit Stock')], true); ?> </strong>
 									<?php echo language::translate('text_commit_changes_to_the_stock', 'Commit changes to stock.'); ?></label>
 								</div>
-							</div>
+							</label>
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_priority', 'Priority'); ?></div>
 									<?php echo functions::form_input_number('priority', true); ?>
-							</div>
+								</label>
 						</div>
 					</div>
 				</div>
@@ -253,15 +253,15 @@
 						<div class="tab-content">
 							<?php foreach (array_keys(language::$languages) as $language_code) { ?>
 							<div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
-								<div class="form-group">
-									<label><?php echo language::translate('title_subject', 'Subject'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_subject', 'Subject'); ?></div>
 									<?php echo functions::form_regional_text('email_subject['. $language_code .']', $language_code, true); ?>
-								</div>
+								</label>
 
-								<div class="form-group">
-									<label><?php echo language::translate('title_message', 'Message'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_message', 'Message'); ?></div>
 									<?php echo functions::form_regional_wysiwyg('email_message['. $language_code .']', $language_code, true); ?>
-								</div>
+								</label>
 							</div>
 							<?php } ?>
 						</div>

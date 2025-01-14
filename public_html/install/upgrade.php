@@ -516,67 +516,66 @@ input[name="development_type"]:checked + div {
 
 	<h2>Application</h2>
 
-	<div class="row">
+	<div class="grid">
 		<div class="col-md-6">
-			<div class="form-group">
-				<label>MySQL/MariaDB Server</label>
+			<label class="form-group">
+				<div class="form-label">MySQL/MariaDB Server</div>
 				<div class="form-input">
 					<?php echo DB_SERVER; ?>
 				</div>
-			</div>
-		</div>
+			</label>
 
-		<div class="col-md-6">
-			<div class="form-group">
-				<label>MySQL/MariaDB Database</label>
+			<div class="col-md-6">
+				<label class="form-group">
+				<div class="form-label">MySQL/MariaDB Database</div>
 				<div class="form-input">
 					<?php echo DB_DATABASE; ?>
 				</div>
-			</div>
+			</label>
 		</div>
 	</div>
 
 	<h3>Backup</h3>
 
-	<div class="form-group">
-		<label class="form-check">
+	<label class="form-group">
+		<div class="form-label form-check">
 			<input type="checkbox" name="backup" value="true" checked> Backup my database before performing the upgrade.
-		</label>
-	</div>
+		</div>
+	</label>
 
-	<div class="row">
+	<div class="grid">
 	<?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
 		<div class="col-md-3">
-			<div class="form-group">
-				<label>Current Version</label>
+			<label class="form-group">
+				<div class="form-label">Current Version</div>
 				<div class="form-input"><?php echo PLATFORM_DATABASE_VERSION; ?></div>
-			</div>
+			</label>
 		</div>
 		<?php } else { ?>
 		<div class="col-md-3">
-			<div class="form-group">
-				<label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
+			<label class="form-group">
+				<div class="form-label">Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</div>
 				<select class="form-input" name="from_version">
 					<option value="">-- Select Version --</option>
 					<?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected' : '') .'>'. PLATFORM_NAME .' '. $version .'</option>' . PHP_EOL; ?>
 				</select>
-			</div>
+			</label>
 		</div>
 		<?php } ?>
 
-		<div class="col-md-3">
-			<div class="form-group">
-				<label>New Version</label>
+		<div class="col-md-6">
+				<label class="form-group">
+				<div class="form-label">New Version</div>
 				<div class="form-input"><?php echo PLATFORM_VERSION; ?></div>
-			</div>
+			</label>
 		</div>
 
 		<div class="col-md-6">
-			<div class="form-group">
-				<label style="margin-top: 2.25em;">
+			<label class="form-group">
+				<div class="form-label" style="margin-top: 2.25em;">
 					<input type="checkbox" class="form-check" name="skip_updates" value="0"> Skip downloading the latest updates
-				</label>
-			</div>
+				</div>
+			</label>
 		</div>
 	</div>
 

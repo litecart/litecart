@@ -169,167 +169,167 @@
 	<div class="card-body">
 		<?php echo functions::form_begin('customer_form', 'post', '', false, 'autocomplete="off"'); ?>
 
-			<div class="row" style="max-width: 960px;">
+			<div class="grid" style="max-width: 960px;">
 
 				<div class="col-md-8">
 
 					<h3><?php echo language::translate('title_sign_in_and_security', 'Sign In and Security'); ?></h3>
 					<?php if (!empty($customer->data['id'])) { ?>
-					<div class="form-group">
+					<label class="form-group">
 						<?php echo functions::form_button('sign_in', ['true', language::translate('text_sign_in_as_customer', 'Sign in as customer')], 'submit', 'class="btn btn-default btn-block"'); ?>
-					</div>
+					</label>
 					<?php } ?>
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_status', 'Status'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
 								<?php echo functions::form_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1'); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_code', 'Code'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_code', 'Code'); ?></div>
 								<?php echo functions::form_input_text('code', true); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
-					<div class="form-group">
-						<label><?php echo language::translate('title_customer_group', 'Customer Group'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_customer_group', 'Customer Group'); ?></div>
 						<?php echo functions::form_select_customer_group('group_id', true); ?>
-					</div>
+					</label>
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-8">
-							<div class="form-group">
-								<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
 								<?php echo functions::form_input_email('email', true); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-4">
-							<div class="form-group">
-								<label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_newsletter', 'Newsletter'); ?></div>
 								<?php echo functions::form_checkbox('newsletter', ['1', language::translate('title_subscribe', 'Subscribe')], true); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="grid">
 
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo !empty($customer->data['id']) ? language::translate('title_new_password', 'New Password') : language::translate('title_password', 'Password'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo !empty($customer->data['id']) ? language::translate('title_new_password', 'New Password') : language::translate('title_password', 'Password'); ?></div>
 								<?php echo functions::form_input_password_unmaskable('new_password', '', 'autocomplete="new-password"'); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_last_login', 'Last Login'); ?></div>
 								<div class="form-input" readonly><?php echo $customer->data['date_login'] ? language::strftime('datetime', $customer->data['date_login']) : '<em>'. language::translate('title_never', 'Never') .'</em>'; ?></div>
-							</div>
+							</label>
 						</div>
 					</div>
 
 					<?php if (!empty($customer->data['id'])) { ?>
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_last_ip_address', 'Last IP Address'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_last_ip_address', 'Last IP Address'); ?></div>
 								<?php echo functions::form_input_text('last_ip_address', true, 'readonly'); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></div>
 								<?php echo functions::form_input_text('last_hostname', true, 'readonly'); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 					<?php } ?>
 
 					<h3><?php echo language::translate('title_customer_details', 'Customer Details'); ?></h3>
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_company', 'Company'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_company', 'Company'); ?></div>
 								<?php echo functions::form_input_text('company', true); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></div>
 								<?php echo functions::form_input_text('tax_id', true); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_firstname', 'First Name'); ?></div>
 								<?php echo functions::form_input_text('firstname', true); ?>
-							</div>
+							</label>
 						</div>
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_lastname', 'Last Name'); ?></div>
 								<?php echo functions::form_input_text('lastname', true); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_address1', 'Address 1'); ?></div>
 								<?php echo functions::form_input_text('address1', true); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_address2', 'Address 2'); ?></div>
 								<?php echo functions::form_input_text('address2', true); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_postcode', 'Postal Code'); ?></div>
 								<?php echo functions::form_input_text('postcode', true); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_city', 'City'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_city', 'City'); ?></div>
 								<?php echo functions::form_input_text('city', true); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="grid">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_country', 'Country'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_country', 'Country'); ?></div>
 								<?php echo functions::form_select_country('country_code', true); ?>
-							</div>
+							</label>
 						</div>
 
 						<div class="col-md-6">
-							<div class="form-group">
-								<label><?php echo language::translate('title_zone', 'Zone'); ?></label>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_zone', 'Zone'); ?></div>
 								<?php echo functions::form_select_zone('zone_code', isset($_POST['country_code']) ? $_POST['country_code'] : '', true); ?>
-							</div>
+							</label>
 						</div>
 					</div>
 
@@ -337,92 +337,92 @@
 
 					<fieldset class="shipping-address"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : ''; ?>>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_company', 'Company'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_company', 'Company'); ?></div>
 									<?php echo functions::form_input_text('shipping_address[company]', true); ?>
-								</div>
+								</label>
 							</div>
 						</div>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_firstname', 'First Name'); ?></div>
 									<?php echo functions::form_input_text('shipping_address[firstname]', true); ?>
-								</div>
+								</label>
 							</div>
 
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_lastname', 'Last Name'); ?></div>
 									<?php echo functions::form_input_text('shipping_address[lastname]', true); ?>
-								</div>
+								</label>
 							</div>
 						</div>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_address1', 'Address 1'); ?></div>
 									<?php echo functions::form_input_text('shipping_address[address1]', true); ?>
-								</div>
+								</label>
 							</div>
 
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_address2', 'Address 2'); ?></div>
 									<?php echo functions::form_input_text('shipping_address[address2]', true); ?>
-								</div>
+								</label>
 							</div>
 						</div>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_postcode', 'Postal Code'); ?></div>
 									<?php echo functions::form_input_text('shipping_address[postcode]', true); ?>
-								</div>
+								</label>
 							</div>
 
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_city', 'City'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_city', 'City'); ?></div>
 									<?php echo functions::form_input_text('shipping_address[city]', true); ?>
-								</div>
+								</label>
 							</div>
 						</div>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_country', 'Country'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_country', 'Country'); ?></div>
 									<?php echo functions::form_select_country('shipping_address[country_code]', true); ?>
-								</div>
+								</label>
 							</div>
 
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></div>
 									<?php echo functions::form_select_zone(isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : $_POST['country_code'], 'shipping_address[zone_code]', true); ?>
-								</div>
+								</label>
 							</div>
 						</div>
 
-						<div class="row">
+						<div class="grid">
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_phone', 'Phone'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
 									<?php echo functions::form_input_phone('shipping_address[phone]', true); ?>
-								</div>
+								</label>
 							</div>
 
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label><?php echo language::translate('title_email', 'Email'); ?></label>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_email', 'Email'); ?></div>
 									<?php echo functions::form_input_email('shipping_address[email]', true); ?>
-								</div>
+								</label>
 							</div>
 						</div>
 
@@ -436,10 +436,10 @@
 				</div>
 
 				<div class="col-md-4">
-					<div class="form-group">
-						<label><?php echo language::translate('title_notes', 'Notes'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_notes', 'Notes'); ?></div>
 						<?php echo functions::form_textarea('notes', true, 'style="height: 450px;"'); ?>
-					</div>
+					</label>
 
 					<?php if (!empty($customer->data['id'])) { ?>
 					<table class="table table-striped table-hover data-table">

@@ -2,7 +2,7 @@
 	{{notices}}
 
 	<div id="content">
-		<div class="row layout">
+		<div class="grid">
 
 			<div class="col-md-8">
 
@@ -19,10 +19,10 @@
 							<ul class="items list-unstyled">
 								<?php foreach ($items as $key => $item) { ?>
 								<li class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo functions::escape_html($item['name']); ?>" data-price="<?php echo currency::format_raw($item['price']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">
-									<div class="row">
+									<div class="grid">
 										<div class="col-8">
 
-											<div class="row">
+											<div class="grid">
 												<div class="col-4 col-md-3">
 													<a href="<?php echo functions::escape_html($item['link']); ?>" class="float-start" style="max-width: 96px; margin-inline-end: 1em;">
 														<?php echo functions::draw_thumbnail($item['image']['original'], 96, 0, 'product'); ?>
@@ -30,7 +30,7 @@
 												</div>
 
 												<div class="col-8 col-md-9">
-													<div class="row">
+													<div class="grid">
 														<div class="col-md-6">
 															<div><strong><a href="<?php echo functions::escape_html($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>
 															<?php if (!empty($item['sku'])) echo '<div class="sku">'. $item['sku'] .'</div>'; ?>
@@ -94,19 +94,19 @@
 
 						<div class="card-body">
 
-							<div class="row">
+							<div class="grid">
 								<div class="col-4">
-									<div class="form-group">
-										<small><?php echo language::translate('title_language', 'Language'); ?></small>
+									<div class="form-label">
+										<div class="form-label"><?php echo language::translate('title_language', 'Language'); ?></div>
 										<div style="line-height: 2;"><?php echo language::$selected['name']; ?></div>
-									</div>
+										</div>
 								</div>
 
 								<div class="col-4">
-									<div class="form-group">
-										<small><?php echo language::translate('title_currency', 'Currency'); ?></small>
+									<div class="form-label">
+										<div class="form-label"><?php echo language::translate('title_currency', 'Currency'); ?></div>
 										<div style="line-height: 2;"><?php echo currency::$selected['code']; ?></div>
-									</div>
+										</div>
 								</div>
 
 								<div class="col-4">
@@ -114,26 +114,26 @@
 								</div>
 							</div>
 
-							<div class="row">
+							<div class="grid">
 								<div class="col-8">
-									<div class="form-group">
-										<small><?php echo language::translate('title_country', 'Country'); ?></small>
+									<div class="form-label">
+										<div class="form-label"><?php echo language::translate('title_country', 'Country'); ?></div>
 										<div style="line-height: 2;"><?php echo functions::form_select_country('country_code', true); ?></div>
-									</div>
+										</div>
 								</div>
 
 								<div class="col-4">
-									<div class="form-group">
-										<small><?php echo language::translate('title_postcode', 'Postal Code'); ?></small>
+									<div class="form-label">
+										<div class="form-label"><?php echo language::translate('title_postcode', 'Postal Code'); ?></div>
 										<div style="line-height: 2;"><?php echo functions::form_input_text('postcode'); ?></div>
-									</div>
+										</div>
 								</div>
 							</div>
 
-							<div class="form-group">
-								<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+							<div class="form-label">
+								<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
 								<?php echo functions::form_input_email('billing_address[email]', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
-							</div>
+								</div>
 
 							<div>
 								<?php echo functions::form_button('checkout', language::translate('title_continue_to_checkout', 'Continue To Checkout') .' '. functions::draw_fonticon('icon-arrow-right'), 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>

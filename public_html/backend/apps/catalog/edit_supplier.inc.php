@@ -79,47 +79,47 @@
 	<div class="card-body">
 		<?php echo functions::form_begin('supplier_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_code', 'Code'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_code', 'Code'); ?></div>
 						<?php echo functions::form_input_text('code', true); ?>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 						<?php echo functions::form_input_text('name', true); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 
-			<div class="form-group">
-				<label><?php echo language::translate('title_description', 'Description'); ?></label>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
 				<?php echo functions::form_textarea('description', true); ?>
-			</div>
+			</label>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
 						<?php echo functions::form_input_email('email', true, 'email', ''); ?>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-6">
-					<div class="form-group">
-						<label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
 						<?php echo functions::form_input_text('phone', true); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 
-			<div class="form-group">
-				<label><?php echo language::translate('title_link', 'Link'); ?></label>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_link', 'Link'); ?></div>
 				<?php echo functions::form_input_text('link', true); ?>
-			</div>
+			</label>
 
 			<div class="card-action">
 				<?php echo functions::form_button_predefined('save'); ?>
@@ -130,3 +130,4 @@
 		<?php echo functions::form_end(); ?>
 	</div>
 </div>
+

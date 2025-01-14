@@ -1,9 +1,9 @@
 <footer id="footer" class="hidden-print">
 	<div class="container">
-		<div class="row" style="margin-bottom: 0;">
+		<div class="grid" style="margin-bottom: 0;">
 
 			<div class="col-md-8">
-				<div class="row" style="margin-bottom: 0;">
+				<div class="grid" style="margin-bottom: 0;">
 
 					<?php if (settings::get('accounts_enabled')) { ?>
 					<section class="account col-md-3">

@@ -74,21 +74,21 @@
 	<div class="card-body">
 		<?php echo functions::form_begin('delivery_status_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-8">
-					<div class="form-group">
-						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 						<?php foreach (array_keys(language::$languages) as $language_code)  echo functions::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-8">
-					<div class="form-group">
-						<label><?php echo language::translate('title_description', 'Description'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
 						<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 50px;"'); ?>
-					</div>
+					</label>
 				</div>
 			</div>
 

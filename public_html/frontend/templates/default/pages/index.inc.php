@@ -8,7 +8,7 @@
 		</div>
 		<?php } ?>
 
-		<div class="row layout">
+		<div class="grid">
 			<div class="col-xs-6 col-md-4">
 				<?php echo functions::draw_banner('left'); ?>
 			</div>

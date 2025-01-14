@@ -44,14 +44,16 @@
 	$geo_zones = database::query(
 		"select * from ". DB_TABLE_PREFIX ."geo_zones
 		order by name asc;"
-	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
+	)->fetch_page(function($geo_zone){
 
-	foreach ($geo_zones as $key => $geo_zone) {
-		$geo_zones[$key]['num_zones'] = database::query(
+		$geo_zone['num_zones'] = database::query(
 			"select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
 			where geo_zone_id = ". (int)$geo_zone['id']
 		)->num_rows;
-	}
+
+		return $geo_zone;
+
+	}, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
 <div class="card card-app">
@@ -101,7 +103,7 @@
 			<fieldset id="actions">
 				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-				<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', 'icon-file-copy'); ?>
+				<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
 			</fieldset>
 		</div>
 

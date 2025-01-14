@@ -151,7 +151,7 @@
 </style>
 
 <div id="widget-graphs" class="widget">
-	<div class="row">
+	<div class="grid">
 		<div class="col-md-8">
 			<div class="card">
 				<div class="card-header">

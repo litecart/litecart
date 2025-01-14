@@ -5,13 +5,13 @@
 	<?php echo functions::form_begin('sign_in_form', 'post', document::ilink('account/sign_in'), false, 'style="width: 320px;"'); ?>
 		<?php echo functions::form_input_hidden('redirect_url', true); ?>
 
-		<div class="form-group">
-			<?php echo functions::form_input_email('email', true, 'required autofocus placeholder="'. language::translate('title_email_address', 'Email Address') .'" autocomplete="email"'); ?>
-		</div>
+		<label class="form-group">
+			<div class="form-label"><?php echo functions::form_input_email('email', true, 'required autofocus placeholder="'. language::translate('title_email_address', 'Email Address') .'" autocomplete="email"'); ?></div>
+		</label>
 
-		<div class="form-group">
-			<?php echo functions::form_input_password('password', '', 'required placeholder="'. language::translate('title_password', 'Password') .'" autocomplete="current-password"'); ?>
-		</div>
+		<label class="form-group">
+			<div class="form-label"><?php echo functions::form_input_password('password', '', 'required placeholder="'. language::translate('title_password', 'Password') .'" autocomplete="current-password"'); ?></div>
+		</label>
 
 		<div class="form-group">
 			<?php echo functions::form_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>

@@ -2,7 +2,7 @@
 	{{breadcrumbs}}
 	{{notices}}
 
-	<div class="row layout">
+	<div class="grid">
 		<div class="col-md-3">
 			<div id="sidebar">
 

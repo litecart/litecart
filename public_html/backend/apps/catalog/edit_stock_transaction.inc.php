@@ -87,37 +87,52 @@
 	<div class="card-body">
 		<?php echo functions::form_begin('form_stock_transaction', 'post'); ?>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-3">
-					<div class="form-group">
-						<label><?php echo language::translate('title_name', 'Name'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 						<?php echo functions::form_input_text('name', true); ?>
-					</div>
+					</label>
 				</div>
 
 				<?php if (!empty($stock_transaction->data['id'])) { ?>
 				<div class="col-md-2">
-					<div class="form-group">
-						<label><?php echo language::translate('title_updated', 'Updated'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_updated', 'Updated'); ?></div>
 						<div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['date_updated'])); ?></div>
-					</div>
+					</label>
 				</div>
 
 				<div class="col-md-2">
-					<div class="form-group">
-						<label><?php echo language::translate('title_created', 'Created'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_created', 'Created'); ?></div>
 						<div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['date_created'])); ?></div>
-					</div>
+					</label>
 				</div>
 				<?php } ?>
 			</div>
 
-			<div class="row">
+			<div class="grid">
 				<div class="col-md-7">
-					<div class="form-group">
-						<label><?php echo language::translate('title_description', 'Description'); ?></label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
 						<?php echo functions::form_textarea('description', true, 'style="height: 60px;"'); ?>
-					</div>
+					</label>
+				</div>
+			</div>
+
+			<div class="grid">
+				<div class="col-md-6">
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_date', 'Date'); ?></div>
+						<?php echo functions::form_input_date('date', true); ?>
+					</label>
+				</div>
+				<div class="col-md-6">
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_quantity', 'Quantity'); ?></div>
+						<?php echo functions::form_input_decimal('quantity', true); ?>
+					</label>
 				</div>
 			</div>
 

@@ -1,0 +1,25 @@
+/* Flexbox */
+
+.flex {
+	display: flex;
+	&:is(ul) {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	&.flex-columns {
+		flex-direction: row;
+	}
+	&.flex-rows {
+		flex-direction: column;
+	}
+	&.flex-gap {
+		gap: var(--gutter-y) var(--gutter-x);
+	}
+	&.flex-wrap {
+		flex-wrap: wrap;
+	}
+	> * {
+		flex: 1 1 auto;
+	}
+}

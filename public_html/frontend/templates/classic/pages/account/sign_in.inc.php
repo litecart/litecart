@@ -11,7 +11,7 @@
 		{{notices}}
 		{{breadcrumbs}}
 
-		<div class="row">
+		<div class="grid">
 			<section id="box-sign-in" class="card col-sm-6 col-md-4">
 
 				<div class="card-header">
@@ -22,13 +22,15 @@
 					<?php echo functions::form_begin('sign_in_form', 'post', document::ilink('account/sign_in'), false, 'style="max-width: 320px;"'); ?>
 						<?php echo functions::form_input_hidden('redirect_url', true); ?>
 
-						<div class="form-group">
+						<label class="form-group">
 							<?php echo functions::form_input_email('email', true, 'required autofocus placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
-						</div>
+							<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
+						</label>
 
-						<div class="form-group">
+						<label class="form-group">
 							<?php echo functions::form_input_password('password', '', 'required placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
-						</div>
+							<div class="form-label"><?php echo language::translate('title_password', 'Password'); ?></div>
+						</label>
 
 						<div class="form-group">
 							<?php echo functions::form_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>

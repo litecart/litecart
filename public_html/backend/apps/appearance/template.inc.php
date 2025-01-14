@@ -73,13 +73,13 @@
 	<div class="card-body">
 		<?php echo functions::form_begin('template_form', 'post', null, false, 'style="max-width: 320px;"'); ?>
 
-			<div class="form-group">
-				<label><?php echo language::translate('title_frontend_template', 'Frontend Template'); ?></label>
-					<div class="input-group">
-						<?php echo functions::form_select_template('template', empty($_POST['template']) ? settings::get('template') : true); ?>
-						<a class="btn btn-default" href="<?php echo document::href_ilink('appearance/template_settings'); ?>" title="<?php echo language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fonticon('icon-wrench'); ?></a>
-					</div>
-			</div>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_frontend_template', 'Frontend Template'); ?></div>
+				<div class="input-group">
+					<?php echo functions::form_select_template('template', empty($_POST['template']) ? settings::get('template') : true); ?>
+					<a class="btn btn-default" href="<?php echo document::href_ilink('appearance/template_settings'); ?>" title="<?php echo language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fonticon('icon-wrench'); ?></a>
+				</div>
+			</label>
 
 			<div class="card-action">
 				<?php echo functions::form_button_predefined('save'); ?>

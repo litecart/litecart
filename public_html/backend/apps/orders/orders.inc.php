@@ -452,30 +452,33 @@ table .icon-star-o:hover {
 				<li>
 					<fieldset>
 						<legend><?php echo language::translate('title_set_order_status', 'Set Order Status'); ?></legend>
-						<div class="form-group">
+						<label class="form-group">
 							<div class="input-group">
 								<?php echo functions::form_select_order_status('order_status_id', true); ?>
 								<button class="btn btn-default" name="action" value="set_order_status" type="submit" formtarget="_self">
 									<?php echo language::translate('title_set', 'Set'); ?>
 								</button>
 							</div>
-						</div>
+						</label>
 					</fieldset>
 				</li>
 
 				<li>
 					<fieldset>
 						<legend><?php echo language::translate('title_shipping', 'Shipping'); ?></legend>
-						<div class="form-group">
+
+						<div>
 							<?php echo functions::form_button('action', ['book_shipping', language::translate('title_book_shipping', 'Book Shipping')]); ?>
 						</div>
+
 					</fieldset>
 				</li>
 
 				<li>
 					<fieldset>
 						<legend><?php echo language::translate('title_payment', 'Payment'); ?></legend>
-						<div class="form-group">
+
+						<div>
 							<?php echo functions::form_button('action', ['cancel_payment', language::translate('title_cancel_payment', 'Cancel Payment')]); ?>
 						</div>
 					</fieldset>
