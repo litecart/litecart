@@ -702,7 +702,7 @@
 				}
 			}
 
-			$html .= '  <option value="'. functions::escape_attr($option[0]) .'"'. (!strcmp($option[0], $input) ? ' selected' : '') . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
+			$html .= '  <option value="'. functions::escape_attr($option[0]) .'"'. (!strcmp($option[0], $input) ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
 		}
 
 		$html .= '</select>';
@@ -767,9 +767,9 @@
 				}
 
 				if (preg_match('#\[\]$#', $name)) {
-					$html .= '  <option value="'. functions::escape_attr($option[0]) .'"'. (in_array($option[0], $input) ? ' selected' : '') . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
+					$html .= '  <option value="'. functions::escape_attr($option[0]) .'"'. (in_array($option[0], $input) ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
 				} else {
-					$html .= '  <option value="'. functions::escape_attr($option[0]) .'"'. (!strcmp($option[0], $input) ? ' selected' : '') . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
+					$html .= '  <option value="'. functions::escape_attr($option[0]) .'"'. (!strcmp($option[0], $input) ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
 				}
 			}
 
@@ -949,7 +949,7 @@
 			case 'customer':
 				return form_select_customer($name, $input, $parameters);
 
-			case 'customer_groups':
+			case 'customer_group':
 				return form_select_customer_group($name, $input);
 
 			case 'country':
@@ -1831,6 +1831,24 @@
 			where CHARACTER_SET_NAME = 'utf8mb4'
 			order by COLLATION_NAME;"
 		)->fetch_all('COLLATION_NAME');
+
+		if (preg_match('#\[\]$#', $name)) {
+			return form_select_multiple($name, $options, $input, $parameters);
+		} else {
+			array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
+			return form_select($name, $options, $input, $parameters);
+		}
+	}
+
+	function form_select_mysql_engine($name, $input=true, $parameters='') {
+
+		$options = database::query(
+			"SHOW ENGINES;"
+		)->fetch_all(function($engine){
+			if (!in_array(strtoupper($engine['Support']), ['YES', 'DEFAULT'])) return false;
+			if (!in_array($engine['Engine'], ['CSV', 'InnoDB', 'MyISAM', 'Aria'])) return false;
+			return [$engine['Engine'], $engine['Engine'] . ' -- '. $engine['Comment']];
+		});
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple($name, $options, $input, $parameters);

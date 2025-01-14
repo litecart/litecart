@@ -89,6 +89,21 @@
 		return $output;
 	}
 
+	function draw_element($name, $parameters=[], $content='') {
+
+		$parameters = implode(' ', array_map(function($key, $value) {
+
+			if ($value == '') {
+				return $key;
+			} else {
+				return $key .'="'. functions::escape_attr($value) .'"';
+			}
+
+		}, array_keys($parameters, $parameters)));
+
+		return '<'. $name . ($parameters ? ' ' . $parameters : '') .'>'. $content .'</'. $name .'>';
+	}
+
 	function draw_fonticon($icon, $parameters='') {
 
 		switch(true) {

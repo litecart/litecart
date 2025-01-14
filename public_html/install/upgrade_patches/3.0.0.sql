@@ -760,29 +760,29 @@ AND calculate
 SET o.discount = 0 - if(ot.discount, ot.discount, 0),
 o.discount_tax = 0 - if(ot.discount_tax, ot.discount_tax, 0);
 -- -----
-UPDATE `lc_order_statuses` set icon = 'icon-money-bill' where icon = 'fa-money';
+UPDATE `lc_order_statuses` SET icon = 'icon-money-bill' WHERE icon = 'fa-money';
 -- -----
-UPDATE `lc_order_statuses` set icon = 'icon-clock' where icon = 'fa-clock-o';
+UPDATE `lc_order_statuses` SET icon = 'icon-clock' WHERE icon = 'fa-clock-o';
 -- -----
-UPDATE `lc_order_statuses` set icon = 'icon-cog' where icon = 'fa-cog';
+UPDATE `lc_order_statuses` SET icon = 'icon-cog' WHERE icon = 'fa-cog';
 -- -----
-UPDATE `lc_order_statuses` set icon = 'icon-home' where icon = 'fa-home';
+UPDATE `lc_order_statuses` SET icon = 'icon-home' WHERE icon = 'fa-home';
 -- -----
-UPDATE `lc_order_statuses` set icon = 'icon-truck' where icon = 'fa-truck';
+UPDATE `lc_order_statuses` SET icon = 'icon-truck' WHERE icon = 'fa-truck';
 -- -----
-UPDATE `lc_order_statuses` set icon = 'icon-times' where icon = 'fa-times';
+UPDATE `lc_order_statuses` SET icon = 'icon-times' WHERE icon = 'fa-times';
 -- -----
-UPDATE `lc_order_statuses` set icon = 'icon-plus' where icon = 'fa-plus';
+UPDATE `lc_order_statuses` SET icon = 'icon-plus' WHERE icon = 'fa-plus';
 -- -----
-UPDATE `lc_order_statuses` set icon = 'icon-pause' where icon = 'fa-pause';
+UPDATE `lc_order_statuses` SET icon = 'icon-pause' WHERE icon = 'fa-pause';
 -- -----
-UPDATE `lc_order_statuses` set icon = 'icon-hourglass-half' where icon = 'fa-hourglass-half';
+UPDATE `lc_order_statuses` SET icon = 'icon-hourglass-half' WHERE icon = 'fa-hourglass-half';
 -- -----
-UPDATE `lc_order_statuses` set icon = 'icon-undo' where icon = 'fa-undo';
+UPDATE `lc_order_statuses` SET icon = 'icon-undo' WHERE icon = 'fa-undo';
 -- -----
-UPDATE `lc_order_statuses` set icon = 'icon-building' where icon = 'fa-building';
+UPDATE `lc_order_statuses` SET icon = 'icon-building' WHERE icon = 'fa-building';
 -- -----
-UPDATE `lc_order_statuses` set icon = 'icon-exclamation' where icon = 'fa-exclamation';
+UPDATE `lc_order_statuses` SET icon = 'icon-exclamation' WHERE icon = 'fa-exclamation';
 -- -----
 UPDATE `lc_orders_items` oi
 LEFT JOIN `lc_orders` o ON (o.id = oi.invoice_id)

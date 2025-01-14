@@ -119,14 +119,14 @@ html[dir="rtl"] .offcanvas {
 
 .navbar-toggler {
 	padding: .75em .5em;
-	.icon-bar {
+	.navbar-toggler-bar {
 		position: relative;
 		display: block;
 		width: 22px;
 		height: 2px;
 		background-color: var(--default-button-text-color);
 		transition: all 250ms ease-in-out;
-		+ .icon-bar {
+		+ .navbar-toggler-bar {
 			margin-top: 3px;
 		}
 		&:nth-of-type(2) {
@@ -138,14 +138,14 @@ html[dir="rtl"] .offcanvas {
 	}
 
 	&.toggled {
-		.icon-bar:nth-of-type(1) {
+		.navbar-toggler-bar:nth-of-type(1) {
 			top: 5px;
 			transform: rotate(45deg);
 		}
-		.icon-bar:nth-of-type(2) {
+		.navbar-toggler-bar:nth-of-type(2) {
 			background-color: transparent;
 		}
-		.icon-bar:nth-of-type(3) {
+		.navbar-toggler-bar:nth-of-type(3) {
 			top: -5px;
 			transform: rotate(-45deg);
 		}

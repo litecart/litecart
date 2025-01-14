@@ -27,9 +27,9 @@
 			<?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_cart.inc.php'); ?>
 
 			<button type="button" class="btn btn-default navbar-toggler hidden-md hidden-lg hidden-xl hidden-xxl" data-toggle="offcanvas" data-target="#offcanvas">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
+				<span class="navbar-toggler-bar"></span>
+				<span class="navbar-toggler-bar"></span>
+				<span class="navbar-toggler-bar"></span>
 			</button>
 		</div>
 	</div>

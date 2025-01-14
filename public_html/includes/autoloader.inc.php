@@ -33,21 +33,11 @@
 						'#^(cm_.*)#' => 'app://includes/modules/customer/$1.inc.php',
 						'#^(job_.*)#' => 'app://includes/modules/jobs/$1.inc.php',
 						'#^(om_.*)#' => 'app://includes/modules/order/$1.inc.php',
-						'#^(ot_.*)#' => 'app://includes/modules/order_total/$1.inc.php',
 						'#^(pm_.*)#' => 'app://includes/modules/payment/$1.inc.php',
 						'#^(sm_.*)#' => 'app://includes/modules/shipping/$1.inc.php',
 					];
 
 					$file = preg_replace(array_keys($search_replace), array_values($search_replace), $class);
-
-					if (is_file($file)) {
-						$source = file_get_contents($file);
-
-						if (!preg_match('#\#\[AllowDynamicProperties\]#', $source)) {
-							$source = preg_replace('#([ \t]*)class [a-zA-Z0-9_-]+ extends abs_module *\{(\n|\r\n?)#', '$1#[AllowDynamicProperties]$2$0', $source);
-							file_put_contents($file, $source);
-						}
-					}
 				}
 
 				switch (true) {
@@ -61,10 +51,6 @@
 
 					case (preg_match('#^om_#', $class)):
 						require 'app://includes/modules/order/' . $class . '.inc.php';
-						break;
-
-					case (preg_match('#^ot_#', $class)):
-						require 'app://includes/modules/order_total/' . $class . '.inc.php';
 						break;
 
 					case (preg_match('#^pm_#', $class)):
