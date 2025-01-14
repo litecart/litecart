@@ -161,7 +161,8 @@
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
 					<th><?php echo language::translate('title_ip_address', 'IP Address'); ?></th>
 					<th style="width: 200px;"><?php echo language::translate('title_hostname', 'Hostname'); ?></th>
-					<th class="text-end" style="width: 200px;"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
+					<th class="text-end" style="width: 200px;"><?php echo language::translate('title_date_updated', 'Date Updated'); ?></th>
+					<th class="text-end" style="width: 200px;"><?php echo language::translate('title_date_created', 'Date Created'); ?></th>
 				</tr>
 			</thead>
 
@@ -174,6 +175,7 @@
 					<td><?php echo functions::escape_html($recipient['name']); ?></td>
 					<td><?php echo $recipient['ip_address']; ?></td>
 					<td><?php echo $recipient['hostname']; ?></td>
+					<td class="text-end"><?php echo language::strftime('datetime', $recipient['date_updated']); ?></td>
 					<td class="text-end"><?php echo language::strftime('datetime', $recipient['date_created']); ?></td>
 				</tr>
 				<?php } ?>
@@ -181,7 +183,7 @@
 
 			<tfoot>
 				<tr>
-					<td colspan="6"><?php echo language::translate('title_recipients', 'Recipients'); ?>: <?php echo language::number_format($num_rows); ?></td>
+					<td colspan="8"><?php echo language::translate('title_recipients', 'Recipients'); ?>: <?php echo language::number_format($num_rows); ?></td>
 				</tr>
 			</tfoot>
 		</table>
