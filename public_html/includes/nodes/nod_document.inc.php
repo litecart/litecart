@@ -128,6 +128,29 @@
 
 		public static function after_capture() {
 
+    	// Site Tags
+			$site_tags = database::query(
+				"select * from ". DB_TABLE_PREFIX ."site_tags
+				where status
+				order by priority desc, description asc;"
+			)->each(function($site_tag){
+
+				if (!empty($site_tag['require_cookie_consent'])) {
+					if (settings::get('cookie_policy') && empty($_COOKIE['cookies_accepted'])) return;
+				}
+
+				switch ($site_tag['position']) {
+
+					case 'head':
+						self::$head_tags[] = $site_tag['content'];
+						break;
+
+					case 'body':
+						self::$foot_tags[] = $site_tag['content'];
+						break;
+				}
+			});
+
 			// JavaScript Environment
 
 			self::$jsenv['platform'] = [

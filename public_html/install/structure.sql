@@ -806,6 +806,25 @@ CREATE TABLE `lc_quantity_units_info` (
 	CONSTRAINT `quantity_unit_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
+CREATE TABLE `lc_redirects` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`immediate` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`pattern` VARCHAR(256) NOT NULL DEFAULT '',
+	`destination` VARCHAR(256) NOT NULL DEFAULT '',
+	`http_response_code` enum('301','302') NOT NULL DEFAULT '301',
+	`redirects` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`date_redirected` TIMESTAMP NULL,
+	`date_valid_from` TIMESTAMP NULL,
+	`date_valid_to` TIMESTAMP NULL,
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `pattern` (`pattern`),
+	KEY `status` (`status`),
+	KEY `immediate` (`immediate`)
+);
+-- -----
 CREATE TABLE `lc_settings` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`group_key` VARCHAR(32) NULL,
@@ -834,6 +853,22 @@ CREATE TABLE `lc_settings_groups` (
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `key` (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+-- -----
+CREATE TABLE `lc_site_tags` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`status` TINYINT(1) NOT NULL DEFAULT '0',
+	`position` ENUM('head','body') NOT NULL DEFAULT 'head',
+	`description` VARCHAR(256) NOT NULL DEFAULT '',
+	`content` TEXT NOT NULL DEFAULT '',
+	`require_cookie_consent` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`priority` TINYINT(4) NOT NULL DEFAULT '0',
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`),
+	INDEX `status` (`status`),
+	INDEX `position` (`position`),
+	INDEX `priority` (`priority`)
+);
 -- -----
 CREATE TABLE `lc_sold_out_statuses` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,

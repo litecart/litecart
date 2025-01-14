@@ -92,6 +92,41 @@ CREATE TABLE `lc_products_references` (
 	UNIQUE INDEX `code` (`product_id`, `code`, `type`, `source`, `source_type`)
 ) ENGINE=InnoDB;
 -- -----
+CREATE TABLE `lc_redirects` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`immediate` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`pattern` VARCHAR(256) NOT NULL DEFAULT '',
+	`destination` VARCHAR(256) NOT NULL DEFAULT '',
+	`http_response_code` enum('301','302') NOT NULL DEFAULT '301',
+	`redirects` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`date_redirected` TIMESTAMP NULL,
+	`date_valid_from` TIMESTAMP NULL,
+	`date_valid_to` TIMESTAMP NULL,
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `pattern` (`pattern`),
+	KEY `status` (`status`),
+	KEY `immediate` (`immediate`)
+);
+-- -----
+CREATE TABLE `lc_site_tags` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`status` TINYINT(1) NOT NULL DEFAULT '0',
+	`position` ENUM('head','body') NOT NULL DEFAULT 'head',
+	`description` VARCHAR(256) NOT NULL DEFAULT '',
+	`content` TEXT NOT NULL DEFAULT '',
+	`require_cookie_consent` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`priority` TINYINT(4) NOT NULL DEFAULT '0',
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`),
+	INDEX `status` (`status`),
+	INDEX `position` (`position`),
+	INDEX `priority` (`priority`)
+);
+-- -----
 CREATE TABLE `lc_stock_transactions` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(128) NOT NULL DEFAULT '',

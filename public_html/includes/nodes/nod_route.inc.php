@@ -20,6 +20,31 @@
 				self::$_links_cache = [];
 			}
 
+			// Redirect (Immediate)
+			$redirect = database::query(
+				"select * from ". DB_TABLE_PREFIX ."redirects
+				where status
+				and immediate = 1
+				and '". database::input($requested_url) ."' regexp pattern
+				and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
+				and (date_valid_to is null or date_valid_to > '". date('Y-m-d H:i:s') ."')
+				limit 1;"
+			)->fetch();
+
+			if ($redirect) {
+
+				database::query(
+					"update ". DB_TABLE_PREFIX ."redirects
+					set redirects = redirects + 1,
+						date_redirected = '". database::input(date('Y-m-d H:i:s')) ."'
+					where id = ". (int)$redirect['id'] .";"
+				);
+
+				http_response_code($redirect['http_response_code']);
+				header('Location: '. preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url)); // MySQL regex wrapper ''
+				exit;
+			}
+
 			event::register('after_capture', [__CLASS__, 'after_capture']);
 		}
 
@@ -225,6 +250,31 @@
 				header('X-Frame-Options: SAMEORIGIN');
 
 				readfile('app://'.$request_path);
+				exit;
+			}
+
+			// Redirect (Last Destination)
+			$redirect = database::query(
+				"select * from ". DB_TABLE_PREFIX ."redirects
+				where status
+				and immediate = 0
+				and '". database::input($requested_url) ."' regexp pattern
+				and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
+				and (date_valid_to is null or date_valid_to > '". date('Y-m-d H:i:s') ."')
+				limit 1;"
+			)->fetch();
+
+			if ($redirect) {
+
+				database::query(
+					"update ". DB_TABLE_PREFIX ."redirects
+					set redirects = redirects + 1,
+						date_redirected = '". database::input(date('Y-m-d H:i:s')) ."'
+					where id = ". (int)$redirect['id'] .";"
+				);
+
+				http_response_code($redirect['http_response_code']);
+				header('Location: '. preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url)); // MySQL regex wrapper ''
 				exit;
 			}
 
