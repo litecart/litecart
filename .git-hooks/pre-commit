@@ -1,12 +1,27 @@
-#!/bin/sh
+#!/bin/bash
 
 for hook in $(dirname "$0")/pre-commit.d/*; do
 
-    if [[ $hook == *.php ]]; then php $hook
-    elif [[ $hook == *.js ]]; then node $hook
-    elif [[ $hook == *.py ]]; then python $hook
-    elif [[ $hook == *.sh ]]; then bash $hook
-    else bash $hook
+    if [ ! -e "$hook" ]; then
+        echo "No hooks found in pre-commit.d, skipping"
+        exit
+    fi
+
+    if [[ $hook == *.php ]]; then
+        php $hook
+
+    elif [[ $hook == *.js ]]; then
+        node $hook
+
+    elif [[ $hook == *.py ]]; then
+        python $hook
+
+    elif [[ $hook == *.sh ]]; then
+        bash $hook
+
+    else
+        echo "Unknown hook: $hook"
+        exit 1
     fi
 
     RESULT=$?
