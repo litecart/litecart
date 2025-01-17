@@ -4,7 +4,7 @@
 	position: relative;
 	display: block;
 	width: 100%;
-	padding: .5em 1em;
+	padding: .75em 1em;
 	background-color: var(--input-background-color);
 	color: var(--input-text-color);
 	border: var(--input-border-size) solid var(--input-border-color);
@@ -54,7 +54,7 @@ input[type="number"] {
 
 	input[type="checkbox"] {
 		position: relative;
-		-webkit-appearance: none;
+		appearance: none;
 		background: var(--input-background-color);
 		width: 1.25em;
 		height: 1.25em;
@@ -76,7 +76,7 @@ input[type="number"] {
 
 	input[type="radio"] {
 		position: relative;
-		-webkit-appearance: none;
+		appearance: none;
 		background: var(--input-background-color);
 		height: 1.25em;
 		width: 1.25em;
@@ -192,10 +192,37 @@ input[type="number"] {
 	}
 }
 
-.form-input-feedback {
-	position: absolute;
-	inset-inline-end: 24px;
-	top: 35px;
+
+.form-toggle {
+	display: flex;
+	flex-direction: row;
+	padding: 0.5em .5em;
+	gap: 1em;
+	color: #000;
+	border-radius: var(--border-radius);
+	background: var(--input-background-color);
+
+	label {
+		flex: 0 0 auto;
+		display: inline-block;
+		border-radius: var(--border-radius);
+		padding: .25em .75em;
+		text-align: center;
+		&:has(:checked) {
+			background: var(--input-toggle-background-color);
+		}
+		&:hover:not(:has(:checked)):not(:has(:disabled)) {
+			background: #fff3;
+			cursor: pointer;
+		}
+		&:has(:focus) {
+			outline: 0;
+			border-color: var(--input-border-color-focus);
+		}
+		&:has(:disabled) {
+			opacity: .5;
+		}
+	}
 }
 
 .input-group {

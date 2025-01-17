@@ -22,7 +22,7 @@
 				break;
 
 			default:
-				throw new ErrorException('Unknown captcha set.');
+				throw new ErrorException('Unknown captcha set');
 		}
 
 		$code = '';

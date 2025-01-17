@@ -2,6 +2,7 @@
 
 .flex {
 	display: flex;
+	gap: var(--gutter-y) var(--gutter-x);
 	&:is(ul) {
 		list-style: none;
 		padding: 0;
@@ -13,8 +14,8 @@
 	&.flex-rows {
 		flex-direction: column;
 	}
-	&.flex-gap {
-		gap: var(--gutter-y) var(--gutter-x);
+	&.flex-nogap {
+		gap: none;
 	}
 	&.flex-wrap {
 		flex-wrap: wrap;

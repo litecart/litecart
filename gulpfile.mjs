@@ -5,7 +5,7 @@ import header from 'gulp-header'
 import less from 'gulp-less'
 import phplint from 'gulp-phplint'
 import rename from 'gulp-rename'
-import dartSass from 'sass'
+import * as dartSass from 'sass'
 import gulpSass from 'gulp-sass'
 import sourcemaps from '@sequencemedia/gulp-sourcemaps'
 import uglify from 'gulp-uglify'
@@ -36,7 +36,7 @@ gulp.task('less-backend', function() {
     .pipe(gulp.dest('public_html/backend/template/css/', { overwrite: true }))
 
   return gulp
-    .src(['public_html/backend/template/less/*.less', '!public_html/backend/template/less/variables*.less'])
+    .src(['public_html/backend/template/less/*.less', '!public_html/backend/template/less/vari*bles.less'])
     .pipe(sourcemaps.init())
     .pipe(less())
     .pipe(header(banner, { pkg: packageData }))

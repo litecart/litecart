@@ -37,7 +37,7 @@ INSERT INTO `lc_categories` (`id`, `parent_id`, `status`, `code`, `keywords`, `i
 (2, 1, 1, '', '', '', 0, NOW(), NOW());
 -- -----
 INSERT INTO `lc_categories_info` (`id`, `category_id`, `language_code`, `name`, `short_description`, `description`, `head_title`, `h1_title`, `meta_description`) VALUES
-(1, 1, 'en', 'Rubber Ducks', '', '', '', '', ''),
+(1, 1, 'en', 'Rubber Ducks', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nibh arcu, facilisis ac pharetra eu, porta semper ligula. Nulla dapibus nulla vehicula elit finibus bibendum. Maecenas porta neque vel pharetra accumsan. Pellentesque ut leo in leo pulvinar ullamcorper sit amet at lorem. Nulla mollis urna sed metus dapibus, nec laoreet elit tincidunt. Proin nec vestibulum elit. Duis at ipsum vitae lacus dignissim condimentum id posuere purus. Aliquam semper sit amet lacus in euismod. Suspendisse ornare faucibus nibh, a tincidunt tortor aliquam vel. Nulla vel nulla nunc. Morbi dignissim rutrum lectus, sit amet luctus purus lacinia ac. Integer nulla nulla, porttitor vel nunc non, consequat ullamcorper nunc. Nunc ornare quis leo sed consequat. Donec sed maximus felis.', '', '', ''),
 (2, 2, 'en', 'Subcategory', '', '', '', '', '');
 -- -----
 INSERT INTO `lc_categories_filters` (`id`, `category_id`, `select_multiple`, `attribute_group_id`, `priority`) VALUES

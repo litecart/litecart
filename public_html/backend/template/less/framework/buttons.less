@@ -63,13 +63,17 @@
 	&.disabled, &[disabled] { opacity: 0.5; cursor: not-allowed; }
 	[data-type="toggle"] { display: none; }
 
-	.fa {
-		margin-inline-end: .25em;
+	+ .btn {
+		margin-inline-start: .5em;
 	}
 }
 
 .btn-block {
 	width: 100%;
+	.btn + .btn {
+		margin-inline-start: 0;
+		margin-top: .5em;
+	}
 }
 
 .btn-group {

@@ -20,6 +20,8 @@
 				self::$_links_cache = [];
 			}
 
+			$requested_url = document::link($_SERVER['REQUEST_URI']);
+
 			// Redirect (Immediate)
 			$redirect = database::query(
 				"select * from ". DB_TABLE_PREFIX ."redirects
@@ -37,10 +39,12 @@
 					"update ". DB_TABLE_PREFIX ."redirects
 					set redirects = redirects + 1,
 						date_redirected = '". database::input(date('Y-m-d H:i:s')) ."'
-					where id = ". (int)$redirect['id'] .";"
+					where id = ". (int)$redirect['id'] ."
+					limit 1;"
 				);
 
 				http_response_code($redirect['http_response_code']);
+				header('X-Redirect-By: '. $redirect['id']);
 				header('Location: '. preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url)); // MySQL regex wrapper ''
 				exit;
 			}
@@ -142,10 +146,11 @@
 				self::identify();
 			}
 
+			$requested_url = document::link($_SERVER['REQUEST_URI']);
+
 			// Forward to rewritten URL (if necessary)
 			if (self::$selected) {
 
-				$requested_url = document::link($_SERVER['REQUEST_URI']);
 				$rewritten_url = document::ilink(self::$selected['resource'], $_GET);
 
 				if ($requested_url != $rewritten_url) {
@@ -199,8 +204,8 @@
 				}
 			}
 
-			// Return a static file
-			$request_path = functions::file_resolve_path(parse_url(self::$request, PHP_URL_PATH));
+			// Resolve a static resource
+			$static_path = functions::file_resolve_path(parse_url(self::$request, PHP_URL_PATH));
 
 			// Create whitelist of static folder content
 			$static_folders = [
@@ -208,24 +213,24 @@
 			];
 
 			// Tunnel an asset stored in an add-on
-			if (preg_match('#^('. implode('|', array_map(function($folder) { return preg_quote($folder, '#'); }, $static_folders)) .')#', $request_path)
-			 && is_file('app://'.$request_path) && preg_match('#\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$#', pathinfo($request_path, PATHINFO_BASENAME))) {
+			if (preg_match('#^('. implode('|', array_map(function($folder) { return preg_quote($folder, '#'); }, $static_folders)) .')#', $static_path)
+			 && is_file('app://'.$static_path) && preg_match('#\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$#', pathinfo($static_path, PATHINFO_BASENAME))) {
 
-				if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= filemtime('app://'.$request_path)) {
+				if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= filemtime('app://'.$static_path)) {
 					header('HTTP/1.1 304 Not Modified');
 					exit;
 				}
 
 				if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
 					foreach (preg_split('#\s*,\s*#', $_SERVER['HTTP_IF_NONE_MATCH'], -1, PREG_SPLIT_NO_EMPTY) as $potential_match) {
-						if (trim($potential_match, '"') == md5_file('app://'.$request_path)) {
+						if (trim($potential_match, '"') == md5_file('app://'.$static_path)) {
 							header('HTTP/1.1 304 Not Modified');
 							exit;
 						}
 					}
 				}
 
-				switch (pathinfo($request_path, PATHINFO_EXTENSION)) {
+				switch (pathinfo($static_path, PATHINFO_EXTENSION)) {
 
 					case 'css': // Not supported by mime_content_type()
 						header('Content-Type: text/css; charset='. mb_http_output());
@@ -236,20 +241,20 @@
 						break;
 
 					default:
-						header('Content-Type: '. mime_content_type('app://'.$request_path));
+						header('Content-Type: '. mime_content_type('app://'.$static_path));
 						break;
 				}
 
-				header('Content-Length: '. filesize('app://'.$request_path));
-				header('Etag: '. md5_file('app://'.$request_path));
-				header('Last-Modified: '. gmdate('D, d M Y H:i:s', filemtime('app://'.$request_path)) .' GMT');
+				header('Content-Length: '. filesize('app://'.$static_path));
+				header('Etag: '. md5_file('app://'.$static_path));
+				header('Last-Modified: '. gmdate('D, d M Y H:i:s', filemtime('app://'.$static_path)) .' GMT');
 				header('Pragma: cache');
 				header('Cache-Control: public, max-age=604800');	// 7 days
 				header('Expires: '. gmdate('D, d M Y H:i:s', strtotime('+7 days')) .' GMT');
 				header('X-Content-Type-Options: nosniff');
 				header('X-Frame-Options: SAMEORIGIN');
 
-				readfile('app://'.$request_path);
+				readfile('app://'.$static_path);
 				exit;
 			}
 
@@ -270,10 +275,12 @@
 					"update ". DB_TABLE_PREFIX ."redirects
 					set redirects = redirects + 1,
 						date_redirected = '". database::input(date('Y-m-d H:i:s')) ."'
-					where id = ". (int)$redirect['id'] .";"
+					where id = ". (int)$redirect['id'] ."
+					limit 1;"
 				);
 
 				http_response_code($redirect['http_response_code']);
+				header('X-Redirect-By: '. $redirect['id']);
 				header('Location: '. preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url)); // MySQL regex wrapper ''
 				exit;
 			}

@@ -9,7 +9,7 @@
 	}
 
 	function escape_js($string) {
-		return addcslashes((string)$string, "\"\'\r\n\\");
+		return addcslashes((string)$string, "\"'`\r\n\\");
 	}
 
 	function escape_mysql($string) {

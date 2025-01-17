@@ -59,18 +59,18 @@
 			breadcrumbs::add($category_crumb->name, document::ilink('category', ['category_id' => $category_crumb->id]));
 		}
 
-	} else if ($product->brand) {
-		document::$title[] = $product->brand->name;
-		breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
-		breadcrumbs::add($product->brand->name, document::ilink('brand', ['brand_id' => $product->brand->id]));
-
 	} else if ($product->default_category) {
 		document::$title[] = $product->default_category->name;
 		breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
 		breadcrumbs::add($product->default_category->name, document::ilink('category', ['category_id' => $product->default_category->id]));
+
+	} else if ($product->brand) {
+		document::$title[] = $product->brand->name;
+		breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
+		breadcrumbs::add($product->brand->name, document::ilink('brand', ['brand_id' => $product->brand->id]));
 	}
 
-	breadcrumbs::add($product->name, document::ilink('product', ['product_id' => $product->id]));
+	breadcrumbs::add($product->name, document::ilink('product', ['product_id' => $product->id], ['category_id', 'brand_id']));
 
 	functions::draw_lightbox();
 
@@ -178,7 +178,7 @@
 	// Sticker
 	if (!empty($product->campaign['price']) && $product->campaign['price'] > 0) {
 		$percentage = round(($product->price - $product->campaign['price']) / $product->price * 100);
-		$_page->snippets['sticker'] = '<div class="sticker sale">'. language::translate('sticker_sale', 'Sale') .' '. $percentage .'%</div>';
+		$_page->snippets['sticker'] = '<div class="sticker sale">'. language::translate('sticker_sale', 'Sale') .' -'. $percentage .'%</div>';
 	} else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
 		$_page->snippets['sticker'] = '<div class="sticker new">'. language::translate('sticker_new', 'New') .'</div>';
 	}

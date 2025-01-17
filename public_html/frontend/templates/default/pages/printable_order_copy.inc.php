@@ -1,3 +1,6 @@
+<?php
+  $page_breaks = [20, 50, 80, 110, 140];
+?>
 <style>
 .logotype {
 	max-width: 250px;
@@ -125,8 +128,11 @@ h1 {
 			</thead>
 
 			<tbody>
-				<?php $i=0; foreach ($order['items'] as $item) { ?>
-				<?php if (++$i % $items_per_page == 0) { ?>
+<?php
+	$i = 0;
+	foreach ($order['items'] as $item) {
+		if (in_array($i++, $page_breaks)) {
+?>
 			</tbody>
 		</table>
 	</main>
@@ -136,6 +142,7 @@ h1 {
 	<header>
 		<?php /* No header */ ?>
 	</header>
+
 	<main class="content">
 		<table class="items table table-striped data-table">
 			<thead>
@@ -150,7 +157,9 @@ h1 {
 			</thead>
 
 			<tbody>
-				<?php } ?>
+<?php
+		}
+?>
 				<tr>
 					<td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
 					<td style="white-space: normal;"><?php echo $item['name']; ?></td>
@@ -159,7 +168,9 @@ h1 {
 					<td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['discount'] + $item['discount_tax'] : $item['discount'], false, $order['currency_code'], $order['currency_value']); ?></td>
 					<td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['sum'] + $item['sum_tax'] : $item['sum'], false, $order['currency_code'], $order['currency_value']); ?></td>
 				</tr>
-				<?php } ?>
+<?php
+	}
+?>
 			</tbody>
 		</table>
 

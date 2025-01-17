@@ -811,6 +811,7 @@ hr {
   transform-origin: 0px 0px;
   transform: rotateX(-25deg);
   transition: 250ms;
+  overflow: hidden;
   visibility: hidden;
   opacity: 0;
 }
@@ -915,6 +916,9 @@ hr {
   padding: 1em;
   margin: 0;
 }
+.dropdown-menu-item {
+  padding: 0.75em 1em;
+}
 html[dir="rtl"] .dropdown [data-toggle="dropdown"] {
   background-position: left 1em center;
 }
@@ -928,6 +932,7 @@ tr.semi-transparent td {
 /* Flexbox */
 .flex {
   display: flex;
+  gap: var(--gutter-y) var(--gutter-x);
 }
 .flex:is(ul) {
   list-style: none;
@@ -940,8 +945,8 @@ tr.semi-transparent td {
 .flex.flex-rows {
   flex-direction: column;
 }
-.flex.flex-gap {
-  gap: var(--gutter-y) var(--gutter-x);
+.flex.flex-nogap {
+  gap: none;
 }
 .flex.flex-wrap {
   flex-wrap: wrap;
@@ -990,7 +995,7 @@ input[type="number"] {
 }
 .form-check input[type="checkbox"] {
   position: relative;
-  -webkit-appearance: none;
+  appearance: none;
   background: var(--input-background-color);
   width: 1.25em;
   height: 1.25em;
@@ -1012,7 +1017,7 @@ input[type="number"] {
 }
 .form-check input[type="radio"] {
   position: relative;
-  -webkit-appearance: none;
+  appearance: none;
   background: var(--input-background-color);
   height: 1.25em;
   width: 1.25em;
@@ -1033,7 +1038,7 @@ input[type="number"] {
   position: relative;
   display: block;
   width: 100%;
-  padding: 0.5em 1em;
+  padding: 0.75em 1em;
   background-color: var(--input-background-color);
   border: var(--input-border-size) solid var(--input-border-color);
   border-radius: var(--border-radius);
@@ -1055,7 +1060,7 @@ input[type="number"] {
   position: relative;
   display: block;
   width: 100%;
-  padding: 0.5em 1em;
+  padding: 0.75em 1em;
   background-color: var(--input-background-color);
   color: var(--input-text-color);
   border: var(--input-border-size) solid var(--input-border-color);
@@ -1126,16 +1131,41 @@ input[type="number"] {
 .form-switch input[type="checkbox"]:checked + .switch:before {
   inset-inline-start: 11px;
 }
-.form-input-feedback {
-  position: absolute;
-  inset-inline-end: 24px;
-  top: 35px;
+.form-toggle {
+  display: flex;
+  flex-direction: row;
+  padding: 0.5em 0.5em;
+  gap: 1em;
+  color: #000;
+  border-radius: var(--border-radius);
+  background: var(--input-background-color);
+}
+.form-toggle label {
+  flex: 0 0 auto;
+  display: inline-block;
+  border-radius: var(--border-radius);
+  padding: 0.25em 0.75em;
+  text-align: center;
+}
+.form-toggle label:has(:checked) {
+  background: var(--input-toggle-background-color);
+}
+.form-toggle label:hover:not(:has(:checked)):not(:has(:disabled)) {
+  background: #fff3;
+  cursor: pointer;
+}
+.form-toggle label:has(:focus) {
+  outline: 0;
+  border-color: var(--input-border-color-focus);
+}
+.form-toggle label:has(:disabled) {
+  opacity: 0.5;
 }
 .input-group {
   position: relative;
   display: block;
   width: 100%;
-  padding: 0.5em 1em;
+  padding: 0.75em 1em;
   background-color: var(--input-background-color);
   color: var(--input-text-color);
   border: var(--input-border-size) solid var(--input-border-color);
@@ -1898,7 +1928,6 @@ ul.list-inline li {
   position: relative;
   display: block;
   padding: 0.75em 1em;
-  border-radius: var(--border-radius);
   color: inherit;
   text-decoration: none;
   transition: all 125ms linear;

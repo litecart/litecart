@@ -674,6 +674,7 @@ body main {
   text-transform: uppercase;
   line-height: 100%;
   border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  box-shadow: 2px 3px 3px #0001;
 }
 #box-product .main-image .sticker.new {
   background: rgba(251, 184, 41, 0.85);

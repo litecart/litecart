@@ -13,6 +13,7 @@ body {
 	background-color: var(--sidebar-background-color);
 	box-shadow: 0 1px 1rem rgba(0, 0, 0, .05);
 	padding: var(--gutter-size);
+	border-radius: var(--border-radius);
 
 	.logotype {
 		display: block;
@@ -105,12 +106,13 @@ body {
 #top-bar {
 	display: flex;
 	padding: 0;
-	margin: 2rem;
 	list-style: none;
 	background: var(--top-background-color);
 	color: var(--top-text-color);
 	border-radius: var(--border-radius);
-		//border-bottom: 1px solid var(--default-border-color);
+	//border-bottom: 1px solid var(--default-border-color);
+	margin: 0;
+	margin-bottom: var(--gutter-size);
 
 	> li {
 		align-self: center;
@@ -291,7 +293,6 @@ body {
 
 #content {
 	flex: 1 1 auto;
-	margin: var(--gutter-size);
 
 	> h1 {
 		padding: 0 0 ~"calc(var(--gutter-size)/2)" 0;
@@ -309,8 +310,8 @@ body {
 	padding: .5em;
 	margin-inline-end: .33em;
 	line-height: 100%;
-	color: var(--app-color);
-	background: #fff5;
+	color: var(--app-icon-color);
+	background: var(--app-icon-background-color);
 	//clip-path: circle(50%);
 	//clip-path: polygon(50% 0%, 83% 12%, 100% 43%, 94% 78%, 68% 100%, 32% 100%, 6% 78%, 0% 43%, 17% 12%);
 	//clip-path: xywh(0 0 100% 100% round var(--border-radius) 0); // 2-rounded corners

@@ -4,12 +4,12 @@
 	 * This file contains PHP logic that is separated from the HTML view.
 	 * Visual changes can be made to the file found in the template folder:
 	 *
-	 *   ~/frontend/templates/default/partials/box_filter.inc.php
+	 *   ~/frontend/templates/default/partials/box_category_filter.inc.php
 	 */
 
-	$box_filter = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_filter.inc.php');
+	$box_category_filter = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_category_filter.inc.php');
 
-	$box_filter->snippets = [
+	$box_category_filter->snippets = [
 		'brands' => [],
 		'attributes' => [],
 		'sort_alternatives' => [
@@ -23,7 +23,7 @@
 	// Brands
 	if (!empty(route::$selected['route']) && route::$selected['route'] == 'f:category' && empty($_GET['brand_id'])) {
 
-		$box_filter->snippets['brands'] = database::query(
+		$box_category_filter->snippets['brands'] = database::query(
 			"select distinct b.id, b.name from ". DB_TABLE_PREFIX ."products p
 			left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
 			". (!empty($_GET['category_id']) ? " left join ". DB_TABLE_PREFIX ."products_to_categories pc on pc.product_id = p.id " : "") ."
@@ -48,7 +48,7 @@
 			left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = cf.attribute_group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
 			where category_id = ". (int)$_GET['category_id'] ."
 			order by priority;"
-		)->each(function($attribute) use (&$box_filter) {
+		)->each(function($attribute) use (&$box_category_filter) {
 
 			$attribute['values'] = database::query(
 				"select distinct cf.value_id as id, if(cf.custom_value != '', cf.custom_value, avi.name) as value from ". DB_TABLE_PREFIX ."products_attributes cf
@@ -63,8 +63,8 @@
 
 			if (!$attribute['values']) return;
 
-			$box_filter->snippets['attributes'][] = $attribute;
+			$box_category_filter->snippets['attributes'][] = $attribute;
 		});
 	}
 
-	echo $box_filter->render();
+	echo $box_category_filter->render();

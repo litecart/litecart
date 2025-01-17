@@ -251,7 +251,7 @@
 									break;
 
 								case 'string':
-									$value = "'". $flattened[$param] ."'";
+									$value = "'". database::input($flattened[$param]) ."'";
 									break;
 
 								default:

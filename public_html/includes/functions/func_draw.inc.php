@@ -148,7 +148,7 @@
 		}
 
 		switch ($icon) {
-			case 'add':         return draw_fonticon('icon-plus');
+			case 'add':         return draw_fonticon('icon-square-pen');
 			case 'cancel':      return draw_fonticon('icon-times');
 			case 'company':     return draw_fonticon('icon-building', 'style="color: #888;"');
 			case 'delete':      return draw_fonticon('icon-trash');

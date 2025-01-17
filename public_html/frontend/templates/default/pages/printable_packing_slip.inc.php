@@ -1,3 +1,6 @@
+<?php
+  $page_breaks = [20, 50, 80, 110, 140];
+?>
 <style>
 .logotype {
 	max-width: 320px;
@@ -89,27 +92,52 @@ table.items tbody tr:nth-child(11) {
 			</div>
 		</div>
 
-		<?php if (count($order['items']) <= $max_first_page_items) { ?>
-			<table class="items table table-striped data-table">
-				<thead>
-					<tr>
-						<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
-						<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-						<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
-					</tr>
-				</thead>
+		<table class="items table table-striped data-table">
+			<thead>
+				<tr>
+					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
+					<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
+					<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
+				</tr>
+			</thead>
 
-				<?php foreach (array_slice($order['items'], 0, $max_first_page_items) as $item) { ?>
-				<tbody>
-					<tr>
-						<td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
-						<td><?php echo $item['sku']; ?></td>
-						<td style="white-space: normal;"><?php echo $item['name']; ?></td>
-					</tr>
-				<?php } ?>
+<?php
+	$i = 0;
+	foreach ($order['items'] as $item) {
+		if (in_array($i++, $page_breaks)) {
+?>
 			</tbody>
 		</table>
-		<?php } ?>
+	</main>
+</section>
+
+<section class="page" data-size="A4">
+	<header class="header">
+	</header>
+
+	<main class="content">
+		<table class="items table table-striped data-table">
+			<thead>
+				<tr>
+					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
+					<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
+					<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
+				</tr>
+			</thead>
+<?php
+		}
+?>
+			<tbody>
+				<tr>
+					<td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
+					<td><?php echo $item['sku']; ?></td>
+					<td style="white-space: normal;"><?php echo $item['name']; ?></td>
+				</tr>
+<?php
+	}
+?>
+			</tbody>
+		</table>
 
 	</main>
 
@@ -147,39 +175,7 @@ table.items tbody tr:nth-child(11) {
 			</div>
 		</div>
 	</footer>
-
 </section>
-
-<?php if (count($order['items']) > 10) { ?>
-<section class="page" data-size="A4">
-
-	<header>
-		<?php /* No header */ ?>
-	</header>
-
-	<main class="content">
-		<table class="items table table-striped data-table">
-			<thead>
-				<tr>
-					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
-					<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-					<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php for ($i=10; $i<count($order['items']); $i++) { ?>
-				<tr>
-					<td><?php echo ($order['items'][$i]['quantity'] > 1) ? '<strong>'. (float)$order['items'][$i]['quantity'].'</strong>' : (float)$order['items'][$i]['quantity']; ?></td>
-					<td><?php echo $order['items'][$i]['sku']; ?></td>
-					<td style="white-space: normal;"><?php echo $order['items'][$i]['name']; ?></td>
-				</tr>
-				<?php } ?>
-			</tbody>
-		</table>
-	</main>
-
-</section>
-<?php } ?>
 
 <?php if (!empty($action_menu)) { ?>
 <div id="actions">

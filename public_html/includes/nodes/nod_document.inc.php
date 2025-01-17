@@ -287,7 +287,7 @@
 			// Reinsert internal javascript
 			if (!empty($javascript)) {
 				$javascript = implode(PHP_EOL, [
-					'<script>',
+					'<script integrity="sha256-'. base64_encode(hash('sha256', implode(PHP_EOL, $javascript), true)) .'">',
 					//'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from parser bypassing in 2024?
 					//'$(document).ready(function() {',
 					implode(PHP_EOL . PHP_EOL, $javascript),
