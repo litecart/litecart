@@ -21,10 +21,9 @@
 	};
 ?>
 
-<section id="box-category-tree" class="hidden-xs">
+<section id="box-category-tree" style="margin-bottom: 2em;">
 
 	<ul class="nav nav-stacked nav-pills">
-		<li><a class="nav-item" href="<?php echo functions::escape_html($backlink); ?>"><?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo language::translate('title_back', 'Back'); ?></a></li>
 		<?php foreach ($categories as $category) echo $draw_branch($category); ?>
 	</ul>
 

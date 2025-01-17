@@ -109,7 +109,11 @@
 		}
 	}
 
-	$language_codes = array_unique(array_merge([language::$selected['code']], [settings::get('store_language_code')], array_keys(language::$languages)));
+	$language_codes = array_unique(array_merge(
+			[language::$selected['code']],
+			[settings::get('store_language_code')],
+			array_keys(language::$languages),
+		));
 
 	$list_style_options = [
 		['columns', language::translate('title_columns', 'Columns')],
@@ -142,7 +146,7 @@
 						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
-								<?php echo functions::form_toggle('status', isset($_POST['status']) ? $_POST['status'] : '0', 'e/d'); ?>
+								<?php echo functions::form_toggle('status', 'e/d', true); ?>
 							</label>
 
 							<label class="form-group">
@@ -203,7 +207,7 @@
 						<div class="col-md-4">
 							<div id="image">
 								<div style="margin-bottom: 15px;">
-									<?php echo functions::draw_thumbnail($category->data['image'], 480, 0, 'category'); ?>
+									<?php echo functions::draw_thumbnail('storage://images/' . $category->data['image'], 480, 0, 'category'); ?>
 								</div>
 
 								<label class="form-group">
@@ -224,8 +228,10 @@
 
 					<?php if (count($language_codes) > 1) { ?>
 					<nav class="nav nav-tabs">
-						<?php foreach ($language_codes as $language) { ?>
-						<a class="nav-link<?php if ($language_code == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language_code; ?>"><?php echo language::$languages[$language_code]['name']; ?></a>
+						<?php foreach ($language_codes as $language_code) { ?>
+						<a class="nav-link<?php if ($language_code == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language_code; ?>">
+							<?php echo language::$languages[$language_code]['name']; ?>
+						</a>
 						<?php } ?>
 					</nav>
 					<?php } ?>

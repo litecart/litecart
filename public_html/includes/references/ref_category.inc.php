@@ -65,6 +65,14 @@
 				case 'main_category':
 				case 'ancestor':
 
+					//$this->_data['ancestor'] = $this;
+
+					//while ($this->_data['ancestor']->parent_id) {
+					//	$this->_data['ancestor'] = $this->_data['ancestor']->parent;
+					//}
+
+					//$this->_data['main_category'] = &$this->_data['ancestor'];
+
 					$this->_data['ancestor'] = database::query(
 						"select t2.id from (
 							select @r as _id,
@@ -80,13 +88,6 @@
 					)->fetch(function($category){
 						return reference::category($category['id'], $this->_language_codes[0]);
 					});
-
-					$this->_data['main_category'] = &$this->_data['ancestor'];
-					$this->_data['ancestor'] = $this;
-
-					while ($this->_data['ancestor']->parent_id) {
-						$this->_data['ancestor'] = $this->_data['ancestor']->parent;
-					}
 
 					$this->_data['main_category'] = &$this->_data['ancestor'];
 

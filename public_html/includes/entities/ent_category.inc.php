@@ -125,34 +125,34 @@
 				limit 1;"
 			);
 
-			foreach (array_keys(language::$languages) as $language_code) {
+			foreach (language::$languages as $language) {
 
-				$categories_info = database::query(
+				$info = database::query(
 					"select * from ". DB_TABLE_PREFIX ."categories_info
 					where category_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
+					and language_code = '". database::input($language['code']) ."'
 					limit 1;"
 				)->fetch();
 
-				if (!$category_info) {
+				if (!$info) {
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."categories_info
 						(category_id, language_code)
-						values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
+						values (". (int)$this->data['id'] .", '". database::input($language['code']) ."');"
 					);
 				}
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."categories_info
-					set name = '". database::input($this->data['name'][$language_code]) ."',
-						short_description = '". database::input($this->data['short_description'][$language_code]) ."',
-						description = '". database::input($this->data['description'][$language_code], true) ."',
-						head_title = '". database::input($this->data['head_title'][$language_code]) ."',
-						h1_title = '". database::input($this->data['h1_title'][$language_code]) ."',
-						meta_description = '". database::input($this->data['meta_description'][$language_code]) ."',
-						synonyms = '". database::input($this->data['synonyms'][$language_code]) ."'
+					set name = '". database::input($this->data['name'][$language['code']]) ."',
+						short_description = '". database::input($this->data['short_description'][$language['code']]) ."',
+						description = '". database::input($this->data['description'][$language['code']], true) ."',
+						head_title = '". database::input($this->data['head_title'][$language['code']]) ."',
+						h1_title = '". database::input($this->data['h1_title'][$language['code']]) ."',
+						meta_description = '". database::input($this->data['meta_description'][$language['code']]) ."',
+						synonyms = '". database::input($this->data['synonyms'][$language['code']]) ."'
 						where category_id = ". (int)$this->data['id'] ."
-						and language_code = '". database::input($language_code) ."'
+						and language_code = '". database::input($language['code']) ."'
 					limit 1;"
 				);
 			}
@@ -217,28 +217,18 @@
 				return;
 			}
 
-			$image = new ent_image($file);
-
-			if (!empty($filename)) {
-				$filename = 'categories/'. $filename;
-			} else {
-				$filename = 'categories/'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type;
-			}
-
-			$fullpath = FS_DIR_STORAGE . 'images/' . $filename;
-
 			if (!$this->data['id']) {
 				$this->save();
 			}
 
-			if (!is_dir('storage://images/categories/')) {
-				mkdir('storage://images/categories/', 0777);
+			if (!empty($filename)) {
+				$filename = 'categories/'. $filename;
+			} else {
+				$filename = 'categories/'. $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type;
 			}
 
-			$image = new ent_image($file);
-
-			if (!$filename) {
-				$filename = 'categories/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type;
+			if (!is_dir('storage://images/categories/')) {
+				mkdir('storage://images/categories/', 0777);
 			}
 
 			if (is_file('storage://images/' . $filename)) {
@@ -252,7 +242,9 @@
 				$image->resample($width, $height, 'FIT_ONLY_BIGGER');
 			}
 
-			if (!$image->save('storage://images/' . $filename, 90)) return false;
+			if (!$image->save('storage://images/' . $filename, 90)) {
+				throw new Exception('Failed saving image');
+			}
 
 			functions::image_delete_cache('storage://images/' . $filename);
 
