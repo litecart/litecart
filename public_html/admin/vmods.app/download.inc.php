@@ -15,7 +15,7 @@
     header('Cache-Control: must-revalidate');
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename='. preg_replace('#\.disabled$#', '.xml', basename($_GET['vmod'])));
+    header('Content-Disposition: attachment; filename='. basename($_GET['vmod_id']) .'.xml');
     header('Content-Length: ' . filesize($file));
     header('Expires: 0');
 
