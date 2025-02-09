@@ -12,6 +12,13 @@
     $_GET['sort'] = 'relevance';
   }
 
+  // Halt on invalid characters
+  if (!in_array(language::$selected['code'], ['ja', 'zh', 'ko']) && preg_match('#[^\p{L}\p{N}\p{Zs}\p{P}\p{S}\p{M}]#u', $_GET['query'])) {
+    http_response_code(400);
+    include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+    return;
+  }
+
   $_GET['query'] = trim($_GET['query']);
 
   document::$snippets['title'][] = !empty($_GET['query']) ? sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])) : language::translate('title_search_results', 'Search Results');
