@@ -141,9 +141,21 @@
         $this->write("RCPT TO: <$recipient>\r\n", 250);
       }
 
-      $this->write("DATA\r\n", 354)
-           ->write("$data\r\n")
-           ->write(".\r\n", 250);
+      $this->write("DATA\r\n", 354);
+
+      // Split into segments of data to avoid exceeding the maximum line length
+      $data_lines = preg_split('#\r\n?|\n#', $data);
+
+      foreach ($data_lines as $line) {
+        $line = rtrim($line, "\r\n");
+        while (strlen($line) > 256) {
+          $this->write(substr($line, 0, 256) . "\r\n");
+          $line = substr($line, 256);
+        }
+        $this->write($line . "\r\n");
+      }
+
+      $this->write(".\r\n", 250);
 
       return true;
     }
