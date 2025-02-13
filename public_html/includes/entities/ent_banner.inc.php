@@ -23,6 +23,8 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
+			$this->data['languages'] = [];
+
 			$this->previous = $this->data;
 		}
 
@@ -58,18 +60,19 @@
 			$this->data['keywords'] = implode(',', $this->data['keywords']);
 
 			if (!$this->data['id']) {
+
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."banners
 					(date_created)
 					values ('". database::input(date('Y-m-d H:i:s')) ."');"
 				);
+
 				$this->data['id'] = database::insert_id();
 			}
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."banners
-				set
-					status = ". (int)$this->data['status'] .",
+				set status = ". (int)$this->data['status'] .",
 					name = '". database::input($this->data['name']) ."',
 					languages = '". implode(',', database::input($this->data['languages'])) ."',
 					link = '". database::input($this->data['link']) ."',
@@ -127,7 +130,9 @@
 				limit 1;"
 			);
 
-			if (file_exists('storage://images/' . $this->data['image'])) unlink('storage://images/' . $this->data['image']);
+			if ($this->data['image'] && is_file('storage://images/' . $this->data['image'])) {
+				unlink('storage://images/' . $this->data['image']);
+			}
 
 			$this->reset();
 

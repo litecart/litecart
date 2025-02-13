@@ -95,11 +95,13 @@
 
 			// Group
 			if (!$this->data['id']) {
+
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."attribute_groups
 					(date_created)
 					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
 				);
+
 				$this->data['id'] = database::insert_id();
 			}
 
@@ -115,26 +117,28 @@
 			// Group info
 			foreach (array_keys(language::$languages) as $language_code) {
 
-				$group_info = database::query(
+				$info = database::query(
 					"select id from ". DB_TABLE_PREFIX ."attribute_groups_info
 					where group_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language_code) ."'
 					limit 1;"
 				)->fetch();
 
-				if (!$group_info) {
+				if (!$info) {
+
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."attribute_groups_info
 						(group_id, language_code)
 						values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
 					);
-					$group_info['id'] = database::insert_id();
+
+					$info['id'] = database::insert_id();
 				}
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."attribute_groups_info
-					set name = '". database::input($this->data['name'][$language_code]) ."'
-					where id = ". (int)$group_info['id'] ."
+					set name = '". database::input(fallback($this->data['name'][$language_code])) ."'
+					where id = ". (int)$info['id'] ."
 					and group_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language_code) ."'
 					limit 1;"
@@ -235,7 +239,7 @@
 			// Check category filters for attribute
 			if (database::query(
 				"select id from ". DB_TABLE_PREFIX ."categories_filters
-				where group_id = ". (int)$this->data['id'] .";"
+				where attribute_group_id = ". (int)$this->data['id'] .";"
 			)->num_rows) {
 				throw new Exception('Cannot delete group linked to products');
 			}

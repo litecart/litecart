@@ -100,7 +100,7 @@
 
 	function file_is_binary($file) {
 
-		$fh = fopen($file, "r");
+		$fh = fopen($file, 'r');
 		$block = fread($fh, 512);
 		fclose($fh);
 

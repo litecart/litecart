@@ -17,29 +17,30 @@
 			<div class="card-body">
 				<?php echo functions::form_begin('customer_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
+				<div class="form-grid">
+
 					<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
-					<div class="grid">
-						<?php if (settings::get('customer_field_company')) { ?>
 						<div class="col-6">
+							<?php if (settings::get('customer_field_company')) { ?>
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_company_name', 'Company Name'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</div>
 								<?php echo functions::form_input_text('company', true); ?>
 							</label>
+							<?php } ?>
 						</div>
-						<?php } ?>
 
-						<?php if (settings::get('customer_field_tax_id')) { ?>
 						<div class="col-6">
+							<?php if (settings::get('customer_field_tax_id')) { ?>
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_tax_id', 'Tax ID'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</div>
 								<?php echo functions::form_input_text('tax_id', true); ?>
 							</label>
+							<?php } ?>
 						</div>
-						<?php } ?>
-					</div>
+
 					<?php } ?>
 
-					<div class="grid">
+
 						<div class="col-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_firstname', 'First Name'); ?></div>
@@ -52,9 +53,7 @@
 								<?php echo functions::form_input_text('lastname', true, 'required'); ?>
 							</label>
 						</div>
-					</div>
 
-					<div class="grid">
 						<div class="col-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_address1', 'Address 1'); ?></div>
@@ -68,9 +67,7 @@
 								<?php echo functions::form_input_text('address2', true); ?>
 							</label>
 						</div>
-					</div>
 
-					<div class="grid">
 						<div class="col-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_postcode', 'Postal Code'); ?></div>

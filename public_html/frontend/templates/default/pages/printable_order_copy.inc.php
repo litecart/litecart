@@ -178,22 +178,22 @@ h1 {
 
 			<div id="subtotal" class="summary">
 				<div class="title"><?php echo language::translate('title_subtotal', 'Subtotal'); ?></div>
-				<div class="amount"><?php echo currency::format($_POST['discount'] ?? 0, true, $order['currency_code'], $order['currency_value']); ?></div>
+				<div class="amount"><?php echo currency::format(fallback($_POST['discount'], 0), true, $order['currency_code'], $order['currency_value']); ?></div>
 			</div>
 
 			<div id="total-discount" class="summary">
 				<div class="title"><?php echo language::translate('title_total_discount', 'Total Discount'); ?></div>
-				<div class="amount"><?php echo currency::format($_POST['discount'] ?? 0, true, $order['currency_code'], $order['currency_value']); ?></div>
+				<div class="amount"><?php echo currency::format(fallback($_POST['discount'], 0), true, $order['currency_code'], $order['currency_value']); ?></div>
 			</div>
 
 			<div id="total-tax" class="summary">
 				<div class="title"><?php echo language::translate('title_total_tax', 'Total Tax'); ?></div>
-				<div class="amount"><?php echo currency::format($_POST['total_tax'] ?? 0, true, $order['currency_code'], $order['currency_value']); ?></div>
+				<div class="amount"><?php echo currency::format(fallback($_POST['total_tax'], 0), true, $order['currency_code'], $order['currency_value']); ?></div>
 			</div>
 
 			<div id="grand-total" class="summary">
 				<div class="title"><?php echo language::translate('title_grand_total', 'Grand Total'); ?></div>
-				<div class="amount"><?php echo currency::format_html($_POST['total'] ?? 0, true, $order['currency_code'], $order['currency_value']); ?></div>
+				<div class="amount"><?php echo currency::format_html(fallback($_POST['total'], 0), true, $order['currency_code'], $order['currency_value']); ?></div>
 			</div>
 		</div>
 	</main>

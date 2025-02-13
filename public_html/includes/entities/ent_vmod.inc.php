@@ -17,6 +17,7 @@
 
 			$this->data = [
 				'id' => null,
+				'file' => null,
 				'status' => 0,
 				'name' => '',
 				'description' => '',
@@ -24,11 +25,10 @@
 				'author' => '',
 				'settings' => [],
 				'aliases' => [],
-				'files' => [],
 				'install' => '',
 				'uninstall' => '',
 				'upgrades' => [],
-				'file' => null,
+				'files' => [],
 				'filename' => null,
 				'date_updated' => null,
 				'date_created' => null,

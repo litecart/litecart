@@ -21,27 +21,39 @@
 						<?php echo functions::form_begin('sign_in_form', 'post', document::ilink('account/sign_in')); ?>
 							<?php echo functions::form_input_hidden('redirect_url', true); ?>
 
-							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
-								<?php echo functions::form_input_email('email', true, 'placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
-							</label>
+							<div class="form-grid">
 
-							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_password', 'Password'); ?></div>
-								<?php echo functions::form_input_password('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
-							</label>
+								<div class="col-12">
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
+										<?php echo functions::form_input_email('email', true, 'placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
+									</label>
+								</div>
 
-							<label class="form-group">
-								<?php echo functions::form_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
-							</label>
+								<div class="col-12">
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_password', 'Password'); ?></div>
+										<?php echo functions::form_input_password('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
+									</label>
+								</div>
 
-							<div>
-								<?php echo functions::form_button('sign_in', language::translate('title_sign_in', 'Sign In'), 'submit', 'class="btn btn-default btn-block"'); ?>
+								<div class="col-12">
+									<label class="form-group">
+										<?php echo functions::form_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
+									</label>
+								</div>
+
+								<div class="col-12">
+									<?php echo functions::form_button('sign_in', language::translate('title_sign_in', 'Sign In'), 'submit', 'class="btn btn-default btn-block"'); ?>
+								</div>
+
 							</div>
 
-							<p class="text-center">
-								<a href="<?php echo document::ilink('account/reset_password', ['email' => fallback($_POST['email'])]); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
-							</p>
+							<div class="text-center">
+								<a href="<?php echo document::ilink('account/reset_password', ['email' => fallback($_POST['email'])]); ?>">
+									<?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?>
+								</a>
+							</div>
 
 						<?php echo functions::form_end(); ?>
 					</div>
@@ -49,7 +61,7 @@
 
 				<section id="box-login-create" class="card col-md-6" style="margin-bottom: 0;">
 					<div class="card-header">
-						<h2 class="card-title"><?php echo language::translate('title_create_an_account', 'Create an Account'); ?></h2>
+						<h2 class="card-title"><?php echo language::translate('title_sign_up', 'Sign Up'); ?></h2>
 					</div>
 
 					<div class="card-body">
@@ -62,7 +74,7 @@
 						</ul>
 
 						<div>
-							<a class="btn btn-default" href="<?php echo document::href_ilink('account/sign_up'); ?>"><?php echo language::translate('title_register_now', 'Register Now'); ?></a>
+							<a class="btn btn-default" href="<?php echo document::href_ilink('account/sign_up'); ?>"><?php echo language::translate('title_sign_up', 'Sign Up'); ?></a>
 						</div>
 					</div>
 				</section>

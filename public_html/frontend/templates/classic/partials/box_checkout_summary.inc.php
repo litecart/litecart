@@ -17,7 +17,6 @@
 
 	<table class="table table-striped table-bordered data-table">
 		<tbody>
-
 			<?php if ($tax_total) { ?>
 			<tr>
 				<td class="text-end" style="color: #999;"><?php echo $incl_excl_tax; ?>:</td>

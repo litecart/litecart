@@ -80,11 +80,11 @@
 .icons {
 	margin-bottom: 2em;
 }
-.icons .icon {
+.icons .favicon {
 	display: inline-block;
 	text-align: center;
 }
-.icons .icon:not(:first-child) {
+.icons .favicon:not(:first-child) {
 	margin-left: .5em;
 }
 .icons .thumbnail {
@@ -109,7 +109,7 @@
 
 				<?php foreach ($thumbnail_sizes as $size) { ?>
 				<?php if (is_file($icon = FS_DIR_STORAGE . 'images/favicons/favicon-'.$size.'x'.$size.'.png')) { ?>
-				<div class="icon">
+				<div class="favicon">
 					<img class="thumbnail" src="<?php echo document::href_rlink($icon); ?>" alt="">
 					<div><?php echo basename($icon); ?></div>
 				</div>
@@ -117,7 +117,7 @@
 				<?php } ?>
 
 				<?php if (is_file($icon = 'storage://images/favicons/favicon.ico')) { ?>
-				<div class="icon">
+				<div class="favicon">
 					<img class="thumbnail" src="data:image/x-icon;base64,<?php echo base64_encode(file_get_contents($icon)); ?>" width="48" height="48" alt="">
 					<div><?php echo basename($icon); ?></div>
 				</div>

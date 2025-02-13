@@ -21,10 +21,15 @@
 			],
 			'rewrite' => function(ent_link $link, $language_code) {
 
-				if (empty($link->query['product_id'])) return;
+				if (empty($link->query['product_id'])) {
+					return;
+				}
 
 				$product = reference::product($link->query['product_id'], $language_code);
-				if (empty($product->id)) return $link;
+
+				if (empty($product->id)) {
+					return $link;
+				}
 
 				$new_path = '';
 

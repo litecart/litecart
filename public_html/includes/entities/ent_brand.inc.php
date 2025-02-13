@@ -69,11 +69,13 @@
 		public function save() {
 
 			if (!$this->data['id']) {
+
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."brands
 					(date_created)
 					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
 				);
+
 				$this->data['id'] = database::insert_id();
 			}
 
@@ -81,47 +83,49 @@
 			$this->data['keywords'] = array_unique($this->data['keywords']);
 			$this->data['keywords'] = implode(',', $this->data['keywords']);
 
-			database::prepare(
+			database::query(
 				"update ". DB_TABLE_PREFIX ."brands
-				set status = :status,
-					featured = :featured,
-					code = :code,
-					name = :name,
-					image = :image,
-					keywords = :keywords
-				where id = :id
+				set status = '". database::input($this->data['status']) ."',
+					featured = '". database::input($this->data['featured']) ."',
+					code = '". database::input($this->data['code']) ."',
+					name = '". database::input($this->data['name']) ."',
+					image = '". database::input($this->data['image']) ."',
+					keywords = '". database::input($this->data['keywords']) ."'
+				where id = ". (int)$this->data['id'] ."
 				limit 1;"
-			)->bind($this->data)->execute();
+			);
 
 			foreach (array_keys(language::$languages) as $language_code) {
 
-				$brand_info = database::query(
+				$info = database::query(
 					"select * from ". DB_TABLE_PREFIX ."brands_info
-					where brand_id = :id
+					where brand_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language_code) ."'
 					limit 1;"
 				, $this->data)->fetch_all();
 
-				if (!$brand_info) {
-					database::prepare(
+				if (!$info) {
+					database::query(
 						"insert into ". DB_TABLE_PREFIX ."brands_info
 						(brand_id, language_code)
-						values (:id, '". database::input($language_code) ."');"
-					)->bind($this->data)->execute();
+						values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
+					);
+
+					$info['id'] = database::insert_id();
 				}
 
-				database::prepare(
+				database::query(
 					"update ". DB_TABLE_PREFIX ."brands_info
-					set short_description = :short_description[$language_code],
-						description = :description[$language_code],
-						head_title = :head_title[$language_code],
-						h1_title = :h1_title[$language_code],
-						meta_description = :meta_description[$language_code],
-						link = :link[$language_code]
-					where brand_id = :id
+					set short_description = '". database::input(fallback($this->data['short_description'][$language_code])) ."',
+						description = '". database::input(fallback($this->data['description'][$language_code])) ."',
+						head_title = '". database::input(fallback($this->data['head_title'][$language_code])) ."',
+						h1_title = '". database::input(fallback($this->data['h1_title'][$language_code])) ."',
+						meta_description = '". database::input(fallback($this->data['meta_description'][$language_code])) ."',
+						link = '". database::input(fallback($this->data['link'][$language_code])) ."'
+					where brand_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language_code) ."'
 					limit 1;"
-				)->bind($this->data, ['language_code' => $language_code])->execute();
+				);
 			}
 
 			$this->previous = $this->data;
@@ -161,11 +165,11 @@
 
 			$image->save('storage://images/' . $filename, 90);
 
-			database::prepare(
+			database::query(
 				"update ". DB_TABLE_PREFIX ."brands
 				set image = '". database::input($filename) ."'
-				where id = :id;"
-			)->bind($this->data)->execute();
+				where id = ". (int)$this->data['id'] .";"
+			);
 
 			$this->previous['image'] = $this->data['image'] = $filename;
 		}
@@ -174,17 +178,17 @@
 
 			if (!$this->data['id']) return;
 
-			if (is_file('storage://images/' . $this->data['image'])) {
+			if ($this->data['image'] && is_file('storage://images/' . $this->data['image'])) {
 				unlink('storage://images/' . $this->data['image']);
 			}
 
 			functions::image_delete_cache('storage://images/' . $this->data['image']);
 
-			database::prepare(
+			database::query(
 				"update ". DB_TABLE_PREFIX ."brands
 				set image = ''
-				where id = :id;"
-			)->bind($this->data)->execute();
+				where id = ". (int)$this->data['id'] .";"
+			);
 
 			$this->previous['image'] = $this->data['image'] = '';
 		}
@@ -193,19 +197,17 @@
 
 			if (!$this->data['id']) return;
 
-			$products_query = database::prepare(
+			if (database::query(
 				"select id from ". DB_TABLE_PREFIX ."products
-				where brand_id = :id
+				where brand_id = ". (int)$this->data['id'] ."
 				limit 1;"
-			)->bind($this->data)->execute();
-
-			if (database::num_rows($products_query)) {
+			)->num_rows) {
 				notices::add('errors', language::translate('error_delete_brand_not_empty_products', 'The brand could not be deleted because there are products linked to it.'));
 				header('Location: '. $_SERVER['REQUEST_URI']);
 				exit;
 			}
 
-			if (!empty($this->data['image']) && is_file('storage://images/brands/' . $this->data['image'])) {
+			if ($this->data['image'] && is_file('storage://images/brands/' . $this->data['image'])) {
 				unlink('storage://images/brands/' . $this->data['image']);
 			}
 
@@ -213,9 +215,8 @@
 				"delete b, bi
 				from ". DB_TABLE_PREFIX ."brands b
 				left join ". DB_TABLE_PREFIX ."brands_info bi on (bi.brand_id = b.id)
-				where b.id = :id;"
-			, $this->data);
-				//)->bind($this->data)->execute();
+				where b.id = ". (int)$this->data['id'] .";"
+			);
 
 			$this->reset();
 

@@ -20,36 +20,49 @@
 					<div class="card-body">
 						<?php echo functions::form_begin('reset_password_form', 'post', null, false, 'style="max-width: 480px;"'); ?>
 
-							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
-								<?php echo functions::form_input_email('email', true); ?>
-							</label>
+							<div class="form-grid">
 
-							<?php if (isset($_REQUEST['reset_token'])) { ?>
-							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_reset_token', 'Reset Token'); ?></div>
-								<?php echo functions::form_input_text('reset_token', true); ?>
-							</label>
+								<div class="col-12">
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
+										<?php echo functions::form_input_email('email', true); ?>
+									</label>
+								</div>
 
-							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_new_password', 'New Password'); ?></div>
-								<?php echo functions::form_input_password('new_password', ''); ?>
-							</label>
+								<?php if (isset($_REQUEST['reset_token'])) { ?>
+								<div class="col-12">
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_reset_token', 'Reset Token'); ?></div>
+										<?php echo functions::form_input_text('reset_token', true); ?>
+									</label>
+								</div>
 
-							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_confirmed_password', 'Confirmed Password'); ?></div>
-								<?php echo functions::form_input_password('confirmed_password', ''); ?>
-							</label>
-							<?php } ?>
+								<div class="col-12">
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_new_password', 'New Password'); ?></div>
+										<?php echo functions::form_input_password('new_password', ''); ?>
+									</label>
+								</div>
 
-							<?php if (settings::get('captcha_enabled')) { ?>
-							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></div>
-								<?php echo functions::form_captcha('reset_password'); ?>
-							</label>
-							<?php } ?>
+								<div class="col-12">
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_confirmed_password', 'Confirmed Password'); ?></div>
+										<?php echo functions::form_input_password('confirmed_password', ''); ?>
+									</label>
+								</div>
+								<?php } ?>
 
-							<?php echo functions::form_button('reset_password', language::translate('title_reset_password', 'Reset Password')); ?>
+								<?php if (settings::get('captcha_enabled')) { ?>
+								<div class="col-12">
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></div>
+										<?php echo functions::form_captcha('reset_password'); ?>
+									</label>
+								</div>
+								<?php } ?>
+
+								<?php echo functions::form_button('reset_password', language::translate('title_reset_password', 'Reset Password')); ?>
+							</div>
 
 						<?php echo functions::form_end(); ?>
 					</div>

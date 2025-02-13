@@ -1,6 +1,10 @@
 <?php
 
-	function catalog_categories_query($parent_id=null) {
+	function catalog_categories_query($parent_ids=null, $filter=[]) {
+
+		if (!is_array($parent_ids)) {
+			$parent_ids = [$parent_ids];
+		}
 
 		$query = database::query(
 			"select c.id, c.parent_id, c.image, ci.name, ci.short_description, c.priority, c.date_updated
@@ -22,7 +26,7 @@
 			) c2 on (c2.parent_id = c.id)
 
 			where c.status
-			and ". ($parent_id ? "c.parent_id = ". (int)$parent_id : "c.parent_id is null") ."
+			and ". ($parent_ids ? "c.parent_id in ('". implode("', '", database::input($parent_ids)) ."')" : "c.parent_id is null") ."
 			and (ptc.num_products > 0 or c2.num_subcategories > 0)
 
 			order by c.priority asc, ci.name asc;"

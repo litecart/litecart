@@ -91,7 +91,7 @@ gulp.task('js-frontend', function() {
 })
 
 // Task to compile and minify Chartist SCSS
-gulp.task('sass-chartist', function() {
+gulp.task('chartist', function() {
   return gulp
     .src('public_html/assets/chartist/chartist.scss', { allowEmpty: true })
     .pipe(sass().on('error', sass.logError))
@@ -105,20 +105,23 @@ gulp.task('sass-chartist', function() {
 
 // Task to compile and minify Featherlight
 gulp.task('less-featherlight', function() {
-
-  gulp
+  return gulp
     .src(['public_html/assets/featherlight/featherli*ht.less'])
     .pipe(less())
     .pipe(cleancss())
     .pipe(rename({ extname: '.min.css' }))
     .pipe(gulp.dest('public_html/assets/featherlight/', { overwrite: true }))
+})
 
-    return gulp
+gulp.task('js-featherlight', function() {
+  return gulp
     .src(['public_html/assets/featherlight/featherli*ht.js'])
     .pipe(uglify())
     .pipe(rename({ extname: '.min.js' }))
     .pipe(gulp.dest('public_html/assets/featherlight/', { overwrite: true }))
 })
+
+gulp.task('featherlight', gulp.series('less-featherlight-', 'js-featherlight'))
 
 // Task to compile and minify Trumbowyg SCSS
 gulp.task('sass-trumbowyg', function() {
@@ -143,9 +146,11 @@ gulp.task('phplint', function() {
 
 // Watch files for changes
 gulp.task('watch', function() {
-  gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('sass-chartist'))
-  gulp.watch('public_html/assets/featherlight/*.{js,less}', gulp.series('less-featherlight'))
+  gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('chartist'))
+  gulp.watch(['public_html/assets/featherlight/*.less'], gulp.series('less-featherlight'))
+  gulp.watch(['public_html/assets/featherlight/*.js', '!public_html/assets/featherlight/*.min.js'], gulp.series('js-featherlight'))
   gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('sass-trumbowyg'))
+  gulp.watch('public_html/assets/fonticons/svgs/**/*.svg', gulp.series('svgtofonts'))
   gulp.watch('public_html/backend/template/less/**/*.less', gulp.series('less-backend'))
   gulp.watch('public_html/backend/template/js/components/*.js', gulp.series('js-backend'))
   gulp.watch('public_html/frontend/templates/default/less/**/*.less', gulp.series('less-frontend'))
@@ -158,9 +163,10 @@ gulp.task('build', gulp.series(
   'js-frontend',
   'less-backend',
   'less-frontend',
-  'less-featherlight',
-  'sass-chartist',
-  'sass-trumbowyg',  'watch',
+  'featherlight',
+  'chartist',
+  'trumbowyg',
+  'watch',
 ))
 
 gulp.task('default', gulp.series(

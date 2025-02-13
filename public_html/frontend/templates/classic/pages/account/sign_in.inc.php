@@ -64,7 +64,7 @@
 					</ul>
 
 					<div>
-						<a class="btn btn-default" href="<?php echo document::href_ilink('account/sign_up'); ?>"><?php echo language::translate('title_register_now', 'Register Now'); ?></a>
+						<a class="btn btn-default" href="<?php echo document::href_ilink('account/sign_up'); ?>"><?php echo language::translate('title_sign_up', 'Sign Up'); ?></a>
 					</div>
 				</section>
 			</div>

@@ -170,7 +170,7 @@
 					// Don't forward if there are notices in stack
 					if (!empty(notices::$data)) {
 						foreach (notices::$data as $notices) {
-							if (!$notices) {
+							if ($notices) {
 								$do_redirect = false;
 								break;
 							}
@@ -410,15 +410,15 @@
 			}
 
 			// Strip logic from string
-			$ipath = self::strip_url_logic($link->path);
+			$ilink = self::strip_url_logic($link->path);
 
-			if (!preg_match('#^\w:#', $ipath)) {
-				$ipath = 'f:'.$ipath;
+			if (!preg_match('#^\w:#', $ilink)) {
+				$ilink = 'f:'.$ilink;
 			}
 
 			// Rewrite link
-			foreach (self::$_routes as $ilink => $route) {
-				if (preg_match('#^'. strtr(preg_quote($ilink, '#'), ['\\*' => '.+', '\\?' => '.', '\\{' => '(', '\\}' => ')', ',' => '|']) .'$#i', $ipath)) { // Use preg_match() as fnmatch() does not support GLOB_BRACE
+			foreach (self::$_routes as $route) {
+				if (preg_match('#^'. strtr(preg_quote($route['resource'], '#'), ['\\*' => '.+', '\\?' => '.', '\\{' => '(', '\\}' => ')', ',' => '|']) .'$#i', $ilink)) { // Use preg_match() as fnmatch() does not support GLOB_BRACE
 					if (isset($route['rewrite']) && is_callable($route['rewrite'])) {
 						if ($rewritten_link = call_user_func_array($route['rewrite'], [$link, $language_code])) {
 							$link = $rewritten_link;

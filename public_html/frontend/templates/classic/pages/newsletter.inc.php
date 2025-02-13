@@ -15,46 +15,50 @@
 
 					<?php echo functions::form_begin('newsletter_subscribe_form', 'post', document::ilink('newsletter')); ?>
 
-						<div class="grid">
-							<div class="col-md-6">
+						<div class="form-grid">
+
+							<div class="col-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo language::translate('title_firstname', 'First Name'); ?></div>
 									<?php echo functions::form_input_text('firstname', true); ?>
 								</label>
 							</div>
 
-							<div class="col-md-6">
+							<div class="col-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo language::translate('title_lastname', 'Last Name'); ?></div>
 									<?php echo functions::form_input_text('lastname', true); ?>
 								</label>
 							</div>
-						</div>
 
-						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
-							<?php echo functions::form_input_email('email', true, 'required'); ?>
-						</label>
+							<div class="col-12">
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
+									<?php echo functions::form_input_email('email', true, 'required'); ?>
+								</label>
+							</div>
 
-						<?php if (settings::get('captcha_enabled')) { ?>
-						<div class="grid">
-							<div class="col-xs-6">
+							<?php if (settings::get('captcha_enabled')) { ?>
+							<div class="col-12">
 								<label class="form-group">
 									<div class="form-label"><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></div>
 									<?php echo functions::form_captcha('newsletter_subscribe', 'required'); ?>
 								</label>
 							</div>
+							<?php } ?>
+
+							<?php if ($consent) { ?>
+							<div class="col-12">
+								<div class="consent">
+									<?php echo functions::form_checkbox('terms_agreed', ['1', $consent], true, 'required'); ?>
+								</div>
+							</div>
+							<?php } ?>
+
+							<div class="col-12">
+								<?php echo functions::form_button('subscribe', language::translate('title_subscribe', 'Subscribe')); ?>
+							</div>
 						</div>
-						<?php } ?>
-
-						<?php if ($consent) { ?>
-						<p class="consent">
-							<?php echo functions::form_checkbox('terms_agreed', ['1', $consent], true, 'required'); ?>
-						</p>
-						<?php } ?>
-
-						<?php echo functions::form_button('subscribe', language::translate('title_subscribe', 'Subscribe')); ?>
-
 					<?php echo functions::form_end(); ?>
 				</div>
 			</section>

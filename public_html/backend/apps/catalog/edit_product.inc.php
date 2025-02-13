@@ -836,7 +836,7 @@
 									<span class="length"><?php echo (float)$_POST['stock_options'][$key]['length']; ?></span> x <span class="width"><?php echo (float)$_POST['stock_options'][$key]['width']; ?></span> x <span class="height"><?php echo (float)$_POST['stock_options'][$key]['height']; ?></span> <span class="length_unit"><?php echo $_POST['stock_options'][$key]['length_unit']; ?></span>
 								</td>
 								<td><?php echo functions::form_select('stock_options['.$key.'][price_operator]', ['+', '*', '%', '='], '+'); ?></td>
-									<td>
+								<td>
 									<div class="dropdown">
 										<?php echo functions::form_input_money('stock_options['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
 										<ul class="dropdown-menu">
@@ -847,8 +847,8 @@
 											</li>
 											<?php } ?>
 										</ul>
-										</div>
-									</td>
+									</div>
+								</td>
 								<td><?php echo functions::form_input_decimal('stock_options['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['stock_options'][$key]) ? (float)$product->data['stock_options'][$key]['quantity'] : '0') .'"'); ?></td>
 									<td>
 										<div class="input-group">

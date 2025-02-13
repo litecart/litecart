@@ -40,7 +40,7 @@
 			case E_ERROR:
 			case E_CORE_ERROR:
 			case E_COMPILE_ERROR:
-			case E_USER_ERROR: // Deprecated in PHP 8.4
+			case 256: // Equals E_USER_ERROR but deprecated in PHP 8.4
 				$output[] = "<strong>Fatal error:</strong> ". htmlspecialchars($errstr) ." in <strong>$errfile</strong> on line <strong>$errline</strong>";
 				break;
 

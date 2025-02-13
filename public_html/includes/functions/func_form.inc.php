@@ -291,7 +291,7 @@
 	function form_input_decimal($name, $input=true, $decimals=2, $parameters='') {
 
 		if (count($args = func_get_args()) > 4) {
-			trigger_error('Passing min and max separate parameters in form_input_decimal() is deprecated. Instead define min="0" max="999" in $parameters', E_USER_DEPRECATED);
+			trigger_error('Passing min and max as 3rd and 4th parameter in form_input_decimal() is deprecated. Instead define min="0" and max="999" in 3rd parameter $parameters', E_USER_DEPRECATED);
 			if (isset($args[5])) $parameters = $args[5];
 			if (isset($args[3])) $parameters .= ($parameters ? ' ' : '') . 'min="'. (int)$args[3] .'"';
 			if (isset($args[4])) $parameters .= ($parameters ? ' ' : '') . 'min="'. (int)$args[4] .'"';
@@ -305,7 +305,7 @@
 			$input = number_format((float)$input, (int)$decimals, '.', '');
 		}
 
-		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'" step="any" data-decimals="'. $decimals .'"'. ($parameters ? ' '. $parameters : '') .'>';
+		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'" step="any" data-decimals="'. (int)$decimals .'"'. ($parameters ? ' '. $parameters : '') .'>';
 	}
 
 	function form_input_email($name, $input=true, $parameters='') {
@@ -385,11 +385,11 @@
 	function form_input_number($name, $input=true, $parameters='') {
 
 		if ($input === true) {
-			$input = (int)form_reinsert_value($name);
+			$input = form_reinsert_value($name);
 		}
 
 		if ($input != '') {
-			$input = round($input);
+			$input = round((float)$input);
 		}
 
 		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'" step="1"'. ($parameters ? ' '. $parameters : '') .'>';

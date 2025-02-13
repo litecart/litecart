@@ -24,7 +24,7 @@
 				self::$data[$type] = [];
 
 			} else if (!empty(self::$data)) {
-				
+
 				foreach (self::$data as $type => $container) {
 					self::$data[$type] = [];
 				}
@@ -32,7 +32,7 @@
 		}
 
 		public static function add($type, $msg, $key=null) {
-			
+
 			if ($key) {
 				self::$data[$type][$key] = $msg;
 			}	else {
@@ -45,20 +45,20 @@
 		}
 
 		public static function get($type) {
-			
+
 			if (!isset(self::$data[$type])) {
 				return false;
 			}
-	
+
 			return self::$data[$type];
 		}
 
 		public static function dump($type) {
-			
+
 			$stack = self::$data[$type];
-			
+
 			self::$data[$type] = [];
-			
+
 			return $stack;
 		}
 
@@ -68,7 +68,7 @@
 
 			if (empty(self::$data)) return '';
 
-			switch (route::$selected['endpoint']) {
+			switch (fallback(route::$selected['endpoint'])) {
 
 				case 'backend':
 					$view = new ent_view('app://backend/template/partials/notices.inc.php');

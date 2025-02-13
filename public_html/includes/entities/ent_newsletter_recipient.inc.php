@@ -68,7 +68,8 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."newsletter_recipients
-				set email = '". database::input($this->data['email']) ."',
+				set subscribed = ". (!empty($this->data['subscribed']) ? 1 : 0) .",
+				email = '". database::input($this->data['email']) ."',
 					ip_address = '". database::input($this->data['ip_address']) ."',
 					hostname = '". database::input($this->data['hostname']) ."',
 					user_agent = '". database::input($this->data['user_agent']) ."'

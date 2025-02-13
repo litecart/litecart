@@ -417,7 +417,8 @@ input[name="development_type"]:checked + div {
 
 	<h3>Database</h3>
 
-	<div class="grid">
+	<div class="form-grid">
+
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Type</div>
@@ -433,9 +434,7 @@ input[name="development_type"]:checked + div {
 				<input class="form-input" name="db_server" type="text" placeholder="localhost">
 			</label>
 		</div>
-	</div>
 
-	<div class="grid">
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Database</div>
@@ -475,9 +474,7 @@ input[name="development_type"]:checked + div {
 				</div>
 			</label>
 		</div>
-	</div>
 
-	<div class="grid">
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Username</div>
@@ -490,9 +487,7 @@ input[name="development_type"]:checked + div {
 				<input class="form-input" type="password" name="db_password">
 			</label>
 		</div>
-	</div>
 
-	<div class="grid">
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Table Prefix</div>
@@ -508,11 +503,12 @@ input[name="development_type"]:checked + div {
 				</label>
 			</label>
 		</div>
+
 	</div>
 
 	<h3>Store Information</h3>
 
-	<div class="grid">
+	<div class="form-grid">
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Store Name</div>
@@ -526,9 +522,7 @@ input[name="development_type"]:checked + div {
 				<input class="form-input" name="store_email" type="text" value="store@email.com" required>
 			</label>
 		</div>
-	</div>
 
-	<div class="grid">
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Country</div>
@@ -589,6 +583,7 @@ input[name="development_type"]:checked + div {
 	<h3>Backend</h3>
 
 	<div class="grid">
+
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Backend URL</div>
@@ -598,9 +593,7 @@ input[name="development_type"]:checked + div {
 				</div>
 			</label>
 		</div>
-	</div>
 
-	<div class="grid">
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Username</div>
@@ -614,13 +607,14 @@ input[name="development_type"]:checked + div {
 				<input class="form-input" name="password" type="password" id="password" required>
 			</label>
 		</div>
+
 	</div>
 
 	<hr>
 
-	<p class="text-center">
+	<div class="text-center">
 		This software is licensed under <a href="https://creativecommons.org/licenses/by-nd/4.0/" target="blank">Creative Commons BY-ND 4.0</a>.
-	</p>
+	</div>
 
 	<div class="form-group text-center">
 		<label><input id="accept_terms" name="accept_terms" value="1" type="checkbox" required> I agree to the terms and conditions.</label>

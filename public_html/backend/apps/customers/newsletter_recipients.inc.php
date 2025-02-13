@@ -19,7 +19,8 @@
 				if (!functions::validate_email($recipient)) continue;
 
 				if (database::query(
-					"select * from ". DB_TABLE_PREFIX ."newsletter_recipients
+					"select *, concat(firstname, ' ', lastname) as name
+					from ". DB_TABLE_PREFIX ."newsletter_recipients
 					where email = '". database::input(strtolower($recipient_id)) ."'
 					limit 1;"
 				)->num_rows) {

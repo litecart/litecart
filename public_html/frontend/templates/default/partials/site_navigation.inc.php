@@ -5,7 +5,8 @@
 
 			<div class="navbar-brand">
 				<a href="<?php echo document::href_ilink(''); ?>">
-					<img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>">
+					<img src="<?php echo document::href_rlink('storage://images/symbol.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>">
+					<?php echo settings::get('store_name'); ?>
 				</a>
 			</div>
 
@@ -17,7 +18,7 @@
 						<a class="navbar-item" href="#" data-toggle="dropdown"><?php echo language::translate('title_catalog', 'Catalog'); ?></a>
 						<ul class="dropdown-menu">
 							<?php foreach ($categories as $item) { ?>
-							<li class="dropdown-menu-item">
+							<li>
 								<a class="navbar-item" href="<?php echo functions::escape_html($item['link']); ?>">
 									<?php echo $item['title']; ?>
 								</a>
@@ -63,7 +64,7 @@
 						</a>
 						<ul class="dropdown-menu">
 							<?php foreach ($pages as $item) { ?>
-							<li class="dropdown-menu-item">
+							<li>
 								<a class="navbar-item" href="<?php echo functions::escape_html($item['link']); ?>">
 									<?php echo $item['title']; ?>
 								</a>
@@ -79,11 +80,7 @@
 						</a>
 					</li>
 
-				</ul>
-
-				<ul class="navbar-nav">
-
-				<?php if (settings::get('accounts_enabled')) { ?>
+					<?php if (settings::get('accounts_enabled')) { ?>
 					<?php if (!empty(customer::$data['id'])) { ?>
 					<li class="account dropdown dropdown-end">
 
@@ -136,10 +133,10 @@
 							<span class="badge"><?php echo $wishlist['num_items']; ?></span>
 						</a>
 
-						<ul class="dropdown-content" style="max-width: 480px;">
+						<ul class="dropdown-menu" style="max-width: 480px;">
 
 							<?php foreach ($wishlist['items'] as $key => $item) { ?>
-							<li class="dropdown-item item">
+							<li class="dropdown-menu-item item">
 
 								<div class="grid">
 									<div class="col-2">
@@ -176,9 +173,9 @@
 							<span class="badge"><?php echo $shopping_cart['num_items']; ?></span>
 						</a>
 
-						<ul class="dropdown-content" style="max-width: 480px;">
+						<ul class="dropdown-menu" style="max-width: 480px;">
 							<?php foreach ($shopping_cart['items'] as $key => $item) { ?>
-							<li class="dropdown-item item">
+							<li class="dropdown-menu-item item">
 
 								<div class="grid">
 									<div class="col-2">

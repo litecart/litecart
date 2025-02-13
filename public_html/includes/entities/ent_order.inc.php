@@ -20,7 +20,7 @@
 
 			database::query(
 				"show fields from ". DB_TABLE_PREFIX ."orders;"
-			)->each(function($field){
+			)->each(function($field) {
 				switch (true) {
 
 					case (preg_match('#^customer_#', $field['Field'])):

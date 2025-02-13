@@ -129,7 +129,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					</div>
 					<?php } ?>
 
-					<fieldset class="buy_now" style="margin: 1em 0;">
+					<fieldset class="buy_now">
 						<?php echo functions::form_begin('buy_now_form', 'post'); ?>
 						<?php echo functions::form_input_hidden('product_id', $product_id); ?>
 

@@ -136,7 +136,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 							<?php if (isset($final_price)) { ?>
 							<?php echo functions::form_begin('buy_now_form', 'post'); ?>
 
-								<fieldset class="buy_now" style="margin: 1em 0;">
+								<fieldset class="buy_now">
 
 									<legend><?php echo language::translate('title_purchase_now', 'Purchase Now'); ?></legend>
 
