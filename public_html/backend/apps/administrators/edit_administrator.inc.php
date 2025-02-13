@@ -50,6 +50,8 @@
 			foreach ([
 				'status',
 				'username',
+				 'firstname',
+				 'lastname',
 				'email',
 				'password',
 				'apps',
@@ -130,6 +132,21 @@
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_username', 'Username'); ?></div>
 								<?php echo functions::form_input_text('username', true, 'autocomplete="off" required'); ?>
+							</label>
+						</div>
+					</div>
+
+					<div class="grid">
+						<div class="col-sm-6">
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_firstname', 'Firstname'); ?></div>
+								<?php echo functions::form_input_text('firstname', true, 'required'); ?>
+							</label>
+						</div>
+						<div class="col-sm-6">
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_lastname', 'Lastname'); ?></div>
+								<?php echo functions::form_input_text('lastname', true, 'required'); ?>
 							</label>
 						</div>
 					</div>

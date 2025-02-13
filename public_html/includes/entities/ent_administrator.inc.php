@@ -86,6 +86,8 @@
 				"update ". DB_TABLE_PREFIX ."administrators
 				set status = ". (!empty($this->data['status']) ? 1 : 0) .",
 					username = '". database::input(strtolower($this->data['username'])) ."',
+					firstname = '". database::input($this->data['firstname']) ."',
+					lastname = '". database::input($this->data['lastname']) ."',
 					email = '". database::input(strtolower($this->data['email'])) ."',
 					apps = '". database::input(json_encode($this->data['apps'], JSON_UNESCAPED_SLASHES)) ."',
 					widgets = '". database::input(json_encode($this->data['widgets'], JSON_UNESCAPED_SLASHES)) ."',

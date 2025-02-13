@@ -160,6 +160,8 @@ ALTER TABLE `lc_administrators`
 CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
+ADD COLUMN `firstname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `username`,
+ADD COLUMN `lastname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `firstname`,
 ADD COLUMN `two_factor_authentication` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `widgets`,
 ADD COLUMN `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '' AFTER `last_hostname`,
 ADD COLUMN `known_ips` VARCHAR(512) NOT NULL DEFAULT '' AFTER `last_user_agent`;

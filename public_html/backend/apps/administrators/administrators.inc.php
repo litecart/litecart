@@ -34,7 +34,8 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$administrators = database::query(
-		"select * from ". DB_TABLE_PREFIX ."administrators
+		"select *, concat(firstname, ' ', lastname) as name
+		from ". DB_TABLE_PREFIX ."administrators
 		order by username;"
 	)->fetch_page(function($administrator){
 
@@ -85,6 +86,7 @@
 					<th></th>
 					<th></th>
 					<th><?php echo language::translate('title_username', 'Username'); ?></th>
+					<th><?php echo language::translate('title_name', 'Name'); ?></th>
 					<th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
 					<th><?php echo language::translate('title_restrictions', 'Restrictions'); ?></th>
 					<th class="text-end" style="min-width: 200px;"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
@@ -101,6 +103,7 @@
 					<td><?php echo functions::draw_fonticon($administrator['status'] ? 'on' : 'off'); ?></td>
 					<td class="warning"><?php echo !empty($administrator['warning']) ? functions::draw_fonticon('icon-exclamation-triangle', 'title="'. functions::escape_html($administrator['warning']) .'"') : ''; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>"><?php echo $administrator['username']; ?></a></td>
+					<td><?php echo $administrator['name']; ?></td>
 					<td><?php echo $administrator['email']; ?></td>
 					<td><?php echo (json_decode($administrator['apps'], true)) ? language::translate('title_restricted', 'Restricted') : '-'; ?></td>
 					<td class="text-end"><?php echo $administrator['date_valid_from'] ? language::strftime('datetime', $administrator['date_valid_from']) : '-'; ?></td>
@@ -113,7 +116,7 @@
 
 			<tfoot>
 				<tr>
-					<td colspan="10"><?php echo language::translate('title_administrators', 'Administrators'); ?>: <?php echo language::number_format($num_rows); ?></td>
+					<td colspan="11"><?php echo language::translate('title_administrators', 'Administrators'); ?>: <?php echo language::number_format($num_rows); ?></td>
 				</tr>
 			</tfoot>
 		</table>
