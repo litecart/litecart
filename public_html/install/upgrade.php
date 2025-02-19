@@ -6,6 +6,8 @@
   ini_set('memory_limit', -1);
   ini_set('display_errors', 'On');
 
+  include_once __DIR__ . '/includes/compatibility.inc.php';
+
   if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
     if (!isset($argv[1]) || $argv[1] == 'help' || $argv[1] == '-h' || $argv[1] == '--help' || $argv[1] == '/?') {
