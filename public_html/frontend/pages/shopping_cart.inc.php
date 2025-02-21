@@ -60,6 +60,16 @@
 			$order->data['customer'] = customer::$data;
 			$order->data['display_prices_including_tax'] = !empty(customer::$data['display_prices_including_tax']) ? true : false;
 
+			foreach ([
+				'email',
+				'country_code',
+				'postcode',
+			] as $field) {
+				if (isset($_POST['customer'][$field])) {
+					$order->data['customer'][$field] = $_POST['customer'][$field];
+				}
+			}
+
 			foreach (cart::$items as $item) {
 				$order->add_item($item);
 			}
@@ -122,18 +132,18 @@
 			'link' => document::ilink('product', ['product_id' => $item['product_id']]),
 			'display_price' => customer::$data['display_prices_including_tax'] ? $item['price'] + $item['tax'] : $item['price'],
 			'price' => $item['price'],
-			'final_price' => $item['price'] ?? 0,
-			'tax' => $item['tax'],
-			'discount' => $item['discount'] ?? 0,
-			'discount_tax' => $item['discount_tax'] ?? 0,
-			'tax_class_id' => $item['tax_class_id'],
+			'final_price' => fallback($item['price'], 0),
+			'tax' => fallback($item['tax'], 0),
+			'discount' => fallback($item['discount'], 0),
+			'discount_tax' => fallback($item['discount_tax'], 0),
+			'tax_class_id' => fallback($item['tax_class_id']),
 			'quantity' => (float)$item['quantity'],
-			'quantity_unit_name' => $item['quantity_unit_name'] ?? 0,
-			'quantity_min' => $item['quantity_min'] ?? 0,
-			'quantity_max' => $item['quantity_max'] ?? 0,
-			'quantity_step' => $item['quantity_step'] ?? 0,
-			'sum' => $item['sum'] ?? 0,
-			'sum_tax' => $item['sum_tax'] ?? 0,
+			'quantity_unit_name' => fallback($item['quantity_unit_name'], 0),
+			'quantity_min' => fallback($item['quantity_min'], 0),
+			'quantity_max' => fallback($item['quantity_max'], 0),
+			'quantity_step' => fallback($item['quantity_step'], 0),
+			'sum' => fallback($item['sum'], 0),
+			'sum_tax' => fallback($item['sum_tax'], 0),
 			'error' => fallback($item['error']),
 		];
 	}

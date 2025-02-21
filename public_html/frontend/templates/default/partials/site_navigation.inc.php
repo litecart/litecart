@@ -49,14 +49,6 @@
 
 				<ul class="navbar-nav">
 
-					<?php if (!empty($regional_settings)) { ?>
-					<li class="regional-settings">
-						<a class="navbar-item" href="<?php echo functions::escape_attr($regional_settings['link']); ?>">
-						<?php echo functions::draw_fonticon('icon-envelope hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo $regional_settings['title']; ?>
-						</a>
-					</li>
-					<?php } ?>
-
 					<?php if ($pages) { ?>
 					<li class="information dropdown">
 						<a class="navbar-item" href="#" data-toggle="dropdown">
@@ -124,6 +116,14 @@
 						</a>
 					</li>
 					<?php } ?>
+					<?php } ?>
+
+					<?php if (!empty($regional_settings)) { ?>
+					<li class="regional-settings">
+						<a class="navbar-item" href="<?php echo functions::escape_attr($regional_settings['link']); ?>">
+						<?php echo functions::draw_fonticon('icon-envelope hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo $regional_settings['title']; ?>
+						</a>
+					</li>
 					<?php } ?>
 
 					<li class="wishlist<?php if (!empty($wishlist['items'])) echo ' filled'; ?> dropdown dropdown-end">

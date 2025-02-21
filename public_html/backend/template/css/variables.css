@@ -42,14 +42,13 @@
   --page-background-color: #edf0f9;
   --sidebar-background-color: #fff;
   --sidebar-background-color-hover: #e5e7ef66;
+  --sidebar-app-group-background-color: #edf0f9;
   --sidebar-doc-background-color-hover: #d2d6e366;
   --sidebar-doc-background-color-active: var(--app-color);
   --sidebar-border-color: var(--default-border-color);
   --sidebar-text-color: inherit;
   --sidebar-width: 20rem;
-  --sidebar-app-group-background-color: #f1f2f5;
   --app-icon-background-color: #edf0f9;
-  --app-icon-color: var(--app-color);
   --navigation-background-color: #3e3e3e;
   --navigation-background-color-active: #bdbdbd;
   --navigation-text-color: #444;
@@ -60,7 +59,7 @@
   --default-text-font: Inter, Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #444;
   --default-text-size: 14px;
-  --breadcrumbs-background-color: #d7d9df;
+  --breadcrumbs-background-color: #e1e4ef;
   --breadcrumbs-text-color: #3c3c3c;
   --breadcrumbs-border-color: transparent;
   --card-background-color: #fff;
@@ -144,11 +143,13 @@ html.dark-mode {
   --top-text-color: var(--card-text-color);
   --page-background-color: #1a2133;
   --sidebar-background-color: #283144;
+  --sidebar-background-color-hover: #202638;
   --sidebar-app-group-background-color: #1a2133;
   --sidebar-doc-background-color-hover: #374258;
   --sidebar-doc-background-color-active: #1a2133;
   --sidebar-border-color: #1d2431;
   --sidebar-text-color: #acb6c2;
+  --app-icon-background-color: #1a2133;
   --default-background-color: #283042;
   --default-border-color: #1c243a;
   --default-title-color: #acb6c2;
@@ -156,7 +157,7 @@ html.dark-mode {
   --default-input-color: #fff;
   --card-background-color: #283144;
   --card-header-background-color: transparent;
-  --card-header-text-color: #fff;
+  --card-header-text-color: #acb6c2;
   --card-body-background-color: transparent;
   --card-footer-background-color: #212836;
   --card-text-color: #acb6c2;

@@ -463,6 +463,18 @@ body main {
 }
 .listing .product .image-wrapper {
   background: var(--whitespace-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+.listing .product .image-wrapper img {
+  --f: 1.05;
+  /* Scale factor */
+  clip-path: inset(0);
+  transition: 250ms;
+}
+.listing .product .image-wrapper img:hover {
+  clip-path: inset(calc((1 - 1/var(--f)) * 50%));
+  scale: var(--f);
 }
 .listing .product .image-wrapper .sticker {
   position: absolute;
@@ -704,7 +716,8 @@ body main {
   color: #cc0000;
 }
 #box-product .social-bookmarks {
-  margin: 1rem 0;
+  display: flex;
+  gap: 0.5em;
 }
 #box-product .social-bookmarks a {
   padding: 0.5em 1em;

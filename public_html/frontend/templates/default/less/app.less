@@ -534,6 +534,18 @@ body {
 
 		.image-wrapper {
 			background: var(--whitespace-color);
+			border-radius: var(--border-radius);
+			overflow: hidden;
+
+			img {
+				--f: 1.05; /* Scale factor */
+				clip-path: inset(0);
+				transition: 250ms;
+			}
+			img:hover {
+				clip-path: inset(calc((1 - 1/var(--f)) * 50%));
+				scale: var(--f)
+			}
 
 			.sticker {
 				position: absolute;
@@ -800,7 +812,8 @@ body {
 	}
 
 	.social-bookmarks {
-		margin: 1rem 0;
+		display: flex;
+		gap: .5em;
 		a {
 			padding: .5em 1em;
 		}

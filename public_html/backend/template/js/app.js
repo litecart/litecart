@@ -668,12 +668,11 @@ $('#search input[name="query"]').on({
 	$.fn.Tabs = function(){
 		this.each(function() {
 
-			let self = this
-
+			const self = this
 			this.$element = $(this)
 
 			this.$element.find('[data-toggle="tab"]').each(function() {
-				let $link = $(this)
+				const $link = $(this)
 
 				$link.on('select', function() {
 					self.$element.find('.active').removeClass('active')
@@ -683,21 +682,21 @@ $('#search input[name="query"]').on({
 					}
 
 					$link.closest('.nav-item').addClass('active')
-
 					$($link.attr('href')).show().siblings().hide()
 				})
 
 				$link.on('click', function(e) {
 					e.preventDefault()
-					history.replaceState(null, null, this.hash)
+					history.replaceState(null, null, $link[0].hash)
 					$link.trigger('select')
 				})
 			})
 
-			if (!this.$element.find('.active').length) {
-				this.$element.find('[data-toggle="tab"]').first().select()
+			const activeTab = this.$element.find('.active')
+			if (!activeTab.length) {
+				this.$element.find('[data-toggle="tab"]').first().trigger('select')
 			} else {
-				this.$element.find('[data-toggle="tab"].active').select()
+				activeTab.trigger('select')
 			}
 		})
 	}

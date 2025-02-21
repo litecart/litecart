@@ -2,7 +2,7 @@
 
 	return [
 		'f:checkout' => [
-			'pattern' => '#^checkout/(index)?$#',
+			'pattern' => '#^checkout(/(index)?)?$#',
 			'controller' => 'app://frontend/pages/checkout/index.inc.php',
 			'params' => '',
 			'endpoint' => 'frontend',

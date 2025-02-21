@@ -284,7 +284,7 @@
 			self::$stats['duration'] += $duration;
 
 			if ($result instanceof mysqli_result) {
-				return new database_result($result);
+				return new database_result($result, $sql);
 			}
 
 			return $result;
@@ -307,7 +307,7 @@
 
 			do {
 				if ($result = mysqli_store_result(self::$_links[$link])) {
-					$results[] = new database_result($result);
+					$results[] = new database_result($result, $sql);
 				}
 			} while (mysqli_next_result(self::$_links[$link]));
 
@@ -338,15 +338,29 @@
 		}
 
 		public static function insert_id($link='default') {
+
+			if (!isset(self::$_links[$link])) {
+				return false;
+			}
+
 			return mysqli_insert_id(self::$_links[$link]);
 		}
 
 		public static function affected_rows($link='default') {
+
+			if (!isset(self::$_links[$link])) {
+				return false;
+			}
+
 			return mysqli_affected_rows(self::$_links[$link]);
 		}
 
 		public static function info($link='default') {
-			if (!isset(self::$_links[$link])) self::connect($link);
+
+			if (!isset(self::$_links[$link])) {
+				self::connect($link);
+			}
+
 			return mysqli_info(self::$_links[$link]);
 		}
 
@@ -443,9 +457,11 @@
 
 	class database_result {
 		private $_result;
+		public /*readonly*/ $statement;
 
-		public function __construct(mysqli_result $result) {
+		public function __construct(mysqli_result $result, $statement) {
 			$this->_result = $result;
+			$this->statement = $statement;
 		}
 
 		public function __call($method, $arguments) {

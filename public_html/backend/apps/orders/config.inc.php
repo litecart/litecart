@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#8fc722',
-			'icon' => 'icon-cash-register',
+			'icon' => 'icon-orders',
 		],
 		'menu' => [
 			[

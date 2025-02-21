@@ -2,7 +2,7 @@
 
 	function catalog_categories_query($parent_ids=null, $filter=[]) {
 
-		if (!is_array($parent_ids)) {
+		if ($parent_ids && !is_array($parent_ids)) {
 			$parent_ids = [$parent_ids];
 		}
 

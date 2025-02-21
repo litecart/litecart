@@ -851,8 +851,8 @@ hr {
   position: fixed;
   width: max-content;
   text-align: start;
-  color: var(--default-text-color);
   background-color: #fff;
+  color: var(--default-text-color);
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
@@ -973,14 +973,10 @@ input[type="number"] {
 }
 .form-group {
   display: block;
-  margin-bottom: 1em;
 }
 .form-group.required label::after {
   content: ' *';
   color: #f00;
-}
-.form-group > label:not(.form-check) {
-  display: block;
 }
 .form-label {
   display: block;
@@ -1043,6 +1039,7 @@ input[type="number"] {
   border: var(--input-border-size) solid var(--input-border-color);
   border-radius: var(--border-radius);
   box-shadow: none;
+  line-height: 1;
   color: var(--input-text-color);
   vertical-align: middle;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
@@ -1066,6 +1063,7 @@ input[type="number"] {
   border: var(--input-border-size) solid var(--input-border-color);
   border-radius: var(--border-radius);
   box-shadow: none;
+  line-height: 1;
   padding-inline-end: 2.5em;
   user-select: none;
   cursor: default;
@@ -1171,6 +1169,7 @@ input[type="number"] {
   border: var(--input-border-size) solid var(--input-border-color);
   border-radius: var(--border-radius);
   box-shadow: none;
+  line-height: 1;
   display: flex;
   padding: 0;
   align-items: center;
@@ -1247,7 +1246,7 @@ fieldset[disabled] > :not(legend),
 .form-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-gap: 0 var(--gutter-x);
+  grid-gap: 1em var(--gutter-x);
 }
 .col-1 {
   grid-column: span 1 !important;
@@ -1824,29 +1823,37 @@ ul.list-inline li {
 .navbar {
   display: flex;
   flex-direction: row;
+  gap: 1em;
 }
 .navbar > * {
   align-self: center;
 }
+.navbar .navbar-brand {
+  flex: 1 0 auto;
+}
 .navbar .navbar-brand a {
   display: block;
-  font-weight: 700;
+  font-weight: 500;
+  text-transform: uppercase;
   text-decoration: none;
   border-radius: var(--border-radius);
+  color: inherit;
+  padding: 0.5em 1em;
+  white-space: nowrap;
 }
 .navbar .navbar-brand a:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
 .navbar .navbar-brand img {
-  display: block;
+  display: inline-block;
   max-width: 250px;
-  max-height: 48px;
-  padding: 0.5em 1em;
+  max-height: 32px;
+  padding-inline-end: 0.5em;
+  vertical-align: middle;
 }
 @media (min-width: 768px) {
   .navbar .navbar-brand {
     flex: 0 1 auto;
-    margin-inline-end: 1em;
   }
 }
 .navbar .navbar-menu {
@@ -1874,7 +1881,6 @@ ul.list-inline li {
     padding: 0;
     margin: 0;
     transition: all 200ms linear;
-    gap: 1em;
     height: auto;
     overflow-y: visible;
     opacity: 1;
@@ -1931,6 +1937,7 @@ ul.list-inline li {
   color: inherit;
   text-decoration: none;
   transition: all 125ms linear;
+  border-radius: var(--border-radius);
 }
 .navbar .navbar-nav .navbar-item:is(a):hover {
   backdrop-filter: brightness(0.85);
@@ -1945,6 +1952,9 @@ ul.list-inline li {
 }
 .navbar .dropdown-menu {
   border-top: none;
+}
+.navbar .dropdown-menu .navbar-item {
+  border-radius: 0;
 }
 .navbar .dropdown-menu li > .nav-item {
   padding: 0.5em 1em;

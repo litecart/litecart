@@ -37,7 +37,7 @@
 		return !0;
 	}
 
-	// Returns value for variable or falls back to a substituting value on nil(). Similar to $var ?? $fallback
+	// Returns value for variable or falls back to a substituting value on nil(). Similar to $var ?? $fallback ?: $fallback
 	function fallback(&$var, $fallback=null) {
 		if (!nil($var)) return $var;
 		return $fallback;

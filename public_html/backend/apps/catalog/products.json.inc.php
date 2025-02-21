@@ -65,10 +65,13 @@
 			'id' => $product['id'],
 			'name' => $product['name'],
 			'code' => $product['code'],
+			'sku' => $product['sku'],
+			'gtin' => $product['gtin'],
 			'price' => [
 				'formatted' => currency::format($product['price'], true, $_GET['currency_code'], $_GET['currency_value']),
 				'value' => (float)$product['price'],
 			],
+			'thumbnail_url' => document::rlink(functions::image_thumbnail('storage://images/'. $product['image'], 64, 64)),
 			'quantity' => (float)$product['quantity'],
 			'reserved' => (float)$product['reserved'],
 			'num_stock_options' => (float)$product['num_stock_options'],

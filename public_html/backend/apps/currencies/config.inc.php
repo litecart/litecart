@@ -7,7 +7,7 @@
 
 		'theme' => [
 			'color' => '#ecae06',
-			'icon' => 'icon-money-bill',
+			'icon' => 'icon-money-coins',
 		],
 
 		'menu' => [],

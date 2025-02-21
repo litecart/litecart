@@ -168,10 +168,10 @@
 		public function http_decode_chunked_data($data) {
 
 			for ($result = ''; $data; $data = trim($data)) {
-				$position = strpos($data, "\r\n");
-				$length = (int)hexdec(substr($data, 0, $position));
-				$result .= substr($data, $position + 2, $length);
-				$data = substr($data, $position + 2 + $length);
+				$position = mb_strpos($data, "\r\n");
+				$length = (int)hexdec(mb_substr($data, 0, $position));
+				$result .= mb_substr($data, $position + 2, $length);
+				$data = mb_substr($data, $position + 2 + $length);
 			}
 
 			return $result;

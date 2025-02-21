@@ -1,6 +1,7 @@
 import gulp from 'gulp'
 import cleancss from '@sequencemedia/gulp-clean-css'
 import concat from 'gulp-concat'
+import download from 'gulp-download-stream'
 import header from 'gulp-header'
 import less from 'gulp-less'
 import phplint from 'gulp-phplint'
@@ -85,17 +86,19 @@ gulp.task('js-frontend', function() {
     .pipe(concat('app.js', {'newLine': '\r\n\r\n'}))
     .pipe(header(banner, { pkg: packageData }))
     .pipe(gulp.dest('public_html/frontend/templates/default/js/', { overwrite: true }))
+    //.pipe(sourcemaps.init())
     .pipe(uglify())
     .pipe(rename({ extname: '.min.js' }))
+    //.pipe(sourcemaps.write('.', { includeContent: false }))
     .pipe(gulp.dest('public_html/frontend/templates/default/js/', { overwrite: true }))
 })
 
 // Task to compile and minify Chartist SCSS
-gulp.task('chartist', function() {
+gulp.task('sass-chartist', function() {
   return gulp
     .src('public_html/assets/chartist/chartist.scss', { allowEmpty: true })
     .pipe(sass().on('error', sass.logError))
-    //.pipe(gulp.dest('public_html/assets/trumbowyg/ui/', { overwrite: true }))
+    //.pipe(gulp.dest('public_html/assets/chartist/', { overwrite: true }))
     .pipe(sourcemaps.write('.', { includeContent: false }))
     .pipe(cleancss())
     .pipe(rename({ extname: '.min.css' }))
@@ -121,7 +124,7 @@ gulp.task('js-featherlight', function() {
     .pipe(gulp.dest('public_html/assets/featherlight/', { overwrite: true }))
 })
 
-gulp.task('featherlight', gulp.series('less-featherlight-', 'js-featherlight'))
+gulp.task('featherlight', gulp.series('less-featherlight', 'js-featherlight'))
 
 // Task to compile and minify Trumbowyg SCSS
 gulp.task('sass-trumbowyg', function() {
@@ -144,13 +147,20 @@ gulp.task('phplint', function() {
     .pipe(phplint.reporter('fail'))
 })
 
+
+gulp.task('iconly', function() {
+  return download([
+    //{ url: `https://cdn.iconly.io/kits/2W7kP8RGg5Xc/v_2f9c71f/iconly.css`, file: 'fonticons.css' },
+    { url: `https://cdn.iconly.io/kits/2W7kP8RGg5Xc/v_2f9c71f/iconly.min.css`, file: 'fonticons.min.css' },
+    { url: `https://cdn.iconly.io/kits/2W7kP8RGg5Xc/v_2f9c71f/iconly.woff2`, file: 'fonticons.woff2' }
+  ])
+  .pipe(replace(/src: url\([^\}]+/g, `src:url(fonticons.woff2?${Math.floor(Date.now() / 1000)}) format("woff2");\n`))
+  .pipe(replace(/src:url\([^\}]+/g, `src:url(fonticons.woff2?${Math.floor(Date.now() / 1000)}) format("woff2");`))
+  .pipe(gulp.dest('public_html/assets/fonticons/'))
+})
+
 // Watch files for changes
 gulp.task('watch', function() {
-  gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('chartist'))
-  gulp.watch(['public_html/assets/featherlight/*.less'], gulp.series('less-featherlight'))
-  gulp.watch(['public_html/assets/featherlight/*.js', '!public_html/assets/featherlight/*.min.js'], gulp.series('js-featherlight'))
-  gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('sass-trumbowyg'))
-  gulp.watch('public_html/assets/fonticons/svgs/**/*.svg', gulp.series('svgtofonts'))
   gulp.watch('public_html/backend/template/less/**/*.less', gulp.series('less-backend'))
   gulp.watch('public_html/backend/template/js/components/*.js', gulp.series('js-backend'))
   gulp.watch('public_html/frontend/templates/default/less/**/*.less', gulp.series('less-frontend'))
@@ -164,8 +174,9 @@ gulp.task('build', gulp.series(
   'less-backend',
   'less-frontend',
   'featherlight',
-  'chartist',
-  'trumbowyg',
+  'sass-chartist',
+  'sass-trumbowyg',
+  'iconly',
   'watch',
 ))
 

@@ -84,9 +84,9 @@
 					<td><?php echo functions::draw_fonticon(($language['status'] == 1) ? 'on' : (($language['status'] == -1) ? 'semi-off' : 'off')); ?></td>
 					<td><?php echo $language['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_language', ['language_code' => $language['code']]); ?>"><?php echo $language['name']; ?></a></td>
-					<td><?php echo $language['code']; ?></td>
-					<td><?php echo $language['code2']; ?></td>
-					<td><?php echo $language['url_type']; ?></td>
+					<td class="text-center"><?php echo $language['code']; ?></td>
+					<td class="text-center"><?php echo $language['code2']; ?></td>
+					<td class="text-center"><?php echo $language['url_type']; ?></td>
 					<td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? functions::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo $language['priority']; ?></td>
