@@ -1,7 +1,6 @@
 /* Dropdowns */
 
 .dropdown {
-	position: relative;
 	perspective: 400px;
 
 	[data-toggle="dropdown"] {
@@ -10,6 +9,8 @@
 		background-position: right 1em center;
 		background-size: .8em;
 		padding-inline-end: 2.5em !important;
+
+		cursor: pointer;
 	}
 
 	.dropdown-content,
@@ -24,9 +25,7 @@
 		opacity: 0;
 	}
 
-	&.open,
-	&:focus-within {
-		z-index: 1;
+	&.open {
 		> .dropdown-content,
 		> .dropdown-menu {
 			visibility: visible;
@@ -67,7 +66,7 @@
 	width: max-content;
 	text-align: start;
 	background: var(--dropdown-menu-background);
-	border: var(--default-border);
+	border: 1px solid var(--default-border-color);
 	border-radius: var(--border-radius);
 	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 	background-clip: padding-box;
@@ -131,7 +130,7 @@
 }
 
 html[dir="rtl"] {
-	.dropdown [data-toggle="dropdown"] {
+	.dropdown label:has([data-toggle="dropdown"]) {
 		background-position: left 1em center;
 	}
 }

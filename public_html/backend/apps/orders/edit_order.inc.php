@@ -422,7 +422,7 @@
 	font-size: 1.5em;
 }
 #order-totals .summary {
-	background: var(--card-background-color);
+	background: var(--card-background);
 	padding: 1em;
 	border-radius: var(--border-radius);
 }

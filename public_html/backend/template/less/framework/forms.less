@@ -7,7 +7,7 @@
 	background: var(--input-background);
 	border: var(--input-border);
 	border-radius: var(--border-radius);
-	&:focus {
+	&:focus-within {
 		border-color: var(--input-border-focus);
 	}
 }
@@ -69,7 +69,8 @@ label.form-check {
 	line-height: 2.5;
 }
 
-.form-check, label.form-check > input {
+.form-check,
+label.form-check > input {
 	&:is(input), &:is(label) > input {
 		display: inline-block;
 		position: relative;
