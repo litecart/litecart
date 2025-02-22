@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=1600">
 <?php echo functions::draw_style('app://backend/template/css/variables.css'); ?>
-<?php echo functions::draw_style('app://backend/template/css/framework.min.css'); ?>
+<?php echo functions::draw_style('app://assets/litecore/css/framework.min.css'); ?>
 <?php echo functions::draw_style('app://backend/template/css/app.min.css'); ?>
 {{head_tags}}
 {{style}}

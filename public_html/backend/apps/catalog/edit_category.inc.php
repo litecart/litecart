@@ -130,7 +130,7 @@
 		</div>
 	</div>
 
-	<nav class="nav nav-tabs">
+	<nav class="tabs">
 		<a class="nav-link active" data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a>
 		<a class="nav-link" data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a>
 		<a class="nav-link" data-toggle="tab" href="#tab-filters"><?php echo language::translate('title_filters', 'Filters'); ?></a>
@@ -227,7 +227,7 @@
 				<div id="tab-information" class="tab-pane" style="max-width: 640px;">
 
 					<?php if (count($language_codes) > 1) { ?>
-					<nav class="nav nav-tabs">
+					<nav class="tabs">
 						<?php foreach ($language_codes as $language_code) { ?>
 						<a class="nav-link<?php if ($language_code == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language_code; ?>">
 							<?php echo language::$languages[$language_code]['name']; ?>
@@ -372,7 +372,7 @@
 
 	$('input[name^="name"]').on('input', function(e) {
 		var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1]
-		$('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5)
+		$('.tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5)
 		$('input[name="name['+language_code+']"]').not(this).val($(this).val())
 		$('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val())
 		$('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val())

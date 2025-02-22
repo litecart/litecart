@@ -4,8 +4,8 @@
 <title>{{title}}</title>
 <meta charset="{{charset}}">
 <?php echo functions::draw_style('app://frontend/templates/'.settings::get('template').'/css/variables.css'); ?>
-<?php echo functions::draw_style('app://frontend/templates/'.settings::get('template').'/css/framework.min.css'); ?>
-<?php echo functions::draw_style('app://frontend/templates/'.settings::get('template').'/css/printable.min.css'); ?>
+<?php echo functions::draw_style('app://assets/litecore/css/framework.min.css'); ?>
+<?php echo functions::draw_style('app://assets/litecore/css/printable.min.css'); ?>
 {{head_tags}}
 </head>
 <body>

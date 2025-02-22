@@ -15,7 +15,7 @@
 		<?php echo language::translate('title_account', 'Account'); ?>
 	</h2>
 
-	<nav class="nav nav-stacked nav-pills">
+	<nav class="pills">
 		<?php foreach ($menu_items as $item) echo $draw_menu_item($item); ?>
 	</nav>
 

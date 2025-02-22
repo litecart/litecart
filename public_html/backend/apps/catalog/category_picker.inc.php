@@ -28,7 +28,7 @@
 			<?php echo language::translate('title_select', 'Select'); ?>
 		</button>
 
-		<nav class="nav nav-pills" style="margin-bottom: 1em;">
+		<nav class="pills" style="margin-bottom: 1em;">
 			<a class="nav-link" href="<?php echo document::href_ilink(null, ['parent_id' => 0]); ?>" data-id="0">
 				<?php echo language::translate('title_root', 'Root'); ?>
 			</a>
@@ -39,7 +39,7 @@
 			<?php } ?>
 		</nav>
 
-		<nav class="nav nav-pills nav-stacked">
+		<nav class="pills">
 			<?php if (!empty($_GET['parent_id'])) { ?>
 			<a class="nav-link" href="<?php echo document::href_ilink(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id]); ?>">
 				<?php echo functions::draw_fonticon('icon-arrow-left'); ?> <?php echo language::translate('title_back', 'Back'); ?>

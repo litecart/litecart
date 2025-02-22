@@ -1,0 +1,89 @@
+/* Flexbox */
+
+.flex-rows {
+	display: flex;
+	flex-direction: row;
+}
+
+.flex-columns {
+	display: flex;
+	flex-direction: column;
+}
+
+.flex-inline {
+	display: inline-flex;
+}
+
+.flex-rows,
+.flex-columns,
+.flex-inline {
+
+	&:is(ul) {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	&.flex-rows ul {
+		padding-inline-start: 1em;
+	}
+
+	&.flex-columns {
+		flex-direction: row;
+	}
+
+	&.flex-rows {
+		flex-direction: column;
+	}
+	&.flex-nogap {
+		gap: none;
+	}
+
+	&.flex-wrap {
+		flex-wrap: wrap;
+	}
+
+	> * {
+		flex: 0 1 auto;
+	}
+
+	&.flex-grow > *,
+	.flex-grow {
+		flex-grow: 1;
+	}
+
+	&.flex-no-shrink > *,
+	.flex-no-shrink {
+		flex-shrink: 0;
+	}
+}
+
+// Deprecated
+.list-unstyled,
+.list-inline {
+	display: flex !important;
+
+	&:is(ul) {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	&.list-inline ul {
+		padding-inline-start: 1em;
+	}
+
+	&.list-inline {
+		flex-direction: row;
+		gap: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+	}
+
+	&.list-unstyled	{
+		flex-direction: column;
+	}
+
+	> * {
+		//flex: 0 1 auto;
+		flex: 1 1 auto;
+	}
+}

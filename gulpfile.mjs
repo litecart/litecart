@@ -27,6 +27,34 @@ const banner = [
   '',
 ].join('\n')
 
+gulp.task('less-framework', function() {
+
+  return gulp
+    .src(['public_html/assets/litecore/less/*.less'])
+    .pipe(sourcemaps.init())
+    .pipe(less())
+    .pipe(gulp.dest('public_html/assets/litecore/css/', { overwrite: true }))
+    .pipe(cleancss())
+    .pipe(header(banner, { pkg: packageData }))
+    .pipe(rename({ extname: '.min.css' }))
+    .pipe(sourcemaps.write('.', { includeContent: false }))
+    .pipe(gulp.dest('public_html/assets/litecore/css/', { overwrite: true }))
+})
+
+// Build and uglify JS files
+gulp.task('js-framework', function() {
+  return gulp
+    .src('public_html/assets/litecore/js/components/*.js')
+    .pipe(concat('framework.js', {'newLine': '\r\n\r\n'}))
+    .pipe(header(banner, { pkg: packageData }))
+    .pipe(gulp.dest('public_html/assets/litecore/js/', { overwrite: true }))
+    .pipe(sourcemaps.init())
+    .pipe(uglify())
+    .pipe(rename({ extname: '.min.js' }))
+    //.pipe(sourcemaps.write('.', { includeContent: false }))
+    .pipe(gulp.dest('public_html/assets/litecore/js/', { overwrite: true }))
+})
+
 // Compile LESS files
 gulp.task('less-backend', function() {
 
@@ -47,6 +75,20 @@ gulp.task('less-backend', function() {
     .pipe(gulp.dest('public_html/backend/template/css', { overwrite: true }))
 })
 
+// Build and uglify JS files
+gulp.task('js-backend', function() {
+  return gulp
+    .src('public_html/backend/template/js/components/*.js')
+    .pipe(concat('app.js', {'newLine': '\r\n\r\n'}))
+    .pipe(header(banner, { pkg: packageData }))
+    .pipe(gulp.dest('public_html/backend/template/js/', { overwrite: true }))
+    .pipe(sourcemaps.init())
+    .pipe(uglify())
+    .pipe(rename({ extname: '.min.js' }))
+    //.pipe(sourcemaps.write('.', { includeContent: false }))
+    .pipe(gulp.dest('public_html/backend/template/js/', { overwrite: true }))
+})
+
 gulp.task('less-frontend', function() {
 
   gulp
@@ -65,19 +107,6 @@ gulp.task('less-frontend', function() {
     .pipe(rename({ extname: '.min.css' }))
     .pipe(sourcemaps.write('.', { includeContent: false }))
     .pipe(gulp.dest('public_html/frontend/templates/default/css/', { overwrite: true }))
-})
-
-// Build and uglify JS files
-gulp.task('js-backend', function() {
-  return gulp
-    .src('public_html/backend/template/js/components/*.js')
-    .pipe(concat('app.js', {'newLine': '\r\n\r\n'}))
-    .pipe(header(banner, { pkg: packageData }))
-    .pipe(gulp.dest('public_html/backend/template/js/', { overwrite: true }))
-    .pipe(sourcemaps.init())
-    .pipe(uglify())
-    .pipe(rename({ extname: '.min.js' }))
-    .pipe(gulp.dest('public_html/backend/template/js/', { overwrite: true }))
 })
 
 gulp.task('js-frontend', function() {
@@ -161,16 +190,24 @@ gulp.task('iconly', function() {
 
 // Watch files for changes
 gulp.task('watch', function() {
+  gulp.watch('public_html/assets/litecore/less/**/*.less', gulp.series('less-framework'))
+  gulp.watch('public_html/assets/litecore/js/components/*.js', gulp.series('js-framework'))
   gulp.watch('public_html/backend/template/less/**/*.less', gulp.series('less-backend'))
   gulp.watch('public_html/backend/template/js/components/*.js', gulp.series('js-backend'))
   gulp.watch('public_html/frontend/templates/default/less/**/*.less', gulp.series('less-frontend'))
   gulp.watch('public_html/frontend/templates/default/js/components/*.js', gulp.series('js-frontend'))
+  gulp.watch(['public_html/assets/featherlight/*.less'], gulp.series('less-featherlight'))
+  gulp.watch(['public_html/assets/featherlight/*.js', '!public_html/assets/featherlight/*.min.js'], gulp.series('js-featherlight'))
+  gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('sass-chartist'))
+  gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('sass-trumbowyg'))
 })
 
 // Task aliases
 gulp.task('build', gulp.series(
+  'js-framework',
   'js-backend',
   'js-frontend',
+  'less-framework',
   'less-backend',
   'less-frontend',
   'featherlight',

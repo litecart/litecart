@@ -174,10 +174,10 @@ html.dark-mode .operation {
 	background: #232a3e;
 }
 
-.nav-tabs .icon-times {
+.tabs .icon-times {
 	color: #c00;
 }
-.nav-tabs .icon-plus {
+.tabs .icon-plus {
 	color: #0c0;
 }
 
@@ -224,7 +224,7 @@ textarea[name*="[insert]"][name$="[content]"] {
 	transition: all 100ms linear;
 }
 
-.nav-tabs a.warning {
+.tabs a.warning {
 	color: red;
 }
 
@@ -243,7 +243,7 @@ textarea.warning {
 
 	<?php echo functions::form_begin('vmod_form', 'post', false, true); ?>
 
-		<nav class="nav nav-tabs">
+		<nav class="tabs">
 			<a class="nav-link active" href="#tab-general" data-toggle="tab"><?php echo language::translate('title_general', 'General'); ?></a>
 			<a class="nav-link" href="#tab-settings" data-toggle="tab"><?php echo language::translate('title_settings', 'Settings'); ?></a>
 			<a class="nav-link" href="#tab-install" data-toggle="tab"><?php echo language::translate('title_install_uninstall', 'Install/Uninstall'); ?></a>
@@ -361,7 +361,7 @@ textarea.warning {
 
 					<h2><?php echo language::translate('title_modifications', 'Modifications'); ?></h2>
 
-					<nav class="nav nav-tabs">
+					<nav class="tabs">
 						<?php foreach (array_keys($vmod->data['files']) as $f) { ?>
 						<a class="nav-link" data-toggle="tab" href="#tab-<?php echo $f; ?>">
 							<span class="file"><?php echo functions::escape_html($_POST['files'][$f]['name']); ?></span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('icon-times'); ?></span>
@@ -721,11 +721,11 @@ textarea.warning {
 	let new_tab_index = 1
 	while ($('.tab-pane[id="tab-'+new_tab_index+'"]').length) new_tab_index++
 
-	$('.nav-tabs').on('click', '[data-toggle="tab"]', function(e) {
+	$('.tabs').on('click', '[data-toggle="tab"]', function(e) {
 		$($(this).attr('href')).find(':input[name$="[content]"]').trigger('input')
 	})
 
-	$('.nav-tabs .add').on('click', function(e) {
+	$('.tabs .add').on('click', function(e) {
 		e.preventDefault()
 
 		let tab = '<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'"><span class="file">new'+ new_tab_index +'</span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('icon-times'); ?></span></a>'
@@ -742,7 +742,7 @@ textarea.warning {
 		$(this).prev().trigger('click')
 	})
 
-	$('.nav-tabs').on('click', '.remove', function(e) {
+	$('.tabs').on('click', '.remove', function(e) {
 		e.preventDefault()
 
 		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false

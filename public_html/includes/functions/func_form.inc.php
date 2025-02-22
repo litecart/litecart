@@ -75,7 +75,9 @@
 
 		$html = implode(PHP_EOL, [
 			'<div class="dropdown"'. ($parameters ? ' ' . $parameters : '') .'>',
-			'  <div class="form-select" data-toggle="dropdown">-- '. language::translate('title_select', 'Select') .' --</div>',
+			'  <div class="form-select" data-toggle="dropdown">',
+			'    -- '. language::translate('title_select', 'Select') .' --',
+			'  </div>',
 			'  <ul class="dropdown-menu">',
 		]);
 

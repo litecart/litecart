@@ -1,9 +1,9 @@
 <style>
-.nav-tabs {
+.tabs {
 	background: transparent;
 	border-bottom: none;
 }
-.nav-tabs .nav-link:not(.active) {
+.tabs .nav-link:not(.active) {
 	background: #eee;
 }
 .tab-content {
@@ -31,7 +31,7 @@
 }
 </style>
 
-<nav class="nav nav-tabs">
+<nav class="tabs">
 	<a class="nav-link active" data-toggle="tab" href="#tab-system"><?php echo language::translate('title_system', 'System'); ?></a>
 	<a class="nav-link" data-toggle="tab" href="#tab-errors"><?php echo language::translate('title_error_log', 'Error Log'); ?></a>
 </nav>

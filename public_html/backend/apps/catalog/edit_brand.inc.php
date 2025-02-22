@@ -154,7 +154,7 @@
 				</div>
 
 				<div class="col-md-12">
-					<nav class="nav nav-tabs">
+					<nav class="tabs">
 						<?php foreach (language::$languages as $language) { ?>
 						<a class="nav-link<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>"" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
 						<?php } ?>

@@ -112,7 +112,7 @@
 			</div>
 
 			<?php if (count(language::$languages) > 1) { ?>
-			<nav class="nav nav-tabs">
+			<nav class="tabs">
 				<?php foreach (language::$languages as $language) { ?>
 				<a class="nav-link<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
 				<?php } ?>
@@ -158,7 +158,7 @@
 <script>
 	$('input[name^="title"]').on('input', function(e) {
 		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1]
-		$('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5)
+		$('.tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5)
 		$('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val())
 	}).trigger('input')
 </script>

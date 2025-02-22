@@ -398,3 +398,74 @@ html.condensed {
 		}
 	}
 }
+
+
+.card-app {
+	position: relative;
+
+	> .card-header {
+		.icon-wrapper {
+			font-size: 24px;
+		}
+	}
+
+	.card-action {
+		position: absolute;
+		top: var(--gutter-size);
+		inset-inline-end: var(--gutter-size);
+		display: flex;
+		gap: .5em;
+	}
+
+	.card-filter {
+		display: flex;
+		gap: var(--gutter-size);
+		> * {
+			&.expandable {
+				flex-grow: 1;
+			}
+		}
+	}
+
+	.data-table {
+		margin: 0;
+	}
+
+	.card-footer {
+		> *:last-child {
+			margin-bottom: 0;
+		}
+		&:blank {
+			display: none;
+		}
+	}
+
+	#actions {
+		width: fit-content;
+		margin-inline-end: auto;
+	}
+}
+
+.featherlight .card-app {
+	.app-icon {
+		display: none;
+	}
+	.card-action {
+		//position: initial !important;
+		//top: auto;
+		//inset-inline-end: auto;
+	}
+}
+
+/* Loader */
+
+.loader {
+	display: inline-block;
+	background: url('../images/loader.svg');
+	background-size: cover;
+	animation-name: spin;
+	animation-duration: 2000ms;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+

@@ -1,0 +1,197 @@
+/* Tables */
+
+.table {
+	width: 100%;
+	max-width: 100%;
+	background: var(--table-body-background);
+	border-spacing: 0;
+	border-collapse: collapse;
+
+	thead th {
+		padding: 1em;
+		background: var(--table-header-background);
+		border-bottom: var(--table-border);
+		border-bottom-width: 2px;
+		vertical-align: bottom;
+	}
+	thead td {
+		vertical-align: middle;
+	}
+
+	td, th {
+		color: var(--default-text-color);
+		padding: .5em 1em;
+		line-height: 2;
+
+		&:first-child {
+			padding-inline-start: var(--gutter-size);
+		}
+		&:last-child {
+			padding-inline-end: var(--gutter-size);
+		}
+
+		&.border-top {
+			border-top: var(--table-border);
+		}
+		&.border-start {
+			border-inline-start: var(--table-border);
+		}
+		&.border-left {
+			border-left: var(--table-border);
+		}
+		&.border-right {
+			border-right: var(--table-border);
+		}
+		&.border-end {
+			border-inline-end: var(--table-border);
+		}
+		&.border-bottom {
+			border-bottom: var(--table-border);
+		}
+
+		@media print {
+			&.border-top,
+			&.border-start,
+			&.border-left,
+			&.border-right,
+			&.border-end,
+			&.border-bottom {
+				border-color: #000 !important;
+			}
+		}
+	}
+
+	> thead > tr > th {
+		text-align: start;
+			vertical-align: bottom;
+
+			@media print {
+				border-color: #000 !important;
+			}
+			&.main {
+				width: 100%;
+			}
+		}
+
+	a {
+		color: inherit;
+		&.link {
+			background: var(--table-link-background);
+			padding: 0.33em 1em;
+			border-radius: var(--border-radius);
+			&:hover {
+				text-decoration: none;
+				background: var(--table-link-background-hover);
+			}
+		}
+	}
+
+	&:not(.table-striped) {
+		> tbody > tr:not(:last-child) > td {
+			border-bottom: var(--table-border);
+		}
+	}
+
+	> tfoot {
+		position: sticky;
+		bottom: 0;
+		background: var(--table-footer-background);
+		border-top: var(--table-border);
+		border-bottom: var(--table-border);
+		text-align: start;
+		td {
+			padding: 1em;
+		}
+	}
+
+	&.table-bordered {
+		> thead {
+		border-bottom: var(--table-border);
+			border-bottom-width: 2px;
+		}
+		> * > tr > td {
+			border-top: var(--table-border);
+			@media print {
+				border-color: #000 !important;
+			}
+		}
+		> tfoot {
+			border-top: var(--table-border);
+		}
+	}
+
+	&.table-striped {
+		> tbody > tr:nth-of-type(odd) {
+			background: var(--table-row-background-odd);
+		}
+		> tbody > tr:nth-of-type(even) {
+			background: var(--table-row-background-even);
+		}
+		@media print {
+			> tbody > tr {
+				border-bottom: 1px solid #000;
+			}
+		}
+	}
+
+	&.table-hover {
+		> tbody > tr {
+			transition: background 125ms linear;
+			&:hover {
+				background: var(--table-row-background-hover);
+			}
+		}
+	}
+
+	&.table-sortable th[data-sort] {
+		cursor: pointer;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	&.table-input {
+		> tbody > tr > td {
+			vertical-align: middle;
+		}
+	}
+
+	&.data-table {
+		white-space: nowrap;
+
+		thead th {
+			@media only screen {
+				position: sticky;
+				top: 0;
+			}
+		}
+		tfoot {
+			@media only screen {
+				position: sticky;
+				bottom: 0;
+			}
+		}
+	}
+}
+
+.table-responsive {
+	overflow-x: auto;
+	> .table {
+		margin-bottom: 0;
+	}
+}
+
+.table > caption + thead > tr:first-child > th,
+.table > colgroup + thead > tr:first-child > th,
+.table > thead:first-child > tr:first-child > th,
+.table > caption + thead > tr:first-child > td,
+.table > colgroup + thead > tr:first-child > td,
+.table > thead:first-child > tr:first-child > td {
+	border-top: 0;
+}
+
+.table {
+	:not(.btn-group) > .btn + .btn {
+		margin-inline-start: 1em;
+	}
+}

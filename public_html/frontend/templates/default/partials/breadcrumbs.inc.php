@@ -1,6 +1,6 @@
 <ul class="breadcrumbs">
 	<?php foreach ($breadcrumbs as $breadcrumb) { ?>
-	<li class="breadcrumb">
+	<li>
 		<?php
 			if (!empty($breadcrumb['link'])) {
 					echo '<a href="'. functions::escape_attr($breadcrumb['link']) .'">'. $breadcrumb['title'] .'</a>';

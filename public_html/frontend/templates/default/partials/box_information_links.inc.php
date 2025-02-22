@@ -25,7 +25,7 @@
 
 	<h2 class="title"><?php echo language::translate('title_information', 'Information'); ?></h2>
 
-	<ul class="nav nav-stacked nav-pills">
+	<ul class="pills">
 		<?php foreach ($pages as $page) echo $draw_page($page, $page_path, 0, $draw_page); ?>
 	</ul>
 

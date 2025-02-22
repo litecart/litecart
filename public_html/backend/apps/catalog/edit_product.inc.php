@@ -209,7 +209,7 @@
 		</div>
 	</div>
 
-	<nav class="nav nav-tabs">
+	<nav class="tabs">
 		<a class="nav-link active" data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a>
 		<a class="nav-link" data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a>
 		<a class="nav-link" data-toggle="tab" href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a>
@@ -346,7 +346,7 @@
 
 				<div id="tab-information" class="tab-pane">
 
-					<nav class="nav nav-tabs" style="margin-top: -1em;">
+					<nav class="tabs" style="margin-top: -1em;">
 						<?php foreach ($language_codes as $language_code) { ?>
 						<a class="nav-link<?php if ($language_code == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language_code; ?>"><?php echo language::$languages[$language_code]['name']; ?></a>
 						<?php } ?>

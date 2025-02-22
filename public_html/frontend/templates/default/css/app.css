@@ -736,3 +736,9 @@ body main {
 #box-product .technical-data table td:first-child {
   width: 50%;
 }
+/* Loader */
+.loader {
+  display: inline-block;
+  background: url('../images/loader.svg');
+  background-size: cover;
+}

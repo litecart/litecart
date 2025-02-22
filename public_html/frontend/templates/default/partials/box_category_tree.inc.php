@@ -8,7 +8,7 @@
 		];
 
 		if (!empty($category['subcategories'])) {
-			$output[] = '  <ul class="nav nav-stacked nav-pills">';
+			$output[] = '  <ul class="pills">';
 			foreach ($category['subcategories'] as $subcategory) {
 				$output[] = $draw_branch($subcategory);
 			}
@@ -23,7 +23,7 @@
 
 <section id="box-category-tree" style="margin-bottom: 2em;">
 
-	<ul class="nav nav-stacked nav-pills">
+	<ul class="pills">
 		<?php foreach ($categories as $category) echo $draw_branch($category); ?>
 	</ul>
 

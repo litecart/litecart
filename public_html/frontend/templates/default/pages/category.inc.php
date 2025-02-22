@@ -6,7 +6,7 @@
 		<div class="col-md-3">
 			<div id="sidebar" style="margin-bottom: 2em;">
 
-				<ul class="nav nav-stacked nav-pills" style="margin-bottom: 2em;">
+				<ul class="pills" style="margin-bottom: 2em;">
 					<li><a class="nav-item" href="<?php echo document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo language::translate('title_back', 'Back'); ?></a></li>
 				</ul>
 
@@ -69,6 +69,7 @@
 								<div class="form-select" data-toggle="dropdown">
 									<?php echo language::translate('title_sort_by', 'Sort By'); ?>
 								</div>
+
 								<ul class="dropdown-content">
 									<?php foreach ($sort_alternatives as $key => $title) { ?>
 									<li><?php echo functions::form_radio_button('sort', [$key, $title], true); ?></li>
@@ -85,7 +86,7 @@
 					<div class="card-body">
 
 <?php /*
-						<nav class="nav nav-pills hidden-xs" style="margin-bottom: 1em;">
+						<nav class="pills hidden-xs" style="margin-bottom: 1em;">
 							<a class="nav-item" href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo language::translate('title_back', 'Back'); ?></a>
 							<?php foreach ($subcategories as $subcategory) { ?><a class="nav-item" href="<?php echo document::href_ilink('category', ['category_id' => $subcategory['id']]); ?>"><?php echo $subcategory['name']; ?></a><?php } ?>
 						</nav>

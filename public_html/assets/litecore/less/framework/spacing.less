@@ -1,0 +1,31 @@
+// Spacing
+
+.m(@id, @size) {
+	.m-@{id} { margin: @size; }
+	.mx-@{id} { margin-inline-start: @size; margin-inline-end: @size; }
+	.my-@{id} { margin-top: @size; margin-bottom: @size; }
+	.mt-@{id} { margin-top: @size; }
+	.mb-@{id} { margin-top: @size; }
+	.ml-@{id} { margin-top: @size; }
+	.mr-@{id} { margin-top: @size; }
+}
+
+.p(@id, @size) {
+	.p-@{id} { padding: @size; }
+	.px-@{id} { padding-inline-start: @size; padding-inline-end: @size; }
+	.py-@{id} { padding-top: @size; padding-bottom: @size; }
+	.pt-@{id} { padding-top: @size; }
+	.pb-@{id} { padding-top: @size; }
+	.pl-@{id} { padding-top: @size; }
+	.pr-@{id} { padding-top: @size; }
+}
+
+.m(1, .25rem);
+.m(2, .5rem);
+.m(3, 1rem);
+.m(4, 2rem);
+
+.p(1, .25rem);
+.p(2, .5rem);
+.p(3, 1rem);
+.p(4, 2rem);

@@ -1,4 +1,4 @@
-<ul class="breadcrumb">
+<ul class="breadcrumbs-2">
 <?php
 	foreach ($breadcrumbs as $breadcrumb) {
 		if (!empty($breadcrumb['link'])) {

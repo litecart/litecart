@@ -419,9 +419,9 @@ table .icon-star-o:hover {
 					<td class="text-end"><?php echo language::strftime('datetime', $order['date_created']); ?></td>
 					<td>
 						<div class="dropdown dropdown-end">
-							<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+							<div class="btn btn-default btn-sm dropdown-toggle"  data-toggle="dropdown">
 								<?php echo functions::draw_fonticon('icon-print'); ?>
-							</button>
+							</div>
 							<nav class="dropdown-menu">
 								<a class="dropdown-menu-item" href="<?php echo  document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank">
 									<?php echo functions::escape_html(language::translate('title_packing_slip', 'Packing Slip')); ?>
