@@ -1,16 +1,16 @@
 /* Buttons & Button Groups */
 
 .btn(@type) {
-	background: ~"var(--button-@{type}-background-color)";
+	background: ~"var(--button-@{type}-background)";
 	color: ~"var(--button-@{type}-text-color)";
 	text-decoration: none;
 	font-weight: 500;
 	&:hover:not(.active):not(.disabled):not([disabled]) {
-		background: ~"var(--button-@{type}-background-color-hover)";
+		background: ~"var(--button-@{type}-background-hover)";
 	}
 	&.active {
-		background: ~"var(--button-@{type}-background-color-active)";
-		border-color: ~"var(--button-@{type}-border-color)";
+		background: ~"var(--button-@{type}-background-active)";
+		border: ~"var(--button-@{type}-border)";
 	}
 }
 
@@ -40,7 +40,7 @@
 		text-decoration: none;
 		border: 1px solid transparent;
 		&:hover {
-			border-color: var(--default-border-color);
+			border: var(--default-border);
 		}
 	}
 
@@ -85,7 +85,7 @@
 		margin-inline-start: -1px;
 	}
 	&:not(.btn-group-vertical) > .btn:not(:first-child) {
-		border-inline-start: 1px solid var(--default-border-color);
+		border-inline-start: var(--default-border);
 	}
 	>.btn:first-child:not(:last-child):not([data-toggle="dropdown"]) {
 		border-start-end-radius: 0;

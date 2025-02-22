@@ -4,18 +4,18 @@
 	padding: var(--input-padding-y) var(--input-padding-x);
 	position: relative;
 	color: var(--input-text-color);
-	background: var(--input-background-color);
-	border: var(--input-border-size) solid var(--input-border-color);
+	background: var(--input-background);
+	border: var(--input-border);
 	border-radius: var(--border-radius);
 	&:focus {
-		border-color: var(--input-border-color-focus);
+		border-color: var(--input-border-focus);
 	}
 }
 
 fieldset {
 	padding: 2em;
 	padding-top: 1em;
-	border: 1px solid var(--input-border-color);
+	border: var(--input-border);
 	border-radius: var(--border-radius);
 	> legend {
 		padding: 0 .5em;
@@ -74,15 +74,15 @@ label.form-check {
 		display: inline-block;
 		position: relative;
 		margin-inline-end: .25em;
-		background: var(--input-background-color);
-		border: 1px solid var(--input-border-color);
+		background: var(--input-background);
+		border: var(--input-border);
 		vertical-align: text-bottom;
 		height: 1.33em;
 		width: 1.33em;
 		appearance: none;
 
 		&:checked {
-			background-color: var(--input-checkbox-background-color-active);
+			background: var(--input-checkbox-background-active);
 		}
 		&:hover:not([disabled]) {
 		}
@@ -164,7 +164,7 @@ input[type="radio"].form-check:not([disabled]):hover,
 	}
 
 	option {
-		background: var(--input-background-color);
+		background: var(--input-background);
 	}
 }
 
@@ -209,7 +209,7 @@ html[dir="rtl"] .form-select {
 	gap: 1em;
 	color: #000;
 	border-radius: var(--border-radius);
-	background: var(--input-background-color);
+	background: var(--input-background);
 
 	label {
 		flex: 0 0 auto;
@@ -218,7 +218,7 @@ html[dir="rtl"] .form-select {
 		padding: .25em .75em;
 		text-align: center;
 		&:has(:checked) {
-			background: var(--input-toggle-background-color);
+			background: var(--input-toggle-background);
 		}
 		&:hover:not(:has(:checked)):not(:has(:disabled)) {
 			background: #fff3;
@@ -226,7 +226,7 @@ html[dir="rtl"] .form-select {
 		}
 		&:has(:focus) {
 			outline: 0;
-			border-color: var(--input-border-color-focus);
+			border: var(--input-border-focus);
 		}
 		&:has(:disabled) {
 			opacity: .5;
@@ -236,7 +236,7 @@ html[dir="rtl"] .form-select {
 
 .form-code {
 	.input-field();
-	background: var(--input-code-background-color);
+	background: var(--input-code-background);
 	width: 100%;
 	height: 640px;
 	font-size: .85em;
@@ -267,7 +267,7 @@ html[dir="rtl"] .form-select {
 		display: inline-block;
 		flex: 1 1 auto;
 		box-shadow: none;
-		background-color: transparent;
+		background: transparent;
 		border-radius: 0;
 		border-top: none;
 		border-bottom: none;
@@ -278,9 +278,9 @@ html[dir="rtl"] .form-select {
 	.input-group-text {
 		flex: 0 1 auto;
 		padding: var(--input-padding-y) var(--input-padding-x);
-		background-color: var(--input-addon-background-color);
-		border-inline-start: 1px solid var(--input-border-color);
-		border-inline-end: 1px solid var(--input-border-color);
+		background: var(--input-addon-background);
+		border-inline-start: var(--input-border);
+		border-inline-end: var(--input-border);
 		color: var(--input-text-color);
 		align-self: stretch;
 		font-weight: normal;
@@ -298,7 +298,7 @@ html[dir="rtl"] .form-select {
 		border: 0;
 	}
 	> *:not(:first-child) {
-		border-left: 1px solid var(--input-border-color);
+		border-left: var(--input-border);
 	}
 	//> *:first-child:is(.btn, .form-select, .form-input) {
 	> *:first-child {
@@ -333,7 +333,7 @@ html[dir="rtl"] .form-select {
 	.input-group + .form-input,
 	.input-group + .form-select,
 	.input-group + .input-group {
-		border-inline-start: 1x solid var(--input-border-color);
+		border-inline-start: var(--input-border);
 	}
 */
 }
@@ -358,7 +358,7 @@ fieldset[disabled] > :not(legend),
 }
 
 .input-group .trumbowyg-box {
-	--trumbowyg-pane-background-color: var(--input-addon-background-color);
+	--trumbowyg-pane-background: var(--input-addon-background);
 	border-start-start-radius: 0;
 	border-end-start-radius: 0;
 	border-end-end-radius: 0;

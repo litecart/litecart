@@ -1,5 +1,5 @@
 body {
-	background-color: var(--page-background-color);
+	background: var(--page-background);
 }
 
 #backend-wrapper {
@@ -10,7 +10,7 @@ body {
 
 #sidebar {
 	flex: 0 0 var(--sidebar-width);
-	background-color: var(--sidebar-background-color);
+	background: var(--sidebar-background);
 	box-shadow: 0 1px 1rem rgba(0, 0, 0, .05);
 	padding: var(--gutter-size);
 
@@ -66,6 +66,7 @@ body {
 
 		.logotype,
 		.filter,
+		//.platform .name,
 		.platform,
 		.copyright {
 			display: none;
@@ -111,10 +112,9 @@ body {
 	gap: .75em 1em;
 	padding: .75em 1em;
 	list-style: none;
-	background: var(--top-background-color);
+	background: var(--top-background);
 	color: var(--top-text-color);
 	border-radius: var(--border-radius);
-	//border-bottom: 1px solid var(--default-border-color);
 	margin: 0;
 	margin-bottom: var(--gutter-size);
 
@@ -129,7 +129,7 @@ body {
 			text-decoration: none;
 			border-radius: var(--border-radius);
 			&:hover {
-				background-color: var(--default-background-color-hover);
+				background: var(--default-background-hover);
 			}
 		}
 
@@ -143,7 +143,7 @@ body {
 
 	.nav-toggle {
 		padding: 5px 10px;
-		background-color: var(--default-background-color);
+		background: var(--default-background);
 		border-radius: var(--border-radius);
 		cursor: pointer;
 		&:hover {
@@ -212,7 +212,6 @@ body {
 	margin: 1em -1em;
 	padding: 0;
 	color: var(--sidebar-text-color);
-	//border-top: 1px var(--sidebar-border-color) solid;
 
 	.app {
 		position: relative;
@@ -223,7 +222,7 @@ body {
 		border-radius: var(--border-radius);
 
 		&:hover:not(.active) {
-			background: var(--sidebar-background-color-hover);
+			background: var(--sidebar-background-hover);
 		}
 
 		a {
@@ -252,7 +251,7 @@ body {
 
 		&.active {
 			border-color: var(--app-color);
-			background: var(--sidebar-app-group-background-color);
+			background: var(--sidebar-app-group-background);
 			border-radius: var(--border-radius);
 
 			.docs {
@@ -260,12 +259,12 @@ body {
 			}
 
 			.doc:hover {
-				background: var(--sidebar-doc-background-color-hover);
+				background: var(--sidebar-doc-background-hover);
 				border-radius: var(--border-radius);
 			}
 
 			.doc.active > a {
-				background: var(--sidebar-doc-background-color-active);
+				background: var(--sidebar-doc-background-active);
 				border-radius: var(--border-radius);
 			}
 		}
@@ -313,7 +312,7 @@ body {
 	margin-inline-end: .33em;
 	line-height: 100%;
 	color: var(--app-color);
-	background: var(--app-icon-background-color);
+	background: var(--app-icon-background);
 	//clip-path: circle(50%);
 	//clip-path: polygon(50% 0%, 83% 12%, 100% 43%, 94% 78%, 68% 100%, 32% 100%, 6% 78%, 0% 43%, 17% 12%);
 	//clip-path: xywh(0 0 100% 100% round var(--border-radius) 0); // 2-rounded corners
@@ -366,7 +365,7 @@ html.condensed {
 	}
 
 	#content {
-		//background: var(--card-background-color);
+		//background: var(--card-background);
 		margin: 0;
 		padding: .5em;
 		> :last-child {

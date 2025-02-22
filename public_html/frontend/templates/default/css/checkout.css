@@ -57,7 +57,7 @@
   top: 50%;
   width: 9999px;
   height: 1px;
-  background: var(--default-border-color);
+  background: var(--default-background);
 }
 .strikethrough-divider > span:before {
   inset-inline-end: 100%;
@@ -117,8 +117,9 @@
   display: block;
   position: relative;
   padding: 0.5em;
-  background: var(--default-background-color);
-  border: 2px solid var(--default-border-color);
+  background: var(--default-background);
+  border: var(--default-border);
+  border-width: 2px;
   border-radius: var(--border-radius);
   user-select: none;
   overflow: hidden;

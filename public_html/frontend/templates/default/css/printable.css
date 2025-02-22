@@ -92,7 +92,7 @@ hr {
 }
 @media screen {
   body {
-    background: var(--site-background-color);
+    background: var(--site-background);
   }
   .page {
     margin: 5mm auto;

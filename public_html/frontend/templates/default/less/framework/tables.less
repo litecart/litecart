@@ -4,7 +4,7 @@
 	width: 100%;
 	max-width: 100%;
 	margin-bottom: var(--gutter-size);
-	background-color: transparent;
+	background: transparent;
 	border-spacing: 0;
 	border-collapse: collapse;
 
@@ -19,22 +19,22 @@
 		vertical-align: top;
 
 		&.border-top {
-			border-top: 1px solid var(--default-border-color);
+			border-top: var(--default-border);
 		}
 		&.border-start {
-			border-inline-start: 1px solid var(--default-border-color);
+			border-inline-start: var(--default-border);
 		}
 		&.border-left {
-			border-left: 1px solid var(--default-border-color);
+			border-left: var(--default-border);
 		}
 		&.border-right {
-			border-right: 1px solid var(--default-border-color);
+			border-right: var(--default-border);
 		}
 		&.border-end {
-			border-inline-end: 1px solid var(--default-border-color);
+			border-inline-end: var(--default-border);
 		}
 		&.border-bottom {
-			border-bottom: 1px solid var(--default-border-color);
+			border-bottom: var(--default-border);
 		}
 
 		@media print {
@@ -50,7 +50,8 @@
 			padding: 6px 12px;
 			text-align: left;
 			vertical-align: bottom;
-			border-bottom: 2px solid var(--default-border-color);
+			border-bottom: var(--default-border);
+			border-bottom-width: 2px;
 			@media print {
 				border-color: #000 !important;
 			}
@@ -63,17 +64,17 @@
 	> tfoot {
 		padding: 6px 12px;
 		text-align: left;
-		border-top: 1px solid var(--default-border-color);
+		border-top: var(--default-border);
 		@media print {
 			border-color: #000 !important;
 		}
 	}
 
 	&.table-bordered {
-		border-top: 1px solid var(--default-border-color);
-		border-bottom: 1px solid var(--default-border-color);
+		border-top: var(--default-border);
+		border-bottom: var(--default-border);
 		> * > tr > td {
-			border-top: 1px solid var(--default-border-color);
+			border-top: var(--default-border);
 			@media print {
 				border-color: #000 !important;
 			}

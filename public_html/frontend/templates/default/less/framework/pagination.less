@@ -15,8 +15,8 @@
 			padding: .5em 1em;
 			text-decoration: none;
 			color: var(--pagination-text-color);
-			background: var(--pagination-background-color);
-			border: 1px solid var(--default-border-color);
+			background: var(--pagination-background);
+			border: var(--default-border);
 			margin-inline-start: -1px;
 		}
 		&:first-child {
@@ -38,7 +38,7 @@
 		&:hover, &:focus {
 			z-index: 2;
 			color: var(--pagination-hover-text-color);
-			background-color: var(--pagination-hover-background-color);
+			background: var(--pagination-hover-background);
 		}
 	}
 
@@ -46,7 +46,7 @@
 		&, &:hover, &:focus {
 			z-index: 3;
 			color: var(--pagination-active-text-color);
-			background-color: var(--pagination-active-background-color);
+			background: var(--pagination-active-background);
 			border-color: var(--pagination-active-background  -color);
 			cursor: default;
 		}

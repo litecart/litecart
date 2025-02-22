@@ -5,16 +5,16 @@
 	display: block;
 	width: 100%;
 	padding: .75em 1em;
-	background-color: var(--input-background-color);
+	background: var(--input-background);
 	color: var(--input-text-color);
-	border: var(--input-border-size) solid var(--input-border-color);
+	border: var(--input-border);
 	border-radius: var(--border-radius);
 	box-shadow: none;
 	line-height: 1;
 }
 
 fieldset {
-	border: 1px solid var(--default-border-color);
+	border: var(--default-border);
 	border-radius: var(--border-radius);
 }
 
@@ -52,10 +52,11 @@ input[type="number"] {
 	input[type="checkbox"] {
 		position: relative;
 		appearance: none;
-		background: var(--input-background-color);
+		background: var(--input-background);
 		width: 1.25em;
 		height: 1.25em;
-		border: 2px solid var(--input-border-color);
+		border: var(--input-border);
+		border-width: 2px;
 		border-radius: var(--border-radius);
 		box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
 		vertical-align: text-bottom;
@@ -63,7 +64,7 @@ input[type="number"] {
 			box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
 		}
 		&:checked {
-			background-color: #999;
+			background: #999;
 			background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/></svg>");
 		}
 		&:hover {
@@ -74,10 +75,10 @@ input[type="number"] {
 	input[type="radio"] {
 		position: relative;
 		appearance: none;
-		background: var(--input-background-color);
+		background: var(--input-background);
 		height: 1.25em;
 		width: 1.25em;
-		border: 2px solid var(--input-border-color);
+		border: 2px solid var(--input-border);
 		border-radius: 50%;
 		box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
 		vertical-align: text-bottom;
@@ -86,7 +87,7 @@ input[type="number"] {
 			//  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
 			//}
 		&:checked {
-			background-color: #999;
+			background: #999;
 			background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='%23fff'/></svg>");
 		}
 		&:hover {
@@ -197,7 +198,7 @@ input[type="number"] {
 	gap: 1em;
 	color: #000;
 	border-radius: var(--border-radius);
-	background: var(--input-background-color);
+	background: var(--input-background);
 
 	label {
 		flex: 0 0 auto;
@@ -206,7 +207,7 @@ input[type="number"] {
 		padding: .25em .75em;
 		text-align: center;
 		&:has(:checked) {
-			background: var(--input-toggle-background-color);
+			background: var(--input-toggle-background);
 		}
 		&:hover:not(:has(:checked)):not(:has(:disabled)) {
 			background: #fff3;
@@ -214,7 +215,7 @@ input[type="number"] {
 		}
 		&:has(:focus) {
 			outline: 0;
-			border-color: var(--input-border-color-focus);
+			border: var(--input-border-focus);
 		}
 		&:has(:disabled) {
 			opacity: .5;
@@ -237,16 +238,16 @@ input[type="number"] {
 	.form-select {
 		flex: 1 1 auto;
 		box-shadow: none;
-		background-color: transparent;
+		background: transparent;
 		border-radius: 0;
 		border: none;
 	}
 	.input-group-text {
 		flex: 0 1 auto;
 		padding: .5em 1em;
-		background-color: var(--input-addon-background-color);
-		border-inline-start: 2px solid var(--input-border-color);
-		border-inline-end: 2px solid var(--input-border-color);
+		background: var(--input-addon-background);
+		border-inline-start: var(--input-border);
+		border-inline-end: var(--input-border);
 		color: var(--input-text-color);
 		align-self: center;
 		font-weight: normal;

@@ -14,8 +14,8 @@
 			position: relative;
 			display: inline-block;
 			padding: .5em 1em;
-			background: var(--pagination-background-color);
-			border: 1px solid var(--default-border-color);
+			background: var(--pagination-background);
+			border: var(--default-border);
 			color: var(--pagination-text-color);
 			text-decoration: none;
 			margin-inline-start: -1px;
@@ -38,16 +38,16 @@
 	> li:not(.disabled):not(.active) > a {
 		&:hover, &:focus {
 			z-index: 2;
-			background-color: var(--pagination-background-color-hover);
-			border-color: var(--pagination-border-color-hover);
+			background: var(--pagination-background-hover);
+			border: var(--pagination-border-hover);
 			color: var(--pagination-text-color-hover);
 		}
 	}
 
 	> .active > a, > .active > span {
 		z-index: 3;
-		background-color: var(--pagination-background-color-active);
-		border-color: var(--pagination-background-color-active);
+		background: var(--pagination-background-active);
+		border-color: var(--pagination-background-active);
 		color: var(--pagination-text-color-active);
 		cursor: default;
 	}

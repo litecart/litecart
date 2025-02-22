@@ -37,7 +37,7 @@ samp {
   font-size: 1em;
 }
 a {
-  background-color: transparent;
+  background: transparent;
 }
 abbr[title] {
   border-bottom: none;
@@ -209,7 +209,7 @@ a:active {
 }
 fieldset {
   padding: var(--gutter-size);
-  border: 1px solid var(--default-border-color);
+  border: var(--default-border);
   border-radius: var(--border-radius);
 }
 fieldset legend {
@@ -220,7 +220,7 @@ fieldset legend {
 hr {
   margin: 1em 0;
   border: 0;
-  border-top: 1px solid var(--default-border-color);
+  border-top: var(--default-border);
 }
 /* Badges */
 .badge {
@@ -261,7 +261,7 @@ hr {
 .breadcrumbs .breadcrumb a,
 .breadcrumbs .breadcrumb span {
   display: inline-block;
-  background-color: #f1f1f7;
+  background: #f1f1f7;
   border-radius: var(--border-radius);
   color: var(--breadcrumbs-text-color);
   transition: all 50ms linear;
@@ -297,60 +297,60 @@ hr {
   touch-action: manipulation;
 }
 .btn.btn-default {
-  background: var(--button-default-background-color);
+  background: var(--button-default-background);
   color: var(--button-default-text-color);
   border: none;
   text-decoration: none;
 }
 .btn.btn-default:hover:not(.active):not(.disabled):not([disabled]) {
-  background: var(--button-default-background-color-hover);
-  border-color: var(--button-default-border-color-hover);
+  background: var(--button-default-background-hover);
+  border: var(--button-default-border-hover);
 }
 .btn.btn-default.active {
-  background: var(--button-default-background-color-active);
-  border-color: var(--button-default-border-color-active);
+  background: var(--button-default-background-active);
+  border-width: var(--button-default-border-active);
 }
 .btn.btn-primary {
-  background: var(--button-primary-background-color);
+  background: var(--button-primary-background);
   color: var(--button-primary-text-color);
   border: none;
   text-decoration: none;
 }
 .btn.btn-primary:hover:not(.active):not(.disabled):not([disabled]) {
-  background: var(--button-primary-background-color-hover);
-  border-color: var(--button-primary-border-color-hover);
+  background: var(--button-primary-background-hover);
+  border: var(--button-primary-border-hover);
 }
 .btn.btn-primary.active {
-  background: var(--button-primary-background-color-active);
-  border-color: var(--button-primary-border-color-active);
+  background: var(--button-primary-background-active);
+  border-width: var(--button-primary-border-active);
 }
 .btn.btn-success {
-  background: var(--button-success-background-color);
+  background: var(--button-success-background);
   color: var(--button-success-text-color);
   border: none;
   text-decoration: none;
 }
 .btn.btn-success:hover:not(.active):not(.disabled):not([disabled]) {
-  background: var(--button-success-background-color-hover);
-  border-color: var(--button-success-border-color-hover);
+  background: var(--button-success-background-hover);
+  border: var(--button-success-border-hover);
 }
 .btn.btn-success.active {
-  background: var(--button-success-background-color-active);
-  border-color: var(--button-success-border-color-active);
+  background: var(--button-success-background-active);
+  border-width: var(--button-success-border-active);
 }
 .btn.btn-danger {
-  background: var(--button-danger-background-color);
+  background: var(--button-danger-background);
   color: var(--button-danger-text-color);
   border: none;
   text-decoration: none;
 }
 .btn.btn-danger:hover:not(.active):not(.disabled):not([disabled]) {
-  background: var(--button-danger-background-color-hover);
-  border-color: var(--button-danger-border-color-hover);
+  background: var(--button-danger-background-hover);
+  border: var(--button-danger-border-hover);
 }
 .btn.btn-danger.active {
-  background: var(--button-danger-background-color-active);
-  border-color: var(--button-danger-border-color-active);
+  background: var(--button-danger-background-active);
+  border-width: var(--button-danger-border-active);
 }
 .btn.btn-outline {
   background: none;
@@ -399,7 +399,7 @@ hr {
   margin-inline-start: -1px;
 }
 .btn-group:not(.btn-group-vertical) > .btn:not(:first-child) {
-  border-inline-start: 1px solid var(--default-border-color);
+  border-inline-start: var(--default-border);
 }
 .btn-group > .btn:first-child:not(:last-child):not([data-toggle="dropdown"]) {
   border-start-end-radius: 0;
@@ -430,8 +430,8 @@ hr {
 /* Cards */
 .card {
   margin-bottom: var(--gutter-size);
-  background-color: var(--card-background-color);
-  border: 1px solid var(--card-border-color);
+  background: var(--card-background);
+  border: var(--card-border);
   border-radius: var(--border-radius);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   color: var(--card-text-color);
@@ -448,13 +448,6 @@ hr {
 .card .card-body:not(:first-child) {
   padding-top: calc(var(--gutter-size) / 2);
 }
-.card .card-header {
-  color: var(--card-header-text-color);
-  background-color: var(--card-header-background-color);
-  border-bottom: 0px solid var(--card-border-color);
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
-  line-height: 100%;
-}
 .card .card-header .card-title {
   font-weight: 500;
   font-size: 1.5rem;
@@ -462,12 +455,11 @@ hr {
 }
 .card .card-body {
   padding-bottom: var(--gutter-size);
-  background-color: var(--card-body-background-color);
 }
 .card .card-footer {
   padding-bottom: var(--gutter-size);
-  background-color: var(--card-footer-background-color);
-  border-top: 1px solid var(--card-border-color);
+  background: var(--card-footer-background);
+  border-top: var(--card-border);
   border-end-end-radius: var(--border-radius);
   border-end-start-radius: var(--border-radius);
   box-shadow: inset 0px 10px 15px -15px rgba(0, 0, 0, 0.25);
@@ -687,13 +679,13 @@ hr {
   margin: 2px;
   text-indent: -999px;
   cursor: pointer;
-  background-color: #000 \9;
-  background-color: rgba(0, 0, 0, 0);
+  background: #000 \9;
+  background: rgba(0, 0, 0, 0);
   border: 1px solid #fff;
   border-radius: 10px;
 }
 .carousel-indicators .active {
-  background-color: #fff;
+  background: #fff;
 }
 /* Chat */
 .bubbles {
@@ -851,9 +843,9 @@ hr {
   position: fixed;
   width: max-content;
   text-align: start;
-  background-color: #fff;
+  background: #fff;
   color: var(--default-text-color);
-  border: 1px solid var(--default-border-color);
+  border: var(--default-border);
   border-radius: var(--border-radius);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
@@ -867,7 +859,7 @@ hr {
   height: 1px;
   margin: 9px 0;
   overflow: hidden;
-  background-color: #e5e5e5;
+  background: #e5e5e5;
 }
 .dropdown-menu > li > *:not(.btn),
 .dropdown-content > li > *:not(.btn) {
@@ -878,7 +870,7 @@ hr {
 .dropdown-menu > li > *:not(.btn)a:focus,
 .dropdown-content > li > *:not(.btn)a:focus {
   text-decoration: none;
-  background-color: #f5f5f5;
+  background: #f5f5f5;
 }
 .dropdown-menu > .active > a,
 .dropdown-content > .active > a,
@@ -889,7 +881,7 @@ hr {
   color: #fff;
   text-decoration: none;
   outline: 0;
-  background-color: #337ab7;
+  background: #337ab7;
 }
 .dropdown-menu > .disabled > a,
 .dropdown-content > .disabled > a,
@@ -904,7 +896,7 @@ hr {
 .dropdown-menu > .disabled > a:focus,
 .dropdown-content > .disabled > a:focus {
   text-decoration: none;
-  background-color: transparent;
+  background: transparent;
   background-image: none;
   cursor: not-allowed;
 }
@@ -956,7 +948,7 @@ tr.semi-transparent td {
 }
 /* Forms & Input Fields */
 fieldset {
-  border: 1px solid var(--default-border-color);
+  border: var(--default-border);
   border-radius: var(--border-radius);
 }
 input,
@@ -992,10 +984,11 @@ input[type="number"] {
 .form-check input[type="checkbox"] {
   position: relative;
   appearance: none;
-  background: var(--input-background-color);
+  background: var(--input-background);
   width: 1.25em;
   height: 1.25em;
-  border: 2px solid var(--input-border-color);
+  border: var(--input-border);
+  border-width: 2px;
   border-radius: var(--border-radius);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   vertical-align: text-bottom;
@@ -1005,7 +998,7 @@ input[type="number"] {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 .form-check input[type="checkbox"]:checked {
-  background-color: #999;
+  background: #999;
   background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/></svg>");
 }
 .form-check input[type="checkbox"]:hover {
@@ -1014,17 +1007,17 @@ input[type="number"] {
 .form-check input[type="radio"] {
   position: relative;
   appearance: none;
-  background: var(--input-background-color);
+  background: var(--input-background);
   height: 1.25em;
   width: 1.25em;
-  border: 2px solid var(--input-border-color);
+  border: 2px solid var(--input-border);
   border-radius: 50%;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   vertical-align: text-bottom;
   margin-inline-end: 0.25em;
 }
 .form-check input[type="radio"]:checked {
-  background-color: #999;
+  background: #999;
   background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='%23fff'/></svg>");
 }
 .form-check input[type="radio"]:hover {
@@ -1035,8 +1028,8 @@ input[type="number"] {
   display: block;
   width: 100%;
   padding: 0.75em 1em;
-  background-color: var(--input-background-color);
-  border: var(--input-border-size) solid var(--input-border-color);
+  background: var(--input-background);
+  border: var(--input-border);
   border-radius: var(--border-radius);
   box-shadow: none;
   line-height: 1;
@@ -1058,9 +1051,9 @@ input[type="number"] {
   display: block;
   width: 100%;
   padding: 0.75em 1em;
-  background-color: var(--input-background-color);
+  background: var(--input-background);
   color: var(--input-text-color);
-  border: var(--input-border-size) solid var(--input-border-color);
+  border: var(--input-border);
   border-radius: var(--border-radius);
   box-shadow: none;
   line-height: 1;
@@ -1136,7 +1129,7 @@ input[type="number"] {
   gap: 1em;
   color: #000;
   border-radius: var(--border-radius);
-  background: var(--input-background-color);
+  background: var(--input-background);
 }
 .form-toggle label {
   flex: 0 0 auto;
@@ -1146,7 +1139,7 @@ input[type="number"] {
   text-align: center;
 }
 .form-toggle label:has(:checked) {
-  background: var(--input-toggle-background-color);
+  background: var(--input-toggle-background);
 }
 .form-toggle label:hover:not(:has(:checked)):not(:has(:disabled)) {
   background: #fff3;
@@ -1154,7 +1147,7 @@ input[type="number"] {
 }
 .form-toggle label:has(:focus) {
   outline: 0;
-  border-color: var(--input-border-color-focus);
+  border: var(--input-border-focus);
 }
 .form-toggle label:has(:disabled) {
   opacity: 0.5;
@@ -1164,9 +1157,9 @@ input[type="number"] {
   display: block;
   width: 100%;
   padding: 0.75em 1em;
-  background-color: var(--input-background-color);
+  background: var(--input-background);
   color: var(--input-text-color);
-  border: var(--input-border-size) solid var(--input-border-color);
+  border: var(--input-border);
   border-radius: var(--border-radius);
   box-shadow: none;
   line-height: 1;
@@ -1184,16 +1177,16 @@ input[type="number"] {
 .input-group .form-select {
   flex: 1 1 auto;
   box-shadow: none;
-  background-color: transparent;
+  background: transparent;
   border-radius: 0;
   border: none;
 }
 .input-group .input-group-text {
   flex: 0 1 auto;
   padding: 0.5em 1em;
-  background-color: var(--input-addon-background-color);
-  border-inline-start: 2px solid var(--input-border-color);
-  border-inline-end: 2px solid var(--input-border-color);
+  background: var(--input-addon-background);
+  border-inline-start: var(--input-border);
+  border-inline-end: var(--input-border);
   color: var(--input-text-color);
   align-self: center;
   font-weight: normal;
@@ -1516,7 +1509,7 @@ fieldset[disabled] > :not(legend),
   max-width: 100%;
   height: auto;
   line-height: var(--default-line-height);
-  background-color: var(--whitespace-color);
+  background: var(--whitespace-color);
   border-radius: var(--border-radius);
   transition: border 200ms ease-in-out;
   margin-inline-end: auto;
@@ -1764,24 +1757,24 @@ ul.list-inline li {
   flex-direction: column;
 }
 .nav-pills .nav-item {
-  background: var(--pills-background-color);
+  background: var(--pills-background);
   border-radius: var(--border-radius);
   transition: all 125ms linear;
   color: var(--pills-text-color);
-  border: 1px solid var(--pills-border-color);
+  border: var(--pills-border);
   box-shadow: 0 1px 10px 0px rgba(0, 0, 0, 0.03);
 }
 .nav-pills .nav-item:hover {
-  background: var(--pills-background-color-hover);
-  border-color: var(--pills-border-color-hover);
+  background: var(--pills-background-hover);
+  border: var(--pills-border-hover);
 }
 .nav-pills .nav-item.active {
-  background: var(--pills-background-color-active);
-  border-color: var(--pills-border-color-active);
+  background: var(--pills-background-active);
+  border: var(--pills-border-active);
   color: var(--pills-text-color-active);
 }
 .nav-tabs {
-  background: var(--tabs-background-color);
+  background: var(--tabs-background);
   border-start-start-radius: var(--border-radius);
   border-start-end-radius: var(--border-radius);
   padding: 0.5em 1em 0 1em;
@@ -1796,20 +1789,20 @@ ul.list-inline li {
   line-height: 1.42857143;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   padding: 0.5em 2em;
-  background-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.5);
 }
 .nav-tabs > li > .nav-item:hover a {
-  background-color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.75);
 }
 .nav-tabs > li > .nav-item.active a {
-  background: var(--tabs-background-color-active);
+  background: var(--tabs-background-active);
   color: var(--tabs-text-color-active);
   margin-bottom: -1px;
   border-bottom-color: #fff;
 }
 .tab-content {
   padding: var(--gutter-size);
-  background: var(--page-background-color);
+  background: var(--page-background);
   border-end-start-radius: var(--border-radius);
   border-end-end-radius: var(--border-radius);
   background: #fff;
@@ -1842,7 +1835,7 @@ ul.list-inline li {
   white-space: nowrap;
 }
 .navbar .navbar-brand a:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.05);
 }
 .navbar .navbar-brand img {
   display: inline-block;
@@ -1964,7 +1957,7 @@ ul.list-inline li {
   flex: 0 1 auto;
   padding: 1em;
   margin: 0.5em;
-  background-color: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.05);
   border: none;
   border-radius: var(--border-radius);
 }
@@ -1973,7 +1966,7 @@ ul.list-inline li {
 }
 .navbar .navbar-toggle .navbar-toggler-bar {
   position: relative;
-  background-color: var(--navigation-text-color);
+  background: var(--navigation-text-color);
   display: block;
   width: 22px;
   height: 2px;
@@ -1993,7 +1986,7 @@ ul.list-inline li {
   transform: rotate(45deg);
 }
 .navbar.expanded .navbar-toggle .navbar-toggler-bar:nth-of-type(2) {
-  background-color: transparent;
+  background: transparent;
 }
 .navbar.expanded .navbar-toggle .navbar-toggler-bar:nth-of-type(3) {
   top: -6px;
@@ -2010,7 +2003,7 @@ ul.list-inline li {
     position: static;
     width: auto;
     margin-top: 0;
-    background-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.15);
     border: 0;
     box-shadow: none;
   }
@@ -2056,7 +2049,7 @@ ul.list-inline li {
     display: none;
   }
   .navbar .dropdown-menu {
-    background-color: #fff;
+    background: #fff;
     border: none;
   }
   .navbar .navbar-menu {
@@ -2097,24 +2090,24 @@ body.navbar-expanded {
   text-decoration: none;
 }
 .alert.alert-default {
-  background-color: var(--default-notice-background-color);
+  background: var(--default-notice-background);
   color: var(--default-notice-text-color);
-  border: 1px solid var(--default-notice-border-color);
+  border: var(--default-notice-border);
 }
 .alert.alert-success {
-  background-color: var(--success-notice-background-color);
+  background: var(--success-notice-background);
   color: var(--success-notice-text-color);
-  border: 1px solid var(--success-notice-border-color);
+  border: var(--success-notice-border);
 }
 .alert.alert-warning {
-  background-color: var(--warning-notice-background-color);
+  background: var(--warning-notice-background);
   color: var(--warning-notice-text-color);
-  border: 1px solid var(--warning-notice-border-color);
+  border: var(--warning-notice-border);
 }
 .alert.alert-danger {
-  background-color: var(--danger-notice-background-color);
+  background: var(--danger-notice-background);
   color: var(--danger-notice-text-color);
-  border: 1px solid var(--danger-notice-border-color);
+  border: var(--danger-notice-border);
 }
 /* Pagination */
 .pagination {
@@ -2134,8 +2127,8 @@ body.navbar-expanded {
   padding: 0.5em 1em;
   text-decoration: none;
   color: var(--pagination-text-color);
-  background: var(--pagination-background-color);
-  border: 1px solid var(--default-border-color);
+  background: var(--pagination-background);
+  border: var(--default-border);
   margin-inline-start: -1px;
 }
 .pagination > li:first-child > a,
@@ -2155,7 +2148,7 @@ body.navbar-expanded {
 .pagination > li > span:focus {
   z-index: 2;
   color: var(--pagination-hover-text-color);
-  background-color: var(--pagination-hover-background-color);
+  background: var(--pagination-hover-background);
 }
 .pagination > .active > a,
 .pagination > .active > span,
@@ -2165,7 +2158,7 @@ body.navbar-expanded {
 .pagination > .active > span:focus {
   z-index: 3;
   color: var(--pagination-active-text-color);
-  background-color: var(--pagination-active-background-color);
+  background: var(--pagination-active-background);
   border-color: var(--pagination-active-background -color);
   cursor: default;
 }
@@ -2192,7 +2185,7 @@ body.navbar-expanded {
   width: 100%;
   max-width: 100%;
   margin-bottom: var(--gutter-size);
-  background-color: transparent;
+  background: transparent;
   border-spacing: 0;
   border-collapse: collapse;
 }
@@ -2208,27 +2201,27 @@ body.navbar-expanded {
 }
 .table > * > tr > td.border-top,
 .table > * > tr > th.border-top {
-  border-top: 1px solid var(--default-border-color);
+  border-top: var(--default-border);
 }
 .table > * > tr > td.border-start,
 .table > * > tr > th.border-start {
-  border-inline-start: 1px solid var(--default-border-color);
+  border-inline-start: var(--default-border);
 }
 .table > * > tr > td.border-left,
 .table > * > tr > th.border-left {
-  border-left: 1px solid var(--default-border-color);
+  border-left: var(--default-border);
 }
 .table > * > tr > td.border-right,
 .table > * > tr > th.border-right {
-  border-right: 1px solid var(--default-border-color);
+  border-right: var(--default-border);
 }
 .table > * > tr > td.border-end,
 .table > * > tr > th.border-end {
-  border-inline-end: 1px solid var(--default-border-color);
+  border-inline-end: var(--default-border);
 }
 .table > * > tr > td.border-bottom,
 .table > * > tr > th.border-bottom {
-  border-bottom: 1px solid var(--default-border-color);
+  border-bottom: var(--default-border);
 }
 @media print {
   .table > * > tr > td.border-top,
@@ -2253,7 +2246,8 @@ body.navbar-expanded {
   padding: 6px 12px;
   text-align: left;
   vertical-align: bottom;
-  border-bottom: 2px solid var(--default-border-color);
+  border-bottom: var(--default-border);
+  border-bottom-width: 2px;
 }
 @media print {
   .table > thead > tr > th {
@@ -2266,7 +2260,7 @@ body.navbar-expanded {
 .table > tfoot {
   padding: 6px 12px;
   text-align: left;
-  border-top: 1px solid var(--default-border-color);
+  border-top: var(--default-border);
 }
 @media print {
   .table > tfoot {
@@ -2274,11 +2268,11 @@ body.navbar-expanded {
   }
 }
 .table.table-bordered {
-  border-top: 1px solid var(--default-border-color);
-  border-bottom: 1px solid var(--default-border-color);
+  border-top: var(--default-border);
+  border-bottom: var(--default-border);
 }
 .table.table-bordered > * > tr > td {
-  border-top: 1px solid var(--default-border-color);
+  border-top: var(--default-border);
 }
 @media print {
   .table.table-bordered > * > tr > td {

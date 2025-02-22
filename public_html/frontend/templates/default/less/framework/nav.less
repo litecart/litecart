@@ -64,26 +64,26 @@
 
 .nav-pills {
 	.nav-item {
-		background: var(--pills-background-color);
+		background: var(--pills-background);
 		border-radius: var(--border-radius);
 		transition: all 125ms linear;
 		color: var(--pills-text-color);
-		border: 1px solid var(--pills-border-color);
+		border: var(--pills-border);
 		box-shadow: 0 1px 10px 0px rgba(0, 0, 0, .03);
 		&:hover {
-			background: var(--pills-background-color-hover);
-			border-color: var(--pills-border-color-hover);
+			background: var(--pills-background-hover);
+			border: var(--pills-border-hover);
 		}
 		&.active {
-			background: var(--pills-background-color-active);
-			border-color: var(--pills-border-color-active);
+			background: var(--pills-background-active);
+			border: var(--pills-border-active);
 			color: var(--pills-text-color-active);
 		}
 	}
 }
 
 .nav-tabs {
-	background: var(--tabs-background-color);
+	background: var(--tabs-background);
 	border-start-start-radius: var(--border-radius);
 	border-start-end-radius: var(--border-radius);
 	padding: .5em 1em 0 1em;
@@ -96,12 +96,12 @@
 			line-height: 1.42857143;
 			border-radius: var(--border-radius) var(--border-radius) 0 0;
 			padding: .5em 2em;
-			background-color: rgba(255, 255, 255, .5);
+			background: rgba(255, 255, 255, .5);
 			&:hover a {
-				background-color: rgba(255, 255, 255, .75);
+				background: rgba(255, 255, 255, .75);
 			}
 			&.active a {
-				background: var(--tabs-background-color-active);
+				background: var(--tabs-background-active);
 				color: var(--tabs-text-color-active);
 				margin-bottom: -1px;
 				border-bottom-color: #fff;
@@ -112,7 +112,7 @@
 
 .tab-content {
 	padding: var(--gutter-size);
-	background: var(--page-background-color);
+	background: var(--page-background);
 	border-end-start-radius: var(--border-radius);
 	border-end-end-radius: var(--border-radius);
 	background: #fff;

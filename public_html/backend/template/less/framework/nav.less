@@ -86,14 +86,14 @@
 
 	.nav-link {
 		margin: 1px 0;
-		background: var(--pills-background-color);
+		background: var(--pills-background);
 
 
 		&:hover {
 			filter: brightness(.95);
 		}
 		&.active {
-			background: var(--pills-background-color-active);
+			background: var(--pills-background-active);
 			color: var(--pills-text-color);
 		}
 	}
@@ -127,8 +127,8 @@ html.dark-mode {
 }
 
 .nav-tabs {
-	background: var(--tab-nav-background-color);
-	border-bottom: 0px solid var(--tab-border-color);
+	background: var(--tab-nav-background);
+	border-bottom: 0;
 	padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
 	padding-bottom: 0;
 	color: var(--tab-nav-text-color);
@@ -140,17 +140,17 @@ html.dark-mode {
 		color: inherit;
 
 		&.active {
-			background: var(--tab-content-background-color);
+			background: var(--tab-content-background);
 			margin-bottom: -1px;
-			border: 0px solid var(--tab-border-color);
-			border-bottom-color: var(--tab-content-background-color);
+			border: 0;
+			border-bottom-color: var(--tab-content-background);
 		}
 	}
 }
 
 .tab-content {
 	margin: 2em 0;
-	background: var(--tab-content-background-color);
+	background: var(--tab-content-background);
 	border-end-start-radius: var(--border-radius);
 	border-end-end-radius: var(--border-radius);
 

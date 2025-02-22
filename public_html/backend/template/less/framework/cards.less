@@ -2,8 +2,7 @@
 
 .card {
 	margin-bottom: var(--gutter-size);
-	background-color: var(--card-background-color);
-	//border: 1px solid var(--card-border-color);
+	background: var(--card-background);
 	border-radius: var(--border-radius);
 	color: var(--card-text-color);
 
@@ -23,10 +22,6 @@
 	}
 
 	.card-header {
-		color: var(--card-header-text-color);
-		background-color: var(--card-header-background-color);
-		border-bottom: 0px solid var(--card-border-color);
-		border-radius: var(--border-radius) var(--border-radius) 0 0;
 		.card-title,
 		.panel-title {
 			font-weight: bold;
@@ -34,12 +29,8 @@
 		}
 	}
 
-	.card-body {
-		background-color: var(--card-body-background-color);
-	}
-
 	.card-footer {
-		background-color: var(--card-footer-background-color);
+		background: var(--card-footer-background);
 		border-end-end-radius: var(--border-radius);
 		border-end-start-radius: var(--border-radius);
 		box-shadow: inset 0px 10px 15px -15px rgba(0, 0, 0, .25);
