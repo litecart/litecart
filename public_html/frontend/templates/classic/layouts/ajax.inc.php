@@ -1,3 +1,0 @@
-{{notices}}
-
-{{content}}

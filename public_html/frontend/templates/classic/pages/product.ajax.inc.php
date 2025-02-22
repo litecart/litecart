@@ -1,1 +1,0 @@
-<?php include 'app://frontend/templates/'.settings::get('template').'/partials/box_product.inc.php'; ?>
