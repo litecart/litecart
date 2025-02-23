@@ -6,6 +6,7 @@ import header from 'gulp-header'
 import less from 'gulp-less'
 import phplint from 'gulp-phplint'
 import rename from 'gulp-rename'
+import replace from 'gulp-replace'
 import * as dartSass from 'sass'
 import gulpSass from 'gulp-sass'
 import sourcemaps from '@sequencemedia/gulp-sourcemaps'
@@ -176,34 +177,58 @@ gulp.task('phplint', function() {
     .pipe(phplint.reporter('fail'))
 })
 
-
 gulp.task('iconly', function() {
-  return download([
-    //{ url: `https://cdn.iconly.io/kits/2W7kP8RGg5Xc/v_2f9c71f/iconly.css`, file: 'fonticons.css' },
-    { url: `https://cdn.iconly.io/kits/2W7kP8RGg5Xc/v_2f9c71f/iconly.min.css`, file: 'fonticons.min.css' },
-    { url: `https://cdn.iconly.io/kits/2W7kP8RGg5Xc/v_2f9c71f/iconly.woff2`, file: 'fonticons.woff2' }
-  ])
-  .pipe(replace(/src: url\([^\}]+/g, `src:url(fonticons.woff2?${Math.floor(Date.now() / 1000)}) format("woff2");\n`))
-  .pipe(replace(/src:url\([^\}]+/g, `src:url(fonticons.woff2?${Math.floor(Date.now() / 1000)}) format("woff2");`))
-  .pipe(gulp.dest('public_html/assets/fonticons/'))
+
+  download([{ url: `https://cdn.iconly.io/kits/2W7kP8RGg5Xc/v_2f9c71f/iconly.woff2`, file: 'fonticons.woff2' }])
+    .pipe(gulp.dest('public_html/assets/litecore/fonts/'));
+
+  return download([{ url: `https://cdn.iconly.io/kits/2W7kP8RGg5Xc/v_2f9c71f/iconly.css`, file: 'fonticons.less' }])
+    .pipe(replace(/^\/\*\!.*?(?=\n.icon-)/gs, [
+      '@font-face {',
+      '  font-display: auto;',
+      '  font-family: "LiteCore";',
+      '  font-style: normal;',
+      '  font-weight: 400;',
+      `  src: url("../fonts/fonticons.woff2?${Math.floor(Date.now() / 1000)}") format("woff2");`,
+      '}',
+      '',
+      '[class^="icon-"], [class*=" icon-"] {',
+      '  display: inline-block;',
+      '  font-family: "LiteCore" !important;',
+      '  font-weight: 400;',
+      '  font-style: normal;',
+      '  font-variant: normal;',
+      '  text-rendering: auto;',
+      '  text-align: center;',
+      '  line-height: 1;',
+      '  width: 1em;',
+      '  height: 1em;',
+      '  -moz-osx-font-smoothing: grayscale;',
+      '  -webkit-font-smoothing: antialiased;',
+      '}',
+      '',
+  ].join('\n')))
+  .pipe(replace(/(\.icon-[^:]+:before)\s*\{\s*([^}]+?)\s*\}\s*/g, '$1 { $2 }\n'))
+  .pipe(gulp.dest('public_html/assets/litecore/less/framework/'))
 })
 
 // Watch files for changes
 gulp.task('watch', function() {
+  gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('sass-chartist'))
+  gulp.watch(['public_html/assets/featherlight/*.less'], gulp.series('less-featherlight'))
+  gulp.watch(['public_html/assets/featherlight/*.js', '!public_html/assets/featherlight/*.min.js'], gulp.series('js-featherlight'))
   gulp.watch('public_html/assets/litecore/less/**/*.less', gulp.series('less-framework'))
   gulp.watch('public_html/assets/litecore/js/components/*.js', gulp.series('js-framework'))
+  gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('sass-trumbowyg'))
   gulp.watch('public_html/backend/template/less/**/*.less', gulp.series('less-backend'))
   gulp.watch('public_html/backend/template/js/components/*.js', gulp.series('js-backend'))
   gulp.watch('public_html/frontend/templates/default/less/**/*.less', gulp.series('less-frontend'))
   gulp.watch('public_html/frontend/templates/default/js/components/*.js', gulp.series('js-frontend'))
-  gulp.watch(['public_html/assets/featherlight/*.less'], gulp.series('less-featherlight'))
-  gulp.watch(['public_html/assets/featherlight/*.js', '!public_html/assets/featherlight/*.min.js'], gulp.series('js-featherlight'))
-  gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('sass-chartist'))
-  gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('sass-trumbowyg'))
 })
 
 // Task aliases
 gulp.task('build', gulp.series(
+  'iconly',
   'js-framework',
   'js-backend',
   'js-frontend',
@@ -213,7 +238,6 @@ gulp.task('build', gulp.series(
   'featherlight',
   'sass-chartist',
   'sass-trumbowyg',
-  'iconly',
   'watch',
 ))
 
