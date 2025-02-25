@@ -114,6 +114,10 @@ DROP TABLE IF EXISTS `lc_suppliers`;
 -- -----
 DROP TABLE IF EXISTS `lc_tax_classes`;
 -- -----
+DROP TABLE IF EXISTS `lc_third_parties`;
+-- -----
+DROP TABLE IF EXISTS `lc_third_parties_info`;
+-- -----
 DROP TABLE IF EXISTS `lc_tax_rates`;
 -- -----
 DROP TABLE IF EXISTS `lc_translations`;

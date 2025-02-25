@@ -1028,6 +1028,41 @@ CREATE TABLE `lc_tax_rates` (
 	CONSTRAINT `tax_rate_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc_geo_zones` (`id`) ON UPDATE NO ACTION ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
+CREATE TABLE `lc_third_parties` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`privacy_classes` VARCHAR(64) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
+	`category` VARCHAR(64) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
+	`name` VARCHAR(64) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
+	`homepage` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
+	`cookie_policy_url` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
+	`privacy_policy_url` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
+	`opt_out_url` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
+	`do_not_sell_url` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
+	`collected_data` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
+	`country_code` CHAR(2) NULL DEFAULT NULL COLLATE 'utf8mb4_swedish_ci',
+	`date_updated` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+	`date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `status` (`status`) USING BTREE,
+	INDEX `country_code` (`country_code`) USING BTREE,
+	CONSTRAINT `third_party_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+-- -----
+CREATE TABLE `lc_third_parties_info` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`third_party_id` INT(10) UNSIGNED NOT NULL,
+	`language_code` VARCHAR(2) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
+	`collected_data` VARCHAR(512) NOT NULL COLLATE 'utf8mb4_swedish_ci',
+	`description` VARCHAR(4096) NOT NULL COLLATE 'utf8mb4_swedish_ci',
+	`purposes` VARCHAR(4096) NOT NULL COLLATE 'utf8mb4_swedish_ci',
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `third_party_id` (`third_party_id`) USING BTREE,
+	INDEX `language_code` (`language_code`) USING BTREE,
+	CONSTRAINT `third_party_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT `third_party_info_to_third_party` FOREIGN KEY (`third_party_id`) REFERENCES `lc_third_parties` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+-- -----
 CREATE TABLE `lc_translations` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`code` VARCHAR(128) NOT NULL DEFAULT '',
