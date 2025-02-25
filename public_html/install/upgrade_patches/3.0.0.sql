@@ -14,7 +14,7 @@ CREATE TABLE `lc_banners` (
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_campaigns` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -28,7 +28,7 @@ CREATE TABLE `lc_campaigns` (
 	INDEX `date_valid_from` (`date_valid_from`) USING BTREE,
 	INDEX `date_valid_to` (`date_valid_to`) USING BTREE,
 	INDEX `status` (`status`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_campaigns_products` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -44,7 +44,7 @@ CREATE TABLE `lc_campaigns_products` (
 	INDEX `campaign_id` (`campaign_id`) USING BTREE,
 	CONSTRAINT `campaign_price_to_campaign` FOREIGN KEY (`campaign_id`) REFERENCES `lc_campaigns` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT `campaign_price_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE IF NOT EXISTS `lc_customer_groups` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `lc_customer_groups` (
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_customers_addresses` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -75,7 +75,7 @@ CREATE TABLE `lc_customers_addresses` (
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `customer_id` (`customer_id`) USING BTREE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_products_references` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -90,7 +90,7 @@ CREATE TABLE `lc_products_references` (
 	INDEX `source` (`source`),
 	INDEX `source_type` (`source_type`),
 	UNIQUE INDEX `code` (`product_id`, `code`, `type`, `source`, `source_type`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_redirects` (
 	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -109,7 +109,7 @@ CREATE TABLE `lc_redirects` (
 	UNIQUE KEY `pattern` (`pattern`),
 	KEY `status` (`status`),
 	KEY `immediate` (`immediate`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_site_tags` (
 	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -125,7 +125,7 @@ CREATE TABLE `lc_site_tags` (
 	INDEX `status` (`status`),
 	INDEX `position` (`position`),
 	INDEX `priority` (`priority`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_stock_transactions` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -134,7 +134,7 @@ CREATE TABLE `lc_stock_transactions` (
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_stock_transactions_contents` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -142,7 +142,7 @@ CREATE TABLE `lc_stock_transactions_contents` (
 	`stock_item_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`quantity_adjustment` FLOAT(11,4) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 RENAME TABLE `lc_manufacturers` TO `lc_brands`;
 -- -----
@@ -598,7 +598,7 @@ CREATE TABLE `lc_stock_items` (
 	INDEX `product_id` (`product_id`) USING BTREE,
 	INDEX `brand_id` (`brand_id`) USING BTREE,
 	INDEX `supplier_id` (`supplier_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_stock_items_info` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -611,7 +611,7 @@ CREATE TABLE `lc_stock_items_info` (
 	FULLTEXT INDEX `name` (`name`),
 	CONSTRAINT `stock_item_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE NO ACTION,
 	CONSTRAINT `stock_item_info_to_stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_third_parties` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
