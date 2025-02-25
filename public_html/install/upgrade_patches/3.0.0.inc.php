@@ -974,3 +974,16 @@
 			change column `". database::input($column['COLUMN_NAME']) ."` `". database::input($column['COLUMN_NAME']) ."` float(10,4) unsigned ". ($column['IS_NULLABLE'] == 'YES' ? "null" : "not null") . " ". ($column['COLUMN_DEFAULT'] ? "default ". $column['COLUMN_DEFAULT'] : "") .";"
 		);
 	});
+
+	// Make sure all date_updated columns have "on update current_timestamp"
+	database::query(
+		"select * from information_schema
+		where TABLE_SCHEMA = '". database::input(DB_DATABASE) ."'
+		and COLUMN_NAME = 'date_updated'
+		and EXTRA not like '%on update current_timestamp%';"
+	)->each(function($column) {
+		database::query(
+			"alter table `". database::input($column['TABLE_NAME']) ."`
+			modify column `". database::input($column['COLUMN_NAME']) ."` timestamp not null default current_timestamp on update current_timestamp;"
+		);
+	});
