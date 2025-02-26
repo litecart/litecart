@@ -42,11 +42,9 @@ CREATE TABLE `lc_campaigns_products` (
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `product_id` (`product_id`) USING BTREE,
 	INDEX `campaign_id` (`campaign_id`) USING BTREE,
-	CONSTRAINT `campaign_price_to_campaign` FOREIGN KEY (`campaign_id`) REFERENCES `lc_campaigns` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT `campaign_price_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
-CREATE TABLE IF NOT EXISTS `lc_customer_groups` (
+CREATE TABLE `lc_customer_groups` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`type` ENUM('retail', 'wholesale') NOT NULL DEFAULT 'retail',
 	`name` VARCHAR(32) NOT NULL DEFAULT '',
@@ -54,27 +52,6 @@ CREATE TABLE IF NOT EXISTS `lc_customer_groups` (
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- -----
-CREATE TABLE `lc_customers_addresses` (
-	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`customer_id` INT(10) UNSIGNED NULL,
-	`type` ENUM('','business','individual') NOT NULL DEFAULT '',
-	`tax_id` VARCHAR(32) NOT NULL DEFAULT '',
-	`company` VARCHAR(64) NOT NULL DEFAULT '',
-	`firstname` VARCHAR(64) NOT NULL DEFAULT '',
-	`lastname` VARCHAR(64) NOT NULL DEFAULT '',
-	`address1` VARCHAR(64) NOT NULL DEFAULT '',
-	`address2` VARCHAR(64) NOT NULL DEFAULT '',
-	`postcode` VARCHAR(8) NOT NULL DEFAULT '',
-	`city` VARCHAR(32) NOT NULL DEFAULT '',
-	`country_code` CHAR(2) NOT NULL DEFAULT '',
-	`zone_code` VARCHAR(8) NOT NULL DEFAULT '',
-	`phone` VARCHAR(24) NOT NULL DEFAULT '',
-	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `customer_id` (`customer_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_products_references` (
@@ -325,8 +302,8 @@ CHANGE COLUMN `client_ip` `ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 ADD COLUMN `subscribed` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1' AFTER `id`,
 ADD COLUMN `country_code` CHAR(2) NULL AFTER `language_code`,
 ADD COLUMN `language_code` CHAR(2) NULL AFTER `lastname`,
-ADD COLUMN `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() AFTER `user_agent`,
-CHANGE COLUMN `date_created` `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() AFTER `date_updated`,
+ADD COLUMN `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER `user_agent`,
+CHANGE COLUMN `date_created` `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `date_updated`,
 ADD INDEX `subscribed` (`subscribed`);
 -- -----
 ALTER TABLE `lc_orders`
@@ -603,14 +580,12 @@ CREATE TABLE `lc_stock_items` (
 CREATE TABLE `lc_stock_items_info` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`stock_item_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-	`language_code` VARCHAR(2) NOT NULL DEFAULT '',
+	`language_code` CHAR(2) NOT NULL DEFAULT '',
 	`name` VARCHAR(128) NOT NULL DEFAULT '',
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `stock_option_id` (`stock_item_id`) USING BTREE,
 	INDEX `language_code` (`language_code`) USING BTREE,
-	FULLTEXT INDEX `name` (`name`),
-	CONSTRAINT `stock_item_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE NO ACTION,
-	CONSTRAINT `stock_item_info_to_stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_third_parties` (
@@ -630,8 +605,7 @@ CREATE TABLE `lc_third_parties` (
 	`date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `status` (`status`) USING BTREE,
-	INDEX `country_code` (`country_code`) USING BTREE,
-	CONSTRAINT `third_party_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE CASCADE ON DELETE SET NULL
+	INDEX `country_code` (`country_code`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_third_parties_info` (
@@ -693,12 +667,13 @@ INSERT IGNORE INTO `lc_banners`
 SELECT id, status, name, languages, '', replace(image, 'slides/', 'banners/'), '', 'jumbotron', date_valid_from, date_valid_to FROM `lc_slides`;
 -- -----
 INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
-(0, 'Left', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Left</div>', '', '', 'left', 0, 0, NULL, NULL, NOW(), NOW()),
-(0, 'Middle', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Middle</div>', '', '', 'middle', 0, 0, NULL, NULL, NOW(), NOW()),
-(0, 'Right', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: seashell;">Right</div>', '', '', 'right', 0, 0, NULL, NULL, NOW(), NOW());
+(0, 'Jumbotron', '', '', 'banners/leaderboard.svg', 'http://litecart-major.local/', 'jumbotron', 0, 0, NULL, NULL, '2024-12-21 00:48:52', '2024-03-25 00:36:20');
+(0, 'Left', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Left</div>', '', '', 'left', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(0, 'Middle', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Middle</div>', '', '', 'middle', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(0, 'Right', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: seashell;">Right</div>', '', '', 'right', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_customer_groups` (`id`, `type`, `name`, `description`, `date_updated`, `date_created`)
-VALUES (NULL, 'retail', 'Default', '', NOW(), NOW());
+VALUES (NULL, 'retail', 'Default', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT IGNORE INTO `lc_customers_addresses`
 (customer_id, tax_id, company, firstname, lastname, address1, address2, postcode, city, country_code, zone_code, phone)
@@ -723,17 +698,17 @@ INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALU
 ('social_media', 'Social Media', 'Social media related settings.', 30);
 -- -----
 INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `required`, `priority`, `date_updated`, `date_created`) VALUES
-('defaults', 'local', 'Default Incoterm', 'Default Incoterm for new orders if nothing else is set.', 'default_incoterm', 'EXW', 'incoterms()', 0, 19, NOW(), NOW()),
-('defaults', 'local', 'Default Order Status', 'Default order status for new orders if nothing else is set.', 'default_order_status_id', '1', 'order_status()', 0, 20, NOW(), NOW()),
-('customer_details', 'local', 'Different Shipping Address', 'Allow customers to provide a different address for shipping.', 'customer_shipping_address', '1', 'toggle("y/n")', 0, 24, NOW(), NOW()),
-('checkout', 'local', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id,  {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 1, 20, NOW(), NOW()),
-('advanced', 'global', 'Static Content Domain Name', 'Use the given alias domain name for static content (fonts, images, stylesheets, javascripts, etc.).', 'static_domain', '', 'text()', 0, 12, NOW(), NOW()),
-('social_media', 'global', 'Facebook Link', 'The link to your Facebook page.', 'facebook_link', '', 'url()', 0, 10, NOW(), NOW()),
-('social_media', 'global', 'Instagram Link', 'The link to your Instagram page.', 'instagram_link', '', 'url()', 0, 20, NOW(), NOW()),
-('social_media', 'global', 'LinkedIn Link', 'The link to your LinkedIn page.', 'linkedin_link', '', 'url()', 0, 30, NOW(), NOW()),
-('social_media', 'global', 'Pinterest Link', 'The link to your Pinterest page.', 'pinterest_link', '', 'url()', 0, 40, NOW(), NOW()),
-('social_media', 'global', 'X Link', 'The link to your X page.', 'x_link', '', 'url()', 0, 50, NOW(), NOW()),
-('social_media', 'global', 'YouTube Link', 'The link to your YouTube channel.', 'youtube_link', '', 'url()', 0, 60, NOW(), NOW());
+('defaults', 'local', 'Default Incoterm', 'Default Incoterm for new orders if nothing else is set.', 'default_incoterm', 'EXW', 'incoterms()', 0, 19, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('defaults', 'local', 'Default Order Status', 'Default order status for new orders if nothing else is set.', 'default_order_status_id', '1', 'order_status()', 0, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('customer_details', 'local', 'Different Shipping Address', 'Allow customers to provide a different address for shipping.', 'customer_shipping_address', '1', 'toggle("y/n")', 0, 24, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('checkout', 'local', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id,  {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 1, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('advanced', 'global', 'Static Content Domain Name', 'Use the given alias domain name for static content (fonts, images, stylesheets, javascripts, etc.).', 'static_domain', '', 'text()', 0, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('social_media', 'global', 'Facebook Link', 'The link to your Facebook page.', 'facebook_link', '', 'url()', 0, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('social_media', 'global', 'Instagram Link', 'The link to your Instagram page.', 'instagram_link', '', 'url()', 0, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('social_media', 'global', 'LinkedIn Link', 'The link to your LinkedIn page.', 'linkedin_link', '', 'url()', 0, 30, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('social_media', 'global', 'Pinterest Link', 'The link to your Pinterest page.', 'pinterest_link', '', 'url()', 0, 40, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('social_media', 'global', 'X Link', 'The link to your X page.', 'x_link', '', 'url()', 0, 50, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('social_media', 'global', 'YouTube Link', 'The link to your YouTube channel.', 'youtube_link', '', 'url()', 0, 60, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_stock_transactions` (id, name, description)
 VALUES (1, 'Initial Stock Transaction', 'This is an initial system generated stock transaction to deposit stock for all sold items and items in stock. We need this for future inconcistency checks.');
@@ -746,7 +721,8 @@ SELECT '1' AS transaction_id, product_id, stock_item_id, quantity_adjustment FRO
 		SELECT pso.product_id, pso.id AS stock_option_id, pso.quantity
 		FROM `lc_products_stock_options` pso
 
-		UNION SELECT oi.product_id, oi.stock_option_id, oi.quantity FROM `lc_orders_items` oi
+		UNION SELECT oi.product_id, oi.stock_option_id, oi.quantity
+		FROM `lc_orders_items` oi
 		WHERE oi.order_id IN (
 			SELECT id FROM `lc_orders` o
 			WHERE o.order_status_id IN (
@@ -754,7 +730,6 @@ SELECT '1' AS transaction_id, product_id, stock_item_id, quantity_adjustment FRO
 				WHERE os.stock_action = 'withdraw'
 			)
 		)
-
 	)
 	GROUP BY product_id, stock_option_id
 	ORDER BY product_id, stock_option_id
@@ -1119,6 +1094,10 @@ ALTER TABLE `lc_brands_info`
 ADD CONSTRAINT `brand` FOREIGN KEY (`brand_id`) REFERENCES `lc_brands` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
 ADD CONSTRAINT `brand_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
 -- -----
+ALTER TABLE `lc_campaigns`
+ADD CONSTRAINT `campaign_price_to_campaign` FOREIGN KEY (`campaign_id`) REFERENCES `lc_campaigns` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+ADD CONSTRAINT `campaign_price_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+-- -----
 ALTER TABLE `lc_cart_items`
 ADD CONSTRAINT `cart_item_to_customer` FOREIGN KEY (`customer_id`) REFERENCES `lc_customers` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
 ADD CONSTRAINT `cart_item_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -1206,9 +1185,24 @@ ALTER TABLE `lc_stock_transactions_contents`
 ADD CONSTRAINT `stock_transaction_content_to_transaction` FOREIGN KEY (`transaction_id`) REFERENCES `lc_stock_transactions` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
 ADD CONSTRAINT `stock_transaction_content_to_stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE CASCADE ON DELETE SET NULL;
 -- -----
+ALTER TABLE `lc_stock_items_info`
+ADD CONSTRAINT `stock_item_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE NO ACTION,
+ADD CONSTRAINT `stock_item_info_to_stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- -----
+ALTER TABLE `lc_stock_items_references`
+ADD CONSTRAINT `stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+ADD CONSTRAINT `supplier` FOREIGN KEY (`supplier_id`) REFERENCES `lc_suppliers` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
+-- -----
 ALTER TABLE `lc_tax_rates`
 ADD CONSTRAINT `tax_rate_to_tax_class` FOREIGN KEY (`tax_class_id`) REFERENCES `lc_tax_classes` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
 ADD CONSTRAINT `tax_rate_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc_geo_zones` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
+-- -----
+ALTER TABLE `lc_third_parties`
+ADD CONSTRAINT `third_party_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE CASCADE ON DELETE SET NULL;
+-- -----
+ALTER TABLE `lc_third_parties_info`
+ADD CONSTRAINT `third_party_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE,
+ADD CONSTRAINT `third_party_info_to_third_party` FOREIGN KEY (`third_party_id`) REFERENCES `lc_third_parties` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 -- -----
 ALTER TABLE `lc_zones`
 ADD CONSTRAINT `zone_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE CASCADE ON DELETE CASCADE;
@@ -1223,4 +1217,3 @@ DROP TABLE `lc_orders_totals`;
 DROP TABLE `lc_slides`;
 -- -----
 DROP TABLE `lc_slides_info`;
--- -----
