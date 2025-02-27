@@ -226,7 +226,7 @@
 		}
 
 		$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
-			return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)";
+			return "if(JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') != 0, JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 		}, currency::$currencies)) .")";
 
 		$query = (
@@ -508,7 +508,7 @@
 		}
 
 		$sql_column_price = "coalesce(". implode(", ", array_map(function($currency){
-			return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)";
+			return "if(JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') != 0, JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 		}, currency::$currencies)) . ")";
 
 		$query = (

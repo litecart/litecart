@@ -129,6 +129,14 @@
 
 							break;
 
+						case 'product_prices':
+
+							database::multi_query(implode(PHP_EOL, [
+								"truncate ". DB_TABLE_PREFIX ."products_prices;",
+							]));
+
+							break;
+
 						case 'product_stock_options':
 
 							database::multi_query(implode(PHP_EOL, [
@@ -348,21 +356,10 @@
 							}
 						}
 
-						$prices = array_intersect_key($row, currency::$currencies);
-
-						$sql_update_prices = '';
-						foreach ($prices as $currency_code => $price) {
-							$sql_update_prices .= database::input($currency_code) ." = ". (float)$price . "," . PHP_EOL;
-						}
-
 						database::query(
-							"update ". DB_TABLE_PREFIX ."campaigns
-							set status = ". (int)$row['status'] .",
-								name = '". database::input($row['name']) ."',
-								date_valid_from = ". (empty($row['date_valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['date_valid_from'])) ."'") .",
-								date_valid_to = ". (empty($row['date_valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['date_valid_to'])) ."'") ."
-							where id = ". (int)$row['id'] ."
-							limit 1;"
+							"insert into ". DB_TABLE_PREFIX ."campaigns_products
+							(campaign_id, product_id, price)
+							on duplicate key update price = '". database::input($row['price']) ."';"
 						);
 
 						break;
@@ -712,13 +709,6 @@
 							$product->data['categories'] = preg_split('#\s*,\s*#', $row['categories'], -1, PREG_SPLIT_NO_EMPTY);
 						}
 
-						// Set price
-						if (!empty($row['currency_code'])) {
-							if (isset($row['price'])) {
-								$product->data['prices'][$row['currency_code']] = $row['price'];
-							}
-						}
-
 						// Set product info data
 						if (!empty($row['language_code'])) {
 
@@ -832,6 +822,56 @@
 
 						break;
 
+					case 'product_prices':
+
+						foreach (['product_id'] as $column) {
+							if (empty($row[$column])) {
+								throw new Exception("Missing value for mandatory column $column on line $i");
+							}
+						}
+
+						$product = new ent_product($row['product_id']);
+
+						if (($key = array_search($row['id'], array_combine(array_keys($product->data['prices']), array_column($product->data['prices'], 'id')))) !== false) {
+
+							if (empty($batch['overwrite'])) {
+								echo "Skip updating existing price on line $line" . PHP_EOL;
+								continue 2;
+							}
+
+							echo "Updating existing price on line $line" . PHP_EOL;
+							$batch['counters']['updated']++;
+
+						} else {
+
+							if (empty($batch['insert'])) {
+								echo "Skip inserting new price on line $line" . PHP_EOL;
+								continue 2;
+							}
+
+							echo "Inserting new price on line $line" . PHP_EOL;
+							$batch['counters']['inserted']++;
+						}
+
+						foreach ([
+							'product_id',
+							'customer_group_id',
+							'min_quantity',
+						] as $field) {
+							if (isset($row[$field])) {
+								$price[$field] = $row[$field];
+							} else if (!isset($price[$field])) {
+								$price[$field] = null;
+							}
+						}
+
+						$price['price'] = json_decode($price['price'], true);
+
+						$product->data['prices'][$key] = $price;
+						$product->save();
+
+						break;
+
 					case 'product_stock_options':
 
 						foreach (['product_id', 'stock_item_id'] as $column) {
@@ -911,13 +951,7 @@
 							}
 						}
 
-						foreach (currency::$currencies as $currency) {
-							if (isset($row[$currency])) {
-								$stock_option[$currency] = $row[$currency];
-							} else if (!isset($stock_option[$currency])) {
-								$stock_option[$currency] = null;
-							}
-						}
+						$stock_option['price_adjust'] = json_decode($stock_option['price_adjust'], true);
 
 						$product->data['stock_options'][$key] = $stock_option;
 						$product->save();
@@ -1210,8 +1244,9 @@
 				case 'campaigns':
 
 					$csv = database::query(
-						"select * from ". DB_TABLE_PREFIX ."campaigns
-						order by product_id;"
+						"select * from ". DB_TABLE_PREFIX ."campaigns_products cp
+						left join ". DB_TABLE_PREFIX ."campaigns c on (c.id = cp.campaign_id)
+						order by c.date_valid_from, c.date_valid_to, cp.product_id;"
 					)->export($result)->fetch_all();
 
 					if (!$csv) {
@@ -1251,7 +1286,7 @@
 					}
 
 					$csv = database::query(
-						"select p.*, '". database::input($_POST['currency_code']) ."' as currency_code, pi.name, pi.description, pi.short_description, pi.technical_data, pi.meta_description, pi.head_title, '". database::input($_POST['language_code']) ."' as language_code, ptc.categories, pp.price, pim.images, '' as new_image, pa.attributes
+						"select p.*, pi.name, pi.description, pi.short_description, pi.technical_data, pi.meta_description, pi.head_title, '". database::input($_POST['language_code']) ."' as language_code, ptc.categories, pim.images, '' as new_image, pa.attributes
 						from ". DB_TABLE_PREFIX ."products p
 						left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
 						left join (
@@ -1271,10 +1306,6 @@
 							group by product_id
 							order by priority
 						) pim on (pim.product_id = p.id)
-						left join (
-							select product_id, `". database::input($_POST['currency_code']) ."` as price
-							from ". DB_TABLE_PREFIX ."products_prices
-						) pp on (pp.product_id = p.id)
 						order by pi.name, pi.id;"
 					)->export($result)->fetch_all();
 
@@ -1379,11 +1410,12 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_type', 'Type'); ?></div>
 							<div class="form-input">
-								<?php echo functions::form_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
+								<?php echo functions::form_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true); ?>
 								<?php echo functions::form_radio_button('type', ['brands', language::translate('title_brands', 'Brands')], true); ?>
 								<?php echo functions::form_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
 								<?php echo functions::form_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true); ?>
 								<?php echo functions::form_radio_button('type', ['products', language::translate('title_products', 'Products')], true); ?>
+								<?php echo functions::form_radio_button('type', ['product_prices', language::translate('title_product_prices', 'Product Prices')], true); ?>
 								<?php echo functions::form_radio_button('type', ['product_stock_options', language::translate('title_product_stock_options', 'Product Stock Options')], true); ?>
 								<?php echo functions::form_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true); ?>
 								<?php echo functions::form_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
@@ -1452,7 +1484,8 @@
 								<?php echo functions::form_radio_button('type', ['brands', language::translate('title_brands', 'Brands')], true, 'data-dependencies="language"'); ?>
 								<?php echo functions::form_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
 								<?php echo functions::form_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true, 'data-dependencies="language"'); ?>
-								<?php echo functions::form_radio_button('type', ['products', language::translate('title_products', 'Products')], true, 'data-dependencies="currency,language"'); ?>
+								<?php echo functions::form_radio_button('type', ['products', language::translate('title_products', 'Products')], true, 'data-dependencies="language"'); ?>
+								<?php echo functions::form_radio_button('type', ['product_prices', language::translate('title_product_prices', 'Product Prices')], true); ?>
 								<?php echo functions::form_radio_button('type', ['product_stock_options', language::translate('title_product_stock_options', 'Product Stock Options')], true); ?>
 								<?php echo functions::form_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true, 'data-dependencies="language"'); ?>
 								<?php echo functions::form_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>

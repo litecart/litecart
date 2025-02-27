@@ -941,15 +941,36 @@
 		"drop table ". DB_TABLE_PREFIX ."products_campaigns;"
 	);
 
-	// Make price columns nullable
+	// Migrate product prices
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."currencies;"
-	)->each(function($currency) {
+		"select * from ". DB_TABLE_PREFIX ."products_prices;"
+	)->each(function($product_price) use ($currencies) {
+
+		$prices = array_filter($product_price, function ($key) {
+			return (preg_match('#^[A-Z]{3}$#', $key));
+		}, ARRAY_FILTER_USE_KEY);
+
+		foreach ($currencies as $currency) {
+			if (!isset($prices[$currency['code']])) {
+				$prices[$currency['code']] = $product_price['price'];
+			}
+		}
+
 		database::query(
-			"alter table ". DB_TABLE_PREFIX ."products_prices
-			change column `". $currency['code'] ."` `". $currency['code'] ."` float(10,4) unsigned null;"
+			"update ". DB_TABLE_PREFIX ."products
+			set prices = '". database::input(json_encode(array_filter($prices))) ."'
+			where id = ". (int)$product_price['id'] ."
+			limit 1;"
 		);
 	});
+
+	// Drop currency columns from products_prices
+	foreach ($currencies as $currency) {
+		database::query(
+			"alter table ". DB_TABLE_PREFIX ."products_prices
+			drop column `". database::input($currency['code']) ."`;"
+		);
+	}
 
 	// Make all 11 digit unsigned integers standard int(10) unsigned
 	database::query(

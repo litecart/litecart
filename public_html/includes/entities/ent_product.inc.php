@@ -95,11 +95,9 @@
 				from ". DB_TABLE_PREFIX ."products_prices pp
 				left join ". DB_TABLE_PREFIX ."customer_groups cg on (cg.id = pp.customer_group_id)
 				where pp.product_id = ". (int)$this->data['id'] .";"
-			)->each(function($price){
-				foreach (array_keys(currency::$currencies) as $currency_code) {
-					$price[$currency_code] = $price[$currency_code];
-				}
-				$this->data['prices'][] = $price;
+			)->each(function($product_price){
+				$product_price['price'] = !empty($product_price['price']) ? json_decode($product_price['price'], true) : [];
+				$this->data['prices'][] = $product_price;
 			});
 
 			// Sort prices
@@ -335,15 +333,13 @@
 					$this->data['prices'][$key]['id'] = $price['id'] = database::insert_id();
 				}
 
-				$sql_prices = implode("," . PHP_EOL, array_map(function($currency) use ($price) {
-					return "`". database::input($currency['code']) ."` = ". (isset($price[$currency['code']]) ? (float)$price[$currency['code']] : "null");
-				}, currency::$currencies));
+				$prices = array_filter($price['price']);
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."products_prices
 					set customer_group_id = ". (!empty($price['customer_group_id']) ? (int)$price['customer_group_id'] : "null") .",
 						min_quantity = ". (!empty($price['min_quantity']) ? (int)$price['min_quantity'] : 1) .",
-						$sql_prices
+						price = '". database::input(json_encode($prices)) ."'
 					where product_id = ". (int)$this->data['id'] ."
 					and id = ". (int)$price['id'] ."
 					limit 1;"
@@ -371,13 +367,11 @@
 					$this->data['campaigns'][$key]['id'] = $campaign['id'] = database::insert_id();
 				}
 
-				$sql_prices = implode("," . PHP_EOL, array_map(function($currency) use ($campaign) {
-					return "`". database::input($currency['code']) ."` = ". (isset($campaign[$currency['code']]) ? (float)$campaign[$currency['code']] : "null");
-				}, currency::$currencies));
+				$campaign['price'] = array_filter($campaign['price']);
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."products_campaigns
-					set $sql_prices
+					set price = '". database::input(json_encode($campaign['price'])) ."',
 					where product_id = ". (int)$this->data['id'] ."
 					and campaign_id = ". (int)$campaign['campaign_id'] ."
 					and id = ". (int)$campaign['id'] ."
@@ -561,15 +555,13 @@
 						$stock_option['id'] = $this->data['stock_options'][$key]['id'] = database::insert_id();
 					}
 
-					$sql_currency_prices = implode(",".PHP_EOL, array_map(function($currency) use ($stock_option) {
-						return "`". database::input($currency['code']) ."` = ". (isset($stock_option[$currency['code']]) ? (float)$stock_option[$currency['code']] : 0);
-					}, currency::$currencies));
+					$stock_option['price_adjustment'] = array_filter($stock_option['price_adjustment']);
 
 					database::query(
 						"update ". DB_TABLE_PREFIX ."products_stock_options
 						set stock_item_id = ". (int)$stock_option['stock_item_id'] .",
 							price_operator = '". database::input($stock_option['price_operator']) ."',
-							$sql_currency_prices,
+							price_adjustment = '". database::input(json_encode($stock_option['price_adjustment'])) ."',
 							priority = ". (int)$i++ ."
 						where id = ". (int)$stock_option['id'] ."
 						and product_id = ". (int)$this->data['id'] ."

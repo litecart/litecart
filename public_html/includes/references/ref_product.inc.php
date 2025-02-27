@@ -86,7 +86,7 @@
 						"select *, min(
 							coalesce(
 								". implode(', ', array_map(function($currency_code){
-									return "if(`". database::input($currency_code) ."` != 0, `". database::input($currency_code) ."` * ". currency::$currencies[$currency_code]['value'] .", null)";
+									return "if(JSON_EXTRACT(price, '$.". database::input($currency_code) ."') != 0, JSON_EXTRACT(price, '$.". database::input($currency_code) ."') * ". currency::$currencies[$currency_code]['value'] .", null)";
 								}, $this->_currency_codes)) ."
 							)
 						) as price
@@ -177,7 +177,9 @@
 
 						$customer_price = (float)database::query(
 							"select coalesce(
-								". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
+								". implode(", ", array_map(function($currency){
+									return "if(JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') != 0, JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+								}, currency::$currencies)) ."
 							) / min_quantity as customer_price
 							from ". DB_TABLE_PREFIX ."products_prices
 							where product_id = ". (int)$this->_data['id'] ."
@@ -375,7 +377,9 @@
 
 					$this->_data['price'] = (float)database::query(
 						"select coalesce(
-							". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
+							". implode(", ", array_map(function($currency){
+								return "if(JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') != 0, JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+							}, currency::$currencies)) ."
 						) / min_quantity as regular_price
 						from ". DB_TABLE_PREFIX ."products_prices
 						where product_id = ". (int)$this->_data['id'] ."

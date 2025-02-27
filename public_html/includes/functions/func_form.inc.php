@@ -1995,7 +1995,7 @@
 				from ". DB_TABLE_PREFIX ."products p
 				left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 				left join (
-					select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
+					select product_id, if(JSON_EXTRACT(price, '$.". database::input(currency::$selected['code']) ."'), JSON_EXTRACT(price, '$.". database::input(currency::$selected['code']) ."') * ". (float)currency::$selected['value'] .", JSON_EXTRACT(price, '$.". database::input(settings::get('store_currency_code')) ."')) as price
 					from ". DB_TABLE_PREFIX ."products_prices
 				) pp on (pp.product_id = p.id)
 				where p.id = ". (int)$input ."

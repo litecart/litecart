@@ -146,9 +146,13 @@
 		);
 	}
 
+	$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
+		return "if(JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') != 0, JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+	}, currency::$currencies)) .")";
+
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$products = database::query(
-		"select p.id, p.status, p.code, pi.name, p.image, pp.price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, p.date_created". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
+		"select p.id, p.status, p.code, pi.name, p.image, pp.price, pc.campaign_price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, p.date_created". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
 
 		from ". DB_TABLE_PREFIX ."products p
 		left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
@@ -156,9 +160,23 @@
 		left join ". DB_TABLE_PREFIX ."suppliers s on (s.id = p.supplier_id)
 
 		left join (
-			select product_id, `". database::input(settings::get('store_currency_code')) ."` as price
+			select product_id, $sql_column_price as price
 			from ". DB_TABLE_PREFIX ."products_prices
 		) pp on (pp.product_id = p.id)
+
+		left join (
+			select product_id, $sql_column_price as campaign_price
+			from ". DB_TABLE_PREFIX ."campaigns_products
+			where campaign_id in (
+				select id from ". DB_TABLE_PREFIX ."campaigns
+				where status
+				and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
+				and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."')
+			)
+			group by product_id
+			order by $sql_column_price asc
+			limit 1
+		) pc on (pc.product_id = p.id)
 
 		left join (
 			select pso.id, pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as quantity
@@ -253,6 +271,7 @@ table .thumbnail {
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
 					<th><?php echo language::translate('title_code', 'Code'); ?></th>
 					<th><?php echo language::translate('title_stock_options', 'Stock Options'); ?></th>
+					<th class="text-end"><?php echo language::translate('title_price', 'Price'); ?></th>
 					<th class="text-end"><?php echo language::translate('title_created', 'Created'); ?></th>
 					<th></th>
 				</tr>
@@ -269,6 +288,7 @@ table .thumbnail {
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name'] ?: '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
 					<td><?php echo $product['code']; ?></td>
 					<td class="text-center"><?php echo $product['num_stock_options']; ?></td>
+					<td class="text-center"><?php echo functions::draw_price_tag($product['price'], $product['campaign_price']); ?></td>
 					<td class="text-end"><?php echo language::strftime('datetime', $product['date_created']); ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id'], 'redirect_url' => document::link()]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>

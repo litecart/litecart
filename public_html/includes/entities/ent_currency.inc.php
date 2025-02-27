@@ -115,16 +115,6 @@
 					if ($this->previous['code'] == settings::get('store_currency_code')) {
 						throw new Exception('Cannot rename the store currency.');
 					}
-
-					database::query(
-						"alter table ". DB_TABLE_PREFIX ."campaigns_products
-						change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` float(10, 4) unsigned null;"
-					);
-
-					database::query(
-						"alter table ". DB_TABLE_PREFIX ."products_prices
-						change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` float(10, 4) unsigned null;"
-					);
 				}
 
 			} else {
@@ -170,16 +160,6 @@
 				"delete from ". DB_TABLE_PREFIX ."currencies
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
-			);
-
-			database::query(
-				"alter table ". DB_TABLE_PREFIX ."campaigns_products
-				drop `". database::input($this->data['code']) ."`;"
-			);
-
-			database::query(
-				"alter table ". DB_TABLE_PREFIX ."products_prices
-				drop `". database::input($this->data['code']) ."`;"
 			);
 
 			$this->reset();

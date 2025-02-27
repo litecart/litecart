@@ -36,9 +36,7 @@ CREATE TABLE `lc_campaigns_products` (
 	`product_id` INT(10) UNSIGNED NOT NULL,
 	`start_date` TIMESTAMP NULL DEFAULT NULL,
 	`end_date` TIMESTAMP NULL DEFAULT NULL,
-	`USD` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-	`EUR` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-	`SEK` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`price` VARCHAR(512) NOT NULL DEFAULT '{}',
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `product_id` (`product_id`) USING BTREE,
 	INDEX `campaign_id` (`campaign_id`) USING BTREE,
@@ -479,6 +477,7 @@ CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT FIRST,
 CHANGE COLUMN `product_id` `product_id` INT(10) UNSIGNED NOT NULL AFTER `id`,
 ADD COLUMN `customer_group_id` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `product_id`,
 ADD COLUMN `min_quantity` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '1' AFTER `customer_group_id`,
+ADD COLUMN `price` VARCHAR(512) NOT NULL DEFAULT '{}' AFTER `min_quantity`,
 ADD INDEX `customer_group_id` (`customer_group_id`),
 ADD INDEX `min_quantity` (`min_quantity`);
 -- -----

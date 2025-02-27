@@ -498,17 +498,35 @@ table .icon-folder-open {
 					$output .= $draw_category_branch($subcategory['id'], $depth+1);
 				}
 
+				$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
+					return "if(JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') != 0, JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+				}, currency::$currencies)) .")";
+
 				// Output products
 				$products = database::query(
-					"select p.id, p.status, p.code, p.sold_out_status_id, p.image, pi.name, pp.price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.date_valid_from, p.date_valid_to, ptc.category_id
+					"select p.id, p.status, p.code, p.sold_out_status_id, p.image, pi.name, pp.price, pc.campaign_price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.date_valid_from, p.date_valid_to, ptc.category_id
 					from ". DB_TABLE_PREFIX ."products p
 					left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 					left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.product_id = p.id)
 
 					left join (
-						select product_id, `". database::input(settings::get('store_currency_code')) ."` as price
+						select product_id, $sql_column_price as price
 						from ". DB_TABLE_PREFIX ."products_prices
 					) pp on (pp.product_id = p.id)
+
+					left join (
+						select product_id, $sql_column_price as campaign_price
+						from ". DB_TABLE_PREFIX ."campaigns_products
+						where campaign_id in (
+							select id from ". DB_TABLE_PREFIX ."campaigns
+							where status
+							and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
+							and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."')
+						)
+						group by product_id
+						order by $sql_column_price asc
+						limit 1
+					) pc on (pc.product_id = p.id)
 
 					left join (
 						select pso.id, pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as quantity
