@@ -43,7 +43,7 @@
   ];
 ?>
 
-<div class="card card-app">
+<div class="card">
   <div class="card-header">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_third_parties', 'Third Parties'); ?>
@@ -58,7 +58,7 @@
 
   <?php echo functions::form_begin('third_parties_form', 'post'); ?>
 
-    <table class="table table-striped table-hover data-table">
+    <table class="data-table">
       <thead>
         <tr>
           <th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
@@ -73,12 +73,12 @@
       <tbody>
         <?php foreach ($third_parties as $third_party) { ?>
         <tr>
-          <td><?php echo functions::form_draw_checkbox('third_parties[]', $third_party['id']); ?></td>
-          <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($third_party['status']) ? '#88cc44' : '#ff6644') .'";'); ?></td>
+          <td><?php echo functions::form_checkbox('third_parties[]', $third_party['id']); ?></td>
+          <td><?php echo functions::draw_fonticon(!empty($third_party['status']) ? 'on' : 'off'); ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_third_party', ['third_party_id' => $third_party['id']]); ?>"><?php echo $third_party['name']; ?></a></td>
           <td><?php echo implode(', ', array_map(function($class) use ($privacy_classes){ return $privacy_classes[$class]; }, preg_split('#\s*,\s*#', $third_party['privacy_classes'], -1, PREG_SPLIT_NO_EMPTY))); ?></td>
           <td class="text-center"><?php echo $third_party['country_code']; ?></td>
-          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_third_party', ['third_party_id' => $third_party['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('pencil'); ?></a></td>
+          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_third_party', ['third_party_id' => $third_party['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php }?>
       </tbody>

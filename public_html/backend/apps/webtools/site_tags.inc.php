@@ -68,7 +68,7 @@
           <td><?php echo functions::form_checkbox('site_tags[]', $site_tag['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($site_tag['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
           <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]); ?>"><?php echo $site_tag['description']; ?></a></td>
-          <td class="text-center"><?php echo $site_tag['require_cookie_consent'] ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td class="text-center"><?php echo $site_tag['require_consent'] ? functions::draw_fonticon('icon-check') : ''; ?></td>
           <td class="text-center"><?php echo $site_tag['position']; ?></td>
           <td class="text-center"><?php echo (int)$site_tag['priority']; ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>

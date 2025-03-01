@@ -23,8 +23,9 @@
       if (empty($_POST['status'])) {
 				$_POST['status'] = 0;
 			}
-      if (empty($_POST['require_cookie_consent'])) {
-				$_POST['require_cookie_consent'] = 0;
+
+      if (empty($_POST['require_consent'])) {
+				$_POST['require_consent'] = null;
 			}
 
       foreach ([
@@ -32,7 +33,7 @@
         'position',
         'description',
         'content',
-        'require_cookie_consent',
+        'require_consent',
         'priority',
       ] as $field) {
         if (isset($_POST[$field])) {
@@ -70,13 +71,45 @@
     }
   }
 
+  $privacy_classes = [
+		'necessary' => language::translate('title_necessary', 'Necessary'),
+		'functionality' => language::translate('title_functionality', 'Functionality'),
+		'personalization' => language::translate('title_personalization', 'Personalization'),
+		'measurement' => language::translate('title_measurement', 'Measurement'),
+		'marketing' => language::translate('title_marketing', 'Marketing'),
+		'security' => language::translate('title_security', 'Security'),
+  ];
+
 	$position_options = [
 		'head' => language::translate('title_head', 'Head'),
 		'body' => language::translate('title_body', 'Body'),
 	];
 
+	$consent_options = database::query(
+		"select * from ". DB_TABLE_PREFIX ."third_parties"
+	)->fetch_all(function($third_party) use ($privacy_classes) {
+
+		$options = [];
+
+		foreach (preg_split('#\s*,\s*#', $third_party['privacy_classes'], -1, PREG_SPLIT_NO_EMPTY) as $class) {
+			$options[$class.':'. $third_party['id']] = $privacy_classes[$class];
+		}
+
+		return [
+			'label' => $third_party['name'],
+			'options' => $options,
+		];
+	});
+
+	array_unshift($consent_options, [
+		'label' => language::translate('title_no_consent', 'No Consent'),
+		'options' => [
+			'' => language::translate('title_no_consent_required', 'No Consent Required'),
+		],
+	]);
+
 ?>
-<div class="card card-app">
+<div class="card">
   <div class="card-header">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo !empty($site_tag->data['id']) ? language::translate('title_edit_site_tag', 'Edit Site Tag') : language::translate('title_create_new_site_tag', 'Create New Site Tag'); ?>
@@ -119,18 +152,19 @@
       </div>
 
       <label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_require_consent', 'Require Consent'); ?></div>
+        <?php echo functions::form_select_optgroup('require_consent', $consent_options, true); ?>
+      </label>
+
+      <label class="form-group">
         <div class="form-label"><?php echo language::translate('title_html_content', 'HTML Content'); ?></div>
         <?php echo functions::form_input_code('content', true, 'required style="height: 480px;"'); ?>
       </label>
 
-      <div class="form-group">
-        <?php echo functions::form_checkbox('require_cookie_consent', ['1', language::translate('text_require_cookie_consent', 'Require cookie consent')], true); ?>
-      </div>
-
       <div class="card-action">
-        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($site_tag->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(&quot;'. language::translate('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"', 'delete') : false; ?>
-        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+				<?php echo functions::form_button_predefined('save'); ?>
+				<?php echo (!empty($site_tag->data['id'])) ? functions::form_button_predefined('delete') : ''; ?>
+				<?php echo functions::form_button_predefined('cancel'); ?>
       </div>
 
     <?php echo functions::form_end(); ?>

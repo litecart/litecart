@@ -17,26 +17,23 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."third_parties;"
-      );
+      )->each(function($field) {
+				$this->data[$field['Field']] = database::create_variable($field['Type']);
+			});
 
-      while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = database::create_variable($field['Type']);
-      }
-
-      $third_party_info_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."third_parties_info;"
-      );
+      )->each(function($field) {
 
-      while ($field = database::fetch($third_party_info_query)) {
-        if (in_array($field['Field'], ['id', 'third_party_id', 'language_code'])) continue;
+        if (in_array($field['Field'], ['id', 'third_party_id', 'language_code'])) return;
 
         $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = database::create_variable($field['Type']);
         }
-      }
+      });
 
       $this->data['privacy_classes'] = [];
 
@@ -51,29 +48,27 @@
 
       $this->reset();
 
-      $third_party_query = database::query(
+      $third_party = database::query(
         "select * from ". DB_TABLE_PREFIX ."third_parties
         where id = ". (int)$third_party_id ."
         limit 1;"
-      );
+      )->fetch();
 
-      if ($third_party = database::fetch($third_party_query)) {
+      if ($third_party) {
         $this->data = array_replace($this->data, array_intersect_key($third_party, $this->data));
       } else {
         throw new Exception('Could not find third party (ID: '. (int)$third_party_id .') in database.');
       }
 
-      $third_party_info_query = database::query(
+      database::query(
         "select * from ". DB_TABLE_PREFIX ."third_parties_info
         where third_party_id = ". (int)$third_party_id .";"
-      );
-
-      while ($third_party_info = database::fetch($third_party_info_query)) {
-        foreach ($third_party_info as $key => $value) {
-          if (in_array($key, ['id', 'third_party_id', 'language_code'])) continue;
-          $this->data[$key][$third_party_info['language_code']] = $value;
-        }
-      }
+      )->each(function($info) {
+				foreach ($info as $key => $value) {
+					if (in_array($key, ['id', 'third_party_id', 'language_code'])) return;
+					$this->data[$key][$info['language_code']] = $value;
+				}
+			});
 
       $this->data['privacy_classes'] = preg_split('#\s*,\s*#', $this->data['privacy_classes'], -1, PREG_SPLIT_NO_EMPTY);
 
@@ -82,12 +77,14 @@
 
     public function save() {
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
+
         database::query(
           "insert into ". DB_TABLE_PREFIX ."third_parties
           (name, date_created)
           values ('". database::input($this->data['name']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
+
         $this->data['id'] = database::insert_id();
       }
 
@@ -109,14 +106,12 @@
 
       foreach (array_keys(language::$languages) as $language_code) {
 
-        $third_party_info_query = database::query(
+        if (!database::query(
           "select * from ". DB_TABLE_PREFIX ."third_parties_info
           where third_party_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
-        );
-
-        if (!$third_party_info = database::fetch($third_party_info_query)) {
+        )->num_rows) {
           database::query(
             "insert into ". DB_TABLE_PREFIX ."third_parties_info
             (third_party_id, language_code)
@@ -143,7 +138,8 @@
     public function delete() {
 
       database::query(
-        "delete tp, tpi from ". DB_TABLE_PREFIX ."third_parties tp
+        "delete tp, tpi
+				from ". DB_TABLE_PREFIX ."third_parties tp
         left join ". DB_TABLE_PREFIX ."third_parties_info tpi on (tpi.third_party_id = tp.id)
         where tp.id = ". (int)$this->data['id'] .";"
       );
