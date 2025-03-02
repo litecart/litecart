@@ -816,6 +816,7 @@
 
       $this->data['images'] = [];
       $this->data['campaigns'] = [];
+      $this->data['attributes'] = [];
       $this->data['options'] = [];
       $this->data['options_stock'] = [];
       $this->save();
