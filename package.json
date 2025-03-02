@@ -46,7 +46,7 @@
 		"changelog": "git log --oneline 'master'..'dev' > changelog.txt",
 		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php",
 		"phplint": "gulp phplint",
-		"test": "gulp test",
+		"test": "php .git-hooks/pre-commit.d/platform_tests.php",
 		"uglify": "gulp replace",
 		"watch": "gulp watch",
 		"update": "ncu -u && npm install",
