@@ -455,7 +455,7 @@
         }
       }
 
-      list($module_id, $option_id) = $this->data['payment_option']['id'] ? preg_split('#:#', $this->data['payment_option']['id'], 2) : ['', ''];
+      list($module_id, $option_id) = !empty($this->data['payment_option']['id']) ? preg_split('#:#', $this->data['payment_option']['id'], 2) : ['', ''];
       $payment_modules = new mod_payment();
       $payment_modules->run('after_save', $module_id, $this);
 
