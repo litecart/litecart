@@ -75,7 +75,7 @@
 	functions::draw_lightbox();
 
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($campaign->data['id']) ? language::translate('title_edit_campaign', 'Edit Campaign') : language::translate('title_create_new_campaign', 'Create New Campaign'); ?>
@@ -122,7 +122,7 @@
 			</div>
 		</div>
 
-		<table id="campaigns" class="table table-striped table-hover data-table">
+		<table id="campaigns" class="table data-table">
 			<thead>
 				<tr>
 					<th class="main"><?php echo language::translate('title_product', 'Product'); ?></th>

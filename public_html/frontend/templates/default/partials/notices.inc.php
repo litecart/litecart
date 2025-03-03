@@ -1,4 +1,4 @@
-<div id="notices">
+<div class="notices">
 <?php
 	foreach (array_keys($notices) as $type) {
 		foreach ($notices[$type] as $notice) {
@@ -6,8 +6,8 @@
 
 				case 'errors':
 					echo implode(PHP_EOL, [
-						'<div class="alert alert-danger">',
-						'  <a href="#" class="close" data-dismiss="alert">&times;</a>',
+						'<div class="notice notice-danger">',
+						'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
 						'  ' . functions::draw_fonticon('icon-exclamation-triangle') . ' ' . $notice,
 						'</div>',
 					]);
@@ -15,8 +15,8 @@
 
 				case 'warnings':
 					echo implode(PHP_EOL, [
-						'<div class="alert alert-warning">',
-						'  <a href="#" class="close" data-dismiss="alert">&times;</a>',
+						'<div class="notice notice-warning">',
+						'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
 						'  ' . functions::draw_fonticon('icon-exclamation-triangle') . ' ' . $notice,
 						'</div>',
 					]);
@@ -24,8 +24,8 @@
 
 				case 'notices':
 					echo implode(PHP_EOL, [
-						'<div class="alert alert-default">',
-						'  <a href="#" class="close" data-dismiss="alert">&times;</a>',
+						'<div class="notice notice-default">',
+						'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
 						'  ' . functions::draw_fonticon('icon-info') . ' ' . $notice,
 						'</div>',
 					]);
@@ -33,8 +33,8 @@
 
 				case 'success':
 					echo implode(PHP_EOL, [
-						'<div class="alert alert-success">',
-						'  <a href="#" class="close" data-dismiss="alert">&times;</a>',
+						'<div class="notice notice-success">',
+						'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
 						'  ' . functions::draw_fonticon('icon-check') . ' ' . $notice,
 						'</div>',
 					]);
@@ -47,6 +47,6 @@
 
 <script>
 	setTimeout(function() {
-		$('#notices').fadeOut('slow')
+		$('.notices').fadeOut('slow')
 	}, 20000)
 </script>

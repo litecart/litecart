@@ -38,7 +38,7 @@
 	}
 
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo language::translate('title_edit_styling', 'Edit Styling'); ?>
@@ -48,8 +48,8 @@
 	<div class="card-body">
 
 		<?php if (preg_match('#\.less$#', $stylesheet)) { ?>
-		<div class="alerts">
-			<div class="alert alert-default"><?php echo functions::draw_fonticon('icon-info'); ?> <?php echo language::translate('notice_detected_less_version_of_variables', 'We detected a LESS version present in this installation that will be used. A LESS compiler is needed to compile the CSS versions (e.g. Developer Kit add-on).'); ?></div>
+		<div class="notices">
+			<div class="notice notice-default"><?php echo functions::draw_fonticon('icon-info'); ?> <?php echo language::translate('notice_detected_less_version_of_variables', 'We detected a LESS version present in this installation that will be used. A LESS compiler is needed to compile the CSS versions (e.g. Developer Kit add-on).'); ?></div>
 		</div>
 		<?php } ?>
 

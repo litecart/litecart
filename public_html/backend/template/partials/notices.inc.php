@@ -1,23 +1,43 @@
-<div id="notices" class="alerts">
+<div class="notices">
 <?php
 	foreach (array_keys($notices) as $type) {
 		foreach ($notices[$type] as $notice) {
 			switch ($type) {
 
 				case 'errors':
-					echo '<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert">&times;</a>' . functions::draw_fonticon('icon-exclamation-triangle') . ' ' . $notice .'</div>' . PHP_EOL;
+					echo implode(PHP_EOL, [
+						'<div class="notice notice-danger">',
+						'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
+						'  ' . functions::draw_fonticon('icon-exclamation-triangle') . ' ' . $notice,
+						'</div>',
+					]);
 					break;
 
 				case 'warnings':
-					echo '<div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert">&times;</a>' . functions::draw_fonticon('icon-exclamation-triangle') . ' ' . $notice .'</div>' . PHP_EOL;
+					echo implode(PHP_EOL, [
+						'<div class="notice notice-warning">',
+						'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
+						'  ' . functions::draw_fonticon('icon-exclamation-triangle') . ' ' . $notice,
+						'</div>',
+					]);
 					break;
 
 				case 'notices':
-					echo '<div class="alert alert-default"><a href="#" class="close" data-dismiss="alert">&times;</a>' . functions::draw_fonticon('icon-info') . ' ' . $notice .'</div>' . PHP_EOL;
+					echo implode(PHP_EOL, [
+						'<div class="notice notice-default">',
+						'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
+						'  ' . functions::draw_fonticon('icon-info') . ' ' . $notice,
+						'</div>',
+					]);
 					break;
 
 				case 'success':
-					echo '<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert">&times;</a>' .functions::draw_fonticon('icon-check') . ' ' . $notice .'</div>' . PHP_EOL;
+					echo implode(PHP_EOL, [
+						'<div class="notice notice-success">',
+						'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
+						'  ' . functions::draw_fonticon('icon-check') . ' ' . $notice,
+						'</div>',
+					]);
 					break;
 			}
 		}
@@ -27,6 +47,6 @@
 
 <script>
 	setTimeout(function() {
-		$('#notices').fadeOut('slow')
-	}, 20e3)
+		$('.notices').fadeOut('slow')
+	}, 20000)
 </script>

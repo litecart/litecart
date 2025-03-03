@@ -92,7 +92,7 @@ table.items tbody tr:nth-child(11) {
 			</div>
 		</div>
 
-		<table class="items table table-striped data-table">
+		<table class="items table data-table">
 			<thead>
 				<tr>
 					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
@@ -116,7 +116,7 @@ table.items tbody tr:nth-child(11) {
 	</header>
 
 	<main class="content">
-		<table class="items table table-striped data-table">
+		<table class="items table data-table">
 			<thead>
 				<tr>
 					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>

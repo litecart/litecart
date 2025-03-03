@@ -147,7 +147,7 @@
 	}
 
 	$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
-		return "if(JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') != 0, JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+		return "if(JSON_VALUE(price, '$.". database::input($currency['code']) ."') != 0, JSON_VALUE(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 	}, currency::$currencies)) .")";
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
@@ -239,7 +239,7 @@ table .thumbnail {
 }
 </style>
 
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo language::translate('title_products', 'Products'); ?>
@@ -260,7 +260,7 @@ table .thumbnail {
 
 	<?php echo functions::form_begin('products_form', 'post'); ?>
 
-		<table class="table table-striped table-hover data-table">
+		<table class="table data-table">
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>

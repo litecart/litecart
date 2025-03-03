@@ -69,7 +69,7 @@
 		}
 	}
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_create_new_supplier', 'Create New Supplier'); ?>
@@ -77,7 +77,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('supplier_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+		<?php echo functions::form_begin('supplier_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-6">

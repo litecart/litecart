@@ -69,7 +69,7 @@
 	}
 ?>
 
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_create_new_quantity_unit', 'Create New Quantity Unit'); ?>
@@ -77,7 +77,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('quantity_unit_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+		<?php echo functions::form_begin('quantity_unit_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-8">

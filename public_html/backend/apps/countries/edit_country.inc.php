@@ -139,7 +139,7 @@
 	}
 
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_create_new_country', 'Create New Country'); ?>
@@ -254,7 +254,7 @@
 
 				<div class="col-lg-6">
 					<h2><?php echo language::translate('title_zones', 'Zones'); ?></h2>
-					<table class="table table-striped table-hover data-table">
+					<table class="table data-table">
 						<thead>
 							<tr>
 								<th><?php echo language::translate('title_id', 'ID'); ?></th>

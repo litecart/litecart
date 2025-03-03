@@ -45,17 +45,13 @@
 				</div>
 			</div>
 
-			<table class="table table-striped data-table">
+			<table class="data-table">
 				<thead>
 					<tr>
 						<th colspan="2">Application</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<th>Web Path</th>
-						<td><?php echo WS_DIR_APP; ?></td>
-					</tr>
 					<tr>
 						<th>System Path</th>
 						<td><?php echo FS_DIR_APP; ?></td>
@@ -64,10 +60,14 @@
 						<th>Document Root</th>
 						<td><?php echo DOCUMENT_ROOT; ?></td>
 					</tr>
+					<tr>
+						<th>Web Path</th>
+						<td><?php echo WS_DIR_APP; ?></td>
+					</tr>
 				</tbody>
 			</table>
 
-			<table class="table table-striped data-table">
+			<table class="data-table">
 				<thead>
 					<tr>
 						<th colspan="2">Machine</th>
@@ -113,7 +113,7 @@
 				</tbody>
 			</table>
 
-			<table class="table table-striped data-table">
+			<table class="data-table">
 				<thead>
 					<tr>
 						<th colspan="2">Web Server</th>
@@ -139,7 +139,7 @@
 				</tbody>
 			</table>
 
-			<table class="table table-striped data-table">
+			<table class="data-table">
 				<thead>
 					<tr>
 						<th colspan="2">PHP</th>
@@ -169,7 +169,7 @@
 				</tbody>
 			</table>
 
-			<table class="table table-striped data-table">
+			<table class="data-table">
 				<thead>
 					<tr>
 						<th colspan="2">Database</th>
@@ -211,7 +211,7 @@
 
 			<?php echo functions::form_begin('errors_form', 'post'); ?>
 
-			<table class="table table-striped data-table">
+			<table class="data-table">
 				<thead>
 					<tr>
 						<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>

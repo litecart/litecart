@@ -58,7 +58,7 @@
 
   <?php echo functions::form_begin('third_parties_form', 'post'); ?>
 
-    <table class="data-table">
+    <table class="table data-table">
       <thead>
         <tr>
           <th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>

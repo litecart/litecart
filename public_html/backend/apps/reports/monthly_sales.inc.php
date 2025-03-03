@@ -62,7 +62,7 @@ form[name="filter_form"] li {
 }
 </style>
 
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>
@@ -85,7 +85,7 @@ form[name="filter_form"] li {
 		<?php echo functions::form_end(); ?>
 	</div>
 
-	<table class="table table-striped table-hover data-table">
+	<table class="table data-table">
 		<thead>
 			<tr>
 				<th width="100%"><?php echo language::translate('title_month', 'Month'); ?></th>

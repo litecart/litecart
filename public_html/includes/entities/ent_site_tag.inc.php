@@ -66,7 +66,7 @@
         "update ". DB_TABLE_PREFIX ."site_tags set
         status = '". (empty($this->data['status']) ? 0 : 1) ."',
         position = '". database::input($this->data['position']) ."',
-        description = '". database::input($this->data['description']) ."',
+        name = '". database::input($this->data['name']) ."',
         content = '". database::input($this->data['content'], true) ."',
         require_consent = ". (!empty($this->data['require_consent']) ? "'". database::input($this->data['require_consent']) ."'" : "null") .",
         priority = ". (int)$this->data['priority'] .",

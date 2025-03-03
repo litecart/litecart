@@ -36,7 +36,7 @@
 		left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_GET['language_code']) ."')
 
 		left join (
-			select product_id, if(JSON_EXTRACT(price, '$.". database::input($_GET['currency_code']) ."') != 0, JSON_EXTRACT(price, '$.". database::input($_GET['currency_code']) ."') * ". (float)$_GET['currency_value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
+			select product_id, if(JSON_VALUE(price, '$.". database::input($_GET['currency_code']) ."') != 0, JSON_VALUE(price, '$.". database::input($_GET['currency_code']) ."') * ". (float)$_GET['currency_value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
 			from ". DB_TABLE_PREFIX ."products_prices
 		) pp on (pp.product_id = p.id)
 

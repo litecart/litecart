@@ -21,21 +21,21 @@
 	}
 
 	function array_intersect_key_recursive(array $array, array $keys): array {
-    $filtered = array_intersect_key($array, $keys);
+		$filtered = array_intersect_key($array, $keys);
 
-    foreach ($filtered as $key => &$value) {
-  	  if (is_array($value) && isset($keys[$key]) && is_array($keys[$key])) {
-        $value = array_intersect_key_recursive($value, $keys[$key]);
-      }
-    }
+		foreach ($filtered as $key => &$value) {
+			if (is_array($value) && isset($keys[$key]) && is_array($keys[$key])) {
+				$value = array_intersect_key_recursive($value, $keys[$key]);
+			}
+		}
 
-    return $filtered;
+		return $filtered;
 	}
 
 	// Update an array with values that have keys present in another arrays, without inserting new keys.
 	function array_update(array $array, array ...$replacements): array {
 
-    foreach ($replacements as $updates) {
+		foreach ($replacements as $updates) {
 			foreach ($array as $key => &$value) {
 				if (is_array($value) && isset($updates[$key]) && is_array($updates[$key])) {
 					// Recursively merge nested arrays
@@ -50,7 +50,7 @@
 			if (array_is_list($array) && array_is_list($updates)) {
 				$array = array_values(array_unique(array_merge($array, $updates))); // Prevent duplicates
 			}
-    }
+		}
 
 		return $array;
 	}
@@ -59,7 +59,7 @@
 	function array_intersect_compare($var1, $var2) {
 
 		// Check if both variables are arrays
-    if (is_array($var1) && is_array($var2)) {
+		if (is_array($var1) && is_array($var2)) {
 
 			// Check if $var1 has a numerical index
 			$is_numerical_index = array_is_list($var1);
@@ -70,7 +70,6 @@
 
 					// Check if the value exists somewhere in the indexed array
 					if (!in_array($value, $var2, true)) {
-						//throw new Exception('Array key '. $key .' does not contain value '. $value);
 						return false;
 					}
 
@@ -83,17 +82,16 @@
 
 					// Recursively compare values
 					if (!array_intersect_compare($value, $var2[$key])) {
-						//throw new Exception('Array key '. $key .' does not match');
 						return false;
 					}
 				}
 			}
 
 			return true;
-    }
+		}
 
-    // Compare values directly
-    return $var1 == $var2;
+		// Compare values directly
+		return $var1 == $var2;
 	}
 
 	// Return a filtered array of values from a given list of keys
@@ -120,28 +118,16 @@
 	// Get first value from array without shifting it or moving internal cursor
 	function array_first(array $array):mixed {
 		if (empty($array) || !is_array($array)) return false;
+		//return $array[array_key_first($array)] || false; // PHP 7.3+
 		return reset($array) || false;
 	}
 
 	// Get last value from array without shifting it or moving internal cursor
 	function array_last(array $array):mixed {
 		if (empty($array) || !is_array($array)) return false;
+		//return $array[array_key_last($array)] || false; // PHP 7.3+
 		return end($array) || false;
 	}
-
-/*
-	// Get first value from array without shifting it or moving internal cursor
-	function array_first(array $array):mixed {
-		if (empty($array) || !is_array($array)) return false;
-		return $array[array_key_first($array)] || false; // PHP 7.3
-	}
-
-	// Get last value from array without shifting it or moving internal cursor
-	function array_last(array $array):mixed {
-		if (empty($array) || !is_array($array)) return false;
-		return $array[array_key_last($array)] || false; // PHP 7.3
-	}
-*/
 
 	// Get a random node from array
 	function array_get_random(array $array):mixed {
@@ -216,6 +202,6 @@
 	}
 
 	// Group values of matching keys array_group_keys(['a' => '1', 'b' => '1'], ['a' => '2', 'b' => '2']) : ['a' => ['1', '2'], ['b' => ['1', '2']]
-	function array_group_keys(...$arrays) {
+	function array_merge_group(...$arrays) {
 		return array_merge_recursive(...$arrays);
 	}

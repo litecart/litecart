@@ -169,7 +169,7 @@ table.data-table td {
 }
 </style>
 
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo language::translate('title_scan_files_for_translations', 'Scan Files For Translations'); ?>
@@ -203,7 +203,7 @@ table.data-table td {
 
 					<?php echo functions::form_begin('scan_form', 'post'); ?>
 
-					<table class="table table-striped data-table">
+					<table class="table data-table">
 						<thead>
 							<tr>
 								<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>

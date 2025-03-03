@@ -367,7 +367,7 @@ table .icon-folder-open {
 }
 </style>
 
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo language::translate('title_catalog', 'Catalog'); ?>
@@ -390,7 +390,7 @@ table .icon-folder-open {
 
 	<?php echo functions::form_begin('catalog_form', 'post'); ?>
 
-		<table class="table table-striped table-hover data-table">
+		<table class="table data-table">
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
@@ -462,7 +462,7 @@ table .icon-folder-open {
 			'  </td>',
 			'  <td class="text-end">',
 			'    <a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_category', ['category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">',
-			'    '. functions::draw_fonticon('icon-pen'),
+			'    '. functions::draw_fonticon('edit'),
 			'    </a>',
 			'  </td>',
 			'</tr>',
@@ -499,7 +499,7 @@ table .icon-folder-open {
 				}
 
 				$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
-					return "if(JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') != 0, JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+					return "if(JSON_VALUE(price, '$.". database::input($currency['code']) ."') != 0, JSON_VALUE(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 				}, currency::$currencies)) .")";
 
 				// Output products
@@ -601,7 +601,7 @@ table .icon-folder-open {
 						'  </td>',
 						'  <td class="text-end">',
 						'    <a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">',
-						'    '. functions::draw_fonticon('icon-pen'),
+						'    '. functions::draw_fonticon('edit'),
 						'    </a>',
 						'  </td>',
 						'</tr>',
@@ -658,7 +658,7 @@ table .icon-folder-open {
 					</li>
 					<li>
 						<div class="btn-group">
-							<?php echo functions::form_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?>
+							<?php echo functions::form_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('warning_previous_mount_points_will_be_reset', 'Warning: All previous mount points will be reset.')) .'\')) return false;"'); ?>
 							<?php echo functions::form_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?>
 							<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
 						</div>

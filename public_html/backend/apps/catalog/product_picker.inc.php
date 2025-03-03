@@ -17,7 +17,7 @@
 			<?php echo functions::form_input_text('query', true, 'placeholder="'. functions::escape_attr(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
 		 </label>
 
-		<table class="table table-striped table-hover data-table">
+		<table class="table data-table">
 			<thead>
 				<tr>
 					<th><?php echo language::translate('title_id', 'ID'); ?></th>

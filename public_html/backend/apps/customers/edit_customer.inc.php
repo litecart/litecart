@@ -159,7 +159,7 @@
 		)->fetch();
 	}
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_create_new_customer', 'Create New Customer'); ?>
@@ -442,7 +442,7 @@
 					</label>
 
 					<?php if (!empty($customer->data['id'])) { ?>
-					<table class="table table-striped table-hover data-table">
+					<table class="table data-table">
 						<tbody>
 							<tr>
 								<td><?php echo language::translate('title_orders', 'Orders'); ?><br>

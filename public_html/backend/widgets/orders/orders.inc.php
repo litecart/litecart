@@ -38,7 +38,7 @@
 		</div>
 	</div>
 
-	<table class="table table-striped table-hover data-table">
+	<table class="table data-table">
 		<thead>
 			<tr>
 				<th></th>

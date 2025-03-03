@@ -21,7 +21,7 @@
 		</label>
 
 		<div class="form-group results table-responsive">
-			<table class="table table-striped table-hover data-table">
+			<table class="table data-table">
 				<thead>
 					<tr>
 						<th><?php echo language::translate('title_id', 'ID'); ?></th>

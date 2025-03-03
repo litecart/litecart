@@ -45,11 +45,13 @@
 				<?php echo functions::draw_fonticon('icon-arrow-left'); ?> <?php echo language::translate('title_back', 'Back'); ?>
 			</a>
 			<?php } ?>
+
 			<?php foreach ($categories as $category) { ?>
 			<a class="nav-link" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']]); ?>">
 				<?php echo functions::draw_fonticon('icon-folder', 'style="color: #cccc66;"'); ?> <?php echo fallback($category['name'], '[untitled]'); ?>
 			</a>
 			<?php } ?>
+
 		</nav>
 	</div>
 

@@ -126,7 +126,7 @@
 					<?php if (isset($_GET['collect']) && in_array('stock_option', $_GET['collect'])) { ?>
 					<label class="form-group">
 						<?php if (!empty($product->stock_options)) { ?>
-						<table class="table table-default table-striped data-table">
+						<table class="table data-table">
 							<thead>
 								<tr>
 									<th></th>

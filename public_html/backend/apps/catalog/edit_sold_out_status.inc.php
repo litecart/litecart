@@ -68,7 +68,7 @@
 		}
 	}
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($sold_out_status->data['id']) ? language::translate('title_edit_sold_out_status', 'Edit Sold Out Status') : language::translate('title_create_new_sold_out_status', 'Create New Sold Out Status'); ?>
@@ -76,7 +76,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('sold_out_status_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+		<?php echo functions::form_begin('sold_out_status_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-8">

@@ -75,7 +75,7 @@
 	functions::draw_lightbox();
 ?>
 
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<div class="card-title">
@@ -135,7 +135,7 @@
 			<h2><?php echo language::translate('title_contents', 'Contents'); ?></h2>
 		</div>
 
-		<table id="transaction-contents" class="table table-striped table-hover data-table">
+		<table id="transaction-contents" class="table data-table">
 			<thead>
 				<tr>
 					<th style="min-width: 225px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>

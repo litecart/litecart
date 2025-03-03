@@ -15,7 +15,7 @@
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo language::translate('title_tax_classes', 'Tax Classes'); ?>
@@ -28,7 +28,7 @@
 
 	<?php echo functions::form_begin('tax_classs_form', 'post'); ?>
 
-		<table class="table table-striped table-hover data-table">
+		<table class="table data-table">
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>

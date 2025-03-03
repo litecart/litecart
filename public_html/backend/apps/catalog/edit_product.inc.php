@@ -202,7 +202,7 @@
 }
 </style>
 
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_create_new_product', 'Create New Product'); ?>
@@ -550,7 +550,7 @@
 
 				<div id="tab-attributes" class="tab-pane" style="max-width: 960px;">
 
-					<table class="table table-striped table-dragable data-table">
+					<table class="table data-table">
 						<thead>
 							<tr>
 								<th style="width: 320px;"><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></th>

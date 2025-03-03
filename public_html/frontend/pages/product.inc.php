@@ -176,7 +176,7 @@
 	}
 
 	// Sticker
-	if (!empty($product->campaign['price']) && $product->campaign['price'] > 0) {
+	if (!empty($product->campaign['price']) && $product->price > 0 && $product->campaign['price'] > 0) {
 		$percentage = round(($product->price - $product->campaign['price']) / $product->price * 100);
 		$_page->snippets['sticker'] = '<div class="sticker sale">'. language::translate('sticker_sale', 'Sale') .' -'. $percentage .'%</div>';
 	} else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {

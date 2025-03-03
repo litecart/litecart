@@ -1,6 +1,11 @@
 <ul id="box-apps-menu">
 
-	<?php foreach ($apps as $app) { ?>
+	<?php foreach ($groups as $group) { ?>
+	<li class="group">
+		<span class="name"><?php echo $group['name']; ?></span>
+	</li>
+
+	<?php foreach ($group['apps'] as $app) { ?>
 	<li class="app<?php echo $app['active'] ? ' active' : ''; ?>" data-id="<?php echo $app['id']; ?>" style="--app-color: <?php echo $app['theme']['color']; ?>;">
 		<a href="<?php echo functions::escape_html($app['link']); ?>" data-toggle="ajax-load">
 			<span class="app-icon" title="<?php echo functions::escape_html($app['name']); ?>">
@@ -21,6 +26,8 @@
 		</ul>
 		<?php } ?>
 	</li>
+	<?php } ?>
+
 	<?php } ?>
 
 </ul>

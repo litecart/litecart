@@ -90,6 +90,8 @@ DROP TABLE IF EXISTS `lc_quantity_units`;
 -- -----
 DROP TABLE IF EXISTS `lc_quantity_units_info`;
 -- -----
+DROP TABLE IF EXISTS `lc_redirects;
+-- -----
 DROP TABLE IF EXISTS `lc_settings`;
 -- -----
 DROP TABLE IF EXISTS `lc_settings_groups`;
@@ -97,6 +99,8 @@ DROP TABLE IF EXISTS `lc_settings_groups`;
 DROP TABLE IF EXISTS `lc_shopping_carts`;
 -- -----
 DROP TABLE IF EXISTS `lc_shopping_carts_items`;
+-- -----
+DROP TABLE IF EXISTS `lc_site_tags;
 -- -----
 DROP TABLE IF EXISTS `lc_sold_out_statuses`;
 -- -----

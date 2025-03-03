@@ -90,9 +90,9 @@ CREATE TABLE `lc_site_tags` (
 	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) NOT NULL DEFAULT '0',
 	`position` ENUM('head','body') NOT NULL DEFAULT 'head',
-	`description` VARCHAR(256) NOT NULL DEFAULT '',
+	`name` VARCHAR(128) NOT NULL DEFAULT '',
 	`content` TEXT NOT NULL DEFAULT '',
-	`require_cookie_consent` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`require_consent` VARCHAR(64) NULL,
 	`priority` TINYINT(4) NOT NULL DEFAULT '0',
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -462,6 +462,9 @@ ALTER TABLE `lc_products_campaigns`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `product_id` `product_id` INT(10) UNSIGNED NOT NULL;
 -- -----
+ALTER TABLE `lc_products_customizations_values`
+ADD COLUMN `price_adjust` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0' AFTER `price_operator`;
+-- -----
 ALTER TABLE `lc_products_images`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `product_id` `product_id` INT(10) UNSIGNED NOT NULL,
@@ -516,8 +519,8 @@ CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
 -- -----
 ALTER TABLE `lc_settings`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-CHANGE COLUMN `setting_group_key` `group_key` VARCHAR(32) NULL,
-CHANGE COLUMN `key` `key` VARCHAR(32) NULL DEFAULT NULL DEFAULT '',
+CHANGE COLUMN `setting_group_key` `group_key` VARCHAR(64) NULL,
+CHANGE COLUMN `key` `key` VARCHAR(64) NULL DEFAULT NULL DEFAULT '',
 CHANGE COLUMN `description` `description` VARCHAR(255) NOT NULL DEFAULT '',
 CHANGE COLUMN `value` `value` VARCHAR(255) NOT NULL DEFAULT '',
 ADD COLUMN `required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `function`,
@@ -1042,7 +1045,22 @@ OR language_code NOT IN (SELECT code from `lc_languages`);
 -- -----
 DELETE FROM `lc_products_attributes`
 WHERE product_id NOT IN (SELECT id from `lc_products`)
+OR group_id NOT IN (SELECT id from `lc_attribute_groups`)
+OR (
+	value_id IS NOT NULL
+	AND value_id != 0
+	AND value_id NOT IN (SELECT id from `lc_attribute_values`)
+);
+-- -----
+DELETE FROM `lc_products_customizations`
+WHERE product_id NOT IN (SELECT id from `lc_products`)
 OR group_id NOT IN (SELECT id from `lc_attribute_groups`);
+-- -----
+DELETE FROM `lc_products_customizations_values`
+WHERE id NOT IN (SELECT id from `lc_products_customizations`)
+OR product_id NOT IN (SELECT id from `lc_products`)
+OR group_id NOT IN (SELECT id from `lc_attribute_groups`)
+OR value_id NOT IN (SELECT id from `lc_attribute_values`);
 -- -----
 DELETE FROM `lc_products_campaigns`
 WHERE product_id NOT IN (SELECT id from `lc_products`);
@@ -1053,6 +1071,19 @@ WHERE product_id NOT IN (SELECT id from `lc_products`);
 DELETE FROM `lc_products_info`
 WHERE product_id NOT IN (SELECT id from `lc_products`)
 OR language_code NOT IN (SELECT code from `lc_languages`);
+-- -----
+DELETE pp1
+FROM `lc_products_prices` pp1
+JOIN `lc_products_prices` pp2
+WHERE (
+	pp1.product_id = pp2.product_id
+	AND pp1.customer_group_id = pp2.customer_group_id
+	AND pp1.min_quantity = pp2.min_quantity
+	AND pp1.id > pp2.id
+);
+-- -----
+DELETE FROM `lc_products_prices`
+WHERE product_id NOT IN (SELECT id from `lc_products`);
 -- -----
 DELETE FROM `lc_products_to_categories`
 WHERE product_id NOT IN (SELECT id from `lc_products`)

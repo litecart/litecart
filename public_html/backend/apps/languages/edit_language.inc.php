@@ -289,7 +289,7 @@
 	}
 
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($language->data['id']) ? language::translate('title_edit_language', 'Edit Language') : language::translate('title_create_new_language', 'Create New Language'); ?>
@@ -297,7 +297,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('language_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+		<?php echo functions::form_begin('language_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 			<?php if (!empty($prefillable_language_options)) { ?>
 			<label class="form-group">

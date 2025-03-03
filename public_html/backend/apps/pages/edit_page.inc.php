@@ -67,7 +67,7 @@
 		}
 	}
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page'); ?>
@@ -75,7 +75,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('pages_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+		<?php echo functions::form_begin('pages_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-6">

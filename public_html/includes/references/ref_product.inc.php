@@ -86,7 +86,7 @@
 						"select *, min(
 							coalesce(
 								". implode(', ', array_map(function($currency_code){
-									return "if(JSON_EXTRACT(price, '$.". database::input($currency_code) ."') != 0, JSON_EXTRACT(price, '$.". database::input($currency_code) ."') * ". currency::$currencies[$currency_code]['value'] .", null)";
+									return "if(JSON_VALUE(price, '$.". database::input($currency_code) ."') != 0, JSON_VALUE(price, '$.". database::input($currency_code) ."') * ". currency::$currencies[$currency_code]['value'] .", null)";
 								}, $this->_currency_codes)) ."
 							)
 						) as price
@@ -178,7 +178,7 @@
 						$customer_price = (float)database::query(
 							"select coalesce(
 								". implode(", ", array_map(function($currency){
-									return "if(JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') != 0, JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+									return "if(JSON_VALUE(price, '$.". database::input($currency['code']) ."') != 0, JSON_VALUE(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 								}, currency::$currencies)) ."
 							) / min_quantity as customer_price
 							from ". DB_TABLE_PREFIX ."products_prices
@@ -281,13 +281,13 @@
 									where value_id = ". (int)$value['value_id'] ."
 									and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
 									order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-								)->each(function($info){
-
+								)->each(function($info) use ($value) {
 									foreach ($info as $key => $v) {
 										if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
-										if (empty($value[$key])) $value[$key] = $v;
+										if (empty($value[$key])) {
+											$value[$key] = $v;
+										}
 									}
-
 								});
 
 							} else {
@@ -295,52 +295,44 @@
 							}
 
 							// Price Adjust
-							$value['price_adjust'] = 0;
+							$price_adjustment = 0;
+							$value['price_adjust'] = json_decode($value['price_adjust'], true);
 
-							if ((!empty($value[$this->_currency_code]) && (float)$value[$this->_currency_code] != 0) || (!empty($value[settings::get('store_currency_code')]) && (float)$value[settings::get('store_currency_code')] != 0)) {
+							foreach ($this->_currency_codes as $currency_code) {
+
+								if (!isset($value['price_adjust'][$currency_code]) || $value['price_adjust'][$currency_code] == 0) {
+									continue;
+								}
 
 								switch ($value['price_operator']) {
-
 									case '+':
-										if ((float)$value[$this->_currency_code] != 0) {
-											$value['price_adjust'] = currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
-										} else {
-											$value['price_adjust'] = (float)$value[settings::get('store_currency_code')];
-										}
+										$price_adjustment = currency::convert($value['price_adjust'][$currency_code], $currency_code, settings::get('store_currency_code'));
 										break;
 
 									case '%':
-										if ((float)$value[$this->_currency_code] != 0) {
-											$value['price_adjust'] = $this->price * currency::convert((float)$value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code')) / 100;
-										} else {
-											$value['price_adjust'] = $this->price * (float)$value[settings::get('store_currency_code')] / 100;
-										}
+										$price_adjustment = $this->price * currency::convert($value['price_adjust'][$currency_code], $currency_code, settings::get('store_currency_code')) / 100;
 										break;
 
 									case '*':
-										if ((float)$value[$this->_currency_code] != 0) {
-											$value['price_adjust'] = $this->price * currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
-										} else {
-											$value['price_adjust'] = $this->price * $value[settings::get('store_currency_code')];
-										}
+										$price_adjustment = $this->price * currency::convert($value['price_adjust'][$currency_code], $currency_code, settings::get('store_currency_code'));
 										break;
 
 									case '=':
-										if ((float)$value[$this->_currency_code] != 0) {
-											$value['price_adjust'] = currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code')) - $this->price;
-										} else {
-											$value['price_adjust'] = $value[settings::get('store_currency_code')] - $this->price;
-										}
+										$price_adjustment = currency::convert($value['price_adjust'][$currency_code], $currency_code, settings::get('store_currency_code')) - $this->price;
 										break;
 
 									default:
 										trigger_error('Unknown price operator for customization', E_USER_WARNING);
-										break;
+										break 2;
+								}
+
+								if ($price_adjustment) {
+									break;
 								}
 							}
 
-							if ($value['price_adjust'] && !empty($this->campaign['price'])) {
-								$value['price_adjust'] = $value['price_adjust'] * $this->campaign['price'] / $this->price;
+							if ($price_adjustment && !empty($this->campaign['price'])) {
+								$price_adjustment = $price_adjustment * $this->campaign['price'] / $this->price;
 							}
 
 							if (!empty($value['value_id'])) {
@@ -378,7 +370,7 @@
 					$this->_data['price'] = (float)database::query(
 						"select coalesce(
 							". implode(", ", array_map(function($currency){
-								return "if(JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') != 0, JSON_EXTRACT(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+								return "if(JSON_VALUE(price, '$.". database::input($currency['code']) ."') != 0, JSON_VALUE(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 							}, currency::$currencies)) ."
 						) / min_quantity as regular_price
 						from ". DB_TABLE_PREFIX ."products_prices

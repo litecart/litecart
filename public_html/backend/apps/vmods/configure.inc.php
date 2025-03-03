@@ -90,7 +90,7 @@ pre {
 }
 </style>
 
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title"><?php echo $app_icon; ?> <?php echo language::translate('title_configure_vmod', 'Configure vMod'); ?></div>
 	</div>
@@ -101,7 +101,7 @@ pre {
 
 		<?php echo functions::form_begin('settings_form', 'post', false, false, 'style="max-width: 960px;"'); ?>
 
-			<table class="table table-striped">
+			<table class="table">
 				<tbody>
 					<?php foreach ($xml->setting as $setting) { ?>
 					<tr>

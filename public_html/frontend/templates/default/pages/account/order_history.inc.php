@@ -16,7 +16,7 @@
 						<h1 class="card-title"><?php echo language::translate('title_order_history', 'Order History'); ?></h1>
 					</div>
 
-					<table class="table table-striped table-hover data-table">
+					<table class="table data-table">
 						<thead>
 						<tr>
 							<th class="main"><?php echo language::translate('title_order', 'Order'); ?></th>

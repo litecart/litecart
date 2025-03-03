@@ -110,7 +110,7 @@
 	}
 
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo language::translate('title_test_vmod', 'Test vMod'); ?>
@@ -121,7 +121,7 @@
 		<h2><?php echo functions::escape_html($vmod['name']); ?></h2>
 	</div>
 
-	<table class="table table-striped table-hover data-table">
+	<table class="table data-table">
 		<thead>
 			<tr>
 				<th class="main"><?php echo language::translate('title_file', 'File'); ?></th>

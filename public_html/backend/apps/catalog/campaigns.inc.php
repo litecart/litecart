@@ -44,7 +44,7 @@
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo language::translate('title_campaigns', 'Campaigns'); ?>
@@ -57,7 +57,7 @@
 
 	<?php echo functions::form_begin('campaigns_form', 'post'); ?>
 
-		<table class="table table-striped table-hover data-table">
+		<table class="table data-table">
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
@@ -81,7 +81,7 @@
 					<td class="text-end"><?php if (!empty($campaign['date_valid_to'])) echo language::strftime('date', $campaign['date_valid_to']); ?></td>
 					<td class="text-end">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
-							<?php echo functions::draw_fonticon('icon-pen'); ?>
+							<?php echo functions::draw_fonticon('edit'); ?>
 						</a>
 					</td>
 				</tr>

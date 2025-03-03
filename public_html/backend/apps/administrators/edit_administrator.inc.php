@@ -108,7 +108,7 @@
 }
 </style>
 
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($administrator->data['username']) ? language::translate('title_edit_administrator', 'Edit Administrator') : language::translate('title_create_new_administrator', 'Create New Administrator'); ?>
@@ -116,7 +116,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('administrator_form', 'post', false, false, 'autocomplete="off"'); ?>
+		<?php echo functions::form_begin('administrator_form', 'post', false, false, 'autocomplete="off" style="max-width: 1200px;"'); ?>
 
 			<div class="grid">
 
@@ -228,10 +228,10 @@
 					</div>
 
 					<div class="grid">
-						<div class="col-md-6">
+						<div class="col-md-12">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_known_ip_addresses', 'Known IP Addresses'); ?></div>
-								<div class="form-input" disabled>
+								<div class="form-input" readonly style="height: 80px;">
 									<?php echo str_replace(',', ', ', $administrator->data['known_ips']); ?>
 								</div>
 							</label>

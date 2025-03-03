@@ -174,14 +174,16 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 											<?php echo functions::draw_price_tag($regular_price, $final_price, $recommended_price); ?>
 
+											<?php if ($tax_class_id) { ?>
 											<?php if ($total_tax) { ?>
 											<div class="tax" style="margin: 0 0 1em 0;">
 											<?php if ($tax_rates) { ?>
-												<?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax">{{total_tax|money}}</span>
+												<?php echo $including_tax ? language::translate('text_tax_included', 'Tax included') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax">{{total_tax|money}}</span>
 											<?php } else { ?>
-												<?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
+												<?php echo language::translate('title_no_tax_included', 'No tax included'); ?>
 											<?php } ?>
 											</div>
+											<?php } ?>
 											<?php } ?>
 
 										</div>
@@ -254,7 +256,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 							<h2 style="margin-top: 0;"><?php echo language::translate('title_technical_data', 'Technical Data'); ?></h2>
 
 							<div class="technical-data" <?php if (!$description) echo 'style="columns: 2 auto;"'; ?>>
-								<table class="table table-striped table-hover">
+								<table class="table">
 <?php
 	foreach ($technical_data as $line) {
 
@@ -283,7 +285,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			echo implode(PHP_EOL, [
 				' </tbody>',
 				'</table>',
-				'<table class="table table-striped table-hover">',
+				'<table class="table">',
 			]);
 		}
 	}

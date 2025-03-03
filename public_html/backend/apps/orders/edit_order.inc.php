@@ -433,7 +433,7 @@
 
 <?php echo functions::form_begin('form_order', 'post'); ?>
 
-	<div class="card card-app">
+	<div class="card">
 		<div class="card-header">
 			<div class="card-title">
 				<?php echo $app_icon; ?> <?php echo !empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['no'] : language::translate('title_create_new_order', 'Create New Order'); ?>
@@ -458,33 +458,49 @@
 
 		<div class="card-body">
 
-		 <h2><?php echo language::translate('title_order_details', 'Order Details'); ?></h2>
+		 	<h2><?php echo language::translate('title_order_details', 'Order Details'); ?></h2>
 
 			<div class="grid">
 				<div class="col-md-8">
 					<div class="grid">
-						<div class="col-md-3">
+						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_order_status', 'Order Status'); ?></div>
 								<?php echo functions::form_select_order_status('order_status_id', true); ?>
 							</label>
 						</div>
 
-						<div class="col-md-3">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label><?php echo language::translate('title_date', 'Date'); ?></label>
+								<div class="form-input" readonly><?php echo language::strftime('datetime', $order->data['date_created']); ?></div>
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label><?php echo language::translate('title_reference', 'Reference'); ?></label>
+								<?php echo functions::form_input_text('reference', true); ?>
+							</div>
+						</div>
+					</div>
+
+					<div class="grid">
+						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_language', 'Language'); ?></div>
 								<?php echo functions::form_select_language('language_code', true); ?>
 							</label>
 						</div>
 
-						<div class="col-md-3">
+						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_currency', 'Currency'); ?></div>
 								<?php echo functions::form_select_currency('currency_code', true); ?>
 							</label>
 						</div>
 
-						<div class="col-md-3">
+						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_currency_value', 'Currency Value'); ?></div>
 								<?php echo functions::form_input_decimal('currency_value', true, 6); ?>
@@ -493,32 +509,22 @@
 					</div>
 
 					<div class="grid">
-						<div class="col-md-3">
-							<div class="form-group">
-								<label><?php echo language::translate('title_date', 'Date'); ?></label>
-								<div class="form-input" readonly><?php echo language::strftime('datetime', $order->data['date_created']); ?></div>
-							</div>
-						</div>
-
-						<div class="col-md-3">
-							<div class="form-group">
-								<label><?php echo language::translate('title_reference', 'Reference'); ?></label>
-								<?php echo functions::form_input_text('reference', true); ?>
-							</div>
-						</div>
-
-						<div class="col-md-3">
+						<div class="col-md-4">
 							<div class="form-group">
 								<label><?php echo language::translate('title_tax_display', 'Tax Display'); ?></label>
 								<?php echo functions::form_toggle('display_prices_including_tax', ['1' => language::translate('title_incl_tax', 'Incl. Tax'), '0' => language::translate('title_excl_tax', 'Excl. Tax')], true); ?>
 							</div>
 						</div>
 
-						<div class="col-md-3">
+						<div class="col-md-8">
 							<div class="form-group">
 								<label><?php echo language::translate('title_hostname', 'Hostname'); ?></label>
 								<div id="hostname" class="form-input">
-									<?php echo $order->data['hostname']; ?> <a class="btn btn-default btn-sm" href="https://ip-api.com/#<?php echo $order->data['ip_address']; ?>" target="_blank" style="margin: -.33em 0;"><?php echo functions::draw_fonticon('icon-square-out'); ?></a>
+									<?php echo $order->data['hostname']; ?>
+
+									<?php if (!empty($order->data['ip_address'])) { ?>
+									<a class="btn btn-default btn-sm" href="https://ip-api.com/#<?php echo $order->data['ip_address']; ?>" target="_blank" style="margin: -.33em 0;"><?php echo functions::draw_fonticon('icon-square-out'); ?></a>
+									<?php } ?>
 								</div>
 							</div>
 						</div>
@@ -528,7 +534,7 @@
 				<div class="col-md-4">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_notes', 'Notes'); ?></div>
-						<?php echo functions::form_textarea('notes', true, 'style="height: 115px;"'); ?>
+						<?php echo functions::form_textarea('notes', true, 'style="height: 191px;"'); ?>
 					</label>
 				</div>
 			</div>
@@ -541,7 +547,7 @@
 
 			<div class="card">
 				<div class="card-body">
-					<div class="grid" style="margin-bottom: 0;">
+					<div class="grid">
 						<div id="billing-address" class="col-md-6">
 							<h2><?php echo language::translate('title_billing_address', 'Billing Address'); ?></h2>
 
@@ -767,7 +773,7 @@
 
 			<div class="card">
 				<div class="card-body">
-					<div class="grid" style="margin-bottom: 0;">
+					<div class="grid">
 						<div class="col-md-6">
 							<h2><?php echo language::translate('title_payment_details', 'Payment Details'); ?></h2>
 
@@ -957,7 +963,7 @@
 			<h2><?php echo language::translate('title_order_lines', 'Order Lines'); ?></h2>
 		</div>
 
-		<table id="order-lines" class="table table-striped table-hover table-input table-dragable data-table">
+		<table id="order-lines" class="table table-input data-table">
 			<thead>
 				<tr>
 					<th style="width: 50px;"><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
@@ -965,8 +971,8 @@
 					<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
 					<th style="width: 100px;" class="text-center"><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
 					<th style="width: 125px;" class="text-center"><?php echo language::translate('title_qty', 'Qty'); ?></th>
-					<th style="width: 135px;" class="text-center"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
-					<th style="width: 175px;" class="text-center"><?php echo language::translate('title_discount', 'Discount'); ?></th>
+					<th style="width: 150px;" class="text-center"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+					<th style="width: 150px;" class="text-center"><?php echo language::translate('title_discount', 'Discount'); ?></th>
 					<th style="width: 100px;" class="text-end"><?php echo language::translate('title_sum', 'Sum'); ?></th>
 					<th style="width: 100px;" class="text-end"><?php echo language::translate('title_tax', 'Tax'); ?></th>
 					<th style="width: 50px;"></th>
@@ -1380,8 +1386,8 @@
 		var n = this,
 			c = $('select[name="currency_code"] option:selected').val()
 			d = $('select[name="currency_code"] option:selected').data('decimals'),
-			p = _env.session.language.decimal_point,
-			t = _env.session.language.thousands_separator,
+			p = _env.language.decimal_point,
+			t = _env.language.thousands_separator,
 			b = $('select[name="currency_code"] option:selected').data('prefix'),
 			e = $('select[name="currency_code"] option:selected').data('suffix'),
 			s = n < 0 ? '-' : '',

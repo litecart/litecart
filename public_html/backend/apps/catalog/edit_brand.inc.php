@@ -89,7 +89,7 @@
 	}
 ?>
 
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_create_new_brand', 'Create New Brand'); ?>
@@ -97,9 +97,9 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('brand_form', 'post', false, true); ?>
+		<?php echo functions::form_begin('brand_form', 'post', false, true, 'style="max-width: 720px;"'); ?>
 
-			<div class="grid" style="max-width: 800px;">
+			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>

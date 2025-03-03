@@ -127,7 +127,7 @@ CREATE TABLE `lc_brands_info` (
 CREATE TABLE `lc_campaigns` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
-	`name` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
+	`name` VARCHAR(50) NOT NULL DEFAULT '',
 	`date_valid_from` TIMESTAMP NULL DEFAULT NULL,
 	`date_valid_to` TIMESTAMP NULL DEFAULT NULL,
 	`date_updated` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -323,28 +323,6 @@ CREATE TABLE `lc_customers` (
 	UNIQUE KEY `email` (`email`),
 	INDEX `group_id` (`group_id`),
 	CONSTRAINT `customer_to_customer_group` FOREIGN KEY (`group_id`) REFERENCES `lc_customer_groups` (`id`) ON UPDATE CASCADE ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
--- -----
-CREATE TABLE `lc_customers_addresses` (
-	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`customer_id` INT(10) UNSIGNED NOT NULL,
-	`type` ENUM('','business','individual') NOT NULL DEFAULT '',
-	`tax_id` VARCHAR(24) NOT NULL DEFAULT '',
-	`company` VARCHAR(32) NOT NULL DEFAULT '',
-	`firstname` VARCHAR(32) NOT NULL DEFAULT '',
-	`lastname` VARCHAR(32) NOT NULL DEFAULT '',
-	`address1` VARCHAR(32) NOT NULL DEFAULT '',
-	`address2` VARCHAR(32) NOT NULL DEFAULT '',
-	`postcode` VARCHAR(8) NOT NULL DEFAULT '',
-	`city` VARCHAR(32) NOT NULL DEFAULT '',
-	`country_code` CHAR(2) NOT NULL DEFAULT '',
-	`zone_code` VARCHAR(8) NOT NULL DEFAULT '',
-	`phone` VARCHAR(24) NOT NULL DEFAULT '',
-	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `customer_id` (`customer_id`) USING BTREE,
-	CONSTRAINT `customer_address_to_customer` FOREIGN KEY (`customer_id`) REFERENCES `lc_customers` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
 CREATE TABLE `lc_delivery_statuses` (
@@ -735,6 +713,39 @@ CREATE TABLE `lc_products_attributes` (
 	CONSTRAINT `product_attribute_to_attribute_value` FOREIGN KEY (`value_id`) REFERENCES `lc_attribute_values` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 -- -----
+CREATE TABLE `lc_products_customizations` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`group_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`function` VARCHAR(32) NOT NULL DEFAULT '',
+	`required` TINYINT(1) NOT NULL DEFAULT '0',
+	`sort` VARCHAR(16) NOT NULL DEFAULT '',
+	`priority` TINYINT(2) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`) USING BTREE,
+	UNIQUE INDEX `product_option` (`product_id`, `group_id`) USING BTREE,
+	INDEX `product_id` (`product_id`) USING BTREE,
+	INDEX `priority` (`priority`) USING BTREE,
+	CONSTRAINT `product_customization_to_attribute_group` FOREIGN KEY (`group_id`) REFERENCES `litecart_major`.`lc_attribute_groups` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT `product_customization_to_product` FOREIGN KEY (`product_id`) REFERENCES `litecart_major`.`lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+-- -----
+CREATE TABLE `lc_products_customizations_values` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`group_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`value_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`custom_value` VARCHAR(64) NOT NULL DEFAULT '',
+	`price_operator` VARCHAR(1) NOT NULL DEFAULT '',
+	`priority` TINYINT(2) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`) USING BTREE,
+	UNIQUE INDEX `product_option_value` (`product_id`, `group_id`, `value_id`) USING BTREE,
+	INDEX `product_id` (`product_id`) USING BTREE,
+	INDEX `priority` (`priority`) USING BTREE,
+	CONSTRAINT `product_customization_value_to_attribute_group` FOREIGN KEY (`group_id`) REFERENCES `litecart_major`.`lc_attribute_groups` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT `product_customization_value_to_attribute_value` FOREIGN KEY (`value_id`) REFERENCES `litecart_major`.`lc_attribute_values` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT `product_customization_value_to_product` FOREIGN KEY (`product_id`) REFERENCES `litecart_major`.`lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+-- -----
 CREATE TABLE `lc_products_images` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`product_id` INT(10) UNSIGNED NOT NULL,
@@ -849,9 +860,9 @@ CREATE TABLE `lc_redirects` (
 -- -----
 CREATE TABLE `lc_settings` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`group_key` VARCHAR(32) NULL,
+	`group_key` VARCHAR(64) NULL,
 	`type` ENUM('global','local') NOT NULL DEFAULT 'local',
-	`key` VARCHAR(32) NOT NULL DEFAULT '',
+	`key` VARCHAR(64) NOT NULL DEFAULT '',
 	`value` VARCHAR(255) NOT NULL DEFAULT '',
 	`title` VARCHAR(128) NOT NULL DEFAULT '',
 	`description` VARCHAR(512) NOT NULL DEFAULT '',
@@ -882,7 +893,7 @@ CREATE TABLE `lc_site_tags` (
 	`position` ENUM('head','body') NOT NULL DEFAULT 'head',
 	`description` VARCHAR(256) NOT NULL DEFAULT '',
 	`content` TEXT NOT NULL DEFAULT '',
-	`require_cookie_consent` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`require_consent` VARCHAR(64) NULL,
 	`priority` TINYINT(4) NOT NULL DEFAULT '0',
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1051,16 +1062,16 @@ CREATE TABLE `lc_tax_rates` (
 CREATE TABLE `lc_third_parties` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-	`privacy_classes` VARCHAR(64) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`category` VARCHAR(64) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`name` VARCHAR(64) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`homepage` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`cookie_policy_url` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`privacy_policy_url` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`opt_out_url` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`do_not_sell_url` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`collected_data` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`country_code` CHAR(2) NULL DEFAULT NULL COLLATE 'utf8mb4_swedish_ci',
+	`privacy_classes` VARCHAR(64) NOT NULL DEFAULT ''
+	`category` VARCHAR(64) NOT NULL DEFAULT '',
+	`name` VARCHAR(64) NOT NULL DEFAULT '',
+	`homepage` VARCHAR(256) NOT NULL DEFAULT '',
+	`cookie_policy_url` VARCHAR(256) NOT NULL DEFAULT '',
+	`privacy_policy_url` VARCHAR(256) NOT NULL DEFAULT '',
+	`opt_out_url` VARCHAR(256) NOT NULL DEFAULT '',
+	`do_not_sell_url` VARCHAR(256) NOT NULL DEFAULT '',
+	`collected_data` VARCHAR(256) NOT NULL DEFAULT '',
+	`country_code` CHAR(2) NULL DEFAULT NULL,
 	`date_updated` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
 	`date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
 	PRIMARY KEY (`id`) USING BTREE,
@@ -1072,10 +1083,10 @@ CREATE TABLE `lc_third_parties` (
 CREATE TABLE `lc_third_parties_info` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`third_party_id` INT(10) UNSIGNED NOT NULL,
-	`language_code` VARCHAR(2) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`collected_data` VARCHAR(512) NOT NULL COLLATE 'utf8mb4_swedish_ci',
-	`description` VARCHAR(4096) NOT NULL COLLATE 'utf8mb4_swedish_ci',
-	`purposes` VARCHAR(4096) NOT NULL COLLATE 'utf8mb4_swedish_ci',
+	`language_code` VARCHAR(2) NOT NULL DEFAULT '',
+	`collected_data` VARCHAR(512) NOT NULL,
+	`description` VARCHAR(4096) NOT NULL,
+	`purposes` VARCHAR(4096) NOT NULL,
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `third_party_id` (`third_party_id`) USING BTREE,
 	INDEX `language_code` (`language_code`) USING BTREE,

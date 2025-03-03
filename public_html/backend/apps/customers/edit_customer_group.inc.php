@@ -57,7 +57,7 @@
 	];
 
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($customer_group->data['id']) ? language::translate('title_edit_customer_group', 'Edit Customer Group') : language::translate('title_create_new_customer_group', 'Create New Customer Group'); ?>
@@ -66,7 +66,7 @@
 
 	<div class="card-body">
 
-		<?php echo functions::form_begin('customer_group_form', 'post', null, false, 'style="max-width: 640px;"'); ?>
+		<?php echo functions::form_begin('customer_group_form', 'post', null, false, 'style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-4">

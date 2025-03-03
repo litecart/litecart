@@ -113,7 +113,7 @@
 	}
 ?>
 
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo language::translate('title_template_settings', 'Template Settings'); ?>
@@ -122,7 +122,7 @@
 
 	<?php echo functions::form_begin('template_settings_form', 'post'); ?>
 
-		<table class="table table-striped table-hover data-table">
+		<table class="table data-table">
 			<tbody>
 				<?php foreach ($settings as $setting) { ?>
 				<tr>

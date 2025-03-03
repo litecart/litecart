@@ -132,7 +132,7 @@
 
 	functions::draw_lightbox();
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo language::translate('title_newletter_recipients', 'Newsletter Recipients'); ?>
@@ -141,7 +141,7 @@
 
 	<div class="card-action">
 		<?php echo functions::form_button('add_recipients', language::translate('title_add_recipients', 'Add Recipients'), 'button', '', 'add'); ?>
-		<?php echo functions::form_button_link(document::ilink(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"'); ?>
+		<?php echo functions::form_button_link(document::ilink(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"', 'icon-output'); ?>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
@@ -153,7 +153,7 @@
 
 	<?php echo functions::form_begin('recipients_form', 'post'); ?>
 
-		<table class="table table-striped table-hover data-table">
+		<table class="table data-table">
 			<thead>
 				<tr>
 					<th style="width: 50px;"><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>

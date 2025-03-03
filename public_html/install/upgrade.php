@@ -1,6 +1,9 @@
 <?php
 
-	// Automatic upgrade: upgrade.php?upgrade=true&redirect={url}
+	/*!
+	 * Unattended Upgrade:
+	 *  upgrade.php?upgrade=true&redirect={url}
+	*/
 
 	@set_time_limit(900);
 	ini_set('memory_limit', -1);
@@ -8,18 +11,25 @@
 	mb_internal_encoding('UTF-8');
 	mb_http_output('UTF-8');
 
+	include __DIR__ . '/../includes/compatibility.inc.php';
+
 	if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
-		if (!isset($argv[1]) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
-			echo "\nLiteCart® 3.0.0\n"
-			. "Copyright (c) ". date('Y') ." LiteCart AB\n"
-			. "https://www.litecart.net/\n"
-			. "Usage: php ". basename(__FILE__) ." [options]\n\n"
-			. "Options:\n"
-			. "  --from_version       Manually set version migrating from. Omit for auto detection\n"
-			. "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n"
-			. "  --backup             Backup the database before running upgrade (Default: true)\n"
-			. "  --cleanup            Delete the install/ directory after finising the upgrade.\n\n";
+		if (!isset($argv[1]) || (in_array($argv[1], ['help', '-h', '--help', '/?']))) {
+			echo implode(PHP_EOL, [
+				'',
+				'LiteCart® 3.0.0',
+				'Copyright (c) '. date('Y') .' LiteCart AB',
+				'https://www.litecart.net/',
+				'Usage: php '. basename(__FILE__) .' [options]',
+				'',
+				'Options:',
+				'  --from_version       Manually set version migrating from. Omit for auto detection',
+				'  --development_type   Set development type "standard" or "development" (Default: standard)',
+				'  --backup             Backup the database before running upgrade (Default: true)',
+				'  --cleanup            Delete the install/ directory after finishing the upgrade.',
+				'',
+			]);
 			exit;
 		}
 
@@ -46,12 +56,15 @@
 		include(__DIR__ . '/../includes/config.inc.php');
 
 	} else {
+
 		require_once __DIR__ . '/includes/header.inc.php';
+
 		echo implode(PHP_EOL, [
 			'<h2>No Installation Detected</h2>',
 			'<p>Warning: No configuration file was found.</p>',
 			'<p><a class="btn btn-default" href="index.php">Click here to install instead</a></p>',
 		]);
+
 		require('includes/footer.inc.php');
 		return;
 	}
@@ -174,12 +187,12 @@
 				}
 
 				$platform_database_version = database::query(
-					"select `value` from ". DB_TABLE_SETTINGS ."
+					"select `value` from ". DB_TABLE_PREFIX ."settings
 					where `key` = 'platform_database_version'
 					limit 1;"
 				)->fetch('value');
 
-				$backup_file = FS_DIR_STORAGE . 'backups/'. PLATFORM_NAME .'-'. strftime('%Y%m%d-%H%M%S') .'-database-'. $platform_database_version .'.sql';
+				$backup_file = FS_DIR_STORAGE . 'backups/'. PLATFORM_NAME .'-'. date('Ymd-Hi') .'-database-'. $platform_database_version .'.sql';
 
 				if (!$backup_handle = fopen($backup_file, 'wb')) {
 					throw new Exception("Cannot open backup file for writing ($backup_file)");
@@ -272,6 +285,7 @@
 			### Installer > Update ########################################
 
 			if (!empty($_REQUEST['skip_updates'])) {
+
 				echo '<p>Checking for updates... ';
 
 				require_once FS_DIR_APP . 'includes/clients/http_client.inc.php';
@@ -326,6 +340,7 @@
 				}
 
 				if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.sql')) {
+
 					echo '<p>Upgrading database to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
 					$sql = file_get_contents(__DIR__ . '/upgrade_patches/'. $version .'.sql');
 					$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);

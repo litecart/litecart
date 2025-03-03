@@ -60,7 +60,7 @@
   )->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 
 ?>
-<div class="card card-app">
+<div class="card">
   <div class="card-header">
     <div class="card-title">
 			<?php echo $app_icon; ?> <?php echo language::translate('title_redirects', 'Redirects'); ?>
@@ -75,7 +75,7 @@
 
 	<?php echo functions::form_begin('redirects_form', 'post'); ?>
 
-		<table class="table table-striped table-hover data-table">
+		<table class="table data-table">
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
@@ -92,7 +92,7 @@
 				<?php foreach ($redirects as $redirect) { ?>
 				<tr class="<?php echo empty($redirect['status']) ? 'semi-transparent' : null; ?>">
 					<td><?php echo functions::form_checkbox('redirects[]', $redirect['id']); ?></td>
-					<td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($redirect['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
+					<td><?php echo functions::draw_fonticon(!empty($redirect['status']) ? 'on' : 'off'); ?></td>
 					<td><a href="<?php echo document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]); ?>"><?php echo $redirect['pattern']; ?></a></td>
 					<td><?php echo $redirect['destination']; ?></td>
 					<td class="text-end"><?php echo $redirect['redirects']; ?></td>

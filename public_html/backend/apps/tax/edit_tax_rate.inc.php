@@ -99,7 +99,7 @@
 		}
 	}
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_create_new_tax_rate', 'Create New Tax Rate'); ?>
@@ -107,7 +107,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('tax_rate_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+		<?php echo functions::form_begin('tax_rate_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-6">

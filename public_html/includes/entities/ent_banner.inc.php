@@ -48,7 +48,7 @@
 				throw new Exception('Could not find banner (ID: '. (int)$id .') in database.');
 			}
 
-			$this->data['languages'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+			$this->data['languages'] = preg_split('#\s*,\s*#', $this->data['languages'], -1, PREG_SPLIT_NO_EMPTY);
 		}
 
 		public function save() {

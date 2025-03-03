@@ -964,10 +964,41 @@
 		);
 	});
 
-	// Drop currency columns from products_prices
+	// Drop currency columns from table
 	foreach ($currencies as $currency) {
 		database::query(
 			"alter table ". DB_TABLE_PREFIX ."products_prices
+			drop column `". database::input($currency['code']) ."`;"
+		);
+	}
+
+	// Migrate product custization value prices
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."products_prices;"
+	)->each(function($product_price) use ($currencies) {
+
+		$price_adjust = array_filter($product_price, function ($key) {
+			return (preg_match('#^[A-Z]{3}$#', $key));
+		}, ARRAY_FILTER_USE_KEY);
+
+		foreach ($currencies as $currency) {
+			if (!isset($price_adjust[$currency['code']])) {
+				$price_adjust[$currency['code']] = $product_price['price'];
+			}
+		}
+
+		database::query(
+			"update ". DB_TABLE_PREFIX ."products_customizations_values
+			set price_adjust = '". database::input(json_encode(array_filter($price_adjust))) ."'
+			where id = ". (int)$product_price['id'] ."
+			limit 1;"
+		);
+	});
+
+	// Drop currency columns from table
+	foreach ($currencies as $currency) {
+		database::query(
+			"alter table ". DB_TABLE_PREFIX ."products_customizations_values
 			drop column `". database::input($currency['code']) ."`;"
 		);
 	}

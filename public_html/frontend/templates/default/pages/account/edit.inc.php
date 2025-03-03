@@ -16,7 +16,7 @@
 					</div>
 
 					<div class="card-body">
-						<?php echo functions::form_begin('customer_account_form', 'post', null, false, 'style="max-width: 640px;"'); ?>
+						<?php echo functions::form_begin('customer_account_form', 'post', null, false, 'style="max-width: 720px;"'); ?>
 
 							<div class="form-grid">
 
@@ -61,7 +61,7 @@
 					</div>
 
 					<div class="card-body">
-						<?php echo functions::form_begin('customer_details_form', 'post', null, false, 'style="max-width: 640px;"'); ?>
+						<?php echo functions::form_begin('customer_details_form', 'post', null, false, 'style="max-width: 720px;"'); ?>
 
 							<div class="form-grid">
 

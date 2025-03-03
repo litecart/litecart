@@ -115,7 +115,7 @@ h1 {
 			</div>
 		</div>
 
-		<table class="items table table-striped data-table">
+		<table class="items table data-table">
 			<thead>
 				<tr>
 					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
@@ -144,7 +144,7 @@ h1 {
 	</header>
 
 	<main class="content">
-		<table class="items table table-striped data-table">
+		<table class="items table data-table">
 			<thead>
 				<tr>
 					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>

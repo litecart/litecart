@@ -61,7 +61,7 @@ pre {
 }
 </style>
 
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo language::translate('title_view_modification', 'View Modification'); ?>

@@ -3,7 +3,7 @@
 +function($) {
 	'use strict'
 
-	$.fn.Tabs = function(){
+	$.fn.tabs = function(){
 		this.each(function() {
 
 			const self = this
@@ -31,22 +31,23 @@
 			})
 
 			const activeTab = this.$element.find('.active')
+
 			if (!activeTab.length) {
 				this.$element.find('[data-toggle="tab"]').first().trigger('select')
 			} else {
 				activeTab.trigger('select')
-	}
+			}
 		})
 	}
 
-	$('.tabs').Tabs()
+	$('.tabs').tabs()
 
 	if (document.location.hash && document.location.hash.match(/^#tab-/)) {
 		$('[data-toggle="tab"][href="' + document.location.hash +'"]').trigger('select')
 	}
 
 	$(document).on('ajaxcomplete', function() {
-		$('.tabs').Tabs()
+		$('.tabs').tabs()
 	})
 
 }(jQuery)

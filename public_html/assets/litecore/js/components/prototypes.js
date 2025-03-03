@@ -17,11 +17,11 @@ Number.prototype.toText = function(decimals = 0) {
 
 Number.prototype.toMoney = function() {
 	var n = this,
-		c = _env.session.currency.decimals,
-		d = _env.session.language.decimal_point,
-		t = _env.session.language.thousands_separator,
-		p = _env.session.currency.prefix,
-		x = _env.session.currency.suffix,
+		c = _env.currency.decimals,
+		d = _env.language.decimal_point,
+		t = _env.language.thousands_separator,
+		p = _env.currency.prefix,
+		x = _env.currency.suffix,
 		s = n < 0 ? '-' : '',
 		i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
 		f = n - i,

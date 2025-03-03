@@ -75,7 +75,7 @@
 		<div class="grid">
 			<div class="col-md-6">
 
-				<table class="table table-striped table-hover data-table">
+				<table class="table data-table">
 					<tbody>
 						<tr>
 							<td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. language::strftime('%B'); ?>:</td>
@@ -100,7 +100,7 @@
 
 			<div class="col-md-6">
 
-				<table class="table table-striped table-hover data-table">
+				<table class="table data-table">
 					<tbody>
 						<tr>
 							<td><?php echo language::translate('title_total_number_of_orders', 'Total Number of Orders'); ?>:</td>

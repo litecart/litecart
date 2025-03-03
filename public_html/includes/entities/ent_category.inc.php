@@ -127,14 +127,12 @@
 
 			foreach (language::$languages as $language) {
 
-				$info = database::query(
+				if (!database::query(
 					"select * from ". DB_TABLE_PREFIX ."categories_info
 					where category_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language['code']) ."'
 					limit 1;"
-				)->fetch();
-
-				if (!$info) {
+				)->num_rows) {
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."categories_info
 						(category_id, language_code)

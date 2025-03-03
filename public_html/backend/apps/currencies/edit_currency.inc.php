@@ -166,7 +166,7 @@
 	}
 
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_create_new_currency', 'Create New Currency'); ?>
@@ -174,17 +174,13 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('currency_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+		<?php echo functions::form_begin('currency_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 			<?php if (!empty($prefillable_currency_options)) { ?>
-			<div class="grid">
-				<div class="col-md-6">
-					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('text_prefill_from_the_web', 'Prefill from the web'); ?></div>
-						<?php echo functions::form_select('prefill', $prefillable_currency_options, ''); ?>
-					</label>
-				</div>
-			</div>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('text_prefill_from_the_web', 'Prefill from the web'); ?></div>
+				<?php echo functions::form_select('prefill', $prefillable_currency_options, ''); ?>
+			</label>
 			<?php } ?>
 
 			<div class="grid">

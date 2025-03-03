@@ -171,8 +171,6 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						<?php echo functions::form_end(); ?>
 					</fieldset>
 
-					<div class="social-bookmarks">
-
 					<h3><?php echo language::translate('title_share_this_product', 'Share This Product'); ?>:</h3>
 
 					<div class="social-bookmarks">

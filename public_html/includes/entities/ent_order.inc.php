@@ -27,7 +27,7 @@
 						$this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = database::create_variable($field);
 						break;
 
-					case (preg_match('#^shipping_(?!option)#', $field['Field'])):
+					case (preg_match('#^shipping_(?!option|tracking|purchase)#', $field['Field'])):
 						$this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = database::create_variable($field);
 						break;
 
@@ -57,14 +57,17 @@
 				'subtotal' => 0,
 				'subtotal_tax' => 0,
 				'display_prices_including_tax' => settings::get('default_display_prices_including_tax'),
-				'ip_address' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '',
+				'ip_address' => fallback($_SERVER['REMOTE_ADDR']),
 				'hostname' => isset($_SERVER['REMOTE_ADDR']) ? gethostbyaddr($_SERVER['REMOTE_ADDR']) : '',
-				'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
-				'domain' => isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '',
+				'user_agent' => fallback($_SERVER['HTTP_USER_AGENT']),
+				'domain' => fallback($_SERVER['HTTP_HOST']),
 			]);
 
 			$this->data['shipping_option']['userdata'] = [];
 			$this->data['payment_option']['userdata'] = [];
+
+			$this->shipping = new mod_shipping($this, $this->data['shipping_option']);
+			$this->payment = new mod_payment($this, $this->data['payment_option']);
 
 			$this->data['payment_due'] = &$this->data['total']; // Backwards compatibility <3.0.0
 			$this->data['tax_total'] = &$this->data['total_tax']; // Backwards compatibility <3.0.0
@@ -197,10 +200,11 @@
 
 			// Insert order
 			if (!$this->data['id']) {
+
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."orders
 					(date_created)
-					values ('". database::input($this->data['uid']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();
@@ -270,7 +274,7 @@
 					total = ". (float)$this->data['total'] .",
 					total_tax = ". (float)$this->data['total_tax'] .",
 					ip_address = '". database::input($this->data['ip_address']) ."',
-					hostname = '". database::input(gethostbyaddr($this->data['hostname'])) ."',
+					hostname = '". database::input($this->data['hostname']) ."',
 					user_agent = '". database::input($this->data['user_agent']) ."',
 					domain = '". database::input($this->data['domain']) ."',
 					public_key = '". database::input($this->data['public_key']) ."',
@@ -452,13 +456,13 @@
 			}
 
 			// Send order status email notification
-			if ($this->previous->data['order_status_id'] && $this->data['order_status_id'] != $this->previous['order_status_id']) {
+			if ($this->previous['order_status_id'] && $this->data['order_status_id'] != $this->previous['order_status_id']) {
 				if (!empty(reference::order_status($this->data['order_status_id'])->notify)) {
 					$this->send_email_notification();
 				}
 			}
 
-			list($module_id, $option_id) = preg_split('#:#', $this->data['payment_option']['id']);
+			list($module_id, $option_id) = preg_split('#:#', fallback($this->data['payment_option']['id'], ':'), 2);
 			$payment_modules = new mod_payment();
 			$payment_modules->run('after_save', $module_id, $this);
 

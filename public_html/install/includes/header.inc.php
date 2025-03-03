@@ -3,11 +3,11 @@
 <head>
 <meta charset="<?php echo mb_http_output(); ?>">
 <title>LiteCart Installer</title>
-<link rel="stylesheet" href="../backend/template/css/variables.css">
-<?php if (is_file(__DIR__.'/../../backend/template/css/framework.css')) { ?>
-<link rel="stylesheet" href="../backend/template/css/framework.css">
+<link rel="stylesheet" href="../backend/template/css/theme.css">
+<?php if (is_file(__DIR__.'/../../assets/litecore/css/framework.css')) { ?>
+<link rel="stylesheet" href="../assets/litecore/css/framework.css">
 <?php } else { ?>
-<link rel="stylesheet" href="../backend/template/css/framework.min.css">
+<link rel="stylesheet" href="../assets/litecore/css/framework.min.css">
 <?php } ?>
 <style>
 html {

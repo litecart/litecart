@@ -81,15 +81,17 @@
 				)
 				limit 1;"
 			)->num_rows) {
-				throw new Exception(language::translate('error_language_conflict', 'The country conflicts another country in the database'));
+				throw new Exception(language::translate('error_country_conflict', 'The country conflicts another country in the database'));
 			}
 
 			if (!$this->data['id']) {
+
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."countries
 					(date_created)
 					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
 				);
+
 				$this->data['id'] = database::insert_id();
 			}
 
@@ -150,7 +152,7 @@
 
 		public function delete() {
 
-			if ($this->data['code'] == settings::get('store_country_code')) {
+			if ($this->data['iso_code_2'] == settings::get('store_country_code')) {
 				throw new Exception(language::translate('error_cannot_delete_store_country', 'You must change the store country before it can be deleted.'));
 			}
 

@@ -130,7 +130,7 @@
 	}
 
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo language::translate('title_settings', 'Settings').' &ndash; '.$settings_group['name']; ?>
@@ -139,7 +139,7 @@
 
 	<?php echo functions::form_begin('settings_form', 'post'); ?>
 
-		<table class="table table-striped table-hover data-table">
+		<table class="table data-table">
 			<thead>
 				<tr>
 					<th style="width: 35%;"><?php echo language::translate('title_key', 'Key'); ?></th>

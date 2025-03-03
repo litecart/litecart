@@ -17,12 +17,11 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."redirects;"
-      );
-      while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = database::create_variable($field['Type']);
-      }
+      )->each(function($field) {
+				$this->data[$field['Field']] = database::create_variable($field['Type']);
+			});
 
       $this->previous = $this->data;
     }
@@ -35,13 +34,13 @@
 
       $this->reset();
 
-      $redirect_query = database::query(
+      $redirect = database::query(
         "select * from ". DB_TABLE_PREFIX ."redirects
         where id = ". (int)$redirect_id ."
         limit 1;"
-      );
+      )->fetch();
 
-      if ($redirect = database::fetch($redirect_query)) {
+      if ($redirect) {
         $this->data = array_replace($this->data, array_intersect_key($redirect, $this->data));
       } else {
         throw new Exception('Could not find redirect (ID: '. (int)$redirect_id .') in database.');
@@ -53,18 +52,19 @@
     public function save() {
 
       if (empty($this->data['id'])) {
+
         database::query(
           "insert into ". DB_TABLE_PREFIX ."redirects
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
+
         $this->data['id'] = database::insert_id();
       }
 
       database::query(
         "update ". DB_TABLE_PREFIX ."redirects
-        set
-          status = ". (int)$this->data['status'] .",
+        set status = ". (int)$this->data['status'] .",
           immediate = ". (int)$this->data['immediate'] .",
           pattern = '". database::input($this->data['pattern']) ."',
           destination = '". database::input($this->data['destination']) ."',

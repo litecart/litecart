@@ -78,14 +78,14 @@
 		'alphabetical' => language::translate('title_alphabetical', 'Alphabetical'),
 	];
 ?>
-<div class="card card-app">
+<div class="card">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo !empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group'); ?>
 		</div>
 	</div>
 
-	<?php echo functions::form_begin('attribute_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+	<?php echo functions::form_begin('attribute_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 	<div class="card-body">
 
@@ -112,7 +112,7 @@
 
 		<h2><?php echo language::translate('title_values', 'Values'); ?></h2>
 
-		<table class="table table-striped table-hover table-dragable data-table">
+		<table class="table data-table">
 			<thead>
 				<tr>
 					<th><?php echo language::translate('title_id', 'ID'); ?></th>
@@ -161,7 +161,7 @@
 		foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_regional_text('values[new_value_index][name]['. $language_code .']', $language_code, '', '');
 ?>
 		let output = [
-			'<tr>'
+			'<tr>',
 			'  <td><?php echo functions::escape_js(functions::form_input_hidden('values[new_value_index][id]', '')); ?></td>',
 			'  <td><?php echo functions::escape_js($name_fields); ?></td>',
 			'  <td class="text-center"><?php echo language::translate('title_no', 'No'); ?></td>',

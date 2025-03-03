@@ -31,7 +31,7 @@
       foreach ([
         'status',
         'position',
-        'description',
+        'name',
         'content',
         'require_consent',
         'priority',
@@ -127,26 +127,26 @@
           </label>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <label class="form-group">
-            <div class="form-label"><?php echo language::translate('title_priority', 'Priority'); ?></div>
-            <?php echo functions::form_input_number('priority', true); ?>
+            <div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+            <?php echo functions::form_input_text('name', true, 'required'); ?>
           </label>
         </div>
       </div>
 
       <div class="grid">
-        <div class="col-sm-6">
+				<div class="col-md-6">
           <label class="form-group">
-            <div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
-            <?php echo functions::form_input_text('description', true, 'required'); ?>
+            <div class="form-label"><?php echo language::translate('title_position', 'Position'); ?></div>
+            <?php echo functions::form_select('position', $position_options, true); ?>
           </label>
         </div>
 
         <div class="col-md-6">
           <label class="form-group">
-            <div class="form-label"><?php echo language::translate('title_position', 'Position'); ?></div>
-            <?php echo functions::form_select('position', $position_options, true); ?>
+            <div class="form-label"><?php echo language::translate('title_priority', 'Priority'); ?></div>
+            <?php echo functions::form_input_number('priority', true); ?>
           </label>
         </div>
       </div>

@@ -21,8 +21,9 @@
 					$this->view = 'app://frontend/templates/'. settings::get('template') .'/' . preg_replace('#\.inc\.php$#', '', $view) . '.inc.php';
 				}
 
+				// Use default view if not found
 				if (!is_file($this->view)) {
-					$this->view = 'app://frontend/templates/default/'. $view;
+					$this->view = preg_replace('#^app://frontend/templates/[^/]+/#', 'app://frontend/templates/default/', $view);
 				}
 			}
 

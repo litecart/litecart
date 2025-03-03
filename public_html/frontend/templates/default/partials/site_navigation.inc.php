@@ -125,7 +125,7 @@
 					<?php if (!empty($regional_settings)) { ?>
 					<li class="regional-settings">
 						<a class="navbar-item" href="<?php echo functions::escape_attr($regional_settings['link']); ?>">
-						<?php echo functions::draw_fonticon('icon-envelope hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo $regional_settings['title']; ?>
+						<?php echo functions::draw_fonticon('icon-world hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo $regional_settings['title']; ?>
 						</a>
 					</li>
 					<?php } ?>

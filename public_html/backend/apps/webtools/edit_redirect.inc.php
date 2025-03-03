@@ -109,7 +109,7 @@
 	];
 
 ?>
-<div class="card card-app">
+<div class="card">
   <div class="card-header">
     <h1 class="card-title"><?php echo $app_icon; ?> <?php echo !empty($redirect->data['id']) ? language::translate('title_edit_redirect', 'Edit Redirect') : language::translate('title_create_new_redirect', 'Create New Redirect'); ?></h1>
   </div>

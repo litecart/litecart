@@ -30,11 +30,11 @@
 // Table Rows
   $site_tags = database::query(
     "select * from ". DB_TABLE_PREFIX ."site_tags
-    order by status desc, position asc, priority asc, description asc;"
+    order by status desc, position asc, priority asc, name asc;"
   )->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 ?>
 
-<div class="card card-app">
+<div class="card">
   <div class="card-header">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_site_tags', 'Site Tags'); ?>
@@ -49,13 +49,13 @@
 
   <?php echo functions::form_begin('site_tags_form', 'post'); ?>
 
-    <table class="table table-striped table-hover data-table">
+    <table class="table data-table">
       <thead>
         <tr>
           <th><?php echo functions::draw_fonticon('icon-square-check fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
-          <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
-          <th><?php echo language::translate('title_cookie', 'Cookie'); ?></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_consent', 'Consent'); ?></th>
           <th><?php echo language::translate('title_position', 'Position'); ?></th>
           <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
           <th></th>
@@ -66,8 +66,8 @@
         <?php foreach ($site_tags as $site_tag) { ?>
         <tr class="<?php echo empty($site_tag['status']) ? 'semi-transparent' : null; ?>">
           <td><?php echo functions::form_checkbox('site_tags[]', $site_tag['id']); ?></td>
-          <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($site_tag['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
-          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]); ?>"><?php echo $site_tag['description']; ?></a></td>
+          <td><?php echo functions::draw_fonticon(!empty($site_tag['status']) ? 'on' : 'off'); ?></td>
+          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]); ?>"><?php echo $site_tag['name']; ?></a></td>
           <td class="text-center"><?php echo $site_tag['require_consent'] ? functions::draw_fonticon('icon-check') : ''; ?></td>
           <td class="text-center"><?php echo $site_tag['position']; ?></td>
           <td class="text-center"><?php echo (int)$site_tag['priority']; ?></td>
