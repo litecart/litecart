@@ -19,34 +19,6 @@
 		public static $title = [];
 
 		public static function init() {
-
-			// Set Default OpenGraph Content
-			self::$opengraph = [
-				'title' => settings::get('store_name'),
-				'type' => 'website',
-				'url' => document::href_ilink(''),
-				'image' => document::href_rlink('storage://images/logotype.png'),
-			];
-
-			// Set Default Schema Data
-			self::$schema['website'] = [
-				'@context' => 'https://schema.org/',
-				'@type' => 'Website',
-				'name' => settings::get('store_name'),
-				'url' => self::ilink(''),
-				'countryOfOrigin' => settings::get('store_country_code'),
-			];
-
-			self::$schema['organization'] = [
-				'@context' => 'https://schema.org/',
-				'@type' => 'Organization',
-				'name' => settings::get('store_name'),
-				'url' => self::ilink(''),
-				'logo' => self::rlink(FS_DIR_STORAGE . 'images/logotype.png'),
-				'email' => settings::get('store_email'),
-				'availableLanguage' => array_column(language::$languages, 'name'),
-			];
-
 			event::register('before_capture', [__CLASS__, 'before_capture']);
 			event::register('after_capture', [__CLASS__, 'after_capture']);
 		}
@@ -93,12 +65,6 @@
 					break;
 			}
 
-			self::$head_tags['favicon'] = implode(PHP_EOL, [
-				'<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon.ico') .'" type="image/x-icon" sizes="32x32 48x48 64x64 96x96">',
-				'<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon-128x128.png') .'" type="image/png" sizes="128x128">',
-				'<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon-192x192.png') .'" type="image/png" sizes="192x192">',
-				'<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon-256x256.png') .'" type="image/png" sizes="256x256">',
-			]);
 
 			// Wait For It (Minified)
 			self::add_head_tags(implode(PHP_EOL, [
@@ -137,42 +103,12 @@
 
 		public static function after_capture() {
 
-    	// Site Tags
-			$site_tags = database::query(
-				"select * from ". DB_TABLE_PREFIX ."site_tags
-				where status
-				order by priority desc, description asc;"
-			)->each(function($site_tag){
-
-				if (!empty($site_tag['require_cookie_consent'])) {
-					if (settings::get('cookie_policy') && empty($_COOKIE['cookies_accepted'])) return;
-				}
-
-				switch ($site_tag['position']) {
-
-					case 'head':
-						self::$head_tags[] = $site_tag['content'];
-						break;
-
-					case 'body':
-						self::$foot_tags[] = $site_tag['content'];
-						break;
-				}
-			});
-
 			// JavaScript Environment
 
 			self::$jsenv['platform'] = [
 				'path' => WS_DIR_APP,
 				'url' => self::ilink('f:'),
 			];
-
-			if (administrator::check_login()) {
-				self::$jsenv['backend'] = [
-					'path' => WS_DIR_APP . BACKEND_ALIAS .'/',
-					'url' => self::ilink('b:'),
-				];
-			}
 
 			self::$jsenv['template'] = [
 				'settings' => self::$settings,
