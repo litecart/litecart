@@ -2,6 +2,7 @@
 
 	return [
 		'name' => language::translate('title_translations', 'Translations'),
+		'group' => 'regional',
 		'default' => 'translations',
 		'priority' => 0,
 

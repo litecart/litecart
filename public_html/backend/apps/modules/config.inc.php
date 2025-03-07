@@ -2,6 +2,7 @@
 
 	return [
 		'name' => language::translate('title_modules', 'Modules'),
+		'group' => 'system',
 		'default' => 'customer',
 		'priority' => 0,
 

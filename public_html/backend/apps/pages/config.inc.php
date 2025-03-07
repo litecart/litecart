@@ -2,6 +2,7 @@
 
 	return [
 		'name' => language::translate('title_pages', 'Pages'),
+		'group' => 'website',
 		'default' => 'pages',
 		'priority' => 0,
 

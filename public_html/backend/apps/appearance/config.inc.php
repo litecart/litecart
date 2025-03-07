@@ -2,6 +2,7 @@
 
 	return [
 		'name' => language::translate('title_appearance', 'Appearance'),
+		'group' => 'website',
 		'default' => 'edit_styling',
 		'priority' => 0,
 

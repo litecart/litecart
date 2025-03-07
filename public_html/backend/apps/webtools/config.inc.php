@@ -2,6 +2,7 @@
 
 	return [
 		'name' => language::translate('title_webtools', 'Webtools'),
+		'group' => 'website',
 		'default' => 'redirects',
 		'priority' => 0,
 

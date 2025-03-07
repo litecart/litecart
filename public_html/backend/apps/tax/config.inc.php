@@ -2,6 +2,7 @@
 
 	return [
 		'name' => language::translate('title_tax', 'Tax'),
+		'group' => 'regional',
 		'default' => 'tax_rates',
 		'priority' => 0,
 

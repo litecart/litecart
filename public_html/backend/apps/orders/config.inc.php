@@ -2,6 +2,7 @@
 
 	return [
 		'name' => language::translate('title_orders', 'Orders'),
+		'group' => 'sales',
 		'default' => 'orders',
 		'priority' => 0,
 

@@ -2,6 +2,7 @@
 
 	return [
 		'name' => language::translate('title_currencies', 'Currencies'),
+		'group' => 'regional',
 		'default' => 'currencies',
 		'priority' => 0,
 

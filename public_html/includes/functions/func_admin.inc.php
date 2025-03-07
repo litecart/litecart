@@ -41,6 +41,25 @@
 		return $apps;
 	}
 
+	function admin_get_grouped_apps() {
+
+		$apps_cache_token = cache::token('backend_apps', ['administrator', 'language']);
+		if (!$apps = cache::get($apps_cache_token)) {
+
+			$groups = [];
+
+			$apps = functions::admin_get_apps();
+
+			foreach ($apps as $app) {
+				$groups[$app['group']][$app['id']] = $app;
+			}
+
+			cache::set($apps_cache_token, $groups);
+		}
+
+		return $groups;
+	}
+
 	function admin_get_widgets() {
 
 		$widgets_cache_token = cache::token('backend_widgets', ['administrator', 'language']);

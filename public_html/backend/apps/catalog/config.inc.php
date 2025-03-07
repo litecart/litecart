@@ -2,6 +2,7 @@
 
 	return [
 		'name' => language::translate('title_catalog', 'Catalog'),
+		'group' => 'website',
 		'default' => 'category_tree',
 		'priority' => 0,
 

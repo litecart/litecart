@@ -2,6 +2,7 @@
 
 	$app_config = [
 		'name' => language::translate('title_settings', 'Settings'),
+		'group' => 'system',
 		'default' => 'store_info',
 		'priority' => 0,
 
