@@ -24,7 +24,7 @@
 		database::query(
 			"update ". DB_TABLE_PREFIX ."banners
 			set total_views = total_views + 1
-			where id in ('". implode("', '", array_column($banners, 'id')) ."');"
+			where id in ('". implode("', '", database::input(array_column($banners, 'id'))) ."');"
 		);
 
 		foreach ($banners as $key => $banner) {
@@ -56,26 +56,6 @@
 
 			$banners[$key]['output'] = $output;
 		}
-
-		// Banner Click Tracking
-		document::$javascript['banner-click-tracking'] = implode(PHP_EOL, [
-			'var mouseOverAd = false;',
-			'$(\'.banner[data-id]\').hover(function() {',
-			'  mouseOverAd = $(this).data("id");',
-			'}, function() {',
-			'  mouseOverAd = false;',
-			'});',
-			'',
-			'$(\'.banner[data-id]\').on(\'click\', function() {',
-			'  $.post("'. document::ilink('ajax/bct') .'", "banner_id=" + $(this).data("id"));',
-			'});',
-			'',
-			'$(window).on(\'blur\', function() {',
-			'  if (mouseOverAd){',
-			'    $.post("'. document::ilink('ajax/bct') .'", "banner_id=" + mouseOverAd);',
-			'  }',
-			'});',
-		]);
 
 		if (count($banners) == 1) {
 			return $banners[0]['output'];
@@ -197,7 +177,7 @@
 	function draw_script($src) {
 
 		if (preg_match('#^(app|storage)://#', $src)) {
-			$tag = '<script integrity="sha256-'. base64_encode(hash_file('sha256', $src, true)) .'" src="'. document::href_rlink($src) .'"></script>';
+			$tag = '<script defer integrity="sha256-'. base64_encode(hash_file('sha256', $src, true)) .'" src="'. document::href_rlink($src) .'"></script>';
 		} else {
 			$tag = '<script src="'. document::href_link($src) .'">'. $content .'</script>';
 		}

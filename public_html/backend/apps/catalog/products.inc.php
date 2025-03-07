@@ -234,8 +234,12 @@
 	color: #f00;
 }
 table .thumbnail {
-	width: 24px;
-	height: 24px;
+	display: inline-block;
+	vertical-align: middle;
+	width: 32px;
+	height: 32px;
+	border-radius: 4px;
+	max-width: unset;
 }
 </style>
 
@@ -268,10 +272,10 @@ table .thumbnail {
 					<th></th>
 					<th class="text-center"><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th style="min-width: 52px;"></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_code', 'Code'); ?></th>
-					<th><?php echo language::translate('title_stock_options', 'Stock Options'); ?></th>
+					<th><?php echo language::translate('title_name', 'Name'); ?></th>
+					<th class="main"><?php echo language::translate('title_code', 'Code'); ?></th>
 					<th class="text-end"><?php echo language::translate('title_price', 'Price'); ?></th>
+					<th><?php echo language::translate('title_stock_options', 'Stock Options'); ?></th>
 					<th class="text-end"><?php echo language::translate('title_created', 'Created'); ?></th>
 					<th></th>
 				</tr>
@@ -287,8 +291,8 @@ table .thumbnail {
 					<td><?php echo functions::draw_thumbnail('storage://images/' . ($product['image'] ?: 'no_image.svg'), 64, 64, settings::get('product_image_clipping')); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name'] ?: '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
 					<td><?php echo $product['code']; ?></td>
-					<td class="text-center"><?php echo $product['num_stock_options']; ?></td>
 					<td class="text-center"><?php echo functions::draw_price_tag($product['price'], $product['campaign_price']); ?></td>
+					<td class="text-center"><?php echo $product['num_stock_options']; ?></td>
 					<td class="text-end"><?php echo language::strftime('datetime', $product['date_created']); ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id'], 'redirect_url' => document::link()]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>

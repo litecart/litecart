@@ -195,8 +195,8 @@
 			cache: false,
 			async: true,
 			dataType: 'json',
-			(jqXHR, textStatus, errorThrown) {
-				if (console) console.warn(errorThrown.message)
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.error('Get Address: ' + errorThrown)
 			},
 			success: function(data) {
 				if (data['alert']) {
@@ -240,7 +240,7 @@
 			async: true,
 			dataType: 'json',
 			success: function(data) {
-				$("select[name='zone_code']").html('')
+				$('select[name="zone_code"]').html('')
 				if (data.length) {
 					$('select[name="zone_code"]').prop('disabled', false)
 					$.each(data, function(i, zone) {

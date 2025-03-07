@@ -33,7 +33,7 @@
 
 		// Brands
 
-	$site_navigation->snippets['brands'] = database::query(
+		$site_navigation->snippets['brands'] = database::query(
 			"select id, name from ". DB_TABLE_PREFIX ."brands
 			where status
 			and featured
@@ -50,41 +50,48 @@
 
 		// Pages
 
-	$site_navigation->snippets['pages'] = database::query(
-		"select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
-		left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
-		where status
-		and parent_id = 0
-		and find_in_set('menu', dock)
-		order by p.priority, pi.title;"
-	)->fetch_all(function($page) {
-		return [
-			'type' => 'page',
-			'id' => $page['id'],
-			'title' => $page['title'],
-			'link' => document::ilink('page', ['page_id' => $page['id']]),
-			'priority' => $page['priority'],
-			'subitems' => database::query(
-				"select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
-				left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
-				where status
-				and parent_id = ". (int)$page['id'] ."
-				order by p.priority, pi.title;"
-			)->fetch_all(function($subpage) {
-				return [
-					'type' => 'page',
-					'id' => $subpage['id'],
-					'title' => $subpage['title'],
-					'link' => document::ilink('page', ['page_id' => $subpage['id']]),
-					'priority' => $subpage['priority'],
-				];
-			}),
+		$site_navigation->snippets['pages'] = database::query(
+			"select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
+			left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+			where status
+			and parent_id = 0
+			and find_in_set('menu', dock)
+			order by p.priority, pi.title;"
+		)->fetch_all(function($page) {
+			return [
+				'type' => 'page',
+				'id' => $page['id'],
+				'title' => $page['title'],
+				'link' => document::ilink('page', ['page_id' => $page['id']]),
+				'priority' => $page['priority'],
+				'subitems' => database::query(
+					"select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
+					left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+					where status
+					and parent_id = ". (int)$page['id'] ."
+					order by p.priority, pi.title;"
+				)->fetch_all(function($subpage) {
+					return [
+						'type' => 'page',
+						'id' => $subpage['id'],
+						'title' => $subpage['title'],
+						'link' => document::ilink('page', ['page_id' => $subpage['id']]),
+						'priority' => $subpage['priority'],
+					];
+				}),
+			];
+		});
+
+		// Regional Settings
+
+		$site_navigation->snippets['regional_settings'] = [
+			'title' => 'sv / SE / SEK',
+			'link' => document::ilink('regional_settings'),
 		];
-	});
 
 		// Information
 
-	 $site_navigation->snippets['information'] = database::query(
+		$site_navigation->snippets['information'] = database::query(
 			"select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
 			left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
 			where status
@@ -103,11 +110,6 @@
 		cache::set($site_navigation_cache_token, $site_navigation->snippets);
 	}
 
-	// Regional Settings
-
-	$site_navigation->snippets['regional_settings'] = [
-		'title' => 'sv / SE / SEK',
-		'link' => document::ilink('regional_settings'),
 	];
 
 	// Shopping Cart

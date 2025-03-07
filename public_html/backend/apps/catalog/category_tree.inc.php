@@ -349,9 +349,11 @@
 
 .thumbnail {
 	display: inline-block;
-	width: 24px;
-	height: 24px;
 	vertical-align: middle;
+	width: 32px;
+	height: 32px;
+	border-radius: 4px;
+	max-width: unset;
 }
 
 .icon-folder,

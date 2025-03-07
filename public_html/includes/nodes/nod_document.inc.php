@@ -54,7 +54,7 @@
 			self::$snippets['charset'] = mb_http_output();
 			self::$snippets['home_path'] = WS_DIR_APP;
 
-			switch (route::$selected['endpoint']) {
+			switch (fallback(route::$selected['endpoint'])) {
 
 				case 'backend':
 					self::$snippets['template_path'] = WS_DIR_APP . 'backend/template/';
@@ -114,7 +114,7 @@
 				'settings' => self::$settings,
 			];
 
-			switch (route::$selected['endpoint']) {
+			switch (fallback(route::$selected['endpoint'])) {
 
 				case 'backend':
 					self::$jsenv['template']['url'] = WS_DIR_APP . 'backend/template/';
@@ -154,7 +154,7 @@
 		public static function optimize(&$output) {
 
 			// Extract styling
-			$output = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function($matches) use (&$stylesheets, &$styles, &$javascripts, &$javascript) {
+			$output = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function($matches) use (&$stylesheets, &$style, &$javascripts, &$javascript) {
 
 				// Extract external stylesheets
 				$stylesheets = [];
@@ -164,10 +164,10 @@
 				}, $matches[2]);
 
 				// Extract internal styling
-				$styles = [];
+				$style = [];
 
-				$matches[2] = preg_replace_callback('#<style[^>]*>(.+?)</style>\R*#is', function($match) use (&$styles) {
-					$styles[] = trim($match[1], "\r\n");
+				$matches[2] = preg_replace_callback('#<style[^>]*>(.+?)</style>\R*#is', function($match) use (&$style) {
+					$style[] = trim($match[1], "\r\n");
 				}, $matches[2]);
 
 				return $matches[1] . $matches[2] . $matches[3];
@@ -180,7 +180,7 @@
 				$javascripts = [];
 
 				$matches[2] = preg_replace_callback('#\R?<script([^>]+src="[^"]+"[^>]*)></script>\R*#is', function($match) use (&$javascripts) {
-					$javascripts[] = trim($match[0]);
+					$javascripts[] = '<script ' . trim($match[1]) .'></script>';
 				}, $matches[2]);
 
 				// Extract internal scripts
@@ -200,27 +200,41 @@
 			}
 
 			// Reinsert internal styles
-			if (!empty($styles)) {
+			if (!empty($style)) {
+
+				// Convert to string
+				$style = implode(PHP_EOL . PHP_EOL, $style);
 
 				// Minify internal CSS
-				$search_replace = [
+				foreach([
 					'#/\*(?:.(?!/)|[^\*](?=/)|(?<!\*)/)*\*/#s' => '', // Remove comments
 					'#([a-zA-Z0-9 \#=",-:()\[\]]+\{\s*\}\s*)#' => '', // Remove empty selectors
 					'#\s+#' => ' ', // Replace multiple whitespace
 					'#^\s+#' => ' ', // Replace leading whitespace
-					'#\s*([:;{}])\s*#' => '$1',
-					'#;}#' => '}',
-				];
+					'#\s*([,:;{}])\s*#' => '$1', // Remove whitespace around delimiters
+					'#;}#' => '}', // Remove trailing semicolons before closing brackets
+				] as $search => $replace) {
+					$style = preg_replace($search, $replace, $style);
+				}
 
-				$styles = implode(PHP_EOL, [
-					'<style>',
-					//'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from parser bypassing in 2024?
-					preg_replace(array_keys($search_replace), array_values($search_replace), implode(PHP_EOL . PHP_EOL, $styles)),
+				$style = implode(PHP_EOL, [
+					//'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from parser bypassing?
+					$style,
 					//'/*]]>*/-->',
-					'</style>',
-				]) . PHP_EOL;
+				]);
 
-				$output = preg_replace('#</head>#', addcslashes($styles . '</head>', '\\$'), $output, 1);
+				// Build integrity hash
+				$checksum = hash('sha256', $style, true);
+
+				// Prepare style tag
+				$style = implode(PHP_EOL, [
+					'<style integrity="sha256-'. base64_encode($checksum) .'">',
+					$style,
+					'</style>',
+				]);
+
+				// Insert style tag before </head>
+				$output = preg_replace('#</head>#', addcslashes($style, '\\$') . PHP_EOL . '</head>', $output . PHP_EOL, 1);
 			}
 
 			// Reinsert external javascripts
@@ -231,16 +245,27 @@
 
 			// Reinsert internal javascript
 			if (!empty($javascript)) {
+
+				// Convert to string
 				$javascript = implode(PHP_EOL, [
-					'<script integrity="sha256-'. base64_encode(hash('sha256', implode(PHP_EOL, $javascript), true)) .'">',
-					//'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from parser bypassing in 2024?
-					//'$(document).ready(function() {',
+					//'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from parser bypassing?
+					'+waitFor(\'jQuery\', function($) {',
 					implode(PHP_EOL . PHP_EOL, $javascript),
-					//'});',
+					'})',
 					//'/*]]>*/-->',
+				]);
+
+				// Build integrity hash
+				$checksum = hash('sha256', $javascript, true);
+
+				// Prepare script tag
+				$javascript = implode(PHP_EOL, [
+					'<script integrity="sha256-'. base64_encode($checksum) .'">',
+					$javascript,
 					'</script>',
 				]) . PHP_EOL;
 
+				// Insert javascript before </body>
 				$output = preg_replace('#</body>#is', addcslashes($javascript . '</body>', '\\$'), $output, 1);
 			}
 
@@ -267,7 +292,7 @@
 			stats::start_watch('rendering');
 
 			// Set view
-			switch (route::$selected['endpoint']) {
+			switch (fallback(route::$selected['endpoint'])) {
 
 				case 'backend':
 					$_page = new ent_view('app://backend/template/layouts/'.self::$layout.'.inc.php');
@@ -410,7 +435,7 @@
 
 			foreach ($resources as $resource) {
 				if (preg_match('#^(app|storage)://#', $resource)) {
-					$scripts[] = '<script integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" src="'. self::href_rlink($resource) .'"></script>';
+					$scripts[] = '<script defer integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" src="'. self::href_rlink($resource) .'"></script>';
 				} else {
 					$scripts[] = '<script src="'. self::href_link($resource) .'"></script>';
 				}
@@ -421,13 +446,15 @@
 
 		public static function add_script($lines, $key=null) {
 
-			if (!is_array($lines)) {
-				$lines = [$lines];
+			if (is_array($lines)) {
+				$lines = implode(PHP_EOL, $lines);
 			}
 
-			self::$javascript[$key] = implode(PHP_EOL, array_map(function($line){
-				return '	'.$line;
-			}, $lines));
+			if (!preg_match('#^( |\t)#', $lines)) {
+				$lines = preg_replace('#^#m', "\t", $lines);
+			}
+
+			self::$javascript[$key] = $lines;
 		}
 
 		public static function add_preload($url, $type=null) {

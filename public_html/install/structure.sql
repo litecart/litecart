@@ -891,7 +891,7 @@ CREATE TABLE `lc_site_tags` (
 	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) NOT NULL DEFAULT '0',
 	`position` ENUM('head','body') NOT NULL DEFAULT 'head',
-	`description` VARCHAR(256) NOT NULL DEFAULT '',
+	`name` VARCHAR(128) NOT NULL DEFAULT '',
 	`content` TEXT NOT NULL DEFAULT '',
 	`require_consent` VARCHAR(64) NULL,
 	`priority` TINYINT(4) NOT NULL DEFAULT '0',

@@ -4,27 +4,38 @@
 	mb_internal_encoding('UTF-8');
 	mb_http_output('UTF-8');
 
+	include __DIR__ . '/../includes/compatibility.inc.php';
+
 	if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
-		if (!isset($argv[1]) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
-			echo "\nLiteCart® 3.0.0\n"
-			. "Copyright (c) ". date('Y') ." LiteCart AB\n"
-			. "https://www.litecart.net/\n"
-			. "Usage: php ". basename(__FILE__) ." [options]\n\n"
-			. "Options:\n"
-			. "  --db_server          Set database hostname (Default: localhost)\n"
-			. "  --db_username        Set database username\n"
-			. "  --db_password        Set database user password\n\n"
-			. "  --db_database        Set database name\n"
-			. "  --db_table_prefix    Set database table prefix (Default: lc_).\n"
-			. "  --db_collation       Set database collation (Default: utf8mb4_swedish_ci)\n"
-			. "  --document_root      Set document root\n\n"
-			. "  --timezone           Set timezone e.g. Europe/London\n\n"
-			. "  --admin_folder       Set admin folder name (Default: admin)\n"
-			. "  --username           Set admin username\n"
-			. "  --password           Set admin user password\n\n"
-			. "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n"
-			. "  --cleanup            Delete the install/ directory after finising the installation.\n\n";
+		if (!isset($argv[1]) || (in_array($argv[1], ['help', '-h', '--help', '/?']))) {
+			echo implode(PHP_EOL, [
+				'',
+				'LiteCart® 3.0.0',
+				'Copyright (c) '. date('Y') .' LiteCart AB',
+				'https://www.litecart.net/',
+				'Usage: php '. basename(__FILE__) .' [options]',
+				'',
+				'Options:',
+				'  --db_server          Set database hostname (Default: localhost)',
+				'  --db_username        Set database username',
+				'  --db_password        Set database user password',
+				'',
+				'  --db_database        Set database name',
+				'  --db_table_prefix    Set database table prefix (Default: lc_).',
+				'  --db_collation       Set database collation (Default: utf8mb4_swedish_ci)',
+				'  --document_root      Set document root',
+				'',
+				'  --timezone           Set timezone e.g. Europe/London',
+				'',
+				'  --admin_folder       Set admin folder name (Default: admin)',
+				'  --username           Set admin username',
+				'  --password           Set admin user password',
+				'',
+				'  --development_type   Set development type "standard" or "advanced" (Default: standard)',
+				'  --cleanup            Delete the install/ directory after finishing the installation.',
+				'',
+			]);
 			exit;
 		}
 
@@ -144,7 +155,10 @@
 		if (!isset($_REQUEST['password'])) {
 			$_REQUEST['password'] = '';
 		}
+
+		// Start off with a clean slate
 		ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');
+
 		if (empty($_REQUEST['timezone']) && !empty($_REQUEST['store_time_zone'])) {
 			$_REQUEST['timezone'] = $_REQUEST['store_time_zone']; // Backwards compatible
 
@@ -160,6 +174,7 @@
 		define('DB_USERNAME', $_REQUEST['db_username']);
 		define('DB_PASSWORD', $_REQUEST['db_password']);
 		define('DB_DATABASE', $_REQUEST['db_database']);
+		define('DB_TABLE_PREFIX', $_REQUEST['db_table_prefix']);
 
 		echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
@@ -179,8 +194,10 @@
 
 		if (version_compare(PHP_VERSION, '5.6', '<')) {
 			throw new Exception(PHP_VERSION .' <span class="error">[Error] PHP 5.6+ minimum requirement</span></p>' . PHP_EOL . PHP_EOL);
+
 		} else if (version_compare(PHP_VERSION, '7.2', '<=')) {
 			echo PHP_VERSION .' <span class="warning">[Warning] PHP '. PHP_VERSION .' has reached <a href="https://www.php.net/supported-versions.php" target="_blank">end of life</a>.</span></p>' . PHP_EOL . PHP_EOL;
+
 		} else {
 			echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
@@ -193,6 +210,7 @@
 
 		if ($missing_extensions = array_diff($extensions, get_loaded_extensions())) {
 			echo '<span class="warning">[Warning] Some important PHP extensions are missing ('. implode(', ', $missing_extensions) .'). It is recommended that you enable them in php.ini.</span></p>' . PHP_EOL . PHP_EOL;
+
 		} else {
 			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
@@ -206,8 +224,10 @@
 
 		if ($disabled_functions = array_intersect($critical_functions, preg_split('#\s*,\s*#', ini_get('disable_functions'), -1, PREG_SPLIT_NO_EMPTY))) {
 			throw new Exception('<span class="error">[Error] Critical functions are disabled ('. implode(', ', $disabled_functions) .'). You need to unblock them in php.ini</span></p>' . PHP_EOL . PHP_EOL);
+
 		} else if ($disabled_functions = array_intersect($important_functions, preg_split('#\s*,\s*#', ini_get('disable_functions'), -1, PREG_SPLIT_NO_EMPTY))) {
 			echo '<span class="warning">[Warning] Some common functions are disabled ('. implode(', ', $disabled_functions) .'). It is recommended that you unblock them in php.ini.</span></p>' . PHP_EOL . PHP_EOL;
+
 		} else {
 			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
@@ -218,6 +238,7 @@
 
 		if (in_array(strtolower(ini_get('display_errors')), ['1', 'true', 'on', 'yes'])) {
 			echo ini_get('display_errors') . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
 		} else {
 			echo ini_get('display_errors') . ' <span class="warning">[Warning] Missing permissions to display errors?</span></p>' . PHP_EOL . PHP_EOL;
 		}
@@ -229,6 +250,7 @@
 
 			if (DOCUMENT_ROOT . preg_replace('#/index\.php$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != str_replace('\\', '/', __DIR__)) {
 				echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
 			} else {
 				echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="warning">[Warning]</span> There is a problem with your web server configuration causing $_SERVER["DOCUMENT_ROOT"] and __DIR__ to return conflicting paths. Contact your web host and have them correcting this.</p>' . PHP_EOL  . PHP_EOL;
 			}
@@ -279,8 +301,10 @@
 
 		if (!extension_loaded('mysqli')) {
 			throw new Exception(' <span class="error">[Error]</span> MySQLi is not installed or configured for PHP</p>' . PHP_EOL  . PHP_EOL);
+
 		} else if (!database::connect('default', DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE, 'utf8')) {
 			throw new Exception(' <span class="error">[Error]</span> Unable to connect</p>' . PHP_EOL  . PHP_EOL);
+
 		} else {
 			echo 'Connected! <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
@@ -295,9 +319,11 @@
 
 		if (version_compare($mysql_version, '5.5', '<')) {
 			throw new Exception($mysql_version . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
+
 		} else if (version_compare($mysql_version, '5.7', '<')) {
 			echo $mysql_version .' <span class="ok">[OK]</span><br>'
 				 . '<span class="warning">MySQL 5.7+ recommended</span></span></p>';
+
 		} else {
 			echo $mysql_version . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
@@ -317,15 +343,20 @@
 		}
 
 		if (strtok($charset['DEFAULT_CHARACTER_SET_NAME'], '_') != strtok($_REQUEST['db_collation'], '_')) {
+
 			if (!empty($_REQUEST['set_default_collation'])) {
+
 				database::query(
 					"ALTER DATABASE `". DB_DATABASE ."`
 					CHARACTER SET ". strtok($_REQUEST['db_collation'], '_') ." COLLATE ". $_REQUEST['db_collation'] .";"
 				);
+
 				echo 'Setting '. strtok($_REQUEST['db_collation'], '_') . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
 			} else {
 				echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="warning">[Warning]</span> The database default charset is not \''. strtok($_REQUEST['db_collation'], '_') .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL/MariaDB query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET '. strtok($_REQUEST['db_collation'], '_') .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
 			}
+
 		} else {
 			echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
@@ -333,15 +364,20 @@
 			echo '<p>Checking MySQL/MariaDB database default collation... ';
 
 		if ($charset['DEFAULT_COLLATION_NAME'] != $_REQUEST['db_collation']) {
+
 			if (!empty($_REQUEST['set_default_collation'])) {
+
 				database::query(
 					"ALTER DATABASE `". DB_DATABASE ."`
 					CHARACTER SET ". strtok($_REQUEST['db_collation'], '_') ." COLLATE ". $_REQUEST['db_collation'] .";"
 				);
+
 				echo 'Setting '. $_REQUEST['db_collation'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
 			} else {
 				echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="warning">[Warning]</span> The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET '. strtok($_REQUEST['db_collation'], '_') .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
 			}
+
 		} else {
 			echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
@@ -352,6 +388,7 @@
 
 		if (file_exists(FS_DIR_STORAGE) || mkdir(FS_DIR_STORAGE, 0777)) {
 			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
 		} else {
 			throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
 		}
@@ -360,24 +397,21 @@
 
 		echo '<p>Writing config file... ';
 
-		$config = file_get_contents('config');
-
-		$map = [
+		$config = strtr(file_get_contents('config'), [
 			'{STORAGE_FOLDER}' => 'storage',
 			'{ADMIN_FOLDER}' => BACKEND_ALIAS,
 			'{DB_SERVER}' => DB_SERVER,
 			'{DB_USERNAME}' => DB_USERNAME,
 			'{DB_PASSWORD}' => DB_PASSWORD,
 			'{DB_DATABASE}' => DB_DATABASE,
-			'{DB_TABLE_PREFIX}' => $_REQUEST['db_table_prefix'],
+			'{DB_TABLE_PREFIX}' => DB_TABLE_PREFIX,
 			'{CLIENT_IP}' => $_REQUEST['client_ip'],
 			'{TIMEZONE}' => $_REQUEST['timezone'],
-		];
-
-		$config = strtr($config, $map);
+		]);
 
 		if (file_put_contents(FS_DIR_STORAGE . 'config.inc.php', $config) !== false) {
 			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
 		} else {
 			throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
 		}
@@ -431,8 +465,7 @@
 
 		echo '<p>Writing database table data... ';
 
-		$sql = file_get_contents('data.sql');
-		$sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
+		$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, file_get_contents('data.sql'));
 
 		$map = [
 			'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
@@ -483,7 +516,7 @@
 		### Admin > Database > Administrators ##################################
 
 		database::query(
-			"insert into ". str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], '`lc_administrators`') ."
+			"insert into ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_administrators`') ."
 			(`id`, `status`, `username`, `password_hash`, `known_ips`, `date_updated`, `date_created`)
 			values ('1', '1', '". database::input($_REQUEST['username']) ."', '". database::input(password_hash($_REQUEST['password'], PASSWORD_DEFAULT)) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 		);
@@ -495,7 +528,7 @@
 		if (defined('PLATFORM_VERSION')) {
 
 			database::query(
-				"update ". str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], '`lc_settings`') ."
+				"update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
 				set `value` = '". database::input(PLATFORM_VERSION) ."'
 				where `key` = 'platform_database_version'
 				limit 1;"
@@ -526,7 +559,7 @@
 
 						if (empty($sql)) continue;
 
-						$sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
+						$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
 						foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
 							$query = preg_replace('#^-- .*?\R+#m', '', $query);
@@ -552,7 +585,7 @@
 			$sql = file_get_contents('data/demo/data.sql');
 
 			if (!empty($sql)) {
-				$sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
+				$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
 				foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
 					$query = preg_replace('#^-- .*?\R+#m', '', $query);
@@ -575,45 +608,48 @@
 
 		### Files > Development Type ##################################
 
-		echo '<p>Preparing CSS files...</p>' . PHP_EOL;
+		if (!is_dir(__DIR__.'/../../.git')) {
 
-		perform_action('delete', [
-			FS_DIR_APP . 'backend/template/less/',
-		]);
-
-		if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
-
-			file_put_contents(FS_DIR_APP . 'frontend/templates/default/.development', 'advanced');
+			echo '<p>Preparing CSS files...</p>' . PHP_EOL;
 
 			perform_action('delete', [
-
-				FS_DIR_APP . 'frontend/templates/*/css/app.css',
-				FS_DIR_APP . 'frontend/templates/*/css/checkout.css',
-				FS_DIR_APP . 'frontend/templates/*/css/framework.css',
-				FS_DIR_APP . 'frontend/templates/*/css/printable.css',
-				FS_DIR_APP . 'frontend/templates/*/js/app.js',
+				FS_DIR_APP . 'backend/template/less/',
 			]);
 
-		} else {
+			if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
-			file_put_contents(FS_DIR_APP . 'frontend/templates/default/.development', 'standard');
+				file_put_contents(FS_DIR_APP . 'frontend/templates/default/.development', 'advanced');
 
-			perform_action('delete', [
-				FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
-				FS_DIR_APP . 'frontend/templates/*/css/*.min.css.map',
-				FS_DIR_APP . 'frontend/templates/*/less/',
-			]);
+				perform_action('delete', [
 
-			perform_action('modify', [
+					FS_DIR_APP . 'frontend/templates/*/css/app.css',
+					FS_DIR_APP . 'frontend/templates/*/css/checkout.css',
+					FS_DIR_APP . 'frontend/templates/*/css/framework.css',
+					FS_DIR_APP . 'frontend/templates/*/css/printable.css',
+					FS_DIR_APP . 'frontend/templates/*/js/app.js',
+				]);
 
-				FS_DIR_APP . 'frontend/templates/*/layouts/*.inc.php' => [
-					['search' => 'app.min.css',       'replace' => 'app.css'],
-					['search' => 'checkout.min.css',  'replace' => 'checkout.css'],
-					['search' => 'framework.min.css', 'replace' => 'framework.css'],
-					['search' => 'printable.min.css', 'replace' => 'printable.css'],
-					['search' => 'app.min.js',        'replace' => 'app.js'],
-				],
-			]);
+			} else {
+
+				file_put_contents(FS_DIR_APP . 'frontend/templates/default/.development', 'standard');
+
+				perform_action('delete', [
+					FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
+					FS_DIR_APP . 'frontend/templates/*/css/*.min.css.map',
+					FS_DIR_APP . 'frontend/templates/*/less/',
+				]);
+
+				perform_action('modify', [
+
+					FS_DIR_APP . 'frontend/templates/*/layouts/*.inc.php' => [
+						['search' => 'app.min.css',       'replace' => 'app.css'],
+						['search' => 'checkout.min.css',  'replace' => 'checkout.css'],
+						['search' => 'framework.min.css', 'replace' => 'framework.css'],
+						['search' => 'printable.min.css', 'replace' => 'printable.css'],
+						['search' => 'app.min.js',        'replace' => 'app.js'],
+					],
+				]);
+			}
 		}
 
 		### Scan translations #########################################
@@ -646,7 +682,7 @@
 
 		foreach ($translations as $code => $translation) {
 			database::query(
-				"insert ignore into ". $_REQUEST['db_table_prefix'] ."translations
+				"insert ignore into ". DB_TABLE_PREFIX ."translations
 				(code, text_en, html, date_created)
 				values ('". database::input($code) ."', '". database::input($translation, true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
 			);
@@ -659,7 +695,7 @@
 		echo '<p>Set cache breakpoint...';
 
 		database::query(
-			"update ". str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], '`lc_settings`') ."
+			"update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
 			set value = '". date('Y-m-d H:i:s') ."'
 			where `key` = 'cache_system_breakpoint'
 			limit 1;"

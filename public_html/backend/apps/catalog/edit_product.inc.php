@@ -562,16 +562,16 @@
 
 						<tbody>
 							<?php if (!empty($_POST['attributes'])) foreach (array_keys($_POST['attributes']) as $key) { ?>
-							<tr>
+							<tr draggable="true">
 								<?php echo functions::form_input_hidden('attributes['.$key.'][id]', true); ?>
 								<?php echo functions::form_input_hidden('attributes['.$key.'][group_id]', true); ?>
 								<?php echo functions::form_input_hidden('attributes['.$key.'][group_name]', true); ?>
 								<?php echo functions::form_input_hidden('attributes['.$key.'][value_id]', true); ?>
 								<?php echo functions::form_input_hidden('attributes['.$key.'][value_name]', true); ?>
 								<?php echo functions::form_input_hidden('attributes['.$key.'][custom_value]', true); ?>
-								<td class="grabable"><?php echo $_POST['attributes'][$key]['group_name']; ?></td>
-								<td class="grabable"><?php echo $_POST['attributes'][$key]['value_name']; ?></td>
-								<td class="grabable"><?php echo $_POST['attributes'][$key]['custom_value']; ?></td>
+								<td class="grabbable"><?php echo $_POST['attributes'][$key]['group_name']; ?></td>
+								<td class="grabbable"><?php echo $_POST['attributes'][$key]['value_name']; ?></td>
+								<td class="grabbable"><?php echo $_POST['attributes'][$key]['custom_value']; ?></td>
 								<td class="text-end">
 									<button name="remove" type="button" class="btn btn-default btn-sm" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
 										<?php echo functions::draw_fonticon('remove'); ?>
@@ -649,7 +649,7 @@
 
 							<?php if (in_array($customization['function'], ['select', 'radio', 'checkbox'])) { ?>
 							<div class="table-responsive">
-								<table class="table table-striped table-hover table-dragable data-table">
+								<table class="table data-table">
 									<thead>
 										<tr>
 											<th class="main"><?php echo language::translate('title_option', 'Option'); ?></th>
@@ -661,8 +661,8 @@
 
 									<tbody>
 									<?php foreach ($customization['values'] as $value_id => $value) { ?>
-										<tr data-value-id="<?php echo functions::escape_html($value['value_id']); ?>" data-value-name="<?php echo functions::escape_html($_POST['customizations'][$group_id]['values'][$value_id]['name']); ?>">
-											<td class="grabable"><?php echo functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
+										<tr draggable="true" data-value-id="<?php echo functions::escape_html($value['value_id']); ?>" data-value-name="<?php echo functions::escape_html($_POST['customizations'][$group_id]['values'][$value_id]['name']); ?>">
+											<td class="grabbable"><?php echo functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
 											<td class="text-center"><?php echo functions::form_select('customizations['.$group_id.'][values]['. $value_id .'][price_operator]', ['+','%','*','='], true); ?></td>
 											<?php foreach ($currency_codes as $currency_code) echo '<td>'. functions::form_select_currency($currency_code, 'customizations['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['customizations'][$group_id]['values'][$value_id][$currency_code]) || $_POST['customizations'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
 											<td class="text-end">
@@ -809,7 +809,7 @@
 							<tbody>
 								<?php if (!empty($_POST['stock_options'])) foreach ($_POST['stock_options'] as $key => $stock_option) { ?>
 							<tr data-stock-item-id="<?php echo $stock_option['stock_item_id']; ?>">
-								<td class="grabable">
+								<td class="grabbable">
 									<?php echo functions::form_input_hidden('stock_options['.$key.'][id]', true); ?>
 									<?php echo functions::form_input_hidden('stock_options['.$key.'][stock_item_id]', true); ?>
 									<?php echo functions::form_input_hidden('stock_options['.$key.'][sku]', true); ?>
@@ -821,13 +821,13 @@
 									<?php echo functions::form_input_hidden('stock_options['.$key.'][length_unit]', true); ?>
 									<span class="name"><?php echo $stock_option['name']; ?></span>
 								</td>
-								<td class="grabable">
+								<td class="grabbable">
 									<span class="sku"><?php echo $_POST['stock_options'][$key]['sku']; ?></span>
 								</td>
-								<td class="grabable text-end">
+								<td class="grabbable text-end">
 									<span class="weight"><?php echo (float)$_POST['stock_options'][$key]['weight']; ?></span> <span class="weight_unit"><?php echo $_POST['stock_options'][$key]['weight_unit']; ?></span>
 								</td>
-								<td class="grabable text-end">
+								<td class="grabbable text-end">
 									<span class="length"><?php echo (float)$_POST['stock_options'][$key]['length']; ?></span> x <span class="width"><?php echo (float)$_POST['stock_options'][$key]['width']; ?></span> x <span class="height"><?php echo (float)$_POST['stock_options'][$key]['height']; ?></span> <span class="length_unit"><?php echo $_POST['stock_options'][$key]['length_unit']; ?></span>
 								</td>
 								<td><?php echo functions::form_select('stock_options['.$key.'][price_operator]', ['+', '*', '%', '='], '+'); ?></td>
@@ -864,7 +864,7 @@
 								</td>
 								<td class="text-end">
 									<a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_options'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true"data-max-width="980px"  title="<?php echo language::translate('title_edit', 'Edit'); ?>">
-										<?php echo functions::draw_fonticon('icon-pen'); ?>
+										<?php echo functions::draw_fonticon('edit'); ?>
 										</a>
 									</td>
 								</tr>
@@ -1656,7 +1656,7 @@
 		if (!$('#customizations input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
 
 			var $output = $([
-				'<li data-group-id="'+ escapeHTML($(groupElement).val()) +'" data-group-name="'+ escapeHTML($(groupElement).find('option:selected').text()) +'">',
+				'<li data-group-id="'+ $(groupElement).val().escapeAttr() +'" data-group-name="'+ $(groupElement).find('option:selected').text().escapeAttr() +'">',
 				'  <div class="float-end">',
 				'    <a class="btn btn-default move-group-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
 				'    <a class="btn btn-default move-group-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?></a>',
@@ -1686,13 +1686,13 @@
 				'    </div>',
 				'  </div>',
 				'  <div class="table-responsive">',
-				'    <table id="table-customizations" class="table table-striped table-hover table-dragable data-table">',
+				'    <table id="table-customizations" class="table data-table">',
 				'      <thead>',
-				'        <tr>',
+				'        <tr draggable="true">',
 				'          <th><?php echo functions::escape_js(language::translate('title_option', 'Option')); ?></th>',
 				'          <th style="width: 150px;"><?php echo functions::escape_js(language::translate('title_price_operator', 'Price Operator')); ?></th>',
 				'          <th colspan="<?php echo count(currency::$currencies); ?>"><?php echo functions::escape_js(language::translate('title_price_adjustment', 'Price Adjustment')); ?></th>',
-				'          <th style="width: 85px;">&nbsp;</th>',
+				'          <th style="width: 85px;"></th>',
 				'        </tr>',
 				'      </thead>',
 				'      <tbody>',
@@ -1711,7 +1711,7 @@
 
 		var $output = $([
 			'<tr data-value-id="'+ escapeHTML($(valueElement).val()) +'" data-value-name="'+ escapeHTML(($(valueElement).val() != 0) ? $(valueElement).find('option:selected').text() : $(customValueElement).val()) +'">',
-			'  <td class="grabable"><?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][value_id]', 'new_value_id')) . functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>',
+			'  <td class="grabbable"><?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][value_id]', 'new_value_id')) . functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>',
 			'  <td class="text-center"><?php echo functions::escape_js(functions::form_select('customizations[new_group_id][values][new_customization_value_i][price_operator]', ['+','%','*','='], true)); ?></td>',
 			'  <?php foreach ($currency_codes as $currency_code) echo '<td style="width: 200px;">'. functions::escape_js(functions::form_select_currency($currency_code, 'customizations[new_group_id][values][new_customization_value_i]['. $currency_code. ']', '')) .'</td>'; ?>',
 			'  <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>',
@@ -1850,7 +1850,7 @@
 
 		var $output = $([
 			'<tr data-stock-item-id="'+ stock_item.id +'">',
-			'  <td class="grabable">',
+			'  <td class="grabbable">',
 			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][id]', '')); ?>',
 			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][stock_item_id]', '')); ?>',
 			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][sku]', '')); ?>',
@@ -1901,7 +1901,7 @@
 			'    <a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a>',
 			'  </td>',
 			'  <td class="text-end">',
-			'    <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" data-max-width="980px" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('icon-pen'); ?></a>',
+			'    <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" data-max-width="980px" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>',
 			'  </td>',
 			'</tr>'
 		].join('\n')

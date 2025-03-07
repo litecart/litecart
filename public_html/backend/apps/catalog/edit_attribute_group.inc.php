@@ -121,16 +121,18 @@
 					<th></th>
 				</tr>
 			</thead>
+
 			<tbody>
 				<?php if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) { ?>
-				<tr>
-					<td class="grabable"><?php echo $group_value['id']; ?><?php echo functions::form_input_hidden('values['. $key .'][id]', $group_value['id']); ?></td>
+				<tr draggable="true">
+					<td class="grabbable"><?php echo $group_value['id']; ?><?php echo functions::form_input_hidden('values['. $key .'][id]', $group_value['id']); ?></td>
 					<td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
 					<td class="text-center"><?php echo !empty($group_value['in_use']) ? language::translate('title_yes', 'Yes') : language::translate('title_no', 'No'); ?></td>
 					<td class="text-end"><?php if (empty($group_value['in_use'])) echo '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('icon-times', 'style="color: #c33;"') .'</a>'; ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
+
 			<tfoot>
 				<tr>
 					<td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('icon-plus'); ?></a></td>

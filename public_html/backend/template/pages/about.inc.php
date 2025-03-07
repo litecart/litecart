@@ -45,7 +45,7 @@
 				</div>
 			</div>
 
-			<table class="data-table">
+			<table class="table data-table">
 				<thead>
 					<tr>
 						<th colspan="2">Application</th>
@@ -67,7 +67,7 @@
 				</tbody>
 			</table>
 
-			<table class="data-table">
+			<table class="table data-table">
 				<thead>
 					<tr>
 						<th colspan="2">Machine</th>
@@ -113,7 +113,7 @@
 				</tbody>
 			</table>
 
-			<table class="data-table">
+			<table class="table data-table">
 				<thead>
 					<tr>
 						<th colspan="2">Web Server</th>
@@ -139,7 +139,7 @@
 				</tbody>
 			</table>
 
-			<table class="data-table">
+			<table class="table data-table">
 				<thead>
 					<tr>
 						<th colspan="2">PHP</th>
@@ -169,7 +169,7 @@
 				</tbody>
 			</table>
 
-			<table class="data-table">
+			<table class="table data-table">
 				<thead>
 					<tr>
 						<th colspan="2">Database</th>
@@ -211,7 +211,7 @@
 
 			<?php echo functions::form_begin('errors_form', 'post'); ?>
 
-			<table class="data-table">
+			<table class="table data-table">
 				<thead>
 					<tr>
 						<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>

@@ -881,6 +881,7 @@
 						}
 
 						$product = new ent_product($row['product_id']);
+
 /*
 						// Find stock option
 						if (!empty($row['id']) && $stock_option = database::query(

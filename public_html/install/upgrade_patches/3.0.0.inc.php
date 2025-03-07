@@ -238,7 +238,7 @@
 		FS_DIR_APP . 'includes/templates/default.catalog/less/app/index.html',
 		FS_DIR_APP . 'includes/templates/default.catalog/less/app/listing.less',
 		FS_DIR_APP . 'includes/templates/default.catalog/less/app/product.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/app/theme.less',
+		FS_DIR_APP . 'includes/templates/default.catalog/less/app/variables.less',
 		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/animations.less',
 		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/base.less',
 		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/breadcrumbs.less',

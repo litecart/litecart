@@ -458,8 +458,6 @@
 
 		<div class="card-body">
 
-		 	<h2><?php echo language::translate('title_order_details', 'Order Details'); ?></h2>
-
 			<div class="grid">
 				<div class="col-md-8">
 					<div class="grid">
@@ -518,10 +516,11 @@
 
 						<div class="col-md-8">
 							<div class="form-group">
-								<label><?php echo language::translate('title_hostname', 'Hostname'); ?></label>
-								<div id="hostname" class="form-input">
-									<?php echo $order->data['hostname']; ?>
-
+								<label><?php echo language::translate('title_ip_address', 'IP Address'); ?> (<?php echo language::translate('title_hostname', 'Hostname'); ?>)</label>
+								<div id="hostname" class="input-group">
+									<div class="form-input" style="overflow: hidden; text-overflow: ellipsis;">
+									<?php echo $order->data['ip_address']; ?> <?php echo !empty($order->data['hostname']) ? '('. $order->data['hostname'] .')' : ''; ?>
+									</div>
 									<?php if (!empty($order->data['ip_address'])) { ?>
 									<a class="btn btn-default btn-sm" href="https://ip-api.com/#<?php echo $order->data['ip_address']; ?>" target="_blank" style="margin: -.33em 0;"><?php echo functions::draw_fonticon('icon-square-out'); ?></a>
 									<?php } ?>
@@ -860,7 +859,7 @@
 
 								<div class="col-md-4">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_shipping_purchase_cost', 'Shipping Purchase Cost'); ?></div>
+										<div class="form-label"><?php echo language::translate('title_purchase_cost', 'Purchase Cost'); ?></div>
 										<?php echo functions::form_input_money('shipping_purchase_cost', settings::get('store_currency_code'), true); ?>
 									</label>
 								</div>
@@ -876,7 +875,7 @@
 
 								<div class="col-md-4">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_weight', 'Weight'); ?></div>
+										<div class="form-label"><?php echo language::translate('title_total_weight', 'Total Weight'); ?></div>
 										<div class="form-input"><?php echo weight::format($order->data['weight_total'], $order->data['weight_unit']) ?></div>
 									</label>
 								</div>
@@ -982,7 +981,7 @@
 
 			<tbody>
 				<?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
-				<tr class="item">
+				<tr class="item" draggable="true">
 					<td><?php echo functions::form_checkbox('selected_items[]', $key, true); ?></td>
 					<td>
 						<?php echo !empty($_POST['items'][$key]['product_id']) ? '<a class="link" href="'. document::href_ilink('f:product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
@@ -1011,7 +1010,7 @@
 					<td><?php echo functions::form_input_decimal('items['.$key.'][discount]', true); ?></td>
 					<td class="text-end sum"><?php echo currency::format($_POST['items'][$key]['sum'], false, $_POST['currency_code'], $_POST['currency_value']); ?></td>
 					<td class="text-end sum_tax"><?php echo currency::format($_POST['items'][$key]['sum_tax'], false, $_POST['currency_code'], $_POST['currency_value']); ?></td>
-					<td class="grabable">
+					<td class="grabbable">
 						<?php echo functions::draw_fonticon('icon-arrows-v'); ?>
 					</td>
 					<td>
@@ -1831,7 +1830,7 @@
 			let $output = $([
 				'  <tr class="item">',
 				'    <td></td>',
-				'    <td class="grabable">' + item.name,
+				'    <td class="grabbable">' + item.name,
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][id]', '')); ?>',
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][product_id]', '')); ?>',
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][stock_item_id]', '')); ?>',
@@ -1848,11 +1847,11 @@
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][height]', '')); ?>',
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][length_unit]', '')); ?>',
 				'    </td>',
-				'    <td class="grabable sku">'+ item.sku +'</td>',
-				'    <td class="grabable">',
+				'    <td class="grabbable sku">'+ item.sku +'</td>',
+				'    <td class="grabbable">',
 				'      <span class="weight"></span> <span class="weight_unit"></span>',
 				'    </td>',
-				'    <td class="grabable">',
+				'    <td class="grabbable">',
 				'      <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>',
 				'    </td>',
 				'    <td><?php echo functions::escape_js(functions::form_input_decimal('items[new_item_index][quantity]', '', 2)); ?></td>',

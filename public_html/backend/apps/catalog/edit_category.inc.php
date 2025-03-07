@@ -289,7 +289,7 @@
 
 				<div id="tab-filters" class="tab-pane" style="max-width: 640px;">
 
-					<table class="table table-striped data-table table-dragable">
+					<table class="data-table">
 						<thead>
 							<tr>
 								<th><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></th>
@@ -300,14 +300,14 @@
 
 						<tbody>
 							<?php if (!empty($_POST['filters'])) foreach (array_keys($_POST['filters']) as $key) { ?>
-							<tr>
-								<td class="grabable">
+							<tr draggable="true">
+								<td class="grabbable">
 									<?php echo functions::form_input_hidden('filters['.$key.'][id]', true); ?>
 									<?php echo functions::form_input_hidden('filters['.$key.'][attribute_group_id]', true); ?>
 									<?php echo functions::form_input_hidden('filters['.$key.'][attribute_group_name]', true); ?>
 									<?php echo functions::escape_html($_POST['filters'][$key]['attribute_group_name']); ?>
 								</td>
-								<td class="grabable"><?php echo functions::form_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
+								<td class="grabbable"><?php echo functions::form_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
 								<td class="text-end">
 									<a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
 									<a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
@@ -396,7 +396,7 @@
 		}
 
 		let output = [
-			'<tr class="grabable">',
+			'<tr class="grabbable">',
 			'  <?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][id]', '')); ?>',
 			'  <?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>',
 			'  <?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>',

@@ -49,7 +49,7 @@
 			}
 
 			$this->data['products'] = database::query(
-				"select cp.*, pi.name, pp.`". database::input(settings::get('store_currency_code')) ."` as regular_price
+				"select cp.*, pi.name, JSON_VALUE(pp.price, '$.". database::input(settings::get('store_currency_code')) ."') as regular_price
 				from ". DB_TABLE_PREFIX ."campaigns_products cp
 				left join ". DB_TABLE_PREFIX ."products_prices pp on (pp.product_id = cp.product_id)
 				left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = cp.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')

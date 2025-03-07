@@ -3,7 +3,6 @@
 <head>
 <title>{{title}}</title>
 <meta charset="{{charset}}">
-<meta name="description" content="{{description}}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <?php echo functions::draw_style('app://frontend/templates/'.settings::get('template').'/css/variables.css'); ?>
 <?php echo functions::draw_style('app://assets/litecore/css/framework.min.css'); ?>
@@ -29,9 +28,10 @@
 </a>
 <?php } ?>
 
-<?php include 'app://frontend/templates/'.settings::get('template').'/partials/site_cookie_notice.inc.php'; ?>
+<?php include 'app://frontend/partials/site_privacy_consent.inc.php'; ?>
 
 {{foot_tags}}
+<?php echo functions::draw_script('app://assets/litecore/js/framework.min.js'); ?>
 <?php echo functions::draw_script('app://frontend/templates/'.settings::get('template').'/js/app.min.js'); ?>
 </body>
 </html>
