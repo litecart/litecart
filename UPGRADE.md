@@ -18,6 +18,6 @@
 
   4. Make sure everything went fine and delete the install/ folder.
 
-     If there are complications, try switching to the default template and disable any vQmods.
+     If there are complications, try switching to the default template and disable any vMods.
 
   If you need help, turn to our forums at https://www.litecart.net/forums/.

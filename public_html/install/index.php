@@ -10,7 +10,6 @@
   require(__DIR__.'/includes/functions.inc.php');
 
   ini_set('display_errors', 'On');
-  ini_set('memory_limit', '64M');
 
   $document_root = realpath(dirname(__FILE__) . '/..') .'/';
 
@@ -322,10 +321,10 @@ input[name="development_type"]:checked + div {
   <h3>PHP</h3>
 
   <ul>
-    <li>5.4 - 8.3 <?php echo (version_compare(PHP_VERSION, '5.6', '>=') && version_compare(PHP_VERSION, '8.4', '<'))? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
+    <li>5.6 - 8.3 <?php echo (version_compare(PHP_VERSION, '5.6', '>=') && version_compare(PHP_VERSION, '8.4', '<'))? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
     <li>register_globals = <?php echo ini_get('register_globals') ? ini_get('register_globals') : 'off'; ?> <?php echo in_array(strtolower(ini_get('register_globals')), ['off', 'false', '', '0']) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
     <li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
-    <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
+    <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="warning">[128+ MB recommeded]</span>'; ?></li>
     <li>Extensions
       <ul>
         <li>apc / apcu <?php echo (extension_loaded('apcu') || extension_loaded('apc')) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Missing, optional]</span>'; ?></li>
@@ -352,10 +351,10 @@ input[name="development_type"]:checked + div {
     <li>Modules
       <ul>
         <?php if (function_exists('apache_get_modules')) $installed_apache_modules = apache_get_modules(); ?>
-        <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected]</span>'; ?></li>
-        <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected]</span>'; ?></li>
-        <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected]</span>'; ?></li>
-        <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected]</span>'; ?></li>
+        <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected, Optional]</span>'; ?></li>
+        <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected, Optional]</span>'; ?></li>
+        <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected, Recommended]</span>'; ?></li>
+        <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="warning">[Not Detected, Recommended]</span>'; ?></li>
       </ul>
     </li>
   </ul>
@@ -366,7 +365,7 @@ input[name="development_type"]:checked + div {
     <li>MySQL 5.7+ - 8.0 / MariaDB 10.8+</li>
   </ul>
 
-  <h2>Writables</h2>
+  <h2>Write Permissions</h2>
 
   <ul>
 <?php

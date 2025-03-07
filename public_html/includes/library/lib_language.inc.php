@@ -152,16 +152,16 @@
         }
       }
 
-    // Return language from URL query
+    // Return language from URI query
       if (!empty($_GET['language'])) {
         if (in_array($_GET['language'], $all_languages)) return $_GET['language'];
       }
 
-    // Return language from URL path
+    // Return language from URI path
       $code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_APP))));
       if (in_array($code, $all_languages)) return $code;
 
-    // Return language from
+    // Return language from root path
       foreach ($enabled_languages as $language_code) {
         if (self::$languages[$language_code]['url_type'] == 'none') {
           $webpath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
