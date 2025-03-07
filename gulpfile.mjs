@@ -1,7 +1,7 @@
 import gulp from 'gulp'
 import cleancss from '@sequencemedia/gulp-clean-css'
 import concat from 'gulp-concat'
-import download from 'gulp-download-stream'
+import download from 'gulp-fetch'
 import header from 'gulp-header'
 import less from 'gulp-less'
 import phplint from 'gulp-phplint'
@@ -11,7 +11,6 @@ import * as dartSass from 'sass'
 import gulpSass from 'gulp-sass'
 import sourcemaps from '@sequencemedia/gulp-sourcemaps'
 import uglify from 'gulp-uglify'
-import watch from 'gulp-watch'
 
 import packageData from './package.json' with { type: 'json' }
 
@@ -179,11 +178,12 @@ gulp.task('phplint', function() {
 
 gulp.task('iconly', function() {
 
-  download([{ url: `https://cdn.iconly.io/kits/2W7kP8RGg5Xc/v_2f9c71f/iconly.woff2`, file: 'fonticons.woff2' }])
-    .pipe(gulp.dest('public_html/assets/litecore/fonts/'));
+  download({ url: 'https://dev.iconly.io/public/OoTc8FJRmnEY/iconly.woff2', filename: 'fonticons.woff2' })
+    .pipe(gulp.dest('public_html/assets/litecore/fonts/'))
 
-  return download([{ url: `https://cdn.iconly.io/kits/2W7kP8RGg5Xc/v_2f9c71f/iconly.css`, file: 'fonticons.less' }])
+  return download({ url: 'https://dev.iconly.io/public/OoTc8FJRmnEY/iconly.css', filename: 'fonticons.less' })
     .pipe(replace(/^\/\*\!.*?(?=\n.icon-)/gs, [
+      '',
       '@font-face {',
       '  font-display: auto;',
       '  font-family: "LiteCore";',
@@ -207,9 +207,9 @@ gulp.task('iconly', function() {
       '  -webkit-font-smoothing: antialiased;',
       '}',
       '',
-  ].join('\n')))
-  .pipe(replace(/(\.icon-[^:]+:before)\s*\{\s*([^}]+?)\s*\}\s*/g, '$1 { $2 }\n'))
-  .pipe(gulp.dest('public_html/assets/litecore/less/framework/'))
+    ].join('\n')))
+    .pipe(replace(/(\.icon-[^:]+:before)\s*\{\s*([^}]+?)\s*\}\s*/g, '$1 { $2 }\n'))
+    .pipe(gulp.dest('public_html/assets/litecore/less/framework/'))
 })
 
 // Watch files for changes
