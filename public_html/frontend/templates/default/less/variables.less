@@ -1,6 +1,10 @@
-@import "../../../../assets/litecore/less/framework/media.less";
+/*!
+* LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built without nonsense.
+* @link https://www.litecart.net/
+* @license CC-BY-ND-4.0
+* author T. Almroth
+*/
 
-/* Fonts */
 @font-face {
 	font-family: 'Fira Sans';
 	font-style: normal;
@@ -30,161 +34,236 @@
 
 :root {
 
-	/* General */
-	--border-radius: 10px;
-	--gutter-size: 2rem;
-	--gutter-x: 2rem;
-	--gutter-y: 2rem;
-	--link-text-color: #5292b1;
-	--whitespace-color: #fff;
-	--shadow-color: rgba(0, 0, 0, .15);
+	/* Template/Endpoint Specific */
+
+	--site-background: #f2f2f7;
 
 	--listing-border: 1px solid #d3d3e1;
 
-	--site-background: #f2f2f7;
-	--header-background: #fff;
-
 	--sidebar-width: 320px;
 
-	/* Important Notice */
-	--important-notice-background: #222;
-	--important-notice-text-color: #fff;
+	--important-message-background-color: #222;
+	--important-message-text-color: #fff;
 
-	/* Cookie Notice */
-	--cookie-notice-background: rgba(45, 45, 56, .75);
-	--cookie-notice-text-color: #fff;
+	--cookie-notice-background: rgba(45, 45, 56, 0.75);
 
-	/* Defaults */
-	--default-text-font: 'Fira Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
-	--default-text-color: #444;
-	--default-text-size: 15px;
-	--default-line-height: 1.5;
-	--default-title-color: #333;
-	--default-title-border: 1px solid #f0f0f0;
-	--default-border: 1px solid #ececf1;
-
-	--top-bar-background: #484860;
-	--top-bar-text-color: #fff;
-
-	--navigation-background: #bfbfcb;
-	--navigation-text-color: #000;
-
-	--card-background: #fff;
-	--card-text-color: var(--default-text-color);
-	--card-border: 1px solid transparent;
-	--card-footer-backgorund-color: #f2f3f6;
-
-	--primary-background: #3b4763;
-	--primary-background-hover: #4aaac7;
-	--primary-background-active: #3596b3;
-	--primary-text-color: #fff;
-
-	/* Notices */
-	--default-notice-background: #f0f0f0;
-	--default-notice-text-color: #333;
-
-	--primary-notice-background: #5bc0de;
-	--primary-notice-text-color: #000;
-
-	--success-notice-background: #d6eca6;
-	--success-notice-text-color: #567d00;
-
-	--warning-notice-background: #ffcc66;
-	--warning-notice-text-color: #aa0000;
-
-	--danger-notice-background: #fcc;
-	--danger-notice-text-color: #c44;
-
-	--breadcrumbs-background: #fff;
-	--breadcrumbs-background-hover: #e8e8ed;
-	--breadcrumbs-text-color: #333;
-	--breadcrumbs-border: 1px solid #e7e7e7;
-
-	/* Buttons */
-	--button-default-background: #d3d3e1;
-	--button-default-background-hover: #e5e5ed;
-	--button-default-background-active: #dddde9;
-	--button-default-border: 1px solid #cfcfcf;
-	--button-default-border-hover: #cfcfcf;
-	--button-default-border-active: 1px solid transparent;
-	--button-default-text-color: #444;
-
-	--button-success-background: #91C231;
-	--button-success-background-hover: #90c920;
-	--button-success-background-active: #81b123;
-	--button-success-border: 1px solid #91C231;
-	--button-success-text-color: #fff;
-
-	--button-danger-background: #d9534f;
-	--button-danger-background-hover: #d04a46;
-	--button-danger-background-active: #db5d59;
-	--button-danger-border: 1px solid rgba(0,0,0,0.1);
-	--button-danger-text-color: #fff;
-
-	/* Forms */
-	--input-background: #ececf1;
-	--input-border: 0px solid #ebebee;
-	--input-padding-y: .75em;
-	--input-padding-x: 1.5em;
-	--input-text-color: #444;
-
-	/* Pills */
-	--pills-background: #fff;
-	--pills-background-hover: #ebebee;
-	--pills-background-active: #c7c7cf;
-	--pills-border: var(--default-border);
-	--pills-border-hover: 1px solid #d3d3d3;
-	--pills-border-active: 1px solid #bbbbbb;
-	--pills-text-color: #333;
-	--pills-text-color-active: var(--pills-text-color);
-
-	/* Tabs */
-	--tabs-background: #e5e5ea;
-	--tabs-background-active: #fff;
-	--tabs-text-color: #333;
-	--tabs-text-color-active: var(--tabs-text-color);
-	/* Tables */
-	--table-striped-row-background-odd: #f9f9f9;
-	--table-striped-row-background-even: #fff;
-	--table-row-hover-background: #ececec;
-
-	/* Paginations */
-	--pagination-background: var(--default-background);
-	--pagination-text-color: var(--default-text-color);
-	--pagination-border: var(--default-border);
-	--pagination-active-background: var(--primary-background);
-	--pagination-active-text-color: #fff;
-	--pagination-hover-background: var(--primary-background);
-	--pagination-hover-text-color: #fff;
-
-	/* Footer */
-	//--footer-background: #e6e6ef;
 	--footer-background: transparent;
 	--footer-title-color: #333;
 	--footer-text-color: #333;
 
-	/* Copyright */
-	//--copyright-background: #d2d2df;
 	--copyright-background: transparent;
 	--copyright-text-color: var(--footer-text-color);
-
 	--cookie-notice-background: #334c;
 	--cookie-notice-text-color: #fff;
 
+	/* Framework */
 
-	@media (min-width: @media-breakpoint-sm) {
-		:root {
-			--gutter-size: 1.25rem;
+	--border-radius: 10px;
+	--gutter-x: 1rem;
+	--gutter-y: 2rem;
+
+	--whitespace-color: #fff;
+
+	--default-text-font: 'Fira Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+	--default-text-color: #444;
+	--default-text-size: 15px;
+	--default-line-height: 1.2;
+	--default-title-color: #333;
+	--default-border-color: #ececf1;
+
+	--link-text-color: #5292b1;
+
+	--input-padding-x: 1em;
+	--input-padding-y: .75em;
+	--input-background-color: #f1f2f5;
+	--input-background-color: #ececf1;
+	--input-text-color: #000;
+	--input-border-color: #e5e6e9;
+	--input-border-width: 0;
+	--input-outline-color: #4e4e55;
+	--input-outline-width: 1px;
+	--input-shadow: none;
+
+	--input-addon-background-color: #f3f4f7;
+	--input-checkbox-background--active: #7052c2;
+	--input-toggle-background: #fff;
+
+	--input-code-background: #313b50;
+	--input-code-text-color: #fff;
+
+	--badge-background-color: #c00;
+	--badge-text-color: #fff;
+
+	--banner-shadow: 0 10px 20px rgba(0, 0, 0, .05);
+
+	--breadcrumbs-background-color: #dcdce5;
+	--breadcrumbs-border-color: #e7e7e7;
+	--breadcrumbs-border-width: 1px;
+
+	--breadcrumb-item-background-color: #f1f1f7;
+	--breadcrumb-item-text-color: #444;
+
+	--button-padding-x: 1.5em;
+	--button-padding-y: .75em;
+	--button-border-width: 1px;
+	--button-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+
+	.btn-default {
+		--button-background-color: #d3d3e1;
+		--button-text-color: #444;
+		--button-border-color: #cfcfcf;
+
+		.btn:hover:not(.active, .disabled, [disabled]),
+		.btn:focus:not(.active, .disabled, [disabled]),
+		.btn:active:not(.active, .disabled, [disabled]) {
+			--button-background-color: #e5e5ed;
+			--button-border-color: #cfcfcf;
+		}
+		&.btn.active {
+			--button-background-color: #dddde9;
+			--button-border-color: transparent;
 		}
 	}
-	@media (min-width: @media-breakpoint-md) {
-		:root {
-			--gutter-size: 1.5rem;
+
+	.btn-success {
+		--button-background-color: #91C231;
+		--button-text-color: #fff;
+		--button-border-color: #91C231;
+
+		&:hover:not(.active, .disabled, [disabled]),
+		&:focus:not(.active, .disabled, [disabled]),
+		&:active:not(.active, .disabled, [disabled]) {
+			background: #90c920;
+			border-color: transparent;
+		}
+
+		&.active {
+			--button-background-color: #81b123;
+			--button-border-color: transparent;
 		}
 	}
-	@media (min-width: @media-breakpoint-lg) {
-		:root {
-			--gutter-size: 2rem;
+
+	.btn-danger {
+		--button-background-color: #d9534f;
+		--button-text-color: #fff;
+		--button-border-color: rgba(0, 0, 0, 0.1);
+
+		&:hover:not(.active, .disabled, [disabled]),
+		&:focus:not(.active, .disabled, [disabled]),
+		&:active:not(.active, .disabled, [disabled]) {
+			--button-background-color: #d04a46;
+			border-color: transparent;
 		}
+
+		&.active {
+			background: #db5d59;
+			border-color: transparent;
+		}
+	}
+
+	--card-background-color: #fff;
+	--card-title-text-size: 1.5em;
+	--card-title-text-weight: 500;
+	--card-text-color: var(--default-text-color);
+	--card-border-color: #e7e7e7;
+	--card-border-width: 1px;
+	--card-shadow: 0 .5em 1em rgba(0, 0, 0, .1);
+
+	--card-footer-background-color: #f2f3f6;
+
+	--carousel-shadow: 0 10px 20px rgba(0, 0, 0, .15);
+
+	--dropdown-background-color: #fff;
+	--dropdown-text-color: var(--default-text-color);
+	--dropdown-border-color: transparent;
+	--dropdown-border-width: none;
+	--dropdown-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+
+	--dropdown-menu-item-background-color: #f1f2f5;
+	--dropdown-menu-item-text-color: #f1f2f5;
+	--dropdown-menu-item-background-color--hover: #f1f2f5;
+	--dropdown-menu-item-text-color--hover: #f1f2f5;
+
+	--navbar-background-color: #bfbfcb;
+	--navbar-text-color: #4e4e55;
+
+	--notice-default-background-color: #f0f0f0;
+	--notice-default-text-color: #333;
+
+	--notice-success-background-color: #d6eca6;
+	--notice-success-text-color: #567d00;
+
+	--notice-warning-background-color: #ffcc66;
+	--notice-warning-background-color: #aa0000;
+
+	--notice-danger-background-color: #fcc;
+	--notice-danger-background-color: #c44;
+
+	--pagination-item-background-color: var(--navbar-background-color);
+	--pagination-item-background-color--hover: var(--navbar-background-color--hover);
+	--pagination-item-text-color: var(--navbar-text-color);
+	--pagination-item-border-color: var(--navbar-border-color);
+	--pagination-item-border-width: 1px;
+	--pagination-item-background-color--hover: #c8cbd0;
+
+	--pill-item-background-color: #f2f3f6;
+	--pill-item-text-color: var(--default-text-color);
+	--pill-item-border-color: transparent;
+	--pill-item-border-width: 0;
+
+	--pill-item-background-color--hover: #ebebee;
+	--pill-item-text-color--hover: #d3d3d3;
+	--pill-item-border-color--hover: #d3d3d3;
+
+	--pill-item-background-color--active: #c7c7cf;
+	--pill-item-text-color--active: #d3d3d3;
+	--pill-item-border-color--active: #bbb;
+
+	--tab-bar-background-color: #f6f7f9;
+	--tab-item-background-color: #e5e5ea;
+	--tab-item-shadow: 0 10px 20px rgba(0, 0, 0, .15);
+
+	--tab-item-background-color: #e5e5ea;
+	--tab-item-background-color--hover: rgba(255, 255, 255, 0.75);
+	--tab-item-background-color--active: #fff;;
+	--tab-item-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+
+	--table-border-color: var(--default-border-color);
+	--table-border-width: 1px;
+
+	--table-header-background-color: #fff;
+	--table-header-text-color: var(--default-text-color);
+
+	--table-body-background-color: #fff;
+	--table-body-background-color--even: #fff;
+	--table-body-background-color--hover: #ecedef;
+	--table-body-text-color: var(--default-text-color);
+
+	--table-link-background-color: #e3ebf3;
+	--table-link-text-color: var(--default-text-color);
+	--table-link-background-color--hover: #cfddeb;
+
+	--table-footer-background-color: #fbfcfd;
+	--table-footer-text-color: var(--default-text-color);
+}
+
+@media (min-width: 576px) {
+	:root {
+		--gutter-x: 1.25rem;
+		--gutter-y: 1.25rem;
+	}
+}
+
+@media (min-width: 768px) {
+	:root {
+		--gutter-x: 1.5rem;
+		--gutter-y: 1.5rem;
+	}
+}
+
+@media (min-width: 992px) {
+	:root {
+		--gutter-x: 2rem;
+		--gutter-y: 2rem;
 	}
 }

@@ -5,79 +5,44 @@
  * @author T. Almroth
  */
 
-// Stylesheet Loader
-$.loadStylesheet = function(url, options, callback, fallback) {
++waitFor('jQuery', ($) => {
 
-	options = $.extend(options || {}, {
-		rel: 'stylesheet',
-		href: url,
-		onload: callback,
-		onerror: fallback
-	})
+  // Stylesheet Loader
+  $.loadStylesheet = function(url, options, callback, fallback) {
 
-	$('<link>', options).appendTo('head')
-}
+    options = $.extend(options || {}, {
+      rel: 'stylesheet',
+      href: url,
+      onload: callback,
+      onerror: fallback
+    })
 
-// JavaScript Loader
-$.loadScript = function(url, options) {
+    $('<link>', options).appendTo('head')
+  }
 
-	options = $.extend(options || {}, {
-		method: 'GET',
-		dataType: 'script',
-		cache: true
-	})
+  // JavaScript Loader
+  $.loadScript = function(url, options, callback, fallback) {
 
-	return jQuery.ajax(url, options)
-}
+    options = $.extend(options || {}, {
+      method: 'GET',
+      dataType: 'script',
+      cache: true,
+      onload: callback,
+      onerror: fallback
+    });
 
-// Escape HTML
-function escapeHTML(string) {
+    return jQuery.ajax(url, options);
+  };
 
-	let entityMap = {
-		'&': '&amp;',
-		'<': '&lt;',
-		'>': '&gt;',
-		'"': '&quot;',
-		"'": '&#39;',
-		'/': '&#x2F;',
-		'`': '&#x60;',
-	}
+  // Keep-alive
+  let keepAlive = setInterval(function() {
+    $.get({
+      url: _env.platform.path + 'ajax/cart.json',
+      cache: false
+    })
+  }, 60e3)
 
-	return String(string).replace(/[&<>"'\/]/g, function (s) {
-		return entityMap[s]
-	})
-}
-
-// Escape HTML
-function escapeAttr(string) {
-	return escapeHTML(string).replace(/\r\n?|\n/g, '\\n')
-}
-
-// Money Formatting
-Number.prototype.toMoney = function() {
-	var n = this,
-		c = _env.currency.decimals,
-		d = _env.language.decimal_point,
-		t = _env.language.thousands_separator,
-		p = _env.currency.prefix,
-		x = _env.currency.suffix,
-		u = _env.currency.code,
-		s = n < 0 ? '-' : '',
-		i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
-		f = n - i,
-		j = (j = i.length) > 3 ? j % 3 : 0
-
-	return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x
-}
-
-// Keep-alive
-let keepAlive = setInterval(function() {
-	$.get({
-		url: window._env.platform.path + 'ajax/cart.json',
-		cache: false
-	})
-}, 60e3)
-
+});
 
 /*
  * Bootstrap: carousel.js v3.4.1
@@ -87,7 +52,7 @@ let keepAlive = setInterval(function() {
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
-+function ($) {
++waitFor('jQuery', ($) => {
 	'use strict'
 
 	// CAROUSEL CLASS DEFINITION
@@ -311,14 +276,14 @@ let keepAlive = setInterval(function() {
 		})
 	})
 
-}(jQuery)
+})
 
 /*
  * jQuery Category Picker
  * by LiteCart
  */
 
-+function() {
++waitFor('jQuery', ($) => {
 
 	$.fn.categoryPicker = function(config){
 		this.each(function() {
@@ -476,21 +441,19 @@ let keepAlive = setInterval(function() {
 		})
 	}
 
-}()
-
+})
 
 /*
  * jQuery Context Menu
  * by LiteCart
  */
 
-+function() {
++waitFor('jQuery', ($) => {
 
 	$.fn.contextMenu = function(config){
 		this.each(function() {
 
 			this.config = config
-
 			self = this
 
 			$(this).on('contextmenu').on({
@@ -498,103 +461,155 @@ let keepAlive = setInterval(function() {
 		})
 	}
 
-}()
-
-
-// Dragmove
-
-$('style').first().append([
-	'.dragmove-horizontal {',
-	'  cursor: e-resize;',
-	'  user-select: none;',
-	'}',
-	'.dragmove-vertical {',
-	'  cursor: n-resize;',
-	'  user-select: none;',
-	'}',
-	'.dragmove-vertical.grabbed,',
-	'.dragmove-horizontal.grabbed	{',
-	'  user-input: unset;',
-	'  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);',
-	'}',
-].join('\n'))
-
-$('body').on('click', '.dragmove', function(e) {
-	e.preventDefault()
-	return false
 })
 
-$('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e) {
++waitFor('jQuery', ($) => {
+  "use strict";
 
-	let $item = $(e.target).closest('.dragmove'),
-		sy = e.pageY,
-		drag
+	$('<style>')
+		.prop('type', 'text/css')
+		.html('.grabbed { opacity: 0.5; }')
+		.appendTo('head');
 
-	if ($(e.target).is('.dragmove')) {
-		$item = $(e.target)
-	}
+  $.fn.draggable = function(options) {
 
-	let index = $item.index()
+    // Default settings
+    var settings = $.extend({
+      handle: null,
+      cursor: 'ns-resize',
+      direction: 'vertical' // Default direction
+    }, options);
 
-	$item.addClass('grabbed')
-	$item.closest('tbody').css('user-input', 'unset')
+    return this.each(function() {
+      var $self = $(this),
+          $handle = settings.handle ? $self.find(settings.handle) : $self,
+          dragging = false,
+          startPos = null;
 
-	function move(e) {
+      // Add basic styling
+      $self.css({
+        'position': 'relative',
+        'user-select': 'none'
+      });
 
-		if (!drag && Math.abs(e.pageY - sy) < 10) return
-		drag = true
+      $handle.css({
+        'cursor': settings.cursor
+      });
 
-		$item.siblings().each(function() {
+      // Mouse down handler
+      $handle.on('mousedown', function(e) {
+        e.preventDefault();
+        dragging = true;
+        startPos = {
+          x: e.pageX,
+          y: e.pageY
+        };
+        $self.addClass('grabbed');
+        $self.parent().addClass('dragging');
 
-			let s = $(this), i = s.index(), y = s.offset().top
+        // Store original position
+        $self.data('original-index', $self.index());
+      });
 
-			if (e.pageY >= y && e.pageY < y + s.outerHeight()) {
-				if (i < $item.index()) s.insertAfter($item)
-				else s.insertBefore($item)
-				return false
-			}
-		})
-	}
+      // Mouse move handler
+			$(document).on('mousemove', function(e) {
+        if (!dragging) return;
+        e.preventDefault();
 
-	function up(e) {
+        var $siblings = $self.siblings().not('.grabbed'),
+            selfHeight = $self.outerHeight(),
+            selfWidth = $self.outerWidth(),
+            selfOffset = $self.offset(),
+            selfTopY = selfOffset.top,
+            selfBottomY = selfOffset.top + selfHeight,
+            selfLeftX = selfOffset.left,
+            selfRightX = selfOffset.left + selfWidth,
+            mouseX = e.pageX,
+            mouseY = e.pageY;
 
-		if (drag && index != $item.index()) {
-			drag = false
-		}
+        // Find the sibling to swap with
+        $siblings.each(function() {
+          var $sibling = $(this),
+              siblingOffset = $sibling.offset(),
+              siblingHeight = $sibling.outerHeight(),
+              siblingWidth = $sibling.outerWidth(),
+              siblingTop = siblingOffset.top,
+              siblingBottom = siblingOffset.top + siblingHeight,
+              siblingLeft = siblingOffset.left,
+              siblingRight = siblingOffset.left + siblingWidth;
 
-		$(document).off('mousemove', move).off('mouseup', up)
-		$item.removeClass('grabbed')
-		$item.closest('tbody').css('user-input', '')
-	}
+          if (settings.direction === 'vertical') {
+            // Moving up: use self's top Y position
+            if (mouseY < selfTopY && siblingBottom > selfTopY && siblingTop < selfTopY) {
+              $sibling.before($self);
+            }
+            // Moving down: use self's bottom Y position
+            else if (mouseY > selfBottomY && siblingTop < selfBottomY && siblingBottom > selfBottomY) {
+              $sibling.after($self);
+            }
+          } else if (settings.direction === 'horizontal') {
+            // Moving left: use self's left X position
+            if (mouseX < selfLeftX && siblingRight > selfLeftX && siblingLeft < selfLeftX) {
+              $sibling.before($self);
+            }
+            // Moving right: use self's right X position
+            else if (mouseX > selfRightX && siblingLeft < selfRightX && siblingRight > selfRightX) {
+              $sibling.after($self);
+            }
+          }
+        });
+			});
 
-	$(document).mousemove(move).mouseup(up)
+			// Mouse up handler
+			$(document).on('mouseup', function(e) {
+				if (!dragging) return;
+				dragging = false;
+				$self.removeClass('grabbed');
+        $self.parent().removeClass('dragging');
+			});
+
+      // Prevent text selection while dragging
+      $self.on('dragstart selectstart', function() {
+        return false
+      });
+    });
+  };
+
+  // Initialize draggable elements
+  $('[draggable="true"]').draggable({
+		handle: '.grabbable',
+		cursor: 'ns-resize',
+    direction: 'vertical' // Default direction
+	});
+
 })
-
 
 // Dropdown
++waitFor('jQuery', ($) => {
 
-$('.dropdown [data-toggle="dropdown"]').on('click', function(e) {
-	$(this).closest('.dropdown').toggleClass('open')
+	$('.dropdown [data-toggle="dropdown"]').on('click', function(e) {
+		$(this).closest('.dropdown').toggleClass('open')
+	})
+
+	$('.dropdown').on('click', 'a', function(e) {
+		$(this).closest('.dropdown').removeClass('open')
+	})
+
+	// Listen for clicks outside the dropdown to uncheck the input
+	$(document).on('click', function(e) {
+		if (!$(e.target).closest('.dropdown').length) {
+			$('[data-toggle="dropdown"]').prop('checked', false);
+		}
+	});
+
 })
-
-$('.dropdown').on('click', 'a', function(e) {
-	$(this).closest('.dropdown').removeClass('open')
-})
-
-// Listen for clicks outside the dropdown to uncheck the input
-$(document).on('click', function(e) {
-  if (!$(e.target).closest('.dropdown').length) {
-    $('[data-toggle="dropdown"]').prop('checked', false);
-  }
-});
-
 
 /*!
  * jQuery Plugin developed by Mario Duarte
  * https://github.com/Mario-Duarte/image-zoom-plugin/
  * Simple jQuery plugin that converts an image into a click to zoom image
  */
-+function ($) {
++waitFor('jQuery', ($) => {
 
   $.fn.imageZoom = function (options) {
 
@@ -693,178 +708,181 @@ $(document).on('click', function(e) {
 
     return newElm;
   };
-}(jQuery);
+})
 
 // Form required asterix
-$(':input[required]').closest('.form-group').addClass('required')
++waitFor('jQuery', ($) => {
 
-// Dropdown Select
-$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e) {
+	$(':input[required]').closest('.form-group').addClass('required')
 
-	let $dropdown = $(this).closest('.dropdown')
-	let $input = $dropdown.find(':input:checked')
+	// Dropdown Select
+	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e) {
 
-	if (!$dropdown.find(':input:checked').length) return
+		let $dropdown = $(this).closest('.dropdown')
+		let $input = $dropdown.find(':input:checked')
 
-	$dropdown.find('li.active').removeClass('active')
+		if (!$dropdown.find(':input:checked').length) return
 
-	if ($input.data('title')) {
-		$dropdown.find('.form-select').text( $input.data('title') )
-	} else if ($input.closest('.option').find('.title').length) {
-		$dropdown.find('.form-select').text( $input.closest('.option').find('.title').text() )
-	} else {
-		$dropdown.find('.form-select').text( $input.parent().text() )
-	}
+		$dropdown.find('li.active').removeClass('active')
 
-	$input.closest('li').addClass('active')
-	$dropdown.trigger('click.bs.dropdown')
+		if ($input.data('title')) {
+			$dropdown.find('.form-select').text( $input.data('title') )
+		} else if ($input.closest('.option').find('.title').length) {
+			$dropdown.find('.form-select').text( $input.closest('.option').find('.title').text() )
+		} else {
+			$dropdown.find('.form-select').text( $input.parent().text() )
+		}
 
-}).trigger('input')
+		$input.closest('li').addClass('active')
+		$dropdown.trigger('click.bs.dropdown')
 
-// Input Number Decimals
-$('body').on('change', 'input[type="number"][data-decimals]', function() {
-	var value = parseFloat($(this).val()),
-		decimals = $(this).data('decimals')
-	if (decimals != '') {
-		$(this).val(value.toFixed(decimals))
-	}
-})
+	}).trigger('input')
 
-
-
-// CSV Input
-
-$('textarea[data-toggle="csv"] + table').on('click', '.remove', function(e) {
-	e.preventDefault()
-	var parent = $(this).closest('tbody')
-	$(this).closest('tr').remove()
-	$(parent).trigger('keyup')
-})
-
-$('textarea[data-toggle="csv"] + table .add-row').on('click', function(e) {
-	e.preventDefault()
-	var n = $(this).closest('table').find('thead th:not(:last-child)').length
-	$(this).closest('table').find('tbody').append(
-		'<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class="remove" href="#"><i class="fa fa-times" style="color: #d33;"></i></a></td>' +'</tr>'
-	).trigger('keyup')
-})
-
-$('textarea[data-toggle="csv"] + table .add-column').on('click', function(e) {
-	e.preventDefault()
-	var table = $(this).closest('table')
-	var title = prompt("Column Title")
-	if (!title) return
-	$(table).find('thead tr th:last-child:last-child').before('<th>'+ title +'</th>')
-	$(table).find('tbody tr td:last-child:last-child').before('<td contenteditable></td>')
-	$(table).find('tfoot tr td').attr('colspan', $(this).closest('table').find('tfoot tr td').attr('colspan') + 1)
-	$(this).trigger('keyup')
-})
-
-$('textarea[data-toggle="csv"] + table').on('keyup', function(e) {
-	var csv = $(this).find('thead tr, tbody tr').map(function (i, row) {
-			return $(row).find('th:not(:last-child),td:not(:last-child)').map(function (j, col) {
-				var text = $(col).text()
-				if (/('|,)/.test(text)) {
-					return '"'+ text.replace(/"/g, '""') +'"'
-				} else {
-					return text
-				}
-			}).get().join(',')
-		}).get().join('\r\n')
-	$(this).next('textarea').val(csv)
-})
-
-
-// Form Input Tags
-
-$('input[data-toggle="tags"]').each(function() {
-
-	let $originalInput = $(this)
-
-	let $tagField = $(
-		'<div class="form-input">\
-			<ul class="tokens">\
-				<span class="input" contenteditable></span>\
-			</ul>\
-		</div>'
-	)
-
-	$tagField.tags = []
-
-	$tagField.add = function(input){
-
-		input = input.trim()
-
-		if (!input) return
-
-		$tagField.tags.push(input)
-
-		let $tag = $(
-			'<li class="tag">\
-				<span class="value"></span>\
-				<span class="remove">x</span>\
-			</li>')
-
-		$('.value', $tag).text(input)
-		$('.input', $tagField).before($tag)
-
-		$tagField.trigger('change')
-	}
-
-	$tagField.remove = function(input){
-
-		$tagField.tags = $.grep($tagField.tags, function(value) {
-			return value != input
-		})
-
-		$('.tag .value', $tagField).each(function() {
-			if ($(this).text() == input) {
-				$(this).parent('.tag').remove()
-			}
-		})
-
-		$tagField.trigger('change')
-	}
-
-	let tags = $.grep($originalInput.val().split(/\s*,\s*/), function(value) {
-		return value
-	})
-
-	$.each(tags, function() {
-		$tagField.add(this)
-	})
-
-	$tagField.on('keypress', '.input', function(e) {
-		if (e.which == 44 || e.which == 13) { // Comma or enter
-			e.preventDefault()
-			$tagField.add($(this).text())
-			$(this).text('')
+	// Input Number Decimals
+	$('body').on('change', 'input[type="number"][data-decimals]', function() {
+		var value = parseFloat($(this).val()),
+			decimals = $(this).data('decimals')
+		if (decimals != '') {
+			$(this).val(value.toFixed(decimals))
 		}
 	})
 
-	$tagField.on('blur', '.input', function() {
-		$tagField.add($(this).text())
-		$(this).text('')
-	})
-
-	$tagField.on('click', '.remove', function(e) {
-		$tagField.remove($(this).siblings('.value').text())
-	})
-
-	$tagField.on('change', function() {
-		$originalInput.val($tagField.tags.join(','))
-	})
-
-	$(this).hide().after($tagField)
 })
 
+// CSV Input
++waitFor('jQuery', ($) => {
+
+	$('textarea[data-toggle="csv"] + table').on('click', '.remove', function(e) {
+		e.preventDefault()
+		var parent = $(this).closest('tbody')
+		$(this).closest('tr').remove()
+		$(parent).trigger('keyup')
+	})
+
+	$('textarea[data-toggle="csv"] + table .add-row').on('click', function(e) {
+		e.preventDefault()
+		var n = $(this).closest('table').find('thead th:not(:last-child)').length
+		$(this).closest('table').find('tbody').append(
+			'<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class="remove" href="#"><i class="fa fa-times" style="color: #d33;"></i></a></td>' +'</tr>'
+		).trigger('keyup')
+	})
+
+	$('textarea[data-toggle="csv"] + table .add-column').on('click', function(e) {
+		e.preventDefault()
+		var table = $(this).closest('table')
+		var title = prompt("Column Title")
+		if (!title) return
+		$(table).find('thead tr th:last-child:last-child').before('<th>'+ title +'</th>')
+		$(table).find('tbody tr td:last-child:last-child').before('<td contenteditable></td>')
+		$(table).find('tfoot tr td').attr('colspan', $(this).closest('table').find('tfoot tr td').attr('colspan') + 1)
+		$(this).trigger('keyup')
+	})
+
+	$('textarea[data-toggle="csv"] + table').on('keyup', function(e) {
+		var csv = $(this).find('thead tr, tbody tr').map(function (i, row) {
+				return $(row).find('th:not(:last-child),td:not(:last-child)').map(function (j, col) {
+					var text = $(col).text()
+					if (/('|,)/.test(text)) {
+						return '"'+ text.replace(/"/g, '""') +'"'
+					} else {
+						return text
+					}
+				}).get().join(',')
+			}).get().join('\r\n')
+		$(this).next('textarea').val(csv)
+	})
+
+})
+
+// Form Input Tags
++waitFor('jQuery', ($) => {
+	$('input[data-toggle="tags"]').each(function() {
+
+		let $originalInput = $(this)
+
+		let $tagField = $(
+			'<div class="form-input">\
+				<ul class="tokens">\
+					<span class="input" contenteditable></span>\
+				</ul>\
+			</div>'
+		)
+
+		$tagField.tags = []
+
+		$tagField.add = function(input){
+
+			input = input.trim()
+
+			if (!input) return
+
+			$tagField.tags.push(input)
+
+			let $tag = $(
+				'<li class="tag">\
+					<span class="value"></span>\
+					<span class="remove">x</span>\
+				</li>')
+
+			$('.value', $tag).text(input)
+			$('.input', $tagField).before($tag)
+
+			$tagField.trigger('change')
+		}
+
+		$tagField.remove = function(input){
+
+			$tagField.tags = $.grep($tagField.tags, function(value) {
+				return value != input
+			})
+
+			$('.tag .value', $tagField).each(function() {
+				if ($(this).text() == input) {
+					$(this).parent('.tag').remove()
+				}
+			})
+
+			$tagField.trigger('change')
+		}
+
+		let tags = $.grep($originalInput.val().split(/\s*,\s*/), function(value) {
+			return value
+		})
+
+		$.each(tags, function() {
+			$tagField.add(this)
+		})
+
+		$tagField.on('keypress', '.input', function(e) {
+			if (e.which == 44 || e.which == 13) { // Comma or enter
+				e.preventDefault()
+				$tagField.add($(this).text())
+				$(this).text('')
+			}
+		})
+
+		$tagField.on('blur', '.input', function() {
+			$tagField.add($(this).text())
+			$(this).text('')
+		})
+
+		$tagField.on('click', '.remove', function(e) {
+			$tagField.remove($(this).siblings('.value').text())
+		})
+
+		$tagField.on('change', function() {
+			$originalInput.val($tagField.tags.join(','))
+		})
+
+		$(this).hide().after($tagField)
+	})
+})
 
 /*
  * Momentum Scroll
  * by LiteCart
  */
-
-+function($) {
++waitFor('jQuery', ($) => {
 
 	$.fn.momentumScroll = function() {
 		this.each(function() {
@@ -991,58 +1009,63 @@ $('input[data-toggle="tags"]').each(function() {
 	}
 
 	$('[data-toggle*="momentumScroll"]').momentumScroll()
-
-}(jQuery)
-
+})
 
 // Alerts
++waitFor('jQuery', ($) => {
 
-$('body').on('click', '.alert .close', function(e) {
-	e.preventDefault()
-	$(this).closest('.alert').fadeOut('fast', function() {
-		$(this).remove()
+	$('body').on('click', '.alert .close', function(e) {
+		e.preventDefault()
+		$(this).closest('.alert').fadeOut('fast', function() {
+			$(this).remove()
+		})
 	})
-})
 
+})
 
 // Off-Canvas Sidebar (data-toggle="offcanvas-collapse")
-$('[data-toggle="offcanvas"]').on('click', function() {
-	$(this).closest('.navbar').toggleClass('expanded')
-	$('body').toggleClass('offcanvas-open', $(this).closest('.navbar').hasClass('expanded'))
-	$('body').css('overflow', $(this).closest('.navbar').hasClass('expanded') ? 'hidden' : '')
-})
++waitFor('jQuery', ($) => {
 
-
-// Password Strength
-
-$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function() {
-
-	$(this).siblings('meter').remove()
-
-	if ($(this).val() == '') return
-
-	let numbers = ($(this).val().match(/[0-9]/g) || []).length,
-		lowercases = ($(this).val().match(/[a-z]/g) || []).length,
-		uppercases = ($(this).val().match(/[A-Z]/g) || []).length,
-		symbols =   ($(this).val().match(/[^\w]/g) || []).length,
-
-		score = (numbers * 9) + (lowercases * 11.25) + (uppercases * 11.25) + (symbols * 15)
-					+ (numbers ? 10 : 0) + (lowercases ? 10 : 0) + (uppercases ? 10 : 0) + (symbols ? 10 : 0)
-
-	let meter = $('<meter min="0" low="80" high="120" optimum="150" max="150" value="'+ score +'"></meter>').css({
-		position: 'absolute',
-		bottom: '-1em',
-		width: '100%',
-		height: '1em'
+	$('[data-toggle="offcanvas"]').on('click', function() {
+		$(this).closest('.navbar').toggleClass('expanded')
+		$('body').toggleClass('offcanvas-open', $(this).closest('.navbar').hasClass('expanded'))
+		$('body').css('overflow', $(this).closest('.navbar').hasClass('expanded') ? 'hidden' : '')
 	})
 
-	$(this).after(meter)
+})
+
+// Password Strength
++waitFor('jQuery', ($) => {
+
+	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function() {
+
+		$(this).siblings('meter').remove()
+
+		if ($(this).val() == '') return
+
+		let numbers = ($(this).val().match(/[0-9]/g) || []).length,
+			lowercases = ($(this).val().match(/[a-z]/g) || []).length,
+			uppercases = ($(this).val().match(/[A-Z]/g) || []).length,
+			symbols =   ($(this).val().match(/[^\w]/g) || []).length,
+
+			score = (numbers * 9) + (lowercases * 11.25) + (uppercases * 11.25) + (symbols * 15)
+						+ (numbers ? 10 : 0) + (lowercases ? 10 : 0) + (uppercases ? 10 : 0) + (symbols ? 10 : 0)
+
+		let meter = $('<meter min="0" low="80" high="120" optimum="150" max="150" value="'+ score +'"></meter>').css({
+			position: 'absolute',
+			bottom: '-1em',
+			width: '100%',
+			height: '1em'
+		})
+
+		$(this).after(meter)
+	})
+
 })
 
 
 // jQuery Placeholders by LiteCart
-
-+function($) {
++waitFor('jQuery', ($) => {
 
 	let Placeholders = []
 
@@ -1082,11 +1105,10 @@ $('form').on('input', 'input[type="password"][data-toggle="password-strength"]',
 		})
 	})
 
-}(jQuery)
+})
 
 
 // Number Formatting
-
 Number.prototype.toText = function(decimals = 0) {
 	var n = this,
 		c = decimals,
@@ -1101,14 +1123,13 @@ Number.prototype.toText = function(decimals = 0) {
 }
 
 // Money Formatting
-
 Number.prototype.toMoney = function() {
 	var n = this,
-		c = _env.session.currency.decimals,
-		d = _env.session.language.decimal_point,
-		t = _env.session.language.thousands_separator,
-		p = _env.session.currency.prefix,
-		x = _env.session.currency.suffix,
+		c = _env.currency.decimals,
+		d = _env.language.decimal_point,
+		t = _env.language.thousands_separator,
+		p = _env.currency.prefix,
+		x = _env.currency.suffix,
 		s = n < 0 ? '-' : '',
 		i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
 		f = n - i,
@@ -1117,77 +1138,105 @@ Number.prototype.toMoney = function() {
 	return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x
 }
 
+// Escape HTML
+String.prototype.escapeHTML = function() {
+
+	let entityMap = {
+		'&': '&amp;',
+		'<': '&lt;',
+		'>': '&gt;',
+		'"': '&quot;',
+		"'": '&#39;',
+		'/': '&#x2F;',
+		'`': '&#x60;',
+	}
+
+	return this.replace(/[&<>"'\/]/g, function (s) {
+		return entityMap[s]
+	})
+}
+
+// Escape Attribute
+String.prototype.escapeAttr = function() {
+	return this.escapeHTML().replace(/\r\n?|\n/g, '\\n')
+}
 
 // Scroll Up
++waitFor('jQuery', ($) => {
 
-$(window).scroll(function() {
-	if ($(this).scrollTop() > 300) {
-		$('#scroll-up').fadeIn()
-	} else {
-		$('#scroll-up').fadeOut()
-	}
+	$(window).scroll(function() {
+		if ($(this).scrollTop() > 300) {
+			$('#scroll-up').fadeIn()
+		} else {
+			$('#scroll-up').fadeOut()
+		}
+	})
+
+	$('#scroll-up').on('click', function() {
+		$('html, body').animate({scrollTop: 0}, 1000, 'easeOutBounce')
+		return false
+	})
+
 })
-
-$('#scroll-up').on('click', function() {
-	$('html, body').animate({scrollTop: 0}, 1000, 'easeOutBounce')
-	return false
-})
-
 
 // Data-Table Toggle Checkboxes
-$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
-	$(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
-		$(this).prop('checked', !$(this).prop('checked')).trigger('change')
++waitFor('jQuery', ($) => {
+
+	// Data-Table Toggle Checkboxes
+	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
+		$(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
+			$(this).prop('checked', !$(this).prop('checked')).trigger('change')
+		})
+		return false
 	})
-	return false
-})
 
-$('body').on('click', '.data-table tbody tr', function(e) {
-	if ($(e.target).is('a') || $(e.target).closest('a').length) return
-	if ($(e.target).is('.btn, :input, th, .icon-star, .icon-star-o')) return
-	$(this).find(':checkbox, :radio').first().trigger('click')
-})
+	$('body').on('click', '.data-table tbody tr', function(e) {
+		if ($(e.target).is('a') || $(e.target).closest('a').length) return
+		if ($(e.target).is('.btn, :input, th, .icon-star, .icon-star-o')) return
+		$(this).find(':checkbox, :radio').first().trigger('click')
+	})
 
-// Data-Table Shift Check Multiple Checkboxes
-let lastTickedCheckbox = null
-$('.data-table td:first-child :checkbox').on('click', function(e) {
+	// Data-Table Shift Check Multiple Checkboxes
+	let lastTickedCheckbox = null
+	$('.data-table td:first-child :checkbox').on('click', function(e) {
 
-	let $chkboxes = $('.data-table td:first-child :checkbox')
+		let $chkboxes = $('.data-table td:first-child :checkbox')
 
-	if (!lastTickedCheckbox) {
+		if (!lastTickedCheckbox) {
+			lastTickedCheckbox = this
+			return
+		}
+
+		if (e.shiftKey) {
+			let start = $chkboxes.index(this)
+			let end = $chkboxes.index(lastTickedCheckbox)
+			$chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastTickedCheckbox.checked)
+		}
+
 		lastTickedCheckbox = this
-		return
-	}
-
-	if (e.shiftKey) {
-		let start = $chkboxes.index(this)
-		let end = $chkboxes.index(lastTickedCheckbox)
-		$chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastTickedCheckbox.checked)
-	}
-
-	lastTickedCheckbox = this
-})
-
-// Data-Table Sorting (Page Reload)
-$('.table-sortable thead th[data-sort]').on('click', function() {
-	let params = {}
-
-	window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
-		params[key] = value
 	})
 
-	params.sort = $(this).data('sort')
+	// Data-Table Sorting (Page Reload)
+	$('.table-sortable thead th[data-sort]').on('click', function() {
+		let params = {}
 
-	window.location.search = $.param(params)
+		window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
+			params[key] = value
+		})
+
+		params.sort = $(this).data('sort')
+
+		window.location.search = $.param(params)
+	})
+
 })
-
 
 // Tabs (data-toggle="tab")
 
-+function($) {
++waitFor('jQuery', ($) => {
 	'use strict'
 
-	$.fn.Tabs = function(){
+	$.fn.tabs = function(){
 		this.each(function() {
 
 			const self = this
@@ -1199,11 +1248,11 @@ $('.table-sortable thead th[data-sort]').on('click', function() {
 				$link.on('select', function() {
 					self.$element.find('.active').removeClass('active')
 
-					if ($link.hasClass('nav-link')) {
+					if ($link.hasClass('tab-item')) {
 						$link.addClass('active')
 					}
 
-					$link.closest('.nav-item').addClass('active')
+					$link.closest('.tab-item').addClass('active')
 					$($link.attr('href')).show().siblings().hide()
 				})
 
@@ -1215,45 +1264,49 @@ $('.table-sortable thead th[data-sort]').on('click', function() {
 			})
 
 			const activeTab = this.$element.find('.active')
+
 			if (!activeTab.length) {
 				this.$element.find('[data-toggle="tab"]').first().trigger('select')
 			} else {
 				activeTab.trigger('select')
-	}
+			}
 		})
 	}
 
-	$('.tabs').Tabs()
+	$('.tabs').tabs()
 
 	if (document.location.hash && document.location.hash.match(/^#tab-/)) {
 		$('[data-toggle="tab"][href="' + document.location.hash +'"]').trigger('select')
 	}
 
 	$(document).on('ajaxcomplete', function() {
-		$('.tabs').Tabs()
+		$('.tabs').tabs()
 	})
 
-}(jQuery)
+})
 
 
 // Polyfill for easeOutBounce
++waitFor('jQuery', ($) => {
 
-$.extend($.easing, {
-	easeOutCubic: function (x) {
-		return 1 - Math.pow( 1 - x, 3 )
-	},
-	easeInCubic: function (x) {
-		return Math.pow(x, 3)
-	},
-	easeOutBounce: function (x, t, b, c, d) {
-		if ((t/=d) < (1/2.75)) {
-			return c*(7.5625*t*t) + b
-		} else if (t < (2/2.75)) {
-			return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b
-		} else if (t < (2.5/2.75)) {
-			return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b
-		} else {
-			return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b
-		}
-	},
+	$.extend($.easing, {
+		easeOutCubic: function (x) {
+			return 1 - Math.pow( 1 - x, 3 )
+		},
+		easeInCubic: function (x) {
+			return Math.pow(x, 3)
+		},
+		easeOutBounce: function (x, t, b, c, d) {
+			if ((t/=d) < (1/2.75)) {
+				return c*(7.5625*t*t) + b
+			} else if (t < (2/2.75)) {
+				return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b
+			} else if (t < (2.5/2.75)) {
+				return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b
+			} else {
+				return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b
+			}
+		},
+	})
+
 })

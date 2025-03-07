@@ -100,15 +100,24 @@
 				'<link rel="icon" href="'. self::href_rlink('storage://images/favicons/favicon-256x256.png') .'" type="image/png" sizes="256x256">',
 			]);
 
-			self::$foot_tags['jquery'] = '<script src="'. self::href_rlink('app://assets/jquery/jquery-4.0.0.min.js') .'"></script>';
+			// Wait For It (Minified)
+			self::add_head_tags(implode(PHP_EOL, [
+				'<script>waitFor=(i,o)=>{void 0!==window.i?o(window.i):setTimeout((()=>waitFor(i,o)),50)};</script>',
+			]), 'jQuery');
 
-			// Hreflang
+			// Load jQuery
+			self::load_script('app://assets/jquery/jquery-4.0.0.min.js', 'jquery');
+
+			// Set Hreflang
 			if (route::$selected['endpoint'] == 'frontend') {
+
 				$hreflangs = [];
+
 				foreach (language::$languages as $language) {
 					if ($language['url_type'] == 'none') continue;
 					$hreflangs[] = '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. self::href_ilink(route::$selected['resource'], [], true, ['page', 'sort'], $language['code']) .'">';
 				}
+
 				self::$head_tags['hreflang'] = implode(PHP_EOL, $hreflangs);
 			}
 

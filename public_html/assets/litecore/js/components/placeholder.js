@@ -1,6 +1,5 @@
 // jQuery Placeholders by LiteCart
-
-+function($) {
++waitFor('jQuery', ($) => {
 
 	let Placeholders = []
 
@@ -40,4 +39,4 @@
 		})
 	})
 
-}(jQuery)
+})

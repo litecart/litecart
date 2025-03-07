@@ -1,0 +1,23 @@
+/* Strike-through Divider */
+
+.strikethrough-divider {
+	align-items: center;
+	color: #7e8999;
+	display: flex;
+	font-size: 12px;
+	justify-content: center;
+	margin: 2em 0;
+	width: 100%;
+}
+.strikethrough-divider:before {
+	margin-inline-end: 1em;
+}
+.strikethrough-divider:after {
+	margin-inline-start: 1em;
+}
+.strikethrough-divider:after,
+.strikethrough-divider:before {
+	flex: 1;
+	border-top: 1px solid #d3dce2;
+	content: "";
+}

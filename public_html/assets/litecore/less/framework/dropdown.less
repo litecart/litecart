@@ -3,6 +3,10 @@
 .dropdown {
 	perspective: 400px;
 
+	// Make sure the dropdown is on top of other elements
+	position: relative;
+	z-index: 999;
+
 	[data-toggle="dropdown"] {
 		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
 		background-repeat: no-repeat;
@@ -17,6 +21,11 @@
 	.dropdown-menu {
 		display: flex;
 		flex-direction: column;
+		background: var(--dropdown-background-color);
+		color: var(--dropdown-text-color);
+		border: var(--dropdown-border-width) solid var(--dropdown-border-color);
+		border-radius: var(--border-radius);
+		box-shadow: var(--dropdown-shadow);
 		transform-origin: 0px 0px;
 		transform: rotateX(-25deg);
 		transition: 250ms;
@@ -63,11 +72,8 @@
 .dropdown-menu,
 .dropdown-content {
 	position: fixed;
-	width: max-content;
+	//width: max-content;
 	text-align: start;
-	background: var(--dropdown-menu-background);
-	color: var(--default-text-color);
-	border: var(--default-border);
 	border-radius: var(--border-radius);
 	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 	background-clip: padding-box;
@@ -127,7 +133,13 @@
 }
 
 .dropdown-menu-item {
+	background: var(--dropdown-menu-item-background-color);
+	color: var(--dropdown-menu-item-text-color);
 	padding: .75em 1em;
+	&:is(a, label) {
+		background: var(--dropdown-menu-item-background-color--hover);
+		color: var(--dropdown-menu-item-text-color--hover);
+	}
 }
 
 html[dir="rtl"] {

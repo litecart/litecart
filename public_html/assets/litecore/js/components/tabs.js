@@ -1,6 +1,6 @@
 // Tabs (data-toggle="tab")
 
-+function($) {
++waitFor('jQuery', ($) => {
 	'use strict'
 
 	$.fn.tabs = function(){
@@ -15,11 +15,11 @@
 				$link.on('select', function() {
 					self.$element.find('.active').removeClass('active')
 
-					if ($link.hasClass('nav-link')) {
+					if ($link.hasClass('tab-item')) {
 						$link.addClass('active')
 					}
 
-					$link.closest('.nav-item').addClass('active')
+					$link.closest('.tab-item').addClass('active')
 					$($link.attr('href')).show().siblings().hide()
 				})
 
@@ -50,4 +50,4 @@
 		$('.tabs').tabs()
 	})
 
-}(jQuery)
+})

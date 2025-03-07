@@ -1,35 +1,38 @@
 // Form required asterix
-$(':input[required]').closest('.form-group').addClass('required')
++waitFor('jQuery', ($) => {
 
-// Dropdown Select
-$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e) {
+	$(':input[required]').closest('.form-group').addClass('required')
 
-	let $dropdown = $(this).closest('.dropdown')
-	let $input = $dropdown.find(':input:checked')
+	// Dropdown Select
+	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e) {
 
-	if (!$dropdown.find(':input:checked').length) return
+		let $dropdown = $(this).closest('.dropdown')
+		let $input = $dropdown.find(':input:checked')
 
-	$dropdown.find('li.active').removeClass('active')
+		if (!$dropdown.find(':input:checked').length) return
 
-	if ($input.data('title')) {
-		$dropdown.find('.form-select').text( $input.data('title') )
-	} else if ($input.closest('.option').find('.title').length) {
-		$dropdown.find('.form-select').text( $input.closest('.option').find('.title').text() )
-	} else {
-		$dropdown.find('.form-select').text( $input.parent().text() )
-	}
+		$dropdown.find('li.active').removeClass('active')
 
-	$input.closest('li').addClass('active')
-	$dropdown.trigger('click.bs.dropdown')
+		if ($input.data('title')) {
+			$dropdown.find('.form-select').text( $input.data('title') )
+		} else if ($input.closest('.option').find('.title').length) {
+			$dropdown.find('.form-select').text( $input.closest('.option').find('.title').text() )
+		} else {
+			$dropdown.find('.form-select').text( $input.parent().text() )
+		}
 
-}).trigger('input')
+		$input.closest('li').addClass('active')
+		$dropdown.trigger('click.bs.dropdown')
 
-// Input Number Decimals
-$('body').on('change', 'input[type="number"][data-decimals]', function() {
-	var value = parseFloat($(this).val()),
-		decimals = $(this).data('decimals')
-	if (decimals != '') {
-		$(this).val(value.toFixed(decimals))
-	}
+	}).trigger('input')
+
+	// Input Number Decimals
+	$('body').on('change', 'input[type="number"][data-decimals]', function() {
+		var value = parseFloat($(this).val()),
+			decimals = $(this).data('decimals')
+		if (decimals != '') {
+			$(this).val(value.toFixed(decimals))
+		}
+	})
+
 })
-

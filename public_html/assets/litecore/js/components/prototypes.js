@@ -1,5 +1,4 @@
 // Number Formatting
-
 Number.prototype.toText = function(decimals = 0) {
 	var n = this,
 		c = decimals,
@@ -14,7 +13,6 @@ Number.prototype.toText = function(decimals = 0) {
 }
 
 // Money Formatting
-
 Number.prototype.toMoney = function() {
 	var n = this,
 		c = _env.currency.decimals,
@@ -28,4 +26,27 @@ Number.prototype.toMoney = function() {
 		j = (j = i.length) > 3 ? j % 3 : 0
 
 	return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x
+}
+
+// Escape HTML
+String.prototype.escapeHTML = function() {
+
+	let entityMap = {
+		'&': '&amp;',
+		'<': '&lt;',
+		'>': '&gt;',
+		'"': '&quot;',
+		"'": '&#39;',
+		'/': '&#x2F;',
+		'`': '&#x60;',
+	}
+
+	return this.replace(/[&<>"'\/]/g, function (s) {
+		return entityMap[s]
+	})
+}
+
+// Escape Attribute
+String.prototype.escapeAttr = function() {
+	return this.escapeHTML().replace(/\r\n?|\n/g, '\\n')
 }

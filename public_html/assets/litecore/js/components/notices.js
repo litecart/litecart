@@ -1,8 +1,11 @@
 // Alerts
++waitFor('jQuery', ($) => {
 
-$('body').on('click', '.alert .close', function(e) {
-	e.preventDefault()
-	$(this).closest('.alert').fadeOut('fast', function() {
-		$(this).remove()
+	$('body').on('click', '.alert .close', function(e) {
+		e.preventDefault()
+		$(this).closest('.alert').fadeOut('fast', function() {
+			$(this).remove()
+		})
 	})
+
 })

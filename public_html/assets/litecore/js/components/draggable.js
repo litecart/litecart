@@ -1,68 +1,120 @@
-// Dragmove
++waitFor('jQuery', ($) => {
+  "use strict";
 
-$('style').first().append([
-	'.dragmove-horizontal {',
-	'  cursor: e-resize;',
-	'  user-select: none;',
-	'}',
-	'.dragmove-vertical {',
-	'  cursor: n-resize;',
-	'  user-select: none;',
-	'}',
-	'.dragmove-vertical.grabbed,',
-	'.dragmove-horizontal.grabbed	{',
-	'  user-input: unset;',
-	'  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);',
-	'}',
-].join('\n'))
+	$('<style>')
+		.prop('type', 'text/css')
+		.html('.grabbed { opacity: 0.5; }')
+		.appendTo('head');
 
-$('body').on('click', '.dragmove', function(e) {
-	e.preventDefault()
-	return false
-})
+  $.fn.draggable = function(options) {
 
-$('body').on('mousedown', '.dragmove-vertical, .dragmove-horizontal', function(e) {
+    // Default settings
+    var settings = $.extend({
+      handle: null,
+      cursor: 'ns-resize',
+      direction: 'vertical' // Default direction
+    }, options);
 
-	let $item = $(e.target).closest('.dragmove'),
-		sy = e.pageY,
-		drag
+    return this.each(function() {
+      var $self = $(this),
+          $handle = settings.handle ? $self.find(settings.handle) : $self,
+          dragging = false,
+          startPos = null;
 
-	if ($(e.target).is('.dragmove')) {
-		$item = $(e.target)
-	}
+      // Add basic styling
+      $self.css({
+        'position': 'relative',
+        'user-select': 'none'
+      });
 
-	let index = $item.index()
+      $handle.css({
+        'cursor': settings.cursor
+      });
 
-	$item.addClass('grabbed')
-	$item.closest('tbody').css('user-input', 'unset')
+      // Mouse down handler
+      $handle.on('mousedown', function(e) {
+        e.preventDefault();
+        dragging = true;
+        startPos = {
+          x: e.pageX,
+          y: e.pageY
+        };
+        $self.addClass('grabbed');
+        $self.parent().addClass('dragging');
 
-	function move(e) {
+        // Store original position
+        $self.data('original-index', $self.index());
+      });
 
-		if (!drag && Math.abs(e.pageY - sy) < 10) return
-		drag = true
+      // Mouse move handler
+			$(document).on('mousemove', function(e) {
+        if (!dragging) return;
+        e.preventDefault();
 
-		$item.siblings().each(function() {
+        var $siblings = $self.siblings().not('.grabbed'),
+            selfHeight = $self.outerHeight(),
+            selfWidth = $self.outerWidth(),
+            selfOffset = $self.offset(),
+            selfTopY = selfOffset.top,
+            selfBottomY = selfOffset.top + selfHeight,
+            selfLeftX = selfOffset.left,
+            selfRightX = selfOffset.left + selfWidth,
+            mouseX = e.pageX,
+            mouseY = e.pageY;
 
-			let s = $(this), i = s.index(), y = s.offset().top
+        // Find the sibling to swap with
+        $siblings.each(function() {
+          var $sibling = $(this),
+              siblingOffset = $sibling.offset(),
+              siblingHeight = $sibling.outerHeight(),
+              siblingWidth = $sibling.outerWidth(),
+              siblingTop = siblingOffset.top,
+              siblingBottom = siblingOffset.top + siblingHeight,
+              siblingLeft = siblingOffset.left,
+              siblingRight = siblingOffset.left + siblingWidth;
 
-			if (e.pageY >= y && e.pageY < y + s.outerHeight()) {
-				if (i < $item.index()) s.insertAfter($item)
-				else s.insertBefore($item)
-				return false
-			}
-		})
-	}
+          if (settings.direction === 'vertical') {
+            // Moving up: use self's top Y position
+            if (mouseY < selfTopY && siblingBottom > selfTopY && siblingTop < selfTopY) {
+              $sibling.before($self);
+            }
+            // Moving down: use self's bottom Y position
+            else if (mouseY > selfBottomY && siblingTop < selfBottomY && siblingBottom > selfBottomY) {
+              $sibling.after($self);
+            }
+          } else if (settings.direction === 'horizontal') {
+            // Moving left: use self's left X position
+            if (mouseX < selfLeftX && siblingRight > selfLeftX && siblingLeft < selfLeftX) {
+              $sibling.before($self);
+            }
+            // Moving right: use self's right X position
+            else if (mouseX > selfRightX && siblingLeft < selfRightX && siblingRight > selfRightX) {
+              $sibling.after($self);
+            }
+          }
+        });
+			});
 
-	function up(e) {
+			// Mouse up handler
+			$(document).on('mouseup', function(e) {
+				if (!dragging) return;
+				dragging = false;
+				$self.removeClass('grabbed');
+        $self.parent().removeClass('dragging');
+			});
 
-		if (drag && index != $item.index()) {
-			drag = false
-		}
+      // Prevent text selection while dragging
+      $self.on('dragstart selectstart', function() {
+        return false
+      });
+    });
+  };
 
-		$(document).off('mousemove', move).off('mouseup', up)
-		$item.removeClass('grabbed')
-		$item.closest('tbody').css('user-input', '')
-	}
+  // Initialize draggable elements
+  $('[draggable="true"]').draggable({
+		handle: '.grabbable',
+		cursor: 'ns-resize',
+    direction: 'vertical' // Default direction
+	});
 
-	$(document).mousemove(move).mouseup(up)
 })

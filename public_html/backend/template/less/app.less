@@ -1,6 +1,11 @@
 body {
-	background: var(--page-background);
+	background: var(--site-background);
 }
+
+h1 { font-size: 1.25em; }
+h2 { font-size: 1.20em; }
+h3 { font-size: 1.15em; }
+h4 { font-size: 1.10em; }
 
 #backend-wrapper {
 	display: flex;
@@ -12,11 +17,11 @@ body {
 	flex: 0 0 var(--sidebar-width);
 	background: var(--sidebar-background);
 	box-shadow: 0 1px 1rem rgba(0, 0, 0, .05);
-	padding: var(--gutter-size);
+	padding: var(--gutter-y) var(--gutter-x);
 
 	.logotype {
 		display: block;
-		margin-bottom: var(--gutter-size);
+		margin-bottom: var(--gutter-y);
 		max-height: 40px;
 	}
 
@@ -35,7 +40,7 @@ body {
 	}
 
 	.copyright {
-		margin-bottom: var(--gutter-size);
+		margin-bottom: var(--gutter-y);
 		font-size: .75em;
 		color: var(--copyright-text-color);
 		text-align: center;
@@ -51,11 +56,11 @@ body {
 
 #main {
 	flex: 1 1 auto;
-	margin: var(--gutter-size);
+	margin: var(--gutter-y);
 }
 
 #sidebar-compact:checked {
-	padding: ~"calc(var(--gutter-size)/2)";
+	padding: var(--gutter-y) var(--gutter-x);
 
 	~ #sidebar {
 		flex-basis: auto;
@@ -107,16 +112,17 @@ body {
 	}
 }
 
-#top-bar {
+#toolbar {
 	display: flex;
 	gap: .75em 1em;
 	padding: .75em 1em;
 	list-style: none;
-	background: var(--top-background);
-	color: var(--top-text-color);
 	border-radius: var(--border-radius);
 	margin: 0;
-	margin-bottom: var(--gutter-size);
+	margin-bottom: var(--gutter-y);
+	background: var(--toolbar-background-color);
+	color: var(--toolbar-text-color);
+	border-bottom: var(--toolbar-border-width) solid var(--default-border-color);
 
 	> li {
 		align-self: center;
@@ -129,7 +135,7 @@ body {
 			text-decoration: none;
 			border-radius: var(--border-radius);
 			&:hover {
-				background: var(--default-background-hover);
+				background: var(--navigation-background-hover);
 			}
 		}
 
@@ -143,7 +149,7 @@ body {
 
 	.nav-toggle {
 		padding: 5px 10px;
-		background: var(--default-background);
+		background: var(--navigation-background);
 		border-radius: var(--border-radius);
 		cursor: pointer;
 		&:hover {
@@ -212,6 +218,17 @@ body {
 	margin: 1em -1em;
 	padding: 0;
 	color: var(--sidebar-text-color);
+
+	.group {
+		font-weight: bold;
+		margin: 0;
+		padding: 1em 0;
+		list-style: none;
+		border-bottom: 1px solid var(--default-border-color);
+		padding-top: 1em;
+		padding-bottom: .5em;
+		margin-bottom: .25em;
+	}
 
 	.app {
 		position: relative;
@@ -296,7 +313,6 @@ body {
 	flex: 1 1 auto;
 
 	> h1 {
-		padding: 0 0 ~"calc(var(--gutter-size)/2)" 0;
 		margin-top: 0;
 		border-bottom: 2px solid transparent;
 	}
@@ -330,7 +346,7 @@ body {
 
 html.dark-mode {
 
-	#top-bar > li > a {
+	#toolbar > li > a {
 		color: inherit;
 	}
 
@@ -357,9 +373,9 @@ html.dark-mode {
 
 html.condensed {
 	--sidebar-width: 18rem;
-	--gutter-size: 1.5em;
+	--gutter-x: 1.5em;
 
-	#top-bar {
+	#toolbar {
 		margin: 0;
 		border-radius: 0;
 	}
@@ -411,15 +427,15 @@ html.condensed {
 
 	.card-action {
 		position: absolute;
-		top: var(--gutter-size);
-		inset-inline-end: var(--gutter-size);
+		top:  var(--gutter-y);
+		inset-inline-end: var(--gutter-x);
 		display: flex;
 		gap: .5em;
 	}
 
 	.card-filter {
 		display: flex;
-		gap: var(--gutter-size);
+		gap: var(--gutter-y) var(--gutter-x);
 		> * {
 			&.expandable {
 				flex-grow: 1;

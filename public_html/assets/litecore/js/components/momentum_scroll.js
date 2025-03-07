@@ -2,8 +2,7 @@
  * Momentum Scroll
  * by LiteCart
  */
-
-+function($) {
++waitFor('jQuery', ($) => {
 
 	$.fn.momentumScroll = function() {
 		this.each(function() {
@@ -130,5 +129,4 @@
 	}
 
 	$('[data-toggle*="momentumScroll"]').momentumScroll()
-
-}(jQuery)
+})

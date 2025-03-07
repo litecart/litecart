@@ -1,54 +1,77 @@
 /* Cards */
 
 .card {
-	margin-bottom: var(--gutter-size);
-	background: var(--card-background);
-	border: var(--card-border);
-	border-radius: var(--border-radius);
-	box-shadow: 0 5px 15px rgba(0, 0, 0, .05);
+	position: relative;
+	background: var(--card-background-color);
 	color: var(--card-text-color);
+	border: var(--card-border-width) solid var(--card-border-color);
+	box-shadow: var(--card-shadow);
+	margin-bottom: var(--gutter-y);
+	border-radius: var(--border-radius);
 
 	.card-header,
 	.card-filter,
 	.card-body,
 	.card-footer {
-		padding: 1em 2em;
+		padding: 2em;
+	}
+
+	.card-filter {
+		display: flex;
+		gap: var(--gutter-y) var(--gutter-x);
+	}
+
+	.card-action {
+		position: absolute;
+		top: 2em;
+		right: 2em;
 	}
 
 	> *[class*="card-"]:first-child {
 		padding-top: 2em;
 		padding-bottom: 1em;
+		border-start-start-radius: var(--border-radius);
+		border-start-end-radius: var(--border-radius);
 	}
 	> *[class*="card-"]:last-child {
 		padding-bottom: 2em;
 	}
 	> *[class*="card-footer"]:last-child {
 		padding-top: 2em;
+		border-end-start-radius: var(--border-radius);
+		border-end-end-radius: var(--border-radius);
 	}
 
 	.card-header {
 		.card-title {
-			font-weight: 500;
-			font-size: 1.5rem;
+			font-weight: var(--card-title-text-weight);
+			font-size: var(--card-title-text-size);
 			margin: 0;
 		}
 	}
 
+	.card-filter {
+		--input-background: transparent;
+	}
+
 	.card-footer {
-		background: var(--card-footer-background);
-		border-end-end-radius: var(--border-radius);
-		border-end-start-radius: var(--border-radius);
+		background: var(--card-footer-background-color);
 		box-shadow: inset 0px 10px 15px -15px rgba(0, 0, 0, .25);
 	}
 
-	.data-table {
-		margin: ~"calc(var(--gutter-size) / 2)" 0;
-	}
-
-	.card-footer {
+	.card-header,
+	.card-body{
+		> *:first-child {
+			margin-top: 0;
+		}
 		> *:last-child {
 			margin-bottom: 0;
 		}
+	}
+
+	.card-header,
+	.card-body,
+	.card-footer {
 		&:blank {
 			display: none;
 		}
@@ -68,6 +91,11 @@
 		border-end-end-radius: 0.25rem;
 		border-end-start-radius: 0.25rem;
 	}
+}
+
+[dir="rtl"] .card-action {
+	left: 2em;
+	right: auto;
 }
 
 .featherlight .card {

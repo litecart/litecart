@@ -2,8 +2,7 @@
 
 .carousel {
 	position: relative;
-	box-shadow: 0 10px 20px rgb(0 0 0 / 15%);
-	margin-bottom: var(--gutter-size);
+	margin-bottom: var(--gutter-y);
 	border-radius: var(--border-radius);
 	overflow: hidden;
 
@@ -33,9 +32,6 @@
 		position: relative;
 		display: none;
 		transition: .6s ease-in-out left;
-		img {
-			border-radius: var(--border-radius);
-		}
 	}
 
 	> .active,
@@ -165,7 +161,7 @@
 		width: 20px;
 		height: 20px;
 		font-family: serif;
-		line-height: 1;
+		line-height: 1.2;
 	}
 
 	@media screen and (min-width: @media-breakpoint-sm) {

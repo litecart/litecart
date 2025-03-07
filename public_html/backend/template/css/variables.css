@@ -5,7 +5,6 @@
  * @author T. Almroth
  */
 
-/* Fonts */
 @font-face {
   font-family: 'Inter';
   font-style: normal;
@@ -32,108 +31,188 @@
 }
 /* Variables */
 :root {
-  --border-radius: 8px;
-  --gutter-size: 2rem;
-  --link-text-color: #06b;
-  --whitespace-color: #fff;
+  /* Template/Endpoint Specific */
+  --site-background: #edf0f9;
   --top-background: var(--card-background);
   --top-text-color: var(--card-text-color);
-  --page-background: #edf0f9;
   --sidebar-background: #fff;
   --sidebar-background-hover: #e5e7ef66;
   --sidebar-app-group-background: #edf0f9;
   --sidebar-doc-background-hover: #d2d6e366;
   --sidebar-doc-background-active: var(--app-color);
-  --sidebar-border: var(--default-border);
+  --sidebar-border: var(--default-border-color);
   --sidebar-text-color: inherit;
-  --sidebar-width: 20rem;
+  --sidebar-width: 18rem;
   --app-icon-background: #edf0f9;
   --navigation-background: #3e3e3e;
   --navigation-background-active: #bdbdbd;
   --navigation-text-color: #444;
-  --default-background: #f2f3f6;
-  --default-background-hover: #f2f3f6;
-  --default-border: 1px solid #f2f3f7;
-  --default-line-height: 1.25;
+  --navigation-background: #f2f3f6;
+  --navigation-background-hover: #f2f3f6;
+  --toolbar-background-color: #fff;
+  --toolbar-text-color: var(--top-text-color);
+  --toolbar-border-color: var(--default-border-color);
+  --toolbar-border-width: 1px;
+  --copyright-text-color: #444;
+  /* Framework */
+  --border-radius: 10px;
+  --gutter-x: 2rem;
+  --gutter-y: 2rem;
+  --whitespace-color: #fff;
   --default-text-font: Inter, Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #444;
   --default-text-size: 14px;
-  --breadcrumbs-background: #e1e4ef;
-  --breadcrumbs-text-color: #3c3c3c;
-  --breadcrumbs-border: 1px solid transparent;
-  --card-background: #fff;
-  --card-text-color: #444;
-  --card-border: 1px solid transparent;
-  --card-footer-background: #e2e5ed;
-  --pills-background: #f3f3f3;
-  --pills-background-active: #cfd3e1;
-  --pills-background-hover: #f1f3f7;
-  --pills-text-color: var(--default-text-color);
-  --tab-nav-background: #f6f7f9;
-  --tab-nav-background-hover: transparent;
-  --tab-nav-background-active: #fff;
-  --tab-nav-text-color: var(--default-text-color);
-  --tab-border: 1px solid transparent;
-  --tab-content-background: #fff;
-  --tab-content-text-color: var(--default-text-color);
-  --table-header-background: #fff;
-  --table-body-background: #fff;
-  --table-row-background-odd: #f9fafb;
-  --table-row-background-even: #fff;
-  --table-row-background-hover: #ecedef;
-  --table-link-background: #e3ebf3;
-  --table-link-background-hover: #cfddeb;
-  --table-footer-background: #fbfcfd;
-  --table-border: 1px solid #e6e8f0;
-  --pagination-background: #fff;
-  --pagination-background-hover: #c8cbd0;
-  --pagination-background-active: #e6e8ec;
-  --pagination-border: var(--default-border);
-  --pagination-border-hover: var(--default-border);
-  --pagination-border-active: var(--default-border);
-  --pagination-text-color: var(--default-text-color);
-  --pagination-text-color-hover: var(--default-text-color);
-  --pagination-text-color-active: var(--default-text-color);
-  --button-default-background: #f1f2f5;
-  --button-default-background-hover: #e3e4e9;
-  --button-default-background-active: #eaebef;
-  --button-default-border: 1px solid transparent;
-  --button-default-text-color: #333;
-  --button-danger-background: #d9534f;
-  --button-danger-background-hover: #d04a46;
-  --button-danger-background-active: #db5d59;
-  --button-danger-border: 1px solid rgba(0, 0, 0, 0.1);
-  --button-danger-text-color: #fff;
-  --button-success-background: #87b92b;
-  --button-success-background-hover: #7faf26;
-  --button-success-background-active: #87b92b;
-  --button-success-border: 1px solid rgba(0, 0, 0, 0.1);
-  --button-success-text-color: #fff;
-  --input-background: #f1f2f5;
-  --input-border: 1px solid #e8ebf1;
-  --input-addon-background: #f3f4f7;
-  --input-code-background: #313b50;
-  --input-code-text-color: #fff;
-  --input-checkbox-background-active: #7052c2;
-  --input-toggle-background: #fff;
-  --input-text-color: #000;
-  --input-border: 1px solid #e5e6e9;
-  --input-border-focus: 1px solid #e7e9f0;
+  --default-line-height: 1.2;
+  --default-title-color: #333;
+  --default-border-color: #f2f3f7;
+  --link-text-color: #06b;
   --input-padding-x: 1.5em;
   --input-padding-y: 0.75em;
-  --dropdown-menu-background: #fff;
-  --notice-default-background: #e5e5e5;
+  --input-background-color: #f6f7fb;
+  --input-text-color: #000;
+  --input-border-color: #e5e6e9;
+  --input-border-width: 1px;
+  --input-outline-color: #333;
+  --input-outline-color--hover: #ccc;
+  --input-outline-width: 1px;
+  --input-shadow: none;
+  --input-addon-background-color: #f3f4f7;
+  --input-checkbox-background--active: #7152e5;
+  --input-toggle-background-color: #fff;
+  --input-toggle-background-color--hover: #fff;
+  --input-code-background: #313b50;
+  --input-code-text-color: #fff;
+  --badge-background-color: #c00;
+  --badge-text-color: #fff;
+  --banner-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  --breadcrumbs-background-color: #e1e4ef;
+  --breadcrumbs-border-color: #e7e7e7;
+  --breadcrumbs-border-width: 1px;
+  --breadcrumb-item-background-color: #3c3c3c;
+  --breadcrumb-item-text-color: #3c3c3c;
+  --button-padding-x: 1.5em;
+  --button-padding-y: 0.75em;
+  --button-background-color: #ecedf1;
+  --button-text-color: #444;
+  --button-border-color: transparent;
+  --button-border-width: 1px;
+  --card-background-color: #fff;
+  --card-text-color: #444;
+  --card-title-text-size: 1.15rem;
+  --card-title-text-weight: 700;
+  --card-border-color: transparent;
+  --card-border-width: 0;
+  --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  --card-footer-background-color: #f4f6fb;
+  --carousel-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  --dropdown-background-color: #fff;
+  --dropdown-text-color: var(--default-text-color);
+  --dropdown-border-color: #e5e6e9;
+  --dropdown-border-width: 1px;
+  --dropdown-shadow: none;
+  --dropdown-menu-item-background-color: #f1f2f5;
+  --dropdown-menu-item-text-color: #444;
+  --dropdown-menu-item-background-color--hover: #f1f2f5;
+  --dropdown-menu-item-text-color--hover: #444;
+  --notice-default-background-color: #e5e5e5;
   --notice-default-text-color: #000;
-  --notice-primary-background: #3ba5c6;
-  --notice-primary-text-color: #fff;
-  --notice-success-background: #98cc34;
+  --notice-default-border-color: #000;
+  --notice-border-width: 0px;
+  --notice-success-background-color: #98cc34;
   --notice-success-text-color: #fff;
-  --notice-warning-background: #ffcc66;
+  --notice-success-border-color: #fff;
+  --notice-warning-background-color: #ffcc66;
   --notice-warning-text-color: #aa0000;
-  --notice-danger-background: #d9534f;
+  --notice-warning-border-color: #aa0000;
+  --notice-danger-background-color: #d9534f;
   --notice-danger-text-color: #fff;
-  --copyright-text-color: #444;
+  --notice-danger-border-color: #fff;
+  --pagination-item-background-color: #fff;
+  --pagination-item-text-color: var(--navbar-text-color);
+  --pagination-item-border-color: var(--default-border-color);
+  --pagination-item-border-width: 1px;
+  --pagination-item-background-color--hover: #c8cbd0;
+  --pill-item-background-color: #f2f3f6;
+  --pill-item-text-color: var(--default-text-color);
+  --pill-item-border-color: transparent;
+  --pill-item-border-width: 0;
+  --pill-item-background-color--hover: #ebebee;
+  --pill-item-text-color--hover: #d3d3d3;
+  --pill-item-border-color--hover: #d3d3d3;
+  --pill-item-background-color--active: #c7c7cf;
+  --pill-item-text-color--active: #d3d3d3;
+  --pill-item-border-color--active: #bbb;
+  --tab-bar-background-color: transparent;
+  --tab-bar-border-color: #e5e5e9;
+  --tab-bar-border-width: 1px;
+  --tab-item-background-color: #e5e5ea;
+  --tab-item-background-color--hover: #d9d9df;
+  --tab-item-background-color--active: #fdfdfd;
+  --tab-item-text-color: #444;
+  --tab-item-text-color--hover: #444;
+  --tab-item-text-color--active: #444;
+  --tab-item-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  --table-border-color: var(--default-border-color);
+  --table-border-width: 1px;
+  --table-header-background-color: #fff;
+  --table-header-text-color: var(--default-text-color);
+  --table-body-background-color: #fff;
+  --table-body-background-color--even: #fff;
+  --table-body-background-color--hover: #f0f3f9;
+  --table-body-text-color: var(--default-text-color);
+  --table-link-background-color: #e3ebf3;
+  --table-link-text-color: var(--default-text-color);
+  --table-link-background-color--hover: #cfddeb;
+  --table-footer-background-color: #fbfcfd;
+  --table-footer-text-color: var(--default-text-color);
 }
+:root .btn:hover:not(.active, .disabled, [disabled]),
+:root .btn:focus:not(.active, .disabled, [disabled]),
+:root .btn:active:not(.active, .disabled, [disabled]) {
+  --button-background-color: #e3e4e9;
+  --button-border-color: #cfcfcf;
+}
+:root .btn.active {
+  --button-background--color: #dddde9;
+  --button-border-color: transparent;
+}
+:root .btn-primary {
+  --button-background-color: #3ba5c6;
+  --button-text-color: #fff;
+  --button-border-color: rgba(0, 0, 0, 0.1);
+}
+:root .btn-primary:hover:not(.active, .disabled, [disabled]),
+:root .btn-primary:focus:not(.active, .disabled, [disabled]),
+:root .btn-primary:active:not(.active, .disabled, [disabled]) {
+  --button-background-color: #2f8fae;
+}
+:root .btn-success {
+  --button-background-color: #87b92b;
+  --button-text-color: #fff;
+  --button-border-color: rgba(0, 0, 0, 0.1);
+}
+:root .btn-success:hover:not(.active, .disabled, [disabled]),
+:root .btn-success:focus:not(.active, .disabled, [disabled]),
+:root .btn-success:active:not(.active, .disabled, [disabled]) {
+  --button-background-color: #7faf26;
+}
+:root .btn-danger {
+  --button-background-color: #d9534f;
+  --button-text-color: #fff;
+  --button-border-color: rgba(0, 0, 0, 0.1);
+}
+:root .btn-danger:hover:not(.active, .disabled, [disabled]),
+:root .btn-danger:focus:not(.active, .disabled, [disabled]),
+:root .btn-danger:active:not(.active, .disabled, [disabled]) {
+  --button-background-color: #d04a46;
+}
+:root .btn-danger.active {
+  --button-background-color: #db5d59;
+}
+:root .card-filter {
+  --input-background: transparent;
+}
+/******************** Dark Mode ********************/
 html.dark-mode {
   --top-background: #283144;
   --top-text-color: var(--card-text-color);
@@ -145,54 +224,15 @@ html.dark-mode {
   --sidebar-doc-background-active: #1a2133;
   --sidebar-border: 1px solid #1d2431;
   --sidebar-text-color: #acb6c2;
-  --app-icon-background: #1a2133;
+  --navigation-background: #1a2133;
   --default-background: #283042;
   --default-border: 1px solid #1c243a;
   --default-title-color: #acb6c2;
   --default-text-color: #acb6c2;
   --default-input-color: #fff;
-  --card-background: #283144;
-  --card-footer-background: #212836;
-  --card-text-color: #acb6c2;
-  --card-border: 1px solid #253046;
-  --pills-background: #333c4e;
-  --tab-nav-background: #1c243a;
-  --tab-nav-text-color: #acb6c2;
-  --tab-border: 1px solid #434e67;
-  --tab-content-background: #283144;
-  --table-header-background: #283144;
-  --table-body-background: #283144;
-  --table-row-background-odd: #2d374c;
-  --table-row-background-even: #283246;
-  --table-row-background-hover: #3c4861;
-  --table-link-background: #1a2133;
-  --table-link-background-hover: #333b4e;
-  --table-footer-background: #252e42;
-  --table-border: 1px solid #1c243a;
-  --pagination-background: var(--default-background);
-  --pagination-background-hover: var(--default-background);
-  --pagination-background-active: #35415a;
-  --pagination-border: var(--default-border);
-  --pagination-border-hover: var(--default-border);
-  --pagination-border-active: var(--default-border);
-  --pagination-text-color: var(--default-text-color);
-  --pagination-text-color-active: var(--default-text-color);
-  --pagination-text-color-hover: #fff;
-  --button-default-background: #354362;
-  --button-default-background-hover: #535f7a;
-  --button-default-background-active: #1a2133;
-  --button-default-border: 1px solid #434e67;
-  --button-default-text-color: #acb6c2;
-  --button-danger-background: #e15954;
-  --button-danger-background-hover: #bd3d38;
-  --button-danger-background-active: #a93e3a;
-  --button-danger-border: 1px solid rgba(0, 0, 0, 0.1);
-  --button-danger-text-color: #fff;
-  --button-success-background: #608516;
-  --button-success-background-hover: #709f12;
-  --button-success-background-active: #608516;
-  --button-success-border: 1px solid rgba(0, 0, 0, 0.1);
-  --button-success-text-color: #fff;
+  --copyright-text-color: #acb6c2;
+  --link-text-color: #acb6c7;
+  --whitespace-color: #1a2133;
   --input-background: #1a2133;
   --input-border: 1px solid #31384a;
   --input-border-focus: 1px solid #555e74;
@@ -200,9 +240,92 @@ html.dark-mode {
   --input-toggle-background: #354362;
   --input-text-color: #acb6c2;
   --input-checkbox-background-active: #495abd;
-  --breadcrumbs-background: #283144;
-  --breadcrumbs-text-color: var(--default-text-color);
-  --copyright-text-color: #acb6c2;
-  --link-text-color: #acb6c7;
-  --whitespace-color: #1a2133;
+}
+html.dark-mode .breadcrumb {
+  background: #283144;
+}
+html.dark-mode .card {
+  background: #283144;
+  color: #acb6c2;
+  border: 1px solid #253046;
+}
+html.dark-mode .card .card-footer {
+  background: #212836;
+}
+html.dark-mode .pill {
+  background: #333c4e;
+}
+html.dark-mode .tabs {
+  background: #1c243a;
+}
+html.dark-mode .tabs .tab {
+  border-color: #434e67;
+  color: #acb6c2;
+}
+html.dark-mode .data-table thead tr {
+  background: #283144;
+}
+html.dark-mode .data-table tbody tr:odd {
+  background: #2d374c;
+}
+html.dark-mode .data-table tbody tr:even {
+  background: #283246;
+}
+html.dark-mode .data-table tbody tr:hover {
+  background: #3c4861;
+}
+html.dark-mode .data-table tfoot tr {
+  background: #252e42;
+}
+html.dark-mode .data-table .link {
+  background: #1a2133;
+}
+html.dark-mode .data-table .link:hover {
+  background: #333b4e;
+}
+html.dark-mode .pagination {
+  background: #1a2133;
+}
+html.dark-mode .pagination .pagination-item {
+  background: #1a2133;
+}
+html.dark-mode .pagination .pagination-item:hover:not(.disabled, .active),
+html.dark-mode .pagination .pagination-item:focus:not(.disabled, .active),
+html.dark-mode .pagination .pagination-item:active:not(.disabled, .active) {
+  background: #35415a;
+  color: #fff;
+}
+html.dark-mode .btn-default {
+  background: #1a2133;
+  color: #acb6c2;
+  border-color: #1c243a;
+}
+html.dark-mode .btn-default:hover:not(.active, .disabled, [disabled]),
+html.dark-mode .btn-default:focus:not(.active, .disabled, [disabled]),
+html.dark-mode .btn-default:active:not(.active, .disabled, [disabled]) {
+  background: #354362;
+  border-color: #434e67;
+}
+html.dark-mode .btn-success {
+  background: #608516;
+  color: #fff;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+html.dark-mode .btn-success:hover:not(.active, .disabled, [disabled]),
+html.dark-mode .btn-success:focus:not(.active, .disabled, [disabled]),
+html.dark-mode .btn-success:active:not(.active, .disabled, [disabled]) {
+  background: #709f12;
+}
+html.dark-mode .btn-danger {
+  background: #e15954;
+  color: #fff;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+html.dark-mode .btn-danger:hover:not(.active, .disabled, [disabled]),
+html.dark-mode .btn-danger:focus:not(.active, .disabled, [disabled]),
+html.dark-mode .btn-danger:active:not(.active, .disabled, [disabled]) {
+  background: #bd3d38;
+}
+html.dark-mode .btn-danger.active {
+  background: #a93e3a;
 }

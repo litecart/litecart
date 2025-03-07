@@ -6,7 +6,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
-+function ($) {
++waitFor('jQuery', ($) => {
 	'use strict'
 
 	// CAROUSEL CLASS DEFINITION
@@ -230,4 +230,4 @@
 		})
 	})
 
-}(jQuery)
+})
