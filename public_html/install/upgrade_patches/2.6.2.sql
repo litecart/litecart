@@ -5,3 +5,12 @@ ADD INDEX `custom_value` (`custom_value`);
 -- -----
 ALTER TABLE `lc_emails`
 ADD COLUMN `error` VARCHAR(256) NULL DEFAULT NULL AFTER `multiparts`;
+-- -----
+DELETE FROM `lc_products_attributes`
+WHERE product_id NOT IN (SELECT id from `lc_products`)
+OR group_id NOT IN (SELECT id from `lc_attribute_groups`)
+OR (
+	value_id IS NOT NULL
+	AND value_id != 0
+	AND value_id NOT IN (SELECT id from `lc_attribute_values`)
+);
