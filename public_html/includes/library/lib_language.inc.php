@@ -143,6 +143,20 @@
         if (!empty(user::$data['id']) || $language['status'] == 1) $enabled_languages[] = $language['code'];
       }
 
+      // Return language for backend
+      if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'])) {
+
+        // Return language by query parameter
+        if (!empty($_GET['language'])) {
+          if (in_array($_GET['language'], $all_languages)) return $_GET['language'];
+        }
+
+        // Return language by session
+        if (!empty(self::$selected['code']) && in_array(self::$selected['code'], $all_languages)) {
+          return self::$selected['code'];
+        }
+      }
+
     // Return language by regional domain
       foreach ($enabled_languages as $language_code) {
         if (self::$languages[$language_code]['url_type'] == 'domain') {
