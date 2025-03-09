@@ -1,0 +1,161 @@
+body.litebox-open {
+	overflow: hidden;
+	padding-inline-end: 15px;
+}
+
+.litebox {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	overflow-y: auto;
+
+	text-align: center;
+	white-space: nowrap;
+
+	z-index: 999;
+
+	animation: litebox-fadein 100ms linear;
+	backdrop-filter: blur(3px) grayscale(1);
+	z-index: 999;
+
+	* {
+		box-sizing: border-box;
+	}
+
+	/* support for nested liteboxes. Does not work in IE8 (use JS to fix) */
+	&.active {
+		background: rgba(0, 0, 0, 0.5);
+	}
+
+	&:before {
+		/* position: trick to center content vertically */
+		content: '';
+		display: inline-block;
+		height: 100%;
+		vertical-align: middle;
+	}
+
+	.litebox-modal {
+		position: relative;
+
+		/* position: centering vertical and horizontal */
+		text-align: start;
+		vertical-align: middle;
+		display: inline-block;
+
+		margin: var(--gutter-y) var(--gutter-x);
+
+		border-radius: var(--border-radius);
+
+		/* reset white-space wrapping */
+		white-space: normal;
+
+		animation: litebox-fadein 250ms linear;
+
+		&:not(.litebox-seamless) {
+			padding: var(--gutter-y) var(--gutter-x);
+			background: #fff;
+			box-shadow: 0 5px 2em rgba(0,0,0,0.25);
+		}
+
+		&.litebox-seamless > * {
+			margin: 0 !important;
+		}
+	}
+
+	.litebox-close {
+		position: absolute;
+		top: 1em;
+		inset-inline-end: 1em;
+		z-index: 9999;
+
+		width: 2em;
+		line-height: 2em;
+
+		font-weight: bold;
+
+		cursor: pointer;
+		text-align: center;
+		font-family: Arial, sans-serif;
+
+		background: var(--whitespace-color);
+		border-radius: 50%;
+	}
+
+	.litebox-previous, .litebox-next {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		background: rgba(0, 0, 0, 0.5);
+		color: white;
+		padding: 10px;
+		cursor: pointer;
+		z-index: 1000; /* Ensures buttons are above the content */
+	}
+
+	.litebox-previous {
+		left: 10px;
+	}
+
+	.litebox-next {
+		right: 10px;
+	}
+
+	.litebox-modal > img {
+		max-width: 100%;
+		max-height: ~"calc(100vh - 80px)";
+	}
+
+	.litebox-modal > iframe {
+		width: 100%;
+		height: 100%;
+		border: none;
+	}
+}
+
+.litebox-loading {
+	.litebox-loader {
+		border: 2em solid #f3f3f3;
+		border-top: 2em solid #c00;
+		border-radius: 50%;
+		width: 128px;
+		height: 128px;
+		animation: litebox-spin 2s linear infinite;
+		opacity: 0.25;
+	}
+	.litebox-modal {
+		background: none;
+		box-shadow: none;
+	}
+}
+
+/* Stacked modals */
+.litebox {
+	perspective: 2048px;
+
+	.litebox-modal {
+		transition: transform 250ms linear, filter 250ms linear;
+		transform: -400px;
+		transform: scale(0.8) rotateY(45deg) translateZ(-400px);
+		transform-style: preserve-3d;
+		filter: blur(2px);
+	}
+
+	&.active .litebox-modal {
+		transform: none !important;
+		filter: none !important;
+	}
+}
+
+@keyframes litebox-fadein {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+
+@keyframes litebox-spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
