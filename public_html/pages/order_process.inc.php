@@ -102,7 +102,13 @@
                 exit;
 
               case 'GET':
-                header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : document::ilink('order_process')));
+                if (!empty($gateway['action'])) {
+                  $redirect_url = document::link($gateway['action'], !empty($gateway['fields']) ? $gateway['fields'] : []);
+                } else {
+                  $redirect_url = document::ilink('order_process', !empty($gateway['fields']) ? $gateway['fields'] : []);
+                }
+
+                header('Location: '. $redirect_url);
                 exit;
 
               default:
