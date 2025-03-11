@@ -117,6 +117,21 @@
 
     try {
 
+      // Validate present from_version
+      if (empty($_REQUEST['from_version']) && !defined('PLATFORM_DATABASE_VERSION')) {
+        throw new Exception('Upgrade failed: Could not detect current platform version.');
+      }
+
+      // Validate selected from_version
+      if (empty($_REQUEST['from_version']) && !in_array(PLATFORM_DATABASE_VERSION, $supported_versions)) {
+        throw new Exception('Upgrade failed: Unsupported platform version to upgrade from.');
+      }
+
+      // Validate optional redirect_url
+      if (!empty($_REQUEST['redirect']) && !filter_var($_REQUEST['redirect'], FILTER_VALIDATE_URL)) {
+        throw new Exception('Upgrade failed: Invalid redirect URL.');
+      }
+
       echo '<h1>Upgrade '. PLATFORM_VERSION .'</h1>' . PHP_EOL . PHP_EOL;
 
       ### PHP > Check Version #######################################
@@ -151,7 +166,7 @@
         echo PLATFORM_DATABASE_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else if (!empty($_REQUEST['from_version'])) {
         define('PLATFORM_DATABASE_VERSION', $_REQUEST['from_version']);
-        echo $_REQUEST['from_version'] . ' (User Defined) <span class="warning">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+        echo htmlspecialchars($_REQUEST['from_version']) . ' (User Defined) <span class="warning">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
         throw new Exception(' <span class="error">[Undetected]</span></p>' . PHP_EOL . PHP_EOL);
       }
