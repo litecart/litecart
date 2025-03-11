@@ -49,7 +49,7 @@
           $page->data['parent_id'] = $_POST['page_id'];
           $page->save();
         }
-        notices::add('success', sprintf(language::translate('success_moved_d_pages', 'Moved %d pages'), count($_POST['pages'])));
+        notices::add('success', strtr(language::translate('success_moved_d_pages', 'Moved %d pages'), ['%d' => count($_POST['pages'])]));
       }
 
       header('Location: '. document::link(WS_DIR_ADMIN, ['page_id' => $_POST['page_id']], true));
@@ -70,7 +70,7 @@
         $page->delete();
       }
 
-      notices::add('success', sprintf(language::translate('success_deleted_d_pages', 'Deleted %d pages'), count($_POST['pages'])));
+      notices::add('success', strtr(language::translate('success_deleted_d_pages', 'Deleted %d pages'), ['%d' => count($_POST['pages'])]));
       header('Location: '. document::link());
       exit;
 
