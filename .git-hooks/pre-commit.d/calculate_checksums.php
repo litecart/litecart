@@ -23,6 +23,8 @@
     }
   }
 
+  echo 'Updating checksums...' . PHP_EOL;
+
 // If there are no committed files, go through all tracked files
   if (empty($committed_files)) {
     echo 'No committed files detected. Going through all tracked files in repository...' . PHP_EOL;
@@ -33,11 +35,12 @@
   foreach ($committed_files as $file) {
     $short_file = preg_replace('#^public_html/#', '', $file);
     if (isset($checksums[$short_file])) {
-      echo 'Updating checksum for '. $file . PHP_EOL;
       $tmp_file = tempnam(sys_get_temp_dir(), '_blob');
       shell_exec('git cat-file blob :'. $file .' > '. $tmp_file);
       $blob = file_get_contents($tmp_file);
-      $checksums[$short_file] = md5(preg_replace('#(\r\n?|\n)#', "\n", $blob));
+      $checksum = md5(preg_replace('#(\r\n?|\n)#', "\n", $blob));
+      echo $checksum .'  '. $file . PHP_EOL;
+      $checksums[$short_file] = $checksum;
       unlink($tmp_file);
     }
   }
