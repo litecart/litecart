@@ -577,9 +577,9 @@ faab49ec26407cd72a7a6984fa943ad7	install/htaccess
 88c129a1bab3911671153318af96e38c	install/includes/functions.inc.php
 a37bf7b37ad3919a13f46de67748afed	install/includes/header.inc.php
 81ba79e4c73a6f49bf76365e5a906bb5	install/index.php
-3ae15dd47399853650ab8c3663329fb5	install/install.php
+80f908874be45eab363793bac09be614	install/install.php
 f1e329cfc37b9745bb7f6a25d36e0592	install/structure.sql
-5b2e5ef34e27984b503fa217bf910d2c	install/upgrade.php
+ff2b5d6cfbe443dbadc956d8068e224e	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
 e40d16965a907467b8a8249a35927faf	install/upgrade_patches/1.0.1.4.inc.php
 9560e70752a13b7a22ec65231e1b61e0	install/upgrade_patches/1.0.1.5.inc.php

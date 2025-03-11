@@ -1,6 +1,6 @@
 <?php
 
-  include_once __DIR__ . '/includes/compatibility.inc.php';
+  include_once __DIR__ . '/../includes/compatibility.inc.php';
 
   if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
