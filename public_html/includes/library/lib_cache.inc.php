@@ -14,7 +14,6 @@
       self::$_data = &session::$data['cache'];
 
       if (settings::get('cache_clear')) {
-        self::clear_cache();
 
         database::query(
           "update ". DB_TABLE_PREFIX ."settings
@@ -23,12 +22,21 @@
           limit 1;"
         );
 
+        self::clear_cache();
+
         if (user::check_login()) {
           notices::add('success', 'Cache cleared');
         }
       }
 
       if (settings::get('cache_clear_thumbnails')) {
+
+        database::query(
+          "update ". DB_TABLE_PREFIX ."settings
+          set value = '0'
+          where `key` = 'cache_clear_thumbnails'
+          limit 1;"
+        );
 
         clearstatcache();
 
@@ -41,13 +49,6 @@
         foreach (glob(FS_DIR_STORAGE .'cache/*.{avif,jpg,png,webp}', GLOB_BRACE) as $file) {
           unlink($file);
         }
-
-        database::query(
-          "update ". DB_TABLE_PREFIX ."settings
-          set value = '0'
-          where `key` = 'cache_clear_thumbnails'
-          limit 1;"
-        );
 
         self::clear_cache('settings');
 
@@ -376,7 +377,10 @@
 
     public static function clear_cache($keyword=null) {
 
-    // Clear vQmod
+    // Clear file cache (as unlink() is sometimes not up to date)
+      clearstatcache(true);
+
+    // Clear vMod cach
       if (empty($keyword)) {
         foreach (glob(FS_DIR_STORAGE . 'vmods/.cache/*.php') as $file) {
           if (is_file($file)) unlink($file);

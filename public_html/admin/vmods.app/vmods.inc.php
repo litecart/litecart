@@ -10,12 +10,14 @@
 
       foreach ($_POST['vmods'] as $vmod) {
 
+        $filename = pathinfo($vmod, PATHINFO_FILENAME); // Remove extension
+
         if (!empty($_POST['enable'])) {
-          if (!is_file(FS_DIR_STORAGE . 'vmods/' . basename($vmod) .'.disabled')) continue;
-          rename(FS_DIR_STORAGE . 'vmods/' . basename($vmod) .'.disabled', FS_DIR_STORAGE . 'vmods/' . basename($vmod) .'.xml');
+          if (!is_file(FS_DIR_STORAGE . 'vmods/' . $filename .'.disabled')) continue;
+          rename(FS_DIR_STORAGE . 'vmods/' . $filename .'.disabled', FS_DIR_STORAGE . 'vmods/' . $filename .'.xml');
         } else {
-          if (!is_file(FS_DIR_STORAGE . 'vmods/' . basename($vmod) .'.xml')) continue;
-          rename(FS_DIR_STORAGE . 'vmods/' . basename($vmod) .'.xml', FS_DIR_STORAGE . 'vmods/' . basename($vmod) .'.disabled');
+          if (!is_file(FS_DIR_STORAGE . 'vmods/' . $filename .'.xml')) continue;
+          rename(FS_DIR_STORAGE . 'vmods/' . $filename .'.xml', FS_DIR_STORAGE . 'vmods/' . $filename .'.disabled');
         }
       }
 
@@ -209,7 +211,7 @@
           <th><?php echo language::translate('title_filename', 'Filename'); ?></th>
           <th><?php echo language::translate('title_author', 'Author'); ?></th>
           <th><?php echo language::translate('title_type', 'Type'); ?></th>
-          <th><?php echo language::translate('title_health', 'Health'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_health', 'Health'); ?></th>
           <th></th>
           <th></th>
         </tr>

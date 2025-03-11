@@ -608,6 +608,7 @@
             <div class="bubble <?php echo $type; ?>">
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][id]', true); ?>
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][author_id]', true); ?>
+              <?php echo functions::form_draw_hidden_field('comments['. $key .'][author_username]', true); ?>
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][order_id]', true); ?>
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][author]', true); ?>
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][text]', true); ?>

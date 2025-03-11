@@ -12,9 +12,16 @@
     $_GET['sort'] = 'relevance';
   }
 
+  // Halt on invalid characters
+  if (!in_array(language::$selected['code'], ['ja', 'zh', 'ko']) && preg_match('#[^\p{L}\p{N}\p{Zs}\p{P}\p{S}\p{M}]#u', $_GET['query'])) {
+    http_response_code(400);
+    include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+    return;
+  }
+
   $_GET['query'] = trim($_GET['query']);
 
-  document::$snippets['title'][] = !empty($_GET['query']) ? sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])) : language::translate('title_search_results', 'Search Results');
+  document::$snippets['title'][] = !empty($_GET['query']) ? strtr(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), ['%s' => functions::escape_html($_GET['query'])]) : language::translate('title_search_results', 'Search Results');
 
   breadcrumbs::add(language::translate('title_search_results', 'Search Results'), document::ilink('search'));
   breadcrumbs::add(!empty($_GET['query']) ? strip_tags($_GET['query']) : language::translate('title_all_products', 'All Products'));
@@ -23,7 +30,7 @@
 
   $_page = new ent_view();
   $_page->snippets = [
-    'title' => !empty($_GET['query']) ? sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])) : language::translate('text_displaying_all_products', 'Displaying all products'),
+    'title' => !empty($_GET['query']) ? strtr(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), ['%s' => functions::escape_html($_GET['query'])]) : language::translate('text_displaying_all_products', 'Displaying all products'),
     'products' => [],
     'sort_alternatives' => [
       'relevance' => language::translate('title_relevance', 'Relevance'),

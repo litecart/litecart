@@ -1,6 +1,6 @@
 <?php
   define('PLATFORM_NAME', 'LiteCart');
-  define('PLATFORM_VERSION', '2.6.1');
+  define('PLATFORM_VERSION', '2.6.2');
   define('SCRIPT_TIMESTAMP_START', microtime(true));
 
 // Start redirecting output to the output buffer

@@ -1,9 +1,11 @@
 <?php
 
+  include_once __DIR__ . '/../includes/compatibility.inc.php';
+
   if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
     if (!isset($argv[1]) || $argv[1] == 'help' || $argv[1] == '-h' || $argv[1] == '--help' || $argv[1] == '/?') {
-      echo "\nLiteCart® 2.6.1\n"
+      echo "\nLiteCart® 2.6.2\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -135,6 +137,41 @@
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No time zone provided</p>' . PHP_EOL  . PHP_EOL);
     }
 
+    // Check if db_server is a valid IP address, hostname, or socket
+    if (!filter_var($_REQUEST['db_server'], FILTER_VALIDATE_IP) && !filter_var($_REQUEST['db_server'], FILTER_VALIDATE_DOMAIN) && !filter_var($_REQUEST['db_server'], FILTER_VALIDATE_URL)) {
+      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Invalid MySQL/MariaDB server provided</p>' . PHP_EOL  . PHP_EOL);
+    }
+
+    // Check if admin folder is a valid folder name
+    if (preg_match('#[^0-9a-z_]#i', $_REQUEST['admin_folder'])) {
+      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Invalid admin folder name provided</p>' . PHP_EOL  . PHP_EOL);
+    }
+
+    // Check if database name is a valid database name
+    if (preg_match('#[^0-9a-z_\.]#i', $_REQUEST['db_database'])) {
+      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Invalid MySQL/MariaDB database name provided</p>' . PHP_EOL  . PHP_EOL);
+    }
+
+    // Check if db_collation is a valid collation
+    if (preg_match('#[^0-9a-z_]#i', $_REQUEST['db_collation'])) {
+      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Invalid MySQL/MariaDB collation provided</p>' . PHP_EOL  . PHP_EOL);
+    }
+
+    // Check if db_table_prefix is a valid table prefix, only alphanumeric characters and underscores are allowed
+    if (preg_match('#[^0-9a-z_]#i', $_REQUEST['db_table_prefix'])) {
+      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Invalid MySQL/MariaDB table prefix provided</p>' . PHP_EOL  . PHP_EOL);
+    }
+
+    // Check if username is a valid username
+    if (preg_match('#[^0-9a-z_\.]#i', $_REQUEST['username'])) {
+      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Invalid username provided</p>' . PHP_EOL  . PHP_EOL);
+    }
+
+    // Check if timezone is valid
+    if (!in_array($_REQUEST['timezone'], timezone_identifiers_list())) {
+      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Invalid time zone provided</p>' . PHP_EOL  . PHP_EOL);
+    }
+
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
     ### Environment > Set #########################################
@@ -248,7 +285,7 @@
 
     ### Database > Connection #####################################
 
-    echo '<p>Connecting to MySQL/MariaDB server on '. $_REQUEST['db_server'] .'... ';
+    echo '<p>Connecting to MySQL/MariaDB server on '. htmlspecialchars($_REQUEST['db_server']) .'... ';
 
     require_once FS_DIR_APP . 'includes/library/lib_database.inc.php';
 

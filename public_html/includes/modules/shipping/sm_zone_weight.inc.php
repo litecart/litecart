@@ -19,16 +19,25 @@
 
     // Calculate cart weight
       $total_weight = 0;
+
       foreach ($items as $item) {
         $total_weight += weight::convert($item['quantity'] * $item['weight'], $item['weight_class'], $this->settings['weight_class']);
       }
 
       $options = [];
 
-      for ($i=1; $i <= 3; $i++) {
-        if (empty($this->settings['geo_zone_id_'.$i])) continue;
+    // Step through each rate table
+      foreach ([1, 2, 3] as $i) {
+
+        if (empty($this->settings['geo_zone_id_'.$i])) {
+          continue;
+        }
 
         $name = language::translate(__CLASS__.':title_option_name_zone_'.$i, '');
+
+        if (!$name) {
+          $name = reference::geo_zone($this->settings['geo_zone_id_'.$i])->name;
+        }
 
         if (!reference::country($customer['shipping_address']['country_code'])->in_geo_zone($this->settings['geo_zone_id_'.$i], $customer['shipping_address'])) continue;
 
@@ -37,7 +46,7 @@
         $options[] = [
           'id' => 'zone_'.$i,
           'icon' => $this->settings['icon'],
-          'name' => !empty($name) ? $name : reference::country($customer['shipping_address']['country_code'])->name,
+          'name' => $name,
           'description' => language::translate(__CLASS__.':title_option_description_zone_'.$i, ''),
           'fields' => '',
           'cost' => $cost,
@@ -48,8 +57,12 @@
 
       $name = language::translate(__CLASS__.':title_option_name_zone_x', '');
 
-      if (empty($options)) {
-        if (empty($this->settings['weight_rate_table_x'])) return;
+    // Fall back to zone_x
+      if (!$options) {
+
+        if (empty($this->settings['weight_rate_table_x'])) {
+          return;
+        }
 
         $cost = $this->calculate_cost($this->settings['weight_rate_table_x'], $total_weight);
 
@@ -102,7 +115,6 @@
 
         case '>':
         case '&gt;':
-
           foreach (preg_split('#[|;]#', $rate_table, -1, PREG_SPLIT_NO_EMPTY) as $rate) {
             list($rate_weight, $rate_cost) = explode(':', $rate);
             if ($shipping_weight > $rate_weight) {

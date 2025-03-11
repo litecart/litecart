@@ -24,10 +24,16 @@
         'doc' => 'most_shopping_customers',
         'params' => [],
       ],
+      [
+        'title' => language::translate('title_who_purchaed', 'Who Purchased?'),
+        'doc' => 'who_purchased',
+        'params' => [],
+      ],
     ],
     'docs' => [
       'monthly_sales' => 'monthly_sales.inc.php',
       'most_sold_products' => 'most_sold_products.inc.php',
       'most_shopping_customers' => 'most_shopping_customers.inc.php',
+      'who_purchased' => 'who_purchased.inc.php',
     ],
   ];

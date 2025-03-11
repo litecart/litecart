@@ -198,6 +198,7 @@
   ];
 
   $thousands_separator_options = [
+    [language::translate('char_none', 'None'), ''],
     [language::translate('char_comma', 'Comma'), ','],
     [language::translate('char_dot', 'Dot'), '.'],
     [language::translate('char_space', 'Space'), ' '],

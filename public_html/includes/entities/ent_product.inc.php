@@ -113,7 +113,7 @@
       );
 
       while ($attribute = database::fetch($product_attributes_query)) {
-        $this->data['attributes'][$attribute['group_id'].'-'.$attribute['value_id']] = $attribute;
+        $this->data['attributes'][$attribute['group_id'].'-'.$attribute['value_id'] . ($attribute['custom_value'] ? ':'. $attribute['custom_value'] : '')] = $attribute;
       }
 
     // Prices
@@ -816,6 +816,7 @@
 
       $this->data['images'] = [];
       $this->data['campaigns'] = [];
+      $this->data['attributes'] = [];
       $this->data['options'] = [];
       $this->data['options_stock'] = [];
       $this->save();

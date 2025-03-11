@@ -41,11 +41,11 @@
       if (empty($user['status'])) throw new Exception(language::translate('error_user_account_disabled', 'The user account is disabled'));
 
       if (!empty($user['date_valid_from']) && date('Y-m-d H:i:s') < $user['date_valid_from']) {
-        throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from']))));
+        throw new Exception(strtr(language::translate('error_account_is_blocked', 'The account is blocked until %s'), ['%s' => language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from']))]));
       }
 
       if (!empty($user['date_valid_to']) && date('Y', strtotime($user['date_valid_to'])) > '1970' && date('Y-m-d H:i:s') > $user['date_valid_to']) {
-        throw new Exception(sprintf(language::translate('error_account_expired', 'The account expired %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to']))));
+        throw new Exception(strtr(language::translate('error_account_expired', 'The account expired %s'), ['%s' => language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to']))]));
       }
 
       if (!password_verify($_POST['password'], $user['password_hash'])) {
@@ -58,7 +58,7 @@
             limit 1;"
           );
 
-          throw new Exception(sprintf(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporarily blocked'), 3 - $user['login_attempts']));
+          throw new Exception(strtr(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporarily blocked'), ['%d' => 3 - $user['login_attempts']]));
 
         } else {
 
@@ -100,7 +100,7 @@
                   ->send();
           }
 
-          throw new Exception(sprintf(language::translate('error_account_has_been_blocked_x_minutes', 'This account has been temporarily blocked for %d minutes.'), 15));
+          throw new Exception(strtr(language::translate('error_account_has_been_blocked_x_minutes', 'This account has been temporarily blocked for %d minutes.'), ['%d' => 15]));
         }
 
         throw new Exception(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));

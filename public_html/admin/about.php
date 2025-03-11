@@ -17,6 +17,9 @@
         throw new Exception(language::translate('error_must_select_errors', 'You must select errors'));
       }
 
+      $memory_limit = ini_get('memory_limit');
+      ini_set('memory_limit', '-1');
+
       $log_file = ini_get('error_log');
 
       $content = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($log_file));
@@ -27,6 +30,9 @@
       }
 
       file_put_contents($log_file, $content);
+      unset($content); // Free RAM
+
+      ini_set('memory_limit', $memory_limit);
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link());
@@ -187,6 +193,9 @@
 
   if ($log_file && is_file($log_file)) {
 
+    $memory_limit = ini_get('memory_limit');
+    ini_set('memory_limit', '-1');
+
     // Truncate a disastrous log file over 1 GB
     if (filesize($log_file) > 1024e6) {
       file_put_contents($log_file, '');
@@ -231,6 +240,8 @@
 
       return ($a['critical'] > $b['critical']) ? -1 : 1;
     });
+
+    ini_set('memory_limit', $memory_limit);
   }
 
   $log_files = [];

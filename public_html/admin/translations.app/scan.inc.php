@@ -153,10 +153,10 @@
 
     cache::clear_cache('translations');
 
-    echo sprintf(language::translate('text_found_d_translations', 'Found %d translations in %d files'), $found_translations, $found_files) . PHP_EOL;
-    echo sprintf(language::translate('text_added_d_new_translations', 'Added %d new translations'), $new_translations) . PHP_EOL;
-    echo sprintf(language::translate('text_updated_d_translations', 'Updated %d translations'), $updated_translations) . PHP_EOL;
-    echo sprintf(language::translate('text_deleted_d_translations', 'Deleted %d translations'), $deleted_translations) . PHP_EOL;
+    echo strtr(language::translate('text_found_n_translations_in_n_files', 'Found %nt translations in %nf files'), ['%nt' => $found_translations, '%nf' => $found_files]) . PHP_EOL;
+    echo strtr(language::translate('text_added_d_new_translations', 'Added %d new translations'), ['%d' => $new_translations]) . PHP_EOL;
+    echo strtr(language::translate('text_updated_d_translations', 'Updated %d translations'), ['%d' => $updated_translations]) . PHP_EOL;
+    echo strtr(language::translate('text_deleted_d_translations', 'Deleted %d translations'), ['%d' => $deleted_translations]) . PHP_EOL;
 
     $log = ob_get_clean();
   }

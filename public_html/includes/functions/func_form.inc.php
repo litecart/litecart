@@ -868,6 +868,9 @@
       case 'upload':
         return form_draw_file_field($name, $parameters);
 
+      case 'url':
+        return form_draw_url_field($name, $parameters);
+
       case 'user':
         return form_draw_users_list($name, $input, false, $parameters);
 
@@ -1345,7 +1348,7 @@
 
     while ($row = database::fetch($collations_query)) {
       if (!in_array(strtoupper($row['Support']), ['YES', 'DEFAULT'])) continue;
-      if (!in_array($row['Engine'], ['CSV', 'InnoDB', 'MyISAM', 'Aria'])) continue;
+      if (!in_array($row['Engine'], ['Aria', 'InnoDB', 'MyISAM'])) continue;
       $options[] = [$row['Engine'] . ' -- '. $row['Comment'], $row['Engine']];
     }
 

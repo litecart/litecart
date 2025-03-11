@@ -87,7 +87,7 @@
         $product->save();
       }
 
-      notices::add('success', sprintf(language::translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
+      notices::add('success', strtr(language::translate('success_duplicated_d_products', 'Duplicated %d products'), ['%d' => count($_POST['products'])]));
       header('Location: '. document::link(WS_DIR_ADMIN, ['category_id' => $_POST['category_id']], true));
       exit;
 
@@ -109,7 +109,7 @@
         $product->save();
       }
 
-      notices::add('success', sprintf(language::translate('success_copied_d_products', 'Copied %d products'), count($_POST['products'])));
+      notices::add('success', strtr(language::translate('success_copied_d_products', 'Copied %d products'), ['%d' => count($_POST['products'])]));
       header('Location: '. document::link(WS_DIR_ADMIN, ['category_id' => $_POST['category_id']], true));
       exit;
 
@@ -140,7 +140,7 @@
           $product->data['categories'] = [$_POST['category_id']];
           $product->save();
         }
-        notices::add('success', sprintf(language::translate('success_moved_d_products', 'Moved %d products'), count($_POST['products'])));
+        notices::add('success', strtr(language::translate('success_moved_d_products', 'Moved %d products'), ['%d' => count($_POST['products'])]));
       }
 
       if (!empty($_POST['categories'])) {
@@ -149,7 +149,7 @@
           $category->data['parent_id'] = $_POST['category_id'];
           $category->save();
         }
-        notices::add('success', sprintf(language::translate('success_moved_d_categories', 'Moved %d categories'), count($_POST['categories'])));
+        notices::add('success', strtr(language::translate('success_moved_d_categories', 'Moved %d categories'), ['%d' => count($_POST['categories'])]));
       }
 
       header('Location: '. document::link(WS_DIR_ADMIN, ['category_id' => $_POST['category_id']], true));
@@ -174,7 +174,7 @@
             $category->save();
           }
         }
-        notices::add('success', sprintf(language::translate('success_unmounted_d_categories', 'Unmounted %d categories'), count($_POST['categories'])));
+        notices::add('success', strtr(language::translate('success_unmounted_d_categories', 'Unmounted %d categories'), ['%d' => count($_POST['categories'])]));
       }
 
       if (!empty($_POST['products'])) {
@@ -187,7 +187,7 @@
             }
           }
         }
-        notices::add('success', sprintf(language::translate('success_unmounted_d_products', 'Unmounted %d products'), count($_POST['products'])));
+        notices::add('success', strtr(language::translate('success_unmounted_d_products', 'Unmounted %d products'), ['%d' => count($_POST['products'])]));
       }
 
       if (isset($_POST['categories']) && in_array($_GET['category_id'], $_POST['categories'])) unset($_GET['category_id']);
@@ -214,7 +214,7 @@
           $product->delete();
         }
 
-        notices::add('success', sprintf(language::translate('success_deleted_d_products', 'Deleted %d products'), count($_POST['products'])));
+        notices::add('success', strtr(language::translate('success_deleted_d_products', 'Deleted %d products'), ['%d' => count($_POST['products'])]));
       }
 
       if (!empty($_POST['categories'])) {
@@ -223,7 +223,7 @@
           $category->delete();
         }
 
-        notices::add('success', sprintf(language::translate('success_deleted_d_categories', 'Deleted %d categories'), count($_POST['categories'])));
+        notices::add('success', strtr(language::translate('success_deleted_d_categories', 'Deleted %d categories'), ['%d' => count($_POST['categories'])]));
       }
 
       header('Location: '. document::link());

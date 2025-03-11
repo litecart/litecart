@@ -48,6 +48,7 @@
       select id from ". DB_TABLE_PREFIX ."order_statuses
       where is_sale
     )
+    ". (!empty($_GET['country_code']) ? "and o.customer_country_code = '". database::input($_GET['country_code']) ."'" : '') ."
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : "") ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : "") ."
     group by date_format(o.date_created, '%Y-%m')
@@ -55,11 +56,16 @@
   );
 
   while ($orders = database::fetch($orders_query)) {
-    if (!isset($total)) $total = [];
+
+    if (!isset($total)) {
+      $total = [];
+    }
+
     foreach (array_keys($orders) as $key) {
       if (!isset($total[$key])) $total[$key] = (float)$orders[$key];
       else $total[$key] += (float)$orders[$key];
     }
+
     $rows[] = $orders;
   }
 
@@ -83,24 +89,30 @@ form[name="filter_form"] li {
     </div>
   </div>
 
-  <div class="card-action">
-    <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
-      <?php echo functions::form_draw_hidden_field('app'); ?>
-      <?php echo functions::form_draw_hidden_field('doc'); ?>
-      <ul class="list-inline">
-        <li><?php echo language::translate('title_date_period', 'Date Period'); ?>:</li>
-        <li>
-          <div class="input-group" style="max-width: 380px;">
-            <?php echo functions::form_draw_date_field('date_from'); ?>
-            <span class="input-group-text"> - </span>
-            <?php echo functions::form_draw_date_field('date_to'); ?>
-          </div>
-        </li>
-        <li><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
-        <li><?php echo functions::form_draw_button('download', language::translate('title_download', 'Download')); ?></li>
-      </ul>
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
+
+    <?php echo functions::form_draw_hidden_field('app'); ?>
+    <?php echo functions::form_draw_hidden_field('doc'); ?>
+
+    <div class="card-filter">
+
+      <?php echo functions::form_draw_countries_list('country_code', isset($_GET['country_code']) ? $_GET['country_code'] : '', false, 'style="width: 250px;"'); ?>
+
+      <div class="input-group" style="max-width: 380px;">
+        <?php echo functions::form_draw_date_field('date_from'); ?>
+        <span class="input-group-text"> - </span>
+        <?php echo functions::form_draw_date_field('date_to'); ?>
+      </div>
+
+      <?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?>
+
+    </div>
+
+    <div class="card-action">
+      <?php echo functions::form_draw_button('download', functions::draw_fonticon('fa-download') .' '. language::translate('title_download', 'Download')); ?>
+    </div>
+
+  <?php echo functions::form_draw_form_end(); ?>
 
   <table class="table table-striped table-hover data-table">
     <thead>
@@ -141,3 +153,11 @@ form[name="filter_form"] li {
     <?php } ?>
   </table>
 </div>
+
+<script>
+  $('select[name="country_code"] option[value=""]').text('-- <?php echo functions::escape_js(language::translate('title_all_countries', 'All Countries')); ?> --');
+
+  $('select[name="country_code"]').change(function(){
+    $('form[name="filter_form"]').submit();
+  });
+</script>

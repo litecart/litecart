@@ -23,7 +23,21 @@
         throw new Exception(language::translate('error_missing_title', 'You must enter a title.'));
       }
 
-      if (empty($_POST['status'])) $_POST['status'] = 0;
+      if (empty($_POST['dock'])) {
+        throw new Exception(language::translate('error_missing_dock', 'You must provide a docking location'));
+      }
+
+      if ($_POST['dock'] == 'parent' && empty($_POST['parent_id'])) {
+        throw new Exception(language::translate('error_missing_parent', 'You must provide a parent for docking under'));
+      }
+
+      if (empty($_POST['status'])) {
+        $_POST['status'] = 0;
+      }
+
+      if (empty($_POST['parent_id'])) {
+        $_POST['parent_id'] = 0;
+      }
 
       $fields = [
         'status',
@@ -94,7 +108,8 @@
           <div class="checkbox">
             <label><?php echo functions::form_draw_radio_button('dock', 'menu', true); ?> <?php echo language::translate('text_dock_in_site_menu', 'Dock in site menu'); ?></label><br>
             <label><?php echo functions::form_draw_radio_button('dock', 'customer_service', true); ?> <?php echo language::translate('text_dock_in_customer_service', 'Dock in customer service'); ?></label><br>
-            <label><?php echo functions::form_draw_radio_button('dock', 'information', true); ?> <?php echo language::translate('text_dock_in_information', 'Dock in information'); ?></label>
+            <label><?php echo functions::form_draw_radio_button('dock', 'information', true); ?> <?php echo language::translate('text_dock_in_information', 'Dock in information'); ?></label><br>
+            <label><?php echo functions::form_draw_radio_button('dock', 'parent', true); ?> <?php echo language::translate('text_dock_under_parent', 'Dock under parent'); ?></label>
           </div>
         </div>
 
@@ -154,4 +169,12 @@
     $('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
+
+  $('input[name="dock"]').change(function(){
+    if ($('input[name="dock"]:checked').val() == 'parent') {
+      $('select[name="parent_id"]').prop('disabled', false);
+    } else {
+      $('select[name="parent_id"]').prop('disabled', true);
+    }
+  }).trigger('change');
 </script>
