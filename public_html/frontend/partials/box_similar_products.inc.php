@@ -31,6 +31,4 @@
 
 	if (!$box_similar_products->snippets['products']) return;
 
-	functions::draw_lightbox();
-
 	echo $box_similar_products->render();

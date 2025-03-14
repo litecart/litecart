@@ -65,7 +65,6 @@
 		$carousel->snippets['items'] = array_column($banners, 'output');
 		return $carousel->render();
 
-
 		return $output;
 	}
 
@@ -377,25 +376,16 @@
 
 	function draw_lightbox($selector='', $parameters=[]) {
 
-		document::load_style('app://assets/featherlight/featherlight.min.css');
-		document::load_script('app://assets/featherlight/featherlight.min.js');
-		document::add_script([
-			'$.featherlight.autoBind = \'[data-toggle="lightbox"]\';',
-			'$.featherlight.defaults.loading = \'<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>\';',
-			'$.featherlight.defaults.closeIcon = \'&#x2716;\';',
-			'$.featherlight.defaults.targetAttr = \'data-target\';',
-		]);
-
 		if (!$selector && !$parameters) return;
 
 		if (preg_match('#^(https?:)?//#', $selector)) {
-			$js = ['$.featherlight(\''. $selector .'\', {'];
+			$js = ['$.litebox(\''. $selector .'\', {'];
 
 		} else if ($selector) {
-			$js = ['$(\''. $selector .'\').featherlight({'];
+			$js = ['$(\''. $selector .'\').litebox({'];
 
 		} else {
-			$js = ['$.featherlight({'];
+			$js = ['$.litebox({'];
 		}
 
 		foreach ($parameters as $key => $value) {
@@ -429,7 +419,7 @@
 
 		$js[] = '})';
 
-		document::add_script($js, 'featherlight-'. $selector);
+		document::add_script($js, 'litebox-'. $selector);
 	}
 
 	function draw_pagination($pages) {

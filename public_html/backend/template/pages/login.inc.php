@@ -44,7 +44,6 @@ html.dark-mode body {
 	<div class="loader" style="width: 128px; height: 128px;"></div>
 </div>
 
-
 <div id="box-login">
 	<div class="card" style="margin: 0;">
 		<div class="card-header text-center">

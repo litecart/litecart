@@ -188,8 +188,6 @@
 
 	$order->data['processable'] = false; // Whether or not it is allowed to be processed in checkout/process
 
-	functions::draw_lightbox();
-
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/index.inc.php');
 
 	$_page->snippets = [

@@ -70,30 +70,37 @@ body.litebox-open {
 		position: absolute;
 		top: 1em;
 		inset-inline-end: 1em;
-		z-index: 9999;
-
 		width: 2em;
 		line-height: 2em;
-
 		font-weight: bold;
-
 		cursor: pointer;
 		text-align: center;
 		font-family: Arial, sans-serif;
-
 		background: var(--whitespace-color);
 		border-radius: 50%;
+		transition: all 150ms linear;
+		z-index: 9999;
+		&:hover {
+			filter: invert(.75);
+		}
 	}
 
-	.litebox-previous, .litebox-next {
+	.litebox-previous,
+	.litebox-next {
+		padding: .75em 1em;
 		position: absolute;
 		top: 50%;
-		transform: translateY(-50%);
-		background: rgba(0, 0, 0, 0.5);
-		color: white;
-		padding: 10px;
+		margin-top: -1.5em;
+		background: rgba(0, 0, 0, 0.33);
+		color: #fff;
+		border-radius: var(--border-radius);
 		cursor: pointer;
-		z-index: 1000; /* Ensures buttons are above the content */
+		backdrop-filter: blur(3px);
+		transition: all 150ms linear;
+		z-index: 1000;
+		&:hover {
+			background: rgba(0, 0, 0, 0.66);
+		}
 	}
 
 	.litebox-previous {

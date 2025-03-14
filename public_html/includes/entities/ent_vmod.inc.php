@@ -66,7 +66,6 @@
 			$this->data['date_created'] = date('Y-m-d H:i:s', filectime($file));
 			$this->data['date_updated'] = date('Y-m-d H:i:s', filemtime($file));
 
-
 			$this->data['name'] = !empty($dom->getElementsByTagName('name')->item(0)) ? $dom->getElementsByTagName('name')->item(0)->textContent : '';
 			$this->data['description'] = !empty($dom->getElementsByTagName('description')->item(0)) ? $dom->getElementsByTagName('description')->item(0)->textContent : '';
 			$this->data['version'] = !empty($dom->getElementsByTagName('version')->item(0)) ? $dom->getElementsByTagName('version')->item(0)->textContent : '';
@@ -178,13 +177,13 @@
 
 			if (!empty($this->data['file'])) {
 				$this->data['file'] = dirname($this->data['file']) .'/'. basename($this->data['id']) . ($this->data['status'] ? '.xml' : '.disabled');
-			
+
 			} else {
-			
+
 				if (is_file($file = FS_DIR_STORAGE . 'vmods/' . $this->data['id'] . ($this->data['status'] ? '.xml' : '.disabled'))) {
 					throw new Exception('vMod already exists');
 				}
-			
+
 				$this->data['file'] = $file;
 			}
 

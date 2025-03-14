@@ -174,12 +174,11 @@
 	], 'abort');
 
 	// Complete Order Items
-	$order_items_query = database::query(
+	database::query(
 		"select * from ". DB_TABLE_PREFIX ."orders_items;"
-	);
+	)->each(function($order_item){
 
-	while ($order_item = database::fetch($order_items_query)) {
-		if (empty($order_item['product_id'])) continue;
+		if (empty($order_item['product_id'])) return;
 
 		// Get stock option
 		if (!empty($order_item['option_stock_combination'])) {
@@ -206,14 +205,14 @@
 		)->fetch();
 
 		if (!$product) {
-			$products = database::query(
+			$product = database::query(
 				"select * from ". DB_TABLE_PREFIX ."products
 				where sku = '". database::input($order_item['sku']) ."'
 				limit 1;"
 			)->fetch();
 		}
 
-		if (empty($product)) continue;
+		if (!$product) return;
 
 		// Update order item
 		database::query(
@@ -229,7 +228,7 @@
 			where id = ". (int)$order_item['id'] ."
 			limit 1;"
 		);
-	}
+	});
 
 	// Order Public Key
 	database::query(
@@ -237,12 +236,10 @@
 		ADD COLUMN `public_key` VARCHAR(32) NOT NULL AFTER `domain`;"
 	);
 
-	$orders_query = database::query(
+	database::query(
 		"select * from ". DB_TABLE_PREFIX ."orders
 		where public_key = '';"
-	);
-
-	while ($order = database::fetch($orders_query)) {
+	)->each(function($order) {
 
 		$public_key = md5($order['id'] . $order['uid'] . $order['customer_email'] . $order['date_created']);
 
@@ -251,10 +248,10 @@
 			set public_key = '". database::input($public_key) ."'
 			where id = ". (int)$order['id'] .";"
 		);
-	}
+	});
 
 	// Fix unique indexes (ALTER IGNORE is deprecated)
-	$tables = [
+	foreach ([
 		['table' => DB_TABLE_PREFIX.'categories_info',            'index' => 'category',                 'columns' => '`category_id`, `language_code`'],
 		['table' => DB_TABLE_PREFIX.'slides_info',                'index' => 'slide_info',               'columns' => '`slide_id`, `language_code`'],
 		['table' => DB_TABLE_PREFIX.'delivery_statuses_info',     'index' => 'delivery_status_info',     'columns' => '`delivery_status_id`, `language_code`'],
@@ -270,16 +267,13 @@
 		['table' => DB_TABLE_PREFIX.'quantity_units_info',        'index' => 'quantity_unit_info',       'columns' => '`quantity_unit_id`, `language_code`'],
 		['table' => DB_TABLE_PREFIX.'sold_out_statuses_info',     'index' => 'sold_out_status_info',     'columns' => '`sold_out_status_id`, `language_code`'],
 		['table' => DB_TABLE_PREFIX.'zones_to_geo_zones',         'index' => 'region',                   'columns' => '`geo_zone_id`, `country_code`, `zone_code`'],
-	];
+	] as $table) {
 
-	foreach ($tables as $table) {
-		$index_query = database::query(
+		if (!database::query(
 			"SHOW KEYS FROM `". $table['table'] ."`
 			WHERE Key_name = '". $table['index'] ."'
 			AND Non_unique = 0;"
-		);
-
-		if (!database::num_rows($index_query)) {
+		)->num_rows) {
 			database::query(
 				"ALTER TABLE `". $table['table'] ."`
 				ADD UNIQUE KEY `". $table['index'] ."` (". $table['columns'] .");"
@@ -288,26 +282,22 @@
 	}
 
 	// Remove some indexes
-	$index_query = database::query(
+	if (database::query(
 		"SHOW KEYS FROM `". DB_TABLE_PREFIX ."products_prices`
 		WHERE Key_name = 'product_price'
 		AND Non_unique = 0;"
-	);
-
-	if (database::num_rows($index_query)) {
+	)->num_rows) {
 		database::query(
 			"ALTER TABLE `". DB_TABLE_PREFIX ."products_prices`
 			DROP KEY `product_price`;"
 		);
 	}
 
-	$index_query = database::query(
+	if (database::query(
 		"SHOW KEYS FROM `". DB_TABLE_PREFIX ."products_to_categories`
 		WHERE Key_name = 'mapping'
 		AND Non_unique = 0;"
-	);
-
-	if (database::num_rows($index_query)) {
+	)->num_rows) {
 		database::query(
 			"ALTER TABLE `". DB_TABLE_PREFIX ."products_to_categories`
 			DROP KEY `mapping`;"
@@ -315,13 +305,12 @@
 	}
 
 	// Migrate product groups to product attributes
-	$products_query = database::query(
+	database::query(
 		"select id, product_groups from `". DB_TABLE_PREFIX ."products`
 		where product_groups != ''
 		order by id;"
-	);
+	)->fetch(function($product) {
 
-	while ($product = database::fetch($products_query)) {
 		foreach (explode(',', $product['product_groups']) as $product_group) {
 			list($group_id, $value_id) = explode('-', $product_group);
 
@@ -331,32 +320,30 @@
 				(". (int)$product['id'] .", ". (int)$group_id .", ". (int)$value_id .");"
 			);
 		}
-	}
+	});
 
 	// Migrate product groups to category filters
-	$categories_query = database::query(
+	database::query(
 		"select id from `". DB_TABLE_PREFIX ."categories`
 		order by id;"
-	);
+	)->fetch(function($category) {
 
-	while ($category = database::fetch($categories_query)) {
-		$products_attributes_query = database::query(
+		database::query(
 			"select distinct group_id from `". DB_TABLE_PREFIX ."products_attributes`
 			where product_id in (
 				select id from `". DB_TABLE_PREFIX ."products_to_categories`
 				where category_id = ". (int)$category['id'] ."
 			)
 			order by group_id;"
-		);
+		)->each(function($attribute) use ($category) {
 
-		while ($attribute = database::fetch($products_attributes_query)) {
 			database::query(
 				"insert into `". DB_TABLE_PREFIX ."categories_filters`
 				(category_id, attribute_group_id, select_multiple) values
 				(". (int)$category['id'] .", ". (int)$attribute['group_id'] .", 1);"
 			);
-		}
-	}
+		});
+	});
 
 	// Finally remove product_groups column
 	database::query(

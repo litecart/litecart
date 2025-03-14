@@ -139,25 +139,30 @@
 			);
 
 			foreach (array_keys(language::$languages) as $language_code) {
-				$stock_items_info_query = database::query(
+
+				$info = database::query(
 					"select * from ". DB_TABLE_PREFIX ."stock_items_info
 					where stock_item_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language_code) ."'
 					limit 1;"
-				);
+				)->fetch();
 
-				if (!$stock_item_info = database::fetch($stock_items_info_query)) {
+				if (!$info) {
+
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."stock_items_info
 						(stock_item_id, language_code)
 						values (". (int)$this->data['id'] .", '". $language_code ."');"
 					);
+
+					$info['id'] = database::insert_id();
 				}
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."stock_items_info
 					set name = '". database::input($this->data['name'][$language_code]) ."'
-					where stock_item_id = ". (int)$this->data['id'] ."
+					where id = ". (int)$info['id'] ."
+					and stock_item_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language_code) ."'
 					limit 1;"
 				);

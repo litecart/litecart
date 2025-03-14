@@ -129,47 +129,61 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					</div>
 					<?php } ?>
 
-					<fieldset class="buy_now">
-						<?php echo functions::form_begin('buy_now_form', 'post'); ?>
+					<?php if (isset($final_price)) { ?>
+					<?php echo functions::form_begin('buy_now_form', 'post'); ?>
+
 						<?php echo functions::form_input_hidden('product_id', $product_id); ?>
+						<fieldset class="buy_now">
 
-						<?php if (count($stock_options) > 1) { ?>
-						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></div>
-							<?php echo form_select_product_stock_option('stock_option_id', $product_id, true); ?>
-						</label>
-						<?php } else if (count($stock_options) == 1) { ?>
-						<?php echo functions::form_input_hidden('stock_option_id', $stock_options[0]['stock_option_id']); ?>
-						<?php } ?>
+							<legend><?php echo language::translate('title_purchase_now', 'Purchase Now'); ?></legend>
 
-						<?php echo functions::draw_price_tag($regular_price, $final_price, $recommended_price); ?>
+							<?php if (count($stock_options) > 1) { ?>
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></div>
+								<?php echo form_select_product_stock_option('stock_option_id', $product_id, true); ?>
+							</label>
+							<?php } else if (count($stock_options) == 1) { ?>
+							<?php echo functions::form_input_hidden('stock_option_id', $stock_options[0]['stock_option_id']); ?>
+							<?php } ?>
 
-						<div class="tax" style="margin: 0 0 1em 0;">
-						<?php if ($tax_rates) { ?>
-							<?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax">{{total_tax|money}}</span>
-						<?php } else { ?>
-							<?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
-						<?php } ?>
-						</div>
+							<div class="grid" style="margin-bottom: 0;">
 
-						<?php if (!settings::get('catalog_only_mode')) { ?>
-						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('title_quantity', 'Quantity'); ?></div>
-							<div style="display: flex">
-								<div class="input-group" style="flex: 0 1 150px;">
-									<?php echo !empty($quantity_unit['decimals']) ? functions::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"') : functions::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"'); ?>
-									<?php if (!empty($quantity_unit['name'])) echo '<div class="input-group-text">'. $quantity_unit['name'] .'</div>'; ?>
+								<div class="col-xl-8">
+									<?php if (!settings::get('catalog_only_mode')) { ?>
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_quantity', 'Quantity'); ?></div>
+										<div style="display: flex">
+											<div class="input-group" style="flex: 0 1 150px;">
+												<?php echo !empty($quantity_unit['decimals']) ? functions::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"') : functions::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"'); ?>
+												<?php if (!empty($quantity_unit['name'])) echo '<div class="input-group-text">'. $quantity_unit['name'] .'</div>'; ?>
+											</div>
+
+											<div style="flex: 1 0 auto; padding-inline-start: 1em;">
+												<?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity_available <= 0 && !$orderable) ? ' disabled' : '') .'>'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
+											</div>
+										</div>
+									</label>
+									<?php } ?>
 								</div>
 
-								<div style="flex: 1 0 auto; padding-inline-start: 1em;">
-									<?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity_available <= 0 && !$orderable) ? ' disabled' : '') .'>'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
+								<div class="col-xl-4">
+									<br>
+									<?php echo functions::draw_price_tag($regular_price, $final_price, $recommended_price); ?>
+
+									<div class="tax" style="margin: 0 0 1em 0;">
+									<?php if ($tax_rates) { ?>
+										<?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax">{{total_tax|money}}</span>
+									<?php } else { ?>
+										<?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
+									<?php } ?>
+									</div>
 								</div>
 							</div>
-						</label>
-						<?php } ?>
 
-						<?php echo functions::form_end(); ?>
-					</fieldset>
+						</fieldset>
+
+					<?php echo functions::form_end(); ?>
+					<?php } ?>
 
 					<h3><?php echo language::translate('title_share_this_product', 'Share This Product'); ?>:</h3>
 

@@ -25,4 +25,3 @@
 	if (!$box_latest_products->snippets['products']) return;
 
 	echo $box_latest_products->render();
-	functions::draw_lightbox();

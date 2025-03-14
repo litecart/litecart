@@ -241,8 +241,6 @@
 		}
 	}
 
-	functions::draw_lightbox();
-
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/customer.inc.php');
 
 	$_page->snippets = [
@@ -250,7 +248,7 @@
 		'account_exists' => $account_exists,
 		'subscribed_to_newsletter' => $subscribed_to_newsletter,
 	];
-var_dump($order->data['customer']);
+
 	echo $_page;
 
 	// Don't process layout if this is an ajax request

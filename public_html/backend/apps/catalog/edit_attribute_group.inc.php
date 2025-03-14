@@ -150,7 +150,6 @@
 	<?php echo functions::form_end(); ?>
 </div>
 
-
 <script>
 	let new_value_index = 0
 	while ($(':input[name^="values['+new_value_index+']"]').length) new_value_index++

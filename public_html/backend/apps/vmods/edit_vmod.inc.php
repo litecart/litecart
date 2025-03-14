@@ -19,7 +19,6 @@
 
 		try {
 
-
 			if (empty($_POST['id'])) {
 				throw new Exception(language::translate('error_must_enter_id', 'You must enter an ID'));
 			}
@@ -160,7 +159,6 @@
 		$files_datalist[] = $relative_path;
 	}
 
-	functions::draw_lightbox();
 ?>
 
 <style>
@@ -1163,10 +1161,10 @@ textarea.warning {
 
 	$('.card-action button[name="delete"]').on('click', function(e) {
 		e.preventDefault()
-		$.featherlight('#modal-uninstall')
+		$.litebox('#modal-uninstall')
 	})
 
-	$('body').on('click', '.featherlight button[name="cancel"]', function(e) {
-		$.featherlight.close()
+	$('body').on('click', '.litebox button[name="cancel"]', function(e) {
+		$.litebox.close()
 	})
 </script>

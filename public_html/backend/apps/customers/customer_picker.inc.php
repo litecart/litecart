@@ -94,7 +94,7 @@
 	$('#modal-customer-picker tbody').on('click', 'td', function() {
 
 		let $row = $(this).closest('tr'),
-			callback = $.featherlight.current().$currentTarget.data('callback'),
+			callback = $.litebox.current().$currentTarget.data('callback'),
 			expand = <?php echo (isset($_GET['collect']) && array_intersect(['address', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
 			customer = $row.data()
 
@@ -114,22 +114,22 @@
 			}
 
 		} else {
-			let $field = $.featherlight.current().$currentTarget.closest('.form-group')
+			let $field = $.litebox.current().$currentTarget.closest('.form-group')
 			$field.find(':input').val(customer.id).trigger('change')
 			$field.find('.id').text(customer.id)
 			$field.find('.name').text(customer.name)
-			$.featherlight.close()
+			$.litebox.close()
 		}
 	})
 
 	$('#modal-customer-picker .set-guest').on('click', function() {
 
-		let field = $.featherlight.current().$currentTarget.closest('.form-input')
+		let field = $.litebox.current().$currentTarget.closest('.form-input')
 
 		$(field).find(':input').val('0').trigger('change')
 		$(field).find('.id').text('0')
 		$(field).find('.name').text('(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)')
-		$.featherlight.close()
+		$.litebox.close()
 	})
 </script>
 

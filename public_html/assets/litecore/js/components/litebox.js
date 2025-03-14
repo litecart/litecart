@@ -106,7 +106,6 @@ waitFor('jQuery', ($) => {
 			Litebox.opened.push(this);
 
 			this.$instance.show();
-			this.beforeContent(e);
 
 			return $.when($modal)
 				.always(($m) => {
@@ -262,19 +261,6 @@ waitFor('jQuery', ($) => {
 			return true;
 		}
 
-		// Before setting content
-		beforeContent(e) {
-
-			const index = this.currentIndex();
-			const len = this.slides().length;
-
-			this.$instance
-				.toggleClass('litebox-first-slide', index === 0)
-				.toggleClass('litebox-last-slide', index === len - 1);
-
-			return true;
-		}
-
 		// After setting content
 		afterContent(e) {
 
@@ -289,14 +275,12 @@ waitFor('jQuery', ($) => {
 			}
 
 			// If the gallery is enabled, and current index is not last, add navigation
-			if (this.$source && this.currentIndex() < this.slides().length - 1) {
+			if (this.$source && this.currentIndex() < this.this.$source.length - 1) {
 				$(`<div class="litebox-next"><span>${this.nextIcon}</span></div>`).on('click', (e) => {
 					this.$instance.trigger(`next`);
 					e.preventDefault();
 				}).appendTo(this.$instance.find('.litebox-modal'));
 			}
-
-			this.onResize(e);
 
 			return true;
 		}
@@ -344,10 +328,6 @@ waitFor('jQuery', ($) => {
 			}
 		}
 
-		onResize(e) {
-			return true;
-		}
-
 		beforeClose(e) {
 			return true;
 		}
@@ -364,14 +344,9 @@ waitFor('jQuery', ($) => {
 			this.$instance.off('next previous');
 		}
 
-		// Get all slides
-		slides() {
-			return this.$source;
-		}
-
 		// Get the current slide index
 		currentIndex() {
-			return this.slides().index(this.$currentTarget);
+			return this.this.$source.index(this.$currentTarget);
 		}
 
 		// Navigate to a specific slide
@@ -382,7 +357,7 @@ waitFor('jQuery', ($) => {
 				return;
 			}
 
-			const source = this.slides();
+			const source = this.this.$source;
 			const len = source.length;
 			const $inner = this.$instance.find('.litebox-inner');
 			index = ((index % len) + len) % len;

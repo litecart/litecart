@@ -102,13 +102,13 @@
 	$('#modal-product-picker tbody').on('click', 'td', function() {
 
 		let $row = $(this).closest('tr'),
-			callback = $.featherlight.current().$currentTarget.data('callback'),
+			callback = $.litebox.current().$currentTarget.data('callback'),
 			expand = <?php echo (isset($_GET['collect']) && array_intersect(['price', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
 			product = $row.data()
 
 		if (expand || $row.data('stock_option')) {
 			callback = function(product){
-				$.featherlight('<?php echo document::ilink(__APP__.'/product_picker_configure', ['callback' => @$_GET['callback']]);?>&product_id='+ product.id)
+				$.litebox('<?php echo document::ilink(__APP__.'/product_picker_configure', ['callback' => @$_GET['callback']]);?>&product_id='+ product.id)
 			}
 		}
 
@@ -120,15 +120,15 @@
 				window[callback](product)
 			}
 
-		} else if ($.featherlight.current().$currentTarget.closest('.input-group').length) {
-			let $field = $.featherlight.current().$currentTarget.closest('.input-group')
+		} else if ($.litebox.current().$currentTarget.closest('.input-group').length) {
+			let $field = $.litebox.current().$currentTarget.closest('.input-group')
 			$field.find(':input').val(product.id).trigger('change')
 			$field.find('.id').text(product.id)
 			$field.find('.name').text(product.name)
 		}
 
-		if ($.featherlight.opened) {
-			$.featherlight.close()
+		if ($.litebox.opened) {
+			$.litebox.close()
 		}
 	})
 </script>

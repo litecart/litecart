@@ -63,8 +63,6 @@
 	}
 	breadcrumbs::add($category->name, document::ilink('category', ['category_id' => $category->id]));
 
-	functions::draw_lightbox();
-
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/category.inc.php');
 
 	$box_category_cache_token = cache::token('box_category', ['get', 'language', 'currency'], 'file');

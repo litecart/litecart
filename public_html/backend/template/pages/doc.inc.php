@@ -2,7 +2,7 @@
 #main {
 	--app-color: <?php echo $theme['color']; ?>;
 }
-#top-bar {
+#toolbar {
 	border-bottom: 5px solid var(--app-color);
 }
 </style>

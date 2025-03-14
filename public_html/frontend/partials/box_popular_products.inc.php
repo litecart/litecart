@@ -33,6 +33,4 @@
 
 	if (!$box_popular_products->snippets['products']) return;
 
-	functions::draw_lightbox();
-
 	echo $box_popular_products->render();

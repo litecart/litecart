@@ -72,8 +72,6 @@
 		return ['code' => $currency['code'], 'decimals' => (int)$currency['decimals'], 'value' => $currency['value']];
 	}, currency::$currencies);
 
-	functions::draw_lightbox();
-
 ?>
 <div class="card">
 	<div class="card-header">

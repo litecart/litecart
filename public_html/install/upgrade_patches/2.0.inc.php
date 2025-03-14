@@ -96,12 +96,10 @@
 	]);
 
 	// Delete Deprecated Modules
-	$module_types_query = database::query(
+	database::query(
 		"select * from ". DB_TABLE_PREFIX ."settings
 		where `key` in ('order_action_modules', 'order_success_modules');"
-	);
-
-	while ($module_type = database::fetch($module_types_query)) {
+	)->each(function($module_type){
 
 		foreach (explode(';', $module_type['value']) as $module) {
 			database::query(
@@ -115,7 +113,7 @@
 			where `key` = '". database::input($module_type['key']) ."'
 			limit 1;"
 		);
-	}
+	});
 
 	// Migrate Modules
 	database::query(
@@ -124,12 +122,10 @@
 		where `key` = 'jobs_modules';"
 	);
 
-	$installed_modules_query = database::query(
+	database::query(
 		"select * from ". DB_TABLE_PREFIX ."settings
 		where `key` in ('job_modules', 'customer_modules', 'order_modules', 'order_total_modules', 'shipping_modules', 'payment_modules');"
-	);
-
-	while ($installed_modules = database::fetch($installed_modules_query)) {
+	)->each(function(){
 
 		foreach (explode(';', $installed_modules['value']) as $module) {
 
@@ -172,7 +168,7 @@
 				limit 1;"
 			);
 		}
-	}
+	});
 
 	// Collect all languages
 	$all_languages = database::query(
@@ -182,11 +178,9 @@
 	)->fetch_all('code');
 
 	// Update slides
-	$slides_query = database::query(
+	database::query(
 		"select * from ". DB_TABLE_PREFIX ."slides;"
-	);
-
-	while ($slide = database::fetch($slides_query)) {
+	)->each(function($slide) {
 
 		if (!empty($slide['language_code'])) {
 			$languages = [$slide['language_code']];
@@ -201,7 +195,7 @@
 				values (". (int)$slide['id'] .", '". database::input($language_code) ."', '". database::input($slide['caption']) ."', '". database::input($slide['link']) ."');"
 			);
 		}
-	}
+	});
 
 	database::query(
 		"alter table ". DB_TABLE_PREFIX ."slides

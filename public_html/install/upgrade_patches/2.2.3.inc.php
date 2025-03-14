@@ -101,12 +101,10 @@
 			select id, value_id, language_code, name from ". DB_TABLE_PREFIX ."option_values_info"
 		);
 
-		$option_groups_query = database::query(
+		database::query(
 			"select * from ". DB_TABLE_PREFIX ."option_groups
 			order by id;"
-		);
-
-		if ($option_group = database::fetch($option_groups_query)) {
+		)->each(function($option_group) {
 
 			if ($option_group['function'] == 'input') {
 				$option_group['function'] = 'text';
@@ -118,7 +116,7 @@
 					`sort` = '". database::input($option_group['sort']) ."'
 				where group_id = ". (int)$option_group['id'] .";"
 			);
-		}
+		});
 
 	// Cannot copy, so migrate option groups into attribute groups
 	} else {
@@ -139,13 +137,11 @@
 			limit 1;"
 		)->fetch('value');
 
-		$option_groups_query = database::query(
+		database::query(
 			"select og.*, ogi.name from ". DB_TABLE_PREFIX ."option_groups og
 			left join ". DB_TABLE_PREFIX ."option_groups_info ogi on (ogi.group_id = og.id and language_code = '". database::input($store_language_code) ."')
 			order by id;"
-		);
-
-		while ($option_group = database::fetch($option_groups_query)) {
+		)->each(function($option_group){
 
 			if ($option_group['function'] == 'input') $option_group['function'] = 'text';
 
@@ -341,7 +337,7 @@
 					}
 				}
 			}
-		}
+		});
 
 		database::query(
 			"ALTER TABLE ". DB_TABLE_PREFIX ."products_options_values

@@ -159,7 +159,7 @@
 
 					<div class="card-action">
 						<?php echo functions::form_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
-						<?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
+						<?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel'); ?>
 					</div>
 
 				</div>
@@ -175,7 +175,7 @@
 		e.preventDefault()
 
 		let $form = $(this).closest('form'),
-			callback = $.featherlight.current().$currentTarget.data('callback')
+			callback = $.litebox.current().$currentTarget.data('callback')
 			item = {
 				id: '',
 				product_id: $form.find(':input[name="product_id"]').val(),
@@ -196,6 +196,6 @@
 			}
 
 		window[callback](product)
-		$.featherlight.close()
+		$.litebox.close()
 	})
 </script>

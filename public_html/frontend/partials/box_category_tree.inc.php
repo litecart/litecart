@@ -54,8 +54,7 @@
 			}
 
 			if (in_array($category['id'], $trail)) {
-				$sub_categories_query = functions::catalog_categories_query($category['id']);
-				if (database::num_rows($sub_categories_query)) {
+				if (functions::catalog_categories_query($category['id'])->num_rows) {
 					$tree[$category['id']]['subcategories'] = $iterator($category['id']);
 				}
 			}

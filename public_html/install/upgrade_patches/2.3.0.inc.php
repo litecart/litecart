@@ -42,12 +42,11 @@
 	]);
 
 	// Connect guest orders to account (if applicable)
-	$orders_query = database::query(
+	database::query(
 		"select customer_id, customer_email from ". DB_TABLE_PREFIX ."orders
 		where customer_id = 0;"
-	);
-
-	while ($order = database::fetch($orders_query)) {
+	)->each(function($order) {
+		
 		$customer = database::query(
 			"select id from ". DB_TABLE_PREFIX ."customers
 			where lower(email) = lower('". database::input($order['customer_email']) ."');"
@@ -57,7 +56,8 @@
 			database::query(
 				"update ". DB_TABLE_PREFIX ."orders
 				set customer_id = '". database::input($customer['id']) ."'
-				where lower(customer_email) = lower('". database::input($order['customer_email']) ."');"
+				where customer_id = 0
+				and lower(customer_email) = lower('". database::input($order['customer_email']) ."');"
 			);
 		}
-	}
+	});

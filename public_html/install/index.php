@@ -265,23 +265,11 @@
 ?>
 
 <?php if (!empty($installation_detected)) { ?>
-<link rel="stylesheet" href="<?php echo WS_DIR_APP; ?>assets/featherlight/featherlight.min.css">
-
 <div id="modal-warning-existing-installation" style="display: none; width: 320px;">
 	<h2>Existing Installation Detected</h2>
 	<p>Warning: An existing installation has been detected. It <u>will be deleted</u> if you continue!</p>
 	<p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
 </div>
-
-<script src="<?php echo WS_DIR_APP; ?>assets/jquery/jquery-4.0.0.min.js"></script>
-<script src="<?php echo WS_DIR_APP; ?>assets/featherlight/featherlight.min.js"></script>
-<script>
-	$.featherlight.autoBind = '[data-toggle="lightbox"]'
-	$.featherlight.defaults.loading = '<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>'
-	$.featherlight.defaults.closeIcon = '&#x2716;'
-	$.featherlight.defaults.targetAttr = 'data-target'
-	$.featherlight('#modal-warning-existing-installation')
-</script>
 <?php } ?>
 
 <style>

@@ -82,13 +82,11 @@
 
 			if (!$this->data['id']) return;
 
-			$products_query = database::query(
+			if (database::query(
 				"select id from ". DB_TABLE_PREFIX ."products
 				where supplier_id = ". (int)$this->data['id'] ."
 				limit 1;"
-			);
-
-			if (database::num_rows($products_query)) {
+			)->num_rows) {
 				throw new Exception(language::translate('error_cannot_delete_supplier_while_used_by_products', 'The supplier could not be deleted because there are products linked to it.'));
 			}
 

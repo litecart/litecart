@@ -120,8 +120,6 @@
 		['rows', language::translate('title_rows', 'Rows')],
 	];
 
-	functions::draw_lightbox();
-
 ?>
 <div class="card">
 	<div class="card-header">
@@ -346,7 +344,6 @@
 	<?php if (!empty($category->data['id'])) { ?>
 	$('select[name="parent_id"] option[value="<?php echo $category->data['id']; ?>"]').prop('disabled', true)
 	<?php } ?>
-
 
 	// Cross Referencing
 

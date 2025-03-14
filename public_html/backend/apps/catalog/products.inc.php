@@ -227,7 +227,6 @@
 		}
 	}
 
-	functions::draw_lightbox();
 ?>
 <style>
 .icon-exclamation-triangle {

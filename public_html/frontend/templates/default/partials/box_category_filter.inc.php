@@ -72,7 +72,6 @@
 			</label>
 
 
-
 		<div class="tokens"></div>
 
 	<?php echo functions::form_end(); ?>

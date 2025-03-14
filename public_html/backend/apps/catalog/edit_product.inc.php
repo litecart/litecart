@@ -154,7 +154,6 @@
 		[language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'],
 	];
 
-	functions::draw_lightbox();
 ?>
 <style>
 #categories {
@@ -789,7 +788,7 @@
 					<h3><?php echo language::translate('title_stock_options', 'Stock Options'); ?></h3>
 
 					<div style="margin: 0 -2em;">
-						<table id="stock-options" class="table table-striped table-hover data-table">
+						<table id="stock-options" class="table data-table">
 							<thead>
 								<tr>
 									<th><?php echo language::translate('title_item', 'Item'); ?></th>
@@ -1557,7 +1556,7 @@
 		}
 	})
 
-	$('body').on('change', '.featherlight select[name="new_predefined_customization[group_id]"]', function() {
+	$('body').on('change', '.litebox select[name="new_predefined_customization[group_id]"]', function() {
 		$.ajax({
 			url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + $(this).val(),
 			type: 'get',
@@ -1579,7 +1578,7 @@
 		})
 	})
 
-	$('body').on('change', '.featherlight select[name="new_user_input_customization[group_id]"]', function() {
+	$('body').on('change', '.litebox select[name="new_user_input_customization[group_id]"]', function() {
 		$.ajax({
 			url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + $(this).val(),
 			type: 'get',
@@ -1590,7 +1589,6 @@
 			success: function(data) {
 				$('select[name="new_user_input_customization[value_id]"]').html('')
 				if ($('select[name="new_user_input_customization[value_id]"]').attr('disabled')) $('select[name="new_user_input_customization[value_id]"]').prop('disabled', false)
-
 
 				if (data) {
 					$('select[name="new_user_input_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>')
@@ -1604,18 +1602,18 @@
 		})
 	})
 
-	$('body').on('change', '.featherlight select[name="new_predefined_customization[value_id]"]', function() {
+	$('body').on('change', '.litebox select[name="new_predefined_customization[value_id]"]', function() {
 		$('input[name="new_predefined_customization[custom_value]"]').val('')
 	})
 
-	$('body').on('keydown', '.featherlight input[name="new_predefined_customization[custom_value]"]', function() {
+	$('body').on('keydown', '.litebox input[name="new_predefined_customization[custom_value]"]', function() {
 		$('select[name="new_predefined_customization[value_id]"]').val('0')
 	})
 
 	var new_customization_group_i = 1,
 		new_customization_value_i = 1
 
-	$('body').on('click', '.featherlight button[name="add_predefined_customization"]', function(e) {
+	$('body').on('click', '.litebox button[name="add_predefined_customization"]', function(e) {
 		e.preventDefault()
 
 		var groupElement = $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"]'),
@@ -1725,10 +1723,10 @@
 
 		$(':input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('tbody').append($output)
 
-		$.featherlight.close()
+		$.litebox.close()
 	})
 
-	$('body').on('click', '.featherlight button[name="add_user_input_option"]', function(e) {
+	$('body').on('click', '.litebox button[name="add_user_input_option"]', function(e) {
 		e.preventDefault()
 
 		var groupElement = $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"]')
@@ -1774,7 +1772,7 @@
 
 		$('#customizations').append($output)
 
-		$.featherlight.close()
+		$.litebox.close()
 	})
 
 	// Stock

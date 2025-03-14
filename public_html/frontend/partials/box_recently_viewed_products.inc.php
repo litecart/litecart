@@ -11,8 +11,6 @@
 
 	if (!settings::get('box_recently_viewed_products_num_items')) return;
 
-	functions::draw_lightbox();
-
 	// Get from catalog
 	$recently_viewed_products = functions::catalog_products_query([
 		'products' => array_reverse(array_column(session::$data['recently_viewed_products'], 'id'))

@@ -243,7 +243,7 @@
 
 					$this->_data['customizations'] = [];
 
-					$products_customizations_query = database::query(
+					database::query(
 						"select * from ". DB_TABLE_PREFIX ."products_customizations
 						where product_id = ". (int)$this->_data['id'] ."
 						order by priority;"
@@ -261,7 +261,6 @@
 								if (in_array($k, ['id', 'group_id', 'language_code'])) continue;
 								if (empty($customization[$key])) $customization[$key] = $value;
 							}
-
 						});
 
 						// Values

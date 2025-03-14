@@ -132,6 +132,4 @@
 		$site_navigation->snippets['shopping_cart']['total'] = currency::format(cart::$total['value']);
 	}
 
-	functions::draw_lightbox();
-
 	echo $site_navigation->render();

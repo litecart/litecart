@@ -42,13 +42,11 @@
 	], 'abort');
 
 	// Copy missing short description from description
-	$products_info_query = database::query(
+	database::query(
 		"select id, description from ". DB_TABLE_PREFIX ."products_info
 		where short_description = ''
 		and description != '';"
-	);
-
-	while ($product_info = database::fetch($products_info_query)) {
+	)->each(function($product_info){
 
 		$short_description = strip_tags($product_info['description']);
 		$short_description = preg_replace('#\R#s', ' ', $short_description);
@@ -64,4 +62,4 @@
 			where id = ". (int)$product_info['id'] ."
 			limit 1;"
 		);
-	}
+	});

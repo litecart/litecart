@@ -75,7 +75,9 @@
 
 		public function load($id) {
 
-			if (!preg_match('#^([0-9]+|[a-f0-9]{13})$#', $id)) throw new Exception('Invalid shopping cart (ID: '. $id .')');
+			if (!preg_match('#^([0-9]+|[a-f0-9]{13})$#', $id)) {
+				throw new Exception('Invalid shopping cart (ID: '. $id .')');
+			}
 
 			$this->reset();
 
@@ -459,7 +461,6 @@
 				if (empty($this->data['billing_address']['lastname'])) {
 					throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
 				}
-
 
 				if (empty($this->data['billing_address']['address1'])) {
 					throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));

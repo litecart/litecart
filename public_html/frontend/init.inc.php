@@ -37,7 +37,7 @@
 	]);
 
 	// Privacy Consents
-	self::$jsenv['cookie_consents'] = [
+	document::$jsenv['cookie_consents'] = [
 		'classes' => !empty($_COOKIE['cookie_consents']['classes']) ? explode(',', $_COOKIE['cookie_consents']['classes']) : [],
 		'third_parties' => !empty($_COOKIE['cookie_consents']['third_parties']) ? explode(',', $_COOKIE['cookie_consents']['third_parties']) : [],
 	];

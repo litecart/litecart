@@ -290,7 +290,7 @@
 		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="datetime-local" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'" placeholder="YYYY-MM-DD [hh:nn]"'. ($parameters ? ' '. $parameters : '') .'>';
 	}
 
-	function form_input_decimal($name, $input=true, $decimals=2, $parameters='') {
+	function form_input_decimal($name, $input=true, $decimals=null, $parameters='') {
 
 		if (count($args = func_get_args()) > 4) {
 			trigger_error('Passing min and max as 3rd and 4th parameter in form_input_decimal() is deprecated. Instead define min="0" and max="999" in 3rd parameter $parameters', E_USER_DEPRECATED);
@@ -303,9 +303,22 @@
 			$input = form_reinsert_value($name);
 		}
 
-		if ($input != '') {
-			$input = number_format((float)$input, (int)$decimals, '.', '');
-		}
+    if ($input != '' && is_numeric($decimals)) {
+
+      // Circumvent floating point precision problem if differing by one 10th of the smallest fraction
+
+      $fractions = strpos($input, '.') ? strlen(substr(strrchr($input, '.'), 1)) : 0;
+      $absdiff = abs((float)$input - round((float)$input, 2));
+      $offset = (1 / pow(10, $decimals+1));
+
+      if ($fractions < $decimals) {
+        $input = number_format((float)$input, $decimals, '.', '');
+      } else if ($absdiff > $offset) {
+        $input = number_format((float)$input, $decimals+2, '.', '');
+      } else {
+        $input = number_format((float)$input, $decimals, '.', '');
+      }
+    }
 
 		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'" step="any" data-decimals="'. (int)$decimals .'"'. ($parameters ? ' '. $parameters : '') .'>';
 	}
@@ -1238,7 +1251,6 @@
 			$category_name = language::translate('title_root', 'Root');
 		}
 
-		functions::draw_lightbox();
 
 		return implode(PHP_EOL, [
 			'<div class="input-group"'. ($parameters ? ' ' . $parameters : '') .'>',
@@ -1897,32 +1909,77 @@
 				$options[] = ['0', '['.language::translate('title_root', 'Root').']'];
 			}
 
-			$pages_query = database::query(
+			database::query(
 				"select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
 				left join ". DB_TABLE_PREFIX ."pages_info pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 				where p.parent_id = ". (int)$parent_id ."
 				order by p.priority asc, pi.title asc;"
-			);
-
-			while ($page = database::fetch($pages_query)) {
+			)->each(function($page) use(&$options, $iterator, $level) {
 
 				$options[] = [$page['id'], str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $page['title']];
 
-				$sub_pages_query = database::query(
+				if (database::query(
 					"select id from ". DB_TABLE_PREFIX ."pages
 					where parent_id = ". (int)$page['id'] ."
 					limit 1;"
-				);
-
-				$sub_options = $iterator($page['id'], $level+1);
-
-				$options = array_merge($options, $sub_options);
-			}
+				)->num_rows) {
+					$sub_options = $iterator($page['id'], $level+1);
+					$options = array_merge($options, $sub_options);
+				}
+			});
 
 			return $options;
 		};
 
 		$options = $iterator(0, 1);
+
+		if (preg_match('#\[\]$#', $name)) {
+			return form_select_multiple($name, $options, $input, $parameters);
+		} else {
+			array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
+			return form_select($name, $options, $input, $parameters);
+		}
+	}
+
+	function form_select_parent_page($name, $input=true, $parameters='') {
+
+		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+			trigger_error('Passing $multiple as 3rd parameter in form_select_page() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+			if (isset($args[3])) $parameters = $args[2];
+		}
+
+		$iterator = function($parent_id, $dock, $level=1) use (&$iterator) {
+
+			$options = [];
+
+			database::query(
+				"select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
+				left join ". DB_TABLE_PREFIX ."pages_info pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+				where ". ($parent_id ? "p.parent_id = ". (int)$parent_id : "dock = '". database::input($dock) ."' and parent_id is null") ."
+				order by p.priority asc, pi.title asc;"
+			)->each(function($page) use(&$options, $iterator, $dock, $level) {
+
+				$options[] = [$dock.':'.$page['id'], str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $page['title']];
+
+				//if (database::query(
+				//	"select id from ". DB_TABLE_PREFIX ."pages
+				//	where parent_id = ". (int)$page['id'] ."
+				//	limit 1;"
+				//)->num_rows) {
+					$sub_options = $iterator($dock.':'.$page['id'], '', $level+1);
+					$options = array_merge($options, $sub_options);
+				//}
+			});
+
+			return $options;
+		};
+
+		$options = array_merge(
+			[['menu:', language::translate('title_site_menu', 'Site Menu')]],
+			$iterator(null, 'menu'),
+			[['information:', language::translate('title_information', 'Information')]],
+			$iterator(null, 'information'),
+		);
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple($name, $options, $input, $parameters);
@@ -2003,7 +2060,6 @@
 			)->fetch();
 		}
 
-		functions::draw_lightbox();
 
 		return implode(PHP_EOL, [
 			'<div class="input-group"' . ($parameters ? ' ' . $parameters : '') . '>',
@@ -2211,8 +2267,6 @@
 		} else {
 			$item_name = '('. language::translate('title_no_items', 'No Item') .')';
 		}
-
-		functions::draw_lightbox();
 
 		return implode(PHP_EOL, [
 			'<div class="input-group"' . ($parameters ? ' ' . $parameters : '') . '>',

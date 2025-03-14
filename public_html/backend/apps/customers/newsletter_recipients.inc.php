@@ -130,7 +130,6 @@
 		['0', language::translate('title_unsubscribed', 'Unsubscribed')],
 	];
 
-	functions::draw_lightbox();
 ?>
 <div class="card">
 	<div class="card-header">
@@ -233,7 +232,7 @@
 
 <script>
 	$('button[name="add_recipients"]').on('click', function() {
-		$.featherlight('#modal-add-recipients')
+		$.litebox('#modal-add-recipients')
 		$('textarea[name="recipients"]').attr('placeholder', 'user@email.com\nanother@email.com')
 	})
 

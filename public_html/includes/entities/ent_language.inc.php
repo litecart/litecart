@@ -147,12 +147,10 @@
 
 			} else {
 
-				$translations_query = database::query(
+				if (!database::query(
 					"show fields from ". DB_TABLE_PREFIX ."translations
 					where `Field` = 'text_". database::input($this->data['code']) ."';"
-				);
-
-				if (!database::num_rows($translations_query)) {
+				)->num_rows) {
 					database::query(
 						"alter table ". DB_TABLE_PREFIX ."translations
 						add `text_". database::input($this->data['code']) ."` text not null after text_en;"

@@ -9,7 +9,6 @@
 	breadcrumbs::add(language::translate('title_orders', 'Orders'), document::ilink('orders'));
 	breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'), document::ilink());
 
-
 	if (!empty($_POST['change'])) {
 
 		try {
@@ -18,18 +17,19 @@
 				throw new Exception(language::translate('error_missing_from_order_status', 'Please select a from order status'));
 			}
 
-			$orders_query = database::query(
+			$num_orders = 0;
+
+			database::query(
 				"select id from ". DB_TABLE_PREFIX ."orders
 				where order_status_id = ". (int)$_POST['from_order_status_id'] .";"
-			);
-
-			while ($order = database::fetch($orders_query)) {
+			)->each(function($order) use (&$num_orders) {
 				$order = new ent_order($order['id']);
 				$order->data['order_status_id'] = (int)$_POST['to_order_status_id'];
 				$order->save();
-			}
+				$num_orders++;
+			});
 
-			notices::add('success', strtr(language::translate('success_changed_order_status_for_n_orders', 'Changed order status for %num orders'), ['%num' => database::num_rows($orders_query)]));
+			notices::add('success', strtr(language::translate('success_changed_order_status_for_n_orders', 'Changed order status for %num orders'), ['%num' => $num_orders]));
 
 			header('Location: '. document::link());
 			exit;

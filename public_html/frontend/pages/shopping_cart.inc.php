@@ -91,8 +91,6 @@
 
 	// Output
 
-	functions::draw_lightbox();
-
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/shopping_cart.inc.php');
 
 	$_page->snippets = [

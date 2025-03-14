@@ -51,7 +51,7 @@
 			group by date_format(date_created, '%Y-%m');"
 		)->fetch('num_orders');
 
-		$stats['average_order_count'] = !empty($total_orders) ? round($total_orders / database::num_rows($orders_query)) : 0;
+		$stats['average_order_count'] = !empty($total_orders) ? round($total_orders / count($orders)) : 0;
 
 		// Num customers
 		$stats['num_customers'] = database::query(

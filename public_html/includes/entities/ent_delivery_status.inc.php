@@ -88,27 +88,29 @@
 
 			foreach (array_keys(language::$languages) as $language_code) {
 
-				$delivery_status_info_query = database::query(
+				$info = database::query(
 					"select * from ". DB_TABLE_PREFIX ."delivery_statuses_info
 					where delivery_status_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language_code) ."'
 					limit 1;"
-				);
+				)->fetch();
 
-				if (!$delivery_status_info = database::fetch($delivery_status_info_query)) {
+				if (!$info) {
+					
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."delivery_statuses_info
 						(delivery_status_id, language_code)
 						values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
 					);
-					$delivery_status_info['id'] = database::insert_id();
+
+					$info['id'] = database::insert_id();
 				}
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."delivery_statuses_info
 					set name = '". database::input($this->data['name'][$language_code]) ."',
 						description = '". database::input($this->data['description'][$language_code]) ."'
-					where id = ". (int)$delivery_status_info['id'] ."
+					where id = ". (int)$info['id'] ."
 					and delivery_status_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language_code) ."'
 					limit 1;"

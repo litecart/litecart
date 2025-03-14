@@ -172,7 +172,6 @@
 		$language_options[] = [$language_code, language::$languages[$language_code]['name']];
 	}
 
-	functions::draw_lightbox();
 ?>
 <style>
 #tokens .token {
@@ -209,7 +208,6 @@
 
 	<?php echo functions::form_begin('filter_form', 'get'); ?>
 		<div class="card-filter">
-
 
 		<div class="dropdown">
 
@@ -447,7 +445,6 @@
 		$('form[name="filter_form"]').submit()
 	})
 
-
 	$('textarea[name^="translations"]').on('input', function() {
 		$(this).height('auto').height($(this).prop('scrollHeight') + 'px')
 	}).trigger('input')
@@ -458,10 +455,9 @@
 		$('#actions').prop('disabled', !$('.data-table :checked').length)
 	}).first().trigger('change')
 
-
 	$('#translator-tool select').on('change', function(e) {
 
-		var $modal = $(this).closest('.featherlight'),
+		var $modal = $(this).closest('.litebox'),
 			from_language_code = $modal.find('select[name="from_language_code"]').val(),
 			to_language_code = $modal.find('select[name="to_language_code"]').val(),
 			translations = []
@@ -487,7 +483,7 @@
 	})
 
 	$('#translator-tool button[name="prefill_fields"]').on('click', function() {
-		var $modal = $(this).closest('.featherlight'),
+		var $modal = $(this).closest('.litebox'),
 			 translated = $modal.find(':input[name="result"]').val().trim()
 
 		translated = translated.split(/\n(?=\[[0-9]+\])/)
@@ -506,6 +502,6 @@
 			$(':input[name$="[text_'+ $modal.find('select[name="to_language_code"]').val() +']"]:eq('+ index +')').val(translation).css('border', '1px solid #f00')
 		})
 
-		$.featherlight.close()
+		$.litebox.close()
 	})
 </script>

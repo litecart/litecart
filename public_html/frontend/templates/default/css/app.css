@@ -684,14 +684,11 @@ body main {
   line-height: 1.2;
 }
 @media (min-width: 576px) {
-  .listing .product .actions:hover {
+  .listing .product:hover .actions {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
   }
-}
-.listing .product.columns .short-description {
-  display: none;
 }
 .listing .product.rows .link {
   flex-direction: row;
@@ -731,6 +728,9 @@ body main {
   .listing .product.rows .description {
     margin-top: 1rem;
   }
+}
+.listing.products.columns .product .short-description {
+  display: none;
 }
 [data-toggle="momentumScroll"] {
   position: relative;

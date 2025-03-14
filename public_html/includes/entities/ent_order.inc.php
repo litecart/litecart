@@ -138,7 +138,6 @@
 				return $item;
 			});
 
-
 			$this->data['comments'] = database::query(
 				"select oc.*, a.username as author_username from ". DB_TABLE_PREFIX ."orders_comments oc
 				left join ". DB_TABLE_PREFIX ."administrators a on (a.id = oc.author_id)
@@ -639,14 +638,13 @@
 				}
 
 				if (empty($this->data['customer']['id'])) {
-					$customer_query = database::query(
+
+					if (!database::query(
 						"select id from ". DB_TABLE_PREFIX ."customers
 						where email = '". database::input($this->data['customer']['email']) ."'
 						and status = 0
 						limit 1;"
-					);
-
-					if (database::num_rows($customer_query)) {
+					)->num_rows) {
 						throw new Exception(language::translate('error_customer_account_is_disabled', 'The customer account is disabled'));
 					}
 				}

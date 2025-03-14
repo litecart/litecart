@@ -356,7 +356,6 @@
 
 			<div class="grid">
 
-
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_system_locale', 'System Locale'); ?></div>
@@ -370,7 +369,6 @@
 						<?php echo functions::form_select_mysql_collation('mysql_collation', true); ?>
 					</label>
 				</div>
-
 
 			</div>
 

@@ -152,6 +152,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									<?php } ?>
 
 									<div class="grid" style="margin-bottom: 0;">
+
 										<div class="col-xl-8">
 											<?php if (!settings::get('catalog_only_mode')) { ?>
 											<label class="form-group">
@@ -171,7 +172,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 										</div>
 
 										<div class="col-xl-4">
-
+											<br>
 											<?php echo functions::draw_price_tag($regular_price, $final_price, $recommended_price); ?>
 
 											<?php if ($tax_class_id) { ?>
@@ -185,7 +186,6 @@ form[name="buy_now_form"] .dropdown-menu .image {
 											</div>
 											<?php } ?>
 											<?php } ?>
-
 										</div>
 									</div>
 

@@ -256,7 +256,6 @@ body {
   }
 }
 
-
 #site-footer {
   background: var(--footer-background);
   color: var(--footer-text-color);
@@ -816,21 +815,15 @@ body {
         aspect-ratio: 1 / 1;
         line-height: 1.2;
       }
-
-      @media (min-width: 576px) {
-        &:hover {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5em;
-        }
-      }
     }
 
-    &.columns {
-      .short-description {
-        display: none;
-      }
-    }
+		@media (min-width: 576px) {
+			&:hover .actions {
+				display: flex;
+				flex-direction: column;
+				gap: 0.5em;
+			}
+		}
 
     &.rows {
       .link {
@@ -877,6 +870,11 @@ body {
       }
     }
   }
+	&.products.columns {
+		.product .short-description {
+			display: none;
+		}
+	}
 }
 
 [data-toggle="momentumScroll"] {

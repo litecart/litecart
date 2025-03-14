@@ -72,8 +72,6 @@
 
 	breadcrumbs::add($product->name, document::ilink('product', ['product_id' => $product->id], ['category_id', 'brand_id']));
 
-	functions::draw_lightbox();
-
 	// Recently viewed products
 	if (isset(session::$data['recently_viewed_products'][$product->id])) {
 		unset(session::$data['recently_viewed_products'][$product->id]);

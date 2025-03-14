@@ -2,12 +2,19 @@
 
 	if (!empty($_GET['page_id'])) {
 		$page = new ent_page($_GET['page_id']);
+
 	} else {
 		$page = new ent_page();
 	}
 
 	if (!$_POST) {
 		$_POST = $page->data;
+
+		if ($page->data['dock']) {
+			$_POST['parent'] = $page->data['dock'] .':'. $page->data['parent_id'];
+		} else {
+			$_POST['parent'] = '';
+		}
 	}
 
 	document::$title[] = !empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page');
@@ -20,10 +27,14 @@
 		try {
 
 			if (empty($_POST['title'])) {
-				throw new Exception(language::translate('error_missing_title', 'You must enter a title.'));
+				throw new Exception(language::translate('error_missing_title', 'You must enter a title'));
 			}
 
-			if (empty($_POST['status'])) $_POST['status'] = 0;
+			if (empty($_POST['status'])) {
+				$_POST['status'] = 0;
+			}
+
+			list($page->data['dock'], $page->data['parent_id']) = preg_split('#:#', $_POST['parent'], $matches, 2, PREG_SPLIT_NO_EMPTY);
 
 			foreach ([
 				'status',
@@ -66,6 +77,7 @@
 			notices::add('errors', $e->getMessage());
 		}
 	}
+
 ?>
 <div class="card">
 	<div class="card-header">
@@ -81,32 +93,23 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
-						<?php echo functions::form_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
-					</label>
-				</div>
-				<div class="col-md-6">
-					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_priority', 'Priority'); ?></div>
-						<?php echo functions::form_input_number('priority', true); ?>
+						<?php echo functions::form_toggle('status', 'e/d', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<div class="grid">
-				<div class="col-md-6">
+				<div class="col-md-8">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_dock', 'Dock'); ?></div>
-						<div>
-							<?php echo functions::form_radio_button('dock', ['menu', language::translate('text_dock_in_site_navigation_menu', 'Dock in site navigation menu')], true); ?>
-							<?php echo functions::form_radio_button('dock', ['information', language::translate('text_dock_in_information', 'Dock in information')], true); ?>
-						</div>
+						<div class="form-label"><?php echo language::translate('title_parent', 'Parent'); ?></div>
+						<?php echo functions::form_select_parent_page('parent', true); ?>
 					</label>
 				</div>
 
-				<div class="col-md-6">
+				<div class="col-md-4">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_parent', 'Parent'); ?></div>
-						<?php echo functions::form_select_page('parent_id', true); ?>
+						<div class="form-label"><?php echo language::translate('title_priority', 'Priority'); ?></div>
+						<?php echo functions::form_input_number('priority', true); ?>
 					</label>
 				</div>
 			</div>

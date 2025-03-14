@@ -32,7 +32,6 @@
 								</div>
 								<?php } ?>
 
-
 								<?php if (settings::get('customer_field_company')) { ?>
 								<div class="col-sm-6">
 									<label class="form-group">

@@ -31,8 +31,6 @@
 	breadcrumbs::add(language::translate('title_search_results', 'Search Results'), document::ilink('search'));
 	breadcrumbs::add(!empty($_GET['query']) ? strip_tags($_GET['query']) : language::translate('title_all_products', 'All Products'), document::ilink());
 
-	functions::draw_lightbox();
-
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/search_results.inc.php');
 
 	$_page->snippets = [

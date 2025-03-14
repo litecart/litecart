@@ -24,8 +24,6 @@
 		exit;
 	}
 
-	functions::draw_lightbox();
-
 	$brand = reference::brand($_GET['brand_id']);
 
 	if (!$brand->id) {

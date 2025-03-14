@@ -18,12 +18,11 @@
 
 		try {
 
-
 			if (empty($_REQUEST['email'])) {
 				throw new Exception(language::translate('error_must_provide_email_address', 'You must provide an email address'));
 			}
 
-			$customer_query = database::query(
+			$customer = database::query(
 				"select * from ". DB_TABLE_PREFIX ."customers
 				where email = '". database::input($_REQUEST['email']) ."'
 				limit 1;"

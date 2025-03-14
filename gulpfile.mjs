@@ -29,10 +29,13 @@ const banner = [
 
 gulp.task('less-framework', function() {
 
-  return gulp
-    .src(['public_html/assets/litecore/less/*.less'])
+  return gulp.src(['public_html/assets/litecore/less/*.less'])
     .pipe(sourcemaps.init())
     .pipe(less())
+    .on('error', function (err) {
+      console.error('LESS Error:', err.message);
+      this.emit('end'); // Prevents Gulp from stopping
+    })
     .pipe(gulp.dest('public_html/assets/litecore/css/', { overwrite: true }))
     .pipe(cleancss())
     .pipe(header(banner, { pkg: packageData }))
@@ -58,16 +61,22 @@ gulp.task('js-framework', function() {
 // Compile LESS files
 gulp.task('less-backend', function() {
 
-  gulp
-    .src('public_html/backend/template/less/vari*bles.less') // non-globstar pattern will fail on some windows paths
+  gulp.src('public_html/backend/template/less/vari*bles.less') // non-globstar pattern will fail on some windows paths
     .pipe(less())
+    .on('error', function (err) {
+      console.error('LESS Error:', err.message);
+      this.emit('end'); // Prevents Gulp from stopping
+    })
     .pipe(header(banner, { pkg: packageData }))
     .pipe(gulp.dest('public_html/backend/template/css/', { overwrite: true }))
 
-  return gulp
-    .src(['public_html/backend/template/less/*.less', '!public_html/backend/template/less/vari*bles.less'])
+  return gulp.src(['public_html/backend/template/less/*.less', '!public_html/backend/template/less/vari*bles.less'])
     .pipe(sourcemaps.init())
     .pipe(less())
+    .on('error', function (err) {
+      console.error('LESS Error:', err.message);
+      this.emit('end'); // Prevents Gulp from stopping
+    })
     .pipe(header(banner, { pkg: packageData }))
     .pipe(cleancss())
     .pipe(rename({ extname: '.min.css' }))
@@ -91,16 +100,22 @@ gulp.task('js-backend', function() {
 
 gulp.task('less-frontend', function() {
 
-  gulp
-    .src('public_html/frontend/templates/default/less/vari*bles.less') // non-globstar pattern will fail on some windows paths
+  gulp.src('public_html/frontend/templates/default/less/vari*bles.less') // non-globstar pattern will fail on some windows paths
     .pipe(less())
+    .on('error', function (err) {
+      console.error('LESS Error:', err.message);
+      this.emit('end'); // Prevents Gulp from stopping
+    })
     .pipe(header(banner, { pkg: packageData }))
     .pipe(gulp.dest('public_html/frontend/templates/default/css/', { overwrite: true }))
 
-  return gulp
-    .src(['public_html/frontend/templates/default/less/*.less', '!public_html/frontend/templates/default/less/variables*.less'])
+  return gulp.src(['public_html/frontend/templates/default/less/*.less', '!public_html/frontend/templates/default/less/variables*.less'])
     .pipe(sourcemaps.init())
     .pipe(less())
+    .on('error', function (err) {
+      console.error('LESS Error:', err.message);
+      this.emit('end'); // Prevents Gulp from stopping
+    })
     .pipe(gulp.dest('public_html/frontend/templates/default/css/', { overwrite: true }))
     .pipe(cleancss())
     .pipe(header(banner, { pkg: packageData }))
@@ -110,8 +125,7 @@ gulp.task('less-frontend', function() {
 })
 
 gulp.task('js-frontend', function() {
-  return gulp
-    .src('public_html/frontend/templates/default/js/components/*.js')
+  return gulp.src('public_html/frontend/templates/default/js/components/*.js')
     .pipe(concat('app.js', {'newLine': '\r\n\r\n'}))
     .pipe(header(banner, { pkg: packageData }))
     .pipe(gulp.dest('public_html/frontend/templates/default/js/', { overwrite: true }))
@@ -124,8 +138,7 @@ gulp.task('js-frontend', function() {
 
 // Task to compile and minify Chartist SCSS
 gulp.task('sass-chartist', function() {
-  return gulp
-    .src('public_html/assets/chartist/chartist.scss', { allowEmpty: true })
+  return gulp.src('public_html/assets/chartist/chartist.scss', { allowEmpty: true })
     .pipe(sass().on('error', sass.logError))
     //.pipe(gulp.dest('public_html/assets/chartist/', { overwrite: true }))
     .pipe(sourcemaps.write('.', { includeContent: false }))
@@ -139,7 +152,8 @@ gulp.task('sass-chartist', function() {
 gulp.task('sass-trumbowyg', function() {
   return gulp
     .src('public_html/assets/trumbowyg/ui/*.scss')
-    .pipe(sass().on('error', sass.logError))
+	.pipe(sass({ silenceDeprecations: ['legacy-js-api'] })
+    .on('error', sass.logError))
     //.pipe(gulp.dest('public_html/assets/trumbowyg/ui/'))
     .pipe(sourcemaps.write('.', { includeContent: false }))
     .pipe(cleancss())
@@ -218,6 +232,4 @@ gulp.task('build', gulp.series(
   'watch',
 ))
 
-gulp.task('default', gulp.series(
-  'build',
-))
+gulp.task('default', gulp.series('build'))

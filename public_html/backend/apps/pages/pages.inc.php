@@ -107,7 +107,6 @@ table tbody .toggle {
 }
 </style>
 
-
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
@@ -159,7 +158,7 @@ table tbody .toggle {
 				from ". DB_TABLE_PREFIX ."pages
 			) p2 on (p2.id = p.id)
 			where p.id
-			". (empty($_GET['query']) ? "and parent_id = 0" : "") ."
+			". (empty($_GET['query']) ? "and !parent_id" : "") ."
 			". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
 			". (!empty($_GET['dock']) ? "and find_in_set('". database::input($_GET['dock']) ."', p.dock)" : "") ."
 			order by p.priority, pi.title;"
@@ -193,12 +192,12 @@ table tbody .toggle {
 					select parent_id as id, count(id) as num_subpages
 					from ". DB_TABLE_PREFIX ."pages
 				) p2 on (p2.id = p.id)
-				where p.parent_id = ". (int)$parent_id ."
-				". ((!empty($_GET['dock']) && empty($depth)) ? "and find_in_set('". database::input($_GET['dock']) ."', p.dock)" : "") ."
+				where ". ($parent_id ? "p.parent_id = ". (int)$parent_id : "p.parent_id is null") ."
+				". ((!empty($_GET['dock']) && empty($depth)) ? "and p.dock = '". database::input($_GET['dock']) ."'" : "") ."
 				order by p.priority, pi.title;"
 			);
 
-			if (empty($parent_id)) {
+			if ($parent_id) {
 				if ($_GET['page'] > 1) database::seek($pages_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 				$num_rows = database::num_rows($pages_query);
 			}
@@ -245,7 +244,7 @@ table tbody .toggle {
 		};
 
 		$num_rows = database::query("select id from ". DB_TABLE_PREFIX ."pages;")->num_rows;
-		$num_root_rows = database::query("select id from ". DB_TABLE_PREFIX ."pages where parent_id = 0;")->num_rows;
+		$num_root_rows = database::query("select id from ". DB_TABLE_PREFIX ."pages where parent_id is null;")->num_rows;
 		$num_pages = $num_root_rows / settings::get('data_table_rows_per_page');
 		$iterator(0, 0);
 	}
@@ -284,7 +283,6 @@ table tbody .toggle {
 		</div>
 
 	<?php echo functions::form_end(); ?>
-
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">

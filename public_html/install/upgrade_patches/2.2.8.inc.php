@@ -1,13 +1,12 @@
 <?php
 
 	// Adjust tables
-	$columns_query = database::query(
+	database::query(
 		"select * from information_schema.COLUMNS
 		where TABLE_SCHEMA = '". DB_DATABASE ."'
 		and TABLE_NAME like '". DB_TABLE_PREFIX ."%';"
-	);
+	)->each(function($column){
 
-	while ($column = database::fetch($columns_query)) {
 		switch ($column['COLUMN_NAME']) {
 			case 'id':
 				database::query(
@@ -84,7 +83,7 @@
 
 				break;
 		}
-	}
+	});
 
 	// Set language url type
 	$seo_links_language_prefix = database::query(

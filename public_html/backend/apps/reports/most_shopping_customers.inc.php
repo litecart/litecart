@@ -40,9 +40,6 @@
 		$_GET['date_to'] = date('Y-m-d');
 	}
 
-	// Table Rows
-	$customers = [];
-
 	$customers_query = database::query(
 		"select
 			sum(o.total - total_tax) as total_amount,
@@ -60,30 +57,19 @@
 		order by total_amount desc;"
 	);
 
-	if (!isset($_GET['download']) && $_GET['page'] > 1) {
-		database::seek($customers_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-	}
-
-	$page_items = 0;
-	while ($customer = database::fetch($customers_query)) {
-		$customers[] = $customer;
-		if (!isset($_GET['download']) && ++$page_items == settings::get('data_table_rows_per_page')) break;
-	}
-
 	if (isset($_GET['download'])) {
+		$customers = $customers_query->fetch_all();
+
 		header('Content-Type: application/csv; charset='. mb_http_output());
 		header('Content-Disposition: filename="most_shopping_customers_'. date('Ymd', strtotime($_GET['date_from'])) .'-'. date('Ymd', strtotime($_GET['date_to'])) .'.csv"');
 		echo functions::csv_encode($customers);
 		exit;
+
+	} else {
+		$customers = $customers_query->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 	}
 
-	// Number of Rows
-	$num_rows = database::num_rows($customers_query);
-
-	// Pagination
-	$num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
-
 <style>
 form[name="filter_form"] li {
 	vertical-align: middle;

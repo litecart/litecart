@@ -89,27 +89,29 @@
 
 			foreach (array_keys(language::$languages) as $language_code) {
 
-				$quantity_unit_info_query = database::query(
+				$info = database::query(
 					"select * from ". DB_TABLE_PREFIX ."quantity_units_info
 					where quantity_unit_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language_code) ."'
 					limit 1;"
-				);
+				)->fetch();
 
-				if (!$quantity_unit_info = database::fetch($quantity_unit_info_query)) {
+				if (!$info) {
+
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."quantity_units_info
 						(quantity_unit_id, language_code)
 						values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
 					);
-					$quantity_unit_info['id'] = database::insert_id();
+
+					$info['id'] = database::insert_id();
 				}
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."quantity_units_info
 					set name = '". database::input($this->data['name'][$language_code]) ."',
 						description = '". database::input($this->data['description'][$language_code]) ."'
-					where id = ". (int)$quantity_unit_info['id'] ."
+					where id = ". (int)$info['id'] ."
 					and quantity_unit_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language_code) ."'
 					limit 1;"

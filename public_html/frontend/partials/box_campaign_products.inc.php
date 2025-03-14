@@ -25,6 +25,4 @@
 
 	if (!$box_campaign_products->snippets['products']) return;
 
-	functions::draw_lightbox();
-
 	echo $box_campaign_products->render();

@@ -72,7 +72,6 @@
 		order by sku, name;"
 	)->fetch_all();
 
-	functions::draw_lightbox();
 ?>
 
 <div class="card">

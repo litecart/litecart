@@ -43,7 +43,7 @@
 <script>
 	$('form[name="newsletter_subscribe_form"]').submit(function(e){
 		e.preventDefault()
-		$.featherlight('<?php echo document::ilink('newsletter'); ?>?email='+ $(this).find('input[name="email"]').val() +' #box-newsletter-subscribe', {
+		$.litebox('<?php echo document::ilink('newsletter'); ?>?email='+ $(this).find('input[name="email"]').val() +' #box-newsletter-subscribe', {
 			"seamless": true,
 			"width": "640px"
 		})

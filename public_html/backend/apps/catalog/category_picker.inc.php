@@ -29,19 +29,23 @@
 		</button>
 
 		<nav class="pills" style="margin-bottom: 1em;">
-			<a class="nav-link" href="<?php echo document::href_ilink(null, ['parent_id' => 0]); ?>" data-id="0">
+
+			<a class="pill" href="<?php echo document::href_ilink(null, ['parent_id' => 0]); ?>" data-id="0">
 				<?php echo language::translate('title_root', 'Root'); ?>
 			</a>
+
 			<?php foreach ($breadcrumbs as $category) { ?>
-			<a class="nav-link" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']]); ?>" data-id="<?php echo $category['id']; ?>">
+			<a class="pill" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']]); ?>" data-id="<?php echo $category['id']; ?>">
 				<?php echo $category['name']; ?>
 			</a>
 			<?php } ?>
+
 		</nav>
 
 		<nav class="pills">
+
 			<?php if (!empty($_GET['parent_id'])) { ?>
-			<a class="nav-link" href="<?php echo document::href_ilink(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id]); ?>">
+			<a class="pill" href="<?php echo document::href_ilink(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id]); ?>">
 				<?php echo functions::draw_fonticon('icon-arrow-left'); ?> <?php echo language::translate('title_back', 'Back'); ?>
 			</a>
 			<?php } ?>
@@ -64,12 +68,12 @@
 	})
 
 	$('#modal-category-picker').on('click', 'button[name="select"]', function() {
-		let field = $.featherlight.current().$currentTarget.closest('.input-group'),
+		let field = $.litebox.current().$currentTarget.closest('.input-group'),
 			id = $(this).data('id'), name = $(this).data('name')
 
 		$(field).find(':input').val(id).trigger('change')
 		$(field).find('.name').text(name)
 		$(field).find('a').attr('href', $(field).find('a').attr('href').replace(/(parent_id)=\d*/, '$1='+id))
-		$.featherlight.close()
+		$.litebox.close()
 	})
 </script>

@@ -74,11 +74,9 @@
 		],
 	], 'abort');
 
-	$products_query =  database::query(
+	database::query(
 		"select id, categories from ". DB_TABLE_PREFIX ."products;"
-	);
-
-	while ($product = database::fetch($products_query)) {
+	)->each(function($product){
 		$categories = explode( ',', $product['categories']);
 
 		$is_first = true;
@@ -98,7 +96,7 @@
 			);
 			$is_first = false;
 		}
-	}
+	});
 
 	database::query(
 		"alter table ". DB_TABLE_PREFIX ."products drop `categories`;"

@@ -17,13 +17,11 @@
 
       $this->data = [];
 
-      $fields_query = database::query(
+      database::query(
         "show fields from ". DB_TABLE_PREFIX ."site_tags;"
-      );
-
-      while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = database::create_variable($field['Type']);
-      }
+      )->each(function($field) {
+				$this->data[$field['Field']] = database::create_variable($field['Type']);
+			});
 
       $this->previous = $this->data;
     }
@@ -36,13 +34,13 @@
 
       $this->reset();
 
-      $site_tag_query = database::query(
+      $site_tag = database::query(
         "select * from ". DB_TABLE_PREFIX ."site_tags
         where id = ". (int)$site_tag_id ."
         limit 1;"
-      );
+      )->fetch();
 
-      if ($site_tag = database::fetch($site_tag_query)) {
+      if ($site_tag) {
         $this->data = array_replace($this->data, array_intersect_key($site_tag, $this->data));
       } else {
         throw new Exception('Could not find site tag (ID: '. (int)$site_tag_id .') in database.');
@@ -53,12 +51,14 @@
 
     public function save() {
 
-      if (empty($this->data['id'])) {
+      if (!$this->data['id']) {
+
         database::query(
           "insert into ". DB_TABLE_PREFIX ."site_tags
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
+
         $this->data['id'] = database::insert_id();
       }
 

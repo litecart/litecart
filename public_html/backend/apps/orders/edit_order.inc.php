@@ -351,8 +351,6 @@
 		}
 	}
 
-	functions::draw_lightbox();
-
 	$account_name = '('. language::translate('title_guest', 'Guest') .')';
 	if (!empty($_POST['customer']['id'])) {
 		$customer = reference::customer((int)$_POST['customer']['id']);
@@ -501,7 +499,7 @@
 						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_currency_value', 'Currency Value'); ?></div>
-								<?php echo functions::form_input_decimal('currency_value', true, 6); ?>
+								<?php echo functions::form_input_decimal('currency_value', true, 4); ?>
 							</label>
 						</div>
 					</div>
@@ -1225,7 +1223,7 @@
 
 		<div class="card-action">
 			<?php echo functions::form_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
-			<?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
+			<?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel'); ?>
 		</div>
 	</div>
 </div>
@@ -1314,7 +1312,7 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_quantity', 'Quantity'); ?></div>
 							<div class="input-group">
-								<?php echo functions::form_input_decimal('quantity', true, 2); ?>
+								<?php echo functions::form_input_decimal('quantity', true); ?>
 								<?php echo functions::form_select_quantity_unit('quantity_unit_id', true); ?>
 							</div>
 						</label>
@@ -1372,7 +1370,7 @@
 
 		<div class="card-action">
 			<?php echo functions::form_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
-			<?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
+			<?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel'); ?>
 		</div>
 	</div>
 </div>
@@ -1734,7 +1732,7 @@
 			$modal.find(':input[name="'+field+'"]').val(value)
 		})
 
-		$.featherlight($modal)
+		$.litebox($modal)
 	})
 
 	// Callback handler for product picker modal
@@ -1764,7 +1762,7 @@
 		let url = '<?php echo document::ilink(__APP__.'/add_product'); ?>?' + $.param(params)
 
 		$.get(url, function(content) {
-			$('.featherlight-modal').html(content)
+			$('.litebox-modal').html(content)
 		}, 'html')
 	}
 
@@ -1774,10 +1772,10 @@
 
 		].join('\n'))
 
-			//$.featherlight($('<div>hello</div>'))
-		$.featherlight('#modal-edit-line-item')
+			//$.litebox($('<div>hello</div>'))
+		$.litebox('#modal-edit-line-item')
 
-		let modal = $('.featherlight.active'),
+		let modal = $('.litebox.active'),
 				row = $(this).closest('tr')
 
 		$(modal).data('row', '')
@@ -1822,7 +1820,7 @@
 
 	$('#modal-edit-line-item button[name="ok"]').on('click', function(e) {
 
-		let $modal = $('.featherlight.active')
+		let $modal = $('.litebox.active')
 		let $row = $(modal).data('row')
 
 		if (!$row) {
@@ -1854,7 +1852,7 @@
 				'    <td class="grabbable">',
 				'      <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>',
 				'    </td>',
-				'    <td><?php echo functions::escape_js(functions::form_input_decimal('items[new_item_index][quantity]', '', 2)); ?></td>',
+				'    <td><?php echo functions::escape_js(functions::form_input_decimal('items[new_item_index][quantity]', '')); ?></td>',
 				'    <td><?php echo functions::escape_js(functions::form_input_money('items[new_item_index][price]', $_POST['currency_code'], '')); ?></td>',
 				'    <td><?php echo functions::escape_js(functions::form_input_money('items[new_item_index][discount]', $_POST['currency_code'], '')); ?></td>',
 				'    <td class="sum"><?php echo currency::format(0, true, $_POST['currency_code'], $_POST['currency_value']); ?></td>',
@@ -1881,7 +1879,7 @@
 
 		refresh_total()
 
-		$.featherlight.close()
+		$.litebox.close()
 	})
 
 	// Order Total

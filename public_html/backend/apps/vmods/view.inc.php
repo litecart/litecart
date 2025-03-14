@@ -92,7 +92,6 @@ pre {
 						<pre><code><?php echo functions::escape_html($operation->find); ?></code></pre>
 					</div>
 
-
 					<div class="insert">
 <?php
 	switch($operation->insert->attributes()['position']) {

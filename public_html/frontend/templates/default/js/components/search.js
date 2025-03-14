@@ -50,7 +50,7 @@
 
 						let $item = $([
 							'<li class="dropdown-menu-item"><a class="dropdown-menu-link" href="'+ category.link.escapeAttr() +'">',
-							'  <img src="'+ less-featherlight.thumbnail.escapeAttr() +'" style="height: 1em;"> ' + category.name.escapeAttr(),
+							'  <img src="'+ product.thumbnail.escapeAttr() +'" style="height: 1em;"> ' + category.name.escapeAttr(),
 							'</a></li>',
 						].join('\n'))
 

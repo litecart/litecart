@@ -24,9 +24,6 @@
 		$_GET['date_to'] = date('Y-m-d');
 	}
 
-	// Table Rows
-	$rows = [];
-
 	$order_items_query = database::query(
 		"select
 			oi.product_id,
@@ -53,28 +50,18 @@
 		order by total_quantity desc;"
 	);
 
-	if (!isset($_GET['download']) && $_GET['page'] > 1) {
-		database::seek($order_items_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-	}
-
-	$page_items = 0;
-	while ($order_item = database::fetch($order_items_query)) {
-		$rows[] = $order_item;
-		if (!isset($_GET['download']) && ++$page_items == settings::get('data_table_rows_per_page')) break;
-	}
-
 	if (isset($_GET['download'])) {
+		$rows = $order_items_query->fetch_all();
+
 		header('Content-Type: application/csv; charset='. mb_http_output());
 		header('Content-Disposition: filename="most_sold_products_'. date('Ymd', strtotime($_GET['date_from'])) .'-'. date('Ymd', strtotime($_GET['date_to'])) .'.csv"');
 		echo functions::csv_encode($rows);
 		exit;
+
+	} else {
+		$rows = $order_items_query->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 	}
 
-	// Number of Rows
-	$num_rows = database::num_rows($order_items_query);
-
-	// Pagination
-	$num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 
 <style>

@@ -609,7 +609,6 @@
 			$('input[name="phone"]').removeAttr('placeholder')
 		}
 
-
 		$.ajax({
 			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
@@ -645,7 +644,6 @@
 		} else {
 			$('input[name="shipping_address[phone]"]').removeAttr('placeholder')
 		}
-
 
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),

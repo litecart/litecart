@@ -21,16 +21,15 @@
 	}
 
 	// Recalculate total quantity in case of inconsistent stock options quantity from bug in 2.3.2
-	$products_query = database::query(
+	database::query(
 		"SELECT product_id as id, sum(quantity) as quantity
 		FROM ". DB_TABLE_PREFIX ."products_options_stock
 		GROUP BY product_id;"
-	);
-
-	while ($product = database::fetch($products_query)) {
+	)->each(function($product) {
 		database::query(
 			"UPDATE ". DB_TABLE_PREFIX ."products
 			SET quantity = ". (float)$product['quantity'] ."
 			WHERE ID = ". (int)$product['id'] .";"
 		);
-	}
+	});
+

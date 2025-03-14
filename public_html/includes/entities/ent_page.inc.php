@@ -99,20 +99,21 @@
 
 			foreach (array_keys(language::$languages) as $language_code) {
 
-				$page_info_query = database::query(
+				$info = database::query(
 					"select * from ". DB_TABLE_PREFIX ."pages_info
 					where page_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language_code) ."'
 					limit 1;"
-				);
+				)->fetch();
 
-				if (!$page_info = database::fetch($page_info_query)) {
+				if (!$info) {
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."pages_info
 						(page_id, language_code)
 						values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
 					);
-					$page_info['id'] = database::insert_id();
+
+					$info['id'] = database::insert_id();
 				}
 
 				database::query(
@@ -121,7 +122,7 @@
 						content = '". database::input($this->data['content'][$language_code], true) ."',
 						head_title = '". database::input($this->data['head_title'][$language_code]) ."',
 						meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
-					where id = ". (int)$page_info['id'] ."
+					where id = ". (int)$info['id'] ."
 					and page_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language_code) ."'
 					limit 1;"

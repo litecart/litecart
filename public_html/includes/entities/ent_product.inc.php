@@ -252,19 +252,22 @@
 
 			// Info
 			foreach (array_keys(language::$languages) as $language_code) {
-				$products_info_query = database::query(
+
+				$info = database::query(
 					"select * from ". DB_TABLE_PREFIX ."products_info
 					where product_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language_code) ."'
 					limit 1;"
-				);
+				)->fetch();
 
-				if (!$product_info = database::fetch($products_info_query)) {
+				if (!$info) {
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."products_info
 						(product_id, language_code)
 						values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
 					);
+
+					$info['id'] = database::insert_id();
 				}
 
 				database::query(
@@ -276,7 +279,8 @@
 						synonyms = '". database::input($this->data['synonyms'][$language_code]) ."',
 						head_title = '". database::input($this->data['head_title'][$language_code]) ."',
 						meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
-					where product_id = ". (int)$this->data['id'] ."
+					where id = ". (int)$info['id'] ."
+					product_id = ". (int)$this->data['id'] ."
 					and language_code = '". database::input($language_code) ."'
 					limit 1;"
 				);

@@ -94,7 +94,7 @@
 			);
 		}
 
-		$categories_query = database::query(
+		$query = (
 			"select c.id, c.parent_id, c.image, ci.name, ci.short_description, c.priority, c.date_updated,
 			(". implode(" + ", $sql_select_relevance) .") as relevance
 
@@ -125,7 +125,7 @@
 			". (!empty($filter['limit']) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") .";"
 		);
 
-		return $categories_query;
+		return database::query($query);
 	}
 
 	// Filter function using AND syntax
