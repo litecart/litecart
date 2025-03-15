@@ -73,29 +73,26 @@ ErrorDocument 500 "Internal Server Error"
 	RewriteRule ^ index.php [QSA,L]
 </IfModule>
 
-# Deny access to content
-<FilesMatch "\.(htaccess|htpasswd|inc\.php)$">
-	<IfModule mod_authz_core.c>
-		Require all denied
-	</IfModule>
+# Deny access to specific files
+<FilesMatch "((^|/)\.)|inc\.php)$">
+	Require all denied
 </FilesMatch>
 
-# Cacheable external content
+# Cacheable static content
 <IfModule mod_headers.c>
-	<FilesMatch "\.(a?png|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">
 	<FilesMatch "\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">
 		Header set Cache-Control "max-age=604800, public, must-revalidate"
 	</FilesMatch>
 </IfModule>
 
-# GZip compress external content
+# Compress static content
 <IfModule mod_deflate.c>
 	<FilesMatch "\.(css|js|svg)$">
 		SetOutputFilter DEFLATE
 	</FilesMatch>
 </IfModule>
 
-# Prevent robots from indexing this site
+# Prevent robots from indexing this entire site
 #<IfModule mod_headers.c>
 #  Header set X-Robots-Tag "noindex, nofollow"
 #</IfModule>

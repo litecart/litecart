@@ -100,7 +100,7 @@
 								exit;
 							}
 
-							$results[] = file_put_contents($file, $contents);
+							$results[] = $result;
 						}
 					}
 				}

@@ -15,7 +15,6 @@
 
 	// Web System
 	define('WS_DIR_APP',         preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP));
-	define('WS_DIR_STORAGE',     WS_DIR_APP);
 	define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');
 	define('WS_DIR_STORAGE',     WS_DIR_APP . '{STORAGE_FOLDER}/');
 

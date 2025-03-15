@@ -216,8 +216,7 @@ CHANGE COLUMN `iso_code_1` `iso_code_1` CHAR(3) NOT NULL DEFAULT '',
 CHANGE COLUMN `iso_code_2` `iso_code_2` CHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `iso_code_3` `iso_code_3` CHAR(3) NOT NULL DEFAULT '',
 CHANGE COLUMN `postcode_format` `postcode_format` VARCHAR(255) NOT NULL DEFAULT '',
-CHANGE COLUMN `postcode_required` `postcode_required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-ADD UNIQUE INDEX `iso_code_1` (`iso_code_1`);
+CHANGE COLUMN `postcode_required` `postcode_required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
 -- -----
 ALTER TABLE `lc_currencies`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -252,7 +251,6 @@ CHANGE COLUMN `shipping_city` `shipping_city` VARCHAR(32) NOT NULL DEFAULT '',
 CHANGE COLUMN `shipping_country_code` `shipping_country_code` CHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `shipping_zone_code` `shipping_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
 CHANGE COLUMN `shipping_phone` `shipping_phone` VARCHAR(16) NOT NULL DEFAULT '',
-CHANGE COLUMN `shipping_email` `shipping_email` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `login_attempts` `login_attempts` INT(11) NOT NULL DEFAULT '0',
 CHANGE COLUMN `total_logins` `total_logins` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
@@ -585,7 +583,6 @@ CREATE TABLE `lc_stock_items_info` (
 	INDEX `stock_option_id` (`stock_item_id`) USING BTREE,
 	INDEX `language_code` (`language_code`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_third_parties` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -674,6 +671,11 @@ INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`
 INSERT INTO `lc_customer_groups` (`id`, `type`, `name`, `description`, `date_updated`, `date_created`)
 VALUES (NULL, 'retail', 'Default', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
+INSERT INTO `lc_orders_items`
+(order_id, sku, name, quantity, price, tax_rate)
+SELECT order_id, module_id, `title`, 1, amount, ROUND(tax / `value` * 100, 2) from `lc_orders_totals`
+WHERE calculate
+ORDER BY order_id, priority;
 -- -----
 INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES
 ('social_media', 'Social Media', 'Social media related settings.', 30);
@@ -958,7 +960,7 @@ DELETE FROM `lc_modules`
 WHERE `module_id` = 'ot_subtotal'
 LIMIT 1;
 -- -----
-/* Cleanup before foreign keys */
+/* Cleanup orphans - as we will assign foreign keys */
 DELETE FROM `lc_attribute_groups_info`
 WHERE group_id NOT IN (SELECT id from `lc_attribute_groups`)
 OR language_code NOT IN (SELECT code from `lc_languages`);
@@ -1096,137 +1098,6 @@ WHERE country_code NOT IN (SELECT iso_code_2 from `lc_countries`);
 DELETE FROM `lc_zones_to_geo_zones`
 WHERE geo_zone_id NOT IN (SELECT id from `lc_geo_zones`)
 OR country_code NOT IN (SELECT iso_code_2 from `lc_countries`);
--- -----
-/* Add foreign keys */
-ALTER TABLE `lc_attribute_groups_info`
-ADD CONSTRAINT `attribute_group_info_to_attribute_group` FOREIGN KEY (`group_id`) REFERENCES `lc_attribute_groups` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `attribute_group_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE ;
--- -----
-ALTER TABLE `lc_attribute_values_info`
-ADD CONSTRAINT `attribute_value_info to attribute_value` FOREIGN KEY (`value_id`) REFERENCES `lc_attribute_values` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `attribute_value_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_brands_info`
-ADD CONSTRAINT `brand` FOREIGN KEY (`brand_id`) REFERENCES `lc_brands` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `brand_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_campaigns_products`
-ADD CONSTRAINT `campaign_price_to_campaign` FOREIGN KEY (`campaign_id`) REFERENCES `lc_campaigns` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `campaign_price_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_cart_items`
-ADD CONSTRAINT `cart_item_to_customer` FOREIGN KEY (`customer_id`) REFERENCES `lc_customers` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `cart_item_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `cart_item_to_stock_option` FOREIGN KEY (`stock_option_id`) REFERENCES `lc_products_stock_options` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_categories`
-ADD CONSTRAINT `category_to_parent` FOREIGN KEY (`parent_id`) REFERENCES `lc_categories` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_categories_filters`
-ADD CONSTRAINT `category_filter_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `category_filter_to_attribute_group` FOREIGN KEY (`attribute_group_id`) REFERENCES `lc_attribute_groups` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_categories_images`
-ADD CONSTRAINT `category_image_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_categories_info`
-ADD CONSTRAINT `category_info_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `category_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_customers`
-ADD CONSTRAINT `customer_to_customer_group` FOREIGN KEY (`group_id`) REFERENCES `lc_customer_groups` (`id`) ON UPDATE CASCADE ON DELETE SET NULL;
--- -----
-ALTER TABLE `lc_delivery_statuses_info`
-ADD CONSTRAINT `delivery_status_info_to_delivery_status` FOREIGN KEY (`delivery_status_id`) REFERENCES `lc_delivery_statuses` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `delivery_status_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_orders`
-ADD CONSTRAINT `order_to_customer` FOREIGN KEY (`customer_id`) REFERENCES `lc_customers` (`id`) ON UPDATE CASCADE ON DELETE SET NULL,
-ADD CONSTRAINT `order_to_order_status` FOREIGN KEY (`order_status_id`) REFERENCES `lc_order_statuses` (`id`) ON UPDATE CASCADE ON DELETE SET NULL;
--- -----
-ALTER TABLE `lc_orders_comments`
-ADD CONSTRAINT `order_comment_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_orders_items`
-ADD CONSTRAINT `order_item_to_order` FOREIGN KEY (`order_id`) REFERENCES `lc_orders` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `order_item_to_products` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE SET NULL,
-ADD CONSTRAINT `order_item_to_stock_option` FOREIGN KEY (`stock_option_id`) REFERENCES `lc_products_stock_options` (`id`) ON UPDATE CASCADE ON DELETE SET NULL;
--- -----
-ALTER TABLE `lc_order_statuses_info`
-ADD CONSTRAINT `order_status_info_to_order` FOREIGN KEY (`order_status_id`) REFERENCES `lc_order_statuses` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `order_status_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_pages_info`
-ADD CONSTRAINT `page_info_to_page` FOREIGN KEY (`page_id`) REFERENCES `lc_pages` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `page_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_products_attributes`
-ADD CONSTRAINT `product_attribute_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `product_attribute_to_attribute_group` FOREIGN KEY (`group_id`) REFERENCES `lc_attribute_groups` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `product_attribute_to_attribute_value` FOREIGN KEY (`value_id`) REFERENCES `lc_attribute_values` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_products_campaigns`
-ADD CONSTRAINT `product_campaign_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_products_images`
-ADD CONSTRAINT `product_image_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_products_info`
-ADD CONSTRAINT `product_info_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `product_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_products_images`
-ADD CONSTRAINT `product_price_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_products_prices`
-ADD CONSTRAINT `product_price_to_customer_group` FOREIGN KEY (`customer_group_id`) REFERENCES `lc_customer_groups` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_products_to_categories`
-ADD CONSTRAINT `product_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `product_to_category` FOREIGN KEY (`category_id`) REFERENCES `lc_categories` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_products_stock_options`
-ADD CONSTRAINT `product_stock_option_to_product` FOREIGN KEY (`product_id`) REFERENCES `lc_products` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
-ADD CONSTRAINT `product_stock_option_to_stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_quantity_units_info`
-ADD CONSTRAINT `quantity_unit_info_to_quantity_unit` FOREIGN KEY (`quantity_unit_id`) REFERENCES `lc_quantity_units` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `quantity_unit_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_sold_out_statuses_info`
-ADD CONSTRAINT `sold_out_status_info_to_sold_out_status` FOREIGN KEY (`sold_out_status_id`) REFERENCES `lc_sold_out_statuses` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `sold_out_status_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_stock_transactions_contents`
-ADD CONSTRAINT `stock_transaction_content_to_transaction` FOREIGN KEY (`transaction_id`) REFERENCES `lc_stock_transactions` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `stock_transaction_content_to_stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE CASCADE ON DELETE SET NULL;
--- -----
-ALTER TABLE `lc_stock_items_info`
-ADD CONSTRAINT `stock_item_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE NO ACTION ON DELETE NO ACTION,
-ADD CONSTRAINT `stock_item_info_to_stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_stock_items_references`
-ADD CONSTRAINT `stock_item` FOREIGN KEY (`stock_item_id`) REFERENCES `lc_stock_items` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
-ADD CONSTRAINT `supplier` FOREIGN KEY (`supplier_id`) REFERENCES `lc_suppliers` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_tax_rates`
-ADD CONSTRAINT `tax_rate_to_tax_class` FOREIGN KEY (`tax_class_id`) REFERENCES `lc_tax_classes` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `tax_rate_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc_geo_zones` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
--- -----
-ALTER TABLE `lc_third_parties`
-ADD CONSTRAINT `third_party_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE CASCADE ON DELETE SET NULL;
--- -----
-ALTER TABLE `lc_third_parties_info`
-ADD CONSTRAINT `third_party_info_to_language` FOREIGN KEY (`language_code`) REFERENCES `lc_languages` (`code`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `third_party_info_to_third_party` FOREIGN KEY (`third_party_id`) REFERENCES `lc_third_parties` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
--- -----
-ALTER TABLE `lc_zones`
-ADD CONSTRAINT `zone_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE CASCADE ON DELETE CASCADE;
--- -----
-ALTER TABLE `lc_zones_to_geo_zones`
-ADD CONSTRAINT `zone_entry_to_geo_zone` FOREIGN KEY (`geo_zone_id`) REFERENCES `lc_geo_zones` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `zone_entry_to_country` FOREIGN KEY (`country_code`) REFERENCES `lc_countries` (`iso_code_2`) ON UPDATE CASCADE ON DELETE CASCADE,
-ADD CONSTRAINT `zone_entry_to_zone` FOREIGN KEY (`zone_code`) REFERENCES `lc_zones` (`code`) ON UPDATE CASCADE ON DELETE CASCADE;
 -- -----
 DROP TABLE `lc_orders_totals`;
 -- -----

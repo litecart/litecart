@@ -138,9 +138,11 @@
 	if (!empty($_REQUEST['upgrade'])) {
 
 		ob_start(function($buffer) {
+
 			if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 				$buffer = strip_tags($buffer);
 			}
+
 			return $buffer;
 		});
 
@@ -376,7 +378,7 @@
 				echo '<p>Set platform database version...';
 
 				database::query(
-					"update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
+					"update ". DB_TABLE_PREFIX ."settings
 					set `value` = '". database::input($version) ."'
 					where `key` = 'platform_database_version'
 					limit 1;"

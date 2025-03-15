@@ -436,7 +436,7 @@ input[name="development_type"]:checked + div {
 				<select class="form-select" name="db_collation" required>
 					<option>utf8mb4_bin</option>
 					<option>utf8mb4_general_ci</option>
-					<option>utf8mb4_unicode_ci</option>
+					<option selected>utf8mb4_unicode_ci</option>
 					<option>utf8mb4_icelandic_ci</option>
 					<option>utf8mb4_latvian_ci</option>
 					<option>utf8mb4_romanian_ci</option>
@@ -444,7 +444,7 @@ input[name="development_type"]:checked + div {
 					<option>utf8mb4_polish_ci</option>
 					<option>utf8mb4_estonian_ci</option>
 					<option>utf8mb4_spanish_ci</option>
-					<option selected>utf8mb4_swedish_ci</option>
+					<option>utf8mb4_swedish_ci</option>
 					<option>utf8mb4_turkish_ci</option>
 					<option>utf8mb4_czech_ci</option>
 					<option>utf8mb4_danish_ci</option>

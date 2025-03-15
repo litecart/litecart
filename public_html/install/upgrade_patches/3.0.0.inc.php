@@ -444,56 +444,32 @@
 		FS_DIR_APP . 'install/data/default/storage/images/no_image.svg/' => FS_DIR_APP . 'storage/images/',
 	]);
 
-	perform_action('modify', [
-		FS_DIR_APP . 'storage/config.inc.php' => [
-			[
-				'search'  => '#^(\t*)  #m',
-				'replace' => '$1	',
-				'regex'  => true,
-			],
-			[
-				'search'  => '/'. preg_quote('## Backwards Compatible Directory Definitions (LiteCart <2.2) ########', '/') . PHP_EOL .'#{70}'. PHP_EOL .'.*?(#{70})/s',
-				'replace' => '$1',
-				'regex'  => true,
-			],
-			[
-				'search'  => "#  define\('DB_TYPE', [^\)]+);(\r\n|\n)#",
-				'replace' => "",
-				'regex'  => true,
-			],
-			[
-				'search'  => "	define('DB_CONNECTION_CHARSET', (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') ? 'latin1' : 'utf8'); // utf8 or latin1" . PHP_EOL,
-				'replace' => "	define('DB_CONNECTION_CHARSET', 'utf8');" . PHP_EOL,
-			],
-			[
-				'search'  => "	define('DB_PERSISTENT_CONNECTIONS', 'false');" . PHP_EOL,
-				'replace' => "",
-			],
-			[
-				'search'  => '/'. preg_quote('// Database Tables - Backwards Compatibility (LiteCart <2.3)', '/') .'.*?(#{70})/',
-				'replace' => '$1',
-				'regex'  => true,
-			],
-			[
-				'search'  => "	error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);",
-				'replace' => "	error_reporting(E_ALL);",
-			],
-			[
-				'search'  => "	define('DOCUMENT_ROOT',      str_replace('\\', '/', rtrim(realpath(!empty(\$_SERVER['DOCUMENT_ROOT']) ? \$_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/')));",
-				'replace' => "	define('DOCUMENT_ROOT',      rtrim(str_replace('\\', '/', realpath(!empty(\$_SERVER['DOCUMENT_ROOT']) ? \$_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..')), '/'));",
-			],
-			[
-				'search'  => "	define('FS_DIR_APP',         str_replace('\\', '/', rtrim(realpath(__DIR__.'/..'), '/')) . '/');",
-				'replace' => "	define('FS_DIR_APP',         rtrim(str_replace('\\', '/', realpath(__DIR__.'/..')), '/') . '/');",
-			],
-		],
+	// Change indentation from spaces to tabs in files
+	foreach ([
+		FS_DIR_APP . 'storage/config.inc.php',
+		FS_DIR_APP . 'storage/vmods/*.xml',
+		FS_DIR_APP . '.htaccess',
+	] as $file_pattern) {
 
+		perform_action('custom', [
+			$file_pattern => function($file){
+
+				$contents = file_get_contents($file);
+
+				while (true) {
+					$contents = preg_replace('#^(\t*)  #m', "$1\t", $contents, -1, $replacements);
+					if (!$replacements) break;
+				}
+
+				$contents = preg_replace('#^(\t*)//#m', "$1\t//", $contents);
+
+				return (bool)file_put_contents($file, $contents);
+			},
+		], 'skip');
+	}
+
+	perform_action('modify', [
 		FS_DIR_APP . '.htaccess' => [
-			[
-				'search'  => '#^(\t)  #m',
-				'replace' => '$1	',
-				'regex'  => true,
-			],
 			[
 				'search'  => 'RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]',
 				'replace' => 'RewriteRule ^ index.php [QSA,L]',
@@ -501,78 +477,11 @@
 		],
 	]);
 
-	perform_action('modify', [
-		FS_DIR_APP . '.htaccess' => [
-			[
-				'search'  => '#^(\t*)  #m',
-				'replace' => '$1	',
-				'regex'  => true,
-			],
-			[
-				'search'  => '/	(#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www\.' . PHP_EOL, '/') .'/',
-				'replace' => '	$1RewriteCond %{HTTP_HOST} !^www\.' . PHP_EOL
-									 . '	$1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
-				'regex'  => true,
-			],
-			[
-				'search'  => '/	(#)?' . preg_quote('RewriteCond %{HTTP_HOST} ^www\.(.*)$' . PHP_EOL, '/') .'/',
-				'replace' => '	$1RewriteCond %{HTTP_HOST} ^www\.(.*)' . PHP_EOL
-									 . '	$1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
-				'regex'  => true,
-			],
-			[
-				'search'  => '/	(#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www\.mydomain\.com' . PHP_EOL, '/') .'/',
-				'replace' => '	$1RewriteCond %{HTTP_HOST} !^www\.mydomain\.com' . PHP_EOL
-									 . '	$1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
-				'regex'  => true,
-			],
-			[
-				'search'  => '	# Web path to catalog root' . PHP_EOL,
-				'replace' => implode(PHP_EOL, [
-					'	# Deny access to non-static content on static domain',
-					'	RewriteCond %{HTTP_HOST} ^static\.',
-					'	RewriteCond %{REQUEST_URI} !\.(css|eot|gif|jpe?g|js|map|otf|png|svg|ttf|woff2?)(\?.*?)?$ [NC]',
-					'	RewriteCond %{REQUEST_URI} !/handlers/ [NC]',
-					'	RewriteRule ^ - [R=403,L]',
-					'',
-					'	# Remove bogus URL query parameters without values (MSNBot)',
-					'	RewriteCond %{QUERY_STRING} ^[0-9a-z]{6,8}=$',
-					'	RewriteRule ^(.*)$ $1 [R=301,L]',
-					'',
-					'	# Favicons',
-					'	RewriteCond %{REQUEST_URI} /favicon\.ico$',
-					'	RewriteCond %{REQUEST_FILENAME} !-f',
-					'	RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon.ico [L]',
-					'',
-					'	RewriteCond %{REQUEST_URI} /(android-chrome|android-icon|apple-icon|apple-touch-icon|favicon)(-\d{2,3}x\d{2,3})?(-precomposed)?\.png$',
-					'	RewriteCond %{REQUEST_FILENAME} !-f',
-					'	RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon-256x256.png [L]',
-					'',
-					'	# Web path to catalog root',
-					'',
-				]),
-			],
-			[
-				'search'  => "	RewriteRule ^ index.php [QSA,L]" . PHP_EOL,
-				'replace' => "	# Resolve some storage content" . PHP_EOL
-									 . "	RewriteRule ^(cache|images)/ storage/%{REQUEST_URI} [L]" . PHP_EOL
-									 . PHP_EOL
-									 . "	RewriteRule ^ index.php [QSA,L]" . PHP_EOL,
-			],
-			[
-				'search'  => "#". preg_quote('<FilesMatch "\.(css|js)$">', '#') .".*?". preg_quote('<FilesMatch "\.(a?png|avif|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">', '#') ."#s",
-				'replace' => '<FilesMatch "\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">',
-				'regex'  => true,
-			],
-			[
-				'search'  => '#AuthUserFile ".*?.htpasswd"#',
-				'replace' => 'AuthUserFile "'. FS_DIR_APP .'.htpasswd"',
-				'regex'  => true,
-			],
-		],
-	], 'abort');
+	perform_action('copy', [
+		FS_DIR_APP . '.htaccess' => FS_DIR_APP . '.htaccess.old',
+		FS_DIR_APP . 'storage/config.inc.php' => FS_DIR_APP . 'storage/config_old.inc.php',
+	]);
 
-	// Update config
 	$timezone = database::query(
 		"select `value` from ". DB_TABLE_PREFIX ."settings
 		where `key` = 'store_timezone'
@@ -582,64 +491,33 @@
 	perform_action('modify', [
 		FS_DIR_APP . 'storage/config.inc.php' => [
 			[
-				'search'  => '#(\r\n?|\n)// Errors#',
-				'replace' => implode(PHP_EOL, [
-					"",
-					"	// Character Set Encoding",
-					"	mb_internal_encoding('UTF-8');",
-					"	mb_regex_encoding('UTF-8');",
-					"",
-					"	// Errors",
-				]),
-				'regex'  => true,
-			],
-			[
-				'search'  => '#$#',
-				'replace' => implode(PHP_EOL, [
-					"",
-					"	// Float Precision",
-					"	ini_set('serialize_precision', 6);",
-					"",
-					"	// Sessions",
-					"	ini_set('session.name', 'LCSESSID');",
-					"	ini_set('session.use_cookies', 1);",
-					"	ini_set('session.use_only_cookies', 1);",
-					"	ini_set('session.use_strict_mode', 1);",
-					"	ini_set('session.use_trans_sid', 0);",
-					"	ini_set('session.cookie_httponly', 1);",
-					"	ini_set('session.cookie_lifetime', 0);",
-					"	ini_set('session.cookie_path', WS_DIR_APP);",
-					"	ini_set('session.cookie_samesite', 'Lax');",
-					"	ini_set('session.gc_maxlifetime', 1440);",
-					"",
-					"	// Timezone",
-					"	ini_set('date.timezone', '". $timezone ."');",
-					"",
-					"	// Output Compression",
-					"	ini_set('zlib.output_compression', 1);",
-					"",
+				'search'  => '#.*#s',
+				'replace' => strtr(file_get_contents('config'), [
+					'{STORAGE_FOLDER}' => 'storage',
+					'{ADMIN_FOLDER}' => BACKEND_ALIAS,
+					'{DB_SERVER}' => DB_SERVER,
+					'{DB_USERNAME}' => DB_USERNAME,
+					'{DB_PASSWORD}' => DB_PASSWORD,
+					'{DB_DATABASE}' => DB_DATABASE,
+					'{DB_TABLE_PREFIX}' => DB_TABLE_PREFIX,
+					'{CLIENT_IP}' => $_SERVER['REMOTE_ADDR'],
+					'{TIMEZONE}' => $_REQUEST['timezone'],
 				]),
 				'regex'  => true,
 			],
 		],
-	]);
 
-	// Change indentation from spaces to tabs in files
-	perform_action('custom', [
-		FS_DIR_APP . 'storage/vmods/*.xml' => function($file){
-
-			$contents = file_get_contents($file);
-
-			while (true) {
-				$contents = preg_replace('#^(\t*)  #m', "$1\t", $contents, -1, $replacements);
-				if (!$replacements) break;
-			}
-
-			$contents = preg_replace('#^(\t*)//#m', "$1\t//", $contents);
-
-			return (bool)file_put_contents($file, $contents);
-		},
-	], 'skip');
+		FS_DIR_APP . '.htaccess' => [
+			[
+				'search'  => '#.*#s',
+				'replace' => strtr($htaccess, [
+					'{WS_DIR_APP}' => preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP),
+					'{FS_DIR_APP}' => FS_DIR_APP,
+				]),
+				'regex'  => true,
+			],
+		],
+	], 'abort');
 
 	// Remove some indexes if they exist
 	if (database::query(
@@ -754,7 +632,6 @@
 		where CHARACTER_SET_NAME = 'utf8mb4'
 		order by COLLATION_NAME;"
 	)->fetch_all('COLLATION_NAME');
-
 
 	database::query(
 		"SELECT TABLE_NAME, TABLE_COLLATION FROM information_schema.TABLES
