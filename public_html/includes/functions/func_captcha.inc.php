@@ -22,7 +22,7 @@
 				break;
 
 			default:
-				throw new ErrorException('Unknown captcha set');
+				throw new Error('Unknown captcha set');
 		}
 
 		$code = '';
@@ -31,7 +31,7 @@
 		}
 
 		if (!$image = imagecreate($config['width'], $config['height'])) {
-			throw new ErrorException('Cannot initialize new GD image stream');
+			throw new Error('Cannot initialize new GD image stream');
 		}
 
 		// Set colors

@@ -34,7 +34,7 @@
 				}
 
 				if (!mysqli_real_connect(self::$_links[$link], $server, $username, $password, $database)) {
-					throw new ErrorException('Could not connect to database: '. mysqli_connect_errno() .' - '. mysqli_connect_error());
+					throw new Error('Could not connect to database: '. mysqli_connect_errno() .' - '. mysqli_connect_error());
 				}
 
 				if (($duration = microtime(true) - $timestamp) > 1) {
@@ -45,7 +45,7 @@
 			}
 
 			if (!is_object(self::$_links[$link])) {
-				throw new ErrorException('Invalid database link');
+				throw new Error('Invalid database link');
 			}
 
 			if (!empty($charset)) {
@@ -97,7 +97,7 @@
 		public static function set_option($option, $value, $link='default') {
 
 			if (!$result = mysqli_options(self::$_links[$link], $option, $value)) {
-				throw new ErrorException('Could not set option '. $option .' to '. $value);
+				trigger_error('Could not set option '. $option .' to '. $value, E_USER_WARNING);
 			}
 
 			return true;
@@ -255,11 +255,13 @@
 									break;
 
 								default:
-								throw new ErrorException('Unsupported parameter type ('. gettype($flattened[$param]) .')');
+									trigger_error('Unsupported parameter type ('. gettype($flattened[$param]) .')', E_USER_WARNING);
+									continue 2;
 							}
 
 						} else {
-							throw new ErrorException('Unmatched parameter name ('. $param .')');
+							trigger_error('Unmatched parameter name ('. $param .')', E_USER_WARNING);
+							continue;
 						}
 
 						// Commit replacement
@@ -272,12 +274,11 @@
 			}
 
 			if (($result = mysqli_query(self::$_links[$link], $sql)) === false) {
-					$error_message = mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\s+#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . $sql . PHP_EOL;
-					throw new ErrorException('MySQL Error: ' . mysqli_errno(self::$_links[$link]));
+				throw new Error('MySQL Error: ' . mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\s+#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . $sql);
 			}
 
-			if (($duration = microtime(true) - $timestamp) > 3) {
-				error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $sql) . PHP_EOL, 3, 'storage://logs/performance.log');
+			if (($duration = microtime(true) - $timestamp) > 5) {
+				error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 5, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $sql) . PHP_EOL, 3, 'storage://logs/performance.log');
 			}
 
 			self::$stats['queries']++;
@@ -299,8 +300,7 @@
 			$timestamp = microtime(true);
 
 			if (mysqli_multi_query(self::$_links[$link], $sql) === false) {
-				//throw new ErrorException(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL);
-				throw new ErrorException('MySQL Error: ' . mysqli_errno(self::$_links[$link]));
+				throw new Error('MySQL Error: ' . mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql));
 			}
 
 			$results = [];

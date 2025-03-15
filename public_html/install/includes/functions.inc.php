@@ -235,6 +235,6 @@
 					break;
 
 			default:
-				throw new ErrorException("Unknown action ($action)");
+				throw new Error("Unknown action ($action)");
 		}
 	}

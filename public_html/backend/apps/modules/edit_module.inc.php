@@ -34,7 +34,7 @@
 			break;
 
 		default:
-			throw new ErrorException('Unknown module type');
+			throw new Error('Unknown module type');
 	}
 
 	$module = new ent_module($module_id);

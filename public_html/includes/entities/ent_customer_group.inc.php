@@ -83,7 +83,7 @@
 				where group_id = ". (int)$this->data['id'] ."
 				limit 1;"
 			)->num_rows) {
-				throw new ErrorException('Cannot delete customer group as there are customers linked to it');
+				throw new Error('Cannot delete customer group as there are customers linked to it');
 			}
 
 			database::query(

@@ -154,7 +154,7 @@
 
 			$original_file = preg_replace('#^(app://|' . preg_quote(FS_DIR_APP, '#') .')#', '', $file);
 			$modified_file = 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '-', $original_file);
-		
+
 			if (isset(self::$_checked[$original_file]) && self::$_checked[$original_file] === false) {
 				return $file;
 			}
@@ -264,7 +264,7 @@
 						$tmp = preg_replace($operation['find']['pattern'], $operation['insert'], $tmp, -1, $count);
 
 						if (!$count && $operation['onerror'] != 'skip') {
-							throw new ErrorException("Vmod failed to perform insert");
+							throw new Error("Vmod failed to perform insert");
 							continue 2;
 						}
 					}
@@ -276,12 +276,12 @@
 			// Create cache folder for modified files if missing
 			if (!is_dir(FS_DIR_STORAGE . 'vmods/.cache/')) {
 				if (!mkdir(FS_DIR_STORAGE . 'vmods/.cache/', 0777)) {
-					throw new ErrorException('The modifications cache directory could not be created');
+					throw new Error('The modifications cache directory could not be created');
 				}
 			}
 
 			if (!is_writable(FS_DIR_STORAGE . 'vmods/.cache/')) {
-				throw new ErrorException('The modifications cache directory is not writable');
+				throw new Error('The modifications cache directory is not writable');
 			}
 
 			// Return original if nothing was modified
@@ -318,7 +318,7 @@
 
 				// Get XML file contents
 				if (!$xml = file_get_contents($file)) {
-					throw new ErrorException('Could not read file');
+					throw new Error('Could not read file');
 				}
 
 				// Normalize line endings

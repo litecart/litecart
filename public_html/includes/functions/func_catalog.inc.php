@@ -132,7 +132,7 @@
 	function catalog_products_query($filter=[]) {
 
 		if (!is_array($filter)) {
-			throw new ErrorException('Invalid array filter for products query');
+			throw new Error('Invalid array filter for products query');
 		}
 
 		if (!empty($filter['categories'])) {
@@ -332,7 +332,7 @@
 	function catalog_products_search_query($filter=[]) {
 
 		if (!is_array($filter)) {
-			throw new ErrorException('Invalid array filter for products query');
+			throw new Error('Invalid array filter for products query');
 		}
 
 		if (!empty($filter['categories'])) {

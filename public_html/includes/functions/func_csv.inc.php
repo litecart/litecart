@@ -67,7 +67,7 @@
 			}
 
 			if (empty($delimiter)) {
-				throw new ErrorException('Unable to determine CSV delimiter');
+				throw new Error('Unable to determine CSV delimiter');
 			}
 		}
 

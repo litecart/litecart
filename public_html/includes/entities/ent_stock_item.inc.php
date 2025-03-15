@@ -54,7 +54,7 @@
 			if ($stock_item) {
 				$this->data = array_replace($this->data, array_intersect_key($stock_item, $this->data));
 			} else {
-				throw new ErrorException('Could not find stock item (ID: '. (int)$id .') in database.');
+				throw new Error('Could not find stock item (ID: '. (int)$id .') in database.');
 			}
 
 			// Info

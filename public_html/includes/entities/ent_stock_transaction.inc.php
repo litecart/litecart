@@ -63,7 +63,7 @@
 			if ($transaction) {
 				$this->data = array_replace($this->data, array_intersect_key($transaction, $this->data));
 			} else {
-				throw new ErrorException('Could not find stock transaction (ID: '. (int)$id .') in database.');
+				throw new Error('Could not find stock transaction (ID: '. (int)$id .') in database.');
 			}
 
 			$this->data['contents'] = database::query(

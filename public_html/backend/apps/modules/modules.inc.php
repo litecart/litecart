@@ -43,7 +43,7 @@
 			break;
 
 		default:
-			throw new ErrorException('Unknown module type ('. __DOC__ .')');
+			throw new Error('Unknown module type ('. __DOC__ .')');
 	}
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {

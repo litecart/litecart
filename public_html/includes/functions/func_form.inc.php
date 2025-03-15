@@ -1422,7 +1422,7 @@
 	function form_select_customer($name, $input=true, $parameters='') {
 
 		if (empty(administrator::$data['id'])) {
-			throw new ErrorException('Must be logged in to use form_select_customer()');
+			throw new Error('Must be logged in to use form_select_customer()');
 		}
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
@@ -1465,7 +1465,7 @@
 	function form_select_customer_group($name, $input=true, $parameters='') {
 
 		if (!administrator::check_login()) {
-			throw new ErrorException('Must be logged in to use form_select_customer_group()');
+			throw new Error('Must be logged in to use form_select_customer_group()');
 		}
 
 		$options = database::query(
@@ -1486,7 +1486,7 @@
 	function form_select_multiple_customers($name, $input=true, $parameters='') {
 
 		if (!administrator::check_login()) {
-			throw new ErrorException('Must be logged in to use form_select_multiple_customers()');
+			throw new Error('Must be logged in to use form_select_multiple_customers()');
 		}
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
