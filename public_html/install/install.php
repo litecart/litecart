@@ -420,12 +420,27 @@
 
 		echo '<p>Cleaning database... ';
 
-		$sql = file_get_contents('clean.sql');
-		$sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
+		// Decode database structure defined in structure.json
+		$database_structure = json_decode(file_get_contents('structure.json'), true);
 
-		foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
-			$query = preg_replace('#^-- .*?\R+#m', '', $query);
-			database::query($query);
+		// Check if structure.json could be decoded
+		if ($database_structure === null) {
+			throw new Exception('structure.json could not be decoded: ' . json_last_error_msg());
+		}
+
+		// Check if structure.json contains any tables
+		if (empty($database_structure['tables'])) {
+			throw new Exception('structure.json does not contain any tables.');
+		}
+
+		// Iterate through tables and drop them
+		foreach (array_keys($database_structure['tables']) as $table_name) {
+
+			$table_name = preg_replace('#^lc_#', DB_TABLE_PREFIX, $table_name);
+
+			database::query(
+				"DROP TABLE IF EXISTS `". database::input($table_name) ."`;"
+			);
 		}
 
 		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
@@ -434,29 +449,105 @@
 
 		echo '<p>Writing database tables... ';
 
-		$sql = file_get_contents('structure.sql');
+		// Iterate through tables
+		foreach ($database_structure['tables'] as $table_name => $table) {
 
-		$mysql_version = database::query(
-			"SELECT VERSION();"
-		)->fetch('VERSION()');
+			// Check if table contains any columns
+			if (empty($table['columns'])) {
+				throw new Exception('Table ' . $table_name . ' does not contain any columns.');
+			}
 
-		// Workaround for early MySQL versions (<5.6.5) not supporting multiple DEFAULT CURRENT_TIMESTAMP
-		if (version_compare($mysql_version, '5.6.5', '<')) {
-			str_replace('`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,', '`date_updated` TIMESTAMP NOT NULL DEFAULT NOW(),', $sql);
-		}
+			$table_name = preg_replace('#^lc_#', DB_TABLE_PREFIX, $table_name);
 
-		$map = [
-			'`lc_' => '`'.$_REQUEST['db_table_prefix'],
-			'utf8mb4_general_ci' => $_REQUEST['db_collation'],
-		];
+			// Create SQL statement
+			$sql = 'CREATE TABLE `' . database::input($table_name) . '` (' . PHP_EOL;
 
-		foreach ($map as $search => $replace) {
-			$sql = str_replace($search, $replace, $sql);
-		}
+			foreach ($table['columns'] as $column_name => $column) {
 
-		foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
-			$query = preg_replace('#^-- .*?\R+#m', '', $query);
-			database::query($query);
+				$sql .= '  `' . $column_name . '` ' . $column['type'];
+
+				if (isset($column['length'])) {
+					$sql .= '(' . $column['length'] . ')';
+				}
+
+				if (isset($column['unsigned']) && $column['unsigned'] === true) {
+					$sql .= ' UNSIGNED';
+				}
+
+				if (!empty($column['nullable'])) {
+					$sql .= ' NULL';
+				} else {
+					$sql .= ' NOT NULL';
+				}
+
+				if (isset($column['auto_increment']) && $column['auto_increment'] === true) {
+					$sql .= ' AUTO_INCREMENT';
+				}
+
+				if (isset($column['default'])) {
+					$sql .= ' DEFAULT '. $column['default'] .'';
+				}
+
+				if (!empty($column['on_update'])) {
+					$sql .= ' ON UPDATE ' . $column['on_update'];
+				}
+
+				$sql .= ', ' . PHP_EOL;
+			}
+
+			if (isset($table['primary_key'])) {
+				$sql .= '  PRIMARY KEY (`' . implode('`, `', $table['primary_key']) . '`),' . PHP_EOL;
+			}
+
+			if (isset($table['unique_keys'])) {
+				foreach ($table['unique_keys'] as $key_name => $key_columns) {
+					$sql .= '  UNIQUE KEY ' . $key_name . ' (`' . implode('`, `', $key_columns) . '`),' . PHP_EOL;
+				}
+			}
+
+			if (isset($table['keys'])) {
+				foreach ($table['keys'] as $key_name => $key_columns) {
+					$sql .= '  KEY ' . $key_name . ' (`' . implode('`, `', $key_columns) . '`),' . PHP_EOL;
+				}
+			}
+
+			if (isset($table['foreign_keys'])) {
+				foreach ($table['foreign_keys'] as $key_name => $key_columns) {
+					$sql .= '  FOREIGN KEY ' . $key_name . ' (`' . implode('`, `', $key_columns['columns']) . '`) REFERENCES `' . $key_columns['table'] . '` (' . implode(', ', $key_columns['references']) . ') ON DELETE ' . $key_columns['on_delete'] . ' ON UPDATE ' . $key_columns['on_update'] . ',' . PHP_EOL;
+				}
+			}
+
+			$sql = rtrim($sql, ', ' . PHP_EOL) . PHP_EOL . ')';
+
+			if (isset($table['engine'])) {
+				$sql .= ' ENGINE=' . database::input($table['engine']);
+			} else {
+				$sql .= ' ENGINE=InnoDB';
+			}
+
+			if (isset($table['charset'])) {
+				$sql .= ' DEFAULT CHARSET=' . database::input($table['charset']);
+			} else {
+				$sql .= ' DEFAULT CHARSET=utf8mb4';
+			}
+
+			if (!empty($_REQUEST['db_collation'])) {
+				$sql .= ' COLLATE=' . $_REQUEST['db_collation'];
+			} else if (isset($table['collation'])) {
+				$sql .= ' COLLATE=' . database::input($table['collation']);
+			} else {
+				$sql .= ' COLLATE=utf8mb4_unicode_ci';
+			}
+
+			$sql .= ';';
+
+			// Workaround for early MySQL versions (<5.6.5) not supporting multiple DEFAULT CURRENT_TIMESTAMP
+			if (version_compare($mysql_version, '5.6.5', '<')) {
+				str_replace('`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,', '`date_updated` TIMESTAMP NOT NULL DEFAULT NOW(),', $sql);
+			}
+
+			// Execute SQL statement
+			database::query($sql);
 		}
 
 		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;

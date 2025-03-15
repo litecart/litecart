@@ -89,8 +89,6 @@
 	ini_set('display_errors', 'On');
 	ini_set('html_errors', 'On');
 
-	ignore_user_abort(true);
-
 	require_once FS_DIR_APP . 'includes/error_handler.inc.php';
 	require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';
 	require_once FS_DIR_APP . 'includes/nodes/nod_database.inc.php';
@@ -147,6 +145,8 @@
 		});
 
 		try {
+
+			ignore_user_abort(true);
 
 			echo '<h1>Upgrade '. PLATFORM_VERSION .'</h1>' . PHP_EOL . PHP_EOL;
 
@@ -275,9 +275,11 @@
 
 			if (defined('PLATFORM_DATABASE_VERSION')) {
 				echo PLATFORM_DATABASE_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
 			} else if (!empty($_REQUEST['from_version'])) {
 				define('PLATFORM_DATABASE_VERSION', $_REQUEST['from_version']);
 				echo $_REQUEST['from_version'] . ' (User Defined) <span class="warning">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
 			} else {
 				throw new Exception(' <span class="error">[Undetected]</span></p>' . PHP_EOL . PHP_EOL);
 			}
@@ -292,20 +294,29 @@
 				$client = new http_client();
 
 				$update_file = function($file) use ($client) {
+
 					$local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
 					$response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
+
 					if ($client->last_response['status_code'] != 200) return false;
+
 					if (!is_dir(dirname(FS_DIR_APP . $local_file))) {
 						mkdir(dirname(FS_DIR_APP . $local_file), 0777, true);
 					}
+
 					file_put_contents(FS_DIR_APP . $local_file, $response);
+
 					return true;
 				};
 
 				$calculate_md5 = function($file) {
+
 					$local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
+
 					if (!is_file(FS_DIR_APP . $local_file)) return;
+
 					$contents = preg_replace('#(\r\n?|\n)#', "\n", file_get_contents(FS_DIR_APP . $local_file));
+
 					return md5($contents);
 				};
 
@@ -378,48 +389,335 @@
 
 			#############################################
 
-			echo '<p>Preparing CSS files...</p>' . PHP_EOL . PHP_EOL;
+			echo 'Update table structures...' . PHP_EOL;
 
-			perform_action('delete', [
-				FS_DIR_APP . 'backend/template/less/',
-			]);
+			// Get all existing tables
+			$existing_tables = database::query(
+				"select table_name from information_schema.tables
+				where table_schema = '". DB_DATABASE ."';"
+			)->fetch_all('table_name');
 
-			if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
+			$default_collation = database::query(
+				"SELECT DEFAULT_COLLATION_NAME
+				FROM INFORMATION_SCHEMA.SCHEMATA
+				WHERE SCHEMA_NAME = '". database::input(DB_DATABASE) ."';"
+			)->fetch('DEFAULT_COLLATION_NAME');
 
-				file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'advanced');
+			// Fetch MySQL table structures from structure.json
+			$database_structure = json_decode(file_get_contents(__DIR__ . '/structure.json'), true);
 
-				perform_action('delete', [
-					FS_DIR_APP . 'frontend/templates/*/css/app.css',
-					FS_DIR_APP . 'frontend/templates/*/css/checkout.css',
-					FS_DIR_APP . 'frontend/templates/*/css/framework.css',
-					FS_DIR_APP . 'frontend/templates/*/css/printable.css',
-					FS_DIR_APP . 'frontend/templates/*/js/app.js',
-				]);
-
-			} else {
-
-				file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'standard');
-
-				perform_action('delete', [
-					FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
-					FS_DIR_APP . 'frontend/templates/*/css/*.min.css.map',
-					FS_DIR_APP . 'frontend/templates/*/less/',
-					FS_DIR_APP . 'frontened/templates/default.catalog/js/*.min.js.map',
-					FS_DIR_APP . 'frontend/templates/default.catalog/less/',
-				]);
-
-				perform_action('modify', [
-					FS_DIR_APP . 'frontend/templates/*/layouts/*.inc.php' => [
-						['search' => 'app.min.css',       'replace' => 'app.css'],
-						['search' => 'checkout.min.css',  'replace' => 'checkout.css'],
-						['search' => 'framework.min.css', 'replace' => 'framework.css'],
-						['search' => 'printable.min.css', 'replace' => 'printable.css'],
-						['search' => 'app.min.js',        'replace' => 'app.js'],
-					],
-				]);
+			if ($database_structure === null) {
+				throw new Exception('structure.json could not be decoded: ' . json_last_error_msg());
 			}
 
-			echo PHP_EOL;
+			if (empty($database_structure['tables'])) {
+				throw new Exception('structure.json does not contain any tables.');
+			}
+
+			// Replace table prefix in structure.json
+			foreach ($database_structure['tables'] as $table_name => $table) {
+				$platform_table_name = preg_replace('#^lc_#', DB_TABLE_PREFIX, $table_name);
+				$database_structure['tables'][$platform_table_name] = $table;
+				unset($database_structure['tables'][$table_name]);
+			}
+
+			#############################################
+
+			// Iterate through each table (this is to drop foreign keys prohibiting us from many changes)
+			foreach ($database_structure['tables'] as $table_name => $table) {
+
+				if (!in_array($table_name, $existing_tables)) {
+					continue;
+				}
+
+				$sql = '';
+
+				// Drop foreign keys
+				if (!empty($table['foreign_keys'])) {
+					foreach (array_keys($table['foreign_keys']) as $key_name) {
+						if (database::query(
+							"SELECT CONSTRAINT_NAME
+							FROM information_schema.REFERENTIAL_CONSTRAINTS
+							WHERE CONSTRAINT_SCHEMA = '". database::input(DB_DATABASE) ."'
+							AND TABLE_NAME = '". database::input($table_name) ."'
+							AND CONSTRAINT_NAME = '". database::input($key_name) ."';"
+						)->num_rows) {
+							$sql .= 'DROP FOREIGN KEY `'. $key_name .'`,' . PHP_EOL;
+						}
+					}
+				}
+
+				// Execute query
+				database::query(
+					"ALTER TABLE `". $table_name ."`
+					". rtrim($sql, ", \r\n") .";"
+				);
+			}
+
+			#############################################
+
+			// Iterate through each table (this is to ensure specific table properties)
+			foreach ($database_structure['tables'] as $table_name => $table) {
+
+				// If table exists
+				if (in_array($table_name, $existing_tables)) {
+
+					// Get existing table properties
+					$existing_table = database::query(
+						"SHOW TABLE STATUS LIKE '". database::input($table_name) ."';"
+					)->fetch();
+
+					// Convert engine and row format if needed
+					if ($existing_table['Engine'] != 'InnoDB' || $existing_table['Row_format'] != 'Dynamic') {
+						database::query(
+							"ALTER TABLE `". $table_name ."`
+							ENGINE='InnoDB' ROW_FORMAT=DYNAMIC;"
+						);
+					}
+
+					// Convert charset and collation if needed
+					if ($existing_table['Create_options'] != 'CHARSET=utf8mb4' || $existing_table['Collation'] != $default_collation) {
+						database::query(
+							"ALTER TABLE `". $table_name ."`
+							CONVERT TO CHARACTER SET utf8mb4 COLLATE ". database::input($default_collation) .";"
+						);
+					}
+				}
+			}
+
+			#############################################
+
+			// Iterate through each table and add/change columns and keys
+			foreach ($database_structure['tables'] as $table_name => $table) {
+
+				if (empty($table['columns'])) {
+					throw new Exception('Table structure for '. $table_name .' in structure.json does not contain any columns');
+				}
+
+				if (in_array($table_name, $existing_tables)) {
+					$table_exists = true;
+				} else {
+					$table_exists = false;
+				}
+
+				if ($table_exists) {
+					$sql = 'ALTER TABLE `'. $table_name .'`' . PHP_EOL;
+				} else {
+					$sql = 'CREATE TABLE `'. $table_name .'` (' . PHP_EOL;
+				}
+
+				$last_column = null;
+
+				// Drop primary key
+				if ($table_exists && !empty($table['primary_key'])) {
+					if (database::query(
+						"SHOW INDEX FROM `". $table_name ."`
+						WHERE Key_name = 'PRIMARY'
+						/*AND non_unique = 0*/;"
+					)->num_rows) {
+						$sql .= 'DROP PRIMARY KEY,' . PHP_EOL;
+					}
+				}
+
+				// Drop keys
+				if ($table_exists && !empty($table['keys'])) {
+					foreach (array_keys($table['keys']) as $key_name) {
+						if (database::query(
+							"SHOW INDEX FROM `". $table_name ."`
+							WHERE Key_name = '". database::input($key_name) ."'
+							/*AND non_unique = 1*/;"
+						)->num_rows) {
+							$sql .= 'DROP INDEX `'. $key_name .'`,' . PHP_EOL;
+						}
+					}
+				}
+
+				// Drop unique keys
+				if ($table_exists && !empty($table['unique_keys'])) {
+					foreach (array_keys($table['unique_keys']) as $key_name) {
+						if (database::query(
+							"SHOW INDEX FROM `". $table_name ."`
+							WHERE Key_name = '". database::input($key_name) ."'
+							/*AND non_unique = 0*/;"
+						)->num_rows) {
+							$sql .= 'DROP INDEX `'. $key_name .'`,' . PHP_EOL;
+						}
+					}
+				}
+
+				// Add/change columns
+				foreach ($table['columns'] as $column_name => $column) {
+
+					if ($table_exists && database::query(
+						"SHOW COLUMNS FROM `". $table_name ."`
+						LIKE '". database::input($column_name) ."';"
+					)->num_rows) {
+						$column_exists = true;
+					} else {
+						$column_exists = false;
+					}
+
+					if ($table_exists) {
+
+						if ($column_exists) {
+							$sql .= 'CHANGE COLUMN `'. $column_name .'` `'. $column_name .'` '. $column['type'];
+						} else {
+							$sql .= 'ADD COLUMN `'. $column_name .'` '. $column['type'];
+						}
+
+					} else {
+						$sql .= '  `'. $column_name .'` '. $column['type'];
+					}
+
+					if (isset($column['length'])) {
+						$sql .= '('. $column['length'] .')';
+					}
+
+					if (isset($column['unsigned']) && $column['unsigned'] === true) {
+						$sql .= ' UNSIGNED';
+					}
+
+					if (!empty($column['nullable'])) {
+						$sql .= ' NULL';
+					} else {
+						$sql .= ' NOT NULL';
+					}
+
+					if (isset($column['auto_increment']) && $column['auto_increment'] === true) {
+						$sql .= ' AUTO_INCREMENT';
+					}
+
+					if (isset($column['default'])) {
+						$sql .= ' DEFAULT '. $column['default'] .'';
+					}
+
+					if (!empty($column['on_update'])) {
+						$sql .= ' ON UPDATE '. $column['on_update'];
+					}
+
+					if ($table_exists && !$column_exists && $last_column) {
+						$sql .= ' AFTER `'. $last_column .'`';
+					}
+
+					$sql .= ',' . PHP_EOL;
+
+					$last_column = $column_name;
+				}
+
+				// Create primary key
+				if (!empty($table['primary_key'])) {
+					if ($table_exists) {
+						$sql .= 'ADD PRIMARY KEY (`'. implode('`, `', $table['primary_key']) .'`),' . PHP_EOL;
+					} else {
+						$sql .= '  PRIMARY KEY (`'. implode('`, `', $table['primary_key']) .'`),' . PHP_EOL;
+					}
+				}
+
+				// Create keys
+				if (!empty($table['keys'])) {
+					foreach ($table['keys'] as $key_name => $key_columns) {
+						if ($table_exists) {
+							$sql .= 'ADD KEY `'. $key_name .'` (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
+						} else {
+							$sql .= '  KEY `'. $key_name .'` (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
+						}
+					}
+				}
+
+				// Create unique keys
+				if (!empty($table['unique_keys'])) {
+					foreach ($table['unique_keys'] as $key_name => $key_columns) {
+						if ($table_exists) {
+							$sql .= 'ADD CONSTRAINT `'. $key_name .'` UNIQUE (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
+						} else {
+							$sql .= '  CONSTRAINT `'. $key_name .'` UNIQUE (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
+						}
+					}
+				}
+
+				if ($table_exists) {
+					$sql = rtrim($sql, ", \r\n") . ';';
+				} else {
+					$sql = rtrim($sql, ", \r\n") . PHP_EOL . ") ENGINE='InnoDB' ROW_FORMAT=DYNAMIC DEFAULT CHARSET='utf8mb4' COLLATE='". database::input($default_collation) ."';";
+				}
+
+				database::query($sql);
+
+				echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+			}
+
+			// Iterate through each table (this is to add foreign keys)
+			foreach ($database_structure['tables'] as $table_name => $table) {
+
+				if (!in_array($table_name, $existing_tables)) {
+					continue;
+				}
+
+				$sql = '';
+
+				// Add foreign keys
+				if (!empty($table['foreign_keys'])) {
+					foreach ($table['foreign_keys'] as $key_name => $foreign_key) {
+						$sql .= 'ADD CONSTRAINT `'. $key_name .'` FOREIGN KEY (`'. implode('`, `', $foreign_key['columns']) .'`) REFERENCES `'. $foreign_key['references']['table'] .'` (`'. implode('`, `', $foreign_key['references']['columns']) .'`) ON DELETE '. $foreign_key['references']['on_delete'] .' ON UPDATE '. $foreign_key['references']['on_update'] .',' . PHP_EOL;
+					}
+				}
+
+				// Execute query
+				if ($sql) {
+					database::query(
+						"ALTER TABLE `". $table_name ."`
+						". rtrim($sql, ", \r\n") .";"
+					);
+				}
+			}
+
+			#############################################
+
+			if (!is_dir(__DIR__.'/../../.git')) {
+
+				echo '<p>Preparing CSS files...</p>' . PHP_EOL . PHP_EOL;
+
+				perform_action('delete', [
+					FS_DIR_APP . 'backend/template/less/',
+				]);
+
+				if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
+
+					file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'advanced');
+
+					perform_action('delete', [
+						FS_DIR_APP . 'frontend/templates/*/css/app.css',
+						FS_DIR_APP . 'frontend/templates/*/css/checkout.css',
+						FS_DIR_APP . 'frontend/templates/*/css/framework.css',
+						FS_DIR_APP . 'frontend/templates/*/css/printable.css',
+						FS_DIR_APP . 'frontend/templates/*/js/app.js',
+					]);
+
+				} else {
+
+					file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'standard');
+
+					perform_action('delete', [
+						FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
+						FS_DIR_APP . 'frontend/templates/*/css/*.min.css.map',
+						FS_DIR_APP . 'frontend/templates/*/less/',
+						FS_DIR_APP . 'frontened/templates/default.catalog/js/*.min.js.map',
+						FS_DIR_APP . 'frontend/templates/default.catalog/less/',
+					]);
+
+					perform_action('modify', [
+						FS_DIR_APP . 'frontend/templates/*/layouts/*.inc.php' => [
+							['search' => 'app.min.css',       'replace' => 'app.css'],
+							['search' => 'checkout.min.css',  'replace' => 'checkout.css'],
+							['search' => 'framework.min.css', 'replace' => 'framework.css'],
+							['search' => 'printable.min.css', 'replace' => 'printable.css'],
+							['search' => 'app.min.js',        'replace' => 'app.js'],
+						],
+					]);
+				}
+
+				echo PHP_EOL;
+			}
 
 			#############################################
 
@@ -485,7 +783,7 @@
 		exit;
 	}
 
-
+	require_once __DIR__ . '/includes/header.inc.php';
 ?>
 <style>
 html {
@@ -506,7 +804,7 @@ input[name="development_type"] + div {
 	display: inline-block;
 	padding: 15px;
 	margin: 7.5px;
-	border: 1px solid rgba(0,0,0,0.1);
+	border: 1px solid rgba(0, 0, 0, .1);
 	border-radius: 15px;
 	width: 250px;
 	height: 145px;
@@ -627,6 +925,5 @@ input[name="development_type"]:checked + div {
 
 	<button class="btn btn-success btn-block" type="submit" name="upgrade" value="true" onclick="if(!confirm('Warning! The procedure cannot be undone.')) return false;" style="font-size: 1.5em; padding: 0.5em;">Upgrade To <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></button>
 </form>
-<?php
 
-	require('includes/footer.inc.php');
+<?php	require 'includes/footer.inc.php'; ?>

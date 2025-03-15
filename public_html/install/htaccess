@@ -10,90 +10,92 @@ ErrorDocument 500 "Internal Server Error"
 
 # URL-rewriting
 <IfModule mod_rewrite.c>
-  RewriteEngine on
+	RewriteEngine on
 
-  # Tell PHP that the mod_rewrite module is enabled
-  <IfModule mod_env.c>
-    SetEnv MOD_REWRITE On
-  </IfModule>
+	# Tell PHP that the mod_rewrite module is enabled
+	<IfModule mod_env.c>
+		SetEnv MOD_REWRITE On
+	</IfModule>
 
-  # Force HTTPS (Standard SSL)
-  #RewriteCond %{HTTPS} off
-  #RewriteCond %{REQUEST_METHOD} !=POST
-  #RewriteCond %{REQUEST_URI} !^/\.well-known/
-  #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,QSA,L]
+	# Force HTTPS (Standard SSL)
+	#RewriteCond %{HTTPS} off
+	#RewriteCond %{REQUEST_METHOD} !=POST
+	#RewriteCond %{REQUEST_URI} !^/\.well-known/
+	#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,QSA,L]
 
-  # Redirect non-www to www
-  #RewriteCond %{HTTP_HOST} !^www\.
-  #RewriteCond %{HTTP_HOST} !^static\.
-  #RewriteCond %{REQUEST_URI} !^/\.well-known/
-  #RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,QSA,L]
+	# Redirect non-www to www
+	#RewriteCond %{HTTP_HOST} !^www\.
+	#RewriteCond %{HTTP_HOST} !^static\.
+	#RewriteCond %{REQUEST_URI} !^/\.well-known/
+	#RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,QSA,L]
 
-  # Redirect www to non-www
-  #RewriteCond %{HTTP_HOST} ^www\.(.*)$
-  #RewriteCond %{HTTP_HOST} !^static\.
-  #RewriteCond %{REQUEST_METHOD} !=POST
-  #RewriteCond %{REQUEST_URI} !^/\.well-known/
-  #RewriteRule ^ https://%1%{REQUEST_URI} [R=301,QSA,L]
+	# Redirect www to non-www
+	#RewriteCond %{HTTP_HOST} ^www\.(.*)$
+	#RewriteCond %{HTTP_HOST} !^static\.
+	#RewriteCond %{REQUEST_METHOD} !=POST
+	#RewriteCond %{REQUEST_URI} !^/\.well-known/
+	#RewriteRule ^ https://%1%{REQUEST_URI} [R=301,QSA,L]
 
-  # Redirect from any alias domain to primary domain
-  #RewriteCond %{REQUEST_METHOD} !=POST
-  #RewriteCond %{HTTP_HOST} !^static\.
-  #RewriteCond %{HTTP_HOST} !^www\.mydomain\.com
-  #RewriteCond %{REQUEST_URI} !^/\.well-known/
-  #RewriteRule ^ https://www.mydomain.com%{REQUEST_URI} [R=301,QSA,L]
+	# Redirect from any alias domain to primary domain
+	#RewriteCond %{REQUEST_METHOD} !=POST
+	#RewriteCond %{HTTP_HOST} !^static\.
+	#RewriteCond %{HTTP_HOST} !^www\.mydomain\.com
+	#RewriteCond %{REQUEST_URI} !^/\.well-known/
+	#RewriteRule ^ https://www.mydomain.com%{REQUEST_URI} [R=301,QSA,L]
 
-  # Deny access to non-static content on static domain
-  RewriteCond %{HTTP_HOST} ^static\.
-  RewriteCond %{REQUEST_URI} !/handlers/ [NC]
-  RewriteCond %{REQUEST_URI} !\.(css|eot|gif|ico|jpe?g|js|map|otf|png|svg|ttf|woff2?)(\?.*?)?$ [NC]
-  RewriteRule ^ - [R=403,L]
+	# Deny access to non-static content on static domain
+	RewriteCond %{HTTP_HOST} ^static\.
+	RewriteCond %{REQUEST_URI} !/handlers/ [NC]
+	RewriteCond %{REQUEST_URI} !\.(css|eot|gif|ico|jpe?g|js|map|otf|png|svg|ttf|woff2?)(\?.*?)?$ [NC]
+	RewriteRule ^ - [R=403,L]
 
-  # Favicons
-  RewriteCond %{REQUEST_URI} /favicon\.ico$
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^ {WS_DIR_APP}storage/images/favicons/favicon.ico [L]
+	# Favicons
+	RewriteCond %{REQUEST_URI} /favicon\.ico$
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^ {WS_DIR_APP}storage/images/favicons/favicon.ico [L]
 
-  RewriteCond %{REQUEST_URI} /(android-chrome|android-icon|apple-icon|apple-touch-icon|favicon)(\-\d{2,3}x\d{2,3})?(-precomposed)?\.png$
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^ {WS_DIR_APP}storage/images/favicons/favicon-256x256.png [L]
+	RewriteCond %{REQUEST_URI} /(android-chrome|android-icon|apple-icon|apple-touch-icon|favicon)(\-\d{2,3}x\d{2,3})?(-precomposed)?\.png$
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^ {WS_DIR_APP}storage/images/favicons/favicon-256x256.png [L]
 
-  # Web path to application root
-  RewriteBase {WS_DIR_APP}
+	# Web path to application root
+	RewriteBase {WS_DIR_APP}
 
-  # No rewrite logic for physical files
-  RewriteCond %{REQUEST_FILENAME} -d [OR]
-  RewriteCond %{REQUEST_FILENAME} -f [OR]
-  RewriteCond %{REQUEST_FILENAME} -l
-  RewriteRule ^ - [L]
+	# No rewrite logic for physical files
+	RewriteCond %{REQUEST_FILENAME} -d [OR]
+	RewriteCond %{REQUEST_FILENAME} -f [OR]
+	RewriteCond %{REQUEST_FILENAME} -l
+	RewriteRule ^ - [L]
 
-  # Resolve some storage content
-  RewriteRule ^(cache|images)/ storage/%{REQUEST_URI} [L]
+	# Resolve some storage content
+	RewriteRule ^(cache|images)/ storage/%{REQUEST_URI} [L]
 
-  RewriteRule ^ index.php [QSA,L]
+	RewriteRule ^ index.php [QSA,L]
 </IfModule>
 
 # Deny access to content
 <FilesMatch "\.(htaccess|htpasswd|inc\.php)$">
-  <IfModule mod_authz_core.c>
-    Require all denied
-  </IfModule>
+	<IfModule mod_authz_core.c>
+		Require all denied
+	</IfModule>
 </FilesMatch>
 
 # Cacheable external content
 <IfModule mod_headers.c>
-  <FilesMatch "\.(a?png|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">
-  <FilesMatch "\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">
-    Header set Cache-Control "max-age=604800, public, must-revalidate"
-  </FilesMatch>
+	<FilesMatch "\.(a?png|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">
+	<FilesMatch "\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">
+		Header set Cache-Control "max-age=604800, public, must-revalidate"
+	</FilesMatch>
 </IfModule>
 
 # GZip compress external content
 <IfModule mod_deflate.c>
-  <FilesMatch "\.(css|js|svg)$">
-    SetOutputFilter DEFLATE
-  </FilesMatch>
+	<FilesMatch "\.(css|js|svg)$">
+		SetOutputFilter DEFLATE
+	</FilesMatch>
 </IfModule>
+
 # Prevent robots from indexing this site
 #<IfModule mod_headers.c>
 #  Header set X-Robots-Tag "noindex, nofollow"
+#</IfModule>

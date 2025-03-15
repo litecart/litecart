@@ -1,7 +1,7 @@
 <?php
 
 	perform_action('copy', [
-		FS_DIR_APP . 'install/data/default/storage/files' => FS_DIR_STORAGE,
+		FS_DIR_APP . 'install/data/default/storage/files' => FS_DIR_APP . 'storage/',
 	]);
 
 	perform_action('delete', [
@@ -363,8 +363,8 @@
 	]);
 
 	perform_action('move', [
-		FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_STORAGE . 'config.inc.php',
-		FS_DIR_APP . 'favicon.ico' => FS_DIR_STORAGE . 'storage/images/favicons/favicon.ico',
+		FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_APP . 'storage/config.inc.php',
+		FS_DIR_APP . 'favicon.ico' => FS_DIR_APP . 'storage/images/favicons/favicon.ico',
 	]);
 
 	foreach (glob(FS_DIR_ADMIN . '*.app') as $file) {
@@ -376,11 +376,11 @@
 	}
 
 	foreach (glob(FS_DIR_APP . 'cache/*') as $file) {
-		perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'cache/', '#') .'#', FS_DIR_STORAGE . 'cache/', $file)]);
+		perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'cache/', '#') .'#', FS_DIR_APP . 'storage/cache/', $file)]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'data/*') as $file) {
-		perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'data/', '#') .'#', FS_DIR_STORAGE, $file)]);
+		perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'data/', '#') .'#', FS_DIR_APP . 'storage/', $file)]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'ext/*') as $file) {
@@ -388,11 +388,11 @@
 	}
 
 	foreach (glob(FS_DIR_APP . 'images/*') as $file) {
-		perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'images/', '#') .'#', FS_DIR_STORAGE . 'images/', $file)]);
+		perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'images/', '#') .'#', FS_DIR_APP . 'storage/images/', $file)]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'logs/*') as $file) {
-		perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'logs/', '#') .'#', FS_DIR_STORAGE . 'logs/', $file)]);
+		perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'logs/', '#') .'#', FS_DIR_APP . 'storage/logs/', $file)]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/boxes/*') as $file) {
@@ -412,7 +412,7 @@
 	}
 
 	foreach (glob(FS_DIR_APP . 'vqmod/xml/*') as $file) {
-		perform_action('move', [$file => FS_DIR_STORAGE . 'vmods/' . basename($file)]);
+		perform_action('move', [$file => FS_DIR_APP . 'storage/vmods/' . basename($file)]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'pages/*') as $file) {
@@ -434,38 +434,64 @@
 	]);
 
 	perform_action('copy', [
-		FS_DIR_APP . 'install/data/default/storage/images/favicon*' => FS_DIR_STORAGE . 'images/',
-		FS_DIR_APP . 'install/data/default/storage/images/stock_items/' => FS_DIR_STORAGE . 'images/stock_items/',
-		FS_DIR_APP . 'install/data/default/storage/images/no_image.svg/' => FS_DIR_STORAGE . 'images/',
+		FS_DIR_APP . 'install/data/default/storage/images/favicon*' => FS_DIR_APP . 'storage/images/',
+		FS_DIR_APP . 'install/data/default/storage/images/stock_items/' => FS_DIR_APP . 'storage/images/stock_items/',
+		FS_DIR_APP . 'install/data/default/storage/images/no_image.svg/' => FS_DIR_APP . 'storage/images/',
 	]);
 
 	perform_action('modify', [
-		FS_DIR_STORAGE . 'config.inc.php' => [
+		FS_DIR_APP . 'storage/config.inc.php' => [
 			[
-				'search'  => '/'. preg_quote('## Backwards Compatible Directory Definitions (LiteCart <2.2) ########', '/') . PHP_EOL .'#{70}'. PHP_EOL .'.*?(#{70})/',
-				'replace' => '$1',
-				'regexp'  => true,
+				'search'  => '#^(\t*)  #m',
+				'replace' => '$1	',
+				'regex'  => true,
 			],
 			[
-				'search'  => "  define('DB_CONNECTION_CHARSET', (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') ? 'latin1' : 'utf8'); // utf8 or latin1" . PHP_EOL,
-				'replace' => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1" . PHP_EOL,
+				'search'  => '/'. preg_quote('## Backwards Compatible Directory Definitions (LiteCart <2.2) ########', '/') . PHP_EOL .'#{70}'. PHP_EOL .'.*?(#{70})/s',
+				'replace' => '$1',
+				'regex'  => true,
+			],
+			[
+				'search'  => "#  define\('DB_TYPE', [^\)]+);(\r\n|\n)#",
+				'replace' => "",
+				'regex'  => true,
+			],
+			[
+				'search'  => "	define('DB_CONNECTION_CHARSET', (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') ? 'latin1' : 'utf8'); // utf8 or latin1" . PHP_EOL,
+				'replace' => "	define('DB_CONNECTION_CHARSET', 'utf8');" . PHP_EOL,
+			],
+			[
+				'search'  => "	define('DB_PERSISTENT_CONNECTIONS', 'false');" . PHP_EOL,
+				'replace' => "",
 			],
 			[
 				'search'  => '/'. preg_quote('// Database Tables - Backwards Compatibility (LiteCart <2.3)', '/') .'.*?(#{70})/',
 				'replace' => '$1',
-				'regexp'  => true,
+				'regex'  => true,
 			],
 			[
-				'search'  => "  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);",
-				'replace' => "  error_reporting(E_ALL);",
+				'search'  => "	error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);",
+				'replace' => "	error_reporting(E_ALL);",
 			],
 			[
-				'search'  => "  define('DOCUMENT_ROOT',      str_replace('\\', '/', rtrim(realpath(!empty(\$_SERVER['DOCUMENT_ROOT']) ? \$_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/')));",
-				'replace' => "  define('DOCUMENT_ROOT',      rtrim(str_replace('\\', '/', realpath(!empty(\$_SERVER['DOCUMENT_ROOT']) ? \$_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..')), '/'));",
+				'search'  => "	define('DOCUMENT_ROOT',      str_replace('\\', '/', rtrim(realpath(!empty(\$_SERVER['DOCUMENT_ROOT']) ? \$_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/')));",
+				'replace' => "	define('DOCUMENT_ROOT',      rtrim(str_replace('\\', '/', realpath(!empty(\$_SERVER['DOCUMENT_ROOT']) ? \$_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..')), '/'));",
 			],
 			[
-				'search'  => "  define('FS_DIR_APP',         str_replace('\\', '/', rtrim(realpath(__DIR__.'/..'), '/')) . '/');",
-				'replace' => "  define('FS_DIR_APP',         rtrim(str_replace('\\', '/', realpath(__DIR__.'/..')), '/') . '/');",
+				'search'  => "	define('FS_DIR_APP',         str_replace('\\', '/', rtrim(realpath(__DIR__.'/..'), '/')) . '/');",
+				'replace' => "	define('FS_DIR_APP',         rtrim(str_replace('\\', '/', realpath(__DIR__.'/..')), '/') . '/');",
+			],
+		],
+
+		FS_DIR_APP . '.htaccess' => [
+			[
+				'search'  => '#^(\t)  #m',
+				'replace' => '$1	',
+				'regex'  => true,
+			],
+			[
+				'search'  => 'RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]',
+				'replace' => 'RewriteRule ^ index.php [QSA,L]',
 			],
 		],
 	]);
@@ -473,117 +499,142 @@
 	perform_action('modify', [
 		FS_DIR_APP . '.htaccess' => [
 			[
-				'search'  => '/  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www\.' . PHP_EOL, '/') .'/',
-				'replace' => '  $1RewriteCond %{HTTP_HOST} !^www\.' . PHP_EOL
-									 . '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
-				'regexp'  => true,
+				'search'  => '#^(\t*)  #m',
+				'replace' => '$1	',
+				'regex'  => true,
 			],
 			[
-				'search'  => '/  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} ^www\.(.*)$' . PHP_EOL, '/') .'/',
-				'replace' => '  $1RewriteCond %{HTTP_HOST} ^www\.(.*)' . PHP_EOL
-									 . '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
-				'regexp'  => true,
+				'search'  => '/	(#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www\.' . PHP_EOL, '/') .'/',
+				'replace' => '	$1RewriteCond %{HTTP_HOST} !^www\.' . PHP_EOL
+									 . '	$1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
+				'regex'  => true,
 			],
 			[
-				'search'  => '/  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www.mydomain.com' . PHP_EOL, '/') .'/',
-				'replace' => '  $1RewriteCond %{HTTP_HOST} !^www\.mydomain\.com' . PHP_EOL
-									 . '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
-				'regexp'  => true,
+				'search'  => '/	(#)?' . preg_quote('RewriteCond %{HTTP_HOST} ^www\.(.*)$' . PHP_EOL, '/') .'/',
+				'replace' => '	$1RewriteCond %{HTTP_HOST} ^www\.(.*)' . PHP_EOL
+									 . '	$1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
+				'regex'  => true,
 			],
 			[
-				'search'  => '  # Web path to catalog root' . PHP_EOL,
+				'search'  => '/	(#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www\.mydomain\.com' . PHP_EOL, '/') .'/',
+				'replace' => '	$1RewriteCond %{HTTP_HOST} !^www\.mydomain\.com' . PHP_EOL
+									 . '	$1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
+				'regex'  => true,
+			],
+			[
+				'search'  => '	# Web path to catalog root' . PHP_EOL,
 				'replace' => implode(PHP_EOL, [
-					'  # Deny access to non-static content on static domain',
-					'  RewriteCond %{HTTP_HOST} ^static\.',
-					'  RewriteCond %{REQUEST_URI} !\.(css|eot|gif|jpe?g|js|map|otf|png|svg|ttf|woff2?)(\?.*?)?$ [NC]',
-					'  RewriteCond %{REQUEST_URI} !/handlers/ [NC]',
-					'  RewriteRule ^ - [R=403,L]',
+					'	# Deny access to non-static content on static domain',
+					'	RewriteCond %{HTTP_HOST} ^static\.',
+					'	RewriteCond %{REQUEST_URI} !\.(css|eot|gif|jpe?g|js|map|otf|png|svg|ttf|woff2?)(\?.*?)?$ [NC]',
+					'	RewriteCond %{REQUEST_URI} !/handlers/ [NC]',
+					'	RewriteRule ^ - [R=403,L]',
 					'',
-					'  # Remove bogus URL query parameters without values (MSNBot)',
-					'  RewriteCond %{QUERY_STRING} ^[0-9a-z]{6,8}=$',
-					'  RewriteRule ^(.*)$ $1 [R=301,L]',
+					'	# Remove bogus URL query parameters without values (MSNBot)',
+					'	RewriteCond %{QUERY_STRING} ^[0-9a-z]{6,8}=$',
+					'	RewriteRule ^(.*)$ $1 [R=301,L]',
 					'',
-					' # Favicons',
-					' RewriteCond %{REQUEST_URI} /favicon\.ico$',
-					' RewriteCond %{REQUEST_FILENAME} !-f',
-					' RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon.ico [L]',
+					'	# Favicons',
+					'	RewriteCond %{REQUEST_URI} /favicon\.ico$',
+					'	RewriteCond %{REQUEST_FILENAME} !-f',
+					'	RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon.ico [L]',
 					'',
-					' RewriteCond %{REQUEST_URI} /(android-chrome|android-icon|apple-icon|apple-touch-icon|favicon)(-\d{2,3}x\d{2,3})?(-precomposed)?\.png$',
-					' RewriteCond %{REQUEST_FILENAME} !-f',
-					' RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon-256x256.png [L]',
+					'	RewriteCond %{REQUEST_URI} /(android-chrome|android-icon|apple-icon|apple-touch-icon|favicon)(-\d{2,3}x\d{2,3})?(-precomposed)?\.png$',
+					'	RewriteCond %{REQUEST_FILENAME} !-f',
+					'	RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon-256x256.png [L]',
 					'',
-					'  # Web path to catalog root',
+					'	# Web path to catalog root',
+					'',
 				]),
 			],
 			[
-				'search'  => "  RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]" . PHP_EOL,
-				'replace' => "  # Resolve some storage content" . PHP_EOL
-									 . "  RewriteRule ^(cache|images)/ storage/%{REQUEST_URI} [L]" . PHP_EOL
+				'search'  => "	RewriteRule ^ index.php [QSA,L]" . PHP_EOL,
+				'replace' => "	# Resolve some storage content" . PHP_EOL
+									 . "	RewriteRule ^(cache|images)/ storage/%{REQUEST_URI} [L]" . PHP_EOL
 									 . PHP_EOL
-									 . "  RewriteRule ^ index.php [QSA,L]" . PHP_EOL,
+									 . "	RewriteRule ^ index.php [QSA,L]" . PHP_EOL,
 			],
 			[
-				'search'  => "#". preg_quote('<FilesMatch "\.(css|js)$">', '#') .".*?". preg_quote('<FilesMatch "\.(a?png|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">', '#') ."#",
+				'search'  => "#". preg_quote('<FilesMatch "\.(css|js)$">', '#') .".*?". preg_quote('<FilesMatch "\.(a?png|avif|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">', '#') ."#s",
 				'replace' => '<FilesMatch "\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">',
-				'regexp'  => true,
+				'regex'  => true,
 			],
 			[
 				'search'  => '#AuthUserFile ".*?.htpasswd"#',
 				'replace' => 'AuthUserFile "'. FS_DIR_APP .'.htpasswd"',
-				'regexp'  => true,
-			],
-		],
-		FS_DIR_STORAGE . 'config.inc.php' => [
-			[
-				'search'  => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1" . PHP_EOL,
-				'replace' => "  define('DB_CONNECTION_CHARSET', 'utf8mb4');",
-			],
-			[
-				'search'  => "  define('DB_PERSISTENT_CONNECTIONS', 'false');" . PHP_EOL,
-				'replace' => "",
-			],
-			[
-				'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'brands_info`');" . PHP_EOL,
-				'replace' => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'brands_info`');" . PHP_EOL
-									 . "  define('DB_TABLE_NEWSLETTER_RECIPIENTS',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'newsletter_recipients`');" . PHP_EOL,
-			],
-			[
-				'search'  => '/'. preg_quote('## Backwards Compatible Directory Definitions (LiteCart <2.2)', '#') .'.*?('. preg_quote('## Database ##########################################################', '/') .')/',
-				'replace' => '$1',
-				'regexp'  => true,
-			],
-			[
-				'search'  => '#'. preg_quote(PHP_EOL, '#') .'// Password Encryption Salt.*?\);'. preg_quote(PHP_EOL, '#') .'#m',
-				'replace' => '',
-				'regexp'  => true,
+				'regex'  => true,
 			],
 		],
 	], 'abort');
 
+	// Update config
+	$timezone = database::query(
+		"select `value` from ". DB_TABLE_PREFIX ."settings
+		where `key` = 'store_timezone'
+		limit 1;"
+	)->fetch('value');
+
+	perform_action('modify', [
+		FS_DIR_APP . 'storage/config.inc.php' => [
+			[
+				'search'  => '#(\r\n?|\n)// Errors#',
+				'replace' => implode(PHP_EOL, [
+					"",
+					"	// Character Set Encoding",
+					"	mb_internal_encoding('UTF-8');",
+					"	mb_regex_encoding('UTF-8');",
+					"",
+					"	// Errors",
+				]),
+				'regex'  => true,
+			],
+			[
+				'search'  => '#$#',
+				'replace' => implode(PHP_EOL, [
+					"",
+					"	// Float Precision",
+					"	ini_set('serialize_precision', 6);",
+					"",
+					"	// Sessions",
+					"	ini_set('session.name', 'LCSESSID');",
+					"	ini_set('session.use_cookies', 1);",
+					"	ini_set('session.use_only_cookies', 1);",
+					"	ini_set('session.use_strict_mode', 1);",
+					"	ini_set('session.use_trans_sid', 0);",
+					"	ini_set('session.cookie_httponly', 1);",
+					"	ini_set('session.cookie_lifetime', 0);",
+					"	ini_set('session.cookie_path', WS_DIR_APP);",
+					"	ini_set('session.cookie_samesite', 'Lax');",
+					"	ini_set('session.gc_maxlifetime', 1440);",
+					"",
+					"	// Timezone",
+					"	ini_set('date.timezone', '". $timezone ."');",
+					"",
+					"	// Output Compression",
+					"	ini_set('zlib.output_compression', 1);",
+					"",
+				]),
+				'regex'  => true,
+			],
+		],
+	]);
+
 	// Change indentation from spaces to tabs in files
-	$files = [
-		FS_DIR_APP . '**/.htaccess',
-		FS_DIR_STORAGE . 'config.inc.php',
-	];
+	perform_action('custom', [
+		FS_DIR_APP . 'storage/vmods/*.xml' => function($file){
 
-	foreach ($files as $file_pattern) {
+			$contents = file_get_contents($file);
 
-		perform_action('custom', [
-			$file_pattern => function($file){
+			while (true) {
+				$contents = preg_replace('#^(\t*)  #m', "$1\t", $contents, -1, $replacements);
+				if (!$replacements) break;
+			}
 
-				$contents = file_get_contents($file);
+			$contents = preg_replace('#^(\t*)//#m', "$1\t//", $contents);
 
-				while (true) {
-					$contents = preg_replace('#^(\t*)  #m', "$1\t", $contents, -1, $replacements);
-					if (!$replacements) break;
-				}
-
-				$contents = preg_replace('#^(\t*)//#m', "$1\t//", $contents);
-
-				return (bool)file_put_contents($file, $contents);
-			},
-		], 'skip');
-	}
+			return (bool)file_put_contents($file, $contents);
+		},
+	], 'skip');
 
 	// Remove some indexes if they exist
 	if (database::query(
@@ -676,37 +727,9 @@
 		);
 	});
 
- 	// Migrate Stock Options
-	database::query(
-		"select * from ". DB_TABLE_PREFIX ."products_stock_options;"
-	)->each(function($stock_option){
 
-		// Remove combination from order item
 		database::query(
-			"update ". DB_TABLE_PREFIX ."orders_items
-			set stock_item_id = ". (int)$stock_item['stock_item_id'] .",
-				attributes = '',
-			where product_id = ". (int)$stock_option['product_id'] ."
-			and attributes = '". database::input($stock_option['attributes']) ."';"
 		);
-	});
-
-	// Download Product Configurations Add-On
-	if (database::query(
-		"select id from ". DB_TABLE_PREFIX ."products_customizations;"
-	)->num_rows) {
-
-			// ...
-
-	// Remove Product Configurations
-	} else {
-		database::query(
-			"drop table ". DB_TABLE_PREFIX ."products_customizations;"
-		);
-		database::query(
-			"drop table ". DB_TABLE_PREFIX ."products_customizations_values;"
-		);
-	}
 
 	// Set subtotal for all previous orders
 	database::query(
@@ -721,22 +744,19 @@
 	);
 
 	// Convert Table Charset and Collations
-	$collations = [];
-
 	$collations = database::query(
 		"select COLLATION_NAME FROM `information_schema`.`COLLATIONS`
 		where CHARACTER_SET_NAME = 'utf8mb4'
 		order by COLLATION_NAME;"
 	)->fetch_all('COLLATION_NAME');
 
-	$tables_query = database::query(
+
+	database::query(
 		"SELECT TABLE_NAME, TABLE_COLLATION FROM information_schema.TABLES
 		WHERE TABLE_SCHEMA = '". DB_DATABASE ."'
 		AND TABLE_NAME like '". DB_TABLE_PREFIX ."%'
 		order by TABLE_NAME;"
-	);
-
-	while ($table = database::fetch($tables_query)) {
+	)->each(function($table) use ($collations) {
 
 		$new_collation = preg_replace('#^(.*?)_.*$#', 'utf8mb4_$1', $table['TABLE_COLLATION']);
 
@@ -744,7 +764,7 @@
 			if (in_array('utf8mb4_0900_ai_ci', $collations)) {
 				$new_collation = 'utf8mb4_0900_ai_ci';
 			} else {
-				$new_collation = 'utf8mb4_swedish_ci';
+				$new_collation = 'utf8mb4_unicode_ci';
 			}
 		}
 
@@ -757,6 +777,12 @@
 			"alter table `". $table['TABLE_NAME'] ."`
 			engine=InnoDB;"
 		);
+	});
+
+	if (in_array('utf8mb4_0900_ai_ci', $collations)) {
+		$new_collation = 'utf8mb4_0900_ai_ci';
+	} else {
+		$new_collation = 'utf8mb4_unicode_ci';
 	}
 
 	database::query(
@@ -766,117 +792,48 @@
 
 	// Change VARCHAR length 256 to 255 (InnoDB limitation)
 
-	$columns_query = database::query(
+	database::query(
 		"select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
 		where TABLE_SCHEMA = '". DB_DATABASE ."'
 		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
 		and COLUMN_TYPE like 'varchar(256)'
 		order by TABLE_NAME;"
-	);
-
-	while ($column = database::fetch($columns_query)) {
+	)->each(function($column){
 		database::query(
 			"alter table `". $column['TABLE_NAME'] ."`
-			change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` ". strtr($column['COLUMN_TYPE'], ['256' => '255']) ." ". (($column['IS_NULLABLE'] == 'YES') ? "NOT NULL" : "NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
+			change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` ". strtr($column['COLUMN_TYPE'], ['256' => '255']) ." ". (($column['IS_NULLABLE'] == 'YES') ? "NULL" : "NOT NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
 		);
-	}
+	});
 
 	// Change VARCHAR to CHAR
 
-	$columns_query = database::query(
+	database::query(
 		"select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
 		where TABLE_SCHEMA = '". DB_DATABASE ."'
 		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
 		and (COLUMN_NAME like '%country_code%' or COLUMN_NAME like '%language_code%')
 		and COLUMN_TYPE = 'varchar(2)'
 		order by TABLE_NAME;"
-	);
-
-	while ($column = database::fetch($columns_query)) {
+	)->each(function($column){
 		database::query(
 			"alter table `". $column['TABLE_NAME'] ."`
-			change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` CHAR(2) ". (($column['IS_NULLABLE'] == 'YES') ? "NOT NULL" : "NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
+			change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` CHAR(2) ". (($column['IS_NULLABLE'] == 'YES') ? "NULL" : "NOT NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
 		);
-	}
+	});
 
-	$columns_query = database::query(
+	database::query(
 		"select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
 		where TABLE_SCHEMA = '". DB_DATABASE ."'
 		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
-		and COLUMN_NAME like '%currency_code%')
+		and COLUMN_NAME like '%currency_code%'
 		and COLUMN_TYPE = 'varchar(3)'
 		order by TABLE_NAME;"
-	);
-
-	while ($column = database::fetch($columns_query)) {
+	)->fetch(function($column){
 		database::query(
 			"alter table `". $column['TABLE_NAME'] ."`
-			change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` CHAR(3) ". (($column['IS_NULLABLE'] == 'YES') ? "NOT NULL" : "NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
+			change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` CHAR(3) ". (($column['IS_NULLABLE'] == 'YES') ? "NULL" : "NOT NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
 		);
-	}
-
-	// Update config
-
-	$timezone = database::query(
-		"select `value` from ". DB_TABLE_PREFIX ."settings
-		where key = 'store_timezone'
-		limit 1;"
-	)->fetch('value');
-
-	perform_action('modify', [
-		FS_DIR_STORAGE . 'config.inc.php' => [
-			[
-				'search'  => "#  define\('DB_TYPE', [^\)]+);(\r\n|\n)#",
-				'replace' => "",
-				'regexp'  => true,
-			],
-			[
-				'search'  => "#  define\('DB_CONNECTION_CHARSET', [^\)]+);(\r\n|\n)#",
-				'replace' => "",
-				'regexp'  => true,
-			],
-			[
-				'search'  => '#(\r\n?|\n)// Errors#',
-				'replace' => implode(PHP_EOL, [
-					"",
-					"// Character Set Encoding",
-					"  mb_internal_encoding('UTF-8');",
-					"  mb_regex_encoding('UTF-8');",
-					"",
-					"// Errors",
-				]),
-				'regexp'  => true,
-			],
-			[
-				'search'  => '#$#',
-				'replace' => implode(PHP_EOL, [
-					"",
-					"// Float Precision",
-					"  ini_set('serialize_precision', 6);",
-					"",
-					"// Sessions",
-					"  ini_set('session.name', 'LCSESSID');",
-					"  ini_set('session.use_cookies', 1);",
-					"  ini_set('session.use_only_cookies', 1);",
-					"  ini_set('session.use_strict_mode', 1);",
-					"  ini_set('session.use_trans_sid', 0);",
-					"  ini_set('session.cookie_httponly', 1);",
-					"  ini_set('session.cookie_lifetime', 0);",
-					"  ini_set('session.cookie_path', WS_DIR_APP);",
-					"  ini_set('session.cookie_samesite', 'Lax');'",
-					"  ini_set('session.gc_maxlifetime', 1440);'",
-					"",
-					"// Timezone",
-					"  ini_set('date.timezone', '". $timezone ."');",
-					"",
-					"// Output Compression",
-					"  ini_set('zlib.output_compression', 1);",
-					"",
-				]),
-				'regexp'  => true,
-			],
-		],
-	]);
+	});
 
 	// Set hostname for recent orders
 	database::query(
@@ -888,16 +845,6 @@
 			"update ". DB_TABLE_PREFIX ."orders
 			set hostname = '". gethostbyaddr($order['ip_address']) ."'
 			where ip_address = '". $order['ip_address'] ."';"
-		);
-	});
-
-	// Create missing currency columns in campaigns_products
-	$currencies = database::query(
-		"select code from ". DB_TABLE_PREFIX ."currencies;"
-	)->each(function($currency){
-		database::query(
-			"alter table ". DB_TABLE_PREFIX ."campaigns_products
-			add column `". $currency['code'] ."` float(11,4) not null default '0.0000';"
 		);
 	});
 
@@ -914,7 +861,20 @@
 		$campaigns[$valid_from.'-'.$valid_to][] = $campaign_product;
 	});
 
-	foreach ($campaigns as $campaign) {
+	// Migrate product campaign prices to campaigns
+	$campaigns = [];
+
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."products_campaigns;"
+	)->each(function($campaign_product) use (&$campaigns) {
+
+		$valid_from = $campaign_product['date_valid_from'] ? date('YmdHis', strtotime($campaign_product['date_valid_from'])) : '0';
+		$valid_to = $campaign_product['date_valid_to'] ? date('YmdHis', strtotime($campaign_product['date_valid_to'])) : '0';
+
+		$campaigns[$valid_from.'-'.$valid_to][] = $campaign_product;
+	});
+
+	foreach ($campaigns as $campaign_products) {
 
 		database::query(
 			"insert into ". DB_TABLE_PREFIX ."campaigns
@@ -924,15 +884,15 @@
 
 		$campaign_id = database::insert_id();
 
-		$prices = array_filter($campaign_product, function ($key) {
+		$prices = array_filter($campaign, function ($key) {
 			return (preg_match('#^[A-Z]{3}$#', $key));
 		}, ARRAY_FILTER_USE_KEY);
 
-		foreach ($campaign as $campaign_product) {
+		foreach ($campaign_products as $product) {
 			database::query(
 				"insert into ". DB_TABLE_PREFIX ."campaigns_products
-				(campaign_id, product_id, `". implode("`, `", array_keys($prices)) ."`)
-				values (". (int)$campaign_id .", ". (int)$campaign_product['product_id'] .", '". implode("', '", $prices) ."');"
+				(campaign_id, product_id, price)
+				values (". (int)$campaign_id .", ". (int)$product['product_id'] .", '". database::input(json_encode($prices)) ."');"
 			);
 		}
 	}
@@ -942,6 +902,11 @@
 	);
 
 	// Migrate product prices
+
+	$currencies = database::query(
+		"select * from ". DB_TABLE_PREFIX ."currencies;"
+	)->fetch_all('code');
+
 	database::query(
 		"select * from ". DB_TABLE_PREFIX ."products_prices;"
 	)->each(function($product_price) use ($currencies) {
@@ -950,15 +915,9 @@
 			return (preg_match('#^[A-Z]{3}$#', $key));
 		}, ARRAY_FILTER_USE_KEY);
 
-		foreach ($currencies as $currency) {
-			if (!isset($prices[$currency['code']])) {
-				$prices[$currency['code']] = $product_price['price'];
-			}
-		}
-
 		database::query(
 			"update ". DB_TABLE_PREFIX ."products
-			set prices = '". database::input(json_encode(array_filter($prices))) ."'
+			set price = '". database::input(json_encode(array_filter($prices))) ."'
 			where id = ". (int)$product_price['id'] ."
 			limit 1;"
 		);
@@ -980,12 +939,6 @@
 		$price_adjust = array_filter($product_price, function ($key) {
 			return (preg_match('#^[A-Z]{3}$#', $key));
 		}, ARRAY_FILTER_USE_KEY);
-
-		foreach ($currencies as $currency) {
-			if (!isset($price_adjust[$currency['code']])) {
-				$price_adjust[$currency['code']] = $product_price['price'];
-			}
-		}
 
 		database::query(
 			"update ". DB_TABLE_PREFIX ."products_customizations_values

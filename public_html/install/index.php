@@ -405,7 +405,7 @@ input[name="development_type"]:checked + div {
 
 	<h3>Database</h3>
 
-	<div class="form-grid">
+	<div class="grid">
 
 		<div class="col-md-6">
 			<label class="form-group">
@@ -496,7 +496,7 @@ input[name="development_type"]:checked + div {
 
 	<h3>Store Information</h3>
 
-	<div class="form-grid">
+	<div class="grid">
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Store Name</div>
