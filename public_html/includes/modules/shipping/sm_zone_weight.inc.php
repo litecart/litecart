@@ -1,7 +1,7 @@
 <?php
 
-	#[AllowDynamicProperties]
 	class sm_zone_weight extends abs_module {
+
 		public $name = 'Zone Based Shipping';
 		public $description = '';
 		public $author = 'LiteCart Dev Team';

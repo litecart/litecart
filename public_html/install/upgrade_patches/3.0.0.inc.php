@@ -411,6 +411,10 @@
 		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/' . preg_replace('#\.catalog#', '', basename($file))]);
 	}
 
+	foreach (glob(FS_DIR_APP . 'vmods/*') as $file) {
+		perform_action('move', [$file => FS_DIR_APP . 'storage/vmods/' . basename($file)]);
+	}
+
 	foreach (glob(FS_DIR_APP . 'vqmod/xml/*') as $file) {
 		perform_action('move', [$file => FS_DIR_APP . 'storage/vmods/' . basename($file)]);
 	}
@@ -430,6 +434,7 @@
 		FS_DIR_APP . 'logs/',
 		FS_DIR_APP . 'ext/',
 		FS_DIR_APP . 'pages/',
+		FS_DIR_APP . 'vmods/',
 		FS_DIR_APP . 'vqmod/',
 	]);
 

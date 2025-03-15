@@ -6,7 +6,7 @@
 
 root = true
 
-[*.{css,html,js,json,less,md,php,scss,sql,svg,xml}]
+[*.{css,htaccess,html,js,json,less,md,php,scss,sql,svg,xml}]
 charset = utf-8
 indent_style = tab
 indent_size = 2

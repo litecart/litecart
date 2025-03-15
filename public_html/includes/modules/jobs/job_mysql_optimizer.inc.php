@@ -1,7 +1,7 @@
 <?php
 
-	#[AllowDynamicProperties]
 	class job_mysql_optimizer {
+
 		public $id = __CLASS__;
 		public $name = 'MySQL Optimizer';
 		public $description = 'Defragment your MySQL database';

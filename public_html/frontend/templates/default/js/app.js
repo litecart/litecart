@@ -9,24 +9,26 @@
 
 +waitFor('jQuery', ($) => {
 
-	var mouseOverAd = null;
+	if (_env && _env.platform && _env.platform.path) {
 
-	$('.banner[data-id]').hover(function() {
-		mouseOverAd = $(this).data('id');
-	}, function() {
-		mouseOverAd = null;
-	});
+		var mouseOverAd = null;
 
-	$('.banner[data-id]').on('click', function() {
-		$.post(_env.platform.path + 'ajax/bct', 'banner_id=' + $(this).data('id'));
-	});
+		$('.banner[data-id]').hover(function() {
+			mouseOverAd = $(this).data('id');
+		}, function() {
+			mouseOverAd = null;
+		});
 
-	$(window).on('blur', function() {
-		if (mouseOverAd){
-			$.post(_env.platform.path + 'ajax/bct', 'banner_id=' + mouseOverAd);
-		}
-	});
+		$('.banner[data-id]').on('click', function() {
+			$.post(_env.platform.path + 'ajax/bct', 'banner_id=' + $(this).data('id'));
+		});
 
+		$(window).on('blur', function() {
+			if (mouseOverAd){
+				$.post(_env.platform.path + 'ajax/bct', 'banner_id=' + mouseOverAd);
+			}
+		});
+	}
 })
 
 // Add to cart
