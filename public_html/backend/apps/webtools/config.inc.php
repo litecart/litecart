@@ -27,6 +27,11 @@
 				'doc' => 'third_parties',
 				'params' => [],
 			],
+			[
+				'title' => 'robots.txt',
+				'doc' => 'robots_txt',
+				'params' => [],
+			],
 		],
 
 		'docs' => [
@@ -38,5 +43,7 @@
 
 			'third_parties' => 'third_parties.inc.php',
 			'edit_third_party' => 'edit_third_party.inc.php',
+
+			'robots_txt' => 'robots_txt.inc.php',
 		],
 	];

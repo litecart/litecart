@@ -4,10 +4,11 @@
 
 	// General
 	$output['general'] = [
+		file_get_contents('storage://robots.txt'),
+		'',
 		'User-agent: *',
-		'Allow: /',
+		'Disallow: /cache/*',
 		'Disallow: /storage/cache/*',
-		//'Crawl-Delay: 10',
 	];
 
 	// Sitemap
@@ -16,7 +17,7 @@
 	// Output
 	ob_clean();
 	header('Content-Type: text/plain;charset='. mb_http_output());
-	
+
 	foreach ($output as $block) {
 		if (is_array($block)) {
 			echo implode(PHP_EOL, $block);
