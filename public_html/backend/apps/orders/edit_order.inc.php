@@ -1390,28 +1390,28 @@
 			s = n < 0 ? '-' : '',
 			i = parseInt(n = Math.abs(+n || 0).toFixed(d)) + '',
 			f = n - i,
-			j = (j = i.length) > 3 ? j % 3 : 0
+			j = (j = i.length) > 3 ? j % 3 : 0;
 
 		if (html) {
-			return '<span class="currency-amount"><small class="currency">'+ c +'</small> '+ s + b + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (d ? '<span class="decimals">' + p + Math.abs(f).toFixed(d).slice(2) + '</span>' : '') + e + '</span>'
+			return '<span class="currency-amount"><small class="currency">'+ c +'</small> '+ s + b + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (d ? '<span class="decimals">' + p + Math.abs(f).toFixed(d).slice(2) + '</span>' : '') + e + '</span>';
 		}
 
-		return s + b + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (d ? p + Math.abs(f).toFixed(d).slice(2) : '') + e
+		return s + b + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (d ? p + Math.abs(f).toFixed(d).slice(2) : '') + e;
 	}
 
 	// Order
 
 	$('select[name="order_status_id"]').on('change', function(e) {
-		let color = $(this).find('option:selected').data('color')
-		$(this).css('box-shadow', color ? '0 0 0px 2px'+ color +'cc' : '')
-	}).trigger('change')
+		let color = $(this).find('option:selected').data('color');
+		$(this).css('box-shadow', color ? '0 0 0px 2px'+ color +'cc' : '');
+	}).trigger('change');
 
 	$('select[name="currency_code"]').on('change', function(e) {
-		$('input[type="number"][data-type="currency"]').data('decimals', $(this).find('option:selected').data('decimals'))
-		$('input[name="currency_value"]').val($(this).find('option:selected').data('value'))
-		$('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text($(this).val())
-		refresh_total()
-	})
+		$('input[type="number"][data-type="currency"]').data('decimals', $(this).find('option:selected').data('decimals'));
+		$('input[name="currency_value"]').val($(this).find('option:selected').data('value'));
+		$('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text($(this).val());
+		refresh_total();
+	});
 
 	// Customer
 
@@ -1427,38 +1427,38 @@
 				$.each(data, function(key, value) {
 					if (key.match(/^customer/)) {
 						$.each(value, function(key, value) {
-							if ($(':input[name="customer['+key+']"]').length) $(':input[name="customer['+key+']"]').val(value).trigger('change')
-						})
+							if ($(':input[name="customer['+key+']"]').length) $(':input[name="customer['+key+']"]').val(value).trigger('change');
+						});
 					} else if (key.match(/^shipping_address/)) {
 						$.each(value, function(key, value) {
-							if ($(':input[name="shipping_address['+key+']"]').length) $(':input[name="shipping_address['+key+']"]').val(value).trigger('change')
-						})
+							if ($(':input[name="shipping_address['+key+']"]').length) $(':input[name="shipping_address['+key+']"]').val(value).trigger('change');
+						});
 					} else {
-						if ($(':input[name="customer['+key+']"]').length) $(':input[name="customer['+key+']"]').val(value).trigger('change')
+						if ($(':input[name="customer['+key+']"]').length) $(':input[name="customer['+key+']"]').val(value).trigger('change');
 					}
-				})
+				});
 			},
-		})
-	})
+		});
+	});
 
 	$('#customer-details select[name="customer[country_code]"]').on('change', function() {
 
 		if ($(this).find('option:selected').data('tax-id-format')) {
-			$('input[name="customer[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
+			$('input[name="customer[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
 		} else {
-			$('input[name="customer[tax_id]"]').removeAttr('pattern')
+			$('input[name="customer[tax_id]"]').removeAttr('pattern');
 		}
 
 		if ($(this).find('option:selected').data('postcode-format')) {
-			$('input[name="customer[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'))
+			$('input[name="customer[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
 		} else {
-			$('input[name="customer[postcode]"]').removeAttr('pattern')
+			$('input[name="customer[postcode]"]').removeAttr('pattern');
 		}
 
 		if ($(this).find('option:selected').data('phone-code')) {
-			$('input[name="customer[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'))
+			$('input[name="customer[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
 		} else {
-			$('input[name="customer[phone]"]').removeAttr('placeholder')
+			$('input[name="customer[phone]"]').removeAttr('placeholder');
 		}
 
 		$.ajax({
@@ -1468,47 +1468,47 @@
 			async: false,
 			dataType: 'json',
 			success: function(data) {
-				$('select[name="customer[zone_code]"]').html('')
-				if ($('select[name="customer[zone_code]"]').is(':disabled')) $('select[name="customer[zone_code]"]').prop('disabled', false)
+				$('select[name="customer[zone_code]"]').html('');
+				if ($('select[name="customer[zone_code]"]').is(':disabled')) $('select[name="customer[zone_code]"]').prop('disabled', false);
 				if (data) {
 					$.each(data, function(i, zone) {
-						$('select[name="customer[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
-					})
+						$('select[name="customer[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
+					});
 				} else {
-					$('select[name="customer[zone_code]"]').prop('disabled', true)
+					$('select[name="customer[zone_code]"]').prop('disabled', true);
 				}
-				$('select[name="customer[zone_code]"]').trigger('change')
+				$('select[name="customer[zone_code]"]').trigger('change');
 			},
-		})
-	})
+		});
+	});
 
 	$('#customer-details button[name="copy_billing_address"]').on('click', function() {
 		$.each(['company', 'firstname', 'lastname', 'address1', 'address2', 'postcode', 'city', 'country_code', 'zone_code', 'phone'], function(key, field) {
-			$('*[name="shipping_address['+ field +']"]').val($('*[name="customer['+ field +']"]').val()).trigger('change')
-		})
-	})
+			$('*[name="shipping_address['+ field +']"]').val($('*[name="customer['+ field +']"]').val()).trigger('change');
+		});
+	});
 
 	$('#customer-details select[name="shipping_address[country_code]"]').on('change', function() {
 
 		if ($(this).find('option:selected').data('tax-id-format')) {
-			$('input[name="shipping_address[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'))
+			$('input[name="shipping_address[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
 		} else {
-			$('input[name="shipping_address[tax_id]"]').removeAttr('pattern')
+			$('input[name="shipping_address[tax_id]"]').removeAttr('pattern');
 		}
 
 		if ($(this).find('option:selected').data('postcode-format')) {
-			$('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'))
+			$('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
 		} else {
-			$('input[name="shipping_address[postcode]"]').removeAttr('pattern')
+			$('input[name="shipping_address[postcode]"]').removeAttr('pattern');
 		}
 
 		if ($(this).find('option:selected').data('phone-code')) {
-			$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'))
+			$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
 		} else {
-			$('input[name="shipping_address[phone]"]').removeAttr('placeholder')
+			$('input[name="shipping_address[phone]"]').removeAttr('placeholder');
 		}
 
-		$('body').css('cursor', 'wait')
+		$('body').css('cursor', 'wait');
 		$.ajax({
 			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
@@ -1516,56 +1516,55 @@
 			async: true,
 			dataType: 'json',
 			success: function(data) {
-				$('select[name="shipping_address[zone_code]"]').html('')
-				if ($('select[name="shipping_address[zone_code]"]').is(':disabled')) $('select[name="shipping_address[zone_code]"]').prop('disabled', false)
+				$('select[name="shipping_address[zone_code]"]').html('');
+				if ($('select[name="shipping_address[zone_code]"]').is(':disabled')) $('select[name="shipping_address[zone_code]"]').prop('disabled', false);
 				if (data) {
 					$.each(data, function(i, zone) {
-						$('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
-					})
+						$('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
+					});
 				} else {
-					$('select[name="shipping_address[zone_code]]"]').prop('disabled', true)
+					$('select[name="shipping_address[zone_code]"]').prop('disabled', true);
 				}
-				$('select[name="customer[zone_code]"]').trigger('change')
+				$('select[name="customer[zone_code]"]').trigger('change');
 			}
-		})
-	})
+		});
+	});
 
 	if ($('select[name="customer[country_code]"] option:selected').data('tax-id-format')) {
-		$('input[name="customer[tax_id]"]').attr('pattern', $('select[name="country_code"] option:selected').data('tax-id-format'))
+		$('input[name="customer[tax_id]"]').attr('pattern', $('select[name="country_code"] option:selected').data('tax-id-format'));
 	} else {
-		$('input[name="customer[tax_id]"]').removeAttr('pattern')
+		$('input[name="customer[tax_id]"]').removeAttr('pattern');
 	}
 
 	if ($('select[name="customer[country_code]"] option:selected').data('postcode-format')) {
-		$('input[name="customer[postcode]"]').attr('pattern', $('select[name="customer[country_code]"] option:selected').data('postcode-format'))
+		$('input[name="customer[postcode]"]').attr('pattern', $('select[name="customer[country_code]"] option:selected').data('postcode-format'));
 	} else {
-		$('input[name="customer[postcode]"]').removeAttr('pattern')
+		$('input[name="customer[postcode]"]').removeAttr('pattern');
 	}
 
 	if ($('select[name="customer[country_code]"] option:selected').data('phone-code')) {
-		$('input[name="customer[phone]"]').attr('placeholder', '+' + $('select[name="customer[country_code]"] option:selected').data('phone-code'))
+		$('input[name="customer[phone]"]').attr('placeholder', '+' + $('select[name="customer[country_code]"] option:selected').data('phone-code'));
 	} else {
-		$('input[name="customer[phone]"]').removeAttr('placeholder')
+		$('input[name="customer[phone]"]').removeAttr('placeholder');
 	}
 
 	if ($('select[name="shipping_address[country_code]"] option:selected').data('tax-id-format')) {
-		$('input[name="shipping_address[tax_id]"]').attr('pattern', $('select[name="shipping_address[country_code]"] option:selected').data('tax-id-format'))
+		$('input[name="shipping_address[tax_id]"]').attr('pattern', $('select[name="shipping_address[country_code]"] option:selected').data('tax-id-format'));
 	} else {
-		$('input[name="shipping_address[tax_id]"]').removeAttr('pattern')
+		$('input[name="shipping_address[tax_id]"]').removeAttr('pattern');
 	}
 
 	if ($('select[name="shipping_address[country_code]"] option:selected').data('postcode-format')) {
-		$('input[name="shipping_address[postcode]"]').attr('pattern', $('select[name="shipping_address[country_code]"] option:selected').data('postcode-format'))
+		$('input[name="shipping_address[postcode]"]').attr('pattern', $('select[name="shipping_address[country_code]"] option:selected').data('postcode-format'));
 	} else {
-		$('input[name="shipping_address[postcode]"]').removeAttr('pattern')
+		$('input[name="shipping_address[postcode]"]').removeAttr('pattern');
 	}
 
 	if ($('select[name="shipping_address[country_code]"] option:selected').data('phone-code')) {
-		$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $('select[name="shipping_address[country_code]"] option:selected').data('phone-code'))
+		$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $('select[name="shipping_address[country_code]"] option:selected').data('phone-code'));
 	} else {
-		$('input[name="shipping_address[phone]"]').removeAttr('placeholder')
+		$('input[name="shipping_address[phone]"]').removeAttr('placeholder');
 	}
-
 	$('select[name="language_code"], select[name="currency_code"], input[name="currency_value"], :input[name^="customer"]').on('input', function() {
 		let params = {
 			language_code: $('select[name="language_code"]').val(),
@@ -1586,26 +1585,26 @@
 					city: $('select[name="shipping_address[city]"]').val(),
 				}
 			}
-		}
+		};
 
-		$('.add-product').attr('href', '<?php echo document::ilink('catalog/product_picker'); ?>?'+ $.param(params))
-	})
+		$('.add-product').attr('href', '<?php echo document::ilink('catalog/product_picker'); ?>?'+ $.param(params));
+	});
 
-	$(':input[name^="customer"]').first().trigger('input')
+	$(':input[name^="customer"]').first().trigger('input');
 
 	// Comments
 
 	$('#box-comments').on('input', 'textarea[name^="comments"][name$="[text]"]', function() {
-		$(this).height('auto').height('calc(' + $(this).prop('scrollHeight') + 'px + 1em) ')
-	}).trigger('input')
+		$(this).height('auto').height('calc(' + $(this).prop('scrollHeight') + 'px + 1em) ');
+	}).trigger('input');
 
-	let new_comment_index = 0
+	let new_comment_index = 0;
 	while ($(':input[name^="comments['+new_comment_index+']"]').length) {
-		new_comment_index++
+		new_comment_index++;
 	}
 
 	$('#box-comments .add').on('click', function(e) {
-		e.preventDefault()
+		e.preventDefault();
 
 		let $output = $([
 			'<div class="bubble local me">',
@@ -1622,41 +1621,41 @@
 			'</div>'
 		].join('\n')
 			.replace(/new_comment_index/g, 'new_' + new_comment_index++)
-		)
+		);
 
-		$(this).before($output)
-		$(this).closest('#box-comments .bubbles textarea:last-child').trigger('focus')
-	})
+		$(this).before($output);
+		$(this).closest('#box-comments .bubbles textarea:last-child').trigger('focus');
+	});
 
 	$('#box-comments').on('click', ':input[name$="[hidden]"]', function(e) {
-		$(this).closest('.bubble').find(':input[name$="[notify]"]').prop('checked', false).trigger('change')
-	})
+		$(this).closest('.bubble').find(':input[name$="[notify]"]').prop('checked', false).trigger('change');
+	});
 
 	$('#box-comments').on('click', ':input[name$="[notify]"]', function(e) {
-		$(this).closest('.bubble').find(':input[name$="[hidden]"]').prop('checked', false).trigger('change')
-	})
+		$(this).closest('.bubble').find(':input[name$="[hidden]"]').prop('checked', false).trigger('change');
+	});
 
 	$('#box-comments').on('click', '.remove', function(e) {
-		e.preventDefault()
-		$(this).closest('.bubble').remove()
-	})
+		e.preventDefault();
+		$(this).closest('.bubble').remove();
+	});
 
 	$('#box-comments .bubbles').on('change', 'input[name^="comments"][name$="[hidden]"]', function(e) {
 		if ($(this).is(':checked')) {
-			$(this).closest('.bubble').addClass('semi-transparent')
+			$(this).closest('.bubble').addClass('semi-transparent');
 		} else {
-			$(this).closest('.bubble').removeClass('semi-transparent')
+			$(this).closest('.bubble').removeClass('semi-transparent');
 		}
-	})
+	});
 
 	// Tax Rates
 
-	let tax_rates = []
+	let tax_rates = [];
 
 	function get_tax(tax_class_id) {
 		$.each(tax_rates, function(i, tax_rate) {
-			if (tax_class_id == i) return tax_rate
-		})
+			if (tax_class_id == i) return tax_rate;
+		});
 	}
 
 	$('#customer-details').on('input', function() {
@@ -1667,13 +1666,13 @@
 			async: false,
 			dataType: 'json',
 			success: function(data) {
-				tax_rates = []
+				tax_rates = [];
 				$.each(data, function(i, tax_rate) {
-					tax_rates[tax_rate.tax_class_id] = tax_rate.rate
-				})
+					tax_rates[tax_rate.tax_class_id] = tax_rate.rate;
+				});
 			},
-		})
-	})
+		});
+	});
 
 	// Order Lines
 
@@ -1686,54 +1685,54 @@
 			discount = parseFloat($row.find(':input[name$="[discount]"]').val() || 0),
 			sum = quantity * (price - discount),
 			sum_tax = (sum * tax_rate / 100),
-			decimals = $('select[name="currency_code"] option:selected').data('decimals') || 0
+			decimals = $('select[name="currency_code"] option:selected').data('decimals') || 0;
 
-		$row.find(':input[name$="[sum]"]').val(sum.toFixed(decimals)).trigger('change')
-		$row.find('.sum').text(sum.toMoney(false))
+		$row.find(':input[name$="[sum]"]').val(sum.toFixed(decimals)).trigger('change');
+		$row.find('.sum').text(sum.toMoney(false));
 
-		$row.find(':input[name$="[tax]"]').val(sum_tax.toFixed(decimals)).trigger('change')
-		$row.find('.sum_tax').text(sum_tax.toMoney(false))
+		$row.find(':input[name$="[tax]"]').val(sum_tax.toFixed(decimals)).trigger('change');
+		$row.find('.sum_tax').text(sum_tax.toMoney(false));
 
-		refresh_total()
-	})
+		refresh_total();
+	});
 
 	$('#order-lines').on('click', '.edit', function() {
 
-		let $row = $(this).closest('tr')
-			type = $row.find(':input[name$="[type]"]').val()
+		let $row = $(this).closest('tr');
+			type = $row.find(':input[name$="[type]"]').val();
 
 		switch (type) {
 
 			case 'product':
-				$modal = $('#modal-edit-line-item')
-				break
+				$modal = $('#modal-edit-line-item');
+				break;
 
 			case 'custom':
-				$modal = $('#modal-edit-line-item')
-				break
+				$modal = $('#modal-edit-line-item');
+				break;
 		}
 
-			// Set origin rowe
-		$modal.data('row', $row)
+			// Set origin row
+		$modal.data('row', $row);
 
 			// Set modal title
-		$modal.find('h2').text("<?php echo functions::escape_js(language::translate('title_edit_line_item', 'Edit Line Item')); ?>")
+		$modal.find('h2').text("<?php echo functions::escape_js(language::translate('title_edit_line_item', 'Edit Line Item')); ?>");
 
 			// Insert values into modal
 		$.each($modal.find(':input'), function(i, element) {
 
-			let field = $(element).attr('name')
-			let value = $row.find(':input[name$="['+field+']"]').val()
+			let field = $(element).attr('name');
+			let value = $row.find(':input[name$="['+field+']"]').val();
 
 			if ($modal.find(':input[name="'+field+'"]').attr('type') == 'number') {
-				value = parseFloat(value || 0)
+				value = parseFloat(value || 0);
 			}
 
-			$modal.find(':input[name="'+field+'"]').val(value)
-		})
+			$modal.find(':input[name="'+field+'"]').val(value);
+		});
 
-		$.litebox($modal)
-	})
+		$.litebox($modal);
+	});
 
 	// Callback handler for product picker modal
 	let selectProduct = function(product) {
@@ -1757,71 +1756,70 @@
 					city: $('select[name="shipping_address[city]"]').val(),
 				}
 			}
-		}
+		};
 
-		let url = '<?php echo document::ilink(__APP__.'/add_product'); ?>?' + $.param(params)
+		let url = '<?php echo document::ilink(__APP__.'/add_product'); ?>?' + $.param(params);
 
 		$.get(url, function(content) {
-			$('.litebox-modal').html(content)
-		}, 'html')
-	}
+			$('.litebox-modal').html(content);
+		}, 'html');
+	};
 
 	$('#order-lines button[name="add"]').on('click', function() {
 
 		$modal = $([
 
-		].join('\n'))
+		].join('\n'));
 
-			//$.litebox($('<div>hello</div>'))
-		$.litebox('#modal-edit-line-item')
+		$.litebox('#modal-edit-line-item');
 
 		let modal = $('.litebox.active'),
-				row = $(this).closest('tr')
+				row = $(this).closest('tr');
 
-		$(modal).data('row', '')
-	})
+		$(modal).data('row', '');
+	});
 
 	$('#order-lines').on('click', '.remove', function(e) {
-		e.preventDefault()
-		$(this).closest('tr').remove()
-	})
+		e.preventDefault();
+		$(this).closest('tr').remove();
+	});
 
 	// Edit Line Item Modal
 
-	let new_item_index = 0
-	while ($(':input[name^="items['+new_item_index+']"]').length) new_item_index++
+	let new_item_index = 0;
+	while ($(':input[name^="items['+new_item_index+']"]').length) new_item_index++;
 
 	window.addItem = function(item) {
-		$output.find('*[name$="[product_id]"]').val(item.product_id)
-		$output.find('*[name$="[stock_item_id]"]').val(item.stock_item_id)
-		$output.find('*[name$="[sku]"]').val(item.sku)
-		$output.find('*[name$="[name]"]').val(item.name)
-		$output.find('*[name$="[gtin]"]').val(item.gtin)
-		$output.find('*[name$="[taric]"]').val(item.taric)
-		$output.find('*[name$="[weight]"]').val(item.weight)
-		$output.find('*[name$="[weight_unit]"]').val(item.weight_unit)
-		$output.find('*[name$="[length]"]').val(item.length)
-		$output.find('*[name$="[width]"]').val(item.width)
-		$output.find('*[name$="[height]"]').val(item.height)
-		$output.find('*[name$="[length_unit]"]').val(item.length_unit)
-		$output.find('*[name$="[quantity]"]').val(item.quantity)
-		$output.find('*[name$="[price]"]').val(item.price)
-		$output.find('*[name$="[tax]"]').val(item.tax)
-		$output.find('*[name$="[tax_rate]"]').val(item.tax_rate)
-		$output.find('*[name$="[tax_class_id]"]').val(item.tax_class_id)
-		$output.find('[data-type="currency"]').parent().find('.input-group-text').text($(':input[name="currency_code"]').val())
-		$output.find('.weight').text(String(item.weight).trim('.0'))
-		$output.find('.weight_unit').text(item.weight_unit)
-		$output.find('.length').text(String(item.length).trim('.0'))
-		$output.find('.width').text(String(item.width).trim('.0'))
-		$output.find('.height').text(String(item.height).trim('.0'))
-		$output.find('.length_unit').text(item.length_unit)
-	}
+		$output.find('*[name$="[product_id]"]').val(item.product_id);
+		$output.find('*[name$="[stock_item_id]"]').val(item.stock_item_id);
+		$output.find('*[name$="[sku]"]').val(item.sku);
+		$output.find('*[name$="[name]"]').val(item.name);
+		$output.find('*[name$="[gtin]"]').val(item.gtin);
+		$output.find('*[name$="[taric]"]').val(item.taric);
+		$output.find('*[name$="[weight]"]').val(item.weight);
+		$output.find('*[name$="[weight_unit]"]').val(item.weight_unit);
+		$output.find('*[name$="[length]"]').val(item.length);
+		$output.find('*[name$="[width]"]').val(item.width);
+		$output.find('*[name$="[height]"]').val(item.height);
+		$output.find('*[name$="[length_unit]"]').val(item.length_unit);
+		$output.find('*[name$="[quantity]"]').val(item.quantity);
+		$output.find('*[name$="[price]"]').val(item.price);
+		$output.find('*[name$="[tax]"]').val(item.tax);
+		$output.find('*[name$="[tax_rate]"]').val(item.tax_rate);
+		$output.find('*[name$="[tax_class_id]"]').val(item.tax_class_id);
+		$output.find('[data-type="currency"]').parent().find('.input-group-text').text($(':input[name="currency_code"]').val());
+		$output.find('.weight').text(String(item.weight).trim('.0'));
+		$output.find('.weight_unit').text(item.weight_unit);
+		$output.find('.length').text(String(item.length).trim('.0'));
+		$output.find('.width').text(String(item.width).trim('.0'));
+		$output.find('.height').text(String(item.height).trim('.0'));
+		$output.find('.length_unit').text(item.length_unit);
+	};
 
 	$('#modal-edit-line-item button[name="ok"]').on('click', function(e) {
 
-		let $modal = $('.litebox.active')
-		let $row = $(modal).data('row')
+		let $modal = $('.litebox.active');
+		let $row = $(modal).data('row');
 
 		if (!$row) {
 
@@ -1864,55 +1862,55 @@
 				'      <a class="btn btn-default btn-sm edit" href="#" title="<?php echo functions::escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('edit')); ?></a>',
 				'    </td>',
 				'  </tr>'
-			].join('\n').replace(/new_item_index/g, 'new_' + new_item_index++))
+			].join('\n').replace(/new_item_index/g, 'new_' + new_item_index++));
 
-			$row = $output
-			$('#order-lines tbody').append($output)
+			$row = $output;
+			$('#order-lines tbody').append($output);
 		}
 
 		$.each($modal.find(':input'), function(i, $element) {
-			let field = $element.attr('name')
-			let value = $modal.find(':input[name="'+field+'"]').val()
-			$row.find(':input[name$="['+field+']"]').val(value).trigger('keyup')
-			$row.find('.'+field).text(value)
-		})
+			let field = $element.attr('name');
+			let value = $modal.find(':input[name="'+field+'"]').val();
+			$row.find(':input[name$="['+field+']"]').val(value).trigger('keyup');
+			$row.find('.'+field).text(value);
+		});
 
-		refresh_total()
+		refresh_total();
 
-		$.litebox.close()
-	})
+		$.litebox.close();
+	});
 
 	// Order Total
 
 	function refresh_total() {
 
 		let subtotal = 0,
-		 discount = 0,
-		 fees = 0,
-		 tax = 0,
-		 total = 0
+			discount = 0,
+			fees = 0,
+			tax = 0,
+			total = 0;
 
 		$('#order-lines tbody tr').each(function() {
 
 			let final_price = parseFloat($(this).find(':input[name$="[price]"]').val() || 0) - parseFloat($(this).find(':input[name$="[discount]"]').val() || 0),
 				sum = final_price * parseFloat($(this).find(':input[name$="[quantity]"]').val() || 0),
-				sum_tax = sum * (parseFloat($(this).find(':input[name$="[tax_rate]"]').val() || 0) / 100)
+				sum_tax = sum * (parseFloat($(this).find(':input[name$="[tax_rate]"]').val() || 0) / 100);
 
-				$(this).find('.sum').text(sum.toMoney())
-				$(this).find('.sum_tax').text(sum_tax.toMoney())
+				$(this).find('.sum').text(sum.toMoney());
+				$(this).find('.sum_tax').text(sum_tax.toMoney());
 
-			subtotal += sum
-			discount += parseFloat($(this).find(':input[name$="[quantity]"]').val() || 0) * parseFloat($(this).find(':input[name$="[discount]"]').val() || 0)
-			tax += sum_tax
-		})
+			subtotal += sum;
+			discount += parseFloat($(this).find(':input[name$="[quantity]"]').val() || 0) * parseFloat($(this).find(':input[name$="[discount]"]').val() || 0);
+			tax += sum_tax;
+		});
 
-		total = subtotal + fees + tax
+		total = subtotal + fees + tax;
 
-		$('#subtotal .amount').text(subtotal.toMoney(false))
-		$('#total-discount .amount').text(discount.toMoney(false))
-		$('#total-fees .amount').text(fees.toMoney(false))
-		$('#total-tax .amount').text(tax.toMoney(false))
-		$('#order-total .amount').html(total.toMoney(true))
+		$('#subtotal .amount').text(subtotal.toMoney(false));
+		$('#total-discount .amount').text(discount.toMoney(false));
+		$('#total-fees .amount').text(fees.toMoney(false));
+		$('#total-tax .amount').text(tax.toMoney(false));
+		$('#order-total .amount').html(total.toMoney(true));
 	}
 
 /*
@@ -1923,7 +1921,7 @@
 		'#order-lines :input[name$="[tax_rate]"]',
 		'#order-lines a.remove',
 	].join(', '), function() {
-		refresh_total()
-	})
+		refresh_total();
+	});
 */
 </script>

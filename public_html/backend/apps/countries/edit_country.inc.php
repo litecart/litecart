@@ -305,15 +305,15 @@
 			'%postcode %city\n' +
 			'%zone_code, %zone_name\n' +
 			'%country_number, %country_code, %country_code_3, %country_name, %country_domestic_name\n'
-		)
-	})
+		);
+	});
 
-	let new_zone_index = 0
-	while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++
+	let new_zone_index = 0;
+	while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++;
 
 	$('form[name="country_form"] .add').on('click', function(e) {
-		e.preventDefault()
-		if ($('select[name="country[code]"]').find('option:selected').val() == '') return
+		e.preventDefault();
+		if ($('select[name="country[code]"]').find('option:selected').val() == '') return;
 
 		let $output = $([
 			'<tr>',
@@ -326,30 +326,30 @@
 			.replace(/new_zone_index/g, 'new_' + new_zone_index++)
 			.replace(/new_zone_code/g, $('input[name="zone[code]"]').val())
 			.replace(/new_zone_name/g, $('input[name="zone[name]"]').val())
-		)
+		);
 
-		$(this).closest('table').find('tbody').append(output)
-	})
+		$(this).closest('table').find('tbody').append($output);
+	});
 
 	$('form[name="country_form"]').on('click', '.remove', function(e) {
-		e.preventDefault()
-		$(this).closest('tr').remove()
-	})
+		e.preventDefault();
+		$(this).closest('tr').remove();
+	});
 
 	<?php if (!empty($available_countries)) { ?>
 	$('select[name="prefill"]').on('change', function() {
 
 		$.each($(this).find('option:selected').data(), function(key, value) {
 
-			var field_name = key.replace(/([A-Z])/, '_$1').toLowerCase()
+			var field_name = key.replace(/([A-Z])/, '_$1').toLowerCase();
 
-			$(':input[name="'+field_name+'"]').not('[type="checkbox"]').not('[type="radio"]').val(value)
-			$('input[name="'+field_name+'"][type="checkbox"][value="'+value+'"], input[name="'+field_name+'"][type="radio"][value="'+value+'"]').prop('checked', true)
+			$(':input[name="'+field_name+'"]').not('[type="checkbox"]').not('[type="radio"]').val(value);
+			$('input[name="'+field_name+'"][type="checkbox"][value="'+value+'"], input[name="'+field_name+'"][type="radio"][value="'+value+'"]').prop('checked', true);
 
 			if (key == 'direction') {
-				$('input[name="'+field_name+'"]:checked').parent('.btn').addClass('active').siblings().removeClass('active')
+				$('input[name="'+field_name+'"]:checked').parent('.btn').addClass('active').siblings().removeClass('active');
 			}
-		})
-	})
+		});
+	});
 	<?php } ?>
 </script>

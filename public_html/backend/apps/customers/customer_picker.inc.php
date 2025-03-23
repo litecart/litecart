@@ -39,15 +39,15 @@
 </div>
 
 <script>
-	$('#modal-customer-picker input[name="query"]').trigger('focus')
+	$('#modal-customer-picker input[name="query"]').trigger('focus');
 
-	var xhr_customer_picker = null
+	var xhr_customer_picker = null;
 	$('#modal-customer-picker input[name="query"]').on('input', function() {
 
 		if ($(this).val() == '') {
-			$('#modal-customer-picker .results tbody').html('')
-			xhr_customer_picker = null
-			return
+			$('#modal-customer-picker .results tbody').html('');
+			xhr_customer_picker = null;
+			return;
 		}
 
 		xhr_customer_picker = $.ajax({
@@ -57,11 +57,11 @@
 			url: '<?php echo document::ilink('customers/customers.json'); ?>?query=' + $(this).val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
-				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
+				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
 			},
 			success: function(json) {
 
-				$('#modal-customer-picker .results tbody').html('')
+				$('#modal-customer-picker .results tbody').html('');
 
 				$.each(json, function(i, row) {
 
@@ -73,64 +73,64 @@
 						'  <td class="date-created">' + row.date_created + '</td>',
 						'  <td></td>',
 						'</tr>'
-					].join('\n'))
+					].join('\n'));
 
-					$row.find('.id').text(row.id)
-					$row.find('.name').text(row.name)
-					$row.find('.date-created').text(row.date_created)
+					$row.find('.id').text(row.id);
+					$row.find('.name').text(row.name);
+					$row.find('.date-created').text(row.date_created);
 
-					$row.data(row)
+					$row.data(row);
 
-					$('#modal-customer-picker .results tbody').append($row)
-				})
+					$('#modal-customer-picker .results tbody').append($row);
+				});
 
 				if ($('#modal-customer-picker .results tbody').html() == '') {
-					$('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>')
+					$('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
 				}
 			},
-		})
-	})
+		});
+	});
 
 	$('#modal-customer-picker tbody').on('click', 'td', function() {
 
 		let $row = $(this).closest('tr'),
 			callback = $.litebox.current().$currentTarget.data('callback'),
 			expand = <?php echo (isset($_GET['collect']) && array_intersect(['address', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
-			customer = $row.data()
+			customer = $row.data();
 
 		if (!customer.id) {
 			customer = {
 				id: 0,
 				name: '(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)',
-			}
+			};
 		}
 
 		if (callback) {
 
 			if (typeof callback == 'function') {
-				callback(product)
+				callback(product);
 			} else {
-				window[callback](customer)
+				window[callback](customer);
 			}
 
 		} else {
-			let $field = $.litebox.current().$currentTarget.closest('.form-group')
-			$field.find(':input').val(customer.id).trigger('change')
-			$field.find('.id').text(customer.id)
-			$field.find('.name').text(customer.name)
-			$.litebox.close()
+			let $field = $.litebox.current().$currentTarget.closest('.form-group');
+			$field.find(':input').val(customer.id).trigger('change');
+			$field.find('.id').text(customer.id);
+			$field.find('.name').text(customer.name);
+			$.litebox.close();
 		}
-	})
+	});
 
 	$('#modal-customer-picker .set-guest').on('click', function() {
 
-		let field = $.litebox.current().$currentTarget.closest('.form-input')
+		let field = $.litebox.current().$currentTarget.closest('.form-input');
 
-		$(field).find(':input').val('0').trigger('change')
-		$(field).find('.id').text('0')
-		$(field).find('.name').text('(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)')
-		$.litebox.close()
-	})
+		$(field).find(':input').val('0').trigger('change');
+		$(field).find('.id').text('0');
+		$(field).find('.name').text('(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)');
+		$.litebox.close();
+	});
 </script>
 
 <?php

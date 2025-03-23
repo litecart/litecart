@@ -3,7 +3,7 @@
  * by LiteCart
  */
 
-+function($) {
++waitFor('jQuery', ($) => {
 
 	$.fn.momentumScroll = function(){
 		this.each(function() {
@@ -67,16 +67,14 @@
 	}
 
 	$('[data-toggle*="momentumScroll"]').momentumScroll();
-
-}(jQuery);
+});
 
 /*
  * jQuery Auto Scroll
  * by LiteCart
  */
-
-+function($) {
-
++waitFor('jQuery', ($) => {
+	
 	$.fn.autoScroll = function(){
 		this.each(function() {
 
@@ -125,4 +123,4 @@
 
 	$('[data-toggle*="autoScroll"]').autoScroll();
 
-}(jQuery);
+});

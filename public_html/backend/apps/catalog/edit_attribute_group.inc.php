@@ -151,11 +151,11 @@
 </div>
 
 <script>
-	let new_value_index = 0
-	while ($(':input[name^="values['+new_value_index+']"]').length) new_value_index++
+	let new_value_index = 0;
+	while ($(':input[name^="values['+new_value_index+']"]').length) new_value_index++;
 
 	$('form[name="attribute_form"]').on('click', '.add', function(e) {
-		e.preventDefault()
+		e.preventDefault();
 
 <?php
 		$name_fields = '';
@@ -169,13 +169,13 @@
 			'  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a></td>',
 			'</tr>'
 		].join('\n')
-		.replace(/new_value_index/g, 'new_' + new_value_index++)
+		.replace(/new_value_index/g, 'new_' + new_value_index++);
 
-		$(this).closest('table').find('tbody').append(output)
-	})
+		$(this).closest('table').find('tbody').append(output);
+	});
 
 	$('form[name="attribute_form"]').on('click', '.remove', function(e) {
-		e.preventDefault()
-		$(this).closest('tr').remove()
-	})
+		e.preventDefault();
+		$(this).closest('tr').remove();
+	});
 </script>

@@ -716,114 +716,114 @@ textarea.warning {
 <script>
 	// Tabs
 
-	let new_tab_index = 1
-	while ($('.tab-pane[id="tab-'+new_tab_index+'"]').length) new_tab_index++
+	let new_tab_index = 1;
+	while ($('.tab-content[id="tab-'+new_tab_index+'"]').length) new_tab_index++;
 
 	$('.tabs').on('click', '[data-toggle="tab"]', function(e) {
-		$($(this).attr('href')).find(':input[name$="[content]"]').trigger('input')
-	})
+		$($(this).attr('href')).find(':input[name$="[content]"]').trigger('input');
+	});
 
 	$('.tabs .add').on('click', function(e) {
-		e.preventDefault()
+		e.preventDefault();
 
 		let tab = '<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'"><span class="file">new'+ new_tab_index +'</span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('icon-times'); ?></span></a>'
-			.replace(/new_tab_index/g, new_tab_index)
+			.replace(/new_tab_index/g, new_tab_index);
 
-		let tab_pane = $('#new-tab-pane-template').html()
-			.replace(/new_tab_index/g, new_tab_index++)
+		let tab_pane = $('#new-tab-content-template').html()
+			.replace(/new_tab_index/g, new_tab_index++);
 
-		$tab_pane = $(tab_pane).hide()
+		$tab_pane = $(tab_pane).hide();
 
-		$(this).before(tab)
-		$('#files').append($tab_pane)
+		$(this).before(tab);
+		$('#files').append($tab_pane);
 
-		$(this).prev().trigger('click')
-	})
+		$(this).prev().trigger('click');
+	});
 
 	$('.tabs').on('click', '.remove', function(e) {
-		e.preventDefault()
+		e.preventDefault();
 
-		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false
+		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false;
 
 		let $tab = $(this).closest('.nav-link'),
-			tab_pane = $(this).closest('.nav-link').attr('href')
+			tab_pane = $(this).closest('.nav-link').attr('href');
 
 		if ($tab.prev('[data-toggle="tab"]').length) {
-			$tab.prev('[data-toggle="tab"]').trigger('click')
+			$tab.prev('[data-toggle="tab"]').trigger('click');
 
 		} else if ($tab.next('[data-toggle="tab"]').length) {
-			$tab.next('[data-toggle="tab"').trigger('click')
+			$tab.next('[data-toggle="tab"]').trigger('click');
 		}
 
-		$(tab_pane).remove()
-		$(this).closest('.nav-link').remove()
-	})
+		$(tab_pane).remove();
+		$(this).closest('.nav-link').remove();
+	});
 
 	// Operations
 
 	let reindex_operations = function($operations) {
-		let index = 1
+		let index = 1;
 		$operations.find('.operation').each(function(i, operation){
-			$(operation).find('.number').text(index++)
-		})
-	}
+			$(operation).find('.number').text(index++);
+		});
+	};
 
 	$('#files').on('change', ':input[name$="[type]"]', function(e) {
-		e.preventDefault()
-		let match_type = $(this).val()
+		e.preventDefault();
+		let match_type = $(this).val();
 
 		$(this).closest('.operation').find(':input[name$="[content]"]').each(function(i, field){
 			switch (match_type) {
 
 				case 'inline':
 				case 'regex':
-					var $newfield = $('<input class="form-code" name="'+ $(field).attr('name') +'" type="text">').val($(field).val())
-					$(field).replaceWith($newfield)
-					break
+					var $newfield = $('<input class="form-code" name="'+ $(field).attr('name') +'" type="text">').val($(field).val());
+					$(field).replaceWith($newfield);
+					break;
 
 				default:
-					var $newfield = $('<textarea class="form-code" name="'+ $(field).attr('name') +'"></textarea>').val($(field).val())
-					$(field).replaceWith($newfield)
-					break
+					var $newfield = $('<textarea class="form-code" name="'+ $(field).attr('name') +'"></textarea>').val($(field).val());
+					$(field).replaceWith($newfield);
+					break;
 			}
-		})
+		});
 
-		$(this).closest('.operation').find(':input[name$="[find][content]"]').trigger('input')
-	})
+		$(this).closest('.operation').find(':input[name$="[find][content]"]').trigger('input');
+	});
 
 	$('#files').on('change', ':input[name$="[method]"]', function(e) {
-		e.preventDefault()
+		e.preventDefault();
 
-		let method = $(this).val()
+		let method = $(this).val();
 
 		if ($.inArray(method, ['top', 'bottom', 'all']) != -1) {
-			$(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', true)
+			$(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', true);
 		} else {
-			$(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', false)
+			$(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', false);
 		}
-	})
+	});
 
-	$('#files :input[name$="[method]"]').trigger('change')
+	$('#files :input[name$="[method]"]').trigger('change');
 
 	$('body').on('input', 'textarea.form-code', function() {
-		$(this).css('height', '')
-		$(this).css('height', Math.min(this.scrollHeight + 10, 250) + 'px')
-	})
+		$(this).css('height', '');
+		$(this).css('height', Math.min(this.scrollHeight + 10, 250) + 'px');
+	});
 
-	$('textarea.form-code').trigger('input')
+	$('textarea.form-code').trigger('input');
 
 	$('.tab-content').on('input', ':input[name^="files"][name$="[name]"]', function() {
-		let $tab_pane = $(this).closest('.tab-pane'),
-		 tab_index = $(this).closest('.tab-pane').attr('id').replace(/^tab-/, ''),
-		 tab_name = $tab_pane.find('input[name$="[name]"]').val()
+		let $tab_pane = $(this).closest('.tab-content'),
+			tab_index = $(this).closest('.tab-content').attr('id').replace(/^tab-/, ''),
+			tab_name = $tab_pane.find('input[name$="[name]"]').val();
 
-		$('a[href="#tab-'+ tab_index +'"] .file').text(tab_name)
+		$('a[href="#tab-'+ tab_index +'"] .file').text(tab_name);
 
 		let file_pattern = $(this).closest('.row').find(':input[name^="files"][name$="[name]"]').val(),
-			url = '<?php echo document::ilink(__APP__.'/sources', ['pattern' => 'thepattern']); ?>'.replace(/thepattern/, file_pattern)
+			url = '<?php echo document::ilink(__APP__.'/sources', ['pattern' => 'thepattern']); ?>'.replace(/thepattern/, file_pattern);
 
 		$.get(url, function(result) {
-			$tab_pane.find('.sources').html('')
+			$tab_pane.find('.sources').html('');
 
 			$.each(result, function(file, source_code) {
 
@@ -832,339 +832,339 @@ textarea.warning {
 					'  <div class="form-code"></div>' +
 					'  <div class="filename"></div>' +
 					'</div>'
-				)
+				);
 
-				$script.find('.form-code').text(source_code)
-				$script.find('.filename').text(file)
-				$tab_pane.find('.sources').append($script)
-			})
+				$script.find('.form-code').text(source_code);
+				$script.find('.filename').text(file);
+				$tab_pane.find('.sources').append($script);
+			});
 
-			$tab_pane.find(':input[name$="[find][content]"]').trigger('input')
-		})
-	})
+			$tab_pane.find(':input[name$="[find][content]"]').trigger('input');
+		});
+	});
 
-	$(':input[name^="files"][name$="[name]"]').trigger('input')
+	$(':input[name^="files"][name$="[name]"]').trigger('input');
 
-	let new_operation_index = $(':input[name$="[find][content]"]').length || 0
+	let new_operation_index = $(':input[name$="[find][content]"]').length || 0;
 
 	$('#files').on('click', '.add', function(e) {
-		e.preventDefault()
+		e.preventDefault();
 
-		let $operations = $(this).closest('.tab-pane').find('.operations'),
-			tab_index = $(this).closest('.tab-pane').data('tab-index')
+		let $operations = $(this).closest('.tab-content').find('.operations'),
+			tab_index = $(this).closest('.tab-content').data('tab-index');
 
-		 let output = $('#new-operation-template').html()
-			 .replace(/current_tab_index/g, tab_index)
-			 .replace(/new_operation_index/g, new_operation_index++)
+			let output = $('#new-operation-template').html()
+				.replace(/current_tab_index/g, tab_index)
+				.replace(/new_operation_index/g, new_operation_index++);
 
-		$operations.append(output)
-		reindex_operations($operations)
-	})
+		$operations.append(output);
+		reindex_operations($operations);
+	});
 
 	$('#files').on('click', '.move-up, .move-down', function(e) {
-		e.preventDefault()
+		e.preventDefault();
 
 		let $row = $(this).closest('.operation'),
-			$operations = $(this).closest('.operations')
+			$operations = $(this).closest('.operations');
 
 		if ($(this).is('.move-up') && $row.prevAll().length > 0) {
-			$row.insertBefore($row.prev())
+			$row.insertBefore($row.prev());
 		} else if ($(this).is('.move-down') && $row.nextAll().length > 0) {
-			$row.insertAfter($row.next())
+			$row.insertAfter($row.next());
 		}
 
-		reindex_operations($operations)
-	})
+		reindex_operations($operations);
+	});
 
 	$('#files').on('click', '.remove', function(e) {
-		e.preventDefault()
+		e.preventDefault();
 
-		let $operations = $(this).closest('.operations')
+		let $operations = $(this).closest('.operations');
 
-		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return
+		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return;
 
-		$(this).closest('.operation').remove()
-		reindex_operations($operations)
+		$(this).closest('.operation').remove();
+		reindex_operations($operations);
 
-		$operations.find(':input[name$="[find][content]"]').trigger('input')
-	})
+		$operations.find(':input[name$="[find][content]"]').trigger('input');
+	});
 
 	// Validate operation
 	$('#files').on('input', ':input[name*="[find]"]', function() {
 
-		let $tab = $(this).closest('.tab-pane'),
+		let $tab = $(this).closest('.tab-content'),
 			$operation = $(this).closest('.operation'),
 			method = $operation.find(':input[name$="[method]"]').val(),
 			find = $operation.find(':input[name$="[find][content]"]').val(),
 			type = $operation.find(':input[name$="[type]"]:checked').val(),
 			indexes = $operation.find(':input[name$="[index]"]').val().split(/\s*,\s*/).filter(Boolean),
 			offset_before = $operation.find(':input[name$="[offset-before]"]').val(),
-			offset_after = $operation.find(':input[name$="[offset-after]"]').val()
+			offset_after = $operation.find(':input[name$="[offset-after]"]').val(),
 			onerror = $operation.find(':input[name$="[onerror]"]').val(),
-			regex_flags = 's'
+			regex_flags = 's';
 
 		try {
 
 			switch (method) {
 
 				case 'top':
-					find = '^'
-					break
+					find = '^';
+					break;
 
 				case 'bottom':
-					find = '$'
-					break
+					find = '$';
+					break;
 
 				case 'all':
-					find = '^.*$'
-					break
+					find = '^.*$';
+					break;
 
 				case 'before':
 				case 'after':
 				case 'replace':
 
-				// Trim
-				find = find.trim()
+					// Trim
+					find = find.trim();
 
-				// Cook the regex pattern
+					// Cook the regex pattern
 					if (type == 'regex') {
 
-						find_operators = 'g'+find.substr(find.lastIndexOf(find.substr(0, 1))+1)
-						find = find.substr(1, find.lastIndexOf(find.substr(0, 1))-1)
+						find_operators = 'g' + find.substr(find.lastIndexOf(find.substr(0, 1)) + 1);
+						find = find.substr(1, find.lastIndexOf(find.substr(0, 1)) - 1);
 
 					} else if (type == 'inline') {
 
-						find = find.replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&")
+						find = find.replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&");
 
 					} else {
 
 						// Whitespace
-						find = find.split(/\r\n?|\n/)
+						find = find.split(/\r\n?|\n/);
 
-						for (let i=0; i < find.length; i++) {
+						for (let i = 0; i < find.length; i++) {
 							if (find[i] = find[i].trim()) {
-								find[i] = '[ \t]*'+ find[i].replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&") +'[ \t]*(?:\r\n?|\n|$)'
-							} else if (i != (find.length -1)) {
-								find[i] = '[ \t]*(?:\r\n?|\n)'
+								find[i] = '[ \t]*' + find[i].replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&") + '[ \t]*(?:\r\n?|\n|$)';
+							} else if (i != (find.length - 1)) {
+								find[i] = '[ \t]*(?:\r\n?|\n)';
 							}
 						}
-						find = find.join('')
+						find = find.join('');
 
 						// Offset
 						if (offset_before != '') {
-							find = '(?:.*?(?:\r\n?|\n)){'+ offset_before +'}'+ find
+							find = '(?:.*?(?:\r\n?|\n)){' + offset_before + '}' + find;
 						}
 
 						if (offset_after != '') {
-							find = find + '(?:.*?(?:\r\n?|\n|$)){0,'+ offset_after +'}'
+							find = find + '(?:.*?(?:\r\n?|\n|$)){0,' + offset_after + '}';
 						}
 					}
 
-					regex_flags = 'gm'
+					regex_flags = 'gm';
 
-					break
+					break;
 
 				default:
-					throw new Error('Unknown error')
+					throw new Error('Unknown error');
 			}
 
 			$.each($tab.find('.script'), function() {
 
 				let regex = new RegExp(find, regex_flags),
 					source = $(this).find('.form-code').text(),
-					matches = (source.match(regex) || []).length
+					matches = (source.match(regex) || []).length;
 
 				if (!matches) {
-					throw new Error('Failed matching content')
+					throw new Error('Failed matching content');
 				}
 
-				if (indexes && Math.max(indexes) > (matches+1)) {
-					throw new Error('Failed matching an index')
+				if (indexes && Math.max(indexes) > (matches + 1)) {
+					throw new Error('Failed matching an index');
 				}
-			})
+			});
 
-			$operation.find(':input[name$="[find][content]"]').removeAttr('title').removeClass('warning')
+			$operation.find(':input[name$="[find][content]"]').removeAttr('title').removeClass('warning');
 
 		} catch (err) {
 			if (onerror != 'ignore') {
-				$operation.find(':input[name$="[find][content]"]').attr('title', err.message).addClass('warning')
+				$operation.find(':input[name$="[find][content]"]').attr('title', err.message).addClass('warning');
 			}
 		}
 
 		if ($tab.find(':input.warning').length) {
-			$('.nav-link[href="#'+ $tab.attr('id') +'"]').addClass('warning')
+			$('.nav-link[href="#' + $tab.attr('id') + '"]').addClass('warning');
 		} else {
-			$('.nav-link[href="#'+ $tab.attr('id') +'"]').removeClass('warning')
+			$('.nav-link[href="#' + $tab.attr('id') + '"]').removeClass('warning');
 		}
-	})
+	});
 
-	// Aliases
+		// Aliases
 
-	let new_alias_index = 0
-	while ($(':input[name^="aliases['+new_alias_index+']"]').length) new_alias_index++
+		let new_alias_index = 0;
+		while ($(':input[name^="aliases['+new_alias_index+']"]').length) new_alias_index++;
 
-	$('button[name="add_alias"]').on('click', function() {
+		$('button[name="add_alias"]').on('click', function() {
 
-		let output = [
-			'<fieldset class="alias">',
-			'  <div class="grid">',
-			'    <div class="col-md-4">',
-			'      <label class="form-group">',
-			'        <div class="form-label"><?php echo language::translate('title_key', 'Key'); ?></div>',
-			'        <div class="input-group">',
-			'          <span class="input-group-text" style="font-family: monospace;">{alias:</span>',
-			'          <?php echo functions::form_input_text('aliases[new_alias_index][key]', '', 'required'); ?>',
-			'          <span class="input-group-text" style="font-family: monospace;">}</span>',
-			'        </div>',
-			'      </label>',
-			'    </div>',
-			'    <div class="col-md-6">',
-			'      <label class="form-group">',
-			'        <div class="form-label"><?php echo functions::escape_js(language::translate('title_value', 'Value')); ?></div>',
-			'        <?php echo functions::escape_js(functions::form_input_text('aliases[new_alias_index][value]', '', 'required')); ?>',
-			'      </label>',
-			'    </div>',
-			'',
-			'    <div class="col-md-2" style="align-self: center;">',
-			'     <?php echo functions::form_button('aliases[new_alias_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_up', 'Move Up')) .'"'); ?>',
-			'     <?php echo functions::form_button('aliases[new_alias_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_down', 'Move Down')) .'"'); ?>',
-			'     <?php echo functions::form_button('aliases[new_alias_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'"'); ?>',
-			'    </div>',
-			'  </div>',
-			'</fieldset>'
-		].join('\n')
-		.replace(/new_alias_index/g, 'new_' + new_alias_index++)
+			let output = [
+				'<fieldset class="alias">',
+				'  <div class="grid">',
+				'    <div class="col-md-4">',
+				'      <label class="form-group">',
+				'        <div class="form-label"><?php echo language::translate('title_key', 'Key'); ?></div>',
+				'        <div class="input-group">',
+				'          <span class="input-group-text" style="font-family: monospace;">{alias:</span>',
+				'          <?php echo functions::form_input_text('aliases[new_alias_index][key]', '', 'required'); ?>',
+				'          <span class="input-group-text" style="font-family: monospace;">}</span>',
+				'        </div>',
+				'      </label>',
+				'    </div>',
+				'    <div class="col-md-6">',
+				'      <label class="form-group">',
+				'        <div class="form-label"><?php echo functions::escape_js(language::translate('title_value', 'Value')); ?></div>',
+				'        <?php echo functions::escape_js(functions::form_input_text('aliases[new_alias_index][value]', '', 'required')); ?>',
+				'      </label>',
+				'    </div>',
+				'',
+				'    <div class="col-md-2" style="align-self: center;">',
+				'     <?php echo functions::form_button('aliases[new_alias_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_up', 'Move Up')) .'"'); ?>',
+				'     <?php echo functions::form_button('aliases[new_alias_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_down', 'Move Down')) .'"'); ?>',
+				'     <?php echo functions::form_button('aliases[new_alias_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'"'); ?>',
+				'    </div>',
+				'  </div>',
+				'</fieldset>'
+			].join('\n')
+			.replace(/new_alias_index/g, 'new_' + new_alias_index++);
 
-		$('.aliases').append(output)
-	})
+			$('.aliases').append(output);
+		});
 
-	$('#aliases').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
-		e.preventDefault()
+		$('#aliases').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
+			e.preventDefault();
 
-		let $row = $(this).closest('.alias')
+			let $row = $(this).closest('.alias');
 
-		if ($(this).is('button[name$="[move_up]"]') && $row.prevAll().length > 0) {
-			$row.insertBefore($row.prev())
-		} else if ($(this).is('button[name$="[move_down]"]') && $row.nextAll().length > 0) {
-			$row.insertAfter($row.next())
-		}
-	})
+			if ($(this).is('button[name$="[move_up]"]') && $row.prevAll().length > 0) {
+				$row.insertBefore($row.prev());
+			} else if ($(this).is('button[name$="[move_down]"]') && $row.nextAll().length > 0) {
+				$row.insertAfter($row.next());
+			}
+		});
 
-	$('#aliases').on('click', 'button[name$="[remove]"]', function(e) {
-		e.preventDefault()
+		$('#aliases').on('click', 'button[name$="[remove]"]', function(e) {
+			e.preventDefault();
 
-		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return
-		$(this).closest('.alias').remove()
-	})
+			if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return;
+			$(this).closest('.alias').remove();
+		});
 
-	// Settings
-	let new_setting_index = 0
-	while ($(':input[name^="settings['+new_setting_index+']"]').length) new_setting_index++
+		// Settings
+		let new_setting_index = 0;
+		while ($(':input[name^="settings['+new_setting_index+']"]').length) new_setting_index++;
 
-	$('button[name="add_setting"]').on('click', function() {
+		$('button[name="add_setting"]').on('click', function() {
 
-		let output = [
-			'<fieldset class="setting">',
-			'  <div class="grid">',
-			'    <div class="col-md-4">',
-			'      <label class="form-group">',
-			'        <div class="form-label"><?php echo language::translate('title_key', 'Key'); ?></div>',
-			'        <div class="input-group">',
-			'          <span class="input-group-text" style="font-family: monospace;">{setting:</span>',
-			'          <?php echo functions::form_input_text('settings[new_setting_index][key]', '', 'required'); ?>',
-			'          <span class="input-group-text" style="font-family: monospace;">}</span>',
-			'        </div>',
-			'      </label>',
-			'    </div>',
-			'    <div class="col-md-6">',
-			'      <label class="form-group">',
-			'        <div class="form-label"><?php echo functions::escape_js(language::translate('title_title', 'Title')); ?></div>',
-			'        <?php echo functions::escape_js(functions::form_input_text('settings[new_setting_index][title]', '', 'required')); ?>',
-			'      </label>',
-			'    </div>',
-			'',
-			'    <div class="col-md-2 text-center" style="align-self: center;">',
-			'     <?php echo functions::form_button('settings[new_setting_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_up', 'Move Up')) .'"'); ?>',
-			'     <?php echo functions::form_button('settings[new_setting_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_down', 'Move Down')) .'"'); ?>',
-			'     <?php echo functions::form_button('settings[new_setting_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'"'); ?>',
-			'    </div>',
-			'  </div>',
-			'',
-			'  <label class="form-group">',
-			'    <div class="form-label"><?php echo functions::escape_js(language::translate('title_description', 'Description')); ?></div>',
-			'    <?php echo functions::escape_js(functions::form_input_text('settings[new_setting_index][description]', '', 'required')); ?>',
-			'  </label>',
-			'',
-			'  <div class="grid">',
-			'    <div class="col-md-6">',
-			'      <label class="form-group">',
-			'        <div class="form-label"><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></div>',
-			'        <?php echo functions::escape_js(functions::form_input_text('settings[new_setting_index][function]', '', 'required')); ?>',
-			'      </label>',
-			'    </div>',
-			'    <div class="col-md-6">',
-			'      <label class="form-group">',
-			'        <div class="form-label"><?php echo functions::escape_js(language::translate('title_default_value', 'Default Value')); ?></div>',
-			'        <?php echo functions::escape_js(functions::form_input_text('settings[new_setting_index][default_value]', '')); ?>',
-			'      </label>',
-			'    </div>',
-			'  </div>',
-			'</fieldset>'
-		].join('\n')
-		.replace(/new_setting_index/g, 'new_' + new_setting_index++)
+			let output = [
+				'<fieldset class="setting">',
+				'  <div class="grid">',
+				'    <div class="col-md-4">',
+				'      <label class="form-group">',
+				'        <div class="form-label"><?php echo language::translate('title_key', 'Key'); ?></div>',
+				'        <div class="input-group">',
+				'          <span class="input-group-text" style="font-family: monospace;">{setting:</span>',
+				'          <?php echo functions::form_input_text('settings[new_setting_index][key]', '', 'required'); ?>',
+				'          <span class="input-group-text" style="font-family: monospace;">}</span>',
+				'        </div>',
+				'      </label>',
+				'    </div>',
+				'    <div class="col-md-6">',
+				'      <label class="form-group">',
+				'        <div class="form-label"><?php echo functions::escape_js(language::translate('title_title', 'Title')); ?></div>',
+				'        <?php echo functions::escape_js(functions::form_input_text('settings[new_setting_index][title]', '', 'required')); ?>',
+				'      </label>',
+				'    </div>',
+				'',
+				'    <div class="col-md-2 text-center" style="align-self: center;">',
+				'     <?php echo functions::form_button('settings[new_setting_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_up', 'Move Up')) .'"'); ?>',
+				'     <?php echo functions::form_button('settings[new_setting_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_down', 'Move Down')) .'"'); ?>',
+				'     <?php echo functions::form_button('settings[new_setting_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'"'); ?>',
+				'    </div>',
+				'  </div>',
+				'',
+				'  <label class="form-group">',
+				'    <div class="form-label"><?php echo functions::escape_js(language::translate('title_description', 'Description')); ?></div>',
+				'    <?php echo functions::escape_js(functions::form_input_text('settings[new_setting_index][description]', '', 'required')); ?>',
+				'  </label>',
+				'',
+				'  <div class="grid">',
+				'    <div class="col-md-6">',
+				'      <label class="form-group">',
+				'        <div class="form-label"><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></div>',
+				'        <?php echo functions::escape_js(functions::form_input_text('settings[new_setting_index][function]', '', 'required')); ?>',
+				'      </label>',
+				'    </div>',
+				'    <div class="col-md-6">',
+				'      <label class="form-group">',
+				'        <div class="form-label"><?php echo functions::escape_js(language::translate('title_default_value', 'Default Value')); ?></div>',
+				'        <?php echo functions::escape_js(functions::form_input_text('settings[new_setting_index][default_value]', '')); ?>',
+				'      </label>',
+				'    </div>',
+				'  </div>',
+				'</fieldset>'
+			].join('\n')
+			.replace(/new_setting_index/g, 'new_' + new_setting_index++);
 
-		$('#settings').append(output)
-	})
+			$('#settings').append(output);
+		});
 
-	$('#settings').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
-		e.preventDefault()
+		$('#settings').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
+			e.preventDefault();
 
-		let $row = $(this).closest('.setting')
+			let $row = $(this).closest('.setting');
 
-		if ($(this).is('button[name$="[move_up]"]') && $row.prevAll().length > 0) {
-			$row.insertBefore($row.prev())
-		} else if ($(this).is('button[name$="[move_down]"]') && $row.nextAll().length > 0) {
-			$row.insertAfter($row.next())
-		}
-	})
+			if ($(this).is('button[name$="[move_up]"]') && $row.prevAll().length > 0) {
+				$row.insertBefore($row.prev());
+			} else if ($(this).is('button[name$="[move_down]"]') && $row.nextAll().length > 0) {
+				$row.insertAfter($row.next());
+			}
+		});
 
-	$('#settings').on('click', 'button[name$="[remove]"]', function(e) {
-		e.preventDefault()
+		$('#settings').on('click', 'button[name$="[remove]"]', function(e) {
+			e.preventDefault();
 
-		if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return
-		$(this).closest('.setting').remove()
-	})
+			if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return;
+			$(this).closest('.setting').remove();
+		});
 
-	// Upgrade Patches
-	let new_upgrade_patch_index = 0
-	while ($(':input[name^="upgrades['+new_upgrade_patch_index+']"]').length) new_upgrade_patch_index++
+		// Upgrade Patches
+		let new_upgrade_patch_index = 0;
+		while ($(':input[name^="upgrades['+new_upgrade_patch_index+']"]').length) new_upgrade_patch_index++;
 
-	$('button[name="add_patch"]').on('click', function() {
+		$('button[name="add_patch"]').on('click', function() {
 
-		let output = [
-			'<fieldset class="upgrade">',
-			'  <label class="form-group" style="max-width: 250px;">',
-			'    <div class="form-label"><?php echo functions::escape_js(language::translate('title_version', 'Version')); ?></div>',
-			'    <?php echo functions::escape_js(functions::form_input_text('upgrades[new_upgrade_patch_index][version]', '')); ?>',
-			'  </label>',
-			'',
-			'  <label class="form-group">',
-			'    <div class="form-label"><?php echo functions::escape_js(language::translate('title_script', 'Script')); ?></div>',
-			'    <?php echo functions::escape_js(functions::form_input_code('upgrades[new_upgrade_patch_index][script]', '', 'style="height: 200px;"')); ?>',
-			'  </label>',
-			'</fieldset>'
-		].join('\n')
-		.replace(/new_upgrade_patch_index/g, 'new_' + new_upgrade_patch_index)
+			let output = [
+				'<fieldset class="upgrade">',
+				'  <label class="form-group" style="max-width: 250px;">',
+				'    <div class="form-label"><?php echo functions::escape_js(language::translate('title_version', 'Version')); ?></div>',
+				'    <?php echo functions::escape_js(functions::form_input_text('upgrades[new_upgrade_patch_index][version]', '')); ?>',
+				'  </label>',
+				'',
+				'  <label class="form-group">',
+				'    <div class="form-label"><?php echo functions::escape_js(language::translate('title_script', 'Script')); ?></div>',
+				'    <?php echo functions::escape_js(functions::form_input_code('upgrades[new_upgrade_patch_index][script]', '', 'style="height: 200px;"')); ?>',
+				'  </label>',
+				'</fieldset>'
+			].join('\n')
+			.replace(/new_upgrade_patch_index/g, 'new_' + new_upgrade_patch_index);
 
-		$('.upgrades').append(output)
-	})
+			$('.upgrades').append(output);
+		});
 
-	$('.card-action button[name="delete"]').on('click', function(e) {
-		e.preventDefault()
-		$.litebox('#modal-uninstall')
-	})
+		$('.card-action button[name="delete"]').on('click', function(e) {
+			e.preventDefault();
+			$.litebox('#modal-uninstall');
+		});
 
-	$('body').on('click', '.litebox button[name="cancel"]', function(e) {
-		$.litebox.close()
-	})
+		$('body').on('click', '.litebox button[name="cancel"]', function(e) {
+			$.litebox.close();
+		});
 </script>

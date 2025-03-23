@@ -1,38 +1,48 @@
-// Form required asterix
 +waitFor('jQuery', ($) => {
 
-	$(':input[required]').closest('.form-group').addClass('required')
+	// Form required asterix
+	$(':input[required]').closest('.form-group').addClass('required');
 
 	// Dropdown Select
 	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e) {
 
-		let $dropdown = $(this).closest('.dropdown')
-		let $input = $dropdown.find(':input:checked')
+		const $dropdown = $(this).closest('.dropdown');
 
-		if (!$dropdown.find(':input:checked').length) return
+		values = [];
 
-		$dropdown.find('li.active').removeClass('active')
+		$dropdown.find(':input:checked').each(function() {
 
-		if ($input.data('title')) {
-			$dropdown.find('.form-select').text( $input.data('title') )
-		} else if ($input.closest('.option').find('.title').length) {
-			$dropdown.find('.form-select').text( $input.closest('.option').find('.title').text() )
-		} else {
-			$dropdown.find('.form-select').text( $input.parent().text() )
+			let name;
+
+			if ($(this).data('name')) {
+				name = $(this).data('name');
+			} else {
+				name = $(this).parent().text();
+			}
+
+			if ($(this).is(':checkbox')) {
+				values.push(name);
+			} else {
+				values = [name];
+			}
+		});
+
+		if (values.length === 0) {
+			values = [$dropdown.data('placeholder')];
 		}
 
-		$input.closest('li').addClass('active')
-		$dropdown.trigger('click.bs.dropdown')
+		$dropdown.find('.form-select').text( values.join(', ') );
+		$dropdown.removeClass('open');
 
-	}).trigger('input')
+	}).trigger('input');
 
 	// Input Number Decimals
 	$('body').on('change', 'input[type="number"][data-decimals]', function() {
 		var value = parseFloat($(this).val()),
-			decimals = $(this).data('decimals')
+			decimals = $(this).data('decimals');
 		if (decimals != '') {
-			$(this).val(value.toFixed(decimals))
+			$(this).val(value.toFixed(decimals));
 		}
-	})
+	});
 
-})
+});

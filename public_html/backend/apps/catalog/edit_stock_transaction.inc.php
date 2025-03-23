@@ -218,51 +218,51 @@
 
 <script>
 	$('input[name="new[sku]"]').on('input', function(e) {
-		let row = $(this).closest('tr')
+		let row = $(this).closest('tr');
 
 		if ($('datalist#available-stock-items option[value="'+ $(this).val() +'"]').length) {
-			$(row).find('input[name="new[name]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('name')).prop('readonly', true)
-			$(row).find('input[name="new[quantity]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('quantity') || 0)
-			$(row).find('input[name="new[backordered]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('backordered') || '')
+			$(row).find('input[name="new[name]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('name')).prop('readonly', true);
+			$(row).find('input[name="new[quantity]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('quantity') || 0);
+			$(row).find('input[name="new[backordered]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('backordered') || '');
 		} else {
-			$(row).find('input[name="new[name]"]').prop('readonly', false)
+			$(row).find('input[name="new[name]"]').prop('readonly', false);
 		}
-	})
+	});
 
 	$('body').on('click', 'button[name="transfer"]', function() {
 		let quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]'),
-			backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]')
+			backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]');
 
-		$(quantity_field).val( Number($(quantity_field).val()) + Number($(backordered_field).val()) )
-		$(backordered_field).val(0)
-	})
+		$(quantity_field).val(Number($(quantity_field).val()) + Number($(backordered_field).val()));
+		$(backordered_field).val(0);
+	});
 
 	$('table tfoot').keypress(function(e) {
 		if (e.which == 13) {
-			e.preventDefault()
-			$('table tfoot button[name="add"]').trigger('click')
+			e.preventDefault();
+			$('table tfoot button[name="add"]').trigger('click');
 		}
-	})
+	});
 
 	$('body').on('click', '#transaction-contents .remove', function(e) {
-		e.preventDefault()
-		$(this).closest('tr').remove()
-	})
+		e.preventDefault();
+		$(this).closest('tr').remove();
+	});
 
-	let new_item_index = 0
-	while ($(':input[name^="contents['+new_item_index+']"]').length) new_item_index++
+	let new_item_index = 0;
+	while ($(':input[name^="contents['+new_item_index+']"]').length) new_item_index++;
 
 	$('table tfoot button[name="add"]').on('click', function(e) {
-		e.preventDefault()
+		e.preventDefault();
 
-		let row = $(this).closest('tr')
+		let row = $(this).closest('tr');
 
 		if (!$('datalist#available-stock-items option[value="'+ $('input[name="new[sku]"]').val() +'"]').length) {
-			alert('Uknown stock item')
-			return
+			alert('Unknown stock item');
+			return;
 		}
 
-		let $option = $('datalist#available-stock-items option[value="'+ $('input[name="new[sku]"]').val() +'"]:first')
+		let $option = $('datalist#available-stock-items option[value="'+ $('input[name="new[sku]"]').val() +'"]:first');
 
 		let $output = $([
 			'  <tr class="item">',
@@ -290,28 +290,28 @@
 			'  </tr>'
 		].join('\n')
 			.replace(/new_item_index/g, 'new_' + new_item_index++)
-		)
+		);
 
 		// Insert values
-		$output.find('[name$="[item_id]"]').val($('input[name="new[id]"]').data('id') || '')
-		$output.find('[name$="[sku]"]').val($('input[name="new[sku]"]').data('sku') || '')
-		$output.find('[name$="[name]"]').val($('input[name="new[name]"]').val() || '')
-		$output.find('[name$="[quantity]"]').val($('input[name="new[quantity]"]').val() || 0)
-		$output.find('[name$="[quantity_adjustment]"]').val($('input[name="new[quantity_adjustment]"]').val() || '')
-		$output.find('[name$="[backordered]"]').val($('input[name="new[backordered]"]').val() || '')
+		$output.find('[name$="[item_id]"]').val($('input[name="new[id]"]').data('id') || '');
+		$output.find('[name$="[sku]"]').val($('input[name="new[sku]"]').data('sku') || '');
+		$output.find('[name$="[name]"]').val($('input[name="new[name]"]').val() || '');
+		$output.find('[name$="[quantity]"]').val($('input[name="new[quantity]"]').val() || 0);
+		$output.find('[name$="[quantity_adjustment]"]').val($('input[name="new[quantity_adjustment]"]').val() || '');
+		$output.find('[name$="[backordered]"]').val($('input[name="new[backordered]"]').val() || '');
 
-		$('#transaction-contents tbody').append($output)
+		$('#transaction-contents tbody').append($output);
 
-		$('input[name="new[sku]"]').val('')
-		$('input[name="new[name]"]').val('')
-		$('input[name="new[quantity]"]').val('')
-		$('input[name="new[quantity_adjustment]"]').val('')
-		$('input[name="new[sku]"]').trigger('focus')
-	})
+		$('input[name="new[sku]"]').val('');
+		$('input[name="new[name]"]').val('');
+		$('input[name="new[quantity]"]').val('');
+		$('input[name="new[quantity_adjustment]"]').val('');
+		$('input[name="new[sku]"]').trigger('focus');
+	});
 
 	$('button[name="save"]').on('click', function() {
 		if ($('input[name="new[sku]"]').val() != '' && $('input[name="new[quantity_adjustment]"]').val() != '') {
-			$('button[name="add"]').trigger('click')
+			$('button[name="add"]').trigger('click');
 		}
-	})
+	});
 </script>

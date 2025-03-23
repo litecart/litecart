@@ -232,15 +232,15 @@
 
 <script>
 	$('button[name="add_recipients"]').on('click', function() {
-		$.litebox('#modal-add-recipients')
-		$('textarea[name="recipients"]').attr('placeholder', 'user@email.com\nanother@email.com')
-	})
+		$.litebox('#modal-add-recipients');
+		$('textarea[name="recipients"]').attr('placeholder', 'user@email.com\nanother@email.com');
+	});
 
 	$('select[name="subscribed"]').on('change', function() {
-		$(this).closes('form').submit()
-	})
+		$(this).closes('form').submit();
+	});
 
 	$('.data-table :checkbox').on('change', function() {
-		$('#actions').prop('disabled', !$('.data-table :checked').length)
-	}).first().trigger('change')
+		$('#actions').prop('disabled', !$('.data-table :checked').length);
+	}).first().trigger('change');
 </script>

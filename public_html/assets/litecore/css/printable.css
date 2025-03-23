@@ -125,6 +125,7 @@ hr {
 @media screen {
   body {
     background: var(--site-background);
+    padding: var(--page-margin);
   }
   .page {
     margin: 5mm auto;

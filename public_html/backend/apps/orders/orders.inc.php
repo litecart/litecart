@@ -510,40 +510,40 @@ table .icon-star-o:hover {
 <script>
 	$('input[name="query"]').keypress(function(e) {
 		if (e.which == 13) {
-			e.preventDefault()
-			$(this).closest('form').submit()
+			e.preventDefault();
+			$(this).closest('form').submit();
 		}
-	})
+	});
 
 	$('form[name="search_form"] select').on('change', function() {
-		$(this).closest('form').submit()
-	})
+		$(this).closest('form').submit();
+	});
 
 	$('.data-table :checkbox').on('change', function() {
-		$('#actions fieldset').prop('disabled', !$('.data-table :checked').length)
-	}).first().trigger('change')
+		$('#actions fieldset').prop('disabled', !$('.data-table :checked').length);
+	}).first().trigger('change');
 
 	$('table').on('click', '.icon-star-o', function(e) {
-		e.stopPropagation()
-		let star = this
+		e.stopPropagation();
+		let star = this;
 		$.post('', 'star&order_id='+$(star).closest('tr').data('id'), function(data) {
-			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>')
-		})
-		return false
-	})
+			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>');
+		});
+		return false;
+	});
 
 	$('table').on('click', '.icon-star', function(e) {
-		let star = this
+		let star = this;
 		$.post('', 'unstar&order_id='+$(star).closest('tr').data('id'), function(data) {
-			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>')
-		})
-		return false
-	})
+			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>');
+		});
+		return false;
+	});
 
 	$('#actions button').on('click', function(e) {
 		if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
-			e.preventDefault()
-			return false
+			e.preventDefault();
+			return false;
 		}
-	})
+	});
 </script>

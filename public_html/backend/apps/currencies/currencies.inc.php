@@ -126,9 +126,9 @@
 <script>
 	$('.data-table input[name^="currencies["]').on('change', function() {
 		if ($('.data-table input[name^="currencies["]:checked').length > 0) {
-			$('fieldset').prop('disabled', false)
+			$('fieldset').prop('disabled', false);
 		} else {
-			$('fieldset').prop('disabled', true)
+			$('fieldset').prop('disabled', true);
 		}
-	}).trigger('change')
+	}).trigger('change');
 </script>

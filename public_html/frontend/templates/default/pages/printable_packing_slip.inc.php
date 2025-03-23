@@ -190,7 +190,7 @@ table.items tbody tr:nth-child(11) {
 
 <script>
 	$('#actions button[name="print"]').on('click', function() {
-		window.print()
-	})
+		window.print();
+	});
 </script>
 <?php } ?>

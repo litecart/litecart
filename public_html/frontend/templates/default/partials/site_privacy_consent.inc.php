@@ -77,5 +77,5 @@
 		$('#site-privacy-consent').privacyConsent(privacy_classes, consents);
 	} catch (e) {
 		console.error('Could not initiate privacy consent manager:' + e.message);
-	}
+	};
 </script>

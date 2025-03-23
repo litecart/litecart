@@ -89,5 +89,5 @@ input[autocomplete="one-time-code"] {
 </section>
 
 <script>
-	$('input[name="code"]').trigger('focus')
+	$('input[name="code"]').trigger('focus');
 </script>

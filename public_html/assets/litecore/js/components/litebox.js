@@ -1,4 +1,4 @@
-waitFor('jQuery', ($) => {
++waitFor('jQuery', ($) => {
 	'use strict';
 
 	// Check if jQuery is available
@@ -208,9 +208,9 @@ waitFor('jQuery', ($) => {
 			this.$modal.show();
 			this.$instance.find('.litebox-modal').html(this.$modal);
 			if (this.closeIcon) {
-				this.$instance.find('.litebox-modal').prepend(`
-					<div class="litebox-close">${this.closeIcon}</div>
-				`);
+				this.$instance.find('.litebox-modal').prepend(
+					`<div class="litebox-close">${this.closeIcon}</div>`
+				);
 			}
 		}
 
@@ -269,7 +269,7 @@ waitFor('jQuery', ($) => {
 			// If the gallery is enabled, and current index is not first, add navigation
 			if (this.$source && this.currentIndex() > 0) {
 				$(`<div class="litebox-previous"><span>${this.previousIcon}</span></div>`).on('click', (e) => {
-					this.$instance.trigger(`previous`);
+					this.$instance.trigger('previous');
 					e.preventDefault();
 				}).appendTo(this.$instance.find('.litebox-modal'));
 			}
@@ -277,7 +277,7 @@ waitFor('jQuery', ($) => {
 			// If the gallery is enabled, and current index is not last, add navigation
 			if (this.$source && this.currentIndex() < this.this.$source.length - 1) {
 				$(`<div class="litebox-next"><span>${this.nextIcon}</span></div>`).on('click', (e) => {
-					this.$instance.trigger(`next`);
+					this.$instance.trigger('next');
 					e.preventDefault();
 				}).appendTo(this.$instance.find('.litebox-modal'));
 			}

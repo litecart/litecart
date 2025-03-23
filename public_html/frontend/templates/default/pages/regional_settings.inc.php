@@ -96,8 +96,8 @@
 
 <script>
 	if ($('#regional-settings .title').parents('.modal')) {
-		$('#regional-settings .title').closest('.modal').find('.modal-title').text($('#regional-settings .title').text())
-		$('#regional-settings .title').remove()
+		$('#regional-settings .title').closest('.modal').find('.modal-title').text($('#regional-settings .title').text());
+		$('#regional-settings .title').remove();
 	}
 
 	$('select[name="country_code"]').on('change', function() {
@@ -109,16 +109,16 @@
 			async: true,
 			dataType: 'json',
 			success: function(data) {
-				$('select[name="zone_code"]').html('')
-				if ($('select[name="zone_code"]').is(':disabled')) $('select[name="zone_code"]').prop('disabled', false)
+				$('select[name="zone_code"]').html('');
+				if ($('select[name="zone_code"]').is(':disabled')) $('select[name="zone_code"]').prop('disabled', false);
 				if (data) {
 					$.each(data, function(i, zone) {
-						$('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>')
-					})
+						$('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
+					});
 				} else {
-					$('select[name="zone_code"]').prop('disabled', true)
+					$('select[name="zone_code"]').prop('disabled', true);
 				}
 			}
-		})
-	})
+		});
+	});
 </script>

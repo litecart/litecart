@@ -400,108 +400,107 @@
 </div>
 
 <script>
-
 	$('form[name="filter_form"]').on('input', ':input', function() {
-		$('#tokens').html('')
+		$('#tokens').html('');
 
 		$.each($('form[name="filter_form"] input[type="checkbox"]:checked, form[name="filter_form"] input[type="radio"]:checked'), function(i,el) {
-			if (!$(this).val()) return
+			if (!$(this).val()) return;
 
-			var $token = $('<span class="token"></span>')
+			var $token = $('<span class="token"></span>');
 
 			$token.attr('data-name', $(el).attr('name'))
 				.attr('data-value', $(el).val())
 				.text($(el).next('.title').text())
-				.append('<a href="#" class="remove">×</a></span>')
+				.append('<a href="#" class="remove">×</a></span>');
 
-			$('#tokens').append($token)
-		})
-	})
+			$('#tokens').append($token);
+		});
+	});
 
 	$('form[name="filter_form"]').on('change', ':input', function() {
-		$('form[name="filter_form"]').submit()
-	})
+		$('form[name="filter_form"]').submit();
+	});
 
-	$('form[name="filter_form"] :input').first().trigger('input')
+	$('form[name="filter_form"] :input').first().trigger('input');
 
 	$('#tokens').on('click', '.remove', function(e) {
 
-		e.preventDefault()
-		var token = $(this).closest('.token')
+		e.preventDefault();
+		var token = $(this).closest('.token');
 
 		switch ($(':input[name="'+ $(token).data('name') +'"]').attr('type')) {
 
 			case 'radio':
 			case 'checkbox':
-				$(':input[name="'+ $(token).data('name') +'"][value="'+ $(token).data('value') +'"]').prop('checked', false).trigger('input')
-				break
+				$(':input[name="'+ $(token).data('name') +'"][value="'+ $(token).data('value') +'"]').prop('checked', false).trigger('input');
+				break;
 
 			case 'text':
 			case 'search':
-				$(':input[name="'+ $(token).data('name') +'"]').val('').trigger('input')
-				break
+				$(':input[name="'+ $(token).data('name') +'"]').val('').trigger('input');
+				break;
 		}
 
-		$('form[name="filter_form"]').submit()
-	})
+		$('form[name="filter_form"]').submit();
+	});
 
 	$('textarea[name^="translations"]').on('input', function() {
-		$(this).height('auto').height($(this).prop('scrollHeight') + 'px')
-	}).trigger('input')
+		$(this).height('auto').height($(this).prop('scrollHeight') + 'px');
+	}).trigger('input');
 
 	// Translator Tool
 
 	$('.data-table :checkbox').on('change', function() {
-		$('#actions').prop('disabled', !$('.data-table :checked').length)
-	}).first().trigger('change')
+		$('#actions').prop('disabled', !$('.data-table :checked').length);
+	}).first().trigger('change');
 
 	$('#translator-tool select').on('change', function(e) {
 
 		var $modal = $(this).closest('.litebox'),
 			from_language_code = $modal.find('select[name="from_language_code"]').val(),
 			to_language_code = $modal.find('select[name="to_language_code"]').val(),
-			translations = []
+			translations = [];
 
-		if (!from_language_code || !to_language_code) return
+		if (!from_language_code || !to_language_code) return;
 
 		$.each($(':input[name^="translations"][name$="[text_'+ from_language_code +']"]'), function(i) {
 			var source = $(this).val(),
-				translation = $(this).closest('tr').find(':input[name^="translations"][name$="[text_'+ to_language_code +']"]').val()
+				translation = $(this).closest('tr').find(':input[name^="translations"][name$="[text_'+ to_language_code +']"]').val();
 
 			if (source && !translation) {
-				translations.push('['+ i +'] = ' + source)
+				translations.push('['+ i +'] = ' + source);
 			}
-		})
+		});
 
-		translations = translations.join('\n')
+		translations = translations.join('\n');
 
-		$modal.find(':input[name="source"]').val(translations).select()
-	})
+		$modal.find(':input[name="source"]').val(translations).select();
+	});
 
 	$('#translator-tool :input[name="source"]').on('focus', function(e) {
-		$(this).select()
-	})
+		$(this).select();
+	});
 
 	$('#translator-tool button[name="prefill_fields"]').on('click', function() {
 		var $modal = $(this).closest('.litebox'),
-			 translated = $modal.find(':input[name="result"]').val().trim()
+			 translated = $modal.find(':input[name="result"]').val().trim();
 
-		translated = translated.split(/\n(?=\[[0-9]+\])/)
+		translated = translated.split(/\n(?=\[[0-9]+\])/);
 
 		if ($modal.find('select[name="to_language_code"]').val() == '') {
-			alert('You must specify which language you are translating')
-			return false
+			alert('You must specify which language you are translating');
+			return false;
 		}
 
 		$.each(translated, function(i) {
 
 			var matches = translated[i].trim().match(/^\[([0-9]+)\] = (.*)$/),
 				index = matches[1],
-				translation = matches[2].trim()
+				translation = matches[2].trim();
 
-			$(':input[name$="[text_'+ $modal.find('select[name="to_language_code"]').val() +']"]:eq('+ index +')').val(translation).css('border', '1px solid #f00')
-		})
+			$(':input[name$="[text_'+ $modal.find('select[name="to_language_code"]').val() +']"]:eq('+ index +')').val(translation).css('border', '1px solid #f00');
+		});
 
-		$.litebox.close()
-	})
+		$.litebox.close();
+	});
 </script>

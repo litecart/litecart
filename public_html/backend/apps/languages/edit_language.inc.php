@@ -476,11 +476,11 @@
 <script>
 	$('input[name="url_type"]').on('change', function() {
 		if ($('input[name="url_type"][value="domain"]:checked').length) {
-			$('input[name="domain_name"]').prop('disabled', false)
+			$('input[name="domain_name"]').prop('disabled', false);
 		} else {
-			$('input[name="domain_name"]').prop('disabled', true)
+			$('input[name="domain_name"]').prop('disabled', true);
 		}
-	}).first().trigger('change')
+	}).first().trigger('change');
 
 	<?php if (!empty($available_languages)) { ?>
 	$('select[name="prefill"]').on('change', function() {
@@ -491,15 +491,15 @@
 				.replace(/([A-Z])/, '_$1')
 				.toLowerCase()
 				.replace(/^date_format$/, 'format_date')
-				.replace(/^time_format$/, 'format_time')
+				.replace(/^time_format$/, 'format_time');
 
-			$(':input[name="'+field_name+'"]').not('[type="checkbox"]').not('[type="radio"]').val(value)
-			$('input[name="'+field_name+'"][type="checkbox"][value="'+value+'"], input[name="'+field_name+'"][type="radio"][value="'+value+'"]').prop('checked', true)
+			$(':input[name="'+field_name+'"]').not('[type="checkbox"]').not('[type="radio"]').val(value);
+			$('input[name="'+field_name+'"][type="checkbox"][value="'+value+'"], input[name="'+field_name+'"][type="radio"][value="'+value+'"]').prop('checked', true);
 
 			if (key == 'direction') {
-				$('input[name="'+field_name+'"]:checked').parent('.btn').addClass('active').siblings().removeClass('active')
+				$('input[name="'+field_name+'"]:checked').parent('.btn').addClass('active').siblings().removeClass('active');
 			}
-		})
-	})
+		});
+	});
 	<?php } ?>
 </script>

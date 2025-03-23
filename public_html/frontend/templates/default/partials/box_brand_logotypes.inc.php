@@ -15,8 +15,8 @@
 </section>
 
 <script>
-$('.rightArrow').on('click', function () {
-	let leftPos = $('.innerWrapper').scrollLeft()
-	$('.innerWrapper').animate({scrollLeft: leftPos + 200}, 800)
-})
+	$('.rightArrow').on('click', function () {
+		let leftPos = $('.innerWrapper').scrollLeft();
+		$('.innerWrapper').animate({scrollLeft: leftPos + 200}, 800);
+	});
 </script>

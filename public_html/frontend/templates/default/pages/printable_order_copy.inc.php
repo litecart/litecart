@@ -251,7 +251,7 @@ h1 {
 
 <script>
 	$('#actions button[name="print"]').on('click', function() {
-		window.print()
-	})
+		window.print();
+	});
 </script>
 <?php } ?>

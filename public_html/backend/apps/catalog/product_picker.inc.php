@@ -36,17 +36,17 @@
 </div>
 
 <script>
-	$('#modal-product-picker input[name="query"]').trigger('focus')
+	$('#modal-product-picker input[name="query"]').trigger('focus');
 
-	var xhr_product_picker = null
+	var xhr_product_picker = null;
 	$('#modal-product-picker input[name="query"]').on('input', function() {
 
-		let $modal = $('#modal-product-picker')
+		let $modal = $('#modal-product-picker');
 
 		if ($(this).val() == '') {
-			$modal.find('tbody').html('')
-			xhr_product_picker = null
-			return
+			$modal.find('tbody').html('');
+			xhr_product_picker = null;
+			return;
 		}
 
 		xhr_product_picker = $.ajax({
@@ -56,11 +56,11 @@
 			url: '<?php echo document::ilink('catalog/products.json'); ?>?query=' + $(this).val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
-				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'))
+				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
 			},
 			success: function(result) {
 
-				$('tbody', $modal).html('')
+				$('tbody', $modal).html('');
 
 				if (!result.length) {
 
@@ -70,10 +70,10 @@
 						'    <em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em>',
 						'  </td>',
 						'</tr>'
-					].join('\n'))
+					].join('\n'));
 
-					$('tbody', $modal).html($output)
-					return
+					$('tbody', $modal).html($output);
+					return;
 				}
 
 				$.each(result, function(i, product) {
@@ -88,47 +88,47 @@
 						'  <td class="text-end">' + product.reserved + '</td>',
 						'  <td>' + product.date_created + '</td>',
 						'</tr>'
-					].join('\n'))
+					].join('\n'));
 
-					$row.data(product)
+					$row.data(product);
 
-					$modal.find('tbody').append($row)
-				})
+					$modal.find('tbody').append($row);
+				});
 
 			},
-		})
-	}).trigger('input').trigger('focus')
+		});
+	}).trigger('input').trigger('focus');
 
 	$('#modal-product-picker tbody').on('click', 'td', function() {
 
 		let $row = $(this).closest('tr'),
 			callback = $.litebox.current().$currentTarget.data('callback'),
 			expand = <?php echo (isset($_GET['collect']) && array_intersect(['price', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
-			product = $row.data()
+			product = $row.data();
 
 		if (expand || $row.data('stock_option')) {
 			callback = function(product){
-				$.litebox('<?php echo document::ilink(__APP__.'/product_picker_configure', ['callback' => @$_GET['callback']]);?>&product_id='+ product.id)
-			}
+				$.litebox('<?php echo document::ilink(__APP__.'/product_picker_configure', ['callback' => @$_GET['callback']]);?>&product_id='+ product.id);
+			};
 		}
 
 		if (callback) {
 
 			if (typeof callback == 'function') {
-				callback(product)
+				callback(product);
 			} else {
-				window[callback](product)
+				window[callback](product);
 			}
 
 		} else if ($.litebox.current().$currentTarget.closest('.input-group').length) {
-			let $field = $.litebox.current().$currentTarget.closest('.input-group')
-			$field.find(':input').val(product.id).trigger('change')
-			$field.find('.id').text(product.id)
-			$field.find('.name').text(product.name)
+			let $field = $.litebox.current().$currentTarget.closest('.input-group');
+			$field.find(':input').val(product.id).trigger('change');
+			$field.find('.id').text(product.id);
+			$field.find('.name').text(product.name);
 		}
 
 		if ($.litebox.opened) {
-			$.litebox.close()
+			$.litebox.close();
 		}
-	})
+	});
 </script>

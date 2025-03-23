@@ -113,6 +113,6 @@
 
 <script>
 	$('.data-table :checkbox').on('change', function() {
-		$('#actions').prop('disabled', !$('.data-table :checked').length)
-	}).first().trigger('change')
+		$('#actions').prop('disabled', !$('.data-table :checked').length);
+	}).first().trigger('change');
 </script>

@@ -95,21 +95,21 @@ html.dark-mode body {
 </div>
 
 <script>
-	if ($('input[name="username"]').val() == '') {
-		$('input[name="username"]').trigger('focus')
+	if (!$('input[name="username"]').val()) {
+		$('input[name="username"]').trigger('focus');
 	} else {
-		$('input[name="password"]').trigger('focus')
+		$('input[name="password"]').trigger('focus');
 	}
 
 	$('form[name="login_form"]').submit(function(e) {
-		e.preventDefault()
-		let form = this
+		e.preventDefault();
+		let form = this;
 		$('#box-login .card-body').slideUp(100, function() {
 			$('#box-login').fadeOut(250, function() {
 				$('.loader-wrapper').fadeIn(100, function() {
-					form.submit()
-				})
-			})
-		})
- })
+					form.submit();
+				});
+			});
+		});
+	});
 </script>

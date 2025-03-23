@@ -79,48 +79,55 @@
 
 <script>
 	$('#box-category-filter form[name="filter_form"] :input').on('input', function() {
-		$('#box-category-filter .tokens').html('')
+		$('#box-category-filter .tokens').html('');
 
 		$.each($('#box-category-filter input[data-token-title][type="search"]'), function(i,el) {
-			if (!$(this).val()) return
-			$('#box-category-filter .tokens').append('<span class="token" data-group="'+ $(el).data('token-group') +'" data-name="'+ $(el).attr('name') +'" data-value="'+ $(el).val() +'">'+ $(el).data('token-title') +': '+ $(el).val() +'<a href="#" class="remove">×</a></span>')
-		})
+			if (!$(this).val()) return;
+			$('#box-category-filter .tokens').append('<span class="token" data-group="'+ $(el).data('token-group') +'" data-name="'+ $(el).attr('name') +'" data-value="'+ $(el).val() +'">'+ $(el).data('token-title') +': '+ $(el).val() +'<a href="#" class="remove">×</a></span>');
+		});
 
 		$.each($('#box-category-filter input[data-token-title]:checkbox:checked, #box-category-filter input[data-token-title][type="radio"]:checked'), function(i,el) {
-			if (!$(this).val()) return
-			$('#box-category-filter .tokens').append('<span class="token" data-group="'+ $(el).data('token-group') +'" data-name="'+ $(el).attr('name') +'" data-value="'+ $(el).val() +'">'+ $(el).data('token-title') +': '+ $(el).data('token-value') +'<a href="#" class="remove">×</a></span>')
-		})
+			if (!$(this).val()) return;
+			$('#box-category-filter .tokens').append('<span class="token" data-group="'+ $(el).data('token-group') +'" data-name="'+ $(el).attr('name') +'" data-value="'+ $(el).val() +'">'+ $(el).data('token-title') +': '+ $(el).data('token-value') +'<a href="#" class="remove">×</a></span>');
+		});
 
-	}).first().trigger('change')
+	}).first().trigger('change');
 
-	let xhr_filter = null
+	let xhr_filter = null;
 	$('#box-category-filter form[name="filter_form"]').on('input', function() {
-		if (xhr_filter) xhr_filter.abort()
-		let url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize())
-		history.replaceState(null, null, url)
-		$('section.listing.products').hide()
+
+		if (xhr_filter) {
+			xhr_filter.abort();
+		}
+
+		let url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize());
+
+		history.replaceState(null, null, url);
+
+		$('section.listing.products').hide();
+
 		xhr_filter = $.ajax({
 			type: 'get',
 			url: url.href,
 			dataType: 'html',
 			success: function(response) {
-				let html = $('section.listing.products', response)[0].outerHTML
-				$('section.listing.products').replaceWith(html).fadeIn('fast')
+				let html = $('section.listing.products', response)[0].outerHTML;
+				$('section.listing.products').replaceWith(html).fadeIn('fast');
 			}
-		})
-	})
+		});
+	});
 
 	$('#box-category-filter form[name="filter_form"] .tokens').on('click', '.remove', function() {
-		let token = $(this).closest('.token')
+		let token = $(this).closest('.token');
 		switch ($(':input[name="'+ $(token).data('name') +'"]').attr('type')) {
 			case 'radio':
 			case 'checkbox':
-				$(':input[name="'+ $(token).data('name') +'"][value="'+ $(token).data('value') +'"]').prop('checked', false).trigger('input')
-				break
+				$(':input[name="'+ $(token).data('name') +'"][value="'+ $(token).data('value') +'"]').prop('checked', false).trigger('input');
+				break;
 			case 'text':
 			case 'search':
-				$(':input[name="'+ $(token).data('name') +'"]').val('').trigger('input')
-				break
+				$(':input[name="'+ $(token).data('name') +'"]').val('').trigger('input');
+				break;
 		}
-	})
+	});
 </script>

@@ -19,6 +19,8 @@
 		'<link rel="icon" href="'. document::href_rlink('app://backend/template/favicons/favicon-256x256.png') .'" type="image/png" sizes="256x256">',
 	]);
 
+	document::$jsenv['backend']['url'] = document::ilink('b:');
+
 	// Fetch apps
 	$apps = functions::admin_get_apps();
 

@@ -169,69 +169,68 @@
 </div>
 
 <script>
-
-	const store_currency_code = '<?php echo settings::get('store_currency_code'); ?>'
-	const currencies = <?php echo json_encode(currency::$currencies); ?>
+	const store_currency_code = '<?php echo settings::get('store_currency_code'); ?>';
+	const currencies = <?php echo json_encode(currency::$currencies); ?>;
 
 	$('#campaigns').on('focus', 'input[name^="campaigns"]', function(e) {
 		if ($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
-			$(this).closest('.dropdown').addClass('open')
-	 	}
-	})
+			$(this).closest('.dropdown').addClass('open');
+		}
+	});
 
 	$('#campaigns').on('blur', '.dropdown', function(e) {
-		$(this).removeClass('open')
-	})
+		$(this).removeClass('open');
+	});
 
 	$('#campaigns').on('input', 'input[name$="[percentage]"]', function() {
 		let $row = $(this).closest('tr'),
-			amount = 0
+			amount = 0;
 
 		$.each(currencies, function(i, currency) {
 
 			if ($('input[name$="['+currency.code+']"]').val() > 0) {
-				amount = Number($('input[name$="['+store_currency_code+']"]').val() * (100 - $(this).val()) / 100).toFixed(currency.decimals)
-				$row.find('input[name$="['+currency.code+']"]').val(amount)
+				amount = Number($('input[name$="['+store_currency_code+']"]').val() * (100 - $(this).val()) / 100).toFixed(currency.decimals);
+				$row.find('input[name$="['+currency.code+']"]').val(amount);
 			} else {
-				$row.find('input[name$="['+currency.code+']"]').val('')
+				$row.find('input[name$="['+currency.code+']"]').val('');
 			}
 
-			amount = Number($row.find('input[name$="['+store_currency_code+']"]').val() / currency.value).toFixed(currency.decimals)
+			amount = Number($row.find('input[name$="['+store_currency_code+']"]').val() / currency.value).toFixed(currency.decimals);
 
-			$row.find('input[name$="['+currency.code+']"]').attr('placeholder', amount)
-		})
-	})
+			$row.find('input[name$="['+currency.code+']"]').attr('placeholder', amount);
+		});
+	});
 
 	$('#campaigns').on('input', 'input[name$="['+store_currency_code+']"]', function() {
 
 		let $row = $(this).closest('tr'),
-			percentage = Number(($('input[name$="['+store_currency_code+']"]').val() - $(this).val()) / $('input[name$="['+store_currency_code+']"]').val() * 100).toFixed(2)
+			percentage = Number(($('input[name$="['+store_currency_code+']"]').val() - $(this).val()) / $('input[name$="['+store_currency_code+']"]').val() * 100).toFixed(2);
 
-		$row.find('input[name$="[percentage]"]').val(percentage)
+		$row.find('input[name$="[percentage]"]').val(percentage);
 
 		$.each(currencies, function(i, currency) {
 
-			amount = Number($row.find('input[name$="['+store_currency_code+']"]').val() / currency.value).toFixed(currency.decimals)
+			amount = Number($row.find('input[name$="['+store_currency_code+']"]').val() / currency.value).toFixed(currency.decimals);
 
-			$row.find('input[name$="['+currency.code+']"]').attr('placeholder', amount)
+			$row.find('input[name$="['+currency.code+']"]').attr('placeholder', amount);
 
 			if ($row.find('input[name$="['+currency.code+']"]').val() == 0) {
-				$row.find('input[name$="['+currency.code+']"]').val('')
+				$row.find('input[name$="['+currency.code+']"]').val('');
 			}
-		})
-	})
+		});
+	});
 
-	$('input[name$="['+store_currency_code+']"]').trigger('input')
+	$('input[name$="['+store_currency_code+']"]').trigger('input');
 
 	$('button[name="remove"]').on('click', function(e) {
-		e.preventDefault()
+		e.preventDefault();
 		//if (confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
-			$(this).closest('tr').remove()
+			$(this).closest('tr').remove();
 		//}
-	})
+	});
 
-	var new_product_i = 0
-	while ($('input[name^="products[new_product_'+new_product_i+']"]').length) new_product_i++
+	var new_product_i = 0;
+	while ($('input[name^="products[new_product_'+new_product_i+']"]').length) new_product_i++;
 
 	window.add_product = function(product) {
 
@@ -255,8 +254,8 @@
 		].join('\n')
 			.replace(/new_product_i/g, 'new_'+new_product_i++)
 			.replace(/product\.id/g, product.id)
-		)
+		);
 
-		$('table tbody').append($output)
-	}
+		$('table tbody').append($output);
+	};
 </script>

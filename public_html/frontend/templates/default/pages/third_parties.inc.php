@@ -113,23 +113,23 @@
 </main>
 
 <script>
-  $('button[name="cookie_settings"]').click(function(){
-    $('#box-cookie-consent').trigger('openExpanded');
-  });
+	$('button[name="cookie_settings"]').click(function(){
+		$('#box-cookie-consent').trigger('openExpanded');
+	});
 
-  $('#box-third-parties .third-party').on('toggled', function(){
-    if ($(this).find('.details').is(':hidden')) {
-      $(this).find('.toggle').hide().html('<?php echo functions::draw_fonticon('icon-chevron-down'); ?>').fadeIn();
-    } else {
-      $(this).find('.toggle').hide().html('<?php echo functions::draw_fonticon('icon-chevron-up'); ?>').fadeIn();
-    }
-  });
+	$('#box-third-parties .third-party').on('toggled', function(){
+		if ($(this).find('.details').is(':hidden')) {
+			$(this).find('.toggle').hide().html('<?php echo functions::draw_fonticon('icon-chevron-down'); ?>').fadeIn();
+		} else {
+			$(this).find('.toggle').hide().html('<?php echo functions::draw_fonticon('icon-chevron-up'); ?>').fadeIn();
+		}
+	});
 
-  $('#box-third-parties .third-party a').click(function(e){
-    e.preventDefault();
-    var $thirdParty = $(this).closest('.third-party');
-    $thirdParty.find('.details').toggleClass('expanded').toggle('fast', function(){
-      $thirdParty.trigger('toggled');
-    });
-  });
+	$('#box-third-parties .third-party a').click(function(e){
+		e.preventDefault();
+		var $thirdParty = $(this).closest('.third-party');
+		$thirdParty.find('.details').toggleClass('expanded').toggle('fast', function(){
+			$thirdParty.trigger('toggled');
+		});
+	});
 </script>

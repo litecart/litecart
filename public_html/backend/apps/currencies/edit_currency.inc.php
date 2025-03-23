@@ -280,9 +280,9 @@
 <script>
 	$('select[name="prefill"]').on('change', function() {
 		$.each($(this).find('option:selected').data(), function(key, value) {
-			var field_name = key.replace(/([A-Z])/, '_$1').toLowerCase()
-			$(':input[name="'+field_name+'"]').val(value)
-		})
-	})
+			var field_name = key.replace(/([A-Z])/, '_$1').toLowerCase();
+			$(':input[name="'+field_name+'"]').val(value);
+		});
+	});
 </script>
 <?php } ?>

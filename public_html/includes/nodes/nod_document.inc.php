@@ -65,11 +65,10 @@
 					break;
 			}
 
-
-			// Wait For It (Minified)
+			// Wait For (Mini version)
 			self::add_head_tags(implode(PHP_EOL, [
-				'<script>waitFor=(i,o)=>{void 0!==window.i?o(window.i):setTimeout((()=>waitFor(i,o)),50)};</script>',
-			]), 'jQuery');
+				'<script>window.waitFor=window.waitFor||((i,o)=>{void 0!==window.i?o(window.i):setTimeout((()=>waitFor(i,o)),50)});</script>',
+			]), 'waitFor');
 
 			// Load jQuery
 			self::load_script('app://assets/jquery/jquery-4.0.0.min.js', 'jquery');
@@ -251,7 +250,7 @@
 					//'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from parser bypassing?
 					'+waitFor(\'jQuery\', function($) {',
 					implode(PHP_EOL . PHP_EOL, $javascript),
-					'})',
+					'});',
 					//'/*]]>*/-->',
 				]);
 
