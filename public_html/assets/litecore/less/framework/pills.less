@@ -14,25 +14,44 @@
 		&:focus,
 		&:active {
 			background: var(--pill-item-background-color--hover);
+			color: var(--pill-item-text-color--hover);
+			border-color: var(--pill-item-border-color--hover);
 		}
 
 		&.active {
 			background: var(--pill-item-background-color--active);
 			color: var(--pill-item-text-color--active);
+			border-color: var(--pill-item-border-color--active);
 		}
 	}
 
-	&:is(ul), ul {
+	ul {
+		display: flex;
+		flex-direction: column;
+		list-style: none;
 		padding: 0;
+		margin: 0;
 
 		li {
-			padding-inline-start: 3em;
+			display: flex;
+			flex-direction: column;
+			padding: 0;
 
-			ul li {
-				padding-inline-start: 4.5em;
+			ul {
+				display: flex;
+				flex-direction: column;
+				padding: 0;
 
-				ul li {
-					padding-inline-start: 6em;
+				li {
+					padding-inline-start: 3em;
+
+					ul li {
+						padding-inline-start: 4.5em;
+
+						ul li {
+							padding-inline-start: 6em;
+						}
+					}
 				}
 			}
 		}

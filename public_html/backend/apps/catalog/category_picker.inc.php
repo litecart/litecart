@@ -30,12 +30,12 @@
 
 		<nav class="pills" style="margin-bottom: 1em;">
 
-			<a class="pill" href="<?php echo document::href_ilink(null, ['parent_id' => 0]); ?>" data-id="0">
+			<a class="pill-item" href="<?php echo document::href_ilink(null, ['parent_id' => 0]); ?>" data-id="0">
 				<?php echo language::translate('title_root', 'Root'); ?>
 			</a>
 
 			<?php foreach ($breadcrumbs as $category) { ?>
-			<a class="pill" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']]); ?>" data-id="<?php echo $category['id']; ?>">
+			<a class="pill-item" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']]); ?>" data-id="<?php echo $category['id']; ?>">
 				<?php echo $category['name']; ?>
 			</a>
 			<?php } ?>
@@ -45,13 +45,13 @@
 		<nav class="pills">
 
 			<?php if (!empty($_GET['parent_id'])) { ?>
-			<a class="pill" href="<?php echo document::href_ilink(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id]); ?>">
+			<a class="pill-item" href="<?php echo document::href_ilink(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id]); ?>">
 				<?php echo functions::draw_fonticon('icon-arrow-left'); ?> <?php echo language::translate('title_back', 'Back'); ?>
 			</a>
 			<?php } ?>
 
 			<?php foreach ($categories as $category) { ?>
-			<a class="nav-link" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']]); ?>">
+			<a class="pill-item" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']]); ?>">
 				<?php echo functions::draw_fonticon('icon-folder', 'style="color: #cccc66;"'); ?> <?php echo fallback($category['name'], '[untitled]'); ?>
 			</a>
 			<?php } ?>

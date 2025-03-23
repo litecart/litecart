@@ -302,7 +302,8 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_csv_file', 'CSV File'); ?></div>
 							<?php echo functions::form_input_file('file', 'accept=".csv, .dsv, .tab, .tsv"'); ?></label>
-
+						</label>
+						
 						<div class="grid">
 							<div class="col-md-6">
 								<label class="form-group">
@@ -310,6 +311,7 @@
 									<?php echo functions::form_select('delimiter', ['' => language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ',' => ',',  ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
 								</label>
 							</div>
+							
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo language::translate('title_enclosure', 'Enclosure'); ?></div>
@@ -325,6 +327,7 @@
 									<?php echo functions::form_select('escapechar', ['"' => '" ('. language::translate('text_default', 'default') .')', '\\' => '\\'], true); ?>
 								</label>
 							</div>
+							
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo language::translate('title_charset', 'Charset'); ?></div>

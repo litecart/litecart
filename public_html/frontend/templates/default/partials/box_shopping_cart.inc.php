@@ -7,12 +7,12 @@
 
 	<ul class="dropdown-menu">
 
-		<li class="dropdown-menu-item">
+		<li class="dropdown-item">
 			<h2><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></h2>
 		</li>
 
 		<?php foreach ($items as $key => $item) { ?>
-		<li class="dropdown-menu-item item">
+		<li class="dropdown-item item">
 			<div class="grid">
 
 				<div class="col-2">
@@ -41,7 +41,7 @@
 
 		<li class="new-item"></li>
 
-		<li class="dropdown-menu-item text-end">
+		<li class="dropdown-item text-end">
 			<?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <?php echo currency::format(cart::$total['amount']); ?>
 		</li>
 

@@ -217,7 +217,7 @@
 
 			<ul class="dropdown-menu">
 				<?php foreach ($collections as $collection) { ?>
-				<li class="dropdown-menu-item">
+				<li class="dropdown-item">
 					<label class="option"><?php echo functions::form_checkbox('collections[]', $collection['id'], true); ?>
 						<span class="title"><?php echo $collection['name']; ?></span>
 					</label>
@@ -238,7 +238,7 @@
 
 				<ul class="dropdown-menu">
 					<?php foreach (language::$languages as $language) { ?>
-					<li class="dropdown-menu-item">
+					<li class="dropdown-item">
 						<label class="option"><?php echo functions::form_checkbox('languages[]', $language['code'], true); ?>
 							<span class="title"><?php echo $language['name']; ?></span>
 						</label>
@@ -254,12 +254,12 @@
 				</div>
 
 				<ul class="dropdown-menu">
-					<li class="dropdown-menu-item">
+					<li class="dropdown-item">
 						<label class="option"><?php echo functions::form_checkbox('endpoint[]', 'frontend', true); ?>
 							<span class="title"><?php echo language::translate('title_frontend', 'Frontend'); ?></span>
 						</label>
 					</li>
-					<li class="dropdown-menu-item">
+					<li class="dropdown-item">
 						<label class="option"><?php echo functions::form_checkbox('endpoint[]', 'backend', true); ?>
 							<span class="title"><?php echo language::translate('title_backend', 'Backend'); ?></span>
 						</label>
@@ -274,7 +274,7 @@
 				</div>
 
 				<ul class="dropdown-menu">
-					<li class="dropdown-menu-item">
+					<li class="dropdown-item">
 						<label class="option"><?php echo functions::form_checkbox('untranslated', '1', true); ?>
 							<span class="title"><?php echo language::translate('text_untranslated_only', 'Untranslated only'); ?></span>
 						</label>

@@ -119,9 +119,9 @@
         <?php echo functions::form_select('privacy_classes[]', $privacy_classes_options, true); ?>
       </div>
 
-      <nav class="nav nav-tabs">
+      <nav class="tabs">
         <?php foreach (language::$languages as $language) { ?>
-        <a class="nav-link<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
+        <a class="tab-item<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
         <?php } ?>
       </nav>
 

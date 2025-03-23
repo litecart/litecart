@@ -137,7 +137,8 @@
 		});
 
 		unset($entries);
-		ini_set('memory_limit', $iniatial_memory_limit);
+
+		ini_set('memory_limit', $iniatial_memory_limit); // Restore limit
 	}
 
 	// Render view

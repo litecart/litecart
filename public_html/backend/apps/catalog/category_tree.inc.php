@@ -595,7 +595,7 @@ table .icon-folder-open {
 						'      '. ($product['name'] ?: '['. language::translate('title_untitled', 'Untitled') .']'),
 						'    </a>',
 						'  </td>',
-						'  <td class="text-end">'. currency::format($product['price']) .'</td>',
+						'  <td class="text-end">'. functions::draw_price_tag($product['price'], $product['campaign_price']) .'</td>',
 						'  <td>',
 						'    <a class="btn btn-default btn-sm" href="'. document::href_ilink('f:product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">',
 						'    '. functions::draw_fonticon('icon-square-out'),

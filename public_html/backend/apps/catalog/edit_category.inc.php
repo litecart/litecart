@@ -129,16 +129,16 @@
 	</div>
 
 	<nav class="tabs">
-		<a class="nav-link active" data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a>
-		<a class="nav-link" data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a>
-		<a class="nav-link" data-toggle="tab" href="#tab-filters"><?php echo language::translate('title_filters', 'Filters'); ?></a>
+		<a class="tab-item active" data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a>
+		<a class="tab-item" data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a>
+		<a class="tab-item" data-toggle="tab" href="#tab-filters"><?php echo language::translate('title_filters', 'Filters'); ?></a>
 	</nav>
 
 	<div class="card-body">
 		<?php echo functions::form_begin('category_form', 'post', false, true); ?>
 
 			<div class="tab-content">
-				<div id="tab-general" class="tab-pane active" style="max-width: 1200px;">
+				<div id="tab-general" class="tab active" style="max-width: 1200px;">
 
 					<div class="grid">
 						<div class="col-md-4">
@@ -222,22 +222,22 @@
 					</div>
 				</div>
 
-				<div id="tab-information" class="tab-pane" style="max-width: 640px;">
+				<div id="tab-information" class="tab-contents" style="max-width: 640px;">
 
 					<?php if (count($language_codes) > 1) { ?>
 					<nav class="tabs">
 						<?php foreach ($language_codes as $language_code) { ?>
-						<a class="nav-link<?php if ($language_code == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language_code; ?>">
+						<a class="tab-item<?php if ($language_code == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language_code; ?>">
 							<?php echo language::$languages[$language_code]['name']; ?>
 						</a>
 						<?php } ?>
 					</nav>
 					<?php } ?>
 
-					<div class="tab-content">
+					<div class="tab-contents">
 
 						<?php foreach ($language_codes as $language_code) { ?>
-						<div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
+						<div id="<?php echo $language_code; ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
@@ -285,7 +285,7 @@
 					</div>
 				</div>
 
-				<div id="tab-filters" class="tab-pane" style="max-width: 640px;">
+				<div id="tab-filters" class="tab-content" style="max-width: 640px;">
 
 					<table class="data-table">
 						<thead>

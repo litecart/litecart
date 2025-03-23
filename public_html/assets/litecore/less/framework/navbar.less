@@ -151,9 +151,7 @@
 	.navbar-toggle {
 		position: relative;
 		flex: 0 1 auto;
-		padding: 1em;
-		margin: .5em;
-		background: rgba(0, 0, 0, 0.05);
+		padding: 0;
 		border: none;
 		border-radius: var(--border-radius);
 
@@ -161,12 +159,17 @@
 			outline: 0;
 		}
 
+		.btn {
+			padding: .75em;
+		}
+
 		.navbar-toggler-bar {
 			position: relative;
-			background: var(--navigation-text-color);
+			background: var(--navbar-text-color);
 			display: block;
 			width: 22px;
 			height: 2px;
+
 			transition: all 250ms ease-in-out;
 			+ .navbar-toggler-bar {
 				margin-top: 4px;

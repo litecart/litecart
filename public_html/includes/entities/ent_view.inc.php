@@ -8,7 +8,7 @@
 		public $cleanup = false;
 		private $_parsers = [];
 
-		public function __construct($view='') {
+		public function __construct($view='', $snippets=[]) {
 
 			if ($view) {
 
@@ -26,6 +26,9 @@
 					$this->view = preg_replace('#^app://frontend/templates/[^/]+/#', 'app://frontend/templates/default/', $view);
 				}
 			}
+
+			// Set snippets
+			$this->snippets = $snippets;
 
 			// Register default parser for snippets {{var|modifier1|modifier2}}
 			$this->register_parser('([0-9a-zA-Z_\.]+)(|[^'. preg_quote($this->wrapper[1][0], '#') .']+)?', function($matches) {

@@ -1,11 +1,11 @@
 /* Dropdowns */
 
 .dropdown {
-	perspective: 400px;
+	//perspective: 400px;
 
 	// Make sure the dropdown is on top of other elements
 	position: relative;
-	z-index: 999;
+	//z-index: 999;
 
 	[data-toggle="dropdown"] {
 		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
@@ -19,6 +19,7 @@
 
 	.dropdown-content,
 	.dropdown-menu {
+		position:absolute;
 		display: flex;
 		flex-direction: column;
 		background: var(--dropdown-background-color);
@@ -35,6 +36,15 @@
 	}
 
 	&.open {
+		z-index: 999;
+		&::before {
+			content: " ";
+			position: fixed;
+			inset: 0;
+			//background: rgba(0, 0, 0, 0.5);
+			backdrop-filter: blur(3px);
+			//z-index: -1;
+		}
 		> .dropdown-content,
 		> .dropdown-menu {
 			visibility: visible;
@@ -92,7 +102,8 @@
 	> li > *:not(.btn) {
 		white-space: nowrap;
 		&a:hover,
-		&a:focus {
+		&a:focus,
+		&a:active {
 			text-decoration: none;
 			background: #f5f5f5;
 		}
@@ -100,7 +111,8 @@
 
 	> .active > a,
 	> .active > a:hover,
-	> .active > a:focus {
+	> .active > a:focus,
+	> .active > a:active {
 		color: #fff;
 		text-decoration: none;
 		outline: 0;
@@ -109,12 +121,14 @@
 
 	> .disabled > a,
 	> .disabled > a:hover,
-	> .disabled > a:focus {
+	> .disabled > a:focus,
+	> .disabled > a:active {
 		color: #777;
 	}
 
 	> .disabled > a:hover,
-	> .disabled > a:focus {
+	> .disabled > a:focus,
+	> .disabled > a:active {
 		text-decoration: none;
 		background: transparent;
 		background-image: none;
@@ -132,15 +146,29 @@
 	margin: 0;
 }
 
-.dropdown-menu-item {
-	background: var(--dropdown-menu-item-background-color);
-	color: var(--dropdown-menu-item-text-color);
+.dropdown-item {
+	background: var(--dropdown-item-background-color);
+	color: var(--dropdown-item-text-color);
 	padding: .75em 1em;
-	&:is(a, label) {
-		background: var(--dropdown-menu-item-background-color--hover);
-		color: var(--dropdown-menu-item-text-color--hover);
+
+	&:is(a, label):hover,
+	&:has(input):hover {
+		background: var(--dropdown-item-background-color--hover);
+		color: var(--dropdown-item-text-color--hover);
+		cursor: pointer;
+	}
+	&:has(input:checked) {
+		background: var(--dropdown-item-background-color--active);
+		color: var(--dropdown-item-text-color--active);
+		font-weight: bold;
+	}
+	input[type="checkbox"],
+	input[type="radio"] {
+		display: none;
 	}
 }
+
+.dropdown-item
 
 html[dir="rtl"] {
 	.dropdown label:has([data-toggle="dropdown"]) {

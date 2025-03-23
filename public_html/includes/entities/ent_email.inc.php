@@ -457,7 +457,7 @@
 
 			$this->save();
 
-			return !empty($result);
+			return $result ? true : false;
 		}
 
 		public function delete() {

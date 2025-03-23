@@ -2,7 +2,7 @@
 
 	$draw_menu_item = function($item) {
 		return implode(PHP_EOL, [
-			'<a class="nav-item'.	($item['active'] ? ' active' : '') .'" href="'. functions::escape_attr($item['link']) .'">',
+			'<a class="pill-item'.	($item['active'] ? ' active' : '') .'" href="'. functions::escape_attr($item['link']) .'">',
 			'	'. $item['title'],
 			'</a>',
 		]);

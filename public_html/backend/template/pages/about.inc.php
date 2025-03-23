@@ -32,12 +32,12 @@
 </style>
 
 <nav class="tabs">
-	<a class="nav-link active" data-toggle="tab" href="#tab-system"><?php echo language::translate('title_system', 'System'); ?></a>
-	<a class="nav-link" data-toggle="tab" href="#tab-errors"><?php echo language::translate('title_error_log', 'Error Log'); ?></a>
+	<a class="tab-item active" data-toggle="tab" href="#tab-system"><?php echo language::translate('title_system', 'System'); ?></a>
+	<a class="tab-item" data-toggle="tab" href="#tab-errors"><?php echo language::translate('title_error_log', 'Error Log'); ?></a>
 </nav>
 
-<div class="tab-content">
-	<div id="tab-system" class="tab-pane active">
+<div class="tab-contents">
+	<div id="tab-system" class="tab-content active">
 		<div id="box-about" class="card">
 			<div class="card-header">
 				<div class="card-title">
@@ -201,7 +201,7 @@
 		</div>
 	</div>
 
-	<div id="tab-errors" class="tab-pane">
+	<div id="tab-errors" class="tab-content">
 		<div id="box-error-log" class="card">
 			<div class="card-header">
 				<div class="card-title">

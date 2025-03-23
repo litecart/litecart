@@ -24,7 +24,7 @@
 
 		try {
 
-			if (!file_put_contents($stylesheet, $_POST['content'])) {
+			if (file_put_contents($stylesheet, $_POST['content']) === false) {
 				throw new Exception(language::translate('error_unable_to_write_to_file', 'Unable to write to file'));
 			}
 

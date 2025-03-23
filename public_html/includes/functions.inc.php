@@ -10,6 +10,7 @@
 		echo '<script>console.log("'. addcslashes($output, "\"\r\n") .'");</script>';
 	}
 
+	// Redirect to a URL and stop script execution
 	function redirect($url=null, $status_code=302) {
 
 		if (!$url) {
@@ -20,20 +21,25 @@
 		exit;
 	}
 
+	// Stop script execution and reload the current page
 	function reload() {
 		redirect();
 	}
 
 	// Checks if variables are not set, null, (bool)false, (int)0, (float)0.00, (string)"", (string)"0", (string)"0.00", (array)[], or array with nil nodes
 	function nil(&...$args) { // ... as of PHP 5.6
+
 		foreach ($args as $arg) {
+
 			if (is_array($arg)) {
 				foreach ($arg as $node) {
 					if (!nil($node)) return !1;
 				}
 			}
+
 			if (!empty($arg) || (is_numeric($arg) && (float)$arg != 0)) return !1;
 		}
+
 		return !0;
 	}
 

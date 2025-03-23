@@ -4,7 +4,7 @@
 
 		$output = [
 			'<li class="category-'. $category['id'] .'">',
-			'  <a class="nav-item'. (!empty($category['opened']) ? ' opened' : '') . (!empty($category['active']) ? ' active' : '') .'" href="'. functions::escape_attr($category['link']) .'">'. functions::draw_fonticon(!empty($category['opened']) ? 'icon-chevron-down float-end' : 'icon-chevron-right float-end') .' '. $category['name'] . ((settings::get('category_tree_product_count') && $category['num_products']) ? ' <small class="float-end">('. $category['num_products'] .')</small>' : '') .'</a>',
+			'  <a class="pill-item'. (!empty($category['opened']) ? ' opened' : '') . (!empty($category['active']) ? ' active' : '') .'" href="'. functions::escape_attr($category['link']) .'">'. functions::draw_fonticon(!empty($category['opened']) ? 'icon-chevron-down float-end' : 'icon-chevron-right float-end') .' '. $category['name'] . ((settings::get('category_tree_product_count') && $category['num_products']) ? ' <small class="float-end">('. $category['num_products'] .')</small>' : '') .'</a>',
 		];
 
 		if (!empty($category['subcategories'])) {

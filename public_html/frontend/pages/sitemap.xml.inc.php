@@ -11,7 +11,7 @@
 
 	$hreflangs = array_map(function($language){
 		if ($language['url_type'] == 'none') return;
-		return '		<xhtml:link rel="alternate" hreflang="'. $language['code'] .'" href="'. document::href_ilink('', [], false, [], $language['code']) .'">';
+		return '		<xhtml:link rel="alternate" hreflang="'. $language['code'] .'" href="'. document::href_ilink('', [], false, [], $language['code']) .'" />';
 	}, language::$languages);
 
 	$output[] = implode(PHP_EOL, [

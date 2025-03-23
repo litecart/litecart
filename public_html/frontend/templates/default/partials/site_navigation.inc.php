@@ -1,4 +1,4 @@
-<div class="container my-2">
+<div class="container">
 	<div id="site-navigation">
 
 		<div class="navbar">
@@ -140,7 +140,7 @@
 						<ul class="dropdown-menu" style="max-width: 480px;">
 
 							<?php foreach ($wishlist['items'] as $key => $item) { ?>
-							<li class="dropdown-menu-item item">
+							<li class="dropdown-item item">
 
 								<div class="grid">
 									<div class="col-2">
@@ -163,7 +163,7 @@
 							</li>
 							<?php } ?>
 
-							<li class="empty text-center">
+							<li class="dropdown-item empty text-center">
 								<span><?php echo language::translate('text_your_wishlist_is_empty'), 'Your wishlist is empty'; ?></span>
 							</li>
 
@@ -179,7 +179,7 @@
 
 						<ul class="dropdown-menu" style="max-width: 480px;">
 							<?php foreach ($shopping_cart['items'] as $key => $item) { ?>
-							<li class="dropdown-menu-item item">
+							<li class="dropdown-item item">
 
 								<div class="grid">
 									<div class="col-2">
@@ -188,7 +188,7 @@
 
 									<div class="col-8">
 										<div>
-											<span class=*""quantity"><?php echo $item['quantity']; ?></span> &times;
+											<span class="quantity"><?php echo $item['quantity']; ?></span> &times;
 											<a class="name" href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>">
 												<?php echo $item['name']; ?>
 											</a>
@@ -206,7 +206,7 @@
 							</li>
 							<?php } ?>
 
-							<li class="empty text-center">
+							<li class="dropdown-item empty text-center">
 								<span><?php echo language::translate('text_your_shopping_cart_is_empty'), 'Your shopping cart is empty'; ?></span>
 							</li>
 

@@ -2,12 +2,14 @@
 
 .flex-rows {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
+	gap: var(--gutter-y) var(--gutter-x);
 }
 
-.flex-columns {
+.flex, .flex-columns {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
+	gap: var(--gutter-y) var(--gutter-x);
 }
 
 .flex-inline {
@@ -36,7 +38,7 @@
 		flex-direction: column;
 	}
 	&.flex-nogap {
-		gap: none;
+		gap: 0;
 	}
 
 	&.flex-wrap {

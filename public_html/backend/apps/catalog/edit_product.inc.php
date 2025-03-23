@@ -209,19 +209,19 @@
 	</div>
 
 	<nav class="tabs">
-		<a class="nav-link active" data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a>
-		<a class="nav-link" data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a>
-		<a class="nav-link" data-toggle="tab" href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a>
-		<a class="nav-link" data-toggle="tab" href="#tab-attributes"><?php echo language::translate('title_attributes', 'Attributes'); ?></a>
-		<a class="nav-link" data-toggle="tab" href="#tab-customizations"><?php echo language::translate('title_customizations', 'Customizations'); ?></a>
-		<a class="nav-link" data-toggle="tab" href="#tab-stock"><?php echo language::translate('title_stock', 'Stock'); ?></a>
+		<a class="tab-item active" data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a>
+		<a class="tab-item" data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a>
+		<a class="tab-item" data-toggle="tab" href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a>
+		<a class="tab-item" data-toggle="tab" href="#tab-attributes"><?php echo language::translate('title_attributes', 'Attributes'); ?></a>
+		<a class="tab-item" data-toggle="tab" href="#tab-customizations"><?php echo language::translate('title_customizations', 'Customizations'); ?></a>
+		<a class="tab-item" data-toggle="tab" href="#tab-stock"><?php echo language::translate('title_stock', 'Stock'); ?></a>
 	</nav>
 
 	<div class="card-body">
 		<?php echo functions::form_begin('product_form', 'post', false, true); ?>
 
-			<div class="tab-content">
-				<div id="tab-general" class="tab-pane active" style="max-width: 1400px;">
+			<div class="tab-contents">
+				<div id="tab-general" class="tab-content active" style="max-width: 1400px;">
 
 					<div class="grid">
 						<div class="col-md-4">
@@ -338,17 +338,17 @@
 
 				</div>
 
-				<div id="tab-information" class="tab-pane">
+				<div id="tab-information" class="tab-contents">
 
 					<nav class="tabs" style="margin-top: -1em;">
 						<?php foreach ($language_codes as $language_code) { ?>
-						<a class="nav-link<?php if ($language_code == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language_code; ?>"><?php echo language::$languages[$language_code]['name']; ?></a>
+						<a class="tab-item<?php if ($language_code == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language_code; ?>"><?php echo language::$languages[$language_code]['name']; ?></a>
 						<?php } ?>
 					</nav>
 
-					<div class="tab-content">
+					<div class="tab-contents">
 						<?php foreach ($language_codes as $language_code) { ?>
-						<div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
+						<div id="<?php echo $language_code; ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 
 							<div class="grid">
 								<div class="col-md-6">
@@ -404,7 +404,7 @@
 					</div>
 				</div>
 
-				<div id="tab-prices" class="tab-pane">
+				<div id="tab-prices" class="tab-content">
 
 					<div class="grid" style="max-width: 640px;">
 						<div class="col-md-6">
@@ -427,7 +427,7 @@
 					</h2>
 
 					<div style="margin: 0 -2em">
-						<table id="prices" class="table table-striped data-table">
+						<table id="prices" class="table data-table">
 							<thead>
 								<tr>
 									<th style="width: 250px;"><?php echo language::translate('title_customer_group', 'Customer Group'); ?></th>
@@ -488,7 +488,7 @@
 					</h2>
 
 					<div style="margin: 0 -2em -3em -2em">
-						<table id="campaigns" class="table table-striped data-table">
+						<table id="campaigns" class="table data-table">
 							<thead>
 								<tr>
 									<th style="width: 250px;"><?php echo language::translate('title_campaign', 'Campaign'); ?></th>
@@ -547,7 +547,7 @@
 					</div>
 				</div>
 
-				<div id="tab-attributes" class="tab-pane" style="max-width: 960px;">
+				<div id="tab-attributes" class="tab-content" style="max-width: 960px;">
 
 					<table class="table data-table">
 						<thead>
@@ -600,7 +600,7 @@
 					</table>
 				</div>
 
-				<div id="tab-customizations" class="tab-pane">
+				<div id="tab-customizations" class="tab-content">
 
 					<ul id="customizations" class="list-unstyled">
 						<?php foreach ($_POST['customizations'] as $group_id => $customization) { ?>
@@ -737,7 +737,7 @@
 					</div>
 				</div>
 
-				<div id="tab-stock" class="tab-pane">
+				<div id="tab-stock" class="tab-content">
 
 					<div class="grid" style="max-width: 640px;">
 						<div class="col-md-3">

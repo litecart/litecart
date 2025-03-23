@@ -1,17 +1,11 @@
 body {
-  display: flex;
-  flex-direction: column;
   background: var(--site-background);
-
-  main {
-    flex-grow: 1;
-  }
 }
 
 #page {
-  min-height: 100vh;
-  display: flex;
+	display: flex;
   flex-direction: column;
+  min-height: 100vh;
 
   #main {
     flex-grow: 1;
@@ -85,6 +79,10 @@ body {
   .wishlist {
     line-height: 1.2;
     transition: all 200ms ease-out;
+
+		.navbar-item{
+			border-radius: 0;
+		}
 
     img {
       max-height: 32px;
@@ -259,7 +257,7 @@ body {
 #site-footer {
   background: var(--footer-background);
   color: var(--footer-text-color);
-  border-top: 1px solid;
+  border-top: 2px solid;
   border-image-slice: 1;
   border-image-source: linear-gradient(to left, #97989f00, #89849269, #97989f00);
 
@@ -557,7 +555,7 @@ body {
 
   .products {
     display: grid;
-    grid-gap: var(--gutter-y) var(--gutter-x);
+    grid-gap: 1em;
     grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
   }
 }

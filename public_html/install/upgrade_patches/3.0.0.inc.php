@@ -610,9 +610,20 @@
 		);
 	});
 
+ 	// Migrate Stock Options
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."products_stock_options;"
+	)->each(function($stock_option){
 
+		// Remove combination from order item
 		database::query(
+			"update ". DB_TABLE_PREFIX ."orders_items
+			set stock_item_id = ". (int)$stock_option['stock_item_id'] .",
+				attributes = ''
+			where product_id = ". (int)$stock_option['product_id'] ."
+			and attributes = '". database::input($stock_option['attributes']) ."';"
 		);
+	});
 
 	// Set subtotal for all previous orders
 	database::query(

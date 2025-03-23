@@ -902,7 +902,10 @@
 
 		<div class="col-lg-3 card flex flex-rows">
 			<div class="card-body flex flex-rows">
-				<h2 style="flex-grow: 0;"><?php echo language::translate('title_comments', 'Comments'); ?></h2>
+
+				<h2 style="flex-grow: 0;">
+					<?php echo language::translate('title_comments', 'Comments'); ?>
+				</h2>
 
 				<div id="box-comments">
 					<div class="bubbles">

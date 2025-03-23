@@ -74,7 +74,7 @@
 	function form_dropdown($name, $options=[], $input=true, $parameters='') {
 
 		$html = implode(PHP_EOL, [
-			'<div class="dropdown"'. ($parameters ? ' ' . $parameters : '') .'>',
+			'<div class="dropdown"'. ($parameters ? ' ' . $parameters : '') .' data-placeholder="-- '. language::translate('title_select', 'Select') .' --">',
 			'  <div class="form-select" data-toggle="dropdown">',
 			'    -- '. language::translate('title_select', 'Select') .' --',
 			'  </div>',
@@ -94,14 +94,14 @@
 			}
 
 			if (preg_match('#\[\]$#', $name)) {
-				$html .= '<li class="dropdown-menu-item option">' . functions::form_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
+				$html .= '<li class="dropdown-item">' . functions::form_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
 			} else {
-				$html .= '<li class="dropdown-menu-item option">' . functions::form_radio_button($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
+				$html .= '<li class="dropdown-item">' . functions::form_radio_button($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
 			}
 		}
 
 		$html .= '  </ul>' . PHP_EOL
-					. '</div>';
+			   . '</div>';
 
 		return $html;
 	}
@@ -303,22 +303,22 @@
 			$input = form_reinsert_value($name);
 		}
 
-    if ($input != '' && is_numeric($decimals)) {
+		if ($input != '' && is_numeric($decimals)) {
 
-      // Circumvent floating point precision problem if differing by one 10th of the smallest fraction
+			// Circumvent floating point precision problem if differing by one 10th of the smallest fraction
 
-      $fractions = strpos($input, '.') ? strlen(substr(strrchr($input, '.'), 1)) : 0;
-      $absdiff = abs((float)$input - round((float)$input, 2));
-      $offset = (1 / pow(10, $decimals+1));
+			$fractions = strpos($input, '.') ? strlen(substr(strrchr($input, '.'), 1)) : 0;
+			$absdiff = abs((float)$input - round((float)$input, 2));
+			$offset = (1 / pow(10, $decimals+1));
 
-      if ($fractions < $decimals) {
-        $input = number_format((float)$input, $decimals, '.', '');
-      } else if ($absdiff > $offset) {
-        $input = number_format((float)$input, $decimals+2, '.', '');
-      } else {
-        $input = number_format((float)$input, $decimals, '.', '');
-      }
-    }
+			if ($fractions < $decimals) {
+				$input = number_format((float)$input, $decimals, '.', '');
+			} else if ($absdiff > $offset) {
+				$input = number_format((float)$input, $decimals+2, '.', '');
+			} else {
+				$input = number_format((float)$input, $decimals, '.', '');
+			}
+		}
 
 		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'" step="any" data-decimals="'. (int)$decimals .'"'. ($parameters ? ' '. $parameters : '') .'>';
 	}
@@ -404,7 +404,7 @@
 		}
 
 		if ($input != '') {
-			$input = round((float)$input);
+			$input = round((int)$input);
 		}
 
 		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'" step="1"'. ($parameters ? ' '. $parameters : '') .'>';
@@ -612,7 +612,7 @@
 			'  imageWidthModalEdit: true,',
 			'  removeformatPasted: true,',
 			'  semantic: false',
-			'});'
+			'});',
 		]);
 
 		return '<textarea name="'. functions::escape_attr($name) .'"'. ($parameters ? ' '. $parameters : '') .'>'. functions::escape_html($input) .'</textarea>';
@@ -1662,7 +1662,7 @@
 		return implode(PHP_EOL, [
 			'<div class="form-input"'. ($parameters ? ' ' . $parameters : '') .'>',
 			'  ' . form_input_hidden($name, true),
-			'  <span class="value">'. ($input ?: '('. language::translate('title_none', 'None') .')') .'</span> <a href="'. document::href_ilink('b:files/file_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>',
+			'  <span class="value">'. ($input ? functions::escape_html($input) : '('. language::translate('title_none', 'None') .')') .'</span> <a href="'. document::href_ilink('b:files/file_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>',
 			'</div>',
 		]);
 
@@ -1860,7 +1860,7 @@
 			"SHOW ENGINES;"
 		)->fetch_all(function($engine){
 			if (!in_array(strtoupper($engine['Support']), ['YES', 'DEFAULT'])) return false;
-			if (!in_array($engine['Engine'], ['CSV', 'InnoDB', 'MyISAM', 'Aria'])) return false;
+			if (!in_array($engine['Engine'], ['InnoDB', 'MyISAM', 'Aria'])) return false;
 			return [$engine['Engine'], $engine['Engine'] . ' -- '. $engine['Comment']];
 		});
 
@@ -2135,7 +2135,7 @@
 			}
 
 			$option = implode(PHP_EOL, [
-				'<div class="flex flex-gap" style="gap: 1em;">',
+				'<div class="dropdown-item flex flex-nogap">',
 				'  <div style="flex: 0 0 auto;">',
 				'  '. ($has_images ? functions::draw_thumbnail('storage://images/' . fallback($stock_option['image'], 'no_image.svg'), 0, 64, 'product') : ''),
 				'  </div>',

@@ -34,7 +34,7 @@
 				$_POST['status'] = 0;
 			}
 
-			list($page->data['dock'], $page->data['parent_id']) = preg_split('#:#', $_POST['parent'], $matches, 2, PREG_SPLIT_NO_EMPTY);
+			list($page->data['dock'], $page->data['parent_id']) = preg_split('#:#', $_POST['parent'], 2, PREG_SPLIT_NO_EMPTY);
 
 			foreach ([
 				'status',
@@ -117,14 +117,14 @@
 			<?php if (count(language::$languages) > 1) { ?>
 			<nav class="tabs">
 				<?php foreach (language::$languages as $language) { ?>
-				<a class="nav-link<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
+				<a class="tab-item<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
 				<?php } ?>
 			</nav>
 			<?php } ?>
 
-			<div class="tab-content">
+			<div class="tab-contents">
 				<?php foreach (array_keys(language::$languages) as $language_code) { ?>
-				<div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
+				<div id="<?php echo $language_code; ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_title', 'Title'); ?></div>
 						<?php echo functions::form_regional_text('title['. $language_code .']', $language_code, true, ''); ?>

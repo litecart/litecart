@@ -55,7 +55,7 @@
 
 	Scripts that output something other than HTML should be named by their output format extension like the following:
 
-		myjsonoutput.json.php
+		myoutput.json.php
 
 	Included files should be named .inc.php:
 
@@ -73,11 +73,11 @@
 
 	Incorrect:
 
-		echo "<p>Hello World!<br />\r\nThis is a new row</p>";
+		echo "<p>Hello World!<br>\r\nThis is a new row</p>";
 
 	Correct:
 
-		echo '<p>Hello World!</br />' . PHP_EOL
+		echo '<p>Hello World!</br>' . PHP_EOL
 			 . 'This is a new row</p>';
 
 	For emails and HTTP headers we always use Windows style Carriage Return + Line Feed (CRLF) \r\n
@@ -132,11 +132,15 @@
 				Level 3
 					Level 4
 
-	Code is immediately indented after opening a PHP tag:
+	Code is immediately indented after opening a PHP or script tag:
 
 		<?php
 			...
 		?>
+
+		<script>
+			...
+		<script/>
 
 ## Code Commenting
 
@@ -222,7 +226,7 @@
 
 	When it is being compromised for best convenience:
 
-		echo "Hello y'all";
+		echo "Hey y'all";
 		echo "Hello $name\r\n";
 
 
@@ -232,11 +236,11 @@
 
 	Incorrect:
 
-		<img src="..." alt="<?php echo $title; ?>" />
+		<img src="..." alt="<?php echo $title; ?>">
 
 	Correct:
 
-		<img src="..." alt="<?php echo htmlspecialchars($title); ?>" />
+		<img src="..." alt="<?php echo htmlspecialchars($title); ?>">
 
 
 ## PHP Variable Scope
@@ -520,7 +524,7 @@
 
 	Database queries should be line breaked, indented, and presented in lowercase.
 
-		$query = database::query(
+		database::query(
 			"select * from ". DB_TABLE_NAME ."
 			where id = ". (int)$integrer ."
 			". (isset($string) ? "and string = '". database::input($string) ."'" : "") ."
@@ -530,7 +534,7 @@
 	Unlike when displaying strings, double quote characters are use to wrap SQL queries.
 
 
-## Passing User Input Data to the Database
+## Processing User Input
 
 	Don't just assume a variable exists with a value:
 
@@ -541,7 +545,7 @@
 		if (!empty($_POST['variable']))
 		if (isset($_POST['variable']) && $_POST['variable'] == 'value')
 
-	Always assume incoming data is insecure by escaping the input:
+	Always assume user data is insecure by escaping the input:
 
 		database::query(
 			"update mytable
@@ -552,4 +556,4 @@
 			limit 1;"
 		);
 
-		echo '<input value="<?php echo htmlspecialchars($_POST['variable']); ?>" />
+		echo '<input value="<?php echo htmlspecialchars($_POST['variable']); ?>">

@@ -64,7 +64,7 @@
 				"update ". DB_TABLE_PREFIX ."settings
 				set `value` = '". database::input(json_encode($new_settings, JSON_UNESCAPED_SLASHES)) ."',
 					date_updated = '". date('Y-m-d H:i:s') ."'
-				where `key` = '". database::input('template_settings') ."'
+				where `key` = 'template_settings'
 				limit 1;"
 			);
 

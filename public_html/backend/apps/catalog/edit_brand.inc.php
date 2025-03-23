@@ -156,14 +156,14 @@
 				<div class="col-md-12">
 					<nav class="tabs">
 						<?php foreach (language::$languages as $language) { ?>
-						<a class="nav-link<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>"" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
+						<a class="tab-item<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>"" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
 						<?php } ?>
 					</nav>
 
-					<div class="tab-content">
+					<div class="tab-contents">
 
-						<?php foreach (array_keys(language::$languages) as $language_code) { ?>
-						<div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
+							<?php foreach (array_keys(language::$languages) as $language_code) { ?>
+							<div id="<?php echo $language_code; ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' selected'; ?>">
 
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_h1_title', 'H1 Title'); ?></div>
@@ -200,7 +200,7 @@
 									</label>
 								</div>
 							</div>
-						</div>
+						</nav>
 						<?php } ?>
 					</div>
 				</div>

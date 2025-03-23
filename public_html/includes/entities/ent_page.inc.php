@@ -89,7 +89,7 @@
 			database::query(
 				"update ". DB_TABLE_PREFIX ."pages
 				set status = ". (int)$this->data['status'] .",
-					parent_id = ". (int)$this->data['parent_id'] .",
+					parent_id = ". ($this->data['parent_id'] ? (int)$this->data['parent_id'] : "null") .",
 					dock = '". database::input($this->data['dock']) ."',
 					priority = ". (int)$this->data['priority'] .",
 					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'

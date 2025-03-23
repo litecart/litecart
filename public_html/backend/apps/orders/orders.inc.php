@@ -423,10 +423,10 @@ table .icon-star-o:hover {
 								<?php echo functions::draw_fonticon('icon-print'); ?>
 							</div>
 							<nav class="dropdown-menu">
-								<a class="dropdown-menu-item" href="<?php echo  document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank">
+								<a class="dropdown-item" href="<?php echo  document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank">
 									<?php echo functions::escape_html(language::translate('title_packing_slip', 'Packing Slip')); ?>
 								</a>
-								<a class="dropdown-menu-item" href="<?php echo document::href_ilink('f:printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="">
+								<a class="dropdown-item" href="<?php echo document::href_ilink('f:printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="">
 									<?php echo functions::escape_html(language::translate('title_order_copy', 'Order Copy')); ?>
 								</a>
 							</nav>

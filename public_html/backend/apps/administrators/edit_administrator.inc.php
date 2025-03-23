@@ -50,8 +50,8 @@
 			foreach ([
 				'status',
 				'username',
-				 'firstname',
-				 'lastname',
+				'firstname',
+				'lastname',
 				'email',
 				'password',
 				'apps',
@@ -116,9 +116,9 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('administrator_form', 'post', false, false, 'autocomplete="off" style="max-width: 1200px;"'); ?>
+		<?php echo functions::form_begin('administrator_form', 'post', false, false, 'autocomplete="off"'); ?>
 
-			<div class="grid">
+			<div class="grid" style="max-width: 1200px;">
 
 				<div class="col-md-8">
 					<div class="grid">
@@ -128,6 +128,7 @@
 								<?php echo functions::form_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
 							</label>
 						</div>
+
 						<div class="col-sm-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_username', 'Username'); ?></div>
@@ -188,6 +189,7 @@
 								<?php echo functions::form_input_datetime('date_valid_from', true); ?>
 							</label>
 						</div>
+
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_valid_to', 'Valid To'); ?></div>

@@ -7,7 +7,6 @@
 
 window.waitFor = (objectName, callback, retries=100) => {
 	if (typeof(window[objectName]) !== 'undefined') {
-		//console.debug('waitFor('+ objectName +') arrived');
 		callback(window[objectName]);
 	} else {
 		if (retries) {

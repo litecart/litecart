@@ -242,14 +242,14 @@ textarea.warning {
 	<?php echo functions::form_begin('vmod_form', 'post', false, true); ?>
 
 		<nav class="tabs">
-			<a class="nav-link active" href="#tab-general" data-toggle="tab"><?php echo language::translate('title_general', 'General'); ?></a>
-			<a class="nav-link" href="#tab-settings" data-toggle="tab"><?php echo language::translate('title_settings', 'Settings'); ?></a>
-			<a class="nav-link" href="#tab-install" data-toggle="tab"><?php echo language::translate('title_install_uninstall', 'Install/Uninstall'); ?></a>
+			<a class="tab-item active" href="#tab-general" data-toggle="tab"><?php echo language::translate('title_general', 'General'); ?></a>
+			<a class="tab-item" href="#tab-settings" data-toggle="tab"><?php echo language::translate('title_settings', 'Settings'); ?></a>
+			<a class="tab-item" href="#tab-install" data-toggle="tab"><?php echo language::translate('title_install_uninstall', 'Install/Uninstall'); ?></a>
 		</nav>
 
 		<div class="card-body">
-			<div class="tab-content">
-				<div id="tab-general" class="tab-pane active">
+			<div class="tab-contents">
+				<div id="tab-general" class="tab-content active">
 
 					<div class="grid">
 						<div class="col-md-4">
@@ -361,17 +361,17 @@ textarea.warning {
 
 					<nav class="tabs">
 						<?php foreach (array_keys($vmod->data['files']) as $f) { ?>
-						<a class="nav-link" data-toggle="tab" href="#tab-<?php echo $f; ?>">
+						<a class="tab-item" data-toggle="tab" href="#tab-<?php echo $f; ?>">
 							<span class="file"><?php echo functions::escape_html($_POST['files'][$f]['name']); ?></span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('icon-times'); ?></span>
 						</a>
 						<?php } ?>
-						<a class="nav-link add" href="#"><?php echo functions::draw_fonticon('icon-plus'); ?></a>
+						<a class="tab-item add" href="#"><?php echo functions::draw_fonticon('icon-plus'); ?></a>
 					</nav>
 
-					<div id="files" class="tab-content">
+					<div id="files" class="tab-contents">
 
 						<?php if (!empty($_POST['files'])) foreach (array_keys($_POST['files']) as $f) { ?>
-						<div id="tab-<?php echo $f; ?>" data-tab-index="<?php echo $f; ?>" class="tab-pane">
+						<div id="tab-<?php echo $f; ?>" class="tab-content" data-tab-index="<?php echo $f; ?>">
 
 							<div class="grid">
 								<div class="col-md-6">
@@ -481,7 +481,7 @@ textarea.warning {
 					</div>
 				</div>
 
-				<div id="tab-settings" class="tab-pane">
+				<div id="tab-settings" class="tab-content">
 
 					<h2><?php echo language::translate('title_settings', 'Settings'); ?></h2>
 
@@ -542,7 +542,7 @@ textarea.warning {
 
 				</div>
 
-				<div id="tab-install" class="tab-pane">
+				<div id="tab-install" class="tab-content">
 
 					<div class="grid">
 						<div class="col-md-6">
@@ -617,8 +617,8 @@ textarea.warning {
 	<?php echo functions::form_end(); ?>
 </div>
 
-<div id="new-tab-pane-template" style="display: none;">
-	<div id="tab-new_tab_index" class="tab-pane">
+<div id="new-tab-content-template" style="display: none;">
+	<div id="tab-new_tab_index" class="tab-content">
 
 		<div class="grid">
 			<div class="col-md-6">
