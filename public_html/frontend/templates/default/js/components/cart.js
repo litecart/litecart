@@ -51,7 +51,7 @@
 		e.preventDefault();
 
 		let $form = $(this),
-			$button = $(this).find('button[type="submit"]'),
+			$button = $form.find('button[type="submit"]'),
 			$target = $('#site-navigation .shopping-cart'),
 			$object = $('<div id="animated-cart-item"></div>').css({
 				position: 'absolute',
@@ -75,10 +75,10 @@
 				left: $target.offset().left,
 				width: $target.innerWidth(),
 				height: $target.innerHeight(),
-				borderRadius: 0
+				borderRadius: 'var(--border-radius)'
 			}, {
 				duration: 1000,
-				easing: 'easeInCubic'
+				easing: 'easeOutCubic'
 			})
 			.animate({
 				opacity: 0
@@ -128,17 +128,17 @@
 					$('#site-navigation .shopping-cart ul .item').remove();
 
 					$.each(result.items, function(key, item) {
-						$('#site-navigation .shopping-cart ul').append([
+						$('#site-navigation .shopping-cart .items').append([
 							'<li class="item">',
 							'  <div class="grid">',
 							'    <div class="col-2">',
 							'      ' + $('<img class="image img-responsive">').attr({'src': item.image.thumbnail, 'srcset': item.image.thumbnail +' 1x, '+ item.image.thumbnail_2x + ' 2x', 'alt': item.name}).prop('outerHTML'),
 							'    </div>',
-							'    <div class="col-8">',
+							'    <div class="col-7">',
 							'      <div>' + $('<a class="name"></a>').attr('href', item.link).text(item.name).prop('outerHTML') + '</div>',
 							'      ' + $('<div class="price"></div>').text(item.formatted_price).prop('outerHTML'),
 							'    </div>',
-							'    <div class="col-2 text-end">',
+							'    <div class="col-3 text-end">',
 							'      ' + $('<button class="btn btn-danger btn-sm" name="remove_cart_item" type="submit"><i class="icon icon-trash"></i></button>').val(item.key).prop('outerHTML'),
 							'    </div>',
 							'  </div>',

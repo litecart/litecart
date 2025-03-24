@@ -2710,10 +2710,10 @@ body.litebox-open {
   background: rgba(0, 0, 0, 0.66);
 }
 .litebox .litebox-previous {
-  left: 10px;
+  left: -4em;
 }
 .litebox .litebox-next {
-  right: 10px;
+  right: -4em;
 }
 .litebox .litebox-modal > img {
   max-width: 100%;
@@ -2868,7 +2868,9 @@ body.litebox-open {
   gap: 1em;
   background: var(--navbar-background-color);
   color: var(--navbar-text-color);
+  box-shadow: var(--navbar-shadow);
   border-radius: var(--border-radius);
+  outline: 1px solid var(--navbar-outline-color);
   z-index: 1;
 }
 .navbar > * {

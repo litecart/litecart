@@ -406,18 +406,18 @@ body {
 #site-privacy-consent .privacy-classes {
   background: #fff3;
   border-radius: 8px;
-  padding: 1em;
-  margin-bottom: 2em;
-  max-height: 50vh;
-  overflow-y: auto;
-  transition: all 200ms linear;
-  height: 480px;
-}
-#site-privacy-consent .privacy-classes.expanded {
   height: 0;
   padding: 0;
   margin-bottom: 0;
   overflow: hidden;
+  transition: all 200ms linear;
+}
+#site-privacy-consent .privacy-classes.expanded {
+  height: 480px;
+  max-height: 50vh;
+  padding: 1em;
+  margin-bottom: 2em;
+  overflow-y: auto;
   border-color: transparent;
 }
 #site-privacy-consent .privacy-classes a,
@@ -431,6 +431,9 @@ body {
 #site-privacy-consent .privacy-classes label + label {
   margin-top: 0.5em;
 }
+#site-privacy-consent .privacy-classes .third-parties {
+  margin: 1em 5em;
+}
 #site-privacy-consent .privacy-classes .require-consent:not(:empty) {
   border: 1px dashed #eee;
   padding: 2em;
@@ -439,7 +442,7 @@ body {
 #site-privacy-consent .privacy-classes .class .name {
   font-weight: bold;
 }
-#site-privacy-consent .privacy-classes .class input[type="checkbox"] {
+#site-privacy-consent .privacy-classes .class input[type="checkbox"][value="all"] {
   width: 1.5em;
   height: 1.5em;
 }

@@ -828,7 +828,8 @@ LEFT JOIN `lc_products_stock_options` pso ON (pso.product_id = oi.product_id AND
 SET oi.stock_option_id = pso.id;
 -- -----
 UPDATE `lc_orders_items`
-SET sum = price * quantity,
+SET `type` = 'product',
+	sum = price * quantity,
 	sum_tax = tax * quantity;
 -- -----
 UPDATE `lc_products_to_categories`
@@ -837,6 +838,10 @@ WHERE `category_id` = 0;
 -- -----
 UPDATE `lc_pages`
 SET dock = REPLACE(dock, 'customer_service', 'information');
+-- -----
+UPDATE `lc_pages`
+SET parent_id = NULL
+WHERE parent_id = 0;
 -- -----
 UPDATE `lc_settings`
 SET `value` = '0'

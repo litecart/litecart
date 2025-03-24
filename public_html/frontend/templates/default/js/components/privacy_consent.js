@@ -4,25 +4,25 @@
 	$.fn.privacyConsent = function(privacyClasses, consents) {
 		var $element = $(this);
 
-		$(this).privacyClasses = privacyClasses || [];
-		$(this).consents = consents || [];
+		$element.privacyClasses = privacyClasses || [];
+		$element.consents = consents || [];
 
 		$element.on('open', function(e) {
 			e.preventDefault();
-			$(this).hide();
-			$(this).fadeIn();
+			$element.hide();
+			$element.fadeIn();
 		});
 
 		$element.on('openExpanded', function(e) {
 			e.preventDefault();
-			$(this).hide().find('.privacy-classes').addClass('expanded');
-			$(this).fadeIn();
+			$element.hide().find('.privacy-classes').addClass('expanded');
+			$element.fadeIn();
 		});
 
 		$element.on('close', function(e) {
 			e.preventDefault();
-			$(this).fadeOut(function(){
-				$(this).find('.privacy-classes').removeClass('expanded');
+			$element.fadeOut(function(){
+				$element.find('.privacy-classes').removeClass('expanded');
 			});
 		});
 

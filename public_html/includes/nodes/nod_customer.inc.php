@@ -2,6 +2,7 @@
 
 	class customer {
 		public static $data;
+		public static $scraps;
 
 		public static function init() {
 
@@ -11,6 +12,13 @@
 
 			// Bind customer to session
 			self::$data = &session::$data['customer'];
+
+			if (empty(session::$data['scraps']) || !is_array(session::$data['scraps'])) {
+				session::$data['scraps'] = [];
+			}
+
+			// Bind scraps to session
+			self::$scraps = &session::$data['scraps'];
 
 			// Sign in a remembered customer
 			if (empty(self::$data['id']) && !empty($_COOKIE['customer_remember_me']) && empty($_POST)) {
@@ -110,6 +118,36 @@
 
 					header('Location: '. document::ilink('f:account/sign_in'));
 					exit;
+				}
+			}
+
+			// Collect scraps
+			if (file_get_contents('php://input')) {
+				foreach ([
+					'#^(given|first)[ _-]?name$#i' => 'firstname',
+					'#^(family|sur|last)[ _-]?name$#i' => 'lastname',
+					'#^(address[ _-]?1|street[ _-]?_(address)?)$#i' => 'address1',
+					'#^(post|postal|zip)[ _-]?code$#i' => 'postcode',
+					'#^city|town|locality$#i' => 'city',
+					'#^country_code$#i' => 'country_code',
+					'#^email[ _-]?_(address)?$#i' => 'email',
+					'#^phone[ _-]?_(no|number)?$#i' => 'phone',
+					'#^lon(gitude)?$#i' => 'longitude',
+					'#^lat(itude)?$#i' => 'latitude',
+				] as $pattern => $field) {
+
+					foreach ($_POST as $key => $value) {
+						if (preg_match($pattern, $key)) {
+							self::$scraps[$field] = $value;
+						}
+					}
+				}
+			}
+
+			// Use scraps for empty fields
+			foreach (self::$scraps as $key => $value) {
+				if (empty(self::$data[$key])) {
+					self::$data[$key] = $value;
 				}
 			}
 

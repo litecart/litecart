@@ -353,6 +353,12 @@
 				$headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
 			}
 
+			if (!empty(language::$languages[$this->data['language_code']]) && language::$languages[$this->data['language_code']]['direction'] == 'rtl') {
+				$direction = 'rtl';
+			} else {
+				$direction = 'ltr';
+			}
+
 			$body = '';
 
 			// Prepare several multiparts
@@ -361,6 +367,7 @@
 					$body .= implode("\r\n", [
 						'--'. $multipart_boundary_string,
 						implode("\r\n", array_map(function($v, $k) { return $k.':'.$v; }, $multipart['headers'], array_keys($multipart['headers']))) . "\r\n",
+						$direction == 'rtl' ? "\xe2\x80\x8f" : '',
 						$multipart['body'],
 					]) . "\r\n\r\n";
 				}

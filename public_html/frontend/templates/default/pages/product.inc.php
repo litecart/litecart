@@ -318,6 +318,10 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			final_price = <?php echo currency::format_raw($final_price); ?>,
 			tax = <?php echo currency::format_raw($total_tax); ?>;
 
+		if (regular_price == 0) {
+			return;
+		}
+
 		$(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function() {
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
 			if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust');

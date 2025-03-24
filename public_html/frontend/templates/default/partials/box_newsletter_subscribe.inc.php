@@ -16,7 +16,7 @@
 <section id="box-newsletter-subscribe">
 	<div class="container text-center">
 
-		<div class="wrapper">
+		<div class="flex-columns" style="place-content: center;">
 			<div class="hidden-xs" style="flex: 0 1 170px;">
 				<img class="responsive" src="<?php echo document::href_rlink('storage://images/illustration/letter.svg'); ?>" >
 			</div>
@@ -43,7 +43,8 @@
 <script>
 	$('form[name="newsletter_subscribe_form"]').submit(function(e){
 		e.preventDefault();
-		$.litebox('<?php echo document::ilink('newsletter'); ?>?email='+ $(this).find('input[name="email"]').val() +' #box-newsletter-subscribe', {
+		let url = '<?php echo document::ilink('newsletter'); ?>?email='+ $(this).find('input[name="email"]').val();
+		$.litebox(url +' #box-newsletter-subscribe', {
 			"seamless": true,
 			"width": "640px"
 		});

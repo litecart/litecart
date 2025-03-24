@@ -27,7 +27,16 @@
 		return;
 	}
 
+	if (!$_POST) {
+		$_POST = [
+			'email' => customer::$data['email'],
+			'country_code' => customer::$data['country_code'],
+			'postcode' => customer::$data['postcode'],
+		];
+	}
+
 	if (isset($_POST['checkout'])) {
+
 		try {
 
 			// Do we have an existing order in the session?

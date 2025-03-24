@@ -48,8 +48,8 @@
     </div>
 
     <div class="card-body">
-      <button name="cookie_settings" class="btn btn-default" type="button" onclick="">
-        <?php echo language::translate('title_display_cookie_settings', 'Display Cookie Settings'); ?>
+      <button name="privacy_settings" class="btn btn-default" type="button" onclick="">
+        <?php echo language::translate('title_privacy_settings', 'Display Privacy Settings'); ?>
       </button>
 
       <?php foreach ($third_parties as $third_party) { ?>
@@ -113,11 +113,11 @@
 </main>
 
 <script>
-	$('button[name="cookie_settings"]').click(function(){
-		$('#box-cookie-consent').trigger('openExpanded');
+	$('button[name="privacy_settings"]').click(function() {
+		$('#site-privacy-consent').trigger('openExpanded');
 	});
 
-	$('#box-third-parties .third-party').on('toggled', function(){
+	$('#box-third-parties .third-party').on('toggled', function() {
 		if ($(this).find('.details').is(':hidden')) {
 			$(this).find('.toggle').hide().html('<?php echo functions::draw_fonticon('icon-chevron-down'); ?>').fadeIn();
 		} else {
@@ -125,10 +125,10 @@
 		}
 	});
 
-	$('#box-third-parties .third-party a').click(function(e){
+	$('#box-third-parties .third-party a').click(function(e) {
 		e.preventDefault();
 		var $thirdParty = $(this).closest('.third-party');
-		$thirdParty.find('.details').toggleClass('expanded').toggle('fast', function(){
+		$thirdParty.find('.details').toggleClass('expanded').toggle('fast', function() {
 			$thirdParty.trigger('toggled');
 		});
 	});

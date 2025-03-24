@@ -21,7 +21,7 @@
 	</a>
 
 	<div class="actions">
-		<button class="preview btn btn-default btn-sm" data-toggle="lightbox" data-target="<?php echo functions::escape_html($link) ?>" data-seamless="true" data-require-window-width="768" data-max-width="980" title="<?php echo language::translate('title_view_product', 'View Product'); ?>">
+		<button class="preview btn btn-default btn-sm" data-toggle="lightbox" data-gallery="products" data-target="<?php echo functions::escape_html($link) ?>" data-seamless="true" data-require-window-width="768" data-max-width="980" title="<?php echo language::translate('title_view_product', 'View Product'); ?>">
 			<?php echo functions::draw_fonticon('icon-zoom-in'); ?>
 		</button>
 

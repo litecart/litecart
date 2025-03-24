@@ -124,14 +124,14 @@
 								<div class="col-4">
 									<div class="form-label">
 										<div class="form-label"><?php echo language::translate('title_postcode', 'Postal Code'); ?></div>
-										<div style="line-height: 2;"><?php echo functions::form_input_text('postcode'); ?></div>
+										<div style="line-height: 2;"><?php echo functions::form_input_text('postcode', true); ?></div>
 									</div>
 								</div>
 
 								<div class="col-12">
 									<div class="form-label">
 										<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
-										<?php echo functions::form_input_email('billing_address[email]', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
+										<?php echo functions::form_input_email('email', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
 									</div>
 								</div>
 

@@ -1188,7 +1188,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 			}
 
 			// If the gallery is enabled, and current index is not last, add navigation
-			if (this.$source && this.currentIndex() < this.this.$source.length - 1) {
+			if (this.$source && this.currentIndex() < this.$source.length - 1) {
 				$(`<div class="litebox-next"><span>${this.nextIcon}</span></div>`).on('click', (e) => {
 					this.$instance.trigger('next');
 					e.preventDefault();
@@ -1259,7 +1259,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 
 		// Get the current slide index
 		currentIndex() {
-			return this.this.$source.index(this.$currentTarget);
+			return this.$source.index(this.$currentTarget);
 		}
 
 		// Navigate to a specific slide
@@ -1270,14 +1270,14 @@ window.waitFor = (objectName, callback, retries=100) => {
 				return;
 			}
 
-			const source = this.this.$source;
+			const source = this.$source;
 			const len = source.length;
 			const $inner = this.$instance.find('.litebox-inner');
 			index = ((index % len) + len) % len;
 
 			this.$instance.addClass('litebox-loading');
 			this.$currentTarget = source.eq(index);
-			this.beforeContent();
+
 			return $.when(
 				this.getContent(),
 				$inner.fadeTo(this.galleryFadeOut, 0.2)
@@ -1290,7 +1290,15 @@ window.waitFor = (objectName, callback, retries=100) => {
 	}
 
 	// jQuery plugin integration
-	$.litebox = Litebox;
+	$.litebox = function (url, options = {}) {
+		if (typeof url === 'string') {
+			const instance = new Litebox(url, options);
+			instance.open();
+			return instance;
+		}
+		console.error('Invalid argument passed to $.litebox. Expected a URL string.');
+	};
+
 	$.fn.litebox = function ($modal, options) {
 		Litebox.attach(this, $modal, options);
 		return this;

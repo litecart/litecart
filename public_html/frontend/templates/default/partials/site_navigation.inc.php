@@ -177,46 +177,49 @@
 							<span class="badge"><?php echo $shopping_cart['num_items']; ?></span>
 						</div>
 
-						<ul class="dropdown-menu" style="max-width: 480px;">
-							<?php foreach ($shopping_cart['items'] as $key => $item) { ?>
-							<li class="dropdown-item item">
+						<div class="dropdown-content" style="max-width: 480px;">
 
-								<div class="grid">
-									<div class="col-2">
-										<?php echo functions::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. functions::escape_attr($item['name']) .'"'); ?>
-									</div>
+							<ul class="list-unstyled items">
+								<?php foreach ($shopping_cart['items'] as $key => $item) { ?>
+									<li class="item">
 
-									<div class="col-8">
-										<div>
-											<span class="quantity"><?php echo $item['quantity']; ?></span> &times;
-											<a class="name" href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>">
-												<?php echo $item['name']; ?>
-											</a>
+									<div class="grid">
+										<div class="col-2">
+											<?php echo functions::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. functions::escape_attr($item['name']) .'"'); ?>
 										</div>
-										<div class="price">
-											<?php echo currency::format($item['price']); ?>
+
+										<div class="col-7">
+											<div>
+												<span class="quantity"><?php echo $item['quantity']; ?></span> &times;
+												<a class="name" href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>">
+													<?php echo $item['name']; ?>
+												</a>
+											</div>
+											<div class="price">
+												<?php echo currency::format($item['price']); ?>
+											</div>
+										</div>
+
+										<div class="col-3 text-end">
+											<?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
 										</div>
 									</div>
 
-									<div class="col-2 text-end">
-										<?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
-									</div>
-								</div>
+								</li>
+								<?php } ?>
+							</ul>
 
-							</li>
-							<?php } ?>
-
-							<li class="dropdown-item empty text-center">
+							<div class="dropdown-item empty text-center">
 								<span><?php echo language::translate('text_your_shopping_cart_is_empty'), 'Your shopping cart is empty'; ?></span>
-							</li>
+							</div>
 
-							<li class="checkout" style="margin-top: 2em;">
+							<div class="checkout" style="margin-top: 2em;">
 								<a class="btn btn-success btn-block btn-lg" href="<?php echo document::href_ilink('shopping_cart'); ?>">
 									<?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?> <?php echo functions::draw_fonticon('icon-arrow-right'); ?>
 								</a>
-							</li>
+							</div>
 
-						</ul>
+						</div>
 					</li>
 				</ul>
 			</nav>

@@ -27,35 +27,38 @@
         <?php foreach ($privacy_classes as $class) { ?>
         <?php if (empty($class['third_parties'])) continue; ?>
         <div id="<?php echo $class['id']; ?>-cookies" class="privacy-class">
-          <label class="class">
-            <div class="row">
-              <div class="col-xs-10">
-                <div class="name"><?php echo $class['title']; ?></div>
-                <div class="description"><?php echo $class['description']; ?></div>
-              </div>
-              <div class="col-xs-2 text-right">
-                <?php if ($class['id'] == 'necessary') { ?>
-                <?php echo functions::form_draw_hidden_field('consents['. $class['id'] .'][]', 'all'); ?>
-                <?php echo functions::form_draw_checkbox('consents['. $class['id'] .'][]', 'all', 'all', 'disabled'); ?>
-                <?php } else { ?>
-                <?php echo $draw_checkbox($class['id'], 'all'); ?>
-                <?php } ?>
-              </div>
-            </div>
-          </label>
+          <div class="class">
+						<label>
+            	<div class="row">
+								<div class="col-1 text-center">
+									<?php if ($class['id'] == 'necessary') { ?>
+									<?php echo functions::form_draw_hidden_field('consents['. $class['id'] .'][]', 'all'); ?>
+									<?php echo functions::form_draw_checkbox('consents['. $class['id'] .'][]', 'all', 'all', 'disabled'); ?>
+									<?php } else { ?>
+									<?php echo $draw_checkbox($class['id'], 'all'); ?>
+									<?php } ?>
+								</div>
 
-          <blockquote class="third-parties">
-            <?php foreach ($class['third_parties'] as $third_party) { ?>
-            <div class="third-party">
-              <label>
-                <?php echo $draw_checkbox($class['id'], $third_party['id'], 'disabled'); ?>
-                <a class="name" href="<?php echo document::href_ilink('third_parties', ['third_party_id' => $third_party['id']]); ?>">
-                  <?php echo functions::escape_html($third_party['name']); ?>
-                </a>
-              </label>
-            </div>
-            <?php } ?>
-          </blockquote>
+								<div class="col-11">
+									<div class="name"><?php echo $class['title']; ?></div>
+									<div class="description"><?php echo $class['description']; ?></div>
+								</div>
+							</div>
+						</label>
+
+						<blockquote class="third-parties">
+							<?php foreach ($class['third_parties'] as $third_party) { ?>
+							<div class="third-party">
+								<label>
+									<?php echo $draw_checkbox($class['id'], $third_party['id'], 'disabled'); ?>
+									<a class="name" href="<?php echo document::href_ilink('third_parties', ['third_party_id' => $third_party['id']]); ?>">
+										<?php echo functions::escape_html($third_party['name']); ?>
+									</a>
+								</label>
+							</div>
+							<?php } ?>
+						</blockquote>
+          </div>
         </div>
         <?php } ?>
 
