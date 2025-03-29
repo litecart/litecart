@@ -73,19 +73,6 @@
 			// Load jQuery
 			self::load_script('app://assets/jquery/jquery-4.0.0.min.js', 'jquery');
 
-			// Set Hreflang
-			if (route::$selected['endpoint'] == 'frontend') {
-
-				$hreflangs = [];
-
-				foreach (language::$languages as $language) {
-					if ($language['url_type'] == 'none') continue;
-					$hreflangs[] = '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. self::href_ilink(route::$selected['resource'], [], true, ['page', 'sort'], $language['code']) .'">';
-				}
-
-				self::$head_tags['hreflang'] = implode(PHP_EOL, $hreflangs);
-			}
-
 			// Get template settings
 			if (!$template_config = include 'app://frontend/templates/'. settings::get('template') .'/config.inc.php') {
 				$template_config = [];
