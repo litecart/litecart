@@ -211,11 +211,11 @@
 		try {
 
 			if (!empty($product['date_valid_from']) && $product['date_valid_from'] < date('Y-m-d H:i:s')) {
-				throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime('date', $product['date_valid_from'])]));
+				throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product['date_valid_from'])]));
 			}
 
 			if (!empty($product['date_valid_to']) && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
-				throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime('date', $product['date_valid_to'])]));
+				throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => functions::datetime_format('date', $product['date_valid_to'])]));
 			}
 
 			if ($product['num_stock_options'] && $product['quantity'] <= 0) {
@@ -292,7 +292,7 @@ table .thumbnail {
 					<td><?php echo $product['code']; ?></td>
 					<td class="text-center"><?php echo functions::draw_price_tag($product['price'], $product['campaign_price']); ?></td>
 					<td class="text-center"><?php echo $product['num_stock_options']; ?></td>
-					<td class="text-end"><?php echo language::strftime('datetime', $product['date_created']); ?></td>
+					<td class="text-end"><?php echo functions::datetime_when($product['date_created']); ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id'], 'redirect_url' => document::link()]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>

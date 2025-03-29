@@ -100,7 +100,7 @@ form[name="filter_form"] li {
 		<tbody>
 			<?php foreach ($rows as $row) { ?>
 			<tr>
-				<td><?php echo ucfirst(language::strftime('%B, %Y', strtotime($row['year_month'].'-01'))); ?></td>
+				<td><?php echo ucfirst(functions::datetime_format('%B, %Y', strtotime($row['year_month'].'-01'))); ?></td>
 				<td class="border-start text-end"><?php echo currency::format($row['total_subtotal'], false, settings::get('store_currency_code')); ?></td>
 				<td class="border-start text-end"><?php echo currency::format($row['total_shipping_fees'], false, settings::get('store_currency_code')); ?></td>
 				<td class="border-start text-end"><?php echo currency::format($row['total_payment_fees'], false, settings::get('store_currency_code')); ?></td>

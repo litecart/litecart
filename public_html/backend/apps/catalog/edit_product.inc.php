@@ -251,14 +251,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_date_updated', 'Date Updated'); ?></div>
-										<div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($product->data['date_updated'])); ?></div>
+										<div><?php echo functions::datetime_when($product->data['date_updated']); ?></div>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_date_created', 'Date Created'); ?></div>
-										<div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($product->data['date_created'])); ?></div>
+										<div><?php echo functions::datetime_when($product->data['date_created']); ?></div>
 									</label>
 								</div>
 							</div>
@@ -509,8 +509,8 @@
 										<?php echo functions::form_input_hidden('campaigns['.$key.'][campaign_id]', true); ?>
 										<?php echo functions::escape_html($campaign['name']); ?>
 									</td>
-									<td><?php echo language::strftime('datetime', $campaign['date_valid_from']); ?></td>
-									<td><?php echo language::strftime('datetime', $campaign['date_valid_to']); ?></td>
+									<td><?php echo functions::datetime_when($campaign['date_valid_from']); ?></td>
+									<td><?php echo functions::datetime_when($campaign['date_valid_to']); ?></td>
 									<td>
 										<div class="dropdown dropdown-end">
 											<?php echo functions::form_input_money('campaigns['.$key.']['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>

@@ -204,11 +204,11 @@
 				}
 
 				if ($product->date_valid_from && $product->date_valid_from > date('Y-m-d H:i:s')) {
-					throw new Exception(strtr(language::translate('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), ['%date' => language::strftime('date', $product->date_valid_from)]));
+					throw new Exception(strtr(language::translate('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product->date_valid_from)]));
 				}
 
 				if ($product->date_valid_to && $product->date_valid_to < date('Y-m-d H:i:s')) {
-					throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), ['%date' => language::strftime('date', $product->date_valid_to)]));
+					throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), ['%date' => functions::datetime_format('date', $product->date_valid_to)]));
 				}
 
 				if ($stock_option_id && !in_array($stock_option_id, array_column($product->stock_options, 'id'))) {

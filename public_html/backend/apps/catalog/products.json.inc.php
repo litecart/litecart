@@ -75,7 +75,7 @@
 			'quantity' => (float)$product['quantity'],
 			'reserved' => (float)$product['reserved'],
 			'num_stock_options' => (float)$product['num_stock_options'],
-			'date_created' => language::strftime('date', $product['date_created']),
+			'date_created' => functions::datetime_format('date', $product['date_created']),
 		];
 	});
 

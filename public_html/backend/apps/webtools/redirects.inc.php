@@ -96,7 +96,7 @@
 					<td><a href="<?php echo document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]); ?>"><?php echo $redirect['pattern']; ?></a></td>
 					<td><?php echo $redirect['destination']; ?></td>
 					<td class="text-end"><?php echo $redirect['redirects']; ?></td>
-					<td class="text-end"><?php echo ($redirect['date_redirected'] > '1971') ? language::strftime(language::$selected['format_datetime'], strtotime($redirect['date_redirected'])) : '-'; ?></td>
+					<td class="text-end"><?php echo $redirect['date_redirected'] ? functions::datetime_when($redirect['date_redirected']) : '-'; ?></td>
 					<td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
 				</tr>
 				<?php } ?>

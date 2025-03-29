@@ -159,21 +159,21 @@
 	}
 
 	$date_format_options = [
-		'%e %b %Y' => language::strftime('%e %b %Y'),
-		'%b %e %Y' => language::strftime('%b %e %Y'),
+		'%e %b %Y' => functions::datetime_format('%e %b %Y'),
+		'%b %e %Y' => functions::datetime_format('%b %e %Y'),
 	];
 
 	$time_format_options = [
 		[
 			'label' => '12-Hour Format',
 			'options' => [
-				'%I:%M %P' => language::strftime('%I:%M %p'),
+				'%I:%M %P' => functions::datetime_format('%I:%M %p'),
 			],
 		],
 		[
 			'label' => '24-Hour Format',
 			'options' => [
-				'%H:%M' => language::strftime('%H:%M'),
+				'%H:%M' => functions::datetime_format('%H:%M'),
 			],
 		],
 	];

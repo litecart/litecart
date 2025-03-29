@@ -230,7 +230,7 @@
 							</div>
 						</td>
 						<td class="text-center"><?php echo $error['occurrences']; ?></td>
-						<td><?php echo language::strftime('datetime', $error['last_occurrence']); ?></td>
+						<td><?php echo functions::datetime_when($error['last_occurrence']); ?></td>
 					</tr>
 					<?php } ?>
 				</tbody>

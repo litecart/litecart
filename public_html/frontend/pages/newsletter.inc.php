@@ -56,7 +56,7 @@
 			$aliases = [
 				'%ipaddress' => $_SERVER['REMOTE_ADDR'],
 				'%hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
-				'%datetime' => language::strftime(language::$selected['format_datetime']),
+				'%datetime' => functions::datetime_format('datetime'),
 				'%store_name' => settings::get('store_name'),
 				'%store_link' => document::ilink(),
 				'%unsubscribe_link' => document::ilink('newsletter', ['email' => $_POST['email']]),
@@ -125,7 +125,7 @@
 			$aliases = [
 				'%ipaddress' => $_SERVER['REMOTE_ADDR'],
 				'%hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
-				'%datetime' => language::strftime(language::$selected['format_datetime']),
+				'%datetime' => functions::datetime_format('datetime'),
 				'%store_name' => settings::get('store_name'),
 				'%store_link' => document::ilink(),
 				'%subscribe_link' => document::ilink('newsletter', ['email' => $_POST['email']]),

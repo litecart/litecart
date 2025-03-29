@@ -29,7 +29,7 @@
 			$month = date('m', $timestamp);
 			$monthly_sales[$year][$month]['year'] = $year;
 			$monthly_sales[$year][$month]['month'] = $month;
-			$monthly_sales[$year][$month]['label'] = language::strftime('%b', $timestamp);
+			$monthly_sales[$year][$month]['label'] = functions::datetime_format('%b', $timestamp);
 			if (!isset($monthly_sales[$year][$month]['total_sales'])) $monthly_sales[$year][$month]['total_sales'] = 0;
 		}
 
@@ -86,7 +86,7 @@
 		});
 
 		for ($timestamp=time(); strtotime('-7 days') < $timestamp; $timestamp = strtotime('-1 day', $timestamp)) {
-			$daily_sales[date('N', $timestamp)]['label'] = language::strftime('%a', $timestamp);
+			$daily_sales[date('N', $timestamp)]['label'] = functions::datetime_format('%a', $timestamp);
 			if (!isset($daily_sales[date('N', $timestamp)]['total_sales'])) $daily_sales[date('N', $timestamp)]['total_sales'] = 0;
 			if (!isset($daily_sales[date('N', $timestamp)]['average_sales'])) $daily_sales[date('N', $timestamp)]['average_sales'] = 0;
 		}

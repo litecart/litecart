@@ -175,8 +175,8 @@
 					<td><?php echo functions::escape_html($recipient['name']); ?></td>
 					<td><?php echo $recipient['ip_address']; ?></td>
 					<td><?php echo $recipient['hostname']; ?></td>
-					<td class="text-end"><?php echo language::strftime('datetime', $recipient['date_updated']); ?></td>
-					<td class="text-end"><?php echo language::strftime('datetime', $recipient['date_created']); ?></td>
+					<td class="text-end"><?php echo functions::datetime_when($recipient['date_updated']); ?></td>
+					<td class="text-end"><?php echo functions::datetime_when($recipient['date_created']); ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>

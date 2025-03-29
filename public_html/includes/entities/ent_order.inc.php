@@ -443,7 +443,7 @@
 
 					$message = language::translate('text_new_comments_added_to_your_order', 'New comments added to your order', $this->data['language_code']) . ":\r\n\r\n";
 					foreach ($notify_comments as $comment) {
-						$message .= language::strftime('datetime', $comment['date_created']) ." – ". trim($comment['text']) . "\r\n\r\n";
+						$message .= functions::datetime_format('datetime', $comment['date_created']) ." – ". trim($comment['text']) . "\r\n\r\n";
 					}
 
 					$email = new ent_email();

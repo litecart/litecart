@@ -304,13 +304,13 @@ textarea.warning {
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_date_created', 'Date Created'); ?></div>
-								<div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($vmod->data['date_created'])); ?></div>
+								<div><?php echo functions::datetime_when($vmod->data['date_created']); ?></div>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_date_updated', 'Date Updated'); ?></div>
-								<div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($vmod->data['date_updated'])); ?></div>
+								<div><?php echo functions::datetime_when($vmod->data['date_updated']); ?></div>
 							</label>
 						</div>
 					</div>

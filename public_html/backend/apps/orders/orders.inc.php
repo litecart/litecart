@@ -416,7 +416,7 @@ table .icon-star-o:hover {
 					<td class="text-center"><?php if (!is_null($order['sufficient_stock'])) echo $order['sufficient_stock'] ? functions::draw_fonticon('icon-check', 'style="color: #88cc44;"') : functions::draw_fonticon('icon-times', 'style="color: #ff6644;"'); ?></td>
 					<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
 					<td class="text-center"><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
-					<td class="text-end"><?php echo language::strftime('datetime', $order['date_created']); ?></td>
+					<td class="text-end"><?php echo functions::datetime_when($order['date_created']); ?></td>
 					<td>
 						<div class="dropdown dropdown-end">
 							<div class="btn btn-default btn-sm dropdown-toggle"  data-toggle="dropdown">

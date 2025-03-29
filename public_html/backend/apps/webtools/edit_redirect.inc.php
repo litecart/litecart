@@ -249,7 +249,7 @@
         <div class="col-md-6">
           <label class="form-group">
             <div class="form-label"><?php echo language::translate('title_last_redirected', 'Last Redirected'); ?></div>
-            <div class="form-input" readonly><?php echo (!empty($redirect->data['date_redirected'])) ? language::strftime(language::$selected['format_datetime'], strtotime($redirect->data['date_redirected'])): '-'; ?></div>
+            <div class="form-input" readonly><?php echo $redirect->data['date_redirected'] ? functions::datetime_when($redirect->data['date_redirected']): '-'; ?></div>
           </label>
         </div>
       </div>

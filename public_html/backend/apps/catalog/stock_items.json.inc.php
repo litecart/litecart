@@ -29,8 +29,8 @@
 	)->fetch_all();
 
 	foreach ($stock_items as $i => $stock_item) {
-		$stock_item['date_updated'] = language::strftime('date', $stock_item['date_updated']);
-		$stock_item['date_created'] = language::strftime('date', $stock_item['date_created']);
+		$stock_item['date_updated'] = functions::datetime_format('date', $stock_item['date_updated']);
+		$stock_item['date_created'] = functions::datetime_format('date', $stock_item['date_created']);
 		$stock_items[$i] = $stock_item;
 	}
 

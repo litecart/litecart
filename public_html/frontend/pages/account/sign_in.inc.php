@@ -53,7 +53,7 @@
 			}
 
 			if ($customer['date_blocked_until'] && strtotime($customer['date_blocked_until']) > time()) {
-				throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime('datetime', $customer['date_blocked_until'])));
+				throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), functions::datetime_format('datetime', $customer['date_blocked_until'])));
 			}
 
 			if (!password_verify($_POST['password'], $customer['password_hash'])) {

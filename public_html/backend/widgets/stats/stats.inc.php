@@ -78,7 +78,7 @@
 				<table class="table data-table">
 					<tbody>
 						<tr>
-							<td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. language::strftime('%B'); ?>:</td>
+							<td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. functions::datetime_format('%B'); ?>:</td>
 							<td class="text-end"><?php echo currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')); ?></td>
 						</tr>
 						<tr>

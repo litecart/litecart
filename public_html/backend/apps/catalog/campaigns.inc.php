@@ -77,8 +77,8 @@
 					<td><?php echo $campaign['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>"><?php echo $campaign['name']; ?></a></td>
 					<td class="text-center"><?php echo language::number_format($campaign['num_products']); ?></td>
-					<td class="text-end"><?php if (!empty($campaign['date_valid_from'])) echo language::strftime('date', $campaign['start_date']); ?></td>
-					<td class="text-end"><?php if (!empty($campaign['date_valid_to'])) echo language::strftime('date', $campaign['date_valid_to']); ?></td>
+					<td class="text-end"><?php echo $campaign['date_valid_from'] ? functions::datetime_format('date', $campaign['start_date']) : ''; ?></td>
+					<td class="text-end"><?php echo $campaign['date_valid_to'] ? functions::datetime_format('date', $campaign['date_valid_to']) : ''; ?></td>
 					<td class="text-end">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
 							<?php echo functions::draw_fonticon('edit'); ?>

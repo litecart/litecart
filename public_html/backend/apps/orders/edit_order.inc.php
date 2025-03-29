@@ -469,7 +469,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label><?php echo language::translate('title_date', 'Date'); ?></label>
-								<div class="form-input" readonly><?php echo language::strftime('datetime', $order->data['date_created']); ?></div>
+								<div class="form-input" readonly><?php echo functions::datetime_when($order->data['date_created']); ?></div>
 							</div>
 						</div>
 
@@ -939,7 +939,7 @@
 
 							<?php echo nl2br($_POST['comments'][$key]['text']); ?>
 
-							<div class="date"><?php echo language::strftime('datetime', $_POST['comments'][$key]['date_created']); ?></div>
+							<div class="date"><?php echo functions::datetime_when($_POST['comments'][$key]['date_created']); ?></div>
 
 							<div class="actions">
 								<a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('icon-times'); ?></a>
@@ -1613,9 +1613,9 @@
 			'<div class="bubble local me">',
 			'  <?php echo functions::form_input_hidden('comments[new_comment_index][id]', ''); ?>',
 			'  <?php echo functions::form_input_hidden('comments[new_comment_index][author]', 'staff'); ?>',
-			'  <?php echo functions::form_input_hidden('comments[new_comment_index][date_created]', language::strftime('datetime')); ?>',
+			'  <?php echo functions::form_input_hidden('comments[new_comment_index][date_created]', functions::datetime_format('datetime')); ?>',
 			'  <?php echo functions::escape_js(functions::form_textarea('comments[new_comment_index][text]', '')); ?>',
-			'  <div class="date"><?php echo language::strftime('datetime'); ?></div>',
+			'  <div class="date"><?php echo functions::datetime_format('datetime'); ?></div>',
 			'  <div class="actions">',
 			'    <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('icon-envelope')], true)); ?> </label>',
 			'    <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('icon-eye-slash')], true)); ?></label>',

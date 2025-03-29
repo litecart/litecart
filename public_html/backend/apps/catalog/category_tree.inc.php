@@ -569,11 +569,11 @@ table .icon-folder-open {
 						$product['warning'] = null;
 
 						if (!empty($product['date_valid_from']) && strtotime($product['date_valid_from']) > time()) {
-							throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime('date', $product['date_valid_from'])]));
+							throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product['date_valid_from'])]));
 						}
 
 						if (!empty($product['date_valid_to']) && strtotime($product['date_valid_to']) < time()) {
-							throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime('date', $product['date_valid_to'])]));
+							throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => functions::datetime_format('date', $product['date_valid_to'])]));
 						}
 
 						if ($product['num_stock_options'] && $product['quantity'] <= 0) {
