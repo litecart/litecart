@@ -15,7 +15,7 @@
       . "  --db_password        Set database user password\n\n"
       . "  --db_database        Set database name\n"
       . "  --db_table_prefix    Set database table prefix (Default: lc_).\n"
-      . "  --db_collation       Set database collation (Default: utf8_swedish_ci)\n"
+      . "  --db_collation       Set database collation (Default: utf8mb4_swedish_ci)\n"
       . "  --document_root      Set document root\n\n"
       . "  --timezone           Set timezone e.g. Europe/London\n\n"
       . "  --admin_folder       Set admin folder name (Default: admin)\n"
@@ -114,7 +114,7 @@
     }
 
     if (empty($_REQUEST['db_collation'])) {
-      $_REQUEST['db_collation'] = 'utf8_swedish_ci';
+      $_REQUEST['db_collation'] = 'utf8mb4_swedish_ci';
     }
 
     if (!isset($_REQUEST['db_table_prefix'])) {

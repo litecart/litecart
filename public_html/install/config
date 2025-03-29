@@ -29,7 +29,7 @@
   define('DB_PASSWORD', '{DB_PASSWORD}');
   define('DB_DATABASE', '{DB_DATABASE}');
   define('DB_TABLE_PREFIX', '{DB_TABLE_PREFIX}');
-  define('DB_CONNECTION_CHARSET', 'utf8');
+  define('DB_CONNECTION_CHARSET', 'utf8mb4');
 
 ######################################################################
 ## Application #######################################################

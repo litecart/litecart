@@ -427,28 +427,28 @@ input[name="development_type"]:checked + div {
     <div class="form-group col-md-6">
       <label>Collation</label>
       <select class="form-control" name="db_collation" required>
-        <option>utf8_bin</option>
-        <option>utf8_general_ci</option>
-        <option>utf8_unicode_ci</option>
-        <option>utf8_icelandic_ci</option>
-        <option>utf8_latvian_ci</option>
-        <option>utf8_romanian_ci</option>
-        <option>utf8_slovenian_ci</option>
-        <option>utf8_polish_ci</option>
-        <option>utf8_estonian_ci</option>
-        <option>utf8_spanish_ci</option>
-        <option selected="selected">utf8_swedish_ci</option>
-        <option>utf8_turkish_ci</option>
-        <option>utf8_czech_ci</option>
-        <option>utf8_danish_ci</option>
-        <option>utf8_lithuanian_ci</option>
-        <option>utf8_slovak_ci</option>
-        <option>utf8_spanish2_ci</option>
-        <option>utf8_roman_ci</option>
-        <option>utf8_persian_ci</option>
-        <option>utf8_esperanto_ci</option>
-        <option>utf8_hungarian_ci</option>
-        <option>utf8_sinhala_ci</option>
+        <option>utf8mb4_bin</option>
+        <option>utf8mb4_general_ci</option>
+        <option>utf8mb4_unicode_ci</option>
+        <option>utf8mb4_icelandic_ci</option>
+        <option>utf8mb4_latvian_ci</option>
+        <option>utf8mb4_romanian_ci</option>
+        <option>utf8mb4_slovenian_ci</option>
+        <option>utf8mb4_polish_ci</option>
+        <option>utf8mb4_estonian_ci</option>
+        <option>utf8mb4_spanish_ci</option>
+        <option selected="selected">utf8mb4_swedish_ci</option>
+        <option>utf8mb4_turkish_ci</option>
+        <option>utf8mb4_czech_ci</option>
+        <option>utf8mb4_danish_ci</option>
+        <option>utf8mb4_lithuanian_ci</option>
+        <option>utf8mb4_slovak_ci</option>
+        <option>utf8mb4_spanish2_ci</option>
+        <option>utf8mb4_roman_ci</option>
+        <option>utf8mb4_persian_ci</option>
+        <option>utf8mb4_esperanto_ci</option>
+        <option>utf8mb4_hungarian_ci</option>
+        <option>utf8mb4_sinhala_ci</option>
       </select>
     </div>
 

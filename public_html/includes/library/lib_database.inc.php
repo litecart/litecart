@@ -132,7 +132,7 @@
         'iso-2022-jp' => 'cp932',
         'iso-2022-jp-2' => 'eucjpms',
         'iso-2022-kr' => 'euckr',
-        'utf-8' => 'utf8',
+        'utf-8' => 'utf8mb4',
         'utf-16' => 'utf16',
         'windows-1250' => 'cp1250',
         'windows-1251' => 'cp1251',
