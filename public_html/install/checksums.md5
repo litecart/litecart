@@ -283,7 +283,7 @@ dfc0b6b23240b07472ae269fc9a29351	includes/library/lib_breadcrumbs.inc.php
 151c61f255638511b3a9959882ae9748	includes/library/lib_cart.inc.php
 0f14dd8a55acb482677c6ec16535d7b3	includes/library/lib_currency.inc.php
 b9808552044b6f33524ad9b4804db9c0	includes/library/lib_customer.inc.php
-229a1e472fb49de5653734303b14c335	includes/library/lib_database.inc.php
+83825a29d6152add064bd8199716f355	includes/library/lib_database.inc.php
 3990fc1cbc97b937ba36f56098599615	includes/library/lib_document.inc.php
 b4401ef3e46e288212dfc2fd3eb1d165	includes/library/lib_event.inc.php
 ea8d7ddb2524ec3236c7099e10854816	includes/library/lib_functions.inc.php
@@ -331,7 +331,7 @@ ed1ae851942e9d52f7d4f0e859a84b7f	includes/references/ref_order_status.inc.php
 de005efcae2f7b85b1d864f554d5dd24	includes/references/ref_product.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/routes/index.html
 34c1df026b8f6cef4bafec4fa15688a0	includes/routes/url_category.inc.php
-51e1ed76a07ea8a18ada0027dc32f4b9	includes/routes/url_customer_service.inc.php
+823635f7dc40fe4bb77fafc1a35ac557	includes/routes/url_customer_service.inc.php
 9430ae7bfbe50821fb9b52dff1ca2c37	includes/routes/url_error_document.inc.php
 66474e6f00cf107eade030a7dc205e0d	includes/routes/url_index.inc.php
 2a774c221ba3ec5bebc48367c2e94172	includes/routes/url_information.inc.php
@@ -532,7 +532,7 @@ f9d8be06239f09f565a93421d9643fff	includes/wrappers/wrap_http.inc.php
 147d97584a52b261149641e67dbbecc7	includes/wrappers/wrap_smtp.inc.php
 7fdb50700585457cd5db07b275f6d686	index.php
 db7b7a833baf1b6f47160530e9a9bc9f	install/clean.sql
-537d76f832f5e95c8e81f2bdbe462659	install/config
+87a2b68a48e38bb9da0f3f641775ad49	install/config
 fd93ba03934d4477cd8add96e009e8ec	install/data.sql
 2b2639ce48f7d6723c0768bcf39ca725	install/data/AU/AU.sql
 9a133ec15a84f54a925d396fd0e270c3	install/data/CA/CA.sql
@@ -576,8 +576,8 @@ faab49ec26407cd72a7a6984fa943ad7	install/htaccess
 5ce62c13340c52070b1f99ff16a9a850	install/includes/footer.inc.php
 88c129a1bab3911671153318af96e38c	install/includes/functions.inc.php
 a37bf7b37ad3919a13f46de67748afed	install/includes/header.inc.php
-81ba79e4c73a6f49bf76365e5a906bb5	install/index.php
-80f908874be45eab363793bac09be614	install/install.php
+e2a07c2599278ed7639313296bde80b8	install/index.php
+7b68f66bafe409c5da6a298ffaf55c6e	install/install.php
 f1e329cfc37b9745bb7f6a25d36e0592	install/structure.sql
 ff2b5d6cfbe443dbadc956d8068e224e	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
@@ -692,6 +692,7 @@ c84802588edcf08935a6b2a68c3dbc33	install/upgrade_patches/2.6.0.inc.php
 7b4bafa25947467027c750c9aea527d3	install/upgrade_patches/2.6.1.inc.php
 cd37a7f25119ad9ac30f171d57ef6db2	install/upgrade_patches/2.6.1.sql
 8b5fda2d89dec0cacfb676360e71ddf7	install/upgrade_patches/2.6.2.sql
+6131ac6ec734bc5242db67e6aa667fa3	install/upgrade_patches/2.6.3.inc.php
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
 70df41f74e6b15be767a8052f14b4036	pages/ajax/cart.json.inc.php
