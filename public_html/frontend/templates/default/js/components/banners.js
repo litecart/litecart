@@ -1,6 +1,6 @@
 // Banner Click Tracking
 
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	var mouseOverAd = null;
 

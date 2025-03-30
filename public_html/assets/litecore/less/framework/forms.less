@@ -26,7 +26,7 @@ label.form-check > input {
 	&:is(input), &:is(label) > input {
 		display: inline-block;
 		margin-inline-end: .25em;
-		background: var(--input-background-color);
+		background: var(--input-background);
 		border: var(--input-border-color);
 		vertical-align: text-bottom;
 		height: 1.33em;
@@ -69,7 +69,7 @@ label.form-check > input {
 	position: relative;
 	width: 100%;
 	padding: var(--input-padding-y) var(--input-padding-x);
-	background: var(--input-background-color);
+	background: var(--input-background);
 	color: var(--input-text-color);
 	border: var(--input-border-width) solid var(--input-border-color);
 	border-radius: var(--border-radius);
@@ -153,7 +153,7 @@ label.form-check > input {
 	}
 
 	option {
-		background: var(--input-background-color);
+		background: var(--input-background);
 	}
 }
 
@@ -208,24 +208,25 @@ label.form-check > input {
 .form-toggle {
 	display: flex;
 	flex-direction: row;
-	padding: var(--input-padding-y);
+	padding: .5em var(--input-padding-x);
 	gap: 1em;
+	overflow: hidden;
 
 	label {
 		flex: 0 0 auto;
 		display: inline-block;
 		border-radius: var(--border-radius);
-		padding: .5em 1em;
+		padding: .25em 1em;
 		margin: ~"calc(-.5em - var(--input-border-width))" 0;
 		text-align: center;
 		border: var(--input-border-width) solid transparent;
 
 		&:has(:checked) {
-			background: var(--input-toggle-background-color);
+			background: var(--input-toggle-background);
 			border: var(--input-border-width) solid var(--input-border-color);
 		}
 		&:hover:not(:checked):not(:disabled) {
-			background: var(--input-toggle-background-color--hover);
+			background: var(--input-toggle-background--hover);
 			cursor: pointer;
 		}
 		&:has(:focus) {
@@ -284,7 +285,7 @@ label.form-check > input {
 	.input-group-text {
 		flex: 0 1 auto;
 		padding: var(--input-padding-y) var(--input-padding-x);
-		background: var(--input-addon-background-color);
+		background: var(--input-addon-background);
 		border-inline-start: var(--input-border-width) solid var(--input-border-color);
 		border-inline-end: var(--input-border-width) solid var(--input-border-color);
 		//align-self: center;
@@ -371,7 +372,7 @@ fieldset[disabled] > :not(legend),
 }
 
 .input-group .trumbowyg-box {
-	--trumbowyg-pane-background: var(--input-addon-background-color);
+	--trumbowyg-pane-background: var(--input-addon-background);
 	border-start-start-radius: 0;
 	border-end-start-radius: 0;
 	border-end-end-radius: 0;

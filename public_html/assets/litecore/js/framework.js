@@ -19,7 +19,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 	}
 };
 
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	// Stylesheet Loader
 	$.loadStylesheet = function(url, options, callback, fallback) {
@@ -68,7 +68,7 @@ window.waitFor = (objectName, callback, retries=100) => {
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 	'use strict';
 
 	// CAROUSEL CLASS DEFINITION
@@ -298,7 +298,7 @@ window.waitFor = (objectName, callback, retries=100) => {
  * jQuery Category Picker
  * by LiteCart
  */
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$.fn.categoryPicker = function(config){
 		this.each(function() {
@@ -460,7 +460,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 
 /* Context Menu */
 
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$.fn.contextMenu = function(config){
 		this.each(function() {
@@ -479,7 +479,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 
 });
 
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 	"use strict";
 
 	$('<style>', {type: 'text/css'})
@@ -600,7 +600,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 });
 
 // Dropdown
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('.dropdown [data-toggle="dropdown"]').on('click', function(e) {
 		$(this).closest('.dropdown').toggleClass('open');
@@ -630,7 +630,7 @@ window.waitFor = (objectName, callback, retries=100) => {
  * https://github.com/Mario-Duarte/image-zoom-plugin/
  * Simple jQuery plugin that converts an image into a click to zoom image
  */
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$.fn.imageZoom = function (options) {
 
@@ -731,7 +731,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 	};
 });
 
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	// Form required asterix
 	$(':input[required]').closest('.form-group').addClass('required');
@@ -781,7 +781,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 });
 
 // CSV Input
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('textarea[data-toggle="csv"] + table').on('click', '.remove', function(e) {
 		e.preventDefault();
@@ -826,7 +826,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 });
 
 // Form Input Tags
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('input[data-toggle="tags"]').each(function() {
 
@@ -911,7 +911,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 
 });
 
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 	'use strict';
 
 	// Check if jQuery is available
@@ -1326,7 +1326,7 @@ window.waitFor = (objectName, callback, retries=100) => {
  * Momentum Scroll
  * by LiteCart
  */
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$.fn.momentumScroll = function() {
 		this.each(function() {
@@ -1455,7 +1455,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 	$('[data-toggle*="momentumScroll"]').momentumScroll();
 });
 
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	// Alerts
 	$('body').on('click', '.alert .close', function(e) {
@@ -1468,7 +1468,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 });
 
 // Off-Canvas Sidebar (data-toggle="offcanvas-collapse")
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('[data-toggle="offcanvas"]').on('click', function() {
 		$(this).closest('.navbar').toggleClass('expanded');
@@ -1479,7 +1479,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 });
 
 // Password Strength
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function() {
 
@@ -1507,7 +1507,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 
 
 // jQuery Placeholders by LiteCart
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	let Placeholders = [];
 
@@ -1604,7 +1604,7 @@ String.prototype.escapeAttr = function() {
 };
 
 // Scroll Up
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$(window).scroll(function() {
 		if ($(this).scrollTop() > 300) {
@@ -1622,7 +1622,7 @@ String.prototype.escapeAttr = function() {
 });
 
 // Data-Table Toggle Checkboxes
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	// Data-Table Toggle Checkboxes
 	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
@@ -1675,7 +1675,7 @@ String.prototype.escapeAttr = function() {
 
 // Tabs (data-toggle="tab")
 
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 	'use strict';
 
 	$.fn.tabs = function(){
@@ -1729,7 +1729,7 @@ String.prototype.escapeAttr = function() {
 
 
 // Polyfill for easeOutBounce
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$.extend($.easing, {
 		easeOutCubic: function (x) {

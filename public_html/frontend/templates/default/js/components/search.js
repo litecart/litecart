@@ -1,5 +1,5 @@
 // AJAX Search
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('.navbar-search :input').on('focus', function() {
 		$(this).closest('.dropdown').addClass('open');

@@ -25,9 +25,7 @@
 
 		public static function before_capture() {
 
-			//self::$snippets['nonce'] = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(32/62))), 0, 32);
-
-			header('Content-Security-Policy: frame-ancestors \'self\';'); // Clickjacking Protection
+			header('Strict-Transport-Security: max-age=63072000; includeSubDomains; preload'); // HSTS
 			header('Access-Control-Allow-Origin: '. self::ilink('')); // Only allow HTTP POST data from own domain
 			header('X-Frame-Options: SAMEORIGIN'); // Clickjacking Protection
 			header('X-Powered-By: '. PLATFORM_NAME);

@@ -1,6 +1,6 @@
 // Tabs (data-toggle="tab")
 
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 	'use strict';
 
 	$.fn.tabs = function(){

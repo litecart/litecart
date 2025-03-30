@@ -1,5 +1,5 @@
 // jQuery Placeholders by LiteCart
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	let Placeholders = [];
 

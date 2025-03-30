@@ -1,5 +1,5 @@
 // Password Strength
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function() {
 

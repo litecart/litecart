@@ -120,7 +120,7 @@ h4 { font-size: 1.10em; }
 	border-radius: var(--border-radius);
 	margin: 0;
 	margin-bottom: var(--gutter-y);
-	background: var(--toolbar-background-color);
+	background: var(--toolbar-background);
 	color: var(--toolbar-text-color);
 	border-bottom: var(--toolbar-border-width) solid var(--default-border-color);
 
@@ -135,7 +135,7 @@ h4 { font-size: 1.10em; }
 			text-decoration: none;
 			border-radius: var(--border-radius);
 			&:hover {
-				background: var(--navigation-background-hover);
+				background-color: var(--navigation-background--hover);
 			}
 		}
 
@@ -219,15 +219,27 @@ h4 { font-size: 1.10em; }
 	padding: 0;
 	color: var(--sidebar-text-color);
 
+	ul.groups, ul.apps, ul.docs {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+
+	a {
+		display: block;
+		padding: .25em .5em;
+		text-decoration: none;
+		color: inherit;
+	}
+
 	.group {
-		font-weight: bold;
 		margin: 0;
 		padding: 1em 0;
 		list-style: none;
 		border-bottom: 1px solid var(--default-border-color);
-		padding-top: 1em;
-		padding-bottom: .5em;
-		margin-bottom: .25em;
+		> .title {
+			font-weight: 500;
+		}
 	}
 
 	.app {
@@ -239,14 +251,11 @@ h4 { font-size: 1.10em; }
 		border-radius: var(--border-radius);
 
 		&:hover:not(.active) {
-			background: var(--sidebar-background-hover);
+			background: var(--sidebar-app-background--hover);
 		}
 
-		a {
-			display: block;
-			padding: .5em;
-			text-decoration: none;
-			color: inherit;
+		> a {
+			padding: .25em .5em;
 
 			.icon-stack {
 				font-size: 1em;
@@ -258,53 +267,50 @@ h4 { font-size: 1.10em; }
 			font-size: 1.2em;
 		}
 
-		.name {
+		> a > .name {
 			margin-inline-start: .5em;
-		}
-
-		.docs {
-			display: none;
 		}
 
 		&.active {
 			border-color: var(--app-color);
-			background: var(--sidebar-app-group-background);
+			background: var(--sidebar-app-background--active);
 			border-radius: var(--border-radius);
 
 			.docs {
 				display: block;
+				padding-bottom: .5em;
 			}
 
-			.doc:hover {
-				background: var(--sidebar-doc-background-hover);
-				border-radius: var(--border-radius);
-			}
-
-			.doc.active > a {
-				background: var(--sidebar-doc-background-active);
-				border-radius: var(--border-radius);
+			.doc {
+				&:hover,
+				&:active {
+					background: var(--sidebar-doc-background--hover);
+					border-radius: var(--border-radius);
+				}
+				&.active {
+					background: var(--sidebar-doc-background--active);
+					border-radius: var(--border-radius);
+				}
+				a {
+					padding: .5em .75em;
+				}
 			}
 		}
 	}
 
 	.docs {
+		display: none;
 		padding-bottom: .5em;
+		padding-left: 1em !important;
+		padding-right: 1em !important;
 	}
 
-	ul {
-		padding: 0 1em;
-		border: none;
-
-		li {
-			border: none;
-			margin: 2px 0;
-			list-style: none;
-			a {
-				font-weight: normal;
-				padding: 3px 3px;
-			}
-		}
+	.bullet {
+		display: inline-block;
+		margin-inline-end: .5em;
+		opacity: .5;
 	}
+
 }
 
 /* Content */

@@ -4,8 +4,8 @@
 	//position: relative;
 	display: flex;
 	flex-direction: row;
-	gap: 1em;
-	background: var(--navbar-background-color);
+	gap: 0;
+	background: var(--navbar-background);
 	color: var(--navbar-text-color);
 	box-shadow: var(--navbar-shadow);
 	border-radius: var(--border-radius);
@@ -32,8 +32,9 @@
 
 		img {
 			display: inline-block;
-			max-width: 250px;
-			max-height: 32px;
+			width: 100%;
+			width: 42px;
+			height: 42px;
 			padding-inline-end: .5em;
 			vertical-align: middle;
 		}
@@ -55,7 +56,7 @@
 		padding: .25em;
 		opacity: 0;
 		overflow-y: scroll;
-		background: #fff;
+		background-color: #fff;
 		box-shadow: 0 0 15px #0003;
 
 		transition: margin 200ms ease-out;
@@ -89,7 +90,7 @@
 		flex-direction: column;
 		margin: 0;
 		padding: 0;
-		gap: 1em;
+		gap: 0;
 		align-content: center;
 
 		> li {
@@ -167,7 +168,7 @@
 
 		.navbar-toggler-bar {
 			position: relative;
-			background: var(--navbar-text-color);
+			background-color: var(--navbar-text-color);
 			display: block;
 			width: 22px;
 			height: 2px;
@@ -192,7 +193,7 @@
 				transform: rotate(45deg);
 			}
 			.navbar-toggler-bar:nth-of-type(2) {
-				background: transparent;
+				background-color: transparent;
 			}
 			.navbar-toggler-bar:nth-of-type(3) {
 				top: -6px;

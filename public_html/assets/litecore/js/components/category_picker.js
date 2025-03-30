@@ -2,7 +2,7 @@
  * jQuery Category Picker
  * by LiteCart
  */
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$.fn.categoryPicker = function(config){
 		this.each(function() {

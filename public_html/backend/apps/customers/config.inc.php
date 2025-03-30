@@ -2,7 +2,7 @@
 
 	return [
 		'name' => language::translate('title_customers', 'Customers'),
-		'group' => 'sales',
+		'group' => 'ecommerce',
 		'default' => 'customers',
 		'priority' => 0,
 

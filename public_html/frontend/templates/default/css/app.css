@@ -10,7 +10,7 @@ body {
   flex-grow: 1;
 }
 #important-message {
-  background: var(--important-message-background-color);
+  background: var(--important-message-background);
   color: var(--important-message-text-color);
   padding: 0.75em 1em;
 }
@@ -204,9 +204,6 @@ body {
 #site-footer {
   background: var(--footer-background);
   color: var(--footer-text-color);
-  border-top: 2px solid;
-  border-image-slice: 1;
-  border-image-source: linear-gradient(to left, #97989f00, #89849269, #97989f00);
 }
 #site-footer .row {
   margin-bottom: 0;
@@ -679,10 +676,10 @@ body {
 }
 .listing .product .actions .btn {
   padding: 0.75em;
-  border: 1px solid var(--default-border-color);
   border-radius: 50%;
   aspect-ratio: 1 / 1;
-  line-height: 1.2;
+  line-height: 1;
+  margin: 0;
 }
 @media (min-width: 576px) {
   .listing .product:hover .actions {
@@ -857,7 +854,8 @@ body {
   display: flex;
 }
 #box-product .social-bookmarks a {
-  padding: 0.75em;
+  font-size: 1.25em;
+  padding: 0.5em;
   border-radius: 50%;
   aspect-ratio: 1 / 1;
   line-height: 1;

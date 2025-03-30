@@ -1,5 +1,5 @@
 // Data-Table Toggle Checkboxes
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	// Data-Table Toggle Checkboxes
 	$('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {

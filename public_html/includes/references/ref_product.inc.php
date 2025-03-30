@@ -222,7 +222,9 @@
 
 						foreach ($info as $key => $value) {
 							if (in_array($key, ['id', 'product_id', 'language_code'])) continue;
-							if (empty($this->_data[$key])) $this->_data[$key] = $value;
+							if (empty($this->_data[$key])) {
+								$this->_data[$key] = $value;
+							}
 						}
 
 					});

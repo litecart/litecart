@@ -1,4 +1,4 @@
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 	'use strict';
 
 	// Check if jQuery is available

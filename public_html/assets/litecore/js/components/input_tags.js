@@ -1,5 +1,5 @@
 // Form Input Tags
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('input[data-toggle="tags"]').each(function() {
 

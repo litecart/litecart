@@ -5,7 +5,7 @@
 	.pill-item {
 		margin: 1px 0;
 		padding: .75em 1em;
-		background: var(--pill-item-background-color);
+		background: var(--pill-item-background);
 		color: var(--pill-item-text-color);
 		border-radius: var(--border-radius);
 		transition: all 125ms linear;
@@ -13,13 +13,13 @@
 		&:hover,
 		&:focus,
 		&:active {
-			background: var(--pill-item-background-color--hover);
+			background: var(--pill-item-background--hover);
 			color: var(--pill-item-text-color--hover);
 			border-color: var(--pill-item-border-color--hover);
 		}
 
 		&.active {
-			background: var(--pill-item-background-color--active);
+			background: var(--pill-item-background--active);
 			color: var(--pill-item-text-color--active);
 			border-color: var(--pill-item-border-color--active);
 		}

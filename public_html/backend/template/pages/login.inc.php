@@ -80,7 +80,7 @@ html.dark-mode body {
 			<div class="card-footer">
 				<div class="grid">
 					<div class="col-md-6 text-start">
-						<a class="btn btn-hover-outline btn-lg" href="<?php echo document::href_ilink('f:'); ?>">
+						<a class="btn btn-transparent btn-lg" href="<?php echo document::href_ilink('f:'); ?>">
 							<?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo language::translate('title_go_to_frontend', 'Go To Frontend'); ?>
 						</a>
 					</div>

@@ -90,6 +90,7 @@
 				break;
 
 			case (preg_match('#^stream_#', $class)):
+
 				require 'app://includes/streams/' . $class . '.inc.php';
 				break;
 

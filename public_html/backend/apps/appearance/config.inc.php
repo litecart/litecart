@@ -23,6 +23,11 @@
 				'params' => [],
 			],
 			[
+				'title' => language::translate('title_images', 'Images'),
+				'doc' => 'images',
+				'params' => [],
+			],
+			[
 				'title' => language::translate('title_logotype', 'Logotype'),
 				'doc' => 'logotype',
 				'params' => [],
@@ -37,6 +42,7 @@
 		'docs' => [
 			'edit_styling' => 'edit_styling.inc.php',
 			'favicon' => 'favicon.inc.php',
+			'images' => 'images.inc.php',
 			'logotype' => 'logotype.inc.php',
 			'template' => 'template.inc.php',
 			'template_settings' => 'template_settings.inc.php',

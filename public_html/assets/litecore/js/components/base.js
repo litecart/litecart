@@ -12,7 +12,7 @@ window.waitFor = (objectName, callback, retries=100) => {
 	}
 };
 
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	// Stylesheet Loader
 	$.loadStylesheet = function(url, options, callback, fallback) {

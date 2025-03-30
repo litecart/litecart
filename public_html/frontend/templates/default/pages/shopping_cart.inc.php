@@ -94,50 +94,48 @@
 
 						<div class="card-body">
 
-							<div class="form-grid">
+							<div class="flex">
 
-								<div class="col-4">
-									<div class="form-label">
-										<div class="form-label"><?php echo language::translate('title_language', 'Language'); ?></div>
-										<div style="line-height: 2;"><?php echo language::$selected['name']; ?></div>
-									</div>
+								<div class="form-group flex-grow">
+									<div class="form-label"><?php echo language::translate('title_language', 'Language'); ?></div>
+									<div style="line-height: 2;"><?php echo language::$selected['name']; ?></div>
 								</div>
 
-								<div class="col-4">
-									<div class="form-label">
-										<div class="form-label"><?php echo language::translate('title_currency', 'Currency'); ?></div>
-										<div style="line-height: 2;"><?php echo currency::$selected['code']; ?></div>
-									</div>
+								<div class="form-group flex-grow">
+									<div class="form-label"><?php echo language::translate('title_currency', 'Currency'); ?></div>
+									<div style="line-height: 2;"><?php echo currency::$selected['code']; ?></div>
 								</div>
 
-								<div class="col-4">
-									<a class="btn btn-default change" href="<?php echo document::href_ilink('regional_settings', ['redirect_url' => document::link()]); ?>#box-regional-settings" data-toggle="lightbox" data-seamless="true"><?php echo language::translate('title_change', 'Change'); ?></a>
+								<div>
+									<a class="btn btn-default change" href="<?php echo document::href_ilink('regional_settings', ['redirect_url' => document::link()]); ?>#box-regional-settings" data-toggle="lightbox" data-seamless="true">
+										<?php echo language::translate('title_change', 'Change'); ?>
+									</a>
 								</div>
+							</div>
 
+							<div class="grid">
 								<div class="col-8">
-									<div class="form-label">
+									<div class="form-group">
 										<div class="form-label"><?php echo language::translate('title_country', 'Country'); ?></div>
 										<div style="line-height: 2;"><?php echo functions::form_select_country('country_code', true); ?></div>
 									</div>
 								</div>
 
 								<div class="col-4">
-									<div class="form-label">
+									<div class="form-group">
 										<div class="form-label"><?php echo language::translate('title_postcode', 'Postal Code'); ?></div>
 										<div style="line-height: 2;"><?php echo functions::form_input_text('postcode', true); ?></div>
 									</div>
 								</div>
+							</div>
 
-								<div class="col-12">
-									<div class="form-label">
-										<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
-										<?php echo functions::form_input_email('email', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
-									</div>
-								</div>
+							<div class="form-group">
+								<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
+								<?php echo functions::form_input_email('email', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
+							</div>
 
-								<div class="col-12">
-									<?php echo functions::form_button('checkout', language::translate('title_continue_to_checkout', 'Continue To Checkout') .' '. functions::draw_fonticon('icon-arrow-right'), 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>
-								</div>
+							<div class="">
+								<?php echo functions::form_button('checkout', language::translate('title_continue_to_checkout', 'Continue To Checkout') .' '. functions::draw_fonticon('icon-arrow-right'), 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>
 							</div>
 
 							<div class="strikethrough-divider">

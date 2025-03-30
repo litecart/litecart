@@ -1,4 +1,4 @@
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	// Alerts
 	$('body').on('click', '.alert .close', function(e) {

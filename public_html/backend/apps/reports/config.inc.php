@@ -2,7 +2,7 @@
 
 	return [
 		'name' => language::translate('title_reports', 'Reports'),
-		'group' => 'sales',
+		'group' => 'ecommerce',
 		'default' => 'monthly_sales',
 		'priority' => 0,
 

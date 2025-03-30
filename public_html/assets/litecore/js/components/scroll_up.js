@@ -1,5 +1,5 @@
 // Scroll Up
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$(window).scroll(function() {
 		if ($(this).scrollTop() > 300) {

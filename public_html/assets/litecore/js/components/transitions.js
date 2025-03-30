@@ -1,5 +1,5 @@
 // Polyfill for easeOutBounce
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$.extend($.easing, {
 		easeOutCubic: function (x) {

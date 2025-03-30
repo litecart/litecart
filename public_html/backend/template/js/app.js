@@ -6,7 +6,7 @@
  */
 
 // Filter
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('#sidebar input[name="filter"]').on({
 
@@ -34,7 +34,7 @@
 });
 
 // AJAX Search
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	let timer_ajax_search = null;
 	let xhr_search = null;

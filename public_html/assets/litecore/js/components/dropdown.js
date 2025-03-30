@@ -1,5 +1,5 @@
 // Dropdown
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('.dropdown [data-toggle="dropdown"]').on('click', function(e) {
 		$(this).closest('.dropdown').toggleClass('open');

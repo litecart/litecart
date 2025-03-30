@@ -1,5 +1,5 @@
 // Off-Canvas Sidebar (data-toggle="offcanvas-collapse")
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('[data-toggle="offcanvas"]').on('click', function() {
 		$(this).closest('.navbar').toggleClass('expanded');

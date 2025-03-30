@@ -1,5 +1,5 @@
 .tabs {
-	background: var(--tab-bar-background-color);
+	background: var(--tab-bar-background);
 	border-bottom: var(--tab-bar-border-width) solid var(--tab-bar-border-color);
 	padding: 1em var(--gutter-x);
 	padding-bottom: 0;
@@ -8,7 +8,7 @@
 	.tab-item {
 		display: inline-block;
 		margin-inline-end: 2px;
-		background: var(--tab-item-background-color);
+		background: var(--tab-item-background);
 		border: var(--tab-bar-border-width) solid var(--tab-bar-border-color);
 		margin-bottom: -1px;
 		color: var(--tab-item-text-color);
@@ -19,12 +19,12 @@
 		&:hover,
 		&:focus,
 		&:active {
-			background: var(--tab-item-background-color--hover);
+			background: var(--tab-item-background--hover);
 			color: var(--tab-item-text-color--hover);
 		}
 
 		&.active {
-			background: var(--tab-item-background-color--active);
+			background: var(--tab-item-background--active);
 			color: var(--tab-item-text-color--active);
 		}
 	}

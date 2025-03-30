@@ -3,7 +3,7 @@
  * by LiteCart
  */
 
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$.fn.momentumScroll = function(){
 		this.each(function() {
@@ -73,8 +73,8 @@
  * jQuery Auto Scroll
  * by LiteCart
  */
-+waitFor('jQuery', ($) => {
-	
+waitFor('jQuery', ($) => {
+
 	$.fn.autoScroll = function(){
 		this.each(function() {
 

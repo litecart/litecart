@@ -1,5 +1,5 @@
 // Filter
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('#sidebar input[name="filter"]').on({
 

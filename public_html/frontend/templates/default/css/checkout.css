@@ -1,3 +1,4 @@
+/* Media Breakpoints */
 .loader-wrapper {
   position: fixed;
   top: 50%;
@@ -97,11 +98,12 @@
 #box-checkout-customer .title {
   margin-top: 0;
 }
-#box-checkout-customer .detail {
+#box-checkout-customer .details {
   box-sizing: border-box;
   border-radius: 1em;
   padding: 1em;
   border: 1px solid #d5d5d5;
+  margin-bottom: var(--gutter-y);
 }
 #box-checkout-customer fieldset {
   border: none;

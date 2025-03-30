@@ -1,11 +1,25 @@
 /* Buttons */
 
+.btn(@type) {
+	background: ~"var(--button-@{type}-background)";
+	color: ~"var(--button-@{type}-text-color)";
+	border: var(--button-border-width) solid ~"var(--button-@{type}-border-color)";
+	&:hover:not(.active, .disabled, [disabled]),
+	&:focus:not(.active, .disabled, [disabled]),
+	&:active:not(.active, .disabled, [disabled]) {
+		background: ~"var(--button-@{type}-background--hover)";
+		border-color: ~"var(--button-@{type}-border-color--hover)";
+	}
+	&.active {
+		background: ~"var(--button-@{type}-background--active)";
+		border-color: ~"var(--button-@{type}-border-color--active)";
+	}
+}
+
+
 .btn {
 	display: inline-block;
 	padding: var(--button-padding-y) var(--button-padding-x);
-	background: var(--button-background-color);
-	color: var(--button-text-color);
-	border: var(--button-border-width) solid var(--button-border-color);
 	border-radius: var(--border-radius);
 	box-shadow: var(--button-shadow);
 	text-decoration:  none;
@@ -18,44 +32,26 @@
 	touch-action: manipulation;
 	user-select: none;
 
-	&.btn-outline {
-		background: none;
-		border: var(--button-border-width) solid var(--button-background-color);
-		color: var(--button-background-color);
-		text-decoration: none;
-		box-shadow: none;
-		&:hover:not(.active, .disabled, [disabled]),
-		&:focus:not(.active, .disabled, [disabled]),
-		&:active:not(.active, .disabled, [disabled]) {
-		}
-		&.active {
-
-		}
-	}
+	&.btn-default { .btn('default'); }
+	&.btn-success { .btn('success'); }
+	&.btn-danger { .btn('danger'); }
+	&.btn-outline { .btn('outline'); }
+	&.btn-transparent { .btn('transparent'); }
 
 	.btn-outline-gradient {
 		border: solid 2px transparent;
 		background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #78e4ff, #ff48fa);
 	}
 
-	&.btn-hover-outline {
-		background: transparent;
-		color: inherit;
-		text-decoration: none;
-		border: 1px solid transparent;
-		&:hover {
-			border: var(--button-border-width) solid var(--button-border-color);
-		}
-	}
-
 	&.btn-sm { font-size: .75em; }
 	&.btn-lg { font-size: 1.25em; }
 
-	&.active, &:active {
-		box-shadow: inset 2px 2px 0px 0 rgba(0, 0, 0, .05);
+	&:active, &.active {
+		box-shadow: var(--button-shadow--active);
+		transform: translateY(1px);
 	}
 
-	&.disabled, &[disabled] {
+	&[disabled] {
 		opacity: .5;
 		cursor: not-allowed;
 	}

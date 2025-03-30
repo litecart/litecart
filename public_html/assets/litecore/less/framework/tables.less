@@ -7,19 +7,23 @@
 	border-collapse: collapse;
 
 	@media print {
-		--table-border-color: #000 !important;
+		--table-border-color: #000c !important;
+		tr th {
+			border-bottom: ~"calc(var(--table-border-width) *2)" solid var(--table-border-color);
+		}
 	}
 
 	thead {
-		background: var(--table-header-background-color);
+		background: var(--table-header-background);
 		color: var(--table-header-text-color);
+		box-shadow: 0 2px 1px rgba(0, 0, 0, .05);
 
 		tr {
-			border-bottom: ~"calc(var(--table-border-width) *2)" solid var(--table-border-color);
+			//border-bottom: ~"calc(var(--table-border-width) *2)" solid var(--table-border-color);
 
 			th {
 				padding: 1em;
-				border-bottom: ~"calc(var(--table-border-width) *2)" solid var(--table-border-color);
+				//border-bottom: ~"calc(var(--table-border-width) *2)" solid var(--table-border-color);
 				vertical-align: bottom;
 				font-weight: 500;
 			}
@@ -31,7 +35,7 @@
 	}
 
 	tbody {
-		background: var(--table-body-background-color);
+		background: var(--table-body-background);
 		color: var(--table-body-text-color);
 	}
 
@@ -91,7 +95,7 @@
 
 				&[data-sort] {
 					&:hover {
-						background: var(--table-header-background-color--hover);
+						background: var(--table-header-background--hover);
 						cursor: pointer;
 					}
 				}
@@ -100,13 +104,14 @@
 			@media only screen {
 				position: sticky;
 				top: 0;
+				z-index: 1;
 			}
 		}
 
 		tbody {
 			> tr {
 				&:hover {
-					background: var(--table-body-background-color--hover);
+					background: var(--table-body-background--hover);
 				}
 			}
 		}
@@ -128,19 +133,26 @@
 			color: inherit;
 
 			&.link {
-				background: var(--table-link-background-color);
-				padding: 0.33em 1em;
+				display: inline-block;
+				background: var(--table-link-background);
+				padding: 0.15em 1em;
+				line-height: 1.5;
 				border-radius: var(--border-radius);
+				box-shadow: var(--table-link-shadow);
+
+				&:active {
+					box-shadow: var(--table-link-shadow--active);
+					transform: translateY(1px);
+				}
 
 				&:hover {
 					text-decoration: none;
-					background: var(--table-link-background-color--hover);
+					background: var(--table-link-background--hover);
 				}
 			}
 		}
 	}
 }
-
 
 .table-responsive {
 	overflow-x: auto;

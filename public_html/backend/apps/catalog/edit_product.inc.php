@@ -236,10 +236,10 @@
 								<?php echo functions::form_select_brand('brand_id', true); ?>
 							</label>
 
-							<label class="form-group">
+							<div class="form-group">
 								<div class="form-label"><?php echo language::translate('title_categories', 'Categories'); ?></div>
 								<?php echo functions::form_select_category('categories[]', true, 'style="max-height: 480px;"'); ?>
-							</label>
+							</div>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_default_category', 'Default Category'); ?></div>

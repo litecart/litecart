@@ -1,5 +1,5 @@
 // Sidebar parallax effect
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	if (_env && _env.template.settings.sidebar_parallax_effect == true) {
 

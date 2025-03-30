@@ -1,5 +1,5 @@
 /* Privacy Consent Manager */
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$.fn.privacyConsent = function(privacyClasses, consents) {
 		var $element = $(this);

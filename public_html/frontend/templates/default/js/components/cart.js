@@ -1,5 +1,5 @@
 // Add to cart
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('.listing.products .product button[name="add_cart_product"]').on('click', function(e) {
 		e.preventDefault();

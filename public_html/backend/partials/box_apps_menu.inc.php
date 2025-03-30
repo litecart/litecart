@@ -3,14 +3,14 @@
 	$box_apps_menu = new ent_view('app://backend/template/partials/box_apps_menu.inc.php');
 
 	$groups = [
+		'ecommerce' => [
+			'id' => 'ecommerce',
+			'name' => language::translate('title_ecommerce', 'Ecommerce'),
+			'apps' => [],
+		],
 		'website' => [
 			'id' => 'website',
 			'name' => language::translate('title_website', 'Website'),
-			'apps' => [],
-		],
-		'sales' => [
-			'id' => 'sales',
-			'name' => language::translate('title_sales', 'Sales'),
 			'apps' => [],
 		],
 		'regional' => [
@@ -26,11 +26,6 @@
 		'other' => [
 			'id' => 'other',
 			'name' => language::translate('title_other', 'Other'),
-			'apps' => [],
-		],
-		'addons' => [
-			'id' => 'addons',
-			'name' => language::translate('title_addons', 'Addons'),
 			'apps' => [],
 		],
 	];

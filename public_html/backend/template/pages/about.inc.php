@@ -11,6 +11,7 @@
 	background: none;
 }
 #box-about {
+	position: relative;
 	overflow: hidden;
 }
 #box-about table + table {
@@ -24,6 +25,36 @@
 }
 #box-about meter {
 	width: 500px;
+}
+#box-about .credits-wrapper {
+	position: absolute;
+	top: 2em;
+	inset-inline-end: 2em;
+	width: 400px;
+	height: 600px;
+	padding: 2em;
+	background: #fff;
+	border: 1px solid var(--default-border-color);
+	border-radius: var(--border-radius);
+	overflow: hidden;
+	transform: translateY(0%);
+}
+#box-about .credits {
+	position: absolute;
+	margin-top: 100%;
+	animation: 30s credits linear infinite;
+	/*animation-delay: 5s;*/
+	animation-play-state: running;
+}
+#box-about .credits:hover {
+	animation-play-state: paused;
+}
+@keyframes credits {
+	from { transform: translateY(0%); }
+  to { transform: translateY(-100%); }
+}
+#box-error-log tr.critical {
+	background: #c002;
 }
 #box-error-log td {
 	white-space: wrap !important;
@@ -198,6 +229,44 @@
 					</tr>
 				</tbody>
 			</table>
+
+			<div class="credits-wrapper">
+				<div class="credits text-center">
+					<h1><?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></h1>
+					<h3>No Nonsense Coding</h3>
+					<p><em>Making as much sense as possible out of as little effort as possible.</em></p>
+					# LiteCart contains work by the following third parties:
+<pre style="white-space: pre-wrap;">
+## Graphics
+
+* (cart) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
+* (wishlist) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
+* (logotype) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
+* (no-image/camera) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
+* (newsletter) T. Almroth - CC BY-SA 4.0 - http://www.tim-international.net/
+
+## Fonts
+
+* Fira Sans - Google Fonts - Free for commercial use - https://www.googlefonts.com/
+* Inter - Google Fonts - Free for commercial use - https://www.googlefonts.com/
+* Reprobate (captcha) - Handwriting of Mike Sedillo - Free for commercial use - https://www.apostrophiclab.com/
+
+## Font Icons
+
+* Fontawesome - MIT License - https://www.fontawesome.io/
+* Material Symbols - Apache License Version 2.0 - https://fonts.google.com/icons
+
+## JavaScripts
+
+* Bootstrap Carousel.js by Twitter - MIT License - https://getbootstrap.com/
+* Bootstrap Collapse.js by Twitter - MIT License - https://getbootstrap.com/
+* Chartist by Gion Kunz - MIT and WTFPL License - https://gionkunz.github.io/chartist-js/
+* jQuery by jQuery Foundation - MIT License - https://www.jquery.com/
+* Trumbowyg by Alex-D - MIT license - https://alex-d.github.io/Trumbowyg/
+</pre>
+
+				</div>
+			</div>
 		</div>
 	</div>
 

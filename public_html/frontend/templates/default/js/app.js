@@ -7,7 +7,7 @@
 
 // Banner Click Tracking
 
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	var mouseOverAd = null;
 
@@ -30,7 +30,7 @@
 })
 
 // Add to cart
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('.listing.products .product button[name="add_cart_product"]').on('click', function(e) {
 		e.preventDefault();
@@ -185,7 +185,7 @@
 });
 
 // Sidebar parallax effect
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	if (_env && _env.template.settings.sidebar_parallax_effect == true) {
 
@@ -205,7 +205,7 @@
 });
 
 /* Privacy Consent Manager */
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$.fn.privacyConsent = function(privacyClasses, consents) {
 		var $element = $(this);
@@ -304,7 +304,7 @@
 });
 
 // AJAX Search
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('.navbar-search :input').on('focus', function() {
 		$(this).closest('.dropdown').addClass('open');
@@ -381,7 +381,7 @@
 });
 
 // Wishlist
-+waitFor('jQuery', ($) => {
+waitFor('jQuery', ($) => {
 
 	$('.listing .product button[name="add_to_wishlist"]').on('click', function(e) {
 		e.preventDefault();

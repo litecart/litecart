@@ -38,7 +38,7 @@
 		$box_account->snippets['menu_items'][] = [
 			'title' => language::translate('title_sign_out', 'Sign Out'),
 			'link' => document::href_ilink('account/sign_out'),
-			'active' => (route::$selected['resource'] == 'f:sign_out'),
+			'active' => (route::$selected['resource'] == 'f:account/sign_out'),
 		];
 
 	} else {
@@ -46,19 +46,19 @@
 		$box_account->snippets['menu_items'][] = [
 			'title' => language::translate('title_sign_in', 'Sign In'),
 			'link' => document::href_ilink('account/sign_in'),
-			'active' => (route::$selected['resource'] == 'f:sign_in'),
+			'active' => (route::$selected['resource'] == 'f:account/sign_in'),
 		];
 
 		$box_account->snippets['menu_items'][] = [
 			'title' => language::translate('title_sign_up', 'Sign Up'),
 			'link' => document::href_ilink('account/sign_up'),
-			'active' => (route::$selected['resource'] == 'f:sign_up'),
+			'active' => (route::$selected['resource'] == 'f:account/sign_up'),
 		];
 
 		$box_account->snippets['menu_items'][] = [
 			'title' => language::translate('title_reset_password', 'Reset Password'),
 			'link' => document::href_ilink('account/reset_password'),
-			'active' => (route::$selected['resource'] == 'f:reset_password'),
+			'active' => (route::$selected['resource'] == 'f:account/reset_password'),
 		];
 	}
 
