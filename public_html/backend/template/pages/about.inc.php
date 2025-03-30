@@ -270,6 +270,25 @@
 		</div>
 	</div>
 
+	<div id="tab-php-ini" class="tab-content">
+		<table class="table data-table">
+			<thead>
+				<tr>
+					<th><?php echo language::translate('title_setting', 'Setting'); ?></th>
+					<th><?php echo language::translate('title_value', 'Value'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($php['ini'] as $key => $value) { ?>
+				<tr>
+					<td><tt><?php echo functions::escape_html($key); ?></tt></td>
+					<td><?php echo functions::escape_html($value); ?></td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
+	</div>
+
 	<div id="tab-errors" class="tab-content">
 		<div id="box-error-log" class="card">
 			<div class="card-header">

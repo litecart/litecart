@@ -170,6 +170,7 @@
 			'loaded_extensions' => (function_exists('get_loaded_extensions') && !in_array('get_loaded_extensions', preg_split('#\s*,\s*#', ini_get('disabled_functions')))) ? get_loaded_extensions() : [],
 			'disabled_functions' => ini_get('disabled_functions') ?  preg_split('#\s*,\s*#', ini_get('disabled_functions')) : [],
 			'memory_limit' => ini_get('memory_limit'),
+			'ini' => ini_get_all(null, false),
 		],
 		'database' => [
 			'name' => database::server_info(),
