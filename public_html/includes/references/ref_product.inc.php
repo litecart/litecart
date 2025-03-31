@@ -62,7 +62,8 @@
 				case 'attributes':
 
 					$this->_data['attributes'] = database::query(
-						"select pa.id, ag.code, pa.group_id, pa.value_id, pa.custom_value, agi.name as group_name, avi.name as value_name, pa.custom_value from ". DB_TABLE_PREFIX ."products_attributes pa
+						"select pa.id, ag.code, pa.group_id, pa.value_id, pa.custom_value, agi.name as group_name, avi.name as value_name, pa.custom_value
+						from ". DB_TABLE_PREFIX ."products_attributes pa
 						left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = pa.group_id)
 						left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input($this->_language_codes[0]) ."')
 						left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input($this->_language_codes[0]) ."')

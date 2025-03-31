@@ -240,7 +240,8 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$orders = database::query(
-		"select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name from ". DB_TABLE_PREFIX ."orders o
+		"select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name
+		from ". DB_TABLE_PREFIX ."orders o
 		left join ". DB_TABLE_PREFIX ."order_statuses os on (os.id = o.order_status_id)
 		left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". database::input(language::$selected['code'])."')
 		where o.id

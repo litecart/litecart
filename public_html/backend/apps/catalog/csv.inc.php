@@ -1345,7 +1345,8 @@
 				case 'stock_items':
 
 					$csv = database::query(
-						"select si.*, sii.name, '". database::input($_POST['language_code']) ."' as language_code from ". DB_TABLE_PREFIX ."stock_items si
+						"select si.*, sii.name, '". database::input($_POST['language_code']) ."' as language_code
+						from ". DB_TABLE_PREFIX ."stock_items si
 						left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.product_id = s.id and si.language_code = '". database::input($_POST['language_code']) ."')
 						order by si.id;"
 					)->export($result)->fetch_all();

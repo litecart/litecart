@@ -34,7 +34,8 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$campaigns = database::query(
-		"select c.*, cp.num_products from ". DB_TABLE_PREFIX ."campaigns c
+		"select c.*, cp.num_products
+		from ". DB_TABLE_PREFIX ."campaigns c
 		left join (
 			select campaign_id, count(*) as num_products
 			from ". DB_TABLE_PREFIX ."campaigns_products

@@ -11,7 +11,8 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$attribute_groups = database::query(
-		"select ag.id, ag.code, agi.name, av.num_values from ". DB_TABLE_PREFIX ."attribute_groups ag
+		"select ag.id, ag.code, agi.name, av.num_values
+		from ". DB_TABLE_PREFIX ."attribute_groups ag
 		left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
 		left join (
 			select group_id, count(id) as num_values

@@ -12,7 +12,8 @@
 		// Total Sales
 
 		$orders = database::query(
-			"select count(id) as num_orders, max(total) as max_order_amount, sum(total - total_tax) as total_sales from ". DB_TABLE_PREFIX ."orders
+			"select count(id) as num_orders, max(total) as max_order_amount, sum(total - total_tax) as total_sales
+			from ". DB_TABLE_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."');"
 		)->fetch();
 

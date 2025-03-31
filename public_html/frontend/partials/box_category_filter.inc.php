@@ -51,7 +51,8 @@
 		)->each(function($attribute) use (&$box_category_filter) {
 
 			$attribute['values'] = database::query(
-				"select distinct cf.value_id as id, if(cf.custom_value != '', cf.custom_value, avi.name) as value from ". DB_TABLE_PREFIX ."products_attributes cf
+				"select distinct cf.value_id as id, if(cf.custom_value != '', cf.custom_value, avi.name) as value
+				from ". DB_TABLE_PREFIX ."products_attributes cf
 				left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = cf.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
 				where product_id in (
 					select product_id from ". DB_TABLE_PREFIX ."products_to_categories

@@ -115,7 +115,8 @@
 			}
 
 			database::query(
-				"select sci.*, p.quantity_min, p.quantity_max, p.quantity_step, qui.name as quantity_unit_name from ". DB_TABLE_PREFIX ."shopping_carts_items sci
+				"select sci.*, p.quantity_min, p.quantity_max, p.quantity_step, qui.name as quantity_unit_name
+				from ". DB_TABLE_PREFIX ."shopping_carts_items sci
 				left join ". DB_TABLE_PREFIX ."products p on (p.id = sci.product_id)
 				left join ". DB_TABLE_PREFIX ."quantity_units_info qui on (qui.id = p.quantity_unit_id and qui.language_code = '". database::input(language::$selected['code']) ."')
 				where sci.cart_id = ". (int)$this->data['id'] ."
