@@ -71,7 +71,7 @@
 	echo $box_checkout_shipping;
 
 	// Don't process layout if this is an ajax request
-	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+	if (is_ajax_request()) {
 		exit;
 	}
 

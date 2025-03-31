@@ -78,9 +78,21 @@
 		return !filter_var($string, FILTER_VALIDATE_BOOLEAN);
 	}
 
-	// Check if request was loaded via AJAX
+	// Attempt to determine if the request was loaded via JavaScript
 	function is_ajax_request() {
-		return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+
+		// Using sec-fetch-mode header
+		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Mode
+		if (isset($_SERVER['HTTP_SEC_FETCH_MODE']) && strtolower($_SERVER['HTTP_SEC_FETCH_MODE']) != 'navigate') {
+			return true;
+		}
+
+		// Using X-Requested-With header
+		if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+			return true;
+		}
+
+		return false;
 	}
 
 	// Return a sane list of uploaded files $name[subnode][subnode][tmp_name] rather than $name[tmp_name][subnode][subnode]

@@ -103,7 +103,7 @@
 				$stock_item->save_file($_FILES['file']['tmp_name'], $_FILES['file']['name'], $_FILES['file']['type']);
 			}
 
-			if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+			if (is_ajax_request()) {
 				header('Content-Type: application/json; charset='. language::$selected['code']);
 				echo json_encode(['status' => 'ok', 'data' => $stock_item->data], JSON_UNESCAPED_SLASHES);
 				exit;
@@ -115,7 +115,7 @@
 
 		} catch (Exception $e) {
 
-			if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+			if (is_ajax_request()) {
 				header('Content-Type: application/json; charset='. language::$selected['code']);
 				echo json_encode(['status' => 'error', 'error' =>  $e->getMessage()], JSON_UNESCAPED_SLASHES);
 				exit;

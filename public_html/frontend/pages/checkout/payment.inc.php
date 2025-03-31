@@ -14,7 +14,7 @@
 	if (settings::get('catalog_only_mode')) {
 		return;
 	}
-	
+
 	if (!empty(session::$data['checkout']['order'])) {
 		$order = &session::$data['checkout']['order'];
 	} else {
@@ -66,6 +66,6 @@
 	echo $box_checkout_payment;
 
 	// Don't process layout if this is an ajax request
-	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+	if (is_ajax_request()) {
 		exit;
 	}

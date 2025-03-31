@@ -110,7 +110,7 @@
 	];
 
 	// Page
-	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+	if (is_ajax_request()) {
 		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/product.ajax.inc.php');
 	} else {
 		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/product.inc.php');
