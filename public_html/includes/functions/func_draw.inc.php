@@ -504,3 +504,9 @@
 
 		return (string)$pagination;
 	}
+
+	// ▮▮▮▯▯▯▯▯▯▯▯▯ 25%
+	function draw_progress_bar($progress, $width=15) {
+		$percentage = floor($progress);
+		return str_pad(str_repeat('▮', floor(($width / 100) * $percentage)), $width, '▯', STR_PAD_RIGHT) . ' '. $percentage .'%';
+	}

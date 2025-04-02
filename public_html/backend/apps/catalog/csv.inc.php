@@ -28,7 +28,13 @@
 				$time_remaining = round($time_elapsed / $progress * 100, 2) - $time_elapsed;
 				$memory_usage = round(memory_get_usage() / 1024 / 1024, 3);
 
-				echo $progress .'% complete' .' - Estimated time remaining: '. $time_remaining .' s - Memory usage: '. $memory_usage .' MB' . PHP_EOL . PHP_EOL;
+				echo implode(PHP_EOL, [
+					functions::draw_progress_bar($progress, 15),
+					'Estimated time remaining: '. $time_remaining .' s',
+					'Memory usage: '. $memory_usage .' MB',
+					'',
+					'',
+				]);
 
 			} else {
 
