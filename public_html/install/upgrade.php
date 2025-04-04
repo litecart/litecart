@@ -425,39 +425,6 @@
 
 			#############################################
 
-			// Iterate through each table (this is to drop foreign keys prohibiting us from many changes)
-			foreach ($database_structure['tables'] as $table_name => $table) {
-
-				if (!in_array($table_name, $existing_tables)) {
-					continue;
-				}
-
-				$sql = '';
-
-				// Drop foreign keys
-				if (!empty($table['foreign_keys'])) {
-					foreach (array_keys($table['foreign_keys']) as $key_name) {
-						if (database::query(
-							"SELECT CONSTRAINT_NAME
-							FROM information_schema.REFERENTIAL_CONSTRAINTS
-							WHERE CONSTRAINT_SCHEMA = '". database::input(DB_DATABASE) ."'
-							AND TABLE_NAME = '". database::input($table_name) ."'
-							AND CONSTRAINT_NAME = '". database::input($key_name) ."';"
-						)->num_rows) {
-							$sql .= 'DROP FOREIGN KEY `'. $key_name .'`,' . PHP_EOL;
-						}
-					}
-				}
-
-				// Execute query
-				database::query(
-					"ALTER TABLE `". $table_name ."`
-					". rtrim($sql, ", \r\n") .";"
-				);
-			}
-
-			#############################################
-
 			// Iterate through each table (this is to ensure specific table properties)
 			foreach ($database_structure['tables'] as $table_name => $table) {
 
@@ -646,31 +613,6 @@
 				database::query($sql);
 
 				echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-			}
-
-			// Iterate through each table (this is to add foreign keys)
-			foreach ($database_structure['tables'] as $table_name => $table) {
-
-				if (!in_array($table_name, $existing_tables)) {
-					continue;
-				}
-
-				$sql = '';
-
-				// Add foreign keys
-				if (!empty($table['foreign_keys'])) {
-					foreach ($table['foreign_keys'] as $key_name => $foreign_key) {
-						$sql .= 'ADD CONSTRAINT `'. $key_name .'` FOREIGN KEY (`'. implode('`, `', $foreign_key['columns']) .'`) REFERENCES `'. $foreign_key['references']['table'] .'` (`'. implode('`, `', $foreign_key['references']['columns']) .'`) ON DELETE '. $foreign_key['references']['on_delete'] .' ON UPDATE '. $foreign_key['references']['on_update'] .',' . PHP_EOL;
-					}
-				}
-
-				// Execute query
-				if ($sql) {
-					database::query(
-						"ALTER TABLE `". $table_name ."`
-						". rtrim($sql, ", \r\n") .";"
-					);
-				}
 			}
 
 			#############################################

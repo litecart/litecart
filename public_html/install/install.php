@@ -511,12 +511,6 @@
 				}
 			}
 
-			if (isset($table['foreign_keys'])) {
-				foreach ($table['foreign_keys'] as $key_name => $key_columns) {
-					$sql .= '  FOREIGN KEY ' . $key_name . ' (`' . implode('`, `', $key_columns['columns']) . '`) REFERENCES `' . $key_columns['table'] . '` (' . implode(', ', $key_columns['references']) . ') ON DELETE ' . $key_columns['on_delete'] . ' ON UPDATE ' . $key_columns['on_update'] . ',' . PHP_EOL;
-				}
-			}
-
 			$sql = rtrim($sql, ', ' . PHP_EOL) . PHP_EOL . ')';
 
 			if (isset($table['engine'])) {
