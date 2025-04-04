@@ -32,6 +32,12 @@ INSERT INTO `lc_brands` (`id`, `status`, `featured`, `code`, `name`, `keywords`,
 INSERT INTO `lc_brands_info` (`id`, `brand_id`, `language_code`, `short_description`, `description`, `h1_title`, `head_title`, `meta_description`, `link`) VALUES
 (1, 1, 'en', '', '', '', '', '', '');
 -- -----
+INSERT INTO `lc_campaigns` (`id`, `status`, `name`, `date_updated`, `date_created`) VALUES
+(1, 1, 'Super Sale', NOW(), NOW());
+-- -----
+INSERT INTO `lc_campaigns_products` (`id`, `product_id`, `price`) VALUES
+(1, 1, '{"USD": 18.00}');
+-- -----
 INSERT INTO `lc_categories` (`id`, `parent_id`, `status`, `code`, `keywords`, `image`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 0, 1, '', '', '', 0, NOW(), NOW()),
 (2, 1, 1, '', '', '', 0, NOW(), NOW());
@@ -50,8 +56,8 @@ INSERT INTO `lc_modules` (`module_id`, `type`, `status`, `priority`, `settings`,
 ('sm_zone_weight', 'shipping', 0, 0, '{"status":"1","icon":"","weight_unit":"kg","geo_zone_id_1":"","weight_rate_table_1":"","geo_zone_id_2":"","weight_rate_table_2":"","geo_zone_id_3":"","weight_rate_table_3":"","weight_rate_table_x":"5:8.95;10:15.95","method":">=","handling_fee":"0.00","tax_class_id":"1","priority":"0"}', '', NOW(), NOW()),
 ('pm_cod', 'payment', 0, 0, '{"status":"1","icon":"","fee":"5.00","tax_class_id":"1","order_status_id":"2","geo_zone_id":"","priority":"0"}', '', NOW(), NOW());
 -- -----
-INSERT INTO `lc_orders` (`id`, `order_status_id`, `customer_id`, `billing_company`, `billing_firstname`, `billing_lastname`, `billing_email`, `billing_phone`, `billing_tax_id`, `billing_address1`, `billing_address2`, `billing_city`, `billing_postcode`, `billing_country_code`, `billing_zone_code`, `shipping_company`, `shipping_firstname`, `shipping_lastname`, `shipping_address1`, `shipping_address2`, `shipping_city`, `shipping_postcode`, `shipping_country_code`, `shipping_zone_code`, `shipping_phone`, `shipping_option_id`, `shipping_option_name`, `shipping_tracking_id`, `payment_option_id`, `payment_option_name`, `payment_transaction_id`, `language_code`, `weight_total`, `weight_unit`, `currency_code`, `currency_value`, `subtotal`, `subtotal_tax`, `total`, `total_tax`, `client_ip`, `date_updated`, `date_created`) VALUES
-(1, 2, 1, 'ACME Corp.', 'John', 'Doe', 'user@email.com', '1-555-123-4567', '', 'Longway Street 1', '', 'Newtown', '12345', 'US', 'CA', 'ACME Corp.', 'John', 'Doe', 'Longway Street 1', '', 'Newtown', '12345', 'US', 'CA', '', 'sm_vendor:parcel', 'Domestic Parcel', '1112223334', 'pm_vendor:card', 'Card Payment', '123456789', 'en', '1.00', 'kg', 'USD', 1, 8, 0, 7.2, 0, '0.0.0.0', NOW(), NOW());
+INSERT INTO `lc_orders` (`id`, `order_status_id`, `customer_id`, `billing_company`, `billing_firstname`, `billing_lastname`, `billing_email`, `billing_phone`, `billing_tax_id`, `billing_address1`, `billing_address2`, `billing_city`, `billing_postcode`, `billing_country_code`, `billing_zone_code`, `shipping_company`, `shipping_firstname`, `shipping_lastname`, `shipping_address1`, `shipping_address2`, `shipping_city`, `shipping_postcode`, `shipping_country_code`, `shipping_zone_code`, `shipping_phone`, `shipping_option_id`, `shipping_option_name`, `shipping_tracking_id`, `payment_option_id`, `payment_option_name`, `payment_transaction_id`, `language_code`, `weight_total`, `weight_unit`, `currency_code`, `currency_value`, `subtotal`, `subtotal_tax`, `total`, `total_tax`, `date_updated`, `date_created`) VALUES
+(1, 2, 1, 'ACME Corp.', 'John', 'Doe', 'user@email.com', '1-555-123-4567', '', 'Longway Street 1', '', 'Newtown', '12345', 'US', 'CA', 'ACME Corp.', 'John', 'Doe', 'Longway Street 1', '', 'Newtown', '12345', 'US', 'CA', '', 'sm_vendor:parcel', 'Domestic Parcel', '1112223334', 'pm_vendor:card', 'Card Payment', '123456789', 'en', '1.00', 'kg', 'USD', 1, 8, 0, 7.2, 0, NOW(), NOW());
 -- -----
 INSERT INTO `lc_orders_comments` (`id`, `order_id`, `author`, `text`, `hidden`, `date_created`) VALUES
 (1, 1, 'customer', 'This is a message from the customer.', 0, NOW()),
@@ -59,8 +65,8 @@ INSERT INTO `lc_orders_comments` (`id`, `order_id`, `author`, `text`, `hidden`, 
 (3, 1, 'staff', 'This is a hidden message by the store crew.', 1, NOW()),
 (4, 1, 'system', 'Order status changed to Dispatched', 1, NOW());
 -- -----
-INSERT INTO `lc_orders_items` (`id`, `order_id`, `product_id`, `stock_option_id`, `options`, `name`, `sku`, `quantity`, `price`, `tax`, `weight`, `weight_unit`) VALUES
-(1, 1, 1, '1-1', '1', 'Yellow Duck', 'RD001-S', '1.00', '8', '0', '1.00', 'kg');
+INSERT INTO `lc_orders_items` (`id`, `order_id`, `product_id`, `stock_option_id`, `userdata`, `name`, `sku`, `gtin`, `quantity`, `price`, `tax`, `weight`, `weight_unit`) VALUES
+(1, 1, 1, 1, '', 'Yellow Duck', 'RD001-S', '4006381333931', 1, 8.00, 0, 1.00, 'kg');
 -- -----
 INSERT INTO `lc_pages` (`id`, `status`, `dock`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 1, 'information', 0, NOW(), NOW()),
@@ -99,9 +105,6 @@ INSERT INTO `lc_products_to_categories` (`product_id`, `category_id`) VALUES
 (4, 1),
 (5, 1);
 -- -----
-INSERT INTO `lc_products_campaigns` (`id`, `product_id`, `start_date`, `end_date`, `USD`) VALUES
-(1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 18.00);
--- -----
 INSERT INTO `lc_products_images` (`id`, `product_id`, `filename`, `priority`) VALUES
 (1, 1, 'products/1-yellow-duck-1.webp', 1),
 (2, 2, 'products/2-green-duck-1.webp', 1),
@@ -116,22 +119,27 @@ INSERT INTO `lc_products_info` (`id`, `product_id`, `language_code`, `name`, `sh
 (4, 4, 'en', 'Blue Duck', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue.', '<p>\r\n	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue. Cras scelerisque dui non consequat sollicitudin. Sed pretium tortor ac auctor molestie. Nulla facilisi. Maecenas pulvinar nibh vitae lectus vehicula semper. Donec et aliquet velit. Curabitur non ullamcorper mauris. In hac habitasse platea dictumst. Phasellus ut pretium justo, sit amet bibendum urna. Maecenas sit amet arcu pulvinar, facilisis quam at, viverra nisi. Morbi sit amet adipiscing ante. Integer imperdiet volutpat ante, sed venenatis urna volutpat a. Proin justo massa, convallis vitae consectetur sit amet, facilisis id libero. \r\n</p>', '', '', 'Colors\r\nBody: Blue\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic'),
 (5, 5, 'en', 'Purple Duck', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue.', '<p>\r\n	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue. Cras scelerisque dui non consequat sollicitudin. Sed pretium tortor ac auctor molestie. Nulla facilisi. Maecenas pulvinar nibh vitae lectus vehicula semper. Donec et aliquet velit. Curabitur non ullamcorper mauris. In hac habitasse platea dictumst. Phasellus ut pretium justo, sit amet bibendum urna. Maecenas sit amet arcu pulvinar, facilisis quam at, viverra nisi. Morbi sit amet adipiscing ante. Integer imperdiet volutpat ante, sed venenatis urna volutpat a. Proin justo massa, convallis vitae consectetur sit amet, facilisis id libero. \r\n</p>', '', '', 'Colors\r\nBody: Purple\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic');
 -- -----
-INSERT INTO `lc_products_stock_options` (`id`, `product_id`, `sku`, `mpn`, `gtin`, `taric`, `image`,  `quantity`, `quantity_unit_id`, `weight`, `weight_unit`, `length`, `width`, `height`, `length_unit`, `purchase_price`, `purchase_price_currency_code`, `date_updated`, `date_created`) VALUES
-(1, 1, 'RD001-S', '', '', '', 'products/1-yellow-duck-1.webp', 0.00, '1', 0.00, 'kg', 0.00, 0.00, 0.00, 'cm', 0.00, 0.00, NOW(), NOW()),
-(2, 1, 'RD001-M', '', '', '', 'products/1-yellow-duck-1.webp', 0.00, '1', 0.00, 'kg', 0.00, 0.00, 0.00, 'cm', 0.00, 0.00, NOW(), NOW()),
-(3 1,, 'RD001-L', '', '', '', 'products/1-yellow-duck-1.webp', 0.00, '1', 0.00, 'kg', 0.00, 0.00, 0.00, 'cm', 0.00, 0.00, NOW(), NOW());
+INSERT INTO `lc_products_stock_options` (`id`, `product_id`, `stock_item_id`, `price_operator`, `price_adjustment`) VALUES
+(1, 1, 1, '+', 0.00),
+(2, 1, 2, '+', 0.00),
+(3, 1, 3, '+', 0.00);
 -- -----
-INSERT INTO `lc_lc_products_stock_options_info` (`id`, `stock_option_id`, `name`, `language_code`) VALUES
-(1, 1, 'Yellow Duck (Small)', 'en'),
-(2, 1, 'Yellow Duck (Medium)', 'en'),
-(3, 1, 'Yellow Duck (Large)', 'en');
+INSERT INTO `lc_products_prices` (`id`, `product_id`, `price`) VALUES
+(1, 1, '{"USD": 20.00}'),
+(2, 2, '{"USD": 20.00}'),
+(3, 3, '{"USD": 20.00}'),
+(4, 4, '{"USD": 20.00}'),
+(5, 5, '{"USD": 20.00}');
 -- -----
-INSERT INTO `lc_products_prices` (`id`, `product_id`, `USD`) VALUES
-(1, 1, 20.00),
-(2, 2, 20.00),
-(3, 3, 20.00),
-(4, 4, 20.00),
-(5, 5, 20.00);
+INSERT INTO `lc_stock_items` (`id`, `brand_id`, `sku`, `gtin`, `image`, `weight`, `weight_unit`, `length`, `width`, `height`, `length_unit`, `quantity`, `backordered`, `priority`, `date_updated`, `date_created`) VALUES
+(1, 1, 'RD001-S', '4006381333931', 'stock_items/1-yellow-duck-1.webp', 1.0000, 'kg', 10.0000, 10.0000, 10.0000, 'cm', 50.0000, 0.0000, 1, NOW(), NOW()),
+(2, 1, 'RD001-M', '4006381333932', 'stock_items/2-yellow-duck-1.webp', 1.0000, 'kg', 12.0000, 12.0000, 12.0000, 'cm', 50.0000, 0.0000, 2, NOW(), NOW()),
+(3, 1, 'RD001-L', '4006381333933', 'stock_items/3-yellow-duck-1.webp', 1.0000, 'kg', 15.0000, 15.0000, 15.0000, 'cm', 0.0000, 50.0000, 3, NOW(), NOW());
+-- -----
+INSERT INTO `lc_stock_items_info` (`id`, `stock_item_id`, `language_code`, `name`) VALUES
+(1, 1, 'en', 'Yellow Duck (Small)'),
+(2, 2, 'en', 'Yellow Duck (Medium)'),
+(3, 3, 'en', 'Yellow Duck (Large)');
 -- -----
 UPDATE `lc_settings` SET `value` = 2 WHERE `key` = 'cookie_policy';
 -- -----

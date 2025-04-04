@@ -39,17 +39,12 @@
 			exit;
 		}
 
-		$options = [
+		$_REQUEST = getopt('', [
 			'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
 			'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type:: cleanup::',
-		];
+		]);
 
-		$_REQUEST = getopt('', $options);
 		$_REQUEST['install'] = true;
-
-		if (isset($_REQUEST['cleanup'])) {
-			$_REQUEST['cleanup'] = true;
-		}
 	}
 
 	if (empty($_REQUEST['install'])) {
@@ -575,7 +570,7 @@
 		$htaccess = file_get_contents('htaccess');
 
 		$htaccess = strtr($htaccess, [
-			'{WS_DIR_APP}' => preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP),
+			'{WS_DIR_APP}' => WS_DIR_APP,
 			'{FS_DIR_APP}' => FS_DIR_APP,
 		]);
 
