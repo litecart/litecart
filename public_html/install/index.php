@@ -232,7 +232,7 @@
 		'TO' => 'Tonga',
 		'TT' => 'Trinidad and Tobago',
 		'TN' => 'Tunisia',
-		'TR' => 'Turkey',
+		'TR' => 'Türkiye',
 		'TM' => 'Turkmenistan',
 		'TC' => 'Turks and Caicos Islands',
 		'TV' => 'Tuvalu',
@@ -468,6 +468,7 @@ input[name="development_type"]:checked + div {
 				<div class="form-label">Username</div>
 				<input class="form-input" type="text" name="db_username" required>
 			</label>
+		</div>
 
 		<div class="col-md-6">
 			<label class="form-group">
@@ -605,7 +606,9 @@ input[name="development_type"]:checked + div {
 	</div>
 
 	<div class="form-group text-center">
-		<label><input id="accept_terms" name="accept_terms" value="1" type="checkbox" required> I agree to the terms and conditions.</label>
+		<label class="form-check">
+			<input id="accept_terms" name="accept_terms" value="1" type="checkbox" required> I agree to the terms and conditions.
+		</label>
 	</div>
 
 	<input class="btn btn-success btn-block" type="submit" name="install" value="Install Now" onclick="if (document.getElementById('accept_terms').value != 1) return false; if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;">

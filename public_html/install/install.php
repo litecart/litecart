@@ -41,7 +41,7 @@
 
 		$options = [
 			'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
-			'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type:: cleanup',
+			'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type:: cleanup::',
 		];
 
 		$_REQUEST = getopt('', $options);
@@ -50,7 +50,6 @@
 		if (isset($_REQUEST['cleanup'])) {
 			$_REQUEST['cleanup'] = true;
 		}
-
 	}
 
 	if (empty($_REQUEST['install'])) {
@@ -66,15 +65,8 @@
 		return $buffer;
 	});
 
-	define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..')), '/'));
-	define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../')), '/') . '/');
-	define('FS_DIR_STORAGE', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../storage')), '/') . '/');
-
-	define('WS_DIR_APP', preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP));
-
 	define('VMOD_DISABLED', 'true');
 
-	require FS_DIR_APP . 'includes/app_header.inc.php';
 	require __DIR__ . '/includes/header.inc.php';
 	require __DIR__ . '/includes/functions.inc.php';
 
@@ -99,22 +91,19 @@
 			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
 		}
 
-		define('FS_DIR_APP', str_replace('\\', '/', realpath(__DIR__ .'/../')) .'/');
-		define('FS_DIR_STORAGE', FS_DIR_APP);
+		define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../')), '/') . '/');
+		define('FS_DIR_STORAGE', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../storage')), '/') . '/');
 
 		define('WS_DIR_APP',         preg_replace('#^'. preg_quote(rtrim(DOCUMENT_ROOT, '/'), '#') .'#', '', FS_DIR_APP));
-		define('WS_DIR_STORAGE',     WS_DIR_APP);
+		define('WS_DIR_STORAGE',     WS_DIR_APP .'storage/');
 
-		if (preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
-			define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
-		} else {
+		require __DIR__ . '/../includes/app_header.inc.php';
+
+		if (!defined('PLATFORM_NAME')) {
 			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform name</p>' . PHP_EOL  . PHP_EOL);
 		}
 
-		// Set platform version
-		if (preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
-			define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
-		} else {
+		if (!defined('PLATFORM_VERSION')) {
 			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform version</p>' . PHP_EOL  . PHP_EOL);
 		}
 
@@ -354,7 +343,7 @@
 				echo 'Setting '. strtok($_REQUEST['db_collation'], '_') . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
 			} else {
-				echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="warning">[Warning]</span> The database default charset is not \''. strtok($_REQUEST['db_collation'], '_') .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL/MariaDB query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET '. strtok($_REQUEST['db_collation'], '_') .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
+				echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="warning">[Warning]</span> The database default charset is not \''. strtok($_REQUEST['db_collation'], '_') .'\' and you might experience problems with mixed character sets in the future. Try performing the following MySQL/MariaDB query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET '. strtok($_REQUEST['db_collation'], '_') .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
 			}
 
 		} else {
@@ -375,7 +364,7 @@
 				echo 'Setting '. $_REQUEST['db_collation'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
 			} else {
-				echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="warning">[Warning]</span> The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET '. strtok($_REQUEST['db_collation'], '_') .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
+				echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="warning">[Warning]</span> The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience future trouble with mixed collations. Try performing the following MySQL query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET '. strtok($_REQUEST['db_collation'], '_') .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
 			}
 
 		} else {
@@ -501,13 +490,13 @@
 
 			if (isset($table['unique_keys'])) {
 				foreach ($table['unique_keys'] as $key_name => $key_columns) {
-					$sql .= '  UNIQUE KEY ' . $key_name . ' (`' . implode('`, `', $key_columns) . '`),' . PHP_EOL;
+					$sql .= '  UNIQUE KEY `' . database::input($key_name) . '` (`' . implode('`, `', $key_columns) . '`),' . PHP_EOL;
 				}
 			}
 
 			if (isset($table['keys'])) {
 				foreach ($table['keys'] as $key_name => $key_columns) {
-					$sql .= '  KEY ' . $key_name . ' (`' . implode('`, `', $key_columns) . '`),' . PHP_EOL;
+					$sql .= '  KEY `' . database::input($key_name) . '` (`' . implode('`, `', $key_columns) . '`),' . PHP_EOL;
 				}
 			}
 
@@ -552,14 +541,12 @@
 
 		$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, file_get_contents('data.sql'));
 
-		$map = [
+		foreach ([
 			'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
 			'{STORE_EMAIL}' => isset($_REQUEST['store_email']) ? $_REQUEST['store_email'] : '',
 			'{STORE_TIME_ZONE}' => isset($_REQUEST['store_time_zone']) ? $_REQUEST['store_time_zone'] : '',
 			'{STORE_COUNTRY_CODE}' => isset($_REQUEST['country_code']) ? $_REQUEST['country_code'] : '',
-		];
-
-		foreach ($map as $search => $replace) {
+		] as $search => $replace) {
 			$sql = str_replace($search, database::input($replace), $sql);
 		}
 
@@ -824,7 +811,7 @@
 
 		### Cleanup ##########################################
 
-		if (!empty($_REQUEST['cleanup'])) {
+		if (!empty($_REQUEST['cleanup']) && stripos(PHP_OS, 'WIN') === false) {
 
 			echo '<p>Cleanup... ';
 
@@ -849,7 +836,7 @@
 				'<form method="get" action="http://x.com/intent/tweet" target="_blank">',
 				'  <input type="hidden" value="https://www.litecart.net/">',
 				'  <label class="form-group">',
-				'    <div class="form-label">',
+				'    <div class="input-group">',
 				'      <input type="text" class="form-input" name="text" value="Woohoo! I just installed #LiteCart and I am super excited! :)">',
 				'      <button class="btn btn-primary" type="submit">Tweet!</button>',
 				'    </div>',
