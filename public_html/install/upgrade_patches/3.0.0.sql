@@ -460,7 +460,7 @@ CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `product_id` `product_id` INT(10) UNSIGNED NOT NULL;
 -- -----
 ALTER TABLE `lc_products_customizations_values`
-ADD COLUMN `price_adjust` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0' AFTER `price_operator`;
+ADD COLUMN `price_adjustment` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0' AFTER `price_modifier`;
 -- -----
 ALTER TABLE `lc_products_images`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,

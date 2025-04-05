@@ -652,7 +652,7 @@
 									<thead>
 										<tr>
 											<th class="main"><?php echo language::translate('title_option', 'Option'); ?></th>
-											<th style="width: 150px;"><?php echo language::translate('title_price_operator', 'Price Operator'); ?></th>
+											<th style="width: 150px;"><?php echo language::translate('title_price_modifier', 'Price Modifier'); ?></th>
 											<th colspan="<?php echo count($currency_codes); ?>"><?php echo language::translate('title_price_adjustment', 'Price Adjustment'); ?></th>
 											<th style="width: 85px;">&nbsp;</th>
 										</tr>
@@ -662,7 +662,7 @@
 									<?php foreach ($customization['values'] as $value_id => $value) { ?>
 										<tr draggable="true" data-value-id="<?php echo functions::escape_html($value['value_id']); ?>" data-value-name="<?php echo functions::escape_html($_POST['customizations'][$group_id]['values'][$value_id]['name']); ?>">
 											<td class="grabbable"><?php echo functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
-											<td class="text-center"><?php echo functions::form_select('customizations['.$group_id.'][values]['. $value_id .'][price_operator]', ['+','%','*','='], true); ?></td>
+											<td class="text-center"><?php echo functions::form_select('customizations['.$group_id.'][values]['. $value_id .'][price_modifier]', ['+','%','*','='], true); ?></td>
 											<?php foreach ($currency_codes as $currency_code) echo '<td>'. functions::form_select_currency($currency_code, 'customizations['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['customizations'][$group_id]['values'][$value_id][$currency_code]) || $_POST['customizations'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
 											<td class="text-end">
 												<button name="move-up" type="button" class="btn btn-default btn-sm" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>">

@@ -301,7 +301,7 @@
 
 								if ($matched_value = array_intersect($selected_values, $possible_values)) {
 									$matched_values[] = $matched_value;
-									$item['extras'] += $value['price_adjust'];
+									$item['extras'] += $value['price_adjustment'];
 								}
 							}
 
@@ -329,7 +329,7 @@
 
 								if ($matched_value = array_intersect([$customizations[$matched_group]], $possible_values)) {
 									$matched_value = array_shift($matched_value);
-									$item['extras'] += $value['price_adjust'];
+									$item['extras'] += $value['price_adjustment'];
 									break;
 								}
 							}

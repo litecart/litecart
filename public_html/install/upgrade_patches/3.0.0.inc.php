@@ -829,13 +829,13 @@
 		"select * from ". DB_TABLE_PREFIX ."products_prices;"
 	)->each(function($product_price) use ($currencies) {
 
-		$price_adjust = array_filter($product_price, function ($key) {
+		$price_adjustment = array_filter($product_price, function ($key) {
 			return (preg_match('#^[A-Z]{3}$#', $key));
 		}, ARRAY_FILTER_USE_KEY);
 
 		database::query(
 			"update ". DB_TABLE_PREFIX ."products_customizations_values
-			set price_adjust = '". database::input(json_encode(array_filter($price_adjust))) ."'
+			set price_adjustment = '". database::input(json_encode(array_filter($price_adjustment))) ."'
 			where id = ". (int)$product_price['id'] ."
 			limit 1;"
 		);

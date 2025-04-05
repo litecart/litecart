@@ -224,22 +224,22 @@
 
 				foreach ($group['values'] as $value) {
 
-					$price_adjust_text = '';
-					$price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-					$tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+					$price_adjustment_text = '';
+					$price_adjustment = currency::format_raw(tax::get_price($value['price_adjustment'], $product->tax_class_id));
+					$tax_adjust = currency::format_raw(tax::get_tax($value['price_adjustment'], $product->tax_class_id));
 
-					if ($value['price_adjust']) {
+					if ($value['price_adjustment']) {
 
-						if ($value['price_adjust'] > 0) {
-							$price_adjust_text = ' +';
-						} else if ($value['price_adjust'] < 0) {
-							$price_adjust_text = ' -';
+						if ($value['price_adjustment'] > 0) {
+							$price_adjustment_text = ' +';
+						} else if ($value['price_adjustment'] < 0) {
+							$price_adjustment_text = ' -';
 						}
 
-						$price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
+						$price_adjustment_text .= currency::format(tax::get_price(abs($value['price_adjustment']), $product->tax_class_id));
 					}
 
-					$values .= functions::form_checkbox('customizations['.$group['name'].'][]', [$value['name'], $value['name'] . $price_adjust_text], true, 'data-group-id="'. (int)$group['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required' : ''));
+					$values .= functions::form_checkbox('customizations['.$group['name'].'][]', [$value['name'], $value['name'] . $price_adjustment_text], true, 'data-group-id="'. (int)$group['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjustment .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required' : ''));
 				}
 
 				break;
@@ -248,24 +248,24 @@
 
 				foreach ($group['values'] as $value) {
 
-					$price_adjust_text = '';
-					$price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-					$tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+					$price_adjustment_text = '';
+					$price_adjustment = currency::format_raw(tax::get_price($value['price_adjustment'], $product->tax_class_id));
+					$tax_adjust = currency::format_raw(tax::get_tax($value['price_adjustment'], $product->tax_class_id));
 
-					if ($value['price_adjust']) {
+					if ($value['price_adjustment']) {
 
-						if ($value['price_adjust'] > 0) {
-							$price_adjust_text = ' +';
-						} else if ($value['price_adjust'] < 0) {
-							$price_adjust_text = ' -';
+						if ($value['price_adjustment'] > 0) {
+							$price_adjustment_text = ' +';
+						} else if ($value['price_adjustment'] < 0) {
+							$price_adjustment_text = ' -';
 						}
 
-						$price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
+						$price_adjustment_text .= currency::format(tax::get_price(abs($value['price_adjustment']), $product->tax_class_id));
 					}
 
 					$values .= implode(PHP_EOL, [
 						'<div class="radio">',
-						'  <label>'. functions::form_radio_button('customizations['.$group['name'].']', $value['name'], true, 'data-group-id="'. (int)$group['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>',
+						'  <label>'. functions::form_radio_button('customizations['.$group['name'].']', $value['name'], true, 'data-group-id="'. (int)$group['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjustment .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required' : '')) .' '. $value['name'] . $price_adjustment_text . '</label>',
 						'</div>',
 					]);
 				}
@@ -277,22 +277,22 @@
 				$customizations = [['-- '. language::translate('title_select', 'Select') .' --', '']];
 				foreach ($group['values'] as $value) {
 
-					$price_adjust_text = '';
-					$price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-					$tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+					$price_adjustment_text = '';
+					$price_adjustment = currency::format_raw(tax::get_price($value['price_adjustment'], $product->tax_class_id));
+					$tax_adjust = currency::format_raw(tax::get_tax($value['price_adjustment'], $product->tax_class_id));
 
-					if ($value['price_adjust']) {
+					if ($value['price_adjustment']) {
 
-						if ($value['price_adjust'] > 0) {
-							$price_adjust_text = ' +';
-						} else if ($value['price_adjust'] < 0) {
-							$price_adjust_text = ' -';
+						if ($value['price_adjustment'] > 0) {
+							$price_adjustment_text = ' +';
+						} else if ($value['price_adjustment'] < 0) {
+							$price_adjustment_text = ' -';
 						}
 
-						$price_adjust_text .= currency::format(tax::get_price(abs($value['price_adjust']), $product->tax_class_id));
+						$price_adjustment_text .= currency::format(tax::get_price(abs($value['price_adjustment']), $product->tax_class_id));
 					}
 
-					$customizations[] = [$value['name'] . $price_adjust_text, $value['name'], 'data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"'];
+					$customizations[] = [$value['name'] . $price_adjustment_text, $value['name'], 'data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjustment .'" data-tax-adjust="'. (float)$tax_adjust .'"'];
 				}
 
 				$values .= functions::form_select('customizations['.$group['name'].']', $customizations, true, 'data-group-id="'. (int)$group['group_id'] .'"'. (!empty($group['required']) ? ' required' : ''));

@@ -298,33 +298,33 @@
 
 							// Price Adjust
 							$price_adjustment = 0;
-							$value['price_adjust'] = json_decode($value['price_adjust'], true);
+							$value['price_adjustment'] = json_decode($value['price_adjustment'], true);
 
 							foreach ($this->_currency_codes as $currency_code) {
 
-								if (!isset($value['price_adjust'][$currency_code]) || $value['price_adjust'][$currency_code] == 0) {
+								if (!isset($value['price_adjustment'][$currency_code]) || $value['price_adjustment'][$currency_code] == 0) {
 									continue;
 								}
 
-								switch ($value['price_operator']) {
+								switch ($value['price_modifier']) {
 									case '+':
-										$price_adjustment = currency::convert($value['price_adjust'][$currency_code], $currency_code, settings::get('store_currency_code'));
+										$price_adjustment = currency::convert($value['price_adjustment'][$currency_code], $currency_code, settings::get('store_currency_code'));
 										break;
 
 									case '%':
-										$price_adjustment = $this->price * currency::convert($value['price_adjust'][$currency_code], $currency_code, settings::get('store_currency_code')) / 100;
+										$price_adjustment = $this->price * currency::convert($value['price_adjustment'][$currency_code], $currency_code, settings::get('store_currency_code')) / 100;
 										break;
 
 									case '*':
-										$price_adjustment = $this->price * currency::convert($value['price_adjust'][$currency_code], $currency_code, settings::get('store_currency_code'));
+										$price_adjustment = $this->price * currency::convert($value['price_adjustment'][$currency_code], $currency_code, settings::get('store_currency_code'));
 										break;
 
 									case '=':
-										$price_adjustment = currency::convert($value['price_adjust'][$currency_code], $currency_code, settings::get('store_currency_code')) - $this->price;
+										$price_adjustment = currency::convert($value['price_adjustment'][$currency_code], $currency_code, settings::get('store_currency_code')) - $this->price;
 										break;
 
 									default:
-										trigger_error('Unknown price operator for customization', E_USER_WARNING);
+										trigger_error('Unknown price modifier for customization', E_USER_WARNING);
 										break 2;
 								}
 

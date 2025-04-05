@@ -948,7 +948,7 @@
 						foreach ([
 							'product_id',
 							'stock_item_id',
-							'price_operator',
+							'price_modifier',
 							'priority',
 						] as $field) {
 							if (isset($row[$field])) {
@@ -958,7 +958,7 @@
 							}
 						}
 
-						$stock_option['price_adjust'] = json_decode($stock_option['price_adjust'], true);
+						$stock_option['price_adjustment'] = json_decode($stock_option['price_adjustment'], true);
 
 						$product->data['stock_options'][$key] = $stock_option;
 						$product->save();

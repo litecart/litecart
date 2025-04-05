@@ -522,7 +522,7 @@
 									group_id = ". (int)$option['group_id'] .",
 									value_id = ". (int)$value['value_id'] .",
 									custom_value = '". database::input($value['custom_value']) ."',
-									price_operator = '". database::input($value['price_operator']) ."',
+									price_modifier = '". database::input($value['price_modifier']) ."',
 									$sql_currencies
 									priority = ". ++$j ."
 								where product_id = ". (int)$this->data['id'] ."
@@ -564,7 +564,7 @@
 					database::query(
 						"update ". DB_TABLE_PREFIX ."products_stock_options
 						set stock_item_id = ". (int)$stock_option['stock_item_id'] .",
-							price_operator = '". database::input($stock_option['price_operator']) ."',
+							price_modifier = '". database::input($stock_option['price_modifier']) ."',
 							price_adjustment = '". database::input(json_encode($stock_option['price_adjustment'])) ."',
 							priority = ". (int)$i++ ."
 						where id = ". (int)$stock_option['id'] ."
