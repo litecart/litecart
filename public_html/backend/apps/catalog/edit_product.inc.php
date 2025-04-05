@@ -330,6 +330,7 @@
 								<div class="new-images"></div>
 
 								<label class="form-group">
+									<?php echo functions::form_input_file('new_images[]', 'multiple', 'accept="image/*"'); ?>
 									<a href="#" class="add btn btn-default btn-sm"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_image', 'Add Image'); ?></a>
 								</label>
 							</div>
@@ -406,7 +407,7 @@
 
 				<div id="tab-prices" class="tab-content">
 
-					<div class="grid" style="max-width: 640px;">
+					<div class="grid" style="max-width: 720px;">
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_recommended_price', 'Recommended Price'); ?> / MSRP</div>
@@ -549,12 +550,11 @@
 
 				<div id="tab-attributes" class="tab-content" style="max-width: 960px;">
 
-					<table class="table data-table">
+					<table id="attributes" class="table data-table">
 						<thead>
 							<tr>
 								<th style="width: 320px;"><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></th>
-								<th style="width: 320px;"><?php echo language::translate('title_value', 'Value'); ?></th>
-								<th><?php echo language::translate('title_custom_value', 'Custom Value'); ?></th>
+								<th style="width: 320px;"><?php echo language::translate('title_attribute_value', 'Attribute Value'); ?></th>
 								<th style="width: 60px;"></th>
 							</tr>
 						</thead>
@@ -569,8 +569,10 @@
 								<?php echo functions::form_input_hidden('attributes['.$key.'][value_name]', true); ?>
 								<?php echo functions::form_input_hidden('attributes['.$key.'][custom_value]', true); ?>
 								<td class="grabbable"><?php echo $_POST['attributes'][$key]['group_name']; ?></td>
-								<td class="grabbable"><?php echo $_POST['attributes'][$key]['value_name']; ?></td>
-								<td class="grabbable"><?php echo $_POST['attributes'][$key]['custom_value']; ?></td>
+								<td class="grabbable">
+									<?php echo $_POST['attributes'][$key]['value_name']; ?>
+									<?php echo $_POST['attributes'][$key]['custom_value']; ?>
+								</td>
 								<td class="text-end">
 									<button name="remove" type="button" class="btn btn-default btn-sm" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
 										<?php echo functions::draw_fonticon('remove'); ?>
@@ -582,18 +584,11 @@
 
 						<tfoot>
 							<tr>
-								<td><label class="form-group">
-	<div class="form-label"><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></div>
-	<?php echo functions::form_select_attribute_group('new_attribute[group_id]', ''); ?>
-</label></td>
-								<td><label class="form-group">
-	<div class="form-label"><?php echo language::translate('title_value', 'Value'); ?></div>
-	<?php echo functions::form_select('new_attribute[value_id]', [], ''); ?>
-</label></td>
-								<td><label class="form-group">
-	<div class="form-label"><?php echo language::translate('title_custom_value', 'Custom Value'); ?></div>
-	<?php echo functions::form_input_text('new_attribute[custom_value]', ''); ?>
-</label></td>
+								<td><?php echo functions::form_select_attribute_group('new_attribute[group_id]', ''); ?></td>
+								<td>
+									<?php echo functions::form_select('new_attribute[value_id]', [], ''); ?>
+									<?php echo functions::form_input_text('new_attribute[custom_value]', '', 'disabled hidden'); ?>
+								</td>
 								<td><?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
 							</tr>
 						</tfoot>
@@ -699,20 +694,27 @@
 						<fieldset style="max-width: 960px;">
 							<legend><?php echo language::translate('title_add_predefined_option', 'Add Predefined Option'); ?></legend>
 							<div class="grid" style="margin-bottom: 0;">
-									<div class="col-md-3"><label class="form-group">
-	<div class="form-label"><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></div>
-	<?php echo functions::form_select_attribute_group('new_predefined_customization[group_id]', ''); ?>
-</label></div>
 
-									<div class="col-md-3"><label class="form-group">
-	<div class="form-label"><?php echo language::translate('title_value', 'Value'); ?></div>
-	<?php echo functions::form_select('new_predefined_customization[value_id]', [['','']], '', 'disabled'); ?>
-</label></div>
+								<div class="col-md-3">
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></div>
+										<?php echo functions::form_select_attribute_group('new_predefined_customization[group_id]', ''); ?>
+									</label>
+								</div>
 
-									<div class="col-md-3"><label class="form-group">
-	<div class="form-label"><?php echo language::translate('title_custom_value', 'Custom Value'); ?></div>
-	<?php echo functions::form_input_text('new_predefined_customization[custom_value]', ''); ?>
-</label></div>
+								<div class="col-md-3"
+								><label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_value', 'Value'); ?></div>
+										<?php echo functions::form_select('new_predefined_customization[value_id]', [['','']], '', 'disabled'); ?>
+									</label>
+								</div>
+
+								<div class="col-md-3">
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_custom_value', 'Custom Value'); ?></div>
+										<?php echo functions::form_input_text('new_predefined_customization[custom_value]', ''); ?>
+									</label>
+								</div>
 
 								<div class="col-md-3" style="align-self: end;">
 									<?php echo functions::form_button('add_predefined_customization', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
@@ -725,10 +727,13 @@
 						<fieldset>
 							<legend><?php echo language::translate('title_add_user_input_option', 'Add User Input Option'); ?></legend>
 							<div class="grid" style="margin-bottom: 0;">
-								<div class="col-md-8"><label class="form-group">
-	<div class="form-label"><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></div>
-	<?php echo functions::form_select_attribute_group('new_user_input_customization[group_id]', ''); ?>
-</label></div>
+								<div class="col-md-8">
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></div>
+										<?php echo functions::form_select_attribute_group('new_user_input_customization[group_id]', ''); ?>
+									</label>
+								</div>
+
 								<div class="col-md-4" style="align-self: end;">
 									<?php echo functions::form_button('add_user_input_customization', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
 								</div>
@@ -739,7 +744,7 @@
 
 				<div id="tab-stock" class="tab-content">
 
-					<div class="grid" style="max-width: 640px;">
+					<div class="grid" style="max-width: 720px;">
 						<div class="col-md-3">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_min_order_qty', 'Min. Order Qty'); ?></div>
@@ -769,7 +774,7 @@
 						</div>
 					</div>
 
-					<div class="grid" style="max-width: 640px;">
+					<div class="grid" style="max-width: 720px;">
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></div>
@@ -787,15 +792,22 @@
 
 					<h3><?php echo language::translate('title_stock_options', 'Stock Options'); ?></h3>
 
+					<div class="grid">
+						<div class="col-md-3">
+							<div class="form-group">
+								<div class="form-label"><?php echo language::translate('title_type', 'Type'); ?></div>
+								<?php echo functions::form_toggle('stock_options_type', ['variation' => language::translate('title_variation', 'Variation'), 'bundle' => language::translate('title_bundle', 'Bundle')], true); ?>
+							</div>
+						</div>
+					</div>
+
 					<div style="margin: 0 -2em;">
 						<table id="stock-options" class="table data-table">
 							<thead>
 								<tr>
 									<th><?php echo language::translate('title_item', 'Item'); ?></th>
 									<th style="width: 150px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
-									<th style="width: 100px;" class="text-end"><?php echo language::translate('title_weight', 'Weight'); ?></th>
-									<th style="width: 150px;" class="text-end"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
-									<th style="width: 125px;" class="text-center"><?php echo language::translate('title_pperator', 'Operator'); ?></th>
+									<th style="width: 125px;" class="text-center"><?php echo language::translate('title_modifier', 'Modifier'); ?></th>
 									<th style="width: 125px;" class="text-center"><?php echo language::translate('title_price', 'Price'); ?></th>
 									<th style="width: 125px;" class="text-center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
 									<th style="width: 175px;" class="text-center"><?php echo language::translate('title_adjust', 'Adjust'); ?></th>
@@ -823,13 +835,7 @@
 								<td class="grabbable">
 									<span class="sku"><?php echo $_POST['stock_options'][$key]['sku']; ?></span>
 								</td>
-								<td class="grabbable text-end">
-									<span class="weight"><?php echo (float)$_POST['stock_options'][$key]['weight']; ?></span> <span class="weight_unit"><?php echo $_POST['stock_options'][$key]['weight_unit']; ?></span>
-								</td>
-								<td class="grabbable text-end">
-									<span class="length"><?php echo (float)$_POST['stock_options'][$key]['length']; ?></span> x <span class="width"><?php echo (float)$_POST['stock_options'][$key]['width']; ?></span> x <span class="height"><?php echo (float)$_POST['stock_options'][$key]['height']; ?></span> <span class="length_unit"><?php echo $_POST['stock_options'][$key]['length_unit']; ?></span>
-								</td>
-								<td><?php echo functions::form_select('stock_options['.$key.'][price_operator]', ['+', '*', '%', '='], '+'); ?></td>
+								<td><?php echo functions::form_select('stock_options['.$key.'][price_modifier]', ['+', '*', '%', '='], '+'); ?></td>
 								<td>
 									<div class="dropdown">
 										<?php echo functions::form_input_money('stock_options['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>

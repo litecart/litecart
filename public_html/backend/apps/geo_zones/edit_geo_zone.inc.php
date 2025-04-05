@@ -71,7 +71,7 @@
 	<?php echo functions::form_begin('form_geo_zone', 'post'); ?>
 		<div class="card-body">
 
-			<div class="grid" style="max-width: 640px;">
+			<div class="grid" style="max-width: 720px;">
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_code', 'Code'); ?></div>

@@ -43,8 +43,8 @@ waitFor('jQuery', ($) => {
 	};
 
 	// Keep-alive
-	if (_env && _env.platform && _env.platform.path) {
-		let keepAlive = setInterval(function() {
+	if (typeof _env !== 'undefined' && _env?.platform?.path) {
+		setInterval(function() {
 			$.get({
 				url: _env.platform.path + 'ajax/cart.json',
 				cache: false

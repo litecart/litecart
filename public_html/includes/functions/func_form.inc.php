@@ -1327,8 +1327,8 @@
 			'  </div>',
 			'  <div class="dropdown">',
 			'  '. form_input_search('', '', 'autocomplete="off" placeholder="'. functions::escape_attr(language::translate('text_search_categories', 'Search categories')) .'&hellip;"'),
-			'    <ul class="dropdown-menu" style="padding: 1em; inset-inline-end: 0; max-height: 480px; overflow-y: auto;">',
-			'    </ul>',
+			'    <div class="dropdown-content" style="padding: 1em; inset-inline-end: 0; max-height: 480px; overflow-y: auto;">',
+			'    </div>',
 			'  </div>',
 			'</div>',
 		]);

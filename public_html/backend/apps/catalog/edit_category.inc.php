@@ -222,7 +222,7 @@
 					</div>
 				</div>
 
-				<div id="tab-information" class="tab-contents" style="max-width: 640px;">
+				<div id="tab-information" class="tab-contents" style="max-width: 720px;">
 
 					<?php if (count($language_codes) > 1) { ?>
 					<nav class="tabs">
@@ -285,7 +285,7 @@
 					</div>
 				</div>
 
-				<div id="tab-filters" class="tab-content" style="max-width: 640px;">
+				<div id="tab-filters" class="tab-content" style="max-width: 720px;">
 
 					<table class="data-table">
 						<thead>

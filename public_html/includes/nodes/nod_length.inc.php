@@ -89,7 +89,11 @@
 		public static function format($value, $unit) {
 
 			if (!isset(self::$units[$unit])) {
-				trigger_error('Invalid length unit ('. $unit .')', E_USER_WARNING);
+
+				if ($value > 0) {
+					trigger_error('Invalid length unit ('. $unit .')', E_USER_WARNING);
+				}
+
 				return language::number_format((float)$value, 2);
 			}
 

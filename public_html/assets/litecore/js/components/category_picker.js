@@ -19,7 +19,7 @@ waitFor('jQuery', ($) => {
 				},
 
 				'input': function(e) {
-						let dropdownMenu = $(self).find('.dropdown-menu');
+						let dropdownMenu = $(self).find('.dropdown-content');
 
 						$(dropdownMenu).html('');
 
@@ -29,16 +29,17 @@ waitFor('jQuery', ($) => {
 
 							$.getJSON(self.config.link, function(result) {
 
-								$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>');
+								$(dropdownMenu).html(
+									'<h3 style="margin-top: 0;">'+ result.name +'</h3>'
+								);
 
 								$.each(result.subcategories, function(i, category) {
-									$(dropdownMenu).append(
-										'<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
-										'  ' + self.config.icons.folder +
-										'  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
-										'  <div><button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button></div>' +
-										'</li>'
-									);
+									$(dropdownMenu).append([
+										'<div class="flex" style="align-items: center;" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'">',
+										'	' + self.config.icons.folder + '<a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>',
+										'	<button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>',
+										'</div>',
+									].join('\n'));
 								});
 							});
 
@@ -64,19 +65,22 @@ waitFor('jQuery', ($) => {
 							success: function(result) {
 
 								if (!result.subcategories.length) {
-									$(dropdownMenu).html('<li class="dropdown-item text-center no-results"><em>:(</em></li>');
+									$(dropdownMenu).html(
+										'<div class="text-center no-results"><em>:(</em></div>'
+									);
 									return;
 								}
 
-								$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ self.config.translations.search_results +'</h3></li>');
+								$(dropdownMenu).html(
+									'<h3 style="margin-top: 0;">'+ self.config.translations.search_results +'</h3>'
+								);
 
 								$.each(result.subcategories, function(i, category) {
 									$(dropdownMenu).append(
-										'<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
-										'  ' + self.config.icons.folder +
-										'  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
-										'  <div><button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button></div>' +
-										'</li>'
+										'<div class="flex" style="align-items: center;" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'">',
+										'	' + self.config.icons.folder + '<a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>',
+										'	<button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>',
+										'</div>',
 									);
 								});
 							},
@@ -84,37 +88,37 @@ waitFor('jQuery', ($) => {
 					}
 			});
 
-			$(this).on('click', '.dropdown-menu .dropdown-item a', function(e) {
+			$(this).on('click', '.dropdown-content a', function(e) {
 				e.preventDefault();
 
-				let dropdownMenu = $(this).closest('.dropdown-menu');
+				let dropdownMenu = $(this).closest('.dropdown-content');
 
 				$.getJSON($(this).data('link'), function(result) {
 
-					$(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>');
+					$(dropdownMenu).html(
+						'<h3 style="margin-top: 0;">'+ result.name +'</h3></li>'
+					);
 
 					if (result.id) {
-						$(dropdownMenu).append(
-							'<li class="dropdown-item" data-id="'+ result.parent.id +'" data-name="'+ result.parent.name +'" style="display: flex; align-items: center;">' +
-							'  ' + self.config.icons.back +
-							'  <a href="#" data-link="'+ self.config.link +'?parent_id='+ result.parent.id +'" style="flex-grow: 1;">'+ result.parent.name +'</a>' +
-							'</li>'
-						);
+						$(dropdownMenu).append([
+							'<div class="flex" style="align-items: center;" data-id="'+ result.parent.id +'" data-name="'+ result.parent.name +'">',
+							'	' + self.config.icons.back + '<a href="#" data-link="'+ self.config.link +'?parent_id='+ result.parent.id +'" style="flex-grow: 1;">'+ result.parent.name +'</a>',
+							'</div>',
+						].join('\n'));
 					}
 
 					$.each(result.subcategories, function(i, category) {
-						$(dropdownMenu).append(
-							'<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
-							'  ' + self.config.icons.folder +
-							'  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
-							'  <div><button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button></div>' +
-							'</li>'
-						);
+						$(dropdownMenu).append([
+							'<div class="flex" style="align-items: center;" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'">',
+							'	' + self.config.icons.folder +' <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>',
+							'	<button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>',
+							'</div>',
+						].join('\n'));
 					});
 				});
 			});
 
-			$(this).on('click', '.dropdown-menu .dropdown-item button.add', function(e) {
+			$(this).on('click', '.dropdown-content button.add', function(e) {
 				e.preventDefault();
 
 				let category = $(this).closest('li'),
@@ -129,13 +133,13 @@ waitFor('jQuery', ($) => {
 
 				if (abort) return;
 
-				$(self).find('.categories').append(
-					'<li class="dropdown-item" style="display: flex; align-items: center;">' +
-					'  <input type="hidden" name="'+ self.config.inputName +'" value="'+ $(category).data('id') +'" data-name="'+ $(category).data('name').replace(/"/, '&quote;') +'">' +
-					'  <div style="flex-grow: 1;">' + self.config.icons.folder +' '+ $(category).data('name') +'</div>' +
-					'  <div><button class="remove btn btn-default btn-sm" type="button">'+ self.config.translations.remove +'</button></div>' +
-					'</li>'
-				);
+				$(self).find('.categories').append([
+					'<div class="flex" style="align-items: center;">',
+					'	<input type="hidden" name="' + self.config.inputName +'" value="'+ $(category).data('id') +'" data-name="'+ $(category).data('name').replace(/"/, '&quote;') +'">',
+					'	<div style="flex-grow: 1;">' + self.config.icons.folder +' '+ $(category).data('name') +'</div>',
+					'	<button class="remove btn btn-default btn-sm" type="button">'+ self.config.translations.remove +'</button>',
+					'</div>',
+				].join('\n'));
 
 				$(self).trigger('change');
 

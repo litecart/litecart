@@ -35,12 +35,8 @@
 		];
 
 	} catch (Exception $e) {
-
-		http_response_code($e->getCode() ?: 400);
-
-		$result = [
-			'error' => $e->getMessage(),
-		];
+		http_response_code($e->getCode() ?: 500);
+		$result = ['error' => $e->getMessage()];
 	}
 
 	ob_clean();

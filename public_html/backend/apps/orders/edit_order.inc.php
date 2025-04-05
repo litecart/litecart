@@ -15,22 +15,22 @@
 
 		// Convert to local currency
 		foreach (array_keys($_POST['items']) as $key) {
-			$_POST['items'][$key]['price'] = $_POST['items'][$key]['price'] / $_POST['currency_value'];
-			$_POST['items'][$key]['tax'] = $_POST['items'][$key]['tax'] / $_POST['currency_value'];
-			$_POST['items'][$key]['discount'] = $_POST['items'][$key]['discount'] / $_POST['currency_value'];
-			$_POST['items'][$key]['discount_tax'] = $_POST['items'][$key]['discount_tax'] / $_POST['currency_value'];
-			$_POST['items'][$key]['sum'] = $_POST['items'][$key]['sum'] / $_POST['currency_value'];
-			$_POST['items'][$key]['sum_tax'] = $_POST['items'][$key]['sum_tax'] / $_POST['currency_value'];
+			$_POST['items'][$key]['price'] = $_POST['items'][$key]['price'] ? $_POST['items'][$key]['price'] / $_POST['currency_value'] : 0;
+			$_POST['items'][$key]['tax'] = $_POST['items'][$key]['tax'] ? $_POST['items'][$key]['tax'] / $_POST['currency_value'] : 0;
+			$_POST['items'][$key]['discount'] = $_POST['items'][$key]['discount'] ? $_POST['items'][$key]['discount'] / $_POST['currency_value'] : 0;
+			$_POST['items'][$key]['discount_tax'] = $_POST['items'][$key]['discount_tax'] ? $_POST['items'][$key]['discount_tax'] / $_POST['currency_value'] : 0;
+			$_POST['items'][$key]['sum'] = $_POST['items'][$key]['sum'] ? $_POST['items'][$key]['sum'] / $_POST['currency_value'] : 0;
+			$_POST['items'][$key]['sum_tax'] = $_POST['items'][$key]['sum_tax'] ? $_POST['items'][$key]['sum_tax'] / $_POST['currency_value'] : 0;
 		}
 
-		$_POST['subtotal'] = $_POST['subtotal'] / $_POST['currency_value'];
-		$_POST['subtotal_tax'] = $_POST['subtotal_tax'] / $_POST['currency_value'];
+		$_POST['subtotal'] = $_POST['subtotal'] ? $_POST['subtotal'] / $_POST['currency_value'] : 0;
+		$_POST['subtotal_tax'] = $_POST['subtotal_tax'] ? $_POST['subtotal_tax'] / $_POST['currency_value'] : 0;
 
-		$_POST['discount'] = $_POST['discount'] / $_POST['currency_value'];
-		$_POST['discount_tax'] = $_POST['discount_tax'] / $_POST['currency_value'];
+		$_POST['discount'] = $_POST['discount'] ? $_POST['discount'] / $_POST['currency_value'] : 0;
+		$_POST['discount_tax'] = $_POST['discount_tax'] ? $_POST['discount_tax'] / $_POST['currency_value'] : 0;
 
-		$_POST['total'] = $_POST['total'] / $_POST['currency_value'];
-		$_POST['total_tax'] = $_POST['total_tax'] / $_POST['currency_value'];
+		$_POST['total'] = $_POST['total'] ? $_POST['total'] / $_POST['currency_value'] : 0;
+		$_POST['total_tax'] = $_POST['total_tax'] ? $_POST['total_tax'] / $_POST['currency_value'] : 0;
 
 		if (empty($order->data['id'])) {
 			$_POST['customer']['country_code'] = settings::get('default_country_code');
@@ -517,11 +517,13 @@
 								<label><?php echo language::translate('title_ip_address', 'IP Address'); ?> (<?php echo language::translate('title_hostname', 'Hostname'); ?>)</label>
 								<div id="hostname" class="input-group">
 									<div class="form-input" style="overflow: hidden; text-overflow: ellipsis;">
-									<?php echo $order->data['ip_address']; ?> <?php echo !empty($order->data['hostname']) ? '('. $order->data['hostname'] .')' : ''; ?>
+										<?php echo $order->data['ip_address']; ?> <?php echo !empty($order->data['hostname']) ? '('. $order->data['hostname'] .')' : ''; ?>
+										<?php if (!empty($order->data['ip_address'])) { ?>
+										<a class="btn btn-default btn-sm" href="https://ip-api.com/#<?php echo $order->data['ip_address']; ?>" target="_blank" style="margin: -.5em 0; margin-inline-start: 1em;">
+											<?php echo functions::draw_fonticon('icon-square-out', ''); ?>
+										</a>
+										<?php } ?>
 									</div>
-									<?php if (!empty($order->data['ip_address'])) { ?>
-									<a class="btn btn-default btn-sm" href="https://ip-api.com/#<?php echo $order->data['ip_address']; ?>" target="_blank" style="margin: -.33em 0;"><?php echo functions::draw_fonticon('icon-square-out'); ?></a>
-									<?php } ?>
 								</div>
 							</div>
 						</div>
@@ -791,14 +793,14 @@
 							</div>
 
 							<div class="grid">
-								<div class="col-md-8">
+								<div class="col-md-7">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_transaction_id', 'Transaction ID'); ?></div>
 										<?php echo functions::form_input_text('payment_transaction_id', true); ?>
 									</label>
 								</div>
 
-								<div class="col-md-4">
+								<div class="col-md-5">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_transaction_fee', 'Transaction Fee'); ?></div>
 										<?php echo functions::form_input_money('payment_transaction_fee', settings::get('store_currency_code'), true); ?>
@@ -864,14 +866,14 @@
 							</div>
 
 							<div class="grid">
-								<div class="col-md-8">
+								<div class="col-md-7">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_tracking_url', 'Tracking URL'); ?></div>
 										<?php echo functions::form_input_url('shipping_tracking_url', true); ?>
 									</label>
 								</div>
 
-								<div class="col-md-4">
+								<div class="col-md-5">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_total_weight', 'Total Weight'); ?></div>
 										<div class="form-input"><?php echo weight::format($order->data['weight_total'], $order->data['weight_unit']) ?></div>
@@ -1201,7 +1203,7 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_tax_rate', 'Tax Rate'); ?></div>
 							<div class="input-group">
-								<?php echo functions::form_input_decimal('items['.$key.'][tax_rate]', true, 2, 'readonly'); ?>
+								<?php echo functions::form_input_decimal('tax_rate', true, 2, 'readonly'); ?>
 								<span class="input-group-text">%</span>
 							</div>
 						</label>

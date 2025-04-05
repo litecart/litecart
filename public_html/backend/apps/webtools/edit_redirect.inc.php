@@ -115,7 +115,7 @@
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_begin('redirect_form', 'post', false, false, 'autocomplete="off" style="max-width: 640px;"'); ?>
+    <?php echo functions::form_begin('redirect_form', 'post', false, false, 'autocomplete="off" style="max-width: 720px;"'); ?>
 
       <div class="grid">
         <div class="col-md-6">
@@ -128,7 +128,7 @@
 
       <div class="form-group">
         <?php echo functions::form_radio_button('immediate', ['1', language::translate('title_firstly', 'Firstly')], true); ?>
-        <div><?php echo language::translate('text_process_rule_firstly', 'Process the rule before processing the request'); ?></div>
+        <div><?php echo language::translate('text_process_rule_firstly', 'Process the rule before processing any logical resource'); ?></div>
       </div>
 
       <div class="form-group">

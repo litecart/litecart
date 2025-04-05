@@ -4,6 +4,8 @@
 		public $data;
 		public $previous;
 
+		public $shipping;
+		public $payment;
 
 		public function __construct($id=null) {
 
@@ -150,6 +152,9 @@
 
 			$this->data['shipping_option']['userdata'] = @json_decode($this->data['shipping_option']['userdata'], true);
 			$this->data['payment_option']['userdata'] = @json_decode($this->data['payment_option']['userdata'], true);
+
+			$this->shipping = new mod_shipping($this, $this->data['shipping_option']);
+			$this->payment = new mod_payment($this, $this->data['payment_option']);
 
 			$this->previous = $this->data;
 		}

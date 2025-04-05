@@ -35,9 +35,11 @@
 	padding: 2em;
 	background: #fff;
 	border: 1px solid var(--default-border-color);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 	border-radius: var(--border-radius);
 	overflow: hidden;
 	transform: translateY(0%);
+	z-index: 999;
 }
 #box-about .credits {
 	position: absolute;
@@ -64,6 +66,7 @@
 
 <nav class="tabs">
 	<a class="tab-item active" data-toggle="tab" href="#tab-system"><?php echo language::translate('title_system', 'System'); ?></a>
+	<a class="tab-item" data-toggle="tab" href="#tab-php-ini"><?php echo language::translate('title_php_ini', 'PHP.ini'); ?></a>
 	<a class="tab-item" data-toggle="tab" href="#tab-errors"><?php echo language::translate('title_error_log', 'Error Log'); ?></a>
 </nav>
 
@@ -231,62 +234,44 @@
 			</table>
 
 			<div class="credits-wrapper">
-				<div class="credits text-center">
+				<div class="credits">
 					<h1><?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></h1>
-					<h3>No Nonsense Coding</h3>
-					<p><em>Making as much sense as possible out of as little effort as possible.</em></p>
-					# LiteCart contains work by the following third parties:
-<pre style="white-space: pre-wrap;">
-## Graphics
-
-* (cart) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
-* (wishlist) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
-* (logotype) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
-* (no-image/camera) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
-* (newsletter) T. Almroth - CC BY-SA 4.0 - http://www.tim-international.net/
-
-## Fonts
-
-* Fira Sans - Google Fonts - Free for commercial use - https://www.googlefonts.com/
-* Inter - Google Fonts - Free for commercial use - https://www.googlefonts.com/
-* Reprobate (captcha) - Handwriting of Mike Sedillo - Free for commercial use - https://www.apostrophiclab.com/
-
-## Font Icons
-
-* Fontawesome - MIT License - https://www.fontawesome.io/
-* Material Symbols - Apache License Version 2.0 - https://fonts.google.com/icons
-
-## JavaScripts
-
-* Bootstrap Carousel.js by Twitter - MIT License - https://getbootstrap.com/
-* Bootstrap Collapse.js by Twitter - MIT License - https://getbootstrap.com/
-* Chartist by Gion Kunz - MIT and WTFPL License - https://gionkunz.github.io/chartist-js/
-* jQuery by jQuery Foundation - MIT License - https://www.jquery.com/
-* Trumbowyg by Alex-D - MIT license - https://alex-d.github.io/Trumbowyg/
-</pre>
-
+					<pre style="white-space: pre-wrap;"><?php echo functions::escape_html($credits); ?></pre>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<div id="tab-php-ini" class="tab-content">
-		<table class="table data-table">
-			<thead>
-				<tr>
-					<th><?php echo language::translate('title_setting', 'Setting'); ?></th>
-					<th><?php echo language::translate('title_value', 'Value'); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ($php['ini'] as $key => $value) { ?>
-				<tr>
-					<td><tt><?php echo functions::escape_html($key); ?></tt></td>
-					<td><?php echo functions::escape_html($value); ?></td>
-				</tr>
-				<?php } ?>
-			</tbody>
-		</table>
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">
+					<?php echo language::translate('title_php_configuration', 'PHP Configuration'); ?>
+				</div>
+				<div>&nbsp;</div>
+			</div>
+
+			<div class="card-action">
+				<?php echo functions::form_input_search('filter', true, 'placeholder="'. language::translate('title_filter', 'Filter') .'"'); ?>
+			</div>
+
+			<table id="php-config" class="table data-table">
+				<thead>
+					<tr>
+						<th><?php echo language::translate('title_setting', 'Setting'); ?></th>
+						<th><?php echo language::translate('title_value', 'Value'); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($php['ini'] as $key => $value) { ?>
+					<tr>
+						<td><tt><?php echo functions::escape_html($key); ?></tt></td>
+						<td><?php echo functions::escape_html($value); ?></td>
+					</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		</div>
 	</div>
 
 	<div id="tab-errors" class="tab-content">
@@ -351,6 +336,19 @@
 	}, 3000);
 	<?php } ?>
 
+	// Filter
+	$('input[name="filter"]').on('input', function() {
+		var filter = $(this).val().toLowerCase();
+		$('#php-config tbody tr').each(function() {
+			if ($(this).text().toLowerCase().indexOf(filter) !== -1) {
+				$(this).show();
+			} else {
+				$(this).hide();
+			}
+		});
+	});
+
+	// Checkbox toggle
 	$('.data-table :checkbox').on('change', function() {
 		$('#actions').prop('disabled', !$('.data-table :checked').length);
 	}).first().trigger('change');

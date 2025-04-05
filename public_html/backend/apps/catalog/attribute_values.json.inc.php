@@ -16,7 +16,7 @@
 			throw new Exception('Invalid group_id');
 		}
 
-		$json = database::query(
+		$result = database::query(
 			"select av.id, avi.name
 			from ". DB_TABLE_PREFIX ."attribute_values av
 			left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id and avi.language_code = '". database::input(language::$selected['code']) ."')
@@ -26,10 +26,10 @@
 
 	} catch(Exception $e) {
 		http_response_code(400);
-		$json = ['error' => $e->getMessage()];
+		$result = ['error' => $e->getMessage()];
 	}
 
 	ob_clean();
 	header('Content-type: application/json; charset='. mb_http_output());
-	echo json_encode($json, JSON_UNESCAPED_SLASHES);
+	echo json_encode($result, JSON_UNESCAPED_SLASHES);
 	exit;

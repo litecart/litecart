@@ -1,5 +1,7 @@
 <?php
 
+	// Banner Click Tracking
+
 	try {
 
 		if (empty($_POST['banner_id'])) {
@@ -15,6 +17,6 @@
 		);
 
 	} catch (Exception $e) {
-		http_response_code(500);
+		http_response_code($e->getCode() ?: 500);
 		die('Error: '. $e->getMessage());
 	}

@@ -71,7 +71,7 @@
 
 ?>
 
-<div id="modal-add-order-item" class="modal fade" style="max-width: 640px;">
+<div id="modal-add-order-item" class="modal fade" style="max-width: 720px;">
 
 	<h2><?php echo language::translate('title_add_product', 'Add Product'); ?></h2>
 

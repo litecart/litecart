@@ -477,6 +477,9 @@ template {
   display: flex;
   gap: var(--gutter-y) var(--gutter-x);
 }
+.card .card-filter .expandable {
+  flex: 1;
+}
 .card .card-action {
   position: absolute;
   top: 2em;
@@ -2046,7 +2049,6 @@ label.form-check > input:is([type="radio"]):checked {
   display: inline-block;
   border-radius: var(--border-radius);
   padding: 0.25em 1em;
-  margin: calc(-.5em - var(--input-border-width)) 0;
   text-align: center;
   border: var(--input-border-width) solid transparent;
 }

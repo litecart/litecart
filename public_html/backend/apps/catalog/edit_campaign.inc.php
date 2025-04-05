@@ -83,7 +83,7 @@
 	<?php echo functions::form_begin('campaigns_form', 'post'); ?>
 
 		<div class="card-body">
-			<div style="max-width: 640px;">
+			<div style="max-width: 720px;">
 
 				<div class="grid">
 					<div class="col-md-6">

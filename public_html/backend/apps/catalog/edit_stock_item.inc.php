@@ -155,15 +155,30 @@
 		<?php echo functions::form_begin('stock_item_form', 'post', false, true); ?>
 
 			<div class="grid">
-				<div class="<?php echo (is_ajax_request()) ? 'col-xl-12' : 'col-xl-6'; ?>">
-
-					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
-						<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
-					</label>
+				<div class="<?php echo (is_ajax_request()) ? 'col-xl-12' : 'col-xl-7'; ?>">
 
 					<div class="grid">
+						<div class="col-md-4">
+							<div class="form-group">
+								<div class="form-label"><?php echo language::translate('title_image', 'Image'); ?></div>
+
+								<?php echo functions::draw_thumbnail('storage://images/' . ($stock_item->data['image'] ?: 'no_image.svg'), 360, 0, 'product'); ?>
+
+								<?php if ($stock_item->data['image']) { ?>
+								<small class="float-end"><?php echo functions::form_checkbox('delete_image', ['1', language::translate('text_delete', 'Delete')], true); ?></small>
+								<?php } ?>
+
+								<?php echo functions::form_input_file('image', 'accept="image/*"'); ?>
+							</div>
+						</div>
+
 						<div class="col-md-8">
+
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+								<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
+							</label>
+
 							<label class="form-group references">
 								<div class="form-label"><?php echo language::translate('title_references', 'References'); ?></div>
 								<div class="input-group">
@@ -206,26 +221,12 @@
 								</div>
 							</div>
 						</div>
-
-						<div class="col-md-4">
-							<div class="form-group">
-								<div class="form-label"><?php echo language::translate('title_image', 'Image'); ?></div>
-
-								<?php echo functions::draw_thumbnail('storage://images/' . ($stock_item->data['image'] ?: 'no_image.svg'), 360, 0, 'product'); ?>
-
-								<?php if ($stock_item->data['image']) { ?>
-								<small class="float-end"><?php echo functions::form_checkbox('delete_image', ['1', language::translate('text_delete', 'Delete')], true); ?></small>
-								<?php } ?>
-
-								<?php echo functions::form_input_file('image', 'accept="image/*"'); ?>
-							</div>
-						</div>
 					</div>
 
 					<div class="grid">
 						<div class="col-md-2">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_reserved_quantity', 'Reserved Quantity'); ?></div>
+								<div class="form-label"><?php echo language::translate('title_reserved', 'Reserved'); ?></div>
 								<div class="form-input text-end" readonly>
 									<?php echo !empty($stock_item->data['id']) ? (float)$stock_item->data['quantity_reserved'] : 'n/a'; ?>
 								</div>
@@ -253,13 +254,13 @@
 						</div>
 
 						<div class="col-md-3">
-							<label class="form-group">
+							<div class="form-group">
 								<div class="form-label"><?php echo language::translate('title_backordered', 'Backordered'); ?></div>
 								<div class="input-group">
 									<?php echo functions::form_button('transfer', functions::draw_fonticon('icon-arrow-left'), 'button'); ?>
 									<?php echo functions::form_input_decimal('backordered', true, 2, 'min="0"'); ?>
 								</div>
-							</label>
+							</div>
 						</div>
 					</div>
 
@@ -309,7 +310,7 @@
 					</div>
 				</div>
 
-				<div class="<?php echo (is_ajax_request()) ? 'col-xl-12' : 'col-xl-6'; ?>">
+				<div class="<?php echo (is_ajax_request()) ? 'col-xl-12' : 'col-xl-5'; ?>">
 					<h2><?php echo language::translate('title_references', 'References'); ?></h2>
 
 					<div class="table-responsive">
@@ -368,7 +369,7 @@
 		'form[name="stock_item_form"] input[name="quantity"]',
 		'form[name="stock_item_form"] input[name="quantity_adjustment"]',
 		'form[name="stock_item_form"] input[name="backordered"]'
-	]).on('blur', function() {
+	].join(', ')).on('blur', function() {
 		$(this).val(Number($(this).val()).toFixed($('select[name="quantity_unit_id"] option:selected').data('decimals')));
 	});
 

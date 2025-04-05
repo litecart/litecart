@@ -189,10 +189,10 @@
 				return datetime_format('time', $timestamp);
 			}
 
-			// If later this week
-			//if ($timestamp > (new \DateTime())->modify('last ' . strtolower(date('l', strtotime('this week'))))->setTime(0, 0)) {
-			//	return datetime_format('%A time', $timestamp);
-			//}
+			// If tomorrow
+			if ($timestamp > (new \DateTime())->modify('+1 day')->setTime(0, 0)) {
+				return language::translate('text_tomorrow', 'Tomorrow') . ' ' . datetime_format('time', $timestamp);
+			}
 
 			return datetime_format('datetime', $timestamp);
 		}
@@ -212,10 +212,6 @@
 		if ($timestamp > (new \DateTime())->modify('-1 day')->setTime(0, 0)) {
 			return language::translate('text_yesterday', 'Yesterday') . ' ' . datetime_format('time', $timestamp);
 		}
-
-		//if ($timestamp > (new \DateTime())->modify('last ' . strtolower(date('l', strtotime('this week'))))->setTime(0, 0)) {
-		//	return datetime_format('%A time', $timestamp);
-		//}
 
 		return datetime_format('datetime', $timestamp);
 	}
