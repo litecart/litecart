@@ -122,6 +122,48 @@
 							change `text_". database::input($this->previous['code']) ."` `text_". database::input($this->data['code']) ."` text not null;"
 						);
 
+						foreach ([
+							DB_TABLE_PREFIX . "attribute_groups",
+							DB_TABLE_PREFIX . "attribute_values",
+							DB_TABLE_PREFIX . "brands",
+							DB_TABLE_PREFIX . "categories",
+							DB_TABLE_PREFIX . "delivery_statuses",
+							DB_TABLE_PREFIX . "order_statuses",
+							DB_TABLE_PREFIX . "pages",
+							DB_TABLE_PREFIX . "products",
+							DB_TABLE_PREFIX . "quantity_units",
+							DB_TABLE_PREFIX . "sold_out_statuses",
+						] as $table) {
+
+							$columns = database::query(
+								"show fields from $table;"
+							)->each(function($column) use ($table) {
+
+								if (in_array(strtoupper($column['Type']), ['TEXT', 'MEDIUMTEXT'])) {
+
+									database::query(
+										"select id, `{$column['Field']}`
+										from `$table`
+										where `{$column['Field']}` like '%\"". database::input($this->previous['code']) ."\"%';"
+									)->each(function($row) use ($table, $column) {
+
+										$data = json_decode($row[$column['Field']], true);
+
+										if (json_last_error() === JSON_ERROR_NONE && isset($data[$this->previous['code']])) {
+											$data[$this->data['code']] = $data[$this->previous['code']];
+											unset($data[$this->previous['code']]);
+
+											database::query(
+												"update `$table`
+												set `{$column['Field']}` = '". database::input(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."'
+												where id = ". (int)$row['id'] ."
+												limit 1;"
+											);
+										}
+									});
+								}
+
+							});
 						}
 					}
 				}
@@ -174,6 +216,46 @@
 				);
 			}
 
+			foreach ([
+				DB_TABLE_PREFIX . "attribute_groups",
+				DB_TABLE_PREFIX . "attribute_values",
+				DB_TABLE_PREFIX . "brands",
+				DB_TABLE_PREFIX . "categories",
+				DB_TABLE_PREFIX . "delivery_statuses",
+				DB_TABLE_PREFIX . "order_statuses",
+				DB_TABLE_PREFIX . "pages",
+				DB_TABLE_PREFIX . "products",
+				DB_TABLE_PREFIX . "quantity_units",
+				DB_TABLE_PREFIX . "sold_out_statuses",
+			] as $table) {
+
+				$columns = database::query(
+					"show fields from $table;"
+				)->each(function($column) use ($table) {
+
+					if (in_array(strtoupper($column['Type']), ['TEXT', 'MEDIUMTEXT'])) {
+						$rows = database::query(
+							"select id, `{$column['Field']}`
+							from $table
+							where `{$column['Field']}` like '%\"". database::input($this->data['code']) ."\"%';"
+						)->each(function($row) use ($table, $column) {
+
+							// Remove the language code from the JSON data
+							$data = json_decode($row[$column['Field']], true);
+
+							if (json_last_error() === JSON_ERROR_NONE && isset($data[$this->data['code']])) {
+								unset($data[$this->data['code']]);
+
+								database::query(
+									"update $table
+									set `{$column['Field']}` = '". database::input(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."'
+									where id = ". (int)$row['id'] ."
+									limit 1;"
+								);
+							}
+						});
+					}
+				});
 			}
 
 			$this->reset();
