@@ -489,6 +489,12 @@
 				}
 			}
 
+			if (isset($table['fulltext_keys'])) {
+				foreach ($table['fulltext_keys'] as $key_name => $key_columns) {
+					$sql .= '  FULLTEXT KEY `' . database::input($key_name) . '` (`' . implode('`, `', $key_columns) . '`),' . PHP_EOL;
+				}
+			}
+
 			if (isset($table['keys'])) {
 				foreach ($table['keys'] as $key_name => $key_columns) {
 					$sql .= '  KEY `' . database::input($key_name) . '` (`' . implode('`, `', $key_columns) . '`),' . PHP_EOL;

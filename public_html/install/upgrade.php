@@ -582,17 +582,6 @@
 					}
 				}
 
-				// Create keys
-				if (!empty($table['keys'])) {
-					foreach ($table['keys'] as $key_name => $key_columns) {
-						if ($table_exists) {
-							$sql .= 'ADD KEY `'. $key_name .'` (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
-						} else {
-							$sql .= '  KEY `'. $key_name .'` (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
-						}
-					}
-				}
-
 				// Create unique keys
 				if (!empty($table['unique_keys'])) {
 					foreach ($table['unique_keys'] as $key_name => $key_columns) {
@@ -600,6 +589,24 @@
 							$sql .= 'ADD CONSTRAINT `'. $key_name .'` UNIQUE (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
 						} else {
 							$sql .= '  CONSTRAINT `'. $key_name .'` UNIQUE (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
+						}
+					}
+				}
+
+				// Create fulltext keys
+				if (isset($table['fulltext_keys'])) {
+					foreach ($table['fulltext_keys'] as $key_name => $key_columns) {
+						$sql .= '  FULLTEXT KEY `' . database::input($key_name) . '` (`' . implode('`, `', $key_columns) . '`),' . PHP_EOL;
+					}
+				}
+
+				// Create keys
+				if (!empty($table['keys'])) {
+					foreach ($table['keys'] as $key_name => $key_columns) {
+						if ($table_exists) {
+							$sql .= 'ADD KEY `'. $key_name .'` (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
+						} else {
+							$sql .= '  KEY `'. $key_name .'` (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
 						}
 					}
 				}
