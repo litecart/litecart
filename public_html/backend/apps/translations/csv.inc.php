@@ -59,9 +59,9 @@
 					foreach ($language_codes as $language_code) {
 
 						$translation = database::query(
-							"select * from ". DB_TABLE_PREFIX . $collection['info_table'] ."
-							where `". database::input($collection['entity_column']) ."` = '". database::input($id) ."'
-							and language_code = '". database::input($language_code) ."'
+							"select id, json_value(`". database::input($column) ."`, '$.". database::input($language_code) ."') as ". database::input($column) ."
+							from `". DB_TABLE_PREFIX . database::input($collection['id']) ."`
+							where id = '". database::input($id) ."'
 							limit 1;"
 						)->fetch();
 
@@ -69,30 +69,19 @@
 
 							if (empty($row[$language_code])) continue;
 							if (empty($_POST['overwrite']) && empty($_POST['append'])) continue;
-							if (empty($translation['text_'.$language_code]) && empty($_POST['append'])) continue;
-							if (!empty($translation['text_'.$language_code]) && empty($_POST['update'])) continue;
+							if (empty($translation[$column]) && empty($_POST['append'])) continue;
+							if (!empty($translation[$column]) && empty($_POST['update'])) continue;
 							if (!in_array($language_code, $installed_language_codes)) continue;
 
 							database::query(
-								"update ". DB_TABLE_PREFIX . $collection['info_table'] ."
-								set `". database::input($column) ."` = '". database::input($row[$language_code], true) ."'
+								"update `". DB_TABLE_PREFIX . database::input($collection['id']) ."`
+								set json_set(`". database::input($column) ."`, '$.". database::input($language_code) ."', '". database::input($row[$language_code], true) ."')
 								where id = '". database::input($translation['id']) ."'
 								limit 1;"
 							);
 
 							$updated++;
 
-						} else {
-
-							if (empty($_POST['append'])) continue;
-
-							database::query(
-								"insert into ". DB_TABLE_PREFIX . $collection['info_table'] ."
-								(`". database::input($collection['entity_column']) ."`, language_code, `". database::input($column, !empty($translation['html'])) ."`)
-								values ('". database::input($id) ."', '". database::input($language_code) ."', '". database::input($row[$language_code]) ."');"
-							);
-
-							$inserted++;
 						}
 					}
 
@@ -136,7 +125,6 @@
 						foreach ($language_codes as $language_code) {
 
 							if (empty($row[$language_code])) continue;
-
 							if (!in_array($language_code, $installed_language_codes)) continue;
 
 							database::query(
@@ -215,20 +203,19 @@
 				);
 			}
 
-			$union_select = function($entity, $entity_table, $info_table, $id, $field) {
+			$union_select = function($id, $entity, $column) {
 				return (
-					"select '$entity' as entity, '1' as frontend, '1' as backend, concat('[$entity', ':', e.id, ']$field') as code, '' as date_updated,
-						coalesce(". implode(', ', array_map(function($language_code) use($field) { return "if($language_code.$field regexp '<', 1, null)"; }, $_POST['language_codes'])) .", 0) as html,
-						". implode(', ', array_map(function($language_code) use($field) { return "`". database::input($language_code) ."`.$field as `text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
-					from ". DB_TABLE_PREFIX ."$entity_table e
-					". implode(PHP_EOL, array_map(function($language_code) use($info_table, $id) { return "left join ". DB_TABLE_PREFIX ."$info_table `". database::input($language_code) ."` on (`". database::input($language_code) ."`.$id = e.id and `". database::input($language_code) ."`.language_code = '$language_code')"; }, $_POST['language_codes']))
+					"select '$entity' as entity, '1' as frontend, '1' as backend, concat('[". database::input($entity) ."', ':', id, ']". database::input($column) ."') as code, '' as date_updated,
+						coalesce(". implode(', ', array_map(function($language_code) use($column) { return "if(json_value(`". database::input($column) ."`, '$.". database::input($language_code) ."') regexp '<', 1, null)"; }, $_POST['language_codes'])) .", 0) as html,
+						". implode(', ', array_map(function($language_code) use($column) { return "json_value(`". $column ."`, '$.". database::input($language_code) ."') as `text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
+					from ". DB_TABLE_PREFIX . database::input($id)
 				);
 			};
 
 			foreach ($collections as $collection) {
-				if (in_array($collection['id'], $_POST['collections'])) {
-					foreach ($collection['info_columns'] as $column) {
-						$sql_union[] = $union_select($collection['entity'], $collection['entity_table'], $collection['info_table'], $collection['entity_column'], $column);
+				if (empty($_GET['collections']) || in_array($collection['id'], $_GET['collections'])) {
+					foreach ($collection['columns'] as $column) {
+						$sql_union[] = $union_select($collection['id'], $collection['entity'], $column);
 					}
 				}
 			}
@@ -303,7 +290,7 @@
 							<div class="form-label"><?php echo language::translate('title_csv_file', 'CSV File'); ?></div>
 							<?php echo functions::form_input_file('file', 'accept=".csv, .dsv, .tab, .tsv"'); ?></label>
 						</label>
-						
+
 						<div class="grid">
 							<div class="col-md-6">
 								<label class="form-group">
@@ -311,7 +298,7 @@
 									<?php echo functions::form_select('delimiter', ['' => language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ',' => ',',  ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
 								</label>
 							</div>
-							
+
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo language::translate('title_enclosure', 'Enclosure'); ?></div>
@@ -327,7 +314,7 @@
 									<?php echo functions::form_select('escapechar', ['"' => '" ('. language::translate('text_default', 'default') .')', '\\' => '\\'], true); ?>
 								</label>
 							</div>
-							
+
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo language::translate('title_charset', 'Charset'); ?></div>
@@ -358,14 +345,15 @@
 					<fieldset>
 						<legend><?php echo language::translate('title_export', 'Export'); ?></legend>
 
-							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_collections', 'Collections'); ?></div>
-								<?php echo functions::form_select('collections[]', array_map(function($c) { return [$c['id'], $c['name']]; }, $collections), true); ?>
-							</label>
+						<div class="form-group">
+							<div class="form-label"><?php echo language::translate('title_collections', 'Collections'); ?></div>
+							<?php echo functions::form_select('collections[]', array_map(function($c) { return [$c['id'], $c['name']]; }, $collections), true); ?>
+						</div>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_languages', 'Languages'); ?></div>
 							<?php echo functions::form_select_language('language_codes[]', true); ?></label>
+						</label>
 
 						<div class="grid">
 							<div class="col-md-6">
@@ -374,6 +362,7 @@
 									<?php echo functions::form_select('delimiter', [',' => ', ('. language::translate('text_default', 'default') .')', ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
 								</label>
 							</div>
+
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo language::translate('title_enclosure', 'Enclosure'); ?></div>
@@ -389,6 +378,7 @@
 									<?php echo functions::form_select('escapechar', ['"' => '" ('. language::translate('text_default', 'default') .')', '\\' => '\\'], true); ?>
 								</label>
 							</div>
+
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo language::translate('title_charset', 'Charset'); ?></div>
@@ -404,6 +394,7 @@
 									<?php echo functions::form_select('eol', ['Win', 'Mac', 'Linux'], true); ?>
 								</label>
 							</div>
+
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo language::translate('title_output', 'Output'); ?></div>

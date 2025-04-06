@@ -50,11 +50,10 @@
 
 					foreach ($_GET['languages'] as $language_code) {
 						database::query(
-							"insert into ". DB_TABLE_PREFIX . $collection['info_table'] ."
-							(`". database::input($collection['entity_column']) ."`, language_code, `". database::input($column, !empty($translation['html'])) ."`)
-							values ('". database::input($id) ."', '". database::input($language_code) ."', '". database::input($translation['text_'.$language_code]) ."')
-							on duplicate key update
-							$column = '". database::input($translation['text_'.$language_code], !empty($translation['html'])) ."';"
+							"update `". DB_TABLE_PREFIX . database::input($collection['id']) ."`
+							set `". database::input($column) ."` = json_set(`". database::input($column) ."`, '$.". database::input($language_code) ."', '". database::input($translation['text_'.$language_code], !empty($translation['html'])) ."')
+							where id = '". database::input($id) ."'
+							limit 1;"
 						);
 					}
 				}
@@ -103,47 +102,54 @@
 	$sql_union = [];
 
 	if (empty($_GET['collections']) || in_array('translations', $_GET['collections'])) {
-		$sql_union[] = "select 'translation' as entity, frontend, backend, code, date_updated, html,
-									 ". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_GET['languages'])) ."
-									 from ". DB_TABLE_PREFIX ."translations
-									 where code not regexp '^(settings_group:|settings_key:|cm|job|om|ot|pm|sm)_'";
+		$sql_union[] = (
+			"select 'translation' as entity, frontend, backend, code, date_updated, html,
+				". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_GET['languages'])) ."
+			from ". DB_TABLE_PREFIX ."translations
+			where code not regexp '^(settings_group:|settings_key:|cm|job|om|ot|pm|sm)_'"
+		);
 	}
 
 	if (empty($_GET['collections']) || in_array('modules', $_GET['collections'])) {
-		$sql_union[] = "select 'translation' as entity, frontend, backend, code, date_updated, html,
-									 ". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_GET['languages'])) ."
-									 from ". DB_TABLE_PREFIX ."translations
-									 where code regexp '^(cm|job|om|ot|pm|sm)_'";
+		$sql_union[] = (
+			"select 'translation' as entity, frontend, backend, code, date_updated, html,
+				". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_GET['languages'])) ."
+			from ". DB_TABLE_PREFIX ."translations
+			where code regexp '^(cm|job|om|ot|pm|sm)_'"
+		);
 	}
 
 	if (empty($_GET['collections']) || in_array('setting_groups', $_GET['collections'])) {
-		$sql_union[] = "select 'translation' as entity, frontend, backend, code, date_updated, html,
-									 ". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_GET['languages'])) ."
-									 from ". DB_TABLE_PREFIX ."translations
-									 where code regexp '^settings_group:'";
+		$sql_union[] = (
+			"select 'translation' as entity, frontend, backend, code, date_updated, html,
+				". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_GET['languages'])) ."
+			from ". DB_TABLE_PREFIX ."translations
+			where code regexp '^settings_group:'"
+		);
 	}
 
 	if (empty($_GET['collections']) || in_array('settings', $_GET['collections'])) {
-		$sql_union[] = "select 'translation' as entity, frontend, backend, code, date_updated, html,
-									 ". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_GET['languages'])) ."
-									 from ". DB_TABLE_PREFIX ."translations
-									 where code regexp '^settings_key:'";
+		$sql_union[] = (
+			"select 'translation' as entity, frontend, backend, code, date_updated, html,
+				". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_GET['languages'])) ."
+			from ". DB_TABLE_PREFIX ."translations
+			where code regexp '^settings_key:'"
+		);
 	}
 
-	$union_select = function($entity, $entity_table, $info_table, $id, $field) {
+	$union_select = function($id, $entity, $column) {
 		return (
-			"select '$entity' as entity, '1' as frontend, '1' as backend, concat('[$entity', ':', e.id, ']$field') as code, '' as date_updated,
-				coalesce(". implode(', ', array_map(function($language_code) use($field) { return "if($language_code.$field regexp '<', 1, null)"; }, $_GET['languages'])) .", 0) as html,
-				". implode(', ', array_map(function($language_code) use($field) { return "`". database::input($language_code) ."`.$field as `text_". database::input($language_code) ."`"; }, $_GET['languages'])) ."
-			from ". DB_TABLE_PREFIX ."$entity_table e
-			". implode(PHP_EOL, array_map(function($language_code) use($info_table, $id) { return "left join ". DB_TABLE_PREFIX ."$info_table `". database::input($language_code) ."` on (`". database::input($language_code) ."`.$id = e.id and `". database::input($language_code) ."`.language_code = '$language_code')"; }, $_GET['languages']))
+			"select '$entity' as entity, '1' as frontend, '1' as backend, concat('[". database::input($entity) ."', ':', id, ']". database::input($column) ."') as code, '' as date_updated,
+				coalesce(". implode(', ', array_map(function($language_code) use($column) { return "if(json_value(`". database::input($column) ."`, '$.". database::input($language_code) ."') regexp '<', 1, null)"; }, $_GET['languages'])) .", 0) as html,
+				". implode(', ', array_map(function($language_code) use($column) { return "json_value(`". $column ."`, '$.". database::input($language_code) ."') as `text_". database::input($language_code) ."`"; }, $_GET['languages'])) ."
+			from ". DB_TABLE_PREFIX . database::input($id)
 		);
 	};
 
 	foreach ($collections as $collection) {
 		if (empty($_GET['collections']) || in_array($collection['id'], $_GET['collections'])) {
-			foreach ($collection['info_columns'] as $column) {
-				$sql_union[] = $union_select($collection['entity'], $collection['entity_table'], $collection['info_table'], $collection['entity_column'], $column);
+			foreach ($collection['columns'] as $column) {
+				$sql_union[] = $union_select($collection['id'], $collection['entity'], $column);
 			}
 		}
 	}
