@@ -13,10 +13,10 @@
 	if (!$box_brand_links->snippets['brands'] = cache::get($box_brand_links_cache_token)) {
 
 		$box_brand_links->snippets['brands'] = database::query(
-			"select b.id, b.name, b.date_created from ". DB_TABLE_PREFIX ."brands b
-			left join ". DB_TABLE_PREFIX ."brands_info bi on (b.id = bi.brand_id and bi.language_code = '". language::$selected['code'] ."')
+			"select b.id, b.date_created, json_value(b.name, '$.". database::input(language::$selected['code']) ."') as name
+			from ". DB_TABLE_PREFIX ."brands b
 			where b.status
-			order by b.name;"
+			order by ;"
 		)->fetch_all(function($brand) {
 			return [
 				'id' => $brand['id'],

@@ -23,13 +23,6 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
-			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."products_info;"
-			)->each(function($field){
-				if (in_array($field['Field'], ['id', 'product_id', 'language_code'])) return;
-				$this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
-			});
-
 			$this->data['categories'] = [];
 			$this->data['images'] = [];
 			$this->data['prices'] = [];
@@ -79,15 +72,17 @@
 			)->fetch_all('category_id');
 
 			// Info
-			database::query(
-				"select * from ". DB_TABLE_PREFIX ."products_info
-				where product_id = ". (int)$id .";"
-			)->each(function($info){
-				foreach ($info as $key => $value) {
-					if (in_array($key, ['id', 'product_id', 'language_code'])) continue;
-					$this->data[$key][$info['language_code']] = $value;
-				}
-			});
+			foreach ([
+				'name',
+				'short_description',
+				'description',
+				'technical_data',
+				'synonyms',
+				'head_title',
+				'meta_description',
+			] as $column) {
+				$this->data[$column] = json_decode($this->data[$column], true) ?: [];
+			}
 
 			// Prices
 			database::query(
@@ -130,20 +125,25 @@
 
 			// Attributes
 			$this->data['attributes'] = database::query(
-				"select pa.*, agi.name as group_name, avi.name as value_name
+				"select pa.*,
+					json_value(ag.name, '$.". database::input(language::$selected['code']) ."') as group_name,
+					json_value(avi.name, '$.". database::input(language::$selected['code']) ."') as value_name
 				from ". DB_TABLE_PREFIX ."products_attributes pa
-				left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
-				left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
+				left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = pa.group_id)
+				left join ". DB_TABLE_PREFIX ."attribute_values avi on (avi.id = pa.value_id)
 				where product_id = ". (int)$id ."
 				order by priority, group_name, value_name, custom_value;"
 			)->fetch_all();
 
 			// Stock Options
 			$this->data['stock_options'] = database::query(
-				"select si.*, pso.*, sii.name, ifnull(oi.reserved, 0) as quantity_reserved, si.quantity - ifnull(oi.reserved, 0) as quantity_available
+				"select si.*, pso.*,
+					json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name,
+					ifnull(oi.reserved, 0) as quantity_reserved,
+					si.quantity - ifnull(oi.reserved, 0) as quantity_available
 				from ". DB_TABLE_PREFIX ."products_stock_options pso
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
-				left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = pso.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+
 				left join (
 					select product_id, stock_option_id, sum(quantity) as reserved
 					from ". DB_TABLE_PREFIX ."orders_items
@@ -206,6 +206,14 @@
 					delivery_status_id = ". (int)$this->data['delivery_status_id'] .",
 					sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
 					default_category_id = ". (int)$this->data['default_category_id'] .",
+					code = '". database::input($this->data['code']) ."',
+					name = '". database::input(json_encode($this->data['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					short_description = '". database::input(json_encode($this->data['short_description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					description = '". database::input(json_encode($this->data['description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					technical_data = '". database::input(json_encode($this->data['technical_data'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					synonyms = '". database::input(json_encode($this->data['synonyms'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					head_title = '". database::input(json_encode($this->data['head_title'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					meta_description = '". database::input(json_encode($this->data['meta_description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 					keywords = '". database::input($this->data['keywords']) ."',
 					quantity_min = ". (float)$this->data['quantity_min'] .",
 					quantity_max = ". (float)$this->data['quantity_max'] .",
@@ -215,17 +223,6 @@
 					purchase_price_currency_code = '". database::input($this->data['purchase_price_currency_code']) ."',
 					recommended_price = ". (float)$this->data['recommended_price'] .",
 					tax_class_id = ". (int)$this->data['tax_class_id'] .",
-					code = '". database::input($this->data['code']) ."',
-					sku = '". database::input($this->data['sku']) ."',
-					mpn = '". database::input($this->data['mpn']) ."',
-					gtin = '". database::input($this->data['gtin']) ."',
-					taric = '". database::input($this->data['taric']) ."',
-					length = ". (float)$this->data['length'] .",
-					width = ". (float)$this->data['width'] .",
-					height = ". (float)$this->data['height'] .",
-					length_unit = '". database::input($this->data['length_unit']) ."',
-					weight = ". (float)$this->data['weight'] .",
-					weight_unit = '". database::input($this->data['weight_unit']) ."',
 					autofill_technical_data = ". (int)$this->data['autofill_technical_data'] .",
 					date_valid_from = ". (empty($this->data['date_valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
 					date_valid_to = ". (empty($this->data['date_valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
@@ -247,42 +244,6 @@
 					"insert into ". DB_TABLE_PREFIX ."products_to_categories
 					(product_id, category_id)
 					values (". (int)$this->data['id'] .", ". (int)$category_id .");"
-				);
-			}
-
-			// Info
-			foreach (array_keys(language::$languages) as $language_code) {
-
-				$info = database::query(
-					"select * from ". DB_TABLE_PREFIX ."products_info
-					where product_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
-					limit 1;"
-				)->fetch();
-
-				if (!$info) {
-					database::query(
-						"insert into ". DB_TABLE_PREFIX ."products_info
-						(product_id, language_code)
-						values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
-					);
-
-					$info['id'] = database::insert_id();
-				}
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."products_info
-					set name = '". database::input($this->data['name'][$language_code]) ."',
-						short_description = '". database::input($this->data['short_description'][$language_code]) ."',
-						description = '". database::input($this->data['description'][$language_code], true) ."',
-						technical_data = '". database::input($this->data['technical_data'][$language_code], true) ."',
-						synonyms = '". database::input($this->data['synonyms'][$language_code]) ."',
-						head_title = '". database::input($this->data['head_title'][$language_code]) ."',
-						meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
-					where id = ". (int)$info['id'] ."
-					product_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
-					limit 1;"
 				);
 			}
 
@@ -658,11 +619,10 @@
 			$this->save();
 
 			database::query(
-				"delete p, cp, ci, pi, pa, pp, pcu, pso, ptc
+				"delete p, cp, ci, pa, pp, pcu, pso, ptc
 				from ". DB_TABLE_PREFIX ."products p
 				left join ". DB_TABLE_PREFIX ."campaigns_products cp on (cp.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."cart_items ci on (ci.product_id = p.id)
-				left join ". DB_TABLE_PREFIX ."products_info pi on (pi.id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_attributes pa on (pa.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_prices pp on (pp.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_customizations pcu on (pcu.product_id = p.id)

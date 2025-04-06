@@ -42,14 +42,14 @@
 	// Table Rows, Total Number of Rows, Total Number of Pages
 
 	$order_statuses = database::query(
-		"select os.*, osi.name, o.num_orders from ". DB_TABLE_PREFIX ."order_statuses os
-		left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and language_code = '". database::input(language::$selected['code']) ."')
+		"select os.*, json_value(os.name, '$.". database::input(language::$selected['code']) ."') as name, o.num_orders
+		from ". DB_TABLE_PREFIX ."order_statuses os
 		left join (
 			select order_status_id, count(id) as num_orders
 			from ". DB_TABLE_PREFIX ."orders
 			group by order_status_id
 		) o on (o.order_status_id = os.id)
-		order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, osi.name asc;"
+		order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, name asc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 	foreach ($order_statuses as $key => $order_status) {

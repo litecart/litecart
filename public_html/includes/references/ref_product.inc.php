@@ -62,14 +62,30 @@
 				case 'attributes':
 
 					$this->_data['attributes'] = database::query(
-						"select pa.id, ag.code, pa.group_id, pa.value_id, pa.custom_value, agi.name as group_name, avi.name as value_name, pa.custom_value
+						"select pa.id, ag.code, pa.group_id, pa.value_id, pa.custom_value, ag.name as group_name, av.name as value_name, pa.custom_value
 						from ". DB_TABLE_PREFIX ."products_attributes pa
 						left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = pa.group_id)
-						left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input($this->_language_codes[0]) ."')
-						left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input($this->_language_codes[0]) ."')
+						left join ". DB_TABLE_PREFIX ."attribute_values av on (av.id = pa.value_id)
 						where product_id = ". (int)$this->_data['id'] ."
-						order by priority, group_name, value_name, custom_value;"
-					)->fetch_all();
+						order by pa.priority, group_name, value_name, custom_value;"
+					)->fetch_all(function($attribute){
+
+						$attribute['group_name'] = json_decode($attribute['group_name'], true) ?: [];
+						$attribute['value_name'] = json_decode($attribute['value_name'], true) ?: [];
+
+						foreach ($this->_language_codes as $language_code) {
+							if (!empty($attribute['group_name'][$language_code])) {
+								$attribute['group_name'] = $attribute['group_name'][$language_code];
+								break;
+							}
+						}
+						foreach ($this->_language_codes as $language_code) {
+							if (!empty($attribute['value_name'][$language_code])) {
+								$attribute['value_name'] = $attribute['value_name'][$language_code];
+								break;
+							}
+						}
+					});
 
 					break;
 
@@ -87,7 +103,7 @@
 						"select *, min(
 							coalesce(
 								". implode(', ', array_map(function($currency_code){
-									return "if(JSON_VALUE(price, '$.". database::input($currency_code) ."') != 0, JSON_VALUE(price, '$.". database::input($currency_code) ."') * ". currency::$currencies[$currency_code]['value'] .", null)";
+									return "if(json_value(price, '$.". database::input($currency_code) ."') != 0, json_value(price, '$.". database::input($currency_code) ."') * ". currency::$currencies[$currency_code]['value'] .", null)";
 								}, $this->_currency_codes)) ."
 							)
 						) as price
@@ -110,23 +126,23 @@
 					$this->_data['categories'] = [];
 
 					database::query(
-						"select * from ". DB_TABLE_PREFIX ."products_to_categories
-						where product_id = ". (int)$this->_data['id'] .";"
-					)->each(function($product_to_category) {
+						"select id, name
+						from ". DB_TABLE_PREFIX ."categories
+						where id in (
+							select category_id from ". DB_TABLE_PREFIX ."products_to_categories
+							where product_id = ". (int)$this->_data['id'] ."
+						);"
+					)->each(function($category) {
 
-						database::query(
-							"select * from ". DB_TABLE_PREFIX ."categories_info
-							where category_id = ". (int)$product_to_category['category_id'] ."
-							and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-							order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-						)->each(function($info){
-							foreach ($info as $key => $value) {
-								if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
-								if (empty($this->_data['categories'][$info['category_id']])) {
-									$this->_data['categories'][$info['category_id']] = $value;
-								}
+						foreach ($this->_language_codes as $language_code) {
+							$category['name'] = json_decode($category['name'], true) ?: [];
+							if (!empty($category['name'][$language_code])) {
+								$category['name'] = $category['name'][$language_code];
+								break;
 							}
-						});
+						}
+
+						return $this->_data['categories'][$category['id']] = $category['name'];
 					});
 
 					break;
@@ -143,22 +159,26 @@
 
 				case 'delivery_status':
 
-					$this->_data['delivery_status'] = [];
+					$this->_data['delivery_status'] = database::query(
+						"select * from ". DB_TABLE_PREFIX ."delivery_statuses
+						where id = ". (int)$this->_data['delivery_status_id'] ."
+						limit 1;"
+					)->fetch(function($status){
 
-					database::query(
-						"select * from ". DB_TABLE_PREFIX ."delivery_statuses_info
-						where delivery_status_id = ". (int)$this->_data['delivery_status_id'] ."
-						and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-						order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-					)->each(function($info){
-
-						foreach ($info as $key => $value) {
-							if (in_array($key, ['id', 'delivery_status_id', 'language_code'])) continue;
-							if (empty($this->_data['delivery_status'][$key])) {
-								$this->_data['delivery_status'][$key] = $value;
+						foreach ([
+							'name',
+							'description',
+						] as $field) {
+							$status[$field] = json_decode($status[$field], true) ?: [];
+							foreach ($this->_language_codes as $language_code) {
+								if (!empty($status[$field][$language_code])) {
+									$status[$field] = $status[$field][$language_code];
+									break;
+								}
 							}
 						}
 
+						return $status;
 					});
 
 					break;
@@ -179,7 +199,7 @@
 						$customer_price = (float)database::query(
 							"select coalesce(
 								". implode(", ", array_map(function($currency){
-									return "if(JSON_VALUE(price, '$.". database::input($currency['code']) ."') != 0, JSON_VALUE(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+									return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 								}, currency::$currencies)) ."
 							) / min_quantity as customer_price
 							from ". DB_TABLE_PREFIX ."products_prices
@@ -206,91 +226,49 @@
 
 					break;
 
-				case 'name':
-				case 'short_description':
-				case 'description':
-				case 'technical_data':
-				case 'head_title':
-				case 'meta_description':
-				case 'synonyms':
-
-					database::query(
-						"select * from ". DB_TABLE_PREFIX ."products_info
-						where product_id = ". (int)$this->_data['id'] ."
-						and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-						order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-					)->each(function($info){
-
-						foreach ($info as $key => $value) {
-							if (in_array($key, ['id', 'product_id', 'language_code'])) continue;
-							if (empty($this->_data[$key])) {
-								$this->_data[$key] = $value;
-							}
-						}
-
-					});
-
-					if ($this->autofill_technical_data) {
-						$this->_data['technical_data'] = '';
-						foreach ($this->attributes as $attribute) {
-							$this->_data['technical_data'] = $attribute['group_name'] .': '. $attribute['value_name'] . PHP_EOL;
-						}
-						$this->_data['technical_data'] = rtrim($this->_data['technical_data']);
-					}
-
-					$this->_data['synonyms'] = preg_split('#\s*,\s*#', (string)$this->_data['synonyms'], -1, PREG_SPLIT_NO_EMPTY);
-
-					break;
-
 				case 'customizations':
 
 					$this->_data['customizations'] = [];
 
 					database::query(
-						"select * from ". DB_TABLE_PREFIX ."products_customizations
+						"select pc.*, ag.name
+						from ". DB_TABLE_PREFIX ."products_customizations pc
+						left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = pc.group_id)
 						where product_id = ". (int)$this->_data['id'] ."
 						order by priority;"
 					)->fetch(function($customization){
 
 						// Group
-						database::query(
-							"select * from ". DB_TABLE_PREFIX ."attribute_groups_info pcgi
-							where group_id = ". (int)$customization['group_id'] ."
-							and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-							order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-						)->each(function($info) use ($customization) {
-
-							foreach ($info as $key => $value) {
-								if (in_array($k, ['id', 'group_id', 'language_code'])) continue;
-								if (empty($customization[$key])) $customization[$key] = $value;
+						$customization['group_name'] = json_decode($customization['group_name'], true) ?: [];
+						foreach ($this->_language_codes as $language_code) {
+							if (!empty($customization['group_name'][$language_code])) {
+								$customization['group_name'] = $customization['group_name'][$language_code];
+								break;
 							}
-						});
+						}
 
 						// Values
 						$customization['values'] = [];
 
 						database::query(
-							"select * from ". DB_TABLE_PREFIX ."products_customizations_values
-							where product_id = ". (int)$this->_data['id'] ."
-							and group_id = ". (int)$customization['group_id'] ."
-							order by priority;"
+							"select pcv.*, av.name
+							from ". DB_TABLE_PREFIX ."products_customizations_values pcv
+							left join ". DB_TABLE_PREFIX ."attribute_values av on (av.value_id = pcv.value_id)
+							where pcv.product_id = ". (int)$this->_data['id'] ."
+							and pcv.group_id = ". (int)$customization['group_id'] ."
+							order by pcv.priority;"
 						)->each(function($value) use ($customization) {
 
 							if (!empty($value['value_id'])) {
 
-								database::query(
-									"select * from ". DB_TABLE_PREFIX ."attribute_values_info pcvi
-									where value_id = ". (int)$value['value_id'] ."
-									and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-									order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-								)->each(function($info) use ($value) {
-									foreach ($info as $key => $v) {
-										if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
-										if (empty($value[$key])) {
-											$value[$key] = $v;
-										}
+								$value['name'] = json_decode($value['name'], true) ?: [];
+
+								foreach ($this->_language_codes as $language_code) {
+									if (!empty($value['name'][$language_code])) {
+										$value['name'] = $value['name'][$language_code];
+										break;
 									}
-								});
+								}
 
 							} else {
 								$value['name'] = $value['custom_value'];
@@ -372,7 +350,7 @@
 					$this->_data['price'] = (float)database::query(
 						"select coalesce(
 							". implode(", ", array_map(function($currency){
-								return "if(JSON_VALUE(price, '$.". database::input($currency['code']) ."') != 0, JSON_VALUE(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+								return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 							}, currency::$currencies)) ."
 						) / min_quantity as regular_price
 						from ". DB_TABLE_PREFIX ."products_prices
@@ -452,36 +430,26 @@
 				case 'quantity_unit':
 
 					$this->_data['quantity_unit'] = database::query(
-						"select id, decimals, separate from ". DB_TABLE_PREFIX ."quantity_units
+						"select id, decimals, separate,
+							json_value(name, '$.".database::input(language::$selected['code'])."') as name,
+							json_value(description, '$.".database::input(language::$selected['code'])."') as description
+						from ". DB_TABLE_PREFIX ."quantity_units
 						where id = ". (int)$this->quantity_unit_id ."
 						limit 1;"
 					)->fetch();
-
-					if (!$this->_data['quantity_unit']) return;
-
-					database::query(
-						"select * from ". DB_TABLE_PREFIX ."quantity_units_info
-						where quantity_unit_id = ". (int)$this->quantity_unit_id ."
-						and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-						order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-					)->each(function($info){
-						foreach ($info as $key => $value) {
-							if (in_array($key, ['id', 'quantity_unit_id', 'language_code'])) continue;
-							if (empty($this->_data['quantity_unit'][$key])) {
-								$this->_data['quantity_unit'][$key] = $value;
-							}
-						}
-					});
 
 					break;
 
 				case 'stock_options':
 
 					$this->_data['stock_options'] = database::query(
-						"select si.*, pso.*, sii.name, ifnull(oi.quantity_reserved, 0) as quantity_reserved, si.quantity - ifnull(oi.quantity_reserved, 0) as quantity_available
+						"select si.*, pso.*,
+							json_value(si.name, '$.".database::input(language::$selected['code'])."') as name,
+							ifnull(oi.quantity_reserved, 0) as quantity_reserved,
+							si.quantity - ifnull(oi.quantity_reserved, 0) as quantity_available
 						from ". DB_TABLE_PREFIX ."products_stock_options pso
 						left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
-						left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = pso.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+
 						left join (
 							select product_id, stock_option_id, sum(quantity) as quantity_reserved
 							from ". DB_TABLE_PREFIX ."orders_items
@@ -513,26 +481,13 @@
 				case 'sold_out_status':
 
 					$this->_data['sold_out_status'] = database::query(
-						"select id, orderable from ". DB_TABLE_PREFIX ."sold_out_statuses
+						"select id, orderable,
+							json_value(name, '$.".database::input(language::$selected['code'])."') as name,
+							json_value(description, '$.".database::input(language::$selected['code'])."') as description
+						from ". DB_TABLE_PREFIX ."sold_out_statuses
 						where id = ". (int)$this->sold_out_status_id ."
 						limit 1;"
 					)->fetch();
-
-					if (!$this->_data['sold_out_status']) return;
-
-					database::query(
-						"select * from ". DB_TABLE_PREFIX ."sold_out_statuses_info
-						where sold_out_status_id = ". (int)$this->_data['sold_out_status_id'] ."
-						and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-						order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-					)->each(function($info){
-						foreach ($info as $key => $value) {
-							if (in_array($key, ['id', 'sold_out_status_id', 'language_code'])) continue;
-							if (empty($this->_data['sold_out_status'][$key])) {
-								$this->_data['sold_out_status'][$key] = $value;
-							}
-						}
-					});
 
 					break;
 
@@ -544,25 +499,200 @@
 
 				default:
 
-					$result = database::query(
+					$product = database::query(
 						"select * from ". DB_TABLE_PREFIX ."products
 						where id = ". (int)$this->_data['id'] ."
 						limit 1;"
-					);
+					)->fetch(function($product){
 
-					if ($result->num_rows) {
-						$row = $result->fetch();
-					} else {
-						$row = array_fill_keys($result->fields(), null);
+						foreach ([
+							'name',
+							'short_description',
+							'description',
+							'technical_data',
+							'head_title',
+							'meta_description',
+							'keywords',
+							'synonyms',
+						] as $field) {
+
+							$product[$field] = json_decode($product[$field], true) ?: [];
+
+							foreach ($this->_language_codes as $language_code) {
+								if (!empty($product[$field][$language_code])) {
+									$product[$field] = $product[$field][$language_code];
+									continue 2;
+								}
+							}
+
+							$product[$field] = '';
+						}
+
+						if ($product['autofill_technical_data']) {
+
+							$product['technical_data'] = '';
+
+							foreach ($this->attributes as $attribute) {
+								$product['technical_data'] = $attribute['group_name'] .': '. $attribute['value_name'] . PHP_EOL;
+							}
+
+							$product['technical_data'] = rtrim($product['technical_data']);
+						}
+
+						$product['synonyms'] = preg_split('#\s*,\s*#', (string)$product['synonyms'], -1, PREG_SPLIT_NO_EMPTY);
+						$product['keywords'] = preg_split('#\s*,\s*#', (string)$product['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+
+						return $product;
+					});
+
+					if (!$product) {
+						$product = database::query(
+							"show fields from ". DB_TABLE_PREFIX ."products;"
+						)->fetch(function($field){
+							return database::create_variable($field);
+						});
 					}
 
-					foreach ($row as $key => $value) {
+					foreach ($product as $key => $value) {
 						$this->_data[$key] = $value;
 					}
-
-					$this->_data['keywords'] = preg_split('#\s*,\s*#', (string)$this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
 					break;
 			}
 		}
+
+    public function calculate_price($parameters=[]) {
+
+      try {
+
+        $item['extras'] = 0;
+
+        if (empty($parameters['quantity'])) {
+          $parameters['quantity'] = 1;
+        }
+
+        if (!empty($parameters['options'])) {
+
+          if (!is_array($parameters['options'])) {
+            throw new Exception('Invalid options');
+          }
+
+          // Remove empty options
+          $array_filter_recursive = function($array) use (&$array_filter_recursive) {
+
+            foreach ($array as $i => $value) {
+              if (is_array($value)) $array[$i] = $array_filter_recursive($value);
+            }
+
+            return array_filter($array, function($v) {
+              if (is_array($v)) return !empty($v);
+              return strlen(trim($v));
+            });
+          };
+
+          $parameters['options'] = $array_filter_recursive($parameters['options']);
+
+          // Build options structure
+          $sanitized_options = [];
+          foreach ($this->options as $option) {
+
+            // Check group
+            $possible_groups = array_filter(array_unique(reference::attribute_group($option['group_id'])->name));
+            $matched_groups = array_intersect(array_keys($options), $possible_groups);
+            $matched_group = array_shift($matched_groups);
+
+            if (empty($matched_group) && empty($option['required'])) {
+              continue;
+            }
+
+            if (empty($options[$matched_group]) && !empty($option['required'])) {
+              throw new Exception(language::translate('error_set_product_options', 'Please set your product options'));
+            }
+
+            // Check values
+            switch ($option['function']) {
+
+              case 'checkbox':
+
+                $selected_values = preg_split('#\s*,\s*#', $options[$matched_group], -1, PREG_SPLIT_NO_EMPTY);
+
+                $matched_values = [];
+                foreach ($option['values'] as $value) {
+
+                  $possible_values = array_unique(
+                    array_merge(
+                      [$value['name']],
+                      !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
+                    )
+                  );
+
+                  if (empty($option['required'])) {
+                    array_unshift($possible_values, '');
+                  }
+
+                  if ($matched_value = array_intersect($selected_values, $possible_values)) {
+                    $matched_values[] = $matched_value;
+                    $extras += $value['price_adjustment'];
+                    $found_match = true;
+                  }
+                }
+
+                if (empty($found_match)) {
+                  throw new Exception(strtr(language::translate('error_must_select_valid_option_for_group', 'You must select a valid option for %group'), ['%group' => $matched_group]));
+                }
+
+                break;
+
+              case 'radio':
+              case 'select':
+
+                foreach ($option['values'] as $value) {
+
+                  $possible_values = array_unique(
+                    array_merge(
+                      [$value['name']],
+                      !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
+                    )
+                  );
+
+                  if (empty($option['required'])) {
+                    array_unshift($possible_values, '');
+                  }
+
+                  if ($matched_value = array_intersect([$options[$matched_group]], $possible_values)) {
+                    $matched_value = array_shift($matched_value);
+                    $extras += $value['price_adjustment'];
+                    $found_match = true;
+                    break;
+                  }
+                }
+
+                if (empty($found_match)) {
+                  throw new Exception(strtr(language::translate('error_must_select_valid_option_for_group', 'You must select a valid option for %group'), ['%group' => $matched_group]));
+                }
+
+                break;
+
+              case 'text':
+              case 'textarea':
+
+                $matched_value = $options[$matched_group];
+
+                if (empty($matched_value) && !empty($option['required'])) {
+                  throw new Exception(strtr(language::translate('error_must_provide_valid_input_for_group', 'You must provide a valid input for %group'), ['%group' => $matched_group]));
+                }
+
+                break;
+            }
+          }
+
+          $price = $this->final_price + $extras;
+
+          return $price;
+        }
+
+      } catch (Exception $e) {
+        return false;
+      }
+    }
 	}

@@ -13,7 +13,7 @@
 		if (!empty($_GET['query'])) {
 			$sql_find = [
 				"c.id = '". database::input($_GET['query']) ."'",
-				"ci.name like '%". database::input($_GET['query']) ."%'",
+				"json_value(c.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'",
 			];
 		}
 
@@ -31,12 +31,11 @@
 		];
 
 		$json['subcategories'] = database::query(
-			"select c.id, c.parent_id, ci.name, c.date_created
+			"select c.id, c.parent_id, json_value(c.name, '$.".database::input(language::$selected['code'])."') as name, c.date_created
 			from ". DB_TABLE_PREFIX ."categories c
-			left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input($_GET['language_code']) ."')
 			where ". (!empty($_GET['parent_id']) ? "c.parent_id = ". (int)$_GET['parent_id'] : "c.parent_id is null") ."
 			". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
-			order by c.priority, ci.name;"
+			order by c.priority, name;"
 		)->fetch_all(function($subcategory) {
 
 			$subcategory['path'] = [];

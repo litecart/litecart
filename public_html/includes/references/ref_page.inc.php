@@ -22,31 +22,6 @@
 
 			switch($field) {
 
-				case 'title':
-				case 'content':
-				case 'head_title':
-				case 'meta_description':
-
-					$query = database::query(
-						"select * from ". DB_TABLE_PREFIX ."pages_info
-						where page_id = ". (int)$this->_data['id'] ."
-						and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-						order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-					);
-
-					while ($row = database::fetch($query)) {
-						foreach ($row as $key => $value) {
-
-							if (in_array($key, ['id', 'page_id', 'language_code'])) continue;
-
-							if (empty($this->_data[$key])) {
-								$this->_data[$key] = $row[$key];
-							}
-						}
-					}
-
-					break;
-
 				case 'parent':
 
 					if (!empty($this->parent_id)) {
@@ -133,7 +108,18 @@
 						"select * from ". DB_TABLE_PREFIX ."pages
 						where id = ". (int)$this->_data['id'] ."
 						limit 1;"
-					)->fetch();
+					)->fetch(function($page) {
+						foreach ($page as $key => $value) {
+							if (in_array($key, ['title', 'content', 'head_title', 'meta_description'])) {
+								foreach ($this->_language_codes as $language_code) {
+									if (!empty($page[$key])) {
+										$this->_data[$key] = $page[$key];
+										break;
+									}
+								}
+							}
+						}
+					});
 
 					if (!$page) return;
 

@@ -51,12 +51,12 @@
 		// Pages
 
 		$site_navigation->snippets['pages'] = database::query(
-			"select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
-			left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+			"select p.id, p.priority, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
+			from ". DB_TABLE_PREFIX ."pages p
 			where status
 			and parent_id = 0
 			and find_in_set('menu', dock)
-			order by p.priority, pi.title;"
+			order by p.priority, title;"
 		)->fetch_all(function($page) {
 			return [
 				'type' => 'page',
@@ -65,11 +65,11 @@
 				'link' => document::ilink('page', ['page_id' => $page['id']]),
 				'priority' => $page['priority'],
 				'subitems' => database::query(
-					"select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
-					left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+					"select p.id, p.priority, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
+					from ". DB_TABLE_PREFIX ."pages p
 					where status
 					and parent_id = ". (int)$page['id'] ."
-					order by p.priority, pi.title;"
+					order by p.priority, title;"
 				)->fetch_all(function($subpage) {
 					return [
 						'type' => 'page',
@@ -92,11 +92,11 @@
 		// Information
 
 		$site_navigation->snippets['information'] = database::query(
-			"select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
-			left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+			"select p.id, p.priority, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
+			from ". DB_TABLE_PREFIX ."pages p
 			where status
 			and find_in_set('information', dock)
-			order by p.priority, pi.title;"
+			order by p.priority,title;"
 		)->fetch_all(function($page) {
 			return [
 				'type' => 'page',

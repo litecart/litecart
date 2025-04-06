@@ -11,13 +11,10 @@
 			select transaction_id from ". DB_TABLE_PREFIX ."stock_transactions_contents
 			where stock_item_id in (
 				select id from ". DB_TABLE_PREFIX ."stock_items si
-				left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = si.id and language_code = '". database::input(language::$selected['code']) ."')
-				where (
-					sii.name like '%". database::input($_GET['query']) ."%'
-					or si.sku like '%". database::input($_GET['query']) ."%'
-					or si.mpn like '%". database::input($_GET['query']) ."%'
-					or si.gtin like '%". database::input($_GET['query']) ."%'
-				)
+				where json_value(si.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
+				or si.sku like '%". database::input($_GET['query']) ."%'
+				or si.mpn like '%". database::input($_GET['query']) ."%'
+				or si.gtin like '%". database::input($_GET['query']) ."%'
 			)
 		)" : "") ."
 		". (!empty($_GET['date_from']) ? "and t.date_created >= '". date('Y-m-d H:i:s', strtotime($_GET['date_from'])) ."'" : '') ."

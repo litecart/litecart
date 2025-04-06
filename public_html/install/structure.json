@@ -36,6 +36,7 @@
       "columns": {
         "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
         "code": { "type": "VARCHAR", "length": 32, "default": "''" },
+        "name": { "type": "TEXT", "default": "'{}'" },
         "sort": { "type": "ENUM('alphabetical','priority')", "default": "'alphabetical'" },
         "date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
         "date_created": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
@@ -43,48 +44,16 @@
       "primary_key": ["id"],
       "keys": {
         "code": ["code"]
-      }
-    },
-    "lc_attribute_groups_info": {
-      "columns": {
-        "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-        "group_id": { "type": "INT", "length": 10, "unsigned": true },
-        "language_code": { "type": "CHAR", "length": 2 },
-        "name": { "type": "VARCHAR", "length": 128, "default": "''" }
       },
-      "primary_key": ["id"],
-      "unique_keys": {
-        "attribute_group": ["group_id", "language_code"]
-      },
-      "keys": {
-        "group_id": ["group_id"],
-        "language_code": ["language_code"]
-      },
-      "foreign_keys": {
-        "attribute_group_info_to_attribute_group": {
-          "columns": ["group_id"],
-          "references": {
-            "table": "lc_attribute_groups",
-            "columns": ["id"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        },
-        "attribute_group_info_to_language": {
-          "columns": ["language_code"],
-          "references": {
-            "table": "lc_languages",
-            "columns": ["code"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        }
-      }
+			"check_constraints": {
+				"chk_name": "JSON_VALID(name)"
+			}
     },
     "lc_attribute_values": {
       "columns": {
         "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
         "group_id": { "type": "INT", "length": 10, "unsigned": true },
+        "name": { "type": "TEXT", "default": "'{}'" },
         "priority": { "type": "INT", "length": 11, "default": 0 },
         "date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
         "date_created": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
@@ -92,43 +61,10 @@
       "primary_key": ["id"],
       "keys": {
         "group_id": ["group_id"]
-      }
-    },
-    "lc_attribute_values_info": {
-      "columns": {
-        "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-        "value_id": { "type": "INT", "length": 10, "unsigned": true },
-        "language_code": { "type": "CHAR", "length": 2 },
-        "name": { "type": "VARCHAR", "length": 128, "default": "''" }
       },
-      "primary_key": ["id"],
-      "unique_keys": {
-        "attribute_value": ["value_id", "language_code"]
-      },
-      "keys": {
-        "value_id": ["value_id"],
-        "language_code": ["language_code"]
-      },
-      "foreign_keys": {
-        "attribute_value_info_to_attribute_value": {
-          "columns": ["value_id"],
-          "references": {
-            "table": "lc_attribute_values",
-            "columns": ["id"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        },
-        "attribute_value_info_to_language": {
-          "columns": ["language_code"],
-          "references": {
-            "table": "lc_languages",
-            "columns": ["code"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        }
-      }
+			"check_constraints": {
+				"chk_name": "JSON_VALID(name)"
+			}
     },
     "lc_banners": {
       "columns": {
@@ -155,7 +91,13 @@
         "status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
         "featured": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
         "code": { "type": "VARCHAR", "length": 32, "default": "''" },
-        "name": { "type": "VARCHAR", "length": 64, "default": "''" },
+        "name":  { "type": "TEXT", "default": "'{}'" },
+        "short_description":  { "type": "TEXT", "default": "'{}'" },
+        "description":  { "type": "MEDIUMTEXT", "default": "'{}'" },
+        "h1_title":  { "type": "TEXT", "default": "'{}'" },
+        "head_title":  { "type": "TEXT", "default": "'{}'" },
+        "meta_description":  { "type": "TEXT", "default": "'{}'" },
+        "link":  { "type": "TEXT", "default": "'{}'" },
         "keywords": { "type": "VARCHAR", "length": 255, "default": "''" },
         "image": { "type": "VARCHAR", "length": 255, "default": "''" },
         "date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
@@ -165,54 +107,22 @@
       "keys": {
         "code": ["code"],
         "status": ["status"]
-      }
-    },
-    "lc_brands_info": {
-      "columns": {
-        "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-        "brand_id": { "type": "INT", "length": 10, "unsigned": true },
-        "language_code": { "type": "CHAR", "length": 2 },
-        "short_description": { "type": "VARCHAR", "length": 255, "default": "''" },
-        "description": { "type": "TEXT", "default": "''" },
-        "h1_title": { "type": "VARCHAR", "length": 128, "default": "''" },
-        "head_title": { "type": "VARCHAR", "length": 128, "default": "''" },
-        "meta_description": { "type": "VARCHAR", "length": 512, "default": "''" },
-        "link": { "type": "VARCHAR", "length": 255, "default": "''" }
       },
-      "primary_key": ["id"],
-      "unique_keys": {
-        "brand_info": ["brand_id", "language_code"]
-      },
-      "keys": {
-        "brand_id": ["brand_id"],
-        "language_code": ["language_code"]
-      },
-      "foreign_keys": {
-        "brand": {
-          "columns": ["brand_id"],
-          "references": {
-            "table": "lc_brands",
-            "columns": ["id"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        },
-        "brand_info_to_language": {
-          "columns": ["language_code"],
-          "references": {
-            "table": "lc_languages",
-            "columns": ["code"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        }
-      }
+			"check_constraints": {
+				"chk_name": "JSON_VALID(name);",
+				"chk_short_description": "JSON_VALID(short_description);",
+				"chk_description": "JSON_VALID(description);",
+				"chk_h1_title": "JSON_VALID(h1_title);",
+				"chk_head_title": "JSON_VALID(head_title);",
+				"chk_meta_description": "JSON_VALID(meta_description);",
+				"chk_link": "JSON_VALID(link);"
+			}
     },
     "lc_campaigns": {
       "columns": {
         "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
         "status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 1 },
-        "name": { "type": "VARCHAR", "length": 50, "default": "''", "collation": "utf8mb4_swedish_ci" },
+        "name": { "type": "VARCHAR", "length": 50, "default": "''" },
         "date_valid_from": { "type": "TIMESTAMP", "nullable": true },
         "date_valid_to": { "type": "TIMESTAMP", "nullable": true },
         "date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
@@ -307,37 +217,58 @@
         }
       }
     },
-    "lc_categories": {
-      "columns": {
-        "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-        "parent_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
-        "google_taxonomy_id": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
-        "status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
-        "code": { "type": "VARCHAR", "length": 64, "default": "''" },
-        "keywords": { "type": "VARCHAR", "length": 255, "default": "''" },
-        "image": { "type": "VARCHAR", "length": 255, "default": "''" },
-        "priority": { "type": "INT", "length": 11, "default": 0 },
-        "date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-        "date_created": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
-      },
-      "primary_key": ["id"],
-      "keys": {
-        "code": ["code"],
-        "parent_id": ["parent_id"],
-        "status": ["status"]
-      },
-      "foreign_keys": {
-        "category_to_parent": {
-          "columns": ["parent_id"],
-          "references": {
-            "table": "lc_categories",
-            "columns": ["id"],
-            "on_update": "CASCADE",
-            "on_delete": "RESTRICT"
-          }
-        }
-      }
-    },
+		"lc_categories": {
+			"columns": {
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"parent_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"google_taxonomy_id": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
+				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
+				"code": { "type": "VARCHAR", "length": 64, "default": "''" },
+				"name": { "type": "TEXT", "default": "'{}'" },
+				"short_description": { "type": "TEXT", "default": "'{}'" },
+				"description": { "type": "MEDIUMTEXT", "default": "'{}'" },
+				"synonyms": { "type": "TEXT", "default": "'{}'" },
+				"head_title": { "type": "TEXT", "default": "'{}'" },
+				"h1_title": { "type": "TEXT", "default": "'{}'" },
+				"meta_description": { "type": "TEXT", "default": "'{}'" },
+				"keywords": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"image": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"priority": { "type": "INT", "length": 11, "default": 0 },
+				"date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
+				"date_created": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"keys": {
+				"code": ["code"],
+				"parent_id": ["parent_id"],
+				"status": ["status"]
+			},
+			"fulltext_keys": {
+				"name": ["name"],
+				"short_description": ["short_description"],
+				"description": ["description"],
+				"synonyms": ["synonyms"]
+			},
+			"foreign_keys": {
+				"category_to_parent": {
+					"columns": ["parent_id"],
+					"references": {
+					"table": "lc_categories",
+					"columns": ["id"],
+					"on_update": "CASCADE",
+					"on_delete": "RESTRICT"
+					}
+				}
+			},
+			"check_constraints": {
+				"chk_name": "JSON_VALID(name);",
+				"chk_short_description": "JSON_VALID(short_description);",
+				"chk_description": "JSON_VALID(description);",
+				"chk_h1_title": "JSON_VALID(h1_title);",
+				"chk_head_title": "JSON_VALID(head_title);",
+				"chk_meta_description": "JSON_VALID(meta_description);"
+			}
+		},
     "lc_categories_filters": {
       "columns": {
         "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
@@ -368,54 +299,6 @@
           "references": {
             "table": "lc_attribute_groups",
             "columns": ["id"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        }
-      }
-    },
-    "lc_categories_info": {
-      "columns": {
-        "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-        "category_id": { "type": "INT", "length": 10, "unsigned": true },
-        "language_code": { "type": "CHAR", "length": 2 },
-        "name": { "type": "VARCHAR", "length": 128, "default": "''" },
-        "short_description": { "type": "VARCHAR", "length": 255, "default": "''" },
-        "description": { "type": "TEXT", "default": "''" },
-        "synonyms": { "type": "VARCHAR", "length": 256, "default": "''" },
-        "head_title": { "type": "VARCHAR", "length": 128, "default": "''" },
-        "h1_title": { "type": "VARCHAR", "length": 128, "default": "''" },
-        "meta_description": { "type": "VARCHAR", "length": 512, "default": "''" }
-      },
-      "primary_key": ["id"],
-      "unique_keys": {
-        "category": ["category_id", "language_code"]
-      },
-      "keys": {
-        "category_id": ["category_id"],
-        "language_code": ["language_code"]
-      },
-      "fulltext_keys": {
-        "name": ["name"],
-        "short_description": ["short_description"],
-        "description": ["description"],
-        "synonyms": ["synonyms"]
-      },
-      "foreign_keys": {
-        "category_info_to_category": {
-          "columns": ["category_id"],
-          "references": {
-            "table": "lc_categories",
-            "columns": ["id"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        },
-        "category_info_to_language": {
-          "columns": ["language_code"],
-          "references": {
-            "table": "lc_languages",
-            "columns": ["code"],
             "on_update": "NO ACTION",
             "on_delete": "CASCADE"
           }
@@ -551,47 +434,12 @@
     "lc_delivery_statuses": {
       "columns": {
         "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"name": { "type": "TEXT", "default": "'{}'" },
+				"description": { "type": "TEXT", "default": "'{}'" },
         "date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
         "date_created": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
       },
       "primary_key": ["id"]
-    },
-    "lc_delivery_statuses_info": {
-      "columns": {
-        "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-        "delivery_status_id": { "type": "INT", "length": 10, "unsigned": true },
-        "language_code": { "type": "CHAR", "length": 2 },
-        "name": { "type": "VARCHAR", "length": 64, "default": "''" },
-        "description": { "type": "VARCHAR", "length": 255, "default": "''" }
-      },
-      "primary_key": ["id"],
-      "unique_keys": {
-        "delivery_status": ["delivery_status_id", "language_code"]
-      },
-      "keys": {
-        "delivery_status_id": ["delivery_status_id"],
-        "language_code": ["language_code"]
-      },
-      "foreign_keys": {
-        "delivery_status_info_to_delivery_status": {
-          "columns": ["delivery_status_id"],
-          "references": {
-            "table": "lc_delivery_statuses",
-            "columns": ["id"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        },
-        "delivery_status_info_to_language": {
-          "columns": ["language_code"],
-          "references": {
-            "table": "lc_languages",
-            "columns": ["code"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        }
-      }
     },
     "lc_emails": {
       "columns": {
@@ -906,6 +754,10 @@
         "hidden": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
         "icon": { "type": "VARCHAR", "length": 24, "default": "''" },
         "color": { "type": "VARCHAR", "length": 7, "default": "''" },
+        "name": { "type": "VARCHAR", "length": 64, "default": "''" },
+        "description": { "type": "TEXT", "default": "'{}'" },
+        "email_subject": { "type": "TEXT", "default": "'{}'" },
+        "email_message": { "type": "MEDIUMTEXT", "default": "'{}'" },
         "is_sale": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
         "is_archived": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
         "is_trackable": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
@@ -919,53 +771,24 @@
       "keys": {
         "is_sale": ["is_sale"],
         "is_archived": ["is_archived"]
-      }
-    },
-    "lc_order_statuses_info": {
-      "columns": {
-        "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-        "order_status_id": { "type": "INT", "length": 10, "unsigned": true },
-        "language_code": { "type": "CHAR", "length": 2 },
-        "name": { "type": "VARCHAR", "length": 64, "default": "''" },
-        "description": { "type": "VARCHAR", "length": 255, "default": "''" },
-        "email_subject": { "type": "VARCHAR", "length": 128, "default": "''" },
-        "email_message": { "type": "TEXT", "default": "''" }
       },
-      "primary_key": ["id"],
-      "unique_keys": {
-        "order_status_info": ["order_status_id", "language_code"]
-      },
-      "keys": {
-        "order_status_id": ["order_status_id"],
-        "language_code": ["language_code"]
-      },
-      "foreign_keys": {
-        "order_status_info_to_order": {
-          "columns": ["order_status_id"],
-          "references": {
-            "table": "lc_order_statuses",
-            "columns": ["id"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        },
-        "order_status_info_to_language": {
-          "columns": ["language_code"],
-          "references": {
-            "table": "lc_languages",
-            "columns": ["code"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        }
-      }
+			"check_constraints": {
+				"chk_name": "JSON_VALID(name);",
+				"chk_description": "JSON_VALID(description);",
+				"chk_email_subject": "JSON_VALID(email_subject);",
+				"chk_email_message": "JSON_VALID(email_message);"
+			}
     },
     "lc_pages": {
       "columns": {
         "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
         "parent_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
-        "status": { "type": "TINYINT", "length": 1, "default": 0 },
         "dock": { "type": "VARCHAR", "length": 64, "default": "''" },
+        "status": { "type": "TINYINT", "length": 1, "default": 0 },
+        "title": { "type": "TEXT", "default": "'{}'" },
+        "content": { "type": "MEDIUMTEXT", "default": "'{}'" },
+        "head_title": { "type": "TEXT", "default": "'{}'" },
+        "meta_description": { "type": "TEXT", "default": "'{}'" },
         "priority": { "type": "INT", "length": 11, "default": 0 },
         "date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
         "date_created": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
@@ -975,46 +798,13 @@
         "status": ["status"],
         "parent_id": ["parent_id"],
         "dock": ["dock"]
-      }
-    },
-    "lc_pages_info": {
-      "columns": {
-        "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-        "page_id": { "type": "INT", "length": 10, "unsigned": true },
-        "language_code": { "type": "CHAR", "length": 2 },
-        "title": { "type": "VARCHAR", "length": 255, "default": "''" },
-        "content": { "type": "MEDIUMTEXT", "default": "''" },
-        "head_title": { "type": "VARCHAR", "length": 128, "default": "''" },
-        "meta_description": { "type": "VARCHAR", "length": 512, "default": "''" }
       },
-      "primary_key": ["id"],
-      "unique_keys": {
-        "page_info": ["page_id", "language_code"]
-      },
-      "keys": {
-        "page_id": ["page_id"],
-        "language_code": ["language_code"]
-      },
-      "foreign_keys": {
-        "page_info_to_page": {
-          "columns": ["page_id"],
-          "references": {
-            "table": "lc_pages",
-            "columns": ["id"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        },
-        "page_info_to_language": {
-          "columns": ["language_code"],
-          "references": {
-            "table": "lc_languages",
-            "columns": ["code"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        }
-      }
+			"check_constraints": {
+				"chk_title": "JSON_VALID(title);",
+				"chk_content": "JSON_VALID(content);",
+				"chk_head_title": "JSON_VALID(head_title);",
+				"chk_meta_description": "JSON_VALID(meta_description);"
+			}
     },
     "lc_products": {
       "columns": {
@@ -1031,25 +821,22 @@
         "mpn": { "type": "VARCHAR", "length": 32, "default": "''" },
         "gtin": { "type": "VARCHAR", "length": 32, "default": "''" },
         "taric": { "type": "VARCHAR", "length": 16, "default": "''" },
+				"name": { "type": "TEXT", "default": "'{}'" },
+				"short_description": { "type": "TEXT", "default": "'{}'" },
+				"description": { "type": "MEDIUMTEXT", "default": "'{}'" },
+				"technical_data": { "type": "TEXT", "default": "'{}'" },
+				"head_title": { "type": "TEXT", "default": "'{}'" },
+				"meta_description": { "type": "TEXT", "default": "'{}'" },
+				"synonyms": { "type": "TEXT", "default": "'{}'" },
         "keywords": { "type": "VARCHAR", "length": 255, "default": "''" },
         "quantity": { "type": "FLOAT", "length": "10,4", "default": 0.0000 },
         "quantity_min": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 1.0000 },
         "quantity_max": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
         "quantity_step": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
         "quantity_unit_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
-        "weight": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0 },
-        "weight_unit": { "type": "VARCHAR", "length": 2, "default": "''" },
-        "length": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0 },
-        "width": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0 },
-        "height": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0 },
-        "length_unit": { "type": "VARCHAR", "length": 2, "default": "''" },
-        "backordered": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
         "recommended_price": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
         "tax_class_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
         "image": { "type": "VARCHAR", "length": 255, "default": "''" },
-        "file": { "type": "VARCHAR", "length": 128, "default": "''" },
-        "filename": { "type": "VARCHAR", "length": 128, "default": "''" },
-        "mime_type": { "type": "VARCHAR", "length": 32, "default": "''" },
         "autofill_technical_data": { "type": "TINYINT", "length": 1, "default": 0 },
         "views": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
         "purchases": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
@@ -1076,7 +863,21 @@
         "date_valid_to": ["date_valid_to"],
         "purchases": ["purchases"],
         "views": ["views"]
-      }
+      },
+			"fulltext_keys": {
+				"name": ["name"],
+				"short_description": ["short_description"],
+				"description": ["description"]
+			},
+			"check_constraints": {
+				"chk_name": "JSON_VALID(name);",
+				"chk_short_description": "JSON_VALID(short_description);",
+				"chk_description": "JSON_VALID(description);",
+				"chk_technical_data": "JSON_VALID(technical_data);",
+				"chk_head_title": "JSON_VALID(head_title);",
+				"chk_meta_description": "JSON_VALID(meta_description);",
+				"chk_synonyms": "JSON_VALID(synonyms);"
+			}
     },
     "lc_products_attributes": {
       "columns": {
@@ -1238,52 +1039,6 @@
         }
       }
     },
-    "lc_products_info": {
-      "columns": {
-        "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-        "product_id": { "type": "INT", "length": 10, "unsigned": true },
-        "language_code": { "type": "CHAR", "length": 2 },
-        "name": { "type": "VARCHAR", "length": 128, "default": "''" },
-        "short_description": { "type": "VARCHAR", "length": 255, "default": "''" },
-        "description": { "type": "TEXT", "default": "''" },
-        "technical_data": { "type": "TEXT", "default": "''" },
-        "head_title": { "type": "VARCHAR", "length": 128, "default": "''" },
-        "meta_description": { "type": "VARCHAR", "length": 512, "default": "''" }
-      },
-      "primary_key": ["id"],
-      "unique_keys": {
-        "product_info": ["product_id", "language_code"]
-      },
-      "keys": {
-        "product_id": ["product_id"],
-        "language_code": ["language_code"]
-      },
-      "fulltext_keys": {
-        "name": ["name"],
-        "short_description": ["short_description"],
-        "description": ["description"]
-      },
-      "foreign_keys": {
-        "product_info_to_product": {
-          "columns": ["product_id"],
-          "references": {
-            "table": "lc_products",
-            "columns": ["id"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        },
-        "product_info_to_language": {
-          "columns": ["language_code"],
-          "references": {
-            "table": "lc_languages",
-            "columns": ["code"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        }
-      }
-    },
     "lc_products_prices": {
       "columns": {
         "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
@@ -1386,50 +1141,19 @@
     "lc_quantity_units": {
       "columns": {
         "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+        "name": { "type": "TEXT", "default": "'{}'" },
+        "description": { "type": "TEXT", "default": "'{}'" },
         "decimals": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 2 },
         "separate": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
         "priority": { "type": "INT", "length": 11, "default": 0 },
         "date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
         "date_created": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
       },
-      "primary_key": ["id"]
-    },
-    "lc_quantity_units_info": {
-      "columns": {
-        "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-        "quantity_unit_id": { "type": "INT", "length": 10, "unsigned": true },
-        "language_code": { "type": "CHAR", "length": 2 },
-        "name": { "type": "VARCHAR", "length": 32, "default": "''" },
-        "description": { "type": "VARCHAR", "length": 512, "nullable": true }
-      },
       "primary_key": ["id"],
-      "unique_keys": {
-        "quantity_unit_info": ["quantity_unit_id", "language_code"]
-      },
-      "keys": {
-        "quantity_unit_id": ["quantity_unit_id"],
-        "language_code": ["language_code"]
-      },
-      "foreign_keys": {
-        "quantity_unit_info_to_quantity_unit": {
-          "columns": ["quantity_unit_id"],
-          "references": {
-            "table": "lc_quantity_units",
-            "columns": ["id"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        },
-        "quantity_unit_info_to_language": {
-          "columns": ["language_code"],
-          "references": {
-            "table": "lc_languages",
-            "columns": ["code"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        }
-      }
+			"check_constraints": {
+				"chk_name": "JSON_VALID(name);",
+				"chk_description": "JSON_VALID(description);",
+			}
     },
     "lc_redirects": {
       "columns": {
@@ -1516,6 +1240,8 @@
         "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
         "hidden": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
         "orderable": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
+        "name": { "type": "TEXT", "default": "'{}'" },
+        "description": { "type": "TEXT", "default": "'{}'" },
         "date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
         "date_created": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
       },
@@ -1525,48 +1251,12 @@
         "orderable": ["orderable"]
       }
     },
-    "lc_sold_out_statuses_info": {
-      "columns": {
-        "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-        "sold_out_status_id": { "type": "INT", "length": 10, "unsigned": true },
-        "language_code": { "type": "CHAR", "length": 2 },
-        "name": { "type": "VARCHAR", "length": 64, "default": "''" },
-        "description": { "type": "VARCHAR", "length": 255, "default": "''" }
-      },
-      "primary_key": ["id"],
-      "unique_keys": {
-        "sold_out_status_info": ["sold_out_status_id", "language_code"]
-      },
-      "keys": {
-        "sold_out_status_id": ["sold_out_status_id"],
-        "language_code": ["language_code"]
-      },
-      "foreign_keys": {
-        "sold_out_status_info_to_sold_out_status": {
-          "columns": ["sold_out_status_id"],
-          "references": {
-            "table": "lc_sold_out_statuses",
-            "columns": ["id"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        },
-        "sold_out_status_info_to_language": {
-          "columns": ["language_code"],
-          "references": {
-            "table": "lc_languages",
-            "columns": ["code"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        }
-      }
-    },
     "lc_stock_items": {
       "columns": {
         "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
         "brand_id": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
         "supplier_id": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
+        "name": { "type": "TEXT", "default": "'{}'" },
         "sku": { "type": "VARCHAR", "length": 32, "default": "''" },
         "mpn": { "type": "VARCHAR", "length": 32, "default": "''" },
         "gtin": { "type": "VARCHAR", "length": 32, "default": "''" },
@@ -1599,43 +1289,10 @@
         "product_id": ["product_id"],
         "brand_id": ["brand_id"],
         "supplier_id": ["supplier_id"]
-      }
-    },
-    "lc_stock_items_info": {
-      "columns": {
-        "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-        "stock_item_id": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
-        "language_code": { "type": "VARCHAR", "length": 2, "default": "''" },
-        "name": { "type": "VARCHAR", "length": 128, "default": "''" }
       },
-      "primary_key": ["id"],
-      "keys": {
-        "stock_option_id": ["stock_item_id"],
-        "language_code": ["language_code"]
-      },
-      "fulltext_keys": {
-        "name": ["name"]
-      },
-      "foreign_keys": {
-        "stock_item_info_to_language": {
-          "columns": ["language_code"],
-          "references": {
-            "table": "lc_languages",
-            "columns": ["code"],
-            "on_update": "NO ACTION",
-            "on_delete": "NO ACTION"
-          }
-        },
-        "stock_item_info_to_stock_item": {
-          "columns": ["stock_item_id"],
-          "references": {
-            "table": "lc_stock_items",
-            "columns": ["id"],
-            "on_update": "NO ACTION",
-            "on_delete": "CASCADE"
-          }
-        }
-      }
+			"check_constraints": {
+				"chk_name": "JSON_VALID(name);"
+			}
     },
     "lc_stock_items_references": {
       "columns": {
@@ -1799,70 +1456,42 @@
       "columns": {
         "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
         "status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
-        "privacy_classes": { "type": "VARCHAR", "length": 64, "default": "''", "collation": "utf8mb4_swedish_ci" },
-        "category": { "type": "VARCHAR", "length": 64, "default": "''", "collation": "utf8mb4_swedish_ci" },
-        "name": { "type": "VARCHAR", "length": 64, "default": "''", "collation": "utf8mb4_swedish_ci" },
-        "homepage": { "type": "VARCHAR", "length": 256, "default": "''", "collation": "utf8mb4_swedish_ci" },
-        "cookie_policy_url": { "type": "VARCHAR", "length": 256, "default": "''", "collation": "utf8mb4_swedish_ci" },
-        "privacy_policy_url": { "type": "VARCHAR", "length": 256, "default": "''", "collation": "utf8mb4_swedish_ci" },
-        "opt_out_url": { "type": "VARCHAR", "length": 256, "default": "''", "collation": "utf8mb4_swedish_ci" },
-        "do_not_sell_url": { "type": "VARCHAR", "length": 256, "default": "''", "collation": "utf8mb4_swedish_ci" },
-        "collected_data": { "type": "VARCHAR", "length": 256, "default": "''", "collation": "utf8mb4_swedish_ci" },
-        "country_code": { "type": "CHAR", "length": 2, "nullable": true, "collation": "utf8mb4_swedish_ci" },
+        "privacy_classes": { "type": "VARCHAR", "length": 64, "default": "''" },
+        "category": { "type": "VARCHAR", "length": 64, "default": "''" },
+        "name": { "type": "VARCHAR", "length": 64, "default": "''" },
+        "description": { "type": "MEDIUMTEXT", "default": "'{}'" },
+        "collected_data": { "type": "TEXT", "default": "'{}'" },
+        "purposes": { "type": "TEXT", "default": "'{}'" },
+        "homepage": { "type": "VARCHAR", "length": 256, "default": "''" },
+        "cookie_policy_url": { "type": "VARCHAR", "length": 256, "default": "''" },
+        "privacy_policy_url": { "type": "VARCHAR", "length": 256, "default": "''" },
+        "opt_out_url": { "type": "VARCHAR", "length": 256, "default": "''" },
+        "do_not_sell_url": { "type": "VARCHAR", "length": 256, "default": "''" },
+        "country_code": { "type": "CHAR", "length": 2, "nullable": true },
         "date_updated": { "type": "TIMESTAMP", "default": "current_timestamp()" },
         "date_created": { "type": "TIMESTAMP", "default": "current_timestamp()" }
       },
       "primary_key": ["id"],
       "keys": {
-        "status": ["status"],
+				"status": ["status"],
         "country_code": ["country_code"]
       },
       "foreign_keys": {
-        "third_party_to_country": {
-          "columns": ["country_code"],
+				"third_party_to_country": {
+					"columns": ["country_code"],
           "references": {
-            "table": "lc_countries",
+						"table": "lc_countries",
             "columns": ["iso_code_2"],
             "on_update": "CASCADE",
             "on_delete": "SET NULL"
           }
         }
-      }
-    },
-    "lc_third_parties_info": {
-      "columns": {
-        "id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-        "third_party_id": { "type": "INT", "length": 10, "unsigned": true },
-        "language_code": { "type": "VARCHAR", "length": 2, "default": "''", "collation": "utf8mb4_swedish_ci" },
-        "collected_data": { "type": "VARCHAR", "length": 512, "collation": "utf8mb4_swedish_ci" },
-        "description": { "type": "VARCHAR", "length": 4096, "collation": "utf8mb4_swedish_ci" },
-        "purposes": { "type": "VARCHAR", "length": 4096, "collation": "utf8mb4_swedish_ci" }
       },
-      "primary_key": ["id"],
-      "keys": {
-        "third_party_id": ["third_party_id"],
-        "language_code": ["language_code"]
-      },
-      "foreign_keys": {
-        "third_party_info_to_language": {
-          "columns": ["language_code"],
-          "references": {
-            "table": "lc_languages",
-            "columns": ["code"],
-            "on_update": "CASCADE",
-            "on_delete": "CASCADE"
-          }
-        },
-        "third_party_info_to_third_party": {
-          "columns": ["third_party_id"],
-          "references": {
-            "table": "lc_third_parties",
-            "columns": ["id"],
-            "on_update": "CASCADE",
-            "on_delete": "CASCADE"
-          }
-        }
-      }
+			"check_constraints": {
+				"chk_description": "JSON_VALID(description);",
+				"chk_collected_data": "JSON_VALID(collected_data);",
+				"chk_purposes": "JSON_VALID(purposes);"
+			}
     },
     "lc_translations": {
       "columns": {

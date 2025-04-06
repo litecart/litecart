@@ -1152,8 +1152,9 @@
 		}
 
 		$options = database::query(
-			"select ag.id, agi.name from ". DB_TABLE_PREFIX ."attribute_groups ag
-			left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
+			"select ag.id,
+				json_value(ag.name, '$.". database::input(language::$selected['code']) ."') as name
+			from ". DB_TABLE_PREFIX ."attribute_groups ag
 			order by name;"
 		)->fetch_all(function($group){
 			return [$group['id'], $group['name']];
@@ -1180,8 +1181,8 @@
 		}
 
 		$options = database::query(
-			"select av.id, avi.name from ". DB_TABLE_PREFIX ."attribute_values av
-			left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id and avi.language_code = '". database::input(language::$selected['code']) ."')
+			"select av.id, json_value(av.value, '$.". database::input(language::$selected['code']) ."') as name
+			from ". DB_TABLE_PREFIX ."attribute_values av
 			where group_id = ". (int)$group_id ."
 			order by name;"
 		)->fetch_all(function($value){
@@ -1297,8 +1298,8 @@
 		}
 
 		database::query(
-			"select c.id, ci.name from ". DB_TABLE_PREFIX ."categories c
-			left join ". DB_TABLE_PREFIX ."categories_info ci on (c.id = ci.category_id and ci.language_code = '". database::input(language::$selected['code']) ."')
+			"select c.id, json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name
+			from ". DB_TABLE_PREFIX ."categories c
 			where c.id in ('". implode("', '", database::input($input)) ."');"
 		)->each(function($category) use (&$html, $name) {
 
@@ -1529,9 +1530,9 @@
 		}
 
 		$options = database::query(
-			"select ds.id, dsi.name , dsi.description from ". DB_TABLE_PREFIX ."delivery_statuses ds
-			left join ". DB_TABLE_PREFIX ."delivery_statuses_info dsi on (dsi.delivery_status_id = ds.id and dsi.language_code = '". database::input(language::$selected['code']) ."')
-			order by dsi.name asc;"
+			"select ds.id, json_value(ds.name, '$.name') as name, json_value(ds.description, '$.description') as description
+			from ". DB_TABLE_PREFIX ."delivery_statuses ds
+			order by name asc;"
 		)->fetch_all(function($row) {
 			return [$row['id'], $row['name'], 'title="'. functions::escape_attr($row['description']) .'"'];
 		});
@@ -1880,9 +1881,9 @@
 		}
 
 		$options = database::query(
-			"select os.id, os.icon, os.color, osi.name from ". DB_TABLE_PREFIX ."order_statuses os
-			left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = os.id and osi.language_code = '". database::input(language::$selected['code']) ."')
-			order by field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, osi.name asc;"
+			"select os.id, os.icon, os.color, json_value(os.name, '$.". database::input(language::$selected['code']) ."') as name
+			from ". DB_TABLE_PREFIX ."order_statuses os
+			order by field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, name asc;"
 		)->fetch_all(function($row) {
 			return [$row['id'], functions::draw_fonticon($row['icon'], 'style="color: '. $row['color'] .';"') .' '. $row['name'], 'data-icon="'. functions::escape_attr($row['icon']) .'" data-color="'. functions::escape_attr($row['color']) .'"'];
 		});
@@ -1910,10 +1911,10 @@
 			}
 
 			database::query(
-				"select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
-				left join ". DB_TABLE_PREFIX ."pages_info pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+				"select p.id, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
+				from ". DB_TABLE_PREFIX ."pages p
 				where p.parent_id = ". (int)$parent_id ."
-				order by p.priority asc, pi.title asc;"
+				order by p.priority asc, title asc;"
 			)->each(function($page) use(&$options, $iterator, $level) {
 
 				$options[] = [$page['id'], str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $page['title']];
@@ -1953,10 +1954,10 @@
 			$options = [];
 
 			database::query(
-				"select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
-				left join ". DB_TABLE_PREFIX ."pages_info pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+				"select p.id, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
+				from ". DB_TABLE_PREFIX ."pages p
 				where ". ($parent_id ? "p.parent_id = ". (int)$parent_id : "dock = '". database::input($dock) ."' and parent_id is null") ."
-				order by p.priority asc, pi.title asc;"
+				order by p.priority asc, title asc;"
 			)->each(function($page) use(&$options, $iterator, $dock, $level) {
 
 				$options[] = [$dock.':'.$page['id'], str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $page['title']];
@@ -2048,11 +2049,10 @@
 
 		if ($input) {
 			$product = database::query(
-				"select p.id, p.code, pp.price, pi.name
+				"select p.id, p.code, pp.price, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name
 				from ". DB_TABLE_PREFIX ."products p
-				left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 				left join (
-					select product_id, if(JSON_VALUE(price, '$.". database::input(currency::$selected['code']) ."'), JSON_VALUE(price, '$.". database::input(currency::$selected['code']) ."') * ". (float)currency::$selected['value'] .", JSON_VALUE(price, '$.". database::input(settings::get('store_currency_code')) ."')) as price
+					select product_id, if(json_value(price, '$.". database::input(currency::$selected['code']) ."'), json_value(price, '$.". database::input(currency::$selected['code']) ."') * ". (float)currency::$selected['value'] .", json_value(price, '$.". database::input(settings::get('store_currency_code')) ."')) as price
 					from ". DB_TABLE_PREFIX ."products_prices
 				) pp on (pp.product_id = p.id)
 				where p.id = ". (int)$input ."
@@ -2087,11 +2087,11 @@
 		}
 
 		$options = database::query(
-			"select p.*, pi.name from ". DB_TABLE_PREFIX ."products p
-			left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
-			order by pi.name"
+			"select p.id, p.code, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name
+			from ". DB_TABLE_PREFIX ."products p
+			order by name"
 		)->fetch_all(function($product) {
-			return [$product['id'], $product['name'] .' &mdash; '. $product['sku'] . ' ['. (float)$product['quantity'] .']'];
+			return [$product['id'], $product['name'] .' &mdash; '. $product['code']];
 		});
 
 		if (preg_match('#\[\]$#', $name)) {
@@ -2176,9 +2176,11 @@
 		}
 
 		$options = database::query(
-			"select qu.*, qui.name, qui.description from ". DB_TABLE_PREFIX ."quantity_units qu
-			left join ". DB_TABLE_PREFIX ."quantity_units_info qui on (qui.quantity_unit_id = qu.id and language_code = '". database::input(language::$selected['code']) ."')
-			order by qu.priority, qui.name asc;"
+			"select qu.*,
+				json_value(qu.name, '$.". database::input(language::$selected['code']) ."') as name,
+				json_value(qu.description, '$.". database::input(language::$selected['code']) ."') as description
+			from ". DB_TABLE_PREFIX ."quantity_units qu
+			order by qu.priority, name asc;"
 		)->fetch_all(function($quantity_unit) {
 			return [$quantity_unit['id'], $quantity_unit['name'], 'data-separate="'. (!empty($quantity_unit['separate']) ? 'true' : 'false') .'" data-decimals="'. (int)$quantity_unit['decimals'] .'" title="'. functions::escape_attr($quantity_unit['description']) .'"'];
 		});
@@ -2231,9 +2233,11 @@
 		}
 
 		$options = database::query(
-			"select sos.id, sosi.name, sosi.description from ". DB_TABLE_PREFIX ."sold_out_statuses sos
-			left join ". DB_TABLE_PREFIX ."sold_out_statuses_info sosi on (sosi.sold_out_status_id = sos.id and sosi.language_code = '". database::input(language::$selected['code']) ."')
-			order by sosi.name asc;"
+			"select sos.id,
+				json_value(sos.name, '$.". database::input(language::$selected['code']) ."') as name,
+				json_value(sos.description, '$.". database::input(language::$selected['code']) ."') as description
+			from ". DB_TABLE_PREFIX ."sold_out_statuses sos
+			order by name asc;"
 		)->fetch_all(function($row) {
 			return [$row['id'], $row['name'], 'title="'. functions::escape_attr($row['description']) .'"'];
 		});
@@ -2258,9 +2262,8 @@
 
 		if ($input) {
 			$item = database::query(
-				"select si.id, si.sku sii.name
+				"select si.id, si.sku, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name
 				from ". DB_TABLE_PREFIX ."stock_items si
-				left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = si.id and sii.language_code = '". database::input(language::$selected['code']) ."')
 				where p.id = ". (int)$input ."
 				limit 1;"
 			)->fetch();
@@ -2297,11 +2300,10 @@
 		}
 
 		$items = database::query(
-			"select si.id, si.sku, si.quantity, sii.name
+			"select si.id, si.sku, si.quantity, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name
 			from ". DB_TABLE_PREFIX ."stock_items si
-			left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
 			where si.id in ('". implode("', '", database::input($input)) ."')
-			order by sii.name"
+			order by name"
 		)->fetch_all();
 
 		$uid = uniqid();

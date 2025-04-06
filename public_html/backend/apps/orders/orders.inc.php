@@ -208,7 +208,7 @@
 			break;
 
 		case 'order_status':
-			$sql_sort = "o.starred desc, field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'dispatched', 'in_transit', 'completed', 'delivered', 'returning', 'returned', 'cancelled'), osi.name";
+			$sql_sort = "o.starred desc, field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'dispatched', 'in_transit', 'completed', 'delivered', 'returning', 'returned', 'cancelled'), name";
 			break;
 
 		case 'payment_method':
@@ -240,10 +240,10 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$orders = database::query(
-		"select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name
+		"select o.*, os.color as order_status_color, os.icon as order_status_icon,
+			json_value(os.name, '$.". database::input(language::$selected['code']) ."') as order_status_name
 		from ". DB_TABLE_PREFIX ."orders o
 		left join ". DB_TABLE_PREFIX ."order_statuses os on (os.id = o.order_status_id)
-		left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". database::input(language::$selected['code'])."')
 		where o.id
 		". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
 		". fallback($sql_where_order_status) ."
@@ -321,14 +321,14 @@
 	];
 
 	database::query(
-		"select os.*, osi.name, o.num_orders from ". DB_TABLE_PREFIX ."order_statuses os
-		left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and language_code = '". database::input(language::$selected['code']) ."')
+		"select os.*, json_value(os.name, '$.". database::input(language::$selected['code']) ."') as name, o.num_orders
+		from ". DB_TABLE_PREFIX ."order_statuses os
 		left join (
 			select order_status_id, count(id) as num_orders
 			from ". DB_TABLE_PREFIX ."orders
 			group by order_status_id
 		) o on (o.order_status_id = os.id)
-		order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), osi.name asc;"
+		order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), name asc;"
 	)->each(function($order_status) use (&$order_status_options) {
 		$order_status_options[1]['options'][$order_status['id']] = $order_status['name'] .' ('. language::number_format($order_status['num_orders']) .')';
 	});

@@ -23,13 +23,6 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
-			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."brands_info;"
-			)->each(function($field) {
-				if (in_array($field['Field'], ['id', 'brand_id', 'language_code'])) return;
-				$this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
-			});
-
 			$this->previous = $this->data;
 		}
 
@@ -53,15 +46,16 @@
 				throw new Exception('Could not find brand (ID: '. (int)$id .') in database.');
 			}
 
-			database::query(
-				"select * from ". DB_TABLE_PREFIX ."brands_info
-				where brand_id = ". (int)$id .";"
-			)->each(function($info){
-				foreach ($info as $key => $value) {
-					if (in_array($key, ['id', 'brand_id', 'language_code'])) continue;
-					$this->data[$key][$info['language_code']] = $value;
-				}
-			});
+			foreach ([
+				'short_description',
+				'description',
+				'head_title',
+				'h1_title',
+				'meta_description',
+				'link',
+			] as $column) {
+				$this->data[$column] = json_decode($this->data[$column], true) ?: [];
+			}
 
 			$this->previous = $this->data;
 		}
@@ -89,44 +83,17 @@
 					featured = '". database::input($this->data['featured']) ."',
 					code = '". database::input($this->data['code']) ."',
 					name = '". database::input($this->data['name']) ."',
+					short_description = '". database::input(json_encode($this->data['short_description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					description = '". database::input(json_encode($this->data['description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					head_title = '". database::input(json_encode($this->data['head_title'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					h1_title = '". database::input(json_encode($this->data['h1_title'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					meta_description = '". database::input(json_encode($this->data['meta_description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					link = '". database::input(json_encode($this->data['link'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."'
 					image = '". database::input($this->data['image']) ."',
 					keywords = '". database::input($this->data['keywords']) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
-
-			foreach (array_keys(language::$languages) as $language_code) {
-
-				$info = database::query(
-					"select * from ". DB_TABLE_PREFIX ."brands_info
-					where brand_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
-					limit 1;"
-				, $this->data)->fetch_all();
-
-				if (!$info) {
-					database::query(
-						"insert into ". DB_TABLE_PREFIX ."brands_info
-						(brand_id, language_code)
-						values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
-					);
-
-					$info['id'] = database::insert_id();
-				}
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."brands_info
-					set short_description = '". database::input(fallback($this->data['short_description'][$language_code])) ."',
-						description = '". database::input(fallback($this->data['description'][$language_code])) ."',
-						head_title = '". database::input(fallback($this->data['head_title'][$language_code])) ."',
-						h1_title = '". database::input(fallback($this->data['h1_title'][$language_code])) ."',
-						meta_description = '". database::input(fallback($this->data['meta_description'][$language_code])) ."',
-						link = '". database::input(fallback($this->data['link'][$language_code])) ."'
-					where brand_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
-					limit 1;"
-				);
-			}
 
 			$this->previous = $this->data;
 
@@ -212,9 +179,8 @@
 			}
 
 			database::query(
-				"delete b, bi
+				"delete b
 				from ". DB_TABLE_PREFIX ."brands b
-				left join ". DB_TABLE_PREFIX ."brands_info bi on (bi.brand_id = b.id)
 				where b.id = ". (int)$this->data['id'] .";"
 			);
 

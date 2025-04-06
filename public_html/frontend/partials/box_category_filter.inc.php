@@ -44,16 +44,15 @@
 	if (!empty(route::$selected['route']) && route::$selected['route'] == 'f:category') {
 
 		database::query(
-			"select cf.attribute_group_id as id, agi.name as name, cf.select_multiple from ". DB_TABLE_PREFIX ."categories_filters cf
-			left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = cf.attribute_group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
+			"select cf.attribute_group_id as id, cf.select_multiple, json_value(ag.name, '$.". database::input(language::$selected['code']) ."') as name
+			from ". DB_TABLE_PREFIX ."categories_filters cf
 			where category_id = ". (int)$_GET['category_id'] ."
 			order by priority;"
 		)->each(function($attribute) use (&$box_category_filter) {
 
 			$attribute['values'] = database::query(
-				"select distinct cf.value_id as id, if(cf.custom_value != '', cf.custom_value, avi.name) as value
+				"select distinct cf.value_id as id, if(cf.custom_value != '', cf.custom_value, json_value(av.name, '$.". database::input(language::$selected['code']) ."')) as value
 				from ". DB_TABLE_PREFIX ."products_attributes cf
-				left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = cf.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
 				where product_id in (
 					select product_id from ". DB_TABLE_PREFIX ."products_to_categories
 					where category_id = ". (int)$_GET['category_id'] ."

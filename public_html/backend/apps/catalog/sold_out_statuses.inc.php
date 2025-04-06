@@ -11,9 +11,9 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$sold_out_statuses = database::query(
-		"select sos.id, sos.orderable, sosi.name from ". DB_TABLE_PREFIX ."sold_out_statuses sos
-		left join ". DB_TABLE_PREFIX ."sold_out_statuses_info sosi on (sos.id = sosi.sold_out_status_id and sosi.language_code = '". database::input(language::$selected['code']) ."')
-		order by sosi.name asc;"
+		"select sos.id, sos.orderable, json_value(sos.name, '$.". database::input(language::$selected['code']) ."') as name
+		from ". DB_TABLE_PREFIX ."sold_out_statuses sos
+		order by name asc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>

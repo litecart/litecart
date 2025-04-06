@@ -280,14 +280,17 @@
 			"select id from ". DB_TABLE_PREFIX ."products
 			where id = '". database::input($_GET['query']) ."'
 			or find_in_set('". database::input($_GET['query']) ."', keywords)
-			or id in (
-				select product_id from ". DB_TABLE_PREFIX ."products_info
-				where name like '%". database::input($_GET['query']) ."%'
-				or short_description like '%". database::input($_GET['query']) ."%'
-				or description like '%". database::input($_GET['query']) ."%'
-				or match(short_description) against ('*". database::input_fulltext($_GET['query']) ."*')
-				or match(description) against ('*". database::input_fulltext($_GET['query']) ."*' in boolean mode)
-				or find_in_set('". database::input($_GET['query']) ."', synonyms)
+			or code regexp '". database::input($code_regex) ."'
+			or (
+				json_value(name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
+				or json_value(short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
+				or json_value(description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
+				or find_in_set('". database::input($_GET['query']) ."', json_value(synonyms, '$.". database::input(language::$selected['code']) ."'))
+			)
+			or (
+				match(json_value(name, '$.". database::input(language::$selected['code']) ."') against ('*". database::input_fulltext($_GET['query']) ."*')
+				or match(json_value(short_description, '$.". database::input(language::$selected['code']) ."') against ('*". database::input_fulltext($_GET['query']) ."*')
+				or match(json_value(description, '$.". database::input(language::$selected['code']) ."') against ('*". database::input_fulltext($_GET['query']) ."*')
 			)
 			or id in (
 				select product_id from ". DB_TABLE_PREFIX ."products_stock_options
@@ -311,12 +314,13 @@
 			"select distinct id from ". DB_TABLE_PREFIX ."categories
 			where id = '". database::input($_GET['query']) ."'
 			or find_in_set('". database::input($_GET['query']) ."', keywords)
-			or id in (
-				select category_id from ". DB_TABLE_PREFIX ."categories_info
-				where name like '%". database::input($_GET['query']) ."%'
-				or description like '%". database::input($_GET['query']) ."%'
-				or match(name) against ('*". database::input_fulltext($_GET['query']) ."*')
-				or match(description) against ('". database::input_fulltext($_GET['query']) ."' in boolean mode)
+			or (
+				json_value(name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
+				or json_value(short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
+			)
+			or (
+				match(json_value(name, '$.". database::input(language::$selected['code']) ."') against ('*". database::input_fulltext($_GET['query']) ."*')
+				or match(json_value(short_description, '$.". database::input(language::$selected['code']) ."') against ('*". database::input_fulltext($_GET['query']) ."*')
 			)
 			or id in (
 				select distinct category_id from ". DB_TABLE_PREFIX ."products_to_categories
@@ -426,11 +430,10 @@ table .icon-folder-open {
 		$output = '';
 
 		$category = database::query(
-			"select c.id, c.status, ci.name
+			"select c.id, c.status, json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name
 			from ". DB_TABLE_PREFIX ."categories c
-			left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
 			where c.id = ". (int)$category_id ."
-			order by c.priority asc, ci.name asc;"
+			order by c.priority asc, name asc;"
 		)->fetch();
 
 		$num_category_rows++;
@@ -488,12 +491,11 @@ table .icon-folder-open {
 
 				// Output subcategories
 				$subcategories = database::query(
-					"select c.id, c.status, ci.name
+					"select c.id, c.status, json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name
 					from ". DB_TABLE_PREFIX ."categories c
-					left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
 					where c.parent_id = ". (int)$category['id'] ."
 					". (!empty($_GET['query']) ? "and c.id in ('". implode("', '", database::input($matched_categories)) ."')" : "") ."
-					order by ci.name;"
+					order by name;"
 				)->fetch_all();
 
 				foreach ($subcategories as $subcategory) {
@@ -501,14 +503,18 @@ table .icon-folder-open {
 				}
 
 				$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
-					return "if(JSON_VALUE(price, '$.". database::input($currency['code']) ."') != 0, JSON_VALUE(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+					return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 				}, currency::$currencies)) .")";
 
 				// Output products
 				$products = database::query(
-					"select p.id, p.status, p.code, p.sold_out_status_id, p.image, pi.name, pp.price, pc.campaign_price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.date_valid_from, p.date_valid_to, ptc.category_id
+					"select p.id, p.status, p.code, p.sold_out_status_id, p.image, p.date_valid_from, p.date_valid_to,
+						json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
+						pp.price, pc.campaign_price, pso.num_stock_options, pso.quantity,
+						pso.quantity - oi.total_reserved as quantity_available, ptc.category_id
+
 					from ". DB_TABLE_PREFIX ."products p
-					left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+
 					left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.product_id = p.id)
 
 					left join (
@@ -559,7 +565,7 @@ table .icon-folder-open {
 					". (!empty($_GET['query']) ? "and p.id in ('". implode("', '", database::input($matched_products)) ."')" : "") ."
 
 					group by p.id
-					order by pi.name asc;"
+					order by name asc;"
 				)->fetch_all();
 
 				foreach ($products as $product) {

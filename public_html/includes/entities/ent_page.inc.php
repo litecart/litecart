@@ -23,13 +23,6 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
-			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."pages_info;"
-			)->each(function($field){
-				if (in_array($field['Field'], ['id', 'page_id', 'language_code'])) return;
-				$this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
-			});
-
 			$this->previous = $this->data;
 		}
 
@@ -53,15 +46,14 @@
 				throw new Exception('Could not find page (ID: '. (int)$id .') in database.');
 			}
 
-			database::query(
-				"select * from ". DB_TABLE_PREFIX ."pages_info
-				where page_id = ". (int)$this->data['id'] .";"
-			)->each(function($info){
-				foreach ($info as $key => $value) {
-					if (in_array($key, ['id', 'page_id', 'language_code'])) continue;
-					$this->data[$key][$info['language_code']] = $value;
-				}
-			});
+			foreach ([
+				'title',
+				'content',
+				'head_title',
+				'meta_description',
+			] as $column) {
+				$this->data[$column] = json_decode($this->data[$column], true) ?: [];
+			}
 
 			$this->previous = $this->data;
 		}
@@ -91,43 +83,15 @@
 				set status = ". (int)$this->data['status'] .",
 					parent_id = ". ($this->data['parent_id'] ? (int)$this->data['parent_id'] : "null") .",
 					dock = '". database::input($this->data['dock']) ."',
+					title = '". database::input(json_encode($this->data['title'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					content = '". database::input(json_encode($this->data['content'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					head_title = '". database::input(json_encode($this->data['head_title'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					meta_description = '". database::input(json_encode($this->data['meta_description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 					priority = ". (int)$this->data['priority'] .",
 					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
-
-			foreach (array_keys(language::$languages) as $language_code) {
-
-				$info = database::query(
-					"select * from ". DB_TABLE_PREFIX ."pages_info
-					where page_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
-					limit 1;"
-				)->fetch();
-
-				if (!$info) {
-					database::query(
-						"insert into ". DB_TABLE_PREFIX ."pages_info
-						(page_id, language_code)
-						values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
-					);
-
-					$info['id'] = database::insert_id();
-				}
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."pages_info
-					set title = '". database::input($this->data['title'][$language_code]) ."',
-						content = '". database::input($this->data['content'][$language_code], true) ."',
-						head_title = '". database::input($this->data['head_title'][$language_code]) ."',
-						meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
-					where id = ". (int)$info['id'] ."
-					and page_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
-					limit 1;"
-				);
-			}
 
 			$this->previous = $this->data;
 
@@ -137,9 +101,8 @@
 		public function delete() {
 
 			database::query(
-				"delete p, pi
+				"delete p
 				from ". DB_TABLE_PREFIX ."pages p
-				left join ". DB_TABLE_PREFIX ."pages_info pi on (pi.page_id = p.id)
 				where p.id = ". (int)$this->data['id'] .";"
 			);
 

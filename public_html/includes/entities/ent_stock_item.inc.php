@@ -23,13 +23,6 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
-			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."stock_items_info;"
-			)->each(function($field){
-				if (in_array($field['Field'], ['id', 'stock_item_id', 'language_code'])) return;
-				$this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
-			});
-
 			$this->data['quantity_reserved'] = 0;
 			$this->data['quantity_adjustment'] = 0;
 			$this->data['references'] = [];
@@ -58,15 +51,11 @@
 			}
 
 			// Info
-			database::query(
-				"select * from ". DB_TABLE_PREFIX ."stock_items_info
-				 where stock_item_id = ". (int)$this->data['id'] .";"
-			)->each(function($info){
-				foreach ($info as $key => $value) {
-					if (in_array($key, ['id', 'stock_item_id', 'language_code'])) continue;
-					$this->data[$key][$info['language_code']] = $value;
-				}
-			});
+			foreach ([
+				'name',
+			] as $column) {
+				$this->data[$column] = database::array_from_json($this->data[$column]);
+			}
 
 			// Reserved Quantity
 			$this->data['quantity_reserved'] = database::query(
@@ -95,11 +84,13 @@
 		public function save() {
 
 			if (!$this->data['id']) {
+
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."stock_items
 					(sku, mpn, gtin, date_created)
 					values ('". database::input($this->data['sku']) ."', '". database::input($this->data['mpn']) ."', '". database::input($this->data['gtin']) ."', '". ($this->data['date_created'] = date('c')) ."');"
 				);
+
 				$this->data['id'] = database::insert_id();
 			}
 
@@ -120,7 +111,8 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."stock_items
-				set sku = '". database::input(strtoupper($this->data['sku'])) ."',
+				set name = '". database::input(json_encode($this->data['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					sku = '". database::input(strtoupper($this->data['sku'])) ."',
 					mpn = '". database::input($this->data['mpn']) ."',
 					gtin = '". database::input($this->data['gtin']) ."',
 					backordered = ". (float)$this->data['backordered'] .",
@@ -137,36 +129,6 @@
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
-
-			foreach (array_keys(language::$languages) as $language_code) {
-
-				$info = database::query(
-					"select * from ". DB_TABLE_PREFIX ."stock_items_info
-					where stock_item_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
-					limit 1;"
-				)->fetch();
-
-				if (!$info) {
-
-					database::query(
-						"insert into ". DB_TABLE_PREFIX ."stock_items_info
-						(stock_item_id, language_code)
-						values (". (int)$this->data['id'] .", '". $language_code ."');"
-					);
-
-					$info['id'] = database::insert_id();
-				}
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."stock_items_info
-					set name = '". database::input($this->data['name'][$language_code]) ."'
-					where id = ". (int)$info['id'] ."
-					and stock_item_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
-					limit 1;"
-				);
-			}
 
 			// If quantity adjustment is set
 			if (!empty($this->data['quantity_adjustment']) && $this->data['quantity_adjustment'] != 0) {
@@ -340,9 +302,8 @@
 		public function delete() {
 
 			database::query(
-				"delete si, sii, sir, pso
+				"delete si, sir, pso
 				from ". DB_TABLE_PREFIX ."stock_items si
-				left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = si.id)
 				left join ". DB_TABLE_PREFIX ."stock_items_references sir on (sir.stock_item_id = si.id)
 				left join ". DB_TABLE_PREFIX ."products_stock_options pso on (pso.stock_item_id = si.id)
 				where si.id = ". (int)$this->data['id'] .";"

@@ -142,7 +142,8 @@ ADD COLUMN `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '' AFTER `last_hostna
 ADD COLUMN `known_ips` VARCHAR(512) NOT NULL DEFAULT '' AFTER `last_user_agent`;
 -- ------
 ALTER TABLE `lc_attribute_groups`
-CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `code`;
 -- -----
 ALTER TABLE `lc_attribute_groups_info`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -160,7 +161,8 @@ CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
 -- -----
 ALTER TABLE `lc_attribute_groups_info`
 CHANGE COLUMN `group_id` `group_id` INT(10) UNSIGNED NOT NULL,
-CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
+CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL,
+ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `group_id`;
 -- -----
 ALTER TABLE `lc_attribute_values_info`
 CHANGE COLUMN `value_id` `value_id` INT(10) UNSIGNED NOT NULL,
@@ -169,7 +171,13 @@ CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
 ALTER TABLE `lc_brands`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `featured` `featured` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
+CHANGE COLUMN `featured` `featured` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+ADD COLUMN `short_description` TEXT NOT NULL DEFAULT '{}' AFTER `name`,
+ADD COLUMN `description` MEDIUMTEXT NOT NULL DEFAULT '{}' AFTER `short_description`,
+ADD COLUMN `h1_title` TEXT NOT NULL DEFAULT '{}' AFTER `description`,
+ADD COLUMN `head_title` TEXT NOT NULL DEFAULT '{}' AFTER `h1_title`,
+ADD COLUMN `meta_description` TEXT NOT NULL DEFAULT '{}' AFTER `head_title`,
+ADD COLUMN `link` TEXT NOT NULL DEFAULT '{}' AFTER `meta_description`;
 -- -----
 ALTER TABLE `lc_brands_info`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -191,7 +199,14 @@ ALTER TABLE `lc_categories`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `parent_id` `parent_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `google_taxonomy_id` `google_taxonomy_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL;
+CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL,
+ADD COLUMN `name` TEXT NOT NULL DEFAULT '' AFTER `code`,
+ADD COLUMN `short_description` TEXT NOT NULL DEFAULT '{}' AFTER `name`,
+ADD COLUMN `description` MEDIUMTEXT NOT NULL DEFAULT '{}' AFTER `short_description`,
+ADD COLUMN `synonyms` TEXT NOT NULL DEFAULT '{}' AFTER `description`,
+ADD COLUMN `head_title` TEXT NOT NULL DEFAULT '{}' AFTER `synonyms`,
+ADD COLUMN `h1_title` TEXT NOT NULL DEFAULT '{}' AFTER `head_title`,
+ADD COLUMN `meta_description` TEXT NOT NULL DEFAULT '{}' AFTER `h1_title`;
 -- -----
 ALTER TABLE `lc_categories_filters`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -261,7 +276,9 @@ ADD COLUMN `group_id` INT UNSIGNED NULL AFTER `id`,
 ADD INDEX `group_id` (`group_id`);
 -- -----
 ALTER TABLE `lc_delivery_statuses`
-CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `id`
+ADD COLUMN `description` TEXT NOT NULL DEFAULT '{}' AFTER `name`;
 -- -----
 ALTER TABLE `lc_delivery_statuses_info`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -398,7 +415,11 @@ CHANGE COLUMN `is_sale` `is_sale` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `is_archived` `is_archived` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `is_trackable` `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `notify` `notify` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-ADD COLUMN `hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
+ADD COLUMN `hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
+ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `color`,
+ADD COLUMN `description` VARCHAR(255) NOT NULL DEFAULT '' AFTER `name`,
+ADD COLUMN `email_subject` VARCHAR(128) NOT NULL DEFAULT '' AFTER `description`,
+ADD COLUMN `email_message` TEXT NOT NULL DEFAULT '' AFTER `email_subject`;
 -- -----
 ALTER TABLE `lc_order_statuses_info`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -408,7 +429,11 @@ CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
 ALTER TABLE `lc_pages`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `parent_id` `parent_id` INT(10) UNSIGNED NULL,
-CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
+CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+ADD COLUMN `title` TEXT NOT NULL DEFAULT '{}' AFTER `dock`,
+ADD COLUMN `content` MEDIUMTEXT NOT NULL DEFAULT '' AFTER `title`,
+ADD COLUMN `head_title` TEXT NOT NULL DEFAULT '' AFTER `content`,
+ADD COLUMN `meta_description` TEXT NOT NULL DEFAULT '' AFTER `head_title`;
 -- -----
 ALTER TABLE `lc_pages_info`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -438,15 +463,21 @@ CHANGE COLUMN `tax_class_id` `tax_class_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `views`  `views` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `purchases` `purchases` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 ADD COLUMN `type` ENUM('virtual','physical','digital','variable','bundle') NOT NULL DEFAULT 'virtual' AFTER `id`,
-ADD COLUMN `synonyms` VARCHAR(256) NOT NULL DEFAULT '' AFTER `keywords`,
 ADD COLUMN `autofill_technical_data` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `image`,
-ADD COLUMN `file` VARCHAR(128) NOT NULL DEFAULT '' AFTER `image`,
-ADD COLUMN `filename` VARCHAR(128) NOT NULL DEFAULT '' AFTER `file`,
-ADD COLUMN `mime_type` VARCHAR(32) NOT NULL DEFAULT '' AFTER `filename`,
+ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `default_category_id`,
+ADD COLUMN `short_description` TEXT NOT NULL DEFAULT '{}' AFTER `name`,
+ADD COLUMN `description` MEDIUMTEXT NOT NULL DEFAULT '{}' AFTER `short_description`,
+ADD COLUMN `technical_data` TEXT NOT NULL DEFAULT '{}' AFTER `description`,
+ADD COLUMN `synonyms` TEXT NOT NULL DEFAULT '{}' AFTER `description`,
+ADD COLUMN `head_title` TEXT NOT NULL DEFAULT '{}' AFTER `synonyms`,
+ADD COLUMN `meta_description` TEXT NOT NULL DEFAULT '{}' AFTER `head_title`,
 DROP INDEX `manufacturer_id`,
 ADD INDEX `type` (`type`),
 ADD INDEX `brand_id` (`brand_id`),
-ADD INDEX `synonyms` (`synonyms`);
+ADD INDEX `synonyms` (`synonyms`),
+ADD FULLTEXT INDEX `name` (`name`),
+ADD FULLTEXT INDEX `short_description` (`short_description`),
+ADD FULLTEXT INDEX `description` (`description`);
 -- -----
 ALTER TABLE `lc_products_attributes`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -505,7 +536,9 @@ CHANGE COLUMN `category_id` `category_id` INT(10) UNSIGNED NULL;
 ALTER TABLE `lc_quantity_units`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `decimals` `decimals` TINYINT(1) UNSIGNED NOT NULL DEFAULT '2',
-CHANGE COLUMN `separate` `separate` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
+CHANGE COLUMN `separate` `separate` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `id`,
+ADD COLUMN `description` TEXT NOT NULL DEFAULT '{}' AFTER `name`;
 -- -----
 ALTER TABLE `lc_quantity_units_info`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -525,7 +558,9 @@ DROP INDEX `setting_group_key`;
 -- -----
 ALTER TABLE `lc_settings_groups`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-CHANGE COLUMN `key` `key` VARCHAR(32) NOT NULL;
+CHANGE COLUMN `key` `key` VARCHAR(32) NOT NULL,
+ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `orderable`,
+ADD COLUMN `description` TEXT NOT NULL DEFAULT '{}' AFTER `name`;
 -- -----
 ALTER TABLE `lc_sold_out_statuses`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -542,6 +577,7 @@ CREATE TABLE `lc_stock_items` (
 	`product_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`brand_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`supplier_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`name` TEXT NOT NULL DEFAULT '{}',
 	`sku` VARCHAR(32) NOT NULL DEFAULT '',
 	`mpn` VARCHAR(32) NOT NULL DEFAULT '',
 	`gtin` VARCHAR(32) NOT NULL DEFAULT '',
@@ -587,33 +623,24 @@ CREATE TABLE `lc_stock_items_info` (
 CREATE TABLE `lc_third_parties` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-	`privacy_classes` VARCHAR(64) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`category` VARCHAR(64) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`name` VARCHAR(64) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`homepage` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`cookie_policy_url` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`privacy_policy_url` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`opt_out_url` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`do_not_sell_url` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`collected_data` VARCHAR(256) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`country_code` CHAR(2) NULL DEFAULT NULL COLLATE 'utf8mb4_swedish_ci',
+	`privacy_classes` VARCHAR(64) NOT NULL DEFAULT '',
+	`category` VARCHAR(64) NOT NULL DEFAULT '',
+	`name` VARCHAR(64) NOT NULL DEFAULT '',
+	`description` MEDIUMTEXT NOT NULL DEFAULT '{}',
+	`collected_data` TEXT NOT NULL DEFAULT '{}',
+	`purposes` TEXT NOT NULL DEFAULT '{}',
+	`homepage` VARCHAR(256) NOT NULL DEFAULT '',
+	`cookie_policy_url` VARCHAR(256) NOT NULL DEFAULT '',
+	`privacy_policy_url` VARCHAR(256) NOT NULL DEFAULT '',
+	`opt_out_url` VARCHAR(256) NOT NULL DEFAULT '',
+	`do_not_sell_url` VARCHAR(256) NOT NULL DEFAULT '',
+	`collected_data` VARCHAR(256) NOT NULL DEFAULT '',
+	`country_code` CHAR(2) NULL DEFAULT NULL,
 	`date_updated` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
 	`date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `status` (`status`) USING BTREE,
 	INDEX `country_code` (`country_code`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- -----
-CREATE TABLE `lc_third_parties_info` (
-	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`third_party_id` INT(10) UNSIGNED NOT NULL,
-	`language_code` CHAR(2) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
-	`collected_data` VARCHAR(512) NOT NULL COLLATE 'utf8mb4_swedish_ci',
-	`description` VARCHAR(4096) NOT NULL COLLATE 'utf8mb4_swedish_ci',
-	`purposes` VARCHAR(4096) NOT NULL COLLATE 'utf8mb4_swedish_ci',
-	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `third_party_id` (`third_party_id`) USING BTREE,
-	INDEX `language_code` (`language_code`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 ALTER TABLE `lc_suppliers`
@@ -721,8 +748,20 @@ FROM (
     GROUP BY product_id, stock_item_id
 ) AS final_result;
 -- -----
+UPDATE `attribute_groups`
+SET name = '{}';
+-- -----
+UPDATE `attribute_values`
+SET name = '{}';
+-- -----
 UPDATE `lc_brands`
-SET image = REPLACE(image, 'manufacturers/', 'brands/');
+SET image = REPLACE(image, 'manufacturers/', 'brands/'),
+  short_description = '{}',
+	description = '{}',
+	h1_title = '{}',
+	head_title = '{}',
+	meta_description = '{}',
+	link = '{}';
 -- -----
 UPDATE `lc_cart_items`
 SET customer_id = NULL
@@ -731,6 +770,19 @@ WHERE customer_id = 0;
 UPDATE `lc_categories`
 SET parent_id = NULL
 WHERE parent_id = 0;
+-- -----
+UPDATE `lc_categories`
+SET name = '{}',
+	short_description = '{}',
+	description = '{}',
+	synonyms = '{}',
+	head_title = '{}',
+	h1_title = '{}',
+	meta_description = '{}';
+-- -----
+UPDATE `delivery_statuses`
+SET name = '{}',
+	description = '{}';
 -- -----
 UPDATE `lc_modules`
 SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit')
@@ -790,6 +842,12 @@ AND calculate
 SET o.discount = 0 - if(ot.discount, ot.discount, 0),
 o.discount_tax = 0 - if(ot.discount_tax, ot.discount_tax, 0);
 -- -----
+UPDATE `lc_order_statuses`
+SET name = '{}',
+	description = '{}',
+	email_subject = '{}',
+	email_message = '{}';
+-- -----
 UPDATE `lc_order_statuses` SET icon = 'icon-money-bill' WHERE icon = 'fa-money';
 -- -----
 UPDATE `lc_order_statuses` SET icon = 'icon-clock' WHERE icon = 'fa-clock-o';
@@ -837,11 +895,28 @@ SET `category_id` = NULL
 WHERE `category_id` = 0;
 -- -----
 UPDATE `lc_pages`
-SET dock = REPLACE(dock, 'customer_service', 'information');
+SET dock = REPLACE(dock, 'customer_service', 'information'),
+	title = '{}',
+	content = '{}',
+	head_title = '{}',
+	meta_description = '{}';
 -- -----
 UPDATE `lc_pages`
 SET parent_id = NULL
 WHERE parent_id = 0;
+-- -----
+UPDATE `lc_products`
+SET name = '{}',
+	short_description = '{}',
+	description = '{}',
+	technical_data = '{}',
+	synonyms = '{}',
+	head_title = '{}',
+	meta_description = '{}';
+-- -----
+UPDATE `lc_quantity_units`
+SET name = '{}',
+	description = '{}';
 -- -----
 UPDATE `lc_settings`
 SET `value` = '0'
@@ -932,6 +1007,13 @@ AND EXISTS (
 	WHERE `key` = 'development_mode'
 	AND `value` = 1
 );
+-- -----
+UPDATE `lc_sold_out_statuses`
+SET name = '{}',
+	description = '{}';
+-- -----
+UPDATE `lc_stock_items`
+SET name = '{}';
 -- -----
 UPDATE `lc_zones_to_geo_zones`
 SET `zone_code` = NULL

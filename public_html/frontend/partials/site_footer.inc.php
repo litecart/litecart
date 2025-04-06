@@ -20,11 +20,11 @@
 
 		// Pages
 		$site_footer->snippets['pages'] = database::query(
-			"select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
-			left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
+			"select p.id, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
+			from ". DB_TABLE_PREFIX ."pages p
 			where status
 			and find_in_set('information', dock)
-			order by p.priority, pi.title;"
+			order by p.priority, title;"
 		)->fetch_all(function($page) {
 			return [
 				'id' => $page['id'],

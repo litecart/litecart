@@ -11,10 +11,9 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$delivery_statuses = database::query(
-		"select ds.id, dsi.name
+		"select ds.id, json_value(ds.name, '$.".database::input(language::$selected['code'])."') as name
 		from ". DB_TABLE_PREFIX ."delivery_statuses ds
-		left join ". DB_TABLE_PREFIX ."delivery_statuses_info dsi on (ds.id = dsi.delivery_status_id and dsi.language_code = '". database::input(language::$selected['code']) ."')
-		order by dsi.name asc;"
+		order by name asc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>

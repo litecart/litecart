@@ -67,8 +67,8 @@
 	}
 
 	$available_stock_items = database::query(
-		"select si.id, si.sku, si.quantity, si.backordered, sii.name from ". DB_TABLE_PREFIX ."stock_items si
-		left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+		"select si.id, si.sku, si.quantity, si.backordered, json_value(si.name, '$.".database::input(language::$selected['code'])."') as name
+		from ". DB_TABLE_PREFIX ."stock_items si
 		order by sku, name;"
 	)->fetch_all();
 

@@ -20,9 +20,10 @@
 	if (!$_page->snippets['brands'] = cache::get($brands_cache_token)) {
 
 		$_page->snippets['brands'] = database::query(
-			"select b.id, b.name, b.image, bi.short_description, bi.link
+			"select b.id, b.image, json_value(b.name, '$.". database::input(language::$selected['code']) ."') as name,
+				json_value(b.short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
+			 	json_value(b.link, '$.". database::input(language::$selected['code']) ."') as link
 			from ". DB_TABLE_PREFIX ."brands b
-			left join ". DB_TABLE_PREFIX ."brands_info bi on (bi.brand_id = b.id and bi.language_code = '". language::$selected['code'] ."')
 			where status
 			order by name;"
 		)->fetch_all(function($brand) {

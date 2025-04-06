@@ -23,13 +23,6 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
-			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."sold_out_statuses_info;"
-			)->each(function($field){
-				if (in_array($field['Field'], ['id', 'sold_out_status_id', 'language_code'])) return;
-				$this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
-			});
-
 			$this->previous = $this->data;
 		}
 
@@ -53,15 +46,12 @@
 				throw new Exception('Could not find sold out status (ID: '. (int)$id .') in database.');
 			}
 
-			database::query(
-				"select * from ". DB_TABLE_PREFIX ."sold_out_statuses_info
-				where sold_out_status_id = ". (int)$this->data['id'] .";"
-			)->each(function($info){
-				foreach ($info as $key => $value) {
-					if (in_array($key, ['id', 'sold_out_status_id', 'language_code'])) continue;
-					$this->data[$key][$info['language_code']] = $value;
-				}
-			});
+			foreach ([
+				'name',
+				'description',
+			] as $column) {
+				$this->data[$column] = json_decode($this->data[$column], true) ?: [];
+			}
 
 			$this->previous = $this->data;
 		}
@@ -81,39 +71,12 @@
 				"update ". DB_TABLE_PREFIX ."sold_out_statuses
 				set orderable = ". (int)$this->data['orderable'] .",
 					hidden = ". (int)$this->data['hidden'] .",
+					name = '". database::input(json_encode($this->data['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					description = '". database::input(json_encode($this->data['description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
-
-			foreach (array_keys(language::$languages) as $language_code) {
-
-				$sold_out_status_info = database::query(
-					"select * from ". DB_TABLE_PREFIX ."sold_out_statuses_info
-					where sold_out_status_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
-					limit 1;"
-				)->fetch();
-
-				if (!$sold_out_status) {
-					database::query(
-						"insert into ". DB_TABLE_PREFIX ."sold_out_statuses_info
-						(sold_out_status_id, language_code)
-						values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
-					);
-					$sold_out_status_info['id'] = database::insert_id();
-				}
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."sold_out_statuses_info
-					set name = '". database::input($this->data['name'][$language_code]) ."',
-						description = '". database::input($this->data['description'][$language_code]) ."'
-					where id = ". (int)$sold_out_status_info['id'] ."
-					and sold_out_status_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
-					limit 1;"
-				);
-			}
 
 			$this->previous = $this->data;
 
@@ -131,9 +94,8 @@
 			}
 
 			database::query(
-				"delete ss, ssi
+				"delete ss
 				from ". DB_TABLE_PREFIX ."sold_out_statuses ss
-				left join ". DB_TABLE_PREFIX ."sold_out_statuses_info ssi on (ssi.sold_out_status_id = si.id)
 				where ss.id = ". (int)$this->data['id'] .";"
 			);
 

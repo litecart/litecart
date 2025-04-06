@@ -22,36 +22,6 @@
 
 			switch($field) {
 
-				case 'name':
-				case 'description':
-				case 'short_description':
-				case 'head_title':
-				case 'meta_description':
-				case 'h1_title':
-				case 'synonyms':
-
-					$this->_data['info'] = [];
-
-					$query = database::query(
-						"select * from ". DB_TABLE_PREFIX ."categories_info
-						where category_id = ". (int)$this->_data['id'] ."
-						and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-						order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-					);
-
-					while ($row = database::fetch($query)) {
-						foreach ($row as $key => $value) {
-
-							if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
-
-							if (empty($this->_data[$key])) {
-								$this->_data[$key] = $row[$key];
-							}
-						}
-					}
-
-					break;
-
 				case 'parent':
 
 					$this->_data['parent'] = false;
@@ -219,19 +189,47 @@
 
 				default:
 
-					$row = database::query(
+					$category = database::query(
 						"select * from ". DB_TABLE_PREFIX ."categories
 						where id = ". (int)$this->_data['id'] ."
 						limit 1;"
-					)->fetch();
+					)->fetch(function($category) {
 
-					if (!$row) return;
+						foreach ([
+							'name',
+							'description',
+							'short_description',
+							'head_title',
+							'meta_description',
+							'h1_title',
+							'synonyms',
+						] as $field) {
 
-					foreach ($row as $key => $value) {
-						$this->_data[$key] = $value;
+							$category[$field] = json_decode($category[$field], true) ?: [];
+
+							foreach ($this->_language_codes as $language_code) {
+								if (!empty($category[$field][$language_code])) {
+									$category[$field] = $category[$field][$language_code];
+								}
+							}
+						}
+
+						$category['keywords'] = preg_split('#\s*,\s*#', $category['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+
+						return $category;
+					});
+
+					if (!$category) {
+						$category = database::query(
+							"show fields from ". DB_TABLE_PREFIX ."categories;"
+						)->fetch(function($field) {
+							return database::create_variable($field);
+						});
 					}
 
-					$this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+					foreach ($category as $key => $value) {
+						$this->_data[$key] = $value;
+					}
 
 					break;
 			}

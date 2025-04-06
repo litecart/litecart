@@ -67,9 +67,7 @@
 
 							database::multi_query(implode(PHP_EOL, [
 								"truncate ". DB_TABLE_PREFIX ."attribute_groups;",
-								"truncate ". DB_TABLE_PREFIX ."attribute_groups_info;",
 								"truncate ". DB_TABLE_PREFIX ."attribute_values;",
-								"truncate ". DB_TABLE_PREFIX ."attribute_values_info;",
 							]));
 
 							break;
@@ -87,7 +85,6 @@
 							database::multi_query(implode(PHP_EOL, [
 								"truncate ". DB_TABLE_PREFIX ."categories;",
 								"truncate ". DB_TABLE_PREFIX ."categories_filters;",
-								"truncate ". DB_TABLE_PREFIX ."categories_info;",
 								"truncate ". DB_TABLE_PREFIX ."products_to_categories;",
 							]));
 
@@ -102,7 +99,6 @@
 
 							database::multi_query(implode(PHP_EOL, [
 								"truncate ". DB_TABLE_PREFIX ."brands`;",
-								"truncate ". DB_TABLE_PREFIX ."brands_info;",
 							]));
 
 							foreach (functions::file_search('storage://images/brands/*') as $file) {
@@ -120,7 +116,6 @@
 								"truncate ". DB_TABLE_PREFIX ."products;",
 								"truncate ". DB_TABLE_PREFIX ."products_attributes;",
 								"truncate ". DB_TABLE_PREFIX ."products_images;",
-								"truncate ". DB_TABLE_PREFIX ."products_info;",
 								"truncate ". DB_TABLE_PREFIX ."products_prices;",
 								"truncate ". DB_TABLE_PREFIX ."products_to_categories;",
 								"truncate ". DB_TABLE_PREFIX ."products_references;",
@@ -164,7 +159,6 @@
 							database::multi_query(implode(PHP_EOL, [
 								"truncate ". DB_TABLE_PREFIX ."products_stock_options;",
 								"truncate ". DB_TABLE_PREFIX ."stock_items;",
-								"truncate ". DB_TABLE_PREFIX ."stock_items_info;",
 							]));
 
 							break;
@@ -223,17 +217,17 @@
 						)->fetch()) {
 							$attribute_group = new ent_attribute_group($attribute_group['id']);
 
-						} elseif (!empty($row['code']) && $attribute_group = database::query(
+						} else if (!empty($row['code']) && $attribute_group = database::query(
 							"select id from ". DB_TABLE_PREFIX ."attribute_groups
 							where code = '". database::input($row['code']) ."'
 							limit 1;"
 						)->fetch()) {
 							$attribute_group = new ent_attribute_group($attribute_group['id']);
 
-						} elseif (!empty($row['group_name']) && $attribute_group = database::query(
-							"select group_id as id from ". DB_TABLE_PREFIX ."attribute_groups_info
-							where name = '". database::input($row['group_name']) ."'
-							and language_code = '". database::input($row['language_code']) ."'
+						} else if (!empty($row['group_name']) && $attribute_group = database::query(
+							"select group_id as id
+							from ". DB_TABLE_PREFIX ."attribute_groups
+							where json_value(name, '$.". database::input($row['language_code']) ."') = '". database::input($row['group_name']) ."'
 							limit 1;"
 						)->fetch()) {
 							$attribute_group = new ent_attribute_group($attribute_group['id']);
@@ -1215,12 +1209,13 @@
 					}
 
 					$csv = database::query(
-						"select ag.id as group_id, ag.code as group_code, agi.name as group_name, av.id as value_id, avi.name as value_name, avi.language_code, av.priority, '". database::input($_POST['language_code']) ."' as language_code
+						"select ag.id as group_id, ag.code as group_code, av.id as value_id, av.priority,
+							json_value(ag.name, '$.". database::input($_POST['language_code']) ."') as group_name,
+							json_value(av.name, '$.". database::input($_POST['language_code']) ."') as value_name,
+							'". database::input($_POST['language_code']) ."' as language_code
 						from ". DB_TABLE_PREFIX ."attribute_values av
 						left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = av.group_id)
-						left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = av.group_id and agi.language_code = '". database::input($_POST['language_code']) ."')
-						left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id and avi.language_code = '". database::input($_POST['language_code']) ."')
-						order by agi.name, av.priority;"
+						order by name, av.priority;"
 					)->export($result)->fetch_all();
 
 					if (!$csv) {
@@ -1236,9 +1231,15 @@
 					}
 
 					$csv = database::query(
-						"select b.*, '' as new_image, bi.name, bi.short_description, bi.description, bi.meta_description, bi.head_title, bi.h1_title, '". database::input($_POST['language_code']) ."' as language_code
+						"select b.*, '' as new_image,
+							json_value(b.name, '". database::input($_POST['language_code']) ."') as name,
+							json_value(bi.short_description, '". database::input($_POST['language_code']) ."') as short_description,
+							json_value(bi.description, '". database::input($_POST['language_code']) ."') as description,
+							json_value(bi.meta_description, '". database::input($_POST['language_code']) ."') as meta_description,
+							json_value(bi.head_title, '". database::input($_POST['language_code']) ."') as head_title,
+							json_value(bi.h1_title, '". database::input($_POST['language_code']) ."') as h1_title,
+							'". database::input($_POST['language_code']) ."' as language_code
 						from ". DB_TABLE_PREFIX ."brands b
-						left join ". DB_TABLE_PREFIX ."brands_info bi on (bi.category_id = b.id and bi.language_code = '". database::input($_POST['language_code']) ."')
 						order by b.priority;"
 					)->export($result)->fetch_all();
 
@@ -1269,10 +1270,16 @@
 					}
 
 					$csv = database::query(
-						"select c.*, c2.code as parent_code, ci.name, '' as new_image, ci.short_description, ci.description, ci.meta_description, ci.head_title, ci.h1_title, '". database::input($_POST['language_code']) ."' as language_code
+						"select c.*, c2.code as parent_code,
+							json_value(c.name, '". database::input($_POST['language_code']) ."') as name,
+							json_value(c.short_description, '". database::input($_POST['language_code']) ."') as short_description,
+							json_value(c.description, '". database::input($_POST['language_code']) ."') as description,
+							json_value(c.meta_description, '". database::input($_POST['language_code']) ."') as meta_description,
+							json_value(c.head_title, '". database::input($_POST['language_code']) ."') as head_title,
+							json_value(c.h1_title, '". database::input($_POST['language_code']) ."') as h1_title,
+							'' as new_image, '". database::input($_POST['language_code']) ."' as language_code
 						from ". DB_TABLE_PREFIX ."categories c
 						left join ". DB_TABLE_PREFIX ."categories c2 on (c2.id = c.parent_id)
-						left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input($_POST['language_code']) ."')
 						order by c.priority;"
 					)->export($result)->fetch_all();
 
@@ -1293,9 +1300,18 @@
 					}
 
 					$csv = database::query(
-						"select p.*, pi.name, pi.description, pi.short_description, pi.technical_data, pi.meta_description, pi.head_title, '". database::input($_POST['language_code']) ."' as language_code, ptc.categories, pim.images, '' as new_image, pa.attributes
+						"select p.*,
+							json_value(p.name, '". database::input($_POST['language_code']) ."') as name,
+							json_value(p.description, '". database::input($_POST['language_code']) ."') as description,
+							json_value(p.short_description, '". database::input($_POST['language_code']) ."') as short_description,
+							json_value(p.technical_data, '". database::input($_POST['language_code']) ."') as technical_data,
+							json_value(p.meta_description, '". database::input($_POST['language_code']) ."') as meta_description,
+							json_value(p.head_title, '". database::input($_POST['language_code']) ."') as head_title,
+							'". database::input($_POST['language_code']) ."' as language_code,
+							ptc.categories, pim.images, '' as new_image, pa.attributes
+
 						from ". DB_TABLE_PREFIX ."products p
-						left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
+
 						left join (
 							select product_id, group_concat(category_id separator ',') as categories
 							from ". DB_TABLE_PREFIX ."products_to_categories
@@ -1313,7 +1329,7 @@
 							group by product_id
 							order by priority
 						) pim on (pim.product_id = p.id)
-						order by pi.name, pi.id;"
+						order by name, pi.id;"
 					)->export($result)->fetch_all();
 
 					if (!$csv) {
@@ -1351,9 +1367,10 @@
 				case 'stock_items':
 
 					$csv = database::query(
-						"select si.*, sii.name, '". database::input($_POST['language_code']) ."' as language_code
+						"select si.*,
+							json_value(si.name, '". database::input($_POST['language_code']) ."') as name,
+							'". database::input($_POST['language_code']) ."' as language_code
 						from ". DB_TABLE_PREFIX ."stock_items si
-						left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.product_id = s.id and si.language_code = '". database::input($_POST['language_code']) ."')
 						order by si.id;"
 					)->export($result)->fetch_all();
 

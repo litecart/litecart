@@ -7,10 +7,11 @@
 		}
 
 		$query = database::query(
-			"select c.id, c.parent_id, c.image, ci.name, ci.short_description, c.priority, c.date_updated
-			from ". DB_TABLE_PREFIX ."categories c
+			"select c.id, c.parent_id, c.image, c.priority, c.date_updated,
+				json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name,
+				json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') as short_description
 
-			left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
+			from ". DB_TABLE_PREFIX ."categories c
 
 			left join (
 				select category_id, count(product_id) as num_products
@@ -29,7 +30,7 @@
 			and ". ($parent_ids ? "c.parent_id in ('". implode("', '", database::input($parent_ids)) ."')" : "c.parent_id is null") ."
 			and (ptc.num_products > 0 or c2.num_subcategories > 0)
 
-			order by c.priority asc, ci.name asc;"
+			order by c.priority asc, name asc;"
 		);
 
 		return $query;
@@ -50,35 +51,19 @@
 			$query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
 
 			$sql_select_relevance[] = (
-				"if(c.id in (
-					select distinct category_id from ". DB_TABLE_PREFIX ."categories_info
-					where match(name) against ('". database::input($query_fulltext) ."' in boolean mode)
-				), 10, 0)"
+				"if(match(json_value(c.name, '$.". database::input(language::$selected['code']) ."')) against ('". database::input($query_fulltext) ."' in boolean mode), 10, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(c.id in (
-					select distinct category_id from ". DB_TABLE_PREFIX ."categories_info
-					where match(synonyms) against ('". database::input($query_fulltext) ."' in boolean mode)
-				), 10, 0)"
+				"if(match(json_value(c.short_description, '$.". database::input(language::$selected['code']) ."')) against ('". database::input($query_fulltext) ."' in boolean mode), 5, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(c.id in (
-					select distinct category_id from ". DB_TABLE_PREFIX ."categories_info
-					where match(short_description) against ('". database::input($query_fulltext) ."' in boolean mode)
-				), 5, 0)"
+				"if(match(json_value(c.description, '$.". database::input(language::$selected['code']) ."')) against ('". database::input($query_fulltext) ."' in boolean mode), 5, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(c.id in (
-					select distinct category_id from ". DB_TABLE_PREFIX ."categories_info
-					where match(description) against ('". database::input($query_fulltext) ."' in boolean mode)
-				), 5, 0)"
-			);
-
-			$sql_select_relevance[] = (
-				"if(match(synonyms) against ('". database::input($query_fulltext) ."' in boolean mode), 10, 0)"
+				"if(match(json_value(c.synonyms, '$.". database::input(language::$selected['code']) ."')) against ('". database::input($query_fulltext) ."' in boolean mode), 10, 0)"
 			);
 		}
 
@@ -95,12 +80,12 @@
 		}
 
 		$query = (
-			"select c.id, c.parent_id, c.image, ci.name, ci.short_description, c.priority, c.date_updated,
-			(". implode(" + ", $sql_select_relevance) .") as relevance
+			"select c.id, c.parent_id, c.image, c.priority, c.date_updated,
+				json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name,
+				json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
+				(". implode(" + ", $sql_select_relevance) .") as relevance
 
 			from ". DB_TABLE_PREFIX ."categories c
-
-			left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
 
 			left join (
 				select category_id, count(product_id) as num_products
@@ -226,23 +211,26 @@
 		}
 
 		$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
-			return "if(JSON_VALUE(price, '$.". database::input($currency['code']) ."') != 0, JSON_VALUE(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+			return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 		}, currency::$currencies)) .")";
 
 		$query = (
-			"select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name,
+			"select p.*, b.id as brand_id, b.name as brand_name,
 				pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price,
 				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.quantity, pso.quantity_available,
 				pa.attributes, ss.hidden
 
 			from (
 				select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, p.keywords, p.image,
-				  p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.views, p.purchases, p.date_created
+				  p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.views, p.purchases, p.date_created,
+					json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
+					json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') as short_description
 
 				from ". DB_TABLE_PREFIX ."products p
 
 				where p.status
 				". (!empty($filter['products']) ? "and p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
+				". (!empty($filter['product_name']) ? "and json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($filter['product_name']), '%_') ."%'" : "") ."
 				". fallback($sql_where_categories) ."
 				". fallback($sql_where_attributes) ."
 				". (!empty($filter['brands']) ? "and p.brand_id in ('". implode("', '", database::input($filter['brands'])) ."')" : null) ."
@@ -255,8 +243,6 @@
 				". ((!empty($sql_inner_sort) && !empty($filter['limit'])) ? "order by " . implode(",", $sql_inner_sort) : "") ."
 				". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") ."
 			) p
-
-			left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 
 			left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
 
@@ -314,7 +300,6 @@
 			where (p.id
 				and (ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)
 				". (!empty($filter['sql_where']) ? "and (". $filter['sql_where'] .")" : "") ."
-				". (!empty($filter['product_name']) ? "and pi.name like '%". database::input($filter['product_name']) ."%'" : "") ."
 				". (!empty($filter['campaign']) ? "and campaign_price > 0" : "") ."
 				". fallback($sql_where_prices) ."
 			)
@@ -363,9 +348,6 @@
 			$query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
 
 			$sql_select_relevance[] = "if(p.code regexp '". database::input($code_regex) ."', 5, 0)";
-			$sql_select_relevance[] = "if(p.sku regexp '". database::input($code_regex) ."', 5, 0)";
-			$sql_select_relevance[] = "if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)";
-			$sql_select_relevance[] = "if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)";
 
 			$sql_select_relevance[] = (
 				"if(p.id in (
@@ -373,63 +355,40 @@
 					where stock_item_id in (
 						select id from ". DB_TABLE_PREFIX ."stock_items
 						where sku regexp '". database::input($code_regex) ."'
+						or gtin regexp '". database::input($code_regex) ."'
+						or mpn regexp '". database::input($code_regex) ."'
 					)
 				), 5, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(p.id in (
-					select distinct product_id from ". DB_TABLE_PREFIX ."products_info
-					where match(name) against ('". database::input($query_fulltext) ."' in boolean mode)
-				), 10, 0)"
+				"if(match(json_value(p.name, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."' in boolean mode), 10, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(p.id in (
-					select distinct product_id from ". DB_TABLE_PREFIX ."products_info
-					where match(short_description) against ('". database::input($query_fulltext) ."' in boolean mode)
-				), 10, 0)"
+				"if(match(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."' in boolean mode), 10, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(p.id in (
-				select distinct product_id from ". DB_TABLE_PREFIX ."products_info
-				where match(description) against ('". database::input($query_fulltext) ."' in boolean mode)
-				), 10, 0)"
+				"if(match(json_value(p.description, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."' in boolean mode), 10, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(p.id in (
-					select distinct product_id
-					from ". DB_TABLE_PREFIX ."products_info
-					where name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
-				), 3, 0)"
+				"if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($_GET['query']), '%_') ."%', 3, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(p.id in (
-					select distinct product_id
-					from ". DB_TABLE_PREFIX ."products_info
-					where short_description like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
-				), 2, 0)"
+				"if(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($_GET['query']), '%_') ."%', 2, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(p.id in (
-					select distinct product_id
-					from ". DB_TABLE_PREFIX ."products_info
-					where description like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
-				), 1, 0)"
+				"if(json_value(p.description, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($_GET['query']), '%_') ."%', 1, 0)"
 			);
 		}
 
 		if (!empty($filter['product_name'])) {
 			$sql_select_relevance['product_name'] = (
-				"if(p.id in (
-					select distinct product_id
-					from ". DB_TABLE_PREFIX ."products_info
-					where name like '%". addcslashes(database::input($filter['product_name']), '%_') ."%'
-				), 1, 0)"
+				"if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($filter['product_name']), '%_') ."%', 1, 0)"
 			);
 		}
 
@@ -508,16 +467,20 @@
 		}
 
 		$sql_column_price = "coalesce(". implode(", ", array_map(function($currency){
-			return "if(JSON_VALUE(price, '$.". database::input($currency['code']) ."') != 0, JSON_VALUE(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+			return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 		}, currency::$currencies)) . ")";
 
 		$query = (
-			"select	p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name,
-			pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price,
-			ifnull(pso.num_stock_options, 0) as num_stock_options, pso.quantity, pso.quantity_available, pa.attributes
+			"select	p.*, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price,
+				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.quantity, pso.quantity_available, pa.attributes
 
 			from (
-				select id, delivery_status_id,	sold_out_status_id,	code,	brand_id,	keywords,	image, recommended_price, tax_class_id, quantity_unit_id, views, purchases, date_created, (". implode(" + ", $sql_select_relevance) .") as relevance
+				select id, delivery_status_id, sold_out_status_id,code,	brand_id,	keywords,	image, recommended_price, tax_class_id,
+					json_value(name, '$.". database::input(language::$selected['code']) ."') as name,
+					json_value(short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
+					quantity_unit_id, views, purchases, date_created, (
+						". implode(" + ", $sql_select_relevance) ."
+					) as relevance
 				from ". DB_TABLE_PREFIX ."products p
 				where status
 				". (!empty($sql_inner_where) ? implode(" and ", $sql_inner_where) : "")."
@@ -525,8 +488,6 @@
 				and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."')
 				having relevance > 0
 			) p
-
-			left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 
 			left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
 

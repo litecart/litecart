@@ -2,10 +2,9 @@
 
 	// Table Rows
 	$orders = database::query(
-		"select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name
+		"select o.*, os.color as order_status_color, os.icon as order_status_icon, json_value(os.name, '$.". database::input(language::$selected['code']) ."') as order_status_name
 		from ". DB_TABLE_PREFIX ."orders o
 		left join ". DB_TABLE_PREFIX ."order_statuses os on (os.id = o.order_status_id)
-		left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
 		where o.order_status_id
 		and os.is_archived = 0
 		order by o.date_created desc, o.id desc

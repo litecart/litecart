@@ -377,19 +377,29 @@
 				];
 			}
 
-			if ($field['Default'] == "''") {
-				$field['Default'] = '';
-			}
+			if (!empty($field['Default'])) {
+				switch (true) {
 
-			if ($field['Default']) {
+					case (preg_match('#^null$#i', $field['Default'])):
+						return null;
 
-				$search_replace = [
-					'#^\'\'$#' => '',
-					'#^null$#i' => null,
-					'#^(now|current_timestamp)(\(\))?$#i' => date('Y-m-d H:i:s'),
-				];
+					case (preg_match('#^\'\'$#', $field['Default'])):
+						return '';
 
-				$field['Default'] = preg_replace(array_keys($search_replace), array_values($search_replace), $field['Default']);
+					case (preg_match('#^\{\}$#', $field['Default'])):
+					case (preg_match('#^\[\]$#', $field['Default'])):
+						return [];
+
+					case (preg_match('#^now(\(\))?$#i', $field['Default'])):
+					case (preg_match('#^current_timestamp(\(\))?$#i', $field['Default'])):
+						return date('Y-m-d H:i:s');
+
+					case (preg_match('#^current_date(\(\))?$#i', $field['Default'])):
+						return date('Y-m-d');
+
+					case (preg_match('#^current_time(\(\))?$#i', $field['Default'])):
+						return date('H:i:s');
+				}
 			}
 
 			switch (true) {

@@ -119,19 +119,21 @@
 		$sql_select_relevance = (
 			"(
 				if(p.id = '". database::input($_GET['query']) ."', 10, 0)
-				+ (match(pi.name) against ('*". database::input($query_fulltext) ."*'))
-				+ (match(pi.short_description) against ('*". database::input($query_fulltext) ."*') / 2)
-				+ (match(pi.description) against ('*". database::input($query_fulltext) ."*') / 3)
-				+ (match(pi.name) against ('". database::input($query_fulltext) ."' in boolean mode))
-				+ (match(pi.short_description) against ('". database::input($query_fulltext) ."' in boolean mode) / 2)
-				+ (match(pi.description) against ('". database::input($query_fulltext) ."' in boolean mode) / 3)
-				+ if(pi.name like '%". database::input($_GET['query']) ."%', 3, 0)
-				+ if(pi.short_description like '%". database::input($_GET['query']) ."%', 2, 0)
-				+ if(pi.description like '%". database::input($_GET['query']) ."%', 1, 0)
+
 				+ if(p.code regexp '". database::input($code_regex) ."', 5, 0)
-				+ if(p.sku regexp '". database::input($code_regex) ."', 5, 0)
-				+ if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
-				+ if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
+
+				+ (match(json_value(p.name, '$.". database::input(language::$selected['code']) ."') against ('*". database::input($query_fulltext) ."*'))
+				+ (match(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."')/2)
+				+ (match(json_value(p.description, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."')/3)
+
+				+ (match(json_value(p.name, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."' in boolean mode))
+				+ (match(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."' in boolean mode) /2)
+				+ (match(json_value(p.description, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."' in boolean mode) /3)
+
+				+ if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%', 3, 0)
+				+ if(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%', 2, 0)
+				+ if(json_value(p.description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%', 1, 0)
+
 				+ if (p.id in (
 					select product_id from ". DB_TABLE_PREFIX ."products_stock_options
 					where stock_item_id in (
@@ -140,23 +142,30 @@
 						or gtin regexp '". database::input($code_regex) ."'
 					)
 				), 5, 0)
+
 				+ if(b.name like '%". database::input($_GET['query']) ."%', 3, 0)
+
 				+ if(s.name like '%". database::input($_GET['query']) ."%', 2, 0)
+
 			) as relevance"
 		);
 	}
 
 	$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
-		return "if(JSON_VALUE(price, '$.". database::input($currency['code']) ."') != 0, JSON_VALUE(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+		return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 	}, currency::$currencies)) .")";
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$products = database::query(
-		"select p.id, p.status, p.code, pi.name, p.image, pp.price, pc.campaign_price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, p.date_created". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
+		"select p.id, p.status, p.code, p.image, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, p.date_created,
+			json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
+		 	pp.price, pc.campaign_price, pso.num_stock_options, pso.quantity, pso.quantity - oi.total_reserved as quantity_available
+			". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
 
 		from ". DB_TABLE_PREFIX ."products p
-		left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+
 		left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
+
 		left join ". DB_TABLE_PREFIX ."suppliers s on (s.id = p.supplier_id)
 
 		left join (
@@ -203,7 +212,7 @@
 
 		group by p.id
 		". (!empty($sql_select_relevance) ? "having relevance > 0" : "") ."
-		". (!empty($sql_select_relevance) ? "order by relevance desc" : "order by p.status desc, pi.name asc") .";"
+		". (!empty($sql_select_relevance) ? "order by relevance desc" : "order by p.status desc, name asc") .";"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 	foreach ($products as $i => $product) {

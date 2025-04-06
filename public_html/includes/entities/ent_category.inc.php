@@ -23,13 +23,6 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
-			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."categories_info;"
-			)->each(function($field) {
-				if (in_array($field['Field'], ['id', 'category_id', 'language_code'])) return;
-				$this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
-			});
-
 			$this->data['filters'] = [];
 			$this->data['products'] = [];
 
@@ -56,20 +49,22 @@
 				throw new Exception('Could not find category (ID: '. (int)$id .') in database.');
 			}
 
-			database::query(
-				"select * from ". DB_TABLE_PREFIX ."categories_info
-				where category_id = ". (int)$id .";"
-			)->each(function($info){
-				foreach ($info as $key => $value) {
-					if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
-					$this->data[$key][$info['language_code']] = $value;
-				}
-			});
+			foreach ([
+				'name',
+				'short_description',
+				'description',
+				'head_title',
+				'h1_title',
+				'meta_description',
+				'synonyms',
+			] as $column) {
+				$this->data[$column] = json_decode($this->data[$column], true) ?: [];
+			}
 
 			// Filters
 			$this->data['filters'] = database::query(
-				"select cf.*, agi.name as attribute_group_name from ". DB_TABLE_PREFIX ."categories_filters cf
-				left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = cf.attribute_group_id and language_code = '". database::input(language::$selected['code']) ."')
+				"select cf.*, json_value(ag.name, '$.". database::input(language::$selected['code']) ."') as attribute_group_name
+				from ". DB_TABLE_PREFIX ."categories_filters cf
 				where category_id = ". (int)$this->data['id'] ."
 				order by priority;"
 			)->fetch_all();
@@ -118,42 +113,19 @@
 					status = ". (int)$this->data['status'] .",
 					code = '". database::input($this->data['code']) ."',
 					google_taxonomy_id = ". (int)$this->data['google_taxonomy_id'] .",
+					name = '". database::input(json_encode($this->data['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					short_description = '". database::input(json_encode($this->data['short_description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					description = '". database::input(json_encode($this->data['description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					head_title = '". database::input(json_encode($this->data['head_title'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					h1_title = '". database::input(json_encode($this->data['h1_title'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					meta_description = '". database::input(json_encode($this->data['meta_description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					synonyms = '". database::input(json_encode($this->data['synonyms'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 					keywords = '". database::input($this->data['keywords']) ."',
 					priority = ". (int)$this->data['priority'] .",
 					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
-
-			foreach (language::$languages as $language) {
-
-				if (!database::query(
-					"select * from ". DB_TABLE_PREFIX ."categories_info
-					where category_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language['code']) ."'
-					limit 1;"
-				)->num_rows) {
-					database::query(
-						"insert into ". DB_TABLE_PREFIX ."categories_info
-						(category_id, language_code)
-						values (". (int)$this->data['id'] .", '". database::input($language['code']) ."');"
-					);
-				}
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."categories_info
-					set name = '". database::input($this->data['name'][$language['code']]) ."',
-						short_description = '". database::input($this->data['short_description'][$language['code']]) ."',
-						description = '". database::input($this->data['description'][$language['code']], true) ."',
-						head_title = '". database::input($this->data['head_title'][$language['code']]) ."',
-						h1_title = '". database::input($this->data['h1_title'][$language['code']]) ."',
-						meta_description = '". database::input($this->data['meta_description'][$language['code']]) ."',
-						synonyms = '". database::input($this->data['synonyms'][$language['code']]) ."'
-						where category_id = ". (int)$this->data['id'] ."
-						and language_code = '". database::input($language['code']) ."'
-					limit 1;"
-				);
-			}
 
 			// Delete filters
 			database::query(
@@ -304,9 +276,8 @@
 			}
 
 			database::query(
-				"delete c, ci, cf, ptc
+				"delete c, cf, ptc
 				from ". DB_TABLE_PREFIX ."categories c
-				left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id)
 				left join ". DB_TABLE_PREFIX ."categories_filters cf on (cf.category_id = c.id)
 				left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.category_id = c.id)
 				where c.id = ". (int)$this->data['id'] .";"

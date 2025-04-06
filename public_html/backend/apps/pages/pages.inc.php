@@ -145,14 +145,13 @@ table tbody .toggle {
 	if (!empty($_GET['query'])) {
 		$sql_where_query = [
 			"p.id = '". database::input($_GET['query']) ."'",
-			"pi.title like '%". database::input($_GET['query']) ."%'",
-			"pi.content like '%". database::input($_GET['query']) ."%'",
+			"json_value(p.title, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'",
+			"json_value(p.content, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'",
 		];
 
 		$pages = database::query(
-			"select p.*, pi.title, p2.num_subpages
+			"select p.*, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title, p2.num_subpages
 			from ". DB_TABLE_PREFIX ."pages p
-			left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
 			left join (
 				select parent_id as id, count(id) as num_subpages
 				from ". DB_TABLE_PREFIX ."pages
@@ -161,7 +160,7 @@ table tbody .toggle {
 			". (empty($_GET['query']) ? "and !parent_id" : "") ."
 			". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
 			". (!empty($_GET['dock']) ? "and find_in_set('". database::input($_GET['dock']) ."', p.dock)" : "") ."
-			order by p.priority, pi.title;"
+			order by p.priority, title;"
 		)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 		foreach ($pages as $page) {
@@ -185,16 +184,15 @@ table tbody .toggle {
 		$iterator = function($parent_id, $depth=0) use (&$iterator) {
 
 			$pages_query = database::query(
-				"select p.*, pi.title, p2.num_subpages
+				"select p.*, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title, p2.num_subpages
 				from ". DB_TABLE_PREFIX ."pages p
-				left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
 				left join (
 					select parent_id as id, count(id) as num_subpages
 					from ". DB_TABLE_PREFIX ."pages
 				) p2 on (p2.id = p.id)
 				where ". ($parent_id ? "p.parent_id = ". (int)$parent_id : "p.parent_id is null") ."
 				". ((!empty($_GET['dock']) && empty($depth)) ? "and p.dock = '". database::input($_GET['dock']) ."'" : "") ."
-				order by p.priority, pi.title;"
+				order by p.priority, title;"
 			);
 
 			if ($parent_id) {

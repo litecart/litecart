@@ -17,11 +17,10 @@
 		}
 
 		$result = database::query(
-			"select av.id, avi.name
+			"select av.id, json_value(av.name, '$.".database::input(language::$selected['code'])."') as name
 			from ". DB_TABLE_PREFIX ."attribute_values av
-			left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id and avi.language_code = '". database::input(language::$selected['code']) ."')
 			where av.group_id = ". (int)$_GET['group_id'] ."
-			order by ". (($attribute_group['sort'] == 'alphabetical') ? "cast(avi.name as unsigned), avi.name" : "av.priority") .";"
+			order by ". (($attribute_group['sort'] == 'alphabetical') ? "cast(name as unsigned), name" : "av.priority") .";"
 		)->fetch_all();
 
 	} catch(Exception $e) {

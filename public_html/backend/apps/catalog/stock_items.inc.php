@@ -43,9 +43,8 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$stock_items = database::query(
-		"select si.*, sii.name, oi.total_reserved, stt.total_deposited, oit.total_withdrawn from ". DB_TABLE_PREFIX ."stock_items si
-
-		left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+		"select si.*, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name,
+		oi.total_reserved, stt.total_deposited, oit.total_withdrawn from ". DB_TABLE_PREFIX ."stock_items si
 
 		left join (
 			select stock_item_id, sum(quantity_adjustment) as total_deposited
@@ -83,7 +82,7 @@
 
 		where si.id
 		". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
-		order by si.sku, sii.name;"
+		order by si.sku, name;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 	foreach ($stock_items as $i => $stock_item) {

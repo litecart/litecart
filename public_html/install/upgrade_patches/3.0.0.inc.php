@@ -885,3 +885,105 @@
 			modify column `". database::input($column['COLUMN_NAME']) ."` timestamp not null default current_timestamp on update current_timestamp;"
 		);
 	});
+
+	// Move info tables data to main table as JSON
+	$collections = [
+		[
+			'singular' => 'attribute_group',
+			'plural' => 'attribute_groups',
+		],
+		[
+			'singular' => 'attribute_value',
+			'plural' => 'attribute_values',
+		],
+		[
+			'singular' => 'brand',
+			'plural' => 'brands',
+		],
+		[
+			'singular' => 'category',
+			'plural' => 'categories',
+		],
+		[
+			'singular' => 'delivery_status',
+			'plural' => 'delivery_statuses',
+		],
+		[
+			'singular' => 'order_status',
+			'plural' => 'order_statuses',
+		],
+		[
+			'singular' => 'page',
+			'plural' => 'pages',
+		],
+		[
+			'singular' => 'product',
+			'plural' => 'products',
+		],
+		[
+			'singular' => 'quantity_unit',
+			'plural' => 'quantity_units',
+		],
+		[
+			'singular' => 'sold_out_status',
+			'plural' => 'sold_out_statuses',
+		],
+		[
+			'singular' => 'stock_item',
+			'plural' => 'stock_items',
+		],
+	];
+
+	$aliases = [
+		'attribute_group_id' => 'group_id',
+		'attribute_value_id' => 'value_id',
+	];
+
+	// Step through collections
+	foreach ($collections as $collection) {
+
+		// Get all columns in main table
+		$columns = database::query(
+			"show fields from `". DB_TABLE_PREFIX . $collection['plural'] ."`;"
+		)->fetch_all('Field');
+
+		// Get all columns in info table
+		$info_columns = database::query(
+			"show fields from ". DB_TABLE_PREFIX . $collection['plural'] ."_info;"
+		)->fetch_all(function($field) use ($collection) {
+			if (in_array($field['Field'], ['id', 'language_code']) || preg_match('#_id$#', $field['Field'])) return false;
+			return $field['Field'];
+		});
+
+		// Create missing columns in main table
+		foreach (array_diff($info_columns, $columns) as $column) {
+			database::query(
+				"alter table `". DB_TABLE_PREFIX . $collection['plural'] ."`
+				add column `". database::input($column) ."` text not null default '{}';"
+			);
+		}
+
+		// Copy data from info table to main table
+		database::query(
+			"SELECT `". database::input(strtr($collection['singular'].'_id', $aliases)) ."` as entity_id,
+				". implode(',' . PHP_EOL, array_map(function($field){
+					return "CONCAT('{', GROUP_CONCAT(CONCAT('\"', language_code, '\":', JSON_QUOTE(`". database::input($field) ."`)) ORDER BY language_code), '}') AS ". $field;
+				}, $info_columns)) ."
+			from `". DB_TABLE_PREFIX . database::input($collection['plural']) ."_info`
+			group by `". database::input(strtr($collection['singular'].'_id', $aliases)) ."`;"
+		)->each(function($info) use ($collection, $info_columns) {
+			database::query(
+				"update `". DB_TABLE_PREFIX . database::input($collection['plural']) ."`
+				set ". implode(',' . PHP_EOL, array_map(function($field) use ($info) {
+					return "`". database::input($field) ."` = '". database::input($info[$field]) ."'";
+				}, $info_columns)) ."
+				where id = ". (int)$info['entity_id'] ."
+				limit 1;"
+			);
+		});
+
+		// Drop info table
+		database::query(
+			"drop table `". DB_TABLE_PREFIX . $collection['plural'] ."_info`;"
+		);
+	}

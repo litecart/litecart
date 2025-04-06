@@ -38,8 +38,7 @@
 				]);
 
 				database::multi_query(
-					"truncate ". DB_TABLE_PREFIX ."pages;
-					truncate ". DB_TABLE_PREFIX ."pages_info;"
+					"truncate ". DB_TABLE_PREFIX ."pages;"
 				);
 			}
 
@@ -128,9 +127,13 @@
 			}
 
 			$csv = database::query(
-				"select p.*, pi.title, pi.content, pi.head_title, pi.meta_description, '". database::input($_POST['language_code']) ."' as language_code
+				"select p.*,
+					json_value(p.title, '$.". database::input($_POST['language_code']) ."') as title,
+					json_value(p.content, '$.". database::input($_POST['language_code']) ."') as content,
+					json_value(p.head_title, '$.". database::input($_POST['language_code']) ."') as head_title,
+					json_value(p.meta_description, '$.". database::input($_POST['language_code']) ."') as meta_description,
+					'". database::input($_POST['language_code']) ."' as language_code
 				from ". DB_TABLE_PREFIX ."pages p
-				left join ". DB_TABLE_PREFIX ."pages_info pi on (pi.page_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
 				order by pid;"
 			)->export($result)->fetch_all();
 

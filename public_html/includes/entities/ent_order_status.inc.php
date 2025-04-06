@@ -23,14 +23,6 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
-			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."order_statuses_info;"
-			)->each(function($field){
-
-				if (in_array($field['Field'], ['id', 'order_status_id', 'language_code'])) return;
-				$this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
-			});
-
 			$this->data['num_orders'] = 0;
 
 			$this->previous = $this->data;
@@ -56,15 +48,14 @@
 				throw new Exception('Could not find order_status (ID: '. (int)$id .') in database.');
 			}
 
-			database::query(
-				"select * from ". DB_TABLE_PREFIX ."order_statuses_info
-				where order_status_id = ". (int)$this->data['id'] .";"
-			)->each(function($info){
-				foreach ($info as $key => $value) {
-					if (in_array($key, ['id', 'order_status_id', 'language_code'])) continue;
-					$this->data[$key][$info['language_code']] = $value;
-				}
-			});
+			foreach ([
+				'name',
+				'description',
+				'email_subject',
+				'email_message',
+			] as $column) {
+				$this->data[$column] = json_decode($this->data[$column], true) ?: [];
+			}
 
 			$this->data['num_orders'] = database::query(
 				"select count(*) as num_orders
@@ -82,7 +73,7 @@
 			}
 
 			if (!$this->data['id']) {
-				
+
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."order_statuses
 					(date_created)
@@ -98,6 +89,10 @@
 					state = '". database::input($this->data['state']) ."',
 					icon = '". database::input($this->data['icon']) ."',
 					color = '". database::input($this->data['color']) ."',
+					name = '". database::input(json_encode($this->data['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					description = '". database::input(json_encode($this->data['description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					email_subject = '". database::input(json_encode($this->data['email_subject'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					email_message = '". database::input(json_encode($this->data['email_message'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 					is_sale = '". (empty($this->data['is_sale']) ? '0' : '1') ."',
 					is_archived = '". (empty($this->data['is_archived']) ? '0' : '1') ."',
 					is_trackable = '". (empty($this->data['is_trackable']) ? '0' : '1') ."',
@@ -108,41 +103,6 @@
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
-
-			foreach (array_keys(language::$languages) as $language_code) {
-
-				$order_status_info = database::query(
-					"select * from ". DB_TABLE_PREFIX ."order_statuses_info
-					where order_status_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
-					limit 1;"
-				)->fetch();
-
-				if (!$order_status_info) {
-
-					database::query(
-						"insert into ". DB_TABLE_PREFIX ."order_statuses_info
-						(order_status_id, language_code)
-						values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
-					);
-
-					$order_status_info = [
-						'id' => database::insert_id(),
-					];
-				}
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."order_statuses_info
-					set name = '". database::input($this->data['name'][$language_code]) ."',
-						description = '". database::input($this->data['description'][$language_code]) ."',
-						email_subject = '". database::input($this->data['email_subject'][$language_code], true) ."',
-						email_message = '". database::input($this->data['email_message'][$language_code], true) ."'
-					where id = ". (int)$order_status_info['id'] ."
-					and order_status_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
-					limit 1;"
-				);
-			}
 
 			$this->previous = $this->data;
 
@@ -156,9 +116,8 @@
 			}
 
 			database::query(
-				"delete os, osi
+				"delete os
 				from ". DB_TABLE_PREFIX ."order_statuses os
-				left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = os.id)
 				where os.id = ". (int)$this->data['id'] .";"
 			);
 

@@ -122,25 +122,6 @@
 							change `text_". database::input($this->previous['code']) ."` `text_". database::input($this->data['code']) ."` text not null;"
 						);
 
-						$info_tables = [
-							DB_TABLE_PREFIX . "attribute_groups_info",
-							DB_TABLE_PREFIX . "attribute_values_info",
-							DB_TABLE_PREFIX . "brands_info",
-							DB_TABLE_PREFIX . "categories_info",
-							DB_TABLE_PREFIX . "delivery_statuses_info",
-							DB_TABLE_PREFIX . "order_statuses_info",
-							DB_TABLE_PREFIX . "pages_info",
-							DB_TABLE_PREFIX . "products_info",
-							DB_TABLE_PREFIX . "quantity_units_info",
-							DB_TABLE_PREFIX . "sold_out_statuses_info",
-						];
-
-						foreach ($info_tables as $table) {
-							database::query(
-								"update ". $table ."
-								set language_code = '". database::input($this->data['code']) ."'
-								where language_code = '". database::input($this->previous['code']) ."';"
-							);
 						}
 					}
 				}
@@ -193,24 +174,6 @@
 				);
 			}
 
-			$info_tables = [
-				DB_TABLE_PREFIX . "attribute_groups_info",
-				DB_TABLE_PREFIX . "attribute_values_info",
-				DB_TABLE_PREFIX . "brands_info",
-				DB_TABLE_PREFIX . "categories_info",
-				DB_TABLE_PREFIX . "delivery_statuses_info",
-				DB_TABLE_PREFIX . "order_statuses_info",
-				DB_TABLE_PREFIX . "pages_info",
-				DB_TABLE_PREFIX . "products_info",
-				DB_TABLE_PREFIX . "quantity_units_info",
-				DB_TABLE_PREFIX . "sold_out_statuses_info",
-			];
-
-			foreach ($info_tables as $table) {
-				database::query(
-					"delete from ". $table ."
-					where language_code = '". database::input($this->data['code']) ."';"
-				);
 			}
 
 			$this->reset();

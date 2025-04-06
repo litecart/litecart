@@ -23,13 +23,6 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
-			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."attribute_groups_info;"
-			)->each(function($field) {
-				if (in_array($field['Field'], ['id', 'group_id', 'language_code'])) return;
-				$this->data[$field['Field']] = array_fill_keys(array_keys(language::$languages), database::create_variable($field));
-			});
-
 			$this->data['values'] = [];
 
 			$this->previous = $this->data;
@@ -55,13 +48,7 @@
 				throw new Exception('Could not find attribute (ID: '. (int)$id .') in database.');
 			}
 
-			database::query(
-				"select name, language_code from ". DB_TABLE_PREFIX ."attribute_groups_info
-				where group_id = ". (int)$id .";"
-			)->each(function($info){
-				if (in_array($info['language_code'], ['id', 'group_id', 'language_code'])) return;
-				$this->data['name'][$info['language_code']] = $info['name'];
-			});
+			$this->data['name'] = json_decode($this->data['name'], true) ?: [];
 
 			database::query(
 				"select * from ". DB_TABLE_PREFIX ."attribute_values
@@ -69,15 +56,7 @@
 				order by priority;"
 			)->each(function($value) {
 
-				database::query(
-					"select * from ". DB_TABLE_PREFIX ."attribute_values_info
-					where value_id = ". (int)$value['id'] .";"
-				)->each(function($info) use (&$value) {
-					foreach (array_keys($info) as $key) {
-						if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
-						$value[$key][$info['language_code']] = $info[$key];
-					}
-				});
+				$value['name'] = json_decode($value['name'], true) ?: [];
 
 				$value['in_use'] = database::query(
 					"select id from ". DB_TABLE_PREFIX ."products_attributes
@@ -108,42 +87,12 @@
 			database::query(
 				"update ". DB_TABLE_PREFIX ."attribute_groups
 				set code = '". database::input($this->data['code']) ."',
+					name = '". database::input(json_encode($this->data['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 					sort = '". database::input($this->data['sort']) ."',
 					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
-
-			// Group info
-			foreach (array_keys(language::$languages) as $language_code) {
-
-				$info = database::query(
-					"select id from ". DB_TABLE_PREFIX ."attribute_groups_info
-					where group_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
-					limit 1;"
-				)->fetch();
-
-				if (!$info) {
-
-					database::query(
-						"insert into ". DB_TABLE_PREFIX ."attribute_groups_info
-						(group_id, language_code)
-						values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
-					);
-
-					$info['id'] = database::insert_id();
-				}
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."attribute_groups_info
-					set name = '". database::input(fallback($this->data['name'][$language_code])) ."'
-					where id = ". (int)$info['id'] ."
-					and group_id = ". (int)$this->data['id'] ."
-					and language_code = '". database::input($language_code) ."'
-					limit 1;"
-				);
-			}
 
 			// Delete values
 			database::query(
@@ -168,11 +117,6 @@
 					and id = ". (int)$value['id'] ."
 					limit 1;"
 				);
-
-				database::query(
-					"delete from ". DB_TABLE_PREFIX ."attribute_values_info
-					where value_id = ". (int)$value['id'] .";"
-				);
 			});
 
 			// Update/Insert values
@@ -192,39 +136,12 @@
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."attribute_values
-					set priority = ". (int)$i++ .",
+					set name = '". database::input(json_encode($value['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+						priority = ". (int)$i++ .",
 						date_updated = '". ($this->data['values'][$key]['date_updated'] = date('Y-m-d H:i:s')) ."'
 					where id = ". (int)$value['id'] ."
 					limit 1;"
 				);
-
-				foreach (array_keys(language::$languages) as $language_code) {
-
-					$info = database::query(
-						"select id from ". DB_TABLE_PREFIX ."attribute_values_info
-						where value_id = ". (int)$value['id'] ."
-						and language_code = '". database::input($language_code) ."'
-						limit 1;"
-					)->fetch();
-
-					if (!$info) {
-						database::query(
-							"insert into ". DB_TABLE_PREFIX ."attribute_values_info
-							(value_id, language_code)
-							values ('". $value['id'] ."', '". database::input($language_code) ."');"
-						);
-						$info['id'] = database::insert_id();
-					}
-
-					database::query(
-						"update ". DB_TABLE_PREFIX ."attribute_values_info
-						set name = '". (isset($value['name'][$language_code]) ? database::input($value['name'][$language_code]) : '') ."'
-						where id = ". (int)$info['id'] ."
-						and value_id = ". (int)$value['id'] ."
-						and language_code = '". database::input($language_code) ."'
-						limit 1;"
-					);
-				}
 			}
 
 			$this->previous = $this->data;
@@ -257,11 +174,9 @@
 
 			// Delete attribute
 			database::query(
-				"delete ag, agi, av, avi
+				"delete ag, av
 				from ". DB_TABLE_PREFIX ."attribute_groups ag
-				left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id)
 				left join ". DB_TABLE_PREFIX ."attribute_values av on (av.group_id = ag.id)
-				left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id)
 				where ag.id = ". (int)$this->data['id'] .";"
 			);
 

@@ -20,36 +20,40 @@
 
 			switch ($field) {
 
-				case 'name':
-				case 'description':
-				case 'email_subject':
-				case 'email_message':
-
-					$query = database::query(
-						"select * from ". DB_TABLE_PREFIX ."order_statuses_info
-						where order_status_id = ". (int)$this->_data['id'] ."
-						and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-						order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-					);
-
-					while ($row = database::fetch($query)) {
-						foreach ($row as $key => $value) {
-							if (in_array($key, ['id', 'order_status_id', 'language_code'])) continue;
-							if (empty($this->_data[$key])) $this->_data[$key] = $value;
-						}
-					}
-
-					break;
-
 				default:
 
 					$order_status = database::query(
 						"select * from ". DB_TABLE_PREFIX ."order_statuses
 						where id = ". (int)$this->_data['id'] ."
 						limit 1;"
-					)->fetch();
+					)->fetch(function($staus) {
 
-					if (!$order_status) return;
+						foreach ([
+							'name',
+							'description',
+							'email_subject',
+							'email_message',
+						] as $field) {
+
+							$status[$field] = json_decode($status[$field], true) ?: [];
+
+							foreach ($this->_language_codes as $language_code) {
+								if (!empty($status[$field][$language_code])) {
+									$status[$field] = $status[$field][$language_code];
+								}
+							}
+						}
+
+						return $status;
+					});
+
+					if (!$order_status) {
+						$order_status = database::query(
+							"show fields from ". DB_TABLE_PREFIX ."order_statuses;"
+						)->each(function($field) use ($order_status) {
+							$order_status[$field['Field']] = database::create_variable($field);
+						})->fetch();
+					}
 
 					foreach ($order_status as $key => $value) {
 						$this->_data[$key] = $value;

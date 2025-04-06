@@ -27,13 +27,13 @@
 		$iterator = function($parent_id) use (&$iterator) {
 
 			return database::query(
-				"select p.id, p.parent_id, pi.title, p.priority, p.date_updated from ". DB_TABLE_PREFIX ."pages p
-				left join ". DB_TABLE_PREFIX ."pages_info pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+				"select p.id, p.parent_id, p.priority, p.date_updated,
+					json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
+				from ". DB_TABLE_PREFIX ."pages p
 				where p.status
 				". (!empty($parent_id) ? "and p.parent_id = ". (int)$parent_id ."" : "and find_in_set('information', p.dock)") ."
-				order by p.priority asc, pi.title asc;"
+				order by p.priority asc, p.title asc;"
 			)->fetch_all(function($page) use (&$iterator) {
-
 				return [
 					'id' => $page['id'],
 					'parent_id' => $page['parent_id'],

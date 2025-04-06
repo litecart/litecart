@@ -29,9 +29,8 @@
 		"select o.*, os.name as order_status_name
 		from ". DB_TABLE_PREFIX ."orders o
 		left join (
-			select os.id, os.hidden, osi.name
+			select os.id, os.hidden, json_value(os.name, '$.". database::input(language::$selected['code']) ."') as name
 			from ". DB_TABLE_PREFIX ."order_statuses os
-			left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = os.id and osi.language_code = '". language::$selected['code'] ."')
 		) os on (os.id = o.order_status_id)
 		where order_status_id is not null
 		and o.customer_id = ". (int)customer::$data['id'] ."

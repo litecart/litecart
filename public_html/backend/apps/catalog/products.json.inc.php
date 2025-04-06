@@ -20,23 +20,21 @@
 		$sql_find = [
 			"p.id = '". database::input($_REQUEST['query']) ."'",
 			"p.code like '". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
+			"json_value(p.name, '$.". database::input($_GET['language_code']) ."') like '%". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
 			"find_in_set(p.keywords, '". database::input($_REQUEST['query']) ."')",
-			"p.sku like '". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
-			"p.mpn like '". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
-			"p.gtin like '". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
-			"pi.name like '%". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
 		];
 	}
 
 	$products = database::query(
-		"select p.id, p.code, pi.name, pp.price, pso.total_quantity as quantity, oi.total_reserved as reserved, p.date_created
+		"select p.id, p.code, pp.price, p.date_created,
+			json_value(p.name, '$.". database::input($_GET['language_code']) ."') as name,
+			pso.total_quantity as quantity,
+			oi.total_reserved as reserved
 
 		from ". DB_TABLE_PREFIX ."products p
 
-		left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_GET['language_code']) ."')
-
 		left join (
-			select product_id, if(JSON_VALUE(price, '$.". database::input($_GET['currency_code']) ."') != 0, JSON_VALUE(price, '$.". database::input($_GET['currency_code']) ."') * ". (float)$_GET['currency_value'] .", JSON_VALUE(price, $.". database::input(settings::get('store_currency_code')) ."')) as price
+			select product_id, if(json_value(price, '$.". database::input($_GET['currency_code']) ."') != 0, json_value(price, '$.". database::input($_GET['currency_code']) ."') * ". (float)$_GET['currency_value'] .", json_value(price, $.". database::input(settings::get('store_currency_code')) ."')) as price
 			from ". DB_TABLE_PREFIX ."products_prices
 		) pp on (pp.product_id = p.id)
 
@@ -58,7 +56,7 @@
 		) oi on (oi.product_id = p.id)
 
 		". (!empty($sql_find) ? "where (". implode(" or ", $sql_find) .")" : "") ."
-		order by pi.name
+		order by name
 		limit 15;"
 	)->fetch_all(function($product) {
 		return [

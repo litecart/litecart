@@ -67,10 +67,9 @@
 			}
 
 			$this->data['contents'] = database::query(
-				"select stc.*, sii.name, si.sku, si.quantity, si.backordered
+				"select stc.*, si.sku, si.quantity, si.backordered, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name
 				from ". DB_TABLE_PREFIX ."stock_transactions_contents stc
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = stc.stock_item_id)
-				left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = stc.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
 				where stc.transaction_id = ". (int)$this->data['id'] .";"
 			)->fetch_all();
 

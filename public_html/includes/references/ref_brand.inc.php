@@ -22,35 +22,6 @@
 
 			switch($field) {
 
-				case 'description':
-				case 'short_description':
-				case 'head_title':
-				case 'meta_description':
-				case 'h1_title':
-				case 'link':
-
-					$this->_data['info'] = [];
-
-					$query = database::query(
-						"select * from ". DB_TABLE_PREFIX ."brands_info
-						where brand_id = ". (int)$this->_data['id'] ."
-						and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-						order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-					);
-
-					while ($row = database::fetch($query)) {
-						foreach ($row as $key => $value) {
-
-							if (in_array($key, ['id', 'brand_id', 'language_code'])) continue;
-
-							if (empty($this->_data[$key])) {
-								$this->_data[$key] = $value;
-							}
-						}
-					}
-
-					break;
-
 				case 'products':
 
 					$this->_data['products'] = database::query(
@@ -92,19 +63,49 @@
 
 				default:
 
-					$row = database::query(
+					$brand = database::query(
 						"select * from ". DB_TABLE_PREFIX ."brands
 						where id = ". (int)$this->_data['id'] ."
 						limit 1;"
-					)->fetch();
+					)->fetch(function($brand) {
 
-					if (!$row) return;
+						foreach ([
+							'description',
+							'short_description',
+							'head_title',
+							'meta_description',
+							'h1_title',
+							'link',
+						] as $key) {
 
-					foreach ($row as $key => $value) {
-						$this->_data[$key] = $value;
+							$brand[$key] = json_decode($brand[$key], true) ?: [];
+
+							foreach ($this->_language_codes as $language_code) {
+								if (!empty($brand[$key][$language_code])) {
+									$brand[$key] = $brand[$key][$language_code];
+									continue 2;
+								}
+							}
+
+							$brand[$key] = reset($brand[$key]);
+						}
+
+						$brand['keywords'] = preg_split('#\s*,\s*#', $brand['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+
+						return $brand;
+					});
+
+					if (!$brand) {
+						$brand = database::query(
+							"show fields from ". DB_TABLE_PREFIX ."brands;"
+						)->fetch(function($field) {
+							return database::create_variable($field);
+						});
 					}
 
-					$this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+					foreach ($brand as $key => $value) {
+						$this->_data[$key] = $value;
+					}
 
 					break;
 			}

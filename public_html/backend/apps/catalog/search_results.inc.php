@@ -8,21 +8,23 @@
 	$query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
 
 	$products = database::query(
-		"select p.id, p.default_category_id, pi.name,
-		(
+		"select p.id, p.default_category_id, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name, (
 			if(p.id = '". database::input($query) ."', 10, 0)
-			+ (match(pi.name) against ('". database::input($query_fulltext) ."' in boolean mode))
-			+ (match(pi.short_description) against ('". database::input($query_fulltext) ."' in boolean mode) / 2)
-			+ (match(pi.description) against ('". database::input($query_fulltext) ."' in boolean mode) / 3)
-			+ if(pi.name like '%". database::input($query) ."%', 3, 0)
-			+ if(pi.short_description like '%". database::input($query) ."%', 2, 0)
-			+ if(pi.description like '%". database::input($query) ."%', 1, 0)
-			+ if(p.code regexp '". database::input($code_regex) ."', 5, 0)
+			+ (p.code regexp '". database::input($code_regex) ."', 5, 0)
+
+			+ (match(json_value(p.name, '$.". database::input(language::$selected['code']) ."')) against ('". database::input($query_fulltext) ."' in boolean mode))
+			+ (match(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."')) against ('". database::input($query_fulltext) ."' in boolean mode) /2)
+			+ (match(json_value(p.description, '$.". database::input(language::$selected['code']) ."')) against ('". database::input($query_fulltext) ."' in boolean mode) /3)
+
+			+ if (json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query) ."%', 3, 0)
+			+ if (json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query) ."%', 2, 0)
+			+ if (json_value(p.description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query) ."%', 1, 0)
+
 			+ if (p.id in (
 				select product_id from ". DB_TABLE_PREFIX ."products_stock_options
 					where stock_item_id in (
 						select id from ". DB_TABLE_PREFIX ."stock_items
-				where sku regexp '". database::input($code_regex) ."'
+						where sku regexp '". database::input($code_regex) ."'
 						or gtin regexp '". database::input($code_regex) ."'
 						or mpn regexp '". database::input($code_regex) ."'
 					)
@@ -30,8 +32,6 @@
 		) as relevance
 
 		from ". DB_TABLE_PREFIX ."products p
-
-		left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 
 		having relevance > 0
 		order by relevance desc, id asc
@@ -68,7 +68,7 @@
 	$query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
 
 	$stock_items = database::query(
-		"select s.id, s.sku, si.name, (
+		"select s.id, s.sku, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name, (
 			if(s.id = '". database::input($query) ."', 10, 0)
 			+ (match(si.name) against ('". database::input($query_fulltext) ."' in boolean mode))
 			+ if(si.name like '%". database::input($query) ."%', 3, 0)
@@ -85,8 +85,6 @@
 		) as relevance
 
 		from ". DB_TABLE_PREFIX ."stock_items s
-
-		left join ". DB_TABLE_PREFIX ."stock_items_info si on (si.stock_item_id = s.id and si.language_code = '". database::input(language::$selected['code']) ."')
 
 		having relevance > 0
 		order by relevance desc, id asc
