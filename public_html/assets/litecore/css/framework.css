@@ -1130,7 +1130,7 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
   font-family: "LiteCore";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/fonticons.woff2?1742765862") format("woff2");
+  src: url("../fonts/fonticons.woff2?1743985480") format("woff2");
 }
 [class^="icon-"],
 [class*=" icon-"] {
@@ -1477,6 +1477,9 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
 .icon-stethoscope:before {
   content: "\e06d";
 }
+.icon-newsstand:before {
+  content: "\e06e";
+}
 .icon-location-arrow:before {
   content: "\e06f";
 }
@@ -1810,7 +1813,7 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
 /* Forms & Input Fields */
 .form-group {
   display: block;
-  margin-bottom: 1em;
+  margin-bottom: 1.5em;
 }
 .form-group:has([required]) .form-label::after {
   content: ' *';
@@ -3201,7 +3204,6 @@ body.navbar-expanded {
 .pagination {
   display: flex;
   padding-inline-start: 0;
-  margin: var(--gutter-y) 0;
   border-radius: var(--border-radius);
   flex-wrap: wrap;
 }
@@ -3234,7 +3236,7 @@ body.navbar-expanded {
   cursor: not-allowed;
 }
 .php-feedback {
-  font-size: 0.8em;
+  font-size: 12px;
   opacity: 0.75;
   transition: all 150ms linear;
   width: fit-content;
@@ -3255,6 +3257,7 @@ body.navbar-expanded {
   flex-direction: column;
 }
 .pills .pill-item {
+  display: block;
   margin: 1px 0;
   padding: 0.75em 1em;
   background: var(--pill-item-background);
@@ -3540,7 +3543,7 @@ body.navbar-expanded {
   box-shadow: 0 2px 1px rgba(0, 0, 0, 0.05);
 }
 .table thead tr th {
-  padding: 1em;
+  padding: 0.5em 1em;
   vertical-align: bottom;
   font-weight: 500;
 }

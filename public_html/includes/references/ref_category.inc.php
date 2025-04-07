@@ -210,8 +210,11 @@
 							foreach ($this->_language_codes as $language_code) {
 								if (!empty($category[$field][$language_code])) {
 									$category[$field] = $category[$field][$language_code];
+									continue 2;
 								}
 							}
+
+							$category[$field] = '';
 						}
 
 						$category['keywords'] = preg_split('#\s*,\s*#', $category['keywords'], -1, PREG_SPLIT_NO_EMPTY);

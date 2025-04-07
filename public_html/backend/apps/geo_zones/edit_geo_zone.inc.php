@@ -115,7 +115,11 @@
 					<td><?php echo functions::form_input_hidden('zones['. $key .'][country_code]', true); ?> <?php echo reference::country($_POST['zones'][$key]['country_code'])->name; ?></td>
 					<td><?php echo functions::form_input_hidden('zones['. $key .'][zone_code]', true); ?> <?php echo !empty($_POST['zones'][$key]['zone_code']) ? reference::country($_POST['zones'][$key]['country_code'])->zones[$_POST['zones'][$key]['zone_code']]['name'] : '-- '.language::translate('title_all_zones', 'All Zones') .' --'; ?></td>
 					<td><?php echo functions::form_input_hidden('zones['. $key .'][city]', true); ?> <?php echo fallback($_POST['zones'][$key]['city'], '-- '.language::translate('title_all_cities'), 'All Cities') .' --'; ?></td>
-					<td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a></td>
+					<td class="text-end">
+						<a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
+							<?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?>
+						</a>
+					</td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -176,7 +180,7 @@
 	$('tfoot button[name="add"]').on('click', function(e) {
 		e.preventDefault();
 
-		if ($('select[name="country[code]"]').val() == '') return;
+		if ($('select[name="new_zone[country_code]"]').val() == '') return;
 
 		let found = false;
 		$.each($('form[name="form_geo_zone"] tbody tr'), function(i, current_row) {
@@ -188,7 +192,16 @@
 			 }
 		});
 
-		if (found) return;
+		if (found) {
+			alert('<?php echo functions::escape_js(language::translate('error_zone_already_exists', 'This zone already exists in the list'), true); ?>');
+			return;
+		}
+
+		let zone_name = $('select[name="new_zone[zone_code]"] option:selected').text();
+		if (zone_name == '') zone_name = '-- '.language::translate('title_all_zones', 'All Zones') .' --';
+
+		let city_name = $('input[name="new_zone[city]"]').val();
+		if (city_name == '') city_name = '-- '.language::translate('title_all_cities', 'All Cities') .' --';
 
 		let $output = $([
 			'<tr>',
@@ -196,7 +209,11 @@
 			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][country_code]', '')); ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>',
 			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][zone_code]', '')); ?>' + $('select[name="new_zone[zone_code]"] option:selected').text() + '</td>',
 			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][city]', '')); ?>' + $('input[name="new_zone[city]"]').val() + '</td>',
-			'  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #cc3333;"')); ?></a></td>',
+			'  <td class="text-end">',
+			'		<a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>">',
+			'			<?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #cc3333;"')); ?>',
+			'		</a>',
+			'	</td>',
 			'</tr>'
 		].join('\n')
 			.replace(/new_zone_index/g, 'new_' + new_zone_index++)

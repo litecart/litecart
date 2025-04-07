@@ -75,7 +75,7 @@
   --input-padding-y: 0.75em;
   --input-background: #f6f7fb;
   --input-text-color: #000;
-  --input-border-color: #e5e6e9;
+  --input-border-color: transparent;
   --input-border-width: 1px;
   --input-outline-color: #333;
   --input-outline-color--hover: #ccc;

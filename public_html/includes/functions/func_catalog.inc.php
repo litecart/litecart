@@ -51,19 +51,19 @@
 			$query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
 
 			$sql_select_relevance[] = (
-				"if(match(json_value(c.name, '$.". database::input(language::$selected['code']) ."')) against ('". database::input($query_fulltext) ."' in boolean mode), 10, 0)"
+				"if(json_value(c.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query_fulltext) ."%', 10, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(match(json_value(c.short_description, '$.". database::input(language::$selected['code']) ."')) against ('". database::input($query_fulltext) ."' in boolean mode), 5, 0)"
+				"if(json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query_fulltext) ."%', 5, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(match(json_value(c.description, '$.". database::input(language::$selected['code']) ."')) against ('". database::input($query_fulltext) ."' in boolean mode), 5, 0)"
+				"if(json_value(c.description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query_fulltext) ."%', 5, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(match(json_value(c.synonyms, '$.". database::input(language::$selected['code']) ."')) against ('". database::input($query_fulltext) ."' in boolean mode), 10, 0)"
+				"if(json_value(c.synonyms, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query_fulltext) ."%', 10, 0)"
 			);
 		}
 
@@ -359,18 +359,6 @@
 						or mpn regexp '". database::input($code_regex) ."'
 					)
 				), 5, 0)"
-			);
-
-			$sql_select_relevance[] = (
-				"if(match(json_value(p.name, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."' in boolean mode), 10, 0)"
-			);
-
-			$sql_select_relevance[] = (
-				"if(match(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."' in boolean mode), 10, 0)"
-			);
-
-			$sql_select_relevance[] = (
-				"if(match(json_value(p.description, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."' in boolean mode), 10, 0)"
 			);
 
 			$sql_select_relevance[] = (

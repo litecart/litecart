@@ -351,11 +351,11 @@ waitFor('jQuery', ($) => {
 				}
 
 				if (result.categories && result.categories.length) {
-					$.each(result.products, function(i, product) {
+					$.each(result.categories, function(i, category) {
 
 						let $item = $([
 							'<li class="dropdown-item"><a class="dropdown-menu-link" href="'+ category.link.escapeAttr() +'">',
-							'  <img src="'+ product.thumbnail.escapeAttr() +'" style="height: 1em;"> ' + category.name.escapeAttr(),
+							'  <img src="'+ category.image.thumbnail.escapeAttr() +'" style="height: 1em;"> ' + category.name.escapeAttr(),
 							'</a></li>',
 						].join('\n'));
 

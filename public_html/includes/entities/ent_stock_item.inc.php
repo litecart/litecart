@@ -54,7 +54,7 @@
 			foreach ([
 				'name',
 			] as $column) {
-				$this->data[$column] = database::array_from_json($this->data[$column]);
+				$this->data[$column] = json_decode($this->data[$column], true);
 			}
 
 			// Reserved Quantity

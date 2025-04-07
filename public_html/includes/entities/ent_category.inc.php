@@ -65,8 +65,9 @@
 			$this->data['filters'] = database::query(
 				"select cf.*, json_value(ag.name, '$.". database::input(language::$selected['code']) ."') as attribute_group_name
 				from ". DB_TABLE_PREFIX ."categories_filters cf
-				where category_id = ". (int)$this->data['id'] ."
-				order by priority;"
+				left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = cf.attribute_group_id)
+				where cf.category_id = ". (int)$this->data['id'] ."
+				order by cf.priority;"
 			)->fetch_all();
 
 			// Products

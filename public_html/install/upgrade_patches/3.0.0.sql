@@ -19,7 +19,7 @@ CREATE TABLE `lc_banners` (
 CREATE TABLE `lc_campaigns` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
-	`name` VARCHAR(32) NOT NULL DEFAULT '' COLLATE 'utf8mb4_swedish_ci',
+	`name` VARCHAR(32) NOT NULL DEFAULT '',
 	`date_valid_from` TIMESTAMP NULL DEFAULT NULL,
 	`date_valid_to` TIMESTAMP NULL DEFAULT NULL,
 	`date_updated` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -524,8 +524,6 @@ CHANGE COLUMN `dim_y` `width` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_z` `height` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 ADD COLUMN `stock_item_id` INT(10) UNSIGNED NOT NULL AFTER `product_id`,
-ADD COLUMN `purchase_price` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `length_unit`,
-ADD COLUMN `backordered` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `quantity`,
 ADD UNIQUE KEY `product_stock_option` (`product_id`, `attributes`),
 ADD INDEX `sku` (`sku`);
 -- -----
@@ -722,30 +720,29 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 INSERT INTO `lc_stock_transactions` (id, name, description)
 VALUES (1, 'Initial Stock Transaction', 'This is an initial system generated stock transaction to deposit stock for all sold items and items in stock. We need this for future inconcistency checks.');
 -- -----
-INSERT INTO `lc_stock_transactions_contents`
-(transaction_id, stock_item_id, quantity_adjustment)
+INSERT INTO `lc_stock_transactions_contents` (transaction_id, stock_item_id, quantity_adjustment)
 SELECT '1' AS transaction_id, stock_item_id, quantity_adjustment
 FROM (
-    SELECT product_id, stock_item_id, SUM(quantity) as quantity_adjustment
-    FROM (
-        SELECT pso.product_id, pso.id AS stock_item_id, pso.quantity
-        FROM `lc_products_stock_options` pso
+	SELECT product_id, stock_item_id, SUM(quantity) as quantity_adjustment
+	FROM (
+		SELECT pso.product_id, pso.id AS stock_item_id, pso.quantity
+		FROM `lc_products_stock_options` pso
 
-        UNION
+		UNION
 
-        SELECT oi.product_id, oi.stock_option_id AS stock_item_id, oi.quantity
-        FROM `lc_orders_items` oi
-        WHERE oi.order_id IN (
-            SELECT id
-            FROM `lc_orders` o
-            WHERE o.order_status_id IN (
-                SELECT id
-                FROM `lc_order_statuses` os
-                WHERE os.stock_action = 'withdraw'
-            )
-        )
-    ) AS temp_table
-    GROUP BY product_id, stock_item_id
+		SELECT oi.product_id, oi.stock_option_id AS stock_item_id, oi.quantity
+		FROM `lc_orders_items` oi
+		WHERE oi.order_id IN (
+			SELECT id
+			FROM `lc_orders` o
+			WHERE o.order_status_id IN (
+				SELECT id
+				FROM `lc_order_statuses` os
+				WHERE os.stock_action = 'withdraw'
+			)
+		)
+	) AS temp_table
+	GROUP BY product_id, stock_item_id
 ) AS final_result;
 -- -----
 UPDATE `attribute_groups`
