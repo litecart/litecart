@@ -364,15 +364,18 @@
 
 	perform_action('move', [
 		FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_APP . 'storage/config.inc.php',
-		FS_DIR_APP . 'favicon.ico' => FS_DIR_APP . 'storage/images/favicons/favicon.ico',
 	]);
 
+	foreach (glob(FS_DIR_APP . 'favicon.ico') as $file) {
+		perform_action('move', [$file => FS_DIR_APP . 'favicon.deleteme']);
+	}
+
 	foreach (glob(FS_DIR_ADMIN . '*.app') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'backend/apps/' . preg_replace('#\.app$#', '', basename($file))]);
+		perform_action('move', [$file.'/*' => FS_DIR_APP . 'backend/apps/' . preg_replace('#\.app$#', '', basename($file))]);
 	}
 
 	foreach (glob(FS_DIR_ADMIN . '*.widget') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'backend/widgets/' . preg_replace('#\.widget$#', '', basename($file))]);
+		perform_action('move', [$file.'/*' => FS_DIR_APP . 'backend/widgets/' . preg_replace('#\.widget$#', '', basename($file))]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'cache/*') as $file) {
@@ -457,7 +460,7 @@
 				$contents = file_get_contents($file);
 
 				while (true) {
-					$contents = preg_replace('#^(\t*)  #m', "$1\t", $contents, -1, $replacements);
+					$contents = preg_replace('#^(\t*)  #m', "$1\t", addcslashes($contents, '\\'), -1, $replacements);
 					if (!$replacements) break;
 				}
 
@@ -571,22 +574,12 @@
 		}
 	});
 
-	database::query(
-		"ALTER TABLE `lc_orders_items`
-		DROP COLUMN `attributes`;"
-	);
-
-	database::query(
-		"ALTER TABLE `products_stock_options`
-		DROP COLUMN `attributes`;"
-	);
-
  	// Migrate PHP serialized userdata to JSON
 	database::query(
 		"select * from ". DB_TABLE_PREFIX ."cart_items;"
 	)->each(function($item){
 
-		$item['userdata'] = unserialize($item['userdata']);
+		$item['userdata'] = $item['userdata'] ? unserialize($item['userdata']) : [];
 
 		database::query(
 			"update ". DB_TABLE_PREFIX ."cart_items
@@ -600,7 +593,7 @@
 		"select * from ". DB_TABLE_PREFIX ."orders_items;"
 	)->each(function($item){
 
-		$item['userdata'] = unserialize($item['userdata']);
+		$item['userdata'] = $item['userdata'] ? unserialize($item['userdata']) : [];
 
 		database::query(
 			"update ". DB_TABLE_PREFIX ."orders_items
@@ -625,6 +618,16 @@
 		);
 	});
 
+	database::query(
+		"ALTER TABLE `lc_orders_items`
+		DROP COLUMN `attributes`;"
+	);
+
+	database::query(
+		"ALTER TABLE `lc_products_stock_options`
+		DROP COLUMN `attributes`;"
+	);
+
 	// Set subtotal for all previous orders
 	database::query(
 		"update ". DB_TABLE_PREFIX ."orders o
@@ -635,6 +638,12 @@
 		) oi on (oi.order_id = o.id)
 		set o.subtotal = if(oi.subtotal, oi.subtotal, 0),
 			o.subtotal_tax = if(oi.subtotal_tax, oi.subtotal_tax, 0);"
+	);
+
+	// Remove tax column from orders_items
+	database::query(
+		"alter table `lc_orders_items`
+		drop column `tax`;"
 	);
 
 	// Convert Table Charset and Collations
@@ -748,8 +757,8 @@
 		"select * from ". DB_TABLE_PREFIX ."products_campaigns;"
 	)->each(function($campaign_product) use (&$campaigns) {
 
-		$valid_from = $campaign_product['date_valid_from'] ? date('YmdHis', strtotime($campaign_product['date_valid_from'])) : '0';
-		$valid_to = $campaign_product['date_valid_to'] ? date('YmdHis', strtotime($campaign_product['date_valid_to'])) : '0';
+		$valid_from = $campaign_product['date_valid_from'] ? date('YmdHis', strtotime($campaign_product['start_date'])) : '0';
+		$valid_to = $campaign_product['date_valid_to'] ? date('YmdHis', strtotime($campaign_product['end_date'])) : '0';
 
 		$campaigns[$valid_from.'-'.$valid_to][] = $campaign_product;
 	});
@@ -761,8 +770,8 @@
 		"select * from ". DB_TABLE_PREFIX ."products_campaigns;"
 	)->each(function($campaign_product) use (&$campaigns) {
 
-		$valid_from = $campaign_product['date_valid_from'] ? date('YmdHis', strtotime($campaign_product['date_valid_from'])) : '0';
-		$valid_to = $campaign_product['date_valid_to'] ? date('YmdHis', strtotime($campaign_product['date_valid_to'])) : '0';
+		$valid_from = $campaign_product['date_valid_from'] ? date('YmdHis', strtotime($campaign_product['start_date'])) : '0';
+		$valid_to = $campaign_product['date_valid_to'] ? date('YmdHis', strtotime($campaign_product['end_date'])) : '0';
 
 		$campaigns[$valid_from.'-'.$valid_to][] = $campaign_product;
 	});
@@ -776,12 +785,14 @@
 		);
 
 		$campaign_id = database::insert_id();
+		$campaign_id = database::insert_id();
 
-		$prices = array_filter($campaign, function ($key) {
-			return (preg_match('#^[A-Z]{3}$#', $key));
-		}, ARRAY_FILTER_USE_KEY);
+		foreach ($campaign_products as $campaign_product) {
 
-		foreach ($campaign_products as $product) {
+			$prices = array_filter($campaign, function ($key) {
+				return (preg_match('#^[A-Z]{3}$#', $key));
+			}, ARRAY_FILTER_USE_KEY);
+
 			database::query(
 				"insert into ". DB_TABLE_PREFIX ."campaigns_products
 				(campaign_id, product_id, price)
@@ -809,7 +820,7 @@
 		}, ARRAY_FILTER_USE_KEY);
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."products
+			"update ". DB_TABLE_PREFIX ."products_prices
 			set price = '". database::input(json_encode(array_filter($prices))) ."'
 			where id = ". (int)$product_price['id'] ."
 			limit 1;"
@@ -817,10 +828,10 @@
 	});
 
 	// Drop currency columns from table
-	foreach ($currencies as $currency) {
+	foreach ($currencies as $currency_code) {
 		database::query(
 			"alter table ". DB_TABLE_PREFIX ."products_prices
-			drop column `". database::input($currency['code']) ."`;"
+			drop column `". database::input($currency_code) ."`;"
 		);
 	}
 
@@ -842,16 +853,16 @@
 	});
 
 	// Drop currency columns from table
-	foreach ($currencies as $currency) {
+	foreach ($currencies as $currency_code) {
 		database::query(
 			"alter table ". DB_TABLE_PREFIX ."products_customizations_values
-			drop column `". database::input($currency['code']) ."`;"
+			drop column `". database::input($currency_code) ."`;"
 		);
 	}
 
 	// Make all 11 digit unsigned integers standard int(10) unsigned
 	database::query(
-		"select * from information_schema
+		"select * from `information_schema`.`COLUMNS`
 		where TABLE_SCHEMA = '". database::input(DB_DATABASE) ."'
 		and COLUMN_TYPE = 'int(11) unsigned';"
 	)->each(function($column) {
@@ -863,7 +874,7 @@
 
 	// Make all 11 digit unsigned floating points standard float(10,4) unsigned
 	database::query(
-		"select * from information_schema
+		"select * from `information_schema`.`COLUMNS`
 		where TABLE_SCHEMA = '". database::input(DB_DATABASE) ."'
 		and COLUMN_TYPE = 'float(11,4) unsigned';"
 	)->each(function($column) {
@@ -875,7 +886,7 @@
 
 	// Make sure all date_updated columns have "on update current_timestamp"
 	database::query(
-		"select * from information_schema
+		"select * from `information_schema`.`COLUMNS`
 		where TABLE_SCHEMA = '". database::input(DB_DATABASE) ."'
 		and COLUMN_NAME = 'date_updated'
 		and EXTRA not like '%on update current_timestamp%';"

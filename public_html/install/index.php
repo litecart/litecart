@@ -270,6 +270,9 @@
 	<p>Warning: An existing installation has been detected. It <u>will be deleted</u> if you continue!</p>
 	<p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
 </div>
+<script>
+	$.litebox('#modal-warning-existing-installation');
+</script>
 <?php } ?>
 
 <style>

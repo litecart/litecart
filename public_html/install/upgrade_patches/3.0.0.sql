@@ -34,8 +34,6 @@ CREATE TABLE `lc_campaigns_products` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`campaign_id` INT(10) UNSIGNED NOT NULL,
 	`product_id` INT(10) UNSIGNED NOT NULL,
-	`start_date` TIMESTAMP NULL DEFAULT NULL,
-	`end_date` TIMESTAMP NULL DEFAULT NULL,
 	`price` VARCHAR(512) NOT NULL DEFAULT '{}',
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `product_id` (`product_id`) USING BTREE,
@@ -152,19 +150,11 @@ CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
 -- -----
 ALTER TABLE `lc_attribute_values`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-CHANGE COLUMN `group_id` `group_id` INT(10) UNSIGNED NOT NULL;
--- -----
-ALTER TABLE `lc_attribute_values_info`
-CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-CHANGE COLUMN `value_id` `value_id` INT(10) UNSIGNED NOT NULL,
-CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
--- -----
-ALTER TABLE `lc_attribute_groups_info`
 CHANGE COLUMN `group_id` `group_id` INT(10) UNSIGNED NOT NULL,
-CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL,
 ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `group_id`;
 -- -----
 ALTER TABLE `lc_attribute_values_info`
+CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `value_id` `value_id` INT(10) UNSIGNED NOT NULL,
 CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
 -- -----
@@ -277,7 +267,7 @@ ADD INDEX `group_id` (`group_id`);
 -- -----
 ALTER TABLE `lc_delivery_statuses`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `id`
+ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `id`,
 ADD COLUMN `description` TEXT NOT NULL DEFAULT '{}' AFTER `name`;
 -- -----
 ALTER TABLE `lc_delivery_statuses_info`
@@ -390,10 +380,10 @@ CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `options` `userdata` VARCHAR(2048) NULL AFTER `name`,
 CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT '',
 CHANGE COLUMN `priority` `priority` INT NOT NULL DEFAULT '0',
+ADD COLUMN `stock_option_id` INT(10) UNSIGNED NULL AFTER `product_id`,
 ADD COLUMN `tax_rate` FLOAT(4,2) UNSIGNED NULL AFTER `tax`,
 ADD COLUMN `tax_class_id` INT(10) UNSIGNED NULL AFTER `tax_rate`,
-ADD COLUMN `stock_option_id` INT(10) UNSIGNED NULL AFTER `product_id`,
-ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `tax`,
+ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `tax_class_id`,
 ADD COLUMN `discount_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount`,
 ADD COLUMN `sum` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount_tax`,
 ADD COLUMN `sum_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `sum`,
@@ -491,6 +481,7 @@ CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `product_id` `product_id` INT(10) UNSIGNED NOT NULL;
 -- -----
 ALTER TABLE `lc_products_customizations_values`
+CHANGE COLUMN `price_operator` `price_modifier` CHAR(1) NOT NULL DEFAULT '+',
 ADD COLUMN `price_adjustment` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0' AFTER `price_modifier`;
 -- -----
 ALTER TABLE `lc_products_images`
@@ -556,14 +547,14 @@ DROP INDEX `setting_group_key`;
 -- -----
 ALTER TABLE `lc_settings_groups`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-CHANGE COLUMN `key` `key` VARCHAR(32) NOT NULL,
-ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `orderable`,
-ADD COLUMN `description` TEXT NOT NULL DEFAULT '{}' AFTER `name`;
+CHANGE COLUMN `key` `key` VARCHAR(32) NOT NULL;
 -- -----
 ALTER TABLE `lc_sold_out_statuses`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `hidden` `hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `orderable` `orderable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
+CHANGE COLUMN `orderable` `orderable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'
+ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `orderable`,
+ADD COLUMN `description` TEXT NOT NULL DEFAULT '{}' AFTER `name`;
 -- -----
 ALTER TABLE `lc_sold_out_statuses_info`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -632,7 +623,6 @@ CREATE TABLE `lc_third_parties` (
 	`privacy_policy_url` VARCHAR(256) NOT NULL DEFAULT '',
 	`opt_out_url` VARCHAR(256) NOT NULL DEFAULT '',
 	`do_not_sell_url` VARCHAR(256) NOT NULL DEFAULT '',
-	`collected_data` VARCHAR(256) NOT NULL DEFAULT '',
 	`country_code` CHAR(2) NULL DEFAULT NULL,
 	`date_updated` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
 	`date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
@@ -698,7 +688,7 @@ VALUES (NULL, 'retail', 'Default', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_orders_items`
 (order_id, sku, name, quantity, price, tax_rate)
-SELECT order_id, module_id, `title`, 1, amount, ROUND(tax / `value` * 100, 2) from `lc_orders_totals`
+SELECT order_id, module_id, `title`, 1, amount, ROUND(tax / `amount` * 100, 2) from `lc_orders_totals`
 WHERE calculate
 ORDER BY order_id, priority;
 -- -----
@@ -745,10 +735,10 @@ FROM (
 	GROUP BY product_id, stock_item_id
 ) AS final_result;
 -- -----
-UPDATE `attribute_groups`
+UPDATE `lc_attribute_groups`
 SET name = '{}';
 -- -----
-UPDATE `attribute_values`
+UPDATE `lc_attribute_values`
 SET name = '{}';
 -- -----
 UPDATE `lc_brands`
@@ -777,7 +767,7 @@ SET name = '{}',
 	h1_title = '{}',
 	meta_description = '{}';
 -- -----
-UPDATE `delivery_statuses`
+UPDATE `lc_delivery_statuses`
 SET name = '{}',
 	description = '{}';
 -- -----
@@ -883,8 +873,7 @@ LEFT JOIN `lc_products_stock_options` pso ON (pso.product_id = oi.product_id AND
 SET oi.stock_option_id = pso.id;
 -- -----
 UPDATE `lc_orders_items`
-SET `type` = 'product',
-	sum = price * quantity,
+SET sum = price * quantity,
 	sum_tax = tax * quantity;
 -- -----
 UPDATE `lc_products_to_categories`
@@ -1034,9 +1023,6 @@ DROP INDEX `product_option_stock`;
 ALTER TABLE `lc_categories`
 DROP COLUMN `list_style`;
 -- -----
-ALTER TABLE `lc_orders_items`
-DROP COLUMN `tax`;
--- -----
 DELETE FROM `lc_settings`
 WHERE `key` IN ('auto_decimals', 'cache_system_breakpoint', 'development_mode', 'jobs_interval', 'jobs_last_push', 'round_amounts', 'store_template_admin', 'store_template_admin_settings');
 -- -----
@@ -1044,7 +1030,6 @@ DELETE FROM `lc_modules`
 WHERE `module_id` = 'ot_subtotal'
 LIMIT 1;
 -- -----
-/* Cleanup orphans - as we will assign foreign keys */
 DELETE FROM `lc_attribute_groups_info`
 WHERE group_id NOT IN (SELECT id from `lc_attribute_groups`)
 OR language_code NOT IN (SELECT code from `lc_languages`);

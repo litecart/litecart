@@ -973,7 +973,7 @@
         "group_id": { "type": "INT", "length": 11, "unsigned": true, "nullable": true },
         "value_id": { "type": "INT", "length": 11, "unsigned": true, "nullable": true },
         "custom_value": { "type": "VARCHAR", "length": 64, "default": "''" },
-        "price_modifier": { "type": "VARCHAR", "length": 1, "default": "''" },
+        "price_modifier": { "type": "CHAR", "length": 1, "default": "'+'" },
         "price_adjustment": { "type": "VARCHAR", "length": 1, "default": "''" },
         "priority": { "type": "TINYINT", "length": 2, "default": 0 }
       },
@@ -1152,7 +1152,7 @@
       "primary_key": ["id"],
 			"check_constraints": {
 				"chk_name": "JSON_VALID(name);",
-				"chk_description": "JSON_VALID(description);",
+				"chk_description": "JSON_VALID(description);"
 			}
     },
     "lc_redirects": {

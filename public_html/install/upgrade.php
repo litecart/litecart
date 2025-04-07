@@ -789,9 +789,10 @@ input[name="development_type"]:checked + div {
 					<?php echo DB_SERVER; ?>
 				</div>
 			</label>
+		</div>
 
-			<div class="col-md-6">
-				<label class="form-group">
+		<div class="col-md-6">
+			<label class="form-group">
 				<div class="form-label">MySQL/MariaDB Database</div>
 				<div class="form-input">
 					<?php echo DB_DATABASE; ?>
@@ -809,7 +810,7 @@ input[name="development_type"]:checked + div {
 	</label>
 
 	<div class="grid">
-	<?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
+		<?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
 		<div class="col-md-3">
 			<label class="form-group">
 				<div class="form-label">Current Version</div>
@@ -829,20 +830,18 @@ input[name="development_type"]:checked + div {
 		<?php } ?>
 
 		<div class="col-md-6">
-				<label class="form-group">
+			<label class="form-group">
 				<div class="form-label">New Version</div>
 				<div class="form-input"><?php echo PLATFORM_VERSION; ?></div>
 			</label>
 		</div>
-
-		<div class="col-md-6">
-			<label class="form-group">
-				<div class="form-label" style="margin-top: 2.25em;">
-					<input type="checkbox" class="form-check" name="skip_updates" value="0"> Skip downloading the latest updates
-				</div>
-			</label>
-		</div>
 	</div>
+
+	<label class="form-group">
+		<div class="form-label" style="margin-top: 2.25em;">
+			<input type="checkbox" class="form-check" name="skip_updates" value="0"> Skip downloading the latest updates
+		</div>
+	</label>
 
 	<h2>Development</h2>
 
