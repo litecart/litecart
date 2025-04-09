@@ -60,7 +60,7 @@ INSERT INTO `lc_tax_classes` (`name`, `description`, `date_updated`, `date_creat
 ('Reduced', '', NOW(), NOW()),
 ('Groceries', '', NOW(), NOW());
 -- -----
-INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `date_updated`, `date_created`) VALUES
 (1, @SE_VAT_ZONE, 'SE VAT 25%', '', 25.0000, 1, 1, 1, 1, NOW(), NOW()),
 (1, @EU_VAT_ZONE, 'SE VAT 25%', '', 25.0000, 0, 1, 1, 1, NOW(), NOW()),
 (2, @SE_VAT_ZONE, 'SE VAT 6%', '', 6.0000, 1, 1, 1, 1, NOW(), NOW()),

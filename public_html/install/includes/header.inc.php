@@ -4,24 +4,13 @@
 <meta charset="<?php echo mb_http_output(); ?>">
 <title>LiteCart Installer</title>
 <link rel="stylesheet" href="../backend/template/css/variables.css">
-<?php if (is_file(__DIR__.'/../../assets/litecore/css/framework.css')) { ?>
-<link rel="stylesheet" href="../assets/litecore/css/framework.css">
-<?php } else { ?>
-<link rel="stylesheet" href="../assets/litecore/css/framework.min.css">
-<?php } ?>
+<link rel="stylesheet" href="../assets/litecore/css/framework<?php echo is_file(__DIR__.'/../../assets/litecore/css/framework.min.css') ? '.min.css' : '.css'; ?>">
 <script>window.waitFor=window.waitFor||((i,o)=>{void 0!==window.i?o(window.i):setTimeout((()=>waitFor(i,o)),50)});</script>
 <style>
-html {
-	background: radial-gradient(ellipse at center, #fff 20%, #d2d7de 100%);
-}
-
-body {
-	padding: 15px;
-}
-
-header {
-	margin: 2em 0;
-}
+html { background: radial-gradient(ellipse at center, #fff 20%, #d2d7de 100%); }
+body { padding: 15px; }
+header { margin: 2em 0; }
+footer { font-size: .8em;	color: #999; }
 
 #logotype {
 	max-width: 300px;
@@ -57,10 +46,6 @@ span.error {
 span.warning {
 	color: #c60;
 	font-weight: bold;
-}
-footer {
-	font-size: .8em;
-	color: #999;
 }
 </style>
 </head>

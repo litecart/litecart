@@ -715,12 +715,12 @@ SELECT '1' AS transaction_id, stock_item_id, quantity_adjustment
 FROM (
 	SELECT product_id, stock_item_id, SUM(quantity) as quantity_adjustment
 	FROM (
-		SELECT pso.product_id, pso.id AS stock_item_id, pso.quantity
+		SELECT pso.product_id, pso.stock_item_id, pso.quantity
 		FROM `lc_products_stock_options` pso
 
 		UNION
 
-		SELECT oi.product_id, oi.stock_option_id AS stock_item_id, oi.quantity
+		SELECT oi.product_id, oi.stock_item_id, oi.quantity
 		FROM `lc_orders_items` oi
 		WHERE oi.order_id IN (
 			SELECT id
@@ -870,7 +870,7 @@ SET oi.tax_class_id = p.tax_class_id,
 -- -----
 UPDATE `lc_orders_items` oi
 LEFT JOIN `lc_products_stock_options` pso ON (pso.product_id = oi.product_id AND pso.attributes = oi.attributes)
-SET oi.stock_option_id = pso.id;
+SET oi.stock_item_id = pso.stock_item_id;
 -- -----
 UPDATE `lc_orders_items`
 SET sum = price * quantity,

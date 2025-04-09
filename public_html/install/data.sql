@@ -1,5 +1,3 @@
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
--- -----
 INSERT INTO `lc_banners` (`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
 (1, 1, 'Jumbotron', '', '', 'banners/jumbotron.svg', '', 'jumbotron', 0, 0, NULL, NULL, NOW(), NOW()),
 (2, 1, 'Left', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Left</div>', '', '', 'left', 0, 0, NULL, NULL, NOW(), NOW()),
@@ -258,13 +256,9 @@ INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decim
 INSERT INTO `lc_customer_groups` (`id`, `type`, `name`, `description`, `date_updated`, `date_created`)
 VALUES (NULL, 'retail', 'Default', '', NOW(), NOW());
 -- -----
-INSERT INTO `lc_delivery_statuses` (`id`, `date_updated`, `date_created`) VALUES
-(1, NOW(), NOW()),
-(2, NOW(), NOW());
--- -----
-INSERT INTO `lc_delivery_statuses_info` (`id`, `delivery_status_id`, `language_code`, `name`, `description`) VALUES
-(1, 1, 'en', '1-3 days', ''),
-(2, 2, 'en', '3-5 days', '');
+INSERT INTO `lc_delivery_statuses` (`id`, `name`, `date_updated`, `date_created`) VALUES
+(1, '{"en": "1-3 days"}', NOW(), NOW()),
+(2, '{"en": "3-5 days"}', NOW(), NOW());
 -- -----
 INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `locale_intl`, `url_type`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english,en-US', 'en_US', 'none', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
@@ -275,43 +269,24 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 (3, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW()),
 (4, 'job_shipping_tracker', 'job', 1, 0, '{"status":"1","frequency":"Hourly","priority":"0"}', '', NOW(), NOW());
 -- -----
-INSERT INTO `lc_order_statuses` (`id`, `hidden`, `state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
-(1, 0, 'created', 'icon-plus', '#c0c0c0', 0, 0, 0, 'none', NOW(), NOW()),
-(2, 0, 'on_hold', 'icon-money', '#c0c0c0', 0, 0, 0, 'none', NOW(), NOW()),
-(3, 0, 'on_hold', 'icon-pause', '#c0c0c0', 1, 0, 0, 'none', NOW(), NOW()),
-(4, 0, 'ready', 'icon-clock-o', '#bec11d', 1, 0, 0, 'reserve', NOW(), NOW()),
-(5, 0, 'delayed', 'icon-hourglass-half', '#e3ab44', 1, 0, 0, 'reserve', NOW(), NOW()),
-(6, 0, 'processing', 'icon-cog', '#e3ab44', 1, 0, 0, 'reserve', NOW(), NOW()),
-(7, 0, 'completed', 'icon-check', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),
-(8, 0, 'dispatched', 'icon-truck', '#99cc66', 1, 1, 1, 'commit', NOW(), NOW()),
-(9, 0, 'in_transit', 'icon-truck', '#e3ab44', 1, 0, 1, 'commit', NOW(), NOW()),
-(10, 0, 'delivered', 'icon-home', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),
-(11, 0, 'returning', 'icon-undo', '#e3ab44', 1, 0, 1, 'reserve', NOW(), NOW()),
-(12, 0, 'returned', 'icon-building', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),
-(13, 1, 'cancelled', 'icon-times', '#ff6666', 0, 1, 0, 'none', NOW(), NOW()),
-(14, 1, 'cancelled', 'icon-exclamation', '#ff6666', 0, 1, 0, 'none', NOW(), NOW());
+INSERT INTO `lc_order_statuses` (`id`, `hidden`, `state`, `icon`, `color`, `name`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
+(1, 0, 'created', 'icon-plus', '#c0c0c0', '{"en": "Created"}', 0, 0, 0, 'none', NOW(), NOW()),
+(2, 0, 'on_hold', 'icon-money', '#c0c0c0', '{"en": "Awaiting payment"}', 0, 0, 0, 'none', NOW(), NOW()),
+(3, 0, 'on_hold', 'icon-pause', '#c0c0c0', '{"en": "On hold"}', 1, 0, 0, 'none', NOW(), NOW()),
+(4, 0, 'ready', 'icon-clock-o', '#bec11d', '{"en": "Ready"}', 1, 0, 0, 'reserve', NOW(), NOW()),
+(5, 0, 'delayed', 'icon-hourglass-half', '#e3ab44', '{"en": "Delayed"}', 1, 0, 0, 'reserve', NOW(), NOW()),
+(6, 0, 'processing', 'icon-cog', '#e3ab44', '{"en": "Processing"}', 1, 0, 0, 'reserve', NOW(), NOW()),
+(7, 0, 'completed', 'icon-check', '#99cc66', '{"en": "Completed"}', 1, 1, 0, 'commit', NOW(), NOW()),
+(8, 0, 'dispatched', 'icon-truck', '#99cc66', '{"en": "Dispatched"}', 1, 1, 1, 'commit', NOW(), NOW()),
+(9, 0, 'in_transit', 'icon-truck', '#e3ab44', '{"en": "In Transit"}', 1, 0, 1, 'commit', NOW(), NOW()),
+(10, 0, 'delivered', 'icon-home', '#99cc66', '{"en": "Delivered"}', 1, 1, 0, 'commit', NOW(), NOW()),
+(11, 0, 'returning', 'icon-undo', '#e3ab44', '{"en": "Returning"}', 1, 0, 1, 'reserve', NOW(), NOW()),
+(12, 0, 'returned', 'icon-building', '#99cc66', '{"en": "Returned"}', 1, 1, 0, 'commit', NOW(), NOW()),
+(13, 1, 'cancelled', 'icon-times', '#ff6666', '{"en": "Cancelled"}', 0, 1, 0, 'none', NOW(), NOW()),
+(14, 1, 'cancelled', 'icon-exclamation', '#ff6666', '{"en": "Fraud"}', 0, 1, 0, 'none', NOW(), NOW());
 -- -----
-INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
-(1, 1, 'en', 'Created', ''),
-(2, 2, 'en', 'Awaiting payment', ''),
-(3, 3, 'en', 'On hold', ''),
-(4, 4, 'en', 'Ready', ''),
-(5, 5, 'en', 'Delayed', ''),
-(6, 6, 'en', 'Processing', ''),
-(7, 7, 'en', 'Completed', ''),
-(8, 8, 'en', 'Dispatched', ''),
-(9, 9, 'en', 'In Transit', ''),
-(10, 10, 'en', 'Delivered', ''),
-(11, 11, 'en', 'Returning', ''),
-(12, 12, 'en', 'Returned', ''),
-(13, 13, 'en', 'Cancelled', ''),
-(14, 14, 'en', 'Fraud', '');
--- -----
-INSERT INTO `lc_quantity_units` (`id`, `decimals`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 0, 0, NOW(), NOW());
--- -----
-INSERT INTO `lc_quantity_units_info` (`id`, `quantity_unit_id`, `language_code`, `name`, `description`) VALUES
-(1, 1, 'en', 'pcs', '');
+INSERT INTO `lc_quantity_units` (`id`, `name`, `decimals`, `priority`, `date_updated`, `date_created`) VALUES
+(1, '{"en": "pcs"}', 0, 0, NOW(), NOW());
 -- -----
 INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES
 ('store_info', 'Store Info', 'Store information', 10),
@@ -423,12 +398,7 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('', 'global', 'Jobs Last Push', 'Time when background jobs were last pushed for execution.', 'jobs_last_push', NOW(), 'text()', 0, 0, NOW(), NOW()),
 ('', 'local', 'Marketplace Access Token', 'The API access token for use with marketplace.', 'marketplace_access_token', '', 'password()', 0, 0, NOW(), NOW());
 -- -----
-INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `date_updated`, `date_created`) VALUES
-(1, 0, NOW(), NOW()),
-(2, 1, NOW(), NOW()),
-(3, 1, NOW(), NOW());
--- -----
-INSERT INTO `lc_sold_out_statuses_info` (`id`, `sold_out_status_id`, `language_code`, `name`, `description`) VALUES
-(1, 1, 'en', 'Sold Out', ''),
-(2, 2, 'en', 'Temporarily Sold Out', ''),
-(3, 3, 'en', 'Backorder Item', '');
+INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `name`, `date_updated`, `date_created`) VALUES
+(1, 0, '{"en": "Sold Out"}', NOW(), NOW()),
+(2, 1, '{"en": "Temporarily Sold Out"}', NOW(), NOW()),
+(3, 1, '{"en": "Backorder Item"}', NOW(), NOW());

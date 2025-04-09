@@ -1,0 +1,51 @@
+{
+	"webservers": {
+		"apache": {
+			"name": "Apache",
+			"minimumVersion": "2.4",
+			"requiredExtensions": ["mod_auth", "mod_deflate", "mod_rewrite"],
+			"optionalExtensions": ["mod_env", "mod_headers"]
+		},
+		"litespeed": {
+			"name": "LiteSpeed",
+			"minimumVersion": "*",
+			"requiredExtensions": [],
+			"optionalExtensions": []
+		},
+		"openlitespeed": {
+			"name": "OpenLiteSpeed",
+			"minimumVersion": "*",
+			"requiredExtensions": [],
+			"optionalExtensions": []
+		},
+		"nginx": {
+			"name": "NginX",
+			"minimumVersion": "*",
+			"requiredExtensions": [],
+			"optionalExtensions": []
+		}
+	},
+	"scripting": {
+		"php": {
+			"minimumVersion": "5.6",
+			"recommendedVersion": "8.4",
+			"maximumVersion": "8.4",
+			"requiredExtensions": ["dom", ["gd", "imagick"], "intl", "json", "libxml", "mbstring", "mysqlnd", "openssl", "SimpleXML"],
+			"optionalExtensions": [["apc", "apcu", "memcache", "memcached"], "fileinfo", "zip"],
+			"requiredFunctions": ["error_log", "ini_set"]
+		}
+	},
+	"databases": {
+		"mysql": {
+			"name": "MySQL",
+			"minimumVersion": "8.0",
+			"maximumVersion": "8.2",
+			"recommendedVersion": "8.0"
+		},
+		"mariadb": {
+			"name": "MariaDB",
+			"minimumVersion": "10.6",
+			"recommendedVersion": "11.2"
+		}
+	}
+}

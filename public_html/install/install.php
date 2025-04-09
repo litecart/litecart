@@ -65,6 +65,8 @@
 	require __DIR__ . '/includes/header.inc.php';
 	require __DIR__ . '/includes/functions.inc.php';
 
+	$requirements = json_decode(file_get_contents(__DIR__ . '/requirements.json'), true);
+
 	try {
 
 		register_shutdown_function(function(){
@@ -190,9 +192,21 @@
 
 		echo '<p>Checking for PHP extensions... ';
 
-		$extensions = ['apcu', 'dom', 'fileinfo', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqli', 'mysqlnd', 'openssl', 'SimpleXML', 'zip'];
+		$missing_extensions = [];
 
-		if ($missing_extensions = array_diff($extensions, get_loaded_extensions())) {
+		foreach ($requirements['scripting']['php']['requiredExtensions'] as $extension) {
+			if ((is_array($extension) && !in_array(true, array_map(function($ext) {
+				return extension_loaded($ext);
+			}, $extension)) && !extension_loaded($extension))) {
+				$missing_extensions[] = $extension;
+			}
+		}
+
+		$missing_extensions = array_map(function($extension) {
+			return is_array($extension) ? implode(' or ', $extension) : $extension;
+		}, $missing_extensions);
+
+		if ($missing_extensions) {
 			echo '<span class="warning">[Warning] Some important PHP extensions are missing ('. implode(', ', $missing_extensions) .'). It is recommended that you enable them in php.ini.</span></p>' . PHP_EOL . PHP_EOL;
 
 		} else {
@@ -301,12 +315,12 @@
 			"SELECT VERSION();"
 		)->fetch('VERSION()');
 
-		if (version_compare($mysql_version, '5.5', '<')) {
-			throw new Exception($mysql_version . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
+		if (version_compare($mysql_version, $requirements['database']['mysql']['minimumVersion'], '<')) {
+			throw new Exception($mysql_version . ' <span class="error">[Error] MySQL '. $requirements['database']['mysql']['minimumVersion'] .'+ required</span></p>');
 
-		} else if (version_compare($mysql_version, '5.7', '<')) {
+		} else if (version_compare($mysql_version, $requirements['database']['mysql']['recommendedVersion'], '<')) {
 			echo $mysql_version .' <span class="ok">[OK]</span><br>'
-				 . '<span class="warning">MySQL 5.7+ recommended</span></span></p>';
+				 . '<span class="warning">MySQL '. $requirements['database']['mysql']['recommendedVersion'] .'+ recommended</span></span></p>';
 
 		} else {
 			echo $mysql_version . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
@@ -799,32 +813,6 @@
 			echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		} else {
 			echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
-		}
-
-		echo '<p>Create file container for requests without a destination...';
-
-		if (file_put_contents(FS_DIR_STORAGE . 'logs/not_found.log', '') !== false) {
-
-			echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-
-				perform_action('delete', [
-					FS_DIR_APP . 'install/',
-				]);
-		} else {
-			echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
-		}
-
-		### Cleanup ##########################################
-
-		if (!empty($_REQUEST['cleanup']) && stripos(PHP_OS, 'WIN') === false) {
-
-			echo '<p>Cleanup... ';
-
-			perform_action('delete', [
-				FS_DIR_APP . 'install/',
-			]);
-
-			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
 
 		### #############################################################

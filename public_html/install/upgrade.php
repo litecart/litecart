@@ -50,9 +50,9 @@
 
 	// Include config
 	if (is_file(__DIR__ . '/../storage/config.inc.php')) {
-		include(__DIR__ . '/../storage/config.inc.php');
+		include(__DIR__ . '/../storage/config.inc.php'); // 3.0.0+
 
-	} else if (is_file(__DIR__ . '/../includes/config.inc.php')) { // <3.0
+	} else if (is_file(__DIR__ . '/../includes/config.inc.php')) { // Prior to 3.x
 		include(__DIR__ . '/../includes/config.inc.php');
 
 	} else {
@@ -76,11 +76,11 @@
 	}
 
 	if (!defined('FS_DIR_STORAGE')) {
-		define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/'); // Prior to 3.0.0
+		define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/'); // Prior to 3.x
 	}
 
 	if (!defined('WS_DIR_STORAGE')) {
-		define('WS_DIR_STORAGE', WS_DIR_APP); // Prior to 2.5.x
+		define('WS_DIR_STORAGE', WS_DIR_APP. 'storage/'); // Prior to 2.5.x
 	}
 
 	error_reporting(E_ALL);
@@ -95,6 +95,8 @@
 	require_once FS_DIR_APP . 'includes/nodes/nod_event.inc.php';
 	require_once FS_DIR_APP . 'includes/nodes/nod_functions.inc.php';
 	require FS_DIR_APP . 'includes/nodes/nod_stats.inc.php';
+
+	$requirements = json_decode(file_get_contents(__DIR__ . '/requirements.json'), true);
 
 	// Set platform name
 	preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../includes/app_header.inc.php'), $matches);
@@ -156,10 +158,15 @@
 
 			echo '<p>Checking PHP version... ';
 
-			if (version_compare(PHP_VERSION, '5.6', '<')) {
-				throw new Exception(PHP_VERSION .' <span class="error">[Error] PHP 5.6+ minimum requirement</span></p>' . PHP_EOL . PHP_EOL);
+			if (version_compare(PHP_VERSION, $requirements['scripting']['php']['minimumVersion'], '<')) {
+				throw new Exception(PHP_VERSION .' <span class="error">[Error] PHP '. $requirements['scripting']['php']['minimumVersion'].'+ minimum requirement</span></p>' . PHP_EOL . PHP_EOL);
+
 			} else if (version_compare(PHP_VERSION, '7.2', '<=')) {
 				echo PHP_VERSION .' <span class="warning">[Warning] PHP '. PHP_VERSION .' has reached <a href="https://www.php.net/supported-versions.php" target="_blank">end of life</a>.</span></p>' . PHP_EOL . PHP_EOL;
+
+			} else if (version_compare(PHP_VERSION, $requirements['scripting']['php']['recommendedVersion'], '<=')) {
+				echo PHP_VERSION .' <span class="warning">[Warning] PHP '. PHP_VERSION .' is below the recommended version '. $requirements['scripting']['php']['recommendedVersion'] .'+</p>' . PHP_EOL . PHP_EOL;
+
 			} else {
 				echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 			}
@@ -168,9 +175,21 @@
 
 			echo '<p>Checking for PHP extensions... ';
 
-			$extensions = ['apcu', 'dom', 'fileinfo', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqli', 'mysqlnd', 'openssl', 'SimpleXML', 'zip'];
+			$missing_extensions = [];
 
-			if ($missing_extensions = array_diff($extensions, get_loaded_extensions())) {
+			foreach ($requirements['scripting']['php']['requiredExtensions'] as $extension) {
+				if ((is_array($extension) && !in_array(true, array_map(function($ext) {
+					return extension_loaded($ext);
+				}, $extension)) && !extension_loaded($extension))) {
+					$missing_extensions[] = $extension;
+				}
+			}
+
+			$missing_extensions = array_map(function($extension) {
+				return is_array($extension) ? implode(' or ', $extension) : $extension;
+			}, $missing_extensions);
+
+			if ($missing_extensions) {
 				echo '<span class="warning">[Warning] Some important PHP extensions are missing ('. implode(', ', $missing_extensions) .'). It is recommended that you enable them in php.ini.</span></p>' . PHP_EOL . PHP_EOL;
 			} else {
 				echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
@@ -699,19 +718,6 @@
 
 			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-			### Cleanup ##########################################
-
-			if (!empty($_REQUEST['cleanup'])) {
-
-				echo '<p>Cleanup... ';
-
-				perform_action('delete', [
-					FS_DIR_APP . 'install/',
-				]);
-
-				echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-			}
-
 			#############################################
 
 			echo '<h2>Complete</h2>' . PHP_EOL . PHP_EOL
@@ -735,6 +741,8 @@
 	}
 
 	require_once __DIR__ . '/includes/header.inc.php';
+
+	$requirements = json_decode(file_get_contents(__DIR__ . '/requirements.json'), true);
 ?>
 <style>
 html {

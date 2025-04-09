@@ -69,8 +69,8 @@
 		// Resolve logic
 		if (preg_match('#[*!\[\]{}]#', $file)) {
 
-			foreach (file_search($file, GLOB_BRACE) as $file) {
-				file_delete($file, $results);
+			foreach (file_search($file, GLOB_BRACE) as $entry) {
+				file_delete($entry, $results);
 			}
 
 		} else {

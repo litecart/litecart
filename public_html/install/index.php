@@ -262,6 +262,8 @@
 		$installation_detected = true;
 	}
 
+	$requirements = json_decode(file_get_contents(__DIR__ . '/requirements.json'), true);
+
 ?>
 <style>
 ul {
@@ -293,6 +295,11 @@ input[name="development_type"] + div .title {
 input[name="development_type"]:checked + div {
 	border-color: #333;
 }
+.text-ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
 </style>
 
 <h1>Installer</h1>
@@ -303,7 +310,7 @@ input[name="development_type"]:checked + div {
 	<h3>PHP</h3>
 
 	<ul>
-		<li>5.6 - 8.3 <?php echo (version_compare(PHP_VERSION, '5.6', '>=') && version_compare(PHP_VERSION, '8.4', '<'))? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
+		<li>PHP <?php echo $requirements['scripting']['php']['minimumVersion']; ?>+ (Recommended: <?php echo $requirements['scripting']['php']['recommendedVersion']; ?>+) <?php echo (version_compare(PHP_VERSION, '5.6', '>=') && version_compare(PHP_VERSION, '8.5', '<'))? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
 		<li>register_globals = <?php echo ini_get('register_globals') ?: 'off'; ?> <?php echo in_array(strtolower(ini_get('register_globals')), ['off', 'false', '', '0']) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
 		<li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
 		<li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="warning">[128M+ recommended]</span>'; ?></li>
@@ -344,7 +351,11 @@ input[name="development_type"]:checked + div {
 	<h3>Database Server</h3>
 
 	<ul>
-		<li>MySQL 5.7+ - 8.0 / MariaDB 10.8+</li>
+		<?php foreach ($requirements['databases'] as $database) { ?>
+		<li>
+			<strong><?php echo $database['name']; ?> <?php echo $database['minimumVersion']; ?>+</strong> (Recommended: <?php echo $database['recommendedVersion']; ?>+)
+		</li>
+		<?php } ?>
 	</ul>
 
 	<h2>Writables</h2>
@@ -381,18 +392,21 @@ input[name="development_type"]:checked + div {
 
 	<h3>File System</h3>
 
-	<label class="form-group">
-		<div class="form-label">Installation Path</div>
-		<div class="form-input"><?php echo htmlspecialchars(FS_DIR_APP); ?></div>
-	</label>
-
-	<label class="form-group">
-		<div class="form-label">Storage Directory</div>
-		<div class="input-group">
-			<span class="input-group-text"><?php echo preg_replace('#install/.*$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)); ?></span>
-			<div class="form-input">storage/</div>
+	<div class="grid">
+		<div class="col-md-9">
+			<label class="form-group">
+				<div class="form-label">Installation Path</div>
+				<div class="form-input text-ellipsis" title="<?php echo htmlspecialchars(FS_DIR_APP); ?>"><?php echo htmlspecialchars(FS_DIR_APP); ?></div>
+			</label>
 		</div>
-	</label>
+
+		<div class="col-md-3">
+			<label class="form-group">
+				<div class="form-label">Storage Directory</div>
+				<div class="form-input">storage/</div>
+			</label>
+		</div>
+	</div>
 
 	<h3>Database</h3>
 
@@ -517,6 +531,7 @@ input[name="development_type"]:checked + div {
 			<label class="form-group">
 				<div class="form-label">Time Zone</div>
 				<select class="form-input" name="store_time_zone" required>
+					<option value="">-- Select --</option>
 <?php
 	foreach (timezone_identifiers_list() as $timezone) {
 		$timezone = explode('/', $timezone);
@@ -612,10 +627,28 @@ input[name="development_type"]:checked + div {
 	<p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
 </div>
 <script>
-	waitFor(jQuery, function($){
-		$.litebox('#modal-warning-existing-installation');
-	});
+waitFor('jQuery', function($){
+	$.litebox('#modal-warning-existing-installation');
+});
 </script>
 <?php } ?>
 
+<script>
+waitFor('jQuery', function($){
+
+	// Attempt to determine country from browser
+	if (!$('select[name="country_code"]').val() || !$('select[name="store_time_zone"]').val()) {
+		$.get('https://ipapi.co/json/', function(data){
+
+			if (!$('select[name="country_code"]').val() && data.country && data.country.length == 2) {
+				$('select[name="country_code"]').val(data.country);
+			}
+
+			if (!$('select[name="store_time_zone"]').val() && data.timezone && data.timezone.length) {
+				$('select[name="store_time_zone"]').val(data.timezone);
+			}
+		});
+	}
+});
+</script>
 <?php require(__DIR__.'/includes/footer.inc.php'); ?>

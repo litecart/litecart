@@ -1,33 +1,32 @@
 <?php
 
-	perform_action('copy', [
-		FS_DIR_APP . 'install/data/default/storage/files' => FS_DIR_APP . 'storage/',
-	]);
-
 	perform_action('delete', [
 		FS_DIR_ADMIN . 'addons.widget/addons.inc.php',
 		FS_DIR_ADMIN . 'addons.widget/config.inc.php',
 		FS_DIR_ADMIN . 'addons.widget/index.html',
 		FS_DIR_ADMIN . 'appearance.app/config.inc.php',
+		FS_DIR_ADMIN . 'appearance.app/edit_styling.inc.php',
+		FS_DIR_ADMIN . 'appearance.app/favicon.inc.php',
 		FS_DIR_ADMIN . 'appearance.app/logotype.inc.php',
 		FS_DIR_ADMIN . 'appearance.app/template.inc.php',
 		FS_DIR_ADMIN . 'appearance.app/template_settings.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/attribute_groups.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/attribute_values.json.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/catalog.inc.php',
+		FS_DIR_ADMIN . 'catalog.app/categories.json.inc.php',
+		FS_DIR_ADMIN . 'catalog.app/category_picker.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/config.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/csv.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/delivery_statuses.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/edit_attribute_group.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/edit_category.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/edit_delivery_status.inc.php',
-		FS_DIR_ADMIN . 'catalog.app/edit_brand.inc.php',
+		FS_DIR_ADMIN . 'catalog.app/edit_manufacturer.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/edit_product.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/edit_quantity_unit.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/edit_sold_out_status.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/edit_supplier.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/index.html',
-		FS_DIR_ADMIN . 'catalog.app/brands.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/products.json.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/quantity_units.inc.php',
 		FS_DIR_ADMIN . 'catalog.app/sold_out_statuses.inc.php',
@@ -50,6 +49,7 @@
 		FS_DIR_ADMIN . 'customers.app/index.html',
 		FS_DIR_ADMIN . 'customers.app/mailchimp.png',
 		FS_DIR_ADMIN . 'customers.app/newsletter.inc.php',
+		FS_DIR_ADMIN . 'customers.app/newsletter_recipients.inc.php',
 		FS_DIR_ADMIN . 'discussions.widget/config.inc.php',
 		FS_DIR_ADMIN . 'discussions.widget/discussions.inc.php',
 		FS_DIR_ADMIN . 'discussions.widget/index.html',
@@ -109,15 +109,30 @@
 		FS_DIR_ADMIN . 'tax.app/index.html',
 		FS_DIR_ADMIN . 'tax.app/tax_classes.inc.php',
 		FS_DIR_ADMIN . 'tax.app/tax_rates.inc.php',
+		FS_DIR_ADMIN . 'tax.app/tax_rates.json.inc.php',
 		FS_DIR_ADMIN . 'translations.app/config.inc.php',
+		FS_DIR_ADMIN . 'translations.app/collections.inc.php',
 		FS_DIR_ADMIN . 'translations.app/csv.inc.php',
 		FS_DIR_ADMIN . 'translations.app/index.html',
 		FS_DIR_ADMIN . 'translations.app/scan.inc.php',
-		FS_DIR_ADMIN . 'translations.app/search.inc.php',
+		FS_DIR_ADMIN . 'translations.app/translations.inc.php',
 		FS_DIR_ADMIN . 'users.app/config.inc.php',
 		FS_DIR_ADMIN . 'users.app/edit_user.inc.php',
 		FS_DIR_ADMIN . 'users.app/index.html',
 		FS_DIR_ADMIN . 'users.app/users.inc.php',
+		FS_DIR_ADMIN . 'vmods.app/config.inc.php',
+		FS_DIR_ADMIN . 'vmods.app/configure.inc.php',
+		FS_DIR_ADMIN . 'vmods.app/download.inc.php',
+		FS_DIR_ADMIN . 'vmods.app/edit_vmod.inc.php',
+		FS_DIR_ADMIN . 'vmods.app/index.html',
+		FS_DIR_ADMIN . 'vmods.app/sources.inc.php',
+		FS_DIR_ADMIN . 'vmods.app/view.inc.php',
+		FS_DIR_ADMIN . 'vmods.app/vmods.inc.php',
+		FS_DIR_ADMIN . 'about.php',
+		FS_DIR_ADMIN . 'index.php',
+		FS_DIR_ADMIN . 'login.php',
+		FS_DIR_ADMIN . 'logout.php',
+		FS_DIR_ADMIN . 'search_results.json.php',
 		FS_DIR_APP . 'ext/chartist/',
 		FS_DIR_APP . 'ext/featherlight/',
 		FS_DIR_APP . 'ext/fontawesome/',
@@ -188,9 +203,20 @@
 		FS_DIR_APP . 'includes/modules/order_total/ot_payment_fee.inc.php',
 		FS_DIR_APP . 'includes/modules/order_total/ot_shipping_fee.inc.php',
 		FS_DIR_APP . 'includes/modules/order_total/ot_subtotal.inc.php',
+		FS_DIR_APP . 'includes/modules/order_total/index.html',
 		FS_DIR_APP . 'includes/modules/mod_order_total.inc.php',
+		FS_DIR_APP . 'includes/routes/index.html',
+		FS_DIR_APP . 'includes/routes/url_category.inc.php',
+		FS_DIR_APP . 'includes/routes/url_index.inc.php',
+		FS_DIR_APP . 'includes/routes/url_product.inc.php',
+		FS_DIR_APP . 'includes/routes/url_category.inc.php',
+		FS_DIR_APP . 'includes/routes/url_information.inc.php',
+		FS_DIR_APP . 'includes/routes/url_push_jobs.inc.php',
+		FS_DIR_APP . 'includes/routes/url_customer_service.inc.php',
+		FS_DIR_APP . 'includes/routes/url_manufacturer.inc.php',
+		FS_DIR_APP . 'includes/routes/url_error_document.inc.php',
+		FS_DIR_APP . 'includes/routes/url_order_process.inc.php',
 		FS_DIR_APP . 'includes/templates/default.admin/',
-		FS_DIR_APP . 'includes/templates/default.catalog/config.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/css/app.css',
 		FS_DIR_APP . 'includes/templates/default.catalog/css/app.min.css',
 		FS_DIR_APP . 'includes/templates/default.catalog/css/app.min.css.map',
@@ -204,8 +230,8 @@
 		FS_DIR_APP . 'includes/templates/default.catalog/css/printable.css',
 		FS_DIR_APP . 'includes/templates/default.catalog/css/printable.min.css',
 		FS_DIR_APP . 'includes/templates/default.catalog/css/printable.min.css.map',
+		FS_DIR_APP . 'includes/templates/default.catalog/css/variables.css',
 		FS_DIR_APP . 'includes/templates/default.catalog/images',
-		FS_DIR_APP . 'includes/templates/default.catalog/index.html',
 		FS_DIR_APP . 'includes/templates/default.catalog/js/app.js',
 		FS_DIR_APP . 'includes/templates/default.catalog/js/app.min.js',
 		FS_DIR_APP . 'includes/templates/default.catalog/js/app.min.js.map',
@@ -237,18 +263,22 @@
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/checkout.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/create_account.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/customer_service.inc.php',
+		FS_DIR_APP . 'includes/templates/default.catalog/pages/development_mode.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/edit_account.inc.php',
+		FS_DIR_APP . 'includes/templates/default.catalog/pages/error_document.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/index.html',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/index.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/information.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/login.ajax.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/login.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/maintenance_mode.inc.php',
-		FS_DIR_APP . 'includes/templates/default.catalog/pages/brand.inc.php',
-		FS_DIR_APP . 'includes/templates/default.catalog/pages/brands.inc.php',
+		FS_DIR_APP . 'includes/templates/default.catalog/pages/manufacturer.inc.php',
+		FS_DIR_APP . 'includes/templates/default.catalog/pages/manufacturers.inc.php',
+		FS_DIR_APP . 'includes/templates/default.catalog/pages/newsletter.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/order.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/order_history.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/order_success.inc.php',
+		FS_DIR_APP . 'includes/templates/default.catalog/pages/page.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/printable_order_copy.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/printable_packing_slip.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/product.ajax.inc.php',
@@ -274,8 +304,8 @@
 		FS_DIR_APP . 'includes/templates/default.catalog/views/box_filter.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/views/box_information_links.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/views/box_latest_products.inc.php',
-		FS_DIR_APP . 'includes/templates/default.catalog/views/box_brand_links.inc.php',
-		FS_DIR_APP . 'includes/templates/default.catalog/views/box_brand_logotypes.inc.php',
+		FS_DIR_APP . 'includes/templates/default.catalog/views/box_manufacturer_links.inc.php',
+		FS_DIR_APP . 'includes/templates/default.catalog/views/box_manufacturer_logotypes.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/views/box_popular_products.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/views/box_product.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/views/box_recently_viewed_products.inc.php',
@@ -291,6 +321,13 @@
 		FS_DIR_APP . 'includes/templates/default.catalog/views/listing_product_row.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/views/notices.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/views/pagination.inc.php',
+		FS_DIR_APP . 'includes/templates/default.catalog/.development',
+		FS_DIR_APP . 'includes/templates/default.catalog/index.html',
+		FS_DIR_APP . 'includes/templates/default.catalog/config.inc.php',
+		FS_DIR_APP . 'includes/templates/index.html',
+		FS_DIR_APP . 'includes/wrappers/index.html',
+		FS_DIR_APP . 'includes/wrappers/wrap_http.inc.php',
+		FS_DIR_APP . 'includes/wrappers/wrap_smtp.inc.php',
 		FS_DIR_APP . 'logs/.htaccess',
 		FS_DIR_APP . 'logs/index.html',
 		FS_DIR_APP . 'pages/ajax/cart.json.inc.php',
@@ -300,6 +337,7 @@
 		FS_DIR_APP . 'pages/ajax/checkout_shipping.inc.php',
 		FS_DIR_APP . 'pages/ajax/checkout_summary.inc.php',
 		FS_DIR_APP . 'pages/ajax/get_address.json.inc.php',
+		FS_DIR_APP . 'pages/ajax/product_options_stock.json.inc.php',
 		FS_DIR_APP . 'pages/ajax/index.html',
 		FS_DIR_APP . 'pages/ajax/zones.json.inc.php',
 		FS_DIR_APP . 'pages/feeds/index.html',
@@ -330,14 +368,16 @@
 		FS_DIR_APP . 'pages/regional_settings.inc.php',
 		FS_DIR_APP . 'pages/reset_password.inc.php',
 		FS_DIR_APP . 'pages/search.inc.php',
-		FS_DIR_APP . 'vqmod/.htaccess',
+		FS_DIR_APP . 'vmods/.cache/',
+		FS_DIR_APP . 'vqmod/',
 		FS_DIR_APP . 'robots.txt',
 	]);
 
-
-	perform_action('move', [
-		FS_DIR_APP . '.htaccess' => FS_DIR_APP . '.htaccess.deleteme',
-		FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_APP . 'storage/config_deleteme.inc.php',
+	// Copy default storage directory
+	perform_action('copy', [
+		FS_DIR_APP . 'install/data/default/storage/' => FS_DIR_APP . 'storage/',
+		FS_DIR_APP . 'install/data/default/storage/images/favicon*' => FS_DIR_APP . 'storage/images/',
+		FS_DIR_APP . 'install/data/default/storage/images/no_image.svg' => FS_DIR_APP . 'storage/images/',
 	]);
 
 	echo '<p>Writing fresh new config file... ';
@@ -348,7 +388,7 @@
 		limit 1;"
 	)->fetch('value');
 
-	$config = strtr(file_get_contents('config'), [
+	$config = strtr(file_get_contents(FS_DIR_APP .'install/config'), [
 		'{STORAGE_FOLDER}' => 'storage',
 		'{ADMIN_FOLDER}' => BACKEND_ALIAS,
 		'{DB_SERVER}' => DB_SERVER,
@@ -360,14 +400,14 @@
 		'{TIMEZONE}' => $timezone,
 	]);
 
-	if (file_put_contents(FS_DIR_STORAGE . 'config.inc.php', $config) !== false) {
+	if (file_put_contents(FS_DIR_APP . 'storage/config.inc.php', $config) !== false) {
 		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
 	} else {
 		throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
 	}
 
-	echo '<p>Writing new .htaccess file... ';
+	echo '<p>Writing fresh new .htaccess file... ';
 	$htaccess = file_get_contents('htaccess');
 
 	$htaccess = strtr($htaccess, [
@@ -381,12 +421,21 @@
 		throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
 	}
 
-	foreach (glob(FS_DIR_APP . 'favicon.ico') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'favicon.deleteme']);
-	}
+	// Move files to trash
+	perform_action('move', [
+		FS_DIR_APP . '.development' => FS_DIR_APP . '.deleteme/.htaccess',
+		FS_DIR_APP . '.htaccess' => FS_DIR_APP . '.deleteme/.htaccess',
+		FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_APP . '.deleteme/config.inc.php',
+		FS_DIR_APP . 'includes/modules/order_total/' => FS_DIR_APP . '.deleteme/',
+		FS_DIR_APP . 'includes/routes/*' => FS_DIR_APP . '.deleteme/routes/',
+		FS_DIR_APP . 'favicon.ico' => FS_DIR_APP . '.deleteme/favicon.ico',
+	]);
+
+	// Move files to new locations
 
 	foreach (glob(FS_DIR_ADMIN . '*.app') as $directory) {
 
+		// Remove empty directories
 		if (!glob($directory . '/*')) {
 			perform_action('delete', [$directory]);
 			continue;
@@ -397,6 +446,7 @@
 
 	foreach (glob(FS_DIR_ADMIN . '*.widget') as $directory) {
 
+		// Remove empty directories
 		if (!glob($directory . '/*')) {
 			perform_action('delete', [$directory]);
 			continue;
@@ -431,6 +481,10 @@
 
 	foreach (glob(FS_DIR_APP . 'includes/library/*') as $file) {
 		perform_action('move', [$file => FS_DIR_APP . 'inlcudes/nodes/' . preg_replace('#^lib_#', 'nod_', basename($file))]);
+	}
+
+	foreach (glob(FS_DIR_APP . 'includes/routes/*') as $file) {
+		perform_action('move', [$file => FS_DIR_APP . 'frontend/routes/' . basename($file)]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/css/*') as $file) {
@@ -469,10 +523,6 @@
 		perform_action('move', [$file => FS_DIR_APP . 'storage/vmods/' . basename($file)]);
 	}
 
-	foreach (glob(FS_DIR_APP . 'vqmod/xml/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'storage/vmods/' . basename($file)]);
-	}
-
 	foreach (glob(FS_DIR_APP . 'pages/*') as $file) {
 		perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'pages/', '#') .'#', FS_DIR_APP . 'frontend/pages/', $file)]);
 	}
@@ -483,19 +533,13 @@
 		FS_DIR_APP . 'data/',
 		FS_DIR_APP . 'images/',
 		FS_DIR_APP . 'includes/boxes/',
-		FS_DIR_APP . 'includes/templates/',
 		FS_DIR_APP . 'includes/library/',
+		FS_DIR_APP . 'includes/routes/',
+		FS_DIR_APP . 'includes/templates/',
 		FS_DIR_APP . 'logs/',
 		FS_DIR_APP . 'ext/',
 		FS_DIR_APP . 'pages/',
 		FS_DIR_APP . 'vmods/',
-		FS_DIR_APP . 'vqmod/',
-	]);
-
-	perform_action('copy', [
-		FS_DIR_APP . 'install/data/default/storage/images/favicon*' => FS_DIR_APP . 'storage/images/',
-		FS_DIR_APP . 'install/data/default/storage/images/stock_items/' => FS_DIR_APP . 'storage/images/stock_items/',
-		FS_DIR_APP . 'install/data/default/storage/images/no_image.svg/' => FS_DIR_APP . 'storage/images/',
 	]);
 
 	// Change indentation from spaces to tabs in files
@@ -804,7 +848,7 @@
 			database::query(
 				"insert into ". DB_TABLE_PREFIX ."campaigns_products
 				(campaign_id, product_id, price)
-				values (". (int)$campaign_id .", ". (int)$product['product_id'] .", '". database::input(json_encode($prices)) ."');"
+				values (". (int)$campaign_id .", ". (int)$campaign_product['product_id'] .", '". database::input(json_encode($prices)) ."');"
 			);
 		}
 	}
