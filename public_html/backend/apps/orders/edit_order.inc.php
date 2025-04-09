@@ -468,14 +468,14 @@
 
 						<div class="col-md-4">
 							<div class="form-group">
-								<label><?php echo language::translate('title_date', 'Date'); ?></label>
+								<label class="form-group"><?php echo language::translate('title_date', 'Date'); ?></label>
 								<div class="form-input" readonly><?php echo functions::datetime_when($order->data['date_created']); ?></div>
 							</div>
 						</div>
 
 						<div class="col-md-4">
 							<div class="form-group">
-								<label><?php echo language::translate('title_reference', 'Reference'); ?></label>
+								<label class="form-group"><?php echo language::translate('title_reference', 'Reference'); ?></label>
 								<?php echo functions::form_input_text('reference', true); ?>
 							</div>
 						</div>

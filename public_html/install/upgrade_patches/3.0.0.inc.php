@@ -191,14 +191,6 @@
 		FS_DIR_APP . 'includes/modules/mod_order_total.inc.php',
 		FS_DIR_APP . 'includes/templates/default.admin/',
 		FS_DIR_APP . 'includes/templates/default.catalog/config.inc.php',
-		FS_DIR_APP . 'includes/templates/default.catalog/css',
-		FS_DIR_APP . 'includes/templates/default.catalog/images',
-		FS_DIR_APP . 'includes/templates/default.catalog/index.html',
-		FS_DIR_APP . 'includes/templates/default.catalog/js',
-		FS_DIR_APP . 'includes/templates/default.catalog/layouts',
-		FS_DIR_APP . 'includes/templates/default.catalog/less',
-		FS_DIR_APP . 'includes/templates/default.catalog/pages',
-		FS_DIR_APP . 'includes/templates/default.catalog/views',
 		FS_DIR_APP . 'includes/templates/default.catalog/css/app.css',
 		FS_DIR_APP . 'includes/templates/default.catalog/css/app.min.css',
 		FS_DIR_APP . 'includes/templates/default.catalog/css/app.min.css.map',
@@ -212,54 +204,34 @@
 		FS_DIR_APP . 'includes/templates/default.catalog/css/printable.css',
 		FS_DIR_APP . 'includes/templates/default.catalog/css/printable.min.css',
 		FS_DIR_APP . 'includes/templates/default.catalog/css/printable.min.css.map',
-		FS_DIR_APP . 'includes/templates/default.catalog/images/cart.svg',
-		FS_DIR_APP . 'includes/templates/default.catalog/images/cart_filled.svg',
-		FS_DIR_APP . 'includes/templates/default.catalog/images/index.html',
-		FS_DIR_APP . 'includes/templates/default.catalog/images/loader.svg',
+		FS_DIR_APP . 'includes/templates/default.catalog/images',
+		FS_DIR_APP . 'includes/templates/default.catalog/index.html',
 		FS_DIR_APP . 'includes/templates/default.catalog/js/app.js',
 		FS_DIR_APP . 'includes/templates/default.catalog/js/app.min.js',
 		FS_DIR_APP . 'includes/templates/default.catalog/js/app.min.js.map',
 		FS_DIR_APP . 'includes/templates/default.catalog/js/index.html',
+		FS_DIR_APP . 'includes/templates/default.catalog/fonts/.htaccess',
+		FS_DIR_APP . 'includes/templates/default.catalog/fonts/asap-v30-latin_latin-ext-700.woff2',
+		FS_DIR_APP . 'includes/templates/default.catalog/fonts/asap-v30-latin_latin-ext-regular.woff2',
+		FS_DIR_APP . 'includes/templates/default.catalog/fonts/index.html',
+		FS_DIR_APP . 'includes/templates/default.catalog/images/cart.svg',
+		FS_DIR_APP . 'includes/templates/default.catalog/images/cart_filled.svg',
+		FS_DIR_APP . 'includes/templates/default.catalog/images/index.html',
+		FS_DIR_APP . 'includes/templates/default.catalog/images/loader.svg',
 		FS_DIR_APP . 'includes/templates/default.catalog/layouts/ajax.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/layouts/blank.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/layouts/checkout.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/layouts/default.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/layouts/index.html',
 		FS_DIR_APP . 'includes/templates/default.catalog/layouts/printable.inc.php',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/app',
+		FS_DIR_APP . 'includes/templates/default.catalog/less/app/',
 		FS_DIR_APP . 'includes/templates/default.catalog/less/app.less',
 		FS_DIR_APP . 'includes/templates/default.catalog/less/checkout.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework',
+		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/',
 		FS_DIR_APP . 'includes/templates/default.catalog/less/framework.less',
 		FS_DIR_APP . 'includes/templates/default.catalog/less/index.html',
 		FS_DIR_APP . 'includes/templates/default.catalog/less/printable.less',
 		FS_DIR_APP . 'includes/templates/default.catalog/less/variables.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/app/boxes.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/app/index.html',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/app/listing.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/app/product.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/app/variables.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/animations.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/base.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/breadcrumbs.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/buttons.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/carousel.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/chat.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/dropdown.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/effects.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/grid.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/images.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/index.html',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/inputs.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/lists.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/loader.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/nav.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/navbar.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/normalize.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/notices.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/pagination.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/tables.less',
-		FS_DIR_APP . 'includes/templates/default.catalog/less/framework/typography.less',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/categories.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/category.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/pages/checkout.inc.php',
@@ -362,20 +334,75 @@
 		FS_DIR_APP . 'robots.txt',
 	]);
 
+
 	perform_action('move', [
-		FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_APP . 'storage/config.inc.php',
+		FS_DIR_APP . '.htaccess' => FS_DIR_APP . '.htaccess.deleteme',
+		FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_APP . 'storage/config_deleteme.inc.php',
 	]);
+
+	echo '<p>Writing fresh new config file... ';
+
+	$timezone = database::query(
+		"select `value` from ". DB_TABLE_PREFIX ."settings
+		where `key` = 'store_timezone'
+		limit 1;"
+	)->fetch('value');
+
+	$config = strtr(file_get_contents('config'), [
+		'{STORAGE_FOLDER}' => 'storage',
+		'{ADMIN_FOLDER}' => BACKEND_ALIAS,
+		'{DB_SERVER}' => DB_SERVER,
+		'{DB_USERNAME}' => DB_USERNAME,
+		'{DB_PASSWORD}' => DB_PASSWORD,
+		'{DB_DATABASE}' => DB_DATABASE,
+		'{DB_TABLE_PREFIX}' => DB_TABLE_PREFIX,
+		'{CLIENT_IP}' => $_REQUEST['client_ip'],
+		'{TIMEZONE}' => $timezone,
+	]);
+
+	if (file_put_contents(FS_DIR_STORAGE . 'config.inc.php', $config) !== false) {
+		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
+	} else {
+		throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
+	}
+
+	echo '<p>Writing new .htaccess file... ';
+	$htaccess = file_get_contents('htaccess');
+
+	$htaccess = strtr($htaccess, [
+		'{WS_DIR_APP}' => WS_DIR_APP,
+		'{FS_DIR_APP}' => FS_DIR_APP,
+	]);
+
+	if (file_put_contents('../.htaccess', $htaccess)) {
+		echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+	} else {
+		throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
+	}
 
 	foreach (glob(FS_DIR_APP . 'favicon.ico') as $file) {
 		perform_action('move', [$file => FS_DIR_APP . 'favicon.deleteme']);
 	}
 
-	foreach (glob(FS_DIR_ADMIN . '*.app') as $file) {
-		perform_action('move', [$file.'/*' => FS_DIR_APP . 'backend/apps/' . preg_replace('#\.app$#', '', basename($file))]);
+	foreach (glob(FS_DIR_ADMIN . '*.app') as $directory) {
+
+		if (!glob($directory . '/*')) {
+			perform_action('delete', [$directory]);
+			continue;
+		}
+
+		perform_action('move', [$directory.'/*' => FS_DIR_APP . 'backend/apps/' . preg_replace('#\.app$#', '', basename($directory)) .'/']);
 	}
 
-	foreach (glob(FS_DIR_ADMIN . '*.widget') as $file) {
-		perform_action('move', [$file.'/*' => FS_DIR_APP . 'backend/widgets/' . preg_replace('#\.widget$#', '', basename($file))]);
+	foreach (glob(FS_DIR_ADMIN . '*.widget') as $directory) {
+
+		if (!glob($directory . '/*')) {
+			perform_action('delete', [$directory]);
+			continue;
+		}
+
+		perform_action('move', [$directory.'/*' => FS_DIR_APP . 'backend/widgets/' . preg_replace('#\.widget$#', '', basename($directory)) .'/']);
 	}
 
 	foreach (glob(FS_DIR_APP . 'cache/*') as $file) {
@@ -406,8 +433,32 @@
 		perform_action('move', [$file => FS_DIR_APP . 'inlcudes/nodes/' . preg_replace('#^lib_#', 'nod_', basename($file))]);
 	}
 
-	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/views/') as $directory) {
-		perform_action('move', [$directory => preg_replace(['#\.catalog#', '#/views/#'], ['', '/partials/'], $directory)]);
+	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/css/*') as $file) {
+		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/default/css/']);
+	}
+
+	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/images/*') as $file) {
+		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/default/images/']);
+	}
+
+	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/layouts/*') as $file) {
+		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/default/layouts/']);
+	}
+
+	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/less/*') as $file) {
+		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/default/less/']);
+	}
+
+	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/js/*') as $file) {
+		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/default/js/']);
+	}
+
+	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/pages/*') as $file) {
+		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/default/pages/']);
+	}
+
+	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/views/*') as $file) {
+		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/default/views/']);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog') as $file) {
@@ -449,7 +500,7 @@
 
 	// Change indentation from spaces to tabs in files
 	foreach ([
-		FS_DIR_APP . 'storage/config.inc.php',
+		FS_DIR_APP . 'storage/config_deleteme.inc.php',
 		FS_DIR_APP . 'storage/vmods/*.xml',
 		FS_DIR_APP . '.htaccess',
 	] as $file_pattern) {
@@ -479,48 +530,6 @@
 			],
 		],
 	]);
-
-	perform_action('copy', [
-		FS_DIR_APP . '.htaccess' => FS_DIR_APP . '.htaccess.old',
-		FS_DIR_APP . 'storage/config.inc.php' => FS_DIR_APP . 'storage/config_old.inc.php',
-	]);
-
-	$timezone = database::query(
-		"select `value` from ". DB_TABLE_PREFIX ."settings
-		where `key` = 'store_timezone'
-		limit 1;"
-	)->fetch('value');
-
-	perform_action('modify', [
-		FS_DIR_APP . 'storage/config.inc.php' => [
-			[
-				'search'  => '#.*#s',
-				'replace' => strtr(file_get_contents('config'), [
-					'{STORAGE_FOLDER}' => 'storage',
-					'{ADMIN_FOLDER}' => BACKEND_ALIAS,
-					'{DB_SERVER}' => DB_SERVER,
-					'{DB_USERNAME}' => DB_USERNAME,
-					'{DB_PASSWORD}' => DB_PASSWORD,
-					'{DB_DATABASE}' => DB_DATABASE,
-					'{DB_TABLE_PREFIX}' => DB_TABLE_PREFIX,
-					'{CLIENT_IP}' => $_SERVER['REMOTE_ADDR'],
-					'{TIMEZONE}' => $_REQUEST['timezone'],
-				]),
-				'regex'  => true,
-			],
-		],
-
-		FS_DIR_APP . '.htaccess' => [
-			[
-				'search'  => '#.*#s',
-				'replace' => strtr($htaccess, [
-					'{WS_DIR_APP}' => preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP),
-					'{FS_DIR_APP}' => FS_DIR_APP,
-				]),
-				'regex'  => true,
-			],
-		],
-	], 'abort');
 
 	// Remove some indexes if they exist
 	if (database::query(
@@ -757,8 +766,8 @@
 		"select * from ". DB_TABLE_PREFIX ."products_campaigns;"
 	)->each(function($campaign_product) use (&$campaigns) {
 
-		$valid_from = $campaign_product['date_valid_from'] ? date('YmdHis', strtotime($campaign_product['start_date'])) : '0';
-		$valid_to = $campaign_product['date_valid_to'] ? date('YmdHis', strtotime($campaign_product['end_date'])) : '0';
+		$valid_from = $campaign_product['start_date'] ? date('YmdHis', strtotime($campaign_product['start_date'])) : '0';
+		$valid_to = $campaign_product['end_date'] ? date('YmdHis', strtotime($campaign_product['end_date'])) : '0';
 
 		$campaigns[$valid_from.'-'.$valid_to][] = $campaign_product;
 	});
@@ -770,8 +779,8 @@
 		"select * from ". DB_TABLE_PREFIX ."products_campaigns;"
 	)->each(function($campaign_product) use (&$campaigns) {
 
-		$valid_from = $campaign_product['date_valid_from'] ? date('YmdHis', strtotime($campaign_product['start_date'])) : '0';
-		$valid_to = $campaign_product['date_valid_to'] ? date('YmdHis', strtotime($campaign_product['end_date'])) : '0';
+		$valid_from = $campaign_product['start_date'] ? date('YmdHis', strtotime($campaign_product['start_date'])) : '0';
+		$valid_to = $campaign_product['end_date'] ? date('YmdHis', strtotime($campaign_product['end_date'])) : '0';
 
 		$campaigns[$valid_from.'-'.$valid_to][] = $campaign_product;
 	});
@@ -785,11 +794,10 @@
 		);
 
 		$campaign_id = database::insert_id();
-		$campaign_id = database::insert_id();
 
 		foreach ($campaign_products as $campaign_product) {
 
-			$prices = array_filter($campaign, function ($key) {
+			$prices = array_filter($campaign_product, function ($key) {
 				return (preg_match('#^[A-Z]{3}$#', $key));
 			}, ARRAY_FILTER_USE_KEY);
 

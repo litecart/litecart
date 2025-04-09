@@ -253,15 +253,15 @@
 						<div class="tab-contents">
 							<?php foreach (array_keys(language::$languages) as $language_code) { ?>
 							<div id="<?php echo $language_code; ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
-								<label class="form-group">
+								<div class="form-group">
 									<div class="form-label"><?php echo language::translate('title_subject', 'Subject'); ?></div>
 									<?php echo functions::form_regional_text('email_subject['. $language_code .']', $language_code, true); ?>
-								</label>
+								</div>
 
-								<label class="form-group">
+								<div class="form-group">
 									<div class="form-label"><?php echo language::translate('title_message', 'Message'); ?></div>
 									<?php echo functions::form_regional_wysiwyg('email_message['. $language_code .']', $language_code, true); ?>
-								</label>
+								</div>
 							</div>
 							<?php } ?>
 						</div>

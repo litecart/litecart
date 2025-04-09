@@ -692,9 +692,9 @@
 			);
 
 			perform_action('delete', [
-				FS_DIR_STORAGE . 'addons/.cache/*.php',
-				FS_DIR_STORAGE . 'addons/.cache/.checked',
-				FS_DIR_STORAGE . 'addons/.cache/.modifications',
+				FS_DIR_STORAGE . 'vmods/.cache/*.php',
+				FS_DIR_STORAGE . 'vmods/.cache/.checked',
+				FS_DIR_STORAGE . 'vmods/.cache/.modifications',
 			]);
 
 			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;

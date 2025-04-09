@@ -247,36 +247,6 @@
 				);
 			}
 
-			// Attributes
-			database::query(
-				"delete from ". DB_TABLE_PREFIX ."products_attributes
-				where product_id = ". (int)$this->data['id'] ."
-				and id not in ('". implode("', '", array_column($this->data['attributes'], 'id')) ."');"
-			);
-
-			$i = 0;
-			foreach ($this->data['attributes'] as $key => $attribute) {
-				if (empty($attribute['id'])) {
-					database::query(
-						"insert into ". DB_TABLE_PREFIX ."products_attributes
-						(product_id, group_id, value_id, custom_value)
-						values (". (int)$this->data['id'] .", ". (int)$attribute['group_id'] .", ". (int)$attribute['value_id'] .", '". database::input($attribute['custom_value']) ."');"
-					);
-					$this->data['attributes'][$key]['id'] = $attribute['id'] = database::insert_id();
-				}
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."products_attributes
-					set group_id = ". (int)$attribute['group_id'] .",
-						value_id = ". (int)$attribute['value_id'] .",
-						custom_value = '". database::input($attribute['custom_value']) ."',
-						priority = ". (int)++$i ."
-					where product_id = ". (int)$this->data['id'] ."
-					and id = ". (int)$attribute['id'] ."
-					limit 1;"
-				);
-			}
-
 			// Delete prices
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."products_prices
@@ -319,27 +289,27 @@
 			);
 
 			// Update campaigns
-			foreach ($this->data['campaigns'] as $key => $campaign) {
+			foreach ($this->data['campaigns'] as $key => $campaign_price) {
 
-				if (empty($campaign['id'])) {
+				if (empty($campaign_price['id'])) {
 
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."campaigns_products
 						(campaign_id, product_id)
-						values (". (int)$this->data['campaign_id'] .", ". (int)$this->data['id'] .");"
+						values (". (!empty($campaign_price['campaign_id']) ? (int)$campaign_price['campaign_id'] : "null") .", ". (int)$this->data['id'] .");"
 					);
 
-					$this->data['campaigns'][$key]['id'] = $campaign['id'] = database::insert_id();
+					$this->data['campaigns'][$key]['id'] = $campaign_price['id'] = database::insert_id();
 				}
 
-				$campaign['price'] = array_filter($campaign['price']);
+				$campaign_price['price'] = array_filter($campaign_price['price']);
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."products_campaigns
-					set price = '". database::input(json_encode($campaign['price'])) ."',
+					set campaign_id = ". (!empty($campaign_price['campaign_id']) ? (int)$campaign_price['campaign_id'] : "null") .",
+						price = '". database::input(json_encode($campaign_price['price'])) ."'
 					where product_id = ". (int)$this->data['id'] ."
-					and campaign_id = ". (int)$campaign['campaign_id'] ."
-					and id = ". (int)$campaign['id'] ."
+					and id = ". (int)$campaign_price['id'] ."
 					limit 1;"
 				);
 			}
@@ -407,6 +377,36 @@
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
+
+			// Attributes
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."products_attributes
+				where product_id = ". (int)$this->data['id'] ."
+				and id not in ('". implode("', '", array_column($this->data['attributes'], 'id')) ."');"
+			);
+
+			$i = 0;
+			foreach ($this->data['attributes'] as $key => $attribute) {
+				if (empty($attribute['id'])) {
+					database::query(
+						"insert into ". DB_TABLE_PREFIX ."products_attributes
+						(product_id, group_id, value_id, custom_value)
+						values (". (int)$this->data['id'] .", ". (int)$attribute['group_id'] .", ". (int)$attribute['value_id'] .", '". database::input($attribute['custom_value']) ."');"
+					);
+					$this->data['attributes'][$key]['id'] = $attribute['id'] = database::insert_id();
+				}
+
+				database::query(
+					"update ". DB_TABLE_PREFIX ."products_attributes
+					set group_id = ". (int)$attribute['group_id'] .",
+						value_id = ". (int)$attribute['value_id'] .",
+						custom_value = '". database::input($attribute['custom_value']) ."',
+						priority = ". (int)++$i ."
+					where product_id = ". (int)$this->data['id'] ."
+					and id = ". (int)$attribute['id'] ."
+					limit 1;"
+				);
+			}
 
 			// Delete customizations
 			database::query(

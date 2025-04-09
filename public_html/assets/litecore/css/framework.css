@@ -504,9 +504,6 @@ template {
   font-size: var(--card-title-text-size);
   margin: 0;
 }
-.card .card-filter {
-  --input-background: transparent;
-}
 .card .card-footer {
   background: var(--card-footer-background);
   box-shadow: inset 0px 10px 15px -15px rgba(0, 0, 0, 0.25);

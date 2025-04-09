@@ -130,10 +130,10 @@
 						<?php echo functions::form_regional_text('title['. $language_code .']', $language_code, true, ''); ?>
 					</label>
 
-					<label class="form-group">
+					<div class="form-group">
 						<div class="form-label"><?php echo language::translate('title_content', 'Content'); ?></div>
 						<?php echo functions::form_regional_wysiwyg('content['. $language_code .']', $language_code, true, 'style="height: 400px;"'); ?>
-					</label>
+					</div>
 
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_head_title', 'Head Title'); ?></div>

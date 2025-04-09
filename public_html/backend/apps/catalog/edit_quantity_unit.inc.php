@@ -116,15 +116,6 @@
 				</div>
 			</div>
 
-			<div class="grid">
-				<div class="col-md-4">
-					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_priority', 'Priority'); ?></div>
-						<?php echo functions::form_input_number('priority', true); ?>
-					</label>
-				</div>
-			</div>
-
 			<div class="card-action">
 				<?php echo functions::form_button_predefined('save'); ?>
 				<?php if (!empty($quantity_unit->data['id'])) echo functions::form_button_predefined('delete'); ?>

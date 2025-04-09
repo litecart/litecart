@@ -64,6 +64,8 @@
 			$results = [];
 		}
 
+		clearstatcache(true, dirname($file));
+
 		// Resolve logic
 		if (preg_match('#[*!\[\]{}]#', $file)) {
 

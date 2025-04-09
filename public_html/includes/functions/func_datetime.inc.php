@@ -184,9 +184,9 @@
 		// If ahead of now
 		if ($timestamp > new \DateTime()) {
 
-			// If later today
-			if ($timestamp > (new \DateTime())->setTime(0, 0)) {
-				return datetime_format('time', $timestamp);
+			// If tomorrow
+			if ($timestamp > (new \DateTime())->modify('+2 days')->setTime(0, 0)) {
+				return datetime_format('datetime', $timestamp);
 			}
 
 			// If tomorrow
@@ -194,7 +194,10 @@
 				return language::translate('text_tomorrow', 'Tomorrow') . ' ' . datetime_format('time', $timestamp);
 			}
 
-			return datetime_format('datetime', $timestamp);
+			// If later today
+			if ($timestamp > (new \DateTime())->setTime(0, 0)) {
+				return datetime_format('time', $timestamp);
+			}
 		}
 
 		if ($timestamp > (new \DateTime())->modify('-1 minute')) {

@@ -1,11 +1,14 @@
 <?php
 
-	if (!isset($_GET['page'])) $_GET['page'] = 1;
+	if (!isset($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+		$_GET['page'] = 1;
+	}
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$transactions = database::query(
-		"select id, name, date_created from ". DB_TABLE_PREFIX ."stock_transactions t
-		where id
+		"select id, name, date_created
+		from ". DB_TABLE_PREFIX ."stock_transactions t
+		where true
 		". (!empty($_GET['query']) ? "t.name like '%". database::input($_GET['query']) ."%' or t.notes like '%". database::input($_GET['query']) ."%'" : "") ."
 		". (!empty($_GET['query']) ? "and id in (
 			select transaction_id from ". DB_TABLE_PREFIX ."stock_transactions_contents
@@ -31,20 +34,26 @@
 	</div>
 
 	<div class="card-action">
-			<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_transaction'), language::translate('title_create_new_transaction', 'Create New Transaction'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_transaction'), language::translate('title_create_new_transaction', 'Create New Transaction'), '', 'add'); ?>
 	</div>
 
-		<?php echo functions::form_begin('search_form', 'get'); ?>
-	<div class="card-filter">
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
+	<?php echo functions::form_begin('search_form', 'get'); ?>
+		<div class="card-filter">
+
+			<div class="expandable">
+				<?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?>
+			</div>
+
 			<div class="input-group">
 				<?php echo functions::form_input_datetime('date_from', true, 'style="width: 50%;"'); ?>
 				<span class="input-group-text">-</span>
 				<?php echo functions::form_input_datetime('date_to', true, 'style="width: 50%;"'); ?>
 			</div>
+
 			<div>
 				<?php echo functions::form_button('search', language::translate('title_filter', 'Filter'), 'submit'); ?>
 			</div>
+
 		</div>
 	<?php echo functions::form_end(); ?>
 
@@ -60,6 +69,7 @@
 					<th></th>
 				</tr>
 			</thead>
+
 			<tbody>
 			<?php foreach ($transactions as $transaction) { ?>
 			<tr>
@@ -71,9 +81,12 @@
 			</tr>
 			<?php } ?>
 			</tbody>
+
 			<tfoot>
 				<tr>
-					<td colspan="5"><?php echo language::translate('title_stock_transactions', 'Stock Transactions'); ?>: <?php echo $num_rows; ?></td>
+					<td colspan="5">
+						<?php echo language::translate('title_stock_transactions', 'Stock Transactions'); ?>: <?php echo $num_rows; ?>
+					</td>
 				</tr>
 			</tfoot>
 		</table>

@@ -68,9 +68,7 @@
 		}
 	}
 
-	$currencies = array_map(function($currency){
-		return ['code' => $currency['code'], 'decimals' => (int)$currency['decimals'], 'value' => $currency['value']];
-	}, currency::$currencies);
+	$currency_codes = array_unique(array_merge([currency::$selected['code']], [settings::get('store_currency_code')], array_keys(currency::$currencies)));
 
 ?>
 <div class="card">
@@ -80,7 +78,7 @@
 		</div>
 	</div>
 
-	<?php echo functions::form_begin('campaigns_form', 'post'); ?>
+	<?php echo functions::form_begin('campaigns_form', 'post', '', false, 'data-track-changes'); ?>
 
 		<div class="card-body">
 			<div style="max-width: 720px;">
@@ -141,7 +139,18 @@
 						</a>
 					</td>
 					<td class="text-end"><?php echo currency::format($product['regular_price'], false, settings::get('store_currency_code')); ?></td>
-					<td class="text-end"><?php echo functions::form_input_money('products['.$key.']['.settings::get('store_currency_code').']', settings::get('store_currency_code'), true, 'style="width: 200px;"'); ?></td>
+					<td>
+						<div class="dropdown dropdown-end">
+							<?php echo functions::form_input_money('products['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
+							<ul class="dropdown-menu">
+								<?php foreach (array_diff($currency_codes, [settings::get('store_currency_code')]) as $currency_code) { ?>
+								<li>
+									<?php echo functions::form_input_money('products['.$key.'][price]['. $currency_code .']', $currency_code, true, 'style="width: 125px;"'); ?>
+								</li>
+								<?php } ?>
+							</ul>
+						</div>
+					</td>
 					<td><?php echo functions::form_input_percent('products['.$key.'][percentage]', '', 2, 'style="width: 100px;"'); ?></td>
 					<td class="text-end">
 						<button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
@@ -170,7 +179,8 @@
 
 <script>
 	const store_currency_code = '<?php echo settings::get('store_currency_code'); ?>';
-	const currencies = <?php echo json_encode(currency::$currencies); ?>;
+	const currencies = <?php echo json_encode(currency::$currencies, JSON_UNESCAPED_SLASHES |  JSON_UNESCAPED_UNICODE); ?>;
+	const currency_codes = <?php echo json_encode($currency_codes); ?>;
 
 	$('#campaigns').on('focus', 'input[name^="campaigns"]', function(e) {
 		if ($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
@@ -186,7 +196,7 @@
 		let $row = $(this).closest('tr'),
 			amount = 0;
 
-		$.each(currencies, function(i, currency) {
+		$.each(currency_codes, function(i, currency_code) {
 
 			if ($('input[name$="['+currency.code+']"]').val() > 0) {
 				amount = Number($('input[name$="['+store_currency_code+']"]').val() * (100 - $(this).val()) / 100).toFixed(currency.decimals);
@@ -208,14 +218,14 @@
 
 		$row.find('input[name$="[percentage]"]').val(percentage);
 
-		$.each(currencies, function(i, currency) {
+		$.each(currency_codes, function(i, currency_code) {
 
-			amount = Number($row.find('input[name$="['+store_currency_code+']"]').val() / currency.value).toFixed(currency.decimals);
+			amount = Number($row.find('input[name$="['+store_currency_code+']"]').val() / currencies[currency_code].value).toFixed(currencies[currency_code].decimals);
 
-			$row.find('input[name$="['+currency.code+']"]').attr('placeholder', amount);
+			$row.find('input[name$="['+currency_code+']"]').attr('placeholder', amount);
 
-			if ($row.find('input[name$="['+currency.code+']"]').val() == 0) {
-				$row.find('input[name$="['+currency.code+']"]').val('');
+			if (!$row.find('input[name$="['+currency_code+']"]').val()) {
+				$row.find('input[name$="['+currency_code+']"]').val('');
 			}
 		});
 	});
@@ -243,7 +253,18 @@
 			'		 </a>',
 			'  </td>',
 			'  <td class="text-end">'+ product.price +'</td>',
-			'  <td class="text-end"><?php echo functions::escape_js(functions::form_input_money('products[new_product_i][currency_code]', settings::get('store_currency_code'), '', 'style="width: 200px;"')); ?></td>',
+			'  <td>',
+			'    <div class="dropdown dropdown-end">',
+			'      <?php echo functions::escape_js(functions::form_input_money('products[new_product_i][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '', 'style="width: 125px;"')); ?>',
+			'      <ul class="dropdown-menu">',
+			'        <?php foreach (array_diff($currency_codes, [settings::get('store_currency_code')]) as $currency_code) { ?>',
+			'        <li>',
+			'          <?php echo functions::escape_js(functions::form_input_money('products[new_product_i][price]['. $currency_code .']', $currency_code, '', 'style="width: 125px;"')); ?>',
+			'        </li>',
+			'        <?php } ?>',
+			'      </ul>',
+			'    </div>',
+			'  </td>',
 			'  <td><?php echo functions::escape_js(functions::form_input_percent('products[new_product_i][percentage]', '', 2)); ?></td>',
 			'  <td class="text-end">',
 			'    <button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo language::translate('title_edit', 'Edit'); ?>">',

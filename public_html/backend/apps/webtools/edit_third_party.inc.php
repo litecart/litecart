@@ -98,26 +98,26 @@
   <div class="card-body">
     <?php echo functions::form_begin('third_party_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
 
-      <div class="row">
+      <div class="grid">
         <div class="col-md-6">
           <div class="form-group">
-            <label><?php echo language::translate('title_status', 'Status'); ?></label>
+            <div class="form-group"><?php echo language::translate('title_status', 'Status'); ?></div>
             <?php echo functions::form_toggle('status', 'e/d', true); ?>
           </div>
         </div>
 
         <div class="col-md-6">
-          <div class="form-group">
-            <label><?php echo language::translate('title_name', 'Name'); ?></label>
+          <label class="form-group">
+            <div class="form-group"><?php echo language::translate('title_name', 'Name'); ?></div>
             <?php echo functions::form_input_text('name', true, 'required'); ?>
-          </div>
+          </label>
         </div>
       </div>
 
-      <div class="form-group">
-        <label><?php echo language::translate('title_privacy_classes', 'Privacy Classes'); ?></label>
+      <label class="form-group">
+        <div class="form-group"><?php echo language::translate('title_privacy_classes', 'Privacy Classes'); ?></div>
         <?php echo functions::form_select('privacy_classes[]', $privacy_classes_options, true); ?>
-      </div>
+      </label>
 
       <nav class="tabs">
         <?php foreach (language::$languages as $language) { ?>
@@ -131,59 +131,59 @@
         <div id="<?php echo $language_code; ?>" class="tab-pane<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 
           <div class="form-group">
-            <label><?php echo language::translate('title_description', 'Description'); ?></label>
+            <div class="form-group"><?php echo language::translate('title_description', 'Description'); ?></div>
             <?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true); ?>
           </div>
 
-          <div class="form-group">
-            <label><?php echo language::translate('title_collected_data', 'Collected Data'); ?></label>
+          <label class="form-group">
+            <div class="form-group"><?php echo language::translate('title_collected_data', 'Collected Data'); ?></div>
             <?php echo functions::form_regional_textarea('collected_data['. $language_code .']', $language_code, true); ?>
-          </div>
+          </label>
 
-          <div class="form-group">
-            <label><?php echo language::translate('title_purposes', 'Purposes'); ?></label>
+          <label class="form-group">
+            <div class="form-group"><?php echo language::translate('title_purposes', 'Purposes'); ?></div>
             <?php echo functions::form_regional_textarea('purposes['. $language_code .']', $language_code, true); ?>
-          </div>
+          </label>
 
         </div>
         <?php } ?>
       </div>
 
-      <div class="row">
+      <div class="grid">
         <div class="col-md-6">
-          <div class="form-group">
-            <label><?php echo language::translate('title_country_of_juristiction', 'Country of Juristiction'); ?></label>
+          <label class="form-group">
+            <div class="form-group"><?php echo language::translate('title_country_of_juristiction', 'Country of Juristiction'); ?></div>
             <?php echo functions::form_select_country('country_code', true); ?>
-          </div>
+          </label>
         </div>
 
         <div class="col-md-6">
-          <div class="form-group">
-            <label><?php echo language::translate('title_homepage', 'Homepage'); ?></label>
+          <label class="form-group">
+            <div class="form-group"><?php echo language::translate('title_homepage', 'Homepage'); ?></div>
             <?php echo functions::form_input_url('homepage', true, 'placeholder="https://..."'); ?>
-          </div>
+          </label>
         </div>
       </div>
 
-      <div class="form-group">
-        <label><?php echo language::translate('title_third_policy', 'Cookie Policy'); ?></label>
+      <label class="form-group">
+        <div class="form-group"><?php echo language::translate('title_third_policy', 'Cookie Policy'); ?></div>
         <?php echo functions::form_input_url('cookie_policy_url', true, 'placeholder="https://..."'); ?>
-      </div>
+      </label>
 
-      <div class="form-group">
-        <label><?php echo language::translate('title_privacy_policy', 'Privacy Policy'); ?></label>
+      <label class="form-group">
+        <div class="form-group"><?php echo language::translate('title_privacy_policy', 'Privacy Policy'); ?></div>
         <?php echo functions::form_input_url('privacy_policy_url', true, 'placeholder="https://..."'); ?>
-      </div>
+      </label>
 
-      <div class="form-group">
-        <label><?php echo language::translate('title_opt_out', 'Opt Out'); ?></label>
+      <label class="form-group">
+        <div class="form-group"><?php echo language::translate('title_opt_out', 'Opt Out'); ?></div>
         <?php echo functions::form_input_url('opt_out_url', true, 'placeholder="https://..."'); ?>
-      </div>
+      </label>
 
-      <div class="form-group">
-        <label><?php echo language::translate('title_do_not_sell', 'Do Not Sell'); ?></label>
+      <label class="form-group">
+        <div class="form-group"><?php echo language::translate('title_do_not_sell', 'Do Not Sell'); ?></div>
         <?php echo functions::form_input_url('do_not_sell_url', true, 'placeholder="https://..."'); ?>
-      </div>
+      </label>
 
       <div class="card-action">
 				<?php echo functions::form_button_predefined('save'); ?>

@@ -24,7 +24,7 @@
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
 					<th><?php echo language::translate('title_stock_options', 'Stock Options'); ?></th>
 					<th><?php echo language::translate('title_price', 'Price'); ?></th>
-					<th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
+					<th><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
 					<th><?php echo language::translate('title_reserved', 'Reserved'); ?></th>
 					<th><?php echo language::translate('title_date_created', 'Date Created'); ?></th>
 				</tr>

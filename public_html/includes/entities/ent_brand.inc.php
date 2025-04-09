@@ -88,7 +88,7 @@
 					head_title = '". database::input(json_encode($this->data['head_title'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 					h1_title = '". database::input(json_encode($this->data['h1_title'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 					meta_description = '". database::input(json_encode($this->data['meta_description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
-					link = '". database::input(json_encode($this->data['link'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."'
+					link = '". database::input(json_encode($this->data['link'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 					image = '". database::input($this->data['image']) ."',
 					keywords = '". database::input($this->data['keywords']) ."'
 				where id = ". (int)$this->data['id'] ."

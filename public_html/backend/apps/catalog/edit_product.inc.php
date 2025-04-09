@@ -309,7 +309,7 @@
 
 								<div class="images">
 									<?php if (!empty($_POST['images'])) foreach (array_keys($_POST['images']) as $key) { ?>
-									<label class="form-group image">
+									<div class="form-group image">
 										<?php echo functions::form_input_hidden('images['.$key.'][id]', true); ?>
 										<?php echo functions::form_input_hidden('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
 
@@ -323,7 +323,7 @@
 											<a class="btn btn-default btn-sm move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></a>
 											<a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></a>
 										</div>
-									</label>
+									</div>
 									<?php } ?>
 								</div>
 
@@ -347,7 +347,7 @@
 						<?php } ?>
 					</nav>
 
-					<div class="tab-contents">
+					<div class="tab-contents" style="padding-top: 2em;">
 						<?php foreach ($language_codes as $language_code) { ?>
 						<div id="<?php echo $language_code; ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 
@@ -364,10 +364,10 @@
 										<?php echo functions::form_regional_text('short_description['. $language_code .']', $language_code, true); ?>
 									</label>
 
-									<label class="form-group">
+									<div class="form-group">
 										<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
 										<?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 250px;"'); ?>
-									</label>
+									</div>
 
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_synonyms', 'Synonyms'); ?></div>
@@ -392,11 +392,11 @@
 								</div>
 
 								<div class="col-md-6">
-									<div class="form-group">
+									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('icon-question'); ?></a></div>
 										<?php echo functions::form_regional_textarea('technical_data['. $language_code .']', $language_code, true, 'style="height: 640px;"'); ?>
 										<div><?php echo functions::form_checkbox('autofill_technical_data', ['1', language::translate('text_autogenerate_from_attributes', 'Generate from attributes')], ''); ?></div>
-									</div>
+									</label>
 								</div>
 							</div>
 						</div>
@@ -445,8 +445,7 @@
 								<tr>
 									<td>
 										<?php echo functions::form_input_hidden('prices['.$key.'][id]', true); ?>
-										<?php echo functions::form_input_hidden('prices['.$key.'][customer_group_id]', true); ?>
-										<?php echo functions::escape_html($price['customer_group_name']); ?>
+										<?php echo functions::form_select_campaign('customer_group_id', true); ?>
 									</td>
 									<td><?php echo functions::form_input_decimal('prices['.$key.'][min_quantity]', true, 'min="1"'); ?></td>
 									<td>
@@ -488,7 +487,7 @@
 						<?php echo language::translate('title_campaigns', 'Campaigns'); ?>
 					</h2>
 
-					<div style="margin: 0 -2em -3em -2em">
+					<div style="margin: 0 -2em">
 						<table id="campaigns" class="table data-table">
 							<thead>
 								<tr>
@@ -507,18 +506,17 @@
 								<tr>
 									<td>
 										<?php echo functions::form_input_hidden('campaigns['.$key.'][id]', true); ?>
-										<?php echo functions::form_input_hidden('campaigns['.$key.'][campaign_id]', true); ?>
-										<?php echo functions::escape_html($campaign['name']); ?>
+										<?php echo functions::form_select_campaign('campaigns['.$key.'][campaign_id]', true); ?>
 									</td>
-									<td><?php echo functions::datetime_when($campaign['date_valid_from']); ?></td>
-									<td><?php echo functions::datetime_when($campaign['date_valid_to']); ?></td>
+									<td><span class="date-valid-from"><?php echo $campaign['date_valid_from'] ? functions::datetime_when($campaign['date_valid_from']) : '-'; ?></span></td>
+									<td><span class="date-valid-to"><?php echo $campaign['date_valid_to'] ? functions::datetime_when($campaign['date_valid_to']) : '-'; ?></span></td>
 									<td>
 										<div class="dropdown dropdown-end">
-											<?php echo functions::form_input_money('campaigns['.$key.']['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
+											<?php echo functions::form_input_money('campaigns['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
 											<ul class="dropdown-menu">
 												<?php foreach (array_diff($currency_codes, [settings::get('store_currency_code')]) as $currency_code) { ?>
 												<li>
-													<?php echo functions::form_input_money('campaigns['.$key.']['. $currency_code .']', $currency_code, true, 'style="width: 125px;"'); ?>
+													<?php echo functions::form_input_money('campaigns['.$key.'][price]['. $currency_code .']', $currency_code, true, 'style="width: 125px;"'); ?>
 												</li>
 												<?php } ?>
 											</ul>
@@ -589,7 +587,7 @@
 									<?php echo functions::form_select('new_attribute[value_id]', [], ''); ?>
 									<?php echo functions::form_input_text('new_attribute[custom_value]', '', 'disabled hidden'); ?>
 								</td>
-								<td><?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
+								<td class="text-end"><?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -851,25 +849,25 @@
 								</td>
 								<td><?php echo functions::form_input_decimal('stock_options['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['stock_options'][$key]) ? (float)$product->data['stock_options'][$key]['quantity'] : '0') .'"'); ?></td>
 									<td>
-										<div class="input-group">
-										<span class="input-group-text">&plusmn;</span>
-										<?php echo functions::form_input_decimal('stock_options['. $key .'][quantity_adjustment]', true); ?>
-										</div>
+										<label class="input-group">
+											<span class="input-group-text">&plusmn;</span>
+											<?php echo functions::form_input_decimal('stock_options['. $key .'][quantity_adjustment]', true); ?>
+										</label>
 									</td>
 									<td>
 										<div class="input-group">
-										<?php echo functions::form_button('transfer', functions::draw_fonticon('icon-arrow-left'), 'button'); ?>
-										<?php echo functions::form_input_decimal('stock_options['. $key .'][backordered]', true, 2, 'min="0"'); ?>
+											<?php echo functions::form_button('transfer', functions::draw_fonticon('icon-arrow-left'), 'button'); ?>
+											<?php echo functions::form_input_decimal('stock_options['. $key .'][backordered]', true, 2, 'min="0"'); ?>
 										</div>
 									</td>
 									<td class="text-end">
-									<a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
-										<?php echo functions::draw_fonticon('icon-times', 'style="color: #c33;"'); ?>
+										<a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
+											<?php echo functions::draw_fonticon('icon-times', 'style="color: #c33;"'); ?>
 										</a>
-								</td>
-								<td class="text-end">
-									<a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_options'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true"data-max-width="980px"  title="<?php echo language::translate('title_edit', 'Edit'); ?>">
-										<?php echo functions::draw_fonticon('edit'); ?>
+									</td>
+									<td class="text-end">
+										<a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_options'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true"data-max-width="980px"  title="<?php echo language::translate('title_edit', 'Edit'); ?>">
+											<?php echo functions::draw_fonticon('edit'); ?>
 										</a>
 									</td>
 								</tr>
@@ -1034,4 +1032,1012 @@
 			$('textarea[name^="technical_data"]').prop('disabled', false);
 		}
 	}).trigger('change');
+
+	// Prices
+
+	$('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').on('input', function() {
+		$('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').not(this).val($(this).val());
+	});
+
+	function get_tax_rate() {
+		switch ($('select[name=tax_class_id]').val()) {
+<?php
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."tax_classes
+		order by name asc;"
+	)->each(function($tax_class){
+		echo '      case "'. $tax_class['id'] . '": return '. tax::get_tax(100, $tax_class['id'], 'store') .';' . PHP_EOL;
+	})
+?>
+			default: return 0;
+		}
+	}
+
+	function get_currency_value(currency_code) {
+		switch (currency_code) {
+			<?php foreach (currency::$currencies as $currency) echo 'case \''. $currency['code'] .'\': return '. (float)$currency['value'] .';' . PHP_EOL; ?>
+		}
+	}
+
+	function get_currency_decimals(currency_code) {
+		switch (currency_code) {
+			<?php foreach ($currency_codes as $currency_code) echo 'case \''. $currency_code .'\': return '. ($currency['decimals']+2) .';' . PHP_EOL; ?>
+		}
+	}
+/*
+	// Update prices
+	$('select[name="tax_class_id"]').on('change', 'input', function() {
+		$('input[name^="prices"]').trigger('input');
+	});
+
+	// Update gross price
+	$('input[name^="prices"]').on('input', function() {
+
+		let currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1];
+		let decimals = get_currency_decimals(currency_code);
+		let gross_field = $('input[name="gross_prices['+ currency_code +']"]');
+		let gross_price = parseFloat(Number($(this).val() * (1+(get_tax_rate()/100))).toFixed(decimals));
+
+		if ($(this).val() == 0) {
+			$(gross_field).val('');
+		} else {
+			$(gross_field).val(gross_price);
+		}
+
+		update_currency_prices();
+	}).trigger('input');
+
+	// Update net price
+	$('input[name^="gross_prices"]').on('input', function() {
+
+		let currency_code = $(this).attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1];
+		let decimals = get_currency_decimals(currency_code);
+		let net_field = $('input[name="prices['+ currency_code +']"]');
+		let net_price = parseFloat(Number($(this).val() / (1+(get_tax_rate()/100))).toFixed(decimals));
+
+		if ($(this).val() == 0) {
+			$(net_field).val('');
+		} else {
+			$(net_field).val(net_price);
+		}
+
+		update_currency_prices();
+	});
+
+	// Update price placeholders
+	function update_currency_prices() {
+		let store_currency_code = '<?php echo settings::get('store_currency_code'); ?>';
+		let currencies = ['<?php echo implode("','", array_keys(currency::$currencies)); ?>'];
+		let net_price = $('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val();
+		let gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val();
+
+		if (!net_price) {
+			net_price = $('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').attr('placeholder');
+		}
+
+		if (!gross_price) {
+			gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').attr('placeholder');
+		}
+
+		$.each(currencies, function(i, currency_code) {
+			if (currency_code == '<?php echo settings::get('store_currency_code'); ?>') return;
+
+			let currency_decimals = get_currency_decimals(currency_code);
+			let currency_net_price = net_price / get_currency_value(currency_code);
+			let currency_gross_price = gross_price / get_currency_value(currency_code);
+
+			currency_net_price = currency_net_price ? parseFloat(currency_net_price.toFixed(currency_decimals)) : '';
+			currency_gross_price = currency_gross_price ? parseFloat(currency_gross_price.toFixed(currency_decimals)) : '';
+
+			$('input[name="prices['+ currency_code +']"]').attr('placeholder', currency_net_price);
+			$('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', currency_gross_price);
+		});
+	}
+
+*/
+
+	// Prices
+	$('#price-incl-tax-tooltip').on('click', function(e) {
+		e.preventDefault();
+		alert('<?php echo str_replace(["\r", "\n", "'"], ["", "", "\\'"], language::translate('tooltip_field_price_incl_tax', 'This field helps you calculate net price based on the tax rates set for the store region. The prices stored in the database are always excluding tax.')); ?>');
+	});
+
+	$('#prices').on('focus', 'input[name^="prices"]', function(e) {
+		if ($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
+			$(this).closest('.dropdown').addClass('open');
+		}
+	});
+
+	$('#prices').on('blur', '.dropdown', function(e) {
+		$(this).removeClass('open');
+	});
+
+	$('#prices').on('input', 'input[name^="prices"][name$="[percentage]"]', function() {
+		let parent = $(this).closest('tr'),
+			value = 0;
+
+		<?php foreach (currency::$currencies as $currency) { ?>
+		if ($('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').val() > 0) {
+			value = parseFloat($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
+			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value);
+		} else {
+			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val('');
+		}
+		<?php } ?>
+
+		<?php foreach (currency::$currencies as $currency) { ?>
+		value = parseFloat($(parent).find('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
+		$(parent).find('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value);
+		<?php } ?>
+	});
+
+	$('#prices').on('input', 'input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
+		let parent = $(this).closest('tr');
+		let percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
+		percentage = percentage.toFixed(2);
+		$(parent).find('input[name$="[percentage]"]').val(percentage);
+
+		<?php foreach (currency::$currencies as $currency) { ?>
+		value = $(parent).find('input[name^="prices"][name*="[price]"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value'] . PHP_EOL; ?>
+		value = value.toFixed(<?php echo $currency['decimals']; ?>);
+		$(parent).find('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value);
+		if ($(parent).find('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
+			$(parent).find('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]').val('');
+		}
+		<?php } ?>
+	});
+
+	$('input[name^="prices"][name*="[price]"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').trigger('input');
+
+	$('#prices').on('click', '.remove', function(e) {
+		e.preventDefault();
+		$(this).closest('tr').remove();
+	});
+
+	let new_price_index = 0;
+	while ($(':input[name^="prices[' + new_price_index + ']"]').length) new_price_index++;
+
+	$('#prices').on('click', '.add', function(e) {
+		e.preventDefault();
+
+		let $output = $([
+			'<tr>',
+			'  <td>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('prices[new_price_index][id]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_select_customer_group('prices[new_price_index][customer_group_id]', '')); ?>',
+			'  </td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_decimal('prices[new_price_index][min_quantity]', '1', 'min="1"')); ?></td>',
+			'  <td>',
+			'    <div class="dropdown">',
+			'      <?php echo functions::escape_js(functions::form_input_money('prices[new_price_index][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?>',
+			'      <ul class="dropdown-menu" style="right:0;">',
+			<?php echo implode(PHP_EOL, array_map(
+				function($currency_code) {
+					return '\'      <li>'. functions::escape_js(functions::form_input_money('prices[new_price_index][price]['. $currency_code .']', $currency_code, true, 'style="width: 125px;"')) .'</li>\',';
+				}, array_diff($currency_codes, [settings::get('store_currency_code')])
+			)); ?>
+			'      </ul>',
+			'    </div>',
+			'  </td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_money('prices[new_price_index][gross]', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?></td>',
+			'  <td></td>',
+			'  <td>',
+			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>">',
+			'      <?php echo functions::escape_js(functions::draw_fonticon('remove')); ?>',
+			'    </a>',
+			'  </td>',
+			'</tr>'
+		].join('\n')
+			.replace(/new_price_index/g, 'new_' + new_price_index++)
+		);
+
+		$('.price-name', $output).text();
+		$('.price-valid-from', $output).text();
+		$('.price-valid-to', $output).text();
+
+		$('#prices tbody').append($output);
+	});
+
+	$('#prices select[name$="[price_id]"]').on('change', function() {
+		let $row = $(this).closest('tr');
+		$option = $(this).find('option:selected');
+
+		if ($(this).val() != '') {
+			$('.price-valid-from', $row).text($option.data('valid-from'));
+			$('.price-valid-to', $row).text($option.data('valid-to'));
+		} else {
+			$('.price-valid-from', $row).text('');
+			$('.price-valid-to', $row).text('');
+		}
+	});
+
+	// Campaigns
+
+	$('#campaigns').on('change', 'select[name$="[campaign_id]"]', function(e) {
+		let $row = $(this).closest('tr');
+		$option = $(this).find('option:selected');
+
+		if ($(this).val() != '') {
+			$('.date-valid-from', $row).text($option.data('valid-from'));
+			$('.date-valid-to', $row).text($option.data('valid-to'));
+		} else {
+			$('.date-valid-from', $row).text('-');
+			$('.date-valid-to', $row).text('-');
+		}
+	});
+
+	$('#campaigns').on('focus', 'input[name^="campaigns"]', function(e) {
+		if ($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
+			$(this).closest('.dropdown').addClass('open');
+		}
+	});
+
+	$('#campaigns').on('blur', '.dropdown', function(e) {
+		$(this).removeClass('open');
+	});
+
+	$('#campaigns').on('input', 'input[name^="campaigns"][name$="[percentage]"]', function() {
+		let parent = $(this).closest('tr'),
+			value = 0;
+
+		<?php foreach (currency::$currencies as $currency) { ?>
+		if ($('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').val() > 0) {
+			value = parseFloat($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
+			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value);
+		} else {
+			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val('');
+		}
+		<?php } ?>
+
+		<?php foreach (currency::$currencies as $currency) { ?>
+		value = parseFloat($(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
+		$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value);
+		<?php } ?>
+	});
+
+	$('#campaigns').on('input', 'input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
+		let parent = $(this).closest('tr');
+		let percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
+		percentage = percentage.toFixed(2);
+		$(parent).find('input[name$="[percentage]"]').val(percentage);
+
+		<?php foreach (currency::$currencies as $currency) { ?>
+		value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>;
+		value = value.toFixed(<?php echo $currency['decimals']; ?>);
+		$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value);
+		if ($(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
+			$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val('');
+		}
+		<?php } ?>
+	});
+
+	$('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').trigger('input');
+
+	$('#campaigns').on('click', '.remove', function(e) {
+		e.preventDefault();
+		$(this).closest('tr').remove();
+	});
+
+	let new_campaign_index = 0;
+	while ($(':input[name^="campaigns[' + new_campaign_index + ']"]').length) new_campaign_index++;
+
+	$('#campaigns').on('click', '.add', function(e) {
+		e.preventDefault();
+
+		let $output = $([
+			'<tr>',
+			'  <td>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('campaigns[new_campaign_index][id]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_select_campaign('campaigns[new_campaign_index][campaign_id]', '', 'style="width: 200px;"')); ?>',
+			'  </td>',
+			'  <td><span class="date-valid-from"></span></td>',
+			'  <td><span class="date-valid-to"></span></td>',
+			'  <td>',
+			'    <div class="dropdown">',
+			'      <?php echo functions::escape_js(functions::form_input_money('campaigns[new_campaign_index][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?>',
+			'      <ul class="dropdown-menu" style="right:0;">',
+			<?php echo implode(PHP_EOL, array_map(
+				function($currency_code) {
+					return '\'      <li>'. functions::escape_js(functions::form_input_money('campaigns[new_campaign_index]price['. $currency_code .']', $currency_code, true, 'style="width: 125px;"')) .'</li>\',';
+				}, array_diff($currency_codes, [settings::get('store_currency_code')])
+			)); ?>
+			'      </ul>',
+			'    </div>',
+			'  </td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_percent('campaigns[new_campaign_index][percentage]', '', 2)); ?></td>',
+			'  <td></td>',
+			'  <td>',
+			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>">',
+			'      <?php echo functions::escape_js(functions::draw_fonticon('remove')); ?>',
+			'    </a>',
+			'  </td>',
+			'</tr>'
+		].join('\n')
+			.replace(/new_campaign_index/g, 'new_' + new_campaign_index++)
+		);
+
+		$('.campaign-name', $output).text();
+		$('.campaign-valid-from', $output).text();
+		$('.campaign-valid-to', $output).text();
+
+		$('#campaigns tbody').append($output);
+	});
+
+	$('#campaigns select[name$="[campaign_id]"]').on('change', function() {
+		let $row = $(this).closest('tr');
+		$option = $(this).find('option:selected');
+
+		if ($(this).val() != '') {
+			$('.campaign-valid-from', $row).text($option.data('valid-from'));
+			$('.campaign-valid-to', $row).text($option.data('valid-to'));
+		} else {
+			$('.campaign-valid-from', $row).text('');
+			$('.campaign-valid-to', $row).text('');
+		}
+	});
+
+	// Attributes
+
+	$('#attributes button[name="remove"]').on('click', function(e) {
+		e.preventDefault();
+		$(this).closest('tr').remove();
+	});
+
+	$('#attributes select[name="new_attribute[group_id]"]').on('change', function(e) {
+
+		let $select = $(this);
+		let $value_select = $('#attributes tfoot select[name="new_attribute[value_id]"]');
+		let $custom_value = $('#attributes tfoot input[name="new_attribute[custom_value]"]');
+
+		if ($select.val() == '') {
+			$value_select.prop('disabled', true).html(
+				'<option value=""><?php echo functions::escape_js(language::translate('title_select_attribute_group_first', 'Select attribute group first')); ?></option>'
+			);
+			$custom_value.prop('disabled', true).val('');
+			return;
+		}
+
+		$.ajax({
+			url: '<?php echo document::href_ilink(__APP__.'/attribute_values.json'); ?>',
+			type: 'get',
+			data: {
+				group_id: $select.val(),
+			},
+			dataType: 'json',
+			success: function(data) {
+
+				if (!data.length) {
+					$value_select.prop('disabled', true).prop('hidden', true).html(
+						'<option value=""><?php echo functions::escape_js(language::translate('title_no_values_found', 'No values found')); ?></option>'
+					);
+					$custom_value.prop('disabled', false).prop('hidden', false).val('');
+					return;
+				}
+
+				$value_select.html('');
+
+				if (Array.isArray(data)) {
+					$.each(data, function(index, value) {
+						$('<option></option>')
+							.attr('value', value.id)
+							.text(value.name)
+							.appendTo($value_select);
+					});
+				} else {
+					console.error('Expected data to be an array, but received:', data);
+				}
+
+				$value_select.prop('disabled', false).html(data);
+				$custom_value.prop('disabled', true).prop('hidden', true).val('');
+				return;
+			}
+		});
+	});
+
+	let new_attribute_id = 0;
+	while ($('select[name="new_attribute['+new_attribute_id+']"]').length) new_attribute_id++;
+
+	$('#attributes button[name="add"]').on('click', function(e) {
+		e.preventDefault();
+
+		let $output = $([
+			'<tr>',
+			'  <td class="grabbable">',
+			'    <?php echo functions::form_input_hidden('attributes[new_attribute_id][group_id]', ''); ?>',
+			'  </td>',
+			'  <td class="grabbable">',
+			'    <?php echo functions::form_input_hidden('attributes[new_attribute_id][value_id]', [], ''); ?>',
+			'  </td>',
+			'  <td class="text-end">',
+			'    <?php echo functions::form_input_hidden('attributes[new_attribute_id][custom_value]', ''); ?>',
+			'  </td>',
+			'  <td class="text-end">',
+			'    <button name="remove" type="button" class="btn btn-default btn-sm" title="<?php echo language::translate('title_remove', 'Remove'); ?>">',
+			'      <?php echo functions::draw_fonticon('remove'); ?>',
+			'    </button>',
+			'  </td>',
+			'</tr>'
+		].join('\n'.replace(/new_attribute_id/g, new_attribute_id++)));
+
+		$('#attributes tbody').append($output);
+	});
+
+/*
+	// Attributes
+
+	$('select[name="new_attribute[group_id]"]').on('change', function() {
+
+		if ($(this).val() == '') {
+			$('select[name="new_attribute[value_id]"]').html('').prop('disabled', true)
+			$(':input[name="new_attribute[custom_value]"]').prop('disabled', true)
+			return
+		}
+
+		$.ajax({
+			url: '<?php echo document::ilink(__APP__.'/attribute_values.json'); ?>?group_id=' + $(this).val(),
+			type: 'get',
+			cache: true,
+			async: true,
+			dataType: 'json',
+			success: function(data) {
+				$('select[name="new_attribute[value_id]"]').html('')
+				if (data) {
+					$('select[name="new_attribute[value_id]"]').prop('disabled', false)
+					$(':input[name="new_attribute[custom_value]"]').prop('disabled', false)
+					$('select[name="new_attribute[value_id]"]').append('<option value="0">-- <?php echo language::translate('title_select', 'Select'); ?> --</option>')
+					$.each(data, function(i, zone) {
+						$('select[name="new_attribute[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>')
+					})
+				} else {
+					$('select[name="new_attribute[value_id]"]').prop('disabled', true)
+					$(':input[name="new_attribute[custom_value]"]').prop('disabled', false)
+				}
+			},
+		})
+		}).trigger('change')
+
+		let new_attribute_index = 0
+		while ($(':input[name^="attributes['+new_attribute_index+']"]').length) new_attribute_index++
+
+		$('#tab-attributes button[name="add"]').on('click', function() {
+
+		if ($('select[name="new_attribute[group_id]"]').val() == '') {
+			alert("<?php echo language::translate('error_must_select_attribute_group', 'You must select an attribute group'); ?>")
+			return
+		}
+
+		if ($('select[name="new_attribute[value_id]"]').val() == '' || $('select[name="new_attribute[value_id]"]').val() == '0') {
+			if ($('input[name="new_attribute[custom_value]"]').val() == '') {
+				alert("<?php echo language::translate('error_must_select_attribute_value', 'You must select an attribute value'); ?>")
+				return
+			}
+		} else {
+			if ($('input[name="new_attribute[custom_value]"]').val() != '') {
+				alert("<?php echo language::translate('error_cannot_define_both_value_and_custom_value', 'You can not define both a value and a custom value'); ?>")
+				return
+			}
+		}
+
+		let $output = $([
+			'<tr>',
+			'  <td>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[new_attribute_index][id]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[new_attribute_index][group_id]', 'new_group_id')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[new_attribute_index][group_name]', 'new_group_name')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[new_attribute_index][value_id]', 'new_value_id')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[new_attribute_index][value_name]', 'new_value_name')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[new_attribute_index][custom_value]', 'new_custom_value')); ?>',
+			'    new_group_name',
+			'  </td>',
+			'  <td>new_value_name</td>',
+			'  <td>new_custom_value</td>',
+			'  <td class="text-end">',
+			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">',
+			'      <?php echo functions::draw_fonticon('remove'); ?>',
+			'    </a>',
+			'  </td>',
+			'</tr>'
+		].join('\n')
+			.replace(/new_attribute_index/g, 'new_' + new_attribute_index++)
+			.replace(/new_group_id/g, $('select[name="new_attribute[group_id]"] option:selected').val())
+			.replace(/new_group_name/g, $('select[name="new_attribute[group_id]"] option:selected').text())
+			.replace(/new_value_id/g, $('select[name="new_attribute[value_id]"] option:selected').val())
+			.replace(/new_custom_value/g, $('input[name="new_attribute[custom_value]"]').val())
+			.replace(/new_value_name/g, ($('select[name="new_attribute[value_id]"] option:selected').val() != '0') ? $('select[name="new_attribute[value_id]"] option:selected').text() : '')
+		)
+
+		$('#tab-attributes tbody').append($output)
+
+		$('select[name="new_attribute[group_id]"]').val('').trigger('change')
+		})
+
+		$('#tab-attributes tbody').on('click', '.remove', function(e) {
+		e.preventDefault()
+		$(this).closest('tr').remove()
+		})
+*/
+	// Quantity Unit
+
+	$('select[name="quantity_unit_id"]').on('change', function() {
+		if ($('option:selected', this).data('decimals') === undefined) return;
+
+		let decimals = $('option:selected', this).data('decimals');
+
+		$('input[name="quantity_min"]').val( parseFloat($('input[name="quantity_min"]').val() || 0).toFixed(decimals) );
+		$('input[name="quantity_max"]').val( parseFloat($('input[name="quantity_max"]').val() || 0).toFixed(decimals) );
+		$('input[name="quantity_step"]').val( parseFloat($('input[name="quantity_step"]').val() || 0).toFixed(decimals) );
+		$('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val() || 0).toFixed(decimals) );
+
+		$('input[name^="stock_options"][name$="[quantity]"]').each(function() {
+			$(this).val( parseFloat($(this).val() || 0).toFixed(decimals) );
+		});
+
+		$('input[name^="stock_options"][name$="[quantity_adjustment]"]').each(function() {
+			$(this).val( parseFloat($(this).val() || 0).toFixed(decimals) );
+		});
+	}).trigger('change');
+
+	// Quantity and Adjustments
+
+	$('body').on('input', ':input[name="quantity"], :input[name$="[quantity]"]', function() {
+		let $quantity_adjustment_field = $(':input[name="' + $(this).attr('name').replace('quantity', 'quantity_adjustment') + '"]'),
+			quantity = parseFloat($(this).val()),
+			quantity_adjustment = parseFloat($(this).val()) - parseFloat($(this).data('quantity')),
+			decimals = parseInt($('select[name="quantity_unit_id"] option:selected').data('decimals'));
+
+		$(':input[name="'+ $(this).attr('name')+'"]').not(this).val( quantity.toFixed(decimals) );
+		$quantity_adjustment_field.val( quantity_adjustment.toFixed(decimals) );
+	});
+
+	$('body').on('input', ':input[name="quantity_adjustment"], :input[name$="[quantity_adjustment]"]', function() {
+		let $quantity_field = $(':input[name="' + $(this).attr('name').replace('quantity_adjustment', 'quantity') + '"]'),
+			quantity = parseFloat($quantity_field.data('quantity') || 0),
+			quantity_adjustment = parseFloat($(this).val() || 0),
+			decimals = parseInt($('select[name="quantity_unit_id"] option:selected').data('decimals') || 0);
+
+		$(':input[name="'+ $(this).attr('name') +'"]').not(this).val( quantity_adjustment.toFixed(decimals) );
+		$quantity_field.val( (quantity + quantity_adjustment).toFixed(decimals) );
+	});
+
+	// Transfer Backordered Quantity
+
+	$('body').on('click', 'button[name*="transfer_backordered"]', function() {
+		let $quantity_adjustment_field = $(':input[name="' + $(this).attr('name').replace('transfer_backordered', 'quantity_adjustment') +'"]'),
+			$backordered_field = $(':input[name="' + $(this).attr('name').replace('transfer_backordered', 'backordered') +'"]'),
+			quantity_adjustment = parseFloat($quantity_adjustment_field.val() || 0),
+			backordered = parseFloat($backordered_field.val() || 0);
+
+		$quantity_adjustment_field.val( quantity_adjustment + backordered ).trigger('input');
+		$backordered_field.val('');
+	});
+
+	// Quantity Unit
+
+	$('select[name="quantity_unit_id"]').on('change', function() {
+		let decimals = parseInt($('select[name="quantity_unit_id"] option:selected').data('decimals'))
+		$('input[name$="[quantity]"], input[name$="[quantity_adjustment]"], input[name$="[backordered]"]').each(function() {
+			if ($(this).val() != '') {
+				$(this).val( parseFloat($(this).val()).toFixed(decimals) )
+			}
+		})
+	}).trigger('change')
+
+	// Customizations
+
+	$('#customizations').on('click', '.remove-group', function(e) {
+		e.preventDefault();
+		$(this).closest('li').remove();
+	});
+
+	$('#customizations').on('click', '.move-group-up, .move-group-down', function(e) {
+		e.preventDefault();
+		var $li = $(this).closest('li');
+		if ($(this).is('.move-group-up') && $li.prevAll().length > 0) {
+			$li.insertBefore($li.prev());
+		} else if ($(this).is('.move-group-down') && $li.nextAll().length > 0) {
+			$li.insertAfter($li.next());
+		}
+	});
+
+	$('#customizations').on('click', 'button[name="remove"]', function(e) {
+		e.preventDefault();
+		$(this).closest('tr').remove();
+	});
+
+	$('#customizations').on('click', 'button[name="move-up"], button[name="move-down"]', function(e) {
+		e.preventDefault();
+		var $row = $(this).closest('tr');
+		if ($(this).is('.move-up') && $row.prevAll().length > 0) {
+			$row.insertBefore($row.prev());
+		} else if ($(this).is('.move-down') && $row.nextAll().length > 0) {
+			$row.insertAfter($row.next());
+		}
+	});
+
+	$('body').on('change', '.litebox select[name="new_predefined_customization[group_id]"]', function() {
+		$.ajax({
+			url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + $(this).val(),
+			type: 'get',
+			cache: true,
+			async: true,
+			dataType: 'json',
+			success: function(data) {
+				$('select[name="new_predefined_customization[value_id]"]').html('');
+				if ($('select[name="new_predefined_customization[value_id]"]').attr('disabled')) $('select[name="new_predefined_customization[value_id]"]').prop('disabled', false);
+				if (data) {
+					$('select[name="new_predefined_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
+					$.each(data, function(i, zone) {
+						$('select[name="new_predefined_customization[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
+					});
+				} else {
+					$('select[name="new_predefined_customization[value_id]"]').prop('disabled', true);
+				}
+			},
+		});
+	});
+
+	$('body').on('change', '.litebox select[name="new_user_input_customization[group_id]"]', function() {
+		$.ajax({
+			url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + $(this).val(),
+			type: 'get',
+			cache: true,
+			async: true,
+			dataType: 'json',
+
+			success: function(data) {
+				$('select[name="new_user_input_customization[value_id]"]').html('');
+				if ($('select[name="new_user_input_customization[value_id]"]').attr('disabled')) $('select[name="new_user_input_customization[value_id]"]').prop('disabled', false);
+
+				if (data) {
+					$('select[name="new_user_input_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
+					$.each(data, function(i, zone) {
+						$('select[name="new_user_input_customization[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
+					});
+				} else {
+					$('select[name="new_user_input_customization[value_id]"]').prop('disabled', true);
+				}
+			},
+		});
+	});
+
+	$('body').on('change', '.litebox select[name="new_predefined_customization[value_id]"]', function() {
+		$('input[name="new_predefined_customization[custom_value]"]').val('');
+	});
+
+	$('body').on('keydown', '.litebox input[name="new_predefined_customization[custom_value]"]', function() {
+		$('select[name="new_predefined_customization[value_id]"]').val('0');
+	});
+
+	var new_customization_group_i = 1,
+		new_customization_value_i = 1;
+
+	$('body').on('click', '.litebox button[name="add_predefined_customization"]', function(e) {
+		e.preventDefault();
+
+		var groupElement = $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"]'),
+			valueElement = $(this).closest('fieldset').find('select[name="new_predefined_customization[value_id]"]'),
+			customValueElement = $(this).closest('fieldset').find('input[name="new_predefined_customization[custom_value]"]');
+
+		if ($(groupElement).val() == '') {
+			alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
+			return;
+		}
+
+		if ($(valueElement).val() == '' || $(valueElement).val() == '0') {
+			if ($(customValueElement).val() == '') {
+				alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_value', 'You must select an attribute value')); ?>");
+			}
+		} else {
+			if ($(customValueElement).val() != '') {
+				console.log($(valueElement).val(), $(customValueElement).val());
+				alert("<?php echo functions::escape_js(language::translate('error_cannot_define_both_value_and_custom_value', 'You cannot define both a value and a custom value')); ?>");
+				return;
+			}
+		}
+
+		if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').length) {
+			if ($(customValueElement).val() != '') {
+				if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[custom_value]"][value="'+ escape($(customValueElement).val()) +'"]').length) {
+					alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>");
+					return;
+				}
+			} else {
+				if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').closest('tr').find('input[name$="[custom_value]"]').val() == $(customValueElement).val()) {
+					alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>");
+					return;
+				}
+			}
+		}
+
+		if (!$('#customizations input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
+
+			var $output = $([
+				'<li data-group-id="'+ $(groupElement).val().escapeAttr() +'" data-group-name="'+ $(groupElement).find('option:selected').text().escapeAttr() +'">',
+				'  <div class="float-end">',
+				'    <a class="btn btn-default move-group-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
+				'    <a class="btn btn-default move-group-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?></a>',
+				'    <a class="btn btn-default remove-group" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a>',
+				'  </div>',
+				'  <h2>'+ $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"] option:selected').text() +'</h2>',
+				'  <?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
+				'  <div class="grid">',
+				'    <div class="col-sm-4 col-md-2">',
+				'      <div class="form-group">',
+				'        <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
+				'        <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][function]', ['select', 'radio', 'checkbox'], 'select')); ?>',
+				'      </div>',
+				'    </div>',
+				'    <div class="col-sm-4 col-md-2">',
+				'      <div class="form-group">',
+				'        <label><?php echo functions::escape_js(language::translate('title_sort_values', 'Sort Values')); ?></label>',
+				'        <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][sort]', $customizations_sort_options, 'custom')); ?>',
+				'      </div>',
+				'    </div>',
+				'    <div class="col-sm-4 col-md-2">',
+				'      <div class="form-group">',
+				'        <label class="form-label"><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
+				'          <?php echo functions::escape_js(functions::form_checkbox('customizations[new_group_id][required]', ['1', language::translate('title_required', 'Required')], true)); ?>',
+				'        </div>',
+				'      </div>',
+				'    </div>',
+				'  </div>',
+				'  <div class="table-responsive">',
+				'    <table id="table-customizations" class="table data-table">',
+				'      <thead>',
+				'        <tr draggable="true">',
+				'          <th><?php echo functions::escape_js(language::translate('title_option', 'Option')); ?></th>',
+				'          <th style="width: 150px;"><?php echo functions::escape_js(language::translate('title_price_modifier', 'Price Modifier')); ?></th>',
+				'          <th colspan="<?php echo count(currency::$currencies); ?>"><?php echo functions::escape_js(language::translate('title_price_adjustment', 'Price Adjustment')); ?></th>',
+				'          <th style="width: 85px;"></th>',
+				'        </tr>',
+				'      </thead>',
+				'      <tbody>',
+				'      </tbody>',
+				'    </table>',
+				'  </div>',
+				'</li>'
+			].join('\n')
+				.replace(/new_customization_group_i/g, 'new_' + new_customization_group_i++)
+				.replace(/new_group_id/g, $(groupElement).val())
+				.replace(/new_group_name/g, $(groupElement).find('option:selected').text())
+			);
+
+			$('#customizations').append($output);
+		}
+
+		var $output = $([
+			'<tr data-value-id="'+ escapeHTML($(valueElement).val()) +'" data-value-name="'+ escapeHTML(($(valueElement).val() != 0) ? $(valueElement).find('option:selected').text() : $(customValueElement).val()) +'">',
+			'  <td class="grabbable"><?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][value_id]', 'new_value_id')) . functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>',
+			'  <td class="text-center"><?php echo functions::escape_js(functions::form_select('customizations[new_group_id][values][new_customization_value_i][price_modifier]', ['+','%','*','='], true)); ?></td>',
+			'  <?php foreach ($currency_codes as $currency_code) echo '<td style="width: 200px;">'. functions::escape_js(functions::form_select_currency($currency_code, 'customizations[new_group_id][values][new_customization_value_i]['. $currency_code. ']', '')) .'</td>'; ?>',
+			'  <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>',
+			'</tr>'
+		].join('\n')
+			.replace(/new_customization_value_i/g, 'new_' + new_customization_value_i++)
+			.replace(/new_group_id/g, $(groupElement).val())
+			.replace(/new_value_id/g, $(valueElement).val())
+			.replace(/new_custom_value/g, $(customValueElement).val().replace(/"/, '&quot;'))
+		);
+
+		$(':input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('tbody').append($output);
+
+		$.litebox.close();
+	});
+
+	$('body').on('click', '.litebox button[name="add_user_input_option"]', function(e) {
+		e.preventDefault();
+
+		var groupElement = $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"]');
+
+		if ($(groupElement).val() == '') {
+			alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
+			return;
+		}
+
+		if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
+			alert("<?php echo functions::escape_js(language::translate('error_group_already_defined', 'This group is already defined')); ?>");
+			return;
+		}
+
+		var $output = $([
+			'<li>',
+			'  <div class="float-end">',
+			'    <a class="move-group-up btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
+			'    <a class="move-group-down btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?></a>',
+			'    <a class="remove-group btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a>',
+			'  </div>',
+			'  <h2>'+ $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"] option:selected').text() +'</h2>',
+			'  <?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
+			'  <div class="grid">',
+			'    <div class="col-sm-4 col-md-2">',
+			'      <div class="form-group">',
+			'        <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
+			'        <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][function]', ['text', 'textarea'], 'text')); ?>',
+			'      </div>',
+			'    </div>',
+			'    <div class="col-sm-4 col-md-2">',
+			'      <div class="form-group">',
+			'        <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
+			'        <?php echo functions::escape_js(functions::form_checkbox('customizations[new_group_id][required]', ['1', language::translate('title_required', 'Required')], true)); ?>',
+			'      </div>',
+			'    </div>',
+			'  </div>',
+			'</li>'
+		].join('\n')
+			.replace(/new_group_id/g, $(groupElement).val())
+			.replace(/new_group_name/g, $(groupElement).find('option:selected').text())
+		);
+
+		$('#customizations').append($output);
+
+		$.litebox.close();
+	});
+
+	// Stock
+
+	<?php if (currency::$currencies > 1) { ?>
+	$('#stock-options').on('focusin', 'input[name^="stock_options"][name*="[price]"]', function() {
+		$(this).closest('.dropdown').dropdown();
+	});
+	<?php } ?>
+
+	$('#stock-options').on('input', 'input[name$="[quantity]"]', function() {
+		var adjustment_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
+		$(adjustment_field).val(parseFloat($(this).val() || 0) - parseFloat($(this).data('quantity') || 0));
+	});
+
+	$('#stock-options').on('input', 'input[name$="[quantity_adjustment]"]', function() {
+		var qty_field = $(this).closest('tr').find('input[name$="[quantity]"]');
+		$(qty_field).val(parseFloat($(qty_field).data('quantity') || 0) + parseFloat($(this).val() || 0));
+	});
+
+	$('#stock-options button[name="transfer"]').on('click', function() {
+		var $quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]'),
+			$backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]');
+		$quantity_field.val(parseFloat($(quantity_field).val() || 0) + parseFloat($(backordered_field).val() || 0)).trigger('input');
+		$backordered_field.val(0);
+	});
+
+	$('#stock-options').on('click', '.move-up, .move-down', function(e) {
+		e.preventDefault();
+		var row = $(this).closest('tr');
+
+		if ($(this).is('.move-up') && $(row).prevAll().length > 1) {
+			$(row).insertBefore($(row).prev());
+		} else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
+			$(row).insertAfter($(row).next());
+		}
+	});
+
+	$('#stock-options').on('click', '.remove', function(e) {
+		e.preventDefault();
+		$(this).closest('tr').remove();
+
+		var total = 0;
+		$(this).closest('tbody').find('input[name$="[quantity]"]').each(function() {
+			total += parseFloat($(this).val() || 0);
+		});
+
+		if (!$('input[name^="stock_options"][name$="[id]"]').length) {
+
+			$('input[name="quantity"]').prop('readonly', false);
+			$('input[name="quantity_adjustment"]').prop('readonly', false);
+			$('input[name="quantity"]').val('');
+			$('input[name="quantity_adjustment"]').val('');
+
+		} else {
+
+			$('input[name="quantity"]').val(0);
+			$('input[name^="stock_options"][name$="[quantity]"]').each(function() {
+				$('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val() || 0) + parseFloat($(this).val() || 0) );
+			});
+
+			$('input[name="quantity_adjustment"]').val(0);
+			$('input[name^="stock_options"][name$="[quantity_adjustment]"]').each(function() {
+				$('input[name="quantity_adjustment"]').val( parseFloat($('input[name="quantity_adjustment"]').val() || 0) + parseFloat($(this).val() || 0) );
+			});
+		}
+	});
+
+	let new_stock_item_i = 1;
+	while ($('input[name="stock_options[new_'+new_stock_item_i+']"]').length) new_stock_item_i++;
+
+	window.upsert_stock_item = function(stock_item) {
+
+		var $output = $([
+			'<tr data-stock-item-id="'+ stock_item.id +'">',
+			'  <td class="grabbable">',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][id]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][stock_item_id]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][sku]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][name]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][weight]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][weight_unit]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][length]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][width]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][height]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][length_unit]', '')); ?>',
+			'    <span class="name"></name>',
+			'  </td>',
+			'  <td>',
+			'    <span class="sku"></span>',
+			'  </td>',
+			'  <td class="text-end">',
+			'    <span class="weight"></span> <span class="weight_unit"></span>',
+			'  </td>',
+			'  <td class="text-end">',
+			'    <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>',
+			'  </td>',
+			'  <td><?php echo functions::escape_js(functions::form_select('stock_options[new_stock_item_i][price_modifier]', ['+', '*', '%', '='], '+')); ?></td>',
+			'  <td>',
+			'    <div class="dropdown">',
+			'      <?php echo functions::escape_js(functions::form_input_money('stock_options[new_stock_item_i][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '', 'style="width: 125px;"')); ?>',
+			'      <ul class="dropdown-menu">',
+			<?php foreach (currency::$currencies as $currency) { ?>
+			<?php if ($currency['code'] == settings::get('store_currency_code')) continue; ?>
+			'        <li><?php echo functions::escape_js(functions::form_input_money('stock_options[new_stock_item_i][price]['. $currency['code'] .']', $currency['code'], '', 'style="width: 125px;"')); ?></li>',
+			<?php } ?>
+			'      </ul>',
+			'    </div>',
+			'  </td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_decimal('stock_options[new_stock_item_i][quantity]', '0', 2, 'data-quantity="new_stock_item_quantity"')); ?></td>',
+			'  <td>',
+			'    <label class="input-group">',
+			'      <span class="input-group-text">&plusmn;</span>',
+			'    <?php echo functions::escape_js(functions::form_input_decimal('stock_options[new_stock_item_i][quantity_adjustment]', '0')); ?>',
+			'    </label>',
+			'  </td>',
+			'  <td>',
+			'    <div class="input-group">',
+			'      <?php echo functions::escape_js(functions::form_button('transfer', functions::draw_fonticon('icon-arrow-left'), 'button')); ?>',
+			'      <?php echo functions::escape_js(functions::form_input_decimal('stock_options[new_stock_item_i][backordered]', '', 2, 'min="0"')); ?>',
+			'    </div>',
+			'  </td>',
+			'  <td class="text-end">',
+			'    <a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a>',
+			'  </td>',
+			'  <td class="text-end">',
+			'    <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" data-max-width="980px" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>',
+			'  </td>',
+			'</tr>'
+		].join('\n')
+			.replace(/new_stock_item_id/g, stock_item.id)
+			.replace(/new_stock_item_i/g, 'new_'+new_stock_item_i)
+		);
+
+		$.each(Object.keys(stock_item), function(i, key) { // Iterate Object.keys() because jQuery.each() doesn't support a property named length
+			switch (key) {
+
+				case 'id':
+					key = 'stock_item_id';
+					var value = stock_item.id;
+					break;
+
+				case 'name':
+					if ($.isPlainObject(stock_item.name)) {
+						var value = stock_item.name.<?php echo language::$selected['code']; ?>;
+					} else {
+						var value = stock_item.name;
+					}
+					break;
+
+				case 'quantity_adjustment':
+					break;
+
+				default:
+					var value = stock_item[key];
+					break;
+			}
+
+			$output.find(':input[name$="['+ key +']"]').val(value);
+			$output.find('.'+ key).text(value);
+		});
+
+		if ($('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').length) {
+			$('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').replaceWith($output);
+			//alert("<?php echo language::translate('error_item_already_defined', 'This item is already defined'); ?>");
+		} else {
+			$('#stock-options tbody').append($output);
+		}
+	};
 </script>

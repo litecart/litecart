@@ -380,7 +380,7 @@ CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `options` `userdata` VARCHAR(2048) NULL AFTER `name`,
 CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT '',
 CHANGE COLUMN `priority` `priority` INT NOT NULL DEFAULT '0',
-ADD COLUMN `stock_option_id` INT(10) UNSIGNED NULL AFTER `product_id`,
+ADD COLUMN `stock_item_id` INT(10) UNSIGNED NULL AFTER `product_id`,
 ADD COLUMN `tax_rate` FLOAT(4,2) UNSIGNED NULL AFTER `tax`,
 ADD COLUMN `tax_class_id` INT(10) UNSIGNED NULL AFTER `tax_rate`,
 ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `tax_class_id`,
@@ -389,7 +389,7 @@ ADD COLUMN `sum` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount_tax`,
 ADD COLUMN `sum_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `sum`,
 ADD COLUMN `downloads` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `length_unit`,
 ADD INDEX `product_id` (`product_id`),
-ADD INDEX `stock_option_id` (`stock_option_id`);
+ADD INDEX `stock_item_id` (`stock_item_id`);
 -- -----
 ALTER TABLE `lc_orders_totals`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -552,7 +552,7 @@ CHANGE COLUMN `key` `key` VARCHAR(32) NOT NULL;
 ALTER TABLE `lc_sold_out_statuses`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `hidden` `hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `orderable` `orderable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'
+CHANGE COLUMN `orderable` `orderable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `orderable`,
 ADD COLUMN `description` TEXT NOT NULL DEFAULT '{}' AFTER `name`;
 -- -----

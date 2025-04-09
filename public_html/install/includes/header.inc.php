@@ -9,6 +9,7 @@
 <?php } else { ?>
 <link rel="stylesheet" href="../assets/litecore/css/framework.min.css">
 <?php } ?>
+<script>window.waitFor=window.waitFor||((i,o)=>{void 0!==window.i?o(window.i):setTimeout((()=>waitFor(i,o)),50)});</script>
 <style>
 html {
 	background: radial-gradient(ellipse at center, #fff 20%, #d2d7de 100%);

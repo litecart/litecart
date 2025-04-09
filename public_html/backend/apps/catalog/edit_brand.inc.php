@@ -175,10 +175,10 @@
 								<?php echo functions::form_regional_text('short_description['. $language_code .']', $language_code, true); ?>
 							</label>
 
-							<label class="form-group">
+							<div class="form-group">
 								<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
 								<?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
-							</label>
+							</div>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_link', 'Link'); ?></div>

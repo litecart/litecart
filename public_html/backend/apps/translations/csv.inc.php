@@ -345,10 +345,10 @@
 					<fieldset>
 						<legend><?php echo language::translate('title_export', 'Export'); ?></legend>
 
-						<div class="form-group">
+						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_collections', 'Collections'); ?></div>
 							<?php echo functions::form_select('collections[]', array_map(function($c) { return [$c['id'], $c['name']]; }, $collections), true); ?>
-						</div>
+						</label>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_languages', 'Languages'); ?></div>

@@ -64,9 +64,9 @@
 					<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo language::translate('title_ID', 'ID'); ?></th>
 					<th class="main"><?php echo language::translate('title_Name', 'Name'); ?></th>
-					<th class="text-end"><?php echo language::translate('title_products', 'Products'); ?></th>
 					<th class="text-end"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
 					<th class="text-end"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
+					<th class="text-end"><?php echo language::translate('title_products', 'Products'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -77,9 +77,9 @@
 					<td><?php echo functions::form_checkbox('campaigns[]', $campaign['id']); ?></td>
 					<td><?php echo $campaign['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>"><?php echo $campaign['name']; ?></a></td>
+					<td class="text-end"><?php echo $campaign['date_valid_from'] ? functions::datetime_format('datetime', $campaign['date_valid_from']) : ''; ?></td>
+					<td class="text-end"><?php echo $campaign['date_valid_to'] ? functions::datetime_format('datetime', $campaign['date_valid_to']) : ''; ?></td>
 					<td class="text-center"><?php echo language::number_format($campaign['num_products']); ?></td>
-					<td class="text-end"><?php echo $campaign['date_valid_from'] ? functions::datetime_format('date', $campaign['start_date']) : ''; ?></td>
-					<td class="text-end"><?php echo $campaign['date_valid_to'] ? functions::datetime_format('date', $campaign['date_valid_to']) : ''; ?></td>
 					<td class="text-end">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
 							<?php echo functions::draw_fonticon('edit'); ?>

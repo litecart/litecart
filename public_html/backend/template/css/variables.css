@@ -220,7 +220,7 @@
   --table-header-text-color: var(--default-text-color);
   --table-body-background: #fff;
   --table-body-background--even: #fff;
-  --table-body-background--hover: #f0f3f9;
+  --table-body-background--hover: #e4e6eb;
   --table-body-text-color: var(--default-text-color);
   --table-link-background: #e3ebf3;
   --table-link-text-color: var(--default-text-color);
@@ -229,9 +229,6 @@
   --table-link-shadow--active: inset 0px 1px 0 0 rgba(0, 0, 0, 0.05);
   --table-footer-background: #fbfcfd;
   --table-footer-text-color: var(--default-text-color);
-}
-:root .card-filter {
-  --input-background: transparent;
 }
 /******************** Dark Mode ********************/
 html.dark-mode {

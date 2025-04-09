@@ -30,23 +30,23 @@
 			json_value(p.name, '$.". database::input($_GET['language_code']) ."') as name,
 			pso.total_quantity as quantity,
 			oi.total_reserved as reserved
-
 		from ". DB_TABLE_PREFIX ."products p
 
 		left join (
-			select product_id, if(json_value(price, '$.". database::input($_GET['currency_code']) ."') != 0, json_value(price, '$.". database::input($_GET['currency_code']) ."') * ". (float)$_GET['currency_value'] .", json_value(price, $.". database::input(settings::get('store_currency_code')) ."')) as price
+			select product_id, if(json_value(price, '$.". database::input($_GET['currency_code']) ."') != 0, json_value(price, '$.". database::input($_GET['currency_code']) ."') * ". (float)$_GET['currency_value'] .", json_value(price, '$.". database::input(settings::get('store_currency_code')) ."')) as price
 			from ". DB_TABLE_PREFIX ."products_prices
 		) pp on (pp.product_id = p.id)
 
 		left join (
-			select product_id, sum(si.quantity) as total_quantity, count(*) as num_stock_options
+			select pso.product_id, sum(si.quantity) as total_quantity, count(*) as num_stock_options
 			from ". DB_TABLE_PREFIX ."products_stock_options pso
 			left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
-			group by product_id
+			group by pso.product_id
 		) pso on (pso.product_id = p.id)
 
 		left join (
-			select oi.product_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
+			select oi.product_id, sum(oi.quantity) as total_reserved
+			from ". DB_TABLE_PREFIX ."orders_items oi
 			left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
 			where o.order_status_id in (
 				select id from ". DB_TABLE_PREFIX ."order_statuses

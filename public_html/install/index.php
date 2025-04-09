@@ -263,18 +263,6 @@
 	}
 
 ?>
-
-<?php if (!empty($installation_detected)) { ?>
-<div id="modal-warning-existing-installation" style="display: none; width: 320px;">
-	<h2>Existing Installation Detected</h2>
-	<p>Warning: An existing installation has been detected. It <u>will be deleted</u> if you continue!</p>
-	<p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
-</div>
-<script>
-	$.litebox('#modal-warning-existing-installation');
-</script>
-<?php } ?>
-
 <style>
 ul {
 	break-inside: avoid;
@@ -616,5 +604,18 @@ input[name="development_type"]:checked + div {
 
 	<input class="btn btn-success btn-block" type="submit" name="install" value="Install Now" onclick="if (document.getElementById('accept_terms').value != 1) return false; if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;">
 </form>
+
+<?php if (!empty($installation_detected)) { ?>
+<div id="modal-warning-existing-installation" style="display: none; width: 320px;">
+	<h2>Existing Installation Detected</h2>
+	<p>Warning: An existing installation has been detected. It <u>will be deleted</u> if you continue!</p>
+	<p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
+</div>
+<script>
+	waitFor(jQuery, function($){
+		$.litebox('#modal-warning-existing-installation');
+	});
+</script>
+<?php } ?>
 
 <?php require(__DIR__.'/includes/footer.inc.php'); ?>

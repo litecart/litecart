@@ -35,7 +35,7 @@
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$banners = database::query(
 		"select * from ". DB_TABLE_PREFIX ."banners
-		where id
+		where true
 		". (!empty($_GET['keyword']) ? "and find_in_set('". database::input($_GET['keywords']) ."', keywords)" : '') ."
 		". (!empty($_GET['query']) ? "and name like '%". database::input($_GET['query']) ."%'" : '') ."
 		order by status desc, name asc;"

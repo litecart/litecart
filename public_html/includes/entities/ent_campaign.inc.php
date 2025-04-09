@@ -49,8 +49,8 @@
 			}
 
 			$this->data['products'] = database::query(
-				"select cp.*, 
-					json_value(p.name, '$.". settings::get('store_currency_code') ."') as name,
+				"select cp.*,
+					json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
 				 	json_value(pp.price, '$.". database::input(settings::get('store_currency_code')) ."') as regular_price
 				from ". DB_TABLE_PREFIX ."campaigns_products cp
 				left join ". DB_TABLE_PREFIX ."products p on (p.id = cp.product_id)
@@ -99,28 +99,26 @@
 				and id not in ('". implode("', '", database::input(array_column($this->data['products'], 'id'))) ."');"
 			);
 
-			foreach ($this->data['products'] as $key => $product) {
+			foreach ($this->data['products'] as $key => $campaign_product) {
 
 				if (empty($product['id'])) {
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."campaigns_products
 						(campaign_id, product_id)
-						values (". (int)$this->data['id'] .", ". (int)$product['product_id'] .");"
+						values (". (int)$this->data['id'] .", ". (int)$campaign_product['product_id'] .");"
 					);
 
-					$this->data['products'][$key]['id'] = $product['id'] = database::insert_id();
+					$this->data['products'][$key]['id'] = $campaign_product['id'] = database::insert_id();
 				}
 
-				$sql_prices = implode(",".PHP_EOL, array_map(function($currency) use ($product) {
-					return $currency['code'] ." = ". (!empty($product[$currency['code']]) ? (float)$product[$currency['code']] : 0);
-				}, currency::$currencies));
+				$campaign_product['price'] = array_filter($campaign_product['price']);
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."campaigns_products
-					set product_id = ". (int)$product['product_id'] .",
-						$sql_prices
+					set product_id = ". (int)$campaign_product['product_id'] .",
+						price = ". (!empty($campaign_product['price']) ? "'". database::input(json_encode($campaign_product['price'])) ."'" : "null") ."
 					where campaign_id = ". (int)$this->data['id'] ."
-					and id = ". (int)$product['id'] ."
+					and id = ". (int)$campaign_product['id'] ."
 					limit 1;"
 				);
 			}

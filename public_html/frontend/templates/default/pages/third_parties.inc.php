@@ -62,46 +62,47 @@
         <div class="details<?php echo !empty($third_party['active']) ? ' expanded' : ''; ?>"<?php echo !empty($third_party['active']) ? ' style="display: block;"' : ''; ?>>
 
           <div class="form-group">
-            <label><?php echo language::translate('title_description', 'Description'); ?></label>
+            <div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
             <div class="description"><?php echo $third_party['description']; ?></div>
           </div>
 
           <div class="form-group">
-            <label><?php echo language::translate('title_collected_data', 'Collected Data'); ?></label>
+            <div class="form-label"><?php echo language::translate('title_collected_data', 'Collected Data'); ?></div>
             <div class="collected-data"><?php echo nl2br($third_party['collected_data'], false); ?></div>
           </div>
 
           <div class="form-group">
-            <label><?php echo language::translate('title_purposes', 'Purposes'); ?></label>
+            <div class="form-label"><?php echo language::translate('title_purposes', 'Purposes'); ?></div>
             <div class="purposes"><?php echo nl2br($third_party['purposes'], false); ?></div>
           </div>
 
           <div class="form-group">
-            <label><?php echo language::translate('title_country_of_juristdiction', 'Country of Jurisdiction'); ?></label>
+            <div class="form-label"><?php echo language::translate('title_country_of_juristdiction', 'Country of Jurisdiction'); ?></div>
             <div class="country"><?php echo $third_party['country_code']; ?></div>
           </div>
 
           <div class="form-group">
-            <label><?php echo language::translate('title_classes', 'Classes'); ?></label>
+            <div class="form-label"><?php echo language::translate('title_classes', 'Classes'); ?></div>
             <div class="classes"><?php echo $third_party['description']; ?></div>
           </div>
+
           <div class="form-group">
-            <label><?php echo language::translate('title_homepage', 'Homepage'); ?></label>
+            <div class="form-label"><?php echo language::translate('title_homepage', 'Homepage'); ?></div>
             <div class="homepage"><?php echo !empty($third_party['homepage_url']) ? '<a href="'. htmlspecialchars($third_party['homepage_url']) .'" target="_blank">'. htmlspecialchars($third_party['homepage_url']) .'</a>' : '-'; ?></div>
           </div>
 
           <div class="form-group">
-            <label><?php echo language::translate('title_cookie_policy', 'Cookie Policy'); ?></label>
+            <div class="form-label"><?php echo language::translate('title_cookie_policy', 'Cookie Policy'); ?></div>
             <div class="cookie-policy"><?php echo !empty($third_party['cookie_policy_url']) ? '<a href="'. htmlspecialchars($third_party['cookie_policy_url']) .'" target="_blank">'. htmlspecialchars($third_party['cookie_policy_url']) .'</a>' : '-'; ?></div>
           </div>
 
           <div class="form-group">
-            <label><?php echo language::translate('title_opt_out', 'Opt Out'); ?></label>
+            <div class="form-label"><?php echo language::translate('title_opt_out', 'Opt Out'); ?></div>
             <div class="opt-out"><?php echo !empty($third_party['opt_out_url']) ? '<a href="'. htmlspecialchars($third_party['opt_out_url']) .'" target="_blank">'. htmlspecialchars($third_party['opt_out_url']) .'</a>' : '-'; ?></div>
           </div>
 
           <div class="form-group">
-            <label><?php echo language::translate('title_do_not_sell', 'Do Not Sell'); ?></label>
+            <div class="form-label"><?php echo language::translate('title_do_not_sell', 'Do Not Sell'); ?></div>
             <div class="do-not-sell"><?php echo !empty($third_party['do_not_sell_url']) ? '<a href="'. htmlspecialchars($third_party['do_not_sell_url']) .'" target="_blank">'. htmlspecialchars($third_party['do_not_sell_url']) .'</a>' : '-'; ?></div>
           </div>
         </div>

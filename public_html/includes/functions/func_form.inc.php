@@ -1,6 +1,6 @@
 <?php
 
-	function form_begin($name='', $method='post', $action=false, $multipart=false, $parameters='') {
+	function form_begin($name='', $method='post', $action='', $multipart=false, $parameters='') {
 		return '<form'. (($name) ? ' name="'. functions::escape_attr($name) .'"' : '') .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. mb_http_output() .'"'. (($action) ? ' action="'. functions::escape_attr($action) .'"' : '') . ($parameters ? ' ' . $parameters : '') .'>';
 	}
 
@@ -1225,7 +1225,7 @@
 			"select id, name, date_valid_from, date_valid_to from ". DB_TABLE_PREFIX ."campaigns
 			order by status desc, name asc;"
 		)->fetch_all(function($campaign){
-			return [$campaign['id'], $campaign['name'], 'data-valid-from="'. ($campaign['date_valid_from'] ? date('Y-m-d H:i:s', strtotime($campaign['date_valid_from'])) : '') .'" data-valid-to="'. ($campaign['date_valid_to'] ? date('Y-m-d H:i:s', strtotime($campaign['date_valid_to'])) : '') .'"'];
+			return [$campaign['id'], $campaign['name'], 'data-valid-from="'. ($campaign['date_valid_from'] ? functions::datetime_when($campaign['date_valid_from']) : '') .'" data-valid-to="'. ($campaign['date_valid_to'] ? functions::datetime_when($campaign['date_valid_to']) : '') .'"'];
 		});
 
 		if (preg_match('#\[\]$#', $name)) {
