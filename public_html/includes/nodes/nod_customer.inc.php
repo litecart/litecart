@@ -1,6 +1,7 @@
 <?php
 
 	class customer {
+
 		public static $data;
 		public static $scraps;
 

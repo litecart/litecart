@@ -1,6 +1,7 @@
 <?php
 
 	class settings {
+		
 		private static $_cache;
 
 		public static function init() {

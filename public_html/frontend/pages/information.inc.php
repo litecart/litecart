@@ -46,8 +46,7 @@
 		echo $_page->render();
 
 	} catch (Exception $e) {
-		http_response_code($e->getCode());
-			//notices::add('errors', $e->getMessage());
+		http_response_code($e->getCode() ?: 500);
 		include 'app://frontend/pages/error_document.inc.php';
 		return;
 	}

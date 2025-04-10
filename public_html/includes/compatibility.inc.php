@@ -36,7 +36,7 @@
 		$_SERVER['SCRIPT_FILENAME'] = isset($argv[0]) ? $argv[0] : 'index.php';
 	}
 
-	// Fix Windows paths
+	// Normalize Windows paths to Unix-style
 	$_SERVER['SCRIPT_FILENAME'] = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME']);
 
 	if (!isset($_SERVER['SERVER_SOFTWARE'])) {

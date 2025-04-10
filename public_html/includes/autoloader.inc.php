@@ -4,21 +4,33 @@
 
 		switch (true) {
 
+			// Abstract classes
 			case (preg_match('#^abs_#', $class)):
 
 				require 'app://includes/abstracts/' . $class . '.inc.php';
 				break;
 
-			case (preg_match('#^chk_#', $class)):
-
-				require 'app://includes/modules/checkout/' . $class . '.inc.php';
-				break;
-
+			// Clients and wrappers
 			case (preg_match('#_client$#', $class)):
 
 				require 'app://includes/clients/' . $class . '.inc.php';
 				break;
 
+
+			// Entities
+			case (preg_match('#^ent_#', $class)):
+
+				require 'app://includes/entities/' . $class . '.inc.php';
+				break;
+
+			// Modules
+			case (preg_match('#^mod_#', $class)):
+
+				require 'app://includes/modules/' . $class . '.inc.php';
+				break;
+
+			// Submodules
+			case (preg_match('#^chk_#', $class)):
 			case (preg_match('#^cm_#', $class)):
 			case (preg_match('#^job_#', $class)):
 			case (preg_match('#^om_#', $class)):
@@ -30,6 +42,7 @@
 				if (version_compare(PHP_VERSION, 8.2, '>=')) {
 
 					$search_replace = [
+						'#^(chk_.*)#' => 'app://includes/modules/checkout/$1.inc.php',
 						'#^(cm_.*)#' => 'app://includes/modules/customer/$1.inc.php',
 						'#^(job_.*)#' => 'app://includes/modules/jobs/$1.inc.php',
 						'#^(om_.*)#' => 'app://includes/modules/order/$1.inc.php',
@@ -64,36 +77,26 @@
 
 				break;
 
-			case (preg_match('#^ent_#', $class)):
-
-				require 'app://includes/entities/' . $class . '.inc.php';
-				break;
-
-			case (preg_match('#^mod_#', $class)):
-
-				require 'app://includes/modules/' . $class . '.inc.php';
-				break;
-
+			// References
 			case (preg_match('#^ref_#', $class)):
 
 				require 'app://includes/references/' . $class . '.inc.php';
 				break;
 
-			case (preg_match('#^sm_#', $class)):
-				require 'app://includes/modules/shipping/' . $class . '.inc.php';
-				break;
-
+			// Routing modules
 			case (preg_match('#^url_#', $class)):
 
 				if (is_file($file = 'app://backend/routes/' . $class . '.inc.php')) require $file;
 				if (is_file($file = 'app://frontend/routes/' . $class . '.inc.php')) require $file;
 				break;
 
+			// Stream wrappers
 			case (preg_match('#^stream_#', $class)):
 
 				require 'app://includes/streams/' . $class . '.inc.php';
 				break;
 
+			// System nodes
 			default:
 
 				if (is_file($file = 'app://includes/nodes/nod_' . $class . '.inc.php')) {

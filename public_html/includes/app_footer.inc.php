@@ -46,9 +46,13 @@
 			} else if (!in_array('fsockopen', $disabled_functions)) {
 				$parts = parse_url($url);
 				$fp = fsockopen($parts['host'], fallback($parts['port'], 80), $errno, $errstr, 30);
-				$out = "GET ". $parts['path'] ." HTTP/1.1\r\n"
-						 . "Host: ". $parts['host'] ."\r\n"
-						 . "Connection: Close\r\n\r\n";
+				$out = implode("\r\n", [
+					'GET '. $parts['path'] .' HTTP/1.1',
+					'Host: '. $parts['host'],
+					'Connection: Close',
+					'',
+					''
+				]);
 				fwrite($fp, $out);
 				fclose($fp);
 			}

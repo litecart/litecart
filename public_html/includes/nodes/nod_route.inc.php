@@ -44,7 +44,7 @@
 				);
 
 				http_response_code($redirect['http_response_code']);
-				header('X-Redirect-By: '. $redirect['id']);
+				header('X-Redirect-Id: '. $redirect['id']);
 				header('Location: '. preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url)); // MySQL regex wrapper ''
 				exit;
 			}
@@ -280,7 +280,7 @@
 				);
 
 				http_response_code($redirect['http_response_code']);
-				header('X-Redirect-By: '. $redirect['id']);
+				header('X-Redirect-Id: '. $redirect['id']);
 				header('Location: '. preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url)); // MySQL regex wrapper ''
 				exit;
 			}

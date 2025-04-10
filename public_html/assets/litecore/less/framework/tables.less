@@ -6,6 +6,9 @@
 	border-spacing: 0;
 	border-collapse: collapse;
 
+	font-size: inherit;
+	line-height: inherit;
+
 	@media print {
 		--table-border-color: #000c !important;
 		tr th {
@@ -41,7 +44,6 @@
 
 	td, th {
 		padding: .5em 1em;
-		line-height: 2;
 
 		&:first-child { padding-inline-start: var(--gutter-x); }
 		&:last-child { padding-inline-end: var(--gutter-x); }

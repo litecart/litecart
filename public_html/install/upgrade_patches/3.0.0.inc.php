@@ -150,7 +150,6 @@
 		FS_DIR_APP . 'images/index.html',
 		FS_DIR_APP . 'images/countries/',
 		FS_DIR_APP . 'images/languages/',
-		FS_DIR_APP . 'includes/abstracts/abs_module.inc.php',
 		FS_DIR_APP . 'includes/boxes/box_account_links.inc.php',
 		FS_DIR_APP . 'includes/boxes/box_also_purchased_products.inc.php',
 		FS_DIR_APP . 'includes/boxes/box_campaign_products.inc.php',
@@ -422,11 +421,13 @@
 	}
 
 	// Move files to trash
+	mkdir(FS_DIR_APP . '.deleteme', 0777, true);
+
 	perform_action('move', [
 		FS_DIR_APP . '.development' => FS_DIR_APP . '.deleteme/.htaccess',
 		FS_DIR_APP . '.htaccess' => FS_DIR_APP . '.deleteme/.htaccess',
 		FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_APP . '.deleteme/config.inc.php',
-		FS_DIR_APP . 'includes/modules/order_total/' => FS_DIR_APP . '.deleteme/',
+		FS_DIR_APP . 'includes/modules/order_total/' => FS_DIR_APP . '.deleteme/order_total/',
 		FS_DIR_APP . 'includes/routes/*' => FS_DIR_APP . '.deleteme/routes/',
 		FS_DIR_APP . 'favicon.ico' => FS_DIR_APP . '.deleteme/favicon.ico',
 	]);
@@ -603,24 +604,24 @@
 	// Separate product configurations from stock options
 	database::query(
 		"select * from ". DB_TABLE_PREFIX ."products_stock_options;"
-	)->each(function($stock_item){
-		foreach (explode(',', $stock_item['attributes']) as $pair) {
+	)->each(function($stock_option){
+		foreach (explode(',', $stock_option['attributes']) as $pair) {
 
 			list($group_id, $value_id) = explode('-', $pair);
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."products_customizations_values
-				where product_id = ". (int)$stock_item['product_id'] ."
+				where product_id = ". (int)$stock_option['product_id'] ."
 				and (group_id = ". (int)$group_id ." and value_id = ". (int)$value_id .");"
 			);
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."products_customizations
-				where product_id = ". (int)$stock_item['product_id'] ."
+				where product_id = ". (int)$stock_option['product_id'] ."
 				and group_id = ". (int)$group_id ."
 				and product_id not in (
 					select product_id from ". DB_TABLE_PREFIX ."products_customizations_values
-					where product_id = ". (int)$stock_item['product_id'] ."
+					where product_id = ". (int)$stock_option['product_id'] ."
 					and group_id = ". (int)$group_id ."
 				);"
 			);
@@ -671,16 +672,6 @@
 		);
 	});
 
-	database::query(
-		"ALTER TABLE `lc_orders_items`
-		DROP COLUMN `attributes`;"
-	);
-
-	database::query(
-		"ALTER TABLE `lc_products_stock_options`
-		DROP COLUMN `attributes`;"
-	);
-
 	// Set subtotal for all previous orders
 	database::query(
 		"update ". DB_TABLE_PREFIX ."orders o
@@ -693,10 +684,15 @@
 			o.subtotal_tax = if(oi.subtotal_tax, oi.subtotal_tax, 0);"
 	);
 
-	// Remove tax column from orders_items
 	database::query(
-		"alter table `lc_orders_items`
-		drop column `tax`;"
+		"ALTER TABLE `". DB_TABLE_PREFIX ."orders_items`
+		DROP COLUMN `attributes,
+		DROP COLUMN `tax`;"
+	);
+
+	database::query(
+		"ALTER TABLE `". DB_TABLE_PREFIX ."products_stock_options`
+		DROP COLUMN `attributes`;"
 	);
 
 	// Convert Table Charset and Collations

@@ -1,6 +1,7 @@
 <?php
 
 	class vmod {
+		
 		public static $enabled = true;                 // Bool whether or not to enable this feature
 		private static $aliases = [];                  // Array of path aliases ['pattern' => 'replace']
 		private static $_checked = [];                 // Array of files that have already passed check() and
