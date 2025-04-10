@@ -32,7 +32,7 @@
 
 					echo 'Copying '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source) .' to '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $target);
 
-					if (file_xcopy($source, $target, $results)) {
+					if (file_xcopy($source, $target, true, $results)) {
 						br([
 							' <span class="ok">[OK]</span>',
 							'',
@@ -117,7 +117,7 @@
 
 					echo 'Deleting '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source);
 
-					if (file_delete($source, $results)) {
+					if (file_delete($source, true, $results)) {
 						br([
 							' <span class="ok">[OK]</span>',
 							'',
@@ -151,7 +151,7 @@
 
 					echo 'Moving '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source) .' to '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $target);
 
-					if (file_move($source, $target, $results)) {
+					if (file_move($source, $target, true, $results)) {
 						br([
 							' <span class="ok">[OK]</span>',
 							'',

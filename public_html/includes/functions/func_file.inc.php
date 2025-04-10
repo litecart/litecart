@@ -1,7 +1,6 @@
 <?php
 
-	function file_copy($source, $target, &$results=[]) {
-
+	function file_copy($source, $target, $overwrite=false, &$results=[]) {
 		$source = str_replace('\\', '/', $source);
 		$target = str_replace('\\', '/', $target);
 
@@ -14,7 +13,7 @@
 
 			foreach (file_search($source, GLOB_BRACE) as $file) {
 				$base_source = preg_replace('#^([^*!\[\]{}]+/).*$#', '$1', $source);
-				file_copy($file, rtrim($target, '/') .'/'. preg_replace('#^'. preg_quote($base_source, '#') .'#', '', $file), $results);
+				file_copy($file, rtrim($target, '/') .'/'. preg_replace('#^'. preg_quote($base_source, '#') .'#', '', $file), $overwrite, $results);
 			}
 
 		} else {
@@ -28,12 +27,20 @@
 
 				foreach (scandir($source) as $file) {
 					if ($file == '.' || $file == '..') continue;
-					file_copy(rtrim($source, '/') .'/'. $file, rtrim($target, '/') .'/'. $file, $results);
+					file_copy(rtrim($source, '/') .'/'. $file, rtrim($target, '/') .'/'. $file, $overwrite, $results);
 				}
 			}
 
 			if (is_file($source) || is_link($source)) {
-				$results[$target] = copy($source, $target);
+				if (file_exists($target)) {
+					if ($overwrite) {
+						$results[$target] = unlink($target) && copy($source, $target);
+					} else {
+						$results[$target] = false;
+					}
+				} else {
+					$results[$target] = copy($source, $target);
+				}
 			}
 		}
 
@@ -58,7 +65,7 @@
 		return $tmp_file;
 	}
 
-	function file_delete($file, &$results=[]) {
+	function file_delete($file, $recursive=false, &$results=[]) {
 
 		if (!isset($results) || !is_array($results)) {
 			$results = [];
@@ -70,13 +77,15 @@
 		if (preg_match('#[*!\[\]{}]#', $file)) {
 
 			foreach (file_search($file, GLOB_BRACE) as $entry) {
-				file_delete($entry, $results);
+				file_delete($entry, $recursive, $results);
 			}
 
 		} else {
 
 			if (is_dir($file)) {
-				file_delete(rtrim($file, '/') . '/*', $results);
+				if ($recursive) {
+					file_delete(rtrim($file, '/') . '/*', $recursive, $results);
+				}
 				$results[$file] = rmdir($file);
 
 			} else if (is_file($file) || is_link($file)) {
@@ -109,7 +118,7 @@
 		return (substr_count($block, "^ -~")/512 > 0.3) or (substr_count($block, "\x00") > 0);
 	}
 
-	function file_move($source, $target, &$results=[]) {
+	function file_move($source, $target, $overwrite=false, &$results=[]) {
 
 		$source = str_replace('\\', '/', $source);
 		$target = str_replace('\\', '/', $target);
@@ -118,11 +127,19 @@
 
 			foreach (file_search($source, GLOB_BRACE) as $file) {
 				$base_source = preg_replace('#^(.*/).*?$#', '$1', strtok($source, '*'));
-				file_move($file, rtrim($target, '/') .'/'. preg_replace('#^'. preg_quote($base_source, '#') .'#', '', $file), $results);
+				file_move($file, rtrim($target, '/') .'/'. preg_replace('#^'. preg_quote($base_source, '#') .'#', '', $file), $overwrite, $results);
 			}
 
 		} else {
-			$results[$target] = rename($source, $target);
+			if (file_exists($target)) {
+				if ($overwrite) {
+					$results[$target] = unlink($target) && rename($source, $target);
+				} else {
+					$results[$target] = false;
+				}
+			} else {
+				$results[$target] = rename($source, $target);
+			}
 		}
 
 		return !in_array(false, $results);
@@ -355,8 +372,7 @@
 		return preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '/', $file);
 	}
 
-	function file_xcopy($source, $target, &$results=[]) {
-
+	function file_xcopy($source, $target, $overwrite=false, &$results=[]) {
 		if (!isset($results) || !is_array($results)) {
 			$results = [];
 		}
@@ -369,7 +385,7 @@
 
 			foreach (file_search($source, GLOB_BRACE) as $file) {
 				$base_source = preg_replace('#^([^*!\[\]{}]+/).*$#', '$1', $source);
-				file_xcopy($file, rtrim($target, '/') .'/'. preg_replace('#^'. preg_quote($base_source, '#') .'#', '', $file), $results);
+				file_xcopy($file, rtrim($target, '/') .'/'. preg_replace('#^'. preg_quote($base_source, '#') .'#', '', $file), $overwrite, $results);
 			}
 
 		} else {
@@ -384,14 +400,24 @@
 					if (!$results[$target]) return false;
 				}
 
-				file_xcopy(rtrim($source, '/') .'/*', rtrim($target, '/') .'/', $results);
+				file_xcopy(rtrim($source, '/') .'/*', rtrim($target, '/') .'/', $overwrite, $results);
 
 			} else if (is_file($source) || is_link($source)) {
 
 				if (is_dir($target)) {
-					$results[$target] = copy(rtrim($source, '/') .'/*', rtrim($target, '/') .'/'. basename($source), $results);
+					$target_file = rtrim($target, '/') .'/'. basename($source);
 				} else {
-					$results[$target] = copy($source, $target);
+					$target_file = $target;
+				}
+
+				if (file_exists($target_file)) {
+					if ($overwrite) {
+						$results[$target_file] = unlink($target_file) && copy($source, $target_file);
+					} else {
+						$results[$target_file] = false;
+					}
+				} else {
+					$results[$target_file] = copy($source, $target_file);
 				}
 			}
 		}
