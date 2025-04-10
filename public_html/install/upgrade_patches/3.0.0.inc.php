@@ -424,11 +424,10 @@
 	mkdir(FS_DIR_APP . '.deleteme', 0777, true);
 
 	perform_action('move', [
-		FS_DIR_APP . '.development' => FS_DIR_APP . '.deleteme/.htaccess',
-		FS_DIR_APP . '.htaccess' => FS_DIR_APP . '.deleteme/.htaccess',
 		FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_APP . '.deleteme/config.inc.php',
 		FS_DIR_APP . 'includes/modules/order_total/' => FS_DIR_APP . '.deleteme/order_total/',
 		FS_DIR_APP . 'includes/routes/*' => FS_DIR_APP . '.deleteme/routes/',
+		FS_DIR_APP . '.htaccess' => FS_DIR_APP . '.deleteme/.htaccess',
 		FS_DIR_APP . 'favicon.ico' => FS_DIR_APP . '.deleteme/favicon.ico',
 	]);
 
@@ -686,12 +685,13 @@
 
 	database::query(
 		"ALTER TABLE `". DB_TABLE_PREFIX ."orders_items`
-		DROP COLUMN `attributes,
+		DROP COLUMN `attributes`,
 		DROP COLUMN `tax`;"
 	);
 
 	database::query(
 		"ALTER TABLE `". DB_TABLE_PREFIX ."products_stock_options`
+		DROP INDEX `product_stock_option`,
 		DROP COLUMN `attributes`;"
 	);
 

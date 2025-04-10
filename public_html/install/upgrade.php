@@ -69,6 +69,10 @@
 		return;
 	}
 
+	if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
+		require_once __DIR__ . '/includes/header.inc.php';
+	}
+
 	require_once __DIR__ . '/includes/functions.inc.php';
 
 	if (!defined('FS_DIR_APP')) {
@@ -740,9 +744,6 @@
 		exit;
 	}
 
-	require_once __DIR__ . '/includes/header.inc.php';
-
-	$requirements = json_decode(file_get_contents(__DIR__ . '/requirements.json'), true);
 ?>
 <style>
 html {

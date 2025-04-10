@@ -30,7 +30,7 @@
 						if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $target)) continue;
 					}
 
-					echo 'Copying '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source) .' to '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $target);
+					echo 'Copying '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $source) .' to '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $target);
 
 					if (file_xcopy($source, $target, true, $results)) {
 						br([
@@ -72,7 +72,7 @@
 
 					foreach ($files as $file) {
 
-						echo 'Performing custom actions on ' . preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $file) .'...<br>' . PHP_EOL;
+						echo 'Performing custom actions on ' . preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file) .'...<br>' . PHP_EOL;
 
 						foreach ($operations as $i => $operation) {
 
@@ -115,7 +115,7 @@
 						if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) continue;
 					}
 
-					echo 'Deleting '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source);
+					echo 'Deleting '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $source);
 
 					if (file_delete($source, true, $results)) {
 						br([
@@ -149,7 +149,7 @@
 						if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) continue;
 					}
 
-					echo 'Moving '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source) .' to '. preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $target);
+					echo 'Moving '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $source) .' to '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $target);
 
 					if (file_move($source, $target, true, $results)) {
 						br([
@@ -190,7 +190,7 @@
 
 						foreach ($files as $file) {
 
-							echo 'Modifying ' . preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .')#', '', $source) .'...<br>' . PHP_EOL;
+							echo 'Modifying ' . preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $source) .'...<br>' . PHP_EOL;
 
 							$contents = file_get_contents($file);
 							$contents = preg_replace('#(\r\n?|\n)#u', PHP_EOL, $contents);

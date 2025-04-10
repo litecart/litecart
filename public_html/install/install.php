@@ -88,11 +88,11 @@
 			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
 		}
 
-		define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../')), '/') . '/');
-		define('FS_DIR_STORAGE', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../storage')), '/') . '/');
+		define('FS_DIR_APP',     rtrim(str_replace('\\', '/', realpath(__DIR__.'/../')), '/') . '/');
+		define('FS_DIR_STORAGE', FS_DIR_APP .'/storage/');
 
-		define('WS_DIR_APP',         preg_replace('#^'. preg_quote(rtrim(DOCUMENT_ROOT, '/'), '#') .'#', '', FS_DIR_APP));
-		define('WS_DIR_STORAGE',     WS_DIR_APP .'storage/');
+		define('WS_DIR_APP',     preg_replace('#^'. preg_quote(rtrim(DOCUMENT_ROOT, '/'), '#') .'#', '', FS_DIR_APP));
+		define('WS_DIR_STORAGE', WS_DIR_APP .'storage/');
 
 		require __DIR__ . '/../includes/app_header.inc.php';
 
@@ -254,6 +254,28 @@
 			}
 		}
 
+		### Storage ###################################################
+
+		echo '<p>Set up storage folder... ';
+
+		if (file_exists(FS_DIR_STORAGE) || mkdir(FS_DIR_STORAGE, 0777)) {
+			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
+		} else {
+			throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
+		}
+
+		### Logs ###################################################
+
+		echo '<p>Set up logs folder... ';
+
+		if (file_exists(FS_DIR_STORAGE . 'logs/') || mkdir(FS_DIR_STORAGE . 'logs/', 0777)) {
+			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
+		} else {
+			throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
+		}
+
 		### Installer > Update ########################################
 
 		echo '<p>Checking for updates... ';
@@ -309,26 +331,43 @@
 
 		### Database > Check Version ##################################
 
-		echo '<p>Checking MySQL/MariaDB version... ';
-
-		$mysql_version = database::query(
+		$database_software = database::query(
 			"SELECT VERSION();"
-		)->fetch('VERSION()');
+		)->fetch(function($row) use ($requirements) {
+			if (preg_match('#mariadb#i', $row['VERSION()'])) {
+				return [
+					'name' => 'MariaDB',
+					'version' => strtok($row['VERSION()'], '-'),
+					'min_version' => $requirements['databases']['mariadb']['minimumVersion'],
+					'recommended_version' => $requirements['databases']['mariadb']['recommendedVersion'],
+				];
+			}
+			return [
+				'name' => 'MySQL',
+				'version' => $row['VERSION()'],
+				'min_version' => $requirements['databases']['mysql']['minimumVersion'],
+				'recommended_version' => $requirements['databases']['mysql']['recommendedVersion'],
+			];
+		});
 
-		if (version_compare($mysql_version, $requirements['database']['mysql']['minimumVersion'], '<')) {
-			throw new Exception($mysql_version . ' <span class="error">[Error] MySQL '. $requirements['database']['mysql']['minimumVersion'] .'+ required</span></p>');
+		echo $database_software['name'] .' '. $database_software['version'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-		} else if (version_compare($mysql_version, $requirements['database']['mysql']['recommendedVersion'], '<')) {
-			echo $mysql_version .' <span class="ok">[OK]</span><br>'
-				 . '<span class="warning">MySQL '. $requirements['database']['mysql']['recommendedVersion'] .'+ recommended</span></span></p>';
+		echo '<p>Checking database software... ';
+
+		if (version_compare($database_software['version'], $database_software['min_version'], '<')) {
+			throw new Exception($database_software['name'] .' '. $database_software['version'] . ' <span class="error">[Error] '.  $database_software['name'] .' '. $database_software['min_version'] .'+ required</span></p>');
+
+		} else if (version_compare($database_software['version'], $database_software['recommended_version'], '<')) {
+			echo $database_software['name'] .' '. $database_software['version'] .' <span class="ok">[OK]</span><br>'
+				 . '<span class="warning">'. $database_software['name'] .' '. $database_software['recommended_version'] .'+ recommended</span></span></p>';
 
 		} else {
-			echo $mysql_version . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+			echo $database_software['name'] .' '. $database_software['version'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
 
 		### Database > Check Charset ##################################
 
-		echo '<p>Checking MySQL/MariaDB database default character set... ';
+		echo '<p>Checking database default character set... ';
 
 		$charset = database::query(
 			"select DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME from information_schema.SCHEMATA
@@ -359,7 +398,7 @@
 			echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
 
-			echo '<p>Checking MySQL/MariaDB database default collation... ';
+			echo '<p>Checking database default collation... ';
 
 		if ($charset['DEFAULT_COLLATION_NAME'] != $_REQUEST['db_collation']) {
 
@@ -378,17 +417,6 @@
 
 		} else {
 			echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-		}
-
-		### Storage ###################################################
-
-		echo '<p>Set up storage folder... ';
-
-		if (file_exists(FS_DIR_STORAGE) || mkdir(FS_DIR_STORAGE, 0777)) {
-			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-
-		} else {
-			throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
 		}
 
 		### Config > Write ############################################
@@ -544,7 +572,7 @@
 			$sql .= ';';
 
 			// Workaround for early MySQL versions (<5.6.5) not supporting multiple DEFAULT CURRENT_TIMESTAMP
-			if (version_compare($mysql_version, '5.6.5', '<')) {
+			if (version_compare($database_software['version'], '5.6.5', '<')) {
 				str_replace('`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,', '`date_updated` TIMESTAMP NOT NULL DEFAULT NOW(),', $sql);
 			}
 

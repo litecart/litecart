@@ -80,9 +80,13 @@ INSERT INTO `lc_products` (`id`, `status`, `brand_id`, `supplier_id`, `delivery_
 UPDATE `lc_products` SET `description` = '{"en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue. <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue. Cras scelerisque dui non consequat sollicitudin. Sed pretium tortor ac auctor molestie. Nulla facilisi. Maecenas pulvinar nibh vitae lectus vehicula semper. Donec et aliquet velit. Curabitur non ullamcorper mauris. In hac habitasse platea dictumst. Phasellus ut pretium justo, sit amet bibendum urna. Maecenas sit amet arcu pulvinar, facilisis quam at, viverra nisi. Morbi sit amet adipiscing ante. Integer imperdiet volutpat ante, sed venenatis urna volutpat a. Proin justo massa, convallis vitae consectetur sit amet, facilisis id libero.</p>"}';
 -- -----
 UPDATE `lc_products` SET `technical_data` = '{"en": "Colors\r\nBody: Yellow\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic"}' WHERE `id` = 1;
+-- -----
 UPDATE `lc_products` SET `technical_data` = '{"en": "Colors\r\nBody: Green\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic"}' WHERE `id` = 2;
+-- -----
 UPDATE `lc_products` SET `technical_data` = '{"en": "Colors\r\nBody: Red\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic"}' WHERE `id` = 3;
+-- -----
 UPDATE `lc_products` SET `technical_data` = '{"en": "Colors\r\nBody: Blue\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic"}' WHERE `id` = 4;
+-- -----
 UPDATE `lc_products` SET `technical_data` = '{"en": "Colors\r\nBody: Purple\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic"}' WHERE `id` = 5;
 -- -----
 INSERT INTO `lc_products_attributes` (`product_id`, `group_id`, `value_id`) VALUES
