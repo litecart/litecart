@@ -40,7 +40,9 @@
 					<?php } ?>
 				</div>
 				<?php } ?>
+			</div>
 
+			<div class="grid">
 				<div class="col-sm-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_firstname', 'First Name'); ?></div>
@@ -54,7 +56,9 @@
 						<?php echo functions::form_input_text('customer[lastname]', true, 'required'); ?>
 					</label>
 				</div>
+			</div>
 
+			<div class="grid">
 				<div class="col-sm-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_address1', 'Address 1'); ?></div>
@@ -68,7 +72,9 @@
 						<?php echo functions::form_input_text('customer[address2]', true); ?>
 					</label>
 				</div>
+			</div>
 
+			<div class="grid">
 				<div class="col-sm-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_postcode', 'Postal Code'); ?></div>
@@ -82,7 +88,9 @@
 						<?php echo functions::form_input_text('customer[city]', true); ?>
 					</label>
 				</div>
+			</div>
 
+			<div class="grid">
 				<div class="col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_country', 'Country'); ?></div>
@@ -119,7 +127,6 @@
 				</div>
 			</div>
 		</div>
-
 
 		<div class="address shipping-address">
 

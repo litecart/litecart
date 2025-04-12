@@ -16,7 +16,6 @@
 				require 'app://includes/clients/' . $class . '.inc.php';
 				break;
 
-
 			// Entities
 			case (preg_match('#^ent_#', $class)):
 

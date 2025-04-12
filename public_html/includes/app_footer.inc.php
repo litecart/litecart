@@ -29,7 +29,7 @@
 	if (date('Ymdh', strtotime(settings::get('jobs_last_run'))) != date('Ymdh')) {
 		if (strtotime(settings::get('jobs_last_push')) < strtotime('-5 minutes')) {
 
-			// To avoid this push method, set up a cron job calling https://www.yoursite.com/index.php/push_jobs
+			// To avoid using this push method, set up a cron job to call https://www.yoursite.com/index.php/push_jobs
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."settings
@@ -43,6 +43,7 @@
 
 			if (!in_array('exec', $disabled_functions)) {
 				exec('wget -q -O - '. $url .' > /dev/null 2>&1 &');
+
 			} else if (!in_array('fsockopen', $disabled_functions)) {
 				$parts = parse_url($url);
 				$fp = fsockopen($parts['host'], fallback($parts['port'], 80), $errno, $errstr, 30);

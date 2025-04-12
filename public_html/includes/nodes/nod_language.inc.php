@@ -286,7 +286,7 @@
 		}
 
 		public static function strftime($format, $timestamp=null) {
-			trigger_error('language::strftime() is deprecated. Use functions::datetime_format() instead', E_USER_DEPRECATED);
+			trigger_error('Method language::strftime() is deprecated. Instead, use functions::datetime_format()', E_USER_DEPRECATED);
 			return functions::datetime_format($format, $timestamp);
 		}
 

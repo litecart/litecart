@@ -874,6 +874,9 @@ body {
 #box-product .technical-data table td:first-child {
   width: 50%;
 }
+.price-tag .sale-price {
+  color: #cc0000;
+}
 .loader {
   display: inline-block;
   background: url('../images/loader.svg');

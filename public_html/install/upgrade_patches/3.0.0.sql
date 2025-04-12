@@ -450,10 +450,9 @@ CHANGE COLUMN `dim_y` `width` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_z` `height` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `tax_class_id` `tax_class_id` INT(10) UNSIGNED NULL,
-CHANGE COLUMN `views`  `views` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `views` `views` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `purchases` `purchases` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-ADD COLUMN `type` ENUM('virtual','physical','digital','variable','bundle') NOT NULL DEFAULT 'virtual' AFTER `id`,
-ADD COLUMN `autofill_technical_data` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `image`,
+ADD COLUMN `autofill_technical_data` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `technical_data`,
 ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `default_category_id`,
 ADD COLUMN `short_description` TEXT NOT NULL DEFAULT '{}' AFTER `name`,
 ADD COLUMN `description` MEDIUMTEXT NOT NULL DEFAULT '{}' AFTER `short_description`,
@@ -461,6 +460,7 @@ ADD COLUMN `technical_data` TEXT NOT NULL DEFAULT '{}' AFTER `description`,
 ADD COLUMN `synonyms` TEXT NOT NULL DEFAULT '{}' AFTER `description`,
 ADD COLUMN `head_title` TEXT NOT NULL DEFAULT '{}' AFTER `synonyms`,
 ADD COLUMN `meta_description` TEXT NOT NULL DEFAULT '{}' AFTER `head_title`,
+ADD COLUMN `stock_option_type` ENUM('variant','bundle') NOT NULL DEFAULT 'variant' AFTER `keywords`,
 DROP INDEX `manufacturer_id`,
 ADD INDEX `type` (`type`),
 ADD INDEX `brand_id` (`brand_id`),
@@ -698,7 +698,7 @@ INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALU
 INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `required`, `priority`, `date_updated`, `date_created`) VALUES
 ('defaults', 'local', 'Default Order Status', 'Default order status for new orders if nothing else is set.', 'default_order_status_id', '1', 'order_status()', 0, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('customer_details', 'local', 'Different Shipping Address', 'Allow customers to provide a different address for shipping.', 'customer_shipping_address', '1', 'toggle("y/n")', 0, 24, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('checkout', 'local', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id,  {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 1, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('checkout', 'local', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id, {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 1, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('advanced', 'global', 'Static Content Domain Name', 'Use the given alias domain name for static content (fonts, images, stylesheets, javascripts, etc.).', 'static_domain', '', 'text()', 0, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('social_media', 'global', 'Facebook Link', 'The link to your Facebook page.', 'facebook_link', '', 'url()', 0, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('social_media', 'global', 'Instagram Link', 'The link to your Instagram page.', 'instagram_link', '', 'url()', 0, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -743,7 +743,7 @@ SET name = '{}';
 -- -----
 UPDATE `lc_brands`
 SET image = REPLACE(image, 'manufacturers/', 'brands/'),
-  short_description = '{}',
+	short_description = '{}',
 	description = '{}',
 	h1_title = '{}',
 	head_title = '{}',
@@ -903,6 +903,11 @@ SET name = '{}',
 UPDATE `lc_quantity_units`
 SET name = '{}',
 	description = '{}';
+-- -----
+UPDATE `lc_settings`
+SET `value` = ''
+WHERE `value` = 'https://'
+and `key` IN ('control_panel_link', 'database_admin_link', 'webmail_link');
 -- -----
 UPDATE `lc_settings`
 SET `value` = '0'

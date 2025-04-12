@@ -168,7 +168,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 								<div class="col-xl-4">
 									<br>
-									<?php echo functions::draw_price_tag($regular_price, $final_price, $recommended_price); ?>
+									<?php echo functions::draw_price_tag($regular_price, $final_price, currency::$selected['code']); ?>
 
 									<div class="tax" style="margin: 0 0 1em 0;">
 									<?php if ($tax_rates) { ?>

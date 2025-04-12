@@ -113,7 +113,9 @@
 						<?php echo functions::form_input_text('name', true); ?>
 					</label>
 				</div>
+			</div>
 
+			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_featured', 'Featured'); ?></div>
@@ -127,7 +129,9 @@
 						<?php echo functions::form_input_text('code', true); ?>
 					</label>
 				</div>
+			</div>
 
+			<div class="grid">
 				<div class="col-md-6">
 					<div id="image">
 						<?php if (!empty($brand->data['image'])) { ?>
@@ -152,58 +156,56 @@
 						<?php echo functions::form_input_tags('keywords', true); ?>
 					</label>
 				</div>
+			</div>
 
-				<div class="col-md-12">
-					<nav class="tabs">
-						<?php foreach (language::$languages as $language) { ?>
-						<a class="tab-item<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>"" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
-						<?php } ?>
-					</nav>
+			<nav class="tabs">
+				<?php foreach (language::$languages as $language) { ?>
+				<a class="tab-item<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>"" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
+				<?php } ?>
+			</nav>
 
-					<div class="tab-contents">
+			<div class="tab-contents">
 
-							<?php foreach (array_keys(language::$languages) as $language_code) { ?>
-							<div id="<?php echo $language_code; ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' selected'; ?>">
+					<?php foreach (array_keys(language::$languages) as $language_code) { ?>
+					<div id="<?php echo $language_code; ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' selected'; ?>">
 
-							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_h1_title', 'H1 Title'); ?></div>
-								<?php echo functions::form_regional_text('h1_title['. $language_code .']', $language_code, true, ''); ?>
-							</label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_h1_title', 'H1 Title'); ?></div>
+						<?php echo functions::form_regional_text('h1_title['. $language_code .']', $language_code, true, ''); ?>
+					</label>
 
-							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_short_description', 'Short Description'); ?></div>
-								<?php echo functions::form_regional_text('short_description['. $language_code .']', $language_code, true); ?>
-							</label>
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_short_description', 'Short Description'); ?></div>
+						<?php echo functions::form_regional_text('short_description['. $language_code .']', $language_code, true); ?>
+					</label>
 
-							<div class="form-group">
-								<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
-								<?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
-							</div>
-
-							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_link', 'Link'); ?></div>
-								<?php echo functions::form_regional_text('link['. $language_code .']', $language_code, true); ?>
-							</label>
-
-							<div class="grid">
-								<div class="col-md-6">
-									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_head_title', 'Head Title'); ?></div>
-										<?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true, ''); ?>
-									</label>
-								</div>
-
-								<div class="col-md-6">
-									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_meta_description', 'Meta Description'); ?></div>
-										<?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
-									</label>
-								</div>
-							</div>
-						</nav>
-						<?php } ?>
+					<div class="form-group">
+						<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
+						<?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
 					</div>
-				</div>
+
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_link', 'Link'); ?></div>
+						<?php echo functions::form_regional_text('link['. $language_code .']', $language_code, true); ?>
+					</label>
+
+					<div class="grid">
+						<div class="col-md-6">
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_head_title', 'Head Title'); ?></div>
+								<?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true, ''); ?>
+							</label>
+						</div>
+
+						<div class="col-md-6">
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_meta_description', 'Meta Description'); ?></div>
+								<?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
+							</label>
+						</div>
+					</div>
+				</nav>
+				<?php } ?>
 			</div>
 
 			<div class="card-action">

@@ -274,30 +274,22 @@
 		return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="thumbnail '. functions::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($thumbnail) .'" srcset="'. document::href_rlink($thumbnail) .' 1x, '. document::href_rlink($thumbnail_2x) .' 2x"'. ($parameters ? ' '. $parameters : '') .'>';
 	}
 
-	function draw_price_tag($regular_price, $final_price=null, $recommended_price=null, $currency_code=null) {
+	function draw_price_tag($regular_price, $final_price=null, $currency_code=null) {
 
-		$price_tag = [];
-
-		if (!isset($regular_price)) {
-			if (isset($final_price)) {
-				$regular_price = $final_price;
-			} else {
-				return;
-			}
+		if ($regular_price === null && $final_price === null) {
+			return '';
 		}
 
 		if (!isset($currency_code)) {
 			$currency_code = currency::$selected['code'];
 		}
 
-		$price_tag[] = '<div class="price-tag">';
-
-		if ($recommended_price > 0 && $recommended_price < $regular_price) {
-			$price_tag[] = '<del class="recommended-price">'. currency::format($recommended_price) .'</del> <strong class="price">'. currency::format($regular_price) .'</strong>';
-		} else if ($regular_price > $final_price) {
-			$price_tag[] = '  <del class="regular-price">'. currency::format($regular_price) .'</del> <strong class="sale-price">'. currency::format($final_price) .'</strong>';
+		if ($final_price !== null && $regular_price === null) {
+			$price_tag[] = '<strong class="sale-price">'. currency::format($final_price, true, currency::$selected['code'], 1) .'</strong>';
+		} else if ($final_price !== null && $final_price < $regular_price) {
+			$price_tag[] = '	<del class="regular-price">'. currency::format($regular_price, true, currency::$selected['code'], 1) .'</del> <strong class="sale-price">'. currency::format($final_price, true, currency::$selected['code'], 1) .'</strong>';
 		} else {
-			$price_tag[] = '<span class="price">'. currency::format($final_price) .'</span>';
+			$price_tag[] = '	<span class="price">'. currency::format($regular_price, true, currency::$selected['code'], 1) .'</span>';
 		}
 
 		$price_tag[] = '</div>';

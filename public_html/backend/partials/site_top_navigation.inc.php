@@ -11,38 +11,45 @@
 				'subitems' => array_map(function($language) {
 					return [
 						'title' => $language['name'],
-						'link' => document::href_ilink(null, [], [], [], $language['code']),
+						'link' => document::ilink(null, [], [], [], $language['code']),
 					];
 				}, language::$languages),
 			],
 			[
 				'title' => language::translate('title_webmail', 'Webmail'),
-				'link' => ($webmail_link = settings::get('webmail_link')) ? functions::escape_html($webmail_link) : document::href_ilink('settings/advanced', ['key' => 'webmail_link', 'action' => 'edit']),
+				'link' => ($webmail_link = settings::get('webmail_link')) ? functions::escape_html($webmail_link) : document::ilink('settings/advanced', ['key' => 'webmail_link', 'action' => 'edit']),
 				'icon' => 'icon-envelope',
+				'target' => '_blank',
+				'icon_only' => true,
 			],
 			[
 				'title' => language::translate('title_control_panel', 'Control Panel'),
-				'link' => ($control_panel_link = settings::get('control_panel_link')) ? functions::escape_html($control_panel_link) : document::href_ilink('settings/advanced', ['key' => 'control_panel_link', 'action' => 'edit']),
+				'link' => ($control_panel_link = settings::get('control_panel_link')) ? functions::escape_html($control_panel_link) : document::ilink('settings/advanced', ['key' => 'control_panel_link', 'action' => 'edit']),
 				'icon' => 'icon-cogs',
+				'target' => '_blank',
+				'icon_only' => true,
 			],
 			[
 				'title' => language::translate('title_database_manager', 'Database Manager'),
-				'link' => ($database_admin_link = settings::get('database_admin_link')) ? functions::escape_html($database_admin_link) : document::href_ilink('settings/advanced', ['key' => 'database_admin_link', 'action' => 'edit']),
+				'link' => ($database_admin_link = settings::get('database_admin_link')) ? functions::escape_html($database_admin_link) : document::ilink('settings/advanced', ['key' => 'database_admin_link', 'action' => 'edit']),
 				'icon' => 'icon-database',
+				'target' => '_blank',
+				'icon_only' => true,
 			],
 			[
 				'title' => language::translate('title_frontend', 'Frontend'),
-				'link' => document::href_ilink('f:'),
+				'link' => document::ilink('f:'),
 				'icon' => 'icon-display',
 			],
 			[
 				'title' => language::translate('title_help', 'Help'),
 				'link' => 'https://litecart.net/wiki/',
 				'icon' => 'icon-question',
+				'target' => '_blank',
 			],
 			[
 				'title' => language::translate('title_sign_out', 'Sign Out'),
-				'link' => document::href_ilink('logout'),
+				'link' => document::ilink('logout'),
 				'icon' => 'icon-sign-out',
 			],
 		],
@@ -68,8 +75,8 @@
 
 		return implode(PHP_EOL, [
 			'<li class="'. ($is_dropdown_item ? 'dropdown-item' : 'nav-item') . (!empty($item['hidden-xs']) ? ' hidden-xs' : '') .'"'. (!empty($item['id']) ? ' data-id="'. functions::escape_attr($item['id']) .'"' : '') .'>',
-			'	<a class="nav-link" href="'. functions::escape_attr($item['link']) .'">',
-			'		'. (!empty($item['icon']) ? functions::draw_fonticon($item['icon']) .' ' : '') . $item['title'],
+			'	<a class="nav-link" href="'. functions::escape_attr($item['link']) .'" target="'. (!empty($item['target']) ? 'target="'. functions::escape_attr($item['target']) .'"' : '') .'">',
+			'		'. (!empty($item['icon']) ? functions::draw_fonticon($item['icon']) : '') . (empty($item['icon_only']) ? ' '. functions::escape_html($item['title']) : ''),
 			!empty($item['badge']) ? '		<div class="badge">'. $item['badge'] .'</div>' : '',
 			'	</a>',
 			'</li>',

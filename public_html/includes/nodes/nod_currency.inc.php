@@ -233,9 +233,15 @@
 
 			$is_negative = $integers < 0;
 
-			return strtr('<span class="currency-amount"><small class="currency">%currency_code</small> %negative%prefix%integers' . ($fractions ? '<span class="decimals">%decimal_point%fractions</span>' : '') .'%suffix</span>', [
+			return strtr(implode('', [
+				'<span class="currency-amount">',
+				  '<small class="currency">%currency_code</small>',
+				  '&nbsp;',
+				  '%negative%prefix%integers' . ($fractions ? '<span class="decimals">%decimal_point%fractions</span>' : ''),
+					'%suffix',
+				'</span>',
+			]), [
 				'%negative' => $is_negative ? '-' : '',
-				' ' => '&nbsp;',
 				'%currency_code' => $currency_code,
 				'%prefix' => $prefix,
 				'%integers' => number_format(abs((int)$integers), 0, '', language::$selected['thousands_sep']),

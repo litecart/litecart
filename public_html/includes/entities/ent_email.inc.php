@@ -152,17 +152,24 @@
 
 		public function add_body($content, $html=false) {
 
+			$content = trim($content);
+
 			if (!$content) {
 				trigger_error('Cannot add an email body with no content', E_USER_WARNING);
 				return $this;
 			}
 
-			$content = trim($content);
+			if (!$html) {
+				$content = nl2br($content, false);
+			}
 
+			// Convert all line endings to RFC standard \r\n
+			$content = preg_replace('#\r\n?|\n#', "\r\n", $content);
+			
 			$view = new ent_view('app://frontend/templates/'.settings::get('template').'/layouts/email.inc.php');
 
 			$view->snippets = [
-				'content' => $html ? $content : nl2br($content),
+				'content' => $content,
 				'language_code' => $this->data['language_code'],
 			];
 
@@ -367,7 +374,7 @@
 					$body .= implode("\r\n", [
 						'--'. $multipart_boundary_string,
 						implode("\r\n", array_map(function($v, $k) { return $k.':'.$v; }, $multipart['headers'], array_keys($multipart['headers']))) . "\r\n",
-						$direction == 'rtl' ? "\xe2\x80\x8f" : '',
+						($direction == 'rtl') ? "\xe2\x80\x8f" : '',
 						$multipart['body'],
 					]) . "\r\n\r\n";
 				}

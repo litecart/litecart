@@ -215,6 +215,7 @@
 					head_title = '". database::input(json_encode($this->data['head_title'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 					meta_description = '". database::input(json_encode($this->data['meta_description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 					keywords = '". database::input($this->data['keywords']) ."',
+					stock_option_type = '". database::input($this->data['stock_option_type']) ."',
 					quantity_min = ". (float)$this->data['quantity_min'] .",
 					quantity_max = ". (float)$this->data['quantity_max'] .",
 					quantity_step = ". (float)$this->data['quantity_step'] .",
@@ -305,7 +306,7 @@
 				$campaign_price['price'] = array_filter($campaign_price['price']);
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."products_campaigns
+					"update ". DB_TABLE_PREFIX ."campaigns_products
 					set campaign_id = ". (!empty($campaign_price['campaign_id']) ? (int)$campaign_price['campaign_id'] : "null") .",
 						price = '". database::input(json_encode($campaign_price['price'])) ."'
 					where product_id = ". (int)$this->data['id'] ."
@@ -473,10 +474,7 @@
 								$value['id'] = database::insert_id();
 							}
 
-							$sql_currencies = "";
-							foreach (array_keys(currency::$currencies) as $currency_code) {
-								$sql_currencies .= $currency_code ." = '". (isset($value[$currency_code]) ? (float)$value[$currency_code] : 0) ."', ";
-							}
+							$prices = array_filter($value['price']);
 
 							database::query(
 								"update ". DB_TABLE_PREFIX ."products_customizations_values set
@@ -484,7 +482,7 @@
 									value_id = ". (int)$value['value_id'] .",
 									custom_value = '". database::input($value['custom_value']) ."',
 									price_modifier = '". database::input($value['price_modifier']) ."',
-									$sql_currencies
+									price_adjustment = '". database::input(json_encode($prices)) ."',
 									priority = ". ++$j ."
 								where product_id = ". (int)$this->data['id'] ."
 								and group_id = ". (int)$option['group_id'] ."

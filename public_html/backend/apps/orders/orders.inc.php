@@ -458,14 +458,14 @@ table .icon-star-o:hover {
 				<li>
 					<fieldset>
 						<legend><?php echo language::translate('title_set_order_status', 'Set Order Status'); ?></legend>
-						<label class="form-group">
+						<div class="form-group">
 							<div class="input-group">
 								<?php echo functions::form_select_order_status('order_status_id', true); ?>
 								<button class="btn btn-default" name="action" value="set_order_status" type="submit" formtarget="_self">
 									<?php echo language::translate('title_set', 'Set'); ?>
 								</button>
 							</div>
-						</label>
+						</div>
 					</fieldset>
 				</li>
 

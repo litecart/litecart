@@ -16,7 +16,7 @@
 				{{short_description}}
 			</div>
 
-			<?php echo functions::draw_price_tag($regular_price, $final_price, $recommended_price); ?>
+			<?php echo functions::draw_price_tag($regular_price, $final_price, currency::$selected['code']); ?>
 		</div>
 	</a>
 

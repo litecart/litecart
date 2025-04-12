@@ -69,21 +69,6 @@
 				'sold_out_status_id',
 				'default_category_id',
 				'categories',
-				'attributes',
-				'keywords',
-				'synonyms',
-				'date_valid_from',
-				'date_valid_to',
-				'quantity',
-				'quantity_adjustment',
-				'quantity_min',
-				'quantity_max',
-				'quantity_step',
-				'quantity_unit_id',
-				'recommended_price',
-				'prices',
-				'campaigns',
-				'tax_class_id',
 				'code',
 				'name',
 				'short_description',
@@ -92,9 +77,24 @@
 				'autofill_technical_data',
 				'head_title',
 				'meta_description',
+				'synonyms',
+				'keywords',
+				'attributes',
+				'prices',
+				'campaigns',
+				'tax_class_id',
+				'recommended_price',
 				'images',
 				'customizations',
+				'stock_option_type',
 				'stock_options',
+				'quantity_adjustment',
+				'quantity_min',
+				'quantity_max',
+				'quantity_step',
+				'quantity_unit_id',
+				'date_valid_from',
+				'date_valid_to',
 			] as $field) {
 				if (isset($_POST[$field])) {
 					$product->data[$field] = $_POST[$field];
@@ -794,7 +794,7 @@
 						<div class="col-md-3">
 							<div class="form-group">
 								<div class="form-label"><?php echo language::translate('title_type', 'Type'); ?></div>
-								<?php echo functions::form_toggle('stock_options_type', ['variation' => language::translate('title_variation', 'Variation'), 'bundle' => language::translate('title_bundle', 'Bundle')], true); ?>
+								<?php echo functions::form_toggle('stock_option_type', ['variation' => language::translate('title_variation', 'Variation'), 'bundle' => language::translate('title_bundle', 'Bundle')], true); ?>
 							</div>
 						</div>
 					</div>

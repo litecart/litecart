@@ -1,14 +1,11 @@
 :root {
   --page-margin: 10mm;
 }
-* {
-  line-height: 125%;
-}
 .page {
   position: relative;
   display: flex;
   flex-direction: column;
-  font-size: 12px;
+  font-size: 13px;
   font-family: var(--default-text-font);
   color: #000;
   overflow: hidden;

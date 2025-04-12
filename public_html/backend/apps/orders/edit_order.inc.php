@@ -460,10 +460,10 @@
 				<div class="col-md-8">
 					<div class="grid">
 						<div class="col-md-4">
-							<label class="form-group">
+							<div class="form-group">
 								<div class="form-label"><?php echo language::translate('title_order_status', 'Order Status'); ?></div>
 								<?php echo functions::form_select_order_status('order_status_id', true); ?>
-							</label>
+							</div>
 						</div>
 
 						<div class="col-md-4">

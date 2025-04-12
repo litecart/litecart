@@ -1959,17 +1959,9 @@
 				where ". ($parent_id ? "p.parent_id = ". (int)$parent_id : "dock = '". database::input($dock) ."' and parent_id is null") ."
 				order by p.priority asc, title asc;"
 			)->each(function($page) use(&$options, $iterator, $dock, $level) {
-
 				$options[] = [$dock.':'.$page['id'], str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $page['title']];
-
-				//if (database::query(
-				//	"select id from ". DB_TABLE_PREFIX ."pages
-				//	where parent_id = ". (int)$page['id'] ."
-				//	limit 1;"
-				//)->num_rows) {
-					$sub_options = $iterator($dock.':'.$page['id'], '', $level+1);
-					$options = array_merge($options, $sub_options);
-				//}
+				$sub_options = $iterator($dock.':'.$page['id'], '', $level+1);
+				$options = array_merge($options, $sub_options);
 			});
 
 			return $options;
@@ -2105,6 +2097,11 @@
 	function form_select_product_stock_option($name, $product_id, $input=true, $parameters='') {
 
 		$product = reference::product($product_id);
+
+		if (!$product->stock_option_type != 'variant' || !$product->stock_options) {
+			trigger_error('Product '. $product->id .' has no stock options', E_USER_WARNING);
+			return;
+		}
 
 		$has_images = array_filter(array_column($product->stock_options, 'image')) ? true : false;
 

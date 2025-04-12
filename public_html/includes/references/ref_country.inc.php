@@ -69,7 +69,7 @@
 				'%zone_name' => (!empty($address['zone_code']) && !empty($this->zones[$address['zone_code']])) ? $this->zones[$address['zone_code']]['name'] : '',
 			];
 
-			$address_format = $this->address_format ? $this->address_format : settings::get('default_address_format');
+			$address_format = $this->address_format ?: settings::get('default_address_format');
 
 			$output = strtr($address_format, $address);
 

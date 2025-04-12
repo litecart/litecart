@@ -4,7 +4,7 @@
 
 		public static function __callstatic($function, $arguments) {
 
-			// Reroute deprecated or renamed functions
+			// Handle deprecated or renamed functions by rerouting them
 			foreach ([
 				'#^form_draw_currency_field$#' => 'form_select_currency',
 				'#^form_draw_customer_field$#' => 'form_select_customer',

@@ -62,7 +62,7 @@
 
 			<label class="form-group">
 				<div class="form-label"><?php echo language::translate('title_content', 'Content'); ?></div>
-				<?php echo functions::form_input_code('content', true); ?>
+				<?php echo functions::form_input_code('content', true, 'style="height: 600px;"'); ?>
 			</label>
 
 			<div class="card-action">

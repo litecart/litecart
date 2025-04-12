@@ -194,15 +194,15 @@
     <?php echo functions::form_end(); ?>
 
     <?php if (!empty($third_party->data['id'])) { ?>
-    <div class="form-control" style="white-space: pre-line; filter: invert(.9);">
+    <div class="form-code>
     <?php echo functions::escape_html(implode(PHP_EOL, [
       '<script type="application/privacy-script" data-privacy-class="..." data-third-party-id="'. $third_party->data['id'] .'">',
-      '  alert("Hello world");',
+      '  ...',
       '</script>',
     ])); ?>
     </div>
 
-    <div class="form-control" style="white-space: pre-line; filter: invert(.9);">
+    <div class="form-code">
     <?php echo functions::escape_html(implode(PHP_EOL, [
       '<script type="application/privacy-content" data-privacy-class="functional|experience|measuring|marketing" data-third-party-id="'. $third_party->data['id'] .'">',
       '<![CDATA[',
@@ -212,24 +212,11 @@
     ])); ?>
     </div>
 
-    <div class="form-control" style="white-space: pre-line; filter: invert(.9);">
+    <div class="form-code">
     <?php echo functions::escape_html(implode(PHP_EOL, [
       '<div class="require-consent" data-privacy-class="functional|experience|measuring|marketing" data-third-party-id="'. $third_party->data['id'] .'" data-content="&lt;iframe src=&quot;...&quot;&gt;&lt;/iframe&gt;"></div>',
     ])); ?>
     </div>
-
-    <div class="form-control" style="white-space: pre-line; filter: invert(.9);">
-    <?php echo functions::escape_html(implode(PHP_EOL, [
-      '<script>',
-      '  $(document).ready(function(){',
-      '    if (hasPrivacyConsent(\'functional|experience|measuring|marketing\', '. $third_party->data['id'] .')) {',
-      '      ...',
-      '    }',
-      '  });',
-      '</script>',
-    ])); ?>
-    </div>
-    <?php } ?>
   </div>
 </div>
 
