@@ -547,6 +547,17 @@
 				}
 			}
 
+			// Create check constraints
+			if (!empty($table['check_constraints'])) {
+				foreach ($table['check_constraints'] as $name => $expression) {
+					if ($table_exists) {
+						$sql .= 'ADD CONSTRAINT `'. $name .'` CHECK ('. database::input($expression) .'),' . PHP_EOL;
+					} else {
+						$sql .= '  CONSTRAINT `'. $name .'` CHECK ('. database::input($expression) .'),' . PHP_EOL;
+					}
+				}
+			}
+
 			$sql = rtrim($sql, ', ' . PHP_EOL) . PHP_EOL . ')';
 
 			if (isset($table['engine'])) {

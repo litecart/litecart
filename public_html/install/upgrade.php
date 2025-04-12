@@ -511,28 +511,43 @@
 					}
 				}
 
-				// Drop keys
-				if ($table_exists && !empty($table['keys'])) {
-					foreach (array_keys($table['keys']) as $key_name) {
-						if (database::query(
-							"SHOW INDEX FROM `". $table_name ."`
-							WHERE Key_name = '". database::input($key_name) ."'
-							/*AND non_unique = 1*/;"
-						)->num_rows) {
-							$sql .= 'DROP INDEX `'. $key_name .'`,' . PHP_EOL;
-						}
-					}
-				}
-
 				// Drop unique keys
 				if ($table_exists && !empty($table['unique_keys'])) {
 					foreach (array_keys($table['unique_keys']) as $key_name) {
 						if (database::query(
 							"SHOW INDEX FROM `". $table_name ."`
 							WHERE Key_name = '". database::input($key_name) ."'
-							/*AND non_unique = 0*/;"
+							AND non_unique = 0;"
 						)->num_rows) {
 							$sql .= 'DROP INDEX `'. $key_name .'`,' . PHP_EOL;
+						}
+					}
+				}
+
+				// Drop keys
+				if ($table_exists && !empty($table['keys'])) {
+					foreach (array_keys($table['keys']) as $key_name) {
+						if (database::query(
+							"SHOW INDEX FROM `". $table_name ."`
+							WHERE Key_name = '". database::input($key_name) ."'
+							AND non_unique = 1;"
+						)->num_rows) {
+							$sql .= 'DROP INDEX `'. $key_name .'`,' . PHP_EOL;
+						}
+					}
+				}
+
+				// Drop check constraints
+				if ($table_exists && !empty($table['check_constraints'])) {
+					foreach (array_keys($table['check_constraints']) as $name) {
+						if (database::query(
+							"SELECT CONSTRAINT_NAME
+							FROM information_schema.table_constraints
+							WHERE CONSTRAINT_SCHEMA = '". DB_DATABASE ."'
+							AND TABLE_NAME = '". database::input($table_name) ."'
+							AND CONSTRAINT_NAME = '". database::input($name) ."';"
+						)->num_rows) {
+							$sql .= 'DROP CHECK `'. $name .'`,' . PHP_EOL;
 						}
 					}
 				}
@@ -630,6 +645,17 @@
 							$sql .= 'ADD KEY `'. $key_name .'` (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
 						} else {
 							$sql .= '  KEY `'. $key_name .'` (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
+						}
+					}
+				}
+
+				// Create check constraints
+				if (!empty($table['check_constraints'])) {
+					foreach ($table['check_constraints'] as $name => $expression) {
+						if ($table_exists) {
+							$sql .= 'ADD CONSTRAINT `'. $name .'` CHECK ('. database::input($expression) .'),' . PHP_EOL;
+						} else {
+							$sql .= '  CONSTRAINT `'. $name .'` CHECK ('. database::input($expression) .'),' . PHP_EOL;
 						}
 					}
 				}
