@@ -512,7 +512,7 @@
 				'{id}' => $this->data['id'],
 			]);
 
-		 // Append length digit
+			// Append length digit
 			if (strpos(settings::get('order_no_format'), '{l}') !== false) {
 				$length = strlen(preg_replace('#[^\d]#', '', $order_no)) + preg_match('#\{c\}#', settings::get('order_no_format')) ? 1 : 0;
 				$order_no = str_replace('{l}', $length, $order_no);
@@ -564,7 +564,7 @@
 			$this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
 		}
 
-    public function validate($shipping = null, $payment = null) {
+		public function validate($shipping = null, $payment = null) {
 
 			// Items
 
@@ -924,9 +924,11 @@
 			}
 
 			if (!empty(language::$languages[$this->data['language_code']]) && language::$languages[$this->data['language_code']]['direction'] == 'rtl') {
-				$message = '<div dir="rtl">' . PHP_EOL
-								 . $message . PHP_EOL
-								 . '</div>';
+				$message = implode(PHP_EOL, [
+					'<div dir="rtl">',
+					$message,
+					'</div>',
+				]);
 			}
 
 			$email = new ent_email();

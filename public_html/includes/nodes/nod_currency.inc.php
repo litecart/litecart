@@ -235,9 +235,9 @@
 
 			return strtr(implode('', [
 				'<span class="currency-amount">',
-				  '<small class="currency">%currency_code</small>',
-				  '&nbsp;',
-				  '%negative%prefix%integers' . ($fractions ? '<span class="decimals">%decimal_point%fractions</span>' : ''),
+					'<small class="currency">%currency_code</small>',
+					'&nbsp;',
+					'%negative%prefix%integers' . ($fractions ? '<span class="decimals">%decimal_point%fractions</span>' : ''),
 					'%suffix',
 				'</span>',
 			]), [
@@ -254,7 +254,7 @@
 		public static function format_raw($value, $currency_code=null, $currency_value=null) {
 
 			settype($value, 'float');
-			
+
 			if (!$value) {
 				return 0;
 			}
@@ -285,7 +285,7 @@
 		public static function round($value, $currency_code) {
 
 			settype($value, 'float');
-			
+
 			if (!$value) {
 				return 0;
 			}

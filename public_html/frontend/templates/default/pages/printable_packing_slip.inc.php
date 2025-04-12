@@ -1,5 +1,5 @@
 <?php
-  $page_breaks = [20, 50, 80, 110, 140];
+	$page_breaks = [20, 50, 80, 110, 140];
 ?>
 <style>
 .logotype {

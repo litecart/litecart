@@ -53,7 +53,7 @@
 }
 @keyframes credits {
 	from { transform: translateY(0%); }
-  to { transform: translateY(-100%); }
+	to { transform: translateY(-100%); }
 }
 #box-error-log tr.critical {
 	background: #c002;

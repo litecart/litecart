@@ -101,7 +101,7 @@
 		}
 
 		$html .= '  </ul>' . PHP_EOL
-			   . '</div>';
+				 . '</div>';
 
 		return $html;
 	}

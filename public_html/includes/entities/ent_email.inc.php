@@ -165,7 +165,7 @@
 
 			// Convert all line endings to RFC standard \r\n
 			$content = preg_replace('#\r\n?|\n#', "\r\n", $content);
-			
+
 			$view = new ent_view('app://frontend/templates/'.settings::get('template').'/layouts/email.inc.php');
 
 			$view->snippets = [
@@ -424,8 +424,9 @@
 						$v = "$k: $v";
 					});
 
-					$data = implode("\r\n", $headers) . "\r\n\r\n"
-					      . $body;
+					$data = implode("\r\n", $headers) . "\r\n"
+						. "\r\n"
+					 . $body;
 
 					$result = $smtp->send(settings::get('store_email'), $recipients, $data);
 

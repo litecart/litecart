@@ -116,7 +116,6 @@
 					}
 					break;
 			}
-
 			return $fee;
 		}
 

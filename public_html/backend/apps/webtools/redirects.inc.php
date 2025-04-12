@@ -1,77 +1,77 @@
 <?php
 
-  if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
-    $_GET['page'] = 1;
-  }
+	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+		$_GET['page'] = 1;
+	}
 
-  if (isset($_POST['enable']) || isset($_POST['disable'])) {
+	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
-    try {
+		try {
 
-      if (empty($_POST['redirects'])) {
-        throw new Exception(language::translate('error_must_select_redirects', 'You must select redirects'));
-      }
+			if (empty($_POST['redirects'])) {
+				throw new Exception(language::translate('error_must_select_redirects', 'You must select redirects'));
+			}
 
-      foreach ($_POST['redirects'] as $redirect_id) {
+			foreach ($_POST['redirects'] as $redirect_id) {
 
-        $redirect = new ent_redirect($redirect_id);
-        $redirect->data['status'] = !empty($_POST['enable']) ? 1 : 0;
-        $redirect->save();
-      }
+				$redirect = new ent_redirect($redirect_id);
+				$redirect->data['status'] = !empty($_POST['enable']) ? 1 : 0;
+				$redirect->save();
+			}
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink());
-      exit;
+			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			header('Location: '. document::ilink());
+			exit;
 
-    } catch (Exception $e) {
-      notices::add('errors', $e->getMessage());
-    }
-  }
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
+		}
+	}
 
-  if (isset($_POST['delete'])) {
+	if (isset($_POST['delete'])) {
 
-    try {
+		try {
 
-      if (empty($currency->data['id'])) {
-        throw new Exception(language::translate('error_must_provide_currency', 'You must provide a currency'));
-      }
+			if (empty($currency->data['id'])) {
+				throw new Exception(language::translate('error_must_provide_currency', 'You must provide a currency'));
+			}
 
-      if (empty($_POST['redirects'])) {
-        throw new Exception(language::translate('error_must_select_redirects', 'You must select redirects'));
-      }
+			if (empty($_POST['redirects'])) {
+				throw new Exception(language::translate('error_must_select_redirects', 'You must select redirects'));
+			}
 
-      foreach ($_POST['redirects'] as $redirect_id) {
-        $redirect = new ent_redirect($redirect_id);
-        $redirect->delete();
-      }
+			foreach ($_POST['redirects'] as $redirect_id) {
+				$redirect = new ent_redirect($redirect_id);
+				$redirect->delete();
+			}
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink(__APP__.'/redirects'));
-      exit;
+			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			header('Location: '. document::ilink(__APP__.'/redirects'));
+			exit;
 
-    } catch (Exception $e) {
-      notices::add('errors', $e->getMessage());
-    }
-  }
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
+		}
+	}
 
-  $redirects = database::query(
-    "select * from ". DB_TABLE_PREFIX ."redirects
-    order by status desc, pattern asc, destination asc;"
-  )->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
+	$redirects = database::query(
+		"select * from ". DB_TABLE_PREFIX ."redirects
+		order by status desc, pattern asc, destination asc;"
+	)->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 
 ?>
 <div class="card">
-  <div class="card-header">
-    <div class="card-title">
+	<div class="card-header">
+		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo language::translate('title_redirects', 'Redirects'); ?>
-    </div>
-  </div>
+		</div>
+	</div>
 
-  <div class="card-action">
+	<div class="card-action">
 		<ul class="list-inline pull-right">
 			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_redirect'), language::translate('title_create_new_redirect', 'Create New Redirect'), '', 'add'); ?></li>
 		</ul>
-  </div>
+	</div>
 
 	<?php echo functions::form_begin('redirects_form', 'post'); ?>
 

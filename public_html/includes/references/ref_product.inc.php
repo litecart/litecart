@@ -561,138 +561,138 @@
 			}
 		}
 
-    public function calculate_price($parameters=[]) {
+		public function calculate_price($parameters=[]) {
 
-      try {
+			try {
 
-        $item['extras'] = 0;
+				$item['extras'] = 0;
 
-        if (empty($parameters['quantity'])) {
-          $parameters['quantity'] = 1;
-        }
+				if (empty($parameters['quantity'])) {
+					$parameters['quantity'] = 1;
+				}
 
-        if (!empty($parameters['options'])) {
+				if (!empty($parameters['options'])) {
 
-          if (!is_array($parameters['options'])) {
-            throw new Exception('Invalid options');
-          }
+					if (!is_array($parameters['options'])) {
+						throw new Exception('Invalid options');
+					}
 
-          // Remove empty options
-          $array_filter_recursive = function($array) use (&$array_filter_recursive) {
+					// Remove empty options
+					$array_filter_recursive = function($array) use (&$array_filter_recursive) {
 
-            foreach ($array as $i => $value) {
-              if (is_array($value)) $array[$i] = $array_filter_recursive($value);
-            }
+						foreach ($array as $i => $value) {
+							if (is_array($value)) $array[$i] = $array_filter_recursive($value);
+						}
 
-            return array_filter($array, function($v) {
-              if (is_array($v)) return !empty($v);
-              return strlen(trim($v));
-            });
-          };
+						return array_filter($array, function($v) {
+							if (is_array($v)) return !empty($v);
+							return strlen(trim($v));
+						});
+					};
 
-          $parameters['options'] = $array_filter_recursive($parameters['options']);
+					$parameters['options'] = $array_filter_recursive($parameters['options']);
 
-          // Build options structure
-          $sanitized_options = [];
-          foreach ($this->options as $option) {
+					// Build options structure
+					$sanitized_options = [];
+					foreach ($this->options as $option) {
 
-            // Check group
-            $possible_groups = array_filter(array_unique(reference::attribute_group($option['group_id'])->name));
-            $matched_groups = array_intersect(array_keys($options), $possible_groups);
-            $matched_group = array_shift($matched_groups);
+						// Check group
+						$possible_groups = array_filter(array_unique(reference::attribute_group($option['group_id'])->name));
+						$matched_groups = array_intersect(array_keys($options), $possible_groups);
+						$matched_group = array_shift($matched_groups);
 
-            if (empty($matched_group) && empty($option['required'])) {
-              continue;
-            }
+						if (empty($matched_group) && empty($option['required'])) {
+							continue;
+						}
 
-            if (empty($options[$matched_group]) && !empty($option['required'])) {
-              throw new Exception(language::translate('error_set_product_options', 'Please set your product options'));
-            }
+						if (empty($options[$matched_group]) && !empty($option['required'])) {
+							throw new Exception(language::translate('error_set_product_options', 'Please set your product options'));
+						}
 
-            // Check values
-            switch ($option['function']) {
+						// Check values
+						switch ($option['function']) {
 
-              case 'checkbox':
+							case 'checkbox':
 
-                $selected_values = preg_split('#\s*,\s*#', $options[$matched_group], -1, PREG_SPLIT_NO_EMPTY);
+								$selected_values = preg_split('#\s*,\s*#', $options[$matched_group], -1, PREG_SPLIT_NO_EMPTY);
 
-                $matched_values = [];
-                foreach ($option['values'] as $value) {
+								$matched_values = [];
+								foreach ($option['values'] as $value) {
 
-                  $possible_values = array_unique(
-                    array_merge(
-                      [$value['name']],
-                      !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
-                    )
-                  );
+									$possible_values = array_unique(
+										array_merge(
+											[$value['name']],
+											!empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
+										)
+									);
 
-                  if (empty($option['required'])) {
-                    array_unshift($possible_values, '');
-                  }
+									if (empty($option['required'])) {
+										array_unshift($possible_values, '');
+									}
 
-                  if ($matched_value = array_intersect($selected_values, $possible_values)) {
-                    $matched_values[] = $matched_value;
-                    $extras += $value['price_adjustment'];
-                    $found_match = true;
-                  }
-                }
+									if ($matched_value = array_intersect($selected_values, $possible_values)) {
+										$matched_values[] = $matched_value;
+										$extras += $value['price_adjustment'];
+										$found_match = true;
+									}
+								}
 
-                if (empty($found_match)) {
-                  throw new Exception(strtr(language::translate('error_must_select_valid_option_for_group', 'You must select a valid option for %group'), ['%group' => $matched_group]));
-                }
+								if (empty($found_match)) {
+									throw new Exception(strtr(language::translate('error_must_select_valid_option_for_group', 'You must select a valid option for %group'), ['%group' => $matched_group]));
+								}
 
-                break;
+								break;
 
-              case 'radio':
-              case 'select':
+							case 'radio':
+							case 'select':
 
-                foreach ($option['values'] as $value) {
+								foreach ($option['values'] as $value) {
 
-                  $possible_values = array_unique(
-                    array_merge(
-                      [$value['name']],
-                      !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
-                    )
-                  );
+									$possible_values = array_unique(
+										array_merge(
+											[$value['name']],
+											!empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
+										)
+									);
 
-                  if (empty($option['required'])) {
-                    array_unshift($possible_values, '');
-                  }
+									if (empty($option['required'])) {
+										array_unshift($possible_values, '');
+									}
 
-                  if ($matched_value = array_intersect([$options[$matched_group]], $possible_values)) {
-                    $matched_value = array_shift($matched_value);
-                    $extras += $value['price_adjustment'];
-                    $found_match = true;
-                    break;
-                  }
-                }
+									if ($matched_value = array_intersect([$options[$matched_group]], $possible_values)) {
+										$matched_value = array_shift($matched_value);
+										$extras += $value['price_adjustment'];
+										$found_match = true;
+										break;
+									}
+								}
 
-                if (empty($found_match)) {
-                  throw new Exception(strtr(language::translate('error_must_select_valid_option_for_group', 'You must select a valid option for %group'), ['%group' => $matched_group]));
-                }
+								if (empty($found_match)) {
+									throw new Exception(strtr(language::translate('error_must_select_valid_option_for_group', 'You must select a valid option for %group'), ['%group' => $matched_group]));
+								}
 
-                break;
+								break;
 
-              case 'text':
-              case 'textarea':
+							case 'text':
+							case 'textarea':
 
-                $matched_value = $options[$matched_group];
+								$matched_value = $options[$matched_group];
 
-                if (empty($matched_value) && !empty($option['required'])) {
-                  throw new Exception(strtr(language::translate('error_must_provide_valid_input_for_group', 'You must provide a valid input for %group'), ['%group' => $matched_group]));
-                }
+								if (empty($matched_value) && !empty($option['required'])) {
+									throw new Exception(strtr(language::translate('error_must_provide_valid_input_for_group', 'You must provide a valid input for %group'), ['%group' => $matched_group]));
+								}
 
-                break;
-            }
-          }
+								break;
+						}
+					}
 
-          $price = $this->final_price + $extras;
+					$price = $this->final_price + $extras;
 
-          return $price;
-        }
+					return $price;
+				}
 
-      } catch (Exception $e) {
-        return false;
-      }
-    }
+			} catch (Exception $e) {
+				return false;
+			}
+		}
 	}

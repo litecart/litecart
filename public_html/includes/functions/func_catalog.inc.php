@@ -222,7 +222,7 @@
 
 			from (
 				select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, p.keywords, p.image,
-				  p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.views, p.purchases, p.date_created,
+					p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.views, p.purchases, p.date_created,
 					json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
 					json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') as short_description
 

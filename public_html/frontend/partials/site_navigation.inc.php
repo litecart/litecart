@@ -110,8 +110,6 @@
 		cache::set($site_navigation_cache_token, $site_navigation->snippets);
 	}
 
-	];
-
 	// Shopping Cart
 
 	$site_navigation->snippets['shopping_cart'] = [
