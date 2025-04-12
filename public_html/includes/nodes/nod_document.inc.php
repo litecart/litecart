@@ -63,6 +63,13 @@
 					break;
 			}
 
+			// Alert errors to administrator
+			if (administrator::check_login()) {
+				self::add_head_tags(implode(PHP_EOL, [
+					'<script>let _alertedErrors=0;window.onerror=(c,r,a,p)=>{_alertedErrors++<5&&alert(c+" in "+r.split("/").pop().split("?")[0]+" on line "+a)};</script>',
+				]), 'alert_errors');
+			}
+
 			// Wait For (Mini version)
 			self::add_head_tags(implode(PHP_EOL, [
 				'<script>window.waitFor=window.waitFor||((i,o)=>{void 0!==window.i?o(window.i):setTimeout((()=>waitFor(i,o)),50)});</script>',
