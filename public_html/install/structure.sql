@@ -547,7 +547,8 @@ CREATE TABLE `lc_products` (
   KEY `date_valid_from` (`date_valid_from`),
   KEY `date_valid_to` (`date_valid_to`),
   KEY `purchases` (`purchases`),
-  KEY `views` (`views`)
+  KEY `views` (`views`),
+  KEY `date_created` (`date_created`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- -----
 CREATE TABLE `lc_products_attributes` (
