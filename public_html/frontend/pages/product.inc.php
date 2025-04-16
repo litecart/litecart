@@ -41,6 +41,15 @@
 		limit 1;"
 	);
 
+	customer::log([
+		'type' => 'product_view',
+		'description' => 'User viewed a product',
+		'data' => [
+			'product_id' => $product->id,
+			'name' => $product->name,
+		],
+	]);
+
 	document::$title[] = $product->head_title ?: $product->name;
 	document::$description = $product->meta_description ?: strip_tags($product->short_description);
 

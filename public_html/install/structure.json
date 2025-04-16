@@ -434,6 +434,37 @@
 				}
 			}
 		},
+		"lc_customers_activity": {
+			"columns": {
+				"id": { "type": "BIGINT", "length": 20, "unsigned": true, "auto_increment": true },
+				"session_id": { "type": "VARCHAR", "length": 64, "nullable": true },
+				"customer_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"type": { "type": "VARCHAR", "length": 64, "nullable": true },
+				"description": { "type": "VARCHAR", "length": 256, "default": "''" },
+				"data": { "type": "VARCHAR", "length": 1024, "default": "'{}'" },
+				"url": { "type": "VARCHAR", "length": 256, "nullable": true },
+				"ip_address": { "type": "VARCHAR", "length": 47, "nullable": true },
+				"hostname": { "type": "VARCHAR", "length": 128, "nullable": true },
+				"user_agent": { "type": "VARCHAR", "length": 256, "nullable": true },
+				"fingerprint": { "type": "VARCHAR", "length": 32, "nullable": true },
+				"date_expires": { "type": "TIMESTAMP", "nullable": true },
+				"date_created": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"keys": {
+				"session_id": ["session_id"],
+				"customer_id": ["customer_id"],
+				"type": ["type"],
+				"ip_address": ["ip_address"],
+				"hostname": ["hostname"],
+				"user_agent": ["user_agent"],
+				"fingerprint": ["fingerprint"],
+				"date_expires": ["date_expires"]
+			},
+			"check_constraints": {
+				"chk_data": "JSON_VALID(data);"
+			}
+		},
 		"lc_delivery_statuses": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },

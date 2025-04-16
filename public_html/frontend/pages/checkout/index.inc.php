@@ -33,6 +33,19 @@
 
 			$session_order = &session::$data['checkout']['order'];
 
+			customer::log([
+				'type' => 'checkout_confirm',
+				'description' => 'User confirmed order to begin checkout',
+				'data' => [
+					'order_id' => $session_order->data['order_id'],
+					'products' => array_filter(array_column($session_order->data['items'], 'product_id')),
+					'shipping_option_id' => $session_order->data['shipping_option']['id'],
+					'payment_option_id' => $session_order->data['payment_option']['id'],
+					'total_amount' => $session_order->data['total'],
+				],
+				'date_expires' => strtotime('+12 months'),
+			]);
+
 			ob_start();
 			include_once 'app://frontend/pages/checkout/customer.inc.php';
 			include_once 'app://frontend/pages/checkout/shipping.inc.php';
@@ -129,6 +142,21 @@
 			exit;
 
 		} catch (Exception $e) {
+
+			customer::log([
+				'type' => 'checkout_failure',
+				'description' => 'Checkout failed due to an error',
+				'data' => [
+					'order_id' => $session_order->data['order_id'],
+					'products' => array_filter(array_column($session_order->data['items'], 'product_id')),
+					'shipping_option_id' => $session_order->data['shipping_option']['id'],
+					'payment_option_id' => $session_order->data['payment_option']['id'],
+					'total_amount' => $session_order->data['total'],
+					'error' => $e->getMessage(),
+				],
+				'date_expires' => strtotime('+12 months'),
+			]);
+
 			notices::add('errors', $e->getMessage());
 		}
 	}
@@ -197,5 +225,20 @@
 		'consent' => null,
 		'confirm' => !empty($order->payment->data['selected']['confirm']) ? $order->payment->data['selected']['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
 	];
+
+	customer::log(
+		[
+			'type' => 'checkout',
+			'description' => 'User is checking out',
+			'data' => [
+				'order_id' => $order->data['id'],
+				'products' => array_filter(array_column($order->data['items'], 'product_id')),
+				'shipping_option_id' => $order->data['shipping_option']['id'],
+				'payment_option_id' => $order->data['payment_option']['id'],
+				'total_amount' => $order->data['total'],
+			],
+			'date_expires' => strtotime('+12 months'),
+		]
+	);
 
 	echo $_page;

@@ -162,6 +162,13 @@
 				limit 1;"
 			);
 
+			customer::log([
+				'customer_id' => $customer->data['id'],
+				'type' => 'create_account',
+				'description' => 'User created an account',
+				'date_expires' => strtotime('+12 months'),
+			]);
+
 			customer::load($customer->data['id']);
 
 			$aliases = [

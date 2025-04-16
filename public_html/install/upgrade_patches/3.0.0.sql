@@ -50,6 +50,30 @@ CREATE TABLE `lc_customer_groups` (
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
+CREATE TABLE IF NOT EXISTS `lc_customers_activity` (
+	`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`session_id` VARCHAR(64) NULL,
+	`customer_id` INT(10) UNSIGNED NULL,
+	`type` VARCHAR(64) NULL,
+	`description` VARCHAR(256) NOT NULL DEFAULT '',
+	`data` VARCHAR(1024) NULL,
+	`url` VARCHAR(256) NULL,
+	`ip_address` VARCHAR(39) NULL,
+	`hostname` VARCHAR(128) NULL,
+	`user_agent` VARCHAR(256) NULL,
+	`fingerprint` VARCHAR(32) NULL,
+	`date_expires` TIMESTAMP NULL DEFAULT NULL,
+	`date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `customer_id` (`customer_id`) USING BTREE,
+	INDEX `session_id` (`session_id`) USING BTREE,
+	INDEX `ip_address` (`ip_address`) USING BTREE,
+	INDEX `hostname` (`hostname`) USING BTREE,
+	INDEX `user_agent` (`user_agent`) USING BTREE,
+	INDEX `fingerprint` (`fingerprint`) USING BTREE,
+	INDEX `date_expires` (`date_expires`) USING BTREE
+);
+-- -----
 CREATE TABLE `lc_products_references` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`product_id` INT UNSIGNED NOT NULL,
@@ -774,6 +798,11 @@ SET name = '{}',
 UPDATE `lc_modules`
 SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit')
 WHERE `module_id` = 'sm_zone_weight'
+LIMIT 1;
+-- -----
+UPDATE `lc_modules`
+SET `module_id` = 'job_cleaner'
+WHERE `module_id` = 'job_cache_cleaner'
 LIMIT 1;
 -- -----
 UPDATE `lc_newsletter_recipients` nr

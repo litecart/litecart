@@ -265,7 +265,7 @@ INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `locale
 -- -----
 INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `settings`, `last_log`, `date_updated`, `date_created`) VALUES
 (1, 'job_error_reporter', 'job', 1, 0, '{"status":"1","frequency":"Weekly","email_receipient":"","priority":"0"}', '', NOW(), NOW()),
-(2, 'job_cache_cleaner', 'job', 1, 0, '{"status":"1","priority":"0"}', '', NOW(), NOW()),
+(2, 'job_cleaner', 'job', 1, 0, '{"status":"1","priority":"0"}', '', NOW(), NOW()),
 (3, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW()),
 (4, 'job_shipping_tracker', 'job', 1, 0, '{"status":"1","frequency":"Hourly","priority":"0"}', '', NOW(), NOW());
 -- -----

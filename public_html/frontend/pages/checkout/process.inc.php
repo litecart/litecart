@@ -42,6 +42,21 @@
 
 			// If payment error
 			if (!empty($result['error'])) {
+
+				customer::log([
+					'type' => 'checkout_failure',
+					'description' => 'User failed payment verification during checkout',
+					'data' => [
+						'order_id' => $order->data['order_id'],
+						'products' => array_filter(array_column($order->data['items'], 'product_id')),
+						'shipping_option_id' => $order->data['shipping_option']['id'],
+						'payment_option_id' => $order->data['payment_option']['id'],
+						'total_amount' => $order->data['total'],
+						'error' => $result['error'],
+					],
+					'date_expires' => strtotime('+12 months'),
+				]);
+
 				notices::add('errors', $result['error']);
 				header('Location: '. document::ilink('checkout/index'));
 				exit;
@@ -95,6 +110,19 @@
 	}
 
 	$order->save();
+
+	customer::log([
+		'type' => 'checkout_success',
+		'description' => 'User completed checkout successfully',
+		'data' => [
+			'order_id' => $order->data['order_id'],
+			'products' => array_filter(array_column($order->data['items'], 'product_id')),
+			'shipping_option_id' => $order->data['shipping_option']['id'],
+			'payment_option_id' => $order->data['payment_option']['id'],
+			'total_amount' => $order->data['total'],
+		],
+		'date_expires' => strtotime('+12 months'),
+	]);
 
 	// Clean up cart
 	cart::clear();

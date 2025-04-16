@@ -1,8 +1,8 @@
 <?php
 
-	class job_cache_cleaner extends abs_module {
+	class job_cleaner extends abs_module {
 
-		public $name = 'Cache Cleaner';
+		public $name = 'Cleaner';
 		public $description = 'Wipe out old cache files that are starting to collect dust.';
 		public $author = 'LiteCart Dev Team';
 		public $version = '1.0';
@@ -16,6 +16,14 @@
 			if ($last_run || !$force) {
 				if (strtotime($last_run) > functions::datetime_last_by_interval('Hourly', $last_run)) return;
 			}
+
+			echo 'Clean expired customer activity...' . PHP_EOL;
+
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."customers_activity
+				where (date_expires is not null and date_expires < '". date('Y-m-d H:i:s') ."')
+				or (date_expires is null and date_created < '". date('Y-m-d H:i:s', strtotime('-12 months')) ."');"
+			);
 
 			echo 'Wipe out old cache files...' . PHP_EOL;
 

@@ -363,4 +363,35 @@
 		public static function check_login() {
 			if (!empty(self::$data['id'])) return true;
 		}
+
+		public static function log($event) {
+
+			$event = [
+				'session_id' => isset($event['session_id']) ? $event['session_id'] : session::get_id(),
+				'customer_id' => isset($event['customer_id']) ? $event['customer_id'] : self::$data['id'],
+				'type' => isset($event['type']) ? $event['type'] : 'unknown',
+				'description' => isset($event['description']) ? $event['description'] : null,
+				'data' => !empty($event['data']) ? json_encode($event['data'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : null,
+				'url' => isset($event['url']) ? $event['url'] : document::link(),
+				'ip_address' => isset($event['ip_address']) ? $event['ip_address'] : $_SERVER['REMOTE_ADDR'],
+				'hostname' => isset($event['hostname']) ? $event['hostname'] : gethostbyaddr(isset($event['ip_address']) ? $event['ip_address'] : $_SERVER['REMOTE_ADDR']),
+				'user_agent' => isset($event['user_agent']) ? $event['user_agent'] : $_SERVER['HTTP_USER_AGENT'],
+				'date_expires' => isset($event['date_expires']) ? date('Y-m-d H:i:s', strtotime($event['date_expires'])) : date('Y-m-d H:i:s', strtotime('+3 months')),
+				'date_created' => date('Y-m-d H:i:s'),
+			];
+
+			$event = array_filter($event, function($val){
+				return $val != null;
+			});
+
+			if (preg_match('#bot|crawl#', $event['hostname']) || preg_match('#bot|crawl#', $event['user_agent'])) {
+				return;
+			}
+
+			database::query(
+				"insert into ". DB_TABLE_PREFIX ."customers_activity
+				(`". implode("`, `", database::input(array_keys($event))) ."`)
+				values ('". implode("', '", database::input($event)) ."');"
+			);
+		}
 	}

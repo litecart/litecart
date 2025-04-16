@@ -2,6 +2,12 @@
 
 	header('X-Robots-Tag: noindex');
 
+	customer::log([
+		'type' => 'sign_out',
+		'description' => 'User signed out',
+		'date_expires' => strtotime('+12 months'),
+	]);
+
 	cart::reset();
 	customer::reset();
 

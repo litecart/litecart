@@ -31,6 +31,15 @@
 			}
 		}
 
+		customer::log([
+			'type' => 'search',
+			'description' => 'User searched for products',
+			'data' => [
+				'query' => $_GET['query'],
+			],
+			'date_expires' => strtotime('+12 months'),
+		]);
+
 	} catch(Exception $e) {
 		http_response_code(400);
 		$search_results = ['error' => $e->getMessage()];

@@ -59,13 +59,45 @@
 				}
 
 				self::add_product($_POST['product_id'], fallback($_POST['stock_option_id'], null), $userdata, isset($_POST['quantity']) ? $_POST['quantity'] : 1);
+
+				customer::log([
+					'type' => 'add_cart_item',
+					'description' => 'User added an item to cart',
+					'data' => [
+						'product_id' => $_POST['product_id'],
+						'stock_option_id' => isset($_POST['stock_option_id']) ? $_POST['stock_option_id'] : null,
+						'quantity' => isset($_POST['quantity']) ? $_POST['quantity'] : 1,
+						'userdata' => isset($userdata) ? $userdata : [],
+					],
+					'date_expires' => strtotime('+6 months'),
+				]);
+
 				header('Location: '. $_SERVER['REQUEST_URI']);
 				exit;
 			}
 
 			// Event handler for removing product from cart
 			if (!empty($_POST['remove_cart_item'])) {
-				self::remove($_POST['remove_cart_item']);
+
+				$item_key = $_POST['remove_cart_item'];
+
+				if (isset(self::$items[$item_key])) {
+
+					customer::log([
+						'type' => 'remove_cart_item',
+						'description' => 'User removed an item from cart',
+						'data' => [
+							'product_id' => cart::$items[$item_key]['product_id'],
+							'stock_option_id' => cart::$items[$item_key]['stock_option_id'],
+							'quantity' => cart::$items[$item_key]['quantity'],
+							'userdata' => cart::$items[$item_key]['userdata'],
+						],
+						'date_expires' => strtotime('+6 months'),
+					]);
+
+					self::remove($item_key);
+				}
+
 				header('Location: '. $_SERVER['REQUEST_URI']);
 				exit;
 			}

@@ -16,6 +16,15 @@
 			limit 1;"
 		);
 
+		customer::log([
+			'type' => 'banner_click',
+			'description' => 'User clicked a banner',
+			'data' => [
+				'banner_id' => $_POST['banner_id'],
+			],
+			'date_expires' => strtotime('+12 months'),
+		]);
+
 	} catch (Exception $e) {
 		http_response_code($e->getCode() ?: 500);
 		die('Error: '. $e->getMessage());
