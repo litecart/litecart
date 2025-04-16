@@ -6,7 +6,9 @@
 
 		function __construct($order_status_id, $language_code=null) {
 
-			if (empty($language_code)) $language_code = language::$selected['code'];
+			if (!$language_code) {
+				$language_code = language::$selected['code'];
+			}
 
 			$this->_data['id'] = (int)$order_status_id;
 			$this->_language_codes = array_unique([
@@ -26,7 +28,7 @@
 						"select * from ". DB_TABLE_PREFIX ."order_statuses
 						where id = ". (int)$this->_data['id'] ."
 						limit 1;"
-					)->fetch(function($staus) {
+					)->fetch(function($status) {
 
 						foreach ([
 							'name',

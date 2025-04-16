@@ -71,32 +71,32 @@
 		</div>
 	</div>
 
-	<?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
+	<?php echo functions::form_begin('filter_form', 'get'); ?>
 
-		<?php echo functions::form_draw_hidden_field('app'); ?>
-		<?php echo functions::form_draw_hidden_field('doc'); ?>
+		<?php echo functions::form_input_hidden('app'); ?>
+		<?php echo functions::form_input_hidden('doc'); ?>
 
 		<div class="card-filter">
 
 			<div class="expandable">
-				<?php echo functions::form_draw_search_field('query', true, 'placeholder="'. functions::escape_html(language::translate('title_item_name_or_sku', 'Item Name or SKU')) .'"'); ?>
+				<?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_html(language::translate('title_item_name_or_sku', 'Item Name or SKU')) .'"'); ?>
 			</div>
 
-			<div class="input-group">
-				<?php echo functions::form_draw_month_field('date_from'); ?>
+			<div class="input-group" style="width: 450px;">
+				<?php echo functions::form_input_month('date_from'); ?>
 				<span class="input-group-text">-</span>
-				<?php echo functions::form_draw_month_field('date_to'); ?>
+				<?php echo functions::form_input_month('date_to'); ?>
 			</div>
 
-			<?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?>
+			<?php echo functions::form_button('filter', functions::draw_fonticon('icon-funnel') .' '. language::translate('title_filter_now', 'Filter')); ?>
 
 		</div>
 
 		<div class="card-action">
-			<?php echo functions::form_draw_button('download', functions::draw_fonticon('fa-download') .' '. language::translate('title_download', 'Download')); ?>
+			<?php echo functions::form_button('download', functions::draw_fonticon('icon-download') .' '. language::translate('title_download', 'Download')); ?>
 		</div>
 
-	<?php echo functions::form_draw_form_end(); ?>
+	<?php echo functions::form_end(); ?>
 
 	<table class="table table-striped data-table">
 		<thead>

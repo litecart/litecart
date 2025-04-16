@@ -53,7 +53,7 @@
 		<?php echo functions::form_begin('filter_form', 'get'); ?>
 			<ul class="list-inline">
 				<li><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
-				<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_banner'), language::translate('title_create_new_banner', 'Create New Banner'), '', 'add'); ?></li>
+				<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_banner'), language::translate('title_create_new_banner', 'Create New Banner'), '', 'create'); ?></li>
 			</ul>
 		<?php echo functions::form_end(); ?>
 	</div>
@@ -104,12 +104,16 @@
 
 		<div class="card-body">
 			<fieldset id="actions">
-				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
+
+				<legend>
+					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+				</legend>
 
 				<div class="btn-group">
 					<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
 					<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
+
 			</fieldset>
 		</div>
 

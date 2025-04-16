@@ -13,32 +13,32 @@
 
 						<div class="grid">
 							<div class="col-md-6">
-								<div class="form-label">
+								<div class="form-group">
 									<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 									<?php echo functions::form_input_text('name', true, 'required'); ?>
 								 </div>
 							</div>
 
 							<div class="col-md-6">
-								<div class="form-label">
+								<div class="form-group">
 									<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
 									<?php echo functions::form_input_email('email', true, 'required'); ?>
 								 </div>
 							</div>
 						</div>
 
-						<div class="form-label">
+						<div class="form-group">
 							<div class="form-label"><?php echo language::translate('title_subject', 'Subject'); ?></div>
 							<?php echo functions::form_input_text('subject', true, 'required'); ?>
 						 </div>
 
-						<div class="form-label">
+						<div class="form-group">
 							<div class="form-label"><?php echo language::translate('title_message', 'Message'); ?></div>
 							<?php echo functions::form_textarea('message', true, 'required style="height: 250px;"'); ?>
 						 </div>
 
 						<?php if (settings::get('captcha_enabled')) { ?>
-						<div class="form-label" style="max-width: 250px;">
+						<div class="form-group" style="max-width: 250px;">
 							<div class="form-label"><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></div>
 							<?php echo functions::form_captcha('contact_us'); ?>
 						 </div>

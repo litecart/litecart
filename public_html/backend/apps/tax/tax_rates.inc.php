@@ -25,7 +25,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_tax_rate'), language::translate('title_create_new_tax_rate', 'Create New Tax Rate'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_tax_rate'), language::translate('title_create_new_tax_rate', 'Create New Tax Rate'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('tax_rates_form', 'post'); ?>

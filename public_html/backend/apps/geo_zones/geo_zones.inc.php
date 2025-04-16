@@ -64,7 +64,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_geo_zone'), language::translate('title_create_new_geo_zone', 'Create New Geo Zone'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_geo_zone'), language::translate('title_create_new_geo_zone', 'Create New Geo Zone'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('geo_zones_form', 'post'); ?>
@@ -101,9 +101,13 @@
 
 		<div class="card-body">
 			<fieldset id="actions">
-				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
+
+				<legend>
+					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+				</legend>
 
 				<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
+
 			</fieldset>
 		</div>
 

@@ -203,12 +203,16 @@
 
 		<div class="card-body">
 			<fieldset id="actions" disabled>
-				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
+
+				<legend>
+					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+				</legend>
 
 				<div class="btn-group">
 					<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
 					<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
+
 			</fieldset>
 		</div>
 

@@ -4,7 +4,7 @@
 	<div class="card-header">
 
 		<?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
-		<div style="float: right;">
+		<div class="float-end">
 			<a class="btn btn-outline btn-sm" href="<?php echo document::ilink('account/sign_in', ['redirect_url' => document::ilink('checkout')]) ?>#box-login" data-toggle="lightbox" data-require-window-width="768" data-seamless="true">
 				<?php echo language::translate('title_sign_in', 'Sign In'); ?>
 			</a>
@@ -16,9 +16,9 @@
 		</h2>
 	</div>
 
-	<div class="card-body addresses">
+	<div id="addresses" class="card-body">
 
-		<div class="details">
+		<div id="billing-address" class="details">
 			<div class="grid">
 
 				<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
@@ -34,7 +34,7 @@
 				<div class="col-sm-6">
 					<?php if (settings::get('customer_field_tax_id')) { ?>
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></div>
+						<div class="form-label"><?php echo language::translate('title_tax_id', 'Tax ID'); ?> / <?php echo language::translate('title_vatin', 'VATIN'); ?></div>
 						<?php echo functions::form_input_text('customer[tax_id]', true); ?>
 					</label>
 					<?php } ?>
@@ -128,26 +128,24 @@
 			</div>
 		</div>
 
-		<div class="address shipping-address">
+		<div id="shipping-address">
 
 			<h3><?php echo functions::form_checkbox('different_shipping_address', ['1', language::translate('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
 
-			<fieldset<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : ''; ?>>
+			<fieldset class="details"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : ''; ?>>
 
-				<div class="form-grid">
-
-					<?php if (settings::get('customer_field_company')) { ?>
+				<?php if (settings::get('customer_field_company')) { ?>
+				<div class="grid">
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_company_name', 'Company Name'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</div>
 							<?php echo functions::form_input_text('shipping_address[company]', true); ?>
 						</label>
 					</div>
+				</div>
+				<?php } ?>
 
-					<div class="col-0 col-sm-6">
-					</div>
-					<?php } ?>
-
+				<div class="grid">
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_firstname', 'First Name'); ?></div>
@@ -161,7 +159,9 @@
 							<?php echo functions::form_input_text('shipping_address[lastname]', true); ?>
 						</label>
 					</div>
+				</div>
 
+				<div class="grid">
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_address1', 'Address 1'); ?></div>
@@ -175,19 +175,25 @@
 							<?php echo functions::form_input_text('shipping_address[address2]', true); ?>
 						</label>
 					</div>
+				</div>
 
+				<div class="grid">
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_postcode', 'Postal Code'); ?></div>
 							<?php echo functions::form_input_text('shipping_address[postcode]', true); ?>
 						</label>
+					</div>
 
+					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_city', 'City'); ?></div>
 							<?php echo functions::form_input_text('shipping_address[city]', true); ?>
 						</label>
 					</div>
+				</div>
 
+				<div class="grid">
 					<div class="col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_country', 'Country'); ?></div>
@@ -199,11 +205,13 @@
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></div>
-							<?php echo functions::form_select_zone('shipping_address[zone_code]', isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : $_POST['country_code'], true); ?>
+							<?php echo functions::form_select_zone('shipping_address[zone_code]', isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : $_POST['customer']['country_code'], true); ?>
 						</label>
 					</div>
 					<?php } ?>
+				</div>
 
+				<div class="grid">
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
@@ -231,7 +239,7 @@
 
 			<fieldset<?php echo (empty($_POST['sign_up'])) ? ' style="display: none;" disabled' : ''; ?>>
 
-				<div class="form-grid">
+				<div class="grid">
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_desired_password', 'Desired Password'); ?></div>
@@ -257,9 +265,15 @@
 		</div>
 
 		<div>
+			<?php if (route::$selected['resource'] == 'f:customer') { ?>
+			<button class="btn btn-lg btn-default btn-block" name="save_customer_details" type="submit">
+				<?php echo language::translate('title_continue', 'Continue'); ?>
+			</button>
+			<?php } else { ?>
 			<button class="btn btn-lg btn-default btn-block" name="save_customer_details" type="submit">
 				<?php echo language::translate('title_save_changes', 'Save Changes'); ?>
 			</button>
+			<?php } ?>
 		</div>
 
 	</div>
@@ -306,11 +320,11 @@
 
 	// Customer Form: Toggles
 
-	$('#modal-customer input[name="different_shipping_address"]').on('change', function(e) {
+	$('#shipping-address input[name="different_shipping_address"]').on('change', function(e) {
 		if (this.checked == true) {
-			$('#modal-customer .shipping-address fieldset').prop('disabled', false).slideDown('fast');
+			$('#shipping-address fieldset').prop('disabled', false).slideDown('fast');
 		} else {
-			$('#modal-customer .shipping-address fieldset').prop('disabled', true).slideUp('fast');
+			$('#shipping-address fieldset').prop('disabled', true).slideUp('fast');
 		}
 	});
 
@@ -324,42 +338,42 @@
 
 	// Customer Form: Get Address
 
-	$('#modal-customer .billing-address :input').on('change', function() {
+	$('#billing-address :input').on('change', function() {
 		if ($(this).val() == '') return;
 		console.log('Get address (Trigger: '+ $(this).attr('name') +')');
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
 			type: 'post',
-			data: $('.billing-address :input').serialize(),
+			data: $('#billing-address :input').serialize(),
 			cache: false,
 			async: true,
 			dataType: 'json',
 			success: function(data) {
 				if (data['alert']) alert(data['alert']);
 				$.each(data, function(key, value) {
-					if ($('.billing-address :input[name$="['+key+']"]').length && $('.billing-address *[name="'+key+'"]').val() == '') {
-						$('.billing-address :input[name$="['+key+']"]').val(value).trigger('input');
+					if ($('#billing-address :input[name$="['+key+']"]').length && $('#billing-address *[name="'+key+'"]').val() == '') {
+						$('#billing-address :input[name$="['+key+']"]').val(value).trigger('input');
 					}
 				});
 			},
 		});
 	});
 
-	$('#modal-customer .shipping-address :input').on('change', function() {
+	$('#shipping-address :input').on('change', function() {
 		if ($(this).val() == '') return;
 		console.log('Get address (Trigger: '+ $(this).attr('name') +')');
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
 			type: 'post',
-			data: $('.shipping-address :input').serialize(),
+			data: $('#shipping-address :input').serialize(),
 			cache: false,
 			async: true,
 			dataType: 'json',
 			success: function(data) {
 				if (data['alert']) alert(data['alert']);
 				$.each(data, function(key, value) {
-					if ($('.shipping-address :input[name$="['+key+']"]').length && $('.shipping-address *[name="'+key+'"]').val() == '') {
-						$('.shipping-address :input[name$="['+key+']"]').val(value).trigger('input');
+					if ($('#shipping-address :input[name$="['+key+']"]').length && $('#shipping-address *[name="'+key+'"]').val() == '') {
+						$('#shipping-address :input[name$="['+key+']"]').val(value).trigger('input');
 					}
 				});
 			},

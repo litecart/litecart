@@ -128,5 +128,5 @@ waitFor('jQuery', ($) => {
 		});
 	};
 
-	$('[data-toggle*="momentumScroll"]').momentumScroll();
+	$('[data-toggle*="momentum-scroll"]').momentumScroll();
 });

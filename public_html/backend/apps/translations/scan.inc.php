@@ -211,6 +211,7 @@ table.data-table td {
 								<th><?php echo language::translate('title_translation', 'Translation'); ?></th>
 							</tr>
 						</thead>
+
 						<tbody>
 							<?php foreach ($orphan as $row) { ?>
 							<tr>

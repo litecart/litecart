@@ -13,7 +13,7 @@
 	.card-filter,
 	.card-body,
 	.card-footer {
-		padding: 2em;
+		padding: ~"calc(var(--gutter-y) / 2)" var(--gutter-x);
 	}
 
 	.card-filter {
@@ -31,18 +31,23 @@
 	}
 
 	> *[class*="card-"]:first-child {
-		padding-top: 2em;
-		padding-bottom: 1em;
+		padding-top: var(--gutter-y);
 		border-start-start-radius: var(--border-radius);
 		border-start-end-radius: var(--border-radius);
 	}
-	> *[class*="card-"]:last-child {
-		padding-bottom: 2em;
+	> *[class*="card-"]:last-child,
+	> form:last-child *[class*="card-"]:last-child {
+		padding-bottom: var(--gutter-y);
 	}
 	> *[class*="card-footer"]:last-child {
-		padding-top: 2em;
+		padding-top: var(--gutter-y);
 		border-end-start-radius: var(--border-radius);
 		border-end-end-radius: var(--border-radius);
+	}
+
+	> table,
+	> form > table {
+		margin: 1em 0;
 	}
 
 	.card-header {

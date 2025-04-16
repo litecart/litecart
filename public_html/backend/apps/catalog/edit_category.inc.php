@@ -287,7 +287,7 @@
 
 				<div id="tab-filters" class="tab-content" style="max-width: 720px;">
 
-					<table class="data-table">
+					<table class="table data-table">
 						<thead>
 							<tr>
 								<th><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></th>
@@ -306,9 +306,13 @@
 									<?php echo functions::escape_html($_POST['filters'][$key]['attribute_group_name']); ?>
 								</td>
 								<td class="grabbable"><?php echo functions::form_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
-								<td class="text-end">
-									<a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
-									<a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
+								<td>
+									<div class="btn-group">
+										<a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
+										<a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
+									</div>
+								</td>
+								<td>
 									<a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
 								</td>
 							</tr>
@@ -394,16 +398,20 @@
 
 		let output = [
 			'<tr class="grabbable">',
-			'  <?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][id]', '')); ?>',
-			'  <?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>',
-			'  <?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>',
-			'  <td>new_attribute_group_name</td>',
-			'  <td><?php echo functions::form_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>',
-			'  <td class="text-end">',
-			'    <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>',
-			'    <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>',
-			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>',
-			'  </td>',
+			'	<?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][id]', '')); ?>',
+			'	<?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>',
+			'	<?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>',
+			'	<td>new_attribute_group_name</td>',
+			'	<td><?php echo functions::form_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>',
+			'	<td class="text-end">',
+			'		<div class="btn-group">',
+			'			<a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>',
+			'			<a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>',
+			'		</div>',
+			'	</td>',
+			'	<td>',
+			'		<a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>',
+			'	</td>',
 			'</tr>',
 	 ].join('\n');
 

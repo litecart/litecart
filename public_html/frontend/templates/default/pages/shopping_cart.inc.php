@@ -129,10 +129,12 @@
 								</div>
 							</div>
 
+							<?php if (empty(customer::$data['email'])) { ?>
 							<div class="form-group">
 								<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
 								<?php echo functions::form_input_email('email', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
 							</div>
+							<?php } ?>
 
 							<div class="">
 								<?php echo functions::form_button('checkout', language::translate('title_continue_to_checkout', 'Continue To Checkout') .' '. functions::draw_fonticon('icon-arrow-right'), 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>

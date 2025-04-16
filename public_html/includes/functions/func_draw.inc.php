@@ -127,8 +127,9 @@
 		}
 
 		switch ($icon) {
-			case 'add':         return draw_fonticon('icon-square-pen');
+			case 'add':         return draw_fonticon('icon-plus');
 			case 'cancel':      return draw_fonticon('icon-times');
+			case 'create':      return draw_fonticon('icon-square-pen');
 			case 'company':     return draw_fonticon('icon-building', 'style="color: #888;"');
 			case 'delete':      return draw_fonticon('icon-trash');
 			case 'download':    return draw_fonticon('icon-download');
@@ -280,16 +281,20 @@
 			return '';
 		}
 
+		if ($final_price > $regular_price) {
+			list($regular_price, $final_price) = [$final_price, $regular_price];
+		}
+
 		if (!isset($currency_code)) {
 			$currency_code = currency::$selected['code'];
 		}
 
-		if ($final_price !== null && $regular_price === null) {
-			$price_tag[] = '<strong class="sale-price">'. currency::format($final_price, true, currency::$selected['code'], 1) .'</strong>';
-		} else if ($final_price !== null && $final_price < $regular_price) {
+		$price_tag = ['<div class="price-tag">'];
+
+		if ($final_price !== null && $final_price < $regular_price) {
 			$price_tag[] = '	<del class="regular-price">'. currency::format($regular_price, true, currency::$selected['code'], 1) .'</del> <strong class="sale-price">'. currency::format($final_price, true, currency::$selected['code'], 1) .'</strong>';
 		} else {
-			$price_tag[] = '	<span class="price">'. currency::format($regular_price, true, currency::$selected['code'], 1) .'</span>';
+			$price_tag[] = '	<span class="regular-price">'. currency::format($regular_price, true, currency::$selected['code'], 1) .'</span>';
 		}
 
 		$price_tag[] = '</div>';

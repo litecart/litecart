@@ -367,7 +367,7 @@ table .icon-star-o:hover {
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_order', ['redirect_url' => $_SERVER['REQUEST_URI']]), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_order', ['redirect_url' => $_SERVER['REQUEST_URI']]), language::translate('title_create_new_order', 'Create New Order'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>

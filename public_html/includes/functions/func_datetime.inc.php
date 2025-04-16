@@ -14,11 +14,6 @@
 			$timestamp = new \DateTime($timestamp);
 		}
 
-		if (!extension_loaded('intl')) {
-			trigger_error('You need the PHP Intl extension enabled to format dates', E_USER_WARNING);
-			return date('Y-m-d H:i:s', $timestamp);
-		}
-
 		if (!($timestamp instanceof \DateTimeInterface)) {
 			trigger_error('$timestamp argument is neither a valid UNIX timestamp, a valid date-time string or a DateTime object.', E_USER_WARNING);
 			return 'n/a';
@@ -30,6 +25,20 @@
 			'date' => language::$selected['format_date'],
 			'time' => language::$selected['format_time'],
 		]);
+
+		if (!extension_loaded('intl')) {
+
+			if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+				return strftime($format, $timestamp->getTimestamp(), $timestamp->getTimezone()->getName());
+
+			} else if (version_compare(PHP_VERSION, '9.0.0', '<')) {
+				return @strftime($format, $timestamp->getTimestamp(), $timestamp->getTimezone()->getName());
+
+			} else {
+				trigger_error('You need the PHP Intl extension enabled to format dates', E_USER_WARNING);
+				return date('Y-m-d H:i:s', $timestamp);
+			}
+		}
 
 		$intl_formats = [
 			'%a' => 'EEE',	// An abbreviated textual representation of the day	Sun through Sat
@@ -205,7 +214,7 @@
 		}
 
 		if ($timestamp > (new \DateTime())->modify('-1 hour')) {
-			return strtr(language::translate('text_n_minutes_ago', '%n minutes_ago'), ['%n' => (new \DateTime())->diff($timestamp)->i]);
+			return strtr(language::translate('text_n_minutes_ago', '%n minutes ago'), ['%n' => (new \DateTime())->diff($timestamp)->i]);
 		}
 
 		if ($timestamp > (new \DateTime())->setTime(0, 0)) {

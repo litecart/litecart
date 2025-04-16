@@ -311,7 +311,7 @@
 
 			<div class="card-body">
 				<div id="actions">
-					<?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger"', 'delete'); ?>
+					<?php echo functions::form_button_predefined('delete'); ?>
 				</div>
 			</div>
 

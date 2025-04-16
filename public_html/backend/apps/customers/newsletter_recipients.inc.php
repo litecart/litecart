@@ -139,7 +139,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button('add_recipients', language::translate('title_add_recipients', 'Add Recipients'), 'button', '', 'add'); ?>
+		<?php echo functions::form_button('add_recipients', language::translate('title_add_recipients', 'Add Recipients'), 'button', '', 'create'); ?>
 		<?php echo functions::form_button_link(document::ilink(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"', 'icon-output'); ?>
 	</div>
 
@@ -190,15 +190,20 @@
 
 		<div class="card-body">
 			<fieldset id="actions" disabled>
-				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-				<div class="flex flex-inline">
+				<legend>
+					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+				</legend>
+
+				<div class="flex">
+
 					<div class="btn-group">
 						<?php echo functions::form_button('subscribe', language::translate('title_set_as_subscribed', 'Set As Subscribed'), 'submit', 'class="btn btn-default"', 'icon-check'); ?>
 						<?php echo functions::form_button('unsubscribe', language::translate('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'icon-times'); ?>
 					</div>
 
 					<?php echo functions::form_button_predefined('delete'); ?>
+
 				</div>
 			</fieldset>
 		</div>

@@ -10,12 +10,14 @@
 
 			foreach ($_POST['vmods'] as $vmod) {
 
+				$filename = pathinfo($vmod, PATHINFO_FILENAME); // Remove extension
+
 				if (!empty($_POST['enable'])) {
-					if (!is_file(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled')) continue;
-					rename(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled', FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml');
+					if (!is_file('storage://vmods/' . $filename .'.disabled')) continue;
+					rename('storage://vmods/' . $filename .'.disabled', 'storage://vmods/' . $filename .'.xml');
 				} else {
-					if (!is_file(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml')) continue;
-					rename(FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml', FS_DIR_STORAGE . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled');
+					if (!is_file(FS_DIR_STORAGE . 'vmods/' . $filename .'.xml')) continue;
+					rename('storage://vmods/' . $filename .'.xml', 'storage://vmods/' . $filename .'.disabled');
 				}
 			}
 
@@ -103,8 +105,9 @@
 		$vmod = vmod::parse_xml($dom, $file);
 
 		$vmod = array_merge($vmod, [
+			'id' => pathinfo($file, PATHINFO_FILENAME),
 			'filename' => pathinfo($file, PATHINFO_BASENAME),
-			'status' => preg_match('#\.xml$#', $file),
+			'status' => preg_match('#\.xml$#', $file) ? true : false,
 			'errors' => null,
 		]);
 
@@ -127,8 +130,10 @@
 
 						if (!$found) {
 							switch ($operation['onerror']) {
+
 								case 'ignore':
 									continue 2;
+
 								case 'abort':
 								case 'warning':
 								default:
@@ -180,7 +185,7 @@
 
 	<div class="card-action">
 		<?php echo functions::form_button_link(document::ilink('settings/advanced', ['action' => 'edit', 'key' => 'cache_clear']), language::translate('title_clear_cache', 'Clear Cache'), '', 'icon-square-out'); ?>
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_vmod'), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_vmod'), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('vmod_form', 'post', '', true); ?>
@@ -250,19 +255,21 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<fieldset id="actions" disabled>
-						<legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-						<ul class="list-inline">
-							<li>
-								<div class="btn-group">
-									<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-									<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-								</div>
-							</li>
-							<li>
-								<?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="'. functions::escape_attr('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'delete'); ?>
-							</li>
-						</ul>
+						<legend>
+							<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+						</legend>
+
+						<div class="flex">
+
+							<div class="btn-group">
+								<?php echo functions::form_button_predefined('enable'); ?>
+								<?php echo functions::form_button_predefined('disable'); ?>
+							</div>
+
+							<?php echo functions::form_button_predefined('delete'); ?>
+
+						</div>
 					</fieldset>
 			</div>
 

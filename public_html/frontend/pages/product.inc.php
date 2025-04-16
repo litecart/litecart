@@ -358,7 +358,7 @@
 			],
 		];
 
-		$cheapest_shipping = (new mod_shipping())->cheapest($tmp_order);
+		$cheapest_shipping = (new mod_shipping)->cheapest($tmp_order);
 
 		if ($cheapest_shipping) {
 			$_page->snippets['cheapest_shipping_fee'] = tax::get_price($cheapest_shipping['fee'], $cheapest_shipping['tax_class_id']);

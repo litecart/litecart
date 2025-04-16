@@ -382,8 +382,8 @@ table .icon-folder-open {
 
 	<div class="card-action">
 		<ul class="list-inline">
-			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_category', isset($_GET['category_id']) ? ['parent_id' => $_GET['category_id']] : []), language::translate('title_create_new_category', 'Create New Category'), '', 'add'); ?></li>
-			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_product', [], ['category_id']), language::translate('title_create_new_product', 'Create New Product'), '', 'add'); ?></li>
+			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_category', isset($_GET['category_id']) ? ['parent_id' => $_GET['category_id']] : []), language::translate('title_create_new_category', 'Create New Category'), '', 'create'); ?></li>
+			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_product', [], ['category_id']), language::translate('title_create_new_product', 'Create New Product'), '', 'create'); ?></li>
 		</ul>
 	</div>
 
@@ -650,34 +650,34 @@ table .icon-folder-open {
 
 		<div class="card-body">
 			<fieldset id="actions">
-				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-				<ul class="list-inline">
-					<li>
-						<div class="btn-group">
-							<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-							<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-						</div>
-					</li>
-					<li>
-						<div style="min-width: 250px;">
-							<?php echo functions::form_select_category('category_id', true); ?>
-						</div>
-					</li>
-					<li>
-						<div class="btn-group">
-							<?php echo functions::form_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('warning_previous_mount_points_will_be_reset', 'Warning: All previous mount points will be reset.')) .'\')) return false;"'); ?>
-							<?php echo functions::form_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?>
-							<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
-						</div>
-					</li>
-					<li>
-						<?php echo functions::form_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?>
-					</li>
-					<li>
-						<?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"', 'delete'); ?>
-					</li>
-				</ul>
+				<legend>
+					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+				</legend>
+
+				<div class="flex">
+
+					<div class="btn-group">
+						<?php echo functions::form_button_predefined('enable'); ?>
+						<?php echo functions::form_button_predefined('disable'); ?>
+					</div>
+
+					<div style="min-width: 250px;">
+						<?php echo functions::form_select_category('category_id', true); ?>
+					</div>
+
+					<div class="btn-group">
+						<?php echo functions::form_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('warning_previous_mount_points_will_be_reset', 'Warning: All previous mount points will be reset.')) .'\')) return false;"'); ?>
+						<?php echo functions::form_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?>
+						<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
+					</div>
+
+					<?php echo functions::form_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?>
+
+					<?php echo functions::form_button_predefined('delete'); ?>
+
+				</div>
+
 			</fieldset>
 		</div>
 

@@ -108,7 +108,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_item'), language::translate('title_create_new_stock_item', 'Create New Stock Item'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_item'), language::translate('title_create_new_stock_item', 'Create New Stock Item'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
@@ -166,13 +166,13 @@
 
 		<div class="card-body">
 			<fieldset id="actions">
-				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-				<ul class="list-inline">
-					<li>
-						<?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"', 'delete'); ?>
-					</li>
-				</ul>
+				<legend>
+					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+				</legend>
+
+				<?php echo functions::form_button_predefined('delete'); ?>
+
 			</fieldset>
 		</div>
 

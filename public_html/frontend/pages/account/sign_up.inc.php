@@ -108,9 +108,10 @@
 				throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 
-			$mod_customer = new mod_customer();
-			$result = $mod_customer->validate($_POST);
-			if (!empty($result['error'])) throw new Exception($result['error']);
+			$result = (new mod_customer)->validate($_POST);
+			if (!empty($result['error'])) {
+				throw new Exception($result['error']);
+			}
 
 			$address = new ent_customer_address();
 

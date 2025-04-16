@@ -30,7 +30,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_attribute_group'), language::translate('title_create_new_group', 'Create New Group'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_attribute_group'), language::translate('title_create_new_group', 'Create New Group'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('attributes_form', 'post'); ?>

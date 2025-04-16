@@ -116,7 +116,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink('customers/edit_customer'), language::translate('title_create_new_customer', 'Create New Customer'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink('customers/edit_customer'), language::translate('title_create_new_customer', 'Create New Customer'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
@@ -175,14 +175,20 @@
 
 		<div class="card-body">
 			<fieldset id="actions">
-				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-				<div class="flex flex-columns flex-gap">
+				<legend>
+					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+				</legend>
+
+				<div class="flex">
+
 					<div div class="btn-group">
-						<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-						<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+						<?php echo functions::form_button_predefined('enable'); ?>
+						<?php echo functions::form_button_predefined('disable'); ?>
 					</div>
-					<?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
+
+					<?php echo functions::form_button_predefined('delete'); ?>
+
 				</div>
 			</fieldset>
 		</div>

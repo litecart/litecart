@@ -43,7 +43,7 @@
 
 	<div class="card-action">
 		<ul class="list-inline">
-			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_site_tag'), language::translate('title_create_new_site_tag', 'Create New Site Tag'), '', 'add'); ?></li>
+			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_site_tag'), language::translate('title_create_new_site_tag', 'Create New Site Tag'), '', 'create'); ?></li>
 		</ul>
 	</div>
 
@@ -71,7 +71,7 @@
 					<td class="text-center"><?php echo $site_tag['require_consent'] ? functions::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo $site_tag['position']; ?></td>
 					<td class="text-center"><?php echo (int)$site_tag['priority']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php }?>
 			</tbody>
@@ -85,7 +85,10 @@
 
 		<div class="card-body">
 			<fieldset id="actions" disabled>
-				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
+
+				<legend>
+					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+				</legend>
 
 				<div class="btn-group">
 					<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>

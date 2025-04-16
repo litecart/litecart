@@ -210,13 +210,13 @@
 
 		if (empty($path)) return $path;
 
-		$path = str_replace('\\', '/', $path);
-		$path = preg_replace('#(?<!:)//+#', '/', $path);
+		$path = str_replace('\\', '/', $path); // Normalize
+		$path = preg_replace('#(?<!:)//+#', '/', $path); // Remove multiple directory separators
 
 		$new_path = [];
 
 		foreach (explode('/', $path) as $part) {
-			if (empty($part) || $part === '.') continue;
+			if ($part === '.') continue;
 
 			if ($part !== '..') array_push($new_path, $part);
 			else if (count($new_path) > 0) array_pop($new_path);

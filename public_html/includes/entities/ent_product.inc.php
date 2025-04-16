@@ -23,14 +23,6 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
-			$this->data['categories'] = [];
-			$this->data['images'] = [];
-			$this->data['prices'] = [];
-			$this->data['campaigns'] = [];
-			$this->data['attributes'] = [];
-			$this->data['customizations'] = [];
-			$this->data['stock_options'] = [];
-
 			$this->data['status'] = 1;
 			$this->data['tax_class_id'] = settings::get('default_tax_class_id');
 			$this->data['purchase_price_currency_code'] = settings::get('store_currency_code');
@@ -40,6 +32,15 @@
 			$this->data['quantity_min'] = 1;
 			$this->data['quantity_available'] = 0;
 			$this->data['quantity_reserved'] = 0;
+
+			$this->data['categories'] = [];
+			$this->data['feeds'] = [];
+			$this->data['images'] = [];
+			$this->data['prices'] = [];
+			$this->data['campaigns'] = [];
+			$this->data['attributes'] = [];
+			$this->data['customizations'] = [];
+			$this->data['stock_options'] = [];
 
 			$this->previous = $this->data;
 		}
@@ -389,11 +390,13 @@
 			$i = 0;
 			foreach ($this->data['attributes'] as $key => $attribute) {
 				if (empty($attribute['id'])) {
+
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."products_attributes
 						(product_id, group_id, value_id, custom_value)
 						values (". (int)$this->data['id'] .", ". (int)$attribute['group_id'] .", ". (int)$attribute['value_id'] .", '". database::input($attribute['custom_value']) ."');"
 					);
+
 					$this->data['attributes'][$key]['id'] = $attribute['id'] = database::insert_id();
 				}
 

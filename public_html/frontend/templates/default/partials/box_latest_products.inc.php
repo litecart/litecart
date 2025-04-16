@@ -5,7 +5,7 @@
 	</div>
 
 	<div class="card-body">
-		<div data-toggle="momentumScroll">
+		<div data-toggle="momentum-scroll">
 			<div class="listing products columns scroll-content">
 				<?php foreach ($products as $product) echo functions::draw_listing_product($product); ?>
 			</div>

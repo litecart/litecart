@@ -96,26 +96,26 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('third_party_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
+		<?php echo functions::form_begin('third_party_form', 'post', false, false, 'autocomplete="off" style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<div class="form-group">
-						<div class="form-group"><?php echo language::translate('title_status', 'Status'); ?></div>
+						<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
 						<?php echo functions::form_toggle('status', 'e/d', true); ?>
 					</div>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-group"><?php echo language::translate('title_name', 'Name'); ?></div>
+						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 						<?php echo functions::form_input_text('name', true, 'required'); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
-				<div class="form-group"><?php echo language::translate('title_privacy_classes', 'Privacy Classes'); ?></div>
+				<div class="form-label"><?php echo language::translate('title_privacy_classes', 'Privacy Classes'); ?></div>
 				<?php echo functions::form_select('privacy_classes[]', $privacy_classes_options, true); ?>
 			</label>
 
@@ -131,17 +131,17 @@
 				<div id="<?php echo $language_code; ?>" class="tab-pane<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 
 					<div class="form-group">
-						<div class="form-group"><?php echo language::translate('title_description', 'Description'); ?></div>
+						<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
 						<?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true); ?>
 					</div>
 
 					<label class="form-group">
-						<div class="form-group"><?php echo language::translate('title_collected_data', 'Collected Data'); ?></div>
+						<div class="form-label"><?php echo language::translate('title_collected_data', 'Collected Data'); ?></div>
 						<?php echo functions::form_regional_textarea('collected_data['. $language_code .']', $language_code, true); ?>
 					</label>
 
 					<label class="form-group">
-						<div class="form-group"><?php echo language::translate('title_purposes', 'Purposes'); ?></div>
+						<div class="form-label"><?php echo language::translate('title_purposes', 'Purposes'); ?></div>
 						<?php echo functions::form_regional_textarea('purposes['. $language_code .']', $language_code, true); ?>
 					</label>
 
@@ -152,36 +152,36 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-group"><?php echo language::translate('title_country_of_juristiction', 'Country of Juristiction'); ?></div>
+						<div class="form-label"><?php echo language::translate('title_country_of_juristiction', 'Country of Juristiction'); ?></div>
 						<?php echo functions::form_select_country('country_code', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-group"><?php echo language::translate('title_homepage', 'Homepage'); ?></div>
+						<div class="form-label"><?php echo language::translate('title_homepage', 'Homepage'); ?></div>
 						<?php echo functions::form_input_url('homepage', true, 'placeholder="https://..."'); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
-				<div class="form-group"><?php echo language::translate('title_third_policy', 'Cookie Policy'); ?></div>
+				<div class="form-label"><?php echo language::translate('title_third_policy', 'Cookie Policy'); ?></div>
 				<?php echo functions::form_input_url('cookie_policy_url', true, 'placeholder="https://..."'); ?>
 			</label>
 
 			<label class="form-group">
-				<div class="form-group"><?php echo language::translate('title_privacy_policy', 'Privacy Policy'); ?></div>
+				<div class="form-label"><?php echo language::translate('title_privacy_policy', 'Privacy Policy'); ?></div>
 				<?php echo functions::form_input_url('privacy_policy_url', true, 'placeholder="https://..."'); ?>
 			</label>
 
 			<label class="form-group">
-				<div class="form-group"><?php echo language::translate('title_opt_out', 'Opt Out'); ?></div>
+				<div class="form-label"><?php echo language::translate('title_opt_out', 'Opt Out'); ?></div>
 				<?php echo functions::form_input_url('opt_out_url', true, 'placeholder="https://..."'); ?>
 			</label>
 
 			<label class="form-group">
-				<div class="form-group"><?php echo language::translate('title_do_not_sell', 'Do Not Sell'); ?></div>
+				<div class="form-label"><?php echo language::translate('title_do_not_sell', 'Do Not Sell'); ?></div>
 				<?php echo functions::form_input_url('do_not_sell_url', true, 'placeholder="https://..."'); ?>
 			</label>
 
@@ -194,7 +194,7 @@
 		<?php echo functions::form_end(); ?>
 
 		<?php if (!empty($third_party->data['id'])) { ?>
-		<div class="form-code>
+		<div class="form-code" style="min-height: unset;">
 		<?php echo functions::escape_html(implode(PHP_EOL, [
 			'<script type="application/privacy-script" data-privacy-class="..." data-third-party-id="'. $third_party->data['id'] .'">',
 			'  ...',
@@ -202,7 +202,7 @@
 		])); ?>
 		</div>
 
-		<div class="form-code">
+		<div class="form-code" style="min-height: unset;">
 		<?php echo functions::escape_html(implode(PHP_EOL, [
 			'<script type="application/privacy-content" data-privacy-class="functional|experience|measuring|marketing" data-third-party-id="'. $third_party->data['id'] .'">',
 			'<![CDATA[',
@@ -212,11 +212,12 @@
 		])); ?>
 		</div>
 
-		<div class="form-code">
+		<div class="form-code" style="min-height: unset;">
 		<?php echo functions::escape_html(implode(PHP_EOL, [
 			'<div class="require-consent" data-privacy-class="functional|experience|measuring|marketing" data-third-party-id="'. $third_party->data['id'] .'" data-content="&lt;iframe src=&quot;...&quot;&gt;&lt;/iframe&gt;"></div>',
 		])); ?>
 		</div>
+		<?php } ?>
 	</div>
 </div>
 

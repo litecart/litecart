@@ -14,6 +14,7 @@
 
 			$log_file = ini_get('error_log');
 
+			ini_set('memory_limit', -1); // Unlimit memory for reading log file
 			$content = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($log_file));
 
 			foreach ($_POST['errors'] as $error) {

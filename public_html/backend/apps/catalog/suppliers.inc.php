@@ -25,7 +25,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_supplier'), language::translate('title_create_new_supplier', 'Create New Supplier'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_supplier'), language::translate('title_create_new_supplier', 'Create New Supplier'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('suppliers_form', 'post'); ?>

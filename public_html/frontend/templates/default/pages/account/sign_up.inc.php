@@ -19,7 +19,7 @@
 					<div class="card-body">
 						<?php echo functions::form_begin('customer_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
-							<div class="form-grid">
+							<div class="grid">
 
 								<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
 								<div class="col-sm-6">
@@ -31,7 +31,9 @@
 								<div class="col-0 col-sm-6">
 								</div>
 								<?php } ?>
+							</div>
 
+							<div class="grid">
 								<?php if (settings::get('customer_field_company')) { ?>
 								<div class="col-sm-6">
 									<label class="form-group">
@@ -49,7 +51,9 @@
 									</label>
 								</div>
 								<?php } ?>
+							</div>
 
+							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_firstname', 'First Name'); ?></div>
@@ -63,7 +67,9 @@
 										<?php echo functions::form_input_text('lastname', true, 'required'); ?>
 									</label>
 								</div>
+							</div>
 
+							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_address1', 'Address 1'); ?></div>
@@ -77,7 +83,9 @@
 										<?php echo functions::form_input_text('address2', true); ?>
 									</label>
 								</div>
+							</div>
 
+							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_postcode', 'Postal Code'); ?></div>
@@ -91,7 +99,9 @@
 										<?php echo functions::form_input_text('city', true); ?>
 									</label>
 								</div>
+							</div>
 
+							<div class="grid">
 								<div class="col-sm-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_country', 'Country'); ?></div>
@@ -107,7 +117,9 @@
 									</label>
 								</div>
 								<?php } ?>
+							</div>
 
+							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_email', 'Email'); ?></div>
@@ -121,7 +133,9 @@
 										<?php echo functions::form_input_phone('phone', true); ?>
 									</label>
 								</div>
+							</div>
 
+							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_desired_password', 'Desired Password'); ?></div>
@@ -135,34 +149,27 @@
 										<?php echo functions::form_input_password('confirmed_password', '', 'required'); ?>
 									</label>
 								</div>
-
-								<div class="col-12">
-									<div class="form-group">
-										<?php echo functions::form_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
-									</div>
-								</div>
-
-								<?php if ($consent) { ?>
-								<div class="col-12">
-									<div class="form-group">
-										<?php echo functions::form_checkbox('terms_agreed', ['1', $consent], true, 'required'); ?>
-									</div>
-								</div>
-								<?php } ?>
-
-								<?php if (settings::get('captcha_enabled')) { ?>
-								<div class="col-12">
-									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></div>
-										<?php echo functions::form_captcha('sign_up'); ?>
-									</label>
-								</div>
-								<?php } ?>
-
-								<div class="col-12">
-									<?php echo functions::form_button('sign_up', language::translate('title_sign_up', 'Sign Up')); ?>
-								</div>
 							</div>
+
+							<div class="form-group">
+								<?php echo functions::form_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
+							</div>
+
+							<?php if ($consent) { ?>
+
+								<div class="form-group">
+									<?php echo functions::form_checkbox('terms_agreed', ['1', $consent], true, 'required'); ?>
+								</div>
+							<?php } ?>
+
+							<?php if (settings::get('captcha_enabled')) { ?>
+								<label class="form-group">
+									<div class="form-label"><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></div>
+									<?php echo functions::form_captcha('sign_up'); ?>
+								</label>
+							<?php } ?>
+
+							<?php echo functions::form_button('sign_up', language::translate('title_sign_up', 'Sign Up')); ?>
 
 						<?php echo functions::form_end(); ?>
 					</div>

@@ -59,6 +59,14 @@
 			case 'save':
 				return functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"' . ($parameters ? ' '. $parameters : ''), 'save');
 
+			case 'quicksave':
+				return implode(PHP_EOL, [
+					'<div class="btn-group">',
+					'	'. functions::form_button('quicksave', ['true', ''], 'submit', 'class="btn btn-success btn-icon" title="'. functions::escape_attr(language::translate('title_quicksave', 'Quicksave')) .'" style="padding-left: .75em; padding-right: .75em;"', 'save'),
+					'	'. functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success" style="padding-left: .75em;"' . ($parameters ? ' '. $parameters : '')),
+					'</div>',
+				]);
+
 			case 'delete':
 				return functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(&quot;'. language::translate('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"' . ($parameters ? ' '. $parameters : ''), 'delete');
 

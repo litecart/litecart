@@ -90,7 +90,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_order_status'), language::translate('title_create_new_order_status', 'Create New Order Status'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_order_status'), language::translate('title_create_new_order_status', 'Create New Order Status'), '', 'create'); ?>
 		</ul>
 	</div>
 

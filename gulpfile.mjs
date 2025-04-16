@@ -194,6 +194,7 @@ gulp.task('iconly', function() {
 			'	font-variant: normal;',
 			'	text-rendering: auto;',
 			'	text-align: center;',
+			'	vertical-align: middle;',
 			'	line-height: 1;',
 			'	width: 1em;',
 			'\theight: 1em;',

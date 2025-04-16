@@ -23,7 +23,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_tax_class'), language::translate('title_create_new_tax_class', 'Create New Tax Class'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_tax_class'), language::translate('title_create_new_tax_class', 'Create New Tax Class'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('tax_classs_form', 'post'); ?>

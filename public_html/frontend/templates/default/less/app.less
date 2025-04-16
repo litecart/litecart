@@ -40,6 +40,7 @@ body {
 }
 
 #site-navigation {
+	margin-top: .5em;
 	.regional-settings {
 		text-decoration: none;
 		color: var(--navigation-text-color);
@@ -257,6 +258,8 @@ body {
 #site-footer {
 	background: var(--footer-background);
 	color: var(--footer-text-color);
+	box-shadow: var(--footer-shadow);
+	padding: 1em 0;
 
 	.row {
 		margin-bottom: 0;
@@ -311,11 +314,13 @@ body {
 
 #copyright {
 	background: var(--copyright-background);
-	box-shadow: inset 0 1em 1em 0px #0001;
+
+	.container {
+		padding: .5em var(--gutter-x);
+	}
 
 	.notice {
 		color: var(--copyright-text-color);
-		padding: 1rem;
 		text-align: center;
 		font-size: 0.75em;
 		letter-spacing: 0.5pt;
@@ -877,48 +882,7 @@ body {
 	}
 }
 
-[data-toggle="momentumScroll"] {
-	position: relative;
-	margin: calc(0px - var(--gutter-y)) calc(0px - var(--gutter-x));
-
-	.scroll-content {
-		padding: var(--gutter-y) var(--gutter-x);
-		overflow: hidden;
-		user-select: none;
-		touch-action: pan-x;
-		cursor: grab;
-
-		&::-webkit-scrollbar {
-			height: 0.5em;
-
-			* {
-				background: transparent;
-			}
-
-			&-thumb {
-				background: rgba(0, 0, 0, 0.25) !important;
-				border-radius: 6px;
-			}
-		}
-	}
-
-	button[name="left"],
-	button[name="right"] {
-		position: absolute;
-		top: 40%;
-		width: 3em;
-		height: 3em;
-		border-radius: var(--border-radius);
-		padding: 0;
-
-		&[name="left"] {
-			inset-inline-start: -20px;
-		}
-
-		&[name="right"] {
-			inset-inline-end: -20px;
-		}
-	}
+[data-toggle="momentum-scroll"] {
 
 	.listing {
 		display: flex;
@@ -984,7 +948,7 @@ body {
 		}
 	}
 
-	.price {
+	.price-tag {
 		font-size: 1.75em;
 
 		.regular-price {

@@ -171,8 +171,7 @@
 				'mpn' => $product->mpn,
 				'gtin' => $product->gtin,
 				'taric' => $product->taric,
-				'price' => $product->final_price,
-				'extras' => 0,
+				'price' => $product->final_price, // Will be recalculated later
 				'tax' => $product->tax,
 				'tax_class_id' => $product->tax_class_id,
 				'quantity' => $quantity,
@@ -237,118 +236,22 @@
 					}
 				}
 
+				if (($calculated_price = $product->calculate_price([
+					'quantity' => $quantity,
+					'stock_option_id' => $stock_option_id,
+					'userdata' => $userdata,
+				])) === false) {
+					throw new Exception(language::translate('error_price_not_available_or_determined', 'Price is not yet available or could not be determined'));
+				} else {
+					$item['price'] = $calculated_price;
+					$item['tax'] = tax::get_tax($calculated_price, $product->tax_class_id);
+				}
+
 				// Set image from stock option
 				if ($stock_option_id) {
 					$stock_option_images = array_column($product->stock_options, 'image', 'id');
 					if (!empty($stock_option_images[$stock_option_id])) {
 						$item['image'] = $stock_option_images[$stock_option_id];
-					}
-				}
-
-				// Remove empty userdata
-				$array_filter_recursive = function($array) use (&$array_filter_recursive) {
-
-					foreach ($array as $i => $value) {
-						if (is_array($value)) {
-							$array[$i] = $array_filter_recursive($value);
-						}
-					}
-
-					return array_filter($array, function($v) {
-						if (is_array($v)) return !empty($v);
-						return strlen(trim($v));
-					});
-				};
-
-				$userdata = $array_filter_recursive($userdata);
-
-				// Check userdata against customizations
-				foreach ($product->customizations as $customization) {
-
-					// Check group
-					$possible_groups = array_filter(array_unique(reference::attribute_group($customization['group_id'])->name));
-					$matched_groups = array_intersect(array_keys($customizations), $possible_groups);
-					$matched_group = array_shift($matched_groups);
-
-					if (!$matched_group && !$customization['required']) {
-						continue;
-					}
-
-					if (empty($customizations[$matched_group]) && $customization['required']) {
-						throw new Exception(language::translate('error_set_product_customizations', 'Please set your product customizations'));
-					}
-
-					// Check values
-					switch ($customization['function']) {
-
-						case 'checkbox':
-
-							$selected_values = preg_split('#\s*,\s*#', $customizations[$matched_group], -1, PREG_SPLIT_NO_EMPTY);
-
-							$matched_values = [];
-							foreach ($customization['values'] as $value) {
-
-								$possible_values = array_unique(
-									array_merge(
-										[$value['name']],
-										!empty(reference::attribute_group($customization['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($customization['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
-									)
-								);
-
-								if (empty($customization['required'])) {
-									array_unshift($possible_values, '');
-								}
-
-								if ($matched_value = array_intersect($selected_values, $possible_values)) {
-									$matched_values[] = $matched_value;
-									$item['extras'] += $value['price_adjustment'];
-								}
-							}
-
-							if (!$matched_values) {
-								throw new Exception(strtr(language::translate('error_must_select_valid_option_for_group', 'You must select a valid option for %group'), ['%group' => $matched_group]));
-							}
-
-							break;
-
-						case 'radio':
-						case 'select':
-
-							foreach ($customization['values'] as $value) {
-
-								$possible_values = array_unique(
-									array_merge(
-										[$value['name']],
-										!empty(reference::attribute_group($customization['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($customization['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
-									)
-								);
-
-								if (!$customization['required']) {
-									array_unshift($possible_values, '');
-								}
-
-								if ($matched_value = array_intersect([$customizations[$matched_group]], $possible_values)) {
-									$matched_value = array_shift($matched_value);
-									$item['extras'] += $value['price_adjustment'];
-									break;
-								}
-							}
-
-							if (!$matched_value) {
-								throw new Exception(strtr(language::translate('error_must_select_valid_option_for_group', 'You must select a valid option for %group'), ['%group' => $matched_group]));
-							}
-
-							break;
-
-						case 'text':
-						case 'textarea':
-							$matched_value = $customizations[$matched_group];
-
-							if (empty($matched_value) && !empty($customization['required'])) {
-								throw new Exception(strtr(language::translate('error_must_provide_valid_input_for_group', 'You must provide a valid input for %group'), ['%group' => $matched_group]));
-							}
-
-							break;
 					}
 				}
 
@@ -362,14 +265,10 @@
 				}
 			}
 
-			// Adjust price with extras
-			$item['price'] += $item['extras'];
-			$item['tax'] += tax::get_tax($item['extras'], $product->tax_class_id);
-
 			// Round amounts (Gets rid of hidden decimals)
 			if (settings::get('round_amounts')) {
 				$item['price'] = currency::round($item['price'], currency::$selected['code']);
-				$item['tax'] = currency::round($item['tax'], currency::$selected['code']);
+				 $item['tax'] = currency::round($item['tax'], currency::$selected['code']);
 			}
 
 			// Add new item or append to existing

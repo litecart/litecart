@@ -53,7 +53,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_brand'), language::translate('title_create_new_brand', 'Create New Brand'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_brand'), language::translate('title_create_new_brand', 'Create New Brand'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('brands_form', 'post'); ?>
@@ -93,12 +93,15 @@
 
 		<div class="card-body">
 			<fieldset id="actions">
-				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
+				<legend>
+					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+				</legend>
 
 				<div class="btn-group">
 					<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
 					<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
+
 			</fieldset>
 		</div>
 

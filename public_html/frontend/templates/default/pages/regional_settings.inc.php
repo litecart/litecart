@@ -32,7 +32,7 @@
 					<div class="card-body">
 						<?php echo functions::form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 640px;"'); ?>
 
-							<div class="form-grid">
+							<div class="grid">
 
 								<?php if (count($languages) > 1) { ?>
 								<div class="col-sm-6">
@@ -51,7 +51,9 @@
 									</label>
 								</div>
 								<?php } ?>
+							</div>
 
+							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_country', 'Country'); ?></div>
@@ -65,7 +67,9 @@
 										<?php echo functions::form_select_zone('zone_code', customer::$data['country_code'], customer::$data['zone_code']); ?>
 									</label>
 								</div>
+							</div>
 
+							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_postcode', 'Postal Code'); ?></div>
@@ -79,11 +83,9 @@
 										<?php echo functions::form_toggle('display_prices_including_tax', 'y/n', customer::$data['display_prices_including_tax']); ?>
 									</label>
 								</div>
-
-								<div class="col-12">
-									<?php echo functions::form_button('save', language::translate('title_save', 'Save')); ?>
-								</div>
 							</div>
+
+							<?php echo functions::form_button('save', language::translate('title_save', 'Save')); ?>
 
 						<?php echo functions::form_end(); ?>
 					</div>

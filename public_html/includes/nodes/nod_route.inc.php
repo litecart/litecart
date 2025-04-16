@@ -119,7 +119,7 @@
 						// Resolve resource logic
 						if (preg_match('#\*#', $route['resource'])) {
 							$route['resource'] = preg_replace_callback('#^(\w:).*$#', function($matches){
-								return fallback($matches[1], 'f:') . preg_replace('#^'. preg_quote(ltrim(BACKEND_ALIAS . '/', '/'), '#') .'#', '', parse_url(self::$request, PHP_URL_PATH));
+								return fallback($matches[1], 'f:') . preg_replace('#^'. preg_quote(trim(BACKEND_ALIAS, '/') . '/', '#') .'#', '', parse_url(self::$request, PHP_URL_PATH));
 							}, $route['resource']);
 						}
 

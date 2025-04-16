@@ -26,7 +26,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_customer_group'), language::translate('title_create_new_customer_group', 'Create New Customer Group'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_customer_group'), language::translate('title_create_new_customer_group', 'Create New Customer Group'), '', 'create'); ?>
 	</div>
 
 	<div class="card-filter">

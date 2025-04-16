@@ -26,7 +26,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_quantity_unit'), language::translate('title_create_new_unit', 'Create New Unit'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_quantity_unit'), language::translate('title_create_new_unit', 'Create New Unit'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('quantity_units_form', 'post'); ?>

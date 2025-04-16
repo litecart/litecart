@@ -177,7 +177,7 @@
 							<span class="badge"><?php echo $shopping_cart['num_items']; ?></span>
 						</div>
 
-						<div class="dropdown-content" style="max-width: 480px;">
+						<div class="dropdown-content" style="min-width: 275px; max-width: 480px;">
 
 							<ul class="list-unstyled items">
 								<?php foreach ($shopping_cart['items'] as $key => $item) { ?>

@@ -151,7 +151,7 @@
 							</ul>
 						</div>
 					</td>
-					<td><?php echo functions::form_input_percent('products['.$key.'][percentage]', '', 2, 'style="width: 100px;"'); ?></td>
+					<td><?php echo functions::form_input_percent('products['.$key.'][percentage]', true, 2, 'style="width: 100px;"'); ?></td>
 					<td class="text-end">
 						<button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
 							<?php echo functions::draw_fonticon('icon-times'); ?>
@@ -196,7 +196,7 @@
 		let $row = $(this).closest('tr'),
 			amount = 0;
 
-		$.each(currency_codes, function(i, currency_code) {
+		$.each(currencies, function(i, currency) {
 
 			if ($('input[name$="['+currency.code+']"]').val() > 0) {
 				amount = Number($('input[name$="['+store_currency_code+']"]').val() * (100 - $(this).val()) / 100).toFixed(currency.decimals);
@@ -218,14 +218,14 @@
 
 		$row.find('input[name$="[percentage]"]').val(percentage);
 
-		$.each(currency_codes, function(i, currency_code) {
+		$.each(currencies, function(i, currency) {
 
-			amount = Number($row.find('input[name$="['+store_currency_code+']"]').val() / currencies[currency_code].value).toFixed(currencies[currency_code].decimals);
+			amount = Number($row.find('input[name$="['+store_currency_code+']"]').val() / currency.value).toFixed(currency.decimals);
 
-			$row.find('input[name$="['+currency_code+']"]').attr('placeholder', amount);
+			$row.find('input[name$="['+currency.code+']"]').attr('placeholder', amount);
 
-			if (!$row.find('input[name$="['+currency_code+']"]').val()) {
-				$row.find('input[name$="['+currency_code+']"]').val('');
+			if (!$row.find('input[name$="['+currency.code+']"]').val()) {
+				$row.find('input[name$="['+currency.code+']"]').val('');
 			}
 		});
 	});
@@ -234,9 +234,9 @@
 
 	$('button[name="remove"]').on('click', function(e) {
 		e.preventDefault();
-		//if (confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
+		if (confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
 			$(this).closest('tr').remove();
-		//}
+		}
 	});
 
 	var new_product_i = 0;

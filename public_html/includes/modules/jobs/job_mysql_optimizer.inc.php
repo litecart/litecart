@@ -1,6 +1,6 @@
 <?php
 
-	class job_mysql_optimizer {
+	class job_mysql_optimizer extends abs_module {
 
 		public $id = __CLASS__;
 		public $name = 'MySQL Optimizer';
@@ -17,10 +17,10 @@
 				if (strtotime($last_run) > functions::datetime_last_by_interval($this->settings['frequency'], $last_run)) return;
 			}
 
-			echo 'Optimizing MySQL Tables...' . PHP_EOL;
+			echo 'Optimizing MySQL Tables...' . PHP_EOL . PHP_EOL;
 
 			database::query(
-				"select table_name as `table`
+				"select table_name
 				from `information_schema`.`tables`
 				where table_schema = '". DB_DATABASE ."'
 				and table_name like '". DB_TABLE_PREFIX ."%';"

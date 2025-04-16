@@ -57,7 +57,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_country'), language::translate('title_create_new_country', 'Create New Country'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_country'), language::translate('title_create_new_country', 'Create New Country'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('countries_form', 'post'); ?>
@@ -84,9 +84,9 @@
 					<td><?php echo functions::draw_fonticon($country['status'] ? 'on' : 'off'); ?></td>
 					<td><?php echo $country['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_country', ['country_code' => $country['iso_code_2']]); ?>"><?php echo $country['name']; ?></a></td>
-					<td><?php echo $country['iso_code_1']; ?></td>
-					<td><?php echo $country['iso_code_2']; ?></td>
-					<td><?php echo $country['iso_code_3']; ?></td>
+					<td class="text-center"><?php echo $country['iso_code_1']; ?></td>
+					<td class="text-center"><?php echo $country['iso_code_2']; ?></td>
+					<td class="text-center"><?php echo $country['iso_code_3']; ?></td>
 					<td class="text-center"><?php echo $country['num_zones'] ?: '-'; ?></td>
 					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_country', ['country_code' => $country['iso_code_2']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
@@ -102,12 +102,16 @@
 
 		<div class="card-body">
 			<fieldset id="actions">
-				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
+
+				<legend>
+					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+				</legend>
 
 				<div class="btn-group">
 					<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
 					<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
+
 			</fieldset>
 		</div>
 

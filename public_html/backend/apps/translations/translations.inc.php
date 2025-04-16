@@ -337,11 +337,13 @@
 
 		<div class="card-body">
 			<fieldset id="actions" disabled>
-				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-				<ul class="list-inline">
-					<li><?php echo functions::form_button_predefined('delete'); ?></li>
-				</ul>
+				<legend>
+					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+				</legend>
+
+				<?php echo functions::form_button_predefined('delete'); ?>
+
 			</fieldset>
 		</div>
 

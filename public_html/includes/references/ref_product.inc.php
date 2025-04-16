@@ -565,19 +565,19 @@
 
 			try {
 
-				$item['extras'] = 0;
+				$price_extras = 0;
 
 				if (empty($parameters['quantity'])) {
 					$parameters['quantity'] = 1;
 				}
 
-				if (!empty($parameters['options'])) {
+				// Cleanup userdata
+				if (!empty($parameters['userdata'])) {
 
-					if (!is_array($parameters['options'])) {
-						throw new Exception('Invalid options');
+					if (!is_array($parameters['userdata'])) {
+						throw new Exception('Invalid userdata');
 					}
 
-					// Remove empty options
 					$array_filter_recursive = function($array) use (&$array_filter_recursive) {
 
 						foreach ($array as $i => $value) {
@@ -590,55 +590,58 @@
 						});
 					};
 
-					$parameters['options'] = $array_filter_recursive($parameters['options']);
+					$parameters['userdata'] = $array_filter_recursive($parameters['userdata']);
+				}
 
-					// Build options structure
-					$sanitized_options = [];
-					foreach ($this->options as $option) {
+				// Validate userdata
+				if (!empty($parameters['userdata'])) {
+
+					// Build customizations structure
+					foreach ($this->customizations as $customization) {
 
 						// Check group
-						$possible_groups = array_filter(array_unique(reference::attribute_group($option['group_id'])->name));
-						$matched_groups = array_intersect(array_keys($options), $possible_groups);
+						$possible_groups = array_filter(array_unique(reference::attribute_group($customization['group_id'])->name));
+						$matched_groups = array_intersect(array_keys($parameters['userdata']), $possible_groups);
 						$matched_group = array_shift($matched_groups);
 
-						if (empty($matched_group) && empty($option['required'])) {
+						if (empty($matched_group) && empty($customization['required'])) {
 							continue;
 						}
 
-						if (empty($options[$matched_group]) && !empty($option['required'])) {
-							throw new Exception(language::translate('error_set_product_options', 'Please set your product options'));
+						if (empty($parameters['userdata'][$matched_group]) && !empty($option['required'])) {
+							throw new Exception(language::translate('error_set_product_customizations', 'Please set your product customizations'));
 						}
 
 						// Check values
-						switch ($option['function']) {
+						switch ($customization['function']) {
 
 							case 'checkbox':
 
-								$selected_values = preg_split('#\s*,\s*#', $options[$matched_group], -1, PREG_SPLIT_NO_EMPTY);
+								$selected_values = preg_split('#\s*,\s*#', $parameters['userdata'][$matched_group], -1, PREG_SPLIT_NO_EMPTY);
 
 								$matched_values = [];
-								foreach ($option['values'] as $value) {
+								foreach ($customization['values'] as $value) {
 
 									$possible_values = array_unique(
 										array_merge(
 											[$value['name']],
-											!empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
+											!empty(reference::attribute_group($customization['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($customization['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
 										)
 									);
 
-									if (empty($option['required'])) {
+									if (empty($customization['required'])) {
 										array_unshift($possible_values, '');
 									}
 
 									if ($matched_value = array_intersect($selected_values, $possible_values)) {
 										$matched_values[] = $matched_value;
-										$extras += $value['price_adjustment'];
+										$price_extras += $value['price_adjustment'];
 										$found_match = true;
 									}
 								}
 
 								if (empty($found_match)) {
-									throw new Exception(strtr(language::translate('error_must_select_valid_option_for_group', 'You must select a valid option for %group'), ['%group' => $matched_group]));
+									throw new Exception(strtr(language::translate('error_must_select_valid_customization_for_group', 'You must select a valid customization for %group'), ['%group' => $matched_group]));
 								}
 
 								break;
@@ -646,29 +649,29 @@
 							case 'radio':
 							case 'select':
 
-								foreach ($option['values'] as $value) {
+								foreach ($customization['values'] as $value) {
 
 									$possible_values = array_unique(
 										array_merge(
 											[$value['name']],
-											!empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
+											!empty(reference::attribute_group($customization['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($customization['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
 										)
 									);
 
-									if (empty($option['required'])) {
+									if (empty($customization['required'])) {
 										array_unshift($possible_values, '');
 									}
 
-									if ($matched_value = array_intersect([$options[$matched_group]], $possible_values)) {
+									if ($matched_value = array_intersect([$parameters['userdata'][$matched_group]], $possible_values)) {
 										$matched_value = array_shift($matched_value);
-										$extras += $value['price_adjustment'];
+										$price_extras += $value['price_adjustment'];
 										$found_match = true;
 										break;
 									}
 								}
 
 								if (empty($found_match)) {
-									throw new Exception(strtr(language::translate('error_must_select_valid_option_for_group', 'You must select a valid option for %group'), ['%group' => $matched_group]));
+									throw new Exception(strtr(language::translate('error_must_select_valid_customization_for_group', 'You must select a valid customization for %group'), ['%group' => $matched_group]));
 								}
 
 								break;
@@ -676,20 +679,20 @@
 							case 'text':
 							case 'textarea':
 
-								$matched_value = $options[$matched_group];
+								$matched_value = $parameters['userdata'][$matched_group];
 
-								if (empty($matched_value) && !empty($option['required'])) {
+								if (empty($matched_value) && !empty($customization['required'])) {
 									throw new Exception(strtr(language::translate('error_must_provide_valid_input_for_group', 'You must provide a valid input for %group'), ['%group' => $matched_group]));
 								}
 
 								break;
 						}
 					}
-
-					$price = $this->final_price + $extras;
-
-					return $price;
 				}
+
+				$price = $this->final_price + $price_extras;
+
+				return $price;
 
 			} catch (Exception $e) {
 				return false;

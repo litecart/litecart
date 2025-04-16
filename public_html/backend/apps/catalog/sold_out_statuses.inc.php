@@ -25,7 +25,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_sold_out_status'), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_sold_out_status'), language::translate('title_create_new_status', 'Create New Status'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('sold_out_statuses_form', 'post'); ?>

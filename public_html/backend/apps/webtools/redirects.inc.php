@@ -69,7 +69,7 @@
 
 	<div class="card-action">
 		<ul class="list-inline pull-right">
-			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_redirect'), language::translate('title_create_new_redirect', 'Create New Redirect'), '', 'add'); ?></li>
+			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_redirect'), language::translate('title_create_new_redirect', 'Create New Redirect'), '', 'create'); ?></li>
 		</ul>
 	</div>
 
@@ -97,7 +97,7 @@
 					<td><?php echo $redirect['destination']; ?></td>
 					<td class="text-end"><?php echo $redirect['redirects']; ?></td>
 					<td class="text-end"><?php echo $redirect['date_redirected'] ? functions::datetime_when($redirect['date_redirected']) : '-'; ?></td>
-					<td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+					<td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -111,14 +111,21 @@
 
 		<div class="card-body">
 			<fieldset id="actions">
-				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
 
-				<div class="btn-group">
-					<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+				<legend>
+					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+				</legend>
+
+				<div class="flex">
+
+					<div class="btn-group">
+						<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+						<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					</div>
+
+					<?php echo functions::form_button_predefined('delete'); ?>
+
 				</div>
-
-				<?php echo functions::form_button_predefined('delete'); ?>
 			</fieldset>
 		</div>
 

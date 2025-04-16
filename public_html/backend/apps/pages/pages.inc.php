@@ -115,7 +115,7 @@ table tbody .toggle {
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_page'), language::translate('title_create_new_page', 'Create New Page'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_page'), language::translate('title_create_new_page', 'Create New Page'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
@@ -258,25 +258,24 @@ table tbody .toggle {
 
 		<div class="card-body">
 			<fieldset id="actions">
-				<legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-				<ul class="list-inline">
-					<li>
-						<div class="btn-group">
-							<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-							<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-						</div>
-					</li>
-					<li>
-						<?php echo functions::form_select_page('page_id', true); ?>
-					</li>
-					<li>
-						<?php echo functions::form_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
-					</li>
-					<li>
-						<?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
-					</li>
-				</ul>
+				<legend>
+					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+				</legend>
+
+				<div class="flex">
+
+					<div class="btn-group">
+						<?php echo functions::form_button_predefined('enable'); ?>
+						<?php echo functions::form_button_predefined('disable'); ?>
+					</div>
+
+					<?php echo functions::form_select_page('page_id', true); ?>
+
+					<?php echo functions::form_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
+
+					<?php echo functions::form_button_predefined('delete'); ?>
+
 			</fieldset>
 		</div>
 

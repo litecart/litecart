@@ -125,17 +125,18 @@
 			<tbody>
 				<?php if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) { ?>
 				<tr draggable="true">
-					<td class="grabbable"><?php echo $group_value['id']; ?><?php echo functions::form_input_hidden('values['. $key .'][id]', $group_value['id']); ?></td>
+					<td><?php echo $group_value['id']; ?><?php echo functions::form_input_hidden('values['. $key .'][id]', $group_value['id']); ?></td>
 					<td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
 					<td class="text-center"><?php echo !empty($group_value['in_use']) ? language::translate('title_yes', 'Yes') : language::translate('title_no', 'No'); ?></td>
-					<td class="text-end"><?php if (empty($group_value['in_use'])) echo '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('icon-times', 'style="color: #c33;"') .'</a>'; ?></td>
+					<td class="grabbable"><?php echo functions::draw_fonticon('icon-arrows-vertical'); ?></td>
+					<td class="text-end"><?php if (empty($group_value['in_use'])) echo '<a href="#" class="remove btn btn-default btn-sm" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('icon-times', 'style="color: #c33;"') .'</a>'; ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
 
 			<tfoot>
 				<tr>
-					<td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('icon-plus'); ?></a></td>
+					<td colspan="4"><a class="add btn btn-default btn-sm" href="#"><?php echo functions::draw_fonticon('icon-plus'); ?></a></td>
 				</tr>
 			</tfoot>
 		</table>
@@ -166,7 +167,8 @@
 			'  <td><?php echo functions::escape_js(functions::form_input_hidden('values[new_value_index][id]', '')); ?></td>',
 			'  <td><?php echo functions::escape_js($name_fields); ?></td>',
 			'  <td class="text-center"><?php echo language::translate('title_no', 'No'); ?></td>',
-			'  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a></td>',
+			'  <td class="grabbable"><?php echo functions::escape_js(functions::draw_fonticon('icon-arrows-vertical')); ?></td>',
+			'  <td class="text-end"><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a></td>',
 			'</tr>'
 		].join('\n')
 		.replace(/new_value_index/g, 'new_' + new_value_index++);

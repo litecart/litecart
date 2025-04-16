@@ -34,7 +34,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_transaction'), language::translate('title_create_new_transaction', 'Create New Transaction'), '', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_transaction'), language::translate('title_create_new_transaction', 'Create New Transaction'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
