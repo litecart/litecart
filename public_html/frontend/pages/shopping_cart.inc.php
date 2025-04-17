@@ -84,14 +84,50 @@
 			}
 
 			session::$data['checkout']['order'] = $order;
+			$order = &session::$data['checkout']['order'];
 
  	  	// Collect scraps
 			 if (empty(customer::$data['id'])) {
 				customer::$data = array_replace(customer::$data, array_intersect_key(array_filter(array_diff_key($_POST, array_flip(['id']))), customer::$data));
 			}
 
-			header('Location: '. document::ilink('checkout/index'));
-			exit;
+
+			if ($_POST['checkout'] == 'standard') {
+
+			} else if (in_array($_POST['checkout'], array_column($checkouts, 'id'))) {
+
+
+
+
+
+			} else {
+				throw new Exception(language::translate('error_unknown_checkout_method', 'Unknown checkout method'));
+			}
+
+			switch ($_POST['checkout']) {
+
+				case 'standard':
+
+					header('Location: '. document::ilink('checkout/index'));
+					exit;
+
+				default:
+
+					$mod_checkout = new mod_checkout();
+					$checkouts = $mod_checkout->options();
+
+					if (!in_array($_POST['checkout'], array_column($checkouts, 'module_id'))) {
+						throw new Exception(language::translate('error_unknown_checkout_method', 'Unknown checkout method'));
+					}
+
+					session::$data['checkout']['type'] = $_POST['checkout'];
+
+					$mod_checkout->select($_POST['checkout']);
+					$mod_checkout->process($order);
+
+					header('Location: '. document::ilink('checkout/verify_checkout'));
+					exit;
+			}
 
 		} catch (Exception $e) {
 			notices::add('errors', $e->getMessage());
@@ -154,5 +190,8 @@
 			'error' => fallback($item['error']),
 		];
 	}
+
+	// Express checkout
+	$_page->snippets['checkouts'] = (new mod_checkout)->$checkout->options();
 
 	echo $_page;
