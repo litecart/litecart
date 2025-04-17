@@ -372,7 +372,7 @@
 				}
 
 				if (version_compare($current_version, '3.0.0', '>=')) {
-					database::query('START TRANSACTION;');
+					database::query('start transaction;');
 				}
 
 				if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.sql')) {
@@ -395,7 +395,7 @@
 				}
 
 				if (version_compare($current_version, '3.0.0', '>=')) {
-					database::query('COMMIT;');
+					database::query('commit;');
 				}
 
 				echo '<p>Set platform database version...';
@@ -759,7 +759,20 @@
 			}
 
 		} catch (Exception $e) {
-			echo $e->getMessage();
+
+			// Rollback if we are in a transaction
+			if (defined('PLATFORM_DATABASE_VERSION') && version_compare(PLATFORM_DATABASE_VERSION, '3.0.0', '>=')) {
+				database::query('rollback;');
+			}
+
+			echo implode(PHP_EOL, [
+				'<h2>Upgrade Failed</h2>',
+				'',
+				'<p style="font-weight: bold;">The upgrade failed. Please check the error log for more information.</p>',
+				'',
+				'<p>Error: '. functions::escape_html($e->getMessage()) .'</p>',
+				'',
+			]);
 		}
 
 		echo ob_get_clean();
