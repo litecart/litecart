@@ -565,9 +565,9 @@ CHANGE COLUMN `key` `key` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `description` `description` VARCHAR(255) NOT NULL DEFAULT '',
 CHANGE COLUMN `value` `value` VARCHAR(255) NOT NULL DEFAULT '',
 ADD COLUMN `required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `function`,
-ADD INDEX `type` (`type`),
-ADD INDEX `group_key` (`group_key`),
-DROP INDEX `setting_group_key`;
+DROP COLUMN `type`,
+DROP INDEX `setting_group_key`,
+ADD INDEX `group_key` (`group_key`)
 -- -----
 ALTER TABLE `lc_settings_groups`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,

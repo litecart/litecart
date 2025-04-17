@@ -1224,7 +1224,6 @@
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"group_key": { "type": "VARCHAR", "length": 64, "nullable": true },
-				"type": { "type": "ENUM('global','local')", "default": "'local'" },
 				"key": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"value": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"title": { "type": "VARCHAR", "length": 128, "default": "''" },
@@ -1240,7 +1239,6 @@
 				"key": ["key"]
 			},
 			"keys": {
-				"type": ["type"],
 				"group_key": ["group_key"]
 			}
 		},

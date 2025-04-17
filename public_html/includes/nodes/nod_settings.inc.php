@@ -1,15 +1,14 @@
 <?php
 
 	class settings {
-		
+
 		private static $_cache;
 
 		public static function init() {
 
 			database::query(
 				"select `key`, `value`, `function`
-				from ". DB_TABLE_PREFIX ."settings
-				where `type` = 'global';"
+				from ". DB_TABLE_PREFIX ."settings;"
 			)->each(function($setting){
 
 				switch (true) {
