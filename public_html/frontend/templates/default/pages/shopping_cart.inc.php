@@ -137,16 +137,20 @@
 							<?php } ?>
 
 							<div class="">
-								<?php echo functions::form_button('checkout', language::translate('title_continue_to_checkout', 'Continue To Checkout') .' '. functions::draw_fonticon('icon-arrow-right'), 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>
+								<?php echo functions::form_button('checkout', ['standard', language::translate('title_continue_to_checkout', 'Continue To Checkout') .' '. functions::draw_fonticon('icon-arrow-right')], 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>
 							</div>
 
+							<?php if ($checkouts) { ?>
 							<div class="strikethrough-divider">
 								<span><?php echo language::translate('text_or_checkout_with', 'Or checkout with'); ?></span>
 							</div>
 
+							<?php foreach ($checkouts as $checkout) { ?>
 							<div id="alternative-checkout">
-								<a class="option btn btn-default btn-lg btn-block" href=""><?php echo functions::draw_fonticon('icon-brand-paypal'); ?> Paypal</a>
+								<?php echo functions::form_button('checkout', [$checkout['module_id'], $checkout['label']], 'button', 'class="option btn btn-default btn-lg btn-block" title="'. functions::escape_attr($checkout['description']) .'"'); ?>
 							</div>
+							<?php } ?>
+							<?php } ?>
 
 						</div>
 
