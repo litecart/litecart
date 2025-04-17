@@ -1,11 +1,7 @@
 <style>
 #box-newsletter-subscribe {
 	padding: var(--gutter-y )var(--gutter-x);
-	background: #f9f9f9;
-	border-top: 2px solid;
-	border-bottom: 2px solid;
-	border-image-slice: 1;
-	border-image-source: linear-gradient(to left, #97989f00, #89849269, #97989f00);
+	padding-top: 0;
 }
 #box-newsletter-subscribe .row > div:last-child {
 	align-self: center;

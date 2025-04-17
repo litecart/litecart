@@ -3,7 +3,7 @@
 	class job_cleaner extends abs_module {
 
 		public $name = 'Cleaner';
-		public $description = 'Wipe out old cache files that are starting to collect dust.';
+		public $description = 'Keep the platform tidy by cleaning up old things.';
 		public $author = 'LiteCart Dev Team';
 		public $version = '1.0';
 		public $website = 'https://www.litecart.net';
@@ -17,7 +17,9 @@
 				if (strtotime($last_run) > functions::datetime_last_by_interval('Hourly', $last_run)) return;
 			}
 
-			echo 'Clean expired customer activity...' . PHP_EOL;
+			// Customer Activity
+
+			echo 'Remove old and expired customer activity...' . PHP_EOL;
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."customers_activity
@@ -25,11 +27,32 @@
 				or (date_expires is null and date_created < '". date('Y-m-d H:i:s', strtotime('-12 months')) ."');"
 			);
 
-			echo 'Wipe out old cache files...' . PHP_EOL;
+			// Logs
+
+			echo 'Wiping out old log files...' . PHP_EOL;
+
+			$deleted_files = 0;
+			$max_age = strtotime('-30 days');
+
+			clearstatcache();
+
+			foreach (functions::file_search(FS_DIR_STORAGE .'logs/**/*.log') as $file) {
+
+				if (filemtime($file) > $max_age) continue;
+
+				echo '  Deleting ' . basename($file) . PHP_EOL;
+				unlink($file);
+
+				$deleted_files++;
+			}
+
+			// Cache
+
+			echo 'Wiping out old cache files...' . PHP_EOL;
 
 			$deleted_files = 0;
 			$deleted_dirs = 0;
-			$timestamp = strtotime('-24 hours');
+			$max_age = strtotime('-24 hours');
 
 			clearstatcache();
 
@@ -38,7 +61,7 @@
 				foreach (functions::file_search($dir.'/*.cache') as $file) {
 
 					if (!is_file($file)) continue;
-					if (filemtime($file) > $timestamp) continue;
+					if (filemtime($file) > $max_age) continue;
 
 					echo '  Deleting ' . basename($file) . PHP_EOL;
 					unlink($file);
@@ -72,7 +95,7 @@
 					'default_value' => '0',
 					'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
 					'description' => language::translate(__CLASS__.':description_priority', 'Process this module in the given priority order.'),
-					'function' => 'int()',
+					'function' => 'number()',
 				],
 			];
 		}

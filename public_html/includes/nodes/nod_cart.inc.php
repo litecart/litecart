@@ -300,7 +300,7 @@
 			// Round amounts (Gets rid of hidden decimals)
 			if (settings::get('round_amounts')) {
 				$item['price'] = currency::round($item['price'], currency::$selected['code']);
-				 $item['tax'] = currency::round($item['tax'], currency::$selected['code']);
+				$item['tax'] = currency::round($item['tax'], currency::$selected['code']);
 			}
 
 			// Add new item or append to existing

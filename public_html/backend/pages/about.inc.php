@@ -49,7 +49,7 @@
 			$fh = fopen('/proc/meminfo','r');
 
 			while ($line = fgets($fh)) {
-				$pieces = array();
+				$pieces = [];
 				if (preg_match('/^MemTotal:\s+(\d+)\skB$/', $line, $pieces)) {
 					$ram_usage = $pieces[1];
 					continue;

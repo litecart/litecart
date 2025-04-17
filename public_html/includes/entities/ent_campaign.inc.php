@@ -59,8 +59,11 @@
 				order by cp.id;"
 			)->fetch_all(function($row){
 
-				if ($row['regular_price'] && $row[settings::get('store_currency_code')]) {
-					$row['percentage'] = ($row['regular_price'] - $row[settings::get('store_currency_code')]) / $row['regular_price'] * 100;
+				$row['price'] = $row['price'] ? json_decode($row['price'], true) : [];
+
+				if ($row['regular_price'] && $row['price'][settings::get('store_currency_code')]) {
+
+					$row['percentage'] = ($row['regular_price'] - $row['price'][settings::get('store_currency_code')]) / $row['regular_price'] * 100;
 				} else {
 					$row['percentage'] = 0;
 				}
