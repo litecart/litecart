@@ -41,7 +41,7 @@ body {
   }
 
   .container {
-    @media (max-width: @media-breakpoint-md - 1px) {
+    @media (max-width: (@media-breakpoint-md - 1px)) {
       padding: 0 !important;
     }
   }
@@ -161,7 +161,7 @@ body.scrolling-down #site-menu {
   .navbar-search {
     flex: 1 1 auto;
     margin: 0 auto;
-    @media (max-width: @media-breakpoint-md - 1px) {
+    @media (max-width: (@media-breakpoint-md - 1px)) {
       width: 100%;
       order: 999;
     }
