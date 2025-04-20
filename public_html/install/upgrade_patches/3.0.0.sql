@@ -44,7 +44,7 @@ CREATE TABLE `lc_customer_groups` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`type` ENUM('retail', 'wholesale') NOT NULL DEFAULT 'retail',
 	`name` VARCHAR(32) NOT NULL DEFAULT '',
-	`description` VARCHAR(256) NOT NULL DEFAULT '',
+	`description` VARCHAR(248) NOT NULL DEFAULT '',
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
@@ -55,12 +55,12 @@ CREATE TABLE IF NOT EXISTS `lc_customers_activity` (
 	`session_id` VARCHAR(64) NULL,
 	`customer_id` INT(10) UNSIGNED NULL,
 	`type` VARCHAR(64) NULL,
-	`description` VARCHAR(256) NOT NULL DEFAULT '',
+	`description` VARCHAR(248) NOT NULL DEFAULT '',
 	`data` VARCHAR(1024) NULL,
-	`url` VARCHAR(256) NULL,
+	`url` VARCHAR(248) NULL,
 	`ip_address` VARCHAR(39) NULL,
 	`hostname` VARCHAR(128) NULL,
-	`user_agent` VARCHAR(256) NULL,
+	`user_agent` VARCHAR(248) NULL,
 	`fingerprint` VARCHAR(32) NULL,
 	`date_expires` TIMESTAMP NULL DEFAULT NULL,
 	`date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
@@ -93,8 +93,8 @@ CREATE TABLE `lc_redirects` (
 	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`immediate` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-	`pattern` VARCHAR(256) NOT NULL DEFAULT '',
-	`destination` VARCHAR(256) NOT NULL DEFAULT '',
+	`pattern` VARCHAR(248) NOT NULL DEFAULT '',
+	`destination` VARCHAR(248) NOT NULL DEFAULT '',
 	`http_response_code` enum('301','302') NOT NULL DEFAULT '301',
 	`redirects` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 	`date_redirected` TIMESTAMP NULL,
@@ -138,7 +138,9 @@ CREATE TABLE `lc_stock_transactions_contents` (
 	`transaction_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`stock_item_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`quantity_adjustment` FLOAT(11,4) NOT NULL DEFAULT '0',
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	INDEX `transaction_id` (`transaction_id`),
+	INDEX `stock_item_id` (`stock_item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 RENAME TABLE `lc_manufacturers` TO `lc_brands`;
@@ -191,7 +193,8 @@ ADD COLUMN `description` MEDIUMTEXT NOT NULL DEFAULT '{}' AFTER `short_descripti
 ADD COLUMN `h1_title` TEXT NOT NULL DEFAULT '{}' AFTER `description`,
 ADD COLUMN `head_title` TEXT NOT NULL DEFAULT '{}' AFTER `h1_title`,
 ADD COLUMN `meta_description` TEXT NOT NULL DEFAULT '{}' AFTER `head_title`,
-ADD COLUMN `link` TEXT NOT NULL DEFAULT '{}' AFTER `meta_description`;
+ADD COLUMN `link` TEXT NOT NULL DEFAULT '{}' AFTER `meta_description`,
+ADD INDEX `name` (`name`);
 -- -----
 ALTER TABLE `lc_brands_info`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -232,7 +235,7 @@ ALTER TABLE `lc_categories_info`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `category_id` `category_id` INT(10) UNSIGNED NOT NULL,
 CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL,
-ADD COLUMN `synonyms` VARCHAR(256) NOT NULL DEFAULT '' AFTER `description`,
+ADD COLUMN `synonyms` VARCHAR(248) NOT NULL DEFAULT '' AFTER `description`,
 ADD FULLTEXT INDEX `name` (`name`),
 ADD FULLTEXT INDEX `short_description` (`short_description`),
 ADD FULLTEXT INDEX `description` (`description`),
@@ -303,7 +306,7 @@ ALTER TABLE `lc_emails`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 ADD COLUMN `ip_address` VARCHAR(39) NOT NULL DEFAULT '' AFTER `multiparts`,
 ADD COLUMN `hostname` VARCHAR(128) NOT NULL DEFAULT '' AFTER `ip_address`,
-ADD COLUMN `user_agent` VARCHAR(256) NOT NULL DEFAULT '' AFTER `hostname`,
+ADD COLUMN `user_agent` VARCHAR(248) NOT NULL DEFAULT '' AFTER `hostname`,
 ADD INDEX `status` (`status`);
 -- -----
 ALTER TABLE `lc_geo_zones`
@@ -462,7 +465,7 @@ CHANGE COLUMN `supplier_id` `supplier_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `delivery_status_id` `delivery_status_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `sold_out_status_id` `sold_out_status_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `default_category_id` `default_category_id` INT(10) UNSIGNED NULL,
-CHANGE COLUMN `keywords` `keywords` VARCHAR(256) NOT NULL DEFAULT '',
+CHANGE COLUMN `keywords` `keywords` VARCHAR(248) NOT NULL DEFAULT '',
 CHANGE COLUMN `quantity_min` `quantity_min` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '1.0000',
 CHANGE COLUMN `quantity_max` `quantity_max` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `quantity_step` `quantity_step` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0.0000',
@@ -476,17 +479,16 @@ CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `tax_class_id` `tax_class_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `views` `views` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `purchases` `purchases` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-ADD COLUMN `autofill_technical_data` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `technical_data`,
 ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `default_category_id`,
 ADD COLUMN `short_description` TEXT NOT NULL DEFAULT '{}' AFTER `name`,
 ADD COLUMN `description` MEDIUMTEXT NOT NULL DEFAULT '{}' AFTER `short_description`,
 ADD COLUMN `technical_data` TEXT NOT NULL DEFAULT '{}' AFTER `description`,
+ADD COLUMN `autofill_technical_data` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `technical_data`,
 ADD COLUMN `synonyms` TEXT NOT NULL DEFAULT '{}' AFTER `description`,
 ADD COLUMN `head_title` TEXT NOT NULL DEFAULT '{}' AFTER `synonyms`,
 ADD COLUMN `meta_description` TEXT NOT NULL DEFAULT '{}' AFTER `head_title`,
 ADD COLUMN `stock_option_type` ENUM('variant','bundle') NOT NULL DEFAULT 'variant' AFTER `keywords`,
 DROP INDEX `manufacturer_id`,
-ADD INDEX `type` (`type`),
 ADD INDEX `brand_id` (`brand_id`),
 ADD INDEX `synonyms` (`synonyms`),
 ADD FULLTEXT INDEX `name` (`name`),
@@ -498,6 +500,7 @@ CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `product_id` `product_id` INT(10) UNSIGNED NOT NULL,
 CHANGE COLUMN `group_id` `group_id` INT(10) UNSIGNED NOT NULL,
 CHANGE COLUMN `value_id` `value_id` INT(10) UNSIGNED NULL,
+CHANGE COLUMN `custom_value` `custom_value` VARCHAR(215) NULL,
 ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `custom_value`;
 -- -----
 ALTER TABLE `lc_products_campaigns`
@@ -607,7 +610,7 @@ CREATE TABLE `lc_stock_items` (
 	`backordered` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
 	`purchase_price` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
 	`purchase_price_currency_code` VARCHAR(3) NOT NULL DEFAULT '',
-	`file` VARCHAR(256) NULL,
+	`file` VARCHAR(248) NULL,
 	`filename` VARCHAR(64) NULL,
 	`mime_type` VARCHAR(32) NULL,
 	`downloads` INT(10) UNSIGNED NOT NULL DEFAULT '0',
@@ -642,11 +645,11 @@ CREATE TABLE `lc_third_parties` (
 	`description` MEDIUMTEXT NOT NULL DEFAULT '{}',
 	`collected_data` TEXT NOT NULL DEFAULT '{}',
 	`purposes` TEXT NOT NULL DEFAULT '{}',
-	`homepage` VARCHAR(256) NOT NULL DEFAULT '',
-	`cookie_policy_url` VARCHAR(256) NOT NULL DEFAULT '',
-	`privacy_policy_url` VARCHAR(256) NOT NULL DEFAULT '',
-	`opt_out_url` VARCHAR(256) NOT NULL DEFAULT '',
-	`do_not_sell_url` VARCHAR(256) NOT NULL DEFAULT '',
+	`homepage` VARCHAR(248) NOT NULL DEFAULT '',
+	`cookie_policy_url` VARCHAR(248) NOT NULL DEFAULT '',
+	`privacy_policy_url` VARCHAR(248) NOT NULL DEFAULT '',
+	`opt_out_url` VARCHAR(248) NOT NULL DEFAULT '',
+	`do_not_sell_url` VARCHAR(248) NOT NULL DEFAULT '',
 	`country_code` CHAR(2) NULL DEFAULT NULL,
 	`date_updated` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
 	`date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
@@ -719,17 +722,17 @@ ORDER BY order_id, priority;
 INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES
 ('social_media', 'Social Media', 'Social media related settings.', 30);
 -- -----
-INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `required`, `priority`, `date_updated`, `date_created`) VALUES
-('defaults', 'local', 'Default Order Status', 'Default order status for new orders if nothing else is set.', 'default_order_status_id', '1', 'order_status()', 0, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('customer_details', 'local', 'Different Shipping Address', 'Allow customers to provide a different address for shipping.', 'customer_shipping_address', '1', 'toggle("y/n")', 0, 24, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('checkout', 'local', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id, {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 1, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('advanced', 'global', 'Static Content Domain Name', 'Use the given alias domain name for static content (fonts, images, stylesheets, javascripts, etc.).', 'static_domain', '', 'text()', 0, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('social_media', 'global', 'Facebook Link', 'The link to your Facebook page.', 'facebook_link', '', 'url()', 0, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('social_media', 'global', 'Instagram Link', 'The link to your Instagram page.', 'instagram_link', '', 'url()', 0, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('social_media', 'global', 'LinkedIn Link', 'The link to your LinkedIn page.', 'linkedin_link', '', 'url()', 0, 30, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('social_media', 'global', 'Pinterest Link', 'The link to your Pinterest page.', 'pinterest_link', '', 'url()', 0, 40, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('social_media', 'global', 'X Link', 'The link to your X page.', 'x_link', '', 'url()', 0, 50, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('social_media', 'global', 'YouTube Link', 'The link to your YouTube channel.', 'youtube_link', '', 'url()', 0, 60, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, `function`, `required`, `priority`, `date_updated`, `date_created`) VALUES
+('defaults', 'Default Order Status', 'Default order status for new orders if nothing else is set.', 'default_order_status_id', '1', 'order_status()', 0, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('customer_details', 'Different Shipping Address', 'Allow customers to provide a different address for shipping.', 'customer_shipping_address', '1', 'toggle("y/n")', 0, 24, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('checkout', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id, {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 1, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('advanced', 'Static Content Domain Name', 'Use the given alias domain name for static content (fonts, images, stylesheets, javascripts, etc.).', 'static_domain', '', 'text()', 0, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('social_media', 'Facebook Link', 'The link to your Facebook page.', 'facebook_link', '', 'url()', 0, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('social_media', 'Instagram Link', 'The link to your Instagram page.', 'instagram_link', '', 'url()', 0, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('social_media', 'LinkedIn Link', 'The link to your LinkedIn page.', 'linkedin_link', '', 'url()', 0, 30, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('social_media', 'Pinterest Link', 'The link to your Pinterest page.', 'pinterest_link', '', 'url()', 0, 40, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('social_media', 'X Link', 'The link to your X page.', 'x_link', '', 'url()', 0, 50, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('social_media', 'YouTube Link', 'The link to your YouTube channel.', 'youtube_link', '', 'url()', 0, 60, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_stock_transactions` (id, name, description)
 VALUES (1, 'Initial Stock Transaction', 'This is an initial system generated stock transaction to deposit stock for all sold items and items in stock. We need this for future inconcistency checks.');

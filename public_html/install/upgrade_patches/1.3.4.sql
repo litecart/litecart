@@ -19,4 +19,4 @@ ALTER TABLE `lc_products_images` ADD COLUMN `checksum` CHAR(32) NOT NULL AFTER `
 -- -----
 ALTER TABLE `lc_categories`	ADD COLUMN `google_taxonomy_id` INT(11) NOT NULL AFTER `parent_id`;
 -- -----
-UPDATE `lc_countries` SET `name` = 'Serbia', `domestic_name` = '', `iso_code_1` = '381', `iso_code_2` = 'RS', `iso_code_3` = 'SRB', `tax_id_format` = '', `address_format` = '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', `postcode_format` = '', `postcode_required` = 0, `language_code` = 'sr', `currency_code` = 'RSD', `phone_code` = '381' WHERE iso_code_2 = 'YU';
+UPDATE `lc_countries` SET `name` = 'Serbia', `domestic_name` = '', `iso_code_1` = '381', `iso_code_2` = 'RS', `iso_code_3` = 'SRB', `tax_id_format` = '', `address_format` = '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', `postcode_format` = '', `postcode_required` = 0, `language_code` = 'sr', `currency_code` = 'RSD', `phone_code` = '381' WHERE iso_code_2 = 'YU';

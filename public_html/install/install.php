@@ -398,7 +398,7 @@
 			echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
 
-			echo '<p>Checking database default collation... ';
+		echo '<p>Checking database default collation... ';
 
 		if ($charset['DEFAULT_COLLATION_NAME'] != $_REQUEST['db_collation']) {
 
@@ -523,38 +523,34 @@
 
 			// Create primary key
 			if (isset($table['primary_key'])) {
-				$sql .= '  PRIMARY KEY (`' . implode('`, `', $table['primary_key']) . '`),' . PHP_EOL;
+				$sql .= '  PRIMARY KEY (`' . implode('`, `', database::input($table['primary_key'])) . '`),' . PHP_EOL;
 			}
 
 			// Create unique keys
 			if (isset($table['unique_keys'])) {
 				foreach ($table['unique_keys'] as $key_name => $key_columns) {
-					$sql .= '  UNIQUE KEY `' . database::input($key_name) . '` (`' . implode('`, `', $key_columns) . '`),' . PHP_EOL;
+					$sql .= '  UNIQUE KEY `' . database::input($key_name) . '` (`' . implode('`, `', database::input($key_columns)) . '`),' . PHP_EOL;
 				}
 			}
 
 			// Create fulltext keys
 			if (isset($table['fulltext_keys'])) {
 				foreach ($table['fulltext_keys'] as $key_name => $key_columns) {
-					$sql .= '  FULLTEXT KEY `' . database::input($key_name) . '` (`' . implode('`, `', $key_columns) . '`),' . PHP_EOL;
+					$sql .= '  FULLTEXT KEY `' . database::input($key_name) . '` (`' . implode('`, `', database::input($key_columns)) . '`),' . PHP_EOL;
 				}
 			}
 
 			// Create keys
 			if (isset($table['keys'])) {
 				foreach ($table['keys'] as $key_name => $key_columns) {
-					$sql .= '  KEY `' . database::input($key_name) . '` (`' . implode('`, `', $key_columns) . '`),' . PHP_EOL;
+					$sql .= '  KEY `' . database::input($key_name) . '` (`' . implode('`, `', database::input($key_columns)) . '`),' . PHP_EOL;
 				}
 			}
 
 			// Create check constraints
 			if (!empty($table['check_constraints'])) {
 				foreach ($table['check_constraints'] as $name => $expression) {
-					if ($table_exists) {
-						$sql .= 'ADD CONSTRAINT `'. $name .'` CHECK ('. database::input($expression) .'),' . PHP_EOL;
-					} else {
-						$sql .= '  CONSTRAINT `'. $name .'` CHECK ('. database::input($expression) .'),' . PHP_EOL;
-					}
+					$sql .= 'CONSTRAINT `'. database::input($name) .'` CHECK ('. database::input($expression) .'),' . PHP_EOL;
 				}
 			}
 

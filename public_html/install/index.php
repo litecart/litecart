@@ -427,7 +427,9 @@ input[name="development_type"]:checked + div {
 				<input class="form-input" name="db_server" type="text" placeholder="localhost">
 			</label>
 		</div>
+	</div>
 
+	<div class="grid">
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Database</div>
@@ -467,7 +469,9 @@ input[name="development_type"]:checked + div {
 				</div>
 			</label>
 		</div>
+	</div>
 
+	<div class="grid">
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Username</div>
@@ -481,7 +485,9 @@ input[name="development_type"]:checked + div {
 				<input class="form-input" type="password" name="db_password">
 			</label>
 		</div>
+	</div>
 
+	<div class="grid">
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Table Prefix</div>
@@ -516,7 +522,9 @@ input[name="development_type"]:checked + div {
 				<input class="form-input" name="store_email" type="text" value="store@email.com" required>
 			</label>
 		</div>
+	</div>
 
+	<div class="grid">
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Country</div>
@@ -595,7 +603,9 @@ input[name="development_type"]:checked + div {
 				<input class="form-input" name="username" type="text" id="username" value="admin" required>
 			</label>
 		</div>
+	</div>
 
+	<div class="grid">
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Password</div>
@@ -624,7 +634,7 @@ input[name="development_type"]:checked + div {
 <div id="modal-warning-existing-installation" style="display: none; width: 320px;">
 	<h2>Existing Installation Detected</h2>
 	<p>Warning: An existing installation has been detected. It <u>will be deleted</u> if you continue!</p>
-	<p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
+	<p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead <i class="icon-arrow-right"></i></a></p>
 </div>
 <script>
 waitFor('jQuery', function($){

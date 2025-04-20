@@ -1,6 +1,7 @@
 <?php
 
 	function file_copy($source, $target, $overwrite=false, &$results=[]) {
+
 		$source = str_replace('\\', '/', $source);
 		$target = str_replace('\\', '/', $target);
 
@@ -32,6 +33,10 @@
 			}
 
 			if (is_file($source) || is_link($source)) {
+
+				clearstatcache(true, dirname($source));
+				clearstatcache(true, dirname($target));
+
 				if (file_exists($target)) {
 					if ($overwrite) {
 						$results[$target] = unlink($target) && copy($source, $target);
@@ -71,8 +76,6 @@
 			$results = [];
 		}
 
-		clearstatcache(true, dirname($file));
-
 		// Resolve logic
 		if (preg_match('#[*!\[\]{}]#', $file)) {
 
@@ -82,10 +85,14 @@
 
 		} else {
 
+			clearstatcache(true, dirname($file));
+
 			if (is_dir($file)) {
+
 				if ($recursive) {
 					file_delete(rtrim($file, '/') . '/*', $recursive, $results);
 				}
+
 				$results[$file] = rmdir($file);
 
 			} else if (is_file($file) || is_link($file)) {
@@ -131,14 +138,18 @@
 			}
 
 		} else {
+
+			clearstatcache(true, dirname($source));
+			clearstatcache(true, dirname($target));
+
 			if (file_exists($target)) {
 				if ($overwrite) {
-					$results[$target] = unlink($target) && rename($source, $target);
+					$results[$source] = unlink($target) && rename($source, $target);
 				} else {
-					$results[$target] = false;
+					$results[$source] = false;
 				}
 			} else {
-				$results[$target] = rename($source, $target);
+				$results[$source] = rename($source, $target);
 			}
 		}
 
@@ -389,6 +400,9 @@
 			}
 
 		} else {
+
+			clearstatcache(true, dirname($source));
+			clearstatcache(true, dirname($target));
 
 			if (!file_exists($source)) {
 				$results[$target] = false;

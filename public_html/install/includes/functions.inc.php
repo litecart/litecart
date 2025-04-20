@@ -30,26 +30,26 @@
 						if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $target)) continue;
 					}
 
-					echo 'Copying '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $source) .' to '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $target);
+					br('Copying files from '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $source) .' to '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $target) . '...');
 
-					if (file_xcopy($source, $target, true, $results)) {
-						br([
-							' <span class="ok">[OK]</span>',
-							'',
-						]);
+					$results = [];
 
-					} else if ($on_error == 'skip') {
-						br([
-							' <span class="warning">[Skipped]</span>',
-							'',
-						]);
+					if (!file_xcopy($source, $target, false, $results)) {
 
-					} else {
-						br([
-							' <span class="error">[Failed]</span>',
-							'',
-						]);
-						exit;
+						foreach ($results as $file => $result) {
+
+							if (!$result) {
+
+								echo '  - '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file);
+
+								if ($on_error == 'skip') {
+									br(' <span class="warning">[Skipped]</span>');
+								} else {
+									br(' <span class="error">[Failed]</span>');
+									exit;
+								}
+							}
+						}
 					}
 				}
 
@@ -72,7 +72,7 @@
 
 					foreach ($files as $file) {
 
-						echo 'Performing custom actions on ' . preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file) .'...<br>' . PHP_EOL;
+						br('Performing custom actions on ' . preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file) .'...');
 
 						foreach ($operations as $i => $operation) {
 
@@ -115,26 +115,26 @@
 						if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) continue;
 					}
 
-					echo 'Deleting '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $source);
+					br('Deleting '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $source) .'...');
 
-					if (file_delete($source, true, $results)) {
-						br([
-							' <span class="ok">[OK]</span>',
-							'',
-						]);
+					$results = [];
 
-					} else if ($on_error == 'skip') {
-						br([
-							' <span class="warning">[Skipped]</span>',
-							'',
-						]);
+					if (!file_delete($source, true, $results)) {
 
-					} else {
-						br([
-							' <span class="error">[Failed]</span>',
-							'',
-						]);
-						exit;
+						foreach ($results as $file => $result) {
+
+							if (!$result) {
+
+								echo '  - '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file);
+
+								if ($on_error == 'skip') {
+									br(' <span class="warning">[Skipped]</span>');
+								} else {
+									br(' <span class="error">[Failed]</span>');
+									exit;
+								}
+							}
+						}
 					}
 				}
 
@@ -149,26 +149,26 @@
 						if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $source)) continue;
 					}
 
-					echo 'Moving '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $source) .' to '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $target);
+					br('Moving '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $source) .' to '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $target) .'...');
 
-					if (file_move($source, $target, true, $results)) {
-						br([
-							' <span class="ok">[OK]</span>',
-							'',
-						]);
+					$results = [];
 
-					} else if ($on_error == 'skip') {
-						br([
-							' <span class="warning">[Skipped]</span>',
-							'',
-						]);
+					if (!file_move($source, $target, false, $results)) {
 
-					} else {
-						br([
-							' <span class="error">[Failed]</span>',
-							'',
-						]);
-						exit;
+						foreach ($results as $file => $result) {
+
+							if (!$result) {
+
+								echo '  - '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file);
+
+								if ($on_error == 'skip') {
+									br(' <span class="warning">[Skipped]</span>');
+								} else {
+									br(' <span class="error">[Failed]</span>');
+									exit;
+								}
+							}
+						}
 					}
 				}
 
@@ -190,14 +190,12 @@
 
 						foreach ($files as $file) {
 
-							echo 'Modifying ' . preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $source) .'...<br>' . PHP_EOL;
+							br('Modifying ' . preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $source) .'...');
 
 							$contents = file_get_contents($file);
 							$contents = preg_replace('#(\r\n?|\n)#u', PHP_EOL, $contents);
 
 							foreach ($operations as $i => $operation) {
-
-								echo '  - Operation #'. $i+1;
 
 								if (!empty($operation['regex'])) {
 									$contents = preg_replace($operation['search'], $operation['replace'], $contents, -1, $count);
@@ -205,26 +203,21 @@
 									$contents = str_replace($operation['search'], $operation['replace'], $contents, $count);
 								}
 
-								if ($count) {
-									br([
-										' <span class="ok">[OK]</span>',
-										'',
-									]);
+								if (!$count) {
+									echo '  - Operation #'. $i+1;
 
-								} else if ($on_error == 'skip') {
-									br([
-										' <span class="warning">[Skipped]</span>',
-										'',
-									]);
+									if ($on_error == 'skip') {
+										br(' <span class="warning">[Skipped]</span>');
 
-								} else {
-									br([
-										' <span class="error">[Failed]</span>',
-										'  Search: ' . $operation['search'],
-										'  Replace: ' . $operation['replace'],
-										'',
-									]);
-									exit;
+									} else {
+										br([
+											' <span class="error">[Failed]</span>',
+											'  Search: ' . $operation['search'],
+											'  Replace: ' . $operation['replace'],
+											'',
+										]);
+										exit;
+									}
 								}
 
 								$results[] = file_put_contents($file, $contents);

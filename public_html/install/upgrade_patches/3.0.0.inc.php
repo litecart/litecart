@@ -163,6 +163,7 @@
 		FS_DIR_APP . 'includes/boxes/box_latest_products.inc.php',
 		FS_DIR_APP . 'includes/boxes/box_manufacturer_links.inc.php',
 		FS_DIR_APP . 'includes/boxes/box_manufacturer_logotypes.inc.php',
+		FS_DIR_APP . 'includes/boxes/box_newsletter_subscribe.inc.php',
 		FS_DIR_APP . 'includes/boxes/box_popular_products.inc.php',
 		FS_DIR_APP . 'includes/boxes/box_recently_viewed_products.inc.php',
 		FS_DIR_APP . 'includes/boxes/box_region.inc.php',
@@ -305,6 +306,7 @@
 		FS_DIR_APP . 'includes/templates/default.catalog/views/box_latest_products.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/views/box_manufacturer_links.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/views/box_manufacturer_logotypes.inc.php',
+		FS_DIR_APP . 'includes/templates/default.catalog/views/box_newsletter_subscribe.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/views/box_popular_products.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/views/box_product.inc.php',
 		FS_DIR_APP . 'includes/templates/default.catalog/views/box_recently_viewed_products.inc.php',
@@ -379,6 +381,17 @@
 		FS_DIR_APP . 'install/data/default/storage/images/no_image.svg' => FS_DIR_APP . 'storage/images/',
 	]);
 
+	// Move files to trash
+	mkdir(FS_DIR_APP . '.deleteme', 0777, true);
+
+	perform_action('move', [
+		FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_APP . '.deleteme/config.inc.php',
+		FS_DIR_APP . 'includes/modules/order_total/' => FS_DIR_APP . '.deleteme/order_total/',
+		FS_DIR_APP . 'includes/routes/*' => FS_DIR_APP . '.deleteme/routes/',
+		FS_DIR_APP . '.htaccess' => FS_DIR_APP . '.deleteme/.htaccess',
+		FS_DIR_APP . 'favicon.ico' => FS_DIR_APP . '.deleteme/favicon.ico',
+	]);
+
 	echo '<p>Writing fresh new config file... ';
 
 	$timezone = database::query(
@@ -395,7 +408,7 @@
 		'{DB_PASSWORD}' => DB_PASSWORD,
 		'{DB_DATABASE}' => DB_DATABASE,
 		'{DB_TABLE_PREFIX}' => DB_TABLE_PREFIX,
-		'{CLIENT_IP}' => $_REQUEST['client_ip'],
+		'{CLIENT_IP}' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',
 		'{TIMEZONE}' => $timezone,
 	]);
 
@@ -407,29 +420,18 @@
 	}
 
 	echo '<p>Writing fresh new .htaccess file... ';
-	$htaccess = file_get_contents('htaccess');
+	$htaccess = file_get_contents(__DIR__.'/htaccess');
 
 	$htaccess = strtr($htaccess, [
 		'{WS_DIR_APP}' => WS_DIR_APP,
 		'{FS_DIR_APP}' => FS_DIR_APP,
 	]);
 
-	if (file_put_contents('../.htaccess', $htaccess)) {
+	if (file_put_contents(FS_DIR_APP . '.htaccess', $htaccess)) {
 		echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 	} else {
 		throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
 	}
-
-	// Move files to trash
-	mkdir(FS_DIR_APP . '.deleteme', 0777, true);
-
-	perform_action('move', [
-		FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_APP . '.deleteme/config.inc.php',
-		FS_DIR_APP . 'includes/modules/order_total/' => FS_DIR_APP . '.deleteme/order_total/',
-		FS_DIR_APP . 'includes/routes/*' => FS_DIR_APP . '.deleteme/routes/',
-		FS_DIR_APP . '.htaccess' => FS_DIR_APP . '.deleteme/.htaccess',
-		FS_DIR_APP . 'favicon.ico' => FS_DIR_APP . '.deleteme/favicon.ico',
-	]);
 
 	// Move files to new locations
 
@@ -695,7 +697,53 @@
 		DROP COLUMN `attributes`;"
 	);
 
+	// Change VARCHAR(256) to VARCHAR(248) (InnoDB limitation for index length)
+
+	database::query(
+		"select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
+		where TABLE_SCHEMA = '". DB_DATABASE ."'
+		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+		and COLUMN_TYPE like 'varchar(256)'
+		order by TABLE_NAME;"
+	)->each(function($column){
+		database::query(
+			"alter table `". $column['TABLE_NAME'] ."`
+			change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` ". strtr($column['COLUMN_TYPE'], ['256' => '248']) ." ". (($column['IS_NULLABLE'] == 'YES') ? "NULL" : "NOT NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
+		);
+	});
+
+	// Change VARCHAR to CHAR
+
+	database::query(
+		"select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
+		where TABLE_SCHEMA = '". DB_DATABASE ."'
+		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+		and (COLUMN_NAME like '%country_code%' or COLUMN_NAME like '%language_code%')
+		and COLUMN_TYPE = 'varchar(2)'
+		order by TABLE_NAME;"
+	)->each(function($column){
+		database::query(
+			"alter table `". $column['TABLE_NAME'] ."`
+			change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` CHAR(2) ". (($column['IS_NULLABLE'] == 'YES') ? "NULL" : "NOT NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
+		);
+	});
+
+	database::query(
+		"select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
+		where TABLE_SCHEMA = '". DB_DATABASE ."'
+		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+		and COLUMN_NAME like '%currency_code%'
+		and COLUMN_TYPE = 'varchar(3)'
+		order by TABLE_NAME;"
+	)->fetch(function($column){
+		database::query(
+			"alter table `". $column['TABLE_NAME'] ."`
+			change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` CHAR(3) ". (($column['IS_NULLABLE'] == 'YES') ? "NULL" : "NOT NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
+		);
+	});
+
 	// Convert Table Charset and Collations
+
 	$collations = database::query(
 		"select COLLATION_NAME FROM `information_schema`.`COLLATIONS`
 		where CHARACTER_SET_NAME = 'utf8mb4'
@@ -740,51 +788,6 @@
 		"alter database `". DB_DATABASE ."`
 		default character set utf8mb4 collate ". database::input($new_collation) .";"
 	);
-
-	// Change VARCHAR length 256 to 255 (InnoDB limitation)
-
-	database::query(
-		"select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
-		where TABLE_SCHEMA = '". DB_DATABASE ."'
-		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
-		and COLUMN_TYPE like 'varchar(256)'
-		order by TABLE_NAME;"
-	)->each(function($column){
-		database::query(
-			"alter table `". $column['TABLE_NAME'] ."`
-			change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` ". strtr($column['COLUMN_TYPE'], ['256' => '255']) ." ". (($column['IS_NULLABLE'] == 'YES') ? "NULL" : "NOT NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
-		);
-	});
-
-	// Change VARCHAR to CHAR
-
-	database::query(
-		"select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
-		where TABLE_SCHEMA = '". DB_DATABASE ."'
-		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
-		and (COLUMN_NAME like '%country_code%' or COLUMN_NAME like '%language_code%')
-		and COLUMN_TYPE = 'varchar(2)'
-		order by TABLE_NAME;"
-	)->each(function($column){
-		database::query(
-			"alter table `". $column['TABLE_NAME'] ."`
-			change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` CHAR(2) ". (($column['IS_NULLABLE'] == 'YES') ? "NULL" : "NOT NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
-		);
-	});
-
-	database::query(
-		"select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
-		where TABLE_SCHEMA = '". DB_DATABASE ."'
-		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
-		and COLUMN_NAME like '%currency_code%'
-		and COLUMN_TYPE = 'varchar(3)'
-		order by TABLE_NAME;"
-	)->fetch(function($column){
-		database::query(
-			"alter table `". $column['TABLE_NAME'] ."`
-			change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` CHAR(3) ". (($column['IS_NULLABLE'] == 'YES') ? "NULL" : "NOT NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
-		);
-	});
 
 	// Set hostname for recent orders
 	database::query(

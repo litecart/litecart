@@ -136,7 +136,7 @@
 	});
 
 	if (empty($_REQUEST['development_type'])) {
-		if (is_file($file = FS_DIR_APP . 'includes/templates/default.catalog/.development')) {
+		if (is_file($file = FS_DIR_APP . 'frontend/templates/default/.development')) {
 			$_REQUEST['development_type'] = file_get_contents($file);
 		}
 	}
@@ -175,7 +175,7 @@
 				echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 			}
 
-			### PHP > Check PHP Extensisons ###############################
+			### PHP > Check PHP Extensisons ########################################
 
 			echo '<p>Checking for PHP extensions... ';
 
@@ -197,6 +197,42 @@
 				echo '<span class="warning">[Warning] Some important PHP extensions are missing ('. implode(', ', $missing_extensions) .'). It is recommended that you enable them in php.ini.</span></p>' . PHP_EOL . PHP_EOL;
 			} else {
 				echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+			}
+
+			### Database > Check Version ###########################################
+
+			$database_software = database::query(
+				"SELECT VERSION();"
+			)->fetch(function($row) use ($requirements) {
+				if (preg_match('#mariadb#i', $row['VERSION()'])) {
+					return [
+						'name' => 'MariaDB',
+						'version' => strtok($row['VERSION()'], '-'),
+						'min_version' => $requirements['databases']['mariadb']['minimumVersion'],
+						'recommended_version' => $requirements['databases']['mariadb']['recommendedVersion'],
+					];
+				}
+				return [
+					'name' => 'MySQL',
+					'version' => $row['VERSION()'],
+					'min_version' => $requirements['databases']['mysql']['minimumVersion'],
+					'recommended_version' => $requirements['databases']['mysql']['recommendedVersion'],
+				];
+			});
+
+			echo $database_software['name'] .' '. $database_software['version'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
+			echo '<p>Checking database software... ';
+
+			if (version_compare($database_software['version'], $database_software['min_version'], '<')) {
+				throw new Exception($database_software['name'] .' '. $database_software['version'] . ' <span class="error">[Error] '.  $database_software['name'] .' '. $database_software['min_version'] .'+ required</span></p>');
+
+			} else if (version_compare($database_software['version'], $database_software['recommended_version'], '<')) {
+				echo $database_software['name'] .' '. $database_software['version'] .' <span class="ok">[OK]</span><br>'
+					. '<span class="warning">'. $database_software['name'] .' '. $database_software['recommended_version'] .'+ recommended</span></span></p>';
+
+			} else {
+				echo $database_software['name'] .' '. $database_software['version'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 			}
 
 			### Backup > Database ##################################################
@@ -309,7 +345,7 @@
 				throw new Exception(' <span class="error">[Undetected]</span></p>' . PHP_EOL . PHP_EOL);
 			}
 
-			### Installer > Update ########################################
+			### Installer > Update #################################################
 
 			if (!empty($_REQUEST['skip_updates'])) {
 
@@ -361,7 +397,7 @@
 				}
 			}
 
-			#############################################
+			########################################################################
 
 			$current_version = PLATFORM_DATABASE_VERSION;
 
@@ -412,7 +448,7 @@
 				$current_version = $version;
 			}
 
-			#############################################
+			########################################################################
 
 			echo 'Update table structures...' . PHP_EOL;
 
@@ -477,7 +513,7 @@
 				}
 			}
 
-			#############################################
+			########################################################################
 
 			// Iterate through each table and add/change columns and keys
 			foreach ($database_structure['tables'] as $table_name => $table) {
@@ -614,9 +650,9 @@
 				// Create primary key
 				if (!empty($table['primary_key'])) {
 					if ($table_exists) {
-						$sql .= 'ADD PRIMARY KEY (`'. implode('`, `', $table['primary_key']) .'`),' . PHP_EOL;
+						$sql .= 'ADD PRIMARY KEY (`'. implode('`, `', database::input($table['primary_key'])) .'`),' . PHP_EOL;
 					} else {
-						$sql .= '  PRIMARY KEY (`'. implode('`, `', $table['primary_key']) .'`),' . PHP_EOL;
+						$sql .= '  PRIMARY KEY (`'. implode('`, `', database::input($table['primary_key'])) .'`),' . PHP_EOL;
 					}
 				}
 
@@ -624,9 +660,9 @@
 				if (!empty($table['unique_keys'])) {
 					foreach ($table['unique_keys'] as $key_name => $key_columns) {
 						if ($table_exists) {
-							$sql .= 'ADD CONSTRAINT `'. $key_name .'` UNIQUE (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
+							$sql .= 'ADD CONSTRAINT `'. database::input($key_name) .'` UNIQUE (`'. implode('`, `', database::input($key_columns)) .'`),' . PHP_EOL;
 						} else {
-							$sql .= '  CONSTRAINT `'. $key_name .'` UNIQUE (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
+							$sql .= '  CONSTRAINT `'. database::input($key_name) .'` UNIQUE (`'. implode('`, `', database::input($key_columns)) .'`),' . PHP_EOL;
 						}
 					}
 				}
@@ -634,7 +670,7 @@
 				// Create fulltext keys
 				if (isset($table['fulltext_keys'])) {
 					foreach ($table['fulltext_keys'] as $key_name => $key_columns) {
-						$sql .= '  FULLTEXT KEY `' . database::input($key_name) . '` (`' . implode('`, `', $key_columns) . '`),' . PHP_EOL;
+						$sql .= '  FULLTEXT KEY `' . database::input($key_name) . '` (`' . implode('`, `', database::input($key_columns)) . '`),' . PHP_EOL;
 					}
 				}
 
@@ -642,9 +678,9 @@
 				if (!empty($table['keys'])) {
 					foreach ($table['keys'] as $key_name => $key_columns) {
 						if ($table_exists) {
-							$sql .= 'ADD KEY `'. $key_name .'` (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
+							$sql .= 'ADD KEY `'. database::input($key_name) .'` (`'. implode('`, `', database::input($key_columns)) .'`),' . PHP_EOL;
 						} else {
-							$sql .= '  KEY `'. $key_name .'` (`'. implode('`, `', $key_columns) .'`),' . PHP_EOL;
+							$sql .= '  KEY `'. database::input($key_name) .'` (`'. implode('`, `', database::input($key_columns)) .'`),' . PHP_EOL;
 						}
 					}
 				}
@@ -653,9 +689,9 @@
 				if (!empty($table['check_constraints'])) {
 					foreach ($table['check_constraints'] as $name => $expression) {
 						if ($table_exists) {
-							$sql .= 'ADD CONSTRAINT `'. $name .'` CHECK ('. database::input($expression) .'),' . PHP_EOL;
+							$sql .= 'ADD CONSTRAINT `'. database::input($name) .'` CHECK ('. database::input($expression) .'),' . PHP_EOL;
 						} else {
-							$sql .= '  CONSTRAINT `'. $name .'` CHECK ('. database::input($expression) .'),' . PHP_EOL;
+							$sql .= '  CONSTRAINT `'. database::input($name) .'` CHECK ('. database::input($expression) .'),' . PHP_EOL;
 						}
 					}
 				}
@@ -671,7 +707,7 @@
 				echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 			}
 
-			#############################################
+			########################################################################
 
 			if (!is_dir(__DIR__.'/../../.git')) {
 
@@ -719,7 +755,7 @@
 				echo PHP_EOL;
 			}
 
-			#############################################
+			########################################################################
 
 			echo '<p>Reset error log... ';
 
@@ -729,7 +765,7 @@
 				echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
 			}
 
-			#############################################
+			########################################################################
 
 			echo '<p>Clear cache... ';
 
@@ -748,7 +784,7 @@
 
 			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-			#############################################
+			########################################################################
 
 			echo '<h2>Complete</h2>' . PHP_EOL . PHP_EOL
 				 . '<p style="font-weight: bold;">Upgrade complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL . PHP_EOL;
@@ -849,14 +885,6 @@ input[name="development_type"]:checked + div {
 		</div>
 	</div>
 
-	<h3>Backup</h3>
-
-	<label class="form-group">
-		<div class="form-label form-check">
-			<input type="checkbox" name="backup" value="true" checked> Backup my database before performing the upgrade.
-		</div>
-	</label>
-
 	<div class="grid">
 		<?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
 		<div class="col-md-3">
@@ -886,9 +914,11 @@ input[name="development_type"]:checked + div {
 	</div>
 
 	<label class="form-group">
-		<div class="form-label" style="margin-top: 2.25em;">
-			<input type="checkbox" class="form-check" name="skip_updates" value="0"> Skip downloading the latest updates
-		</div>
+		<input class="form-check" type="checkbox" name="backup" value="true" checked> Backup my database before performing the upgrade.
+	</label>
+
+	<label class="form-group">
+		<input type="checkbox" class="form-check" name="skip_updates" value="0"> Skip downloading the latest updates
 	</label>
 
 	<h2>Development</h2>

@@ -39,12 +39,12 @@
 		"mysql": {
 			"name": "MySQL",
 			"minimumVersion": "8.0",
-			"recommendedVersion": "8.4"
+			"recommendedVersion": "8.3"
 		},
 		"mariadb": {
 			"name": "MariaDB",
 			"minimumVersion": "10.4",
-			"recommendedVersion": "11.7"
+			"recommendedVersion": "11.6"
 		}
 	}
 }
