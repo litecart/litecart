@@ -1016,7 +1016,7 @@ WHERE `key` = 'jobs_last_push'
 LIMIT 1;
 -- -----
 UPDATE `lc_settings`
-SET `value` = 'https://'
+SET `value` = ''
 WHERE `value` IN ('?app=settings&doc=advanced&action=edit&key=control_panel_link', '?app=settings&doc=advanced&action=edit&key=database_admin_link', '?app=settings&doc=advanced&action=edit&key=webmail_link');
 -- -----
 UPDATE `lc_settings`
@@ -1058,7 +1058,7 @@ ALTER TABLE `lc_categories`
 DROP COLUMN `list_style`;
 -- -----
 DELETE FROM `lc_settings`
-WHERE `key` IN ('auto_decimals', 'cache_system_breakpoint', 'development_mode', 'jobs_interval', 'jobs_last_push', 'round_amounts', 'store_template_admin', 'store_template_admin_settings');
+WHERE `key` IN ('auto_decimals', 'cache_system_breakpoint', 'development_mode', 'jobs_interval', 'round_amounts', 'store_template_admin', 'store_template_admin_settings');
 -- -----
 DELETE FROM `lc_modules`
 WHERE `module_id` = 'ot_subtotal'

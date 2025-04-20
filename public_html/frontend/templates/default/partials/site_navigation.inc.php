@@ -130,46 +130,6 @@
 					</li>
 					<?php } ?>
 
-					<li class="wishlist<?php if (!empty($wishlist['items'])) echo ' filled'; ?> dropdown dropdown-end">
-						<div class="navbar-item" data-toggle="dropdown">
-							<img class="img-responsive hidden-xs" src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($wishlist['items']) ? 'wishlist_filled.svg' : 'wishlist.svg')); ?>">
-							<span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo language::translate('title_wishlist', 'Wishlist'); ?></span>
-							<span class="badge"><?php echo $wishlist['num_items']; ?></span>
-						</div>
-
-						<ul class="dropdown-menu" style="max-width: 480px;">
-
-							<?php foreach ($wishlist['items'] as $key => $item) { ?>
-							<li class="dropdown-item item">
-
-								<div class="grid">
-									<div class="col-2">
-										<?php echo functions::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. functions::escape_attr($item['name']) .'"'); ?>
-									</div>
-
-									<div class="col-8">
-										<div>
-											<a class="name" href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>">
-												<?php echo $item['name']; ?>
-											</a>
-										</div>
-									</div>
-
-									<div class="col-2 text-end">
-										<?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
-									</div>
-								</div>
-
-							</li>
-							<?php } ?>
-
-							<li class="dropdown-item empty text-center">
-								<span><?php echo language::translate('text_your_wishlist_is_empty'), 'Your wishlist is empty'; ?></span>
-							</li>
-
-						</ul>
-					</li>
-
 					<li class="shopping-cart<?php if (!empty($shopping_cart['items'])) echo ' filled'; ?> dropdown dropdown-end">
 						<div class="navbar-item" data-toggle="dropdown">
 							<img class="img-responsive hidden-xs" src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($shopping_cart['items']) ? 'cart_filled.svg' : 'cart.svg')); ?>">
