@@ -17,12 +17,12 @@
 			$this->_selected = $module_id;
 		}
 
-		public function options($shopping_cart) {
+		public function options($items, $customer) {
 
 			$results = [];
 
 			foreach ($this->modules as $module) {
-				if ($options = $module->option($shopping_cart)) {
+				if ($options = $module->option($items, $customer)) {
 					$results[] = [
 						'module_id' => $module_id,
 						'label' => $row['label'],

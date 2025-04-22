@@ -65,4 +65,6 @@
 
 	$box_category_tree->snippets['categories'] = $iterator($main_category ? $main_category->id : 0);
 
+	if (!$box_category_tree->snippets['categories']) return;
+
 	echo $box_category_tree->render();

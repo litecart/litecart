@@ -55,9 +55,9 @@
 		}
 
 		// Validate
-		if (!empty($_POST['save_customer_details'])) { // <-- Button is pressed
-			if (settings::get('accounts_enabled') && !empty($_POST['sign_up'])) {
+		if (isset($_POST['save_customer_details'])) { // <-- Button is pressed
 
+			if (settings::get('accounts_enabled') && !empty($_POST['sign_up'])) {
 				try {
 
 					if (empty($_POST['customer']['email']) || !filter_var($_POST['customer']['email'], FILTER_VALIDATE_EMAIL)) {

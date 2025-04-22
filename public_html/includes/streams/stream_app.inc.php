@@ -15,7 +15,7 @@
 
 			$file = readdir($this->_directory);
 
-				// Skip returning . and ..
+			// Skip returning . and ..
 			if (is_string($file) && preg_match('#^\.{1,2}$#', $file)) {
 				return $this->dir_readdir();
 			}

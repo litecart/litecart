@@ -25,10 +25,6 @@
 			<?php echo functions::draw_fonticon('icon-zoom-in'); ?>
 		</button>
 
-		<button class="wishlist btn btn-default btn-sm" name="add_to_wishlist" title="<?php echo language::translate('title_add_to_favourites', 'Add To Favourites'); ?>">
-			<?php echo functions::draw_fonticon('icon-heart-o'); ?>
-		</button>
-
 		<?php if (!$num_stock_options) { ?>
 		<button class="add-to-cart btn btn-success btn-sm" name="add_cart_product" title="<?php echo language::translate('title_add_to_cart', 'Add To Cart'); ?>">
 			<?php echo functions::draw_fonticon('icon-shopping-cart'); ?>

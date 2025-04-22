@@ -537,7 +537,7 @@ table .icon-folder-open {
 					) pc on (pc.product_id = p.id)
 
 					left join (
-						select pso.id, pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as quantity
+						select pso.id, pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options
 						from ". DB_TABLE_PREFIX ."products_stock_options pso
 						left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 						group by pso.product_id

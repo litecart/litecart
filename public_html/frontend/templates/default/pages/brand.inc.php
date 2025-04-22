@@ -24,12 +24,30 @@
 						<p class="description">{{description}}</p>
 						<?php } ?>
 
-						<?php include 'app://frontend/partials/box_filter.inc.php'; ?>
-
 						<?php if ($products) { ?>
+
+						<div class="flex flex-gap">
+							<div class="dropdown" style="flex-grow: 0;">
+								<div class="form-select" data-toggle="dropdown">
+									<?php echo language::translate('title_sort_by', 'Sort By'); ?>
+								</div>
+
+								<ul class="dropdown-content">
+									<?php foreach ($sort_alternatives as $key => $title) { ?>
+									<li><?php echo functions::form_radio_button('sort', [$key, $title], true); ?></li>
+									<?php } ?>
+								</ul>
+							</div>
+
+							<div style="flex-grow: 0;">
+								<?php echo functions::form_toggle('list_style', ['columns' => functions::draw_fonticon('icon-th-large'), 'rows' => functions::draw_fonticon('icon-bars')], true, 'data-token-group="list_style" data-token-title="'. language::translate('title_list_style', 'List Style') .'"'); ?>
+							</div>
+						</div>
+
 						<section class="listing products columns">
 							<?php foreach ($products as $product) echo functions::draw_listing_product($product, ['brand_id']); ?>
 						</section>
+
 						<?php } ?>
 					</div>
 

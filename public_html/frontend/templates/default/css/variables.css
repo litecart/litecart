@@ -159,9 +159,9 @@
   --notice-success-background: #d6eca6;
   --notice-success-text-color: #567d00;
   --notice-warning-background: #ffcc66;
-  --notice-warning-background: #aa0000;
+  --notice-warning-text-color: #aa0000;
   --notice-danger-background: #fcc;
-  --notice-danger-background: #c44;
+  --notice-danger-text-color: #c44;
   /* Pagination */
   --pagination-item-background: var(--navbar-background);
   --pagination-item-background--hover: var(--navbar-background--hover);

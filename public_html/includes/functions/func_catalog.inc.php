@@ -203,13 +203,6 @@
 			$sql_where_attributes = implode(PHP_EOL, $sql_where_attributes);
 		}
 
-		if (!empty($filter['price_ranges']) && is_array($filter['price_ranges'])) {
-			$sql_where_prices = "and (". implode(" or ", array_map(function($range){
-				list($min, $max) = explode('-', $range);
-				return "(final_price between ". (float)$min ." and ". (float)$max .")";
-			}, $filter['price_ranges'])) .")";
-		}
-
 		$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
 			return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 		}, currency::$currencies)) .")";
@@ -297,11 +290,12 @@
 
 			left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
 
-			where (p.id
-				and (ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)
+			where (
+				(ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)
 				". (!empty($filter['sql_where']) ? "and (". $filter['sql_where'] .")" : "") ."
 				". (!empty($filter['campaign']) ? "and campaign_price > 0" : "") ."
-				". fallback($sql_where_prices) ."
+				". (!empty($filter['price_range']['min']) ? "and final_price >= ". (float)$filter['price_range']['min'] : "") ."
+				". (!empty($filter['price_range']['max']) ? "and final_price <= ". (float)$filter['price_range']['max'] : "") ."
 			)
 
 			group by p.id
@@ -529,6 +523,8 @@
 			where (p.id
 				and (ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)
 				". (!empty($sql_where) ? implode(" and ", $sql_where) : "") ."
+				". (!empty($filter['price_range']['min']) ? "and final_price >= ". (float)$filter['price_range']['min'] : "") ."
+				". (!empty($filter['price_range']['max']) ? "and final_price <= ". (float)$filter['price_range']['max'] : "") ."
 			)
 
 			group by p.id

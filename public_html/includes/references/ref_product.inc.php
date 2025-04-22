@@ -447,7 +447,9 @@
 							json_value(si.name, '$.".database::input(language::$selected['code'])."') as name,
 							ifnull(oi.quantity_reserved, 0) as quantity_reserved,
 							si.quantity - ifnull(oi.quantity_reserved, 0) as quantity_available
+
 						from ". DB_TABLE_PREFIX ."products_stock_options pso
+
 						left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 
 						left join (

@@ -8,13 +8,13 @@
 
 				<section id="box-shopping-cart" class="card">
 
-					<?php echo functions::form_begin('shopping_cart_form', 'post'); ?>
+					<div class="card-header">
+						<h2 class="card-title"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></h2>
+					</div>
 
-						<div class="card-header">
-							<h2 class="card-title"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></h2>
-						</div>
+					<div class="card-body">
 
-						<div class="card-body">
+						<?php echo functions::form_begin('shopping_cart_form', 'post'); ?>
 
 							<ul class="items list-unstyled">
 								<?php foreach ($items as $key => $item) { ?>
@@ -75,9 +75,10 @@
 							<div class="subtotal text-lg text-end">
 								<?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format($subtotal['value'] + $subtotal['tax']) : currency::format($subtotal['value']); ?></strong>
 							</div>
-						</div>
 
-					<?php echo functions::form_end(); ?>
+						<?php echo functions::form_end(); ?>
+					</div>
+
 				</section>
 
 			</div>
@@ -86,13 +87,13 @@
 
 				<section id="box-shopping-cart" class="card">
 
-					<?php echo functions::form_begin('shopping_cart_form', 'post'); ?>
+					<div class="card-header">
+						<h2 class="card-title"><?php echo language::translate('title_checkout', 'Checkout'); ?></h2>
+					</div>
 
-						<div class="card-header">
-							<h2 class="card-title"><?php echo language::translate('title_checkout', 'Checkout'); ?></h2>
-						</div>
+					<div class="card-body">
 
-						<div class="card-body">
+						<?php echo functions::form_begin('shopping_cart_form', 'post'); ?>
 
 							<div class="flex">
 
@@ -152,9 +153,9 @@
 							<?php } ?>
 							<?php } ?>
 
-						</div>
+						<?php echo functions::form_end(); ?>
 
-					<?php echo functions::form_end(); ?>
+					</div>
 
 				</section>
 

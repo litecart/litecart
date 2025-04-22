@@ -48,40 +48,34 @@
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/brand.inc.php');
 
-	$brand_cache_token = cache::token('box_brand', ['get', 'language', 'currency', 'prices'], 'file');
-	if (!$_page->snippets = cache::get($brand_cache_token, ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
+	$_page->snippets = [
+		'id' => $brand->id,
+		'title' => $brand->h1_title ?: $brand->name,
+		'name' => $brand->name,
+		'description' => $brand->description,
+		'link' => $brand->link,
+		'image' => $brand->image ? 'storage://images/' . $brand->image : '',
+		'products' => [],
+		'sort_alternatives' => [
+			'name' => language::translate('title_name', 'Name'),
+			'price' => language::translate('title_price', 'Price'),
+			'popularity' => language::translate('title_popularity', 'Popularity'),
+			'date' => language::translate('title_date', 'Date'),
+		],
+		'num_products_page' => null,
+		'num_products_total' => null,
+		'pagination' => null,
+	];
 
-		$_page->snippets = [
-			'id' => $brand->id,
-			'title' => $brand->h1_title ?: $brand->name,
-			'name' => $brand->name,
-			'description' => $brand->description,
-			'link' => $brand->link,
-			'image' => $brand->image ? 'storage://images/' . $brand->image : '',
-			'products' => [],
-			'sort_alternatives' => [
-				'name' => language::translate('title_name', 'Name'),
-				'price' => language::translate('title_price', 'Price'),
-				'popularity' => language::translate('title_popularity', 'Popularity'),
-				'date' => language::translate('title_date', 'Date'),
-			],
-			'num_products_page' => null,
-			'num_products_total' => null,
-			'pagination' => null,
-		];
+	$_page->snippets['products'] = functions::catalog_products_query([
+		'brands' => [$brand->id],
+		'product_name' => fallback($_GET['product_name']),
+		'sort' => $_GET['sort'],
+		'campaigns_first' => true,
+	])->fetch_page(null, null, $_GET['page'], 20, $num_rows, $num_pages);
 
-		$_page->snippets['products'] = functions::catalog_products_query([
-			'brands' => [$brand->id],
-			'product_name' => fallback($_GET['product_name']),
-			'sort' => $_GET['sort'],
-			'campaigns_first' => true,
-		])->fetch_page(null, null, $_GET['page'], 20, $num_rows, $num_pages);
-
-		$_page->snippets['num_products_page'] = count($_page->snippets['products']);
-		$_page->snippets['num_products_total'] = $num_rows;
-		$_page->snippets['pagination'] = functions::draw_pagination($num_pages);
-
-		cache::set($brand_cache_token, $_page->snippets);
-	}
+	$_page->snippets['num_products_page'] = count($_page->snippets['products']);
+	$_page->snippets['num_products_total'] = $num_rows;
+	$_page->snippets['pagination'] = functions::draw_pagination($num_pages);
 
 	echo $_page->render();

@@ -5,7 +5,7 @@
 
 		<?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
 		<div class="float-end">
-			<a class="btn btn-outline btn-sm" href="<?php echo document::ilink('account/sign_in', ['redirect_url' => document::ilink('checkout')]) ?>#box-login" data-toggle="lightbox" data-require-window-width="768" data-seamless="true">
+			<a class="btn btn-outline btn-sm" href="<?php echo document::ilink('account/sign_in', ['redirect_url' => document::ilink('checkout')]) ?>#box-login" data-toggle="lightbox" data-require-window-width="768" data-width="420px" data-seamless="true">
 				<?php echo language::translate('title_sign_in', 'Sign In'); ?>
 			</a>
 		</div>
