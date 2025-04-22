@@ -46,10 +46,8 @@
 		}
 
 		// Check if data was set correctly
-		foreach ($data as $key => $value) {
-			if ($page->data[$key] != $value) {
-				throw new Exception('The page data was not stored correctly ('. $key .')');
-			}
+		if (!functions::array_intersect_compare($data, $page->data)) {
+			throw new Exception('The page data was not stored correctly');
 		}
 
 		########################################################################
@@ -70,10 +68,8 @@
 		$page->save();
 
 		// Check if data was set correctly
-		foreach ($data as $key => $value) {
-			if ($page->data[$key] != $value) {
-				throw new Exception('The page data was not updated correctly ('. $key .')');
-			}
+		if (!functions::array_intersect_compare($data, $page->data)) {
+			throw new Exception('The page data was not updated correctly ('. $key .')');
 		}
 
 		########################################################################
@@ -92,11 +88,12 @@
 			throw new Exception('Failed to delete page');
 		}
 
-		echo '  Test passed successfully!' . PHP_EOL;
 		return true;
 
 	} catch (Exception $e) {
-		echo 'Test failed: '. $e->getMessage();
+
+		echo ' [Failed]'. PHP_EOL . 'Error: '. $e->getMessage();
+		return false;
 
 	} finally {
 

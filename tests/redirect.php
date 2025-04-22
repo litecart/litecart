@@ -14,9 +14,9 @@
 
 		// Prepare some example data
 		$data = [
-			'code' => '301',
-			'from_url' => '/old-page',
-			'to_url' => '/new-page',
+			'http_response_code' => '301',
+			'pattern' => '^old-page$',
+			'destination' => 'new-page',
 		];
 
 		########################################################################
@@ -46,10 +46,8 @@
 		}
 
 		// Check if data was set correctly
-		foreach ($data as $key => $value) {
-			if ($redirect->data[$key] != $value) {
-				throw new Exception('The redirect data was not stored correctly ('. $key .')');
-			}
+		if (!functions::array_intersect_compare($data, $redirect->data)) {
+			throw new Exception('The redirect data was not stored correctly' . print_r($redirect->data, true) . print_r($data, true));
 		}
 
 		########################################################################
@@ -58,9 +56,9 @@
 
 		// Prepare some new data
 		$data = [
-			'code' => '302',
-			'from_url' => '/old-page-updated',
-			'to_url' => '/new-page-updated',
+			'http_response_code' => '302',
+			'pattern' => '^old-page-updated$',
+			'destination' => 'new-page-updated',
 		];
 
 		// Update some data
@@ -70,10 +68,8 @@
 		$redirect->save();
 
 		// Check if data was set correctly
-		foreach ($data as $key => $value) {
-			if ($redirect->data[$key] != $value) {
-				throw new Exception('The redirect data was not updated correctly ('. $key .')');
-			}
+		if (!functions::array_intersect_compare($data, $redirect->data)) {
+			throw new Exception('The redirect data was not updated correctly');
 		}
 
 		########################################################################
@@ -92,11 +88,12 @@
 			throw new Exception('Failed to delete redirect');
 		}
 
-		echo '  Test passed successfully!' . PHP_EOL;
 		return true;
 
 	} catch (Exception $e) {
-		echo 'Test failed: '. $e->getMessage();
+
+		echo ' [Failed]'. PHP_EOL . 'Error: '. $e->getMessage();
+		return false;
 
 	} finally {
 

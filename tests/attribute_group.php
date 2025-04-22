@@ -83,12 +83,11 @@
 			throw new Exception('Failed to delete attribute group');
 		}
 
-		echo '  Test passed successfully!' . PHP_EOL;
 		return true;
 
 	} catch (Exception $e) {
 
-		echo '  Error: ' . $e->getMessage() . PHP_EOL;
+		echo ' [Failed]'. PHP_EOL . 'Error: '. $e->getMessage();
 		return false;
 
 	} finally {

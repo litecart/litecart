@@ -590,9 +590,8 @@ CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
 -- -----
 CREATE TABLE `lc_stock_items` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`product_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-	`brand_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-	`supplier_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`brand_id` INT(10) UNSIGNED NULL,
+	`supplier_id` INT(10) UNSIGNED NULL,
 	`name` TEXT NOT NULL DEFAULT '{}',
 	`sku` VARCHAR(32) NOT NULL DEFAULT '',
 	`mpn` VARCHAR(32) NOT NULL DEFAULT '',
@@ -624,16 +623,6 @@ CREATE TABLE `lc_stock_items` (
 	INDEX `product_id` (`product_id`) USING BTREE,
 	INDEX `brand_id` (`brand_id`) USING BTREE,
 	INDEX `supplier_id` (`supplier_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- -----
-CREATE TABLE `lc_stock_items_info` (
-	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`stock_item_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-	`language_code` CHAR(2) NOT NULL DEFAULT '',
-	`name` VARCHAR(128) NOT NULL DEFAULT '',
-	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `stock_option_id` (`stock_item_id`) USING BTREE,
-	INDEX `language_code` (`language_code`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_third_parties` (
@@ -1034,9 +1023,6 @@ AND EXISTS (
 UPDATE `lc_sold_out_statuses`
 SET name = '{}',
 	description = '{}';
--- -----
-UPDATE `lc_stock_items`
-SET name = '{}';
 -- -----
 UPDATE `lc_zones_to_geo_zones`
 SET `zone_code` = NULL

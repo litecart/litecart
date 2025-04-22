@@ -100,22 +100,12 @@
 			);
 
 			// Revert stock changes
-			foreach ($this->previous['contents'] as $content) {
-
-				if (!empty($content['stock_item_id'])) {
-					database::query(
-						"update ". DB_TABLE_PREFIX ."stock_items
-						set quantity = quantity - ". (float)$content['quantity_adjustment'] ."
-						where id = ". (int)$content['stock_item_id'] ."
-						and product_id = ". (int)$content['product_id'] ."
-						limit 1;"
-					);
-				}
-
+			foreach ($this->previous['contents'] as $previous_content) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."products
-					set quantity = quantity - ". (float)$content['quantity_adjustment'] ."
-					where id = ". (int)$content['product_id'] ."
+					"update ". DB_TABLE_PREFIX ."stock_items
+					set quantity = quantity - ". (float)$previous_content['quantity_adjustment'] .",
+						backordered = backordered - ". (!empty($previous_content['backordered']) ? (float)$previous_content['backordered'] : 0) ."
+					where id = ". (int)$previous_content['stock_item_id'] ."
 					limit 1;"
 				);
 			}
@@ -155,9 +145,8 @@
 					database::query(
 						"update ". DB_TABLE_PREFIX ."stock_items
 						set quantity = quantity + ". (float)$content['quantity_adjustment'] .",
-							backordered = ". (float)$content['backordered'] ."
+							backordered = backordered + ". (!empty($content['backordered']) ? (float)$content['backordered'] : 0) ."
 						where id = ". (int)$content['stock_item_id'] ."
-						and product_id = ". (int)$content['product_id'] ."
 						limit 1;"
 					);
 				}
@@ -169,10 +158,10 @@
 			cache::clear_cache('product');
 		}
 
-		public function adjust_quantity($product_id, $stock_item_id, $quantity_adjustment) {
+		public function adjust_quantity($stock_item_id, $quantity_adjustment) {
 
 			foreach ($this->data['contents'] as $content) {
-				if ($content['product_id'] == $product_id && $content['stock_item_id'] == $stock_item_id) {
+				if ($content['stock_item_id'] == $stock_item_id) {
 					$content['quantity_adjustment'] += $quantity_adjustment;
 					return;
 				}
@@ -180,7 +169,6 @@
 
 			$this->data['contents'][] = [
 				'id' => null,
-				'product_id' => $product_id,
 				'stock_item_id' => $stock_item_id,
 				'quantity_adjustment' => $quantity_adjustment,
 			];

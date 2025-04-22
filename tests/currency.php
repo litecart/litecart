@@ -91,7 +91,6 @@
 			throw new Exception('Failed to delete currency');
 		}
 
-		echo '  Test passed successfully!' . PHP_EOL;
 		return true;
 
 	} catch (Exception $e) {

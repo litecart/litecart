@@ -45,10 +45,8 @@
 		}
 
 		// Check if data was set correctly
-		foreach ($data as $key => $value) {
-			if ($order_status->data[$key] != $value) {
-				throw new Exception('The order status data was not stored correctly ('. $key .')');
-			}
+		if (!functions::array_intersect_compare($data, $order_status->data)) {
+			throw new Exception('The order status data was not stored correctly');
 		}
 
 		########################################################################
@@ -68,10 +66,8 @@
 		$order_status->save();
 
 		// Check if data was set correctly
-		foreach ($data as $key => $value) {
-			if ($order_status->data[$key] != $value) {
-				throw new Exception('The order status data was not updated correctly ('. $key .')');
-			}
+		if (!functions::array_intersect_compare($data, $order_status->data)) {
+			throw new Exception('The order status data was not updated correctly');
 		}
 
 		########################################################################
@@ -90,11 +86,12 @@
 			throw new Exception('Failed to delete order status');
 		}
 
-		echo '  Test passed successfully!' . PHP_EOL;
 		return true;
 
 	} catch (Exception $e) {
-		echo 'Test failed: '. $e->getMessage();
+
+		echo ' [Failed]'. PHP_EOL . 'Error: '. $e->getMessage();
+		return false;
 
 	} finally {
 

@@ -1297,8 +1297,8 @@
 		"lc_stock_items": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-				"brand_id": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
-				"supplier_id": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
+				"brand_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"supplier_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"name": { "type": "TEXT", "default": "'{}'" },
 				"sku": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"mpn": { "type": "VARCHAR", "length": 32, "default": "''" },

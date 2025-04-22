@@ -47,6 +47,7 @@
 		if (!functions::array_intersect_compare($data, $customer->data)) {
 			throw new Exception('The customer data was not stored correctly');
 		}
+
 		// Define some example data
 		$data = [
 			'status' => 0,
@@ -80,12 +81,11 @@
 			throw new Exception('Failed to delete customer');
 		}
 
-		echo '  Test passed successfully!' . PHP_EOL;
 		return true;
 
 	} catch (Exception $e) {
 
-		echo '  Error: ' . $e->getMessage() . PHP_EOL;
+		echo ' [Failed]'. PHP_EOL . 'Error: '. $e->getMessage();
 		return false;
 
 	} finally {

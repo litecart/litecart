@@ -90,7 +90,6 @@
 			throw new Exception('Failed to delete customer group');
 		}
 
-		echo '  Test passed successfully!' . PHP_EOL;
 		return true;
 
 	} catch (Exception $e) {

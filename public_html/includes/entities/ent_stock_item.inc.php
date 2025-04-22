@@ -23,6 +23,7 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
+			$this->data['name'] = [];
 			$this->data['quantity_reserved'] = 0;
 			$this->data['quantity_adjustment'] = 0;
 			$this->data['references'] = [];
@@ -54,7 +55,7 @@
 			foreach ([
 				'name',
 			] as $column) {
-				$this->data[$column] = json_decode($this->data[$column], true);
+				$this->data[$column] = json_decode($this->data[$column], true) ?: [];
 			}
 
 			// Reserved Quantity
@@ -96,17 +97,25 @@
 
 		 // Create sku if missing
 			if (empty($this->data['sku'])) {
+
 				$i = 1;
-				while (true) {
-					$this->data['sku'] = $this->data['id'] .'-'. ($this->data['name'][settings::get('store_language_code')] ? strtoupper(substr($this->data['name'][settings::get('store_language_code')], 0, 4)) : 'UNKN') .'-'. $i++;
-					if (!database::query(
-						"select id from ". DB_TABLE_PREFIX ."stock_items
-						where sku = '". database::input($this->data['sku']) ."'
-						limit 1;"
-					)->num_rows) {
+				$name = 'UNTITLED';
+				$language_codes = array_unique(array_merge([language::$selected['code']], [settings::get('store_language_code')], array_keys(language::$languages)));
+
+				foreach ($language_codes as $language_code) {
+					if (!empty($this->data['name'][$language_code])) {
+						$name = strtoupper(preg_replace('#[^A-Z0-9]#', '', $this->data['name'][$language_code]));
 						break;
 					}
 				}
+
+				do {
+					$this->data['sku'] = implode('-', [$this->data['id'], $name, $i++]);
+				} while (database::query(
+					"select id from ". DB_TABLE_PREFIX ."stock_items
+					where sku = '". database::input($this->data['sku']) ."'
+					limit 1;"
+				)->num_rows);
 			}
 
 			database::query(
@@ -130,8 +139,15 @@
 				limit 1;"
 			);
 
+			if ($this->previous['quantity'] != $this->data['quantity']) {
+				if (isset($this->data['quantity_adjustment']) && $this->data['quantity_adjustment'] != 0) {
+					throw new Exception('Quantity adjustment cannot be set when quantity is changed');
+				}
+				$this->data['quantity_adjustment'] = $this->data['quantity'] - $this->previous['quantity'];
+			}
+
 			// If quantity adjustment is set
-			if (!empty($this->data['quantity_adjustment']) && $this->data['quantity_adjustment'] != 0) {
+			if (isset($this->data['quantity_adjustment']) && $this->data['quantity_adjustment'] != 0) {
 
 				$stock_transaction = new ent_stock_transaction('system');
 
@@ -165,12 +181,15 @@
 
 			if (!empty($this->data['references'])) {
 				foreach ($this->data['references'] as $key => $reference) {
+
 					if (empty($reference['id'])) {
+
 						database::query(
 							"insert into ". DB_TABLE_PREFIX ."stock_items_references
 							(stock_item_id, supplier_id)
 							values (". (int)$this->data['id'] .", ". (int)$reference['supplier_id'] .");"
 						);
+
 						$reference['id'] = $this->data['references'][$key]['id'] = database::insert_id();
 					}
 
@@ -292,7 +311,7 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."stock_items
-				set file = ''
+				set file = null
 				where id = ". (int)$this->data['id'] .";"
 			);
 

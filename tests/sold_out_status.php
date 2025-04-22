@@ -14,8 +14,12 @@
 
 		// Prepare some example data
 		$data = [
-			'name' => 'Out of Stock',
-			'description' => 'This item is currently out of stock.',
+			'name' => [
+				'en' => 'Out of Stock',
+			],
+			'description' => [
+				'en' => 'This item is currently out of stock.',
+			],
 			'orderable' => 0,
 		];
 
@@ -46,10 +50,8 @@
 		}
 
 		// Check if data was set correctly
-		foreach ($data as $key => $value) {
-			if ($sold_out_status->data[$key] != $value) {
-				throw new Exception('The sold out status data was not stored correctly ('. $key .')');
-			}
+		if (!functions::array_intersect_compare($data, $sold_out_status->data)) {
+			throw new Exception('The sold out status data was not stored correctly');
 		}
 
 		########################################################################
@@ -70,10 +72,8 @@
 		$sold_out_status->save();
 
 		// Check if data was set correctly
-		foreach ($data as $key => $value) {
-			if ($sold_out_status->data[$key] != $value) {
-				throw new Exception('The sold out status data was not updated correctly ('. $key .')');
-			}
+		if (!functions::array_intersect_compare($data, $sold_out_status->data)) {
+			throw new Exception('The sold out status data was not updated correctly');
 		}
 
 		########################################################################
@@ -92,11 +92,12 @@
 			throw new Exception('Failed to delete sold out status');
 		}
 
-		echo '  Test passed successfully!' . PHP_EOL;
 		return true;
 
 	} catch (Exception $e) {
-		echo 'Test failed: '. $e->getMessage();
+
+		echo ' [Failed]'. PHP_EOL . 'Error: '. $e->getMessage();
+		return false;
 
 	} finally {
 

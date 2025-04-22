@@ -356,10 +356,10 @@
 						tax = ". (float)$item['tax'] .",
 						tax_class_id = ". (int)$item['tax_class_id'] .",
 						tax_rate = ". ($item['tax_rate'] ? (float)$item['tax_rate'] : "null") .",
-						discount = ". (float)$this->data['discount'] .",
-						discount_tax = ". (float)$this->data['discount_tax'] .",
-						sum = ". (float)$this->data['sum'] .",
-						sum_tax = ". (float)$this->data['sum_tax'] .",
+						discount = ". (float)$item['discount'] .",
+						discount_tax = ". (float)$item['discount_tax'] .",
+						sum = ". (float)$item['sum'] .",
+						sum_tax = ". (float)$item['sum_tax'] .",
 						weight = ". (float)$item['weight'] .",
 						weight_unit = '". database::input($item['weight_unit']) ."',
 						length = ". (float)$item['length'] .",
@@ -496,8 +496,8 @@
 				$this->data['subtotal_tax'] += (float)$item['tax'] * (float)$item['quantity'];
 				$this->data['discount'] += (float)$item['discount'] * (float)$item['quantity'];
 				$this->data['discount_tax'] += (float)$item['discount_tax'] * (float)$item['quantity'];
-				$this->data['sum'] += ($item['price'] - (float)$item['discount']) * (float)$item['quantity'];
-				$this->data['sum_tax'] += ((float)$item['tax'] - (float)$item['discount_tax']) * (float)$item['quantity'];
+				$this->data['total'] += ($item['price'] - (float)$item['discount']) * (float)$item['quantity'];
+				$this->data['total_tax'] += ((float)$item['tax'] - (float)$item['discount_tax']) * (float)$item['quantity'];
 				$this->data['weight_total'] += (float)weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * abs($item['quantity']);
 			}
 		}

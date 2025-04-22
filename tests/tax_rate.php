@@ -96,7 +96,6 @@
 			throw new Exception('Failed to delete tax rate');
 		}
 
-		echo '  Test passed successfully!' . PHP_EOL;
 		return true;
 
 	} catch (Exception $e) {

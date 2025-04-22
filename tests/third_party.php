@@ -9,81 +9,89 @@
 
 		 // Fetch the current auto increment ID
 		$auto_increment_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."site_tags';"
+			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."third_parties';"
 		)->fetch('Auto_increment');
 
 		// Prepare some example data
 		$data = [
-			'name' => 'New Tag',
-			'description' => 'This is a new site tag.',
+			'name' => 'New Third Party',
+			'description' => [
+				'en' => 'This is a new third party.',
+			],
+			'collected_data' => [
+				'en' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+			],
+			'purposes' => [
+				'en' => 'Consectetur adipiscing elit. Lorem ipsum dolor sit amet.',
+			],
 		];
 
 		########################################################################
-		## Creating a new site tag
+		## Creating a new third party
 		########################################################################
 
 		// Create a new entity
-		$site_tag = new ent_site_tag();
-		$site_tag->data = functions::array_update($site_tag->data, $data);
-		$site_tag->save();
+		$third_party = new ent_third_party();
+		$third_party->data = functions::array_update($third_party->data, $data);
+		$third_party->save();
 
 		// Check if the entity was created
-		if (!$site_tag_id = $site_tag->data['id']) {
-			throw new Exception('Failed to create site tag');
+		if (!$third_party_id = $third_party->data['id']) {
+			throw new Exception('Failed to create third party');
 		}
 
 		########################################################################
-		## Load and check the site tag
+		## Load and check the third party
 		########################################################################
 
 		// Load the entity
-		$site_tag = new ent_site_tag($site_tag_id);
+		$third_party = new ent_third_party($third_party_id);
 
-		// Check if the site tag was loaded
-		if ($site_tag->data['id'] != $site_tag_id) {
-			throw new Exception('Failed to load site tag');
+		// Check if the third party was loaded
+		if ($third_party->data['id'] != $third_party_id) {
+			throw new Exception('Failed to load third party');
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $site_tag->data)) {
-			throw new Exception('The site tag data was not stored correctly');
+		if (!functions::array_intersect_compare($data, $third_party->data)) {
+			throw new Exception('The third party data was not stored correctly');
 		}
 
 		########################################################################
-		## Updating the site tag
+		## Updating the third party
 		########################################################################
 
 		// Prepare some new data
 		$data = [
-			'name' => 'Updated Tag',
-			'description' => 'This is an updated site tag.',
+			'name' => 'Updated Third Party',
+			'description' => 'This is an updated third party.',
 		];
 
 		// Update some data
-		$site_tag->data = functions::array_update($site_tag->data, $data);
+		$third_party->data = functions::array_update($third_party->data, $data);
 
 		// Save changes to database
-		$site_tag->save();
+		$third_party->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $site_tag->data)) {
-			throw new Exception('The site tag data was not updated correctly');
+		if (!functions::array_intersect_compare($data, $third_party->data)) {
+			throw new Exception('The third party data was not updated correctly');
 		}
 
 		########################################################################
-		## Deleting the site tag
+		## Deleting the third party
 		########################################################################
 
 		// Delete the entity
-		$site_tag->delete();
+		$third_party->delete();
 
 		// Check if the entity was deleted
 		if (database::query(
-			"select id from ". DB_TABLE_PREFIX ."site_tags
-			where id = ". (int)$site_tag_id ."
+			"select id from ". DB_TABLE_PREFIX ."third_parties
+			where id = ". (int)$third_party_id ."
 			limit 1;"
 		)->num_rows) {
-			throw new Exception('Failed to delete site tag');
+			throw new Exception('Failed to delete third party');
 		}
 
 		return true;
@@ -100,7 +108,7 @@
 
 		// Revert the auto increment ID
 		database::query(
-			"ALTER TABLE ". DB_TABLE_PREFIX ."site_tags
+			"ALTER TABLE ". DB_TABLE_PREFIX ."third_parties
 			AUTO_INCREMENT = ". (int)$auto_increment_id .";"
 		);
 	}

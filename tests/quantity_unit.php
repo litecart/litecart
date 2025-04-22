@@ -46,10 +46,8 @@
 		}
 
 		// Check if data was set correctly
-		foreach ($data as $key => $value) {
-			if ($quantity_unit->data[$key] != $value) {
-				throw new Exception('The quantity unit data was not stored correctly ('. $key .')');
-			}
+		if (!functions::array_intersect_compare($data, $quantity_unit->data)) {
+			throw new Exception('The quantity unit data was not stored correctly');
 		}
 
 		########################################################################
@@ -70,10 +68,8 @@
 		$quantity_unit->save();
 
 		// Check if data was set correctly
-		foreach ($data as $key => $value) {
-			if ($quantity_unit->data[$key] != $value) {
-				throw new Exception('The quantity unit data was not updated correctly ('. $key .')');
-			}
+		if (!functions::array_intersect_compare($data, $quantity_unit->data)) {
+			throw new Exception('The quantity unit data was not updated correctly ');
 		}
 
 		########################################################################
@@ -92,11 +88,12 @@
 			throw new Exception('Failed to delete quantity unit');
 		}
 
-		echo '  Test passed successfully!' . PHP_EOL;
 		return true;
 
 	} catch (Exception $e) {
-		echo 'Test failed: '. $e->getMessage();
+
+		echo ' [Failed]'. PHP_EOL . 'Error: '. $e->getMessage();
+		return false;
 
 	} finally {
 

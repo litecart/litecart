@@ -58,10 +58,8 @@
 		}
 
 		// Check if data was set correctly
-		foreach ($data as $key => $value) {
-			if ($language->data[$key] != $value) {
-				throw new Exception('The language data was not stored correctly ('. $key .')');
-			}
+		if (!functions::array_intersect_compare($data, $language->data)) {
+			throw new Exception('The language data was not stored correctly');
 		}
 
 		########################################################################
@@ -94,10 +92,8 @@
 		$language->save();
 
 		// Check if data was set correctly
-		foreach ($data as $key => $value) {
-			if ($language->data[$key] != $value) {
-				throw new Exception('The language data was not updated correctly ('. $key .')');
-			}
+		if (!functions::array_intersect_compare($data, $language->data)) {
+			throw new Exception('The language data was not updated correctly');
 		}
 
 		########################################################################
@@ -116,12 +112,11 @@
 			throw new Exception('Failed to delete language');
 		}
 
-		echo '  Test passed successfully!' . PHP_EOL;
 		return true;
 
 	} catch (Exception $e) {
 
-		echo 'Test failed: '. $e->getMessage();
+		echo ' [Failed]'. PHP_EOL . 'Error: '. $e->getMessage();
 		return false;
 
 	} finally {

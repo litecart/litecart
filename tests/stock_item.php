@@ -14,7 +14,7 @@
 
 		// Prepare some example data
 		$data = [
-			'product_id' => 1,
+			'name' => ['en' => 'Test Stock Item'],
 			'quantity' => 100,
 			'location' => 'Warehouse A',
 		];
@@ -25,7 +25,11 @@
 
 		// Create a new entity
 		$stock_item = new ent_stock_item();
-		$stock_item->data = functions::array_update($stock_item->data, $data);
+		//$stock_item->data = functions::array_update($stock_item->data, $data);
+		foreach ($data as $key => $value) {
+			$stock_item->data[$key] = $value;
+		}
+
 		$stock_item->save();
 
 		// Check if the entity was created
@@ -46,10 +50,10 @@
 		}
 
 		// Check if data was set correctly
-		foreach ($data as $key => $value) {
-			if ($stock_item->data[$key] != $value) {
-				throw new Exception('The stock item data was not stored correctly ('. $key .')');
-			}
+		if (!functions::array_intersect_compare($data, $stock_item->data)) {
+			print_r($data);
+			print_r($stock_item->data);
+			throw new Exception('The stock item data was not stored correctly');
 		}
 
 		########################################################################
@@ -58,21 +62,23 @@
 
 		// Prepare some new data
 		$data = [
+			'name' => ['en' => 'Updated Stock Item'],
 			'quantity' => 200,
 			'location' => 'Warehouse B',
 		];
 
 		// Update some data
-		$stock_item->data = functions::array_update($stock_item->data, $data);
+		//$stock_item->data = functions::array_update($stock_item->data, $data);
+		foreach ($data as $key => $value) {
+			$stock_item->data[$key] = $value;
+		}
 
 		// Save changes to database
 		$stock_item->save();
 
 		// Check if data was set correctly
-		foreach ($data as $key => $value) {
-			if ($stock_item->data[$key] != $value) {
-				throw new Exception('The stock item data was not updated correctly ('. $key .')');
-			}
+		if (!functions::array_intersect_compare($data, $stock_item->data)) {
+			throw new Exception('The stock item data was not updated correctly');
 		}
 
 		########################################################################
@@ -91,11 +97,12 @@
 			throw new Exception('Failed to delete stock item');
 		}
 
-		echo '  Test passed successfully!' . PHP_EOL;
 		return true;
 
 	} catch (Exception $e) {
-		echo 'Test failed: '. $e->getMessage();
+
+		echo ' [Failed]'. PHP_EOL . 'Error: '. $e->getMessage();
+		return false;
 
 	} finally {
 
