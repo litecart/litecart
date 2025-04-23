@@ -181,14 +181,14 @@
 			$this->data['categories'] = array_filter($this->data['categories'], function($var) { return ($var != ''); }); // Don't filter root ('0')
 			$this->data['categories'] = array_unique($this->data['categories']);
 
-			$this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+			$this->data['keywords'] = functions::string_split($this->data['keywords']);
 			$this->data['keywords'] = array_map('trim', $this->data['keywords']);
 			$this->data['keywords'] = array_filter($this->data['keywords']);
 			$this->data['keywords'] = array_unique($this->data['keywords']);
 			$this->data['keywords'] = implode(',', $this->data['keywords']);
 
 			foreach (array_keys($this->data['synonyms']) as $language_code) {
-				$this->data['synonyms'][$language_code] = preg_split('#\s*,\s*#', $this->data['synonyms'][$language_code], -1, PREG_SPLIT_NO_EMPTY);
+				$this->data['synonyms'][$language_code] = functions::string_split($this->data['synonyms'][$language_code]);
 				$this->data['synonyms'][$language_code] = array_map('trim', $this->data['synonyms'][$language_code]);
 				$this->data['synonyms'][$language_code] = array_filter($this->data['synonyms'][$language_code]);
 				$this->data['synonyms'][$language_code] = array_unique($this->data['synonyms'][$language_code]);

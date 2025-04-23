@@ -56,7 +56,7 @@
 				$this->data[$column] = json_decode($this->data[$column], true) ?: [];
 			}
 
-			$this->data['privacy_classes'] = preg_split('#\s*,\s*#', $this->data['privacy_classes'], -1, PREG_SPLIT_NO_EMPTY);
+			$this->data['privacy_classes'] = functions::string_split($this->data['privacy_classes']);
 
 			$this->previous = $this->data;
 		}
