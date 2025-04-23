@@ -23,6 +23,18 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
+			foreach ([
+				'name',
+				'short_description',
+				'description',
+				'head_title',
+				'h1_title',
+				'meta_description',
+				'synonyms',
+			] as $column) {
+				$this->data[$column] = array_fill_keys(array_keys(language::$languages), '');
+			}
+
 			$this->data['filters'] = [];
 			$this->data['products'] = [];
 

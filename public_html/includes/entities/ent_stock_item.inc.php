@@ -23,7 +23,7 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
-			$this->data['name'] = [];
+			$this->data['name'] = array_fill_keys(array_keys(language::$languages), '');
 			$this->data['quantity_reserved'] = 0;
 			$this->data['quantity_adjustment'] = 0;
 			$this->data['references'] = [];

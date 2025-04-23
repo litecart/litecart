@@ -23,6 +23,14 @@
 				$this->data[$field['Field']] = database::create_variable($field['Type']);
 			});
 
+			foreach ([
+				'description',
+				'collected_data',
+				'purposes',
+			] as $column) {
+				$this->data[$column] = array_fill_keys(array_keys(language::$languages), '');
+			}
+
 			$this->data['privacy_classes'] = [];
 
 			$this->previous = $this->data;

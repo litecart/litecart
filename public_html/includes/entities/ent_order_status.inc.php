@@ -23,6 +23,15 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
+			foreach ([
+				'name',
+				'description',
+				'email_subject',
+				'email_message',
+			] as $column) {
+				$this->data[$column] = array_fill_keys(array_keys(language::$languages), '');
+			}
+
 			$this->data['num_orders'] = 0;
 
 			$this->previous = $this->data;

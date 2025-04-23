@@ -23,6 +23,18 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
+			foreach ([
+				'name',
+				'short_description',
+				'description',
+				'technical_data',
+				'synonyms',
+				'head_title',
+				'meta_description',
+			] as $column) {
+				$this->data[$column] = array_fill_keys(array_keys(language::$languages), '');
+			}
+
 			$this->data['status'] = 1;
 			$this->data['tax_class_id'] = settings::get('default_tax_class_id');
 			$this->data['purchase_price_currency_code'] = settings::get('store_currency_code');
