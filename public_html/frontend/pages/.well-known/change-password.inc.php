@@ -1,4 +1,4 @@
 <?php
 
-	header('Location: '. document::ilink('account/edit'), 301);
+	redirect(document::ilink('account/edit'), 301);
 	exit;

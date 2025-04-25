@@ -31,7 +31,7 @@
 
 			notices::add('success', strtr(language::translate('success_changed_order_status_for_n_orders', 'Changed order status for %num orders'), ['%num' => $num_orders]));
 
-			header('Location: '. document::link());
+			reload();
 			exit;
 
 		} catch (Exception $e) {

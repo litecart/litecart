@@ -61,7 +61,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/brands'));
+			redirect(document::ilink(__APP__.'/brands'));
 			exit;
 
 		} catch (Exception $e) {
@@ -80,7 +80,7 @@
 			$brand->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/brands'));
+			redirect(document::ilink(__APP__.'/brands'));
 			exit;
 
 		} catch (Exception $e) {

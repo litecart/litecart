@@ -34,7 +34,7 @@
 				'%lastname' => customer::$data['lastname'],
 			]));
 
-			header('Location: '. document::ilink('f:'));
+			redirect(document::ilink('f:'));
 			exit;
 
 		} catch (Exception $e) {
@@ -116,7 +116,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/customers'));
+			redirect(document::ilink(__APP__.'/customers'));
 			exit;
 
 		} catch (Exception $e) {
@@ -135,7 +135,7 @@
 			$customer->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/customers'));
+			redirect(document::ilink(__APP__.'/customers'));
 			exit;
 
 		} catch (Exception $e) {

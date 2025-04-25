@@ -10,7 +10,7 @@
 
 	if (empty(session::$data['checkout']['order'])) {
 		notices::add('errors', 'Missing order object');
-		header('Location: '. document::ilink('checkout/index'));
+		redirect(document::ilink('checkout/index'));
 		exit;
 	}
 
@@ -18,13 +18,13 @@
 
 	if (empty($order->data['processable'])) {
 		notices::add('errors', 'The shopping cart is not yet processable for creating an order');
-		header('Location: '. document::ilink('checkout/index'));
+		redirect(document::ilink('checkout/index'));
 		exit;
 	}
 
 	if ($error_message = $order->validate()) {
 		notices::add('errors', $error_message);
-		header('Location: '. document::ilink('checkout/index'));
+		redirect(document::ilink('checkout/index'));
 		exit;
 	}
 
@@ -58,7 +58,7 @@
 				]);
 
 				notices::add('errors', $result['error']);
-				header('Location: '. document::ilink('checkout/index'));
+				redirect(document::ilink('checkout/index'));
 				exit;
 			}
 		}
@@ -149,5 +149,5 @@
 
 	$order_modules->after_process($order);
 
-	header('Location: '. document::ilink('checkout/success', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]));
+	redirect(document::ilink('checkout/success', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]));
 	exit;

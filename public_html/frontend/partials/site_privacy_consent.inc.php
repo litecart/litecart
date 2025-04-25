@@ -92,7 +92,7 @@
 
 			header('Set-Cookie: privacy_consents='. $consents .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+12 months')) .'; Path=/; SameSite=Lax', false);
 
-			header('Location: '. document::link());
+			reload();
 			exit;
 
 		} catch (Exception $e) {
@@ -102,7 +102,7 @@
 
 	if (isset($_POST['privacy_consent']) && $_POST['privacy_consent'] == 0) {
 		header('Set-Cookie: privacy_consents=necessary:all; Path='. WS_DIR_APP .'; Expires=0; Path=/; SameSite=Lax', false);
-		header('Location: '. document::link());
+		reload();
 		exit;
 	}
 

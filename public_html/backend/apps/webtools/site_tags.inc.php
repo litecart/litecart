@@ -19,7 +19,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink());
+			reload();
 			exit;
 
 		} catch (Exception $e) {

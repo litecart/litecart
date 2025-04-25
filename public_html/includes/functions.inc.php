@@ -23,7 +23,8 @@
 
 	// Stop script execution and reload the current page
 	function reload() {
-		redirect();
+		header('Location:', 302);
+		exit;
 	}
 
 	// Checks if variables are not set, null, (bool)false, (int)0, (float)0.00, (string)"", (string)"0", (string)"0.00", (array)[], or array with nil nodes

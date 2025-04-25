@@ -90,7 +90,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/currencies'));
+			redirect(document::ilink(__APP__.'/currencies'));
 			exit;
 
 		} catch (Exception $e) {
@@ -109,7 +109,7 @@
 			$currency->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/currencies'));
+			redirect(document::ilink(__APP__.'/currencies'));
 			exit;
 
 		} catch (Exception $e) {

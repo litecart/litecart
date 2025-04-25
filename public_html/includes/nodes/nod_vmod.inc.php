@@ -1,7 +1,7 @@
 <?php
 
 	class vmod {
-		
+
 		public static $enabled = true;                 // Bool whether or not to enable this feature
 		private static $aliases = [];                  // Array of path aliases ['pattern' => 'replace']
 		private static $_checked = [];                 // Array of files that have already passed check() and
@@ -415,7 +415,7 @@
 							file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
 
 							if (isset($_SERVER['REQUEST_URI'])) {
-								header('Location: '. $_SERVER['REQUEST_URI']);
+								reload();
 								exit;
 							}
 						}
@@ -439,7 +439,7 @@
 							include func_get_arg(0);
 						})($tmp_file);
 
-						header('Location: '. $_SERVER['REQUEST_URI']);
+						reload();
 						exit;
 					}
 

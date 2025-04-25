@@ -145,7 +145,7 @@
 			notices::add($updated ? 'success' : 'notice', strtr(language::translate('success_updated_n_existing_entries', 'Updated %n existing entries'), ['%n' => $updated]));
 			notices::add($inserted ? 'success' : 'notice', strtr(language::translate('success_insert_n_new_entries', 'Inserted %n new entries'), ['%n' => $inserted]));
 
-			header('Location: '. document::ilink());
+			reload();
 			exit;
 
 		} catch (Exception $e) {

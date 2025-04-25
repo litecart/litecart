@@ -61,7 +61,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. $redirect_url);
+			redirect($redirect_url);
 			exit;
 
 		} catch (Exception $e) {

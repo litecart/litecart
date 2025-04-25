@@ -20,7 +20,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink());
+			reload();
 			exit;
 
 		} catch (Exception $e) {
@@ -46,7 +46,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/redirects'));
+			redirect(document::ilink(__APP__.'/redirects'));
 			exit;
 
 		} catch (Exception $e) {

@@ -46,7 +46,7 @@
 			$attribute_group->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/attribute_groups'));
+			redirect(document::ilink(__APP__.'/attribute_groups'));
 			exit;
 
 		} catch (Exception $e) {
@@ -65,7 +65,7 @@
 			$attribute_group->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/attribute_groups'));
+			redirect(document::ilink(__APP__.'/attribute_groups'));
 			exit;
 
 		} catch (Exception $e) {

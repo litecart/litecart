@@ -94,7 +94,7 @@
 
 			if ($_POST['checkout'] == 'standard') {
 
-				header('Location: '. document::ilink('checkout/index'));
+				redirect(document::ilink('checkout/index'));
 				exit;
 
 			} else if (in_array($_POST['checkout'], array_column($checkouts, 'id'))) {
@@ -111,7 +111,7 @@
 				$mod_checkout->select($_POST['checkout']);
 				$mod_checkout->process($order);
 
-				header('Location: '. document::ilink('checkout/verify_checkout'));
+				redirect(document::ilink('checkout/verify_checkout'));
 				exit;
 
 			} else {

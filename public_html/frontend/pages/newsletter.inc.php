@@ -77,7 +77,7 @@
 					->send();
 
 			notices::add('success', language::translate('success_subscribed_to_newsletter', 'Thank you for subscribing to our newsletter'));
-			header('Location: '. $_SERVER['REQUEST_URI']);
+			reload();
 			exit;
 
 		} catch (Exception $e) {
@@ -147,7 +147,7 @@
 					->send();
 
 			notices::add('success', language::translate('success_unsubscribed_from_newsletter', 'You have been unsubscribed from the newsletter'));
-			header('Location: '. $_SERVER['REQUEST_URI']);
+			reload();
 			exit;
 
 		} catch (Exception $e) {

@@ -36,7 +36,7 @@
 			$tax_class->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/tax_classes'));
+			redirect(document::ilink(__APP__.'/tax_classes'));
 			exit;
 
 		} catch (Exception $e) {
@@ -55,7 +55,7 @@
 			$tax_class->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/tax_classes'));
+			redirect(document::ilink(__APP__.'/tax_classes'));
 			exit;
 
 		} catch (Exception $e) {

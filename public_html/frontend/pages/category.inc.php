@@ -20,7 +20,7 @@
 	}
 
 	if (empty($_GET['category_id'])) {
-		header('Location: '. document::ilink('categories'));
+		redirect(document::ilink('categories'));
 		exit;
 	}
 

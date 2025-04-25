@@ -22,7 +22,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink());
+			reload();
 			exit;
 
 		} catch (Exception $e) {
@@ -44,7 +44,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink());
+			reload();
 			exit;
 
 		} catch (Exception $e) {
@@ -81,7 +81,7 @@
 			move_uploaded_file($_FILES['vmod']['tmp_name'], $filename);
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::link());
+			reload();
 			exit;
 
 		} catch (Exception $e) {

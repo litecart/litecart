@@ -38,7 +38,7 @@
 		}
 
 		if (route::$selected['route'] != 'f:checkout/process') {
-			header('Location: '. $_SERVER['REQUEST_URI']);
+			reload();
 			exit;
 		}
 	}

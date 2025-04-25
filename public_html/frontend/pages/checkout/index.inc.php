@@ -27,7 +27,7 @@
 
 			if (empty(session::$data['checkout']['order'])) {
 				notices::add('errors', 'Missing order object');
-				header('Location: '. document::ilink('checkout/index'));
+				redirect(document::ilink('checkout/index'));
 				exit;
 			}
 
@@ -54,7 +54,7 @@
 			ob_clean();
 
 			if (!empty(notices::$data['errors'])) {
-				header('Location: '. document::ilink('checkout/index'));
+				redirect(document::ilink('checkout/index'));
 				exit;
 			}
 
@@ -63,13 +63,13 @@
 
 				if (empty($payment->selected)) {
 					notices::add('errors', language::translate('error_no_payment_method_selected', 'No payment method selected'));
-					header('Location: '. document::ilink('checkout/index'));
+					redirect(document::ilink('checkout/index'));
 					exit;
 				}
 
 				if ($payment_error = $payment->pre_check($session_order)) {
 					notices::add('errors', $payment_error);
-					header('Location: '. document::ilink('checkout/index'));
+					redirect(document::ilink('checkout/index'));
 					exit;
 				}
 
@@ -84,7 +84,7 @@
 
 					if (!empty($gateway['error'])) {
 						notices::add('errors', $gateway['error']);
-						header('Location: '. document::ilink('checkout/index'));
+						redirect(document::ilink('checkout/index'));
 						exit;
 					}
 
@@ -130,7 +130,7 @@
 							case 'GET':
 							default:
 
-								header('Location: '. fallback($gateway['action'], document::ilink('checkout/process')));
+								redirect(fallback($gateway['action'], document::ilink('checkout/process')));
 								exit;
 						}
 					}
@@ -138,7 +138,7 @@
 			}
 
 			$session_order->data['processable'] = true;
-			header('Location: '. document::ilink('checkout/process'));
+			redirect(document::ilink('checkout/process'));
 			exit;
 
 		} catch (Exception $e) {
@@ -187,7 +187,7 @@
 
 			session::$data['checkout']['order'] = $order;
 
-			header('Location: '. document::ilink('checkout/index'));
+			redirect(document::ilink('checkout/index'));
 			exit;
 
 		} catch (Exception $e) {

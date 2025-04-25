@@ -117,7 +117,7 @@
 
 					notices::add('errors', $e->getMessage());
 
-					header('Location: '. document::ilink('f:account/sign_in'));
+					redirect(document::ilink('f:account/sign_in'));
 					exit;
 				}
 			}

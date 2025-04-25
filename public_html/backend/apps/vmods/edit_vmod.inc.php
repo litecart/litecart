@@ -62,9 +62,9 @@
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 
 			if (isset($_POST['quicksave'])) {
-				header('Location: '. document::ilink(__APP__.'/edit_vmod', ['vmod' => basename($vmod->data['file'])]));
+				redirect(document::ilink(__APP__.'/edit_vmod', ['vmod' => basename($vmod->data['file'])]));
 			} else {
-				header('Location: '. document::ilink(__APP__.'/vmods'));
+				redirect(document::ilink(__APP__.'/vmods'));
 			}
 
 			exit;
@@ -100,7 +100,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/vmods'));
+			redirect(document::ilink(__APP__.'/vmods'));
 			exit;
 
 		} catch (Exception $e) {

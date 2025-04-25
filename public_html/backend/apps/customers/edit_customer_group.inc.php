@@ -29,7 +29,7 @@
 			$customer_group->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::link('', ['app' => $_GET['app'], 'doc' => 'customer_groups']));
+			redirect(document::link(__APP__.'/customer_groups'));
 			exit;
 
 		} catch (Exception $e) {
@@ -43,7 +43,7 @@
 			$customer_group->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::link('', ['app' => $_GET['app'], 'doc' => 'customer_groups']));
+			redirect(document::link(__APP__.'/customer_groups'));
 			exit;
 
 		} catch (Exception $e) {

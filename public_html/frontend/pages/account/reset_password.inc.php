@@ -104,7 +104,7 @@
 							->send();
 
 				notices::add('success', language::translate('success_reset_password_email_sent', 'An email with instructions has been sent to your email address.'));
-				header('Location: '. document::ilink('account/reset_password', ['email' => $_REQUEST['email'], 'reset_token' => '']));
+				redirect(document::ilink('account/reset_password', ['email' => $_REQUEST['email'], 'reset_token' => '']));
 				exit;
 
 			} else {
@@ -114,7 +114,7 @@
 				$customer->data['password_reset_token'] = '';
 
 				notices::add('success', language::translate('success_new_password_set', 'Your new password has been set. You may now sign in.'));
-				header('Location: '. document::ilink('account/sign_in', ['email' => $customer->data['email']]));
+				redirect(document::ilink('account/sign_in', ['email' => $customer->data['email']]));
 				exit;
 
 			}

@@ -37,7 +37,7 @@
 			$geo_zone->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/geo_zones'));
+			redirect(document::ilink(__APP__.'/geo_zones'));
 			exit;
 
 		} catch (Exception $e) {
@@ -53,7 +53,7 @@
 			$geo_zone->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/geo_zones'));
+			redirect(document::ilink(__APP__.'/geo_zones'));
 			exit;
 
 		} catch (Exception $e) {

@@ -37,7 +37,7 @@
 			$redirect->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::link('', ['doc' => 'redirects'], ['app']));
+			redirect(document::link('', ['doc' => 'redirects'], ['app']));
 			exit;
 
 		} catch (Exception $e) {
@@ -56,7 +56,7 @@
 			$redirect->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::link('', ['doc' => 'redirects'], ['app']));
+			redirect(document::link('', ['doc' => 'redirects'], ['app']));
 			exit;
 
 		} catch (Exception $e) {

@@ -54,7 +54,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(null, [], true, ['action']));
+			redirect(document::ilink(null, [], true, ['action']));
 			exit;
 
 		} catch (Exception $e) {

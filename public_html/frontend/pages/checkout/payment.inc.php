@@ -33,7 +33,7 @@
 		$order->payment->select($_POST['payment_option']['id'], $_POST);
 
 		if (route::$selected['route'] != 'f:checkout/process') {
-			header('Location: '. $_SERVER['REQUEST_URI']);
+			reload();
 			exit;
 		}
 	}

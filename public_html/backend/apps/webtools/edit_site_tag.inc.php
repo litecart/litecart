@@ -44,7 +44,7 @@
 			$site_tag->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/site_tags'));
+			redirect(document::ilink(__APP__.'/site_tags'));
 			exit;
 
 		} catch (Exception $e) {
@@ -63,7 +63,7 @@
 			$site_tag->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/site_tags'));
+			redirect(document::ilink(__APP__.'/site_tags'));
 			exit;
 
 		} catch (Exception $e) {

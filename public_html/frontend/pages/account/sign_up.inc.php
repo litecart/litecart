@@ -190,7 +190,7 @@
 						->send();
 
 			notices::add('success', language::translate('success_your_customer_account_has_been_created', 'Your customer account has been created.'));
-			header('Location: '. document::ilink(''));
+			redirect(document::ilink(''));
 			exit;
 
 		} catch (Exception $e) {

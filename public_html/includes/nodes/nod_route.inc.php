@@ -45,7 +45,7 @@
 
 				http_response_code($redirect['http_response_code']);
 				header('X-Redirect-Id: '. $redirect['id']);
-				header('Location: '. preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url)); // MySQL regex wrapper ''
+				redirect(preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url)); // MySQL regex wrapper ''
 				exit;
 			}
 
@@ -181,11 +181,11 @@
 
 						// Send HTTP 302 if it's the start page
 						if (parse_url(self::$request, PHP_URL_PATH) == WS_DIR_APP) {
-							header('Location: '. $rewritten_url, true, 302);
+							redirect($rewritten_url, true, 302);
 							exit;
 						}
 
-						header('Location: '. $rewritten_url, true, 301);
+						redirect($rewritten_url, true, 301);
 						exit;
 					}
 				}
@@ -281,7 +281,7 @@
 
 				http_response_code($redirect['http_response_code']);
 				header('X-Redirect-Id: '. $redirect['id']);
-				header('Location: '. preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url)); // MySQL regex wrapper ''
+				redirect(preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url)); // MySQL regex wrapper ''
 				exit;
 			}
 

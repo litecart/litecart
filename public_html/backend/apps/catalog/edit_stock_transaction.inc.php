@@ -43,7 +43,7 @@
 			$stock_transaction->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/stock_transactions'));
+			redirect(document::ilink(__APP__.'/stock_transactions'));
 			exit;
 
 		} catch (Exception $e) {
@@ -58,7 +58,7 @@
 			$stock_transaction->delete();
 
 			notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-			header('Location: '. document::ilink(__APP__.'/stock_transactions'));
+			redirect(document::ilink(__APP__.'/stock_transactions'));
 			exit;
 
 		} catch (Exception $e) {

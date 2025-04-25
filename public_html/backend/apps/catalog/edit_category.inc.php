@@ -81,7 +81,7 @@
 			$category->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink('catalog/category_tree', ['parent_id' => $category->data['id']]));
+			redirect(document::ilink('catalog/category_tree', ['parent_id' => $category->data['id']]));
 			exit;
 
 		} catch (Exception $e) {
@@ -101,7 +101,7 @@
 			$category->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink('catalog/category_tree'));
+			redirect(document::ilink('catalog/category_tree'));
 			exit;
 
 		} catch (Exception $e) {

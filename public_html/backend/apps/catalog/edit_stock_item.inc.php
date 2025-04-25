@@ -110,7 +110,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/stock_items'));
+			redirect(document::ilink(__APP__.'/stock_items'));
 			exit;
 
 		} catch (Exception $e) {
@@ -132,7 +132,7 @@
 			$stock_item->delete();
 
 			notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-			header('Location: '. document::ilink(__APP__.'/stock_items'));
+			redirect(document::ilink(__APP__.'/stock_items'));
 			exit;
 
 		} catch (Exception $e) {

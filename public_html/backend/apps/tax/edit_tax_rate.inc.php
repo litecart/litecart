@@ -72,7 +72,7 @@
 			$tax_rate->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/tax_rates'));
+			redirect(document::ilink(__APP__.'/tax_rates'));
 			exit;
 
 		} catch (Exception $e) {
@@ -91,7 +91,7 @@
 			$tax_rate->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/tax_rates'));
+			redirect(document::ilink(__APP__.'/tax_rates'));
 			exit;
 
 		} catch (Exception $e) {

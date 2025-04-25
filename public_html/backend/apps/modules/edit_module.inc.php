@@ -61,7 +61,7 @@
 			$module->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/'.$return_doc));
+			redirect(document::ilink(__APP__.'/'.$return_doc));
 			exit;
 
 		} catch (Exception $e) {
@@ -75,7 +75,7 @@
 			$module->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/'.$return_doc));
+			redirect(document::ilink(__APP__.'/'.$return_doc));
 			exit;
 
 		} catch (Exception $e) {

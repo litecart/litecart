@@ -42,7 +42,7 @@
 			$supplier->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/suppliers'));
+			redirect(document::ilink(__APP__.'/suppliers'));
 			exit;
 
 		} catch (Exception $e) {
@@ -61,7 +61,7 @@
 			$supplier->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/suppliers'));
+			redirect(document::ilink(__APP__.'/suppliers'));
 			exit;
 
 		} catch (Exception $e) {

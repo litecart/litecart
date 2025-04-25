@@ -41,7 +41,7 @@
 			$sold_out_status->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/sold_out_statuses'));
+			redirect(document::ilink(__APP__.'/sold_out_statuses'));
 			exit;
 
 		} catch (Exception $e) {
@@ -60,7 +60,7 @@
 			$sold_out_status->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/sold_out_statuses'));
+			redirect(document::ilink(__APP__.'/sold_out_statuses'));
 			exit;
 
 		} catch (Exception $e) {

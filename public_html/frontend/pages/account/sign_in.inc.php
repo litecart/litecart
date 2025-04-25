@@ -127,7 +127,7 @@
 				$redirect_url = document::ilink('f:');
 			}
 
-			header('Location: '. $redirect_url);
+			redirect($redirect_url);
 			exit;
 
 		} catch (Exception $e) {

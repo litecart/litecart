@@ -41,7 +41,7 @@
 			$campaign->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/campaigns'));
+			redirect(document::ilink(__APP__.'/campaigns'));
 			exit;
 
 		} catch (Exception $e) {
@@ -60,7 +60,7 @@
 			$campaign->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/campaigns'));
+			redirect(document::ilink(__APP__.'/campaigns'));
 			exit;
 
 		} catch (Exception $e) {

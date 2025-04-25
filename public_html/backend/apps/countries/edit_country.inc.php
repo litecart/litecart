@@ -71,7 +71,7 @@
 			$country->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/countries'));
+			redirect(document::ilink(__APP__.'/countries'));
 			exit;
 
 		} catch (Exception $e) {
@@ -90,7 +90,7 @@
 			$country->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/countries'));
+			redirect(document::ilink(__APP__.'/countries'));
 			exit;
 
 		} catch (Exception $e) {

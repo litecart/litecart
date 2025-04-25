@@ -67,7 +67,7 @@
 			header('Pragma: no-cache');
 
 			notices::add('success', language::translate('success_changes_saved_refresh_cache', 'Changes saved successfully. If you don\'t see any changes, try <a href="https://www.google.com/search?q=how+to+hard+refresh+a+web+page" target="_blank">hard refreshing</a> the page or clear browser cache.'));
-			header('Location: '. document::ilink());
+			reload();
 			exit;
 
 		} catch (Exception $e) {

@@ -119,7 +119,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. $_GET['redirect_url']);
+			redirect($_GET['redirect_url']);
 			exit;
 
 		} catch (Exception $e) {
@@ -138,7 +138,7 @@
 			$product->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/category_tree', ['category_id' => $_POST['categories'][0]]));
+			redirect(document::ilink(__APP__.'/category_tree', ['category_id' => $_POST['categories'][0]]));
 			exit;
 
 		} catch (Exception $e) {

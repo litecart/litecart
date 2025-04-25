@@ -27,7 +27,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink());
+			reload();
 			exit;
 
 		} catch (Exception $e) {
@@ -50,7 +50,7 @@
 
 			notices::add('success', strtr(language::translate('success_deleted_n_customers', 'Deleted %n customers'), ['%n' => count($_POST['customers'])]));
 
-			header('Location: '. document::link());
+			reload();
 			exit;
 
 		} catch (Exception $e) {

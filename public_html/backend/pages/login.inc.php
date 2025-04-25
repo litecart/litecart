@@ -163,9 +163,9 @@
 				notices::add('notices', language::translate('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
 
 				if (!empty($_POST['redirect_url'])) {
-					header('Location: '. document::ilink('verify', ['redirect_url' => $_POST['redirect_url']]));
+					redirect(document::ilink('verify', ['redirect_url' => $_POST['redirect_url']]));
 				} else {
-					header('Location: '. document::ilink('verify'));
+					redirect(document::ilink('verify'));
 				}
 
 				exit;
@@ -202,7 +202,7 @@
 			}
 
 			notices::add('success', str_replace(['%username'], [administrator::$data['username']], language::translate('success_now_logged_in_as', 'You are now logged in as %username')));
-			header('Location: '. $redirect_url);
+			redirect($redirect_url);
 			exit;
 
 		} catch (Exception $e) {

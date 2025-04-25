@@ -60,7 +60,7 @@
 			}
 
 			notices::add('success', language::translate('title_changes_saved', 'Changes saved'));
-			header('Location: '. $_SERVER['REQUEST_URI']);
+			reload();
 			exit;
 
 		} catch (Exception $e) {
@@ -89,7 +89,7 @@
 			}
 
 			notices::add('success', language::translate('title_changes_saved', 'Changes saved'));
-			header('Location: '. $_SERVER['REQUEST_URI']);
+			reload();
 			exit;
 
 		} catch (Exception $e) {

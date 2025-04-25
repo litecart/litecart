@@ -29,7 +29,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink());
+			reload();
 			exit;
 
 		} catch (Exception $e) {
@@ -101,7 +101,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(null, ['category_id' => $_POST['category_id']]));
+			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]));
 			exit;
 
 		} catch (Exception $e) {
@@ -133,7 +133,7 @@
 			}
 
 			notices::add('success', sprintf(language::translate('success_copied_d_products', 'Copied %d products'), count($_POST['products'])));
-			header('Location: '. document::ilink(null, ['category_id' => $_POST['category_id']]));
+			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]));
 			exit;
 
 		} catch (Exception $e) {
@@ -182,7 +182,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(null, ['category_id' => $_POST['category_id']]));
+			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]));
 			exit;
 
 		} catch (Exception $e) {
@@ -228,7 +228,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink());
+			reload();
 			exit;
 
 		} catch (Exception $e) {
@@ -258,7 +258,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink());
+			reload();
 			exit;
 
 		} catch (Exception $e) {

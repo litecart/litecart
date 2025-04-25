@@ -23,7 +23,7 @@
 			}
 
 			notices::add('success', sprintf(language::translate('success_deleted_d_stock_items', 'Deleted %d stock_items'), count($_POST['stock_items'])));
-			header('Location: '. document::ilink());
+			reload();
 			exit;
 
 		} catch (Exception $e) {

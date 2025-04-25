@@ -181,7 +181,7 @@
 				limit 1;"
 			)->num_rows) {
 				notices::add('errors', language::translate('error_delete_brand_not_empty_products', 'The brand could not be deleted because there are products linked to it.'));
-				header('Location: '. $_SERVER['REQUEST_URI']);
+				reload();
 				exit;
 			}
 

@@ -60,7 +60,7 @@
 			$banner->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/banners'));
+			redirect(document::ilink(__APP__.'/banners'));
 			exit;
 
 		} catch (Exception $e) {
@@ -75,7 +75,7 @@
 			$banner->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
-			header('Location: '. document::ilink(__APP__.'/banners'));
+			redirect(document::ilink(__APP__.'/banners'));
 			exit;
 
 		} catch (Exception $e) {

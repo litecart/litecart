@@ -74,7 +74,7 @@
 			$administrator->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/administrators'));
+			redirect(document::ilink(__APP__.'/administrators'));
 			exit;
 
 		} catch (Exception $e) {
@@ -93,7 +93,7 @@
 			$administrator->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/administrators'));
+			redirect(document::ilink(__APP__.'/administrators'));
 			exit;
 
 		} catch (Exception $e) {

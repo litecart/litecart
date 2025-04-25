@@ -2,13 +2,13 @@
 
 	if (empty(session::$data['checkout']['order'])) {
 		notices::add('errors', 'Missing order object');
-		header('Location: '. document::ilink('checkout/index'));
+		redirect(document::ilink('checkout/index'));
 		exit;
 	}
 
 	if (empty(session::$data['checkout']['type']) || session::$data['checkout']['type'] != 'express') {
 		notices::add('errors', 'Invalid checkout type');
-		header('Location: '. document::ilink('shopping_cart'));
+		redirect(document::ilink('shopping_cart'));
 		exit;
 	}
 
@@ -36,7 +36,7 @@
 
 		notices::add('errors', $error_message);
 
-		header('Location: '. document::ilink('shopping_cart'));
+		redirect(document::ilink('shopping_cart'));
 		exit;
 	}
 
@@ -105,5 +105,5 @@
 	$order->payment->after_process($order);
 	$order_modules->after_process($order);
 
-	header('Location: '. document::ilink('checkout/success', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]));
+	redirect(document::ilink('checkout/success', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]));
 	exit;

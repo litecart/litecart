@@ -31,7 +31,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink());
+			reload();
 			exit;
 
 		} catch (Exception $e) {
@@ -64,7 +64,7 @@
 				notices::add('success', sprintf(language::translate('success_moved_d_pages', 'Moved %d pages'), count($_POST['pages'])));
 			}
 
-			header('Location: '. document::ilink(null, ['page_id' => $_POST['page_id']]));
+			redirect(document::ilink(null, ['page_id' => $_POST['page_id']]));
 			exit;
 
 		} catch (Exception $e) {
@@ -86,7 +86,7 @@
 			}
 
 			notices::add('success', sprintf(language::translate('success_deleted_d_pages', 'Deleted %d pages'), count($_POST['pages'])));
-			header('Location: '. document::ilink());
+			reload();
 			exit;
 
 		} catch (Exception $e) {

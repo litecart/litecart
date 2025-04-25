@@ -20,7 +20,7 @@
 	}
 
 	if (empty($_GET['brand_id'])) {
-		header('Location: '. document::ilink('brands'));
+		redirect(document::ilink('brands'));
 		exit;
 	}
 

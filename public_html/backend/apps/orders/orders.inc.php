@@ -158,7 +158,7 @@
 					break;
 			}
 
-			header('Location: '. $_SERVER['REQUEST_URI']);
+			reload();
 			exit;
 
 		} catch (Exception $e) {

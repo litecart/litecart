@@ -86,7 +86,7 @@
 			$return_order->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/edit_order', ['order_id' => $return_order->data['id']]));
+			redirect(document::ilink(__APP__.'/edit_order', ['order_id' => $return_order->data['id']]));
 			exit;
 
 		} catch (Exception $e) {
@@ -140,7 +140,7 @@
 			$order->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink());
+			reload();
 			exit;
 
 		} catch (Exception $e) {
@@ -320,7 +320,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. $redirect_url);
+			redirect($redirect_url);
 			exit;
 
 		} catch (Exception $e) {
@@ -338,12 +338,15 @@
 
 			$order->delete();
 
-			if (empty($_GET['redirect_url'])) {
-				$_GET['redirect_url'] = document::ilink(__APP__.'/orders');
+			if (!empty($_GET['redirect_url'])) {
+				$redirect_url = new ent_link($_GET['redirect_url']);
+				$redirect_url->host = '';
+			} else {
+				$redirect_url = document::ilink(__APP__.'/orders');
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. $_GET['redirect_url']);
+			redirect($redirect_url);
 			exit;
 
 		} catch (Exception $e) {
@@ -356,6 +359,7 @@
 		$customer = reference::customer((int)$_POST['customer']['id']);
 		$account_name = $customer->company ?: $customer->firstname .' '. $customer->lastname;
 	}
+
 ?>
 <style>
 #hostname {

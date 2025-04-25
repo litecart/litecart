@@ -54,7 +54,7 @@
 				$redirect_url = document::link();
 			}
 
-			header('Location: '. $redirect_url);
+			redirect($redirect_url);
 			exit;
 
 		} catch (Exception $e) {

@@ -131,7 +131,7 @@
 			}
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/languages'));
+			redirect(document::ilink(__APP__.'/languages'));
 			exit;
 
 		} catch (Exception $e) {
@@ -150,7 +150,7 @@
 			$language->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/languages'));
+			redirect(document::ilink(__APP__.'/languages'));
 			exit;
 
 		} catch (Exception $e) {

@@ -72,7 +72,7 @@
 					'date_expires' => strtotime('+6 months'),
 				]);
 
-				header('Location: '. $_SERVER['REQUEST_URI']);
+				reload();
 				exit;
 			}
 
@@ -98,21 +98,21 @@
 					self::remove($item_key);
 				}
 
-				header('Location: '. $_SERVER['REQUEST_URI']);
+				reload();
 				exit;
 			}
 
 			// Event handler for updating product in cart
 			if (!empty($_POST['update_cart_item'])) {
 				self::update($_POST['update_cart_item'], isset($_POST['item'][$_POST['update_cart_item']]['quantity']) ? $_POST['item'][$_POST['update_cart_item']]['quantity'] : 1);
-				header('Location: '. $_SERVER['REQUEST_URI']);
+				reload();
 				exit;
 			}
 
 			// Event handler for clearing all cart items
 			if (!empty($_POST['clear_cart_items'])) {
 				self::clear();
-				header('Location: '. $_SERVER['REQUEST_URI']);
+				reload();
 				exit;
 			}
 		}
@@ -368,7 +368,7 @@
 			self::_calculate_total();
 
 			if (!$force) {
-				header('Location: '. document::link());
+				reload();
 				exit;
 			}
 		}
@@ -389,7 +389,7 @@
 			self::_calculate_total();
 
 			if (!$force) {
-				header('Location: '. document::link());
+				reload();
 				exit;
 			}
 		}

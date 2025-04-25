@@ -41,7 +41,7 @@
 			$quantity_unit->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/quantity_units'));
+			redirect(document::ilink(__APP__.'/quantity_units'));
 			exit;
 
 		} catch (Exception $e) {
@@ -60,7 +60,7 @@
 			$quantity_unit->delete();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/quantity_units'));
+			redirect(document::ilink(__APP__.'/quantity_units'));
 			exit;
 
 		} catch (Exception $e) {

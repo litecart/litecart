@@ -5,7 +5,7 @@
 	document::$head_tags[] = '<meta name="viewport" content="width=device-width, initial-scale=1">';
 
 	if (empty(session::$data['security_verification'])) {
-		header('Location: '. document::ilink(''));
+		redirect(document::ilink(''));
 		exit;
 	}
 
@@ -67,7 +67,7 @@
 			}
 
 			notices::add('success', str_replace(['%username'], [administrator::$data['username']], language::translate('success_now_logged_in_as', 'You are now logged in as %username')));
-			header('Location: '. $redirect_url);
+			redirect($redirect_url);
 			exit;
 
 		} catch (Exception $e) {
