@@ -632,17 +632,14 @@ waitFor('jQuery', ($) => {
 waitFor('jQuery', ($) => {
 
 	$('form[data-track-changes]').each(function() {
-		let $form = $(this);
-		$form.data('originalData', $form.serialize());
+		$(this).data('originalData', $(this).serialize());
 	});
 
 	$(window).on('beforeunload', function() {
 		let hasChanges = false;
 
 		$('form[data-track-changes]').each(function() {
-			let $form = $(this);
-
-			if ($form.serialize() != $form.data('originalData')) {
+			if ($(this).serialize() != $(this).data('originalData')) {
 				hasChanges = true;
 				return false; // Break out of the each loop
 			}
@@ -652,6 +649,7 @@ waitFor('jQuery', ($) => {
 			return true; // Show the confirmation dialog
 		}
 	});
+
 });
 
 

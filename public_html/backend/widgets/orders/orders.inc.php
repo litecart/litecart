@@ -31,7 +31,7 @@
 	});
 
 ?>
-<div id="widget-orders" class="widget card" style="overflow: hidden;">
+<div id="widget-orders" class="widget card" style="padding-bottom: .5em;">
 	<div class="card-header">
 		<div class="card-title">
 			<?php echo language::translate('title_orders', 'Orders'); ?>

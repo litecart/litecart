@@ -40,7 +40,7 @@ gulp.task('less-framework', function() {
 		.pipe(cleancss())
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(rename({ extname: '.min.css' }))
-		.pipe(sourcemaps.write('.', { includeContent: false }))
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('public_html/assets/litecore/css/', { overwrite: true }));
 });
 
@@ -54,7 +54,7 @@ gulp.task('js-framework', function() {
 		.pipe(sourcemaps.init())
 		.pipe(uglify())
 		.pipe(rename({ extname: '.min.js' }))
-		//.pipe(sourcemaps.write('.', { includeContent: false }))
+		//.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('public_html/assets/litecore/js/', { overwrite: true }));
 });
 
@@ -80,7 +80,7 @@ gulp.task('less-backend', function() {
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(cleancss())
 		.pipe(rename({ extname: '.min.css' }))
-		.pipe(sourcemaps.write('.', { includeContent: false }))
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('public_html/backend/template/css', { overwrite: true }));
 });
 
@@ -94,7 +94,7 @@ gulp.task('js-backend', function() {
 		.pipe(sourcemaps.init())
 		.pipe(uglify())
 		.pipe(rename({ extname: '.min.js' }))
-		//.pipe(sourcemaps.write('.', { includeContent: false }))
+		//.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('public_html/backend/template/js/', { overwrite: true }));
 });
 
@@ -120,7 +120,7 @@ gulp.task('less-frontend', function() {
 		.pipe(cleancss())
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(rename({ extname: '.min.css' }))
-		.pipe(sourcemaps.write('.', { includeContent: false }))
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('public_html/frontend/templates/default/css/', { overwrite: true }));
 });
 
@@ -132,7 +132,7 @@ gulp.task('js-frontend', function() {
 		//.pipe(sourcemaps.init())
 		.pipe(uglify())
 		.pipe(rename({ extname: '.min.js' }))
-		//.pipe(sourcemaps.write('.', { includeContent: false }))
+		//.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('public_html/frontend/templates/default/js/', { overwrite: true }));
 });
 
@@ -141,10 +141,10 @@ gulp.task('sass-chartist', function() {
 	return gulp.src('public_html/assets/chartist/chartist.scss', { allowEmpty: true })
 		.pipe(sass().on('error', sass.logError))
 		//.pipe(gulp.dest('public_html/assets/chartist/', { overwrite: true }))
-		.pipe(sourcemaps.write('.', { includeContent: false }))
+		//.pipe(sourcemaps.write('.'))
 		.pipe(cleancss())
 		.pipe(rename({ extname: '.min.css' }))
-		.pipe(sourcemaps.write('.', { includeContent: false }))
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('public_html/assets/chartist/', { overwrite: true }));
 });
 
@@ -155,11 +155,11 @@ gulp.task('sass-trumbowyg', function() {
 	.pipe(sass({ silenceDeprecations: ['legacy-js-api'] })
 		.on('error', sass.logError))
 		//.pipe(gulp.dest('public_html/assets/trumbowyg/ui/'))
-		.pipe(sourcemaps.write('.', { includeContent: false }))
+		//.pipe(sourcemaps.write('.'))
 		.pipe(cleancss())
 		.pipe(rename({ extname: '.min.css' }))
 		.pipe(gulp.dest('public_html/assets/trumbowyg/ui/'))
-		.pipe(sourcemaps.write('.', { includeContent: false }));
+		.pipe(sourcemaps.write('.'));
 });
 
 // Lint PHP files

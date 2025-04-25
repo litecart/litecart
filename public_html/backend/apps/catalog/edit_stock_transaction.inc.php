@@ -69,7 +69,7 @@
 	$available_stock_items = database::query(
 		"select si.id, si.sku, si.quantity, si.backordered, json_value(si.name, '$.".database::input(language::$selected['code'])."') as name
 		from ". DB_TABLE_PREFIX ."stock_items si
-		order by sku, name;"
+		order by si.sku, si.name;"
 	)->fetch_all();
 
 ?>
@@ -92,13 +92,6 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
 							<?php echo functions::form_input_text('name', true); ?>
-						</label>
-					</div>
-
-					<div class="col-md-6">
-						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('title_date', 'Date'); ?></div>
-							<?php echo functions::form_input_date('date', true); ?>
 						</label>
 					</div>
 				</div>

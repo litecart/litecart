@@ -37,10 +37,12 @@
 
 			$tmp_file = tempnam(sys_get_temp_dir(), '_blob');
 
-			shell_exec('git cat-file blob :'. $file .' > '. $tmp_file);
+			//shell_exec('git cat-file blob :'. $file .' > '. $tmp_file);
+			shell_exec('git show :'. $file .' > '. $tmp_file);
 			$blob = file_get_contents($tmp_file);
 
 			$checksum = md5(preg_replace('#(\r\n?|\n)#', "\n", $blob));
+
 			if ($checksum != $checksums[$short_file]) {
 				$checksums[$short_file] = $checksum;
 				echo 'Updating '. $short_file . PHP_EOL;

@@ -68,7 +68,11 @@
 		}
 	}
 
-	$currency_codes = array_unique(array_merge([currency::$selected['code']], [settings::get('store_currency_code')], array_keys(currency::$currencies)));
+	$currency_codes = array_values(
+		array_unique(
+			array_merge([settings::get('store_currency_code')], [currency::$selected['code']], array_keys(currency::$currencies))
+		)
+	);
 
 ?>
 <div class="card">
@@ -131,7 +135,7 @@
 
 			<tbody>
 				<?php foreach ($_POST['products'] as $key => $product) { ?>
-				<tr>
+				<tr data-product-id="<?php echo $product['product_id']; ?>" data-regular-price="<?php echo currency::format_raw($product['regular_price'], settings::get('store_currency_code')); ?>">
 					<td>
 						<?php echo functions::form_input_hidden('products['.$key.'][product_id]', true); ?>
 						<a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['product_id']]); ?>">
@@ -179,7 +183,7 @@
 
 <script>
 	const store_currency_code = '<?php echo settings::get('store_currency_code'); ?>';
-	const currencies = <?php echo json_encode(currency::$currencies, JSON_UNESCAPED_SLASHES |  JSON_UNESCAPED_UNICODE); ?>;
+	const currencies = <?php echo json_encode(currency::$currencies, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?>;
 	const currency_codes = <?php echo json_encode($currency_codes); ?>;
 
 	$('#campaigns').on('focus', 'input[name^="campaigns"]', function(e) {
@@ -214,13 +218,15 @@
 	$('#campaigns').on('input', 'input[name$="['+store_currency_code+']"]', function() {
 
 		let $row = $(this).closest('tr'),
-			percentage = Number(($('input[name$="['+store_currency_code+']"]').val() - $(this).val()) / $('input[name$="['+store_currency_code+']"]').val() * 100).toFixed(2);
+			regular_price = Number($row.data('regular-price')),
+			campaign_price = Number($(this).val()),
+			percentage = Number((regular_price - $(this).val()) / regular_price * 100).toFixed(2);
 
 		$row.find('input[name$="[percentage]"]').val(percentage);
 
 		$.each(currencies, function(i, currency) {
 
-			amount = Number($row.find('input[name$="['+store_currency_code+']"]').val() / currency.value).toFixed(currency.decimals);
+			amount = Number(regular_price / currency.value).toFixed(currency.decimals);
 
 			$row.find('input[name$="['+currency.code+']"]').attr('placeholder', amount);
 
@@ -265,7 +271,7 @@
 			'      </ul>',
 			'    </div>',
 			'  </td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_percent('products[new_product_i][percentage]', '', 2)); ?></td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_percent('products[new_product_i][percentage]', '0.00', 2)); ?></td>',
 			'  <td class="text-end">',
 			'    <button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo language::translate('title_edit', 'Edit'); ?>">',
 			'      <?php echo functions::draw_fonticon('icon-times'); ?>',
@@ -277,6 +283,12 @@
 			.replace(/product\.id/g, product.id)
 		);
 
-		$('table tbody').append($output);
+		$output.data({
+			'product-id': product.id,
+		  'regular-price': product.price
+		});
+
+		$('#campaigns tbody').append($output);
+		$.litebox.close();
 	};
 </script>

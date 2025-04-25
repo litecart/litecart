@@ -319,9 +319,11 @@
 
 										<div class="input-group">
 											<?php echo functions::form_input_text('images['.$key.'][new_filename]', fallback($_POST['images'][$key]['new_filename'], $_POST['images'][$key]['filename'])); ?>
-											<a class="btn btn-default btn-sm move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></a>
-											<a class="btn btn-default btn-sm move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></a>
-											<a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></a>
+											<div class="btn-group">
+												<a class="btn btn-default btn-sm move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></a>
+												<a class="btn btn-default btn-sm move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></a>
+												<a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></a>
+											</div>
 										</div>
 									</div>
 									<?php } ?>
@@ -983,9 +985,11 @@
 			'  ',
 			'  <div class="input-group">',
 			'    <?php echo functions::form_input_file('new_images[]', 'accept="image/*"'); ?>',
-			'    <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></a>',
-			'    <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></a>',
-			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></a>',
+			'    <div class="btn-group">',
+			'      <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></a>',
+			'      <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></a>',
+			'      <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></a>',
+			'  	 </div>',
 			'  </div>',
 			'</div>'
 		].join('\n'));
