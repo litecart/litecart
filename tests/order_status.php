@@ -14,8 +14,8 @@
 
 		// Prepare some example data
 		$data = [
-			'name' => 'Pending',
-			'description' => 'Order is pending',
+			'name' => ['en' => 'Pending'],
+			'description' => ['en' => 'Order is pending'],
 		];
 
 		########################################################################
@@ -55,8 +55,8 @@
 
 		// Prepare some new data
 		$data = [
-			'name' => 'Shipped',
-			'description' => 'Order has been shipped',
+			'name' => ['en' => 'Shipped'],
+			'description' => ['en' => 'Order has been shipped'],
 		];
 
 		// Update some data

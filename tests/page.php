@@ -14,8 +14,8 @@
 
 		// Prepare some example data
 		$data = [
-			'title' => 'Test Page',
-			'content' => 'This is a test page.',
+			'title' => ['en' => 'Test Page'],
+			'content' => ['en' => 'This is a test page.'],
 			'priority' => 1,
 		];
 
@@ -56,8 +56,8 @@
 
 		// Prepare some new data
 		$data = [
-			'title' => 'Updated Test Page',
-			'content' => 'This is an updated test page.',
+			'title' => ['en' => 'Updated Test Page'],
+			'content' => ['en' => 'This is an updated test page.'],
 			'priority' => 2,
 		];
 

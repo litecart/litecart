@@ -35,9 +35,9 @@ waitFor('jQuery', ($) => {
 
 								$.each(result.subcategories, function(i, category) {
 									$(dropdownMenu).append([
-										'<div class="flex" style="align-items: center;" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'">',
+										'<div class="category flex" style="align-items: center;" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'">',
 										'	' + self.config.icons.folder + '<a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>',
-										'	<button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>',
+										'	<button name="add" class="btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>',
 										'</div>',
 									].join('\n'));
 								});
@@ -77,9 +77,9 @@ waitFor('jQuery', ($) => {
 
 								$.each(result.subcategories, function(i, category) {
 									$(dropdownMenu).append(
-										'<div class="flex" style="align-items: center;" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'">',
+										'<div class="category flex" style="align-items: center;" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'">',
 										'	' + self.config.icons.folder + '<a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>',
-										'	<button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>',
+										'	<button name="add" class="btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>',
 										'</div>',
 									);
 								});
@@ -109,23 +109,23 @@ waitFor('jQuery', ($) => {
 
 					$.each(result.subcategories, function(i, category) {
 						$(dropdownMenu).append([
-							'<div class="flex" style="align-items: center;" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'">',
+							'<div class="category flex" style="align-items: center;" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'">',
 							'	' + self.config.icons.folder +' <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>',
-							'	<button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>',
+							'	<button name="add" class="btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>',
 							'</div>',
 						].join('\n'));
 					});
 				});
 			});
 
-			$(this).on('click', '.dropdown-content button.add', function(e) {
+			$(this).on('click', '.dropdown-content button[name="add"]', function(e) {
 				e.preventDefault();
 
-				let category = $(this).closest('li'),
-						abort = false;
+				let category = $(this).closest('.category').data(),
+					abort = false;
 
 				$(self).find('input[name="'+ self.config.inputName +'"]').each(function() {
-					if ($(this).val() == category.data('id')) {
+					if ($(this).val() == category.id) {
 						abort = true;
 						return;
 					}
@@ -133,11 +133,22 @@ waitFor('jQuery', ($) => {
 
 				if (abort) return;
 
-				$(self).find('.categories').append([
-					'<div class="flex" style="align-items: center;">',
-					'	<input type="hidden" name="' + self.config.inputName +'" value="'+ $(category).data('id') +'" data-name="'+ $(category).data('name').replace(/"/, '&quote;') +'">',
-					'	<div style="flex-grow: 1;">' + self.config.icons.folder +' '+ $(category).data('name') +'</div>',
-					'	<button class="remove btn btn-default btn-sm" type="button">'+ self.config.translations.remove +'</button>',
+				let inputField = $('<input>', {
+					type: 'hidden',
+					name: self.config.inputName,
+					value: category.id,
+					"data-name": category.name
+				})[0].outerHTML;
+
+				$(self).find('ul').append([
+					'<li class="list-item flex">',
+					'	<div style="flex-grow: 1;">',
+					'		'+ inputField,
+					'		'+ self.config.icons.folder +' '+ category.name,
+					'	</div>',
+					'	<button name="remove" class="btn btn-default btn-sm" type="button">',
+					'		'+ self.config.translations.remove,
+					'	</button>',
 					'</div>',
 				].join('\n'));
 
@@ -148,7 +159,7 @@ waitFor('jQuery', ($) => {
 				return false;
 			});
 
-			$(this).find('.categories').on('click', '.remove', function(e) {
+			$(this).on('click', 'button[name="remove"]', function(e) {
 				$(this).closest('li').remove();
 				$(self).trigger('change');
 			});

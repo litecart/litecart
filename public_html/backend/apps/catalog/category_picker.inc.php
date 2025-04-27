@@ -57,7 +57,7 @@
 
 			<?php foreach ($categories as $category) { ?>
 			<a class="pill-item" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']]); ?>">
-				<?php echo functions::draw_fonticon('icon-folder', 'style="color: #cccc66;"'); ?> <?php echo fallback($category['name'], '[untitled]'); ?>
+				<?php echo functions::draw_fonticon('icon-folder', 'style="color: #cccc66;"'); ?> <?php echo $category['name']; ?>
 			</a>
 			<?php } ?>
 

@@ -333,7 +333,7 @@ waitFor('jQuery', ($) => {
 		}
 
 		afterClose(e) {
-			if (e.isDefaultPrevented()) return;
+			if (e?.isDefaultPrevented()) return;
 			this._$previouslyTabbable.removeAttr('tabindex');
 			this._$previouslyWithTabIndex.each((i, el) => $(el).attr('tabindex', this._previousWithTabIndices[i]));
 			if (this._previouslyActive instanceof $) {
@@ -385,6 +385,14 @@ waitFor('jQuery', ($) => {
 		}
 		console.error('Invalid argument passed to $.litebox. Expected a URL string.');
 	};
+
+	// Expose the Litebox.current method
+	$.litebox.current = Litebox.current.bind(Litebox);
+
+	// Expose the Litebox.close method
+	$.litebox.close = function(){
+		this.current()?.close();
+	}
 
 	$.fn.litebox = function ($modal, options) {
 		Litebox.attach(this, $modal, options);

@@ -196,6 +196,28 @@
 		$(this).removeClass('open');
 	});
 
+	$('#campaigns').on('input', 'input[name$="['+store_currency_code+']"]', function() {
+
+		let $row = $(this).closest('tr'),
+			regular_price = Number($row.data('regular-price')),
+			campaign_price = Number($(this).val()),
+			percentage = Number((regular_price - $(this).val()) / regular_price * 100).toFixed(2);
+
+		$row.find('input[name$="[percentage]"]').val(percentage);
+
+		$.each(currencies, function(i, currency) {
+			if (currency.value !== undefined && currency.decimals !== undefined) {
+				amount = Number(regular_price / currency.value).toFixed(currency.decimals);
+
+				$row.find('input[name$="['+currency.code+']"]').attr('placeholder', amount);
+
+				if (!$row.find('input[name$="['+currency.code+']"]').val()) {
+					$row.find('input[name$="['+currency.code+']"]').val('');
+				}
+			}
+		});
+	});
+
 	$('#campaigns').on('input', 'input[name$="[percentage]"]', function() {
 		let $row = $(this).closest('tr'),
 			amount = 0;
@@ -203,7 +225,7 @@
 		$.each(currencies, function(i, currency) {
 
 			if ($('input[name$="['+currency.code+']"]').val() > 0) {
-				amount = Number($('input[name$="['+store_currency_code+']"]').val() * (100 - $(this).val()) / 100).toFixed(currency.decimals);
+				amount = Number($('input[name$="['+store_currency_code+']"]').val() * (100 - $('input[name$="['+currency.code+']"]').val()) / 100).toFixed(currency.decimals);
 				$row.find('input[name$="['+currency.code+']"]').val(amount);
 			} else {
 				$row.find('input[name$="['+currency.code+']"]').val('');
@@ -215,30 +237,9 @@
 		});
 	});
 
-	$('#campaigns').on('input', 'input[name$="['+store_currency_code+']"]', function() {
-
-		let $row = $(this).closest('tr'),
-			regular_price = Number($row.data('regular-price')),
-			campaign_price = Number($(this).val()),
-			percentage = Number((regular_price - $(this).val()) / regular_price * 100).toFixed(2);
-
-		$row.find('input[name$="[percentage]"]').val(percentage);
-
-		$.each(currencies, function(i, currency) {
-
-			amount = Number(regular_price / currency.value).toFixed(currency.decimals);
-
-			$row.find('input[name$="['+currency.code+']"]').attr('placeholder', amount);
-
-			if (!$row.find('input[name$="['+currency.code+']"]').val()) {
-				$row.find('input[name$="['+currency.code+']"]').val('');
-			}
-		});
-	});
-
 	$('input[name$="['+store_currency_code+']"]').trigger('input');
 
-	$('button[name="remove"]').on('click', function(e) {
+	$('#campaigns').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
 		if (confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
 			$(this).closest('tr').remove();
@@ -258,7 +259,7 @@
 			'      ' + product.name,
 			'		 </a>',
 			'  </td>',
-			'  <td class="text-end">'+ product.price +'</td>',
+			'  <td class="text-end">'+ Number(product.price.value).toMoney() +'</td>',
 			'  <td>',
 			'    <div class="dropdown dropdown-end">',
 			'      <?php echo functions::escape_js(functions::form_input_money('products[new_product_i][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '', 'style="width: 125px;"')); ?>',
@@ -285,7 +286,7 @@
 
 		$output.data({
 			'product-id': product.id,
-		  'regular-price': product.price
+		  'regular-price': product.price.value
 		});
 
 		$('#campaigns tbody').append($output);

@@ -29,6 +29,8 @@
 		$committed_files = $tracked_files;
 	}
 
+	echo 'Updating checksums for '. count($committed_files) .' committed files...' . PHP_EOL;
+
 	// Update checksums for committed and tracked files
 	foreach ($committed_files as $file) {
 		$short_file = preg_replace('#^public_html/#', '', $file);
@@ -45,7 +47,7 @@
 
 			if ($checksum != $checksums[$short_file]) {
 				$checksums[$short_file] = $checksum;
-				echo 'Updating '. $short_file . PHP_EOL;
+				echo '  - '. $short_file . PHP_EOL;
 			}
 
 			unlink($tmp_file);
