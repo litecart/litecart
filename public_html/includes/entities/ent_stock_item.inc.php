@@ -56,6 +56,7 @@
 				'name',
 			] as $column) {
 				$this->data[$column] = json_decode($this->data[$column], true) ?: [];
+				$this->data[$column] += array_fill_keys(array_keys(language::$languages), '');
 			}
 
 			// Reserved Quantity
