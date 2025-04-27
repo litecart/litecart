@@ -13,7 +13,12 @@
 	}
 
 	$categories = database::query(
-		"select c.id, json_value(c.name, '$.".database::input(language::$selected['code'])."') as name
+		"select c.id, coalesce(
+			". implode(', ', array_map(function($language) {
+				return "json_value(c.name, '$.". database::input($language['code']) ."')";
+			}, language::$languages)) .",
+			'(". database::input(language::translate('title_untitled', 'Untitled')) .")'
+		) as name
 		from ". DB_TABLE_PREFIX ."categories c
 		where ". (!empty($_GET['parent_id']) ? "c.parent_id = ". (int)$_GET['parent_id'] : "c.parent_id is null") ."
 		order by c.priority, name;"

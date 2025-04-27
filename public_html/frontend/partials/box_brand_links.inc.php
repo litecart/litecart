@@ -13,7 +13,7 @@
 	if (!$box_brand_links->snippets['brands'] = cache::get($box_brand_links_cache_token)) {
 
 		$box_brand_links->snippets['brands'] = database::query(
-			"select b.id, b.date_created, b.name
+			"select b.id, b.created_at, b.name
 			from ". DB_TABLE_PREFIX ."brands b
 			where b.status
 			order by b.name;"
@@ -22,7 +22,7 @@
 				'id' => $brand['id'],
 				'name' => $brand['name'],
 				'link' => document::ilink('brand', ['brand_id' => $brand['id']]),
-				'date_created' => $brand['date_created'],
+				'created_at' => $brand['created_at'],
 				'active' => (isset($_GET['brand_id']) && $_GET['brand_id'] == $brand['id']),
 			];
 		});

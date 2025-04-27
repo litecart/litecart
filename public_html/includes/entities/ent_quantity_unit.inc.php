@@ -61,8 +61,8 @@
 			if (!$this->data['id']) {
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."quantity_units
-					(date_created)
-					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(created_at)
+					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 				$this->data['id'] = database::insert_id();
 			}
@@ -74,7 +74,7 @@
 					decimals = ". (int)$this->data['decimals'] .",
 					separate = ". (int)$this->data['separate'] .",
 					priority = ". (int)$this->data['priority'] .",
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

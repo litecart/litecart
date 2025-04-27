@@ -77,8 +77,8 @@
 
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."brands
-					(date_created)
-					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(created_at)
+					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();

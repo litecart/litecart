@@ -80,8 +80,8 @@
 
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."campaigns
-					(id, date_created)
-					values (". (int)$this->data['id'] .", '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(id, created_at)
+					values (". (int)$this->data['id'] .", '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();

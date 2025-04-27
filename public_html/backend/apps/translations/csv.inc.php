@@ -169,7 +169,7 @@
 
 			if (in_array('translations', $_POST['collections'])) {
 				$sql_union[] = (
-					"select 'translation' as entity, frontend, backend, code, date_updated, html,
+					"select 'translation' as entity, frontend, backend, code, updated_at, html,
 					". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
 					from ". DB_TABLE_PREFIX ."translations
 					where code not regexp '^(settings_group:|settings_key:|cm|job|om|ot|pm|sm)_'"
@@ -178,7 +178,7 @@
 
 			if (in_array('modules', $_POST['collections'])) {
 				$sql_union[] = (
-					"select 'translation' as entity, frontend, backend, code, date_updated, html,
+					"select 'translation' as entity, frontend, backend, code, updated_at, html,
 					". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
 					from ". DB_TABLE_PREFIX ."translations
 					where code regexp '^(cm|job|om|ot|pm|sm)_'"
@@ -187,7 +187,7 @@
 
 			if (in_array('setting_groups', $_POST['collections'])) {
 				$sql_union[] = (
-					"select 'translation' as entity, frontend, backend, code, date_updated, html,
+					"select 'translation' as entity, frontend, backend, code, updated_at, html,
 					". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
 					from ". DB_TABLE_PREFIX ."translations
 					where code regexp '^settings_group:'"
@@ -196,7 +196,7 @@
 
 			if (in_array('settings', $_POST['collections'])) {
 				$sql_union[] = (
-					"select 'translation' as entity, frontend, backend, code, date_updated, html,
+					"select 'translation' as entity, frontend, backend, code, updated_at, html,
 					". implode(", ", array_map(function($language_code) { return "`text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
 					from ". DB_TABLE_PREFIX ."translations
 					where code regexp '^settings_key:'"
@@ -205,7 +205,7 @@
 
 			$union_select = function($id, $entity, $column) {
 				return (
-					"select '$entity' as entity, '1' as frontend, '1' as backend, concat('[". database::input($entity) ."', ':', id, ']". database::input($column) ."') as code, '' as date_updated,
+					"select '$entity' as entity, '1' as frontend, '1' as backend, concat('[". database::input($entity) ."', ':', id, ']". database::input($column) ."') as code, '' as updated_at,
 						coalesce(". implode(', ', array_map(function($language_code) use($column) { return "if(json_value(`". database::input($column) ."`, '$.". database::input($language_code) ."') regexp '<', 1, null)"; }, $_POST['language_codes'])) .", 0) as html,
 						". implode(', ', array_map(function($language_code) use($column) { return "json_value(`". $column ."`, '$.". database::input($language_code) ."') as `text_". database::input($language_code) ."`"; }, $_POST['language_codes'])) ."
 					from ". DB_TABLE_PREFIX . database::input($id)

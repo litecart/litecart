@@ -26,8 +26,8 @@
 					select id from ". DB_TABLE_PREFIX ."order_statuses
 					where is_trackable
 				)
-				and date_created > '". date('Y-m-d H:i:s', strtotime('-30 days')) ."'
-				order by date_created asc
+				and created_at > '". date('Y-m-d H:i:s', strtotime('-30 days')) ."'
+				order by created_at asc
 				limit 10;"
 			)->fetch_all();
 

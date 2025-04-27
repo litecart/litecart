@@ -17,7 +17,7 @@
 	}
 
 	if (empty($_GET['sort'])) {
-		$_GET['sort'] = 'date_created';
+		$_GET['sort'] = 'created_at';
 	}
 
 	document::$title[] = language::translate('title_orders', 'Orders');
@@ -216,7 +216,7 @@
 			break;
 
 		default:
-			$sql_sort = "if(o.starred, 1, 0) desc, o.date_created desc, o.id desc";
+			$sql_sort = "if(o.starred, 1, 0) desc, o.created_at desc, o.id desc";
 			break;
 	}
 
@@ -247,8 +247,8 @@
 		where o.id
 		". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
 		". fallback($sql_where_order_status) ."
-		". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : '') ."
-		". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : '') ."
+		". (!empty($_GET['date_from']) ? "and o.created_at >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : '') ."
+		". (!empty($_GET['date_to']) ? "and o.created_at <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : '') ."
 		order by $sql_sort;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
@@ -398,7 +398,7 @@ table .icon-star-o:hover {
 					<th><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
 					<th class="text-center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
 					<th data-sort="order_status" class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
-					<th class="text-end" data-sort="date_created"><?php echo language::translate('title_date_created', 'Date Created'); ?></th>
+					<th class="text-end" data-sort="created_at"><?php echo language::translate('title_created_at', 'Created At'); ?></th>
 					<th></th>
 					<th></th>
 				</tr>
@@ -422,7 +422,7 @@ table .icon-star-o:hover {
 					<td class="text-center"><?php if (!is_null($order['sufficient_stock'])) echo $order['sufficient_stock'] ? functions::draw_fonticon('icon-check', 'style="color: #88cc44;"') : functions::draw_fonticon('icon-times', 'style="color: #ff6644;"'); ?></td>
 					<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
 					<td class="text-center"><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
-					<td class="text-end"><?php echo functions::datetime_when($order['date_created']); ?></td>
+					<td class="text-end"><?php echo functions::datetime_when($order['created_at']); ?></td>
 					<td>
 						<div class="dropdown dropdown-end">
 							<div class="btn btn-default btn-sm dropdown-toggle"  data-toggle="dropdown">

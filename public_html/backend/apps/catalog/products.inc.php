@@ -157,7 +157,7 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$products = database::query(
-		"select p.id, p.status, p.code, p.image, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, p.date_created,
+		"select p.id, p.status, p.code, p.image, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, p.created_at,
 			json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
 		 	pp.price, pc.campaign_price, pso.num_stock_options, pso.quantity, total_reserved, pso.quantity - oi.total_reserved as quantity_available
 			". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
@@ -303,7 +303,7 @@ table .thumbnail {
 					<td class="text-end"><?php echo functions::draw_price_tag($product['price'], $product['campaign_price'], settings::get('store_currency_code')); ?></td>
 					<td class="text-center"><?php echo $product['num_stock_options']; ?></td>
 					<td class="text-center"><?php echo $product['total_reserved']; ?></td>
-					<td class="text-end"><?php echo functions::datetime_when($product['date_created']); ?></td>
+					<td class="text-end"><?php echo functions::datetime_when($product['created_at']); ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id'], 'redirect_url' => document::link()]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>

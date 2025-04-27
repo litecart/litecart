@@ -1,10 +1,10 @@
-INSERT INTO `lc_banners` (`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_banners` (`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `date_valid_from`, `date_valid_to`, `updated_at`, `created_at`) VALUES
 (1, 1, 'Jumbotron', '', '', 'banners/jumbotron.svg', '', 'jumbotron', 0, 0, NULL, NULL, NOW(), NOW()),
 (2, 1, 'Left', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Left</div>', '', '', 'left', 0, 0, NULL, NULL, NOW(), NOW()),
 (3, 1, 'Middle', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Middle</div>', '', '', 'middle', 0, 0, NULL, NULL, NOW(), NOW()),
 (4, 1, 'Right', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: seashell;">Right</div>', '', '', 'right', 0, 0, NULL, NULL, NOW(), NOW());
 -- -----
-INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1`, `iso_code_2`, `iso_code_3`, `tax_id_format`, `address_format`, `postcode_format`, `postcode_required`, `language_code`, `currency_code`, `phone_code`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1`, `iso_code_2`, `iso_code_3`, `tax_id_format`, `address_format`, `postcode_format`, `postcode_required`, `language_code`, `currency_code`, `phone_code`, `updated_at`, `created_at`) VALUES
 (1, 1, 'Afghanistan', '', '004', 'AF', 'AFG', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '', 0, 'fa', 'AFN', '93', NOW(), NOW()),
 (2, 1, 'Albania', '', '008', 'AL', 'ALB', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '', 0, 'sq', 'ALL', '355', NOW(), NOW()),
 (3, 1, 'Algeria', '', '012', 'DZ', 'DZA', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '[0-9]{5}', 0, 'ar', 'DZD', '213', NOW(), NOW()),
@@ -249,27 +249,27 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1
 (243, 1, 'Isle of Man', '', '833', 'IM', 'IMN', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '', 0, 'en', '', '44', NOW(), NOW()),
 (244, 1, 'Åland Islands', '', '248', 'AX', 'ALA', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '', 0, 'sv', 'EUR', '358', NOW(), NOW());
 -- -----
-INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `updated_at`, `created_at`) VALUES
 (1, 'USD', '840', 'US Dollars', 1, 2, '$', '', 0, NOW(), NOW()),
 (1, 'EUR', '978', 'Euros', 1.173, 2, '', ' €', 0, NOW(), NOW());
 -- -----
-INSERT INTO `lc_customer_groups` (`id`, `type`, `name`, `description`, `date_updated`, `date_created`)
+INSERT INTO `lc_customer_groups` (`id`, `type`, `name`, `description`, `updated_at`, `created_at`)
 VALUES (NULL, 'retail', 'Default', '', NOW(), NOW());
 -- -----
-INSERT INTO `lc_delivery_statuses` (`id`, `name`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_delivery_statuses` (`id`, `name`, `updated_at`, `created_at`) VALUES
 (1, '{"en": "1-3 days"}', NOW(), NOW()),
 (2, '{"en": "3-5 days"}', NOW(), NOW());
 -- -----
-INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `locale_intl`, `url_type`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `locale_intl`, `url_type`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `updated_at`, `created_at`) VALUES
 (1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english,en-US', 'en_US', 'none', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 -- -----
-INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `settings`, `last_log`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `settings`, `last_log`, `updated_at`, `created_at`) VALUES
 (1, 'job_error_reporter', 'job', 1, 0, '{"status":"1","frequency":"Weekly","email_receipient":"","priority":"0"}', '', NOW(), NOW()),
 (2, 'job_cleaner', 'job', 1, 0, '{"status":"1","priority":"0"}', '', NOW(), NOW()),
 (3, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW()),
 (4, 'job_shipping_tracker', 'job', 1, 0, '{"status":"1","frequency":"Hourly","priority":"0"}', '', NOW(), NOW());
 -- -----
-INSERT INTO `lc_order_statuses` (`id`, `hidden`, `state`, `icon`, `color`, `name`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_order_statuses` (`id`, `hidden`, `state`, `icon`, `color`, `name`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `updated_at`, `created_at`) VALUES
 (1, 0, 'created', 'icon-plus', '#c0c0c0', '{"en": "Created"}', 0, 0, 0, 'none', NOW(), NOW()),
 (2, 0, 'on_hold', 'icon-money', '#c0c0c0', '{"en": "Awaiting payment"}', 0, 0, 0, 'none', NOW(), NOW()),
 (3, 0, 'on_hold', 'icon-pause', '#c0c0c0', '{"en": "On hold"}', 1, 0, 0, 'none', NOW(), NOW()),
@@ -285,7 +285,7 @@ INSERT INTO `lc_order_statuses` (`id`, `hidden`, `state`, `icon`, `color`, `name
 (13, 1, 'cancelled', 'icon-times', '#ff6666', '{"en": "Cancelled"}', 0, 1, 0, 'none', NOW(), NOW()),
 (14, 1, 'cancelled', 'icon-exclamation', '#ff6666', '{"en": "Fraud"}', 0, 1, 0, 'none', NOW(), NOW());
 -- -----
-INSERT INTO `lc_pages` (`id`, `status`, `dock`, `priority`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_pages` (`id`, `status`, `dock`, `priority`, `updated_at`, `created_at`) VALUES
 (1, 1, 'information', 0, NOW(), NOW()),
 (2, 1, 'information', 0, NOW(), NOW()),
 (3, 1, 'information', 0, NOW(), NOW()),
@@ -302,7 +302,7 @@ UPDATE `lc_pages` SET `title` = '{"en": "Terms of Purchase"}', `content` = '{"en
 -- -----
 UPDATE `lc_pages` SET `title` = '{"en": "Delivery Information"}', `content` = '{"en": "<h1>Delivery Information</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer fermentum quam eget molestie lacinia. Suspendisse consectetur velit vitae tellus commodo pharetra. Curabitur lobortis turpis tortor, id blandit metus pellentesque sit amet. Etiam cursus dolor purus, sit amet vestibulum ipsum aliquet nec. Nunc sed aliquet eros. Sed at vehicula urna. Aliquam euismod nisl a felis adipiscing tincidunt. Etiam vestibulum arcu sed massa ornare, vitae venenatis odio convallis.\\n</p>\\n\\n<h2>\\nSubheading 2\\n</h2>\\n\\n<p>\\nAliquam eget suscipit urna. Fusce sed lorem enim. Praesent dictum sagittis tellus, vel imperdiet urna tristique eu. Morbi sed orci eu odio varius tempor consequat ut lectus. Aliquam sagittis sapien vitae nulla porta adipiscing. Nullam pulvinar interdum malesuada. Ut blandit ligula quam, id luctus risus ultrices eget. Donec mattis turpis vel purus hendrerit, id ornare dui viverra. Donec at aliquet purus. Maecenas ut commodo lorem. Vivamus ornare sem eu convallis ullamcorper.\\n</p>\\n\\n<h3>\\nSubheading 3\\n</h3>\\n\\n<p>\\nIn in massa accumsan augue accumsan facilisis non eget dui. Ut volutpat nisl urna, ac dapibus ipsum fermentum iaculis. Donec sed lorem metus. Donec gravida et risus et consectetur. Proin aliquet, ipsum in faucibus condimentum, orci sapien sollicitudin mi, vitae molestie nunc odio vitae libero. Nullam pretium velit in sem sagittis, et facilisis mi fermentum. Aenean varius sed est et tincidunt. Praesent non imperdiet ligula.\\n</p>"}' WHERE `id` = 5;
 -- -----
-INSERT INTO `lc_quantity_units` (`id`, `name`, `decimals`, `priority`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_quantity_units` (`id`, `name`, `decimals`, `priority`, `updated_at`, `created_at`) VALUES
 (1, '{"en": "pcs"}', 0, 0, NOW(), NOW());
 -- -----
 INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES
@@ -318,7 +318,7 @@ INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALU
 ('advanced', 'Advanced', 'Advanced settings', 100),
 ('security', 'Security', 'Store security and protection against threats', 110);
 -- -----
-INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, `function`, `required`, `priority`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, `function`, `required`, `priority`, `updated_at`, `created_at`) VALUES
 ('', 'Platform Database Version', 'The platform version of the database', 'platform_database_version', '', 'text()', 0, 0, NOW(), NOW()),
 ('store_info', 'Store Name', 'The name of your store.', 'store_name', '{STORE_NAME}', 'text()', 1, 10, NOW(), NOW()),
 ('store_info', 'Store Email', 'The store\'s email address.', 'store_email', '{STORE_EMAIL}', 'text()', 1, 11, NOW(), NOW()),
@@ -415,7 +415,7 @@ INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, 
 ('', 'Jobs Last Push', 'Time when background jobs were last pushed for execution.', 'jobs_last_push', NOW(), 'text()', 0, 0, NOW(), NOW()),
 ('', 'Marketplace Access Token', 'The API access token for use with marketplace.', 'marketplace_access_token', '', 'password()', 0, 0, NOW(), NOW());
 -- -----
-INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `name`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `name`, `updated_at`, `created_at`) VALUES
 (1, 0, '{"en": "Sold Out"}', NOW(), NOW()),
 (2, 1, '{"en": "Temporarily Sold Out"}', NOW(), NOW()),
 (3, 1, '{"en": "Backorder Item"}', NOW(), NOW());

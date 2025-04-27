@@ -110,14 +110,14 @@
 					<div class="col-md-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_updated', 'Updated'); ?></div>
-							<div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['date_updated'])); ?></div>
+							<div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['updated_at'])); ?></div>
 						</label>
 					</div>
 
 					<div class="col-md-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_created', 'Created'); ?></div>
-							<div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['date_created'])); ?></div>
+							<div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['created_at'])); ?></div>
 						</label>
 					</div>
 				</div>

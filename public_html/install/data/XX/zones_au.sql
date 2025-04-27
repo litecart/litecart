@@ -1,4 +1,4 @@
-INSERT INTO `lc_zones` (`country_code`, `code`, `name`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_zones` (`country_code`, `code`, `name`, `updated_at`, `created_at`) VALUES
 ('AU', 'ACT', 'Australian Capital Territory', NOW(), NOW()),
 ('AU', 'NSW', 'New South Wales', NOW(), NOW()),
 ('AU', 'NT', 'Northern Territory', NOW(), NOW()),

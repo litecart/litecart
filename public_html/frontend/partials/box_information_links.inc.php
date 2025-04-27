@@ -27,7 +27,7 @@
 		$iterator = function($parent_id) use (&$iterator) {
 
 			return database::query(
-				"select p.id, p.parent_id, p.priority, p.date_updated,
+				"select p.id, p.parent_id, p.priority, p.updated_at,
 					json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
 				from ". DB_TABLE_PREFIX ."pages p
 				where p.status

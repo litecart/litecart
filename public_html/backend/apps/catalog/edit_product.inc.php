@@ -250,15 +250,15 @@
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_date_updated', 'Date Updated'); ?></div>
-										<div><?php echo functions::datetime_when($product->data['date_updated']); ?></div>
+										<div class="form-label"><?php echo language::translate('title_updated_at', 'Updated At'); ?></div>
+										<div><?php echo functions::datetime_when($product->data['updated_at']); ?></div>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_date_created', 'Date Created'); ?></div>
-										<div><?php echo functions::datetime_when($product->data['date_created']); ?></div>
+										<div class="form-label"><?php echo language::translate('title_created_at', 'Created At'); ?></div>
+										<div><?php echo functions::datetime_when($product->data['created_at']); ?></div>
 									</label>
 								</div>
 							</div>

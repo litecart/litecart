@@ -30,8 +30,8 @@
 				'uninstall' => '',
 				'upgrades' => [],
 				'filename' => null,
-				'date_updated' => null,
-				'date_created' => null,
+				'updated_at' => null,
+				'created_at' => null,
 			];
 
 			$this->previous = $this->data;
@@ -63,8 +63,8 @@
 			$this->data['id'] = preg_replace('#\.(xml|disabled)?$#', '', basename($file));
 			$this->data['status'] = !preg_match('#\.disabled$#', $file) ? '1' : '0';
 			$this->data['file'] = $file;
-			$this->data['date_created'] = date('Y-m-d H:i:s', filectime($file));
-			$this->data['date_updated'] = date('Y-m-d H:i:s', filemtime($file));
+			$this->data['created_at'] = date('Y-m-d H:i:s', filectime($file));
+			$this->data['updated_at'] = date('Y-m-d H:i:s', filemtime($file));
 
 			$this->data['name'] = !empty($dom->getElementsByTagName('name')->item(0)) ? $dom->getElementsByTagName('name')->item(0)->textContent : '';
 			$this->data['description'] = !empty($dom->getElementsByTagName('description')->item(0)) ? $dom->getElementsByTagName('description')->item(0)->textContent : '';

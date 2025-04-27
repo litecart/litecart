@@ -63,7 +63,7 @@
 
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."banners
-					(date_created)
+					(created_at)
 					values ('". database::input(date('Y-m-d H:i:s')) ."');"
 				);
 
@@ -81,7 +81,7 @@
 					keywords = '". database::input($this->data['keywords']) ."',
 					date_valid_from = ". (!empty($this->data['date_valid_from']) ? "'". database::input($this->data['date_valid_from']) ."'" : "null") .",
 					date_valid_to = ". (!empty($this->data['date_valid_to']) ? "'". database::input($this->data['date_valid_to']) ."'" : "null") .",
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

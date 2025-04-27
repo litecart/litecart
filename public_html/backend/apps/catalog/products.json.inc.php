@@ -26,7 +26,7 @@
 	}
 
 	$products = database::query(
-		"select p.id, p.code, pp.price, p.date_created,
+		"select p.id, p.code, pp.price, p.created_at,
 			json_value(p.name, '$.". database::input($_GET['language_code']) ."') as name,
 			pso.total_quantity as quantity,
 			oi.total_reserved as reserved
@@ -73,7 +73,7 @@
 			'quantity' => (float)$product['quantity'],
 			'reserved' => (float)$product['reserved'],
 			'num_stock_options' => (float)$product['num_stock_options'],
-			'date_created' => functions::datetime_format('date', $product['date_created']),
+			'created_at' => functions::datetime_format('date', $product['created_at']),
 		];
 	});
 

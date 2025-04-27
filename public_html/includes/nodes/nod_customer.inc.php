@@ -377,7 +377,7 @@
 				'hostname' => isset($event['hostname']) ? $event['hostname'] : gethostbyaddr(isset($event['ip_address']) ? $event['ip_address'] : $_SERVER['REMOTE_ADDR']),
 				'user_agent' => isset($event['user_agent']) ? $event['user_agent'] : $_SERVER['HTTP_USER_AGENT'],
 				'date_expires' => isset($event['date_expires']) ? date('Y-m-d H:i:s', strtotime($event['date_expires'])) : date('Y-m-d H:i:s', strtotime('+3 months')),
-				'date_created' => date('Y-m-d H:i:s'),
+				'created_at' => date('Y-m-d H:i:s'),
 			];
 
 			$event = array_filter($event, function($val){

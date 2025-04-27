@@ -42,7 +42,7 @@
 					'    </image:image>',
 				]) : '',
 
-			 '    <lastmod>'. date('Y-m-d', strtotime($category['date_updated'])) .'</lastmod>',
+			 '    <lastmod>'. date('Y-m-d', strtotime($category['updated_at'])) .'</lastmod>',
 			 '    <changefreq>weekly</changefreq>',
 			 '    <priority>1.0</priority>',
 			 '  </url>',
@@ -55,7 +55,7 @@
 	$category_iterator(0);
 
 	database::query(
-		"select id, image, date_updated from ". DB_TABLE_PREFIX ."products
+		"select id, image, updated_at from ". DB_TABLE_PREFIX ."products
 		where status
 		order by id;"
 	)->each(function($product) use (&$output) {
@@ -81,7 +81,7 @@
 				]);
 			})),
 
-			'    <lastmod>'. date('Y-m-d', strtotime($product['date_updated'])) .'</lastmod>',
+			'    <lastmod>'. date('Y-m-d', strtotime($product['updated_at'])) .'</lastmod>',
 			'    <changefreq>weekly</changefreq>',
 			'    <priority>0.8</priority>',
 			'  </url>',

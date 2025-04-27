@@ -31,7 +31,12 @@
 		];
 
 		$json['subcategories'] = database::query(
-			"select c.id, c.parent_id, json_value(c.name, '$.".database::input(language::$selected['code'])."') as name, c.date_created
+			"select c.id, c.parent_id, c.created_at, coalesce(
+				". implode(', ', array_map(function($language) {
+					return "json_value(c.name, '$.". database::input($language['code']) ."')";
+				}, language::$languages)) .",
+				'(". database::input(language::translate('title_untitled', 'Untitled')) .")'
+			) as name
 			from ". DB_TABLE_PREFIX ."categories c
 			where ". (!empty($_GET['parent_id']) ? "c.parent_id = ". (int)$_GET['parent_id'] : "c.parent_id is null") ."
 			". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
@@ -55,5 +60,5 @@
 
 	ob_clean();
 	header('Content-Type: application/json');
-	echo json_encode($json, JSON_UNESCAPED_SLASHES);
+	echo json_encode($json, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 	exit;

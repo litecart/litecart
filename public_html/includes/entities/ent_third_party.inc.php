@@ -62,6 +62,7 @@
 				'purposes',
 			] as $column) {
 				$this->data[$column] = json_decode($this->data[$column], true) ?: [];
+				$this->data[$column] += array_fill_keys(array_keys(language::$languages), '');
 			}
 
 			$this->data['privacy_classes'] = functions::string_split($this->data['privacy_classes']);
@@ -75,8 +76,8 @@
 
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."third_parties
-					(name, date_created)
-					values ('". database::input($this->data['name']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(name, created_at)
+					values ('". database::input($this->data['name']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();
@@ -96,7 +97,7 @@
 					privacy_policy_url = '". database::input($this->data['privacy_policy_url']) ."',
 					opt_out_url = '". database::input($this->data['opt_out_url']) ."',
 					do_not_sell_url = '". database::input($this->data['opt_out_url']) ."',
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

@@ -324,7 +324,7 @@
 		$sticker = '';
 		if ($product['campaign_price']) {
 			$sticker = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'</div>';
-		} else if ($product['date_created'] > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
+		} else if ($product['created_at'] > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
 			$sticker = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
 		}
 

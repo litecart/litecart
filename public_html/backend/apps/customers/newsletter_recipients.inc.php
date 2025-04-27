@@ -108,7 +108,7 @@
 			where true
 			". ((isset($_GET['subscribed']) && $_GET['subscribed'] != '') ? "and subscribed = ". (int)$_GET['subscribed'] ."" : "") ."
 			". (!empty($_GET['query']) ? "and c.email like '%". database::input($_GET['query']) ."%'" : "") ."
-			order by date_created desc;"
+			order by created_at desc;"
 		)->each(function($recipient) {
 			echo $recipient['email'] . PHP_EOL;
 		});
@@ -122,7 +122,7 @@
 		where true
 		". (!empty($_GET['query']) ? "and email like '%". database::input($_GET['query']) ."%'" : "") ."
 		". ((isset($_GET['subscribed']) && $_GET['subscribed'] != '') ? "and subscribed = ". (int)$_GET['subscribed'] ."" : "") ."
-		order by date_created desc;"
+		order by created_at desc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 	$filter_options = [
 		['', '-- '. language::translate('title_all_recipients', 'All Recipients')],
@@ -161,8 +161,8 @@
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
 					<th><?php echo language::translate('title_ip_address', 'IP Address'); ?></th>
 					<th style="width: 200px;"><?php echo language::translate('title_hostname', 'Hostname'); ?></th>
-					<th class="text-end" style="width: 200px;"><?php echo language::translate('title_date_updated', 'Date Updated'); ?></th>
-					<th class="text-end" style="width: 200px;"><?php echo language::translate('title_date_created', 'Date Created'); ?></th>
+					<th class="text-end" style="width: 200px;"><?php echo language::translate('title_updated_at', 'Updated At'); ?></th>
+					<th class="text-end" style="width: 200px;"><?php echo language::translate('title_created_at', 'Created At'); ?></th>
 				</tr>
 			</thead>
 
@@ -175,8 +175,8 @@
 					<td><?php echo functions::escape_html($recipient['name']); ?></td>
 					<td><?php echo $recipient['ip_address']; ?></td>
 					<td><?php echo $recipient['hostname']; ?></td>
-					<td class="text-end"><?php echo functions::datetime_when($recipient['date_updated']); ?></td>
-					<td class="text-end"><?php echo functions::datetime_when($recipient['date_created']); ?></td>
+					<td class="text-end"><?php echo functions::datetime_when($recipient['updated_at']); ?></td>
+					<td class="text-end"><?php echo functions::datetime_when($recipient['created_at']); ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>

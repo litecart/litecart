@@ -86,8 +86,8 @@
 
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."currencies
-					(code, number, date_created)
-					values ('". database::input($this->data['code']) ."', '". database::input($this->data['number']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(code, number, created_at)
+					values ('". database::input($this->data['code']) ."', '". database::input($this->data['number']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();
@@ -104,7 +104,7 @@
 					suffix = '". database::input($this->data['suffix'], false, false) ."',
 					decimals = ". (int)$this->data['decimals'] .",
 					priority = ". (int)$this->data['priority'] .",
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

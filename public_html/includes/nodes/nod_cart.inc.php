@@ -34,7 +34,7 @@
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."cart_items
-				where date_created < '". date('Y-m-d H:i:s', strtotime('-3 months')) ."';"
+				where created_at < '". date('Y-m-d H:i:s', strtotime('-3 months')) ."';"
 			);
 
 			// Load items
@@ -315,7 +315,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."cart_items
 					set quantity = ". (float)self::$items[$item_key]['quantity'] .",
-						date_updated = '". date('Y-m-d H:i:s') ."'
+						updated_at = '". date('Y-m-d H:i:s') ."'
 					where cart_uid = '". database::input(self::$data['uid']) ."'
 					and `key` = '". database::input($item_key) ."'
 					limit 1;"
@@ -327,7 +327,7 @@
 
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."cart_items
-						(customer_id, cart_uid, `key`, product_id, stock_option_id, userdata, image, quantity, date_updated, date_created)
+						(customer_id, cart_uid, `key`, product_id, stock_option_id, userdata, image, quantity, updated_at, created_at)
 						values (". (customer::$data['id'] ? (int)customer::$data['id'] : "null") .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". ($item['product_id'] ? (int)$item['product_id'] : "null") .", ". ($item['stock_option_id'] ? (int)$item['stock_option_id'] : "null") .", '". database::input(json_encode($item['userdata'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."', '". database::input($item['image']) ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 					);
 

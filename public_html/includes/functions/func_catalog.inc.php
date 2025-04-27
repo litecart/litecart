@@ -7,7 +7,7 @@
 		}
 
 		$query = database::query(
-			"select c.id, c.parent_id, c.image, c.priority, c.date_updated,
+			"select c.id, c.parent_id, c.image, c.priority, c.updated_at,
 				json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name,
 				json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') as short_description
 
@@ -80,7 +80,7 @@
 		}
 
 		$query = (
-			"select c.id, c.parent_id, c.image, c.priority, c.date_updated,
+			"select c.id, c.parent_id, c.image, c.priority, c.updated_at,
 				json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name,
 				json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
 				(". implode(" + ", $sql_select_relevance) .") as relevance
@@ -162,13 +162,13 @@
 				break;
 
 			case 'date':
-				$sql_inner_sort[] = "p.date_created desc";
-				$sql_outer_sort[] = "p.date_created desc";
+				$sql_inner_sort[] = "p.created_at desc";
+				$sql_outer_sort[] = "p.created_at desc";
 				break;
 
 			case 'popularity':
-				$sql_inner_sort[] = "(p.purchases / ceil(datediff(now(), p.date_created)/7)) desc, (p.views / ceil(datediff(now(), p.date_created)/7)) desc";
-				$sql_outer_sort[] = "(p.purchases / ceil(datediff(now(), p.date_created)/7)) desc, (p.views / ceil(datediff(now(), p.date_created)/7)) desc";
+				$sql_inner_sort[] = "(p.purchases / ceil(datediff(now(), p.created_at)/7)) desc, (p.views / ceil(datediff(now(), p.created_at)/7)) desc";
+				$sql_outer_sort[] = "(p.purchases / ceil(datediff(now(), p.created_at)/7)) desc, (p.views / ceil(datediff(now(), p.created_at)/7)) desc";
 				break;
 
 			case 'products':
@@ -215,7 +215,7 @@
 
 			from (
 				select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, p.keywords, p.image,
-					p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.views, p.purchases, p.date_created,
+					p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.views, p.purchases, p.created_at,
 					json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
 					json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') as short_description
 
@@ -435,7 +435,7 @@
 					break;
 
 				case 'date':
-					$sql_order_by = "date_created desc";
+					$sql_order_by = "created_at desc";
 					break;
 
 				case 'rand':
@@ -443,7 +443,7 @@
 					break;
 
 				case 'popularity':
-					$sql_order_by = "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
+					$sql_order_by = "(p.purchases / (datediff(now(), p.created_at)/7)) desc, (p.views / (datediff(now(), p.created_at)/7)) desc";
 					break;
 			}
 		}
@@ -460,7 +460,7 @@
 				select id, delivery_status_id, sold_out_status_id,code,	brand_id,	keywords,	image, recommended_price, tax_class_id,
 					json_value(name, '$.". database::input(language::$selected['code']) ."') as name,
 					json_value(short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
-					quantity_unit_id, views, purchases, date_created, (
+					quantity_unit_id, views, purchases, created_at, (
 						". implode(" + ", $sql_select_relevance) ."
 					) as relevance
 				from ". DB_TABLE_PREFIX ."products p

@@ -77,8 +77,8 @@
 
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."attribute_groups
-					(date_created)
-					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(created_at)
+					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();
@@ -89,7 +89,7 @@
 				set code = '". database::input($this->data['code']) ."',
 					name = '". database::input(json_encode($this->data['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 					sort = '". database::input($this->data['sort']) ."',
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
@@ -127,8 +127,8 @@
 
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."attribute_values
-						(group_id, date_created)
-						values (". (int)$this->data['id'] .", '". ($this->data['values'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
+						(group_id, created_at)
+						values (". (int)$this->data['id'] .", '". ($this->data['values'][$key]['created_at'] = date('Y-m-d H:i:s')) ."');"
 					);
 
 					$value['id'] = $this->data['values'][$key]['id'] = database::insert_id();
@@ -138,7 +138,7 @@
 					"update ". DB_TABLE_PREFIX ."attribute_values
 					set name = '". database::input(json_encode($value['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 						priority = ". (int)$i++ .",
-						date_updated = '". ($this->data['values'][$key]['date_updated'] = date('Y-m-d H:i:s')) ."'
+						updated_at = '". ($this->data['values'][$key]['updated_at'] = date('Y-m-d H:i:s')) ."'
 					where id = ". (int)$value['id'] ."
 					limit 1;"
 				);

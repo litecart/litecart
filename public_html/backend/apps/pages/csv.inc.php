@@ -76,7 +76,7 @@
 
 					if (!empty($row['id'])) {
 						database::query(
-							"insert into ". DB_TABLE_PREFIX ."pages (id, date_created)
+							"insert into ". DB_TABLE_PREFIX ."pages (id, created_at)
 							values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 						);
 						$page = new ent_page($row['id']);

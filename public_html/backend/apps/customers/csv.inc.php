@@ -96,7 +96,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."customer_groups (id, date_created)
+									"insert into ". DB_TABLE_PREFIX ."customer_groups (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$group = new ent_customer_group($row['id']);
@@ -155,7 +155,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."customers (id, date_created)
+									"insert into ". DB_TABLE_PREFIX ."customers (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$customer = new ent_customer($row['id']);
@@ -246,7 +246,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."newsletter_recipients (id, date_created)
+									"insert into ". DB_TABLE_PREFIX ."newsletter_recipients (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$recipient = new ent_newsletter_recipient($row['id']);
@@ -298,7 +298,7 @@
 
 					$csv = database::query(
 						"select * from ". DB_TABLE_PREFIX ."customers_addresses
-						order by date_created asc;"
+						order by created_at asc;"
 					)->export($result)->fetch_all();
 
 					if (!$csv) {
@@ -311,7 +311,7 @@
 
 					$csv = database::query(
 						"select * from ". DB_TABLE_PREFIX ."customers
-						order by date_created asc;"
+						order by created_at asc;"
 					)->export($result)->fetch_all();
 
 					if (!$csv) {
@@ -324,7 +324,7 @@
 
 					$csv = database::query(
 						"select * from ". DB_TABLE_PREFIX ."customer_groups
-						order by date_created asc;"
+						order by created_at asc;"
 					)->export($result)->fetch_all();
 
 					if (!$csv) {
@@ -337,7 +337,7 @@
 
 					$csv = database::query(
 						"select * from ". DB_TABLE_PREFIX ."newsletter_recipients
-						order by date_created asc;"
+						order by created_at asc;"
 					)->export($result)->fetch_all();
 
 					if (!$csv) {

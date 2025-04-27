@@ -1297,8 +1297,8 @@
 
 		$html = implode(PHP_EOL, [
 			'<div data-toggle="category-picker"' . ($parameters ? ' ' . $parameters : '') .'>',
-			'  <div class="form-input" style="overflow-y: auto; min-height: 100px; max-height: 480px;">',
-			'    <ul class="categories list-unstyled">',
+			'  <div class="form-input" style="overflow-y: auto; min-height: 100px; max-height: 480px; margin-bottom: .25em;">',
+			'    <ul class="list-unstyled">',
 		]);
 
 		if (empty($parent_id)) {
@@ -1306,7 +1306,12 @@
 		}
 
 		database::query(
-			"select c.id, json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name
+			"select c.id, coalesce(
+				". implode(', ', array_map(function($language) {
+					return "json_value(c.name, '$.". database::input($language['code']) ."')";
+				}, language::$languages)) .",
+				'(". database::input(language::translate('title_untitled', 'Untitled')) .")'
+			) as name
 			from ". DB_TABLE_PREFIX ."categories c
 			where c.id in ('". implode("', '", database::input($input)) ."');"
 		)->each(function($category) use (&$html, $name) {
@@ -1319,12 +1324,12 @@
 			}
 
 			$html .= implode(PHP_EOL, [
-				'      <li class="list-item">',
-				'        '. form_input_hidden($name, $category['id'], 'data-name="'. functions::escape_attr($category['name']) .'"'),
-				'        <div>',
+				'      <li class="list-item flex">',
+				'        <div style="flex-grow: 1;">',
+				'          '. form_input_hidden($name, $category['id'], 'data-id="'. (int)$category['id'] .'" data-name="'. functions::escape_attr($category['name']) .'"'),
 				'          '. functions::draw_fonticon('folder') .' '. implode(' &gt; ', $path),
 				'        </div>',
-				'        <button class="remove btn btn-default btn-sm float-end" type="button">',
+				'        <button name="remove" class="btn btn-default btn-sm float-end" type="button">',
 				'          '. language::translate('title_remove', 'Remove'),
 				'        </button>',
 				'      </li>',
@@ -1334,6 +1339,7 @@
 		$html .= implode(PHP_EOL, [
 			'    </ul>',
 			'  </div>',
+			'',
 			'  <div class="dropdown">',
 			'  '. form_input_search('', '', 'autocomplete="off" placeholder="'. functions::escape_attr(language::translate('text_search_categories', 'Search categories')) .'&hellip;"'),
 			'    <div class="dropdown-content" style="padding: 1em; inset-inline-end: 0; max-height: 480px; overflow-y: auto;">',

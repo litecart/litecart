@@ -87,8 +87,8 @@
 			if (!$this->data['id']) {
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."customers
-					(email, date_created)
-					values ('". database::input($this->data['email']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(email, created_at)
+					values ('". database::input($this->data['email']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();
@@ -133,7 +133,7 @@
 					password_reset_token = '". database::input($this->data['password_reset_token']) ."',
 					date_blocked_until = ". (!empty($this->data['date_blocked_until']) ? "'". database::input($this->data['date_blocked_until']) ."'" : "null") .",
 					date_expire_sessions = ". (!empty($this->data['date_expire_sessions']) ? "'". database::input($this->data['date_expire_sessions']) ."'" : "null") .",
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
@@ -151,7 +151,7 @@
 			if (!empty($this->data['newsletter'])) {
 				database::query(
 					"insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
-					(email, firstname, lastname, ip_address, hostname, user_agent, date_created)
+					(email, firstname, lastname, ip_address, hostname, user_agent, created_at)
 					values ('". database::input(strtolower($this->data['email'])) ."', '". database::input($this->data['firstname']) ."', '". database::input($this->data['lastname']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."');"
 				);
 			} else if (!empty($this->previous['id'])) {

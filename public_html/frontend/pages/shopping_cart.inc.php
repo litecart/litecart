@@ -52,7 +52,7 @@
 					"select * from ". DB_TABLE_PREFIX ."orders
 					where id = ". (int)$resume_id ."
 					and order_status_id is null
-					and date_created > '". date('Y-m-d H:i:s', strtotime('-15 minutes')) ."'
+					and created_at > '". date('Y-m-d H:i:s', strtotime('-15 minutes')) ."'
 					limit 1;"
 				)->num_rows) {
 					session::$data['checkout']['order'] = new ent_order($resume_id);

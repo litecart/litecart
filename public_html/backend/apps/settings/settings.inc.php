@@ -37,7 +37,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."settings
 					set `value` = '". database::input($value) ."',
-						date_updated = '". date('Y-m-d H:i:s') ."'
+						updated_at = '". date('Y-m-d H:i:s') ."'
 					where `key` = '". database::input($key) ."'
 					limit 1;"
 				);

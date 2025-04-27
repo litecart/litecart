@@ -789,10 +789,36 @@
 		default character set utf8mb4 collate ". database::input($new_collation) .";"
 	);
 
+	// Rename date_updated to updated_at
+	database::query(
+		"select TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS
+		where TABLE_SCHEMA = '". DB_DATABASE ."'
+		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+		and COLUMN_NAME = 'date_updated';"
+	)->each(function($column) {
+		database::query(
+			"alter table `". $column['TABLE_NAME'] ."`
+			change column `date_updated` `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;"
+		);
+	});
+
+	// Rename date_created to created_at
+	database::query(
+		"select TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS
+		where TABLE_SCHEMA = '". DB_DATABASE ."'
+		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+		and COLUMN_NAME = 'date_created';"
+	)->each(function($column) {
+		database::query(
+			"alter table `". $column['TABLE_NAME'] ."`
+			change column `date_created` `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;"
+		);
+	});
+
 	// Set hostname for recent orders
 	database::query(
 		"select ip_address from ". DB_TABLE_PREFIX ."orders
-		order by date_created desc
+		order by created_at desc
 		limit 250;"
 	)->each(function($order) {
 		database::query(
@@ -932,19 +958,6 @@
 		database::query(
 			"alter table `". database::input($column['TABLE_NAME']) ."`
 			change column `". database::input($column['COLUMN_NAME']) ."` `". database::input($column['COLUMN_NAME']) ."` float(10,4) unsigned ". ($column['IS_NULLABLE'] == 'YES' ? "null" : "not null") . " ". ($column['COLUMN_DEFAULT'] ? "default ". $column['COLUMN_DEFAULT'] : "") .";"
-		);
-	});
-
-	// Make sure all date_updated columns have "on update current_timestamp"
-	database::query(
-		"select * from `information_schema`.`COLUMNS`
-		where TABLE_SCHEMA = '". database::input(DB_DATABASE) ."'
-		and COLUMN_NAME = 'date_updated'
-		and EXTRA not like '%on update current_timestamp%';"
-	)->each(function($column) {
-		database::query(
-			"alter table `". database::input($column['TABLE_NAME']) ."`
-			modify column `". database::input($column['COLUMN_NAME']) ."` timestamp not null default current_timestamp on update current_timestamp;"
 		);
 	});
 

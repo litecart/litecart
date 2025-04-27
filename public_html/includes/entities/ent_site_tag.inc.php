@@ -55,8 +55,8 @@
 
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."site_tags
-					(date_created)
-					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(created_at)
+					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();
@@ -70,7 +70,7 @@
 				content = '". database::input($this->data['content'], true) ."',
 				require_consent = ". (!empty($this->data['require_consent']) ? "'". database::input($this->data['require_consent']) ."'" : "null") .",
 				priority = ". (int)$this->data['priority'] .",
-				date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+				updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

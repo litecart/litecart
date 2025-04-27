@@ -71,7 +71,7 @@
 
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."translations
-						(code, text_en, html, date_created)
+						(code, text_en, html, created_at)
 						values ('". database::input($code) ."', '". database::input($translation, true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
 					);
 

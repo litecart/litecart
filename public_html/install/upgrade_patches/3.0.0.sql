@@ -11,8 +11,8 @@ CREATE TABLE `lc_banners` (
 	`total_clicks` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`date_valid_from` TIMESTAMP NULL DEFAULT NULL,
 	`date_valid_to` TIMESTAMP NULL DEFAULT NULL,
-	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
@@ -22,8 +22,8 @@ CREATE TABLE `lc_campaigns` (
 	`name` VARCHAR(32) NOT NULL DEFAULT '',
 	`date_valid_from` TIMESTAMP NULL DEFAULT NULL,
 	`date_valid_to` TIMESTAMP NULL DEFAULT NULL,
-	`date_updated` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	`date_created` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `date_valid_from` (`date_valid_from`) USING BTREE,
 	INDEX `date_valid_to` (`date_valid_to`) USING BTREE,
@@ -45,8 +45,8 @@ CREATE TABLE `lc_customer_groups` (
 	`type` ENUM('retail', 'wholesale') NOT NULL DEFAULT 'retail',
 	`name` VARCHAR(32) NOT NULL DEFAULT '',
 	`description` VARCHAR(248) NOT NULL DEFAULT '',
-	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `lc_customers_activity` (
 	`user_agent` VARCHAR(248) NULL,
 	`fingerprint` VARCHAR(32) NULL,
 	`date_expires` TIMESTAMP NULL DEFAULT NULL,
-	`date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+	`created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `customer_id` (`customer_id`) USING BTREE,
 	INDEX `session_id` (`session_id`) USING BTREE,
@@ -100,8 +100,8 @@ CREATE TABLE `lc_redirects` (
 	`date_redirected` TIMESTAMP NULL,
 	`date_valid_from` TIMESTAMP NULL,
 	`date_valid_to` TIMESTAMP NULL,
-	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `pattern` (`pattern`),
 	KEY `status` (`status`),
@@ -116,8 +116,8 @@ CREATE TABLE `lc_site_tags` (
 	`content` TEXT NOT NULL DEFAULT '',
 	`require_consent` VARCHAR(64) NULL,
 	`priority` TINYINT(4) NOT NULL DEFAULT '0',
-	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
 	INDEX `status` (`status`),
 	INDEX `position` (`position`),
@@ -128,8 +128,8 @@ CREATE TABLE `lc_stock_transactions` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(128) NOT NULL DEFAULT '',
 	`description` MEDIUMTEXT NOT NULL DEFAULT '',
-	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
@@ -330,8 +330,8 @@ CHANGE COLUMN `client_ip` `ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 ADD COLUMN `subscribed` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1' AFTER `id`,
 ADD COLUMN `country_code` CHAR(2) NULL AFTER `email`,
 ADD COLUMN `language_code` CHAR(2) NULL AFTER `country_code`,
-ADD COLUMN `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER `user_agent`,
-CHANGE COLUMN `date_created` `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `date_updated`,
+ADD COLUMN `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER `user_agent`,
+CHANGE COLUMN `date_created` `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `updated_at`,
 ADD INDEX `subscribed` (`subscribed`);
 -- -----
 ALTER TABLE `lc_orders`
@@ -614,8 +614,8 @@ CREATE TABLE `lc_stock_items` (
 	`mime_type` VARCHAR(32) NULL,
 	`downloads` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`priority` INT(11) NOT NULL DEFAULT '0',
-	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `mpn` (`mpn`) USING BTREE,
 	INDEX `gtin` (`gtin`) USING BTREE,
@@ -640,8 +640,8 @@ CREATE TABLE `lc_third_parties` (
 	`opt_out_url` VARCHAR(248) NOT NULL DEFAULT '',
 	`do_not_sell_url` VARCHAR(248) NOT NULL DEFAULT '',
 	`country_code` CHAR(2) NULL DEFAULT NULL,
-	`date_updated` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
-	`date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `status` (`status`) USING BTREE,
 	INDEX `country_code` (`country_code`) USING BTREE
@@ -693,13 +693,13 @@ INSERT IGNORE INTO `lc_banners`
 (`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `date_valid_from`, `date_valid_to`)
 SELECT id, status, name, languages, '', replace(image, 'slides/', 'banners/'), '', 'jumbotron', date_valid_from, date_valid_to FROM `lc_slides`;
 -- -----
-INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `date_valid_from`, `date_valid_to`, `updated_at`, `created_at`) VALUES
 (0, 'Jumbotron', '', '', 'banners/leaderboard.svg', '', 'jumbotron', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (0, 'Left', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Left</div>', '', '', 'left', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (0, 'Middle', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Middle</div>', '', '', 'middle', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (0, 'Right', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: seashell;">Right</div>', '', '', 'right', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
-INSERT INTO `lc_customer_groups` (`id`, `type`, `name`, `description`, `date_updated`, `date_created`)
+INSERT INTO `lc_customer_groups` (`id`, `type`, `name`, `description`, `updated_at`, `created_at`)
 VALUES (NULL, 'retail', 'Default', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_orders_items`
@@ -711,7 +711,7 @@ ORDER BY order_id, priority;
 INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES
 ('social_media', 'Social Media', 'Social media related settings.', 30);
 -- -----
-INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, `function`, `required`, `priority`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, `function`, `required`, `priority`, `date_created`, `date_updated`) VALUES
 ('defaults', 'Default Order Status', 'Default order status for new orders if nothing else is set.', 'default_order_status_id', '1', 'order_status()', 0, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('customer_details', 'Different Shipping Address', 'Allow customers to provide a different address for shipping.', 'customer_shipping_address', '1', 'toggle("y/n")', 0, 24, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('checkout', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id, {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 1, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),

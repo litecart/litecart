@@ -38,7 +38,7 @@
 					<th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
 					<th><?php echo language::translate('title_mpn', 'MPN'); ?></th>
 					<th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-					<th><?php echo language::translate('title_date_created', 'Date Created'); ?></th>
+					<th><?php echo language::translate('title_created_at', 'Created At'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -84,7 +84,7 @@
 						'  <td class="gtin">' + item.gtin + '</td>',
 						'  <td class="mpn">' + item.mpn + '</td>',
 						'  <td class="quantity text-end">' + item.quantity + '</td>',
-						'  <td class="date-created">' + item.date_created + '</td>',
+						'  <td class="date-created">' + item.created_at + '</td>',
 						'</tr>',
 					].join('\n'));
 

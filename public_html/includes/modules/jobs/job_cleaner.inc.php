@@ -24,7 +24,7 @@
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."customers_activity
 				where (date_expires is not null and date_expires < '". date('Y-m-d H:i:s') ."')
-				or (date_expires is null and date_created < '". date('Y-m-d H:i:s', strtotime('-12 months')) ."');"
+				or (date_expires is null and created_at < '". date('Y-m-d H:i:s', strtotime('-12 months')) ."');"
 			);
 
 			// Logs

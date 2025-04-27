@@ -105,8 +105,8 @@
 			if (!$this->data['id']) {
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."categories
-					(parent_id, code, date_created)
-					values (". (!empty($this->data['parent_id']) ? (int)$this->data['parent_id'] : "null") .", '". database::input($this->data['code']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(parent_id, code, created_at)
+					values (". (!empty($this->data['parent_id']) ? (int)$this->data['parent_id'] : "null") .", '". database::input($this->data['code']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 				$this->data['id'] = database::insert_id();
 			}
@@ -135,7 +135,7 @@
 					synonyms = '". database::input(json_encode($this->data['synonyms'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 					keywords = '". database::input($this->data['keywords']) ."',
 					priority = ". (int)$this->data['priority'] .",
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

@@ -25,21 +25,21 @@
 		$stats['total_sales_year'] = database::query(
 			"select sum(total - total_tax) as total_sales_year from ". DB_TABLE_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."')
-			and date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))) ."';"
+			and created_at >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))) ."';"
 		)->fetch('total_sales_year');
 
 		// Total Sales Month
 		$stats['total_sales_month'] = database::query(
 			"select sum(total - total_tax) as total_sales_month from ". DB_TABLE_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."')
-			and date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m'), 1, date('Y'))) ."';"
+			and created_at >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m'), 1, date('Y'))) ."';"
 		)->fetch('total_sales_month');
 
 		// Average order amount
 		$orders = database::query(
 			"select count(id) as num_orders, sum(total - total_tax) as total_sales from ". DB_TABLE_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."')
-			and date_created >= '". date('Y-m-d', strtotime('-6 months')) ."';"
+			and created_at >= '". date('Y-m-d', strtotime('-6 months')) ."';"
 		)->fetch();
 
 		$stats['average_order_amount'] = (!empty($orders['total_sales']) && !empty($orders['num_orders'])) ? ($orders['total_sales'] / $orders['num_orders']) : 0;
@@ -48,8 +48,8 @@
 		$total_orders = database::query(
 			"select count(id) as num_orders from ". DB_TABLE_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."')
-			and date_created >= '". date('Y-m-d', strtotime('-6 months')) ."'
-			group by date_format(date_created, '%Y-%m');"
+			and created_at >= '". date('Y-m-d', strtotime('-6 months')) ."'
+			group by date_format(created_at, '%Y-%m');"
 		)->fetch('num_orders');
 
 		$stats['average_order_count'] = !empty($total_orders) ? round($total_orders / count($orders)) : 0;

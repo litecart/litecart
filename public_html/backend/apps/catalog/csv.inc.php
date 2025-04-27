@@ -405,7 +405,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."categories (id, date_created)
+									"insert into ". DB_TABLE_PREFIX ."categories (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$category = new ent_category($row['id']);
@@ -460,10 +460,10 @@
 
 						$category->save();
 
-						if (!empty($row['date_created'])) {
+						if (!empty($row['created_at'])) {
 							database::query(
 								"update ". DB_TABLE_PREFIX ."categories
-								set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
+								set created_at = '". date('Y-m-d H:i:s', strtotime($row['created_at'])) ."'
 								where id = ". (int)$category->data['id'] ."
 								limit 1;"
 							);
@@ -518,7 +518,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."brands (id, date_created)
+									"insert into ". DB_TABLE_PREFIX ."brands (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$brand = new ent_brand($row['id']);
@@ -563,10 +563,10 @@
 
 						$brand->save();
 
-						if (!empty($row['date_created'])) {
+						if (!empty($row['created_at'])) {
 							database::query(
 								"update ". DB_TABLE_PREFIX ."brands
-								set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
+								set created_at = '". date('Y-m-d H:i:s', strtotime($row['created_at'])) ."'
 								where id = ". (int)$brand->data['id'] ."
 								limit 1;"
 							);
@@ -635,7 +635,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."products (id, date_created)
+									"insert into ". DB_TABLE_PREFIX ."products (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$product = new ent_product($row['id']);
@@ -811,10 +811,10 @@
 
 						$product->save();
 
-						if (!empty($row['date_created'])) {
+						if (!empty($row['created_at'])) {
 							database::query(
 								"update ". DB_TABLE_PREFIX ."products
-								set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
+								set created_at = '". date('Y-m-d H:i:s', strtotime($row['created_at'])) ."'
 								where id = ". (int)$product->data['id'] ."
 								limit 1;"
 							);
@@ -1013,7 +1013,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."stock_items (id, date_created)
+									"insert into ". DB_TABLE_PREFIX ."stock_items (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$stock_item = new ent_stock_item($row['id']);
@@ -1079,10 +1079,10 @@
 
 						$stock_item->save();
 
-						if (!empty($row['date_created'])) {
+						if (!empty($row['created_at'])) {
 							database::query(
 								"update ". DB_TABLE_PREFIX ."stock_items
-								set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
+								set created_at = '". date('Y-m-d H:i:s', strtotime($row['created_at'])) ."'
 								where id = ". (int)$stock_item->data['id'] ."
 								limit 1;"
 							);
@@ -1130,7 +1130,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."suppliers (id, date_created)
+									"insert into ". DB_TABLE_PREFIX ."suppliers (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$supplier = new ent_supplier($row['id']);
@@ -1154,10 +1154,10 @@
 
 						$supplier->save();
 
-						if (!empty($row['date_created'])) {
+						if (!empty($row['created_at'])) {
 							database::query(
 								"update ". DB_TABLE_PREFIX ."suppliers
-								set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
+								set created_at = '". date('Y-m-d H:i:s', strtotime($row['created_at'])) ."'
 								where id = ". (int)$supplier->data['id'] ."
 								limit 1;"
 							);

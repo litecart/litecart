@@ -26,7 +26,7 @@
 					<th><?php echo language::translate('title_price', 'Price'); ?></th>
 					<th><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
 					<th><?php echo language::translate('title_reserved', 'Reserved'); ?></th>
-					<th><?php echo language::translate('title_date_created', 'Date Created'); ?></th>
+					<th><?php echo language::translate('title_created_at', 'Created At'); ?></th>
 				</tr>
 			</thead>
 			<tbody></tbody>
@@ -86,7 +86,7 @@
 						'  <td class="text-end">' + product.price.formatted + '</td>',
 						'  <td class="text-end">' + product.quantity + '</td>',
 						'  <td class="text-end">' + product.reserved + '</td>',
-						'  <td>' + product.date_created + '</td>',
+						'  <td>' + product.created_at + '</td>',
 						'</tr>'
 					].join('\n'));
 

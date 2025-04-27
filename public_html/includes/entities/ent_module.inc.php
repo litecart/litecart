@@ -118,8 +118,8 @@
 
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."modules
-					(module_id, type, date_created)
-					values ('". database::input($this->data['module_id']) ."', '". database::input($this->data['type']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(module_id, type, created_at)
+					values ('". database::input($this->data['module_id']) ."', '". database::input($this->data['type']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();
@@ -150,7 +150,7 @@
 					status = ". (int)$this->data['status'] .",
 					priority = ". (int)$this->data['priority'] .",
 					settings = '". database::input($this->_encode_settings($this->data['settings'])) ."',
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)database::input($this->data['id']) ."
 				limit 1;"
 			);

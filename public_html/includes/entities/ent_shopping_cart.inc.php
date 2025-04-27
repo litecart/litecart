@@ -147,8 +147,8 @@
 			if (!$this->data['id']) {
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."shopping_carts
-					(uid, date_created)
-					values ('". database::input($this->data['uid']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(uid, created_at)
+					values ('". database::input($this->data['uid']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();
@@ -196,7 +196,7 @@
 					subtotal = ". (float)$this->data['subtotal'] .",
 					subtotal_tax = ". (float)$this->data['subtotal_tax'] .",
 					public_key = '". database::input($this->data['public_key']) ."',
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

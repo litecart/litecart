@@ -54,7 +54,7 @@
 
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."customer_groups
-					(date_created)
+					(created_at)
 					values ('". database::input(date('Y-m-d H:i:s')) ."');"
 				);
 
@@ -66,7 +66,7 @@
 				set type = '". database::input($this->data['type']) ."',
 					name = '". database::input($this->data['name']) ."',
 					description = '". database::input($this->data['description']) ."',
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = '". (int)$this->data['id'] ."'
 				limit 1;"
 			);

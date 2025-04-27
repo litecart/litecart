@@ -209,7 +209,7 @@
 			if (!empty($_POST['newsletter'])) {
 				database::query(
 					"insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
-					(email, date_created)
+					(email, created_at)
 					values ('". database::input($_POST['customer']['email']) ."', '". date('Y-m-d H:i:s') ."');"
 				);
 			}

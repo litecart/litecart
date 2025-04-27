@@ -5,7 +5,7 @@
 	}
 
 	if (empty($_GET['sort'])) {
-		$_GET['sort'] = 'date_created';
+		$_GET['sort'] = 'created_at';
 	}
 
 	document::$title[] = language::translate('title_customers', 'Customers');
@@ -93,7 +93,7 @@
 			break;
 
 		default:
-			$sql_sort = "c.date_created desc, c.id desc";
+			$sql_sort = "c.created_at desc, c.id desc";
 			break;
 	}
 
@@ -142,7 +142,7 @@
 					<th data-sort="company"><?php echo language::translate('title_company_name', 'Company Name'); ?></th>
 					<th class="main"><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></th>
 					<th class="text-center" data-sort="group"><?php echo language::translate('title_customer_group', 'Customer Group'); ?></th>
-					<th data-sort="date_created" class="text-end"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
+					<th data-sort="created_at" class="text-end"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
 					<th style="width: 50px;"></th>
 				</tr>
 			</thead>
@@ -158,7 +158,7 @@
 					<td><?php echo $customer['company']; ?></td>
 					<td><?php echo $customer['last_hostname']; ?></td>
 					<td class="text-center"><?php echo $customer['group_name']; ?></td>
-					<td class="text-end"><?php echo functions::datetime_when($customer['date_created']); ?></td>
+					<td class="text-end"><?php echo functions::datetime_when($customer['created_at']); ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>

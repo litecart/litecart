@@ -6,7 +6,7 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$transactions = database::query(
-		"select id, name, date_created
+		"select id, name, created_at
 		from ". DB_TABLE_PREFIX ."stock_transactions t
 		where true
 		". (!empty($_GET['query']) ? "t.name like '%". database::input($_GET['query']) ."%' or t.notes like '%". database::input($_GET['query']) ."%'" : "") ."
@@ -20,9 +20,9 @@
 				or si.gtin like '%". database::input($_GET['query']) ."%'
 			)
 		)" : "") ."
-		". (!empty($_GET['date_from']) ? "and t.date_created >= '". date('Y-m-d H:i:s', strtotime($_GET['date_from'])) ."'" : '') ."
-		". (!empty($_GET['date_to']) ? "and t.date_created <= '". date('Y-m-d H:i:s', strtotime($_GET['date_to'])) ."'" : '') ."
-		order by date_created desc;"
+		". (!empty($_GET['date_from']) ? "and t.created_at >= '". date('Y-m-d H:i:s', strtotime($_GET['date_from'])) ."'" : '') ."
+		". (!empty($_GET['date_to']) ? "and t.created_at <= '". date('Y-m-d H:i:s', strtotime($_GET['date_to'])) ."'" : '') ."
+		order by created_at desc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
@@ -76,7 +76,7 @@
 				<td><?php echo functions::form_checkbox('stock_transactions[]', $transaction['id']); ?></td>
 				<td><?php echo $transaction['id']; ?></td>
 				<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>"><?php echo $transaction['name']; ?></a></td>
-				<td class="text-end"><?php echo functions::datetime_when($transaction['date_created']); ?></td>
+				<td class="text-end"><?php echo functions::datetime_when($transaction['created_at']); ?></td>
 				<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 			</tr>
 			<?php } ?>

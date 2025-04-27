@@ -69,8 +69,8 @@
 			if (!$this->data['id']) {
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."geo_zones
-					(date_created)
-					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(created_at)
+					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();
@@ -81,7 +81,7 @@
 				set code = '". database::input($this->data['code']) ."',
 					name = '". database::input($this->data['name']) ."',
 					description = '". database::input($this->data['description']) ."',
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
@@ -98,8 +98,8 @@
 					if (empty($zone['id'])) {
 						database::query(
 							"insert into ". DB_TABLE_PREFIX ."zones_to_geo_zones
-							(geo_zone_id, country_code, zone_code, city, date_created)
-							values (". (int)$this->data['id'] .", '". database::input($zone['country_code']) ."', '". database::input($zone['zone_code']) ."', '". database::input($zone['city']) ."', '". ($this->data['zones'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
+							(geo_zone_id, country_code, zone_code, city, created_at)
+							values (". (int)$this->data['id'] .", '". database::input($zone['country_code']) ."', '". database::input($zone['zone_code']) ."', '". database::input($zone['city']) ."', '". ($this->data['zones'][$key]['created_at'] = date('Y-m-d H:i:s')) ."');"
 						);
 						$this->data['zones'][$key]['id'] = $zone['id'] = database::insert_id();
 					}
@@ -109,7 +109,7 @@
 						set country_code = '". database::input($zone['country_code']) ."',
 						zone_code = '". database::input($zone['zone_code']) ."',
 						city = '". database::input($zone['city']) ."',
-						date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+						updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 						where geo_zone_id = ". (int)$this->data['id'] ."
 						and id = ". (int)$zone['id'] ."
 						limit 1;"

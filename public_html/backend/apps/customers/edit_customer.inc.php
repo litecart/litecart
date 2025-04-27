@@ -199,7 +199,7 @@
 				". (!empty($fingerprints) ? "or fingerprint in ('". implode("', '", database::input($fingerprints)) ."')" : '') ."
 				". (!empty($session_ids) ? "or session_id in ('". implode("', '", database::input($session_ids)) ."')" : '') ."
 			)
-			order by date_created desc;"
+			order by created_at desc;"
 		)->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 
 	}
@@ -549,7 +549,7 @@
 				<tbody>
 					<?php foreach ($activity as $activity) { ?>
 						<tr>
-							<td><?php echo functions::datetime_when($activity['date_created']); ?></td>
+							<td><?php echo functions::datetime_when($activity['created_at']); ?></td>
 							<td>
 								<?php echo functions::escape_html($activity['description']); ?>
 								<?php echo $activity['data'] ? '<br><tt>'. functions::escape_html($activity['data']) .'</tt>' : ''; ?>

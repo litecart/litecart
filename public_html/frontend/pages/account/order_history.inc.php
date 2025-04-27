@@ -35,7 +35,7 @@
 		where order_status_id is not null
 		and o.customer_id = ". (int)customer::$data['id'] ."
 		and os.hidden != 0
-		order by o.date_created desc;"
+		order by o.created_at desc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 	foreach ($orders as $key => $order) {
@@ -54,7 +54,7 @@
 			'printable_link' => document::ilink('printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]),
 			'order_status' => $order['order_status_name'],
 			'num_downloads' => $num_downloads,
-			'date_created' => functions::datetime_when($order['date_created']),
+			'created_at' => functions::datetime_when($order['created_at']),
 			'total' => currency::format($order['total'], false, $order['currency_code'], $order['currency_value']),
 		];
 	}

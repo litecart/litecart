@@ -88,8 +88,8 @@
 
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."stock_items
-					(sku, mpn, gtin, date_created)
-					values ('". database::input($this->data['sku']) ."', '". database::input($this->data['mpn']) ."', '". database::input($this->data['gtin']) ."', '". ($this->data['date_created'] = date('c')) ."');"
+					(sku, mpn, gtin, created_at)
+					values ('". database::input($this->data['sku']) ."', '". database::input($this->data['mpn']) ."', '". database::input($this->data['gtin']) ."', '". ($this->data['created_at'] = date('c')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();
@@ -134,7 +134,7 @@
 					width = ". (float)$this->data['width'] .",
 					height = ". (float)$this->data['height'] .",
 					length_unit = '". database::input($this->data['length_unit']) ."',
-					date_updated = '". ($this->data['date_updated'] = date('c')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('c')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

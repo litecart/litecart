@@ -38,8 +38,8 @@
 			select id from ". DB_TABLE_PREFIX ."order_statuses
 			where is_sale
 		)
-		and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'
-		and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'
+		and o.created_at >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'
+		and o.created_at <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'
 		". (!empty($_GET['query']) ? "and (
 			oi.product_id = '". database::input($_GET['query']) ."'
 			or oi.name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'

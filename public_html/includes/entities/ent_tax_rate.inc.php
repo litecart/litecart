@@ -56,8 +56,8 @@
 			if (!$this->data['id']) {
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."tax_rates
-					(date_created)
-					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(created_at)
+					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();
@@ -76,7 +76,7 @@
 					rule_companies_without_tax_id = ". (int)$this->data['rule_companies_without_tax_id'] .",
 					rule_individuals_with_tax_id = ". (int)$this->data['rule_individuals_with_tax_id'] .",
 					rule_individuals_without_tax_id = ". (int)$this->data['rule_individuals_without_tax_id'] .",
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

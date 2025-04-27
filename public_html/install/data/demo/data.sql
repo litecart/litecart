@@ -1,8 +1,8 @@
-INSERT INTO `lc_attribute_groups` (`id`, `code`, `name`, `sort`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_attribute_groups` (`id`, `code`, `name`, `sort`, `updated_at`, `created_at`) VALUES
 (1, 'size', '{"en": "Size"}', 'alphabetical', NOW(), NOW()),
 (2, 'color', '{"en": "Color"}', 'priority', NOW(), NOW());
 -- -----
-INSERT INTO `lc_attribute_values` (`id`, `group_id`, `name`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_attribute_values` (`id`, `group_id`, `name`, `updated_at`, `created_at`) VALUES
 (1, 1, '{"en": "Small"}', NOW(), NOW()),
 (2, 1, '{"en": "Medium"}', NOW(), NOW()),
 (3, 1, '{"en": "Large"}', NOW(), NOW()),
@@ -12,16 +12,16 @@ INSERT INTO `lc_attribute_values` (`id`, `group_id`, `name`, `date_updated`, `da
 (7, 2, '{"en": "Blue"}', NOW(), NOW()),
 (8, 2, '{"en": "Purple"}', NOW(), NOW());
 -- -----
-INSERT INTO `lc_brands` (`id`, `status`, `featured`, `code`, `name`, `keywords`, `image`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_brands` (`id`, `status`, `featured`, `code`, `name`, `keywords`, `image`, `updated_at`, `created_at`) VALUES
 (1, 1, 1, 'acme', 'ACME Corp.', '', 'brands/1-acme-corp.png', NOW(), NOW());
 -- -----
-INSERT INTO `lc_campaigns` (`id`, `status`, `name`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_campaigns` (`id`, `status`, `name`, `updated_at`, `created_at`) VALUES
 (1, 1, 'Super Sale', NOW(), NOW());
 -- -----
 INSERT INTO `lc_campaigns_products` (`id`, `product_id`, `price`) VALUES
 (1, 1, '{"USD": 18.00}');
 -- -----
-INSERT INTO `lc_categories` (`id`, `parent_id`, `status`, `code`, `name`, `priority`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_categories` (`id`, `parent_id`, `status`, `code`, `name`, `priority`, `updated_at`, `created_at`) VALUES
 (1, 0, 1, '', '{"en": "Rubber Ducks"}', 0, NOW(), NOW()),
 (2, 1, 1, '', '{"en": "Subcategory"}', 0, NOW(), NOW());
 -- -----
@@ -34,17 +34,17 @@ WHERE `id` = 1;
 INSERT INTO `lc_categories_filters` (`id`, `category_id`, `select_multiple`, `attribute_group_id`, `priority`) VALUES
 (1, 1, 1, 1, 1);
 -- -----
-INSERT INTO `lc_customers` (`id`, `code`, `status`, `email`, `tax_id`, `company`, `firstname`, `lastname`, `address1`, `address2`, `postcode`, `city`, `country_code`, `zone_code`, `phone`, `different_shipping_address`, `shipping_company`, `shipping_firstname`, `shipping_lastname`, `shipping_address1`, `shipping_address2`, `shipping_city`, `shipping_postcode`, `shipping_country_code`, `shipping_zone_code`, `shipping_phone`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_customers` (`id`, `code`, `status`, `email`, `tax_id`, `company`, `firstname`, `lastname`, `address1`, `address2`, `postcode`, `city`, `country_code`, `zone_code`, `phone`, `different_shipping_address`, `shipping_company`, `shipping_firstname`, `shipping_lastname`, `shipping_address1`, `shipping_address2`, `shipping_city`, `shipping_postcode`, `shipping_country_code`, `shipping_zone_code`, `shipping_phone`, `updated_at`, `created_at`) VALUES
 (1, '', 1, 'user@email.com', '0000000000', 'ACME Corp.', 'John', 'Doe', 'Longway Street 1', '', '12345', 'Newtown', 'US', 'CA', '1-555-123-4567', 0, '', '', '', '', '', '', '', '', '', '', NOW(), NOW());
 -- -----
-INSERT INTO `lc_modules` (`module_id`, `type`, `status`, `priority`, `settings`, `last_log`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_modules` (`module_id`, `type`, `status`, `priority`, `settings`, `last_log`, `updated_at`, `created_at`) VALUES
 ('sm_zone_weight', 'shipping', 0, 0, '{"status":"1","icon":"","weight_unit":"kg","geo_zone_id_1":"","weight_rate_table_1":"","geo_zone_id_2":"","weight_rate_table_2":"","geo_zone_id_3":"","weight_rate_table_3":"","weight_rate_table_x":"5:8.95;10:15.95","method":">=","handling_fee":"0.00","tax_class_id":"1","priority":"0"}', '', NOW(), NOW()),
 ('pm_cod', 'payment', 0, 0, '{"status":"1","icon":"","fee":"5.00","tax_class_id":"1","order_status_id":"2","geo_zone_id":"","priority":"0"}', '', NOW(), NOW());
 -- -----
-INSERT INTO `lc_orders` (`id`, `order_status_id`, `customer_id`, `billing_company`, `billing_firstname`, `billing_lastname`, `billing_email`, `billing_phone`, `billing_tax_id`, `billing_address1`, `billing_address2`, `billing_city`, `billing_postcode`, `billing_country_code`, `billing_zone_code`, `shipping_company`, `shipping_firstname`, `shipping_lastname`, `shipping_address1`, `shipping_address2`, `shipping_city`, `shipping_postcode`, `shipping_country_code`, `shipping_zone_code`, `shipping_phone`, `shipping_option_id`, `shipping_option_name`, `shipping_tracking_id`, `payment_option_id`, `payment_option_name`, `payment_transaction_id`, `language_code`, `weight_total`, `weight_unit`, `currency_code`, `currency_value`, `subtotal`, `subtotal_tax`, `total`, `total_tax`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_orders` (`id`, `order_status_id`, `customer_id`, `billing_company`, `billing_firstname`, `billing_lastname`, `billing_email`, `billing_phone`, `billing_tax_id`, `billing_address1`, `billing_address2`, `billing_city`, `billing_postcode`, `billing_country_code`, `billing_zone_code`, `shipping_company`, `shipping_firstname`, `shipping_lastname`, `shipping_address1`, `shipping_address2`, `shipping_city`, `shipping_postcode`, `shipping_country_code`, `shipping_zone_code`, `shipping_phone`, `shipping_option_id`, `shipping_option_name`, `shipping_tracking_id`, `payment_option_id`, `payment_option_name`, `payment_transaction_id`, `language_code`, `weight_total`, `weight_unit`, `currency_code`, `currency_value`, `subtotal`, `subtotal_tax`, `total`, `total_tax`, `updated_at`, `created_at`) VALUES
 (1, 2, 1, 'ACME Corp.', 'John', 'Doe', 'user@email.com', '1-555-123-4567', '', 'Longway Street 1', '', 'Newtown', '12345', 'US', 'CA', 'ACME Corp.', 'John', 'Doe', 'Longway Street 1', '', 'Newtown', '12345', 'US', 'CA', '', 'sm_vendor:parcel', 'Domestic Parcel', '1112223334', 'pm_vendor:card', 'Card Payment', '123456789', 'en', '1.00', 'kg', 'USD', 1, 8, 0, 7.2, 0, NOW(), NOW());
 -- -----
-INSERT INTO `lc_orders_comments` (`id`, `order_id`, `author`, `text`, `hidden`, `date_created`) VALUES
+INSERT INTO `lc_orders_comments` (`id`, `order_id`, `author`, `text`, `hidden`, `created_at`) VALUES
 (1, 1, 'customer', 'This is a message from the customer.', 0, NOW()),
 (2, 1, 'staff', 'This is a message from the store crew.', 0, NOW()),
 (3, 1, 'staff', 'This is a hidden message by the store crew.', 1, NOW()),
@@ -53,7 +53,7 @@ INSERT INTO `lc_orders_comments` (`id`, `order_id`, `author`, `text`, `hidden`, 
 INSERT INTO `lc_orders_items` (`id`, `order_id`, `product_id`, `stock_option_id`, `userdata`, `name`, `sku`, `gtin`, `quantity`, `price`, `tax`, `weight`, `weight_unit`) VALUES
 (1, 1, 1, 1, '', 'Yellow Duck', 'RD001-S', '4006381333931', 1, 8.00, 0, 1.00, 'kg');
 -- -----
-INSERT INTO `lc_products` (`id`, `status`, `brand_id`, `supplier_id`, `delivery_status_id`, `sold_out_status_id`, `default_category_id`, `code`, `name`, `quantity_unit_id`, `tax_class_id`, `image`, `views`, `purchases`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_products` (`id`, `status`, `brand_id`, `supplier_id`, `delivery_status_id`, `sold_out_status_id`, `default_category_id`, `code`, `name`, `quantity_unit_id`, `tax_class_id`, `image`, `views`, `purchases`, `date_valid_from`, `date_valid_to`, `updated_at`, `created_at`) VALUES
 (1, 1, 1, 0, 1, 2, 2, 'rd001', '{"en": "Yellow Duck"}', 1, 1, 'products/1-yellow-duck-1.jpg', 0, 0, NULL, NULL, NOW(), NOW()),
 (2, 1, 1, 0, 1, 2, 2, 'rd002', '{"en": "Green Duck"}', 1, 1, 'products/2-green-duck-1.jpg', 0, 0, NULL, NULL, NOW(), NOW()),
 (3, 1, 1, 0, 1, 2, 1, 'rd003', '{"en": "Red Duck"}', 1, 1, 'products/3-red-duck-1.jpg', 0, 0, NULL, NULL, NOW(), NOW()),
@@ -107,7 +107,7 @@ INSERT INTO `lc_products_prices` (`id`, `product_id`, `price`) VALUES
 (4, 4, '{"USD": 20.00}'),
 (5, 5, '{"USD": 20.00}');
 -- -----
-INSERT INTO `lc_stock_items` (`id`, `brand_id`, `sku`, `gtin`, `name`, `image`, `weight`, `weight_unit`, `length`, `width`, `height`, `length_unit`, `quantity`, `backordered`, `priority`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_stock_items` (`id`, `brand_id`, `sku`, `gtin`, `name`, `image`, `weight`, `weight_unit`, `length`, `width`, `height`, `length_unit`, `quantity`, `backordered`, `priority`, `updated_at`, `created_at`) VALUES
 (1, 1, 'RD001-S', '4006381333931', '{"en": "Yellow Duck (Small)"}', 'stock_items/1-yellow-duck-1.webp', 1.0000, 'kg', 10.0000, 10.0000, 10.0000, 'cm', 50.0000, 0.0000, 1, NOW(), NOW()),
 (2, 1, 'RD001-M', '4006381333932', '{"en": "Yellow Duck (Medium)"}', 'stock_items/2-yellow-duck-1.webp', 1.0000, 'kg', 12.0000, 12.0000, 12.0000, 'cm', 50.0000, 0.0000, 2, NOW(), NOW()),
 (3, 1, 'RD001-L', '4006381333933', '{"en": "Yellow Duck (Large)"}', 'stock_items/3-yellow-duck-1.webp', 1.0000, 'kg', 15.0000, 15.0000, 15.0000, 'cm', 0.0000, 50.0000, 3, NOW(), NOW());

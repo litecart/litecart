@@ -17,7 +17,7 @@
 	}
 
 	$date_first_order = database::query(
-		"select min(date_created) as min_date
+		"select min(created_at) as min_date
 		from ". DB_TABLE_PREFIX ."orders
 		limit 1;"
 	)->fetch(function($result){
@@ -51,8 +51,8 @@
 			select id from ". DB_TABLE_PREFIX ."order_statuses
 			where is_sale
 		)
-		". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : '') ."
-		". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : '') ."
+		". (!empty($_GET['date_from']) ? "and o.created_at >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : '') ."
+		". (!empty($_GET['date_to']) ? "and o.created_at <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : '') ."
 		group by if(o.customer_id, o.customer_id, o.customer_email)
 		order by total_amount desc;"
 	);

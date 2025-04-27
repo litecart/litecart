@@ -76,8 +76,8 @@
 			if (!$this->data['id']) {
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."emails
-					(status, code, ip_address, hostname, user_agent, date_created) values
-					('". database::input($this->data['status']) ."', '". database::input($this->data['code']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(status, code, ip_address, hostname, user_agent, created_at) values
+					('". database::input($this->data['status']) ."', '". database::input($this->data['code']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();
@@ -97,7 +97,7 @@
 					language_code = '". database::input($this->data['language_code']) ."',
 					date_scheduled = ". (!empty($this->data['date_scheduled']) ? "'". database::input($this->data['date_scheduled']) ."'" : "null") .",
 					date_sent = ". (!empty($this->data['date_sent']) ? "'". database::input($this->data['date_sent']) ."'" : "null") .",
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] .";"
 			);
 
@@ -290,7 +290,7 @@
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."emails
 				where status in ('sent', 'error')
-				and date_updated < '". date('Y-m-d H:i:s', strtotime($time_ago)) ."';"
+				and updated_at < '". date('Y-m-d H:i:s', strtotime($time_ago)) ."';"
 			);
 
 			cache::clear_cache('email');

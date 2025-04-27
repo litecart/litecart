@@ -207,8 +207,8 @@
 
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."orders
-					(date_created)
-					values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+					(created_at)
+					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();
@@ -284,7 +284,7 @@
 					public_key = '". database::input($this->data['public_key']) ."',
 					date_paid = ". (!empty($this->data['date_paid']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['date_paid'])) ."'" : "null") .",
 					date_dispatched = ". (!empty($this->data['date_dispatched']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['date_dispatched'])) ."'" : "null") .",
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
@@ -419,8 +419,8 @@
 					if (empty($comment['id'])) {
 						database::query(
 							"insert into ". DB_TABLE_PREFIX ."orders_comments
-							(order_id, date_created)
-							values (". (int)$this->data['id'] .", '". ($this->data['comments'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
+							(order_id, created_at)
+							values (". (int)$this->data['id'] .", '". ($this->data['comments'][$key]['created_at'] = date('Y-m-d H:i:s')) ."');"
 						);
 
 						$comment['id'] = $this->data['comments'][$key]['id'] = database::insert_id();
@@ -448,7 +448,7 @@
 
 					$message = language::translate('text_new_comments_added_to_your_order', 'New comments added to your order', $this->data['language_code']) . ":\r\n\r\n";
 					foreach ($notify_comments as $comment) {
-						$message .= functions::datetime_format('datetime', $comment['date_created']) ." – ". trim($comment['text']) . "\r\n\r\n";
+						$message .= functions::datetime_format('datetime', $comment['created_at']) ." – ". trim($comment['text']) . "\r\n\r\n";
 					}
 
 					$email = new ent_email();

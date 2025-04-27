@@ -580,7 +580,7 @@
 
 			// Workaround for early MySQL versions (<5.6.5) not supporting multiple DEFAULT CURRENT_TIMESTAMP
 			if (version_compare($database_software['version'], '5.6.5', '<')) {
-				str_replace('`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,', '`date_updated` TIMESTAMP NOT NULL DEFAULT NOW(),', $sql);
+				str_replace('`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,', '`updated_at` TIMESTAMP NOT NULL DEFAULT NOW(),', $sql);
 			}
 
 			// Execute SQL statement
@@ -643,7 +643,7 @@
 
 		database::query(
 			"insert into ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_administrators`') ."
-			(`id`, `status`, `username`, `password_hash`, `known_ips`, `date_updated`, `date_created`)
+			(`id`, `status`, `username`, `password_hash`, `known_ips`, `updated_at`, `created_at`)
 			values ('1', '1', '". database::input($_REQUEST['username']) ."', '". database::input(password_hash($_REQUEST['password'], PASSWORD_DEFAULT)) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 		);
 
@@ -809,7 +809,7 @@
 		foreach ($translations as $code => $translation) {
 			database::query(
 				"insert ignore into ". DB_TABLE_PREFIX ."translations
-				(code, text_en, html, date_created)
+				(code, text_en, html, created_at)
 				values ('". database::input($code) ."', '". database::input($translation, true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
 			);
 		}

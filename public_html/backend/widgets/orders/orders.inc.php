@@ -7,7 +7,7 @@
 		left join ". DB_TABLE_PREFIX ."order_statuses os on (os.id = o.order_status_id)
 		where o.order_status_id
 		and os.is_archived = 0
-		order by o.date_created desc, o.id desc
+		order by o.created_at desc, o.id desc
 		limit 10;"
 	)->fetch_all(function(&$order) {
 
@@ -64,7 +64,7 @@
 				<td><?php echo $order['payment_option_name']; ?></td>
 				<td><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
 				<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
-				<td class="text-end"><?php echo functions::datetime_when($order['date_created']); ?></td>
+				<td class="text-end"><?php echo functions::datetime_when($order['created_at']); ?></td>
 				<td class="text-end">
 				<td>
 					<div class="dropdown dropdown-end">

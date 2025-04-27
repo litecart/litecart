@@ -17,7 +17,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."settings
 					set `value` = '". database::input($_POST['template']) ."',
-						date_updated = '". date('Y-m-d H:i:s') ."'
+						updated_at = '". date('Y-m-d H:i:s') ."'
 					where `key` = '". database::input('template') ."'
 					limit 1;"
 				);
@@ -34,7 +34,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."settings
 					set `value` = '". database::input(json_encode($settings, JSON_UNESCAPED_SLASHES)) ."',
-						date_updated = '". date('Y-m-d H:i:s') ."'
+						updated_at = '". date('Y-m-d H:i:s') ."'
 					where `key` = '". database::input('template_settings') ."'
 					limit 1;"
 				);

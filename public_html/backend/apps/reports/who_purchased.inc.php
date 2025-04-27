@@ -12,10 +12,10 @@
 	}
 
 	$date_first_order = database::query(
-		"select min(date_created)
+		"select min(created_at)
 		from ". DB_TABLE_PREFIX ."orders
 		limit 1;"
-	)->fetch('min(date_created)');
+	)->fetch('min(created_at)');
 
 	if ($_GET['date_from'] < $date_first_order) {
 		$_GET['date_from'] = $date_first_order;
@@ -37,7 +37,7 @@
 	$result = database::query(
 		"select
 			oi.product_id, oi.quantity, oi.sku, oi.name,
-			o.id as order_id, o.date_created as order_date_created,
+			o.id as order_id, o.created_at as order_created_at,
 			if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) as customer_name, o.customer_country_code, o.customer_email
 		from ". DB_TABLE_PREFIX ."orders_items oi
 		left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
@@ -45,10 +45,10 @@
 			select id from ". DB_TABLE_PREFIX ."order_statuses where is_sale
 		)
 		". (!empty($_GET['query']) ? "and (oi.product_id = '". database::input($_GET['query']) ."' or oi.sku like '". database::input($_GET['query']) ."' or oi.name like '%". addcslashes(database::input($_GET['query']), '%_') ."%')" : null) ."
-		and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', $timestamp_from), date('d', $timestamp_from), date('Y', $timestamp_from))) ."'
-		and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', $timestamp_to), date('d', $timestamp_to), date('Y', $timestamp_to))) ."'
+		and o.created_at >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', $timestamp_from), date('d', $timestamp_from), date('Y', $timestamp_from))) ."'
+		and o.created_at <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', $timestamp_to), date('d', $timestamp_to), date('Y', $timestamp_to))) ."'
 		having quantity > 0
-		order by oi.name asc, o.date_created desc, customer_name asc;"
+		order by oi.name asc, o.created_at desc, customer_name asc;"
 	);
 
 	if (isset($_GET['download'])) {
@@ -122,7 +122,7 @@
 				<td><?php echo reference::country($row['customer_country_code'])->name; ?></td>
 				<td><?php echo $row['customer_email']; ?></td>
 				<td class="text-center"><?php echo (float)$row['quantity']; ?></td>
-				<td><?php echo $row['order_date_created']; ?></td>
+				<td><?php echo $row['order_created_at']; ?></td>
 			</tr>
 			<?php } ?>
 		</tbody>
