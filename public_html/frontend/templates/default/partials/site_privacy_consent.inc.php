@@ -35,7 +35,7 @@
 									<?php echo functions::form_draw_hidden_field('consents['. $class['id'] .'][]', 'all'); ?>
 									<?php echo functions::form_draw_checkbox('consents['. $class['id'] .'][]', 'all', 'all', 'disabled'); ?>
 									<?php } else { ?>
-									<?php echo $draw_checkbox($class['id'], 'all'); ?>
+									<?php echo $draw_checkbox($class['id'], 'all', 'all'); ?>
 									<?php } ?>
 								</div>
 

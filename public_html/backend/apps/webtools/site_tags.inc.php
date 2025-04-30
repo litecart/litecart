@@ -55,7 +55,7 @@
 					<th><?php echo functions::draw_fonticon('icon-square-check fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_consent', 'Consent'); ?></th>
+					<th><?php echo language::translate('title_require_consent', 'Require Consent'); ?></th>
 					<th><?php echo language::translate('title_position', 'Position'); ?></th>
 					<th><?php echo language::translate('title_priority', 'Priority'); ?></th>
 					<th></th>

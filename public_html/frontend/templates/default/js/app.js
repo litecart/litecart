@@ -239,14 +239,14 @@ waitFor('jQuery', ($) => {
 				}
 			});
 
-			$('script[type="application/privacy-script"]').each(function() {
+			$('script[type="application/x-privacy-script"]').each(function() {
 				if (hasPrivacyConsent($(this).data('privacy-class'), $(this).data('third-party-id'))) {
 					$newElement = $('<script>').attr('src', $(this).attr('src')).html($(this).prop('innerHTML'));
 					$(this).replaceWith($newElement);
 				}
 			});
 
-			$('script[type="application/privacy-content"]').each(function() {
+			$('script[type="application/x-privacy-content"]').each(function() {
 				if (hasPrivacyConsent($(this).data('privacy-class'), $(this).data('third-party-id'))) {
 					$(this).replaceWith($(this).prop('innerHTML'));
 				}

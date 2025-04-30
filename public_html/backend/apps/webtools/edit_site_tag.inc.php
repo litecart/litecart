@@ -75,9 +75,9 @@
 		'necessary' => language::translate('title_necessary', 'Necessary'),
 		'functionality' => language::translate('title_functionality', 'Functionality'),
 		'personalization' => language::translate('title_personalization', 'Personalization'),
+		'security' => language::translate('title_security', 'Security'),
 		'measurement' => language::translate('title_measurement', 'Measurement'),
 		'marketing' => language::translate('title_marketing', 'Marketing'),
-		'security' => language::translate('title_security', 'Security'),
 	];
 
 	$position_options = [

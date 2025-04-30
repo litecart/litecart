@@ -77,9 +77,9 @@
 		'necessary' => language::translate('title_necessary', 'Necessary'),
 		'functionality' => language::translate('title_functionality', 'Functionality'),
 		'personalization' => language::translate('title_personalization', 'Personalization'),
+		'security' => language::translate('title_security', 'Security'),
 		'measurement' => language::translate('title_measurement', 'Measurement'),
 		'marketing' => language::translate('title_marketing', 'Marketing'),
-		'security' => language::translate('title_security', 'Security'),
 	];
 ?>
 <style>
@@ -196,7 +196,7 @@
 		<?php if (!empty($third_party->data['id'])) { ?>
 		<div class="form-code" style="min-height: unset;">
 		<?php echo functions::escape_html(implode(PHP_EOL, [
-			'<script type="application/privacy-script" data-privacy-class="..." data-third-party-id="'. $third_party->data['id'] .'">',
+			'<script type="application/x-privacy-script" data-privacy-class="..." data-third-party-id="'. $third_party->data['id'] .'">',
 			'  ...',
 			'</script>',
 		])); ?>
@@ -204,7 +204,7 @@
 
 		<div class="form-code" style="min-height: unset;">
 		<?php echo functions::escape_html(implode(PHP_EOL, [
-			'<script type="application/privacy-content" data-privacy-class="functional|experience|measuring|marketing" data-third-party-id="'. $third_party->data['id'] .'">',
+			'<script type="application/x-privacy-content" data-privacy-class="functional|personalization|security|measurement|marketing" data-third-party-id="'. $third_party->data['id'] .'">',
 			'<![CDATA[',
 			'  <iframe>...</iframe>',
 			']]>',
@@ -214,7 +214,7 @@
 
 		<div class="form-code" style="min-height: unset;">
 		<?php echo functions::escape_html(implode(PHP_EOL, [
-			'<div class="require-consent" data-privacy-class="functional|experience|measuring|marketing" data-third-party-id="'. $third_party->data['id'] .'" data-content="&lt;iframe src=&quot;...&quot;&gt;&lt;/iframe&gt;"></div>',
+			'<div class="require-consent" data-privacy-class="functional|personalization|security|measurement|marketing" data-third-party-id="'. $third_party->data['id'] .'" data-content="&lt;iframe src=&quot;...&quot;&gt;&lt;/iframe&gt;"></div>',
 		])); ?>
 		</div>
 		<?php } ?>

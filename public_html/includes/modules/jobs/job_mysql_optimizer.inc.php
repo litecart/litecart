@@ -25,7 +25,7 @@
 				where table_schema = '". DB_DATABASE ."'
 				and table_name like '". DB_TABLE_PREFIX ."%';"
 			)->each(function($row){
-				echo '  ' . $row['table_name'] . PHP_EOL;
+				echo '  - ' . $row['table_name'] . PHP_EOL;
 				database::query("optimize table ". $row['table_name'] .";");
 			});
 

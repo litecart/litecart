@@ -72,7 +72,7 @@
 
 			// Wait For (Mini version)
 			self::add_head_tags(implode(PHP_EOL, [
-				'<script>window.waitFor=window.waitFor||((i,o)=>{void 0!==window.i?o(window.i):setTimeout((()=>waitFor(i,o)),50)});</script>',
+				'<script>window.waitFor=window.waitFor||((i,o)=>{void 0!==window[i]?o(window[i]):setTimeout((()=>waitFor(i,o)),50)});</script>',
 			]), 'waitFor');
 
 			// Load jQuery
