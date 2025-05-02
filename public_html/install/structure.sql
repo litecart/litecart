@@ -667,9 +667,10 @@ CREATE TABLE `lc_products_prices` (
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- -----
 CREATE TABLE `lc_products_to_categories` (
-   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-   `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-   PRIMARY KEY(`product_id`, `category_id`)
+  `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY(`product_id`, `category_id`),
+  KEY `category_id` (`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- -----
 CREATE TABLE `lc_quantity_units` (
