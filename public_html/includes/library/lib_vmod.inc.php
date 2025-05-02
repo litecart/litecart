@@ -368,14 +368,13 @@
 
                 if (version_compare($upgrade['version'], $installed_version, '<=')) continue;
 
-              // Exceute upgrade in an isolated scope
                 $tmp_file = stream_get_meta_data(tmpfile())['uri'];
                 file_put_contents($tmp_file, "<?php" . PHP_EOL . $upgrade['script']);
 
-              // Exceute upgrade in an isolated scope
-                (function() {
+              // Exceute install in an isolated scope
+                call_user_func(function() {
                   include func_get_arg(0);
-                })($tmp_file);
+                }, $tmp_file);
 
                 self::$_installed[$vmod['id']] = $upgrade['version'];
               }
@@ -409,9 +408,10 @@
             $tmp_file = stream_get_meta_data(tmpfile())['uri'];
             file_put_contents($tmp_file, "<?php\r\n" . $dom->getElementsByTagName('install')->item(0)->textContent);
 
-            (function() {
+          // Exceute install in an isolated scope
+            call_user_func(function() {
               include func_get_arg(0);
-            })($tmp_file);
+            }, $tmp_file);
 
             header('Location: '. $_SERVER['REQUEST_URI']);
             exit;
