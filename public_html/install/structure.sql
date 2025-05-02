@@ -573,7 +573,9 @@ CREATE TABLE `lc_products_campaigns` (
   `USD` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
   `EUR` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`)
+  KEY `product_id` (`product_id`),
+  KEY `start_date` (`start_date`),
+  KEY `end_date` (`end_date`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- -----
 CREATE TABLE `lc_products_images` (
