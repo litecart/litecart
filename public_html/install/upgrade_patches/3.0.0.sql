@@ -11,7 +11,7 @@ CREATE TABLE `lc_banners` (
 	`total_clicks` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`date_valid_from` TIMESTAMP NULL DEFAULT NULL,
 	`date_valid_to` TIMESTAMP NULL DEFAULT NULL,
-	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -541,7 +541,9 @@ CHANGE COLUMN `dim_x` `length` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_y` `width` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_z` `height` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
-ADD COLUMN `stock_item_id` INT(10) UNSIGNED NOT NULL AFTER `product_id`,
+ADD COLUMN `stock_item_id` INT(10) UNSIGNED NULL AFTER `product_id`,
+ADD COLUMN `price_modifier` ENUM('+','%','*','=') NOT NULL DEFAULT '+' AFTER `length_unit`,
+ADD COLUMN `price_adjustment` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0' AFTER `price_modifier`,
 ADD UNIQUE KEY `product_stock_option` (`product_id`, `attributes`),
 ADD INDEX `sku` (`sku`);
 -- -----

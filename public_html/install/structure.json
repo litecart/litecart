@@ -1122,7 +1122,7 @@
 				"stock_item_id": { "type": "INT", "length": 10, "unsigned": true },
 				"price_modifier": { "type": "ENUM('+','%','*','=')", "default": "'+'" },
 				"price_adjustment": { "type": "VARCHAR(512)", "default": "'+'" },
-				"priority": { "type": "INT", "length": 11, "default": 0.0000 }
+				"priority": { "type": "INT", "length": 11, "default": 0 }
 			},
 			"primary_key": ["id"],
 			"unique_keys": {
@@ -1300,6 +1300,7 @@
 				"brand_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"supplier_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"name": { "type": "TEXT", "default": "'{}'" },
+				"attributes": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"sku": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"mpn": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"gtin": { "type": "VARCHAR", "length": 32, "default": "''" },

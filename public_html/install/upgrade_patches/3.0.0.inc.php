@@ -937,6 +937,159 @@
 		);
 	}
 
+	// Migrate products_customizations price adjustments that are bound to a stock option
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."products_stock_options
+		where attributes != '';"
+	)->each(function($stock_option) {
+
+		$attributes = functions::string_split($stock_option['attributes'], ',');
+		$attributes = array_map(function($attribute) {
+			return explode('-', $attribute);
+		}, $attributes);
+
+		foreach ($attributes as $attribute) {
+			list($group_id, $value_id) = $attribute;
+
+			database::query(
+				"select * from ". DB_TABLE_PREFIX ."products_customizations_values
+				where product_id = ". (int)$stock_option['product_id'] ."
+				and group_id = ". (int)$group_id ."
+				and value_id = ". (int)$value_id ."
+				limit 1;"
+			)->fetch(function($customization_value) use ($stock_option, $price_modifier, $price_adjustment) {
+				database::query(
+					"update ". DB_TABLE_PREFIX ."products_products_stock_options
+					set price_modifier = '". database::input($customization_value['price_modifier']) ."'
+						price_adjustment = '". database::input($customization_value['price_adjustment']) ."'
+					where id = ". (int)$stock_option['id'] ."
+					limit 1;"
+				);
+			});
+
+			// Remove customization value now as we migrated it to the stock option
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."products_customizations_values
+				where product_id = ". (int)$stock_option['product_id'] ."
+				and group_id = ". (int)$group_id ."
+				and value_id = ". (int)$value_id .";"
+			);
+
+			// Delete orpan customization groups
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."products_customizations
+				where product_id = ". (int)$stock_option['product_id'] ."
+				and group_id not in (
+					select id from ". DB_TABLE_PREFIX ."products_customizations_values
+					where product_id = ". (int)$stock_option['product_id'] ."
+					and group_id = ". (int)$group_id ."
+				);"
+			);
+		}
+	});
+
+	// Create stock options from products having quantities but no stock options
+	database::query(
+		"select id, sku, weight, weight_unit, length, width, height, length_unit, quantity
+		from ". DB_TABLE_PREFIX ."products
+		where id not in (
+			select product_id from ". DB_TABLE_PREFIX ."products_stock_options
+		)
+		where quantity != 0;"
+	)->each(function($product) {
+
+		database::query(
+			"insert into ". DB_TABLE_PREFIX ."products_stock_options
+			(product_id, sku, weight, weight_unit, length, width, height, length_unit, quantity)
+			values (
+				". (int)$product['id'] .",
+				'". database::input($product['sku']) ."',
+				". (float)$product['weight'] .",
+				". (int)$product['weight_unit'] .",
+				". (float)$product['length'] .",
+				". (float)$product['width'] .",
+				". (float)$product['height'] .",
+				". (int)$product['length_unit'] .",
+				". (int)$product['quantity'] ."
+			);"
+		);
+
+		database::query(
+			"update ". DB_TABLE_PREFIX ."orders_items
+			set stock_item_id = ". database::insert_id() ."
+			where product_id = ". (int)$stock_option['id'] ."
+			and stock_item_id is null;"
+		);
+	});
+
+	// Migrate stock options to stock items
+	database::query(
+		"select pso.id, pso.product_id, p.brand_id, p.supplier_id, p.name, pso.attributes, pso.sku, p.gtin, p.mpn, p.taric, pso.weight, pso.weight_unit, pso.length, pso.width, pso.height, pso.length_unit, pso.quantity, p.quantity_unit_id, p.purchase_price, p.purchase_price_currency_code, pso.updated_at, pso.created_at
+		from ". DB_TABLE_PREFIX ."products_stock_options pso
+		left join ". DB_TABLE_PREFIX ."products p on (p.id = pso.product_id);"
+	)->each(function($stock_option) {
+
+		database::query(
+			"insert into ". DB_TABLE_PREFIX ."stock_items
+			(sku, brand_id, supplier_id, weight, weight_unit, length, width, height, length_unit, quantity, quantity_unit_id, purchase_price, purchase_price_currency_code, updated_at, created_at)
+			values (
+				". ($stock_option['brand_id'] ? (int)$stock_option['brand_id'] : "null") .",
+				". ($stock_option['supplier_id'] ? (int)$stock_option['supplier_id'] : "null") .",
+				'". database::input($stock_option['name']) ."',
+				'". database::input($stock_option['attributes']) ."',
+				'". database::input($stock_option['sku']) ."',
+				'". database::input($stock_option['gtin']) ."',
+				'". database::input($stock_option['mpn']) ."',
+				'". database::input($stock_option['taric']) ."',
+				". (float)$stock_option['weight'] .",
+				". (int)$stock_option['weight_unit'] .",
+				". (float)$stock_option['length'] .",
+				". (float)$stock_option['width'] .",
+				". (float)$stock_option['height'] .",
+				". (int)$stock_option['length_unit'] .",
+				". (int)$stock_option['quantity'] .",
+				". (int)$stock_option['quantity_unit_id'] .",
+				1
+			);"
+		);
+
+		$stock_item_id = database::insert_id();
+
+		database::query(
+			"update ". DB_TABLE_PREFIX ."products_stock_options
+			set stock_item_id = ". (int)$stock_item_id ."
+			where id = ". (int)$stock_option['id'] ."
+			limit 1;"
+		);
+
+		database::query(
+			"update ". DB_TABLE_PREFIX ."orders_items
+			set stock_item_id = ". (int)$stock_item_id ."
+			where product_id = ". (int)$stock_option['product_id'] ."
+			and (
+				sku = '". database::input($stock_option['sku']) ."'
+				or attributes = '". database::input($stock_option['attributes']) ."'
+			);"
+		);
+	});
+
+	// Drop deprecated columns from products_stock_options
+	database::query(
+		"alter table ". DB_TABLE_PREFIX ."products_stock_options
+		drop column `attributes`,
+		drop column `sku`,
+		drop column `gtin`,
+		drop column `mpn`,
+		drop column `taric`,
+		drop column `weight`,
+		drop column `weight_unit`,
+		drop column `length`,
+		drop column `width`,
+		drop column `height`,
+		drop column `length_unit`,
+		drop column `quantity`;"
+	);
+
 	// Make all 11 digit unsigned integers standard int(10) unsigned
 	database::query(
 		"select * from `information_schema`.`COLUMNS`
