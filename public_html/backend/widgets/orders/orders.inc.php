@@ -59,8 +59,8 @@
 			<tr class="<?php echo implode(' ', $order['classes']); ?>">
 				<td><?php echo functions::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
 				<td class="text-center"><?php echo $order['no']; ?></td>
-				<td><a class="link" href="<?php echo document::href_ilink('orders/edit_order', ['order_id' => $order['id']]); ?>"><?php echo $order['customer_company'] ?: $order['customer_firstname'] .' '. $order['customer_lastname']; ?></a></td>
-				<td><?php echo ($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>
+				<td><a class="link" href="<?php echo document::href_ilink('orders/edit_order', ['order_id' => $order['id']]); ?>"><?php echo $order['billing_company'] ?: $order['billing_firstname'] .' '. $order['billing_lastname']; ?></a></td>
+				<td><?php echo ($order['billing_country_code']) ? reference::country($order['billing_country_code'])->name : ''; ?></td>
 				<td><?php echo $order['payment_option_name']; ?></td>
 				<td><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
 				<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
