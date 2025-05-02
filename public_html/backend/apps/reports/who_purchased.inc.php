@@ -38,7 +38,7 @@
 		"select
 			oi.product_id, oi.quantity, oi.sku, oi.name,
 			o.id as order_id, o.created_at as order_created_at,
-			if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) as customer_name, o.customer_country_code, o.customer_email
+			if(o.billing_company, o.billing_company, concat(o.billing_firstname, ' ', o.billing_lastname)) as customer_name, o.billing_country_code, o.billing_email
 		from ". DB_TABLE_PREFIX ."orders_items oi
 		left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
 		where o.order_status_id in (
