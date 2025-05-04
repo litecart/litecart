@@ -195,7 +195,8 @@
 		) pso on (pso.product_id = p.id)
 
 		left join (
-			select oi.product_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
+			select oi.product_id, sum(oi.quantity) as total_reserved
+			from ". DB_TABLE_PREFIX ."orders_items oi
 			left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
 			where o.order_status_id in (
 				select id from ". DB_TABLE_PREFIX ."order_statuses

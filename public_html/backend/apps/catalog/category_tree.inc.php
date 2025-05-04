@@ -510,8 +510,8 @@ table .icon-folder-open {
 				$products = database::query(
 					"select p.id, p.status, p.code, p.sold_out_status_id, p.image, p.date_valid_from, p.date_valid_to,
 						json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
-						pp.price, pc.campaign_price, pso.num_stock_options, pso.quantity,
-						pso.quantity - oi.total_reserved as quantity_available, ptc.category_id
+						pp.price, pc.campaign_price, pso.num_stock_options, pso.quantity, oi.total_reserved, pso.quantity - oi.total_reserved as available,
+						ptc.category_id
 
 					from ". DB_TABLE_PREFIX ."products p
 
@@ -537,25 +537,22 @@ table .icon-folder-open {
 					) pc on (pc.product_id = p.id)
 
 					left join (
-						select pso.id, pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options
+						select pso.id, pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as quantity
 						from ". DB_TABLE_PREFIX ."products_stock_options pso
 						left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 						group by pso.product_id
 					) pso on (pso.product_id = p.id)
 
 					left join (
-						select oi.stock_option_id, sum(oi.quantity) as total_reserved
+						select oi.product_id, sum(oi.quantity) as total_reserved
 						from ". DB_TABLE_PREFIX ."orders_items oi
-						left join ". DB_TABLE_PREFIX ."products_stock_options pso on (pso.id = oi.stock_option_id)
-						where oi.order_id in (
-							select id from ". DB_TABLE_PREFIX ."orders o
-							where order_status_id in (
-								select id from ". DB_TABLE_PREFIX ."order_statuses os
-								where stock_action = 'reserve'
-							)
+						left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+						where o.order_status_id in (
+							select id from ". DB_TABLE_PREFIX ."order_statuses
+							where stock_action = 'reserve'
 						)
-						group by pso.id
-					) oi on (oi.stock_option_id = pso.id)
+						group by oi.product_id
+					) oi on (oi.product_id = p.id)
 
 					where ". (!empty($category['id']) ? "p.id in (
 						select product_id from ". DB_TABLE_PREFIX ."products_to_categories ptc

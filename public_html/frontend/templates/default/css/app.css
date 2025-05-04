@@ -842,6 +842,9 @@ body {
 #box-product .technical-data table td:first-child {
   width: 50%;
 }
+#box-product form[name="buy_now_form"] legend {
+  letter-spacing: 0.1em;
+}
 .price-tag .sale-price {
   color: #cc0000;
 }

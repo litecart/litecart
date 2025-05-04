@@ -219,7 +219,7 @@
 
 				// Prepare style tag
 				$style = implode(PHP_EOL, [
-					'<style integrity="sha256-'. base64_encode($checksum) .'">',
+					'<style integrity="sha256-'. base64_encode($checksum) .'" crossorigin="anonymous">',
 					$style,
 					'</style>',
 				]);
@@ -251,7 +251,7 @@
 
 				// Prepare script tag
 				$javascript = implode(PHP_EOL, [
-					'<script integrity="sha256-'. base64_encode($checksum) .'">',
+					'<script integrity="sha256-'. base64_encode($checksum) .'" crossorigin="anonymous">',
 					$javascript,
 					'</script>',
 				]) . PHP_EOL;
@@ -407,7 +407,7 @@
 			$styles = [];
 			foreach ($resources as $resource) {
 				if (preg_match('#^(app|storage)://#', $resource)) {
-					$styles[] = '<link rel="stylesheet" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" href="'. self::href_rlink($resource) .'">';
+					$styles[] = '<link rel="stylesheet" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" href="'. self::href_rlink($resource) .'">';
 				} else {
 					$styles[] = '<link rel="stylesheet" href="'. self::href_link($resource) .'">';
 				}
@@ -426,7 +426,7 @@
 
 			foreach ($resources as $resource) {
 				if (preg_match('#^(app|storage)://#', $resource)) {
-					$scripts[] = '<script defer integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" src="'. self::href_rlink($resource) .'"></script>';
+					$scripts[] = '<script defer integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" src="'. self::href_rlink($resource) .'"></script>';
 				} else {
 					$scripts[] = '<script src="'. self::href_link($resource) .'"></script>';
 				}

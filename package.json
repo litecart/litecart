@@ -18,8 +18,8 @@
 		"url": "https://github.com/litecart/litecart/issues"
 	},
 	"devDependencies": {
-		"@sequencemedia/gulp-clean-css": "^1.0.226",
-		"@sequencemedia/gulp-sourcemaps": "^1.0.240",
+		"@sequencemedia/gulp-clean-css": "^1.0.235",
+		"@sequencemedia/gulp-sourcemaps": "^1.0.249",
 		"gulp": "^5.0.0",
 		"gulp-clean-css": "^4.3.0",
 		"gulp-concat": "^2.6.1",
@@ -33,7 +33,7 @@
 		"gulp-uglify": "^3.0.2",
 		"gulp-watch": "^5.0.1",
 		"phplint": "^2.0.5",
-		"sass": "^1.86.0"
+		"sass": "^1.87.0"
 	},
 	"type": "module",
 	"engines": {

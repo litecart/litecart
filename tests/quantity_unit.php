@@ -14,8 +14,8 @@
 
 		// Prepare some example data
 		$data = [
-			'name' => ['en' => 'Kilogram'],
-			'description' => ['en' => 'Unit of mass'],
+			'name' => ['en' => 'Fictional Unit'],
+			'description' => ['en' => 'Unit of fictional mass'],
 			'decimals' => 3,
 		];
 

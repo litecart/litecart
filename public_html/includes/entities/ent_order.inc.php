@@ -119,7 +119,7 @@
 			}
 
 			$this->data['items'] = database::query(
-				"select oi.*, si.quantity, p.sold_out_status_id
+				"select oi.*, si.quantity as stock_quanity, p.sold_out_status_id
 				from ". DB_TABLE_PREFIX ."orders_items oi
 				left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
