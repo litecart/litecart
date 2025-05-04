@@ -6,14 +6,14 @@
 	];
 
 	$result['results'] = database::query(
-		"select id, concat(billing_firstname, ' ', billing_lastname) as customer_name,
+		"select id, concat(customer_firstname, ' ', customer_lastname) as customer_name,
 		(
 			if(id = '". database::input($query) ."', 10, 0)
 			+ if(reference like '%". database::input($query) ."%', 5, 0)
-			+ if(billing_email like '%". database::input($query) ."%', 5, 0)
-			+ if(billing_tax_id like '%". database::input($query) ."%', 5, 0)
+			+ if(customer_email like '%". database::input($query) ."%', 5, 0)
+			+ if(customer_tax_id like '%". database::input($query) ."%', 5, 0)
 			+ if(shipping_tax_id like '%". database::input($query) ."%', 5, 0)
-			+ if(concat(billing_company, ' ', billing_firstname, ' ', billing_lastname, ' ', billing_address1, ' ', billing_address2, ' ', billing_postcode, ' ', billing_city) like '%". database::input($query) ."%', 5, 0)
+			+ if(concat(customer_company, ' ', customer_firstname, ' ', customer_lastname, ' ', customer_address1, ' ', customer_address2, ' ', customer_postcode, ' ', customer_city) like '%". database::input($query) ."%', 5, 0)
 			+ if(concat(shipping_company, ' ', shipping_firstname, ' ', shipping_lastname, ' ', shipping_address1, ' ', shipping_address2, ' ', shipping_postcode, ' ', shipping_city) like '%". database::input($query) ."%', 5, 0)
 			+ if(shipping_tracking_id like '%". database::input($query) ."%', 5, 0)
 			+ if(payment_transaction_id like '%". database::input($query) ."%', 5, 0)

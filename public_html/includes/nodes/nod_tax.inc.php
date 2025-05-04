@@ -50,12 +50,10 @@
 
 						$customer = [
 							'tax_id' => '',
-							'billing_address' => [
-								'company' => '',
-								'country_code' => settings::get('store_country_code'),
-								'zone_code' => settings::get('store_zone_code'),
-								'city' => '',
-							],
+							'company' => '',
+							'country_code' => settings::get('store_country_code'),
+							'zone_code' => settings::get('store_zone_code'),
+							'city' => '',
 							'shipping_address' => [
 								'company' => '',
 								'country_code' => settings::get('store_country_code'),
@@ -83,28 +81,28 @@
 				}
 			}
 
-			if (empty($customer['billing_address']['country_code'])) {
+			if (empty($customer['country_code'])) {
 				if (!empty(customer::$data['country_code'])) {
-					$customer['billing_address']['country_code'] = customer::$data['country_code'];
+					$customer['country_code'] = customer::$data['country_code'];
 				} else {
-					$customer['billing_address']['country_code'] = settings::get('default_country_code');
+					$customer['country_code'] = settings::get('default_country_code');
 				}
 			}
 
-			if (!isset($customer['billing_address']['zone_code'])) {
+			if (!isset($customer['zone_code'])) {
 				if (!empty(customer::$data['zone_code'])) {
-					$customer['billing_address']['zone_code'] = customer::$data['zone_code'];
+					$customer['zone_code'] = customer::$data['zone_code'];
 				} else {
-					$customer['billing_address']['zone_code'] = settings::get('default_zone_code');
+					$customer['zone_code'] = settings::get('default_zone_code');
 				}
 			}
 
-			if (!isset($customer['billing_address']['city'])) {
-				$customer['billing_address']['city'] = '';
+			if (!isset($customer['city'])) {
+				$customer['city'] = '';
 			}
 
 			if (!isset($customer['shipping_address'])) {
-				$customer['shipping_address'] = $customer['billing_address'];
+				$customer['shipping_address'] = $customer;
 			}
 
 			if (!isset($customer['shipping_address']['city'])) {
@@ -125,14 +123,14 @@
 						address_type = 'payment'
 						and geo_zone_id in (
 							select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
-							where country_code = '". database::input($customer['billing_address']['country_code']) ."'
-							and (zone_code = '' or zone_code = '". database::input($customer['billing_address']['zone_code']) ."')
-							and (city = '' or lower(city) like '". (!empty($customer['billing_address']['city']) ? database::input(mb_strtolower($customer['billing_address']['city'])) : '') ."')
+							where country_code = '". database::input($customer['country_code']) ."'
+							and (zone_code = '' or zone_code = '". database::input($customer['zone_code']) ."')
+							and (city = '' or lower(city) like '". (!empty($customer['city']) ? database::input(mb_strtolower($customer['city'])) : '') ."')
 						)
-						". ((!empty($customer['billing_address']['company']) && !empty($customer['billing_address']['tax_id'])) ? "and rule_companies_with_tax_id" : "") ."
-						". ((!empty($customer['billing_address']['company']) && empty($customer['billing_address']['tax_id'])) ? "and rule_companies_without_tax_id" : "") ."
-						". ((empty($customer['billing_address']['company']) && !empty($customer['billing_address']['tax_id'])) ? "and rule_individuals_with_tax_id" : "") ."
-						". ((empty($customer['billing_address']['company']) && empty($customer['billing_address']['tax_id'])) ? "and rule_individuals_without_tax_id" : "") ."
+						". ((!empty($customer['company']) && !empty($customer['tax_id'])) ? "and rule_companies_with_tax_id" : "") ."
+						". ((!empty($customer['company']) && empty($customer['tax_id'])) ? "and rule_companies_without_tax_id" : "") ."
+						". ((empty($customer['company']) && !empty($customer['tax_id'])) ? "and rule_individuals_with_tax_id" : "") ."
+						". ((empty($customer['company']) && empty($customer['tax_id'])) ? "and rule_individuals_without_tax_id" : "") ."
 					) or (
 						address_type = 'shipping'
 						and geo_zone_id in (

@@ -163,7 +163,7 @@
 				select id from ". DB_TABLE_PREFIX ."order_statuses
 				where is_sale
 			)
-			and (o.customer_id = ". (int)$customer->data['id'] ." or o.billing_email = '". database::input($customer->data['email']) ."');"
+			and (o.customer_id = ". (int)$customer->data['id'] ." or o.customer_email = '". database::input($customer->data['email']) ."');"
 		)->fetch();
 
 		$ip_addresses = database::query(

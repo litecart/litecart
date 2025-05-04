@@ -452,7 +452,7 @@
 					}
 
 					$email = new ent_email();
-					$email->add_recipient($this->data['billing_address']['email'], $this->data['billing_address']['firstname'] .' '. $this->data['billing_address']['lastname'])
+					$email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
 								->set_subject($subject)
 								->add_body($message)
 								->send();
@@ -787,8 +787,8 @@
 			$aliases = [
 				'%order_id' => $this->data['no'], // Backwards compatibility
 				'%order_no' => $this->data['no'],
-				'%firstname' => $this->data['billing_address']['firstname'],
-				'%lastname' => $this->data['billing_address']['lastname'],
+				'%firstname' => $this->data['customer']['firstname'],
+				'%lastname' => $this->data['customer']['lastname'],
 				'%billing_address' => functions::format_address($this->data['customer']),
 				'%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
 				'%shipping_address' => functions::format_address($this->data['customer']['shipping_address']),
@@ -876,8 +876,8 @@
 				'%order_id' => $this->data['no'], // Backwards compatibility
 				'%order_no' => $this->data['no'],
 				'%new_status' => $order_status->name,
-				'%firstname' => $this->data['billing_address']['firstname'],
-				'%lastname' => $this->data['billing_address']['lastname'],
+				'%firstname' => $this->data['customer']['firstname'],
+				'%lastname' => $this->data['customer']['lastname'],
 				'%billing_address' => nl2br(functions::format_address($this->data['customer']), false),
 				'%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
 				'%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address']), false),
@@ -932,7 +932,7 @@
 			}
 
 			$email = new ent_email();
-			$email->add_recipient($this->data['billing_address']['email'], $this->data['billing_address']['firstname'] .' '. $this->data['billing_address']['lastname'])
+			$email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
 						->set_subject($subject)
 						->add_body($message, true)
 						->send();

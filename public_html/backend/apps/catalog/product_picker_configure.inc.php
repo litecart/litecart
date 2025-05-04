@@ -30,10 +30,8 @@
 
 		if (empty($_GET['customer'])) {
 			$_GET['customer'] = [
-				'billing_address' => [
-					'country_code' => settings::get('default_country_code'),
-					'zone_code' => settings::get('default_zone_code'),
-				],
+				'country_code' => settings::get('default_country_code'),
+				'zone_code' => settings::get('default_zone_code'),
 				'shipping_address' => [
 					'country_code' => settings::get('default_country_code'),
 					'zone_code' => settings::get('default_zone_code'),

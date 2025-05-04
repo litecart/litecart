@@ -44,7 +44,7 @@
 		"select
 			sum(o.total - total_tax) as total_amount,
 			o.customer_id as id,
-			if(o.billing_company, o.billing_company, concat(o.billing_firstname, ' ', o.billing_lastname)) as name,
+			if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) as name,
 			customer_email as email
 		from ". DB_TABLE_PREFIX ."orders o
 		where o.order_status_id in (
@@ -53,7 +53,7 @@
 		)
 		". (!empty($_GET['date_from']) ? "and o.created_at >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : '') ."
 		". (!empty($_GET['date_to']) ? "and o.created_at <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : '') ."
-		group by if(o.customer_id, o.customer_id, o.billing_email)
+		group by if(o.customer_id, o.customer_id, o.customer_email)
 		order by total_amount desc;"
 	);
 

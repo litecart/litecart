@@ -96,7 +96,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."orders
 					set customer_id = ". (int)$this->data['id'] ."
-					where lower(billing_email) = '". database::input(strtolower($this->data['email'])) ."'
+					where lower(customer_email) = '". database::input(strtolower($this->data['email'])) ."'
 					and customer_id = 0;"
 				);
 			}
