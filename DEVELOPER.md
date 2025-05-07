@@ -1,7 +1,8 @@
 # Social Coding
 
-  [Github Repository](https://www.github.com/litecart/litecart)
-  Branch: dev
+Github Repository: https://www.github.com/litecart/litecart
+Repository URL: https://www.github.com/litecart/litecart.git
+Branch Name: `dev`
 
 
 # Changelog / Commit Messages
@@ -119,10 +120,9 @@ Once the pull request is accepted you can safely delete your feature branch.
 
 # Enable Git Hook Automations
 
-This project contains some useful git hook automations that can be fired upon git events.
-Example: PHP lint checking, file checksum calculation, ..
+This project contains some useful Git-hook automations that can be fired upon specific git events. I.e. checking your code for syntax errors before storing your commit, or updating file checksums after storing the commit.
 
-Execute this command to enable them:
+Execute this command to enable git-hooks:
 
 ```bash
 # Configure Git to execute git-hook automations upon specific events
