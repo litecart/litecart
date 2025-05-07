@@ -13,10 +13,10 @@
 
   Examples:
 
-    ! Fix critical issue where drinks was not coming out of the tap
-    + Added lettuce to the sallad
-    - Removed tomatoes as some guests are allergic
+    ! Fix critical issue where beer was not coming out of the tap
     * Replaced the smaller plate with a larger one
+    + Added lettuce to the sallad
+    - Removed rotten tomatoes
 
   Issue Tracker Fix Example:
 
@@ -64,9 +64,9 @@ You can now execute any of the following commands:
 
 If you are new to Git, we recommend SourceTree or GitHub Desktop as a great graphical user interface for working with Git.
 
-1. Fork the official LiteCart repository by going to https://github.com/litecart/litecart and clicking "Fork".
+1. Fork the official LiteCart repository by going to https://github.com/litecart/litecart and clicking **Fork**.
 
-2. Use the "git clone" command to initiate a copy of the code from your forked repository. Use the "dev" branch as source.
+2. Initiate a copy of the code from your forked repository. Use the `dev` branch as source.
 
 ```bash
 # Clone the repo
@@ -92,24 +92,25 @@ git checkout -b mynewfeature upstream/dev
 4. Commit your changes and push the new branch to your forked repository.
 
 ```bash
-# Cherry pick a commit made in any other branch...
+# Cherry pick a commit made in another branch...
 git cherry-pick <commit-hash>
 
 # ... or stage new files for commit
 git add path/to/file.ext
+git add path/to/file2.ext
 
 # Commit your new feature locally
-git commit -m "My commit of my new feature"
+git commit -m "Commit message of new feature, used for changelog"
 
 # Push commit to your Github repository
 git push -u origin mynewfeature
 ```
 
-5. Go to your forked repository in Github and click "Pull Requests" followed by the button "New Pull Request".
+5. Go to your forked repository in Github and click **Pull Requests** followed by the button **New Pull Request**.
 
-  * Base Repository: litecart/litecart, Compare: dev
+  * Base Repository: `litecart/litecart`, Compare: `dev`
 
-  * Head Repository: you/litecart, Compare: mynewfeature
+  * Head Repository: `you/litecart`, Compare: `mynewfeature`
 
 Caution! After creating the pull request, do not push any more commits to your feature branch, unless you have bugs that needs patching.
 
