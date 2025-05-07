@@ -18,8 +18,8 @@
 		"url": "https://github.com/litecart/litecart/issues"
 	},
 	"devDependencies": {
-		"@sequencemedia/gulp-clean-css": "^1.0.235",
-		"@sequencemedia/gulp-sourcemaps": "^1.0.249",
+		"@sequencemedia/gulp-clean-css": "^1.0.238",
+		"@sequencemedia/gulp-sourcemaps": "^1.0.252",
 		"gulp": "^5.0.0",
 		"gulp-clean-css": "^4.3.0",
 		"gulp-concat": "^2.6.1",

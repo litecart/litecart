@@ -395,21 +395,6 @@ template {
   background: var(--button-outline-background--active);
   border-color: var(--button-outline-border-color--active);
 }
-.btn.btn-transparent {
-  background: var(--button-transparent-background);
-  color: var(--button-transparent-text-color);
-  border: var(--button-border-width) solid var(--button-transparent-border-color);
-}
-.btn.btn-transparent:hover:not(.active, .disabled, [disabled]),
-.btn.btn-transparent:focus:not(.active, .disabled, [disabled]),
-.btn.btn-transparent:active:not(.active, .disabled, [disabled]) {
-  background: var(--button-transparent-background--hover);
-  border-color: var(--button-transparent-border-color--hover);
-}
-.btn.btn-transparent.active {
-  background: var(--button-transparent-background--active);
-  border-color: var(--button-transparent-border-color--active);
-}
 .btn .btn-outline-gradient {
   border: solid 2px transparent;
   background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #78e4ff, #ff48fa);
@@ -2080,7 +2065,7 @@ label.form-check > input:is([type="radio"]):checked {
   background: var(--input-toggle-background);
   border: var(--input-border-width) solid var(--input-border-color);
 }
-.form-toggle label:hover:not(:checked):not(:disabled) {
+.form-toggle label:hover:not(:has(:checked)):not(:disabled) {
   background: var(--input-toggle-background--hover);
   cursor: pointer;
 }
