@@ -137,8 +137,8 @@
 					<th style="width: 40px;"><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th style="width: 40px;"></th>
 					<th data-sort="id" style="width: 50px;"><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th data-sort="email"><?php echo language::translate('title_email', 'Email'); ?></th>
 					<th data-sort="name"><?php echo language::translate('title_name', 'Name'); ?></th>
+					<th data-sort="email"><?php echo language::translate('title_email', 'Email'); ?></th>
 					<th data-sort="company"><?php echo language::translate('title_company_name', 'Company Name'); ?></th>
 					<th class="main"><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></th>
 					<th class="text-center" data-sort="group"><?php echo language::translate('title_customer_group', 'Customer Group'); ?></th>
@@ -153,8 +153,11 @@
 					<td><?php echo functions::form_checkbox('customers[]', $customer['id']); ?></td>
 					<td><?php echo functions::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
 					<td><?php echo $customer['id']; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>"><?php echo $customer['email']; ?></a></td>
-					<td><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></td>
+					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>">
+						<?php echo functions::draw_fonticon($customer['company'] ? 'icon-building' : 'icon-user', 'style="opacity: .5;"'); ?>
+						<?php echo $customer['company'] ?: $customer['firstname'] .' '. $customer['lastname']; ?>
+					</td>
+					<td><?php echo $customer['email']; ?></a></td>
 					<td><?php echo $customer['company']; ?></td>
 					<td><?php echo $customer['last_host']; ?></td>
 					<td class="text-center"><?php echo $customer['group_name']; ?></td>

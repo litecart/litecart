@@ -41,6 +41,10 @@
   --sidebar-app-background: transparent;
   --sidebar-app-background--hover: transparent;
   --sidebar-app-background--active: #e5e7ef66;
+  --sidebar-app-border-size: 1px;
+  --sidebar-app-border-color: transparent;
+  --sidebar-app-border-color--hover: #e5e7ef;
+  --sidebar-app-border-color--active: transparent;
   --sidebar-doc-background--hover: #d2d6e366;
   --sidebar-doc-background--active: #b6bccf66;
   --sidebar-border: var(--default-border-color);
@@ -72,7 +76,7 @@
   --link-text-color: #06b;
   /* Forms */
   --input-padding-x: 1.5em;
-  --input-padding-y: 0.75em;
+  --input-padding-y: 0.66em;
   --input-background: #f6f7fb;
   --input-text-color: #000;
   --input-border-color: transparent;
@@ -98,7 +102,7 @@
   --breadcrumb-item-text-color: #3c3c3c;
   /* Buttons */
   --button-padding-x: 1.5em;
-  --button-padding-y: 0.75em;
+  --button-padding-y: 0.66em;
   --button-border-width: 1px;
   --button-shadow: 0 1px 2px 0 rgba(37, 44, 97, 0.15), 0 1px 2px 0 rgba(93, 100, 148, 0.2);
   --button-shadow--active: 0 1px 0px 0 rgba(37, 44, 97, 0.15), 0 0px 2px 0 rgba(93, 100, 148, 0.2);

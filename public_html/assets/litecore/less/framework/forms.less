@@ -224,7 +224,7 @@ label.form-check > input {
 			background: var(--input-toggle-background);
 			border: var(--input-border-width) solid var(--input-border-color);
 		}
-		&:hover:not(:checked):not(:disabled) {
+		&:hover:not(:has(:checked)):not(:disabled) {
 			background: var(--input-toggle-background--hover);
 			cursor: pointer;
 		}

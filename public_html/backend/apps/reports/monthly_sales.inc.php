@@ -79,8 +79,8 @@ form[name="filter_form"] li {
 						<?php echo functions::form_input_date('date_to'); ?>
 					</div>
 				</li>
-				<li><?php echo functions::form_button('filter', functions::draw_fonticon('icon-funnel') .' '. language::translate('title_filter_now', 'Filter')); ?></li>
-				<li><?php echo functions::form_button('download', functions::draw_fonticon('icon-download') .' '. language::translate('title_download', 'Download')); ?></li>
+				<li><?php echo functions::form_button('filter', ['true', functions::draw_fonticon('icon-funnel') .' '. language::translate('title_filter_now', 'Filter')]); ?></li>
+				<li><?php echo functions::form_button('download', ['true', functions::draw_fonticon('icon-download') .' '. language::translate('title_download', 'Download')]); ?></li>
 			</ul>
 		<?php echo functions::form_end(); ?>
 	</div>

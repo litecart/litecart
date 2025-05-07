@@ -154,12 +154,12 @@
 
 				<div class="grid">
 					<div class="col-md-2">
-						<label><?php echo language::translate('title_from_order_status', 'From Order Status'); ?></label>
+						<label class="form-label"><?php echo language::translate('title_from_order_status', 'From Order Status'); ?></label>
 						<?php echo functions::form_select_order_status('from_order_status_id', true); ?>
 					</div>
 
 					<div class="col-md-2">
-						<label><?php echo language::translate('title_to_order_status', 'To Order Status'); ?></label>
+						<label class="form-label"><?php echo language::translate('title_to_order_status', 'To Order Status'); ?></label>
 						<?php echo functions::form_select_order_status('to_order_status_id', true); ?>
 					</div>
 

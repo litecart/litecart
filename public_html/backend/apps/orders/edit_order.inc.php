@@ -511,14 +511,14 @@
 					<div class="grid">
 						<div class="col-md-4">
 							<div class="form-group">
-								<label><?php echo language::translate('title_tax_display', 'Tax Display'); ?></label>
+								<label class="form-label"><?php echo language::translate('title_tax_display', 'Tax Display'); ?></label>
 								<?php echo functions::form_toggle('display_prices_including_tax', ['1' => language::translate('title_incl_tax', 'Incl. Tax'), '0' => language::translate('title_excl_tax', 'Excl. Tax')], true); ?>
 							</div>
 						</div>
 
 						<div class="col-md-8">
 							<div class="form-group">
-								<label><?php echo language::translate('title_ip_address', 'IP Address'); ?> (<?php echo language::translate('title_hostname', 'Hostname'); ?>)</label>
+								<label class="form-label"><?php echo language::translate('title_ip_address', 'IP Address'); ?> (<?php echo language::translate('title_hostname', 'Hostname'); ?>)</label>
 								<div id="hostname" class="input-group">
 									<div class="form-input" style="overflow: hidden; text-overflow: ellipsis;">
 										<?php echo $order->data['ip_address']; ?> <?php echo !empty($order->data['hostname']) ? '('. $order->data['hostname'] .')' : ''; ?>

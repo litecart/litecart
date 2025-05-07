@@ -17,7 +17,7 @@ h4 { font-size: 1.10em; }
 	flex: 0 0 var(--sidebar-width);
 	background: var(--sidebar-background);
 	box-shadow: 0 1px 1rem rgba(0, 0, 0, .05);
-	padding: var(--gutter-y) var(--gutter-x);
+	padding: 1.5em;
 
 	.logotype {
 		display: block;
@@ -215,7 +215,6 @@ h4 { font-size: 1.10em; }
 
 #box-apps-menu {
 	display: block;
-	margin: 1em -1em;
 	padding: 0;
 	color: var(--sidebar-text-color);
 
@@ -245,17 +244,23 @@ h4 { font-size: 1.10em; }
 	.app {
 		position: relative;
 		display: block;
-		padding: 0;
-		margin: 2px 0;
+		border: var(--sidebar-app-border-size) solid var(--sidebar-app-border-color);
 		border-inline-start: 5px solid transparent;
 		border-radius: var(--border-radius);
+		transition: all 100ms linear;
 
 		&:hover:not(.active) {
 			background: var(--sidebar-app-background--hover);
+			border: var(--sidebar-app-border-size) solid var(--sidebar-app-border-color--hover);
 		}
 
 		> a {
-			padding: .25em .5em;
+			padding: .25em;
+
+			&:hover {
+				background: var(--sidebar-app-background--hover);
+				color: var(--sidebar-text-color--hover);
+			}
 
 			.icon-stack {
 				font-size: 1em;
@@ -264,7 +269,6 @@ h4 { font-size: 1.10em; }
 
 		.app-icon {
 			margin-inline-end: 0;
-			font-size: 1.2em;
 		}
 
 		> a > .name {
@@ -300,9 +304,8 @@ h4 { font-size: 1.10em; }
 
 	.docs {
 		display: none;
-		padding-bottom: .5em;
-		padding-left: 1em !important;
-		padding-right: 1em !important;
+		padding-left: .5em !important;
+		padding-right: .5em !important;
 	}
 
 	.bullet {

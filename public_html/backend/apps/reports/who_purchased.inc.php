@@ -88,12 +88,12 @@
 				<?php echo functions::form_input_month('date_to'); ?>
 			</div>
 
-			<?php echo functions::form_button('filter', functions::draw_fonticon('icon-funnel') .' '. language::translate('title_filter_now', 'Filter')); ?>
+			<?php echo functions::form_button('filter', ['true', functions::draw_fonticon('icon-funnel') .' '. language::translate('title_filter_now', 'Filter')]); ?>
 
 		</div>
 
 		<div class="card-action">
-			<?php echo functions::form_button('download', functions::draw_fonticon('icon-download') .' '. language::translate('title_download', 'Download')); ?>
+			<?php echo functions::form_button('download', ['true', functions::draw_fonticon('icon-download') .' '. language::translate('title_download', 'Download')]); ?>
 		</div>
 
 	<?php echo functions::form_end(); ?>

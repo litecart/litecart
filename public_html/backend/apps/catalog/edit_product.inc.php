@@ -170,15 +170,6 @@
 	white-space: nowrap;
 }
 
-#images .thumbnail {
-	margin: 0;
-}
-#images .image {
-	overflow: hidden;
-}
-#images .thumbnail {
-	margin-inline-end: 15px;
-}
 #images img {
 	max-width: 50px;
 	max-height: 50px;
@@ -307,32 +298,30 @@
 
 							<div id="images">
 
-								<div class="images">
+								<div class="images" style="margin-bottom: 1em;">
 									<?php if (!empty($_POST['images'])) foreach (array_keys($_POST['images']) as $key) { ?>
-									<div class="form-group image">
+									<div class="flex image" style="gap: 1em;">
 										<?php echo functions::form_input_hidden('images['.$key.'][id]', true); ?>
 										<?php echo functions::form_input_hidden('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
 
-										<div class="float-start <?php echo strtolower(settings::get('product_image_clipping')); ?>">
-											<?php echo functions::draw_thumbnail('storage://images/' . $product->data['images'][$key]['filename'], 64, 0, 'product'); ?>
-										</div>
+										<?php echo functions::draw_thumbnail('storage://images/' . $product->data['images'][$key]['filename'], 64, 0, 'product'); ?>
 
-										<div class="input-group">
-											<?php echo functions::form_input_text('images['.$key.'][new_filename]', fallback($_POST['images'][$key]['new_filename'], $_POST['images'][$key]['filename'])); ?>
+										<?php echo functions::form_input_text('images['.$key.'][new_filename]', fallback($_POST['images'][$key]['new_filename'], $_POST['images'][$key]['filename'])); ?>
+
+										<div style="align-content: center;">
 											<div class="btn-group">
-												<a class="btn btn-default btn-sm move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></a>
-												<a class="btn btn-default btn-sm move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></a>
-												<a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></a>
+												<button name="move_up" class="btn btn-default btn-sm" class="button" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></button>
+												<button name="move_down" class="btn btn-default btn-sm" class="button" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></button>
+												<button name="remove" class="btn btn-default btn-sm" class="button" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></button>
 											</div>
 										</div>
 									</div>
 									<?php } ?>
 								</div>
 
-								<div class="new-images"></div>
+								<div class="new-images" style="margin-bottom: 1em;"></div>
 
 								<label class="form-group">
-									<?php echo functions::form_input_file('new_images[]', 'multiple', 'accept="image/*"'); ?>
 									<a href="#" class="add btn btn-default btn-sm"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_image', 'Add Image'); ?></a>
 								</label>
 							</div>
@@ -819,37 +808,37 @@
 
 							<tbody>
 								<?php if (!empty($_POST['stock_options'])) foreach ($_POST['stock_options'] as $key => $stock_option) { ?>
-							<tr data-stock-item-id="<?php echo $stock_option['stock_item_id']; ?>">
-								<td class="grabbable">
-									<?php echo functions::form_input_hidden('stock_options['.$key.'][id]', true); ?>
-									<?php echo functions::form_input_hidden('stock_options['.$key.'][stock_item_id]', true); ?>
-									<?php echo functions::form_input_hidden('stock_options['.$key.'][sku]', true); ?>
-									<?php echo functions::form_input_hidden('stock_options['.$key.'][weight]', true); ?>
-									<?php echo functions::form_input_hidden('stock_options['.$key.'][weight_unit]', true); ?>
-									<?php echo functions::form_input_hidden('stock_options['.$key.'][length]', true); ?>
-									<?php echo functions::form_input_hidden('stock_options['.$key.'][width]', true); ?>
-									<?php echo functions::form_input_hidden('stock_options['.$key.'][height]', true); ?>
-									<?php echo functions::form_input_hidden('stock_options['.$key.'][length_unit]', true); ?>
-									<span class="name"><?php echo $stock_option['name']; ?></span>
-								</td>
-								<td class="grabbable">
-									<span class="sku"><?php echo $_POST['stock_options'][$key]['sku']; ?></span>
-								</td>
-								<td><?php echo functions::form_select('stock_options['.$key.'][price_modifier]', ['+', '*', '%', '='], '+'); ?></td>
-								<td>
-									<div class="dropdown">
-										<?php echo functions::form_input_money('stock_options['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
-										<ul class="dropdown-menu">
-											<?php foreach (currency::$currencies as $currency) { ?>
-											<?php if ($currency['code'] == settings::get('store_currency_code')) continue; ?>
-											<li>
-												<?php echo functions::form_input_money('stock_options['.$key.'][price]['. $currency['code'] .']', $currency['code'], true, 'style="width: 125px;"'); ?>
-											</li>
-											<?php } ?>
-										</ul>
-									</div>
-								</td>
-								<td><?php echo functions::form_input_decimal('stock_options['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['stock_options'][$key]) ? (float)$product->data['stock_options'][$key]['quantity'] : '0') .'"'); ?></td>
+								<tr data-stock-item-id="<?php echo $stock_option['stock_item_id']; ?>">
+									<td class="grabbable">
+										<?php echo functions::form_input_hidden('stock_options['.$key.'][id]', true); ?>
+										<?php echo functions::form_input_hidden('stock_options['.$key.'][stock_item_id]', true); ?>
+										<?php echo functions::form_input_hidden('stock_options['.$key.'][sku]', true); ?>
+										<?php echo functions::form_input_hidden('stock_options['.$key.'][weight]', true); ?>
+										<?php echo functions::form_input_hidden('stock_options['.$key.'][weight_unit]', true); ?>
+										<?php echo functions::form_input_hidden('stock_options['.$key.'][length]', true); ?>
+										<?php echo functions::form_input_hidden('stock_options['.$key.'][width]', true); ?>
+										<?php echo functions::form_input_hidden('stock_options['.$key.'][height]', true); ?>
+										<?php echo functions::form_input_hidden('stock_options['.$key.'][length_unit]', true); ?>
+										<span class="name"><?php echo $stock_option['name']; ?></span>
+									</td>
+									<td class="grabbable">
+										<span class="sku"><?php echo $_POST['stock_options'][$key]['sku']; ?></span>
+									</td>
+									<td><?php echo functions::form_select('stock_options['.$key.'][price_modifier]', ['+', '*', '%', '='], '+'); ?></td>
+									<td>
+										<div class="dropdown">
+											<?php echo functions::form_input_money('stock_options['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
+											<ul class="dropdown-menu">
+												<?php foreach (currency::$currencies as $currency) { ?>
+												<?php if ($currency['code'] == settings::get('store_currency_code')) continue; ?>
+												<li>
+													<?php echo functions::form_input_money('stock_options['.$key.'][price]['. $currency['code'] .']', $currency['code'], true, 'style="width: 125px;"'); ?>
+												</li>
+												<?php } ?>
+											</ul>
+										</div>
+									</td>
+									<td><?php echo functions::form_input_decimal('stock_options['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['stock_options'][$key]) ? (float)$product->data['stock_options'][$key]['quantity'] : '0') .'"'); ?></td>
 									<td>
 										<label class="input-group">
 											<span class="input-group-text">&plusmn;</span>
@@ -873,7 +862,7 @@
 										</a>
 									</td>
 								</tr>
-							<?php } ?>
+								<?php } ?>
 							</tbody>
 
 							<tfoot>
@@ -956,21 +945,21 @@
 
 	// Images
 
-	$('#images').on('click', '.move-up, .move-down', function(e) {
+	$('#images').on('click', 'button[name="move_up"], button[name="move_down"]', function(e) {
 		e.preventDefault();
-		let row = $(this).closest('.form-group');
+		let row = $(this).closest('.image');
 
-		if ($(this).is('.move-up') && $(row).prevAll().length > 0) {
+		if ($(this).is('button[name="move_up"]') && $(row).prevAll().length > 0) {
 			$(row).insertBefore(row.prev());
-		} else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
+		} else if ($(this).is('button[name="move_up"]') && $(row).nextAll().length > 0) {
 			$(row).insertAfter($(row).next());
 		}
 		refreshMainImage();
 	});
 
-	$('#images').on('click', '.remove', function(e) {
+	$('#images').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
-		$(this).closest('.form-group').remove();
+		$(this).closest('.image').remove();
 		refreshMainImage();
 	});
 
@@ -978,18 +967,17 @@
 		e.preventDefault();
 
 		let $output = $([
-			'<div class="image form-group">',
-			'  <div class="float-start">',
-			'    <?php echo functions::draw_thumbnail('storage://images/no_image.svg', 64, 0, 'product'); ?>',
-			'  </div>',
-			'  ',
-			'  <div class="input-group">',
-			'    <?php echo functions::form_input_file('new_images[]', 'accept="image/*"'); ?>',
+			'<div class="flex image" style="gap: 1em;">',
+			'  <?php echo functions::form_input_hidden('images[new_image][id]', ''); ?>',
+			'  <?php echo functions::form_input_hidden('images[new_image][filename]', ''); ?>',
+			'  <?php echo functions::draw_thumbnail('storage://images/no_image.svg', 64, 0, 'product'); ?>',
+			'  <?php echo functions::form_input_file('images[new_image][new_filename]'); ?>',
+			'  <div style="align-content: center;">',
 			'    <div class="btn-group">',
-			'      <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></a>',
-			'      <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></a>',
-			'      <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></a>',
-			'  	 </div>',
+			'      <button name="move_up" class="btn btn-default btn-sm" type="button" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></button>',
+			'      <button name="move_down" class="btn btn-default btn-sm" type="button" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></button>',
+			'      <button name="remove" class="btn btn-default btn-sm" type="button" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></button>',
+			'    </div>',
 			'  </div>',
 			'</div>'
 		].join('\n'));
@@ -999,7 +987,7 @@
 	});
 
 	$('#images').on('change', 'input[type="file"]', function(e) {
-		let img = $(this).closest('.form-group').find('img');
+		let img = $(this).closest('.image').find('img');
 		let oFReader = new FileReader();
 
 		oFReader.readAsDataURL(this.files[0]);
