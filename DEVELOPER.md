@@ -50,14 +50,14 @@ Node.js should now have installed all necessary libraries.
 
 You can now execute any of the following commands:
 
-    **npm run grunt**         (Launches all grunt tasks)
-    **npm run less**          (Compile and minify .min.css from .less)
-    **npm run uglify**        (Uglify and minify .min.js from .js)
-    **npm run replace**       (Update version number in scripts from package.js)
-    **npm run phplint**       (Check PHP scripts for syntax errors)
-    **npm run watch**         (Watch for changes in .less and .js and update minified versions on the fly)
-    **npm run hash**          (Update checksums.md5 for all tracked files)
-    **npm update**            (Update your node modules to newer versions)
+    npm run grunt         (Launches all grunt tasks)
+    npm run less          (Compile and minify .min.css from .less)
+    npm run uglify        (Uglify and minify .min.js from .js)
+    npm run replace       (Update version number in scripts from package.js)
+    npm run phplint       (Check PHP scripts for syntax errors)
+    npm run watch         (Watch for changes in .less and .js and update minified versions on the fly)
+    npm run hash          (Update checksums.md5 for all tracked files)
+    npm update            (Update your node modules to newer versions)
 
 
 # How To Make a Git Pull Request
