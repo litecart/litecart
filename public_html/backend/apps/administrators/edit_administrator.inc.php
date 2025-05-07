@@ -20,11 +20,11 @@
 		try {
 
 			if (empty($_POST['username'])) {
-				throw new Exception(language::translate('error_must_enter_username', 'You must enter a username'));
+				throw new Exception(language::translate('error_must_provide_username', 'You must provide a username'));
 			}
 
 			if (empty($administrator->data['id']) && empty($_POST['password'])) {
-				throw new Exception(language::translate('error_must_enter_password', 'You must enter a password'));
+				throw new Exception(language::translate('error_must_provide_password', 'You must provide a password'));
 			}
 
 			if (!empty($_POST['two_factor_auth']) && empty($_POST['email'])) {
@@ -32,7 +32,7 @@
 			}
 
 			if (!empty($_POST['password']) && empty($_POST['confirmed_password'])) {
-				throw new Exception(language::translate('error_must_enter_confirmed_password', 'You must confirm the password'));
+				throw new Exception(language::translate('error_must_confirm_password', 'You must confirm the password'));
 			}
 
 			if (!empty($_POST['password']) && $_POST['password'] != $_POST['confirmed_password']) {
@@ -87,7 +87,7 @@
 		try {
 
 			if (empty($administrator->data['id'])) {
-				throw new Exception(language::translate('error_must_provide_administrator', 'You must provide a administrator'));
+				throw new Exception(language::translate('error_must_provide_administrator', 'You must provide an administrator'));
 			}
 
 			$administrator->delete();

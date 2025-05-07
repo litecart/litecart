@@ -25,7 +25,7 @@
 		try {
 
 			if (empty($_POST['name'])) {
-				throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
 			}
 
 			if (!empty($_POST['code'])) {

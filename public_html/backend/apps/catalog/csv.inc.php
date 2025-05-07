@@ -43,7 +43,7 @@
 				}
 
 				if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
-					throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+					throw new Exception(language::translate('error_must_select_file_upload', 'You must select a file to upload'));
 				}
 
 				if (!empty($_FILES['file']['error'])) {
@@ -1205,7 +1205,7 @@
 				case 'attributes':
 
 					if (empty($_POST['language_code'])) {
-						throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+						throw new Exception(language::translate('error_must_select_language', 'You must select a language'));
 					}
 
 					$csv = database::query(
@@ -1227,7 +1227,7 @@
 				case 'brands':
 
 					if (empty($_POST['language_code'])) {
-						throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+						throw new Exception(language::translate('error_must_select_language', 'You must select a language'));
 					}
 
 					$csv = database::query(
@@ -1266,7 +1266,7 @@
 				case 'categories':
 
 					if (empty($_POST['language_code'])) {
-						throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+						throw new Exception(language::translate('error_must_select_language', 'You must select a language'));
 					}
 
 					$csv = database::query(
@@ -1292,11 +1292,11 @@
 				case 'products':
 
 					if (empty($_POST['language_code'])) {
-						throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+						throw new Exception(language::translate('error_must_select_language', 'You must select a language'));
 					}
 
 					if (empty($_POST['currency_code'])) {
-						throw new Exception(language::translate('error_must_select_a_currency', 'You must select a currency'));
+						throw new Exception(language::translate('error_must_select_currency', 'You must select a currency'));
 					}
 
 					$csv = database::query(

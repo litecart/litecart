@@ -20,17 +20,17 @@
 		try {
 
 			if (empty($_POST['name'])) {
-				throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
 			}
 
 			if (empty($banner->data['id'])) {
 
 				if (empty($_POST['html']) && empty($_FILES['image'])) {
-					throw new Exception(language::translate('error_must_upload_image_or_enter_html', 'You must upload an image or enter HTML'));
+					throw new Exception(language::translate('error_must_upload_image_or_html', 'You must upload an image or provide HTML'));
 				}
 
 				if (!empty($_POST['image']) && empty($_POST['link'])) {
-					throw new Exception(language::translate('error_must_enter_link', 'You must enter a target link'));
+					throw new Exception(language::translate('error_must_provide_link', 'You must provide a target link'));
 				}
 			}
 

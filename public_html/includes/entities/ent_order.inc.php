@@ -564,211 +564,226 @@
 			$this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
 		}
 
-		public function validate($shipping = null, $payment = null) {
+		public function validate($filters=[], $shipping = null, $payment = null) {
+
+			if (!is_array($filters)) {
+				$filters = [];
+			}
 
 			// Items
 
-			if (empty($this->data['items'])) {
-				return language::translate('error_order_missing_items', 'The order does not contain any items');
-			}
+			if (empty($filters) || in_array('customer', $filters)) {
 
-			foreach ($this->data['items'] as $item) {
-				if (!empty($item['error'])) {
-					return language::translate('error_cart_contains_errors', 'Your cart contains errors');
+				if (empty($this->data['items'])) {
+					return language::translate('error_order_missing_items', 'The order does not contain any items');
 				}
-			}
 
-			if ($this->data['total'] < 0) {
-				return language::translate('error_total_cannot_be_a_negative_amount', 'The total cannot be a negative amount');
+				foreach ($this->data['items'] as $item) {
+					if (!empty($item['error'])) {
+						return language::translate('error_cart_contains_errors', 'Your cart contains errors');
+					}
+				}
+
+				if ($this->data['total'] < 0) {
+					return language::translate('error_total_cannot_be_a_negative_amount', 'The total cannot be a negative amount');
+				}
 			}
 
 			// Customer Details
 
-			try {
+			if (empty($filters) || in_array('customer', $filters)) {
 
-				if (empty($this->data['customer']['firstname'])) {
-					throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
-				}
+				try {
 
-				if (empty($this->data['customer']['lastname'])) {
-					throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
-				}
+					if (empty($this->data['customer']['firstname'])) {
+						throw new Exception(language::translate('error_must_provide_firstname', 'You must provide a first name'));
+					}
 
-				if (empty($this->data['customer']['address1'])) {
-					throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
-				}
+					if (empty($this->data['customer']['lastname'])) {
+						throw new Exception(language::translate('error_must_provide_lastname', 'You must provide a last name'));
+					}
 
-				if (empty($this->data['customer']['city'])) {
-					throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
-				}
+					if (empty($this->data['customer']['address1'])) {
+						throw new Exception(language::translate('error_must_provide_address1', 'You must provide an address'));
+					}
 
-				if (empty($this->data['customer']['country_code'])) {
-					throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
-				}
+					if (empty($this->data['customer']['city'])) {
+						throw new Exception(language::translate('error_must_provide_city', 'You must provide a city'));
+					}
 
-				if (empty($this->data['customer']['email'])) {
-					throw new Exception(language::translate('error_missing_email', 'You must enter an email address.'));
-				}
+					if (empty($this->data['customer']['country_code'])) {
+						throw new Exception(language::translate('error_must_select_country', 'You must select a country'));
+					}
 
-				if (empty($this->data['customer']['phone'])) {
-					throw new Exception(language::translate('error_missing_phone', 'You must enter a phone number.'));
-				}
+					if (empty($this->data['customer']['email'])) {
+						throw new Exception(language::translate('error_must_provide_email', 'You must provide an email address'));
+					}
 
-				if (!functions::validate_email($this->data['customer']['email'])) {
-					throw new Exception(language::translate('error_invalid_email_address', 'Invalid email address'));
-				}
+					if (empty($this->data['customer']['phone'])) {
+						throw new Exception(language::translate('error_must_provide_phone', 'You must provide a phone number'));
+					}
 
-				if (reference::country($this->data['customer']['country_code'])->tax_id_format) {
-					if (!empty($this->data['customer']['tax_id'])) {
-						if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->tax_id_format .'#i', $this->data['customer']['tax_id'])) {
-							throw new Exception(language::translate('error_invalid_tax_id_format', 'Invalid tax ID format'));
+					if (!functions::validate_email($this->data['customer']['email'])) {
+						throw new Exception(language::translate('error_invalid_email_address', 'Invalid email address'));
+					}
+
+					if (reference::country($this->data['customer']['country_code'])->tax_id_format) {
+						if (!empty($this->data['customer']['tax_id'])) {
+							if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->tax_id_format .'#i', $this->data['customer']['tax_id'])) {
+								throw new Exception(language::translate('error_invalid_tax_id_format', 'Invalid tax ID format'));
+							}
 						}
 					}
-				}
 
-				if (reference::country($this->data['customer']['country_code'])->postcode_format) {
-					if (!empty($this->data['customer']['postcode'])) {
-						if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->postcode_format .'#i', $this->data['customer']['postcode'])) {
-							throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format'));
-						}
-					} else {
-						throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode'));
-					}
-				}
-
-				if (settings::get('customer_field_zone') && reference::country($this->data['customer']['country_code'])->zones) {
-					if (empty($this->data['customer']['zone_code']) && reference::country($this->data['customer']['country_code'])->zones) {
-						throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
-					}
-				}
-
-				if (empty($this->data['customer']['id'])) {
-
-					if (!database::query(
-						"select id from ". DB_TABLE_PREFIX ."customers
-						where email = '". database::input($this->data['customer']['email']) ."'
-						and status = 0
-						limit 1;"
-					)->num_rows) {
-						throw new Exception(language::translate('error_customer_account_is_disabled', 'The customer account is disabled'));
-					}
-				}
-
-			} catch (Exception $e) {
-				return language::translate('title_customer_details', 'Customer Details') .': '. $e->getMessage();
-			}
-
-			try {
-
-				if (!empty($this->data['customer']['different_shipping_address'])) {
-
-					if (empty($this->data['customer']['shipping_address']['firstname'])) {
-						throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
-					}
-
-					if (empty($this->data['customer']['shipping_address']['lastname'])) {
-						throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
-					}
-
-					if (empty($this->data['customer']['shipping_address']['address1'])) {
-						throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
-					}
-
-					if (empty($this->data['customer']['shipping_address']['city'])) {
-						throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
-					}
-
-					if (empty($this->data['customer']['shipping_address']['country_code'])) {
-						throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
-					}
-
-					if (reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format) {
-						if (!empty($this->data['customer']['shipping_address']['postcode'])) {
-							if (!preg_match('#'. reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format .'#i', $this->data['customer']['shipping_address']['postcode'])) {
-								throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format.'));
+					if (reference::country($this->data['customer']['country_code'])->postcode_format) {
+						if (!empty($this->data['customer']['postcode'])) {
+							if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->postcode_format .'#i', $this->data['customer']['postcode'])) {
+								throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format'));
 							}
 						} else {
-							throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
+							throw new Exception(language::translate('error_must_provide_postcode', 'You must provide a postcode'));
 						}
 					}
 
-					if (settings::get('customer_field_zone') && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) {
-						if (empty($this->data['customer']['shipping_address']['zone_code']) && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) {
-							return language::translate('error_missing_zone', 'You must select a zone.');
+					if (settings::get('customer_field_zone') && reference::country($this->data['customer']['country_code'])->zones) {
+						if (empty($this->data['customer']['zone_code']) && reference::country($this->data['customer']['country_code'])->zones) {
+							throw new Exception(language::translate('error_must_select_zone', 'You must select a zone.'));
 						}
 					}
+
+					if (empty($this->data['customer']['id'])) {
+
+						if (!database::query(
+							"select id from ". DB_TABLE_PREFIX ."customers
+							where email = '". database::input($this->data['customer']['email']) ."'
+							and status = 0
+							limit 1;"
+						)->num_rows) {
+							throw new Exception(language::translate('error_customer_account_is_disabled', 'The customer account is disabled'));
+						}
+					}
+
+				} catch (Exception $e) {
+					return language::translate('title_customer_details', 'Customer Details') .': '. $e->getMessage();
 				}
 
-			} catch (Exception $e) {
-				return language::translate('title_shipping_address', 'Shipping Address') .': '. $e->getMessage();
-			}
+				try {
 
-			// Additional Customer Validation
+					if (!empty($this->data['customer']['different_shipping_address'])) {
 
-			$mod_customer = new mod_customer();
-			$result = $mod_customer->validate($this->data['customer']);
+						if (empty($this->data['customer']['shipping_address']['firstname'])) {
+							throw new Exception(language::translate('error_must_provide_firstname', 'You must provide a first name'));
+						}
 
-			if (!empty($result['error'])) {
-				return $result['error'];
-			}
+						if (empty($this->data['customer']['shipping_address']['lastname'])) {
+							throw new Exception(language::translate('error_must_provide_lastname', 'You must provide a last name'));
+						}
 
-			// Shipping Option
+						if (empty($this->data['customer']['shipping_address']['address1'])) {
+							throw new Exception(language::translate('error_must_provide_address1', 'You must provide an address'));
+						}
 
-			if (!empty($shipping->modules) && count($shipping->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
+						if (empty($this->data['customer']['shipping_address']['city'])) {
+							throw new Exception(language::translate('error_must_provide_city', 'You must provide a city'));
+						}
 
-				if (!empty($this->data['shipping_option']['id'])) {
+						if (empty($this->data['customer']['shipping_address']['country_code'])) {
+							throw new Exception(language::translate('error_must_select_country', 'You must select a country'));
+						}
 
-					list($module_id, $option_id) = $this->data['shipping_option']['id'] ? preg_split('#:#', $this->data['shipping_option']['id'], 2) : ['', ''];
+						if (reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format) {
+							if (!empty($this->data['customer']['shipping_address']['postcode'])) {
+								if (!preg_match('#'. reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format .'#i', $this->data['customer']['shipping_address']['postcode'])) {
+									throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format.'));
+								}
+							} else {
+								throw new Exception(language::translate('error_must_provide_postcode', 'You must provide a postcode'));
+							}
+						}
 
-					if (empty($shipping->data['options'][$module_id]['options'][$option_id])) {
-						return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
+						if (settings::get('customer_field_zone') && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) {
+							if (empty($this->data['customer']['shipping_address']['zone_code']) && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) {
+								return language::translate('error_must_select_zone', 'You must select a zone');
+							}
+						}
 					}
 
-					if (!empty($shipping->data['options'][$module_id]['options'][$option_id]['error'])) {
-						return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains errors');
-					}
+				} catch (Exception $e) {
+					return language::translate('title_shipping_address', 'Shipping Address') .': '. $e->getMessage();
+				}
 
-					if ($error = $shipping->run('validate', $module_id, $this)) {
-						return $error;
-					}
+				// Additional Customer Validation
 
-				} else {
-					return language::translate('error_no_shipping_method_selected', 'No shipping method selected');
+				$mod_customer = new mod_customer();
+				$result = $mod_customer->validate($this->data['customer']);
+
+				if (!empty($result['error'])) {
+					return $result['error'];
+				}
+		}
+			// Shipping Option Validation
+			if (empty($filters) || in_array('customer', $filters)) {
+
+				if (!empty($shipping->modules) && count($shipping->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
+
+					if (!empty($this->data['shipping_option']['id'])) {
+
+						list($module_id, $option_id) = $this->data['shipping_option']['id'] ? preg_split('#:#', $this->data['shipping_option']['id'], 2) : ['', ''];
+
+						if (empty($shipping->data['options'][$module_id]['options'][$option_id])) {
+							return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
+						}
+
+						if (!empty($shipping->data['options'][$module_id]['options'][$option_id]['error'])) {
+							return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains errors');
+						}
+
+						if ($error = $shipping->run('validate', $module_id, $this)) {
+							return $error;
+						}
+
+					} else {
+						return language::translate('error_no_shipping_method_selected', 'No shipping method selected');
+					}
 				}
 			}
 
-			// Payment Option
+			// Payment Option Validation
+			if (empty($filters) || in_array('customer', $filters)) {
 
-			if (!empty($payment->modules) && count($payment->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
+				if (!empty($payment->modules) && count($payment->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
 
-				if (!empty($this->data['payment_option']['id'])) {
+					if (!empty($this->data['payment_option']['id'])) {
 
-					list($module_id, $option_id) = $this->data['payment_option']['id'] ? preg_split('#:#', $this->data['payment_option']['id'], 2) : ['', ''];
+						list($module_id, $option_id) = $this->data['payment_option']['id'] ? preg_split('#:#', $this->data['payment_option']['id'], 2) : ['', ''];
 
-					if (empty($payment->data['options'][$module_id]['options'][$option_id])) {
-						return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
+						if (empty($payment->data['options'][$module_id]['options'][$option_id])) {
+							return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
+						}
+
+						if (!empty($payment->data['options'][$module_id]['options'][$option_id]['error'])) {
+							return language::translate('error_payment_method_contains_error', 'The selected payment method contains errors');
+						}
+
+						if ($error = $payment->run('validate', $module_id, $this)) {
+							return $error;
+						}
+
+					} else {
+						return language::translate('error_no_payment_method_selected', 'No payment method selected');
 					}
-
-					if (!empty($payment->data['options'][$module_id]['options'][$option_id]['error'])) {
-						return language::translate('error_payment_method_contains_error', 'The selected payment method contains errors');
-					}
-
-					if ($error = $payment->run('validate', $module_id, $this)) {
-						return $error;
-					}
-
-				} else {
-					return language::translate('error_no_payment_method_selected', 'No payment method selected');
 				}
 			}
 
 			// Additional Order Validation
+			if (empty($filters) || in_array('customer', $filters)) {
 
-			$mod_order = new mod_order();
-			$result = $mod_order->validate($this);
+				$mod_order = new mod_order();
+				$result = $mod_order->validate($this);
 
-			if (!empty($result['error'])) {
-				return $result['error'];
+				if (!empty($result['error'])) {
+					return $result['error'];
+				}
 			}
 
 			return false;

@@ -31,11 +31,11 @@
 		try {
 
 			if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-				throw new Exception(language::translate('error_must_enter_your_email_Address', 'You must enter your email address'));
+				throw new Exception(language::translate('error_must_provide_email', 'You must provide an email address'));
 			}
 
 			if (empty($_POST['password'])) {
-				throw new Exception(language::translate('error_must_enter_your_password', 'You must enter your password'));
+				throw new Exception(language::translate('error_must_provide_password', 'You must provide a password'));
 			}
 
 			$customer = database::query(

@@ -25,23 +25,23 @@
 		try {
 
 			if (empty($_POST['firstname'])) {
-				throw new Exception(language::translate('error_missing_firstname', 'You must provide a firstname'));
+				throw new Exception(language::translate('error_must_provide_firstname', 'You must provide a firstname'));
 			}
 
 			if (empty($_POST['lastname'])) {
-				throw new Exception(language::translate('error_missing_lastname', 'You must provide a lastname'));
+				throw new Exception(language::translate('error_must_provide_lastname', 'You must provide a lastname'));
 			}
 
 			if (empty($_POST['subject'])) {
-				throw new Exception(language::translate('error_missing_subject', 'You must provide a subject'));
+				throw new Exception(language::translate('error_must_provide_subject', 'You must provide a subject'));
 			}
 
 			if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-				throw new Exception(language::translate('error_missing_email', 'You must provide a valid email address'));
+				throw new Exception(language::translate('error_must_provide_email', 'You must provide a valid email address'));
 			}
 
 			if (empty($_POST['message'])) {
-				throw new Exception(language::translate('error_missing_message', 'You must provide a message'));
+				throw new Exception(language::translate('error_must_provide_message', 'You must provide a message'));
 			}
 
 			if (settings::get('captcha_enabled') && !functions::captcha_validate('contact_us')) {

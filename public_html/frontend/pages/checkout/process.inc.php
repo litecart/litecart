@@ -9,7 +9,7 @@
 	}
 
 	if (empty(session::$data['checkout']['order'])) {
-		notices::add('errors', 'Missing order object');
+		notices::add('errors', language::translate('error_no_order_in_session', 'No order in session'));
 		redirect(document::ilink('checkout/index'));
 		exit;
 	}

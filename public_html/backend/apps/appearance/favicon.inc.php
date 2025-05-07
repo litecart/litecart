@@ -13,7 +13,7 @@
 		try {
 
 			if (empty($_FILES['image'])) {
-				throw new Exception(language::translate('error_missing_image', 'You must select an image'));
+				throw new Exception(language::translate('error_must_select_image', 'You must select an image'));
 			}
 
 			if (!extension_loaded('imagick')) {

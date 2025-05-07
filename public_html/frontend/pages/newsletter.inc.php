@@ -12,7 +12,7 @@
 		try {
 
 			if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-				throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
+				throw new Exception(language::translate('error_must_provide_email', 'You must provide an email address'));
 			}
 
 			if (settings::get('captcha_enabled') && !functions::captcha_validate('newsletter_subscribe')) {
@@ -90,7 +90,7 @@
 		try {
 
 			if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-				throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
+				throw new Exception(language::translate('error_must_provide_email', 'You must provide an email address'));
 			}
 
 			if (settings::get('captcha_enabled') && !functions::captcha_validate('newsletter_unsubscribe')) {

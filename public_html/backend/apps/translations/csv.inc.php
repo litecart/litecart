@@ -25,7 +25,7 @@
 			}
 
 			if (empty($csv[0]['code'])) {
-				throw new Exception(language::translate('error_missing_code_column', 'Missing column for code'));
+				throw new Exception(language::translate('error_missing_column_code', 'Missing column for code'));
 			}
 
 			$installed_language_codes = database::query(

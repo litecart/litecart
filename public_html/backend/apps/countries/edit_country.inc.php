@@ -19,20 +19,12 @@
 
 		try {
 
-			if (empty($_POST['iso_code_1'])) {
-				throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
-			}
-
-			if (empty($_POST['iso_code_2'])) {
-				throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
-			}
-
-			if (empty($_POST['iso_code_3'])) {
-				throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
+			if (empty($_POST['iso_code_1']) && empty($_POST['iso_code_2']) && empty($_POST['iso_code_3'])) {
+				throw new Exception(language::translate('error_must_provide_codes', 'You must provide all codes'));
 			}
 
 			if (empty($_POST['name'])) {
-				throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
 			}
 
 			if (empty($_POST['zones'])) {

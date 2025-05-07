@@ -27,7 +27,7 @@
 		try {
 
 			if (empty($_POST['title'])) {
-				throw new Exception(language::translate('error_missing_title', 'You must enter a title'));
+				throw new Exception(language::translate('error_must_provide_title', 'You must provide a title'));
 			}
 
 			if (empty($_POST['status'])) {

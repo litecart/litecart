@@ -3,7 +3,7 @@
 	try {
 
 		if (empty($_GET['vmod'])) {
-			throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMmod'));
+			throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
 		}
 
 		$folder = 'storage://addons/' . basename($_GET['vmod']) .'/';

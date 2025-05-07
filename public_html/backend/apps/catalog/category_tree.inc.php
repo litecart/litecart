@@ -9,7 +9,7 @@
 		try {
 
 			if (empty($_POST['categories']) && empty($_POST['products'])) {
-				throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
+				throw new Exception(language::translate('error_must_select_category_and_product', 'You must select a category or product'));
 			}
 
 			if (!empty($_POST['categories'])) {
@@ -41,7 +41,7 @@
 		try {
 
 			if (empty($_POST['categories']) && empty($_POST['products'])) {
-				throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
+				throw new Exception(language::translate('error_must_select_select_category_and_product', 'You must select a category or product'));
 			}
 
 			if (!empty($_POST['categories'])) {
@@ -145,7 +145,7 @@
 		try {
 
 			if (empty($_POST['categories']) && empty($_POST['products'])) {
-				throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
+				throw new Exception(language::translate('error_must_select_category_and_product', 'You must select a category or product'));
 			}
 
 			if (isset($_POST['category_id']) && $_POST['category_id'] == '') {
@@ -194,7 +194,7 @@
 		try {
 
 			if (empty($_POST['categories']) && empty($_POST['products'])) {
-				throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
+				throw new Exception(language::translate('error_must_select_category_and_product', 'You must select a category or product'));
 			}
 
 			if (empty($_GET['category_id'])) {
@@ -240,7 +240,7 @@
 		try {
 
 			if (empty($_POST['categories']) && empty($_POST['products'])) {
-				throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
+				throw new Exception(language::translate('error_must_select_category_and_product', 'You must select a category or product'));
 			}
 
 			if (!empty($_POST['products'])) {

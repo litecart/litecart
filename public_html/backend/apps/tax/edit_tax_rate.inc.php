@@ -20,7 +20,7 @@
 		try {
 
 			if (empty($_POST['name'])) {
-				throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
 			}
 
 			if (empty($_POST['geo_zone_id'])) {
@@ -32,7 +32,7 @@
 			}
 
 			if (empty($_POST['rate'])) {
-				throw new Exception(language::translate('error_must_enter_rate', 'You must enter a rate'));
+				throw new Exception(language::translate('error_must_provide_rate', 'You must provide a rate'));
 			}
 
 			if (empty($_POST['rule_companies_with_tax_id'])) {

@@ -30,7 +30,7 @@
 		try {
 
 			if (empty($_POST['code'])) {
-				throw new Exception(language::translate('error_must_enter_authentication_code', 'You must enter verification code'));
+				throw new Exception(language::translate('error_must_provide_verification_code', 'You must provide a verification code'));
 			}
 
 			if ($_POST['code'] != session::$data['security_verification']['code']) {

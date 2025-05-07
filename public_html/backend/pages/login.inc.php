@@ -18,11 +18,11 @@
 			}
 
 			if (empty($_POST['username'])) {
-				throw new Exception(language::translate('error_must_enter_your_username_or_email', 'You must enter your username or email address'));
+				throw new Exception(language::translate('error_must_provide_username_or_email', 'You must provide your username or email address'));
 			}
 
 			if (empty($_POST['password'])) {
-				throw new Exception(language::translate('error_must_enter_your_password', 'You must enter your password'));
+				throw new Exception(language::translate('error_must_provide_password', 'You must provide a password'));
 			}
 
 			$administrator = database::query(

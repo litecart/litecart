@@ -22,11 +22,11 @@
 		try {
 
 			if (empty($_POST['code'])) {
-				throw new Exception(language::translate('error_must_enter_code', 'You must enter a code'));
+				throw new Exception(language::translate('error_must_provide_code', 'You must provide a code'));
 			}
 
 			if (empty($_POST['name'])) {
-				throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
 			}
 
 			if (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain') {

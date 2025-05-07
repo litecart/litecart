@@ -22,15 +22,15 @@
 			$_POST['code'] = strtoupper($_POST['code']);
 
 			if (empty($_POST['code'])) {
-				throw new Exception(language::translate('error_must_enter_code', 'You must enter a code'));
+				throw new Exception(language::translate('error_must_provide_code', 'You must provide a code'));
 			}
 
 			if (empty($_POST['name'])) {
-				throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
 			}
 
 			if (empty($_POST['value'])) {
-				throw new Exception(language::translate('error_must_enter_value', 'You must enter a value'));
+				throw new Exception(language::translate('error_must_provide_value', 'You must provide a value'));
 			}
 
 			if ((!empty($_POST['set_store']) || $_POST['code'] == settings::get('store_currency_code')) && (float)$_POST['value'] != 1) {

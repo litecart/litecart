@@ -61,7 +61,7 @@
 				try {
 
 					if (empty($_POST['customer']['email']) || !filter_var($_POST['customer']['email'], FILTER_VALIDATE_EMAIL)) {
-						throw new Exception(language::translate('error_missing_email', 'You must enter an email address'));
+						throw new Exception(language::translate('error_must_provide_email', 'You must provide an email address'));
 					}
 
 					if (!functions::validate_email($_POST['customer']['email'])) {
@@ -75,7 +75,7 @@
 					)->num_rows) {
 
 						if (empty($_POST['password'])) {
-							throw new Exception(language::translate('error_missing_password', 'You must enter a password'));
+							throw new Exception(language::translate('error_must_provide_password', 'You must provide a password'));
 						}
 
 						if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']) {

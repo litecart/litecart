@@ -51,11 +51,11 @@
 				}
 
 				if (empty($_POST['new_password'])) {
-					throw new Exception(language::translate('error_missing_password', 'You must enter a password.'));
+					throw new Exception(language::translate('error_must_provide_password', 'You must provide a password'));
 				}
 
 				if (empty($_POST['confirmed_password'])) {
-					throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password.'));
+					throw new Exception(language::translate('error_must_confirm_password', 'You must confirm your password'));
 				}
 
 				if ($_POST['new_password'] != $_POST['confirmed_password']) {

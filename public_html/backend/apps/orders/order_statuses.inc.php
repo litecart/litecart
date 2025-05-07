@@ -14,7 +14,7 @@
 		try {
 
 			if (empty($_POST['from_order_status_id'])) {
-				throw new Exception(language::translate('error_missing_from_order_status', 'Please select a from order status'));
+				throw new Exception(language::translate('error_must_select_from_order_status', 'You must select "from" order status'));
 			}
 
 			$num_orders = 0;
