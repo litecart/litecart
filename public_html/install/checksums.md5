@@ -420,9 +420,9 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/fonts/index.
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/images/index.html
 e6e2336e113f1248d03214ca228984d5	includes/templates/default.catalog/images/loader.svg
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/index.html
-843242b7eec8ab7c0d4be03428287fad	includes/templates/default.catalog/js/app.js
-4b48f0381045fcd4436978d63698de40	includes/templates/default.catalog/js/app.min.js
-fd831d6355d00cfd59a513e909d62da4	includes/templates/default.catalog/js/app.min.js.map
+be31f4a1bb9f28c87386cbfcea8dd861	includes/templates/default.catalog/js/app.js
+8421cd62c07b37878e359d45ca697b53	includes/templates/default.catalog/js/app.min.js
+15419e7e1c6bcdc8829fa14d71746c18	includes/templates/default.catalog/js/app.min.js.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/js/index.html
 06037af6e6e1dc266fee3de3495281a3	includes/templates/default.catalog/layouts/ajax.inc.php
 9f1c0d9a701dcdd5bef54d9a2878fd2d	includes/templates/default.catalog/layouts/blank.inc.php
