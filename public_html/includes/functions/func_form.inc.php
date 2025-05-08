@@ -1230,10 +1230,11 @@
 	function form_select_campaign($name, $input=true, $parameters='') {
 
 		$options = database::query(
-			"select id, name, date_valid_from, date_valid_to from ". DB_TABLE_PREFIX ."campaigns
+			"select id, name, valid_from, valid_to
+			from ". DB_TABLE_PREFIX ."campaigns
 			order by status desc, name asc;"
 		)->fetch_all(function($campaign){
-			return [$campaign['id'], $campaign['name'], 'data-valid-from="'. ($campaign['date_valid_from'] ? functions::datetime_when($campaign['date_valid_from']) : '') .'" data-valid-to="'. ($campaign['date_valid_to'] ? functions::datetime_when($campaign['date_valid_to']) : '') .'"'];
+			return [$campaign['id'], $campaign['name'], 'data-valid-from="'. ($campaign['valid_from'] ? functions::datetime_when($campaign['valid_from']) : '') .'" data-valid-to="'. ($campaign['valid_to'] ? functions::datetime_when($campaign['valid_to']) : '') .'"'];
 		});
 
 		if (preg_match('#\[\]$#', $name)) {

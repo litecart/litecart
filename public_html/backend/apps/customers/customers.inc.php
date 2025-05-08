@@ -159,7 +159,7 @@
 					</td>
 					<td><?php echo $customer['email']; ?></a></td>
 					<td><?php echo $customer['company']; ?></td>
-					<td><?php echo $customer['last_host']; ?></td>
+					<td><?php echo $customer['last_hostname']; ?></td>
 					<td class="text-center"><?php echo $customer['group_name']; ?></td>
 					<td class="text-end"><?php echo functions::datetime_when($customer['created_at']); ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>

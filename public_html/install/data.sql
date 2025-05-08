@@ -1,4 +1,4 @@
-INSERT INTO `lc_banners` (`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `date_valid_from`, `date_valid_to`, `updated_at`, `created_at`) VALUES
+INSERT INTO `lc_banners` (`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `valid_from`, `valid_to`, `updated_at`, `created_at`) VALUES
 (1, 1, 'Jumbotron', '', '', 'banners/jumbotron.svg', '', 'jumbotron', 0, 0, NULL, NULL, NOW(), NOW()),
 (2, 1, 'Left', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Left</div>', '', '', 'left', 0, 0, NULL, NULL, NOW(), NOW()),
 (3, 1, 'Middle', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Middle</div>', '', '', 'middle', 0, 0, NULL, NULL, NOW(), NOW()),

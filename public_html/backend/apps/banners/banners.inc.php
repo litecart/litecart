@@ -88,8 +88,8 @@
 					<td class="text-end"><?php echo $banner['total_clicks']; ?></td>
 					<td class="text-end"><?php echo $banner['total_views']; ?></td>
 					<td class="text-end"><?php echo !empty($banner['total_clicks']) ? '1:'.round($banner['total_views']/$banner['total_clicks']) : '-'; ?></td>
-					<td class="text-center"><?php echo $banner['date_valid_from'] ? functions::datetime_when($banner['date_valid_from']) : '-'; ?></td>
-					<td class="text-center"><?php echo $banner['date_valid_to'] ? functions::datetime_when($banner['date_valid_to']) : '-'; ?></td>
+					<td class="text-center"><?php echo $banner['valid_from'] ? functions::datetime_when($banner['valid_from']) : '-'; ?></td>
+					<td class="text-center"><?php echo $banner['valid_to'] ? functions::datetime_when($banner['valid_to']) : '-'; ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>

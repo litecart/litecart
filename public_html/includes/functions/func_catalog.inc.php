@@ -228,8 +228,8 @@
 				". fallback($sql_where_attributes) ."
 				". (!empty($filter['brands']) ? "and p.brand_id in ('". implode("', '", database::input($filter['brands'])) ."')" : null) ."
 				". (!empty($filter['keywords']) ? "and (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
-				and (p.date_valid_from is null or p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
-				and (p.date_valid_to is null or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
+				and (p.valid_from is null or p.valid_from <= '". date('Y-m-d H:i:s') ."')
+				and (p.valid_to is null or p.valid_to >= '". date('Y-m-d H:i:s') ."')
 				". (!empty($filter['purchased']) ? "and p.purchases" : "") ."
 				". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : "") ."
 
@@ -260,8 +260,8 @@
 				where campaign_id in (
 					select id from ". DB_TABLE_PREFIX ."campaigns
 					where status
-					and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
-					and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."')
+					and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
+					and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
 				)
 				group by product_id
 				order by $sql_column_price asc
@@ -466,8 +466,8 @@
 				from ". DB_TABLE_PREFIX ."products p
 				where status
 				". (!empty($sql_inner_where) ? implode(" and ", $sql_inner_where) : "")."
-				and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
-				and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."')
+				and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
+				and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
 				having relevance > 0
 			) p
 
@@ -493,8 +493,8 @@
 				where campaign_id in (
 					select id from ". DB_TABLE_PREFIX ."campaigns
 					where status
-					and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
-					and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."')
+					and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
+					and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
 				)
 				group by product_id
 				order by $sql_column_price asc

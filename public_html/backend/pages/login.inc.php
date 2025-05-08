@@ -43,12 +43,12 @@
 				throw new Exception(language::translate('error_administrator_account_disabled', 'The administrator account is disabled'));
 			}
 
-			if (!empty($administrator['date_valid_from']) && date('Y-m-d H:i:s') < $administrator['date_valid_from']) {
-				throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), functions::datetime_format('datetime', $administrator['date_valid_from'])));
+			if (!empty($administrator['valid_from']) && date('Y-m-d H:i:s') < $administrator['valid_from']) {
+				throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), functions::datetime_format('datetime', $administrator['valid_from'])));
 			}
 
-			if (!empty($administrator['date_valid_to']) && date('Y-m-d H:i:s') > $administrator['date_valid_to']) {
-				throw new Exception(sprintf(language::translate('error_account_expired', 'The account expired %s'), functions::datetime_format('datetime', $administrator['date_valid_to'])));
+			if (!empty($administrator['valid_to']) && date('Y-m-d H:i:s') > $administrator['valid_to']) {
+				throw new Exception(sprintf(language::translate('error_account_expired', 'The account expired %s'), functions::datetime_format('datetime', $administrator['valid_to'])));
 			}
 
 			if (!password_verify($_POST['password'], $administrator['password_hash'])) {
@@ -69,7 +69,7 @@
 					database::query(
 						"update ". DB_TABLE_PREFIX ."administrators
 						set login_attempts = 0,
-						date_valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
+						valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
 						where id = ". (int)$administrator['id'] ."
 						limit 1;"
 					);
@@ -134,7 +134,7 @@
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
 					login_attempts = 0,
 					total_logins = total_logins + 1,
-					date_login = '". date('Y-m-d H:i:s') ."'
+					last_login = '". date('Y-m-d H:i:s') ."'
 				where id = ". (int)$administrator['id'] ."
 				limit 1;"
 			);

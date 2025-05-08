@@ -52,8 +52,8 @@
 				throw new Exception(language::translate('error_customer_account_disabled_or_not_activated', 'The customer account is disabled or not activated'));
 			}
 
-			if ($customer['date_blocked_until'] && strtotime($customer['date_blocked_until']) > time()) {
-				throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), functions::datetime_format('datetime', $customer['date_blocked_until'])));
+			if ($customer['blocked_until'] && strtotime($customer['blocked_until']) > time()) {
+				throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), functions::datetime_format('datetime', $customer['blocked_until'])));
 			}
 
 			if (!password_verify($_POST['password'], $customer['password_hash'])) {
@@ -74,7 +74,7 @@
 					database::query(
 						"update ". DB_TABLE_PREFIX ."customers
 						set login_attempts = 0,
-						date_blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
+						blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
 						where id = ". (int)$customer['id'] ."
 						limit 1;"
 					);
@@ -97,9 +97,9 @@
 				set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 					last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
+					last_login = '". date('Y-m-d H:i:s') ."'
 					login_attempts = 0,
-					num_logins = num_logins + 1,
-					date_login = '". date('Y-m-d H:i:s') ."'
+					total_logins = total_logins + 1,
 				where id = ". (int)$customer['id'] ."
 				limit 1;"
 			);

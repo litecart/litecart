@@ -18,7 +18,7 @@
 				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
 			}
 
-			if ($_POST['date_valid_from'] > $_POST['date_valid_to']) {
+			if ($_POST['valid_from'] > $_POST['valid_to']) {
 				throw new Exception(language::translate('error_svalid_from_cannot_be_later_than_valid_to', 'The valid from cannot be later than valid to'));
 			}
 
@@ -29,8 +29,8 @@
 			foreach ([
 				'status',
 				'name',
-				'date_valid_from',
-				'date_valid_to',
+				'valid_from',
+				'valid_to',
 				'products',
 			] as $field) {
 				if (isset($_POST[$field])) {
@@ -107,14 +107,14 @@
 					<div class="col-md-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_valid_from', 'Valid From'); ?></div>
-							<?php echo functions::form_input_datetime('date_valid_from', true); ?>
+							<?php echo functions::form_input_datetime('valid_from', true); ?>
 						</label>
 					</div>
 
 					<div class="col-md-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_valid_to', 'Valid To'); ?></div>
-							<?php echo functions::form_input_datetime('date_valid_to', true); ?>
+							<?php echo functions::form_input_datetime('valid_to', true); ?>
 						</label>
 					</div>
 				</div>

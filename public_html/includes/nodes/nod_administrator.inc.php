@@ -24,8 +24,8 @@
 						"select * from ". DB_TABLE_PREFIX ."administrators
 						where lower(username) = lower('". database::input($username) ."')
 						and status
-						and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
-						and (date_valid_to is null or date_valid_to > '". date('Y-m-d H:i:s') ."')
+						and (valid_from is null or valid_from < '". date('Y-m-d H:i:s') ."')
+						and (valid_to is null or valid_to > '". date('Y-m-d H:i:s') ."')
 						limit 1;"
 					)->fetch();
 
@@ -48,7 +48,7 @@
 							database::query(
 								"update ". DB_TABLE_PREFIX ."administrators
 								set login_attempts = 0,
-								date_valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
+								valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
 								where id = ". (int)$administrator['id'] ."
 								limit 1;"
 							);
@@ -66,7 +66,7 @@
 							last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
 							login_attempts = 0,
 							total_logins = total_logins + 1,
-							date_login = '". date('Y-m-d H:i:s') ."'
+							last_login = '". date('Y-m-d H:i:s') ."'
 						where id = ". (int)$administrator['id'] ."
 						limit 1;"
 					);
@@ -101,7 +101,7 @@
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."administrators
-					set date_active = '". date('Y-m-d H:i:s') ."'
+					set last_active = '". date('Y-m-d H:i:s') ."'
 					where id = ". (int)self::$data['id'] ."
 					limit 1;"
 				);

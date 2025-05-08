@@ -54,7 +54,7 @@
 						'total_amount' => $order->data['total'],
 						'error' => $result['error'],
 					],
-					'date_expires' => strtotime('+12 months'),
+					'expires_at' => strtotime('+12 months'),
 				]);
 
 				notices::add('errors', $result['error']);
@@ -121,7 +121,7 @@
 			'payment_option_id' => $order->data['payment_option']['id'],
 			'total_amount' => $order->data['total'],
 		],
-		'date_expires' => strtotime('+12 months'),
+		'expires_at' => strtotime('+12 months'),
 	]);
 
 	// Clean up cart

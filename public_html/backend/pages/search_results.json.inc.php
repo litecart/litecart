@@ -37,7 +37,7 @@
 			'data' => [
 				'query' => $_GET['query'],
 			],
-			'date_expires' => strtotime('+12 months'),
+			'expires_at' => strtotime('+12 months'),
 		]);
 
 	} catch(Exception $e) {

@@ -52,7 +52,7 @@
 							database::query(
 								"update ". DB_TABLE_PREFIX ."customers
 								set login_attempts = 0,
-								date_blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
+								blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
 								where id = ". (int)$customer['id'] ."
 								limit 1;"
 							);
@@ -71,7 +71,7 @@
 							last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
 							login_attempts = 0,
 							total_logins = total_logins + 1,
-							date_login = '". date('Y-m-d H:i:s') ."'
+							last_login = '". date('Y-m-d H:i:s') ."'
 						where id = ". (int)$customer['id'] ."
 						limit 1;"
 					);
@@ -376,7 +376,7 @@
 				'ip_address' => isset($event['ip_address']) ? $event['ip_address'] : $_SERVER['REMOTE_ADDR'],
 				'hostname' => isset($event['hostname']) ? $event['hostname'] : gethostbyaddr(isset($event['ip_address']) ? $event['ip_address'] : $_SERVER['REMOTE_ADDR']),
 				'user_agent' => isset($event['user_agent']) ? $event['user_agent'] : $_SERVER['HTTP_USER_AGENT'],
-				'date_expires' => isset($event['date_expires']) ? date('Y-m-d H:i:s', strtotime($event['date_expires'])) : date('Y-m-d H:i:s', strtotime('+3 months')),
+				'expires_at' => isset($event['expires_at']) ? date('Y-m-d H:i:s', strtotime($event['expires_at'])) : date('Y-m-d H:i:s', strtotime('+3 months')),
 				'created_at' => date('Y-m-d H:i:s'),
 			];
 

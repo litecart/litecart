@@ -79,8 +79,8 @@
 					". (!empty($this->data['image']) ? "image = '" . database::input($this->data['image']) . "'," : '') ."
 					html = '". database::input($this->data['html'], true) ."',
 					keywords = '". database::input($this->data['keywords']) ."',
-					date_valid_from = ". (!empty($this->data['date_valid_from']) ? "'". database::input($this->data['date_valid_from']) ."'" : "null") .",
-					date_valid_to = ". (!empty($this->data['date_valid_to']) ? "'". database::input($this->data['date_valid_to']) ."'" : "null") .",
+					valid_from = ". (!empty($this->data['valid_from']) ? "'". database::input($this->data['valid_from']) ."'" : "null") .",
+					valid_to = ". (!empty($this->data['valid_to']) ? "'". database::input($this->data['valid_to']) ."'" : "null") .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"

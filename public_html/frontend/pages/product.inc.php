@@ -26,11 +26,11 @@
 		return;
 	}
 
-	if ($product->date_valid_from && $product->date_valid_from > date('Y-m-d H:i:s')) {
-		notices::add('errors', sprintf(language::translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), functions::datetime_format('date', $product->date_valid_from)));
+	if ($product->valid_from && $product->valid_from > date('Y-m-d H:i:s')) {
+		notices::add('errors', sprintf(language::translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), functions::datetime_format('date', $product->valid_from)));
 	}
 
-	if ($product->date_valid_to && $product->date_valid_to < date('Y-m-d H:i:s')) {
+	if ($product->valid_to && $product->valid_to < date('Y-m-d H:i:s')) {
 		notices::add('errors', language::translate('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
 	}
 

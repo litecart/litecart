@@ -9,8 +9,8 @@ CREATE TABLE `lc_banners` (
 	`keywords` VARCHAR(255) NOT NULL DEFAULT '',
 	`total_views` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`total_clicks` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-	`date_valid_from` TIMESTAMP NULL DEFAULT NULL,
-	`date_valid_to` TIMESTAMP NULL DEFAULT NULL,
+	`valid_from` TIMESTAMP NULL DEFAULT NULL,
+	`valid_to` TIMESTAMP NULL DEFAULT NULL,
 	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
@@ -20,13 +20,13 @@ CREATE TABLE `lc_campaigns` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
 	`name` VARCHAR(32) NOT NULL DEFAULT '',
-	`date_valid_from` TIMESTAMP NULL DEFAULT NULL,
-	`date_valid_to` TIMESTAMP NULL DEFAULT NULL,
+	`valid_from` TIMESTAMP NULL DEFAULT NULL,
+	`valid_to` TIMESTAMP NULL DEFAULT NULL,
 	`updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `date_valid_from` (`date_valid_from`) USING BTREE,
-	INDEX `date_valid_to` (`date_valid_to`) USING BTREE,
+	INDEX `valid_from` (`valid_from`) USING BTREE,
+	INDEX `valid_to` (`valid_to`) USING BTREE,
 	INDEX `status` (`status`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `lc_customers_activity` (
 	`hostname` VARCHAR(128) NULL,
 	`user_agent` VARCHAR(248) NULL,
 	`fingerprint` VARCHAR(32) NULL,
-	`date_expires` TIMESTAMP NULL DEFAULT NULL,
+	`expires_at` TIMESTAMP NULL DEFAULT NULL,
 	`created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `customer_id` (`customer_id`) USING BTREE,
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `lc_customers_activity` (
 	INDEX `hostname` (`hostname`) USING BTREE,
 	INDEX `user_agent` (`user_agent`) USING BTREE,
 	INDEX `fingerprint` (`fingerprint`) USING BTREE,
-	INDEX `date_expires` (`date_expires`) USING BTREE
+	INDEX `expires_at` (`expires_at`) USING BTREE
 );
 -- -----
 CREATE TABLE `lc_products_references` (
@@ -96,10 +96,10 @@ CREATE TABLE `lc_redirects` (
 	`pattern` VARCHAR(248) NOT NULL DEFAULT '',
 	`destination` VARCHAR(248) NOT NULL DEFAULT '',
 	`http_response_code` enum('301','302') NOT NULL DEFAULT '301',
-	`redirects` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-	`date_redirected` TIMESTAMP NULL,
-	`date_valid_from` TIMESTAMP NULL,
-	`date_valid_to` TIMESTAMP NULL,
+	`total_redirects` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`last_redirected` TIMESTAMP NULL,
+	`valid_from` TIMESTAMP NULL,
+	`valid_to` TIMESTAMP NULL,
 	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
@@ -161,9 +161,15 @@ CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
 ADD COLUMN `firstname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `username`,
 ADD COLUMN `lastname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `firstname`,
-ADD COLUMN `two_factor_authentication` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `widgets`,
+ADD COLUMN `two_factor_auth` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `widgets`,
 ADD COLUMN `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '' AFTER `last_hostname`,
-ADD COLUMN `known_ips` VARCHAR(512) NOT NULL DEFAULT '' AFTER `last_user_agent`;
+ADD COLUMN `known_ips` VARCHAR(512) NOT NULL DEFAULT '' AFTER `two_factor_auth`,
+CHANGE COLUMN `login_attempts` `login_attempts` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `two_factor_auth`,
+CHANGE COLUMN `total_logins` `total_logins` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `login_attempts`,
+CHANGE COLUMN `date_active` `last_active` TIMESTAMP NULL DEFAULT NULL AFTER `last_user_agent`,
+CHANGE COLUMN `date_login` `last_login` TIMESTAMP NULL DEFAULT NULL AFTER `last_active`,
+CHANGE COLUMN `date_valid_from` `valid_from` TIMESTAMP NULL DEFAULT NULL AFTER `known_ips`,
+CHANGE COLUMN `date_valid_to` `valid_to` TIMESTAMP NULL DEFAULT NULL AFTER `valid_from`;
 -- ------
 ALTER TABLE `lc_attribute_groups`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -288,8 +294,12 @@ CHANGE COLUMN `total_logins` `total_logins` INT(10) UNSIGNED NOT NULL DEFAULT '0
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '',
+CHANGE COLUMN `date_login` `last_login` TIMESTAMP NULL DEFAULT NULL AFTER `last_user_agent`,
+CHANGE COLUMN `date_blocked_until` `blocked_until` TIMESTAMP NULL DEFAULT NULL AFTER `last_login`,
 ADD COLUMN `shipping_email` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_phone`,
 ADD COLUMN `group_id` INT UNSIGNED NULL AFTER `id`,
+ADD COLUMN `known_ips` VARCHAR(512) NOT NULL DEFAULT '' AFTER `total_logins`,
+ADD COLUMN `last_active` TIMESTAMP NULL DEFAULT NULL AFTER `last_login`,
 ADD INDEX `group_id` (`group_id`);
 -- -----
 ALTER TABLE `lc_delivery_statuses`
@@ -323,6 +333,8 @@ ADD INDEX `code2` (`code2`);
 ALTER TABLE `lc_modules`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
+CHANGE COLUMN `date_pushed` `last_pushed` TIMESTAMP NULL DEFAULT NULL AFTER `last_log`;
+CHANGE COLUMN `date_processed` `last_processed` TIMESTAMP NULL DEFAULT NULL AFTER `last_pushed`;
 -- -----
 ALTER TABLE `lc_newsletter_recipients`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -330,8 +342,7 @@ CHANGE COLUMN `client_ip` `ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 ADD COLUMN `subscribed` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1' AFTER `id`,
 ADD COLUMN `country_code` CHAR(2) NULL AFTER `email`,
 ADD COLUMN `language_code` CHAR(2) NULL AFTER `country_code`,
-ADD COLUMN `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER `user_agent`,
-CHANGE COLUMN `date_created` `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `updated_at`,
+ADD COLUMN `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER `user_agent`
 ADD INDEX `subscribed` (`subscribed`);
 -- -----
 ALTER TABLE `lc_orders`
@@ -488,9 +499,15 @@ ADD COLUMN `synonyms` TEXT NOT NULL DEFAULT '{}' AFTER `description`,
 ADD COLUMN `head_title` TEXT NOT NULL DEFAULT '{}' AFTER `synonyms`,
 ADD COLUMN `meta_description` TEXT NOT NULL DEFAULT '{}' AFTER `head_title`,
 ADD COLUMN `stock_option_type` ENUM('variant','bundle') NOT NULL DEFAULT 'variant' AFTER `keywords`,
+ADD COLUMN `date_valid_from` `valid_from` TIMESTAMP NULL DEFAULT NULL AFTER `purchases`,
+ADD COLUMN `date_valid_to` `valid_to` TIMESTAMP NULL DEFAULT NULL AFTER `valid_from`,
 DROP INDEX `manufacturer_id`,
+DROP INDEX `date_valid_from`,
+DROP INDEX `date_valid_to`,
 ADD INDEX `brand_id` (`brand_id`),
 ADD INDEX `synonyms` (`synonyms`),
+ADD INDEX `valid_from` (`valid_from`),
+ADD INDEX `valid_to` (`valid_to`),
 ADD FULLTEXT INDEX `name` (`name`),
 ADD FULLTEXT INDEX `short_description` (`short_description`),
 ADD FULLTEXT INDEX `description` (`description`);
@@ -692,10 +709,10 @@ CHANGE COLUMN `zone_code` `zone_code` VARCHAR(8) NULL,
 CHANGE COLUMN `city` `city` VARCHAR(32) NULL;
 -- -----
 INSERT IGNORE INTO `lc_banners`
-(`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `date_valid_from`, `date_valid_to`)
+(`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `valid_from`, `valid_to`)
 SELECT id, status, name, languages, '', replace(image, 'slides/', 'banners/'), '', 'jumbotron', date_valid_from, date_valid_to FROM `lc_slides`;
 -- -----
-INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `date_valid_from`, `date_valid_to`, `updated_at`, `created_at`) VALUES
+INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `valid_from`, `valid_to`, `updated_at`, `created_at`) VALUES
 (0, 'Jumbotron', '', '', 'banners/leaderboard.svg', '', 'jumbotron', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (0, 'Left', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Left</div>', '', '', 'left', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (0, 'Middle', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Middle</div>', '', '', 'middle', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),

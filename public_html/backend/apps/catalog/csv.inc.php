@@ -697,8 +697,8 @@
 							'recommended_price',
 							'delivery_status_id',
 							'sold_out_status_id',
-							'date_valid_from',
-							'date_valid_to',
+							'valid_from',
+							'valid_to',
 						] as $field) {
 							if (isset($row[$field])) {
 								$product->data[$field] = $row[$field];
@@ -1254,7 +1254,7 @@
 					$csv = database::query(
 						"select * from ". DB_TABLE_PREFIX ."campaigns_products cp
 						left join ". DB_TABLE_PREFIX ."campaigns c on (c.id = cp.campaign_id)
-						order by c.date_valid_from, c.date_valid_to, cp.product_id;"
+						order by c.valid_from, c.valid_to, cp.product_id;"
 					)->export($result)->fetch_all();
 
 					if (!$csv) {

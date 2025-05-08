@@ -54,8 +54,8 @@
 				$object->priority = isset($object->settings['priority']) ? (int)$object->settings['priority'] : 0;
 
 				if ($type == 'jobs') {
-					$object->date_pushed = $module['date_pushed'];
-					$object->date_processed = $module['date_processed'];
+					$object->last_pushed = $module['last_pushed'];
+					$object->last_processed = $module['last_processed'];
 				}
 
 				// Add module to list

@@ -90,8 +90,8 @@
 			database::query(
 				"update ". DB_TABLE_PREFIX ."campaigns
 				set name = '". database::input($this->data['name']) ."',
-					date_valid_from = ". (!empty($this->data['date_valid_from']) ? "'". database::input($this->data['date_valid_from']) ."'" : "null") .",
-					date_valid_to = ". (!empty($this->data['date_valid_to']) ? "'". database::input($this->data['date_valid_to']) ."'" : "null") ."
+					valid_from = ". (!empty($this->data['valid_from']) ? "'". database::input($this->data['valid_from']) ."'" : "null") .",
+					valid_to = ". (!empty($this->data['valid_to']) ? "'". database::input($this->data['valid_to']) ."'" : "null") ."
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

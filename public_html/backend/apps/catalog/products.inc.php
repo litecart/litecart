@@ -157,7 +157,7 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$products = database::query(
-		"select p.id, p.status, p.code, p.image, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, p.created_at,
+		"select p.id, p.status, p.code, p.image, p.sold_out_status_id, p.valid_from, p.valid_to, p.created_at,
 			json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
 		 	pp.price, pc.campaign_price, pso.num_stock_options, pso.quantity, total_reserved, pso.quantity - oi.total_reserved as quantity_available
 			". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
@@ -179,8 +179,8 @@
 			where campaign_id in (
 				select id from ". DB_TABLE_PREFIX ."campaigns
 				where status
-				and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
-				and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."')
+				and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
+				and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
 			)
 			group by product_id
 			order by $sql_column_price asc
@@ -220,12 +220,12 @@
 
 		try {
 
-			if (!empty($product['date_valid_from']) && $product['date_valid_from'] < date('Y-m-d H:i:s')) {
-				throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product['date_valid_from'])]));
+			if (!empty($product['valid_from']) && $product['valid_from'] < date('Y-m-d H:i:s')) {
+				throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product['valid_from'])]));
 			}
 
-			if (!empty($product['date_valid_to']) && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
-				throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => functions::datetime_format('date', $product['date_valid_to'])]));
+			if (!empty($product['valid_to']) && $product['valid_to'] < date('Y-m-d H:i:s')) {
+				throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => functions::datetime_format('date', $product['valid_to'])]));
 			}
 
 			if ($product['num_stock_options'] && $product['quantity'] <= 0) {

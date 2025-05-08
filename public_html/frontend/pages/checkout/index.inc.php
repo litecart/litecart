@@ -43,7 +43,7 @@
 					'payment_option_id' => $session_order->data['payment_option']['id'],
 					'total_amount' => $session_order->data['total'],
 				],
-				'date_expires' => strtotime('+12 months'),
+				'expires_at' => strtotime('+12 months'),
 			]);
 
 			ob_start();
@@ -154,7 +154,7 @@
 					'total_amount' => $session_order->data['total'],
 					'error' => $e->getMessage(),
 				],
-				'date_expires' => strtotime('+12 months'),
+				'expires_at' => strtotime('+12 months'),
 			]);
 
 			notices::add('errors', $e->getMessage());
@@ -237,7 +237,7 @@
 				'payment_option_id' => $order->data['payment_option']['id'],
 				'total_amount' => $order->data['total'],
 			],
-			'date_expires' => strtotime('+12 months'),
+			'expires_at' => strtotime('+12 months'),
 		]
 	);
 

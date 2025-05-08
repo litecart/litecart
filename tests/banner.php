@@ -19,8 +19,8 @@
 			'html' => '<p>This is a test banner</p>',
 			'keywords' => 'test,banner',
 			'languages' => ['en'],
-			'date_valid_from' => '2023-01-01 00:00:00',
-			'date_valid_to' => '2023-12-31 23:59:59',
+			'valid_from' => '2023-01-01 00:00:00',
+			'valid_to' => '2023-12-31 23:59:59',
 		];
 
 		########################################################################
@@ -56,8 +56,8 @@
 			'html' => '<p>This is a test banner 2</p>',
 			'keywords' => 'test,banner2',
 			'languages' => ['en'],
-			'date_valid_from' => '2024-01-01 00:00:00',
-			'date_valid_to' => '2024-12-31 23:59:59',
+			'valid_from' => '2024-01-01 00:00:00',
+			'valid_to' => '2024-12-31 23:59:59',
 		];
 
 		$banner->data = functions::array_update($banner->data, $data);

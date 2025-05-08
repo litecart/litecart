@@ -69,7 +69,7 @@
 						'quantity' => isset($_POST['quantity']) ? $_POST['quantity'] : 1,
 						'userdata' => isset($userdata) ? $userdata : [],
 					],
-					'date_expires' => strtotime('+6 months'),
+					'expires_at' => strtotime('+6 months'),
 				]);
 
 				reload();
@@ -92,7 +92,7 @@
 							'quantity' => cart::$items[$item_key]['quantity'],
 							'userdata' => cart::$items[$item_key]['userdata'],
 						],
-						'date_expires' => strtotime('+6 months'),
+						'expires_at' => strtotime('+6 months'),
 					]);
 
 					self::remove($item_key);
@@ -234,12 +234,12 @@
 					throw new Exception(language::translate('error_product_currently_not_available_for_purchase', 'The product is currently not available for purchase'));
 				}
 
-				if ($product->date_valid_from && $product->date_valid_from > date('Y-m-d H:i:s')) {
-					throw new Exception(strtr(language::translate('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product->date_valid_from)]));
+				if ($product->valid_from && $product->valid_from > date('Y-m-d H:i:s')) {
+					throw new Exception(strtr(language::translate('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product->valid_from)]));
 				}
 
-				if ($product->date_valid_to && $product->date_valid_to < date('Y-m-d H:i:s')) {
-					throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), ['%date' => functions::datetime_format('date', $product->date_valid_to)]));
+				if ($product->valid_to && $product->valid_to < date('Y-m-d H:i:s')) {
+					throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), ['%date' => functions::datetime_format('date', $product->valid_to)]));
 				}
 
 				if ($stock_option_id && !in_array($stock_option_id, array_column($product->stock_options, 'id'))) {

@@ -29,12 +29,12 @@
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."modules
-					set date_pushed = '". date('Y-m-d H:i:s') ."'
+					set last_pushed = '". date('Y-m-d H:i:s') ."'
 					where module_id = '". database::input($module_id) ."'
 					limit 1;"
 				);
 
-				if (!$last_run = $this->modules[$module_id]->date_processed) {
+				if (!$last_run = $this->modules[$module_id]->last_processed) {
 					$last_run = 0; // As null will throw a deprecated notice in PHP 8.2+
 				}
 
@@ -59,7 +59,7 @@
 					database::query(
 						"update ". DB_TABLE_PREFIX ."modules
 						set last_log = '". database::input($log) ."',
-							date_processed = '". date('Y-m-d H:i:s') ."'
+							last_processed = '". date('Y-m-d H:i:s') ."'
 						where module_id = '". database::input($module_id) ."'
 						limit 1;"
 					);

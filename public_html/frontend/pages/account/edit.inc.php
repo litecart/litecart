@@ -88,7 +88,7 @@
 			customer::log([
 				'type' => 'edit_account_security',
 				'description' => 'User edited account security details',
-				'date_expires' => strtotime('+12 months'),
+				'expires_at' => strtotime('+12 months'),
 			]);
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
@@ -220,7 +220,7 @@
 			customer::log([
 				'type' => 'edit_account_details',
 				'description' => 'User edited account details',
-				'date_expires' => strtotime('+12 months'),
+				'expires_at' => strtotime('+12 months'),
 			]);
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));

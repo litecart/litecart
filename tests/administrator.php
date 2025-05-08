@@ -18,8 +18,8 @@
 			'username' => 'test',
 			'email' => 'test@example.com',
 			'two_factor_auth' => 1,
-			'date_valid_from' => '2023-01-01 00:00:00',
-			'date_valid_to' => '2023-12-31 23:59:59',
+			'valid_from' => '2023-01-01 00:00:00',
+			'valid_to' => '2023-12-31 23:59:59',
 		];
 
 		$password = '123456';
@@ -76,8 +76,8 @@
 			'username' => 'test2',
 			'email' => 'test2@example.com',
 			'two_factor_auth' => 0,
-			'date_valid_from' => '2024-01-01 00:00:00',
-			'date_valid_to' => '2024-12-31 23:59:59',
+			'valid_from' => '2024-01-01 00:00:00',
+			'valid_to' => '2024-12-31 23:59:59',
 		];
 
 		// Update some data

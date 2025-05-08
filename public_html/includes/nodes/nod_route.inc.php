@@ -28,8 +28,8 @@
 				where status
 				and immediate = 1
 				and '". database::input($requested_url) ."' regexp pattern
-				and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
-				and (date_valid_to is null or date_valid_to > '". date('Y-m-d H:i:s') ."')
+				and (valid_from is null or valid_from < '". date('Y-m-d H:i:s') ."')
+				and (valid_to is null or valid_to > '". date('Y-m-d H:i:s') ."')
 				limit 1;"
 			)->fetch();
 
@@ -37,8 +37,8 @@
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."redirects
-					set redirects = redirects + 1,
-						date_redirected = '". database::input(date('Y-m-d H:i:s')) ."'
+					set total_redirects = total_redirects + 1,
+						last_redirected = '". database::input(date('Y-m-d H:i:s')) ."'
 					where id = ". (int)$redirect['id'] ."
 					limit 1;"
 				);
@@ -264,8 +264,8 @@
 				where status
 				and immediate = 0
 				and '". database::input($requested_url) ."' regexp pattern
-				and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
-				and (date_valid_to is null or date_valid_to > '". date('Y-m-d H:i:s') ."')
+				and (valid_from is null or valid_from < '". date('Y-m-d H:i:s') ."')
+				and (valid_to is null or valid_to > '". date('Y-m-d H:i:s') ."')
 				limit 1;"
 			)->fetch();
 
@@ -274,7 +274,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."redirects
 					set redirects = redirects + 1,
-						date_redirected = '". database::input(date('Y-m-d H:i:s')) ."'
+						last_redirected = '". database::input(date('Y-m-d H:i:s')) ."'
 					where id = ". (int)$redirect['id'] ."
 					limit 1;"
 				);

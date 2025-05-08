@@ -57,8 +57,8 @@
 				'apps',
 				'widgets',
 				'two_factor_auth',
-				'date_valid_from',
-				'date_valid_to',
+				'valid_from',
+				'valid_to',
 			] as $field) {
 				if (isset($_POST[$field])) {
 					$administrator->data[$field] = $_POST[$field];
@@ -186,14 +186,14 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_valid_from', 'Valid From'); ?></div>
-								<?php echo functions::form_input_datetime('date_valid_from', true); ?>
+								<?php echo functions::form_input_datetime('valid_from', true); ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_valid_to', 'Valid To'); ?></div>
-								<?php echo functions::form_input_datetime('date_valid_to', true); ?>
+								<?php echo functions::form_input_datetime('valid_to', true); ?>
 							</label>
 						</div>
 					</div>
@@ -218,13 +218,13 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_last_login', 'Last Login'); ?></div>
-								<?php echo functions::form_input_text('date_login', true, 'readonly'); ?>
+								<?php echo functions::form_input_text('last_login', true, 'readonly'); ?>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_last_active', 'Last Active'); ?></div>
-								<?php echo functions::form_input_text('date_active', true, 'readonly'); ?>
+								<?php echo functions::form_input_text('last_active', true, 'readonly'); ?>
 							</label>
 						</div>
 					</div>

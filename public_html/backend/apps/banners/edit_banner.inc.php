@@ -45,8 +45,8 @@
 				'link',
 				'html',
 				'keywords',
-				'date_valid_from',
-				'date_valid_to',
+				'valid_from',
+				'valid_to',
 			] as $field) {
 				if (isset($_POST[$field])) {
 					$banner->data[$field] = $_POST[$field];
@@ -153,15 +153,15 @@ table th:last-child {
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></div>
-						<?php echo functions::form_input_datetime('date_valid_from', true); ?>
+						<div class="form-label"><?php echo language::translate('title_valid_from', 'Date Valid From'); ?></div>
+						<?php echo functions::form_input_datetime('valid_from', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></div>
-						<?php echo functions::form_input_datetime('date_valid_to', true); ?>
+						<div class="form-label"><?php echo language::translate('title_valid_to', 'Date Valid To'); ?></div>
+						<?php echo functions::form_input_datetime('valid_to', true); ?>
 					</label>
 				</div>
 			</div>

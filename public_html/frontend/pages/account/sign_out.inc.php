@@ -5,7 +5,7 @@
 	customer::log([
 		'type' => 'sign_out',
 		'description' => 'User signed out',
-		'date_expires' => strtotime('+12 months'),
+		'expires_at' => strtotime('+12 months'),
 	]);
 
 	cart::reset();

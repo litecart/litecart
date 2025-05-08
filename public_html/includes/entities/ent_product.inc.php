@@ -123,11 +123,11 @@
 
 			// Campaigns
 			$this->data['campaigns'] = database::query(
-				"select cp.*, c.name, c.date_valid_from, c.date_valid_to
+				"select cp.*, c.name, c.valid_from, c.valid_to
 				from ". DB_TABLE_PREFIX ."campaigns_products cp
 				left join ". DB_TABLE_PREFIX ."campaigns c on (c.id = cp.campaign_id)
 				where cp.product_id = ". (int)$this->data['id'] ."
-				order by c.date_valid_from;"
+				order by c.valid_from;"
 			)->fetch_all();
 
 			// Images
@@ -239,8 +239,8 @@
 					recommended_price = ". (float)$this->data['recommended_price'] .",
 					tax_class_id = ". (int)$this->data['tax_class_id'] .",
 					autofill_technical_data = ". (int)$this->data['autofill_technical_data'] .",
-					date_valid_from = ". (empty($this->data['date_valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
-					date_valid_to = ". (empty($this->data['date_valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
+					valid_from = ". (empty($this->data['valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['valid_from'])) ."'") .",
+					valid_to = ". (empty($this->data['valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['valid_to'])) ."'") .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"

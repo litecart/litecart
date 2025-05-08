@@ -84,8 +84,8 @@
 				if (!empty($dom->getElementsByTagName('marketplace')->item(0)->getElementsByTagName('addon_id')->length)) {
 					$this->data['marketplace']['addon_id'] = $dom->getElementsByTagName('marketplace')->item(0)->getElementsByTagName('addon_id')->item(0)->textContent;
 				}
-				if (!empty($dom->getElementsByTagName('marketplace')->item(0)->getElementsByTagName('date_expires')->length)) {
-					$this->data['marketplace']['date_expires'] = $dom->getElementsByTagName('marketplace')->item(0)->getElementsByTagName('date_expires')->item(0)->textContent;
+				if (!empty($dom->getElementsByTagName('marketplace')->item(0)->getElementsByTagName('expires_at')->length)) {
+					$this->data['marketplace']['expires_at'] = $dom->getElementsByTagName('marketplace')->item(0)->getElementsByTagName('expires_at')->item(0)->textContent;
 				}
 			}
 
@@ -229,7 +229,7 @@
 
 			$marketplace_node = $dom->createElement('marketplace');
 			$marketplace_node->appendChild( $dom->createElement('addon_id', fallback($this->data['marketplace']['addon_id'], '')) );
-			$marketplace_node->appendChild( $dom->createElement('date_expires', fallback($this->data['marketplace']['date_expires'], '')) );
+			$marketplace_node->appendChild( $dom->createElement('expires_at', fallback($this->data['marketplace']['expires_at'], '')) );
 
 			$vmod_node->appendChild($marketplace_node);
 

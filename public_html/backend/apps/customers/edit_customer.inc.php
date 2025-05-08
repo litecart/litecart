@@ -291,7 +291,7 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_last_login', 'Last Login'); ?></div>
-										<div class="form-input" readonly><?php echo $customer->data['date_login'] ? functions::datetime_when($customer->data['date_login']) : '<em>'. language::translate('title_never', 'Never') .'</em>'; ?></div>
+										<div class="form-input" readonly><?php echo $customer->data['last_login'] ? functions::datetime_when($customer->data['last_login']) : '<em>'. language::translate('title_never', 'Never') .'</em>'; ?></div>
 									</label>
 								</div>
 							</div>

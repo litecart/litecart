@@ -88,8 +88,8 @@
 							select id from ". DB_TABLE_PREFIX ."sold_out_statuses
 							where (hidden is null or hidden = 0)
 						))
-						and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
-						and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
+						and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
+						and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."');"
 					)->fetch_all(function($product){
 						return reference::product($product['id'], $this->_language_codes[0]);
 					});
@@ -130,8 +130,8 @@
 							select id from ". DB_TABLE_PREFIX ."sold_out_statuses
 							where (hidden is null or hidden = 0)
 						))
-						and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
-						and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
+						and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
+						and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."');"
 					)->fetch('num_products');
 
 					break;

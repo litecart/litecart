@@ -26,8 +26,8 @@
 				'pattern',
 				'destination',
 				'http_response_code',
-				'date_valid_from',
-				'date_valid_to',
+				'valid_from',
+				'valid_to',
 			] as $field) {
 				if (isset($_POST[$field])) {
 					$redirect->data[$field] = $_POST[$field];
@@ -225,14 +225,14 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_valid_from', 'Valid From'); ?></div>
-						<?php echo functions::form_input_datetime('date_valid_from', true); ?>
+						<?php echo functions::form_input_datetime('valid_from', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_valid_to', 'Valid To'); ?></div>
-						<?php echo functions::form_input_datetime('date_valid_to', true); ?>
+						<?php echo functions::form_input_datetime('valid_to', true); ?>
 					</label>
 				</div>
 			</div>
@@ -242,14 +242,14 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_redirects', 'Redirects'); ?></div>
-						<div class="form-input" readonly><?php echo (int)$redirect->data['redirects']; ?></div>
+						<div class="form-input" readonly><?php echo (int)$redirect->data['total_redirects']; ?></div>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo language::translate('title_last_redirected', 'Last Redirected'); ?></div>
-						<div class="form-input" readonly><?php echo $redirect->data['date_redirected'] ? functions::datetime_when($redirect->data['date_redirected']): '-'; ?></div>
+						<div class="form-input" readonly><?php echo $redirect->data['last_redirected'] ? functions::datetime_when($redirect->data['last_redirected']): '-'; ?></div>
 					</label>
 				</div>
 			</div>

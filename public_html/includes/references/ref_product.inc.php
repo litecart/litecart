@@ -112,8 +112,8 @@
 						and campaign_id in (
 							select id from ". DB_TABLE_PREFIX ."campaigns
 							where status
-							and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
-							and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."')
+							and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
+							and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
 						)
 						group by product_id
 						limit 1;"

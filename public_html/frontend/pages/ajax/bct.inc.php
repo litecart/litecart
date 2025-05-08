@@ -22,7 +22,7 @@
 			'data' => [
 				'banner_id' => $_POST['banner_id'],
 			],
-			'date_expires' => strtotime('+12 months'),
+			'expires_at' => strtotime('+12 months'),
 		]);
 
 	} catch (Exception $e) {

@@ -93,8 +93,8 @@
 				'quantity_max',
 				'quantity_step',
 				'quantity_unit_id',
-				'date_valid_from',
-				'date_valid_to',
+				'valid_from',
+				'valid_to',
 			] as $field) {
 				if (isset($_POST[$field])) {
 					$product->data[$field] = $_POST[$field];
@@ -274,13 +274,13 @@
 							</label>
 
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></div>
-								<?php echo functions::form_input_datetime('date_valid_from', true); ?>
+								<div class="form-label"><?php echo language::translate('title_valid_from', 'Date Valid From'); ?></div>
+								<?php echo functions::form_input_datetime('valid_from', true); ?>
 							</label>
 
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></div>
-								<?php echo functions::form_input_datetime('date_valid_to', true); ?>
+								<div class="form-label"><?php echo language::translate('title_valid_to', 'Date Valid To'); ?></div>
+								<?php echo functions::form_input_datetime('valid_to', true); ?>
 							</label>
 						</div>
 
@@ -499,8 +499,8 @@
 										<?php echo functions::form_input_hidden('campaigns['.$key.'][id]', true); ?>
 										<?php echo functions::form_select_campaign('campaigns['.$key.'][campaign_id]', true); ?>
 									</td>
-									<td><span class="date-valid-from"><?php echo $campaign['date_valid_from'] ? functions::datetime_when($campaign['date_valid_from']) : '-'; ?></span></td>
-									<td><span class="date-valid-to"><?php echo $campaign['date_valid_to'] ? functions::datetime_when($campaign['date_valid_to']) : '-'; ?></span></td>
+									<td><span class="date-valid-from"><?php echo $campaign['valid_from'] ? functions::datetime_when($campaign['valid_from']) : '-'; ?></span></td>
+									<td><span class="date-valid-to"><?php echo $campaign['valid_to'] ? functions::datetime_when($campaign['valid_to']) : '-'; ?></span></td>
 									<td>
 										<div class="dropdown dropdown-end">
 											<?php echo functions::form_input_money('campaigns['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>

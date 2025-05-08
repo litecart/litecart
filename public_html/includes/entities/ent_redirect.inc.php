@@ -69,8 +69,8 @@
 					pattern = '". database::input($this->data['pattern']) ."',
 					destination = '". database::input($this->data['destination']) ."',
 					http_response_code = '". database::input($this->data['http_response_code']) ."',
-					date_valid_from = ". (!empty($this->data['date_valid_from']) ? "'". database::input($this->data['date_valid_from']) ."'" : "null") .",
-					date_valid_to = ". (!empty($this->data['date_valid_to']) ? "'". database::input($this->data['date_valid_to']) ."'" : "null") .",
+					valid_from = ". (!empty($this->data['valid_from']) ? "'". database::input($this->data['valid_from']) ."'" : "null") .",
+					valid_to = ". (!empty($this->data['valid_to']) ? "'". database::input($this->data['valid_to']) ."'" : "null") .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"

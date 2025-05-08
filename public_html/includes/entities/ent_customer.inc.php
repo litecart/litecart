@@ -131,7 +131,7 @@
 					shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
 					notes = '". database::input($this->data['notes']) ."',
 					password_reset_token = '". database::input($this->data['password_reset_token']) ."',
-					date_blocked_until = ". (!empty($this->data['date_blocked_until']) ? "'". database::input($this->data['date_blocked_until']) ."'" : "null") .",
+					blocked_until = ". (!empty($this->data['blocked_until']) ? "'". database::input($this->data['blocked_until']) ."'" : "null") .",
 					date_expire_sessions = ". (!empty($this->data['date_expire_sessions']) ? "'". database::input($this->data['date_expire_sessions']) ."'" : "null") .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."

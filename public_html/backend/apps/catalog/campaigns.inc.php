@@ -41,7 +41,7 @@
 			from ". DB_TABLE_PREFIX ."campaigns_products
 			group by campaign_id
 		) cp on (cp.campaign_id = c.id)
-		order by c.status desc, c.date_valid_from, c.date_valid_to;"
+		order by c.status desc, c.valid_from, c.valid_to;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
@@ -77,8 +77,8 @@
 					<td><?php echo functions::form_checkbox('campaigns[]', $campaign['id']); ?></td>
 					<td><?php echo $campaign['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>"><?php echo $campaign['name']; ?></a></td>
-					<td class="text-end"><?php echo $campaign['date_valid_from'] ? functions::datetime_format('datetime', $campaign['date_valid_from']) : ''; ?></td>
-					<td class="text-end"><?php echo $campaign['date_valid_to'] ? functions::datetime_format('datetime', $campaign['date_valid_to']) : ''; ?></td>
+					<td class="text-end"><?php echo $campaign['valid_from'] ? functions::datetime_format('datetime', $campaign['valid_from']) : ''; ?></td>
+					<td class="text-end"><?php echo $campaign['valid_to'] ? functions::datetime_format('datetime', $campaign['valid_to']) : ''; ?></td>
 					<td class="text-center"><?php echo language::number_format($campaign['num_products']); ?></td>
 					<td class="text-end">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
