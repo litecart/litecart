@@ -90,7 +90,7 @@
 
         if (!$user['status']) {
           if (!empty($_COOKIE['remember_me'])) {
-            header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax');
+            header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
           }
           self::reset();
           die('Your account is disabled');

@@ -85,7 +85,7 @@
 
         if (!$customer['status']) {
           if (!empty($_COOKIE['customer_remember_me'])) {
-            header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax');
+            header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
           }
           self::reset();
           die('Your account is disabled');
