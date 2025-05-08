@@ -272,7 +272,7 @@
             case 'FIT_ONLY_BIGGER_USE_WHITESPACING':
               if ($this->width() <= $width && $this->height() <= $height) {
                 $_newimage = new imagick();
-                $_newimage->newImage($width, $height, 'rgba('.$this->_whitespace[0].','.$this->_whitespace[1].','.$this->_whitespace[2].',0)');
+                $_newimage->newImage($width, $height, 'rgba('.$this->_whitespace[0].','.$this->_whitespace[1].','.$this->_whitespace[2].',png)');
                 $offset_x = round(($width - $this->width()) / 2);
                 $offset_y = round(($height - $this->height()) / 2);
                 $result = $_newimage->compositeImage($this->_image, imagick::COMPOSITE_COPY, $offset_x, $offset_y);
