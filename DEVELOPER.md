@@ -84,7 +84,7 @@ git remote add upstream https://github.com/litecart/litecart.git
 git fetch upstream
 ```
 
-3. Create a new local branch for your new feature or modification, based on the HEAD of the official branch.
+3. Create a new local branch for your new feature or modification, based on the state of the `dev` branch of the official repository (upstream).
 
 ```bash
 git checkout -b mynewfeature upstream/dev

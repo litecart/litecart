@@ -249,7 +249,7 @@
 
     if ($value === true) $value = form_reinsert_value($name);
 
-    if ($value != '') {
+    if ($value != '' && is_numeric($decimals)) {
 
       // Circumvent floating point precision problem if differing by one 10th of the smallest fraction
 

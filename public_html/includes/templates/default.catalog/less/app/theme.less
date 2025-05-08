@@ -28,7 +28,7 @@ body {
 }
 
 #site-menu {
-  @media (max-width: @media-breakpoint-md - 1px) {
+  @media (max-width: (@media-breakpoint-md - 1px)) {
     position: sticky;
     display: block;
     top: 0;
@@ -222,8 +222,6 @@ body.scrolling-down #site-menu {
     .details {
       display: none;
     }
-  }
-  @media (max-width: calc(@media-breakpoint-md)) {
     #cart .badge {
       top: 15px;
       right: 0;
@@ -253,12 +251,12 @@ body.scrolling-down #site-menu {
     grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
     grid-gap: var(--gutter-x);
 
-    @media (min-width: (@media-breakpoint-sm)) {
+    @media (min-width: @media-breakpoint-sm) {
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       grid-template-columns: repeat(4, 1fr);
     }
 
-    @media (min-width: (@media-breakpoint-md)) {
+    @media (min-width: @media-breakpoint-md) {
       grid-template-columns: repeat(5, 1fr);
     }
   }

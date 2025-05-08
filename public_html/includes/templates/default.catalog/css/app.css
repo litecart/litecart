@@ -226,8 +226,6 @@ body.scrolling-down #site-menu {
   #cart .details {
     display: none;
   }
-}
-@media (max-width: calc(992px)) {
   #cart #cart .badge {
     top: 15px;
     right: 0;

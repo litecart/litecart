@@ -86,7 +86,7 @@ html[dir="rtl"] {
 @media (max-width: calc(@media-breakpoint-sm - 1px)) {
   .hidden-xs { display: none; }
 }
-@media (min-width: (@media-breakpoint-sm)) and (max-width: calc(@media-breakpoint-md - 1px)) {
+@media (min-width: @media-breakpoint-sm) and (max-width: calc(@media-breakpoint-md - 1px)) {
   .hidden-sm { display: none; }
 }
 @media (min-width: @media-breakpoint-md) and (max-width: calc(@media-breakpoint-lg - 1px)) {
