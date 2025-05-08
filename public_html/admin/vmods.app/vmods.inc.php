@@ -39,7 +39,7 @@
       }
 
       foreach ($_POST['vmods'] as $vmod) {
-        $vmod = new ent_vmod($vmod);
+        $vmod = new ent_vmod(pathinfo($vmod, PATHINFO_BASENAME));
         $vmod->delete();
       }
 
