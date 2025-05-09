@@ -188,11 +188,11 @@
     });
 
     if (++num_cart_updates < 60) { // Continue refreshing up to 60 cycles
-      setTimeout('updateCart', 60e3);
+      setTimeout(window.updateCart, 60e3);
     }
   }
 
-  setTimeout('updateCart', 60e3); // Keeps session alive
+  setTimeout(window.updateCart, 60e3); // Keeps session alive
 
 // Add to cart animation
   $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
