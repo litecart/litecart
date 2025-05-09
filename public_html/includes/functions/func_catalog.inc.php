@@ -222,6 +222,7 @@
 				from ". DB_TABLE_PREFIX ."products p
 
 				where p.status
+				". (!empty($filter['featured']) ? "and featured = 1" : "") ."
 				". (!empty($filter['products']) ? "and p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
 				". (!empty($filter['product_name']) ? "and json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($filter['product_name']), '%_') ."%'" : "") ."
 				". fallback($sql_where_categories) ."
