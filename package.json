@@ -40,7 +40,7 @@
 		"less": "grunt less",
 		"phplint": "grunt phplint",
 		"test": "grunt test",
-		"uglify": "grunt replace",
+		"uglify": "grunt uglify",
 		"watch": "grunt watch",
 		"update": "ncu -u && npm install && npm audit fix"
 	}
