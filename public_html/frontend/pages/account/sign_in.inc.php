@@ -42,7 +42,10 @@
 				"select * from ". DB_TABLE_PREFIX ."customers
 				where lower(email) = '". database::input(strtolower($_POST['email'])) ."'
 				limit 1;"
-			)->fetch();
+			)->fetch(function($customer){
+				$customer['known_ips'] = preg_split('#\s*,\s*#', $customer['known_ips'], -1, PREG_SPLIT_NO_EMPTY);
+				return $customer;
+			});
 
 			if (!$customer) {
 				throw new Exception(language::translate('error_email_not_found_in_database', 'The email does not exist in our database'));
@@ -92,9 +95,17 @@
 				);
 			}
 
+			array_unshift($customer['known_ips'], $_SERVER['REMOTE_ADDR']);
+			$customer['known_ips'] = array_unique($customer['known_ips']);
+
+			if (count($customer['known_ips']) > 5) {
+				array_pop($customer['known_ips']);
+			}
+
 			database::query(
 				"update ". DB_TABLE_PREFIX ."customers
-				set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+				set known_ips = '". database::input(implode(',', $administrator['known_ips'])) ."'
+					last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 					last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
 					last_login = '". date('Y-m-d H:i:s') ."'
