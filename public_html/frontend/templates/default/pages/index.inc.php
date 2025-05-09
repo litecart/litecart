@@ -24,6 +24,8 @@
 
 		<?php include 'app://frontend/partials/box_categories.inc.php'; ?>
 
+		<?php include 'app://frontend/partials/box_featured_products.inc.php'; ?>
+
 		<?php include 'app://frontend/partials/box_campaign_products.inc.php'; ?>
 
 		<?php include 'app://frontend/partials/box_popular_products.inc.php'; ?>

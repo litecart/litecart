@@ -107,6 +107,7 @@
 			"keys": {
 				"code": ["code"],
 				"status": ["status"],
+				"featured": ["featured"],
 				"name": ["name"]
 			},
 			"check_constraints": {
@@ -850,6 +851,7 @@
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
+				"featured": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"type": { "type": "ENUM('virtual','physical','digital','variable','bundle')", "default": "'virtual'" },
 				"brand_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"supplier_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
@@ -888,6 +890,7 @@
 			"primary_key": ["id"],
 			"keys": {
 				"status": ["status"],
+				"featured": ["featured"],
 				"default_category_id": ["default_category_id"],
 				"brand_id": ["brand_id"],
 				"supplier_id": ["supplier_id"],

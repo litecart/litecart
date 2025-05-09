@@ -466,6 +466,7 @@
 				from ". DB_TABLE_PREFIX ."products p
 				where status
 				". (!empty($sql_inner_where) ? implode(" and ", $sql_inner_where) : "")."
+				". (!empty($filter['featured']) ? "and featured = 1" : "") ."
 				and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
 				and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
 				having relevance > 0

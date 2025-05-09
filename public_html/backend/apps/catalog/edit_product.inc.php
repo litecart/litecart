@@ -64,6 +64,7 @@
 
 			foreach ([
 				'status',
+				'featured',
 				'brand_id',
 				'delivery_status_id',
 				'sold_out_status_id',
@@ -220,6 +221,11 @@
 							<label class="form-group">
 								<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
 								<?php echo functions::form_toggle('status', 'e/d', true); ?>
+							</label>
+
+							<label class="form-group">
+								<div class="form-label"><?php echo language::translate('title_featured', 'Featured'); ?></div>
+								<?php echo functions::form_toggle('featured', 'y/n', true); ?>
 							</label>
 
 							<label class="form-group">
