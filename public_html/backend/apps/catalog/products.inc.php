@@ -8,6 +8,26 @@
 
 	breadcrumbs::add(language::translate('title_products', 'Products'));
 
+	if (isset($_POST['star']) || isset($_POST['unstar'])) {
+
+		try {
+
+			database::query(
+				"update ". DB_TABLE_PREFIX ."products
+				set featured = ". (isset($_POST['star']) ? 1 : 0) ."
+				where id = ". (int)$_POST['product_id'] ."
+				limit 1;"
+			);
+
+			echo 'ok';
+			exit;
+
+		} catch (Exception $e) {
+			http_response_code($e->getCode() ?: 500);
+			notices::add('errors', $e->getMessage());
+		}
+	}
+
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
 		try {
@@ -157,7 +177,7 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$products = database::query(
-		"select p.id, p.status, p.code, p.image, p.sold_out_status_id, p.valid_from, p.valid_to, p.created_at,
+		"select p.id, p.status, p.featured, p.code, p.image, p.sold_out_status_id, p.valid_from, p.valid_to, p.created_at,
 			json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
 		 	pp.price, pc.campaign_price, pso.num_stock_options, pso.quantity, total_reserved, pso.quantity - oi.total_reserved as quantity_available
 			". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
@@ -250,6 +270,10 @@ table .thumbnail {
 	border-radius: 4px;
 	max-width: unset;
 }
+table .icon-star:hover,
+table .icon-star-o:hover {
+	transform: scale(1.5);
+}
 </style>
 
 <div class="card">
@@ -281,6 +305,7 @@ table .thumbnail {
 					<th></th>
 					<th class="text-center"><?php echo language::translate('title_id', 'ID'); ?></th>
 					<th style="min-width: 52px;"></th>
+					<th></th>
 					<th><?php echo language::translate('title_name', 'Name'); ?></th>
 					<th class="main"><?php echo language::translate('title_code', 'Code'); ?></th>
 					<th class="text-end"><?php echo language::translate('title_price', 'Price'); ?></th>
@@ -293,12 +318,13 @@ table .thumbnail {
 
 			<tbody>
 				<?php foreach ($products as $product) { ?>
-				<tr class="<?php if (empty($product['status'])) echo 'semi-transparent'; ?>">
+				<tr class="<?php if (empty($product['status'])) echo 'semi-transparent'; ?>" data-id="<?php echo (int)$product['id']; ?>">
 					<td><?php echo functions::form_checkbox('products[]', $product['id']); ?></td>
 					<td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
 					<td class="warning"><?php if (!empty($product['warning'])) echo functions::draw_fonticon('icon-exclamation-triangle', 'title="'. functions::escape_attr($product['warning']) .'"'); ?></td>
 					<td class="text-center"><?php echo $product['id']; ?></td>
 					<td><?php echo functions::draw_thumbnail('storage://images/' . ($product['image'] ?: 'no_image.svg'), 64, 64, settings::get('product_image_clipping')); ?></td>
+					<td><?php echo !empty($product['featured']) ? functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name'] ?: '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
 					<td><?php echo $product['code']; ?></td>
 					<td class="text-end"><?php echo functions::draw_price_tag($product['price'], $product['campaign_price'], settings::get('store_currency_code')); ?></td>
@@ -311,7 +337,7 @@ table .thumbnail {
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="11"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo language::number_format($num_rows); ?></td>
+					<td colspan="13"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo language::number_format($num_rows); ?></td>
 				</tr>
 			</tfoot>
 		</table>
@@ -363,5 +389,23 @@ table .thumbnail {
 			$('.data-table tfoot').html($(response).find('.data-table tfoot').html());
 			$('.card-footer').after($(response).find('.card-footer').html()).remove();
 		});
+	});
+
+	$('table').on('click', '.icon-star-o', function(e) {
+		e.stopPropagation();
+		let $star = $(this);
+		$.post('', 'star&product_id='+$star.closest('tr').data('id'), function(data) {
+			$star.replaceWith('<?php echo functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>');
+		});
+		return false;
+	});
+
+	$('table').on('click', '.icon-star', function(e) {
+		e.stopPropagation();
+		let $star = $(this);
+		$.post('', 'unstar&product_id='+$star.closest('tr').data('id'), function(data) {
+			$star.replaceWith('<?php echo functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>');
+		});
+		return false;
 	});
 </script>
