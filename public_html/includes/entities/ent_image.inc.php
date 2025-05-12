@@ -115,7 +115,6 @@
             Imagick::setResourceLimit(imagick::RESOURCETYPE_DISK, 512e6);
 
             $this->_image = new imagick($this->_src);
-
             return true;
 
         case 'gd':
@@ -256,47 +255,49 @@
             throw new Exception('Not a valid image object');
           }
 
-          switch(strtoupper($clipping)) {
-            case 'FIT':
-              //$result = $this->_image->scaleImage($width, $height, true);
-              //return $this->_image->adaptiveResizeImage($width, $height, true);
-              return $this->_image->thumbnailImage($width, $height, true);
+          $this->_image->setImageBackgroundColor('transparent');
 
-            case 'FIT_ONLY_BIGGER':
-              if ($this->width() <= $width && $this->height() <= $height) return true;
-              return $this->_image->thumbnailImage($width, $height, true);
+          switch(strtoupper($clipping)) {
+
+            case 'FIT':
+              $this->_image->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1, true);
+              break;
 
             case 'FIT_USE_WHITESPACING':
-              return $this->_image->thumbnailImage($width, $height, true, true);
+              $this->_image->thumbnailImage($width, $height, true, true);
+              break;
+
+            case 'FIT_ONLY_BIGGER':
+              if ($this->width() > $width || $this->height() > $height) {
+                $this->_image->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1, false);
+              }
+              break;
 
             case 'FIT_ONLY_BIGGER_USE_WHITESPACING':
-              if ($this->width() <= $width && $this->height() <= $height) {
-                $_newimage = new imagick();
-                $_newimage->newImage($width, $height, 'rgba('.$this->_whitespace[0].','.$this->_whitespace[1].','.$this->_whitespace[2].',png)');
-                $offset_x = round(($width - $this->width()) / 2);
-                $offset_y = round(($height - $this->height()) / 2);
-                $result = $_newimage->compositeImage($this->_image, imagick::COMPOSITE_COPY, $offset_x, $offset_y);
-                $this->_image = $_newimage;
-                return $result;
+              if ($this->width() > $width || $this->height() > $height) {
+                $this->_image->thumbnailImage($width, $height, true, true);
               }
-
-              return $this->_image->thumbnailImage($width, $height, true, true);
+              break;
 
             case 'CROP':
-              return $this->_image->cropThumbnailImage($width, $height);
+              $this->_image->cropThumbnailImage($width, $height);
+              break;
 
             case 'CROP_ONLY_BIGGER':
-              if ($this->width() <= $width && $this->height() <= $height) return true;
-              return $this->_image->cropThumbnailImage($width, $height);
+              if ($this->width() > $width || $this->height() > $height) {
+                $this->_image->cropThumbnailImage($width, $height);
+              }
+              break;
 
             case 'STRETCH':
-              //return $this->_image->resizeImage($width, $height, \Imagick::FILTER_LANCZOS, 1); // Stretch
-              //return $this->_image->adaptiveResizeImage($width, $height, false); // Stretch
-              return $this->_image->thumbnailImage($width, $height, false); // Stretch
+              $this->_image->scaleImage($width, $height);
+              break;
 
             default:
-              throw new Exception('Unknown clipping method ($clipping)');
-        }
+              throw new Exception("Unknown clipping method ($clipping)");
+          }
+
+          return true;
 
         case 'gd':
 
@@ -543,9 +544,21 @@
             throw new Exception('Not a valid image object');
           }
 
-          if (!$this->_image->trimImage(0)) return false;
+          if (!$this->_image->trimImage(10)) return false;
 
-          $this->resample(round($this->width() * 1.15), round($this->height() * 1.15), 'FIT_ONLY_BIGGER_USE_WHITESPACING');  // Add 15% padding
+          unset($this->_width);
+          unset($this->_height);
+
+          $padding_x = round($this->_image->getImageWidth() * 0.15);
+          $padding_y = round($this->_image->getImageHeight() * 0.15);
+
+          $canvas = new Imagick();
+          $canvas->newImage($this->_image->getImageWidth() + $padding_x + $padding_x, $this->_image->getImageHeight() + $padding_y + $padding_y, 'none', 'png');
+
+          // Composite original image onto the canvas, centered
+          $canvas->compositeImage($this->_image, Imagick::COMPOSITE_OVER, $padding_x, $padding_y);
+
+          $this->_image = $canvas;
 
           return true;
 
@@ -789,19 +802,24 @@
 
             case 'jpeg':
             case 'jpg':
-               $this->_image->setImageCompression(Imagick::COMPRESSION_JPEG);
-               break;
+              $this->_image->setImageBackgroundColor('rgb('. implode(', ', $this->_whitespace) .')');
+              $this->_image->mergeImageLayers(Imagick::LAYERMETHOD_FLATTEN);
+              $this->_image->setImageAlphaChannel(Imagick::ALPHACHANNEL_REMOVE);
+              $this->_image->setImageCompression(Imagick::COMPRESSION_JPEG);
+              break;
 
             default:
-               $this->_image->setImageCompression(Imagick::COMPRESSION_ZIP);
-               break;
+              $this->_image->setImageCompression(Imagick::COMPRESSION_ZIP);
+              break;
           }
 
           $this->_image->setImageCompressionQuality((int)$quality);
 
           if ($interlaced) $this->_image->setInterlaceScheme(Imagick::INTERLACE_PLANE);
 
-          return $this->_image->writeImage($type.':'.$destination);
+          $this->_image->setImageFormat($type);
+
+          return $this->_image->writeImage($destination);
 
         case 'gd':
 
