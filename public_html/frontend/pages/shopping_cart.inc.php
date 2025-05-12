@@ -87,7 +87,7 @@
 			$order = &session::$data['checkout']['order'];
 
  	  	// Collect scraps
-			 if (empty(customer::$data['id'])) {
+			 if (!customer::check_login()) {
 				customer::$data = array_replace(customer::$data, array_intersect_key(array_filter(array_diff_key($_POST, array_flip(['id']))), customer::$data));
 			}
 
@@ -138,13 +138,13 @@
 	];
 
 	foreach (currency::$currencies as $currency) {
-		if (!empty(administrator::$data['id']) || $currency['status'] == 1) {
+		if (administrator::check_login() || $currency['status'] == 1) {
 			$_page->snippets['currencies'][] = $currency;
 		}
 	}
 
 	foreach (language::$languages as $language) {
-		if (!empty(administrator::$data['id']) || $language['status'] == 1) {
+		if (administrator::check_login() || $language['status'] == 1) {
 			$_page->snippets['languages'][] = $language;
 		}
 	}

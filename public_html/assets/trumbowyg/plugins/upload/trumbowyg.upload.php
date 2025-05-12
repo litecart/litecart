@@ -18,7 +18,7 @@
 			$i=0; $filename='';
 
 			while (empty($filename) || is_file($upload_directory . $filename)) {
-				$filename = pathinfo($_FILES['fileToUpload']['name'], PATHINFO_FILENAME) . (!empty($i) ? '_'.$i : '') .'.'. $image->type;
+				$filename = pathinfo($_FILES['fileToUpload']['name'], PATHINFO_FILENAME) . ($i ? '_'.$i : '') .'.'. $image->type;
 				$i++;
 			}
 

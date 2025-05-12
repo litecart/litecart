@@ -66,7 +66,7 @@
 
 			$enabled_currencies = [];
 			foreach (self::$currencies as $currency) {
-				if (!empty(administrator::$data['id']) || $currency['status'] == 1) {
+				if (administrator::check_login() || $currency['status'] == 1) {
 					$enabled_currencies[] = $currency['code'];
 				}
 			}
@@ -215,8 +215,8 @@
 
 			$amount = (float)self::format_raw($value, $currency_code, $currency_value);
 			$decimals = isset(self::$currencies[$currency_code]['decimals']) ? (int)self::$currencies[$currency_code]['decimals'] : 2;
-			$prefix = !empty(self::$currencies[$currency_code]['prefix']) ? self::$currencies[$currency_code]['prefix'] : '';
-			$suffix = !empty(self::$currencies[$currency_code]['suffix']) ? self::$currencies[$currency_code]['suffix'] : '';
+			$prefix = self::$currencies[$currency_code]['prefix'];
+			$suffix = self::$currencies[$currency_code]['suffix'];
 
 			if ($auto_decimals) {
 				if ($amount == floor($amount)) {

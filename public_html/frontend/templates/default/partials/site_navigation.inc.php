@@ -77,12 +77,12 @@
 					</li>
 
 					<?php if (settings::get('accounts_enabled')) { ?>
-					<?php if (!empty(customer::$data['id'])) { ?>
+					<?php if (customer::check_login()) { ?>
 					<li class="account dropdown dropdown-end">
 
 						<div class="navbar-item" data-toggle="dropdown">
 							<?php echo functions::draw_fonticon('icon-user hidden-xs hidden-sm hidden-md hidden-lg'); ?>
-							<span class="hidden-sm"><?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span>
+							<span class="hidden-sm"><?php echo customer::check_login() ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span>
 						</div>
 
 						<ul class="dropdown-menu">

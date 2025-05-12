@@ -142,7 +142,7 @@
 					</tr>
 					<tr>
 						<th>Uptime</th>
-						<td><?php echo !empty($uptime) ? $uptime : '<em>n/a</em>'; ?></td>
+						<td><?php echo fallback($uptime, '<em>n/a</em>'); ?></td>
 					</tr>
 				</tbody>
 			</table>
@@ -156,7 +156,7 @@
 				<tbody>
 					<tr>
 						<th>Daemon</th>
-						<td><?php echo !empty($web_server['name']) ? $web_server['name'] : '<em>Unknown</em>'; ?></td>
+						<td><?php echo fallback($web_server['name'], '<em>Unknown</em>'); ?></td>
 					</tr>
 					<tr>
 						<th>SAPI</th>
@@ -186,7 +186,7 @@
 					</tr>
 					<tr>
 						<th>Whoami</th>
-						<td><?php echo !empty($php['whoami']) ? $php['whoami'] : '<em>Unknown</em>'; ?></td>
+						<td><?php echo fallback($php['whoami'], '<em>Unknown</em>'); ?></td>
 					</tr>
 					<tr>
 						<th>PHP Extensions</th>
@@ -198,7 +198,7 @@
 					</tr>
 					<tr>
 						<th>Memory Limit</th>
-						<td><?php echo !empty($php['memory_limit']) ? $php['memory_limit'] : '<em>n/a</em>'; ?></td>
+						<td><?php echo fallback($php['memory_limit'], '<em>n/a</em>'); ?></td>
 					</tr>
 				</tbody>
 			</table>

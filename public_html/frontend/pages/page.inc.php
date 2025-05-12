@@ -27,8 +27,8 @@
 			return;
 		}
 
-		document::$title[] = !empty($page->head_title) ? $page->head_title : $page->title;
-		document::$description = !empty($page->meta_description) ? $page->meta_description : '';
+		document::$title[] = $page->head_title ?: $page->title;
+		document::$description = $page->meta_description;
 
 		//breadcrumbs::add(language::translate('title_Pages', 'Pages'));
 		foreach (array_slice($page->path, 0, -1, true) as $crumb) {

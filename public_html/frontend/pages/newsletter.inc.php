@@ -22,7 +22,7 @@
 			$_POST['email'] = strtolower($_POST['email']);
 
  	  	// Collect scraps
-			if (empty(customer::$data['id'])) {
+			if (!customer::check_login()) {
 				customer::$data = array_replace(customer::$data, array_intersect_key(array_filter(array_diff_key($_POST, array_flip(['id']))), customer::$data));
 			}
 
@@ -109,7 +109,7 @@
 			}
 
 		// Collect scraps
-			if (empty(customer::$data['id'])) {
+			if (!customer::check_login()) {
 				customer::$data = array_replace(customer::$data, array_intersect_key(array_filter(array_diff_key($_POST, array_flip(['id']))), customer::$data));
 			}
 

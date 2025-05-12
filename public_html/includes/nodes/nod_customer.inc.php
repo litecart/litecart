@@ -170,7 +170,7 @@
 				if (settings::get('regional_settings_screen')) {
 					if (empty(session::$data['skip_regional_settings_screen'])) {
 
-						if (empty(customer::$data['id'])) {
+						if (!customer::check_login()) {
 							functions::draw_lightbox(document::ilink('regional_settings'));
 						}
 						session::$data['skip_regional_settings_screen'] = true;

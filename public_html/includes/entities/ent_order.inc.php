@@ -169,7 +169,7 @@
 				$this->data['comments'][] = [
 					'author' => 'system',
 					'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status', settings::get('store_language_code')), [
-						'%username' => !empty(administrator::$data['username']) ? administrator::$data['username'] : 'system',
+						'%username' => fallback(administrator::$data['username'], 'system'),
 						'%new_status' => reference::order_status($this->data['order_status_id'], settings::get('store_language_code'))->name,
 					]),
 					'hidden' => 1,
@@ -757,11 +757,11 @@
 
 						list($module_id, $option_id) = $this->data['payment_option']['id'] ? preg_split('#:#', $this->data['payment_option']['id'], 2) : ['', ''];
 
-						if (empty($payment->data['options'][$module_id]['options'][$option_id])) {
+						if (empty($payment->options[$module_id]['options'][$option_id])) {
 							return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
 						}
 
-						if (!empty($payment->data['options'][$module_id]['options'][$option_id]['error'])) {
+						if (!empty($payment->options[$module_id]['options'][$option_id]['error'])) {
 							return language::translate('error_payment_method_contains_error', 'The selected payment method contains errors');
 						}
 
@@ -805,14 +805,14 @@
 				'%firstname' => $this->data['customer']['firstname'],
 				'%lastname' => $this->data['customer']['lastname'],
 				'%billing_address' => functions::format_address($this->data['customer']),
-				'%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
+				'%payment_transaction_id' => $this->data['payment_transaction_id'] ?: '-',
 				'%shipping_address' => functions::format_address($this->data['customer']['shipping_address']),
-				'%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
-				'%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
+				'%shipping_tracking_id' => $this->data['shipping_tracking_id'] ?: '-',
+				'%shipping_tracking_url' => $this->data['shipping_tracking_url'] ?: '',
 				'%order_items' => null,
 				'%total' => currency::format($this->data['total'], true, $this->data['currency_code'], $this->data['currency_value']),
 				'%order_copy_url' => document::ilink('order', ['order_no' => $this->data['no'], 'public_key' => $this->data['public_key']], false, [], $language_code),
-				'%order_status' => !empty($order_status) ? $order_status->name : null,
+				'%order_status' => $order_status ? $order_status->name : null,
 				'%store_name' => settings::get('store_name'),
 				'%store_url' => document::ilink('', [], false, [], $language_code),
 			];
@@ -894,12 +894,12 @@
 				'%firstname' => $this->data['customer']['firstname'],
 				'%lastname' => $this->data['customer']['lastname'],
 				'%billing_address' => nl2br(functions::format_address($this->data['customer']), false),
-				'%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
+				'%payment_transaction_id' => $this->data['payment_transaction_id'] ?: '-',
 				'%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address']), false),
-				'%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
-				'%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
-				'%shipping_current_status' => !empty($this->data['shipping_current_status']) ? $this->data['shipping_current_status'] : '',
-				'%shipping_current_location' => !empty($this->data['shipping_current_location']) ? $this->data['shipping_current_location'] : '',
+				'%shipping_tracking_id' => $this->data['shipping_tracking_id'] ?: '-',
+				'%shipping_tracking_url' => $this->data['shipping_tracking_url'],
+				'%shipping_current_status' => $this->data['shipping_current_status'],
+				'%shipping_current_location' => $this->data['shipping_current_location'],
 				'%order_items' => null,
 				'%total' => currency::format($this->data['total'], true, $this->data['currency_code'], $this->data['currency_value']),
 				'%order_copy_url' => document::ilink('order', ['order_no' => $this->data['no'], 'public_key' => $this->data['public_key']], false, [], $this->data['language_code']),

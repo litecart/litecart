@@ -32,7 +32,7 @@
 	$category = reference::category($_GET['category_id']);
 
 	if (empty($_GET['list_style'])) {
-		$_GET['list_style'] = !empty($category->list_style) ? $category->list_style : 'columns';
+		$_GET['list_style'] = fallback($category->list_style, 'columns');
 	}
 
 	if (!$category->id) {

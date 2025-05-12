@@ -21,7 +21,7 @@
 		'active' => (route::$selected['resource'] == 'f:regional_settings'),
 	];
 
-	if (!empty(customer::$data['id'])) {
+	if (customer::check_login()) {
 
 		$box_account->snippets['menu_items'][] = [
 			'title' => language::translate('title_edit_account', 'Edit Account'),

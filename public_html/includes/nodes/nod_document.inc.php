@@ -134,9 +134,9 @@
 			];
 
 			self::$jsenv['customer'] = [
-				'id' => !empty(customer::$data['id']) ? customer::$data['id'] : null,
-				'name' => !empty(customer::$data['firstname']) ? customer::$data['firstname'] .' '. customer::$data['lastname'] : null,
-				'email' => !empty(customer::$data['email']) ? customer::$data['email'] : null,
+				'id' => customer::check_login() ? customer::$data['id'] : null,
+				'name' => customer::$data['firstname'] ? customer::$data['firstname'] .' '. customer::$data['lastname'] : null,
+				'email' => customer::$data['email'] ?: null,
 			];
 
 			self::$head_tags[] = '<script>window._env='. json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .'</script>';

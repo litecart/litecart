@@ -21,7 +21,7 @@
 				$redirect_url = new ent_link($_GET['redirect_url']);
 				$redirect_url->host = '';
 			} else {
-				$redirect_url = document::ilink('', [], null, [], !empty($_POST['language_code']) ? $_POST['language_code'] : '');
+				$redirect_url = document::ilink('', [], null, [], fallback($_POST['language_code'], ''));
 			}
 
 			if (!empty($_POST['language_code'])) {
@@ -77,13 +77,13 @@
 	];
 
 	foreach (currency::$currencies as $currency) {
-		if (!empty(administrator::$data['id']) || $currency['status'] == 1) {
+		if (administrator::check_login() || $currency['status'] == 1) {
 			$_page->snippets['currencies'][] = $currency;
 		}
 	}
 
 	foreach (language::$languages as $language) {
-		if (!empty(administrator::$data['id']) || $language['status'] == 1) {
+		if (administrator::check_login() || $language['status'] == 1) {
 			$_page->snippets['languages'][] = $language;
 		}
 	}

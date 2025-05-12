@@ -43,7 +43,7 @@
 			// Event handler for adding product to cart
 			if (!empty($_POST['add_cart_product'])) {
 
-				$userdata = !empty($_POST['userdata']) ? $_POST['userdata'] : [];
+				$userdata = fallback($_POST['userdata']);
 
 				if ($userdata) {
 					foreach (array_keys($userdata) as $key) {
@@ -140,7 +140,7 @@
 
 			self::reset();
 
-			if (!empty(customer::$data['id'])) {
+			if (customer::check_login()) {
 				database::query(
 					"update ". DB_TABLE_PREFIX ."cart_items
 					set cart_uid = '". database::input(self::$data['uid']) ."',
@@ -211,9 +211,9 @@
 				'quantity_max' => ($product->quantity_max > 0) ? $product->quantity_max : null,
 				'quantity_step' => ($product->quantity_step > 0) ? $product->quantity_step : null,
 				'quantity_unit' => [
-					'name' => !empty($product->quantity_unit['name']) ? $product->quantity_unit['name'] : '',
-					'decimals' => !empty($product->quantity_unit['decimals']) ? $product->quantity_unit['decimals'] : '',
-					'separate' => !empty($product->quantity_unit['separate']) ? $product->quantity_unit['separate'] : '',
+					'name' => $product->quantity_unit ? $product->quantity_unit['name'] : '',
+					'decimals' => $product->quantity_unit ? $product->quantity_unit['decimals'] : '',
+					'separate' => $product->quantity_unit ? $product->quantity_unit['separate'] : '',
 				],
 				'weight' => $product->weight,
 				'weight_unit' => $product->weight_unit,

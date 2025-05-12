@@ -106,7 +106,7 @@
 				'phone',
 				'email',
 			] as $field) {
-				$customer->data['shipping_address'][$field] = !empty($_POST['shipping_address'][$field]) ? $_POST['shipping_address'][$field] : '';
+				$customer->data['shipping_address'][$field] = fallback($_POST['shipping_address'][$field], '');
 			}
 
 			$customer->save();

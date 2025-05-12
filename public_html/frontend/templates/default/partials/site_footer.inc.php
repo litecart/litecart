@@ -21,7 +21,7 @@
 								</a>
 							</li>
 
-							<?php if (empty(customer::$data['id'])) { ?>
+							<?php if (!customer::check_login()) { ?>
 
 							<li>
 								<a href="<?php echo document::href_ilink('account/sign_up'); ?>">

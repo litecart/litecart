@@ -133,14 +133,14 @@
 						break;
 
 					case 'login':
-						$hash_string .= !empty(customer::$data['id']) ? '1' : '0';
+						$hash_string .= customer::check_login() ? '1' : '0';
 						break;
 
 					case 'prices':
 						$hash_string .= currency::$selected['code'];
 						$hash_string .= !empty(customer::$data['display_prices_including_tax']) ? '1' : '0';
-						$hash_string .= !empty(customer::$data['country_code']) ? customer::$data['country_code'] : '';
-						$hash_string .= !empty(customer::$data['zone_code']) ? customer::$data['zone_code'] : '';
+						$hash_string .= customer::$data['country_code'];
+						$hash_string .= customer::$data['zone_code'];
 						break;
 
 					case 'post':

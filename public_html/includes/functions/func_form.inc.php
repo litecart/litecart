@@ -139,10 +139,10 @@
 	function form_captcha($id, $config=[], $parameters='') {
 
 		$config = [
-			'width' => !empty($config['width']) ? $config['width'] : 100,
-			'height' => !empty($config['height']) ? $config['height'] : 40,
-			'length' => !empty($config['length']) ? $config['length'] : 4,
-			'set' => !empty($config['set']) ? $config['set'] : 'numbers',
+			'width' => fallback($config['width'], 100),
+			'height' => fallback($config['height'], 40),
+			'length' => fallback($config['length'], 4),
+			'set' => fallback($config['set'], 'numbers'),
 		];
 
 		return functions::captcha_draw($id, $config, $parameters);
