@@ -144,11 +144,11 @@
       $text = strtr($text, $characters);
     }
 
-  // Strip non printable characters and symbols
-    $text = preg_replace(['#[[:cntrl:]]+#', '#&(amp;)?#', '#[!"\#$%\'()*+,./:;<=>?@\[\]\\^`{}|~]#'], '', $text);
+  // Remove all special characters except letters, numbers, spaces, hyphens, and underscores
+    $text = preg_replace('#[^\p{L}\p{N}\p{Han}\p{Hiragana}\p{Katakana}\-–—_ ]+#u', '', $text);
 
-  // Underscores and dashes
-    $text = trim(preg_replace('#[-–—_ ]+#', '-', $text), '-');
+  // Replace spaces, hyphens, and underscores
+    $text = trim(preg_replace('#[\-–—_ ]+#', '-', $text), '-');
 
   // Convert to lowercases
     $text = mb_strtolower($text);
