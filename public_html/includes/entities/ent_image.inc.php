@@ -815,6 +815,8 @@
 
           $this->_image->setImageCompressionQuality((int)$quality);
 
+          $this->_image->transformImageColorspace(Imagick::COLORSPACE_SRGB);
+
           if ($interlaced) $this->_image->setInterlaceScheme(Imagick::INTERLACE_PLANE);
 
           $this->_image->setImageFormat($type);
