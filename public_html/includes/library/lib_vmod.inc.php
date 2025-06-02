@@ -366,7 +366,7 @@
             // Execute upgrade scripts
               foreach ($upgrades as $upgrade) {
 
-                if (version_compare($upgrade['version'], $installed_version, '<=')) continue;
+                if (version_compare($upgrade['version'], self::$_installed[$vmod['id']], '<=')) continue;
 
                 $tmp_file = stream_get_meta_data(tmpfile())['uri'];
                 file_put_contents($tmp_file, "<?php" . PHP_EOL . $upgrade['script']);
