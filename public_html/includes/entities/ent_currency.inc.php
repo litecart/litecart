@@ -43,11 +43,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($currency) {
-				$this->data = array_replace($this->data, array_intersect_key($currency, $this->data));
-			} else {
+			if (!$currency) {
 				throw new Exception('Could not find currency ('. functions::escape_html($currency_code) .') in database.');
 			}
+			
+			$this->data = array_replace($this->data, array_intersect_key($currency, $this->data));
 
 			$this->previous = $this->data;
 		}

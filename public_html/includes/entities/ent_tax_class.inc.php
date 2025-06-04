@@ -40,11 +40,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($tax_class) {
-				$this->data = array_replace($this->data, array_intersect_key($tax_class, $this->data));
-			} else {
+			if (!$tax_class) {
 				throw new Exception('Could not find tax class (ID: '. (int)$id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($tax_class, $this->data));
 
 			$this->previous = $this->data;
 		}

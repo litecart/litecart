@@ -51,11 +51,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($order_status) {
-				$this->data = array_replace($this->data, array_intersect_key($order_status, $this->data));
-			} else {
+			if (!$order_status) {
 				throw new Exception('Could not find order_status (ID: '. (int)$id .') in database.');
 			}
+			
+			$this->data = array_replace($this->data, array_intersect_key($order_status, $this->data));
 
 			foreach ([
 				'name',

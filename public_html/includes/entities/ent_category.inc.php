@@ -55,11 +55,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($category) {
-				$this->data = array_replace($this->data, array_intersect_key($category, $this->data));
-			} else {
+			if (!$category) {
 				throw new Exception('Could not find category (ID: '. (int)$id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($category, $this->data));
 
 			foreach ([
 				'name',

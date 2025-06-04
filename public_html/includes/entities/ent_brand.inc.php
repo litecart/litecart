@@ -51,11 +51,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($brand) {
-				$this->data = array_replace($this->data, array_intersect_key($brand, $this->data));
-			} else {
+			if (!$brand) {
 				throw new Exception('Could not find brand (ID: '. (int)$id .') in database.');
 			}
+			
+			$this->data = array_replace($this->data, array_intersect_key($brand, $this->data));
 
 			foreach ([
 				'short_description',

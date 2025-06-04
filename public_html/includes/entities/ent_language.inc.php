@@ -43,11 +43,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($language) {
-				$this->data = array_intersect_key(array_merge($this->data, $language), $this->data);
-			} else {
+			if (!$language) {
 				throw new Exception('Could not find language ('. functions::escape_html($language_code) .') in database.');
 			}
+
+			$this->data = array_intersect_key(array_merge($this->data, $language), $this->data);
 
 			$this->previous = $this->data;
 		}

@@ -41,11 +41,11 @@
 
 			// If absolute path is not provided, search for the file in the vmods directory
 			if (!preg_match('#^(\w:)?/#', str_replace('\\', '/', $file))) {
-					$file = FS_DIR_STORAGE . 'vmods/' . $file;
+				$file = FS_DIR_STORAGE . 'vmods/' . $file;
 			}
 
 			if (!is_file($file)) {
-					throw new Exception('Invalid vMod ('. $file .')');
+				throw new Exception('Invalid vMod ('. $file .')');
 			}
 
 			$this->reset();

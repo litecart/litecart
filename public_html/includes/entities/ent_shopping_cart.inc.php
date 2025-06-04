@@ -83,11 +83,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($shopping_cart) {
-				$this->data = array_replace($this->data, array_intersect_key($shopping_cart, $this->data));
-			} else {
+			if (!$shopping_cart) {
 				throw new Exception('Could not find shopping cart in database (ID: '. $id .')');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($shopping_cart, $this->data));
 
 			foreach ($shopping_cart as $field => $value) {
 				switch (true) {

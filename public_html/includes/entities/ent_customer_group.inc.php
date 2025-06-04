@@ -39,11 +39,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($customer_group) {
-				$this->data = array_replace($this->data, array_intersect_key($customer_group, $this->data));
-			} else {
+			if (!$customer_group) {
 				throw new Exception('Could not find customer group (ID: '. (int)$id .') in database.');
 			}
+			
+			$this->data = array_replace($this->data, array_intersect_key($customer_group, $this->data));
 
 			$this->previous = $this->data;
 		}

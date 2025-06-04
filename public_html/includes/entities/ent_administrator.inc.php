@@ -45,12 +45,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($administrator) {
-				$this->data = array_replace($this->data, array_intersect_key($administrator, $this->data));
-			} else {
+			if (!$administrator) {
 				throw new Exception('Could not find administrator (ID: '. (int)$id .') in database.');
 			}
 
+			$this->data = array_replace($this->data, array_intersect_key($administrator, $this->data));
 			$this->data['apps'] = !empty($this->data['apps']) ? json_decode($this->data['apps'], true) : [];
 			$this->data['widgets'] = !empty($this->data['widgets']) ? json_decode($this->data['widgets'], true) : [];
 

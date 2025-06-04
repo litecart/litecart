@@ -50,11 +50,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($third_party) {
-				$this->data = array_replace($this->data, array_intersect_key($third_party, $this->data));
-			} else {
+			if (!$third_party) {
 				throw new Exception('Could not find third party (ID: '. (int)$third_party_id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($third_party, $this->data));
 
 			foreach ([
 				'description',

@@ -40,11 +40,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($redirect) {
-				$this->data = array_replace($this->data, array_intersect_key($redirect, $this->data));
-			} else {
+			if (!$redirect) {
 				throw new Exception('Could not find redirect (ID: '. (int)$redirect_id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($redirect, $this->data));
 
 			$this->previous = $this->data;
 		}

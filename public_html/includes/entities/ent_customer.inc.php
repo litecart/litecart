@@ -67,11 +67,11 @@
 				}
 			});
 
-			if ($customer) {
-				$this->data = array_replace($this->data, array_intersect_key($customer, $this->data));
-			} else {
+			if (!$customer) {
 				throw new Exception('Could not find customer (ID: '. (int)$id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($customer, $this->data));
 
 			$this->data['newsletter'] = database::query(
 				"select id from ". DB_TABLE_PREFIX ."newsletter_recipients

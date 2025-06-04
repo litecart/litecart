@@ -49,11 +49,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($page) {
-				$this->data = array_replace($this->data, array_intersect_key($page, $this->data));
-			} else {
+			if (!$page) {
 				throw new Exception('Could not find page (ID: '. (int)$id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($page, $this->data));
 
 			foreach ([
 				'title',

@@ -42,11 +42,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($campaign) {
-				$this->data = array_replace($this->data, array_intersect_key($campaign, $this->data));
-			} else {
+			if (!$campaign) {
 				throw new Exception('Could not find campaign ('. functions::escape_html($id) .') in the database.');
 			}
+			
+			$this->data = array_replace($this->data, array_intersect_key($campaign, $this->data));
 
 			$this->data['products'] = database::query(
 				"select cp.*,

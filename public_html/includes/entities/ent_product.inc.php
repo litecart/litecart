@@ -72,11 +72,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($product) {
-				$this->data = array_replace($this->data, array_intersect_key($product, $this->data));
-			} else {
+			if (!$product) {
 				throw new Exception('Could not find product (ID: '. (int)$id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($product, $this->data));
 
 			// Categories
 			$this->data['categories'] = database::query(

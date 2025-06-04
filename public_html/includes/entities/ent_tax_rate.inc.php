@@ -42,11 +42,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($tax_rate) {
-				$this->data = array_replace($this->data, array_intersect_key($tax_rate, $this->data));
-			} else {
+			if (!$tax_rate) {
 				throw new Exception('Could not find tax rate (ID: '. (int)$id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($tax_rate, $this->data));
 
 			$this->previous = $this->data;
 		}

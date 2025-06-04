@@ -47,11 +47,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($delivery_status) {
-				$this->data = array_replace($this->data, array_intersect_key($delivery_status, $this->data));
-			} else {
+			if (!$delivery_status) {
 				throw new Exception('Could not find delivery status (ID: '. (int)$id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($delivery_status, $this->data));
 
 			foreach ([
 				'name',

@@ -40,11 +40,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($site_tag) {
-				$this->data = array_replace($this->data, array_intersect_key($site_tag, $this->data));
-			} else {
+			if (!$site_tag) {
 				throw new Exception('Could not find site tag (ID: '. (int)$site_tag_id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($site_tag, $this->data));
 
 			$this->previous = $this->data;
 		}

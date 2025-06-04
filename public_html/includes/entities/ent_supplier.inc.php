@@ -36,15 +36,15 @@
 
 			$supplier = database::query(
 				"select * from ". DB_TABLE_PREFIX ."suppliers
-				where id=". (int)$id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 
-			if ($supplier) {
-				$this->data = array_replace($this->data, array_intersect_key($supplier, $this->data));
-			} else {
+			if (!$supplier) {
 				throw new Exception('Could not find supplier (ID: '. (int)$id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($supplier, $this->data));
 
 			$this->previous = $this->data;
 		}

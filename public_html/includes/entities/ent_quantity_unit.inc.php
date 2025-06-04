@@ -40,11 +40,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($quantity_unit) {
-				$this->data = array_replace($this->data, array_intersect_key($quantity_unit, $this->data));
-			} else {
+			if (!$quantity_unit) {
 				throw new Exception('Could not find quantity unit (ID: '. (int)$id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($quantity_unit, $this->data));
 
 			foreach ([
 				'name',

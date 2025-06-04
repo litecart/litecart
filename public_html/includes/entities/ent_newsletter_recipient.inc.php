@@ -45,11 +45,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($recipient) {
-				$this->data = array_replace($this->data, array_intersect_key($recipient, $this->data));
-			} else {
+			if (!$recipient) {
 				throw new Exception('Could not find newsletter recipient (ID: '. (int)$id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($recipient, $this->data));
 
 			$this->previous = $this->data;
 		}

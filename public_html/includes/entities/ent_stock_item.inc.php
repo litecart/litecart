@@ -33,23 +33,40 @@
 
 		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $id)) {
-				throw new Exception('Invalid stock transaction (ID: '. functions::escape_html($id) .')');
-			}
-
 			$this->reset();
 
-			$stock_item = database::query(
+			if (!preg_match('#^[0-9]$#', $id)) {
+				$stock_item = database::query(
 				"select * from ". DB_TABLE_PREFIX ."stock_items
 				where id = ". (int)$id ."
 				limit 1;"
-			)->fetch();
+				)->fetch();
+			}
 
-			if ($stock_item) {
-				$this->data = array_replace($this->data, array_intersect_key($stock_item, $this->data));
-			} else {
+			// If not a number or not found, try to find by sku, gtin or mpn
+			if (!$stock_item) {
+
+				foreach ([
+					'sku',
+					'gtin',
+					'mpn',
+				] as $column) {
+
+					$stock_item = database::query(
+						"select * from ". DB_TABLE_PREFIX ."stock_items
+						where lower(nullif($column, '')) = '". database::input(strtolower($id)) ."'
+						limit 1;"
+					)->fetch();
+
+					if ($stock_item) break;
+				}
+			}
+
+			if (!$stock_item) {
 				throw new Error('Could not find stock item (ID: '. (int)$id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($stock_item, $this->data));
 
 			// Info
 			foreach ([

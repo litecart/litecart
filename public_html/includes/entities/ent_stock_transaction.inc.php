@@ -60,11 +60,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($transaction) {
-				$this->data = array_replace($this->data, array_intersect_key($transaction, $this->data));
-			} else {
+			if (!$transaction) {
 				throw new Error('Could not find stock transaction (ID: '. (int)$id .') in database.');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($transaction, $this->data));
 
 			$this->data['contents'] = database::query(
 				"select stc.*, si.sku, si.quantity, si.backordered, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name

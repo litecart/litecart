@@ -42,12 +42,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($group) {
-				$this->data = array_replace($this->data, array_intersect_key($group, $this->data));
-			} else {
+			if (!$group) {
 				throw new Exception('Could not find attribute (ID: '. (int)$id .') in database.');
 			}
 
+			$this->data = array_replace($this->data, array_intersect_key($group, $this->data));
 			$this->data['name'] = json_decode($this->data['name'], true) ?: [];
 
 			database::query(

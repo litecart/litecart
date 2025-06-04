@@ -42,13 +42,14 @@
 				limit 1;"
 			)->fetch();
 
-			if ($banner) {
-				$this->data = array_replace($this->data, array_intersect_key($banner, $this->data));
-			} else {
+			if (!$banner) {
 				throw new Exception('Could not find banner (ID: '. (int)$id .') in database.');
 			}
 
+			$this->data = array_replace($this->data, array_intersect_key($banner, $this->data));
 			$this->data['languages'] = preg_split('#\s*,\s*#', $this->data['languages'], -1, PREG_SPLIT_NO_EMPTY);
+
+			$this->previous = $this->data;
 		}
 
 		public function save() {

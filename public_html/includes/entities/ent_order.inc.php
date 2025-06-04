@@ -91,11 +91,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($order) {
-				$this->data = array_replace($this->data, array_intersect_key($order, $this->data));
-			} else {
+			if (!$order) {
 				throw new Exception('Could not find order in database (ID: '. (int)$id .')');
 			}
+
+			$this->data = array_replace($this->data, array_intersect_key($order, $this->data));
 
 			foreach ($order as $field => $value) {
 
@@ -277,6 +277,7 @@
 					discount_tax = ". (float)$this->data['discount_tax'] .",
 					total = ". (float)$this->data['total'] .",
 					total_tax = ". (float)$this->data['total_tax'] .",
+					notes = '". database::input($this->data['ip_address']) ."',
 					ip_address = '". database::input($this->data['ip_address']) ."',
 					hostname = '". database::input($this->data['hostname']) ."',
 					user_agent = '". database::input($this->data['user_agent']) ."',

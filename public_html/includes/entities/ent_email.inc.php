@@ -54,11 +54,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($email) {
-				$this->data = array_replace($this->data, array_intersect_key($email, $this->data));
-			} else {
+			if (!$email) {
 				throw new Exception('Could not find email (ID: '. (int)$id .') in database.');
 			}
+			
+			$this->data = array_replace($this->data, array_intersect_key($email, $this->data));
 
 			$this->data['sender'] = json_decode($email['sender'], true);
 			$this->data['recipients'] = json_decode($email['recipients'], true);

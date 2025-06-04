@@ -42,11 +42,11 @@
 				limit 1;"
 			)->fetch();
 
-			if ($geo_zone) {
-				$this->data = array_replace($this->data, array_intersect_key($geo_zone, $this->data));
-			} else {
+			if (!$geo_zone) {
 				throw new Exception('Could not find geo zone (ID: '. (int)$id .') in database.');
 			}
+			
+			$this->data = array_replace($this->data, array_intersect_key($geo_zone, $this->data));
 
 			$this->data['zones'] = database::query(
 				"select z2gz.*, c.name as country_name, z.name as zone_name from ". DB_TABLE_PREFIX ."zones_to_geo_zones z2gz
