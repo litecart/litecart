@@ -45,7 +45,7 @@ CREATE TABLE `lc_customer_groups` (
 	`type` ENUM('retail', 'wholesale') NOT NULL DEFAULT 'retail',
 	`name` VARCHAR(32) NOT NULL DEFAULT '',
 	`description` VARCHAR(248) NOT NULL DEFAULT '',
-	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -100,7 +100,7 @@ CREATE TABLE `lc_redirects` (
 	`last_redirected` TIMESTAMP NULL,
 	`valid_from` TIMESTAMP NULL,
 	`valid_to` TIMESTAMP NULL,
-	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `pattern` (`pattern`),
@@ -116,12 +116,49 @@ CREATE TABLE `lc_site_tags` (
 	`content` TEXT NOT NULL DEFAULT '',
 	`require_consent` VARCHAR(64) NULL,
 	`priority` TINYINT(4) NOT NULL DEFAULT '0',
-	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
 	INDEX `status` (`status`),
 	INDEX `position` (`position`),
 	INDEX `priority` (`priority`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- -----
+CREATE TABLE `lc_stock_items` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`brand_id` INT(10) UNSIGNED NULL,
+	`supplier_id` INT(10) UNSIGNED NULL,
+	`name` TEXT NOT NULL DEFAULT '{}',
+	`sku` VARCHAR(32) NOT NULL DEFAULT '',
+	`mpn` VARCHAR(32) NOT NULL DEFAULT '',
+	`gtin` VARCHAR(32) NOT NULL DEFAULT '',
+	`shelf` VARCHAR(32) NOT NULL DEFAULT '',
+	`taric` VARCHAR(16) NOT NULL DEFAULT '',
+	`image` VARCHAR(512) NOT NULL DEFAULT '',
+	`weight` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
+	`length` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`width` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`height` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`length_unit` VARCHAR(2) NOT NULL DEFAULT '',
+	`quantity` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`backordered` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`purchase_price` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`purchase_price_currency_code` VARCHAR(3) NOT NULL DEFAULT '',
+	`file` VARCHAR(248) NULL,
+	`filename` VARCHAR(64) NULL,
+	`mime_type` VARCHAR(32) NULL,
+	`downloads` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`priority` INT(11) NOT NULL DEFAULT '0',
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `mpn` (`mpn`) USING BTREE,
+	INDEX `gtin` (`gtin`) USING BTREE,
+	INDEX `sku` (`sku`) USING BTREE,
+	INDEX `product_id` (`product_id`) USING BTREE,
+	INDEX `brand_id` (`brand_id`) USING BTREE,
+	INDEX `supplier_id` (`supplier_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_stock_transactions` (
@@ -141,6 +178,28 @@ CREATE TABLE `lc_stock_transactions_contents` (
 	PRIMARY KEY (`id`),
 	INDEX `transaction_id` (`transaction_id`),
 	INDEX `stock_item_id` (`stock_item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- -----
+CREATE TABLE `lc_third_parties` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`privacy_classes` VARCHAR(64) NOT NULL DEFAULT '',
+	`category` VARCHAR(64) NOT NULL DEFAULT '',
+	`name` VARCHAR(64) NOT NULL DEFAULT '',
+	`description` MEDIUMTEXT NOT NULL DEFAULT '{}',
+	`collected_data` TEXT NOT NULL DEFAULT '{}',
+	`purposes` TEXT NOT NULL DEFAULT '{}',
+	`homepage` VARCHAR(248) NOT NULL DEFAULT '',
+	`cookie_policy_url` VARCHAR(248) NOT NULL DEFAULT '',
+	`privacy_policy_url` VARCHAR(248) NOT NULL DEFAULT '',
+	`opt_out_url` VARCHAR(248) NOT NULL DEFAULT '',
+	`do_not_sell_url` VARCHAR(248) NOT NULL DEFAULT '',
+	`country_code` CHAR(2) NULL DEFAULT NULL,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `status` (`status`) USING BTREE,
+	INDEX `country_code` (`country_code`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 RENAME TABLE `lc_manufacturers` TO `lc_brands`;
@@ -332,8 +391,8 @@ ADD INDEX `code2` (`code2`);
 -- -----
 ALTER TABLE `lc_modules`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
-CHANGE COLUMN `date_pushed` `last_pushed` TIMESTAMP NULL DEFAULT NULL AFTER `last_log`;
+CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `date_pushed` `last_pushed` TIMESTAMP NULL DEFAULT NULL AFTER `last_log`,
 CHANGE COLUMN `date_processed` `last_processed` TIMESTAMP NULL DEFAULT NULL AFTER `last_pushed`;
 -- -----
 ALTER TABLE `lc_newsletter_recipients`
@@ -342,7 +401,7 @@ CHANGE COLUMN `client_ip` `ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 ADD COLUMN `subscribed` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1' AFTER `id`,
 ADD COLUMN `country_code` CHAR(2) NULL AFTER `email`,
 ADD COLUMN `language_code` CHAR(2) NULL AFTER `country_code`,
-ADD COLUMN `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER `user_agent`
+ADD COLUMN `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER `user_agent`,
 ADD INDEX `subscribed` (`subscribed`);
 -- -----
 ALTER TABLE `lc_orders`
@@ -500,11 +559,12 @@ ADD COLUMN `synonyms` TEXT NOT NULL DEFAULT '{}' AFTER `description`,
 ADD COLUMN `head_title` TEXT NOT NULL DEFAULT '{}' AFTER `synonyms`,
 ADD COLUMN `meta_description` TEXT NOT NULL DEFAULT '{}' AFTER `head_title`,
 ADD COLUMN `stock_option_type` ENUM('variant','bundle') NOT NULL DEFAULT 'variant' AFTER `keywords`,
-ADD COLUMN `date_valid_from` `valid_from` TIMESTAMP NULL DEFAULT NULL AFTER `purchases`,
-ADD COLUMN `date_valid_to` `valid_to` TIMESTAMP NULL DEFAULT NULL AFTER `valid_from`,
+ADD COLUMN `valid_from` TIMESTAMP NULL DEFAULT NULL AFTER `purchases`,
+ADD COLUMN `valid_to` TIMESTAMP NULL DEFAULT NULL AFTER `valid_from`,
 DROP INDEX `manufacturer_id`,
 DROP INDEX `date_valid_from`,
 DROP INDEX `date_valid_to`,
+ADD INDEX `featured` (`featured`),
 ADD INDEX `brand_id` (`brand_id`),
 ADD INDEX `synonyms` (`synonyms`),
 ADD INDEX `valid_from` (`valid_from`),
@@ -608,65 +668,6 @@ CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `sold_out_status_id` `sold_out_status_id` INT(10) UNSIGNED NOT NULL,
 CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
 -- -----
-CREATE TABLE `lc_stock_items` (
-	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`brand_id` INT(10) UNSIGNED NULL,
-	`supplier_id` INT(10) UNSIGNED NULL,
-	`name` TEXT NOT NULL DEFAULT '{}',
-	`sku` VARCHAR(32) NOT NULL DEFAULT '',
-	`mpn` VARCHAR(32) NOT NULL DEFAULT '',
-	`gtin` VARCHAR(32) NOT NULL DEFAULT '',
-	`shelf` VARCHAR(32) NOT NULL DEFAULT '',
-	`taric` VARCHAR(16) NOT NULL DEFAULT '',
-	`image` VARCHAR(512) NOT NULL DEFAULT '',
-	`weight` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-	`weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
-	`length` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-	`width` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-	`height` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-	`length_unit` VARCHAR(2) NOT NULL DEFAULT '',
-	`quantity` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-	`backordered` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-	`purchase_price` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-	`purchase_price_currency_code` VARCHAR(3) NOT NULL DEFAULT '',
-	`file` VARCHAR(248) NULL,
-	`filename` VARCHAR(64) NULL,
-	`mime_type` VARCHAR(32) NULL,
-	`downloads` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-	`priority` INT(11) NOT NULL DEFAULT '0',
-	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `mpn` (`mpn`) USING BTREE,
-	INDEX `gtin` (`gtin`) USING BTREE,
-	INDEX `sku` (`sku`) USING BTREE,
-	INDEX `product_id` (`product_id`) USING BTREE,
-	INDEX `brand_id` (`brand_id`) USING BTREE,
-	INDEX `supplier_id` (`supplier_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- -----
-CREATE TABLE `lc_third_parties` (
-	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-	`privacy_classes` VARCHAR(64) NOT NULL DEFAULT '',
-	`category` VARCHAR(64) NOT NULL DEFAULT '',
-	`name` VARCHAR(64) NOT NULL DEFAULT '',
-	`description` MEDIUMTEXT NOT NULL DEFAULT '{}',
-	`collected_data` TEXT NOT NULL DEFAULT '{}',
-	`purposes` TEXT NOT NULL DEFAULT '{}',
-	`homepage` VARCHAR(248) NOT NULL DEFAULT '',
-	`cookie_policy_url` VARCHAR(248) NOT NULL DEFAULT '',
-	`privacy_policy_url` VARCHAR(248) NOT NULL DEFAULT '',
-	`opt_out_url` VARCHAR(248) NOT NULL DEFAULT '',
-	`do_not_sell_url` VARCHAR(248) NOT NULL DEFAULT '',
-	`country_code` CHAR(2) NULL DEFAULT NULL,
-	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `status` (`status`) USING BTREE,
-	INDEX `country_code` (`country_code`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- -----
 ALTER TABLE `lc_suppliers`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 -- -----
@@ -711,7 +712,7 @@ CHANGE COLUMN `city` `city` VARCHAR(32) NULL;
 -- -----
 INSERT IGNORE INTO `lc_banners`
 (`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `valid_from`, `valid_to`)
-SELECT id, status, name, languages, '', replace(image, 'slides/', 'banners/'), '', 'jumbotron', date_valid_from, date_valid_to FROM `lc_slides`;
+SELECT id, status, name, languages, '', replace(image, 'slides/', 'banners/'), '', 'jumbotron', valid_from, valid_to FROM `lc_slides`;
 -- -----
 INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `valid_from`, `valid_to`, `updated_at`, `created_at`) VALUES
 (0, 'Jumbotron', '', '', 'banners/leaderboard.svg', '', 'jumbotron', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -734,6 +735,7 @@ INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALU
 INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, `function`, `required`, `priority`, `date_created`, `date_updated`) VALUES
 ('defaults', 'Default Order Status', 'Default order status for new orders if nothing else is set.', 'default_order_status_id', '1', 'order_status()', 0, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('customer_details', 'Different Shipping Address', 'Allow customers to provide a different address for shipping.', 'customer_shipping_address', '1', 'toggle("y/n")', 0, 24, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('listings', 'Featured Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_featured_products_num_items', '10', 'number()', 0, 17, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('checkout', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id, {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 1, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('advanced', 'Static Content Domain Name', 'Use the given alias domain name for static content (fonts, images, stylesheets, javascripts, etc.).', 'static_domain', '', 'text()', 0, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('social_media', 'Facebook Link', 'The link to your Facebook page.', 'facebook_link', '', 'url()', 0, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -742,34 +744,6 @@ INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, 
 ('social_media', 'Pinterest Link', 'The link to your Pinterest page.', 'pinterest_link', '', 'url()', 0, 40, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('social_media', 'X Link', 'The link to your X page.', 'x_link', '', 'url()', 0, 50, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('social_media', 'YouTube Link', 'The link to your YouTube channel.', 'youtube_link', '', 'url()', 0, 60, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
--- -----
-INSERT INTO `lc_stock_transactions` (id, name, description)
-VALUES (1, 'Initial Stock Transaction', 'This is an initial system generated stock transaction to deposit stock for all sold items and items in stock. We need this for future inconcistency checks.');
--- -----
-INSERT INTO `lc_stock_transactions_contents` (transaction_id, stock_item_id, quantity_adjustment)
-SELECT '1' AS transaction_id, stock_item_id, quantity_adjustment
-FROM (
-	SELECT product_id, stock_item_id, SUM(quantity) as quantity_adjustment
-	FROM (
-		SELECT pso.product_id, pso.stock_item_id, pso.quantity
-		FROM `lc_products_stock_options` pso
-
-		UNION
-
-		SELECT oi.product_id, oi.stock_item_id, oi.quantity
-		FROM `lc_orders_items` oi
-		WHERE oi.order_id IN (
-			SELECT id
-			FROM `lc_orders` o
-			WHERE o.order_status_id IN (
-				SELECT id
-				FROM `lc_order_statuses` os
-				WHERE os.stock_action = 'withdraw'
-			)
-		)
-	) AS temp_table
-	GROUP BY product_id, stock_item_id
-) AS final_result;
 -- -----
 UPDATE `lc_attribute_groups`
 SET name = '{}';
@@ -908,10 +882,6 @@ SET oi.tax_class_id = p.tax_class_id,
 	oi.discount_tax = oi.price * (o.discount_tax/o.total),
 	oi.`sum` = oi.price - (oi.price * (o.discount/o.total)),
 	oi.sum_tax = oi.tax - (oi.tax * (o.discount/o.total));
--- -----
-UPDATE `lc_orders_items` oi
-LEFT JOIN `lc_products_stock_options` pso ON (pso.product_id = oi.product_id AND pso.attributes = oi.attributes)
-SET oi.stock_item_id = pso.stock_item_id;
 -- -----
 UPDATE `lc_orders_items`
 SET sum = price * quantity,

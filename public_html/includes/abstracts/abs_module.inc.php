@@ -1,6 +1,7 @@
 <?php
 
 	abstract class abs_module {
+
 		public $id = null;
 		public $name = '';
 		public $description = '';
@@ -11,6 +12,7 @@
 
 		public $status = null;
 		public $settings = [];
+		public $userdata = [];
 		public $priority = 0;
 		public $last_pushed = null;
 		public $last_processed = null;

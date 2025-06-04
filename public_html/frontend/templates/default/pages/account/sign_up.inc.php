@@ -19,19 +19,15 @@
 					<div class="card-body">
 						<?php echo functions::form_begin('customer_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
+							<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
 							<div class="grid">
-
-								<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
 								<div class="col-sm-6">
 									<label class="form-group">
 										<?php echo functions::form_toggle('type', ['individual' => language::translate('title_individual', 'Individual'), 'business' => language::translate('title_business', 'Business')], empty($_POST['type']) ? 'individual' : true); ?>
 									</label>
 								</div>
-
-								<div class="col-0 col-sm-6">
-								</div>
-								<?php } ?>
 							</div>
+							<?php } ?>
 
 							<div class="grid">
 								<?php if (settings::get('customer_field_company')) { ?>
@@ -152,7 +148,7 @@
 							</div>
 
 							<div class="form-group">
-								<?php echo functions::form_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
+								<?php echo functions::form_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via email when there are new products or campaigns.')], true); ?>
 							</div>
 
 							<?php if ($consent) { ?>

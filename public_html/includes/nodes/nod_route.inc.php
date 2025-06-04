@@ -85,6 +85,11 @@
 					$route['endpoint'] = 'backend';
 					break;
 
+
+				case (preg_match('#^f:#', $resource)):
+					$route['endpoint'] = 'frontend';
+					break;
+
 				default:
 					$route['endpoint'] = 'frontend';
 					break;
@@ -118,7 +123,7 @@
 
 						// Resolve resource logic
 						if (preg_match('#\*#', $route['resource'])) {
-							$route['resource'] = preg_replace_callback('#^(\w:).*$#', function($matches){
+							$route['resource'] = preg_replace_callback('#^([a-z]:).*$#', function($matches){
 								return fallback($matches[1], 'f:') . preg_replace('#^'. preg_quote(trim(BACKEND_ALIAS, '/') . '/', '#') .'#', '', parse_url(self::$request, PHP_URL_PATH));
 							}, $route['resource']);
 						}
@@ -412,7 +417,7 @@
 			// Strip logic from string
 			$ilink = self::strip_url_logic($link->path);
 
-			if (!preg_match('#^\w:#', $ilink)) {
+			if (!preg_match('#^[a-z]:#', $ilink)) {
 				$ilink = 'f:'.$ilink;
 			}
 

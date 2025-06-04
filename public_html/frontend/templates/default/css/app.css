@@ -511,7 +511,7 @@ body {
 }
 @media (min-width: 576px) {
   .listing.categories {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
     margin-bottom: 2em;
   }
 }
@@ -569,16 +569,19 @@ body {
   border-radius: var(--border-radius);
   padding: 0.5em;
   transition: all 100ms linear;
+  background: #fff6;
+  font-weight: 500;
 }
 .listing .category .link:hover {
-  background: #fff6;
-  border: 1px solid #e2e2e9;
+  background: #fff;
+}
+.listing .category .thumbnail {
+  height: 3em;
 }
 .listing .category .caption {
   flex: 1 0 auto;
   padding: 0.5em 1em;
   color: var(--default-text-color);
-  text-align: center;
   align-self: center;
 }
 .listing .category .caption * {
@@ -674,7 +677,7 @@ body {
   top: 1em;
   inset-inline-end: 1em;
   padding: 0.5em;
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(3px);
   border-radius: 1em;
   margin: 0 -1px -1px -1px;
@@ -828,6 +831,14 @@ body {
   aspect-ratio: 1 / 1;
   line-height: 1;
 }
+#box-product .social-bookmarks .btn {
+  background: #fff;
+  transition: all 200ms linear;
+}
+#box-product .social-bookmarks .btn:hover {
+  background: #555;
+  color: #fff;
+}
 #box-product .description p:first-child {
   margin-top: 0;
 }
@@ -842,8 +853,14 @@ body {
 #box-product .technical-data table td:first-child {
   width: 50%;
 }
+#box-product form[name="buy_now_form"] fieldset {
+  border-color: #d9d9d9;
+}
 #box-product form[name="buy_now_form"] legend {
   letter-spacing: 0.1em;
+}
+#box-product form[name="buy_now_form"] .form-group {
+  margin-bottom: 0.5em;
 }
 .price-tag .sale-price {
   color: #cc0000;

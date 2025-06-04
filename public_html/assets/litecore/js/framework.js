@@ -727,7 +727,7 @@ waitFor('jQuery', ($) => {
 		e.preventDefault();
 		var n = $(this).closest('table').find('thead th:not(:last-child)').length;
 		$(this).closest('table').find('tbody').append(
-			'<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class="remove" href="#"><i class="fa fa-times" style="color: #d33;"></i></a></td>' +'</tr>'
+			'<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class="remove" href="#"><i class="icon-times" style="color: #d33;"></i></a></td>' +'</tr>'
 		).trigger('keyup');
 	});
 

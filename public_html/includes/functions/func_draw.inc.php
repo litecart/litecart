@@ -85,6 +85,10 @@
 
 	function draw_fonticon($icon, $parameters='') {
 
+		if (!$icon) {
+			return '';
+		}
+
 		switch(true) {
 
 			// LiteCore Fonticons
@@ -414,7 +418,7 @@
 			}
 		}
 
-		$js[] = '})';
+		$js[] = '});';
 
 		document::add_script($js, 'litebox-'. $selector);
 	}

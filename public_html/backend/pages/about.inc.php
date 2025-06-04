@@ -215,6 +215,7 @@
 		'errors' => $errors,
 	];
 
+	sort($_page->snippets['php']['loaded_extensions'], SORT_NATURAL);
 	sort($_page->snippets['php']['disabled_functions'], SORT_NATURAL);
 
 	echo $_page;

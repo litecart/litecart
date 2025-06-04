@@ -22,7 +22,7 @@
 		$_POST['email'] = customer::$data['email'];
 	}
 
-	if (!empty(customer::$data['id'])) {
+	if (customer::check_login()) {
 		notices::add('notices', language::translate('text_already_logged_in', 'You are already logged in'));
 	}
 

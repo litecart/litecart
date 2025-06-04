@@ -11,6 +11,7 @@
 * @license CC-BY-ND-4.0
 * author T. Almroth
 */
+/* Media Breakpoints */
 @font-face {
   font-family: 'Fira Sans';
   font-style: normal;
@@ -39,8 +40,6 @@
   /* General */
   --site-background: #f2f2f7;
   --listing-border: 1px solid #d3d3e1;
-  --sidebar-width: 320px;
-  --cookie-notice-background: rgba(45, 45, 56, 0.75);
   /* Important Message */
   --important-message-background: #222;
   --important-message-text-color: #fff;
@@ -55,9 +54,11 @@
   --cookie-notice-background: #334c;
   --cookie-notice-text-color: #fff;
   /* Framework */
+  --gutter-x: 15px;
+  /* See additional for media queries */
+  --gutter-y: 15px;
+  /* See additional for media queries */
   --border-radius: 10px;
-  --gutter-x: 1rem;
-  --gutter-y: 2rem;
   --whitespace-color: #fff;
   --default-text-font: 'Fira Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #444;
@@ -67,8 +68,8 @@
   --default-border-color: #ececf1;
   --link-text-color: #5292b1;
   /* Forms */
-  --input-padding-x: 1em;
-  --input-padding-y: 0.75em;
+  --input-padding-x: 1.25em;
+  --input-padding-y: 0.66em;
   --input-background: #ececf1;
   --input-text-color: #000;
   --input-border-color: #e5e6e9;
@@ -96,8 +97,8 @@
   --breadcrumb-item-border-width: 1px;
   --breadcrumb-item-border-color: #d6d6e1;
   /* Buttons */
-  --button-padding-x: 1.5em;
-  --button-padding-y: 0.75em;
+  --button-padding-x: 1.25em;
+  --button-padding-y: 0.66em;
   --button-border-width: 1px;
   --button-shadow: 0 2px 2px 0 rgba(37, 44, 97, 0.15), 0 1px 3px 0 rgba(93, 100, 148, 0.2);
   /* Default Button */
@@ -131,7 +132,7 @@
   --card-title-text-weight: 500;
   --card-border-color: #e7e7e7;
   --card-border-width: 1px;
-  --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  --card-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   --card-footer-background: #f2f3f6;
   --carousel-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   /* Dropdowns */
@@ -205,19 +206,13 @@
 }
 @media (min-width: 576px) {
   :root {
-    --gutter-x: 1.25rem;
-    --gutter-y: 1.25rem;
+    --gutter-x: 20px;
+    --gutter-y: 20px;
   }
 }
 @media (min-width: 768px) {
   :root {
-    --gutter-x: 1.5rem;
-    --gutter-y: 1.5rem;
-  }
-}
-@media (min-width: 992px) {
-  :root {
-    --gutter-x: 2rem;
-    --gutter-y: 2rem;
+    --gutter-x: 30px;
+    --gutter-y: 30px;
   }
 }

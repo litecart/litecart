@@ -2,22 +2,23 @@
 	<div id="content">
 		{{notices}}
 
-		<?php if ($jumbotron = functions::draw_banner('jumbotron')) { ?>
-		<div id="box-jumbotron" style="margin-bottom: 2em;">
-			<?php echo $jumbotron; ?>
-		</div>
-		<?php } ?>
+		<div class="grid">
 
-		<div class="grid" style="grid-gap: var(--gutter-y) 30px;">
-			<div class="col-xs-6 col-md-4">
+			<?php if ($jumbotron = functions::draw_banner('jumbotron')) { ?>
+			<div id="box-jumbotron" class="col-12">
+				<?php echo $jumbotron; ?>
+			</div>
+			<?php } ?>
+
+			<div class="col-12 col-md-4">
 				<?php echo functions::draw_banner('left'); ?>
 			</div>
 
-			<div class="col-xs-6 col-md-4">
+			<div class="col-6 col-md-4">
 				<?php echo functions::draw_banner('middle'); ?>
 			</div>
 
-			<div class="hidden-xs hidden-sm col-md-4">
+			<div class="col-6 col-md-4">
 				<?php echo functions::draw_banner('right'); ?>
 			</div>
 		</div>

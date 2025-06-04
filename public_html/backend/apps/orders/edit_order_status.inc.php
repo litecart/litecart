@@ -158,7 +158,7 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_font_icon', 'Font Icon'); ?></div>
-										<?php echo functions::form_input_text('icon', true, 'placeholder="fa-circle-thin"'); ?>
+										<?php echo functions::form_input_text('icon', true, 'placeholder="icon-circle-thin"'); ?>
 									</label>
 								</div>
 
@@ -219,8 +219,8 @@
 								</div>
 
 								<div class="checkbox">
-									<strong><?php echo functions::form_radio_button('stock_action', ['commit', language::translate('title_commit_stock', 'Commit Stock')], true); ?> </strong>
-									<?php echo language::translate('text_commit_changes_to_the_stock', 'Commit changes to stock.'); ?></label>
+									<strong><?php echo functions::form_radio_button('stock_action', ['commit', language::translate('title_commit_changes', 'Commit Changes')], true); ?> </strong>
+									<?php echo language::translate('text_commit_changes_to_the_stock', 'Commit changes to stock withdrawing or depositing quantities determined by if an order is a sale or return.'); ?></label>
 								</div>
 							</label>
 						</div>

@@ -108,15 +108,20 @@
 						"select * from ". DB_TABLE_PREFIX ."pages
 						where id = ". (int)$this->_data['id'] ."
 						limit 1;"
-					)->fetch(function($page) {
+					)->fetch(function(&$page) {
 						foreach ($page as $key => $value) {
+
 							if (in_array($key, ['title', 'content', 'head_title', 'meta_description'])) {
+								$value = json_decode($value, true) ?: [];
+
 								foreach ($this->_language_codes as $language_code) {
-									if (!empty($page[$key])) {
-										$this->_data[$key] = $page[$key];
-										break;
+									if (!empty($value[$language_code])) {
+										$page[$key] = $value[$language_code];
+										continue 2;
 									}
 								}
+
+								$page[$key] = '';
 							}
 						}
 					});

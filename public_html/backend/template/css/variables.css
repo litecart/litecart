@@ -154,7 +154,7 @@
   --card-title-text-weight: 700;
   --card-border-color: transparent;
   --card-border-width: 0;
-  --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  --card-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   --card-footer-background: #f4f6fb;
   --carousel-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   /* Dropdowns */
@@ -221,7 +221,7 @@
   --table-link-background: #e3ebf3;
   --table-link-text-color: var(--default-text-color);
   --table-link-background--hover: #cfddeb;
-  --table-link-shadow: 0 1px 1px 0 rgba(37, 44, 97, 0.15), 0 1px 1px 0 rgba(93, 100, 148, 0.2);
+  --table-link-shadow: 0 0 1px 0 rgba(37, 44, 97, 0.15), 0 1px 1px 0 rgba(93, 100, 148, 0.2);
   --table-link-shadow--active: inset 0px 1px 0 0 rgba(0, 0, 0, 0.05);
   --table-footer-background: #fbfcfd;
   --table-footer-text-color: var(--default-text-color);

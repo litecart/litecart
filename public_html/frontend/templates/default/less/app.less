@@ -614,7 +614,7 @@ body {
 		grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
 
 		@media (min-width: 576px) {
-			grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+			grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
 			margin-bottom: 2em;
 		}
 	}
@@ -681,18 +681,23 @@ body {
 			border-radius: var(--border-radius);
 			padding: 0.5em;
 			transition: all 100ms linear;
+			background: #fff6;
+			font-weight: 500;
 
 			&:hover {
-				background: #fff6;
-				border: 1px solid #e2e2e9;
+				background: #fff;
+
 			}
+		}
+
+		.thumbnail {
+			height: 3em;
 		}
 
 		.caption {
 			flex: 1 0 auto;
 			padding: 0.5em 1em;
 			color: var(--default-text-color);
-			text-align: center;
 			align-self: center;
 
 			* {
@@ -806,7 +811,7 @@ body {
 			top: 1em;
 			inset-inline-end: 1em;
 			padding: 0.5em;
-			background: rgba(255, 255, 255, 0.75);
+			background: rgba(255, 255, 255, 0.25);
 			backdrop-filter: blur(3px);
 			border-radius: 1em;
 			margin: 0 -1px -1px -1px;
@@ -992,6 +997,16 @@ body {
 			aspect-ratio: 1 / 1;
 			line-height: 1;
 		}
+
+		.btn {
+			background: #fff;
+			transition: all 200ms linear;
+
+			&:hover {
+				background: #555;
+				color: #fff;
+			}
+		}
 	}
 
 	.description {
@@ -1018,8 +1033,16 @@ body {
 		}
 	}
 
-	form[name="buy_now_form"] legend {
-		letter-spacing: .1em;
+	form[name="buy_now_form"] {
+		fieldset {
+			border-color: #d9d9d9;
+		}
+		legend {
+			letter-spacing: .1em;
+		}
+		.form-group {
+			margin-bottom: .5em;
+		}
 	}
 }
 

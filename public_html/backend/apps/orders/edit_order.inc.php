@@ -653,7 +653,7 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
-										<?php echo functions::form_input_email('customer[email]', true, 'required'); ?>
+										<?php echo functions::form_input_email('customer[email]', true); ?>
 									</label>
 								</div>
 							</div>

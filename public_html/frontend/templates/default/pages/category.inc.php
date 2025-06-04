@@ -122,16 +122,22 @@
 				<article id="box-category-description" class="card">
 					<div class="card-header">
 						<h1 class="card-title"><?php echo $h1_title; ?></h1>
-						<div style="margin-top: .5em;">
-							<?php echo $short_description; ?>
-						</div>
 					</div>
 
 					<div class="card-body">
 						<div class="flex">
 
 							<div class="description flex-grow" style="flex: 1 1 auto;">
-								{{description}}
+
+								<?php if ($short_description) { ?>
+								<p class="short-description text-medium" style="margin-top: 0;">
+									<?php echo $short_description; ?>
+								</p>
+								<?php } ?>
+
+								<div class="description">
+									{{description}}
+								</div>
 							</div>
 
 							<?php if ($image) { ?>

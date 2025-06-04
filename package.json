@@ -18,9 +18,9 @@
 		"url": "https://github.com/litecart/litecart/issues"
 	},
 	"devDependencies": {
-		"@sequencemedia/gulp-clean-css": "^1.0.238",
-		"@sequencemedia/gulp-sourcemaps": "^1.0.252",
-		"gulp": "^5.0.0",
+		"@sequencemedia/gulp-clean-css": "^1.0.245",
+		"@sequencemedia/gulp-sourcemaps": "^1.0.259",
+		"gulp": "^5.0.1",
 		"gulp-clean-css": "^4.3.0",
 		"gulp-concat": "^2.6.1",
 		"gulp-fetch": "^1.0.1",
@@ -33,14 +33,14 @@
 		"gulp-uglify": "^3.0.2",
 		"gulp-watch": "^5.0.1",
 		"phplint": "^2.0.5",
-		"sass": "^1.87.0"
+		"sass": "^1.89.1"
 	},
 	"type": "module",
 	"engines": {
-		"node": ">=23"
+		"node": ">=22"
 	},
 	"scripts": {
-		"iconly": "gulp iconly",
+		"iconly": "gulp iconly && gulp less-framework",
 		"archive": "git archive --format=zip --output latest.zip",
 		"build": "gulp build",
 		"changelog": "git log --oneline 'master'..'dev' > changelog.txt",

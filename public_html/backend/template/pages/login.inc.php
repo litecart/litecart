@@ -27,8 +27,6 @@ html.dark-mode body {
 	width: 400px;
 	margin: auto;
 	border-radius: var(--border-radius);
-	box-shadow: 0px 0px 60px rgba(0,0,0,0.25);
-	overflow: hidden;
 }
 #box-login .card-header a {
 	display: block;
@@ -45,16 +43,17 @@ html.dark-mode body {
 </div>
 
 <div id="box-login">
-	<div class="card" style="margin: 0;">
-		<div class="card-header text-center">
-			<a href="<?php echo document::href_ilink(''); ?>">
-				<img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>">
-			</a>
-		</div>
 
-		<?php echo functions::form_begin('login_form', 'post'); ?>
-			<?php echo functions::form_input_hidden('login', 'true'); ?>
-			<?php echo functions::form_input_hidden('redirect_url', true); ?>
+	<?php echo functions::form_begin('login_form', 'post'); ?>
+		<?php echo functions::form_input_hidden('login', 'true'); ?>
+		<?php echo functions::form_input_hidden('redirect_url', true); ?>
+
+		<div class="card" style="margin: 0;">
+			<div class="card-header text-center">
+				<a href="<?php echo document::href_ilink(''); ?>">
+					<img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>">
+				</a>
+			</div>
 
 			<div class="card-body">
 
@@ -90,8 +89,9 @@ html.dark-mode body {
 				</div>
 			</div>
 
-		<?php echo functions::form_end(); ?>
-	</div>
+		</div>
+
+	<?php echo functions::form_end(); ?>
 </div>
 
 <script>

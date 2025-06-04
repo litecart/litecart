@@ -22,6 +22,7 @@
 		foreach ($iterator as $file) {
 
 			if (!preg_match('#\.php$#', $file)) continue;
+			if (!preg_match('#^app://(vendor|storage)/#', $file)) continue;
 
 			$files++;
 			$contents = file_get_contents($file);

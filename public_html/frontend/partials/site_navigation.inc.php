@@ -85,7 +85,7 @@
 		// Regional Settings
 
 		$site_navigation->snippets['regional_settings'] = [
-			'title' => 'sv / SE / SEK',
+			'title' => language::$selected['code'] .' / '. customer::$data['country_code'] .' / '. currency::$selected['code'],
 			'link' => document::ilink('regional_settings'),
 		];
 

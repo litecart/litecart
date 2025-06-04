@@ -1,3 +1,14 @@
+<style>
+.detail {
+	padding: var(--input-padding-y) var(--input-padding-x);
+	border: 1px solid #ddd;
+	border-radius: var(--border-radius);
+}
+.detail .form-label {
+	font-weight: bold;
+}
+</style>
+
 <main id="box-checkout">
 	<?php echo functions::form_begin('checkout_form', 'post', '', false, 'autocomplete="off"'); ?>
 
@@ -20,23 +31,50 @@
 						</div>
 					</div>
 
-					<?php if (!empty($express_checkout)) { ?>
-					<fieldset id="express-checkout">
-						<legend><?php echo language::translate('title_express_checkkout', 'Express Checkout'); ?></legend>
+					<section id="box-checkout-customer">
 
-						<div class="options">
-							<?php foreach ($express_checkout as $express_option) { ?>
-							<a class="option btn btn-default btn-lg" href=""><?php echo $express_option['title']; ?></a>
-							<?php } ?>
+						<div class="card-header">
+							<div class="float-end">
+								<a href="<?php echo document::ilink('checkout/customer'); ?>" class="btn btn-default" style="margin-inline-start: 1em;">
+									<?php echo functions::draw_fonticon('icon-pencil'); ?> <?php echo language::translate('title_change', 'Change'); ?>
+								</a>
+							</div>
+							<h2 class="card-title">
+								<?php echo language::translate('title_customer_details', 'Customer Details'); ?>
+							</h2>
 						</div>
-					</fieldset>
 
-					<div class="strikethrough-divider">
-						<span><?php echo language::translate('text_or', 'Or'); ?></span>
-					</div>
-					<?php } ?>
+						<div class="card-body addresses">
 
-					<div class="customer wrapper"></div>
+							<div class="grid">
+
+								<div class="col-md-6 detail">
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_buyer', 'Buyer'); ?></div>
+										<div class="billing-address"><?php echo nl2br(reference::country($order['customer']['country_code'])->format_address($order['customer'])); ?></div>
+									</label>
+
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
+										<div><?php echo fallback($order['customer']['email'], '&nbsp;'); ?></div>
+									</label>
+
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
+										<div><?php echo fallback($order['customer']['phone'], '&nbsp;'); ?></div>
+									</label>
+								</div>
+
+								<div class="col-md-6 detail">
+									<label class="form-group">
+										<div class="form-label"><?php echo language::translate('title_deliver_to', 'Deliver To'); ?></div>
+										<div class="shipping-address"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])); ?></div>
+									</label>
+								</div>
+							</div>
+
+						</div>
+					</section>
 
 			 </div>
 			</div>
@@ -44,11 +82,173 @@
 			<div class="right-wrapper col-md-6">
 				<div class="right">
 
-					<div class="shipping wrapper"></div>
+					<div class="shipping wrapper">
+						<section id="box-checkout-shipping">
 
-					<div class="payment wrapper"></div>
+							<h2>
+								<?php echo language::translate('text_select_a_shipping_option', 'Select a shipping option'); ?>
+							</h2>
 
-					<div class="summary wrapper"></div>
+							<div class="options">
+
+								<?php foreach ($shipping_options as $option) { ?>
+								<label class="option">
+
+									<input name="shipping_option[id]" value="<?php echo $option['id']; ?>" type="radio" hidden <?php if (!empty($selected) && $selected['id'] == $option['id']) echo ' checked'; ?><?php if (!empty($option['error'])) echo ' disabled'; ?>>
+
+									<div class="header row" style="margin: 0;">
+										<div class="col-3">
+											<?php echo functions::draw_thumbnail($option['icon'], 160, 80, 'fit'); ?>
+										</div>
+
+										<div class="col-9" style="align-self: center;">
+											<div class="name"><?php echo $option['name']; ?></div>
+
+											<?php if (!empty($option['description'])) { ?>
+											<div class="description"><?php echo $option['description']; ?></div>
+											<?php } ?>
+
+											<div class="price"><?php echo (empty($option['error']) && $option['fee'] != 0) ? '+ ' . currency::format(tax::get_price($option['fee'], $option['tax_class_id'])) : language::translate('text_no_fee', 'No fee'); ?></div>
+											<?php if (!empty($option['error'])) { ?>
+											<div class="error"><?php echo $option['error']; ?></div>
+											<?php } ?>
+										</div>
+									</div>
+
+									<?php if (empty($option['error']) && !empty($option['fields'])) { ?>
+									<div class="content">
+										<hr>
+										<div class="fields text-start"><?php echo $option['fields']; ?></div>
+									</div>
+									<?php } ?>
+
+								</label>
+								<?php } ?>
+
+							</div>
+						</section>
+					</div>
+
+					<div class="payment wrapper">
+						<section id="box-checkout-payment">
+							<div class="card-header">
+								<h2 class="card-title"><?php echo language::translate('text_choose_how_you_would_like_to_pay', 'Choose how you would like to pay'); ?></h2>
+							</div>
+
+							<div class="card-body">
+								<div class="options">
+
+									<?php foreach ($payment_options as $option) { ?>
+									<label class="option">
+
+										<input name="payment_option[id]" value="<?php echo $option['id']; ?>" type="radio" hidden <?php if (!empty($selected) && $selected['id'] == $option['id']) echo ' checked'; ?><?php if (!empty($option['error'])) echo ' disabled'; ?>>
+
+										<div class="header row" style="margin: 0;">
+											<div class="col-3" style="margin: 0;">
+												<?php echo functions::draw_thumbnail('storage://' . $option['icon'], 160, 80, 'fit'); ?>
+											</div>
+
+											<div class="col-9" style="align-self: center;">
+												<div class="name"><?php echo $option['name']; ?></div>
+
+												<?php if (!empty($option['description'])) { ?>
+												<div class="description"><?php echo $option['description']; ?></div>
+												<?php } ?>
+
+												<div class="price"><?php if (empty($option['error']) && $option['fee'] != 0) echo '+ ' . currency::format(tax::get_price($option['fee'], $option['tax_class_id'])); ?></div>
+												<?php if (!empty($option['error'])) { ?>
+												<div class="error"><?php echo $option['error']; ?></div>
+												<?php } ?>
+											</div>
+										</div>
+
+										<?php if (empty($option['error']) && !empty($option['fields'])) { ?>
+										<div class="content">
+											<hr>
+											<div class="fields text-start"><?php echo $option['fields']; ?></div>
+										</div>
+										<?php } ?>
+
+									</label>
+									<?php } ?>
+								</div>
+
+							</div>
+						</section>
+					</div>
+
+					<div class="summary wrapper">
+						<section id="box-checkout-summary">
+
+							<h2 class="title">
+								<?php echo language::translate('title_order_summary', 'Order Summary'); ?>
+							</h2>
+
+							<table class="table data-table">
+								<thead>
+									<tr>
+										<th class="text-start"><?php echo language::translate('title_item', 'Item'); ?></td>
+										<th class="text-end"><?php echo language::translate('title_price', 'Price'); ?></td>
+										<th class="text-end"><?php echo language::translate('title_discount', 'Discount'); ?></td>
+										<th class="text-end"><?php echo language::translate('title_sum', 'Sum'); ?></td>
+									</tr>
+								</thead>
+
+								<tbody>
+									<?php foreach ($order['items'] as $item) { ?>
+									<tr>
+										<td class="text-start"><?php echo (float)$item['quantity']; ?> x <?php echo $item['name']; ?></td>
+										<td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
+										<td class="text-end">-<?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['discount'] + $item['discount_tax'] : $item['discount'], false, $order['currency_code'], $order['currency_value']); ?></td>
+										<td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['sum'] + $item['sum_tax'] : $item['sum'], false, $order['currency_code'], $order['currency_value']); ?></td>
+									</tr>
+									<?php } ?>
+
+									<tr>
+										<td colspan="3" class="text-end"><strong><?php echo language::translate('title_subtotal', 'Subtotal'); ?>:</strong></td>
+										<td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $order['subtotal'] + $order['subtotal_tax'] : $order['subtotal'], false, $order['currency_code'], $order['currency_value']); ?></td>
+									</tr>
+
+									<?php if ($order['total_tax']) { ?>
+									<tr>
+										<td colspan="3" class="text-end text-muted"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+										<td class="text-end text-muted"><?php echo currency::format($order['total_tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
+									</tr>
+									<?php } ?>
+								</tbody>
+
+								<tfoot>
+									<tr>
+										<td colspan="3" class="text-end"><strong><?php echo language::translate('title_total', 'Payment Due'); ?>:</strong></td>
+										<td class="text-end" style="width: 25%;"><strong><?php echo currency::format_html($order['total'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
+									</tr>
+								</tfoot>
+							</table>
+
+							<div class="comments form-group">
+								<label><?php echo language::translate('title_comments', 'Comments'); ?></label>
+								<?php echo functions::form_textarea('comments', true, 'maxlength="250" rows="2"'); ?>
+								<small class="remaining"></small>
+							</div>
+
+							<div class="confirm">
+								<?php if ($error) { ?>
+								<div class="alert alert-danger">{{error|escape}}</div>
+								<?php } ?>
+
+								<?php if (!$error && $consent) { ?>
+								<div class="consent text-center" style="font-size: 1.25em; margin-top: 0.5em;">
+									<?php echo '<label>'. functions::form_checkbox('terms_agreed', ['1', $consent], true, 'required') .'</label>'; ?>
+								</div>
+								<?php } ?>
+
+								<?php if (!$error) { ?>
+								<button class="btn btn-block btn-lg btn-success" type="submit" name="confirm" value="true"<?php if (!empty($error)) echo ' disabled'; ?>>{{confirm}}</button>
+								<?php } ?>
+							</div>
+
+						</section>
+					</div>
 
 				</div>
 			</div>
@@ -59,15 +259,12 @@
 
 <script>
 	// Queue Handler
+	$checkout = $('#box-checkout');
 
-	$('#box-checkout').data('updateQueue', [
-		{component: 'customer', data: null, refresh: true},
-		{component: 'shipping', data: null, refresh: true},
-		{component: 'payment',  data: null, refresh: true},
-		{component: 'summary',  data: null, refresh: true}
-	]);
+	$checkout.data('updateQueue', []);
+	$checkout.prop('updateLock', false);
 
-	$('#box-checkout').on('update', function(e, task) {
+	$checkout.on('update', function(e, task) {
 
 		var updateQueue = $(this).data('updateQueue');
 
@@ -104,47 +301,23 @@
 			$('#box-checkout .' + task.component + '.wrapper').fadeTo('fast', 0.15);
 		}
 
-		var url = '';
-		switch (task.component) {
-
-			case 'customer':
-				url = '<?php echo document::ilink('checkout/customer'); ?>';
-				break;
-
-			case 'shipping':
-				url = '<?php echo document::ilink('checkout/shipping'); ?>';
-				break;
-
-			case 'payment':
-				url = '<?php echo document::ilink('checkout/payment'); ?>';
-				break;
-
-			case 'summary':
-				url = '<?php echo document::ilink('checkout/summary'); ?>';
-				break;
-
-			default:
-				alert('Error: Invalid component ' + task.component);
-				break;
-		}
-
 		if (task.data === true) {
 			switch (task.component) {
 
-				case 'customer':
-					task.data = $('#box-checkout-customer :input').serialize();
-					break;
-
 				case 'shipping':
-					task.data = $('#box-checkout-shipping :input').serialize();
+					task.data = $('.shipping.wrapper :input').serialize();
 					break;
 
 				case 'payment':
-					task.data = $('#box-checkout-payment :input').serialize();
+					task.data = $('.payment.wrapper :input').serialize();
 					break;
 
 				case 'summary':
-					task.data = $('#box-checkout-summary :input').serialize();
+					task.data = $('.summary.wrapper :input').serialize();
+					break;
+
+				default:
+					console.error('Invalid component ' + task.component + ' while updating checkout');
 					break;
 			}
 		}
@@ -156,12 +329,8 @@
 
 		$.ajax({
 			type: task.data ? 'post' : 'get',
-			url: url,
 			data: task.data,
 			dataType: 'html',
-			beforeSend: function(jqXHR) {
-				jqXHR.overrideMimeType('text/html;charset=<?php echo mb_http_output(); ?>');
-			},
 
 			error: function(jqXHR, textStatus, errorThrown) {
 				$('#box-checkout .' + task.component + '.wrapper').html('An unexpected error occurred, try reloading the page.');
@@ -170,6 +339,14 @@
 			success: function(html) {
 
 				if (task.refresh) {
+
+					html = $('.'+task.component+'.wrapper', html).html();
+
+					if (!html) {
+						$('#box-checkout .' + task.component + '.wrapper').html('An unexpected error occurred, try reloading the page.');
+						return;
+					}
+
 					$('#box-checkout .' + task.component + '.wrapper').html(html).fadeTo('fast', 1);
 				}
 
@@ -180,15 +357,58 @@
 			},
 
 			complete: function(html) {
-				if ($('#box-checkout').data('updateQueue').length == 0) {
+				if ($checkout.data('updateQueue').length == 0) {
 					$('body > .loader-wrapper').fadeOut('fast', function() {
 						$(this).remove();
 					});
 				}
-				$('#box-checkout').prop('updateLock', false);
-				$('#box-checkout').trigger('update');
+				$checkout.prop('updateLock', false);
+				$checkout.trigger('update');
 			}
 		});
 
 	}).trigger('update');
+
+	// Shipping
+	$(':input[name="shipping_option[id]"]:not(:checked) + .option :input').prop('disabled', true);
+
+	$('input[name="shipping_option[id]"]').on('change', function(e) {
+
+		$('input[name="shipping_option[id]"]:not(:checked) + .option :input').prop('disabled', true);
+		$(this).next('.option').find(':input').prop('disabled', false);
+
+		let formdata = $(this).closest('.option-wrapper :input').serialize();
+
+		$checkout
+			.trigger('update', [{component: 'shipping', data: formdata + '&select_shipping=true', refresh: false}])
+			.trigger('update', [{component: 'payment', refresh: true}])
+			.trigger('update', [{component: 'summary', refresh: true}]);
+	});
+
+	// Payment
+	$(':input[name="payment_option[id]"]:not(:checked) .option :input').prop('disabled', true);
+
+	$(':input[name="payment_option[id]"]').on('change', function(e) {
+
+		$('input[name="payment_option[id]"]:not(:checked) + .option :input').prop('disabled', true);
+		$(this).next('.option').find(':input').prop('disabled', false);
+
+		let formdata = $(this).closest('.option-wrapper :input').serialize();
+
+		$checkout
+			.trigger('update', [{component: 'payment', data: formdata + '&select_payment=true', refresh: false}])
+			.trigger('update', [{component: 'summary', refresh: true}]);
+	});
+
+	// Display remaining characters
+	$('textarea[name="comments"][maxlength]').on('input', function() {
+		let remaining = $(this).attr('maxlength') - $(this).val().length;
+		$(this).closest('.comments').find('.remaining').text(remaining);
+	});
+
+	// Replace submit button with spinner when form is submitting
+	$('form[name="checkout_form"]').submit(function(e) {
+		let new_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('icon-spinner'); ?> <?php echo functions::escape_js(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>';
+		$('#box-checkout-summary button[name="confirm"]').css('display', 'none').before(new_button);
+	});
 </script>

@@ -78,7 +78,7 @@ Better:
 		}
 
 
-## Variable Duplication - Avoid Nonsense1 Nonsense2
+## Variable Duplication - No nonsense for nonsense
 
 Variable duplication is a challenge to backtrace. If we have no use of the raw user input, we can just overwrite it with safer polished and sanitized data.
 
@@ -152,7 +152,7 @@ Better:
 
 ## Fat third party libraries for small features - Stay away from other people's nonsense
 
-Looking to cut corners with third party libraries will backfire eventually. Libraries can be performance draining. They have dependencies and can unknowingly become outdated or discontinued. Many are poorly managed, contains flaws or have security problems. They can be a complete pain when you want to step up PHP versions. One way or the other, they need to be maintained. Maintenance will takes time and focus and a lot of reverse engineering.
+Looking to cut corners with third party libraries will backfire eventually. Libraries can be performance draining. They have dependencies and can unknowingly become outdated or discontinued. Many are poorly managed, contains flaws or have security problems. They can be a complete pain when you want to step up versions. One way or the other, they need to be maintained. Maintenance will take time and focus and a comes with a lot of reverse engineering.
 
 There is no good reason to embed a third party library if you will just utilize a small portion of it. If it's reasonable to code this part yourself it's likely a good idea to do it. Best of all, you will know every corner of the code.
 

@@ -5,6 +5,8 @@
 * author T. Almroth
 */
 
+@import '../../../../assets/litecore/less/framework/media.less';
+
 @font-face {
 	font-family: 'Fira Sans';
 	font-style: normal;
@@ -33,19 +35,12 @@
 :root {
 
 	/* General */
-
 	--site-background: #f2f2f7;
-
 	--listing-border: 1px solid #d3d3e1;
-
-	--sidebar-width: 320px;
-
-	--cookie-notice-background: rgba(45, 45, 56, 0.75);
 
 	/* Important Message */
 	--important-message-background: #222;
 	--important-message-text-color: #fff;
-
 
 	/* Footer */
 	--footer-background: #dedee5;
@@ -61,10 +56,20 @@
 
 	/* Framework */
 
-	--border-radius: 10px;
-	--gutter-x: 1rem;
-	--gutter-y: 2rem;
+	--gutter-x: 15px; /* See additional for media queries */
+	--gutter-y: 15px; /* See additional for media queries */
 
+	@media (min-width: @media-breakpoint-sm) {
+		--gutter-x: 20px;
+		--gutter-y: 20px;
+	}
+
+	@media (min-width: @media-breakpoint-md) {
+		--gutter-x: 30px;
+		--gutter-y: 30px;
+	}
+
+	--border-radius: 10px;
 	--whitespace-color: #fff;
 
 	--default-text-font: 'Fira Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
@@ -77,8 +82,8 @@
 	--link-text-color: #5292b1;
 
 	/* Forms */
-	--input-padding-x: 1em;
-	--input-padding-y: .75em;
+	--input-padding-x: 1.25em;
+	--input-padding-y: .66em;
 	//--input-background: #f1f2f5;
 	--input-background: #ececf1;
 	--input-text-color: #000;
@@ -114,8 +119,8 @@
 	--breadcrumb-item-border-color: #d6d6e1;
 
 	/* Buttons */
-	--button-padding-x: 1.5em;
-	--button-padding-y: .75em;
+	--button-padding-x: 1.25em;
+	--button-padding-y: .66em;
 	--button-border-width: 1px;
 	--button-shadow: 0 2px 2px 0 rgba(37, 44, 97, 0.15), 0 1px 3px 0 rgba(93, 100, 148, 0.2);
 
@@ -153,7 +158,7 @@
 	--card-title-text-weight: 500;
 	--card-border-color: #e7e7e7;
 	--card-border-width: 1px;
-	--card-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+	--card-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
 	--card-footer-background: #f2f3f6;
 
 	--carousel-shadow: 0 10px 20px rgba(0, 0, 0, .15);
@@ -246,25 +251,4 @@
 
 	--table-footer-background: #fbfcfd;
 	--table-footer-text-color: var(--default-text-color);
-}
-
-@media (min-width: 576px) {
-	:root {
-		--gutter-x: 1.25rem;
-		--gutter-y: 1.25rem;
-	}
-}
-
-@media (min-width: 768px) {
-	:root {
-		--gutter-x: 1.5rem;
-		--gutter-y: 1.5rem;
-	}
-}
-
-@media (min-width: 992px) {
-	:root {
-		--gutter-x: 2rem;
-		--gutter-y: 2rem;
-	}
 }

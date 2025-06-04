@@ -20,6 +20,14 @@
 		return array_filter(array_map($function, $array));
 	}
 
+	// Same as array_map but with the callable function first and filtered results
+	function array_each2(array $array, callable $function):array {
+		foreach ($array as $key => $value) {
+			$array[$key] = $function($key, $value);
+		}
+		return $array;
+	}
+
 	function array_intersect_key_recursive(array $array, array $keys): array {
 		$filtered = array_intersect_key($array, $keys);
 
@@ -53,45 +61,6 @@
 		}
 
 		return $array;
-	}
-
-	// Checking if array keys in var1 is present in var2 and their values equals the same
-	function array_intersect_compare($var1, $var2) {
-
-		// Check if both variables are arrays
-		if (is_array($var1) && is_array($var2)) {
-
-			// Check if $var1 has a numerical index
-			$is_numerical_index = array_is_list($var1);
-
-			foreach ($var1 as $key => $value) {
-
-				if ($is_numerical_index) {
-
-					// Check if the value exists somewhere in the indexed array
-					if (!in_array($value, $var2, true)) {
-						return false;
-					}
-
-				} else {
-
-					// If associative array key does not exist in $var2
-					if (!array_key_exists($key, $var2)) {
-						continue;
-					}
-
-					// Recursively compare values
-					if (!array_intersect_compare($value, $var2[$key])) {
-						return false;
-					}
-				}
-			}
-
-			return true;
-		}
-
-		// Compare values directly
-		return $var1 == $var2;
 	}
 
 	// Return a filtered array of values from a given list of keys
@@ -204,4 +173,64 @@
 	// Group values of matching keys array_group_keys(['a' => '1', 'b' => '1'], ['a' => '2', 'b' => '2']) : ['a' => ['1', '2'], ['b' => ['1', '2']]
 	function array_merge_group(...$arrays) {
 		return array_merge_recursive(...$arrays);
+	}
+
+	// Checking if array keys in var1 is present in var2 and their values equals the same
+	function array_intersect_compare($var1, $var2) {
+
+		// Check if both variables are arrays
+		if (is_array($var1) && is_array($var2)) {
+
+			// Check if $var1 has a numerical index
+			$is_numerical_index = array_is_list($var1);
+
+			foreach ($var1 as $key => $value) {
+
+				if ($is_numerical_index) {
+
+					// Check if the value exists somewhere in the indexed array
+					if (!in_array($value, $var2, true)) {
+						return false;
+					}
+
+				} else {
+
+					// If associative array key does not exist in $var2
+					if (!array_key_exists($key, $var2)) {
+						continue;
+					}
+
+					// Recursively compare values
+					if (!array_intersect_compare($value, $var2[$key])) {
+						return false;
+					}
+				}
+			}
+
+			return true;
+		}
+
+		// Compare values directly
+		return $var1 == $var2;
+	}
+
+	function array_diff_assoc_recursive(array $array1, array $array2): array {
+		$result = [];
+
+		foreach ($array1 as $key => $value) {
+			if (array_key_exists($key, $array2)) {
+				if (is_array($value)) {
+					$recursive_diff = array_diff_assoc_recursive($value, $array2[$key]);
+					if (!empty($recursive_diff)) {
+						$result[$key] = $recursive_diff;
+					}
+				} elseif ($value !== $array2[$key]) {
+					$result[$key] = $value;
+				}
+			} else {
+				$result[$key] = $value;
+			}
+		}
+
+		return $result;
 	}

@@ -241,7 +241,8 @@
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$orders = database::query(
 		"select o.*, os.color as order_status_color, os.icon as order_status_icon,
-			json_value(os.name, '$.". database::input(language::$selected['code']) ."') as order_status_name
+			json_value(os.name, '$.". database::input(language::$selected['code']) ."') as order_status_name,
+			if (o.notes, 1, 0) as has_notes
 		from ". DB_TABLE_PREFIX ."orders o
 		left join ". DB_TABLE_PREFIX ."order_statuses os on (os.id = o.order_status_id)
 		where o.id
@@ -254,6 +255,7 @@
 
 	foreach ($orders as $i => $order) {
 
+		// Order Status Icon and Color
 		if (empty($order['order_status_id'])) {
 			$order['order_status_icon'] = 'icon-minus';
 			$order['order_status_color'] = '#ccc';
@@ -267,6 +269,7 @@
 			$order['order_status_color'] = '#ccc';
 		}
 
+		// CSS Classes
 		$order['css_classes'] = [];
 
 		if (empty($order['order_status_id'])) {
@@ -277,6 +280,18 @@
 			$order['css_classes'][]= 'bold';
 		}
 
+		// Tags
+		$order['tags'] = [];
+
+		if ($order['customer_country_code'] != settings::get('store_country_code')) {
+			$order['tags'][] = $order['customer_country_code'];
+		}
+
+		if (!empty($order['shipping_country_code']) && $order['shipping_country_code'] != $order['customer_country_code']) {
+			$order['tags'][] = $order['shipping_country_code'];
+		}
+
+		// Order Items
 		$order['items'] = database::query(
 			"select oi.*, si.quantity as stock_quantity
 			from ". DB_TABLE_PREFIX ."orders_items oi
@@ -295,10 +310,14 @@
 
 		if (in_array(false, array_column($order['items'], 'sufficient_stock'), true)) {
 			$order['sufficient_stock'] = false;
-		} else if (in_array(null, array_column($order['items'], 'sufficient_stock'), true)) {
+			$order['sufficient_stock_icon'] = functions::draw_fonticon('icon-check', 'style="color: #88cc44;"');
+
+		} else if (array_unique(array_column($order['items'], 'sufficient_stock'), true) == [true]) {
 			$order['sufficient_stock'] = true;
+			$order['sufficient_stock_icon'] = functions::draw_fonticon('icon-times', 'style="color: #ff6644;"');
 		} else {
 			$order['sufficient_stock'] = null;
+			$order['sufficient_stock_icon'] = '';
 		}
 
 		$orders[$i] = $order;
@@ -354,6 +373,15 @@ table .icon-star-o:hover {
 	transform: scale(1.5);
 }
 
+table .tag {
+	font-family: monospace;
+	font-size: 0.8em;
+	opacity: 0.75;
+	border: 1px solid var(--default-border-color);
+	padding: .25em .5em;
+	border-radius: var(--border-radius);
+}
+
 #order-actions li {
 	vertical-align: middle;
 }
@@ -393,9 +421,8 @@ table .icon-star-o:hover {
 					<th data-sort="id" class="text-end"><?php echo language::translate('title_order_no', 'Order No'); ?></th>
 					<th></th>
 					<th data-sort="customer" class="main"><?php echo language::translate('title_customer', 'Customer'); ?></th>
-					<th data-sort="country"><?php echo language::translate('title_country', 'Country'); ?></th>
-					<th data-sort="payment_method"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
 					<th><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
+					<th data-sort="payment_method"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
 					<th class="text-center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
 					<th data-sort="order_status" class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
 					<th class="text-end" data-sort="created_at"><?php echo language::translate('title_created_at', 'Created At'); ?></th>
@@ -412,14 +439,19 @@ table .icon-star-o:hover {
 					<td class="text-center"><?php echo $order['no']; ?></td>
 					<td><?php echo !empty($order['starred']) ? functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?></td>
 					<td>
-						<a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>">
+						<a class="link" href="<?php echo document::href_ilink(__APP__.'/order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>">
 							<?php echo functions::draw_fonticon($order['customer_company'] ? 'icon-building' : 'icon-user', 'style="opacity: .5;"'); ?>
 							<?php echo $order['customer_company'] ?: $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php if (!$order['customer_id']) echo ' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?>
 						</a>
+
+						<?php foreach ($order['tags'] as $tag) echo '<code class="tag">'. functions::escape_html($tag) .'</code>'; ?>
+
+						<?php if ($order['has_notes']) { ?>
+						<?php echo functions::draw_fonticon('icon-sticky-note', 'title="'. language::translate('title_notes', 'Notes') .'" style="color: #f2b01e; margin-left: .5em;"'); ?>
+						<?php } ?>
 					</td>
-					<td><?php echo $order['customer_country_code']; ?></td>
+					<td class="text-center"><?php $order['sufficient_stock_icon'] ?: '-'; ?></td>
 					<td><?php echo $order['payment_option_name']; ?></td>
-					<td class="text-center"><?php if (!is_null($order['sufficient_stock'])) echo $order['sufficient_stock'] ? functions::draw_fonticon('icon-check', 'style="color: #88cc44;"') : functions::draw_fonticon('icon-times', 'style="color: #ff6644;"'); ?></td>
 					<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
 					<td class="text-center"><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
 					<td class="text-end"><?php echo functions::datetime_when($order['created_at']); ?></td>
@@ -447,7 +479,7 @@ table .icon-star-o:hover {
 
 			<tfoot>
 				<tr>
-					<td colspan="13"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo language::number_format($num_rows); ?></td>
+					<td colspan="12"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo language::number_format($num_rows); ?></td>
 				</tr>
 			</tfoot>
 		</table>
@@ -531,17 +563,18 @@ table .icon-star-o:hover {
 
 	$('table').on('click', '.icon-star-o', function(e) {
 		e.stopPropagation();
-		let star = this;
-		$.post('', 'star&order_id='+$(star).closest('tr').data('id'), function(data) {
-			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>');
+		let $star = $(this);
+		$.post('', 'star&order_id='+$star.closest('tr').data('id'), function(data) {
+			$star.replaceWith('<?php echo functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>');
 		});
 		return false;
 	});
 
 	$('table').on('click', '.icon-star', function(e) {
-		let star = this;
-		$.post('', 'unstar&order_id='+$(star).closest('tr').data('id'), function(data) {
-			$(star).replaceWith('<?php echo functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>');
+		e.stopPropagation();
+		let $star = $(this);
+		$.post('', 'unstar&order_id='+$star.closest('tr').data('id'), function(data) {
+			$star.replaceWith('<?php echo functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>');
 		});
 		return false;
 	});

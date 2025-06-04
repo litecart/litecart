@@ -8,7 +8,7 @@
 
 		'theme' => [
 			'color' => '#2b6ca2',
-			'icon' => 'icon-comments',
+			'icon' => 'icon-language',
 		],
 
 		'menu' => [

@@ -10,7 +10,7 @@
 
 	function form_reinsert_value($name) {
 
-		if (!$name) return;
+		if (!$name) return '';
 
 		foreach ([$_POST, $_GET] as $superglobal) {
 
@@ -27,7 +27,7 @@
 				$node = $node[$part];
 			}
 
-			return $node;
+			return $node ?: '';
 		}
 
 		return preg_match('#\[\]$#', $name) ? [] : '';
@@ -1120,7 +1120,6 @@
 
 			case 'zone':
 				$option = $options ? $options[0] : '';
-				//if (empty($option)) $option = settings::get('store_country_code');
 				return form_select_zone($name, $option, $input, $parameters);
 
 			default:

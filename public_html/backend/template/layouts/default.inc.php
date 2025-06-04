@@ -12,7 +12,7 @@
 {{style}}
 <style>
 :root {
-	--default-text-size: <?php echo !empty($_COOKIE['font_size']) ? $_COOKIE['font_size'] : '14'; ?>px;
+	--default-text-size: <?php echo fallback($_COOKIE['font_size'], '14'); ?>px;
 }
 </style>
 </head>
@@ -50,7 +50,7 @@
 
 		<main id="main">
 			<div class="container">
-			
+
 				<?php include 'app://backend/partials/site_top_navigation.inc.php'; ?>
 
 				<div id="content">

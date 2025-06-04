@@ -205,6 +205,14 @@
 	}
 }
 
+.option:has(input[name="shipping_option[id]"]:checked)::after {
+	content: '<?php echo language::translate('title_selected', 'Selected'); ?>';
+}
+
+.option:has(input[name="payment_option[id]"]:checked)::after {
+	content: '<?php echo language::translate('title_selected', 'Selected'); ?>';
+}
+
 .summary.wrapper {
 	height: 100%;
 }
@@ -222,4 +230,17 @@
 		position: sticky;
 		top: 3.5em;
 	}
+}
+
+#box-checkout-summary tr td:first-child {
+	width: 75px;
+}
+.comments {
+	position: relative;
+}
+.comments .remaining {
+	position: absolute;
+	bottom: .5em;
+	inset-inline-end: .5em;
+	color: #999;
 }

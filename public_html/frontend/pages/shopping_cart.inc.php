@@ -91,7 +91,6 @@
 				customer::$data = array_replace(customer::$data, array_intersect_key(array_filter(array_diff_key($_POST, array_flip(['id']))), customer::$data));
 			}
 
-
 			if ($_POST['checkout'] == 'standard') {
 
 				redirect(document::ilink('checkout/index'));
