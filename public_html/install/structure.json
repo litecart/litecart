@@ -732,6 +732,7 @@
 				"stock_option_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"userdata": { "type": "VARCHAR", "length": 2048, "nullable": true },
 				"name": { "type": "VARCHAR", "length": 128, "default": "''" },
+				"serial_number": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"sku": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"gtin": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"taric": { "type": "VARCHAR", "length": 32, "default": "''" },

@@ -349,6 +349,7 @@
 						stock_item_id = ". (int)$item['stock_item_id'] .",
 						name = '". database::input($item['name']) ."',
 						userdata = '". (!empty($item['userdata']) ? database::input(json_encode($item['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
+						serial_number = '". database::input($item['serial_number']) ."',
 						sku = '". database::input($item['sku']) ."',
 						gtin = '". database::input($item['gtin']) ."',
 						taric = '". database::input($item['taric']) ."',

@@ -998,6 +998,7 @@
 						<?php echo functions::form_input_hidden('items['.$key.'][stock_item_id]', true); ?>
 						<?php echo functions::form_input_hidden('items['.$key.'][name]', true); ?>
 						<?php echo functions::form_input_hidden('items['.$key.'][data]', true); ?>
+						<?php echo functions::form_input_hidden('items['.$key.'][serial_number]', true); ?>
 						<?php echo functions::form_input_hidden('items['.$key.'][sku]', true); ?>
 						<?php echo functions::form_input_hidden('items['.$key.'][gtin]', true); ?>
 						<?php echo functions::form_input_hidden('items['.$key.'][taric]', true); ?>
@@ -1803,6 +1804,7 @@
 		$output.find('*[name$="[stock_item_id]"]').val(item.stock_item_id);
 		$output.find('*[name$="[sku]"]').val(item.sku);
 		$output.find('*[name$="[name]"]').val(item.name);
+		$output.find('*[name$="[serial_number]"]').val(item.serial_number);
 		$output.find('*[name$="[gtin]"]').val(item.gtin);
 		$output.find('*[name$="[taric]"]').val(item.taric);
 		$output.find('*[name$="[weight]"]').val(item.weight);
@@ -1842,6 +1844,7 @@
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][name]', '')); ?>',
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][description]', '')); ?>',
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][data]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][serial_number]', '')); ?>',
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][sku]', '')); ?>',
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][gtin]', '')); ?>',
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][taric]', '')); ?>',
