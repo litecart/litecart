@@ -28,6 +28,23 @@
 				self::$data['last_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 				self::regenerate_id();
 			}
+
+			// Collect Urchin Tracking Module (UTM) data
+			if (empty(self::$data['utm_data'])) {
+				self::$data['utm_data'] = [];
+			}
+
+			foreach ([
+				'source',
+				'medium',
+				'campaign',
+				'term',
+				'content',
+			] as $key) {
+				if (!empty($_GET['utm_'.$key])) {
+					self::$data['utm'][$key] = $_GET['utm_'.$key];
+				}
+			}
 		}
 
 		public static function start() {

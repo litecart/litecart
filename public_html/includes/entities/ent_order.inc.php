@@ -118,6 +118,8 @@
 				}
 			}
 
+			$this->data['utm_data'] = json_decode($this->data['utm_data'], true) ?: [];
+
 			$this->data['items'] = database::query(
 				"select oi.*, si.quantity as stock_quanity, p.sold_out_status_id
 				from ". DB_TABLE_PREFIX ."orders_items oi
@@ -278,6 +280,7 @@
 					total = ". (float)$this->data['total'] .",
 					total_tax = ". (float)$this->data['total_tax'] .",
 					notes = '". database::input($this->data['ip_address']) ."',
+					utm_data = '". database::input(json_encode($this->data['utm_data'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
 					ip_address = '". database::input($this->data['ip_address']) ."',
 					hostname = '". database::input($this->data['hostname']) ."',
 					user_agent = '". database::input($this->data['user_agent']) ."',

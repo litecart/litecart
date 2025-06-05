@@ -660,6 +660,7 @@
 				"total": { "type": "FLOAT", "length": "10,4", "default": 0.0000 },
 				"total_tax": { "type": "FLOAT", "length": "10,4", "default": 0.0000 },
 				"notes": { "type": "VARCHAR", "length": 1024, "default": "''" },
+				"utm_data": { "type": "VARCHAR", "length": 1024, "default": "'{}'" },
 				"ip_address": { "type": "VARCHAR", "length": 39, "default": "''" },
 				"hostname": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"user_agent": { "type": "VARCHAR", "length": 255, "default": "''" },

@@ -456,6 +456,7 @@ ADD COLUMN `subtotal_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `subtotal`,
 ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `subtotal_tax`,
 ADD COLUMN `discount_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount`,
 ADD COLUMN `notes` VARCHAR(1024) NOT NULL DEFAULT '' AFTER `total_tax`,
+ADD COLUMN `utm_data` VARCHAR(1024) NOT NULL DEFAULT '{}' AFTER `notes`,
 ADD COLUMN `hostname` VARCHAR(128) NOT NULL DEFAULT '' AFTER `ip_address`,
 ADD INDEX `no` (`no`);
 -- -----

@@ -61,6 +61,8 @@
 				}
 			}
 
+			$order->data['utm_data'] = session::$data['utm'] ?? [];
+
 			// Build Order
 			$order->data['weight_unit'] = settings::get('store_weight_unit');
 			$order->data['currency_code'] = currency::$selected['code'];
