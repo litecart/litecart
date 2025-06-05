@@ -51,6 +51,7 @@
 				<th><?php echo language::translate('title_date', 'Date'); ?></th>
 				<th></th>
 				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 

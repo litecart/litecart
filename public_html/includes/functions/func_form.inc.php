@@ -892,11 +892,7 @@
 		foreach ($options as $key => $option) {
 
 			if (!is_array($option)) {
-				if ($is_numerical_index) {
-					$option = [$option, $option];
-				} else {
-					$option = [$key, $option];
-				}
+				$option = [$key, $option];
 			}
 
 			if (preg_match('#\[\]$#', $name)) {

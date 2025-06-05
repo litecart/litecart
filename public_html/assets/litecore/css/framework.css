@@ -3628,6 +3628,10 @@ body.navbar-expanded {
   border-bottom: var(--table-border-width) solid var(--table-border-color);
   text-align: start;
 }
+.table > tfoot tr {
+  background: var(--table-footer-background);
+  color: var(--table-footer-text-color);
+}
 .table > tfoot td {
   padding: 1em;
 }

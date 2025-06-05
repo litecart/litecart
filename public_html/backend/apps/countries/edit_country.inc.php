@@ -335,6 +335,10 @@
 
 			var field_name = key.replace(/([A-Z])/, '_$1').toLowerCase();
 
+			if (field_name == 'address_format') {
+				value = value.replace(/\\n|\\r(\\n)?/g, '\n');
+			}
+
 			$(':input[name="'+field_name+'"]').not('[type="checkbox"]').not('[type="radio"]').val(value);
 			$('input[name="'+field_name+'"][type="checkbox"][value="'+value+'"], input[name="'+field_name+'"][type="radio"][value="'+value+'"]').prop('checked', true);
 
@@ -342,6 +346,7 @@
 				$('input[name="'+field_name+'"]:checked').parent('.btn').addClass('active').siblings().removeClass('active');
 			}
 		});
+
 	});
 	<?php } ?>
 </script>
