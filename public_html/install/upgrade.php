@@ -125,7 +125,7 @@
 
 	// List supported upgrades
 	$supported_versions = ['1.0' => '1.0'];
-	foreach (glob(__DIR__ . '/upgrade_patches/*') as $file) {
+	foreach (glob(__DIR__ . '/migrations/*') as $file) {
 		if (preg_match('#/([^/]+).(?:inc.php|sql)$#', $file, $matches)) {
 			$supported_versions[$matches[1]] = $matches[1];
 		}
@@ -411,10 +411,10 @@
 					database::query('start transaction;');
 				}
 
-				if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.sql')) {
+				if (file_exists(__DIR__ . '/migrations/'. $version .'.sql')) {
 
 					echo '<p>Upgrading database to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
-					$sql = file_get_contents(__DIR__ . '/upgrade_patches/'. $version .'.sql');
+					$sql = file_get_contents(__DIR__ . '/migrations/'. $version .'.sql');
 					$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
 					foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
@@ -425,9 +425,9 @@
 					}
 				}
 
-				if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.inc.php')) {
+				if (file_exists(__DIR__ . '/migrations/'. $version .'.inc.php')) {
 					echo '<p>Upgrading system to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
-					include(__DIR__ . '/upgrade_patches/'. $version .'.inc.php');
+					include(__DIR__ . '/migrations/'. $version .'.inc.php');
 				}
 
 				if (version_compare($current_version, '3.0.0', '>=')) {
