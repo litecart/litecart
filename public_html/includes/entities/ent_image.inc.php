@@ -375,6 +375,13 @@
 
 						switch ($clipping) {
 
+							case 'CROP':
+								return $this->_image->cropThumbnailImage($max_width, $max_height);
+
+							case 'CROP_ONLY_BIGGER':
+								if ($this->width <= $max_width && $this->height <= $max_height) return true;
+								return $this->_image->cropThumbnailImage($max_width, $max_height);
+
 							case 'FIT':
 								//$result = $this->_image->scaleImage($max_width, $max_height, true);
 								//return $this->_image->adaptiveResizeImage($max_width, $max_height, true);
@@ -399,14 +406,6 @@
 								}
 
 								return $this->_image->thumbnailImage($max_width, $max_height, true, true);
-
-							case 'CROP':
-
-								return $this->_image->cropThumbnailImage($max_width, $max_height);
-
-							case 'CROP_ONLY_BIGGER':
-								if ($this->width <= $max_width && $this->height <= $max_height) return true;
-								return $this->_image->cropThumbnailImage($max_width, $max_height);
 
 							case 'STRETCH':
 								return $this->_image->thumbnailImage($max_width, $max_height, false); // Stretch
@@ -460,25 +459,6 @@
 							} else {
 								$result = ImageCopyResampledFixed($_resized, $this->_image, 0, 0, 0, round(($this->height - $new_height * $this->width / $new_width) / 2), $new_width, $new_height, $this->width, round($this->width / $destination_ratio), $this->_whitespace);
 							}
-
-							break;
-
-						case 'STRETCH':
-
-							// Calculate dimensions
-							$new_width = ((int)$max_width == 0) ? $this->width : $max_width;
-							$new_height = ((int)$max_height == 0) ? $this->height : $max_height;
-
-							// Create output image container
-							$_resized = ImageCreateTrueColor($new_width, $new_height);
-
-							ImageAlphaBlending($_resized, true);
-							ImageSaveAlpha($_resized, true);
-
-							ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
-
-							// Perform resample
-							$result = ImageCopyResampledFixed($_resized, $this->_image, round(($max_width - $new_width) / 2), round(($max_height - $new_height) / 2), 0, 0, $new_width, $new_height, $this->width, $this->height, $this->_whitespace);
 
 							break;
 
@@ -539,6 +519,25 @@
 								// Perform resample
 								$result = ImageCopyResampledFixed($_resized, $this->_image, round(($max_width - $new_width) / 2), round(($max_height - $new_height) / 2), 0, 0, $new_width, $new_height, $this->width, $this->height, $this->_whitespace);
 							}
+
+							break;
+
+						case 'STRETCH':
+
+							// Calculate dimensions
+							$new_width = ((int)$max_width == 0) ? $this->width : $max_width;
+							$new_height = ((int)$max_height == 0) ? $this->height : $max_height;
+
+							// Create output image container
+							$_resized = ImageCreateTrueColor($new_width, $new_height);
+
+							ImageAlphaBlending($_resized, true);
+							ImageSaveAlpha($_resized, true);
+
+							ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
+
+							// Perform resample
+							$result = ImageCopyResampledFixed($_resized, $this->_image, round(($max_width - $new_width) / 2), round(($max_height - $new_height) / 2), 0, 0, $new_width, $new_height, $this->width, $this->height, $this->_whitespace);
 
 							break;
 

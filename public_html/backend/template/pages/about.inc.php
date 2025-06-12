@@ -41,20 +41,6 @@
 	transform: translateY(0%);
 	z-index: 999;
 }
-#box-about .credits {
-	position: absolute;
-	margin-top: 100%;
-	animation: 30s credits linear infinite;
-	/*animation-delay: 5s;*/
-	animation-play-state: running;
-}
-#box-about .credits:hover {
-	animation-play-state: paused;
-}
-@keyframes credits {
-	from { transform: translateY(0%); }
-	to { transform: translateY(-100%); }
-}
 #box-error-log tr.critical {
 	background: #c002;
 }
@@ -232,13 +218,6 @@
 					</tr>
 				</tbody>
 			</table>
-
-			<div class="credits-wrapper">
-				<div class="credits">
-					<h1><?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></h1>
-					<pre style="white-space: pre-wrap;"><?php echo functions::escape_html($credits); ?></pre>
-				</div>
-			</div>
 		</div>
 	</div>
 
