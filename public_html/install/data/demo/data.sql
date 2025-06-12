@@ -13,7 +13,7 @@ INSERT INTO `lc_attribute_values` (`id`, `group_id`, `name`, `updated_at`, `crea
 (8, 2, '{"en": "Purple"}', NOW(), NOW());
 -- -----
 INSERT INTO `lc_brands` (`id`, `status`, `featured`, `code`, `name`, `keywords`, `image`, `updated_at`, `created_at`) VALUES
-(1, 1, 1, 'acme', 'ACME Corp.', '', 'brands/1-acme-corp.png', NOW(), NOW());
+(1, 1, 1, 'acme', 'ACME Corp.', '', 'brands/1-acme-corp.webp', NOW(), NOW());
 -- -----
 INSERT INTO `lc_campaigns` (`id`, `status`, `name`, `updated_at`, `created_at`) VALUES
 (1, 1, 'Super Sale', NOW(), NOW());
