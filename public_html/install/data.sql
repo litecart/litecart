@@ -416,6 +416,9 @@ INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, 
 ('', 'Jobs Last Push', 'Time when background jobs were last pushed for execution.', 'jobs_last_push', NOW(), 'text()', 0, 0, NOW(), NOW()),
 ('', 'Marketplace Access Token', 'The API access token for use with marketplace.', 'marketplace_access_token', '', 'password()', 0, 0, NOW(), NOW());
 -- -----
+INSERT INTO `lc_site_tags` (`id`, `status`, `position`, `name`, `content`, `require_consent`, `priority`, `updated_at`, `created_at`)
+VALUES (1, 0, 'head', 'Google Tag Manager', '<script>\n  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({\'gtm.start\':\n  new Date().getTime(),event:\'gtm.js\'});var f=d.getElementsByTagName(s)[0],\n  j=d.createElement(s),dl=l!=\'dataLayer\'?\'&l=\'+l:\'\';j.async=true;j.src=\n  \'https://www.googletagmanager.com/gtm.js?id=\'+i+dl;f.parentNode.insertBefore(j,f);\n  })(window,document,\'script\',\'dataLayer\',\'GTM-XXXXXX\');\n\n  gtag(\'consent\', \'default\', {\n    \'functionality_storage\': \'denied\',\n    \'personalization_storage\': \'denied\',\n    \'security_storage\': \'denied\',\n    \'analytics_storage\': \'denied\',\n    \'ad_storage\': \'denied\',\n    \'ad_user_data\': \'denied\',\n    \'ad_personalization\': \'denied\'\n  });\n\n  gtag(\'consent\', \'update\', {\n    \'functionality_storage\': \'granted\',\n  });\n</script>', 'functionality:1', 0, '2025-04-28 21:09:17', '2025-04-15 06:38:04');
+-- -----
 INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `name`, `updated_at`, `created_at`) VALUES
 (1, 0, '{"en": "Sold Out"}', NOW(), NOW()),
 (2, 1, '{"en": "Temporarily Sold Out"}', NOW(), NOW()),
