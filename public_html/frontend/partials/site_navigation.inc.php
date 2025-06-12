@@ -13,6 +13,7 @@
 	if (!$site_navigation->snippets = cache::get($site_navigation_cache_token)) {
 
 		$site_navigation->snippets = [
+			'important_notice' => settings::get('important_notice'),
 			'categories' => [],
 			'brands' => [],
 			'pages' => [],

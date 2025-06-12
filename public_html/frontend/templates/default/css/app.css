@@ -9,10 +9,14 @@ body {
 #page #main {
   flex-grow: 1;
 }
-#important-message {
-  background: var(--important-message-background);
-  color: var(--important-message-text-color);
-  padding: 0.75em 1em;
+#important-notice {
+  padding: 0.75em 2em;
+  background: var(--important-notice-background);
+  color: var(--important-notice-text-color);
+  border: var(--important-notice-border-size) solid var(--important-notice-border-color);
+  border-radius: var(--border-radius);
+  margin-bottom: 1em;
+  text-align: center;
 }
 #site-toolbar {
   background: var(--toolbar-background);

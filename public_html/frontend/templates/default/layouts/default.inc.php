@@ -13,7 +13,7 @@
 
 <div id="page">
 	<header>
-		<?php include 'app://frontend/partials/site_top_bar.inc.php'; ?>
+		<?php include 'app://frontend/partials/site_important_notice.inc.php'; ?>
 		<?php include 'app://frontend/partials/site_navigation.inc.php'; ?>
 	</header>
 

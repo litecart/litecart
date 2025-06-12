@@ -41,8 +41,10 @@
   --site-background: #f2f2f7;
   --listing-border: 1px solid #d3d3e1;
   /* Important Message */
-  --important-message-background: #222;
-  --important-message-text-color: #fff;
+  --important-notice-background: #e7e2c8;
+  --important-notice-text-color: var(--default-text-color);
+  --important-notice-border-color: transparent;
+  --important-notice-border-size: 0px;
   /* Footer */
   --footer-background: #dedee5;
   --footer-title-color: #333;
