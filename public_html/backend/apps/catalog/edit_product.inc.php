@@ -171,6 +171,13 @@
 	white-space: nowrap;
 }
 
+#images {
+	margin-bottom: 1em;
+}
+#images .image {
+	gap: 1em;
+	margin-bottom: 1em;
+}
 #images img {
 	max-width: 50px;
 	max-height: 50px;
@@ -296,41 +303,39 @@
 <?php
 	if ($product->data['images']) {
 		$image = current($product->data['images']);
-		echo functions::draw_thumbnail('storage://images/' . ($image['filename'] ?  $image['filename'] : 'no_image.svg'), 480, 0, 'product', 'id="main-image"');
-		reset($product->data['images']);
-	}
+		echo functions::draw_thumbnail('storage://images/'. $image['filename'], 480, 0, 'product', 'id="main-image"');
+	} else {
+		echo functions::draw_thumbnail('storage://images/no_image.svg', 480, 0, 'product', 'id="main-image"');
+  }
 ?>
 							</label>
 
 							<div id="images">
 
-								<div class="images" style="margin-bottom: 1em;">
-									<?php if (!empty($_POST['images'])) foreach (array_keys($_POST['images']) as $key) { ?>
-									<div class="flex image" style="gap: 1em;">
-										<?php echo functions::form_input_hidden('images['.$key.'][id]', true); ?>
-										<?php echo functions::form_input_hidden('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
+								<?php if (!empty($_POST['images'])) foreach (array_keys($_POST['images']) as $key) { ?>
+								<div class="image flex">
+									<?php echo functions::form_input_hidden('images['.$key.'][id]', true); ?>
+									<?php echo functions::form_input_hidden('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
+									<?php echo functions::draw_thumbnail('storage://images/' . $product->data['images'][$key]['filename'], 64, 0, 'product'); ?>
+									<?php echo functions::form_input_text('images['.$key.'][new_filename]', fallback($_POST['images'][$key]['new_filename'], $_POST['images'][$key]['filename'])); ?>
 
-										<?php echo functions::draw_thumbnail('storage://images/' . $product->data['images'][$key]['filename'], 64, 0, 'product'); ?>
-
-										<?php echo functions::form_input_text('images['.$key.'][new_filename]', fallback($_POST['images'][$key]['new_filename'], $_POST['images'][$key]['filename'])); ?>
-
-										<div style="align-content: center;">
-											<div class="btn-group">
-												<button name="move_up" class="btn btn-default btn-sm" class="button" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></button>
-												<button name="move_down" class="btn btn-default btn-sm" class="button" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></button>
-												<button name="remove" class="btn btn-default btn-sm" class="button" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></button>
-											</div>
+									<div style="align-content: center;">
+										<div class="btn-group">
+											<button name="move_up" class="btn btn-default btn-sm" class="button" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></button>
+											<button name="move_down" class="btn btn-default btn-sm" class="button" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></button>
+											<button name="remove" class="btn btn-default btn-sm" class="button" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></button>
 										</div>
 									</div>
-									<?php } ?>
 								</div>
+								<?php } ?>
 
-								<div class="new-images" style="margin-bottom: 1em;"></div>
-
-								<label class="form-group">
-									<a href="#" class="add btn btn-default btn-sm"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_image', 'Add Image'); ?></a>
-								</label>
 							</div>
+
+							<label class="form-group">
+								<button name="add_image" type="button" class="add btn btn-default btn-sm">
+									<?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_image', 'Add Image'); ?>
+								</button>
+							</label>
 						</div>
 					</div>
 
@@ -953,13 +958,15 @@
 
 	$('#images').on('click', 'button[name="move_up"], button[name="move_down"]', function(e) {
 		e.preventDefault();
-		let row = $(this).closest('.image');
 
-		if ($(this).is('button[name="move_up"]') && $(row).prevAll().length > 0) {
-			$(row).insertBefore(row.prev());
-		} else if ($(this).is('button[name="move_up"]') && $(row).nextAll().length > 0) {
-			$(row).insertAfter($(row).next());
+		let $row = $(this).closest('.image');
+
+		if ($(this).is('button[name="move_up"]') && $row.prevAll().length > 0) {
+			$row.insertBefore($row.prev());
+		} else if ($(this).is('button[name="move_down"]') && $row.nextAll().length > 0) {
+			$row.insertAfter($row.next());
 		}
+
 		refreshMainImage();
 	});
 
@@ -969,15 +976,13 @@
 		refreshMainImage();
 	});
 
-	$('#images .add').on('click', function(e) {
+	$('button[name="add_image"]').on('click', function(e) {
 		e.preventDefault();
 
 		let $output = $([
-			'<div class="flex image" style="gap: 1em;">',
-			'  <?php echo functions::form_input_hidden('images[new_image][id]', ''); ?>',
-			'  <?php echo functions::form_input_hidden('images[new_image][filename]', ''); ?>',
+			'<div class="image flex">',
 			'  <?php echo functions::draw_thumbnail('storage://images/no_image.svg', 64, 0, 'product'); ?>',
-			'  <?php echo functions::form_input_file('images[new_image][new_filename]'); ?>',
+			'  <?php echo functions::form_input_file('new_images[]'); ?>',
 			'  <div style="align-content: center;">',
 			'    <div class="btn-group">',
 			'      <button name="move_up" class="btn btn-default btn-sm" type="button" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></button>',
@@ -988,32 +993,39 @@
 			'</div>'
 		].join('\n'));
 
-		$('#images .new-images').append($output);
+		$('#images').append($output);
 		refreshMainImage();
 	});
 
 	$('#images').on('change', 'input[type="file"]', function(e) {
-		let img = $(this).closest('.image').find('img');
-		let oFReader = new FileReader();
+		let $img = $(this).closest('.image').find('img');
 
-		oFReader.readAsDataURL(this.files[0]);
-
-		oFReader.onload = function(e){
-			$(img).attr('src', e.target.result);
-		};
-
-		oFReader.onloadend = function(e) {
-			refreshMainImage();
-		};
-	});
-
-	function refreshMainImage() {
-		if ($('#images img:first').length) {
-			$('#tab-general .main-image').attr('src', $('#images img:first').attr('src'));
+		if ($img.length && this.files && this.files[0]) {
+			let reader = new FileReader();
+			reader.onload = function(e) {
+				$img.attr('src', e.target.result);
+				$img.attr('srcset', e.target.result);
+				console.log('Image loaded:', $img.attr('src'));
+				refreshMainImage();
+			};
+			reader.readAsDataURL(this.files[0]);
 			return;
 		}
 
-		$('#tab-general .main-image').attr('src', '<?php echo document::href_rlink(functions::draw_thumbnail('storage://images/no_image.svg', 360, 0, 'product')); ?>');
+		$img.attr('src', '<?php echo document::href_rlink('storage://images/no_image.svg'); ?>');
+	});
+
+	function refreshMainImage() {
+
+		let source;
+		if ($('#images img:first').length) {
+			source = $('#images img:first').attr('src')
+		} else {
+			source = '<?php echo document::href_rlink('storage://images/no_image.svg'); ?>';
+		}
+
+		$('#main-image').attr('src', source);
+		$('#main-image').attr('srcset', source);
 	}
 
 	// Technical Data
