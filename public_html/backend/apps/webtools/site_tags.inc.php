@@ -78,7 +78,9 @@
 
 			<tfoot>
 				<tr>
-					<td colspan="7"><?php echo language::translate('title_site_tags', 'Site Tags'); ?>: <?php echo $num_rows; ?></td>
+					<td colspan="99">
+						<?php echo language::translate('title_site_tags', 'Site Tags'); ?>: <?php echo $num_rows; ?>
+					</td>
 				</tr>
 			</tfoot>
 		</table>

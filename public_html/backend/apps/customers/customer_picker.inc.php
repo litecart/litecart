@@ -85,7 +85,13 @@
 				});
 
 				if ($('#modal-customer-picker .results tbody').html() == '') {
-					$('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
+					$('#modal-customer-picker .results tbody').html([
+						'<tr>',
+						'	<td colspan="99">',
+						'		<em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em>',
+						'	</td>',
+						'</tr>'
+					].join('\n'));
 				}
 			},
 		});

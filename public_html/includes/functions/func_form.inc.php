@@ -216,7 +216,11 @@
 		$html .= implode(PHP_EOL, [
 			'  <tfoot>',
 			'    <tr>',
-			'      <td colspan="'. (count($columns)+1) .'"><button class="btn btn-default btn-sm" name="add_row" type="button">'. functions::draw_fonticon('icon-plus') .' '.  language::translate('title_add_row', 'Add Row') .'</button></td>',
+			'      <td colspan="99">',
+			'        <button class="btn btn-default btn-sm" name="add_row" type="button">',
+			'          '. functions::draw_fonticon('icon-plus') .' '.  language::translate('title_add_row', 'Add Row'),
+			'        </button>',
+			'      </td>',
 			'    </tr>',
 			'  </tfoot>',
 			'</table>',

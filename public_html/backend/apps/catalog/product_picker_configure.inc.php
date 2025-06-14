@@ -145,7 +145,7 @@
 							</tbody>
 							<tfoot>
 								<tr>
-									<td class="text-end" colspan="4">
+									<td colspan="99" class="text-end">
 										<strong><?php echo language::translate('title_total', 'Total'); ?>: </strong><?php echo (float)$product->quantity; ?>
 									</td>
 								</tr>

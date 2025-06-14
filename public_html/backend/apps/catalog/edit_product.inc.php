@@ -467,7 +467,7 @@
 
 							<tfoot>
 								<tr>
-									<td colspan="6">
+									<td colspan="99">
 										<button class="btn btn-default add" type="button">
 											<?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_price', 'Add Price'); ?>
 										</button>
@@ -870,7 +870,7 @@
 
 							<tfoot>
 								<tr>
-									<td colspan="11">
+									<td colspan="99">
 										<a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="980px">
 											<?php echo functions::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?>
 										</a>

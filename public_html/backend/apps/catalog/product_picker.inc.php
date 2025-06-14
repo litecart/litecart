@@ -66,7 +66,7 @@
 
 					var $output = $([
 						'<tr>',
-						'  <td colspan="7">',
+						'  <td colspan="99">',
 						'    <em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em>',
 						'  </td>',
 						'</tr>'

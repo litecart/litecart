@@ -1035,7 +1035,7 @@
 
 			<tfoot>
 				<tr>
-					<td colspan="11">
+					<td colspan="99">
 						<button name="add_product" class="btn btn-default" href="<?php echo document::href_ilink('catalog/product_picker'); ?>" data-toggle="lightbox" data-callback="selectProduct"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></button>
 						<?php echo functions::form_button('add', language::translate('title_add_line_item', 'Add Line Item'), 'button', '', 'add'); ?>
 						<?php echo functions::form_button('return', language::translate('title_return_items', 'Return Items'), 'submit', 'formnovalidate onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'icon-reply'); ?>

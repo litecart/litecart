@@ -62,7 +62,9 @@
 
 			<tfoot>
 				<tr>
-					<td colspan="6"><?php echo language::translate('title_attributes', 'Attributes'); ?>: <?php echo language::number_format($num_rows); ?></td>
+					<td colspan="99">
+						<?php echo language::translate('title_attributes', 'Attributes'); ?>: <?php echo language::number_format($num_rows); ?>
+					</td>
 				</tr>
 			</tfoot>
 		</table>

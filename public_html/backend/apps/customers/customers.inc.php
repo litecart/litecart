@@ -169,7 +169,7 @@
 
 			<tfoot>
 				<tr>
-					<td colspan="10">
+					<td colspan="99">
 						<?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>

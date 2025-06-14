@@ -336,7 +336,11 @@
 
 							<tfoot>
 								<tr>
-									<td colspan="3"><button class="btn btn-default add" type="button"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_create_new_reference', 'Create New Reference'); ?></button></td>
+									<td colspan="99">
+										<button class="btn btn-default add" type="button">
+											<?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_create_new_reference', 'Create New Reference'); ?>
+										</button>
+									</td>
 								</tr>
 							</tfoot>
 						</table>

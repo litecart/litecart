@@ -251,7 +251,9 @@ table tbody .toggle {
 
 			<tfoot>
 				<tr>
-					<td colspan="7"><?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo language::number_format($num_rows); ?></td>
+					<td colspan="99">
+						<?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo language::number_format($num_rows); ?>
+					</td>
 				</tr>
 			</tfoot>
 		</table>

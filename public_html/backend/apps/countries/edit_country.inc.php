@@ -255,6 +255,7 @@
 								<th></th>
 							</tr>
 						</thead>
+
 						<tbody>
 							<?php if (!empty($_POST['zones'])) foreach (array_keys($_POST['zones']) as $key) { ?>
 							<tr>
@@ -269,9 +270,14 @@
 							</tr>
 							<?php } ?>
 						</tbody>
+
 						<tfoot>
 							<tr>
-								<td colspan="4"><a class="add btn btn-default" href="#"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_zone', 'Add Zone'); ?></a></td>
+								<td colspan="99">
+									<a class="add btn btn-default" href="#">
+										<?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_zone', 'Add Zone'); ?>
+									</a>
+								</td>
 							</tr>
 						</tfoot>
 					</table>

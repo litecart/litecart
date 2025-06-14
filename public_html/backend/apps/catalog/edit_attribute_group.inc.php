@@ -136,7 +136,11 @@
 
 			<tfoot>
 				<tr>
-					<td colspan="4"><a class="add btn btn-default btn-sm" href="#"><?php echo functions::draw_fonticon('icon-plus'); ?></a></td>
+					<td colspan="99">
+						<a class="add btn btn-default btn-sm" href="#">
+							<?php echo functions::draw_fonticon('icon-plus'); ?>
+						</a>
+					</td>
 				</tr>
 			</tfoot>
 		</table>

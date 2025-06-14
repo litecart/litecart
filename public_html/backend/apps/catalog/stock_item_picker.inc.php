@@ -98,7 +98,7 @@
 				if ($('#stock-item-picker tbody').html() == '') {
 					$('#stock-item-picker tbody').html([
 						'<tr>',
-						'  <td colspan="6">',
+						'  <td colspan="99">',
 						'    <em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em>',
 						'</td>',
 						'</tr>',

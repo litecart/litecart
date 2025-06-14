@@ -94,7 +94,9 @@
 
 			<tfoot>
 				<tr>
-					<td colspan="5"><?php echo language::translate('title_geo_zones', 'Geo Zones'); ?>: <?php echo language::number_format($num_rows); ?></td>
+					<td colspan="99">
+						<?php echo language::translate('title_geo_zones', 'Geo Zones'); ?>: <?php echo language::number_format($num_rows); ?>
+					</td>
 				</tr>
 			</tfoot>
 		</table>

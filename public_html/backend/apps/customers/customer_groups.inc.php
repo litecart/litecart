@@ -62,7 +62,7 @@
 
 			<tfoot>
 				<tr>
-					<td colspan="5">
+					<td colspan="99">
 						<?php echo language::translate('title_customer_groups', 'Customer Groups'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>

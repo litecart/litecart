@@ -330,7 +330,9 @@
 
 			<tfoot>
 				<tr>
-					<td colspan="8"><?php echo language::translate('title_translations', 'Translations'); ?>: <?php echo $num_rows; ?></td>
+					<td colspan="99">
+						<?php echo language::translate('title_translations', 'Translations'); ?>: <?php echo $num_rows; ?>
+					</td>
 				</tr>
 			</tfoot>
 		</table>

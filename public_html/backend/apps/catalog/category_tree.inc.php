@@ -640,7 +640,9 @@ table .icon-folder-open {
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="7"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+						<td colspan="99">
+							<?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?>
+						</td>
 					</tr>
 				</tfoot>
 		</table>

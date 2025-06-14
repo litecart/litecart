@@ -84,7 +84,7 @@
 
 			<tfoot>
 				<tr>
-					<td colspan="5">
+					<td colspan="99">
 						<?php echo language::translate('title_stock_transactions', 'Stock Transactions'); ?>: <?php echo $num_rows; ?>
 					</td>
 				</tr>
