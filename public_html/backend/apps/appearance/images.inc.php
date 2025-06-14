@@ -5,53 +5,47 @@
 	breadcrumbs::add(language::translate('title_appearance', 'Appearance'));
 	breadcrumbs::add(language::translate('title_logotype', 'Logotype'), document::ilink());
 
+	$images = [
+		[
+			'id' => 'logotype',
+			'name' => language::translate('title_logotype', 'Logotype'),
+			'file' => 'storage://images/logotype.png',
+			'max' => ['width' => 600, 'height' => 200],
+		],
+		[
+			'id' => 'facility',
+			'name' => language::translate('title_facility', 'Facility'),
+			'file' => 'storage://images/illustration/facility.jpg',
+			'max' => ['width' => 800, 'height' => 600],
+		]
+		// Add more images as needed
+	];
+
 	if (isset($_POST['save'])) {
 
 		try {
 
-			if (!empty($_FILES['logotype'])) {
+			foreach ($images as $_image) {
 
-				$image = new ent_image($_FILES['logotype']['tmp_name']);
+				if (!empty($_FILES[$_image['id']])) {
 
-				if (!$image->width) {
-					throw new Exception(language::translate('error_invalid_image', 'The image is invalid'));
-				}
+					$image = new ent_image($_FILES[$_image['id']]['tmp_name']);
 
-				$file = 'storage://images/logotype.png';
+					if (!$image->width) {
+						throw new Exception(language::translate('error_invalid_image', 'The image is invalid'));
+					}
 
-				if (is_file($file)) {
-					unlink($file);
-				}
+					if (is_file($_image['file'])) {
+						unlink($_image['id']);
+					}
 
-				functions::image_delete_cache($file);
+					functions::image_delete_cache($_image['file']);
 
-				$image->resample(512, 512, 'FIT_ONLY_BIGGER');
+					$image->resample($_image['file']['max']['width'], $_image['file']['max']['height'], 'FIT_ONLY_BIGGER');
 
-				if (!$image->save($file)) {
-					throw new Exception(language::translate('error_failed_uploading_image', 'The uploaded image failed saving to disk. Make sure permissions are set.'));
-				}
-			}
-
-			if (!empty($_FILES['facility'])) {
-
-				$image = new ent_image($_FILES['facility']['tmp_name']);
-
-				if (!$image->width) {
-					throw new Exception(language::translate('error_invalid_image', 'The image is invalid'));
-				}
-
-				$file = 'storage://images/illustration/facility.jpg';
-
-				if (is_file($file)) {
-					unlink($file);
-				}
-
-				functions::image_delete_cache($file);
-
-				$image->resample(512, 512, 'FIT_ONLY_BIGGER');
-
-				if (!$image->save($file)) {
-					throw new Exception(language::translate('error_failed_uploading_image', 'The uploaded image failed saving to disk. Make sure permissions are set.'));
+					if (!$image->save($_image['file'])) {
+						throw new Exception(language::translate('error_failed_uploading_image', 'The uploaded image failed saving to disk. Make sure permissions are set.'));
+					}
 				}
 			}
 
@@ -63,19 +57,6 @@
 			notices::add('errors', $e->getMessage());
 		}
 	}
-
-	$images = [
-		[
-			'id' => 'logotype',
-			'name' => language::translate('title_logotype', 'Logotype'),
-			'file' => 'storage://images/logotype.png',
-		],
-		[
-			'id' => 'facility',
-			'name' => language::translate('title_facility', 'Facility'),
-			'file' => 'storage://images/illustration/facility.jpg',
-		]
-	];
 
 ?>
 <style>
