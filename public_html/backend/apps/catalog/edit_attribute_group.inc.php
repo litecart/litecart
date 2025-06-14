@@ -164,7 +164,9 @@
 
 <?php
 		$name_fields = '';
-		foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_regional_text('values[__index__][name]['. $language_code .']', $language_code, '', '');
+		foreach (array_keys(language::$languages) as $language_code) {
+			$name_fields .= functions::form_regional_text('values[__index__][name]['. $language_code .']', $language_code, '', '');
+		}
 ?>
 		let $output = $([
 			'<tr>',

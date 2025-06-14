@@ -230,7 +230,7 @@
 				'<?php echo functions::escape_js(language::translate('title_price_range', 'Price Range')) ; ?>: '+ $('input[name="price_range[min]"]').val() +' &ndash; '+ $('input[name="price_range[max]"]').val(),
 				'<a href="#" class="remove">×</a>',
 				'</span>'
-			].join(''));
+			].join('\n'));
 		}
 
 	}).first().trigger('change');

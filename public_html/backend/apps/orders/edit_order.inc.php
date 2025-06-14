@@ -1269,21 +1269,28 @@
 				</div>
 
 				<div class="grid">
-					<div class="col-md-4">
+					<div class="col-md-3">
+						<label class="form-group">
+							<div class="form-label"><?php echo language::translate('title_serial_number', 'Serial Number'); ?></div>
+							<?php echo functions::form_input_text('serial_number', ''); ?>
+						</label>
+					</div>
+
+					<div class="col-md-3">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_sku', 'SKU'); ?></div>
 							<?php echo functions::form_input_text('sku', ''); ?>
 						</label>
 					</div>
 
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_gtin', 'GTIN'); ?></div>
 							<?php echo functions::form_input_text('gtin', ''); ?>
 						</label>
 					</div>
 
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<label class="form-group">
 							<div class="form-label"><?php echo language::translate('title_taric', 'TARIC'); ?></div>
 							<?php echo functions::form_input_text('taric', ''); ?>
