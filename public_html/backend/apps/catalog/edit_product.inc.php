@@ -1196,32 +1196,33 @@
 		$(this).closest('tr').remove();
 	});
 
-	let new_price_index = 0;
-	while ($(':input[name^="prices[' + new_price_index + ']"]').length) new_price_index++;
 
 	$('#prices').on('click', '.add', function(e) {
 		e.preventDefault();
 
+		let __index__ = 0;
+		while ($(':input[name^="prices[' + __index__ + ']"]').length) __index__++;
+
 		let $output = $([
 			'<tr>',
 			'  <td>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('prices[new_price_index][id]', '')); ?>',
-			'    <?php echo functions::escape_js(functions::form_select_customer_group('prices[new_price_index][customer_group_id]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('prices[__index__][id]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_select_customer_group('prices[__index__][customer_group_id]', '')); ?>',
 			'  </td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_decimal('prices[new_price_index][min_quantity]', '1', 'min="1"')); ?></td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_decimal('prices[__index__][min_quantity]', '1', 'min="1"')); ?></td>',
 			'  <td>',
 			'    <div class="dropdown">',
-			'      <?php echo functions::escape_js(functions::form_input_money('prices[new_price_index][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?>',
+			'      <?php echo functions::escape_js(functions::form_input_money('prices[__index__][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?>',
 			'      <ul class="dropdown-menu" style="right:0;">',
 			<?php echo implode(PHP_EOL, array_map(
 				function($currency_code) {
-					return '\'      <li>'. functions::escape_js(functions::form_input_money('prices[new_price_index][price]['. $currency_code .']', $currency_code, true, 'style="width: 125px;"')) .'</li>\',';
+					return '\'      <li>'. functions::escape_js(functions::form_input_money('prices[__index__][price]['. $currency_code .']', $currency_code, true, 'style="width: 125px;"')) .'</li>\',';
 				}, array_diff($currency_codes, [settings::get('store_currency_code')])
 			)); ?>
 			'      </ul>',
 			'    </div>',
 			'  </td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_money('prices[new_price_index][gross]', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?></td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_money('prices[__index__][gross]', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?></td>',
 			'  <td></td>',
 			'  <td>',
 			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>">',
@@ -1230,7 +1231,7 @@
 			'  </td>',
 			'</tr>'
 		].join('\n')
-			.replace(/new_price_index/g, 'new_' + new_price_index++)
+			.replace('__index__', 'new_' + __index__)
 		);
 
 		$('.price-name', $output).text();
@@ -1320,33 +1321,34 @@
 		$(this).closest('tr').remove();
 	});
 
-	let new_campaign_index = 0;
-	while ($(':input[name^="campaigns[' + new_campaign_index + ']"]').length) new_campaign_index++;
 
 	$('#campaigns').on('click', '.add', function(e) {
 		e.preventDefault();
 
+		let __index__ = 0;
+		while ($(':input[name^="campaigns[' + __index__ + ']"]').length) __index__++;
+
 		let $output = $([
 			'<tr>',
 			'  <td>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('campaigns[new_campaign_index][id]', '')); ?>',
-			'    <?php echo functions::escape_js(functions::form_select_campaign('campaigns[new_campaign_index][campaign_id]', '', 'style="width: 200px;"')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('campaigns[__index__][id]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_select_campaign('campaigns[__index__][campaign_id]', '', 'style="width: 200px;"')); ?>',
 			'  </td>',
 			'  <td><span class="date-valid-from"></span></td>',
 			'  <td><span class="date-valid-to"></span></td>',
 			'  <td>',
 			'    <div class="dropdown">',
-			'      <?php echo functions::escape_js(functions::form_input_money('campaigns[new_campaign_index][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?>',
+			'      <?php echo functions::escape_js(functions::form_input_money('campaigns[__index__][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?>',
 			'      <ul class="dropdown-menu" style="right:0;">',
 			<?php echo implode(PHP_EOL, array_map(
 				function($currency_code) {
-					return '\'      <li>'. functions::escape_js(functions::form_input_money('campaigns[new_campaign_index]price['. $currency_code .']', $currency_code, true, 'style="width: 125px;"')) .'</li>\',';
+					return '\'      <li>'. functions::escape_js(functions::form_input_money('campaigns[__index__]price['. $currency_code .']', $currency_code, true, 'style="width: 125px;"')) .'</li>\',';
 				}, array_diff($currency_codes, [settings::get('store_currency_code')])
 			)); ?>
 			'      </ul>',
 			'    </div>',
 			'  </td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_percent('campaigns[new_campaign_index][percentage]', '', 2)); ?></td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_percent('campaigns[__index__][percentage]', '', 2)); ?></td>',
 			'  <td></td>',
 			'  <td>',
 			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>">',
@@ -1355,7 +1357,7 @@
 			'  </td>',
 			'</tr>'
 		].join('\n')
-			.replace(/new_campaign_index/g, 'new_' + new_campaign_index++)
+			.replace('__index__', 'new_' + __index__)
 		);
 
 		$('.campaign-name', $output).text();
@@ -1436,22 +1438,22 @@
 		});
 	});
 
-	let new_attribute_id = 0;
-	while ($('select[name="new_attribute['+new_attribute_id+']"]').length) new_attribute_id++;
-
 	$('#attributes button[name="add"]').on('click', function(e) {
 		e.preventDefault();
+
+		let __index__ = 0;
+		while ($('select[name="new_attribute[new_'+__index__+']"]').length) __index__++;
 
 		let $output = $([
 			'<tr>',
 			'  <td class="grabbable">',
-			'    <?php echo functions::form_input_hidden('attributes[new_attribute_id][group_id]', ''); ?>',
+			'    <?php echo functions::form_input_hidden('attributes[__index__][group_id]', ''); ?>',
 			'  </td>',
 			'  <td class="grabbable">',
-			'    <?php echo functions::form_input_hidden('attributes[new_attribute_id][value_id]', [], ''); ?>',
+			'    <?php echo functions::form_input_hidden('attributes[__index__][value_id]', [], ''); ?>',
 			'  </td>',
 			'  <td class="text-end">',
-			'    <?php echo functions::form_input_hidden('attributes[new_attribute_id][custom_value]', ''); ?>',
+			'    <?php echo functions::form_input_hidden('attributes[__index__][custom_value]', ''); ?>',
 			'  </td>',
 			'  <td class="text-end">',
 			'    <button name="remove" type="button" class="btn btn-default btn-sm" title="<?php echo language::translate('title_remove', 'Remove'); ?>">',
@@ -1459,7 +1461,9 @@
 			'    </button>',
 			'  </td>',
 			'</tr>'
-		].join('\n'.replace(/new_attribute_id/g, new_attribute_id++)));
+		].join('\n')
+			.replace('__index__', __index__++)
+		);
 
 		$('#attributes tbody').append($output);
 	});
@@ -1498,10 +1502,11 @@
 		})
 		}).trigger('change')
 
-		let new_attribute_index = 0
-		while ($(':input[name^="attributes['+new_attribute_index+']"]').length) new_attribute_index++
 
 		$('#tab-attributes button[name="add"]').on('click', function() {
+
+			let __index__ = 0
+			while ($(':input[name^="attributes[new_'+__index__+']"]').length) __index__++
 
 		if ($('select[name="new_attribute[group_id]"]').val() == '') {
 			alert("<?php echo language::translate('error_must_select_attribute_group', 'You must select an attribute group'); ?>")
@@ -1523,12 +1528,12 @@
 		let $output = $([
 			'<tr>',
 			'  <td>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[new_attribute_index][id]', '')); ?>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[new_attribute_index][group_id]', 'new_group_id')); ?>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[new_attribute_index][group_name]', 'new_group_name')); ?>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[new_attribute_index][value_id]', 'new_value_id')); ?>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[new_attribute_index][value_name]', 'new_value_name')); ?>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[new_attribute_index][custom_value]', 'new_custom_value')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[__index__][id]', '')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[__index__][group_id]', 'new_group_id')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[__index__][group_name]', 'new_group_name')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[__index__][value_id]', 'new_value_id')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[__index__][value_name]', 'new_value_name')); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[__index__][custom_value]', 'new_custom_value')); ?>',
 			'    new_group_name',
 			'  </td>',
 			'  <td>new_value_name</td>',
@@ -1540,7 +1545,7 @@
 			'  </td>',
 			'</tr>'
 		].join('\n')
-			.replace(/new_attribute_index/g, 'new_' + new_attribute_index++)
+			.replace('__index__', 'new_' + __index__)
 			.replace(/new_group_id/g, $('select[name="new_attribute[group_id]"] option:selected').val())
 			.replace(/new_group_name/g, $('select[name="new_attribute[group_id]"] option:selected').text())
 			.replace(/new_value_id/g, $('select[name="new_attribute[value_id]"] option:selected').val())

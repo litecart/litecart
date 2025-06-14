@@ -448,24 +448,25 @@
 		$(this).closest('tr').remove();
 	});
 
-	var new_reference_i = 1;
-	while ($('input[name="references[new_'+new_reference_i+']"]').length) new_reference_i++;
-
 	$('#table-references').on('click', '.add', function(e) {
 		e.preventDefault();
 
-		let output = [
+		var __index__ = 1;
+		while ($('input[name="references[new_'+__index__+']"]').length) __index__++;
+
+		let $output = $([
 			'<tr>',
 			'  <td>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('references[new_reference_i][id]', true)); ?>',
-			'    <?php echo functions::escape_js(functions::form_select_supplier('references[new_reference_i][source]', true)); ?>',
+			'    <?php echo functions::escape_js(functions::form_input_hidden('references[__index__][id]', true)); ?>',
+			'    <?php echo functions::escape_js(functions::form_select_supplier('references[__index__][source]', true)); ?>',
 			'  </td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_text('references[new_reference_i][code]', true)); ?></td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_text('references[__index__][code]', true)); ?></td>',
 			'  <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>',
 			'</tr>',
-		].join('\n');
+		].join('\n')
+			.replace('__index__', 'new_' + __index__);
+		);
 
-		output = output.replace(/new_reference_i/g, 'new_' + new_reference_i++);
-		$('#table-references tbody').append(output);
+		$('#table-references tbody').append($output);
 	});
 </script>

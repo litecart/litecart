@@ -1045,12 +1045,12 @@ textarea.warning {
 
 	// Aliases
 
-	let new_alias_index = 0;
-	while ($(':input[name^="aliases['+new_alias_index+']"]').length) new_alias_index++;
+	$('button[name="add_alias"]').on('click', function() {
 
-		$('button[name="add_alias"]').on('click', function() {
+			let __index__ = 0;
+			while ($(':input[name^="aliases[new_'+__index__+']"]').length) __index__++;
 
-		let output = [
+		let $output = $([
 			'<fieldset class="alias">',
 			'	<div class="grid">',
 			'		<div class="col-md-4">',
@@ -1058,7 +1058,7 @@ textarea.warning {
 			'				<div class="form-label"><?php echo language::translate('title_key', 'Key'); ?></div>',
 			'				<div class="input-group">',
 			'					<span class="input-group-text" style="font-family: monospace;">{alias:</span>',
-			'					<?php echo functions::form_input_text('aliases[new_alias_index][key]', '', 'required'); ?>',
+			'					<?php echo functions::form_input_text('aliases[__index__][key]', '', 'required'); ?>',
 			'					<span class="input-group-text" style="font-family: monospace;">}</span>',
 			'				</div>',
 			'			</label>',
@@ -1067,23 +1067,24 @@ textarea.warning {
 			'		<div class="col-md-6">',
 			'			<label class="form-group">',
 			'				<div class="form-label"><?php echo functions::escape_js(language::translate('title_value', 'Value')); ?></div>',
-			'				<?php echo functions::escape_js(functions::form_input_text('aliases[new_alias_index][value]', '', 'required')); ?>',
+			'				<?php echo functions::escape_js(functions::form_input_text('aliases[__index__][value]', '', 'required')); ?>',
 			'			</label>',
 			'		</div>',
 			'',
 			'		<div class="col-md-2" style="align-self: center;">',
 			'			<div class="btn-group">',
-			'				<?php echo functions::form_button('aliases[new_alias_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_up', 'Move Up')) .'"'); ?>',
-			'				<?php echo functions::form_button('aliases[new_alias_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_down', 'Move Down')) .'"'); ?>',
+			'				<?php echo functions::form_button('aliases[__index__][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_up', 'Move Up')) .'"'); ?>',
+			'				<?php echo functions::form_button('aliases[__index__][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_down', 'Move Down')) .'"'); ?>',
 			'			</div>',
-			'			<?php echo functions::form_button('aliases[new_alias_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'"'); ?>',
+			'			<?php echo functions::form_button('aliases[__index__][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'"'); ?>',
 			'		</div>',
 			'	</div>',
 			'</fieldset>'
 		].join('\n')
-		.replace(/new_alias_index/g, 'new_' + new_alias_index++);
+			.replace('__index__', 'new_' + __index__)
+		);
 
-		$('.aliases').append(output);
+		$('.aliases').append($output);
 	});
 
 	$('#aliases').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
@@ -1106,12 +1107,12 @@ textarea.warning {
 	});
 
 	// Settings
-	let new_setting_index = 0;
-	while ($(':input[name^="settings['+new_setting_index+']"]').length) new_setting_index++;
+	$('button[name="add_setting"]').on('click', function() {
 
-		$('button[name="add_setting"]').on('click', function() {
+		let __index__ = 0;
+		while ($(':input[name^="settings[new_'+__index__+']"]').length) __index__++;
 
-		let output = [
+		let $output = $([
 			'<fieldset class="setting">',
 			'',
 			'	<div class="grid">',
@@ -1120,7 +1121,7 @@ textarea.warning {
 			'				<div class="form-label"><?php echo language::translate('title_key', 'Key'); ?></div>',
 			'				<div class="input-group">',
 			'					<span class="input-group-text" style="font-family: monospace;">{setting:</span>',
-			'					<?php echo functions::form_input_text('settings[new_setting_index][key]', '', 'required'); ?>',
+			'					<?php echo functions::form_input_text('settings[__index__][key]', '', 'required'); ?>',
 			'					<span class="input-group-text" style="font-family: monospace;">}</span>',
 			'				</div>',
 			'			</label>',
@@ -1129,45 +1130,46 @@ textarea.warning {
 			'		<div class="col-md-6">',
 			'			<label class="form-group">',
 			'				<div class="form-label"><?php echo functions::escape_js(language::translate('title_title', 'Title')); ?></div>',
-			'				<?php echo functions::escape_js(functions::form_input_text('settings[new_setting_index][title]', '', 'required')); ?>',
+			'				<?php echo functions::escape_js(functions::form_input_text('settings[__index__][title]', '', 'required')); ?>',
 			'			</label>',
 			'		</div>',
 			'',
 			'		<div class="col-md-2 text-center" style="align-self: center;">',
 			'			<div class="btn-group">',
-			'				<?php echo functions::form_button('settings[new_setting_index][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_up', 'Move Up')) .'"'); ?>',
-			'				<?php echo functions::form_button('settings[new_setting_index][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_down', 'Move Down')) .'"'); ?>',
+			'				<?php echo functions::form_button('settings[__index__][move_up]', functions::draw_fonticon('move-up'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_up', 'Move Up')) .'"'); ?>',
+			'				<?php echo functions::form_button('settings[__index__][move_down]', functions::draw_fonticon('move-down'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_move_down', 'Move Down')) .'"'); ?>',
 			'			</div>',
-			'			<?php echo functions::form_button('settings[new_setting_index][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'"'); ?>',
+			'			<?php echo functions::form_button('settings[__index__][remove]', functions::draw_fonticon('remove'), 'button', 'class="btn btn-default btn-sm" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'"'); ?>',
 			'		</div>',
 			'	</div>',
 			'',
 			'	<label class="form-group">',
 			'		<div class="form-label"><?php echo functions::escape_js(language::translate('title_description', 'Description')); ?></div>',
-			'		<?php echo functions::escape_js(functions::form_input_text('settings[new_setting_index][description]', '', 'required')); ?>',
+			'		<?php echo functions::escape_js(functions::form_input_text('settings[__index__][description]', '', 'required')); ?>',
 			'	</label>',
 			'',
 			'	<div class="grid">',
 			'		<div class="col-md-6">',
 			'			<label class="form-group">',
 			'				<div class="form-label"><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></div>',
-			'				<?php echo functions::escape_js(functions::form_input_text('settings[new_setting_index][function]', '', 'required')); ?>',
+			'				<?php echo functions::escape_js(functions::form_input_text('settings[__index__][function]', '', 'required')); ?>',
 			'			</label>',
 			'		</div>',
 			'',
 			'		<div class="col-md-6">',
 			'			<label class="form-group">',
 			'				<div class="form-label"><?php echo functions::escape_js(language::translate('title_default_value', 'Default Value')); ?></div>',
-			'				<?php echo functions::escape_js(functions::form_input_text('settings[new_setting_index][default_value]', '')); ?>',
+			'				<?php echo functions::escape_js(functions::form_input_text('settings[__index__][default_value]', '')); ?>',
 			'			</label>',
 			'		</div>',
 			'	</div>',
 			'',
 			'</fieldset>'
 		].join('\n')
-		.replace(/new_setting_index/g, 'new_' + new_setting_index++);
+			.replace('__index__', 'new_' + __index__)
+		);
 
-		$('#settings').append(output);
+		$('#settings').append($output);
 	});
 
 	$('#settings').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
@@ -1190,27 +1192,28 @@ textarea.warning {
 	});
 
 	// Upgrade Patches
-	let new_upgrade_patch_index = 0;
-	while ($(':input[name^="upgrades['+new_upgrade_patch_index+']"]').length) new_upgrade_patch_index++;
-
 	$('button[name="add_patch"]').on('click', function() {
 
-		let output = [
+		let __index__ = 0;
+		while ($(':input[name^="upgrades[new_'+__index__+']"]').length) __index__++;
+
+		let $output = ([
 			'<fieldset class="upgrade">',
 			'	<label class="form-group" style="max-width: 250px;">',
 			'		<div class="form-label"><?php echo functions::escape_js(language::translate('title_version', 'Version')); ?></div>',
-			'		<?php echo functions::escape_js(functions::form_input_text('upgrades[new_upgrade_patch_index][version]', '')); ?>',
+			'		<?php echo functions::escape_js(functions::form_input_text('upgrades[__index__][version]', '')); ?>',
 			'	</label>',
 			'',
 			'	<label class="form-group">',
 			'		<div class="form-label"><?php echo functions::escape_js(language::translate('title_script', 'Script')); ?></div>',
-			'		<?php echo functions::escape_js(functions::form_input_code('upgrades[new_upgrade_patch_index][script]', '', 'style="height: 200px;"')); ?>',
+			'		<?php echo functions::escape_js(functions::form_input_code('upgrades[__index__][script]', '', 'style="height: 200px;"')); ?>',
 			'	</label>',
 			'</fieldset>'
 		].join('\n')
-		.replace(/new_upgrade_patch_index/g, 'new_' + new_upgrade_patch_index);
+			.replace('__index__', 'new_' + __index__)
+		);
 
-		$('.upgrades').append(output);
+		$('.upgrades').append($output);
 	});
 
 	$('.card-action button[name="delete"]').on('click', function(e) {

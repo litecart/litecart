@@ -242,11 +242,11 @@
 		$(this).closest('tr').remove();
 	});
 
-	let new_item_index = 0;
-	while ($(':input[name^="contents['+new_item_index+']"]').length) new_item_index++;
-
 	$('table tfoot button[name="add"]').on('click', function(e) {
 		e.preventDefault();
+
+		let __index__ = 0;
+		while ($(':input[name^="contents[new_'+__index__+']"]').length) __index__++;
 
 		let row = $(this).closest('tr');
 
@@ -260,17 +260,17 @@
 		let $output = $([
 			'  <tr class="item">',
 			'    <td>',
-			'       <?php echo functions::escape_js(functions::form_input_hidden('contents[new_item_index][id]', '')); ?>',
-			'       <?php echo functions::escape_js(functions::form_input_hidden('contents[new_item_index][stock_item_id]', '')); ?>',
-			'       <?php echo functions::escape_js(functions::form_input_hidden('contents[new_item_index][sku]', '')); ?>',
+			'       <?php echo functions::escape_js(functions::form_input_hidden('contents[__index__][id]', '')); ?>',
+			'       <?php echo functions::escape_js(functions::form_input_hidden('contents[__index__][stock_item_id]', '')); ?>',
+			'       <?php echo functions::escape_js(functions::form_input_hidden('contents[__index__][sku]', '')); ?>',
 			'       ' + $option.attr('value'),
 			'    </td>',
-			'    <td><?php echo functions::escape_js(functions::form_input_hidden('contents[new_item_index][name]', '')); ?>'+ $option.data('name') +'</td>',
-			'    <td><?php echo functions::escape_js(functions::form_input_decimal('contents[new_item_index][quantity]', '', 2, 'readonly')); ?></td>',
+			'    <td><?php echo functions::escape_js(functions::form_input_hidden('contents[__index__][name]', '')); ?>'+ $option.data('name') +'</td>',
+			'    <td><?php echo functions::escape_js(functions::form_input_decimal('contents[__index__][quantity]', '', 2, 'readonly')); ?></td>',
 			'    <td>',
 			'      <div class="input-group">',
 			'        <span class="input-group-text">&plusmn;</span>',
-			'        <?php echo functions::form_input_decimal('contents[new_item_index][quantity_adjustment]', true, 2, !empty($_POST['options_stock']) ? 'readonly' : ''); ?>',
+			'        <?php echo functions::form_input_decimal('contents[__index__][quantity_adjustment]', true, 2, !empty($_POST['options_stock']) ? 'readonly' : ''); ?>',
 			'      </div>',
 			'    </td>',
 			'    <td class="text-center">',
@@ -282,7 +282,7 @@
 			'    <td class="text-center"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a></td>',
 			'  </tr>'
 		].join('\n')
-			.replace(/new_item_index/g, 'new_' + new_item_index++)
+			.replace('__index__', 'new_' + __index__)
 		);
 
 		// Insert values

@@ -300,22 +300,24 @@
 		);
 	});
 
-	let new_zone_index = 0;
-	while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++;
 
 	$('form[name="country_form"] .add').on('click', function(e) {
 		e.preventDefault();
+
 		if ($('select[name="country[code]"]').find('option:selected').val() == '') return;
+
+		let __index__ = 0;
+		while ($(':input[name^="zones[new_'+__index__+']"]').length) __index__++;
 
 		let $output = $([
 			'<tr>',
-			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][id]', '')); ?></td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_text('zones[new_zone_index][code]', '')); ?></td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_text('zones[new_zone_index][name]', '')); ?></td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[__index__][id]', '')); ?></td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_text('zones[__index__][code]', '')); ?></td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_text('zones[__index__][name]', '')); ?></td>',
 			'  <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>',
 			'</tr>',
 		].join('\n')
-			.replace(/new_zone_index/g, 'new_' + new_zone_index++)
+			.replace('__index__', 'new_' + __index__)
 			.replace(/new_zone_code/g, $('input[name="zone[code]"]').val())
 			.replace(/new_zone_name/g, $('input[name="zone[name]"]').val())
 		);

@@ -174,8 +174,6 @@
 		});
 	});
 
-	let new_zone_index = 0;
-	while ($(':input[name^="zones['+new_zone_index+']"]').length) new_zone_index++;
 
 	$('#zones').on('click', 'button[name="add"]', function(e) {
 		e.preventDefault();
@@ -187,18 +185,23 @@
 
 		let found = false;
 		$.each($('form[name="form_geo_zone"] tbody tr'), function(i, current_row) {
-			if ($(current_row).find(':input[name$="[country_code]"]').val() == $(':input[name="new_zone[country_code]"]').val()
-			 && $(current_row).find(':input[name$="[zone_code]"]').val() == $(':input[name="new_zone[zone_code]"]').val()
-			 && $(current_row).find(':input[name$="[city]"]').val() == $(':input[name="new_zone[city]"]').val()) {
-				 found = true;
-				 return;
-			 }
+			if (
+				$(current_row).find(':input[name$="[country_code]"]').val() == $(':input[name="new_zone[country_code]"]').val()
+				&& $(current_row).find(':input[name$="[zone_code]"]').val() == $(':input[name="new_zone[zone_code]"]').val()
+				&& $(current_row).find(':input[name$="[city]"]').val() == $(':input[name="new_zone[city]"]').val()
+			) {
+				found = true;
+				return;
+			}
 		});
 
 		if (found) {
 			alert('<?php echo functions::escape_js(language::translate('error_zone_already_exists', 'This zone already exists in the list'), true); ?>');
 			return;
 		}
+
+		let __index__ = 0;
+		while ($(':input[name^="zones[new_'+__index__+']"]').length) __index__++;
 
 		let zone_name = $('select[name="new_zone[zone_code]"] option:selected').text();
 		let city_name = $('input[name="new_zone[city]"]').val();
@@ -213,10 +216,10 @@
 
 		let $output = $([
 			'<tr>',
-			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][id]', '')); ?></td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][country_code]', '')); ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][zone_code]', '')); ?>' + zone_name + '</td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[new_zone_index][city]', '')); ?>' + city_name + '</td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[__index__][id]', '')); ?></td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[__index__][country_code]', '')); ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[__index__][zone_code]', '')); ?>' + zone_name + '</td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[__index__][city]', '')); ?>' + city_name + '</td>',
 			'  <td class="text-end">',
 			'		<a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>">',
 			'			<?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #cc3333;"')); ?>',
@@ -224,7 +227,7 @@
 			'	</td>',
 			'</tr>'
 		].join('\n')
-			.replace(/new_zone_index/g, 'new_' + new_zone_index++)
+			.replace('__index__', 'new_' + __index__)
 		);
 
 		$(':input[name$="[country_code]"]', $output).val($(':input[name="new_zone[country_code]"]').val());

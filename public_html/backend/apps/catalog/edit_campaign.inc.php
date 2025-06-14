@@ -246,15 +246,15 @@
 		}
 	});
 
-	var new_product_i = 0;
-	while ($('input[name^="products[new_product_'+new_product_i+']"]').length) new_product_i++;
-
 	window.add_product = function(product) {
+
+		var __index__ = 0;
+		while ($('input[name^="products[new_product_new_'+__index__+']"]').length) __index__++;
 
 		$output = $([
 			'<tr>',
 			'  <td>',
-			'    <?php echo functions::form_input_hidden('products[new_product_i][product_id]', 'product.id'); ?>',
+			'    <?php echo functions::form_input_hidden('products[__index__][product_id]', 'product.id'); ?>',
 			'    <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => 'product.id']); ?>">',
 			'      ' + product.name,
 			'		 </a>',
@@ -262,17 +262,17 @@
 			'  <td class="text-end">'+ Number(product.price.value).toMoney() +'</td>',
 			'  <td>',
 			'    <div class="dropdown dropdown-end">',
-			'      <?php echo functions::escape_js(functions::form_input_money('products[new_product_i][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '', 'style="width: 125px;"')); ?>',
+			'      <?php echo functions::escape_js(functions::form_input_money('products[__index__][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '', 'style="width: 125px;"')); ?>',
 			'      <ul class="dropdown-menu">',
 			'        <?php foreach (array_diff($currency_codes, [settings::get('store_currency_code')]) as $currency_code) { ?>',
 			'        <li>',
-			'          <?php echo functions::escape_js(functions::form_input_money('products[new_product_i][price]['. $currency_code .']', $currency_code, '', 'style="width: 125px;"')); ?>',
+			'          <?php echo functions::escape_js(functions::form_input_money('products[__index__][price]['. $currency_code .']', $currency_code, '', 'style="width: 125px;"')); ?>',
 			'        </li>',
 			'        <?php } ?>',
 			'      </ul>',
 			'    </div>',
 			'  </td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_percent('products[new_product_i][percentage]', '0.00', 2)); ?></td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_percent('products[__index__][percentage]', '0.00', 2)); ?></td>',
 			'  <td class="text-end">',
 			'    <button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo language::translate('title_edit', 'Edit'); ?>">',
 			'      <?php echo functions::draw_fonticon('icon-times'); ?>',
@@ -280,7 +280,7 @@
 			'  </td>',
 			'</tr>',
 		].join('\n')
-			.replace(/new_product_i/g, 'new_'+new_product_i++)
+			.replace('__index__', 'new_' + __index__)
 			.replace(/product\.id/g, product.id)
 		);
 

@@ -388,7 +388,6 @@
 
 	// Filters
 
-	var new_attribute_filter_i = 0;
 	$('#tab-filters button[name="add"]').on('click', function() {
 
 		if ($('select[name="new_attribute_group"]').val() == '') {
@@ -396,13 +395,16 @@
 			return;
 		}
 
-		let output = [
+		var __index__ = 0;
+		while ($('input[name="filters[new_new_'+__index__+']"]').length) __index__++;
+
+		let $output = [
 			'<tr class="grabbable">',
-			'	<?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][id]', '')); ?>',
-			'	<?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>',
-			'	<?php echo functions::escape_js(functions::form_input_hidden('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>',
+			'	<?php echo functions::escape_js(functions::form_input_hidden('filters[__index__][id]', '')); ?>',
+			'	<?php echo functions::escape_js(functions::form_input_hidden('filters[__index__][attribute_group_id]', 'new_attribute_group_id')); ?>',
+			'	<?php echo functions::escape_js(functions::form_input_hidden('filters[__index__][attribute_group_name]', 'new_attribute_group_name')); ?>',
 			'	<td>new_attribute_group_name</td>',
-			'	<td><?php echo functions::form_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>',
+			'	<td><?php echo functions::form_checkbox('filters[__index__][select_multiple]', true); ?></td>',
 			'	<td class="text-end">',
 			'		<div class="btn-group">',
 			'			<a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>',
@@ -413,15 +415,13 @@
 			'		<a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>',
 			'	</td>',
 			'</tr>',
-	 ].join('\n');
+	 ].join('\n')
+		.replace('__index__', 'new_' + __index__);
+		.replace(/new_attribute_group_id/g, $('select[name="new_attribute_group"] option:selected').val())
+		.replace(/new_attribute_group_name/g, $('select[name="new_attribute_group"] option:selected').text()
+	);
 
-		while ($('input[name="filters[new_'+new_attribute_filter_i+']"]').length) new_attribute_filter_i++;
-		output = output.replace(/new_attribute_filter_i/g, 'new_' + new_attribute_filter_i);
-		output = output.replace(/new_attribute_group_id/g, $('select[name="new_attribute_group"] option:selected').val());
-		output = output.replace(/new_attribute_group_name/g, $('select[name="new_attribute_group"] option:selected').text());
-		new_attribute_filter_i++;
-
-		$('#tab-filters tbody').append(output);
+		$('#tab-filters tbody').append($output);
 	});
 
 	$('#tab-filters').on('click', '.move-up, .move-down', function(e) {

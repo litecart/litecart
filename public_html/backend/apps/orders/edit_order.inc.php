@@ -1608,29 +1608,28 @@
 		$(this).height('auto').height('calc(' + $(this).prop('scrollHeight') + 'px + 1em) ');
 	}).trigger('input');
 
-	let new_comment_index = 0;
-	while ($(':input[name^="comments['+new_comment_index+']"]').length) {
-		new_comment_index++;
-	}
 
 	$('#box-comments .add').on('click', function(e) {
 		e.preventDefault();
 
+		let __index__ = 0;
+		while ($(':input[name^="comments[new_'+__index__+']"]').length) __index__++;
+
 		let $output = $([
 			'<div class="bubble local me">',
-			'  <?php echo functions::form_input_hidden('comments[new_comment_index][id]', ''); ?>',
-			'  <?php echo functions::form_input_hidden('comments[new_comment_index][author]', 'staff'); ?>',
-			'  <?php echo functions::form_input_hidden('comments[new_comment_index][created_at]', functions::datetime_format('datetime')); ?>',
-			'  <?php echo functions::escape_js(functions::form_textarea('comments[new_comment_index][text]', '')); ?>',
+			'  <?php echo functions::form_input_hidden('comments[__index__][id]', ''); ?>',
+			'  <?php echo functions::form_input_hidden('comments[__index__][author]', 'staff'); ?>',
+			'  <?php echo functions::form_input_hidden('comments[__index__][created_at]', functions::datetime_format('datetime')); ?>',
+			'  <?php echo functions::escape_js(functions::form_textarea('comments[__index__][text]', '')); ?>',
 			'  <div class="date"><?php echo functions::datetime_format('datetime'); ?></div>',
 			'  <div class="actions">',
-			'    <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('icon-envelope')], true)); ?> </label>',
-			'    <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('icon-eye-slash')], true)); ?></label>',
+			'    <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[__index__][notify]', [1, functions::draw_fonticon('icon-envelope')], true)); ?> </label>',
+			'    <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[__index__][hidden]', [1, functions::draw_fonticon('icon-eye-slash')], true)); ?></label>',
 			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('icon-times'); ?></a>',
 			'  </div>',
 			'</div>'
 		].join('\n')
-			.replace(/new_comment_index/g, 'new_' + new_comment_index++)
+			.replace('__index__', 'new_' + __index__)
 		);
 
 		$(this).before($output);
@@ -1796,8 +1795,6 @@
 
 	// Edit Line Item Modal
 
-	let new_item_index = 0;
-	while ($(':input[name^="items['+new_item_index+']"]').length) new_item_index++;
 
 	window.addItem = function(item) {
 		$output.find('*[name$="[product_id]"]').val(item.product_id);
@@ -1834,26 +1831,29 @@
 
 		if (!$row) {
 
+			let __index__ = 0;
+			while ($(':input[name^="items[new_'+__index__+']"]').length) __index__++;
+
 			let $output = $([
 				'  <tr class="item">',
 				'    <td></td>',
 				'    <td class="grabbable">' + item.name,
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][id]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][product_id]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][stock_item_id]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][name]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][description]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][data]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][serial_number]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][sku]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][gtin]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][taric]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][weight]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][weight_unit]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][length]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][width]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][height]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('items[new_item_index][length_unit]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][id]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][product_id]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][stock_item_id]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][name]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][description]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][data]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][serial_number]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][sku]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][gtin]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][taric]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][weight]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][weight_unit]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][length]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][width]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][height]', '')); ?>',
+				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][length_unit]', '')); ?>',
 				'    </td>',
 				'    <td class="grabbable sku">'+ item.sku +'</td>',
 				'    <td class="grabbable">',
@@ -1862,9 +1862,9 @@
 				'    <td class="grabbable">',
 				'      <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>',
 				'    </td>',
-				'    <td><?php echo functions::escape_js(functions::form_input_decimal('items[new_item_index][quantity]', '')); ?></td>',
-				'    <td><?php echo functions::escape_js(functions::form_input_money('items[new_item_index][price]', $_POST['currency_code'], '')); ?></td>',
-				'    <td><?php echo functions::escape_js(functions::form_input_money('items[new_item_index][discount]', $_POST['currency_code'], '')); ?></td>',
+				'    <td><?php echo functions::escape_js(functions::form_input_decimal('items[__index__][quantity]', '')); ?></td>',
+				'    <td><?php echo functions::escape_js(functions::form_input_money('items[__index__][price]', $_POST['currency_code'], '')); ?></td>',
+				'    <td><?php echo functions::escape_js(functions::form_input_money('items[__index__][discount]', $_POST['currency_code'], '')); ?></td>',
 				'    <td class="sum"><?php echo currency::format(0, true, $_POST['currency_code'], $_POST['currency_value']); ?></td>',
 				'    <td class="sum_tax"><?php echo currency::format(0, true, $_POST['currency_code'], $_POST['currency_value']); ?></td>',
 				'    <td class="text-end">',
@@ -1874,7 +1874,9 @@
 				'      <a class="btn btn-default btn-sm edit" href="#" title="<?php echo functions::escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('edit')); ?></a>',
 				'    </td>',
 				'  </tr>'
-			].join('\n').replace(/new_item_index/g, 'new_' + new_item_index++));
+			].join('\n')
+				.replace('__index__', 'new_' + __index__)
+			);
 
 			$row = $output;
 			$('#order-lines tbody').append($output);

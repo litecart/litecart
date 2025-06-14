@@ -190,25 +190,25 @@ table th:last-child {
 		});
 	});
 
-	let new_key_index = 0;
-	while ($(':input[name^="keys['+new_key_index+']"]').length) new_key_index++;
-
 	$('.data-table .add').on('click', function(e) {
 		e.preventDefault();
 
+		let __index__ = 0;
+		while ($(':input[name^="keys[new_'+__index__+']"]').length) __index__++;
+
 		let $output = $([
 			'<tr>',
-			'  <td><?php echo functions::form_input_text('keys[new_key_index]', 'new_key_index', 'required pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>',
+			'  <td><?php echo functions::form_input_text('keys[__index__]', '__index__', 'required pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>',
 			<?php foreach (language::$languages as $language) { ?>
-			'  <td><?php echo functions::form_input_text('values['. $language['code'] .'][new_key_index]', true); ?></td>',
+			'  <td><?php echo functions::form_input_text('values['. $language['code'] .'][__index__]', true); ?></td>',
 			<?php } ?>
 			'  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a></td>',
 			'</tr>'
 		].join('\n')
-			.replace(/new_key_index/g, 'new_' + new_key_index++)
+			.replace('__index__', 'new_' + __index__)
 		);
 
-		$('.data-table tbody').append(output);
+		$('.data-table tbody').append($output);
 	});
 
 	$('.data-table').on('click', '.remove', function(e) {

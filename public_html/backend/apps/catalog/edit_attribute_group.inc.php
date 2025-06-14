@@ -152,28 +152,29 @@
 </div>
 
 <script>
-	let new_value_index = 0;
-	while ($(':input[name^="values['+new_value_index+']"]').length) new_value_index++;
-
 	$('form[name="attribute_form"]').on('click', '.add', function(e) {
 		e.preventDefault();
 
+		let __index__ = 0;
+		while ($(':input[name^="values[new_'+__index__+']"]').length) __index__++;
+
 <?php
 		$name_fields = '';
-		foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_regional_text('values[new_value_index][name]['. $language_code .']', $language_code, '', '');
+		foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_regional_text('values[__index__][name]['. $language_code .']', $language_code, '', '');
 ?>
-		let output = [
+		let $output = $([
 			'<tr>',
-			'  <td><?php echo functions::escape_js(functions::form_input_hidden('values[new_value_index][id]', '')); ?></td>',
+			'  <td><?php echo functions::escape_js(functions::form_input_hidden('values[__index__][id]', '')); ?></td>',
 			'  <td><?php echo functions::escape_js($name_fields); ?></td>',
 			'  <td class="text-center"><?php echo language::translate('title_no', 'No'); ?></td>',
 			'  <td class="grabbable"><?php echo functions::escape_js(functions::draw_fonticon('icon-arrows-vertical')); ?></td>',
 			'  <td class="text-end"><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a></td>',
 			'</tr>'
 		].join('\n')
-		.replace(/new_value_index/g, 'new_' + new_value_index++);
+			.replace('__index__', 'new_' + __index__)
+		);
 
-		$(this).closest('table').find('tbody').append(output);
+		$(this).closest('table').find('tbody').append($output);
 	});
 
 	$('form[name="attribute_form"]').on('click', '.remove', function(e) {
