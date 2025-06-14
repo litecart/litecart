@@ -2,7 +2,7 @@
 
 	class vmod {
 
-		public static $enabled = true;                 // Bool whether or not to enable this feature
+		public static  $enabled = true;                 // Bool whether or not to enable this feature
 		private static $aliases = [];                  // Array of path aliases ['pattern' => 'replace']
 		private static $_checked = [];                 // Array of files that have already passed check() and
 		private static $_checksums = [];               // Array of checksums for time comparison
@@ -10,7 +10,7 @@
 		private static $_modifications = [];           // Array of modifications to apply
 		private static $_installed = [];               // Array of installed modifications
 		private static $_settings = [];                // Array of modification settings
-		public static $time_elapsed = 0;               // Integer of time elapsed during operations
+		public static  $time_elapsed = 0;               // Integer of time elapsed during operations
 
 		public static function init() {
 
@@ -81,13 +81,13 @@
 			}
 
 			// If no cache is requested by browser
-				//if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
-				//  $last_modified = time();
-				//}
+			//if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
+			//  $last_modified = time();
+			//}
 
 			// Load installed
 			foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $installed) {
-				list($id, $version) = preg_split('#;#', $installed);
+				list($id, $version) = preg_split('#;#', $installed, 2);
 				self::$_installed[$id] = $version;
 			}
 
@@ -107,7 +107,7 @@
 			// Create a list of checked files
 			if (filemtime($checked_file) > $last_modified) {
 				foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-					list($original_file, $modified_file, $checksum) = preg_split('#;#', $line);
+					list($original_file, $modified_file, $checksum) = preg_split('#;#', $line, 3);
 					if (is_file(FS_DIR_APP . $original_file) && is_file(FS_DIR_STORAGE . $modified_file) && filemtime(FS_DIR_STORAGE . $modified_file) > filemtime(FS_DIR_APP . $original_file)) {
 						self::$_checked[$original_file] = $modified_file;
 						self::$_checksums[$original_file] = $checksum;

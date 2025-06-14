@@ -69,9 +69,9 @@
 						set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 							last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
 							last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
+							last_login = '". date('Y-m-d H:i:s') ."',
 							login_attempts = 0,
-							total_logins = total_logins + 1,
-							last_login = '". date('Y-m-d H:i:s') ."'
+							total_logins = total_logins + 1
 						where id = ". (int)$customer['id'] ."
 						limit 1;"
 					);
@@ -127,12 +127,12 @@
 				foreach ([
 					'#^(given|first)[ _-]?name$#i' => 'firstname',
 					'#^(family|sur|last)[ _-]?name$#i' => 'lastname',
-					'#^(address[ _-]?1|street[ _-]?_(address)?)$#i' => 'address1',
+					'#^(address[ _-]?1|street[ _-]?(address)?)$#i' => 'address1',
 					'#^(post|postal|zip)[ _-]?code$#i' => 'postcode',
 					'#^city|town|locality$#i' => 'city',
-					'#^country_code$#i' => 'country_code',
-					'#^email[ _-]?_(address)?$#i' => 'email',
-					'#^phone[ _-]?_(no|number)?$#i' => 'phone',
+					'#^country[ _-]?code$#i' => 'country_code',
+					'#^email[ _-]?(address)?$#i' => 'email',
+					'#^phone[ _-]?(no|number)?$#i' => 'phone',
 					'#^lon(gitude)?$#i' => 'longitude',
 					'#^lat(itude)?$#i' => 'latitude',
 				] as $pattern => $field) {
@@ -288,13 +288,13 @@
 				self::$data['zone_code'] = array_keys(reference::country(self::$data['country_code'])->zones)[0];
 			}
 
-		// Set shipping country if empty
+			// Set shipping country if empty
 			if (empty(self::$data['shipping_address']['country_code'])) {
 				self::$data['shipping_address']['country_code'] = self::$data['country_code'];
 				self::$data['shipping_address']['zone_code'] = self::$data['zone_code'];
 			}
 
-		// Unset zone if not in country
+			// Unset zone if not in country
 			if (!isset(reference::country(self::$data['shipping_address']['country_code'])->zones[self::$data['shipping_address']['zone_code']])) {
 				self::$data['shipping_address']['zone_code'] = '';
 			}

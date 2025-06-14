@@ -24,14 +24,6 @@
 
 		try {
 
-			if (empty($_POST['name'][language::$selected['code']])) {
-				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
-			}
-
-			if (empty($_POST['categories'])) {
-				throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
-			}
-
 			if (!empty($_POST['code'])) {
 				if (database::query(
 					"select id from ". DB_TABLE_PREFIX ."products
@@ -46,7 +38,7 @@
 			if (!empty($_FILES['new_images']['tmp_name'])) {
 				foreach (array_keys($_FILES['new_images']['tmp_name']) as $key) {
 					if (!empty($_FILES['new_images']['tmp_name'][$key]) && !empty($_FILES['new_images']['error'][$key])) {
-						throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected for unknown reason'));
+						throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected').': '. print_r($_FILES['new_images']['error'][$key], true));
 					}
 				}
 			}

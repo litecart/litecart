@@ -16,7 +16,7 @@
 
 					$this->_data['group'] = [];
 
-					if (empty($this->group_id)) break;
+					if (!$this->group_id) break;
 
 					$this->_data['group'] = database::query(
 						"select * from ". DB_TABLE_PREFIX ."customer_groups

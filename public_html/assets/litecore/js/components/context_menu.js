@@ -1,7 +1,6 @@
-/* Context Menu */
-
 waitFor('jQuery', ($) => {
 
+	// Context Menu
 	$.fn.contextMenu = function(config){
 		this.each(function() {
 

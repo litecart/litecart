@@ -52,7 +52,9 @@
 
 		public function format_address($address) {
 
-			$address = [
+			$address_format = $this->address_format ?: settings::get('default_address_format');
+
+			$output = strtr($address_format, [
 				'%code' => fallback($address['code']),
 				'%tax_id' => fallback($address['tax_id']),
 				'%company' => fallback($address['company']),
@@ -67,11 +69,7 @@
 				'%country_domestic_name' => $this->domestic_name,
 				'%zone_code' => fallback($address['zone_code']),
 				'%zone_name' => (!empty($address['zone_code']) && !empty($this->zones[$address['zone_code']])) ? $this->zones[$address['zone_code']]['name'] : '',
-			];
-
-			$address_format = $this->address_format ?: settings::get('default_address_format');
-
-			$output = strtr($address_format, $address);
+			]);
 
 			$output = preg_replace('#(\r\n?|\n)+#', "\r\n", $output);
 

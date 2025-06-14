@@ -1,6 +1,6 @@
-// jQuery Placeholders by LiteCart
 waitFor('jQuery', ($) => {
-
+	
+	// jQuery Placeholders by LiteCart
 	let Placeholders = [];
 
 	$.fn.Placeholder = function(options){

@@ -18,7 +18,8 @@
 	database::query(
 		"update ". DB_TABLE_PREFIX ."settings
 		set value = '". date('Y-m-d H:i:s') ."'
-		where `key` in ('jobs_last_push');"
+		where `key` = 'jobs_last_run'
+		limit 1;"
 	);
 
 	$jobs = new mod_jobs();

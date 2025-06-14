@@ -298,10 +298,6 @@ template {
 .breadcrumbs-2 li span {
   cursor: default;
 }
-.breadcrumbs-2 li:not(:last-child) a,
-.breadcrumbs-2 li:not(:last-child) span {
-  padding-right: 1.5em;
-}
 .breadcrumbs-2 .breadcrumb-item {
   display: inline-block;
   background: var(--breadcrumb-item-background);
@@ -312,7 +308,7 @@ template {
   text-decoration: none;
   text-align: center;
   line-height: 1em;
-  padding: 0.5em 1.25em;
+  padding: 0.5em 1em;
   vertical-align: middle;
 }
 .breadcrumbs-2 .breadcrumb-item:hover {

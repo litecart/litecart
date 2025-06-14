@@ -19,6 +19,10 @@
 					'icon' => fallback($config['theme']['icon'], 'icon-plus'),
 					'color' => fallback($config['theme']['color'], '#97a3b5'),
 				];
+				
+				if (empty($config['group'])) {
+					$config['group'] = 'other';
+				}
 
 				$apps[$id] = array_merge(['id' => $id, 'directory' => $directory], $config);
 			}

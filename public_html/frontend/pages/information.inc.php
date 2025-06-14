@@ -16,15 +16,11 @@
 		$page = reference::page($_GET['page_id']);
 
 		if (empty($page->id)) {
-			http_response_code(410);
-			include 'app://frontend/pages/error_document.inc.php';
-			return;
+			throw new Exception('Page does not exist', 410);
 		}
 
 		if (empty($page->status)) {
-			http_response_code(404);
-			include 'app://frontend/pages/error_document.inc.php';
-			return;
+			throw new Exception('Page is disabled', 404);
 		}
 
 		document::$title[] = $page->head_title ?: $page->title;

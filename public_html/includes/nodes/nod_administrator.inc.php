@@ -64,9 +64,9 @@
 						set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 							last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
 							last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
+							last_login = '". date('Y-m-d H:i:s') ."',
 							login_attempts = 0,
-							total_logins = total_logins + 1,
-							last_login = '". date('Y-m-d H:i:s') ."'
+							total_logins = total_logins + 1
 						where id = ". (int)$administrator['id'] ."
 						limit 1;"
 					);

@@ -41,12 +41,12 @@
 				if (version_compare(PHP_VERSION, 8.2, '>=')) {
 
 					$search_replace = [
-						'#^(chk_.*)#' => 'app://includes/modules/checkout/$1.inc.php',
-						'#^(cm_.*)#' => 'app://includes/modules/customer/$1.inc.php',
-						'#^(job_.*)#' => 'app://includes/modules/jobs/$1.inc.php',
-						'#^(om_.*)#' => 'app://includes/modules/order/$1.inc.php',
-						'#^(pm_.*)#' => 'app://includes/modules/payment/$1.inc.php',
-						'#^(sm_.*)#' => 'app://includes/modules/shipping/$1.inc.php',
+						'#^chk#' => 'app://includes/modules/checkout/$0.inc.php',
+						'#^cm_#' => 'app://includes/modules/customer/$0.inc.php',
+						'#^job_#' => 'app://includes/modules/jobs/$0.inc.php',
+						'#^om_#' => 'app://includes/modules/order/$0.inc.php',
+						'#^pm_#' => 'app://includes/modules/payment/$0.inc.php',
+						'#^sm_#' => 'app://includes/modules/shipping/$0.inc.php',
 					];
 
 					$file = preg_replace(array_keys($search_replace), array_values($search_replace), $class);

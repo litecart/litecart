@@ -109,10 +109,10 @@
 	function file_format_size($size) {
 		switch (true) {
 			case ($size == 0): return '-';
-			case ($size < 1000): return language::number_format($size, 0) . ' B';
-			case (($size/1024) < 1000): return language::number_format($size/1024) . ' kB';
-			case (($size/1024/1024) < 1000): return language::number_format($size/1024/1024, 2) . ' MB';
-			case (($size/1024/1024/1024) < 1000): return language::number_format($size/1024/1024/1024, 2) . ' GB';
+			case ($size < 1e3): return language::number_format($size, 0) . ' B';
+			case (($size/1024) < 1e3): return language::number_format($size/1024) . ' kB';
+			case (($size/1024/1024) < 1e3): return language::number_format($size/1024/1024, 2) . ' MB';
+			case (($size/1024/1024/1024) < 1e3): return language::number_format($size/1024/1024/1024, 2) . ' GB';
 		}
 	}
 

@@ -1,6 +1,6 @@
-// Password Strength
 waitFor('jQuery', ($) => {
 
+	// Password Strength
 	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function() {
 
 		$(this).siblings('meter').remove();
