@@ -10,6 +10,7 @@
 		public static $javascript = [];
 		public static $jsenv = [];
 		public static $layout = 'default';
+		public static $console = [];
 		public static $opengraph = [];
 		public static $preloads = [];
 		public static $schema = [];
@@ -351,6 +352,13 @@
 				]);
 			}
 
+			// Prepare console log
+			if (!empty(self::$console)) {
+				self::$javascript[] = implode(PHP_EOL, array_map(function($log) {
+					return 'console.'. $log['type'] .'("'. functions::escape_attr($log['message']) .'", '. json_encode($log['data'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) .');';
+				}, self::$console));
+			}
+
 			// Prepare internal javascript
 			if (!empty(self::$javascript)) {
 				$_page->snippets['foot_tags'][] = implode(PHP_EOL, [
@@ -465,6 +473,20 @@
 			}
 
 			self::$preloads[$link] = $type;
+		}
+
+		// Send a message to the console
+		public static function console(string $type, string $message, $data=null) {
+
+			if (!in_array($type, ['debug', 'log', 'info', 'warn', 'error', 'table'])) {
+				$type = 'log';
+			}
+
+			self::$console[] = [
+				'type' => $type,
+				'message' => $message,
+				'data' => $data,
+			];
 		}
 
 		public static function ilink($resource=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
