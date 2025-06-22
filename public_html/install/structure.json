@@ -879,6 +879,8 @@
 				"quantity_max": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
 				"quantity_step": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
 				"quantity_unit_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"purchase_price": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
+				"purchase_price_currency_code": { "type": "VARCHAR", "length": "3", "unsigned": true, "default": "''" },
 				"recommended_price": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
 				"tax_class_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"image": { "type": "VARCHAR", "length": 255, "default": "''" },
