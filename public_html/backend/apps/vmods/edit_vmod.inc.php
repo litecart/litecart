@@ -770,15 +770,21 @@ textarea.warning {
 	$('.tabs .add').on('click', function(e) {
 		e.preventDefault();
 
-		let tab = '<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'"><span class="file">new'+ new_tab_index +'</span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('icon-times'); ?></span></a>'
-			.replace(/new_tab_index/g, new_tab_index);
+		let $tab = $([
+			'<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'">',
+			'  <span class="file">new'+ new_tab_index +'</span> <span class="btn btn-default btn-sm remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('icon-times'); ?>',
+			'</span>',
+			'</a>'
+		].join('')
+			.replace('new_tab_index', new_tab_index)
+		);
 
-		let tab_pane = $('#new-tab-content-template').html()
-			.replace(/new_tab_index/g, new_tab_index++);
+		let $tab_pane = $(
+			$('#new-tab-content-template').html()
+				.replace('new_tab_index', new_tab_index++)
+		).hide();
 
-		$tab_pane = $(tab_pane).hide();
-
-		$(this).before(tab);
+		$(this).before($tab);
 		$('#files').append($tab_pane);
 
 		$(this).prev().trigger('click');
@@ -898,11 +904,13 @@ textarea.warning {
 		let $operations = $(this).closest('.tab-content').find('.operations'),
 			tab_index = $(this).closest('.tab-content').data('tab-index');
 
-		let output = $('#new-operation-template').html()
-			.replace(/current_tab_index/g, tab_index)
-			.replace(/new_operation_index/g, new_operation_index++);
+		let $output = $(
+			$('#new-operation-template').html()
+			.replace('current_tab_index', tab_index)
+			.replace('new_operation_index', new_operation_index++)
+		);
 
-		$operations.append(output);
+		$operations.append($output);
 		reindex_operations($operations);
 	});
 

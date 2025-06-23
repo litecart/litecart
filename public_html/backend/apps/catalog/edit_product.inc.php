@@ -578,7 +578,7 @@
 							<tr>
 								<td><?php echo functions::form_select_attribute_group('new_attribute[group_id]', ''); ?></td>
 								<td>
-									<?php echo functions::form_select('new_attribute[value_id]', [], ''); ?>
+									<?php echo functions::form_select('new_attribute[value_id]', [], ''); ?></td>
 									<?php echo functions::form_input_text('new_attribute[custom_value]', '', 'disabled hidden'); ?>
 								</td>
 								<td class="text-end"><?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
@@ -646,7 +646,7 @@
 									</thead>
 
 									<tbody>
-									<?php foreach ($customization['values'] as $value_id => $value) { ?>
+										<?php foreach ($customization['values'] as $value_id => $value) { ?>
 										<tr draggable="true" data-value-id="<?php echo functions::escape_html($value['value_id']); ?>" data-value-name="<?php echo functions::escape_html($_POST['customizations'][$group_id]['values'][$value_id]['name']); ?>">
 											<td class="grabbable"><?php echo functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
 											<td class="text-center"><?php echo functions::form_select('customizations['.$group_id.'][values]['. $value_id .'][price_modifier]', ['+','%','*','='], true); ?></td>
@@ -663,7 +663,7 @@
 												</button>
 											</td>
 										</tr>
-									<?php } ?>
+										<?php } ?>
 									</tbody>
 								</table>
 							</div>
@@ -684,8 +684,12 @@
 
 					<div id="modal-predefined-customization" style="display: none;">
 						<fieldset style="max-width: 960px;">
-							<legend><?php echo language::translate('title_add_predefined_option', 'Add Predefined Option'); ?></legend>
-							<div class="grid" style="margin-bottom: 0;">
+
+							<legend>
+								<?php echo language::translate('title_add_predefined_option', 'Add Predefined Option'); ?>
+							</legend>
+
+							<div class="grid">
 
 								<div class="col-md-3">
 									<label class="form-group">
@@ -694,8 +698,8 @@
 									</label>
 								</div>
 
-								<div class="col-md-3"
-								><label class="form-group">
+								<div class="col-md-3">
+									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_value', 'Value'); ?></div>
 										<?php echo functions::form_select('new_predefined_customization[value_id]', [['','']], '', 'disabled'); ?>
 									</label>
@@ -708,17 +712,23 @@
 									</label>
 								</div>
 
-								<div class="col-md-3" style="align-self: end;">
+								<div class="col-md-3">
+									<br>
 									<?php echo functions::form_button('add_predefined_customization', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
 								</div>
 							</div>
+
 						</fieldset>
 					</div>
 
 					<div id="modal-user-input-customization" style="display: none;">
 						<fieldset>
-							<legend><?php echo language::translate('title_add_user_input_option', 'Add User Input Option'); ?></legend>
-							<div class="grid" style="margin-bottom: 0;">
+
+							<legend>
+								<?php echo language::translate('title_add_user_input_option', 'Add User Input Option'); ?>
+							</legend>
+
+							<div class="grid">
 								<div class="col-md-8">
 									<label class="form-group">
 										<div class="form-label"><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></div>
@@ -726,10 +736,12 @@
 									</label>
 								</div>
 
-								<div class="col-md-4" style="align-self: end;">
+								<div class="col-md-4">
+									<br>
 									<?php echo functions::form_button('add_user_input_customization', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
 								</div>
 							</div>
+
 						</fieldset>
 					</div>
 				</div>
@@ -811,7 +823,7 @@
 
 							<tbody>
 								<?php if (!empty($_POST['stock_options'])) foreach ($_POST['stock_options'] as $key => $stock_option) { ?>
-								<tr data-stock-item-id="<?php echo $stock_option['stock_item_id']; ?>">
+								<tr draggable="true" data-stock-item-id="<?php echo $stock_option['stock_item_id']; ?>">
 									<td class="grabbable">
 										<?php echo functions::form_input_hidden('stock_options['.$key.'][id]', true); ?>
 										<?php echo functions::form_input_hidden('stock_options['.$key.'][stock_item_id]', true); ?>
@@ -1196,7 +1208,6 @@
 		$(this).closest('tr').remove();
 	});
 
-
 	$('#prices').on('click', '.add', function(e) {
 		e.preventDefault();
 
@@ -1390,11 +1401,11 @@
 	$('#attributes select[name="new_attribute[group_id]"]').on('change', function(e) {
 
 		let $select = $(this);
-		let $value_select = $('#attributes tfoot select[name="new_attribute[value_id]"]');
-		let $custom_value = $('#attributes tfoot input[name="new_attribute[custom_value]"]');
+		let $select_value = $('select[name="new_attribute[value_id]"]');
+		let $custom_value = $('input[name="new_attribute[custom_value]"]');
 
 		if ($select.val() == '') {
-			$value_select.prop('disabled', true).html(
+			$select_value.prop('disabled', true).html(
 				'<option value=""><?php echo functions::escape_js(language::translate('title_select_attribute_group_first', 'Select attribute group first')); ?></option>'
 			);
 			$custom_value.prop('disabled', true).val('');
@@ -1411,28 +1422,42 @@
 			success: function(data) {
 
 				if (!data.length) {
-					$value_select.prop('disabled', true).prop('hidden', true).html(
+
+					$select_value.prop({
+						disabled:  true,
+						hidden: true
+					}).html(
 						'<option value=""><?php echo functions::escape_js(language::translate('title_no_values_found', 'No values found')); ?></option>'
 					);
-					$custom_value.prop('disabled', false).prop('hidden', false).val('');
+
+					$custom_value.prop({
+						disabled:  false,
+						hidden: false
+					}).val('');
+
 					return;
 				}
 
-				$value_select.html('');
+				$select_value.html('');
 
 				if (Array.isArray(data)) {
-					$.each(data, function(index, value) {
-						$('<option></option>')
-							.attr('value', value.id)
-							.text(value.name)
-							.appendTo($value_select);
+					$.each(data, function(i, value) {
+						let $output = $('<option></option>', { value: value.id }).text(value.name);
+						console.log($output[0].outerHTML);
+						$select_value.append($output);
 					});
+
 				} else {
 					console.error('Expected data to be an array, but received:', data);
 				}
 
-				$value_select.prop('disabled', false).html(data);
-				$custom_value.prop('disabled', true).prop('hidden', true).val('');
+				$select_value.prop('disabled', false).html(data);
+
+				$custom_value.prop({
+					disabled:  true,
+					hidden: true
+				}).val('');
+
 				return;
 			}
 		});
@@ -1445,14 +1470,12 @@
 		while ($('select[name="new_attribute[new_'+__index__+']"]').length) __index__++;
 
 		let $output = $([
-			'<tr>',
+			'<tr draggable="true">',
 			'  <td class="grabbable">',
 			'    <?php echo functions::form_input_hidden('attributes[__index__][group_id]', ''); ?>',
 			'  </td>',
 			'  <td class="grabbable">',
 			'    <?php echo functions::form_input_hidden('attributes[__index__][value_id]', [], ''); ?>',
-			'  </td>',
-			'  <td class="text-end">',
 			'    <?php echo functions::form_input_hidden('attributes[__index__][custom_value]', ''); ?>',
 			'  </td>',
 			'  <td class="text-end">',
@@ -1462,7 +1485,7 @@
 			'  </td>',
 			'</tr>'
 		].join('\n')
-			.replace('__index__', __index__++)
+			.replace('__index__', 'new_' + __index__)
 		);
 
 		$('#attributes tbody').append($output);
@@ -1546,11 +1569,11 @@
 			'</tr>'
 		].join('\n')
 			.replace('__index__', 'new_' + __index__)
-			.replace(/new_group_id/g, $('select[name="new_attribute[group_id]"] option:selected').val())
-			.replace(/new_group_name/g, $('select[name="new_attribute[group_id]"] option:selected').text())
-			.replace(/new_value_id/g, $('select[name="new_attribute[value_id]"] option:selected').val())
-			.replace(/new_custom_value/g, $('input[name="new_attribute[custom_value]"]').val())
-			.replace(/new_value_name/g, ($('select[name="new_attribute[value_id]"] option:selected').val() != '0') ? $('select[name="new_attribute[value_id]"] option:selected').text() : '')
+			.replace('new_group_id', $('select[name="new_attribute[group_id]"] option:selected').val())
+			.replace('new_group_name', $('select[name="new_attribute[group_id]"] option:selected').text())
+			.replace('new_value_id', $('select[name="new_attribute[value_id]"] option:selected').val())
+			.replace('new_custom_value', $('input[name="new_attribute[custom_value]"]').val())
+			.replace('new_value_name', ($('select[name="new_attribute[value_id]"] option:selected').val() != '0') ? $('select[name="new_attribute[value_id]"] option:selected').text() : '')
 		)
 
 		$('#tab-attributes tbody').append($output)
@@ -1804,26 +1827,26 @@
 				'  </div>',
 				'</li>'
 			].join('\n')
-				.replace(/new_customization_group_i/g, 'new_' + new_customization_group_i++)
-				.replace(/new_group_id/g, $(groupElement).val())
-				.replace(/new_group_name/g, $(groupElement).find('option:selected').text())
+				.replace('new_customization_group_i', 'new_' + new_customization_group_i++)
+				.replace('new_group_id', $(groupElement).val())
+				.replace('new_group_name', $(groupElement).find('option:selected').text())
 			);
 
 			$('#customizations').append($output);
 		}
 
 		var $output = $([
-			'<tr data-value-id="'+ escapeHTML($(valueElement).val()) +'" data-value-name="'+ escapeHTML(($(valueElement).val() != 0) ? $(valueElement).find('option:selected').text() : $(customValueElement).val()) +'">',
+			'<tr draggable="true" data-value-id="'+ escapeHTML($(valueElement).val()) +'" data-value-name="'+ escapeHTML(($(valueElement).val() != 0) ? $(valueElement).find('option:selected').text() : $(customValueElement).val()) +'">',
 			'  <td class="grabbable"><?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][value_id]', 'new_value_id')) . functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>',
 			'  <td class="text-center"><?php echo functions::escape_js(functions::form_select('customizations[new_group_id][values][new_customization_value_i][price_modifier]', ['+','%','*','='], true)); ?></td>',
 			'  <?php foreach ($currency_codes as $currency_code) echo '<td style="width: 200px;">'. functions::escape_js(functions::form_select_currency($currency_code, 'customizations[new_group_id][values][new_customization_value_i]['. $currency_code. ']', '')) .'</td>'; ?>',
 			'  <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>',
 			'</tr>'
 		].join('\n')
-			.replace(/new_customization_value_i/g, 'new_' + new_customization_value_i++)
-			.replace(/new_group_id/g, $(groupElement).val())
-			.replace(/new_value_id/g, $(valueElement).val())
-			.replace(/new_custom_value/g, $(customValueElement).val().replace(/"/, '&quot;'))
+			.replace('new_customization_value_i', 'new_' + new_customization_value_i++)
+			.replace('new_group_id', $(groupElement).val())
+			.replace('new_value_id', $(valueElement).val())
+			.replace('new_custom_value', $(customValueElement).val().replace('"', '&quot;'))
 		);
 
 		$(':input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('tbody').append($output);
@@ -1871,8 +1894,8 @@
 			'  </div>',
 			'</li>'
 		].join('\n')
-			.replace(/new_group_id/g, $(groupElement).val())
-			.replace(/new_group_name/g, $(groupElement).find('option:selected').text())
+			.replace('new_group_id', $(groupElement).val())
+			.replace('new_group_name', $(groupElement).find('option:selected').text())
 		);
 
 		$('#customizations').append($output);
@@ -1952,7 +1975,7 @@
 	window.upsert_stock_item = function(stock_item) {
 
 		var $output = $([
-			'<tr data-stock-item-id="'+ stock_item.id +'">',
+			'<tr draggable="true" data-stock-item-id="'+ stock_item.id +'">',
 			'  <td class="grabbable">',
 			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][id]', '')); ?>',
 			'    <?php echo functions::escape_js(functions::form_input_hidden('stock_options[new_stock_item_i][stock_item_id]', '')); ?>',
@@ -2008,8 +2031,8 @@
 			'  </td>',
 			'</tr>'
 		].join('\n')
-			.replace(/new_stock_item_id/g, stock_item.id)
-			.replace(/new_stock_item_i/g, 'new_'+new_stock_item_i)
+			.replace('new_stock_item_id', stock_item.id)
+			.replace('new_stock_item_i', 'new_'+new_stock_item_i)
 		);
 
 		$.each(Object.keys(stock_item), function(i, key) { // Iterate Object.keys() because jQuery.each() doesn't support a property named length

@@ -718,14 +718,13 @@
 				}
 
 				// Additional Customer Validation
-
-				$mod_customer = new mod_customer();
-				$result = $mod_customer->validate($this->data['customer']);
-
-				if (!empty($result['error'])) {
-					return $result['error'];
+				if ($result = (new mod_customer)->validate($this->data['customer'])) {
+					if (!empty($result['error'])) {
+						return $result['error'];
+					}
 				}
-		}
+			}
+
 			// Shipping Option Validation
 			if (empty($filters) || in_array('customer', $filters)) {
 

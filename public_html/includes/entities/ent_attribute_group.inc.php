@@ -60,6 +60,9 @@
 				$value['in_use'] = database::query(
 					"select id from ". DB_TABLE_PREFIX ."products_attributes
 					where value_id = ". (int)$value['id'] ."
+					union
+					select id from ". DB_TABLE_PREFIX ."products_customizations_values
+					where value_id = ". (int)$value['id'] ."
 					limit 1;"
 				)->num_rows ? true : false;
 
@@ -100,13 +103,19 @@
 				and id not in ('". implode("', '", array_column($this->data['values'], 'id')) ."');"
 			)->each(function($value) {
 
-				$has_products_attributes = database::query(
+				if (database::query(
 					"select id from ". DB_TABLE_PREFIX ."products_attributes
 					where value_id = ". (int)$value['id'] ."
 					limit 1;"
-				)->num_rows ? true : false;
+				)->num_rows) {
+					throw new Exception('Cannot delete value linked to product attributes');
+				}
 
-				if ($has_products_attributes) {
+				if (database::query(
+					"select id from ". DB_TABLE_PREFIX ."products_customizations_values
+					where value_id = ". (int)$value['id'] ."
+					limit 1;"
+				)->num_rows) {
 					throw new Exception('Cannot delete value linked to product attributes');
 				}
 
@@ -157,12 +166,14 @@
 				"select id from ". DB_TABLE_PREFIX ."categories_filters
 				where attribute_group_id = ". (int)$this->data['id'] .";"
 			)->num_rows) {
-				throw new Exception('Cannot delete group linked to products');
+				throw new Exception('Cannot delete group linked to category filters');
 			}
 
 			// Check products for attribute
 			if (database::query(
 				"select id from ". DB_TABLE_PREFIX ."products_attributes
+				where group_id = ". (int)$this->data['id'] ."
+				union select id from ". DB_TABLE_PREFIX ."products_customizations
 				where group_id = ". (int)$this->data['id'] .";"
 			)->num_rows) {
 				throw new Exception('Cannot delete group linked to products');

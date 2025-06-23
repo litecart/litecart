@@ -169,12 +169,16 @@
 		}
 ?>
 		let $output = $([
-			'<tr>',
+			'<tr draggable="true">',
 			'  <td><?php echo functions::escape_js(functions::form_input_hidden('values[__index__][id]', '')); ?></td>',
 			'  <td><?php echo functions::escape_js($name_fields); ?></td>',
 			'  <td class="text-center"><?php echo language::translate('title_no', 'No'); ?></td>',
 			'  <td class="grabbable"><?php echo functions::escape_js(functions::draw_fonticon('icon-arrows-vertical')); ?></td>',
-			'  <td class="text-end"><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a></td>',
+			'  <td class="text-end">',
+			'		<a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>">',
+			'			<?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?>',
+			'		</a>',
+			'	</td>',
 			'</tr>'
 		].join('\n')
 			.replace('__index__', 'new_' + __index__)

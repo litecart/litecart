@@ -82,7 +82,7 @@
 	function form_dropdown($name, $options=[], $input=true, $parameters='') {
 
 		$html = implode(PHP_EOL, [
-			'<div class="dropdown"'. ($parameters ? ' ' . $parameters : '') .' data-placeholder="-- '. language::translate('title_select', 'Select') .' --">',
+			'<div class="dropdown"'. ($parameters ? ' ' . $parameters : '') .' data-placeholder="-- '. functions::escape_attr(language::translate('title_select', 'Select')) .' --">',
 			'  <div class="form-select" data-toggle="dropdown">',
 			'    -- '. language::translate('title_select', 'Select') .' --',
 			'  </div>',
@@ -109,7 +109,7 @@
 		}
 
 		$html .= '  </ul>' . PHP_EOL
-				 . '</div>';
+		       . '</div>';
 
 		return $html;
 	}

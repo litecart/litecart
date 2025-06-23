@@ -11,27 +11,29 @@
 
 		public function process($force, $last_run) {
 
+			$log_file = ini_get('error_log');
+
+			// Abort if no log file is set
+			if (!$log_file) return;
+
+			// Abort if log file is missing
+			if (!is_file($log_file)) return;
+
 			if (!$force) {
 
-				// Abort if no log file is set
-				if (!$log_file = ini_get('error_log')) return;
-
-					// Abort if log file is missing
-				if (!is_file($log_file)) return;
-
-					// Make sure this is not an urgent matter of a huge log file (100+ MB)
+				// Make sure this is not an urgent matter of a huge log file (100+ MB)
 				if (filesize($log_file) < 100e6) {
 
-						// Abort if disabled
+					// Abort if disabled
 					if (!$this->settings['status']) return;
 
-						// Abort if not within working hours
+					// Abort if not within working hours
 					if (!empty($this->settings['working_hours'])) {
 						list($from_time, $to_time) = explode('-', $this->settings['working_hours']);
 						if (time() < strtotime("Today $from_time") || time() > strtotime("Today $to_time")) return;
 					}
 
-						// Abort if the frequency for running this job is not met
+					// Abort if the frequency for running this job is not met
 					if (strtotime($last_run) > functions::datetime_last_by_interval($this->settings['frequency'], $last_run)) return;
 				}
 			}

@@ -124,7 +124,7 @@
 						// Resolve resource logic
 						if (preg_match('#\*#', $route['resource'])) {
 							$route['resource'] = preg_replace_callback('#^([a-z]:).*$#', function($matches){
-								return fallback($matches[1], 'f:') . preg_replace('#^'. preg_quote(trim(BACKEND_ALIAS, '/') . '/', '#') .'#', '', parse_url(self::$request, PHP_URL_PATH));
+								return fallback($matches[1], 'f:') . preg_replace('#^'. trim(preg_quote(BACKEND_ALIAS, '#')) .'/#', '', parse_url(self::$request, PHP_URL_PATH));
 							}, $route['resource']);
 						}
 
@@ -322,10 +322,17 @@
 
 			$path = functions::file_resolve_path($path);
 
-			// Remove language prefix
-			if ($path = urldecode(parse_url($path, PHP_URL_PATH))) {
-				$path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')(/|$))?#', '', $path);
-			}
+			// URL decode any encoded path segments
+			$path = urldecode(parse_url($path, PHP_URL_PATH));
+
+			// Remove path to the application directory
+			$path = preg_replace('#^'. WS_DIR_APP .'#', '', $path);
+
+			// Remove the index.php prefix
+			$path = preg_replace('#^(index\.php/)?#', '', $path);
+
+			// Remove language code from the path
+			$path = preg_replace('#^('. implode('|', array_keys(language::$languages)) .')(/|$)#', '', $path);
 
 			if (!$path) {
 				return '';

@@ -209,14 +209,14 @@ gulp.task('iconly', function() {
 
 // Watch files for changes
 gulp.task('watch', function() {
-	gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('sass-chartist'));
-	gulp.watch('public_html/assets/litecore/less/**/*.less', gulp.series('less-framework'));
-	gulp.watch('public_html/assets/litecore/js/components/*.js', gulp.series('js-framework'));
-	gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('sass-trumbowyg'));
-	gulp.watch('public_html/backend/template/less/**/*.less', gulp.series('less-backend'));
-	gulp.watch('public_html/backend/template/js/components/*.js', gulp.series('js-backend'));
-	gulp.watch('public_html/frontend/templates/default/less/**/*.less', gulp.series('less-frontend'));
-	gulp.watch('public_html/frontend/templates/default/js/components/*.js', gulp.series('js-frontend'));
+	gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('sass-chartist'))
+	gulp.watch('public_html/assets/litecore/less/**/*.less', gulp.series('less-framework'))
+	gulp.watch('public_html/assets/litecore/js/components/*.js', gulp.series('js-framework'))
+	gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('sass-trumbowyg'))
+	gulp.watch('public_html/backend/template/less/**/*.less', gulp.series('less-backend'))
+	gulp.watch('public_html/backend/template/js/components/*.js', gulp.series('js-backend'))
+	gulp.watch('public_html/frontend/templates/default/less/**/*.less', gulp.series('less-frontend'))
+	gulp.watch('public_html/frontend/templates/default/js/components/*.js', gulp.series('js-frontend'))
 });
 
 // Task aliases

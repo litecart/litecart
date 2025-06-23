@@ -988,7 +988,7 @@
 
 			<tbody>
 				<?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
-				<tr class="item" draggable="true">
+				<tr draggable="true" class="item">
 					<td><?php echo functions::form_checkbox('selected_items[]', $key, true); ?></td>
 					<td>
 						<?php echo !empty($_POST['items'][$key]['product_id']) ? '<a class="link" href="'. document::href_ilink('f:product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
@@ -1842,7 +1842,7 @@
 			while ($(':input[name^="items[new_'+__index__+']"]').length) __index__++;
 
 			let $output = $([
-				'  <tr class="item">',
+				'  <tr draggable="true" class="item">',
 				'    <td></td>',
 				'    <td class="grabbable">' + item.name,
 				'      <?php echo functions::escape_js(functions::form_input_hidden('items[__index__][id]', '')); ?>',

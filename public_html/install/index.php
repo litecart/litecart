@@ -257,7 +257,7 @@
 		'ZW' => 'Zimbabwe',
 	];
 
-	// Include config
+	// Detect an existing installation
 	if (is_file(FS_DIR_APP . 'includes/config.inc.php') || is_file(FS_DIR_STORAGE . 'config.inc.php')) {
 		$installation_detected = true;
 	}

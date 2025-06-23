@@ -24,6 +24,7 @@
 		],
 
 		'docs' => [
+			'order' => 'order.inc.php',
 			'orders' => 'orders.inc.php',
 			'edit_order' => 'edit_order.inc.php',
 			'order_statuses' => 'order_statuses.inc.php',

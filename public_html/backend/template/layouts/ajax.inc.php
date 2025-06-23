@@ -1,3 +1,4 @@
 {{style}}
 {{notices}}
 {{content}}
+{{javascript}}

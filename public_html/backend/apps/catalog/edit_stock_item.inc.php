@@ -433,8 +433,11 @@
 						return;
 					}
 					<?php if (!empty($_GET['js_callback'])) { ?>
-					<?php echo 'if ('. addcslashes($_GET['js_callback'], '\'') .') '. addcslashes($_GET['js_callback'], '\'') .'(result.data);'; ?>
-					<?php echo 'else alert("Unknown callback function'. addcslashes($_GET['js_callback'], "\"\r\n") .'");'; ?>
+					if (typeof window[<?php echo functions::escape_js(json_encode($_GET['js_callback'])); ?>] === 'function') {
+						window[<?php echo functions::escape_js(json_encode($_GET['js_callback'])); ?>](result.data);
+					} else {
+						alert("Unknown callback function <?php echo functions::escape_js(json_encode($_GET['js_callback'])); ?>");
+					}
 					<?php } ?>
 					$.litebox.close();
 				},
@@ -468,7 +471,7 @@
 			'  <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>',
 			'</tr>',
 		].join('\n')
-			.replace('__index__', 'new_' + __index__);
+			.replace('__index__', 'new_' + __index__)
 		);
 
 		$('#table-references tbody').append($output);

@@ -25,7 +25,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_attribute_groups', 'Attribute Groups'); ?>
+			<?php echo $app_icon; ?> <?php echo language::translate('title_attributes', 'Attributes'); ?>
 		</div>
 	</div>
 

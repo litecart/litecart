@@ -281,7 +281,7 @@
 			'</tr>',
 		].join('\n')
 			.replace('__index__', 'new_' + __index__)
-			.replace(/product\.id/g, product.id)
+			.replace('product.id', product.id)
 		);
 
 		$output.data({

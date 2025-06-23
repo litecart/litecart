@@ -316,8 +316,8 @@
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
-						<?php echo functions::form_input_text('name', true, 'list="available-languages"'); ?>
+						<div class="form-label"><?php echo language::translate('title_text_direction', 'Text Direction'); ?></div>
+						<?php echo functions::form_toggle('direction', $text_directions); ?>
 					</label>
 				</div>
 			</div>
@@ -325,8 +325,15 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_text_direction', 'Text Direction'); ?></div>
-						<?php echo functions::form_toggle('direction', $text_directions); ?>
+						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+						<?php echo functions::form_input_text('name', true, 'list="available-languages"'); ?>
+					</label>
+				</div>
+
+				<div class="col-md-6">
+					<label class="form-group">
+						<div class="form-label"><?php echo language::translate('title_system_locale', 'System Locale'); ?></div>
+						<?php echo functions::form_select_system_locale('locale', true); ?>
 					</label>
 				</div>
 			</div>
@@ -354,23 +361,11 @@
 				</div>
 			</div>
 
-			<div class="grid">
 
-				<div class="col-md-6">
-					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_system_locale', 'System Locale'); ?></div>
-						<?php echo functions::form_select_system_locale('locale', true); ?>
-					</label>
-				</div>
-
-				<div class="col-md-6">
-					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_database_collation', 'Database Collation'); ?></div>
-						<?php echo functions::form_select_mysql_collation('mysql_collation', true); ?>
-					</label>
-				</div>
-
-			</div>
+			<label class="form-group">
+				<div class="form-label"><?php echo language::translate('title_database_collation', 'Database Collation'); ?></div>
+				<?php echo functions::form_select_mysql_collation('mysql_collation', true); ?>
+			</label>
 
 			<div class="grid">
 				<div class="col-md-6">

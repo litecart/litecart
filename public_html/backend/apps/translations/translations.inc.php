@@ -173,10 +173,14 @@
 		$_POST['translations'] = $translations;
 	}
 
-	$language_options = [['-- '. language::translate('title_select', 'Select') .' --', '']];
-	foreach ($_GET['languages'] as $language_code) {
-		$language_options[] = [$language_code, language::$languages[$language_code]['name']];
-	}
+	$language_options = array_column(language::$languages, 'name', 'code');
+
+	$collection_options = array_column($collections, 'name', 'id');
+
+	$endpoint_options = [
+		['frontend', language::translate('title_frontend', 'Frontend')],
+		['backend', language::translate('title_backend', 'Backend')],
+	];
 
 ?>
 <style>
@@ -215,74 +219,27 @@
 	<?php echo functions::form_begin('filter_form', 'get'); ?>
 		<div class="card-filter">
 
-		<div class="dropdown">
-
-			<div class="form-select" data-toggle="dropdown">
-				<?php echo language::translate('title_collections', 'Collections'); ?>
-			</div>
-
-			<ul class="dropdown-menu">
-				<?php foreach ($collections as $collection) { ?>
-				<li class="dropdown-item">
-					<label class="option"><?php echo functions::form_checkbox('collections[]', $collection['id'], true); ?>
-						<span class="title"><?php echo $collection['name']; ?></span>
-					</label>
-				</li>
-				<?php } ?>
-			</ul>
-			</div>
+			<?php echo functions::form_dropdown('collections[]', $collection_options, true); ?>
 
 			<div class="expandable">
 				<?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?>
 			</div>
 
-			<div class="dropdown">
+			<?php echo functions::form_dropdown('languages[]', $language_options, true); ?>
+
+			<?php echo functions::form_dropdown('endpoint[]', $endpoint_options, true); ?>
+
+			<div class="dropdown" data-placeholder="-- <?php echo language::translate('title_filters', 'Filters'); ?> --">
 
 				<div class="form-select" data-toggle="dropdown">
-					<?php echo language::translate('title_languages', 'Languages'); ?>
-				</div>
-
-				<ul class="dropdown-menu">
-					<?php foreach (language::$languages as $language) { ?>
-					<li class="dropdown-item">
-						<label class="option"><?php echo functions::form_checkbox('languages[]', $language['code'], true); ?>
-							<span class="title"><?php echo $language['name']; ?></span>
-						</label>
-					</li>
-					<?php } ?>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-
-				<div class="form-select" data-toggle="dropdown">
-					<?php echo language::translate('title_endpoint', 'Endpoint'); ?>
+					-- <?php echo language::translate('title_filters', 'Filters'); ?> --
 				</div>
 
 				<ul class="dropdown-menu">
 					<li class="dropdown-item">
-						<label class="option"><?php echo functions::form_checkbox('endpoint[]', 'frontend', true); ?>
-							<span class="title"><?php echo language::translate('title_frontend', 'Frontend'); ?></span>
-						</label>
-					</li>
-					<li class="dropdown-item">
-						<label class="option"><?php echo functions::form_checkbox('endpoint[]', 'backend', true); ?>
-							<span class="title"><?php echo language::translate('title_backend', 'Backend'); ?></span>
-						</label>
-					</li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-
-				<div class="form-select" data-toggle="dropdown">
-					<?php echo language::translate('title_filters', 'Filters'); ?>
-				</div>
-
-				<ul class="dropdown-menu">
-					<li class="dropdown-item">
-						<label class="option"><?php echo functions::form_checkbox('untranslated', '1', true); ?>
-							<span class="title"><?php echo language::translate('text_untranslated_only', 'Untranslated only'); ?></span>
+						<label>
+							<?php echo functions::form_checkbox('untranslated', '1', true); ?>
+							<?php echo language::translate('text_untranslated_only', 'Untranslated only'); ?>
 						</label>
 					</li>
 				</ul>

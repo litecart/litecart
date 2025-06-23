@@ -414,7 +414,7 @@
 
 			$styles = [];
 			foreach ($resources as $resource) {
-				if (preg_match('#^(app|storage)://#', $resource)) {
+				if (preg_match('#^(app|storage)://#', $resource) && is_file($resource)) {
 					$styles[] = '<link rel="stylesheet" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" href="'. self::href_rlink($resource) .'">';
 				} else {
 					$styles[] = '<link rel="stylesheet" href="'. self::href_link($resource) .'">';
@@ -433,7 +433,7 @@
 			$scripts = [];
 
 			foreach ($resources as $resource) {
-				if (preg_match('#^(app|storage)://#', $resource)) {
+				if (preg_match('#^(app|storage)://#', $resource) && is_file($resource)) {
 					$scripts[] = '<script defer integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" src="'. self::href_rlink($resource) .'"></script>';
 				} else {
 					$scripts[] = '<script src="'. self::href_link($resource) .'"></script>';
@@ -507,10 +507,19 @@
 					break;
 
 				default:
-					if (isset(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend') {
-						$resource = WS_DIR_APP . BACKEND_ALIAS .'/'. $resource;
-					} else {
-						$resource = WS_DIR_APP . $resource;
+
+					switch (fallback(route::$selected['endpoint'])) {
+						case 'backend':
+							$resource = WS_DIR_APP . BACKEND_ALIAS .'/'. $resource;
+							break;
+							
+						case 'frontend':
+							$resource = WS_DIR_APP . $resource;
+							break;
+							
+						default:
+							$resource = WS_DIR_APP . $resource;
+							break;
 					}
 					break;
 			}
@@ -556,7 +565,7 @@
 				$webpath = preg_replace('#^storage://#', WS_DIR_STORAGE, $resource);
 
 			} else {
-				$webpath = preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', str_replace('\\', '/', $resource));
+				$webpath = preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', str_replace('\\', '/', $resource));
 			}
 
 			if (is_file($resource)) {

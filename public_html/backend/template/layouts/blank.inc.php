@@ -8,7 +8,6 @@
 <?php echo functions::draw_style('app://assets/litecore/css/framework.min.css'); ?>
 <?php echo functions::draw_style('app://backend/template/css/app.min.css'); ?>
 {{head_tags}}
-{{style}}
 </head>
 <body>
 
@@ -17,6 +16,6 @@
 {{foot_tags}}
 <?php echo functions::draw_script('app://assets/litecore/js/framework.min.js'); ?>
 <?php echo functions::draw_script('app://backend/template/js/app.min.js'); ?>
-{{javascript}}
+
 </body>
 </html>

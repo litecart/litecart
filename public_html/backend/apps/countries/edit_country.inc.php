@@ -324,8 +324,8 @@
 			'</tr>',
 		].join('\n')
 			.replace('__index__', 'new_' + __index__)
-			.replace(/new_zone_code/g, $('input[name="zone[code]"]').val())
-			.replace(/new_zone_name/g, $('input[name="zone[name]"]').val())
+			.replace('new_zone_code', $('input[name="zone[code]"]').val())
+			.replace('new_zone_name', $('input[name="zone[name]"]').val())
 		);
 
 		$(this).closest('table').find('tbody').append($output);

@@ -139,7 +139,7 @@ waitFor('jQuery', ($) => {
 						const deferred = $.Deferred();
 						const $img = $('<img>', { src: url, alt: '' });
 						$img.on('load', () => deferred.resolve($img));
-						$img.on('error', () => deferred.reject());
+						$img.on('error', () => deferred.resolve($('<div>Failed to load image</div>')));
 						return deferred.promise();
 					}
 				},
@@ -163,7 +163,10 @@ waitFor('jQuery', ($) => {
 					process: function (url) {
 						const deferred = $.Deferred();
 						const $iframe = $('<iframe/>', { src: url });
-						$iframe.on('load', () => { $iframe.show().appendTo(this.$instance.find('.litebox-modal')); deferred.resolve($iframe); });
+						$iframe.on('load', () => {
+							$iframe.show().appendTo(this.$instance.find('.litebox-modal'));
+							deferred.resolve($iframe);
+						});
 						return deferred.promise();
 					}
 				},
@@ -172,7 +175,7 @@ waitFor('jQuery', ($) => {
 					process: function(url) {
 						const deferred = $.Deferred();
 						const $content = $('<div>').css({ "white-space": 'pre-wrap', "max-width": '90vw' });
-						$.get(url, raw => $content.text(raw)).done(() => deferred.resolve($content));
+						$.get(url, raw => $content.text(raw)).done(() => deferred.resolve($content)).fail(() => deferred.resolve($('<div>Failed to load file</div>')));
 						return deferred.promise();
 					}
 				},

@@ -313,7 +313,9 @@
 									</div>
 								</td>
 								<td>
-									<a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
+									<a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>">
+										<?php echo functions::draw_fonticon('remove'); ?>
+									</a>
 								</td>
 							</tr>
 							<?php } ?>
@@ -323,6 +325,7 @@
 							<tr>
 								<td><?php echo functions::form_select_attribute_group('new_attribute_group', true); ?></td>
 								<td><?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
+								<td></td>
 								<td></td>
 							</tr>
 						</tfoot>
@@ -398,7 +401,7 @@
 		var __index__ = 0;
 		while ($('input[name="filters[new_new_'+__index__+']"]').length) __index__++;
 
-		let $output = [
+		let $output = $([
 			'<tr class="grabbable">',
 			'	<?php echo functions::escape_js(functions::form_input_hidden('filters[__index__][id]', '')); ?>',
 			'	<?php echo functions::escape_js(functions::form_input_hidden('filters[__index__][attribute_group_id]', 'new_attribute_group_id')); ?>',
@@ -415,11 +418,11 @@
 			'		<a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>',
 			'	</td>',
 			'</tr>',
-	 ].join('\n')
-		.replace('__index__', 'new_' + __index__)
-		.replace(/new_attribute_group_id/g, $('select[name="new_attribute_group"] option:selected').val())
-		.replace(/new_attribute_group_name/g, $('select[name="new_attribute_group"] option:selected').text()
-	);
+		].join('\n')
+			.replace('__index__', 'new_' + __index__)
+			.replace('new_attribute_group_id', $('select[name="new_attribute_group"] option:selected').val())
+			.replace('new_attribute_group_name', $('select[name="new_attribute_group"] option:selected').text())
+		);
 
 		$('#tab-filters tbody').append($output);
 	});

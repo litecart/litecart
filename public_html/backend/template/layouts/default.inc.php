@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{language}}" dir="{{text_direction}}" class="<?php echo !empty($_COOKIE['dark_mode']) ? 'dark-mode' : ''; ?>>
+<html lang="{{language}}" dir="{{text_direction}}" class="<?php echo !empty($_COOKIE['dark_mode']) ? 'dark-mode' : ''; ?>">
 <head>
 <title>{{title}}</title>
 <meta charset="{{charset}}">
@@ -9,7 +9,6 @@
 <?php echo functions::draw_style('app://assets/litecore/css/framework.min.css'); ?>
 <?php echo functions::draw_style('app://backend/template/css/app.min.css'); ?>
 {{head_tags}}
-{{style}}
 <style>
 :root {
 	--default-text-size: <?php echo fallback($_COOKIE['font_size'], '14'); ?>px;
@@ -70,5 +69,6 @@
 {{foot_tags}}
 <?php echo functions::draw_script('app://assets/litecore/js/framework.min.js'); ?>
 <?php echo functions::draw_script('app://backend/template/js/app.min.js'); ?>
+
 </body>
 </html>
