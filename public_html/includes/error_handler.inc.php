@@ -16,24 +16,24 @@
 		switch ($errno) {
 
 			case 2048: // Equals E_STRICT but deprecated in PHP 8.4
-				$output[] = '<div class="php-feedback error"><strong>Strict:</strong> '. htmlspecialchars($errstr) .' in <strong>$errfile</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback error"><strong>Strict:</strong> <pre style="white-space:pre-wrap;"> '. htmlspecialchars($errstr) .' </pre> in <strong>$errfile</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			case E_NOTICE:
 			case E_USER_NOTICE:
-				$output[] = '<div class="php-feedback notice"><strong>Notice:</strong> <quote>'. htmlspecialchars($errstr) .'</quote> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback notice"><strong>Notice:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			case E_WARNING:
 			case E_USER_WARNING:
 			case E_COMPILE_WARNING:
 			case E_RECOVERABLE_ERROR:
-				$output[] = '<div class="php-feedback warning"><strong>Warning:</strong> <quote>'. htmlspecialchars($errstr) .'</quote> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback warning"><strong>Warning:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
-				$output[] = '<div class="php-feedback notice"><strong>Deprecated:</strong> <quote>'. htmlspecialchars($errstr) .'</quote> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback notice"><strong>Deprecated:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			case E_PARSE:
@@ -41,11 +41,11 @@
 			case E_CORE_ERROR:
 			case E_COMPILE_ERROR:
 			case 256: // Equals E_USER_ERROR but deprecated in PHP 8.4
-				$output[] = '<div class="php-feedback error"><strong>Fatal error:</strong> <quote>'. htmlspecialchars($errstr) .'</quote> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback error"><strong>Fatal error:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			default:
-				$output[] = '<div class="php-feedback error"><strong>Fatal error:</strong> <quote>'. htmlspecialchars($errstr) .'</quote> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback error"><strong>Fatal error:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 		}
 
