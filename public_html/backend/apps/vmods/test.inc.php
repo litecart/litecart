@@ -113,7 +113,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_test_vmod', 'Test vMod'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_test_vmod', 'Test vMod'); ?>
 		</div>
 	</div>
 
@@ -124,8 +124,8 @@
 	<table class="table data-table">
 		<thead>
 			<tr>
-				<th class="main"><?php echo language::translate('title_file', 'File'); ?></th>
-				<th><?php echo language::translate('title_result', 'Result'); ?></th>
+				<th class="main"><?php echo t('title_file', 'File'); ?></th>
+				<th><?php echo t('title_result', 'Result'); ?></th>
 			</tr>
 		</thead>
 		<tbody>

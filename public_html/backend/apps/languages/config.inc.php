@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_languages', 'Languages'),
+		'name' => t('title_languages', 'Languages'),
 		'group' => 'regional',
 		'default' => 'languages',
 		'priority' => 0,
@@ -13,12 +13,12 @@
 
 		'menu' => [
 			[
-				'title' => language::translate('title_languages', 'Languages'),
+				'title' => t('title_languages', 'Languages'),
 				'doc' => 'languages',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_storage_encoding', 'Storage Encoding'),
+				'title' => t('title_storage_encoding', 'Storage Encoding'),
 				'doc' => 'storage_encoding',
 				'params' => [],
 			],

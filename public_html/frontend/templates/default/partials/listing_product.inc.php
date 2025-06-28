@@ -21,18 +21,18 @@
 	</a>
 
 	<div class="actions">
-		<button class="preview btn btn-default btn-sm" data-toggle="lightbox" data-gallery="products" data-target="<?php echo functions::escape_html($link) ?>" data-seamless="true" data-require-window-width="768" data-max-width="980" title="<?php echo language::translate('title_view_product', 'View Product'); ?>">
+		<button class="preview btn btn-default btn-sm" data-toggle="lightbox" data-gallery="products" data-target="<?php echo functions::escape_html($link) ?>" data-seamless="true" data-require-window-width="768" data-max-width="980" title="<?php echo t('title_view_product', 'View Product'); ?>">
 			<?php echo functions::draw_fonticon('icon-zoom-in'); ?>
 		</button>
 
 		<?php if (!$num_stock_options) { ?>
-		<button class="add-to-cart btn btn-success btn-sm" name="add_cart_product" title="<?php echo language::translate('title_add_to_cart', 'Add To Cart'); ?>">
+		<button class="add-to-cart btn btn-success btn-sm" name="add_cart_product" title="<?php echo t('title_add_to_cart', 'Add To Cart'); ?>">
 			<?php echo functions::draw_fonticon('icon-shopping-cart'); ?>
 		</button>
 		<?php } ?>
 
 		<?php if ($num_stock_options) { ?>
-		<a class="view-options btn btn-default btn-sm" title="<?php echo language::translate('title_view_options', 'View Options'); ?>">
+		<a class="view-options btn btn-default btn-sm" title="<?php echo t('title_view_options', 'View Options'); ?>">
 			<?php echo functions::draw_fonticon('icon-copy'); ?>
 			<?php //echo $num_stock_options; ?>
 		</a>

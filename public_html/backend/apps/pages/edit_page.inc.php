@@ -17,17 +17,17 @@
 		}
 	}
 
-	document::$title[] = !empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page');
+	document::$title[] = !empty($page->data['id']) ? t('title_edit_page', 'Edit Page') : t('title_create_new_page', 'Create New Page');
 
-	breadcrumbs::add(language::translate('title_pages', 'Pages'), document::ilink(__APP__.'/pages'));
-	breadcrumbs::add(!empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page'), document::ilink());
+	breadcrumbs::add(t('title_pages', 'Pages'), document::ilink(__APP__.'/pages'));
+	breadcrumbs::add(!empty($page->data['id']) ? t('title_edit_page', 'Edit Page') : t('title_create_new_page', 'Create New Page'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
 		try {
 
 			if (empty($_POST['title'])) {
-				throw new Exception(language::translate('error_must_provide_title', 'You must provide a title'));
+				throw new Exception(t('error_must_provide_title', 'You must provide a title'));
 			}
 
 			if (empty($_POST['status'])) {
@@ -53,7 +53,7 @@
 
 			$page->save();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/pages'));
 			exit;
 
@@ -65,11 +65,11 @@
 	if (isset($_POST['delete'])) {
 
 		try {
-			if (empty($page->data['id'])) throw new Exception(language::translate('error_must_provide_page', 'You must provide a page'));
+			if (empty($page->data['id'])) throw new Exception(t('error_must_provide_page', 'You must provide a page'));
 
 			$page->delete();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/pages'));
 			exit;
 
@@ -82,7 +82,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page'); ?>
+			<?php echo $app_icon; ?> <?php echo !empty($page->data['id']) ? t('title_edit_page', 'Edit Page') : t('title_create_new_page', 'Create New Page'); ?>
 		</div>
 	</div>
 
@@ -92,7 +92,7 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
+						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
 						<?php echo functions::form_toggle('status', 'e/d', true); ?>
 					</label>
 				</div>
@@ -101,14 +101,14 @@
 			<div class="grid">
 				<div class="col-md-8">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_parent', 'Parent'); ?></div>
+						<div class="form-label"><?php echo t('title_parent', 'Parent'); ?></div>
 						<?php echo functions::form_select_parent_page('parent', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-4">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_priority', 'Priority'); ?></div>
+						<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
 						<?php echo functions::form_input_number('priority', true); ?>
 					</label>
 				</div>
@@ -126,22 +126,22 @@
 				<?php foreach (array_keys(language::$languages) as $language_code) { ?>
 				<div id="<?php echo $language_code; ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_title', 'Title'); ?></div>
+						<div class="form-label"><?php echo t('title_title', 'Title'); ?></div>
 						<?php echo functions::form_regional_text('title['. $language_code .']', $language_code, true, ''); ?>
 					</label>
 
 					<div class="form-group">
-						<div class="form-label"><?php echo language::translate('title_content', 'Content'); ?></div>
+						<div class="form-label"><?php echo t('title_content', 'Content'); ?></div>
 						<?php echo functions::form_regional_wysiwyg('content['. $language_code .']', $language_code, true, 'style="height: 400px;"'); ?>
 					</div>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_head_title', 'Head Title'); ?></div>
+						<div class="form-label"><?php echo t('title_head_title', 'Head Title'); ?></div>
 						<?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true); ?>
 					</label>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_meta_description', 'Meta Description'); ?></div>
+						<div class="form-label"><?php echo t('title_meta_description', 'Meta Description'); ?></div>
 						<?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
 					</label>
 				</div>

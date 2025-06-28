@@ -7,10 +7,10 @@
 	 *   ~/frontend/templates/default/pages/contact.inc.php
 	 */
 
-	document::$title[] = language::translate('contact:head_title', 'Contact');
-	document::$description = language::translate('contact:meta_description', '');
+	document::$title[] = t('contact:head_title', 'Contact');
+	document::$description = t('contact:meta_description', '');
 
-	breadcrumbs::add(language::translate('title_contact', 'Contact'), document::ilink('contact'));
+	breadcrumbs::add(t('title_contact', 'Contact'), document::ilink('contact'));
 
 	if (!$_POST) {
 		$_POST = [
@@ -25,27 +25,27 @@
 		try {
 
 			if (empty($_POST['firstname'])) {
-				throw new Exception(language::translate('error_must_provide_firstname', 'You must provide a firstname'));
+				throw new Exception(t('error_must_provide_firstname', 'You must provide a firstname'));
 			}
 
 			if (empty($_POST['lastname'])) {
-				throw new Exception(language::translate('error_must_provide_lastname', 'You must provide a lastname'));
+				throw new Exception(t('error_must_provide_lastname', 'You must provide a lastname'));
 			}
 
 			if (empty($_POST['subject'])) {
-				throw new Exception(language::translate('error_must_provide_subject', 'You must provide a subject'));
+				throw new Exception(t('error_must_provide_subject', 'You must provide a subject'));
 			}
 
 			if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-				throw new Exception(language::translate('error_must_provide_email', 'You must provide a valid email address'));
+				throw new Exception(t('error_must_provide_email', 'You must provide a valid email address'));
 			}
 
 			if (empty($_POST['message'])) {
-				throw new Exception(language::translate('error_must_provide_message', 'You must provide a message'));
+				throw new Exception(t('error_must_provide_message', 'You must provide a message'));
 			}
 
 			if (settings::get('captcha_enabled') && !functions::captcha_validate('contact_us')) {
-				throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
+				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 
 			// Collect scraps
@@ -53,7 +53,7 @@
 				customer::$data = array_replace(customer::$data, array_intersect_key(array_filter(array_diff_key($_POST, array_flip(['id']))), customer::$data));
 			}
 
-			$message = strtr(language::translate('email_customer_feedback', implode("\r\n", [
+			$message = strtr(t('email_customer_feedback', implode("\r\n", [
 				'** This is an email message from %sender_name <%sender_email> **',
 				'',
 				'%message',
@@ -72,10 +72,10 @@
 			$result = $email->send();
 
 			if (!$result) {
-				throw new Exception(language::translate('error_sending_email_for_unknown_reason', 'The email could not be sent for an unknown reason'));
+				throw new Exception(t('error_sending_email_for_unknown_reason', 'The email could not be sent for an unknown reason'));
 			}
 
-			notices::add('success', language::translate('success_your_email_was_sent', 'Your email has successfully been sent'));
+			notices::add('success', t('success_your_email_was_sent', 'Your email has successfully been sent'));
 			reload();
 			exit;
 

@@ -1,12 +1,12 @@
 <style>
 .option:has(input[name="shipping_option[id]"]:checked)::after {
-	content: '<?php echo language::translate('title_selected', 'Selected'); ?>';
+	content: '<?php echo t('title_selected', 'Selected'); ?>';
 }
 </style>
 
 <section id="box-checkout-shipping">
 	<div class="card-header">
-		<h2 class="card-title"><?php echo language::translate('text_select_a_shipping_option', 'Select a shipping option'); ?></h2>
+		<h2 class="card-title"><?php echo t('text_select_a_shipping_option', 'Select a shipping option'); ?></h2>
 	</div>
 
 	<div class="card-body">
@@ -29,7 +29,7 @@
 						<div class="description"><?php echo $option['description']; ?></div>
 						<?php } ?>
 
-						<div class="price"><?php echo (empty($option['error']) && $option['fee'] != 0) ? '+ ' . currency::format(tax::get_price($option['fee'], $option['tax_class_id'])) : language::translate('text_no_fee', 'No fee'); ?></div>
+						<div class="price"><?php echo (empty($option['error']) && $option['fee'] != 0) ? '+ ' . currency::format(tax::get_price($option['fee'], $option['tax_class_id'])) : t('text_no_fee', 'No fee'); ?></div>
 						<?php if (!empty($option['error'])) { ?>
 						<div class="error"><?php echo $option['error']; ?></div>
 						<?php } ?>

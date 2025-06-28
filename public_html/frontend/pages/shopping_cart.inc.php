@@ -11,16 +11,16 @@
 
 	if (settings::get('catalog_only_mode')) return;
 
-	document::$title[] = language::translate('title_shopping_cart', 'Shopping Cart');
+	document::$title[] = t('title_shopping_cart', 'Shopping Cart');
 
-	breadcrumbs::add(language::translate('title_shopping_cart', 'Shopping Cart'), document::ilink('shopping_cart'));
+	breadcrumbs::add(t('title_shopping_cart', 'Shopping Cart'), document::ilink('shopping_cart'));
 
 	if (!cart::$items) {
 
 		echo implode(PHP_EOL, [
 			'<main id="content" class="container">',
-			'  <p>'. language::translate('description_no_items_in_cart', 'There are no items in your cart.') .'</p>',
-			'  <div><a class="btn btn-default" href="'. document::href_ilink('') .'">'. language::translate('title_back', 'Back') .'</a></div>',
+			'  <p>'. t('description_no_items_in_cart', 'There are no items in your cart.') .'</p>',
+			'  <div><a class="btn btn-default" href="'. document::href_ilink('') .'">'. t('title_back', 'Back') .'</a></div>',
 			'</main>',
 		]);
 
@@ -104,7 +104,7 @@
 				$checkouts = $mod_checkout->options();
 
 				if (!in_array($_POST['checkout'], array_column($checkouts, 'module_id'))) {
-					throw new Exception(language::translate('error_unknown_checkout_method', 'Unknown checkout method'));
+					throw new Exception(t('error_unknown_checkout_method', 'Unknown checkout method'));
 				}
 
 				session::$data['checkout']['type'] = $_POST['checkout'];
@@ -116,7 +116,7 @@
 				exit;
 
 			} else {
-				throw new Exception(language::translate('error_unknown_checkout_method', 'Unknown checkout method'));
+				throw new Exception(t('error_unknown_checkout_method', 'Unknown checkout method'));
 			}
 
 		} catch (Exception $e) {

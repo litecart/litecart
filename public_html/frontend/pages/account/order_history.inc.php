@@ -9,7 +9,7 @@
 
 	header('X-Robots-Tag: noindex');
 
-	document::$title[] = language::translate('order_history:head_title', 'Order History');
+	document::$title[] = t('order_history:head_title', 'Order History');
 
 	customer::require_login();
 
@@ -17,8 +17,8 @@
 		$_GET['page'] = 1;
 	}
 
-	breadcrumbs::add(language::translate('title_account', 'Account'));
-	breadcrumbs::add(language::translate('title_order_history', 'Order History'), document::ilink('account/order_history'));
+	breadcrumbs::add(t('title_account', 'Account'));
+	breadcrumbs::add(t('title_order_history', 'Order History'), document::ilink('account/order_history'));
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/account/order_history.inc.php');
 

@@ -9,9 +9,9 @@
 
 	header('X-Robots-Tag: noindex');
 
-	document::$title[] = language::translate('regional_settings:head_title', 'Regional Settings');
+	document::$title[] = t('regional_settings:head_title', 'Regional Settings');
 
-	breadcrumbs::add(language::translate('title_regional_settings', 'Regional Settings'), document::ilink('regional_settings'));
+	breadcrumbs::add(t('title_regional_settings', 'Regional Settings'), document::ilink('regional_settings'));
 
 	if (isset($_POST['save'])) {
 
@@ -60,7 +60,7 @@
 				$redirect_url = document::ilink('', [], null, [], fallback($_POST['language_code']));
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect($redirect_url);
 			exit;
 

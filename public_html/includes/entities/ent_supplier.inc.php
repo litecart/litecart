@@ -87,7 +87,7 @@
 				where supplier_id = ". (int)$this->data['id'] ."
 				limit 1;"
 			)->num_rows) {
-				throw new Exception(language::translate('error_cannot_delete_supplier_while_used_by_products', 'The supplier could not be deleted because there are products linked to it.'));
+				throw new Exception(t('error_cannot_delete_supplier_while_used_by_products', 'The supplier could not be deleted because there are products linked to it.'));
 			}
 
 			database::query(

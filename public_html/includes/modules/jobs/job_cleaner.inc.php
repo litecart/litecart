@@ -86,15 +86,15 @@
 				[
 					'key' => 'status',
 					'default_value' => '1',
-					'title' => language::translate(__CLASS__.':title_status', 'Status'),
-					'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
+					'title' => t(__CLASS__.':title_status', 'Status'),
+					'description' => t(__CLASS__.':description_status', 'Enables or disables the module.'),
 					'function' => 'toggle("e/d")',
 				],
 				[
 					'key' => 'priority',
 					'default_value' => '0',
-					'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
-					'description' => language::translate(__CLASS__.':description_priority', 'Process this module in the given priority order.'),
+					'title' => t(__CLASS__.':title_priority', 'Priority'),
+					'description' => t(__CLASS__.':description_priority', 'Process this module in the given priority order.'),
 					'function' => 'number()',
 				],
 			];

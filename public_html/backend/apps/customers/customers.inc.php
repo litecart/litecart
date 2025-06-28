@@ -8,16 +8,16 @@
 		$_GET['sort'] = 'created_at';
 	}
 
-	document::$title[] = language::translate('title_customers', 'Customers');
+	document::$title[] = t('title_customers', 'Customers');
 
-	breadcrumbs::add(language::translate('title_customers', 'Customers'), document::ilink());
+	breadcrumbs::add(t('title_customers', 'Customers'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
 		try {
 
 			if (empty($_POST['customers'])) {
-				throw new Exception(language::translate('error_must_select_customers', 'You must select customers'));
+				throw new Exception(t('error_must_select_customers', 'You must select customers'));
 			}
 
 			foreach ($_POST['customers'] as $customer_id) {
@@ -26,7 +26,7 @@
 				$customer->save();
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -40,7 +40,7 @@
 		try {
 
 			if (empty($_POST['customers'])) {
-				throw new Exception(language::translate('error_must_select_customers', 'You must select customers'));
+				throw new Exception(t('error_must_select_customers', 'You must select customers'));
 			}
 
 			foreach ($_POST['customers'] as $customer_id) {
@@ -48,7 +48,7 @@
 				$customer->delete();
 			}
 
-			notices::add('success', strtr(language::translate('success_deleted_n_customers', 'Deleted %n customers'), ['%n' => count($_POST['customers'])]));
+			notices::add('success', strtr(t('success_deleted_n_customers', 'Deleted %n customers'), ['%n' => count($_POST['customers'])]));
 
 			reload();
 			exit;
@@ -111,20 +111,20 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_customers', 'Customers'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_customers', 'Customers'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink('customers/edit_customer'), language::translate('title_create_new_customer', 'Create New Customer'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink('customers/edit_customer'), t('title_create_new_customer', 'Create New Customer'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
 
 		<div class="card-filter">
 			<div><?php echo functions::form_select_customer_group('group_id', true, 'style="min-width: 200px;"'); ?></div>
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
-			<?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
+			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+			<?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
 		</div>
 
 	<?php echo functions::form_end(); ?>
@@ -136,13 +136,13 @@
 				<tr>
 					<th style="width: 40px;"><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th style="width: 40px;"></th>
-					<th data-sort="id" style="width: 50px;"><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th data-sort="name"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th data-sort="email"><?php echo language::translate('title_email', 'Email'); ?></th>
-					<th data-sort="company"><?php echo language::translate('title_company_name', 'Company Name'); ?></th>
-					<th class="main"><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></th>
-					<th class="text-center" data-sort="group"><?php echo language::translate('title_customer_group', 'Customer Group'); ?></th>
-					<th data-sort="created_at" class="text-end"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
+					<th data-sort="id" style="width: 50px;"><?php echo t('title_id', 'ID'); ?></th>
+					<th data-sort="name"><?php echo t('title_name', 'Name'); ?></th>
+					<th data-sort="email"><?php echo t('title_email', 'Email'); ?></th>
+					<th data-sort="company"><?php echo t('title_company_name', 'Company Name'); ?></th>
+					<th class="main"><?php echo t('title_last_hostname', 'Last Hostname'); ?></th>
+					<th class="text-center" data-sort="group"><?php echo t('title_customer_group', 'Customer Group'); ?></th>
+					<th data-sort="created_at" class="text-end"><?php echo t('title_date_registered', 'Date Registered'); ?></th>
 					<th style="width: 50px;"></th>
 				</tr>
 			</thead>
@@ -162,7 +162,7 @@
 					<td><?php echo $customer['last_hostname']; ?></td>
 					<td class="text-center"><?php echo $customer['group_name']; ?></td>
 					<td class="text-end"><?php echo functions::datetime_when($customer['created_at']); ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -170,7 +170,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_customers', 'Customers'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -180,7 +180,7 @@
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
 				<div class="flex">
@@ -206,7 +206,7 @@
 </div>
 
 <script>
-	$('select[name="group_id"] option[value=""]').text('-- <?php echo language::translate('title_all', 'All'); ?> --');
+	$('select[name="group_id"] option[value=""]').text('-- <?php echo t('title_all', 'All'); ?> --');
 	$('select[name="group_id"]').on('change', function() {
 		$(this).closest('form').submit();
 	});

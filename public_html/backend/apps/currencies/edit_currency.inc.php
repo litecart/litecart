@@ -10,10 +10,10 @@
 		$_POST = $currency->data;
 	}
 
-	document::$title[] = !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_create_new_currency', 'Create New Currency');
+	document::$title[] = !empty($currency->data['id']) ? t('title_edit_currency', 'Edit Currency') : t('title_create_new_currency', 'Create New Currency');
 
-	breadcrumbs::add(language::translate('title_currencies', 'Currencies'), document::ilink(__APP__.'/currencies'));
-	breadcrumbs::add(!empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_create_new_currency', 'Create New Currency'), document::ilink());
+	breadcrumbs::add(t('title_currencies', 'Currencies'), document::ilink(__APP__.'/currencies'));
+	breadcrumbs::add(!empty($currency->data['id']) ? t('title_edit_currency', 'Edit Currency') : t('title_create_new_currency', 'Create New Currency'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
@@ -22,35 +22,35 @@
 			$_POST['code'] = strtoupper($_POST['code']);
 
 			if (empty($_POST['code'])) {
-				throw new Exception(language::translate('error_must_provide_code', 'You must provide a code'));
+				throw new Exception(t('error_must_provide_code', 'You must provide a code'));
 			}
 
 			if (empty($_POST['name'])) {
-				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
+				throw new Exception(t('error_must_provide_name', 'You must provide a name'));
 			}
 
 			if (empty($_POST['value'])) {
-				throw new Exception(language::translate('error_must_provide_value', 'You must provide a value'));
+				throw new Exception(t('error_must_provide_value', 'You must provide a value'));
 			}
 
 			if ((!empty($_POST['set_store']) || $_POST['code'] == settings::get('store_currency_code')) && (float)$_POST['value'] != 1) {
-				throw new Exception(language::translate('error_store_currency_must_have_value_1', 'The store currency must always have the currency value 1.0.'));
+				throw new Exception(t('error_store_currency_must_have_value_1', 'The store currency must always have the currency value 1.0.'));
 			}
 
 			if (empty($_POST['set_default']) && isset($currency->data['code']) && $currency->data['code'] == settings::get('default_currency_code') && $currency->data['code'] != $_POST['code']) {
-				throw new Exception(language::translate('error_cannot_rename_default_currency', 'You must change the default currency before renaming it.'));
+				throw new Exception(t('error_cannot_rename_default_currency', 'You must change the default currency before renaming it.'));
 			}
 
 			if (empty($_POST['set_store']) && isset($currency->data['code']) && $currency->data['code'] == settings::get('store_currency_code') && $currency->data['code'] != $_POST['code']) {
-				throw new Exception(language::translate('error_cannot_rename_store_currency', 'You must change the store currency before renaming it.'));
+				throw new Exception(t('error_cannot_rename_store_currency', 'You must change the store currency before renaming it.'));
 			}
 
 			if (!empty($_POST['set_default']) && empty($_POST['status']) && isset($currency->data['code']) && $currency->data['code'] == settings::get('default_currency_code')) {
-				throw new Exception(language::translate('error_cannot_set_disabled_default_currency', 'You cannot set a disabled currency as default currency.'));
+				throw new Exception(t('error_cannot_set_disabled_default_currency', 'You cannot set a disabled currency as default currency.'));
 			}
 
 			if (!empty($_POST['set_store']) && empty($_POST['status']) && isset($currency->data['code']) && $currency->data['code'] == settings::get('store_currency_code')) {
-				throw new Exception(language::translate('error_cannot_set_disabled_store_currency', 'You cannot set a disabled currency as store currency.'));
+				throw new Exception(t('error_cannot_set_disabled_store_currency', 'You cannot set a disabled currency as store currency.'));
 			}
 
 			foreach ([
@@ -89,7 +89,7 @@
 				);
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/currencies'));
 			exit;
 
@@ -103,12 +103,12 @@
 		try {
 
 			if (empty($currency->data['id'])) {
-				throw new Exception(language::translate('error_must_provide_currency', 'You must provide a currency'));
+				throw new Exception(t('error_must_provide_currency', 'You must provide a currency'));
 			}
 
 			$currency->delete();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/currencies'));
 			exit;
 
@@ -120,9 +120,9 @@
 	$store_currency = reference::currency(settings::get('store_currency_code'));
 
 	$statuses = [
-		1 => language::translate('title_enabled', 'Enabled'),
-		-1 => language::translate('title_hidden', 'Hidden'),
-		0 => language::translate('title_disabled', 'Disabled'),
+		1 => t('title_enabled', 'Enabled'),
+		-1 => t('title_hidden', 'Hidden'),
+		0 => t('title_disabled', 'Disabled'),
 	];
 
 	// Prefillable currencies
@@ -150,7 +150,7 @@
 
 		if ($available_currencies) {
 
-			$prefillable_currency_options = [['', '-- '. language::translate('title_select', 'Select') .' --']];
+			$prefillable_currency_options = [['', '-- '. t('title_select', 'Select') .' --']];
 
 			// Append to array of options
 			foreach ($available_currencies as $available_currency) {
@@ -169,7 +169,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_create_new_currency', 'Create New Currency'); ?>
+			<?php echo $app_icon; ?> <?php echo !empty($currency->data['id']) ? t('title_edit_currency', 'Edit Currency') : t('title_create_new_currency', 'Create New Currency'); ?>
 		</div>
 	</div>
 
@@ -178,7 +178,7 @@
 
 			<?php if (!empty($prefillable_currency_options)) { ?>
 			<label class="form-group">
-				<div class="form-label"><?php echo language::translate('text_prefill_from_the_web', 'Prefill from the web'); ?></div>
+				<div class="form-label"><?php echo t('text_prefill_from_the_web', 'Prefill from the web'); ?></div>
 				<?php echo functions::form_select('prefill', $prefillable_currency_options, ''); ?>
 			</label>
 			<?php } ?>
@@ -186,14 +186,14 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
+						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
 						<?php echo functions::form_toggle('status', $statuses, true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 						<?php echo functions::form_input_text('name', true); ?>
 					</label>
 				</div>
@@ -202,14 +202,14 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_code', 'Code'); ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></div>
+						<div class="form-label"><?php echo t('title_code', 'Code'); ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></div>
 						<?php echo functions::form_input_text('code', true, 'required pattern="[A-Z]{3}"'); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_number', 'Number'); ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></div>
+						<div class="form-label"><?php echo t('title_number', 'Number'); ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></div>
 						<?php echo functions::form_input_text('number', true, 'required pattern="[0-9]{3}"'); ?>
 					</label>
 				</div>
@@ -218,7 +218,7 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_value', 'Value'); ?></div>
+						<div class="form-label"><?php echo t('title_value', 'Value'); ?></div>
 						<div class="input-group">
 							<?php echo functions::form_input_decimal('value', true, 4); ?>
 							<span class="input-group-text"><?php echo $store_currency->code; ?></span>
@@ -228,7 +228,7 @@
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_decimals', 'Decimals'); ?></div>
+						<div class="form-label"><?php echo t('title_decimals', 'Decimals'); ?></div>
 						<?php echo functions::form_input_number('decimals', true); ?>
 					</label>
 				</div>
@@ -237,14 +237,14 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_prefix', 'Prefix'); ?></div>
+						<div class="form-label"><?php echo t('title_prefix', 'Prefix'); ?></div>
 						<?php echo functions::form_input_text('prefix', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_suffix', 'Suffix'); ?></div>
+						<div class="form-label"><?php echo t('title_suffix', 'Suffix'); ?></div>
 						<?php echo functions::form_input_text('suffix', true); ?>
 					</label>
 				</div>
@@ -253,15 +253,15 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_priority', 'Priority'); ?></div>
+						<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
 						<?php echo functions::form_input_number('priority', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<div class="form-group">
-						<?php echo functions::form_checkbox('set_default', ['1', language::translate('description_set_as_default_currency', 'Set as default currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('default_currency_code')) ? '1' : true); ?>
-						<?php echo functions::form_checkbox('set_store', ['1', language::translate('description_set_as_store_currency', 'Set as store currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('store_currency_code')) ? '1' : true); ?>
+						<?php echo functions::form_checkbox('set_default', ['1', t('description_set_as_default_currency', 'Set as default currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('default_currency_code')) ? '1' : true); ?>
+						<?php echo functions::form_checkbox('set_store', ['1', t('description_set_as_store_currency', 'Set as store currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('store_currency_code')) ? '1' : true); ?>
 					</div>
 				</div>
 			</div>

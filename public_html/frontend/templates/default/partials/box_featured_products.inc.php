@@ -1,7 +1,7 @@
 <section id="box-featured-products" class="card">
 
 	<div class="card-header">
-		<h2 class="card-title"><?php echo language::translate('title_featured_products', 'Featured Products'); ?></h2>
+		<h2 class="card-title"><?php echo t('title_featured_products', 'Featured Products'); ?></h2>
 	</div>
 
 	<div class="card-body">

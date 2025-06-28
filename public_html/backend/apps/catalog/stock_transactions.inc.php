@@ -29,19 +29,19 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_stock_transactions', 'Stock Transactions'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_stock_transactions', 'Stock Transactions'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_transaction'), language::translate('title_create_new_transaction', 'Create New Transaction'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_transaction'), t('title_create_new_transaction', 'Create New Transaction'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
 
 			<div class="expandable">
-				<?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?>
+				<?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?>
 			</div>
 
 			<div class="input-group">
@@ -51,7 +51,7 @@
 			</div>
 
 			<div>
-				<?php echo functions::form_button('search', language::translate('title_filter', 'Filter'), 'submit'); ?>
+				<?php echo functions::form_button('search', t('title_filter', 'Filter'), 'submit'); ?>
 			</div>
 
 		</div>
@@ -63,9 +63,9 @@
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th class="text-end"><?php echo language::translate('title_date', 'Date'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th class="text-end"><?php echo t('title_date', 'Date'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -77,7 +77,7 @@
 				<td><?php echo $transaction['id']; ?></td>
 				<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>"><?php echo $transaction['name']; ?></a></td>
 				<td class="text-end"><?php echo functions::datetime_when($transaction['created_at']); ?></td>
-				<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+				<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 			</tr>
 			<?php } ?>
 			</tbody>
@@ -85,7 +85,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_stock_transactions', 'Stock Transactions'); ?>: <?php echo $num_rows; ?>
+						<?php echo t('title_stock_transactions', 'Stock Transactions'); ?>: <?php echo $num_rows; ?>
 					</td>
 				</tr>
 			</tfoot>

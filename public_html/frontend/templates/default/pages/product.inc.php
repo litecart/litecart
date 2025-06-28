@@ -63,14 +63,14 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<?php if ($recommended_price) { ?>
 					<div class="recommended-price" style="margin: 1em 0;">
-						<?php echo language::translate('title_recommended_price', 'Recommended Price'); ?>:
+						<?php echo t('title_recommended_price', 'Recommended Price'); ?>:
 						<span class="value">{{recommended_price|money}}</span>
 					</div>
 					<?php } ?>
 
 					<?php if ($cheapest_shipping_fee !== null) { ?>
 					<div class="cheapest-shipping" style="margin: 1em 0;">
-						<?php echo functions::draw_fonticon('icon-truck'); ?> <?php echo strtr(language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">%price</strong>'), ['%price' => currency::format($cheapest_shipping_fee)]); ?>
+						<?php echo functions::draw_fonticon('icon-truck'); ?> <?php echo strtr(t('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">%price</strong>'), ['%price' => currency::format($cheapest_shipping_fee)]); ?>
 					</div>
 					<?php } ?>
 
@@ -78,21 +78,21 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					<div class="codes" style="margin: 1em 0;">
 						<?php if ($sku) { ?>
 						<div class="sku">
-							<?php echo language::translate('title_sku', 'SKU'); ?>:
+							<?php echo t('title_sku', 'SKU'); ?>:
 							<span class="value">{{sku}}</span>
 						</div>
 						<?php } ?>
 
 						<?php if ($mpn) { ?>
 						<div class="mpn">
-							<?php echo language::translate('title_mpn', 'MPN'); ?>:
+							<?php echo t('title_mpn', 'MPN'); ?>:
 							<span class="value">{{mpn}}</span>
 						</div>
 						<?php } ?>
 
 						<?php if ($gtin) { ?>
 						<div class="gtin">
-							<?php echo language::translate('title_gtin', 'GTIN'); ?>:
+							<?php echo t('title_gtin', 'GTIN'); ?>:
 							<span class="value">{{gtin}}</span>
 						</div>
 						<?php } ?>
@@ -103,13 +103,13 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					<div class="stock-status" style="margin: 1em 0;">
 						<?php if ($quantity_available > 0) { ?>
 						<div class="stock-available">
-							<?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
+							<?php echo t('title_stock_status', 'Stock Status'); ?>:
 							<span class="value">{{stock_status}}</span>
 						</div>
 
 						<?php if ($delivery_status) { ?>
 						<div class="stock-delivery">
-							<?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>:
+							<?php echo t('title_delivery_status', 'Delivery Status'); ?>:
 							<span class="value"><?php echo $delivery_status['name']; ?></span>
 						</div>
 						<?php } ?>
@@ -117,14 +117,14 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						<?php } else { ?>
 						<?php if ($sold_out_status) { ?>
 							<div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>">
-								<?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
+								<?php echo t('title_stock_status', 'Stock Status'); ?>:
 								<span class="value"><?php echo $sold_out_status['name']; ?></span>
 							</div>
 
 							<?php } else { ?>
 							<div class="stock-unavailable">
-								<?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
-								<span class="value"><?php echo language::translate('title_sold_out', 'Sold Out'); ?></span>
+								<?php echo t('title_stock_status', 'Stock Status'); ?>:
+								<span class="value"><?php echo t('title_sold_out', 'Sold Out'); ?></span>
 							</div>
 							<?php } ?>
 							<?php } ?>
@@ -136,13 +136,13 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 						<fieldset style="margin: 2em 0;">
 
-							<legend><?php echo language::translate('title_purchase_now', 'Purchase Now'); ?></legend>
+							<legend><?php echo t('title_purchase_now', 'Purchase Now'); ?></legend>
 
 							<?php echo functions::form_input_hidden('product_id', $product_id); ?>
 
 							<?php if (count($stock_options) > 1) { ?>
 							<div class="form-group">
-								<div class="form-label"><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></div>
+								<div class="form-label"><?php echo t('text_select_desired_option', 'Select desired option'); ?></div>
 								<?php echo form_select_product_stock_option('stock_option_id', $product_id, true); ?>
 							</div>
 							<?php } else if (count($stock_options) == 1) { ?>
@@ -154,7 +154,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 								<div class="col-xl-8">
 									<?php if (!settings::get('catalog_only_mode')) { ?>
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_quantity', 'Quantity'); ?></div>
+										<div class="form-label"><?php echo t('title_quantity', 'Quantity'); ?></div>
 										<div style="display: flex">
 											<div class="input-group" style="flex: 0 1 150px;">
 												<?php echo !empty($quantity_unit['decimals']) ? functions::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"') : functions::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"'); ?>
@@ -162,7 +162,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 											</div>
 
 											<div style="flex: 1 0 auto; padding-inline-start: 1em;">
-												<?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity_available <= 0 && !$orderable) ? ' disabled' : '') .'>'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
+												<?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity_available <= 0 && !$orderable) ? ' disabled' : '') .'>'. t('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
 											</div>
 										</div>
 									</label>
@@ -177,9 +177,9 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									<?php if ($total_tax) { ?>
 									<div class="tax" style="margin: 0 0 1em 0;">
 									<?php if ($tax_rates) { ?>
-										<?php echo $including_tax ? language::translate('text_tax_included', 'Tax included') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax">{{total_tax|money}}</span>
+										<?php echo $including_tax ? t('text_tax_included', 'Tax included') : t('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax">{{total_tax|money}}</span>
 									<?php } else { ?>
-										<?php echo language::translate('title_no_tax_included', 'No tax included'); ?>
+										<?php echo t('title_no_tax_included', 'No tax included'); ?>
 									<?php } ?>
 									</div>
 									<?php } ?>
@@ -194,33 +194,33 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<div class="social-bookmarks">
 
-						<a class="link btn btn-default" href="#" title="<?php echo functions::escape_html(language::translate('text_share_link', 'Share Link')); ?>">
+						<a class="link btn btn-default" href="#" title="<?php echo functions::escape_html(t('text_share_link', 'Share Link')); ?>">
 							<?php echo functions::draw_fonticon('icon-link', 'style="color: #333;"'); ?>
 						</a>
 
-						<a class="btn btn-default" href="<?php echo 'mailto:user@email.com?', http_build_query(['subject' => language::translate('text_is_this_a_product_for_you', 'Is this a product for you?'), 'body' => document::ilink()]); ?>" title="<?php echo functions::escape_html(language::translate('text_share_via_email', 'Share via Email')); ?>">
+						<a class="btn btn-default" href="<?php echo 'mailto:user@email.com?', http_build_query(['subject' => t('text_is_this_a_product_for_you', 'Is this a product for you?'), 'body' => document::ilink()]); ?>" title="<?php echo functions::escape_html(t('text_share_via_email', 'Share via Email')); ?>">
 							<?php echo functions::draw_fonticon('icon-envelope', 'style="color: #333;"'); ?>
 						</a>
 
 						<?php /* Requires appId
-						<a class="x btn btn-default" href="<?php echo document::href_link('fb-messenger://share/', ['link' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(language::translate('text_share_via_s', 'Share via %s'), ['%s' => 'Messenger'])); ?>">
+						<a class="x btn btn-default" href="<?php echo document::href_link('fb-messenger://share/', ['link' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_via_s', 'Share via %s'), ['%s' => 'Messenger'])); ?>">
 							<?php echo functions::draw_fonticon('icon-brand-messenger', 'style="color: #000;"'); ?>
 						</a>
 							*/ ?>
 
-						<a class="x btn btn-default" href="<?php echo document::href_link('https://wa.me/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(language::translate('text_share_via_s', 'Share via %s'), ['%s' => 'WhatsApp'])); ?>">
+						<a class="x btn btn-default" href="<?php echo document::href_link('https://wa.me/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_via_s', 'Share via %s'), ['%s' => 'WhatsApp'])); ?>">
 							<?php echo functions::draw_fonticon('icon-brand-whatsapp', 'style="color: #000;"'); ?>
 						</a>
 
-						<a class="facebook btn btn-default" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(language::translate('text_share_on_s', 'Share on %s'), ['%s' => 'Facebook'])); ?>">
+						<a class="facebook btn btn-default" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_on_s', 'Share on %s'), ['%s' => 'Facebook'])); ?>">
 							<?php echo functions::draw_fonticon('icon-brand-facebook', 'style="color: #3b5998;"'); ?>
 						</a>
 
-						<a class="x btn btn-default" href="<?php echo document::href_link('https://x.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(language::translate('text_share_on_s', 'Share on %s'), ['%s' => 'X'])); ?>">
+						<a class="x btn btn-default" href="<?php echo document::href_link('https://x.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_on_s', 'Share on %s'), ['%s' => 'X'])); ?>">
 							<?php echo functions::draw_fonticon('icon-brand-x', 'style="color: #000;"'); ?>
 						</a>
 
-						<a class="pinterest btn btn-default" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(language::translate('text_share_on_s', 'Share on %s'), ['%s' => 'Pinterest'])); ?>">
+						<a class="pinterest btn btn-default" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_on_s', 'Share on %s'), ['%s' => 'Pinterest'])); ?>">
 							<?php echo functions::draw_fonticon('icon-brand-pinterest', 'style="color: #bd081c;"'); ?>
 						</a>
 
@@ -237,7 +237,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 						<?php if ($description) { ?>
 						<div class="col-md-<?php echo ($technical_data) ? 6 : 12; ?>">
-							<h2 style="margin-top: 0;"><?php echo language::translate('title_description', 'Description'); ?></h2>
+							<h2 style="margin-top: 0;"><?php echo t('title_description', 'Description'); ?></h2>
 
 							<div class="description">
 								{{description}}
@@ -247,7 +247,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 						<?php if ($technical_data) { ?>
 						<div class="col-md-<?php echo ($description) ? 6 : 12; ?>">
-							<h2 style="margin-top: 0;"><?php echo language::translate('title_technical_data', 'Technical Data'); ?></h2>
+							<h2 style="margin-top: 0;"><?php echo t('title_technical_data', 'Technical Data'); ?></h2>
 
 							<div class="technical-data" <?php if (!$description) echo 'style="columns: 2 auto;"'; ?>>
 								<table class="table">
@@ -364,6 +364,6 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 	$('#box-product[data-id="{{product_id}}"] .social-bookmarks .link').off().on('click', function(e) {
 		e.preventDefault();
-		prompt("<?php echo language::translate('text_link_to_this_product', 'Link to this product'); ?>", '{{link}}');
+		prompt("<?php echo t('text_link_to_this_product', 'Link to this product'); ?>", '{{link}}');
 	});
 </script>

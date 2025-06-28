@@ -19,8 +19,8 @@
 
 		echo implode(PHP_EOL, [
 			'<div id="content">',
-			'  <p>'. language::translate('description_no_items_in_cart', 'There are no items in your cart.') .'</p>',
-			'  <div><a class="btn btn-default" href="'. document::href_ilink('') .'">'. language::translate('title_back', 'Back') .'</a>',
+			'  <p>'. t('description_no_items_in_cart', 'There are no items in your cart.') .'</p>',
+			'  <div><a class="btn btn-default" href="'. document::href_ilink('') .'">'. t('title_back', 'Back') .'</a>',
 			'</div>',
 		]);
 

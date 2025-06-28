@@ -12,7 +12,7 @@
 
 				<section id="box-edit-account" class="card">
 					<div class="card-header">
-						<h1 class="card-title"><?php echo language::translate('title_sign_in_and_security', 'Sign-In and Security'); ?></h1>
+						<h1 class="card-title"><?php echo t('title_sign_in_and_security', 'Sign-In and Security'); ?></h1>
 					</div>
 
 					<div class="card-body">
@@ -22,34 +22,34 @@
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
+										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
 										<?php echo functions::form_input_email('email', true, 'required'); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_password', 'Password'); ?></div>
+										<div class="form-label"><?php echo t('title_password', 'Password'); ?></div>
 										<?php echo functions::form_input_password('password', '', 'required'); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_new_password', 'New Password'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</div>
+										<div class="form-label"><?php echo t('title_new_password', 'New Password'); ?> (<?php echo t('text_or_leave_blank', 'Or leave blank'); ?>)</div>
 										<?php echo functions::form_input_password('new_password', ''); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_confirm_new_password', 'Confirm New Password'); ?></div>
+										<div class="form-label"><?php echo t('title_confirm_new_password', 'Confirm New Password'); ?></div>
 										<?php echo functions::form_input_password('confirmed_password', ''); ?>
 									</label>
 								</div>
 							</div>
 
-							<p><?php echo functions::form_button('save_account', language::translate('title_save', 'Save')); ?></p>
+							<p><?php echo functions::form_button('save_account', t('title_save', 'Save')); ?></p>
 
 						<?php echo functions::form_end(); ?>
 					</div>
@@ -57,7 +57,7 @@
 
 				<section id="box-edit-details" class="card">
 					<div class="card-header">
-						<h1 class="card-title"><?php echo language::translate('title_customer_profile', 'Customer Profile'); ?></h1>
+						<h1 class="card-title"><?php echo t('title_customer_profile', 'Customer Profile'); ?></h1>
 					</div>
 
 					<div class="card-body">
@@ -68,8 +68,8 @@
 								<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
 								<div class="col-6">
 									<div class="form-group">
-										<div class="form-label"><?php echo language::translate('title_customer_type', 'Customer Type'); ?></div>
-										<?php echo functions::form_toggle('type', ['individual' => language::translate('title_individual', 'Individual'), 'company' => language::translate('title_company', 'Company')], empty($_POST['type']) ? 'individual' : true); ?>
+										<div class="form-label"><?php echo t('title_customer_type', 'Customer Type'); ?></div>
+										<?php echo functions::form_toggle('type', ['individual' => t('title_individual', 'Individual'), 'company' => t('title_company', 'Company')], empty($_POST['type']) ? 'individual' : true); ?>
 									</div>
 								</div>
 
@@ -80,7 +80,7 @@
 								<?php if (settings::get('customer_field_company')) { ?>
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_company_name', 'Company Name'); ?></div>
+										<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?></div>
 										<?php echo functions::form_input_text('company', true, 'required'); ?>
 									</label>
 								</div>
@@ -89,7 +89,7 @@
 								<?php if (settings::get('customer_field_tax_id')) { ?>
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></div>
+										<div class="form-label"><?php echo t('title_tax_id', 'Tax ID'); ?></div>
 										<?php echo functions::form_input_text('tax_id', true); ?>
 									</label>
 								</div>
@@ -97,75 +97,75 @@
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_firstname', 'First Name'); ?></div>
+										<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
 										<?php echo functions::form_input_text('firstname', true, 'required'); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_lastname', 'Last Name'); ?></div>
+										<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
 										<?php echo functions::form_input_text('lastname', true, 'required'); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_address1', 'Address 1'); ?></div>
+										<div class="form-label"><?php echo t('title_address1', 'Address 1'); ?></div>
 										<?php echo functions::form_input_text('address1', true); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_address2', 'Address 2'); ?></div>
+										<div class="form-label"><?php echo t('title_address2', 'Address 2'); ?></div>
 										<?php echo functions::form_input_text('address2', true); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_postcode', 'Postal Code'); ?></div>
+										<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
 										<?php echo functions::form_input_text('postcode', true); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_city', 'City'); ?></div>
+										<div class="form-label"><?php echo t('title_city', 'City'); ?></div>
 										<?php echo functions::form_input_text('city', true); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_country', 'Country'); ?></div>
+										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
 										<?php echo functions::form_select_country('country_code', true, 'required'); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></div>
+										<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
 										<?php echo form_select_zone('zone_code', fallback($_POST['country_code']), true, 'required'); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
+										<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
 										<?php echo functions::form_input_phone('phone', true, 'placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
 									</label>
 								</div>
 
 								<div class="col-12">
 									<div class="form-group">
-										<?php echo functions::form_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via email when there are new products or campaigns.')], true); ?>
+										<?php echo functions::form_checkbox('newsletter', ['1', t('consent_newsletter', 'I would like to be notified occasionally via email when there are new products or campaigns.')], true); ?>
 									</div>
 								</div>
 
 								<div class="col-12">
-									<?php echo functions::form_button('save_details', language::translate('title_save', 'Save')); ?>
+									<?php echo functions::form_button('save_details', t('title_save', 'Save')); ?>
 								</div>
 
 							</div>

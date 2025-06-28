@@ -10,11 +10,11 @@
 		$_POST = $stock_transaction->data;
 	}
 
-	document::$title[] = !empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_transaction', 'Create New Transaction');
+	document::$title[] = !empty($stock_transaction->data['id']) ? t('title_edit_stock_transaction', 'Edit Stock Transaction') : t('title_create_new_transaction', 'Create New Transaction');
 
-	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_stock_transactions', 'Stock Transactions'), document::ilink(__APP__.'/stock_transactions'));
-	breadcrumbs::add(!empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_transaction', 'Create New Transaction'), document::ilink());
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_stock_transactions', 'Stock Transactions'), document::ilink(__APP__.'/stock_transactions'));
+	breadcrumbs::add(!empty($stock_transaction->data['id']) ? t('title_edit_stock_transaction', 'Edit Stock Transaction') : t('title_create_new_transaction', 'Create New Transaction'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
@@ -26,7 +26,7 @@
 
 			foreach (array_keys($_POST['contents']) as $key) {
 				if (empty($_POST['contents'][$key]['quantity_adjustment'])) {
-					throw new Exception(language::translate('error_quantity_cannot_be_empty', 'Quantity cannot be empty'));
+					throw new Exception(t('error_quantity_cannot_be_empty', 'Quantity cannot be empty'));
 				}
 			}
 
@@ -42,7 +42,7 @@
 
 			$stock_transaction->save();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/stock_transactions'));
 			exit;
 
@@ -57,7 +57,7 @@
 
 			$stock_transaction->delete();
 
-			notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
+			notices::add('success', t('success_post_deleted', 'Post deleted'));
 			redirect(document::ilink(__APP__.'/stock_transactions'));
 			exit;
 
@@ -78,7 +78,7 @@
 	<div class="card-header">
 		<div class="card-title">
 			<div class="card-title">
-				<?php echo $app_icon; ?> <?php echo !empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_stock_transaction', 'Create New Stock Transaction'); ?>
+				<?php echo $app_icon; ?> <?php echo !empty($stock_transaction->data['id']) ? t('title_edit_stock_transaction', 'Edit Stock Transaction') : t('title_create_new_stock_transaction', 'Create New Stock Transaction'); ?>
 			</div>
 		</div>
 	</div>
@@ -90,7 +90,7 @@
 				<div class="grid">
 					<div class="col-md-6">
 						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+							<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 							<?php echo functions::form_input_text('name', true); ?>
 						</label>
 					</div>
@@ -99,7 +99,7 @@
 				<div class="grid">
 					<div class="col-md-12">
 						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
+							<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
 							<?php echo functions::form_textarea('description', true, 'style="height: 60px;"'); ?>
 						</label>
 					</div>
@@ -109,14 +109,14 @@
 				<div class="grid">
 					<div class="col-md-6">
 						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('title_updated', 'Updated'); ?></div>
+							<div class="form-label"><?php echo t('title_updated', 'Updated'); ?></div>
 							<div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['updated_at'])); ?></div>
 						</label>
 					</div>
 
 					<div class="col-md-6">
 						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('title_created', 'Created'); ?></div>
+							<div class="form-label"><?php echo t('title_created', 'Created'); ?></div>
 							<div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['created_at'])); ?></div>
 						</label>
 					</div>
@@ -124,17 +124,17 @@
 				<?php } ?>
 			</div>
 
-			<h2><?php echo language::translate('title_contents', 'Contents'); ?></h2>
+			<h2><?php echo t('title_contents', 'Contents'); ?></h2>
 		</div>
 
 		<table id="transaction-contents" class="table data-table">
 			<thead>
 				<tr>
-					<th style="min-width: 225px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
-					<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
-					<th class="text-end" style="min-width: 150px;"><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
-					<th class="text-end" style="min-width: 150px;"><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></th>
-					<th class="text-end" style="min-width: 175px;"><?php echo language::translate('title_backordered', 'Backordered'); ?></th>
+					<th style="min-width: 225px;"><?php echo t('title_sku', 'SKU'); ?></th>
+					<th class="main"><?php echo t('title_item', 'Item'); ?></th>
+					<th class="text-end" style="min-width: 150px;"><?php echo t('title_in_stock', 'In Stock'); ?></th>
+					<th class="text-end" style="min-width: 150px;"><?php echo t('title_quantity_adjustment', 'Quantity Adjustment'); ?></th>
+					<th class="text-end" style="min-width: 175px;"><?php echo t('title_backordered', 'Backordered'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -163,7 +163,7 @@
 							<?php echo functions::form_input_decimal('contents['. $key .'][backordered]', true, 2); ?>
 						</div>
 					</td>
-					<td class="text-center"><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+					<td class="text-center"><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_html(t('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -185,7 +185,7 @@
 							<?php echo functions::form_input_decimal('new[backordered]', true, 2); ?>
 						</div>
 					</td>
-					<td><?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
+					<td><?php echo functions::form_button('add', t('title_add', 'Add'), 'button'); ?></td>
 				</tr>
 			</tfoot>
 		</table>
@@ -204,7 +204,7 @@
 <datalist id="available-stock-items">
 	<?php foreach ($available_stock_items as $stock_item) { ?>
 	<option value="<?php echo functions::escape_html($stock_item['sku']); ?>" data-sku="<?php echo functions::escape_html($stock_item['sku']); ?>" data-name="<?php echo functions::escape_html($stock_item['name']); ?>" data-quantity="<?php echo (float)$stock_item['quantity']; ?>" data-backordered="<?php echo (float)$stock_item['backordered']; ?>">
-		<?php echo functions::escape_html($stock_item['name']); ?> &ndash; (<?php echo language::translate('title_in_stock', 'In Stock'); ?>: <?php echo (float)$stock_item['quantity']; ?>)
+		<?php echo functions::escape_html($stock_item['name']); ?> &ndash; (<?php echo t('title_in_stock', 'In Stock'); ?>: <?php echo (float)$stock_item['quantity']; ?>)
 	</option>
 	<?php } ?>
 </datalist>
@@ -279,7 +279,7 @@
 			'        <?php echo functions::escape_js(functions::form_input_decimal('contents[new_item_index][backordered]', true, 2)); ?>',
 			'      </div>',
 			'    </td>',
-			'    <td class="text-center"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a></td>',
+			'    <td class="text-center"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(t('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a></td>',
 			'  </tr>'
 		].join('\n')
 			.replace('__index__', 'new_' + __index__)

@@ -1,25 +1,25 @@
 <?php
 
-	document::$title[] = language::translate('title_countries', 'Countries');
+	document::$title[] = t('title_countries', 'Countries');
 
-	breadcrumbs::add(language::translate('title_countries', 'Countries'), document::ilink());
+	breadcrumbs::add(t('title_countries', 'Countries'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
 		try {
 
 			if (empty($_POST['countries'])) {
-				throw new Exception(language::translate('error_must_select_countries', 'You must select countries'));
+				throw new Exception(t('error_must_select_countries', 'You must select countries'));
 			}
 
 			foreach ($_POST['countries'] as $country_code) {
 
 				if (!empty($_POST['disable']) && $country_code == settings::get('default_country_code')) {
-					throw new Exception(language::translate('error_cannot_disable_default_country', 'You cannot disable the default country'));
+					throw new Exception(t('error_cannot_disable_default_country', 'You cannot disable the default country'));
 				}
 
 				if (!empty($_POST['disable']) && $country_code == settings::get('store_country_code')) {
-					throw new Exception(language::translate('error_cannot_disable_store_country', 'You cannot disable the store country'));
+					throw new Exception(t('error_cannot_disable_store_country', 'You cannot disable the store country'));
 				}
 
 				$country = new ent_country($country_code);
@@ -27,7 +27,7 @@
 				$country->save();
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -52,12 +52,12 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_countries', 'Countries'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_countries', 'Countries'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_country'), language::translate('title_create_new_country', 'Create New Country'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_country'), t('title_create_new_country', 'Create New Country'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('countries_form', 'post'); ?>
@@ -67,12 +67,12 @@
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
 					<th>Numeric</th>
 					<th>Alpha 2</th>
 					<th>Alpha-3</th>
-					<th><?php echo language::translate('title_zones', 'Zones'); ?></th>
+					<th><?php echo t('title_zones', 'Zones'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -88,7 +88,7 @@
 					<td class="text-center"><?php echo $country['iso_code_2']; ?></td>
 					<td class="text-center"><?php echo $country['iso_code_3']; ?></td>
 					<td class="text-center"><?php echo $country['num_zones'] ?: '-'; ?></td>
-					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_country', ['country_code' => $country['iso_code_2']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_country', ['country_code' => $country['iso_code_2']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -96,7 +96,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_countries', 'Countries'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_countries', 'Countries'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -106,12 +106,12 @@
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
 				<div class="btn-group">
-					<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+					<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
 
 			</fieldset>

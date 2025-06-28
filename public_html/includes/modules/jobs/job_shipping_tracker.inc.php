@@ -68,22 +68,22 @@
 				[
 					'key' => 'status',
 					'default_value' => '1',
-					'title' => language::translate(__CLASS__.':title_status', 'Status'),
-					'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
+					'title' => t(__CLASS__.':title_status', 'Status'),
+					'description' => t(__CLASS__.':description_status', 'Enables or disables the module.'),
 					'function' => 'toggle("e/d")',
 				],
 				[
 					'key' => 'frequency',
 					'default_value' => 'Hourly',
-					'title' => language::translate(__CLASS__.':title_frequency', 'Frequency'),
-					'description' => language::translate(__CLASS__.':description_check_frequency', 'How often the modification scanner should run.'),
+					'title' => t(__CLASS__.':title_frequency', 'Frequency'),
+					'description' => t(__CLASS__.':description_check_frequency', 'How often the modification scanner should run.'),
 					'function' => 'radio("15 min","Hourly","3 Hours","6 Hours","12 Hours","Daily")',
 				],
 				[
 					'key' => 'priority',
 					'default_value' => '0',
-					'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
-					'description' => language::translate(__CLASS__.':description_priority', 'Process this module in the given priority order.'),
+					'title' => t(__CLASS__.':title_priority', 'Priority'),
+					'description' => t(__CLASS__.':description_priority', 'Process this module in the given priority order.'),
 					'function' => 'number()',
 				],
 			];

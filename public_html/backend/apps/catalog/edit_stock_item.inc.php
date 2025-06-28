@@ -10,16 +10,16 @@
 		$_POST = $stock_item->data;
 	}
 
-	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_stock_items', 'Stock Items'), document::ilink(__APP__.'/stock_items'));
-	breadcrumbs::add(!empty($stock_item->data['id']) ? language::translate('title_edit_stock_item', 'Edit Stock Item') : language::translate('title_create_new_stock_item', 'Create New Stock Item'), document::ilink());
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_stock_items', 'Stock Items'), document::ilink(__APP__.'/stock_items'));
+	breadcrumbs::add(!empty($stock_item->data['id']) ? t('title_edit_stock_item', 'Edit Stock Item') : t('title_create_new_stock_item', 'Create New Stock Item'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
 		try {
 
 			if (empty($_POST['name'][settings::get('store_language_code')])) {
-				throw new Exception(language::translate('error_name_missing', 'You must provide a name'));
+				throw new Exception(t('error_name_missing', 'You must provide a name'));
 			}
 
 			if (!empty($_POST['sku'])) {
@@ -29,7 +29,7 @@
 					and sku = '". database::input($_POST['sku']) ."'
 					limit 1;"
 				)->num_rows) {
-					throw new Exception(language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
+					throw new Exception(t('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
 				}
 			}
 
@@ -40,7 +40,7 @@
 					and mpn = '". database::input($_POST['mpn']) ."'
 					limit 1;"
 				)->num_rows) {
-					throw new Exception(language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
+					throw new Exception(t('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
 				}
 			}
 
@@ -51,7 +51,7 @@
 					and gtin = '". database::input($_POST['gtin']) ."'
 					limit 1;"
 				)->num_rows) {
-					throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
+					throw new Exception(t('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
 				}
 			}
 
@@ -109,7 +109,7 @@
 				exit;
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/stock_items'));
 			exit;
 
@@ -131,7 +131,7 @@
 
 			$stock_item->delete();
 
-			notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
+			notices::add('success', t('success_post_deleted', 'Post deleted'));
 			redirect(document::ilink(__APP__.'/stock_items'));
 			exit;
 
@@ -145,7 +145,7 @@
 	<div class="card-header">
 		<div class="card-title">
 			<div class="card-title">
-				<?php echo $app_icon; ?> <?php echo !empty($stock_item->data['id']) ? language::translate('title_edit_stock_item', 'Edit Stock Item') : language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?>
+				<?php echo $app_icon; ?> <?php echo !empty($stock_item->data['id']) ? t('title_edit_stock_item', 'Edit Stock Item') : t('title_create_new_stock_item', 'Create New Stock Item'); ?>
 			</div>
 		</div>
 	</div>
@@ -160,12 +160,12 @@
 					<div class="grid">
 						<div class="col-md-4">
 							<div class="form-group">
-								<div class="form-label"><?php echo language::translate('title_image', 'Image'); ?></div>
+								<div class="form-label"><?php echo t('title_image', 'Image'); ?></div>
 
 								<?php echo functions::draw_thumbnail('storage://images/' . ($stock_item->data['image'] ?: 'no_image.svg'), 360, 0, 'product'); ?>
 
 								<?php if ($stock_item->data['image']) { ?>
-								<small class="float-end"><?php echo functions::form_checkbox('delete_image', ['1', language::translate('text_delete', 'Delete')], true); ?></small>
+								<small class="float-end"><?php echo functions::form_checkbox('delete_image', ['1', t('text_delete', 'Delete')], true); ?></small>
 								<?php } ?>
 
 								<?php echo functions::form_input_file('image', 'accept="image/*"'); ?>
@@ -175,29 +175,29 @@
 						<div class="col-md-8">
 
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+								<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 								<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
 							</label>
 
 							<label class="form-group references">
-								<div class="form-label"><?php echo language::translate('title_references', 'References'); ?></div>
+								<div class="form-label"><?php echo t('title_references', 'References'); ?></div>
 								<div class="input-group">
-									<label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+									<label class="input-group-text" style="width: 125px;"><?php echo t('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
 									<?php echo functions::form_input_text('sku', true, 'style="text-transform: uppercase;"'); ?>
 								</div>
 
 								<div class="input-group">
-									<label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+									<label class="input-group-text" style="width: 125px;"><?php echo t('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
 									<?php echo functions::form_input_text('gtin', true); ?>
 								</div>
 
 								<div class="input-group">
-									<label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+									<label class="input-group-text" style="width: 125px;"><?php echo t('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
 									<?php echo functions::form_input_text('mpn', true); ?>
 								</div>
 
 								<div class="input-group">
-									<label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
+									<label class="input-group-text" style="width: 125px;"><?php echo t('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
 									<?php echo functions::form_input_text('taric', true); ?>
 								</div>
 							</label>
@@ -205,14 +205,14 @@
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_shelf_location', 'Shelf Location'); ?></div>
+										<div class="form-label"><?php echo t('title_shelf_location', 'Shelf Location'); ?></div>
 										<?php echo functions::form_input_text('shelf', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></div>
+										<div class="form-label"><?php echo t('title_purchase_price', 'Purchase Price'); ?></div>
 										<div class="input-group">
 											<?php echo functions::form_input_decimal('purchase_price', true, 2, 'min="0"'); ?>
 											<?php echo functions::form_select_currency('purchase_price_currency_code', true); ?>
@@ -226,7 +226,7 @@
 					<div class="grid">
 						<div class="col-md-2">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_reserved', 'Reserved'); ?></div>
+								<div class="form-label"><?php echo t('title_reserved', 'Reserved'); ?></div>
 								<div class="form-input text-end" readonly>
 									<?php echo !empty($stock_item->data['id']) ? (float)$stock_item->data['quantity_reserved'] : 'n/a'; ?>
 								</div>
@@ -235,7 +235,7 @@
 
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_stock_quantity', 'Stock Quantity'); ?></div>
+								<div class="form-label"><?php echo t('title_stock_quantity', 'Stock Quantity'); ?></div>
 								<div class="input-group">
 									<?php echo functions::form_input_decimal('quantity', true, 2, 'data-quantity="'. (!empty($stock_item->data['id']) ? (float)$stock_item->data['quantity'] : '0') .'"'); ?>
 									<?php echo functions::form_select_quantity_unit('quantity_unit_id', true); ?>
@@ -245,7 +245,7 @@
 
 						<div class="col-md-3">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></div>
+								<div class="form-label"><?php echo t('title_quantity_adjustment', 'Quantity Adjustment'); ?></div>
 								<div class="input-group">
 									<span class="input-group-text">&plusmn;</span>
 									<?php echo functions::form_input_decimal('quantity_adjustment', true, 2); ?>
@@ -255,7 +255,7 @@
 
 						<div class="col-md-3">
 							<div class="form-group">
-								<div class="form-label"><?php echo language::translate('title_backordered', 'Backordered'); ?></div>
+								<div class="form-label"><?php echo t('title_backordered', 'Backordered'); ?></div>
 								<div class="input-group">
 									<?php echo functions::form_button('transfer', functions::draw_fonticon('icon-arrow-left'), 'button'); ?>
 									<?php echo functions::form_input_decimal('backordered', true, 2, 'min="0"'); ?>
@@ -267,7 +267,7 @@
 					<div class="grid">
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_weight', 'Weight'); ?></div>
+								<div class="form-label"><?php echo t('title_weight', 'Weight'); ?></div>
 								<div class="input-group">
 									<?php echo functions::form_input_decimal('weight', true, 3, 'min="0"'); ?>
 									<?php echo functions::form_select_weight_unit('weight_unit', true); ?>
@@ -277,7 +277,7 @@
 
 						<div class="col-md-8">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></div>
+								<div class="form-label"><?php echo t('title_dimensions', 'Dimensions'); ?></div>
 								<div class="input-group">
 									<?php echo functions::form_input_decimal('length', true, 3, 'min="0"'); ?>
 									<span class="input-group-text">x</span>
@@ -293,17 +293,17 @@
 					<div class="grid">
 						<div class="col-md-10">
 							<div class="form-group">
-								<div class="form-label"><?php echo language::translate('title_digital_item', 'Digital Item'); ?></div>
+								<div class="form-label"><?php echo t('title_digital_item', 'Digital Item'); ?></div>
 								<?php echo functions::form_input_file('file'); ?>
 								<?php if (!empty($stock_item->data['file'])) { ?>
-								<div><?php echo functions::form_checkbox('delete_file', ['1', language::translate('text_delete', 'Delete') .' '. $stock_item->data['filename']], true); ?></div>
+								<div><?php echo functions::form_checkbox('delete_file', ['1', t('text_delete', 'Delete') .' '. $stock_item->data['filename']], true); ?></div>
 								<?php } ?>
 							</div>
 						</div>
 
 						<div class="col-md-2">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_downloads', 'Downloads'); ?></div>
+								<div class="form-label"><?php echo t('title_downloads', 'Downloads'); ?></div>
 								<?php echo functions::form_input_number('downloads', true, 'readonly'); ?>
 							</label>
 						</div>
@@ -311,13 +311,13 @@
 				</div>
 
 				<div class="<?php echo (is_ajax_request()) ? 'col-xl-12' : 'col-xl-5'; ?>">
-					<h2><?php echo language::translate('title_references', 'References'); ?></h2>
+					<h2><?php echo t('title_references', 'References'); ?></h2>
 
 					<div class="table-responsive">
 						<table id="table-references" class="table data-table">
 							<thead>
-								<th style="min-width: 200px;"><?php echo language::translate('title_supplier', 'Supplier'); ?></th>
-								<th class="main"><?php echo language::translate('title_code', 'Code'); ?></th>
+								<th style="min-width: 200px;"><?php echo t('title_supplier', 'Supplier'); ?></th>
+								<th class="main"><?php echo t('title_code', 'Code'); ?></th>
 								<th></th>
 							</thead>
 
@@ -329,7 +329,7 @@
 										<?php echo functions::form_select_supplier('references['.$key.'][source]', true); ?>
 									</td>
 									<td><?php echo functions::form_input_text('references['.$key.'][code]', true); ?></td>
-									<td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+									<td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
 								</tr>
 							<?php } ?>
 							</tbody>
@@ -338,7 +338,7 @@
 								<tr>
 									<td colspan="99">
 										<button class="btn btn-default add" type="button">
-											<?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_create_new_reference', 'Create New Reference'); ?>
+											<?php echo functions::draw_fonticon('add'); ?> <?php echo t('text_create_new_reference', 'Create New Reference'); ?>
 										</button>
 									</td>
 								</tr>
@@ -468,7 +468,7 @@
 			'    <?php echo functions::escape_js(functions::form_select_supplier('references[__index__][source]', true)); ?>',
 			'  </td>',
 			'  <td><?php echo functions::escape_js(functions::form_input_text('references[__index__][code]', true)); ?></td>',
-			'  <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>',
+			'  <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>',
 			'</tr>',
 		].join('\n')
 			.replace('__index__', 'new_' + __index__)

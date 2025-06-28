@@ -8,7 +8,7 @@
 	<ul class="dropdown-menu">
 
 		<li class="dropdown-item">
-			<h2><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></h2>
+			<h2><?php echo t('title_shopping_cart', 'Shopping Cart'); ?></h2>
 		</li>
 
 		<?php foreach ($items as $key => $item) { ?>
@@ -42,14 +42,14 @@
 		<li class="new-item"></li>
 
 		<li class="dropdown-item text-end">
-			<?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <?php echo currency::format(cart::$total['amount']); ?>
+			<?php echo t('title_subtotal', 'Subtotal'); ?>: <?php echo currency::format(cart::$total['amount']); ?>
 		</li>
 
 		<li><hr></li>
 
 		<li style="margin-top: 2em;">
 			<a class="btn btn-success btn-lg" href="{{link|escape}}">
-				<?php echo language::translate('title_go_to_chekout', 'Go To Checkout'); ?>
+				<?php echo t('title_go_to_chekout', 'Go To Checkout'); ?>
 			</a>
 		</li>
 	</ul>

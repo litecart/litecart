@@ -71,11 +71,11 @@
 		public function save() {
 
 			if (!empty($this->data['parent_id']) && $this->data['parent_id'] == $this->data['id']) {
-				throw new Exception(language::translate('error_cannot_attach_page_to_itself', 'You cannot attach a page to itself'));
+				throw new Exception(t('error_cannot_attach_page_to_itself', 'You cannot attach a page to itself'));
 			}
 
 			if (!empty($this->data['id']) && !empty($this->data['parent_id']) && in_array($this->data['parent_id'], array_keys(reference::page($this->data['id'])->descendants))) {
-				throw new Exception(language::translate('error_cannot_attach_page_to_descendant', 'You cannot attach a page to a descendant'));
+				throw new Exception(t('error_cannot_attach_page_to_descendant', 'You cannot attach a page to a descendant'));
 			}
 
 			if (!$this->data['id']) {

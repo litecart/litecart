@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_pages', 'Pages'),
+		'name' => t('title_pages', 'Pages'),
 		'group' => 'website',
 		'default' => 'pages',
 		'priority' => 0,
@@ -13,12 +13,12 @@
 
 		'menu' => [
 			[
-				'title' => language::translate('title_pages', 'Pages'),
+				'title' => t('title_pages', 'Pages'),
 				'doc' => 'pages',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_csv_import_export', 'CSV Import/Export'),
+				'title' => t('title_csv_import_export', 'CSV Import/Export'),
 				'doc' => 'csv',
 				'params' => [],
 			],

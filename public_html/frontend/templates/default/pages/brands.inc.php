@@ -5,7 +5,7 @@
 		<section id="box-brands" class="card">
 
 			<div class="card-header">
-				<h1 class="card-title"><?php echo language::translate('title_brands', 'Brands'); ?></h1>
+				<h1 class="card-title"><?php echo t('title_brands', 'Brands'); ?></h1>
 			</div>
 
 			<div class="card-body">

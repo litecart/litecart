@@ -10,7 +10,7 @@
 		$_POST = $customer_group->data;
 	}
 
-	breadcrumbs::add(!empty($customer_group->data['id']) ? language::translate('title_edit_customer_group', 'Edit Customer Group') : language::translate('title_add_new_customer_group', 'Add New Customer Group'));
+	breadcrumbs::add(!empty($customer_group->data['id']) ? t('title_edit_customer_group', 'Edit Customer Group') : t('title_add_new_customer_group', 'Add New Customer Group'));
 
 	if (isset($_POST['save'])) {
 
@@ -28,7 +28,7 @@
 
 			$customer_group->save();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::link(__APP__.'/customer_groups'));
 			exit;
 
@@ -42,7 +42,7 @@
 
 			$customer_group->delete();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::link(__APP__.'/customer_groups'));
 			exit;
 
@@ -52,15 +52,15 @@
 	}
 
 	$type_options = [
-		['retail', language::translate('title_retail', 'Retail')],
-		['wholesale', language::translate('title_wholesale', 'Wholesale')],
+		['retail', t('title_retail', 'Retail')],
+		['wholesale', t('title_wholesale', 'Wholesale')],
 	];
 
 ?>
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($customer_group->data['id']) ? language::translate('title_edit_customer_group', 'Edit Customer Group') : language::translate('title_create_new_customer_group', 'Create New Customer Group'); ?>
+			<?php echo $app_icon; ?> <?php echo !empty($customer_group->data['id']) ? t('title_edit_customer_group', 'Edit Customer Group') : t('title_create_new_customer_group', 'Create New Customer Group'); ?>
 		</div>
 	</div>
 
@@ -71,21 +71,21 @@
 			<div class="grid">
 				<div class="col-md-4">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_type', 'Type'); ?></div>
+						<div class="form-label"><?php echo t('title_type', 'Type'); ?></div>
 						<?php echo functions::form_select('type', $type_options, true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-8">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 						<?php echo functions::form_input_text('name', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
+				<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
 				<?php echo functions::form_textarea('description', true); ?>
 			</label>
 

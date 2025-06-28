@@ -110,8 +110,8 @@
 
 			// Show notice
 			notices::add('notices', strtr('%message [<a href="%link">%preview</a>]', [
-				'%message' => language::translate('reminder_store_in_maintenance_mode', 'The store is in maintenance mode.'),
-				'%preview' => language::translate('title_preview', 'Preview'),
+				'%message' => t('reminder_store_in_maintenance_mode', 'The store is in maintenance mode.'),
+				'%preview' => t('title_preview', 'Preview'),
 				'%link' => document::href_ilink('maintenance_mode'),
 			]), 'maintenance_mode');
 

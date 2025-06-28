@@ -54,7 +54,7 @@
 			if (!$order_status) {
 				throw new Exception('Could not find order_status (ID: '. (int)$id .') in database.');
 			}
-			
+
 			$this->data = array_replace($this->data, array_intersect_key($order_status, $this->data));
 
 			foreach ([
@@ -79,7 +79,7 @@
 		public function save() {
 
 			if ($this->data['num_orders'] && $this->data['stock_action'] != $this->previous['stock_action']) {
-				throw new Exception(language::translate('error_cannot_change_stock_action_while_used_by_orders', 'You cannot change stock action while there are orders using this status'));
+				throw new Exception(t('error_cannot_change_stock_action_while_used_by_orders', 'You cannot change stock action while there are orders using this status'));
 			}
 
 			if (!$this->data['id']) {
@@ -122,7 +122,7 @@
 		public function delete() {
 
 			if ($this->data['num_orders']) {
-				throw new Exception(language::translate('error_cannot_delete_order_status_while_used', 'Cannot delete the order status while it is in use by orders'));
+				throw new Exception(t('error_cannot_delete_order_status_while_used', 'Cannot delete the order status while it is in use by orders'));
 			}
 
 			database::query(

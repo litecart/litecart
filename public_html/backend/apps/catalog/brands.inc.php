@@ -4,17 +4,17 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_brands', 'Brands');
+	document::$title[] = t('title_brands', 'Brands');
 
-	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink());
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_brands', 'Brands'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
 		try {
 
 			if (empty($_POST['brands'])) {
-				throw new Exception(language::translate('error_must_select_brands', 'You must select brands'));
+				throw new Exception(t('error_must_select_brands', 'You must select brands'));
 			}
 
 			foreach ($_POST['brands'] as $brand_id) {
@@ -23,7 +23,7 @@
 				$brand->save();
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -48,12 +48,12 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_brands', 'Brands'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_brands', 'Brands'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_brand'), language::translate('title_create_new_brand', 'Create New Brand'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_brand'), t('title_create_new_brand', 'Create New Brand'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('brands_form', 'post'); ?>
@@ -65,8 +65,8 @@
 					<th></th>
 					<th></th>
 					<th></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_products', 'Products'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_products', 'Products'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -80,14 +80,14 @@
 					<td><?php echo functions::draw_thumbnail('storage://images/' . ($brand['image'] ?: 'no_image.svg'), 16, 16, 'fit', 'style="vertical-align: bottom;"'); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_brand', ['brand_id' => $brand['id']]); ?>"><?php echo $brand['name']; ?></a></td>
 					<td class="text-center"><?php echo (int)$brand['num_products']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_brand', ['brand_id' => $brand['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_brand', ['brand_id' => $brand['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_brands', 'Brands'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_brands', 'Brands'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -96,12 +96,12 @@
 		<div class="card-body">
 			<fieldset id="actions">
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
 				<div class="btn-group">
-					<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+					<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
 
 			</fieldset>

@@ -67,7 +67,7 @@
 <div class="card card-app">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_who_purchased', 'Who Purchased?'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_who_purchased', 'Who Purchased?'); ?>
 		</div>
 	</div>
 
@@ -79,7 +79,7 @@
 		<div class="card-filter">
 
 			<div class="expandable">
-				<?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_html(language::translate('title_item_name_or_sku', 'Item Name or SKU')) .'"'); ?>
+				<?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_html(t('title_item_name_or_sku', 'Item Name or SKU')) .'"'); ?>
 			</div>
 
 			<div class="input-group" style="width: 450px;">
@@ -88,12 +88,12 @@
 				<?php echo functions::form_input_month('date_to'); ?>
 			</div>
 
-			<?php echo functions::form_button('filter', ['true', functions::draw_fonticon('icon-funnel') .' '. language::translate('title_filter_now', 'Filter')]); ?>
+			<?php echo functions::form_button('filter', ['true', functions::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]); ?>
 
 		</div>
 
 		<div class="card-action">
-			<?php echo functions::form_button('download', ['true', functions::draw_fonticon('icon-download') .' '. language::translate('title_download', 'Download')]); ?>
+			<?php echo functions::form_button('download', ['true', functions::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]); ?>
 		</div>
 
 	<?php echo functions::form_end(); ?>
@@ -101,14 +101,14 @@
 	<table class="table table-striped data-table">
 		<thead>
 			<tr>
-				<th style="width: 0;"><?php echo language::translate('title_product_id', 'Product ID'); ?></th>
-				<th><?php echo language::translate('title_product_name', 'Product Name'); ?></th>
-				<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-				<th><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
-				<th><?php echo language::translate('title_country', 'Country'); ?></th>
-				<th><?php echo language::translate('title_email', 'Email'); ?></th>
-				<th style="width: 0;"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-				<th style="width: 0;"><?php echo language::translate('title_purchase_date', 'Purchase Date'); ?></th>
+				<th style="width: 0;"><?php echo t('title_product_id', 'Product ID'); ?></th>
+				<th><?php echo t('title_product_name', 'Product Name'); ?></th>
+				<th><?php echo t('title_sku', 'SKU'); ?></th>
+				<th><?php echo t('title_customer_name', 'Customer Name'); ?></th>
+				<th><?php echo t('title_country', 'Country'); ?></th>
+				<th><?php echo t('title_email', 'Email'); ?></th>
+				<th style="width: 0;"><?php echo t('title_quantity', 'Quantity'); ?></th>
+				<th style="width: 0;"><?php echo t('title_purchase_date', 'Purchase Date'); ?></th>
 			</tr>
 		</thead>
 

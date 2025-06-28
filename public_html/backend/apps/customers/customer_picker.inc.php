@@ -11,23 +11,23 @@
 
 <div id="modal-customer-picker" class="modal fade" style="max-width: 720px; display: none;">
 
-	<button class="set-guest btn btn-default btn-sm float-end" type="button"><?php echo language::translate('text_set_as_guest', 'Set As Guest'); ?></button>
+	<button class="set-guest btn btn-default btn-sm float-end" type="button"><?php echo t('text_set_as_guest', 'Set As Guest'); ?></button>
 
-	<h2 style="margin-top: 0;"><?php echo language::translate('title_customers', 'Customers'); ?></h2>
+	<h2 style="margin-top: 0;"><?php echo t('title_customers', 'Customers'); ?></h2>
 
 	<div class="modal-body">
 		<label class="form-group">
-			<div class="form-label"><?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_attr(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?></div>
+			<div class="form-label"><?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_attr(t('title_search', 'Search')) .'" autocomplete="off"'); ?></div>
 		</label>
 
 		<div class="form-group results table-responsive">
 			<table class="table data-table">
 				<thead>
 					<tr>
-						<th><?php echo language::translate('title_id', 'ID'); ?></th>
-						<th><?php echo language::translate('title_name', 'Name'); ?></th>
-						<th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
-						<th><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
+						<th><?php echo t('title_id', 'ID'); ?></th>
+						<th><?php echo t('title_name', 'Name'); ?></th>
+						<th class="main"><?php echo t('title_email', 'Email'); ?></th>
+						<th><?php echo t('title_date_registered', 'Date Registered'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -88,7 +88,7 @@
 					$('#modal-customer-picker .results tbody').html([
 						'<tr>',
 						'	<td colspan="99">',
-						'		<em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em>',
+						'		<em><?php echo functions::escape_js(t('text_no_results', 'No results')); ?></em>',
 						'	</td>',
 						'</tr>'
 					].join('\n'));
@@ -107,7 +107,7 @@
 		if (!customer.id) {
 			customer = {
 				id: 0,
-				name: '(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)',
+				name: '(<?php echo functions::escape_js(t('title_guest', 'Guest')); ?>)',
 			};
 		}
 
@@ -134,7 +134,7 @@
 
 		$(field).find(':input').val('0').trigger('change');
 		$(field).find('.id').text('0');
-		$(field).find('.name').text('(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)');
+		$(field).find('.name').text('(<?php echo functions::escape_js(t('title_guest', 'Guest')); ?>)');
 		$.litebox.close();
 	});
 </script>

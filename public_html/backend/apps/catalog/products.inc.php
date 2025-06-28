@@ -4,9 +4,9 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_products', 'Products');
+	document::$title[] = t('title_products', 'Products');
 
-	breadcrumbs::add(language::translate('title_products', 'Products'));
+	breadcrumbs::add(t('title_products', 'Products'));
 
 	if (isset($_POST['star']) || isset($_POST['unstar'])) {
 
@@ -33,7 +33,7 @@
 		try {
 
 			if (empty($_POST['products'])) {
-				throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+				throw new Exception(t('error_must_select_products', 'You must select products'));
 			}
 
 			foreach ($_POST['products'] as $product_id) {
@@ -42,7 +42,7 @@
 				$product->save();
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -55,11 +55,11 @@
 
 		try {
 			if (empty($_POST['products'])) {
-				throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+				throw new Exception(t('error_must_select_products', 'You must select products'));
 			}
 
 			if (empty($_POST['category_id'])) {
-				throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
+				throw new Exception(t('error_must_select_category', 'You must select a category'));
 			}
 
 			foreach ($_POST['products'] as $product_id) {
@@ -100,7 +100,7 @@
 				$product->save();
 			}
 
-			notices::add('success', sprintf(language::translate('success_cloned_d_products', 'Cloned %d products'), count($_POST['products'])));
+			notices::add('success', sprintf(t('success_cloned_d_products', 'Cloned %d products'), count($_POST['products'])));
 			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]));
 			exit;
 
@@ -114,7 +114,7 @@
 		try {
 
 			if (empty($_POST['products'])) {
-				throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+				throw new Exception(t('error_must_select_products', 'You must select products'));
 			}
 
 			foreach ($_POST['products'] as $product_id) {
@@ -122,7 +122,7 @@
 				$product->delete();
 			}
 
-			notices::add('success', sprintf(language::translate('success_deleted_d_products', 'Deleted %d products'), count($_POST['products'])));
+			notices::add('success', sprintf(t('success_deleted_d_products', 'Deleted %d products'), count($_POST['products'])));
 			reload();
 			exit;
 
@@ -241,15 +241,15 @@
 		try {
 
 			if (!empty($product['valid_from']) && $product['valid_from'] < date('Y-m-d H:i:s')) {
-				throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product['valid_from'])]));
+				throw new Exception(strtr(t('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product['valid_from'])]));
 			}
 
 			if (!empty($product['valid_to']) && $product['valid_to'] < date('Y-m-d H:i:s')) {
-				throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => functions::datetime_format('date', $product['valid_to'])]));
+				throw new Exception(strtr(t('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => functions::datetime_format('date', $product['valid_to'])]));
 			}
 
 			if ($product['num_stock_options'] && $product['quantity'] <= 0) {
-				throw new Exception(language::translate('text_product_is_out_of_stock', 'The product is out of stock'));
+				throw new Exception(t('text_product_is_out_of_stock', 'The product is out of stock'));
 			}
 
 		} catch (Exception $e) {
@@ -279,19 +279,19 @@ table .icon-star-o:hover {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_products', 'Products'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_products', 'Products'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_product'), language::translate('title_create_new_product', 'Create New Product'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_product'), t('title_create_new_product', 'Create New Product'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
 			<div style="min-width: 300px;"><?php echo functions::form_select_category('category_id', true); ?></div>
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink(null, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
-			<div><?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
+			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink(null, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
+			<div><?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>
 		</div>
 	<?php echo functions::form_end(); ?>
 
@@ -303,15 +303,15 @@ table .icon-star-o:hover {
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th></th>
-					<th class="text-center"><?php echo language::translate('title_id', 'ID'); ?></th>
+					<th class="text-center"><?php echo t('title_id', 'ID'); ?></th>
 					<th style="min-width: 52px;"></th>
 					<th></th>
-					<th><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th class="main"><?php echo language::translate('title_code', 'Code'); ?></th>
-					<th class="text-end"><?php echo language::translate('title_price', 'Price'); ?></th>
-					<th><?php echo language::translate('title_stock_options', 'Stock Options'); ?></th>
-					<th class="text-end"><?php echo language::translate('title_reserved'); ?></th>
-					<th class="text-end"><?php echo language::translate('title_created', 'Created'); ?></th>
+					<th><?php echo t('title_name', 'Name'); ?></th>
+					<th class="main"><?php echo t('title_code', 'Code'); ?></th>
+					<th class="text-end"><?php echo t('title_price', 'Price'); ?></th>
+					<th><?php echo t('title_stock_options', 'Stock Options'); ?></th>
+					<th class="text-end"><?php echo t('title_reserved'); ?></th>
+					<th class="text-end"><?php echo t('title_created', 'Created'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -325,20 +325,20 @@ table .icon-star-o:hover {
 					<td class="text-center"><?php echo $product['id']; ?></td>
 					<td><?php echo functions::draw_thumbnail('storage://images/' . ($product['image'] ?: 'no_image.svg'), 64, 64, settings::get('product_image_clipping')); ?></td>
 					<td><?php echo !empty($product['featured']) ? functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name'] ?: '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
+					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name'] ?: '('. t('title_untitled', 'Untitled') .')'; ?></a></td>
 					<td><?php echo $product['code']; ?></td>
 					<td class="text-end"><?php echo functions::draw_price_tag($product['price'], $product['campaign_price'], settings::get('store_currency_code')); ?></td>
 					<td class="text-center"><?php echo $product['num_stock_options']; ?></td>
 					<td class="text-center"><?php echo $product['total_reserved']; ?></td>
 					<td class="text-end"><?php echo functions::datetime_when($product['created_at']); ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id'], 'redirect_url' => document::link()]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id'], 'redirect_url' => document::link()]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_products', 'Products'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_products', 'Products'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -348,7 +348,7 @@ table .icon-star-o:hover {
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
 				<div class="flex">
@@ -358,7 +358,7 @@ table .icon-star-o:hover {
 						<?php echo functions::form_button_predefined('disable'); ?>
 					</div>
 
-					<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
+					<?php echo functions::form_button('clone', t('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
 
 					<?php echo functions::form_button_predefined('delete'); ?>
 

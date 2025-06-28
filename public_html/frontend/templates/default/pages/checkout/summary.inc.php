@@ -16,16 +16,16 @@
 <section id="box-checkout-summary">
 
 	<h2 class="title">
-		<?php echo language::translate('title_order_summary', 'Order Summary'); ?>
+		<?php echo t('title_order_summary', 'Order Summary'); ?>
 	</h2>
 
 	<table class="table data-table">
 		<thead>
 			<tr>
-				<th class="text-start"><?php echo language::translate('title_item', 'Item'); ?></td>
-				<th class="text-end"><?php echo language::translate('title_price', 'Price'); ?></td>
-				<th class="text-end"><?php echo language::translate('title_discount', 'Discount'); ?></td>
-				<th class="text-end"><?php echo language::translate('title_sum', 'Sum'); ?></td>
+				<th class="text-start"><?php echo t('title_item', 'Item'); ?></td>
+				<th class="text-end"><?php echo t('title_price', 'Price'); ?></td>
+				<th class="text-end"><?php echo t('title_discount', 'Discount'); ?></td>
+				<th class="text-end"><?php echo t('title_sum', 'Sum'); ?></td>
 			</tr>
 		</thead>
 
@@ -40,13 +40,13 @@
 			<?php } ?>
 
 			<tr>
-				<td colspan="3" class="text-end"><strong><?php echo language::translate('title_subtotal', 'Subtotal'); ?>:</strong></td>
+				<td colspan="3" class="text-end"><strong><?php echo t('title_subtotal', 'Subtotal'); ?>:</strong></td>
 				<td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $order['subtotal'] + $order['subtotal_tax'] : $order['subtotal'], false, $order['currency_code'], $order['currency_value']); ?></td>
 			</tr>
 
 			<?php if ($order['total_tax']) { ?>
 			<tr>
-				<td colspan="3" class="text-end text-muted"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+				<td colspan="3" class="text-end text-muted"><?php echo !empty(customer::$data['display_prices_including_tax']) ? t('title_including_tax', 'Including Tax') : t('title_excluding_tax', 'Excluding Tax'); ?>:</td>
 				<td class="text-end text-muted"><?php echo currency::format($order['total_tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
 			</tr>
 			<?php } ?>
@@ -54,14 +54,14 @@
 
 		<tfoot>
 			<tr>
-				<td colspan="3" class="text-end"><strong><?php echo language::translate('title_total', 'Payment Due'); ?>:</strong></td>
+				<td colspan="3" class="text-end"><strong><?php echo t('title_total', 'Payment Due'); ?>:</strong></td>
 				<td class="text-end" style="width: 25%;"><strong><?php echo currency::format_html($order['total'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
 			</tr>
 		</tfoot>
 	</table>
 
 	<div class="comments form-group">
-		<label><?php echo language::translate('title_comments', 'Comments'); ?></label>
+		<label><?php echo t('title_comments', 'Comments'); ?></label>
 		<?php echo functions::form_textarea('comments', true, 'maxlength="250" rows="2"'); ?>
 		<small class="remaining"></small>
 	</div>
@@ -93,12 +93,12 @@
 	$('#box-checkout-summary button[name="confirm"]').on('click', function(e) {
 		if ($('box-checkout-customer').prop('changed')) {
 			e.preventDefault();
-			alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
+			alert("<?php echo t('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
 		}
 	});
 
 	$('form[name="checkout_form"]').submit(function(e) {
-		let new_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('icon-spinner'); ?> <?php echo functions::escape_js(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>';
+		let new_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('icon-spinner'); ?> <?php echo functions::escape_js(t('text_please_wait', 'Please wait')); ?>&hellip;</div>';
 		$('#box-checkout-summary button[name="confirm"]').css('display', 'none').before(new_button);
 	});
 </script>

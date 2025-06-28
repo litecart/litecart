@@ -43,7 +43,7 @@
 
 				<nav class="pills" style="margin-bottom: 2em;">
 					<a class="pill-item" href="<?php echo document::href_ilink(''); ?>">
-						<?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo language::translate('title_back', 'Back'); ?>
+						<?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_back', 'Back'); ?>
 					</a>
 				</nav>
 
@@ -60,20 +60,20 @@
 							<?php echo functions::form_begin('filter_form', 'get'); ?>
 
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_product_name', 'Product Name'); ?></div>
-										<?php echo functions::form_input_search('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. language::translate('title_name', 'Name') .'" placeholder="'. functions::escape_attr(language::translate('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>
+										<div class="form-label"><?php echo t('title_product_name', 'Product Name'); ?></div>
+										<?php echo functions::form_input_search('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. t('title_name', 'Name') .'" placeholder="'. functions::escape_attr(t('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>
 									</label>
 
 									<?php if ($brands) { ?>
 									<div class="form-group">
-										<div class="form-label"><?php echo language::translate('title_brands', 'Brands'); ?></div>
+										<div class="form-label"><?php echo t('title_brands', 'Brands'); ?></div>
 										<div class="dropdown">
 											<div class="form-select" data-toggle="dropdown">
-												<?php echo language::translate('title_brands', 'Brands'); ?>
+												<?php echo t('title_brands', 'Brands'); ?>
 											</div>
 											<ul class="dropdown-content">
 												<?php foreach ($brands as $brand) { ?>
-												<li><?php echo functions::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, 'data-token-group="brand" data-token-title="'. language::translate('title_brand', 'Brand') .'" data-token-value="'. $brand['name'] .'"'); ?></li>
+												<li><?php echo functions::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, 'data-token-group="brand" data-token-title="'. t('title_brand', 'Brand') .'" data-token-value="'. $brand['name'] .'"'); ?></li>
 												<?php } ?>
 											</ul>
 										</div>
@@ -82,7 +82,7 @@
 
 									<?php foreach ($attributes as $attribute) { ?>
 									<div class="form-group">
-										<div class="form-label"><?php echo language::translate('title_product_attributes', 'Product Attributes'); ?></div>
+										<div class="form-label"><?php echo t('title_product_attributes', 'Product Attributes'); ?></div>
 										<div class="dropdown">
 											<div class="form-select" data-toggle="dropdown">
 												<?php echo $attribute['name']; ?>
@@ -97,11 +97,11 @@
 									<?php } ?>
 
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_price_range', 'Price Range'); ?></div>
+										<div class="form-label"><?php echo t('title_price_range', 'Price Range'); ?></div>
 										<div class="input-group">
-											<?php echo functions::form_input_number('price_range[min]', true, 'placeholder="'. language::translate('title_min', 'Min') .'"'); ?>
+											<?php echo functions::form_input_number('price_range[min]', true, 'placeholder="'. t('title_min', 'Min') .'"'); ?>
 											<span class="input-group-text"> &ndash; </span>
-											<?php echo functions::form_input_number('price_range[max]', true, 'placeholder="'. language::translate('title_max', 'Max') .'"'); ?>
+											<?php echo functions::form_input_number('price_range[max]', true, 'placeholder="'. t('title_max', 'Max') .'"'); ?>
 										</div>
 									</label>
 
@@ -163,7 +163,7 @@
 
 								<div class="dropdown" style="display: inline-block; margin-inline-start: 1em;">
 									<div class="form-select" data-toggle="dropdown">
-										<?php echo language::translate('title_sort_by', 'Sort By'); ?>
+										<?php echo t('title_sort_by', 'Sort By'); ?>
 									</div>
 
 									<ul class="dropdown-content">
@@ -174,7 +174,7 @@
 								</div>
 
 								<div style="display: inline-block;">
-									<?php echo functions::form_toggle('list_style', ['columns' => functions::draw_fonticon('icon-th-large'), 'rows' => functions::draw_fonticon('icon-bars')], true, 'data-token-group="list_style" data-token-title="'. language::translate('title_list_style', 'List Style') .'"'); ?>
+									<?php echo functions::form_toggle('list_style', ['columns' => functions::draw_fonticon('icon-th-large'), 'rows' => functions::draw_fonticon('icon-bars')], true, 'data-token-group="list_style" data-token-title="'. t('title_list_style', 'List Style') .'"'); ?>
 								</div>
 							</div>
 						</div>
@@ -187,7 +187,7 @@
 
 <?php /*
 						<nav class="pills hidden-xs" style="margin-bottom: 1em;">
-							<a class="pill-item" href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo language::translate('title_back', 'Back'); ?></a>
+							<a class="pill-item" href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_back', 'Back'); ?></a>
 							<?php foreach ($subcategories as $subcategory) { ?><a class="nav-item" href="<?php echo document::href_ilink('category', ['category_id' => $subcategory['id']]); ?>"><?php echo $subcategory['name']; ?></a><?php } ?>
 						</nav>
 */ ?>
@@ -227,7 +227,7 @@
 		if ($('input[name="price_range[min]"]').val() || $('input[name="price_range[max]"]').val()) {
 			$('#filter-tokens').append([
 				'<span class="token" data-group="price-range" data-name="price_range[min]" data-value="'+ $('input[name="price_range[min]"]').val() +'">',
-				'<?php echo functions::escape_js(language::translate('title_price_range', 'Price Range')) ; ?>: '+ $('input[name="price_range[min]"]').val() +' &ndash; '+ $('input[name="price_range[max]"]').val(),
+				'<?php echo functions::escape_js(t('title_price_range', 'Price Range')) ; ?>: '+ $('input[name="price_range[min]"]').val() +' &ndash; '+ $('input[name="price_range[max]"]').val(),
 				'<a href="#" class="remove">×</a>',
 				'</span>'
 			].join('\n'));

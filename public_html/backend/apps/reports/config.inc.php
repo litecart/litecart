@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_reports', 'Reports'),
+		'name' => t('title_reports', 'Reports'),
 		'group' => 'ecommerce',
 		'default' => 'monthly_sales',
 		'priority' => 0,
@@ -13,22 +13,22 @@
 
 		'menu' => [
 			[
-				'title' => language::translate('title_monthly_sales', 'Monthly Sales'),
+				'title' => t('title_monthly_sales', 'Monthly Sales'),
 				'doc' => 'monthly_sales',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_most_sold_products', 'Most Sold Products'),
+				'title' => t('title_most_sold_products', 'Most Sold Products'),
 				'doc' => 'most_sold_products',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_most_shopping_customers', 'Most Shopping Customers'),
+				'title' => t('title_most_shopping_customers', 'Most Shopping Customers'),
 				'doc' => 'most_shopping_customers',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_who_purchased', 'Who Purchased'),
+				'title' => t('title_who_purchased', 'Who Purchased'),
 				'doc' => 'who_purchased',
 				'params' => [],
 			],

@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_webtools', 'Webtools'),
+		'name' => t('title_webtools', 'Webtools'),
 		'group' => 'website',
 		'default' => 'redirects',
 		'priority' => 0,
@@ -13,17 +13,17 @@
 
 		'menu' => [
 			[
-				'title' => language::translate('title_redirects', 'Redirects'),
+				'title' => t('title_redirects', 'Redirects'),
 				'doc' => 'redirects',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_site_tags', 'Site Tags'),
+				'title' => t('title_site_tags', 'Site Tags'),
 				'doc' => 'site_tags',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_third_parties', 'Third Parties'),
+				'title' => t('title_third_parties', 'Third Parties'),
 				'doc' => 'third_parties',
 				'params' => [],
 			],

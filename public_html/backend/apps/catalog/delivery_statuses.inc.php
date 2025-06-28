@@ -4,10 +4,10 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_delivery_statuses', 'Delivery Statuses');
+	document::$title[] = t('title_delivery_statuses', 'Delivery Statuses');
 
-	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_delivery_statuses', 'Delivery Statuses'), document::ilink());
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_delivery_statuses', 'Delivery Statuses'), document::ilink());
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$delivery_statuses = database::query(
@@ -20,12 +20,12 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_delivery_statuses', 'Delivery Statuses'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_delivery_statuses', 'Delivery Statuses'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_delivery_status'), language::translate('title_create_new_status', 'Create New Status'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_delivery_status'), t('title_create_new_status', 'Create New Status'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('delivery_statuses_form', 'post'); ?>
@@ -34,8 +34,8 @@
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
+					<th width="100%"><?php echo t('title_name', 'Name'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -46,7 +46,7 @@
 					<td><?php echo functions::form_checkbox('delivery_statuses[]', $delivery_status['id']); ?></td>
 					<td><?php echo $delivery_status['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]); ?>"><?php echo $delivery_status['name']; ?></a></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -54,7 +54,7 @@
 			<tfoot>
 				<tr>
 				<td colspan="99">
-					<?php echo language::translate('title_delivery_statuses', 'Delivery Statuses'); ?>: <?php echo language::number_format($num_rows); ?>
+					<?php echo t('title_delivery_statuses', 'Delivery Statuses'); ?>: <?php echo language::number_format($num_rows); ?>
 				</td>
 			</tr>
 		</table>

@@ -1,9 +1,9 @@
 <?php
 
-	document::$title[] = language::translate('title_favicon', 'Favicon');
+	document::$title[] = t('title_favicon', 'Favicon');
 
-	breadcrumbs::add(language::translate('title_appearance', 'Appearance'));
-	breadcrumbs::add(language::translate('title_favicon', 'Favicon'), document::ilink());
+	breadcrumbs::add(t('title_appearance', 'Appearance'));
+	breadcrumbs::add(t('title_favicon', 'Favicon'), document::ilink());
 
 	$icon_sizes = [96, 64, 48, 32];
 	$thumbnail_sizes = [256, 192, 128];
@@ -13,7 +13,7 @@
 		try {
 
 			if (empty($_FILES['image'])) {
-				throw new Exception(language::translate('error_must_select_image', 'You must select an image'));
+				throw new Exception(t('error_must_select_image', 'You must select an image'));
 			}
 
 			if (!extension_loaded('imagick')) {
@@ -66,7 +66,7 @@
 			header('Cache-Control: only-if-cached; must-revalidate');
 			header('Pragma: no-cache');
 
-			notices::add('success', language::translate('success_changes_saved_refresh_cache', 'Changes saved successfully. If you don\'t see any changes, try <a href="https://www.google.com/search?q=how+to+hard+refresh+a+web+page" target="_blank">hard refreshing</a> the page or clear browser cache.'));
+			notices::add('success', t('success_changes_saved_refresh_cache', 'Changes saved successfully. If you don\'t see any changes, try <a href="https://www.google.com/search?q=how+to+hard+refresh+a+web+page" target="_blank">hard refreshing</a> the page or clear browser cache.'));
 			reload();
 			exit;
 
@@ -98,7 +98,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_favicon', 'Favicon'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_favicon', 'Favicon'); ?>
 		</div>
 	</div>
 
@@ -126,14 +126,14 @@
 			</div>
 
 			<div class="form-group" style="max-width: 480px;">
-				<label><?php echo language::translate('title_new_icon', 'New Icon'); ?></label>
+				<label><?php echo t('title_new_icon', 'New Icon'); ?></label>
 				<div class="input-group">
 					<?php echo functions::form_input_file('image', 'accept=".ico,.png,.svg"'); ?>
-					<?php echo functions::form_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
+					<?php echo functions::form_button('upload', t('title_upload', 'Upload'), 'submit'); ?>
 				</div>
 			</div>
 
-			<p><?php echo strtr(language::translate('note_favicon_best_result_achieved', 'Note: Best results are achieved by uploading a %size pixels PNG image with alpha transparency.'), ['%size' => '256x256']); ?></p>
+			<p><?php echo strtr(t('note_favicon_best_result_achieved', 'Note: Best results are achieved by uploading a %size pixels PNG image with alpha transparency.'), ['%size' => '256x256']); ?></p>
 
 		<?php echo functions::form_end(); ?>
 	</div>

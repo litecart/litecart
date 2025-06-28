@@ -1,15 +1,15 @@
 <?php
 
-	document::$title[] = language::translate('title_category_tree', 'Category Tree');
+	document::$title[] = t('title_category_tree', 'Category Tree');
 
-	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_category_tree', 'Category Tree'), document::ilink());
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_category_tree', 'Category Tree'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 		try {
 
 			if (empty($_POST['categories']) && empty($_POST['products'])) {
-				throw new Exception(language::translate('error_must_select_category_and_product', 'You must select a category or product'));
+				throw new Exception(t('error_must_select_category_and_product', 'You must select a category or product'));
 			}
 
 			if (!empty($_POST['categories'])) {
@@ -28,7 +28,7 @@
 				}
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -41,7 +41,7 @@
 		try {
 
 			if (empty($_POST['categories']) && empty($_POST['products'])) {
-				throw new Exception(language::translate('error_must_select_select_category_and_product', 'You must select a category or product'));
+				throw new Exception(t('error_must_select_select_category_and_product', 'You must select a category or product'));
 			}
 
 			if (!empty($_POST['categories'])) {
@@ -100,7 +100,7 @@
 				}
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]));
 			exit;
 
@@ -113,15 +113,15 @@
 		try {
 
 			if (!empty($_POST['categories'])) {
-				throw new Exception(language::translate('error_cant_copy_category', 'You can\'t copy a category'));
+				throw new Exception(t('error_cant_copy_category', 'You can\'t copy a category'));
 			}
 
 			if (empty($_POST['products'])) {
-				throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+				throw new Exception(t('error_must_select_products', 'You must select products'));
 			}
 
 			if (isset($_POST['category_id']) && $_POST['category_id'] == '') {
-				throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
+				throw new Exception(t('error_must_select_category', 'You must select a category'));
 			}
 
 			if (!empty($_POST['products'])) {
@@ -132,7 +132,7 @@
 				}
 			}
 
-			notices::add('success', sprintf(language::translate('success_copied_d_products', 'Copied %d products'), count($_POST['products'])));
+			notices::add('success', sprintf(t('success_copied_d_products', 'Copied %d products'), count($_POST['products'])));
 			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]));
 			exit;
 
@@ -145,21 +145,21 @@
 		try {
 
 			if (empty($_POST['categories']) && empty($_POST['products'])) {
-				throw new Exception(language::translate('error_must_select_category_and_product', 'You must select a category or product'));
+				throw new Exception(t('error_must_select_category_and_product', 'You must select a category or product'));
 			}
 
 			if (isset($_POST['category_id']) && $_POST['category_id'] == '') {
-				throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
+				throw new Exception(t('error_must_select_category', 'You must select a category'));
 			}
 
 			if (isset($_POST['category_id']) && isset($_POST['categories']) && in_array($_POST['category_id'], $_POST['categories'])) {
-				throw new Exception(language::translate('error_cant_move_category_to_itself', 'You can\'t move a category to itself'));
+				throw new Exception(t('error_cant_move_category_to_itself', 'You can\'t move a category to itself'));
 			}
 
 			if (isset($_POST['category_id']) && isset($_POST['categories'])) {
 				foreach ($_POST['categories'] as $category_id) {
 					if (in_array($_POST['category_id'], array_keys(reference::category($category_id)->descendants))) {
-						throw new Exception(language::translate('error_cant_move_category_to_descendant', 'You can\'t move a category to a descendant'));
+						throw new Exception(t('error_cant_move_category_to_descendant', 'You can\'t move a category to a descendant'));
 						break;
 					}
 				}
@@ -181,7 +181,7 @@
 				}
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]));
 			exit;
 
@@ -194,11 +194,11 @@
 		try {
 
 			if (empty($_POST['categories']) && empty($_POST['products'])) {
-				throw new Exception(language::translate('error_must_select_category_and_product', 'You must select a category or product'));
+				throw new Exception(t('error_must_select_category_and_product', 'You must select a category or product'));
 			}
 
 			if (empty($_GET['category_id'])) {
-				throw new Exception(language::translate('error_category_must_be_nested_in_another_category_to_unmount', 'A category must be nested in another category to be unmounted'));
+				throw new Exception(t('error_category_must_be_nested_in_another_category_to_unmount', 'A category must be nested in another category to be unmounted'));
 			}
 
 			if (!empty($_POST['categories'])) {
@@ -227,7 +227,7 @@
 				unset($_GET['category_id']);
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -240,7 +240,7 @@
 		try {
 
 			if (empty($_POST['categories']) && empty($_POST['products'])) {
-				throw new Exception(language::translate('error_must_select_category_and_product', 'You must select a category or product'));
+				throw new Exception(t('error_must_select_category_and_product', 'You must select a category or product'));
 			}
 
 			if (!empty($_POST['products'])) {
@@ -257,7 +257,7 @@
 				}
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -376,21 +376,21 @@ table .icon-folder-open {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_catalog', 'Catalog'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_catalog', 'Catalog'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
 		<ul class="list-inline">
-			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_category', isset($_GET['category_id']) ? ['parent_id' => $_GET['category_id']] : []), language::translate('title_create_new_category', 'Create New Category'), '', 'create'); ?></li>
-			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_product', [], ['category_id']), language::translate('title_create_new_product', 'Create New Product'), '', 'create'); ?></li>
+			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_category', isset($_GET['category_id']) ? ['parent_id' => $_GET['category_id']] : []), t('title_create_new_category', 'Create New Category'), '', 'create'); ?></li>
+			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_product', [], ['category_id']), t('title_create_new_product', 'Create New Product'), '', 'create'); ?></li>
 		</ul>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink('', [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
-			<div><?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
+			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink('', [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
+			<div><?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>
 		</div>
 	<?php echo functions::form_end(); ?>
 
@@ -402,8 +402,8 @@ table .icon-folder-open {
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th class="text-end"><?php echo language::translate('title_price', 'Price'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th class="text-end"><?php echo t('title_price', 'Price'); ?></th>
 					<th></th>
 					<th></th>
 				</tr>
@@ -417,7 +417,7 @@ table .icon-folder-open {
 					<td>
 						<?php echo functions::draw_fonticon('icon-folder-open', 'style="color: #cc6;"'); ?>
 						<a href="'. document::href_ilink(null, [], [], []) .'">
-							<strong>[<?php echo language::translate('title_root', 'Root'); ?>]</strong>
+							<strong>[<?php echo t('title_root', 'Root'); ?>]</strong>
 						</a>
 					</td>
 					<td></td>
@@ -466,7 +466,7 @@ table .icon-folder-open {
 			'    </a>',
 			'  </td>',
 			'  <td class="text-end">',
-			'    <a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_category', ['category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">',
+			'    <a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_category', ['category_id' => $category['id']]) .'" title="'. t('title_edit', 'Edit') .'">',
 			'    '. functions::draw_fonticon('edit'),
 			'    </a>',
 			'  </td>',
@@ -572,15 +572,15 @@ table .icon-folder-open {
 						$product['warning'] = null;
 
 						if (!empty($product['valid_from']) && strtotime($product['valid_from']) > time()) {
-							throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product['valid_from'])]));
+							throw new Exception(strtr(t('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product['valid_from'])]));
 						}
 
 						if (!empty($product['valid_to']) && strtotime($product['valid_to']) < time()) {
-							throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => functions::datetime_format('date', $product['valid_to'])]));
+							throw new Exception(strtr(t('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => functions::datetime_format('date', $product['valid_to'])]));
 						}
 
 						if ($product['num_stock_options'] && $product['quantity'] <= 0) {
-							throw new Exception(language::translate('text_product_is_out_of_stock', 'The product is out of stock'));
+							throw new Exception(t('text_product_is_out_of_stock', 'The product is out of stock'));
 						}
 
 					} catch (Exception $e) {
@@ -595,17 +595,17 @@ table .icon-folder-open {
 						'  <td style="padding-inline-start: '. ($depth+2) .'em;">',
 						'    '. empty($display_images) ? functions::draw_thumbnail('storage://images/' . $product['image'], 24, 24, 'fit') : '<span style="margin-inline-start: '. (($depth+1)*16) .'px;"></span>',
 						'    <a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">',
-						'      '. ($product['name'] ?: '['. language::translate('title_untitled', 'Untitled') .']'),
+						'      '. ($product['name'] ?: '['. t('title_untitled', 'Untitled') .']'),
 						'    </a>',
 						'  </td>',
 						'  <td class="text-end">'. functions::draw_price_tag($product['price'], $product['campaign_price'], settings::get('store_currency_code')) .'</td>',
 						'  <td>',
-						'    <a class="btn btn-default btn-sm" href="'. document::href_ilink('f:product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">',
+						'    <a class="btn btn-default btn-sm" href="'. document::href_ilink('f:product', ['product_id' => $product['id']]) .'" title="'. t('title_view', 'View') .'" target="_blank">',
 						'    '. functions::draw_fonticon('icon-square-out'),
 						'    </a>',
 						'  </td>',
 						'  <td class="text-end">',
-						'    <a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">',
+						'    <a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. t('title_edit', 'Edit') .'">',
 						'    '. functions::draw_fonticon('edit'),
 						'    </a>',
 						'  </td>',
@@ -620,7 +620,7 @@ table .icon-folder-open {
 					'  <td></td>',
 					'  <td></td>',
 					'  <td></td>',
-					'  <td><em style="margin-inline-start: '. (($depth+1)*16) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>',
+					'  <td><em style="margin-inline-start: '. (($depth+1)*16) .'px;">'. t('title_empty', 'Empty') .'</em></td>',
 					'  <td></td>',
 					'  <td></td>',
 					'  <td></td>',
@@ -641,7 +641,7 @@ table .icon-folder-open {
 				<tfoot>
 					<tr>
 						<td colspan="99">
-							<?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?>
+							<?php echo t('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo t('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?>
 						</td>
 					</tr>
 				</tfoot>
@@ -651,7 +651,7 @@ table .icon-folder-open {
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
 				<div class="flex">
@@ -666,12 +666,12 @@ table .icon-folder-open {
 					</div>
 
 					<div class="btn-group">
-						<?php echo functions::form_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('warning_previous_mount_points_will_be_reset', 'Warning: All previous mount points will be reset.')) .'\')) return false;"'); ?>
-						<?php echo functions::form_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?>
-						<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
+						<?php echo functions::form_button('move', t('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", t('warning_previous_mount_points_will_be_reset', 'Warning: All previous mount points will be reset.')) .'\')) return false;"'); ?>
+						<?php echo functions::form_button('copy', t('title_copy', 'Copy'), 'submit'); ?>
+						<?php echo functions::form_button('clone', t('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
 					</div>
 
-					<?php echo functions::form_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?>
+					<?php echo functions::form_button('unmount', t('title_unmount', 'Unmount'), 'submit'); ?>
 
 					<?php echo functions::form_button_predefined('delete'); ?>
 

@@ -14,11 +14,11 @@
 		}
 	}
 
-	document::$title[] = !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_create_new_product', 'Create New Product');
+	document::$title[] = !empty($product->data['id']) ? t('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : t('title_create_new_product', 'Create New Product');
 
-	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_products', 'Products'), document::ilink(__APP__.'/products'));
-	breadcrumbs::add(!empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_create_new_product', 'Create New Product'), document::ilink());
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_products', 'Products'), document::ilink(__APP__.'/products'));
+	breadcrumbs::add(!empty($product->data['id']) ? t('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : t('title_create_new_product', 'Create New Product'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
@@ -31,14 +31,14 @@
 					and code = '". database::input($_POST['code']) ."'
 					limit 1;"
 				)->num_rows) {
-					throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+					throw new Exception(t('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
 				}
 			}
 
 			if (!empty($_FILES['new_images']['tmp_name'])) {
 				foreach (array_keys($_FILES['new_images']['tmp_name']) as $key) {
 					if (!empty($_FILES['new_images']['tmp_name'][$key]) && !empty($_FILES['new_images']['error'][$key])) {
-						throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected').': '. print_r($_FILES['new_images']['error'][$key], true));
+						throw new Exception(t('error_uploaded_image_rejected', 'An uploaded image was rejected').': '. print_r($_FILES['new_images']['error'][$key], true));
 					}
 				}
 			}
@@ -111,7 +111,7 @@
 				$_GET['redirect_url'] = document::ilink(__APP__.'/category_tree', ['category_id' => isset($_POST['categories'][0]) ? $_POST['categories'][0] : '']);
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect($_GET['redirect_url']);
 			exit;
 
@@ -125,12 +125,12 @@
 		try {
 
 			if (empty($product->data['id'])) {
-				throw new Exception(language::translate('error_must_provide_product', 'You must provide a product'));
+				throw new Exception(t('error_must_provide_product', 'You must provide a product'));
 			}
 
 			$product->delete();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/category_tree', ['category_id' => $_POST['categories'][0]]));
 			exit;
 
@@ -143,8 +143,8 @@
 	$currency_codes = array_unique(array_merge([currency::$selected['code']], [settings::get('store_currency_code')], array_keys(currency::$currencies)));
 
 	$customizations_sort_options = [
-		[language::translate('title_list_order', 'List Order'), 'priority'],
-		[language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'],
+		[t('title_list_order', 'List Order'), 'priority'],
+		[t('title_alphabetical', 'Alphabetical'), 'alphabetical'],
 	];
 
 ?>
@@ -195,17 +195,17 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_create_new_product', 'Create New Product'); ?>
+			<?php echo $app_icon; ?> <?php echo !empty($product->data['id']) ? t('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : t('title_create_new_product', 'Create New Product'); ?>
 		</div>
 	</div>
 
 	<nav class="tabs">
-		<a class="tab-item active" data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a>
-		<a class="tab-item" data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a>
-		<a class="tab-item" data-toggle="tab" href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a>
-		<a class="tab-item" data-toggle="tab" href="#tab-attributes"><?php echo language::translate('title_attributes', 'Attributes'); ?></a>
-		<a class="tab-item" data-toggle="tab" href="#tab-customizations"><?php echo language::translate('title_customizations', 'Customizations'); ?></a>
-		<a class="tab-item" data-toggle="tab" href="#tab-stock"><?php echo language::translate('title_stock', 'Stock'); ?></a>
+		<a class="tab-item active" data-toggle="tab" href="#tab-general"><?php echo t('title_general', 'General'); ?></a>
+		<a class="tab-item" data-toggle="tab" href="#tab-information"><?php echo t('title_information', 'Information'); ?></a>
+		<a class="tab-item" data-toggle="tab" href="#tab-prices"><?php echo t('title_prices', 'Prices'); ?></a>
+		<a class="tab-item" data-toggle="tab" href="#tab-attributes"><?php echo t('title_attributes', 'Attributes'); ?></a>
+		<a class="tab-item" data-toggle="tab" href="#tab-customizations"><?php echo t('title_customizations', 'Customizations'); ?></a>
+		<a class="tab-item" data-toggle="tab" href="#tab-stock"><?php echo t('title_stock', 'Stock'); ?></a>
 	</nav>
 
 	<div class="card-body">
@@ -218,27 +218,27 @@
 						<div class="col-md-4">
 
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
+								<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
 								<?php echo functions::form_toggle('status', 'e/d', true); ?>
 							</label>
 
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_featured', 'Featured'); ?></div>
+								<div class="form-label"><?php echo t('title_featured', 'Featured'); ?></div>
 								<?php echo functions::form_toggle('featured', 'y/n', true); ?>
 							</label>
 
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_brand', 'Brand'); ?></div>
+								<div class="form-label"><?php echo t('title_brand', 'Brand'); ?></div>
 								<?php echo functions::form_select_brand('brand_id', true); ?>
 							</label>
 
 							<div class="form-group">
-								<div class="form-label"><?php echo language::translate('title_categories', 'Categories'); ?></div>
+								<div class="form-label"><?php echo t('title_categories', 'Categories'); ?></div>
 								<?php echo functions::form_select_category('categories[]', true, 'style="max-height: 480px;"'); ?>
 							</div>
 
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_default_category', 'Default Category'); ?></div>
+								<div class="form-label"><?php echo t('title_default_category', 'Default Category'); ?></div>
 								<?php echo functions::form_select('default_category_id', [], true); ?>
 							</label>
 
@@ -246,14 +246,14 @@
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_updated_at', 'Updated At'); ?></div>
+										<div class="form-label"><?php echo t('title_updated_at', 'Updated At'); ?></div>
 										<div><?php echo functions::datetime_when($product->data['updated_at']); ?></div>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_created_at', 'Created At'); ?></div>
+										<div class="form-label"><?php echo t('title_created_at', 'Created At'); ?></div>
 										<div><?php echo functions::datetime_when($product->data['created_at']); ?></div>
 									</label>
 								</div>
@@ -264,34 +264,34 @@
 						<div class="col-md-4">
 
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+								<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 								<?php echo functions::form_regional_text('name['. language::$selected['code'] .']', language::$selected['code'], true); ?>
 							</label>
 
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_code', 'Code'); ?></div>
+								<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
 								<?php echo functions::form_input_text('code', true); ?>
 							</label>
 
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_keywords', 'Keywords'); ?></div>
+								<div class="form-label"><?php echo t('title_keywords', 'Keywords'); ?></div>
 								<?php echo functions::form_input_tags('keywords', true); ?>
 							</label>
 
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_valid_from', 'Date Valid From'); ?></div>
+								<div class="form-label"><?php echo t('title_valid_from', 'Date Valid From'); ?></div>
 								<?php echo functions::form_input_datetime('valid_from', true); ?>
 							</label>
 
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_valid_to', 'Date Valid To'); ?></div>
+								<div class="form-label"><?php echo t('title_valid_to', 'Date Valid To'); ?></div>
 								<?php echo functions::form_input_datetime('valid_to', true); ?>
 							</label>
 						</div>
 
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_images', 'Images'); ?></div>
+								<div class="form-label"><?php echo t('title_images', 'Images'); ?></div>
 <?php
 	if ($product->data['images']) {
 		$image = current($product->data['images']);
@@ -313,9 +313,9 @@
 
 									<div style="align-content: center;">
 										<div class="btn-group">
-											<button name="move_up" class="btn btn-default btn-sm" class="button" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></button>
-											<button name="move_down" class="btn btn-default btn-sm" class="button" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></button>
-											<button name="remove" class="btn btn-default btn-sm" class="button" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></button>
+											<button name="move_up" class="btn btn-default btn-sm" class="button" title="<?php echo t('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></button>
+											<button name="move_down" class="btn btn-default btn-sm" class="button" title="<?php echo t('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></button>
+											<button name="remove" class="btn btn-default btn-sm" class="button" title="<?php echo t('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></button>
 										</div>
 									</div>
 								</div>
@@ -325,7 +325,7 @@
 
 							<label class="form-group">
 								<button name="add_image" type="button" class="add btn btn-default btn-sm">
-									<?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_image', 'Add Image'); ?>
+									<?php echo functions::draw_fonticon('add'); ?> <?php echo t('text_add_image', 'Add Image'); ?>
 								</button>
 							</label>
 						</div>
@@ -349,36 +349,36 @@
 								<div class="col-md-6">
 
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+										<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 										<?php echo functions::form_regional_text('name['. $language_code .']', $language_code, true); ?>
 									</label>
 
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_short_description', 'Short Description'); ?></div>
+										<div class="form-label"><?php echo t('title_short_description', 'Short Description'); ?></div>
 										<?php echo functions::form_regional_text('short_description['. $language_code .']', $language_code, true); ?>
 									</label>
 
 									<div class="form-group">
-										<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
+										<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
 										<?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 250px;"'); ?>
 									</div>
 
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_synonyms', 'Synonyms'); ?></div>
+										<div class="form-label"><?php echo t('title_synonyms', 'Synonyms'); ?></div>
 										<?php echo functions::form_input_tags('synonyms['. $language_code .']', true); ?>
 									</label>
 
 									<div class="grid">
 										<div class="col-md-6">
 											<label class="form-group">
-												<div class="form-label"><?php echo language::translate('title_head_title', 'Head Title'); ?></div>
+												<div class="form-label"><?php echo t('title_head_title', 'Head Title'); ?></div>
 												<?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true); ?>
 											</label>
 										</div>
 
 										<div class="col-md-6">
 											<label class="form-group">
-												<div class="form-label"><?php echo language::translate('title_meta_description', 'Meta Description'); ?></div>
+												<div class="form-label"><?php echo t('title_meta_description', 'Meta Description'); ?></div>
 												<?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
 											</label>
 										</div>
@@ -387,9 +387,9 @@
 
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('icon-question'); ?></a></div>
+										<div class="form-label"><?php echo t('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('icon-question'); ?></a></div>
 										<?php echo functions::form_regional_textarea('technical_data['. $language_code .']', $language_code, true, 'style="height: 640px;"'); ?>
-										<div><?php echo functions::form_checkbox('autofill_technical_data', ['1', language::translate('text_autogenerate_from_attributes', 'Generate from attributes')], ''); ?></div>
+										<div><?php echo functions::form_checkbox('autofill_technical_data', ['1', t('text_autogenerate_from_attributes', 'Generate from attributes')], ''); ?></div>
 									</label>
 								</div>
 							</div>
@@ -404,31 +404,31 @@
 					<div class="grid" style="max-width: 720px;">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_recommended_price', 'Recommended Price'); ?> / MSRP</div>
+								<div class="form-label"><?php echo t('title_recommended_price', 'Recommended Price'); ?> / MSRP</div>
 								<?php echo functions::form_input_money('recommended_price', settings::get('store_currency_code'), true); ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_tax_class', 'Tax Class'); ?></div>
+								<div class="form-label"><?php echo t('title_tax_class', 'Tax Class'); ?></div>
 								<?php echo functions::form_select_tax_class('tax_class_id', true); ?>
 							</label>
 						</div>
 					</div>
 
 					<h2 style="margin-top: 2em;">
-						<?php echo language::translate('title_prices', 'Prices'); ?>
+						<?php echo t('title_prices', 'Prices'); ?>
 					</h2>
 
 					<div style="margin: 0 -2em">
 						<table id="prices" class="table data-table">
 							<thead>
 								<tr>
-									<th style="width: 250px;"><?php echo language::translate('title_customer_group', 'Customer Group'); ?></th>
-									<th style="width: 50px;"><?php echo language::translate('title_min_quantity', 'Min. Quantity'); ?></th>
-									<th style="width: 200px;" class="text-center"><?php echo language::translate('title_net_price', 'Net Price'); ?></th>
-									<th style="width: 200px;" class="text-center"><?php echo language::translate('title_gross_price', 'Gross Price'); ?>  <a href="#" id="price-incl-tax-tooltip"><?php echo functions::draw_fonticon('icon-question'); ?></a></th>
+									<th style="width: 250px;"><?php echo t('title_customer_group', 'Customer Group'); ?></th>
+									<th style="width: 50px;"><?php echo t('title_min_quantity', 'Min. Quantity'); ?></th>
+									<th style="width: 200px;" class="text-center"><?php echo t('title_net_price', 'Net Price'); ?></th>
+									<th style="width: 200px;" class="text-center"><?php echo t('title_gross_price', 'Gross Price'); ?>  <a href="#" id="price-incl-tax-tooltip"><?php echo functions::draw_fonticon('icon-question'); ?></a></th>
 									<th></th>
 									<th style="width: 50px;"></th>
 								</tr>
@@ -457,7 +457,7 @@
 									<td><?php echo functions::form_input_money('prices['.$key.'][gross]', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?></td>
 									<td></td>
 									<td>
-										<a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
+										<a class="btn btn-default btn-sm remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>">
 											<?php echo functions::draw_fonticon('remove'); ?>
 										</a>
 									</td>
@@ -469,7 +469,7 @@
 								<tr>
 									<td colspan="99">
 										<button class="btn btn-default add" type="button">
-											<?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_price', 'Add Price'); ?>
+											<?php echo functions::draw_fonticon('add'); ?> <?php echo t('text_add_price', 'Add Price'); ?>
 										</button>
 									</td>
 								</tr>
@@ -478,18 +478,18 @@
 					</div>
 
 					<h2 style="margin-top: 2em;">
-						<?php echo language::translate('title_campaigns', 'Campaigns'); ?>
+						<?php echo t('title_campaigns', 'Campaigns'); ?>
 					</h2>
 
 					<div style="margin: 0 -2em">
 						<table id="campaigns" class="table data-table">
 							<thead>
 								<tr>
-									<th style="width: 250px;"><?php echo language::translate('title_campaign', 'Campaign'); ?></th>
-									<th style="width: 200px;"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
-									<th style="width: 200px;"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
-									<th style="width: 200px;"><?php echo language::translate('title_price', 'Price'); ?></th>
-									<th style="width: 200px;"><?php echo language::translate('title_discount', 'Discount'); ?></th>
+									<th style="width: 250px;"><?php echo t('title_campaign', 'Campaign'); ?></th>
+									<th style="width: 200px;"><?php echo t('title_valid_from', 'Valid From'); ?></th>
+									<th style="width: 200px;"><?php echo t('title_valid_to', 'Valid To'); ?></th>
+									<th style="width: 200px;"><?php echo t('title_price', 'Price'); ?></th>
+									<th style="width: 200px;"><?php echo t('title_discount', 'Discount'); ?></th>
 									<th></th>
 									<th style="width: 50px;"></th>
 								</tr>
@@ -519,7 +519,7 @@
 									<td><?php echo functions::form_input_percent('campaigns['.$key.'][percentage]', '', 2, 'min="0"'); ?></td>
 									<td></td>
 									<td>
-										<a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
+										<a class="btn btn-default btn-sm remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>">
 											<?php echo functions::draw_fonticon('remove'); ?>
 										</a>
 									</td>
@@ -531,7 +531,7 @@
 								<tr>
 									<td colspan="7">
 										<button class="btn btn-default add" type="button">
-											<?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_campaign', 'Add Campaign'); ?>
+											<?php echo functions::draw_fonticon('add'); ?> <?php echo t('text_add_campaign', 'Add Campaign'); ?>
 										</button>
 									</td>
 								</tr>
@@ -545,8 +545,8 @@
 					<table id="attributes" class="table data-table">
 						<thead>
 							<tr>
-								<th style="width: 320px;"><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></th>
-								<th style="width: 320px;"><?php echo language::translate('title_attribute_value', 'Attribute Value'); ?></th>
+								<th style="width: 320px;"><?php echo t('title_attribute_group', 'Attribute Group'); ?></th>
+								<th style="width: 320px;"><?php echo t('title_attribute_value', 'Attribute Value'); ?></th>
 								<th style="width: 60px;"></th>
 							</tr>
 						</thead>
@@ -566,7 +566,7 @@
 									<?php echo $_POST['attributes'][$key]['custom_value']; ?>
 								</td>
 								<td class="text-end">
-									<button name="remove" type="button" class="btn btn-default btn-sm" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
+									<button name="remove" type="button" class="btn btn-default btn-sm" title="<?php echo t('title_remove', 'Remove'); ?>">
 										<?php echo functions::draw_fonticon('remove'); ?>
 									</a>
 								</td>
@@ -581,7 +581,7 @@
 									<?php echo functions::form_select('new_attribute[value_id]', [], ''); ?></td>
 									<?php echo functions::form_input_text('new_attribute[custom_value]', '', 'disabled hidden'); ?>
 								</td>
-								<td class="text-end"><?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
+								<td class="text-end"><?php echo functions::form_button('add', t('title_add', 'Add'), 'button'); ?></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -594,13 +594,13 @@
 						<li data-group-id="<?php echo functions::escape_html($group_id); ?>" data-group-name="<?php echo functions::escape_html($customization['name']); ?>">
 
 							<div class="float-end">
-								<button name="move-group-up" type="button" class="btn btn-default" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>">
+								<button name="move-group-up" type="button" class="btn btn-default" title="<?php echo functions::escape_html(t('title_move_up', 'Move Up')); ?>">
 									<?php echo functions::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?>
 								</button>
-								<button name="move-group-down" type="button" class="btn btn-default" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>">
+								<button name="move-group-down" type="button" class="btn btn-default" title="<?php echo functions::escape_html(t('title_move_down', 'Move Down')); ?>">
 									<?php echo functions::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?>
 								</button>
-								<button name="remove-group" type="button" class="btn btn-default" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>">
+								<button name="remove-group" type="button" class="btn btn-default" title="<?php echo functions::escape_html(t('title_remove', 'Remove')); ?>">
 									<?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?>
 								</button>
 							</div>
@@ -611,7 +611,7 @@
 							<div class="grid">
 								<div class="col-sm-4 col-md-2">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_function', 'Function'); ?></div>
+										<div class="form-label"><?php echo t('title_function', 'Function'); ?></div>
 										<?php echo functions::form_select('customizations['.$group_id.'][function]', in_array($customization['function'], ['select', 'radio', 'checkbox']) ? ['select', 'radio', 'checkbox'] : ['text', 'textarea'], true); ?>
 									</label>
 								</div>
@@ -619,7 +619,7 @@
 								<?php if (in_array($customization['function'], ['select', 'radio', 'checkbox'])) { ?>
 								<div class="col-sm-4 col-md-2">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_sort_values', 'Sort Values'); ?></div>
+										<div class="form-label"><?php echo t('title_sort_values', 'Sort Values'); ?></div>
 										<?php echo functions::form_select('customizations['.$group_id.'][sort]', $customizations_sort_options, true); ?>
 									</label>
 								</div>
@@ -627,8 +627,8 @@
 
 								<div class="col-sm-4 col-md-2">
 									<div class="form-group">
-										<div class="form-label"><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></div>
-										<?php echo functions::form_checkbox('customizations['.$group_id.'][required]', ['1', language::translate('title_required', 'Required')], true); ?>
+										<div class="form-label"><?php echo functions::escape_js(t('title_required', 'Required')); ?></div>
+										<?php echo functions::form_checkbox('customizations['.$group_id.'][required]', ['1', t('title_required', 'Required')], true); ?>
 									</div>
 								</div>
 							</div>
@@ -638,9 +638,9 @@
 								<table class="table data-table">
 									<thead>
 										<tr>
-											<th class="main"><?php echo language::translate('title_option', 'Option'); ?></th>
-											<th style="width: 150px;"><?php echo language::translate('title_price_modifier', 'Price Modifier'); ?></th>
-											<th colspan="<?php echo count($currency_codes); ?>"><?php echo language::translate('title_price_adjustment', 'Price Adjustment'); ?></th>
+											<th class="main"><?php echo t('title_option', 'Option'); ?></th>
+											<th style="width: 150px;"><?php echo t('title_price_modifier', 'Price Modifier'); ?></th>
+											<th colspan="<?php echo count($currency_codes); ?>"><?php echo t('title_price_adjustment', 'Price Adjustment'); ?></th>
 											<th style="width: 85px;">&nbsp;</th>
 										</tr>
 									</thead>
@@ -652,13 +652,13 @@
 											<td class="text-center"><?php echo functions::form_select('customizations['.$group_id.'][values]['. $value_id .'][price_modifier]', ['+','%','*','='], true); ?></td>
 											<?php foreach ($currency_codes as $currency_code) echo '<td>'. functions::form_select_currency($currency_code, 'customizations['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['customizations'][$group_id]['values'][$value_id][$currency_code]) || $_POST['customizations'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
 											<td class="text-end">
-												<button name="move-up" type="button" class="btn btn-default btn-sm" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>">
+												<button name="move-up" type="button" class="btn btn-default btn-sm" title="<?php echo functions::escape_html(t('title_move_up', 'Move Up')); ?>">
 													<?php echo functions::draw_fonticon('move-up'); ?>
 												</button>
-												<button name="move-down" type="button" class="btn btn-default btn-sm" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>">
+												<button name="move-down" type="button" class="btn btn-default btn-sm" title="<?php echo functions::escape_html(t('title_move_down', 'Move Down')); ?>">
 													<?php echo functions::draw_fonticon('move-down'); ?>
 												</button>
-												<button name="remove" type="button" class="btn btn-default btn-sm" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>">
+												<button name="remove" type="button" class="btn btn-default btn-sm" title="<?php echo functions::escape_html(t('title_remove', 'Remove')); ?>">
 													<?php echo functions::draw_fonticon('remove'); ?>
 												</button>
 											</td>
@@ -675,10 +675,10 @@
 
 					<div>
 						<a class="btn btn-default" href="#modal-predefined-customization" data-toggle="lightbox">
-							<?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_predefined_customization', 'Add Predefined Option'); ?>
+							<?php echo functions::draw_fonticon('add'); ?> <?php echo t('title_add_predefined_customization', 'Add Predefined Option'); ?>
 						</a>
 						<a class="btn btn-default" href="#modal-user-input-customization" data-toggle="lightbox">
-							<?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_user_input_customization', 'Add User Input Option'); ?>
+							<?php echo functions::draw_fonticon('add'); ?> <?php echo t('title_add_user_input_customization', 'Add User Input Option'); ?>
 						</a>
 					</div>
 
@@ -686,35 +686,35 @@
 						<fieldset style="max-width: 960px;">
 
 							<legend>
-								<?php echo language::translate('title_add_predefined_option', 'Add Predefined Option'); ?>
+								<?php echo t('title_add_predefined_option', 'Add Predefined Option'); ?>
 							</legend>
 
 							<div class="grid">
 
 								<div class="col-md-3">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></div>
+										<div class="form-label"><?php echo t('title_attribute_group', 'Attribute Group'); ?></div>
 										<?php echo functions::form_select_attribute_group('new_predefined_customization[group_id]', ''); ?>
 									</label>
 								</div>
 
 								<div class="col-md-3">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_value', 'Value'); ?></div>
+										<div class="form-label"><?php echo t('title_value', 'Value'); ?></div>
 										<?php echo functions::form_select('new_predefined_customization[value_id]', [['','']], '', 'disabled'); ?>
 									</label>
 								</div>
 
 								<div class="col-md-3">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_custom_value', 'Custom Value'); ?></div>
+										<div class="form-label"><?php echo t('title_custom_value', 'Custom Value'); ?></div>
 										<?php echo functions::form_input_text('new_predefined_customization[custom_value]', ''); ?>
 									</label>
 								</div>
 
 								<div class="col-md-3">
 									<br>
-									<?php echo functions::form_button('add_predefined_customization', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
+									<?php echo functions::form_button('add_predefined_customization', t('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
 								</div>
 							</div>
 
@@ -725,20 +725,20 @@
 						<fieldset>
 
 							<legend>
-								<?php echo language::translate('title_add_user_input_option', 'Add User Input Option'); ?>
+								<?php echo t('title_add_user_input_option', 'Add User Input Option'); ?>
 							</legend>
 
 							<div class="grid">
 								<div class="col-md-8">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></div>
+										<div class="form-label"><?php echo t('title_attribute_group', 'Attribute Group'); ?></div>
 										<?php echo functions::form_select_attribute_group('new_user_input_customization[group_id]', ''); ?>
 									</label>
 								</div>
 
 								<div class="col-md-4">
 									<br>
-									<?php echo functions::form_button('add_user_input_customization', language::translate('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
+									<?php echo functions::form_button('add_user_input_customization', t('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
 								</div>
 							</div>
 
@@ -751,28 +751,28 @@
 					<div class="grid" style="max-width: 720px;">
 						<div class="col-md-3">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_min_order_qty', 'Min. Order Qty'); ?></div>
+								<div class="form-label"><?php echo t('title_min_order_qty', 'Min. Order Qty'); ?></div>
 								<?php echo functions::form_input_decimal('quantity_min', true, 2, 'min="0"'); ?>
 							</label>
 						</div>
 
 						<div class="col-md-3">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_max_order_quantity', 'Max. Order Qty'); ?></div>
+								<div class="form-label"><?php echo t('title_max_order_quantity', 'Max. Order Qty'); ?></div>
 								<?php echo functions::form_input_decimal('quantity_max', true, 2, 'min="0"'); ?>
 							</label>
 						</div>
 
 						<div class="col-md-3">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_quantity_step', 'Quantity Step'); ?></div>
+								<div class="form-label"><?php echo t('title_quantity_step', 'Quantity Step'); ?></div>
 								<?php echo functions::form_input_decimal('quantity_step', true, 2, 'min="0"'); ?>
 							</label>
 						</div>
 
 						<div class="col-md-3">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_quantity_unit', 'Quantity Unit'); ?></div>
+								<div class="form-label"><?php echo t('title_quantity_unit', 'Quantity Unit'); ?></div>
 								<?php echo functions::form_select_quantity_unit('quantity_unit_id', true); ?>
 							</label>
 						</div>
@@ -781,26 +781,26 @@
 					<div class="grid" style="max-width: 720px;">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></div>
+								<div class="form-label"><?php echo t('title_delivery_status', 'Delivery Status'); ?></div>
 								<?php echo functions::form_select_delivery_status('delivery_status_id', true); ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_sold_out_status', 'Sold Out Status'); ?></div>
+								<div class="form-label"><?php echo t('title_sold_out_status', 'Sold Out Status'); ?></div>
 								<?php echo functions::form_select_sold_out_status('sold_out_status_id', true); ?>
 							</label>
 						</div>
 					</div>
 
-					<h3><?php echo language::translate('title_stock_options', 'Stock Options'); ?></h3>
+					<h3><?php echo t('title_stock_options', 'Stock Options'); ?></h3>
 
 					<div class="grid">
 						<div class="col-md-3">
 							<div class="form-group">
-								<div class="form-label"><?php echo language::translate('title_type', 'Type'); ?></div>
-								<?php echo functions::form_toggle('stock_option_type', ['variation' => language::translate('title_variation', 'Variation'), 'bundle' => language::translate('title_bundle', 'Bundle')], true); ?>
+								<div class="form-label"><?php echo t('title_type', 'Type'); ?></div>
+								<?php echo functions::form_toggle('stock_option_type', ['variation' => t('title_variation', 'Variation'), 'bundle' => t('title_bundle', 'Bundle')], true); ?>
 							</div>
 						</div>
 					</div>
@@ -809,13 +809,13 @@
 						<table id="stock-options" class="table data-table">
 							<thead>
 								<tr>
-									<th><?php echo language::translate('title_item', 'Item'); ?></th>
-									<th style="width: 150px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
-									<th style="width: 125px;" class="text-center"><?php echo language::translate('title_modifier', 'Modifier'); ?></th>
-									<th style="width: 125px;" class="text-center"><?php echo language::translate('title_price', 'Price'); ?></th>
-									<th style="width: 125px;" class="text-center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-									<th style="width: 175px;" class="text-center"><?php echo language::translate('title_adjust', 'Adjust'); ?></th>
-									<th style="width: 175px;" class="text-center"><?php echo language::translate('title_backordered', 'Backordered'); ?></th>
+									<th><?php echo t('title_item', 'Item'); ?></th>
+									<th style="width: 150px;"><?php echo t('title_sku', 'SKU'); ?></th>
+									<th style="width: 125px;" class="text-center"><?php echo t('title_modifier', 'Modifier'); ?></th>
+									<th style="width: 125px;" class="text-center"><?php echo t('title_price', 'Price'); ?></th>
+									<th style="width: 125px;" class="text-center"><?php echo t('title_quantity', 'Quantity'); ?></th>
+									<th style="width: 175px;" class="text-center"><?php echo t('title_adjust', 'Adjust'); ?></th>
+									<th style="width: 175px;" class="text-center"><?php echo t('title_backordered', 'Backordered'); ?></th>
 									<th style="width: 85px;"></th>
 									<th style="width: 50px;"></th>
 								</tr>
@@ -867,12 +867,12 @@
 										</div>
 									</td>
 									<td class="text-end">
-										<a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
+										<a class="remove btn btn-default btn-sm" href="#" title="<?php echo t('title_remove', 'Remove'); ?>">
 											<?php echo functions::draw_fonticon('icon-times', 'style="color: #c33;"'); ?>
 										</a>
 									</td>
 									<td class="text-end">
-										<a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_options'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true"data-max-width="980px"  title="<?php echo language::translate('title_edit', 'Edit'); ?>">
+										<a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_options'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true"data-max-width="980px"  title="<?php echo t('title_edit', 'Edit'); ?>">
 											<?php echo functions::draw_fonticon('edit'); ?>
 										</a>
 									</td>
@@ -884,10 +884,10 @@
 								<tr>
 									<td colspan="99">
 										<a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="980px">
-											<?php echo functions::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?>
+											<?php echo functions::draw_fonticon('icon-plus'); ?> <?php echo t('title_create_new_stock_item', 'Create New Stock Item'); ?>
 										</a>
 										<a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="980px">
-											<?php echo functions::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_existing_stock_item', 'Add Existing Stock Item'); ?>
+											<?php echo functions::draw_fonticon('icon-plus'); ?> <?php echo t('title_add_existing_stock_item', 'Add Existing Stock Item'); ?>
 										</a>
 									</td>
 								</tr>
@@ -989,9 +989,9 @@
 			'  <?php echo functions::form_input_file('new_images[]'); ?>',
 			'  <div style="align-content: center;">',
 			'    <div class="btn-group">',
-			'      <button name="move_up" class="btn btn-default btn-sm" type="button" title="<?php echo language::translate('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></button>',
-			'      <button name="move_down" class="btn btn-default btn-sm" type="button" title="<?php echo language::translate('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></button>',
-			'      <button name="remove" class="btn btn-default btn-sm" type="button" title="<?php echo language::translate('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></button>',
+			'      <button name="move_up" class="btn btn-default btn-sm" type="button" title="<?php echo t('text_move_up', 'Move up'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-up'); ?></button>',
+			'      <button name="move_down" class="btn btn-default btn-sm" type="button" title="<?php echo t('text_move_down', 'Move down'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('move-down'); ?></button>',
+			'      <button name="remove" class="btn btn-default btn-sm" type="button" title="<?php echo t('title_remove', 'Remove'); ?>" style="align-content: center;"><?php echo functions::draw_fonticon('remove'); ?></button>',
 			'    </div>',
 			'  </div>',
 			'</div>'
@@ -1153,7 +1153,7 @@
 	// Prices
 	$('#price-incl-tax-tooltip').on('click', function(e) {
 		e.preventDefault();
-		alert('<?php echo str_replace(["\r", "\n", "'"], ["", "", "\\'"], language::translate('tooltip_field_price_incl_tax', 'This field helps you calculate net price based on the tax rates set for the store region. The prices stored in the database are always excluding tax.')); ?>');
+		alert('<?php echo str_replace(["\r", "\n", "'"], ["", "", "\\'"], t('tooltip_field_price_incl_tax', 'This field helps you calculate net price based on the tax rates set for the store region. The prices stored in the database are always excluding tax.')); ?>');
 	});
 
 	$('#prices').on('focus', 'input[name^="prices"]', function(e) {
@@ -1236,7 +1236,7 @@
 			'  <td><?php echo functions::escape_js(functions::form_input_money('prices[__index__][gross]', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?></td>',
 			'  <td></td>',
 			'  <td>',
-			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>">',
+			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove'), true); ?>">',
 			'      <?php echo functions::escape_js(functions::draw_fonticon('remove')); ?>',
 			'    </a>',
 			'  </td>',
@@ -1362,7 +1362,7 @@
 			'  <td><?php echo functions::escape_js(functions::form_input_percent('campaigns[__index__][percentage]', '', 2)); ?></td>',
 			'  <td></td>',
 			'  <td>',
-			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>">',
+			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove'), true); ?>">',
 			'      <?php echo functions::escape_js(functions::draw_fonticon('remove')); ?>',
 			'    </a>',
 			'  </td>',
@@ -1406,7 +1406,7 @@
 
 		if ($select.val() == '') {
 			$select_value.prop('disabled', true).html(
-				'<option value=""><?php echo functions::escape_js(language::translate('title_select_attribute_group_first', 'Select attribute group first')); ?></option>'
+				'<option value=""><?php echo functions::escape_js(t('title_select_attribute_group_first', 'Select attribute group first')); ?></option>'
 			);
 			$custom_value.prop('disabled', true).val('');
 			return;
@@ -1427,7 +1427,7 @@
 						disabled:  true,
 						hidden: true
 					}).html(
-						'<option value=""><?php echo functions::escape_js(language::translate('title_no_values_found', 'No values found')); ?></option>'
+						'<option value=""><?php echo functions::escape_js(t('title_no_values_found', 'No values found')); ?></option>'
 					);
 
 					$custom_value.prop({
@@ -1479,7 +1479,7 @@
 			'    <?php echo functions::form_input_hidden('attributes[__index__][custom_value]', ''); ?>',
 			'  </td>',
 			'  <td class="text-end">',
-			'    <button name="remove" type="button" class="btn btn-default btn-sm" title="<?php echo language::translate('title_remove', 'Remove'); ?>">',
+			'    <button name="remove" type="button" class="btn btn-default btn-sm" title="<?php echo t('title_remove', 'Remove'); ?>">',
 			'      <?php echo functions::draw_fonticon('remove'); ?>',
 			'    </button>',
 			'  </td>',
@@ -1513,7 +1513,7 @@
 				if (data) {
 					$('select[name="new_attribute[value_id]"]').prop('disabled', false)
 					$(':input[name="new_attribute[custom_value]"]').prop('disabled', false)
-					$('select[name="new_attribute[value_id]"]').append('<option value="0">-- <?php echo language::translate('title_select', 'Select'); ?> --</option>')
+					$('select[name="new_attribute[value_id]"]').append('<option value="0">-- <?php echo t('title_select', 'Select'); ?> --</option>')
 					$.each(data, function(i, zone) {
 						$('select[name="new_attribute[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>')
 					})
@@ -1532,18 +1532,18 @@
 			while ($(':input[name^="attributes[new_'+__index__+']"]').length) __index__++
 
 		if ($('select[name="new_attribute[group_id]"]').val() == '') {
-			alert("<?php echo language::translate('error_must_select_attribute_group', 'You must select an attribute group'); ?>")
+			alert("<?php echo t('error_must_select_attribute_group', 'You must select an attribute group'); ?>")
 			return
 		}
 
 		if ($('select[name="new_attribute[value_id]"]').val() == '' || $('select[name="new_attribute[value_id]"]').val() == '0') {
 			if ($('input[name="new_attribute[custom_value]"]').val() == '') {
-				alert("<?php echo language::translate('error_must_select_attribute_value', 'You must select an attribute value'); ?>")
+				alert("<?php echo t('error_must_select_attribute_value', 'You must select an attribute value'); ?>")
 				return
 			}
 		} else {
 			if ($('input[name="new_attribute[custom_value]"]').val() != '') {
-				alert("<?php echo language::translate('error_cannot_define_both_value_and_custom_value', 'You can not define both a value and a custom value'); ?>")
+				alert("<?php echo t('error_cannot_define_both_value_and_custom_value', 'You can not define both a value and a custom value'); ?>")
 				return
 			}
 		}
@@ -1562,7 +1562,7 @@
 			'  <td>new_value_name</td>',
 			'  <td>new_custom_value</td>',
 			'  <td class="text-end">',
-			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>">',
+			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>">',
 			'      <?php echo functions::draw_fonticon('remove'); ?>',
 			'    </a>',
 			'  </td>',
@@ -1695,7 +1695,7 @@
 				$('select[name="new_predefined_customization[value_id]"]').html('');
 				if ($('select[name="new_predefined_customization[value_id]"]').attr('disabled')) $('select[name="new_predefined_customization[value_id]"]').prop('disabled', false);
 				if (data) {
-					$('select[name="new_predefined_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
+					$('select[name="new_predefined_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(t('title_select', 'Select')); ?> --</option>');
 					$.each(data, function(i, zone) {
 						$('select[name="new_predefined_customization[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
 					});
@@ -1719,7 +1719,7 @@
 				if ($('select[name="new_user_input_customization[value_id]"]').attr('disabled')) $('select[name="new_user_input_customization[value_id]"]').prop('disabled', false);
 
 				if (data) {
-					$('select[name="new_user_input_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
+					$('select[name="new_user_input_customization[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(t('title_select', 'Select')); ?> --</option>');
 					$.each(data, function(i, zone) {
 						$('select[name="new_user_input_customization[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
 					});
@@ -1749,18 +1749,18 @@
 			customValueElement = $(this).closest('fieldset').find('input[name="new_predefined_customization[custom_value]"]');
 
 		if ($(groupElement).val() == '') {
-			alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
+			alert("<?php echo functions::escape_js(t('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
 			return;
 		}
 
 		if ($(valueElement).val() == '' || $(valueElement).val() == '0') {
 			if ($(customValueElement).val() == '') {
-				alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_value', 'You must select an attribute value')); ?>");
+				alert("<?php echo functions::escape_js(t('error_must_select_attribute_value', 'You must select an attribute value')); ?>");
 			}
 		} else {
 			if ($(customValueElement).val() != '') {
 				console.log($(valueElement).val(), $(customValueElement).val());
-				alert("<?php echo functions::escape_js(language::translate('error_cannot_define_both_value_and_custom_value', 'You cannot define both a value and a custom value')); ?>");
+				alert("<?php echo functions::escape_js(t('error_cannot_define_both_value_and_custom_value', 'You cannot define both a value and a custom value')); ?>");
 				return;
 			}
 		}
@@ -1768,12 +1768,12 @@
 		if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').length) {
 			if ($(customValueElement).val() != '') {
 				if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[custom_value]"][value="'+ escape($(customValueElement).val()) +'"]').length) {
-					alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>");
+					alert("<?php echo functions::escape_js(t('error_option_already_defined', 'This option is already defined')); ?>");
 					return;
 				}
 			} else {
 				if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').closest('tr').find('input[name$="[custom_value]"]').val() == $(customValueElement).val()) {
-					alert("<?php echo functions::escape_js(language::translate('error_option_already_defined', 'This option is already defined')); ?>");
+					alert("<?php echo functions::escape_js(t('error_option_already_defined', 'This option is already defined')); ?>");
 					return;
 				}
 			}
@@ -1784,29 +1784,29 @@
 			var $output = $([
 				'<li data-group-id="'+ $(groupElement).val().escapeAttr() +'" data-group-name="'+ $(groupElement).find('option:selected').text().escapeAttr() +'">',
 				'  <div class="float-end">',
-				'    <a class="btn btn-default move-group-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
-				'    <a class="btn btn-default move-group-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?></a>',
-				'    <a class="btn btn-default remove-group" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a>',
+				'    <a class="btn btn-default move-group-up" href="#" title="<?php echo functions::escape_js(t('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
+				'    <a class="btn btn-default move-group-down" href="#" title="<?php echo functions::escape_js(t('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?></a>',
+				'    <a class="btn btn-default remove-group" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a>',
 				'  </div>',
 				'  <h2>'+ $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"] option:selected').text() +'</h2>',
 				'  <?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
 				'  <div class="grid">',
 				'    <div class="col-sm-4 col-md-2">',
 				'      <div class="form-group">',
-				'        <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
+				'        <label><?php echo functions::escape_js(t('title_function', 'Function')); ?></label>',
 				'        <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][function]', ['select', 'radio', 'checkbox'], 'select')); ?>',
 				'      </div>',
 				'    </div>',
 				'    <div class="col-sm-4 col-md-2">',
 				'      <div class="form-group">',
-				'        <label><?php echo functions::escape_js(language::translate('title_sort_values', 'Sort Values')); ?></label>',
+				'        <label><?php echo functions::escape_js(t('title_sort_values', 'Sort Values')); ?></label>',
 				'        <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][sort]', $customizations_sort_options, 'custom')); ?>',
 				'      </div>',
 				'    </div>',
 				'    <div class="col-sm-4 col-md-2">',
 				'      <div class="form-group">',
-				'        <label class="form-label"><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
-				'          <?php echo functions::escape_js(functions::form_checkbox('customizations[new_group_id][required]', ['1', language::translate('title_required', 'Required')], true)); ?>',
+				'        <label class="form-label"><?php echo functions::escape_js(t('title_required', 'Required')); ?></label>',
+				'          <?php echo functions::escape_js(functions::form_checkbox('customizations[new_group_id][required]', ['1', t('title_required', 'Required')], true)); ?>',
 				'        </div>',
 				'      </div>',
 				'    </div>',
@@ -1815,9 +1815,9 @@
 				'    <table id="table-customizations" class="table data-table">',
 				'      <thead>',
 				'        <tr draggable="true">',
-				'          <th><?php echo functions::escape_js(language::translate('title_option', 'Option')); ?></th>',
-				'          <th style="width: 150px;"><?php echo functions::escape_js(language::translate('title_price_modifier', 'Price Modifier')); ?></th>',
-				'          <th colspan="<?php echo count(currency::$currencies); ?>"><?php echo functions::escape_js(language::translate('title_price_adjustment', 'Price Adjustment')); ?></th>',
+				'          <th><?php echo functions::escape_js(t('title_option', 'Option')); ?></th>',
+				'          <th style="width: 150px;"><?php echo functions::escape_js(t('title_price_modifier', 'Price Modifier')); ?></th>',
+				'          <th colspan="<?php echo count(currency::$currencies); ?>"><?php echo functions::escape_js(t('title_price_adjustment', 'Price Adjustment')); ?></th>',
 				'          <th style="width: 85px;"></th>',
 				'        </tr>',
 				'      </thead>',
@@ -1840,7 +1840,7 @@
 			'  <td class="grabbable"><?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][value_id]', 'new_value_id')) . functions::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>',
 			'  <td class="text-center"><?php echo functions::escape_js(functions::form_select('customizations[new_group_id][values][new_customization_value_i][price_modifier]', ['+','%','*','='], true)); ?></td>',
 			'  <?php foreach ($currency_codes as $currency_code) echo '<td style="width: 200px;">'. functions::escape_js(functions::form_select_currency($currency_code, 'customizations[new_group_id][values][new_customization_value_i]['. $currency_code. ']', '')) .'</td>'; ?>',
-			'  <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>',
+			'  <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_js(t('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_js(t('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>',
 			'</tr>'
 		].join('\n')
 			.replace('new_customization_value_i', 'new_' + new_customization_value_i++)
@@ -1860,35 +1860,35 @@
 		var groupElement = $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"]');
 
 		if ($(groupElement).val() == '') {
-			alert("<?php echo functions::escape_js(language::translate('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
+			alert("<?php echo functions::escape_js(t('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
 			return;
 		}
 
 		if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
-			alert("<?php echo functions::escape_js(language::translate('error_group_already_defined', 'This group is already defined')); ?>");
+			alert("<?php echo functions::escape_js(t('error_group_already_defined', 'This group is already defined')); ?>");
 			return;
 		}
 
 		var $output = $([
 			'<li>',
 			'  <div class="float-end">',
-			'    <a class="move-group-up btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
-			'    <a class="move-group-down btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?></a>',
-			'    <a class="remove-group btn btn-default" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a>',
+			'    <a class="move-group-up btn btn-default" href="#" title="<?php echo functions::escape_js(t('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
+			'    <a class="move-group-down btn btn-default" href="#" title="<?php echo functions::escape_js(t('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?></a>',
+			'    <a class="remove-group btn btn-default" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a>',
 			'  </div>',
 			'  <h2>'+ $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"] option:selected').text() +'</h2>',
 			'  <?php echo functions::escape_js(functions::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
 			'  <div class="grid">',
 			'    <div class="col-sm-4 col-md-2">',
 			'      <div class="form-group">',
-			'        <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
+			'        <label><?php echo functions::escape_js(t('title_function', 'Function')); ?></label>',
 			'        <?php echo functions::escape_js(functions::form_select('customizations[new_group_id][function]', ['text', 'textarea'], 'text')); ?>',
 			'      </div>',
 			'    </div>',
 			'    <div class="col-sm-4 col-md-2">',
 			'      <div class="form-group">',
-			'        <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>',
-			'        <?php echo functions::escape_js(functions::form_checkbox('customizations[new_group_id][required]', ['1', language::translate('title_required', 'Required')], true)); ?>',
+			'        <label><?php echo functions::escape_js(t('title_required', 'Required')); ?></label>',
+			'        <?php echo functions::escape_js(functions::form_checkbox('customizations[new_group_id][required]', ['1', t('title_required', 'Required')], true)); ?>',
 			'      </div>',
 			'    </div>',
 			'  </div>',
@@ -2024,10 +2024,10 @@
 			'    </div>',
 			'  </td>',
 			'  <td class="text-end">',
-			'    <a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a>',
+			'    <a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a>',
 			'  </td>',
 			'  <td class="text-end">',
-			'    <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" data-max-width="980px" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>',
+			'    <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" data-max-width="980px" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>',
 			'  </td>',
 			'</tr>'
 		].join('\n')
@@ -2065,7 +2065,7 @@
 
 		if ($('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').length) {
 			$('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').replaceWith($output);
-			//alert("<?php echo language::translate('error_item_already_defined', 'This item is already defined'); ?>");
+			//alert("<?php echo t('error_item_already_defined', 'This item is already defined'); ?>");
 		} else {
 			$('#stock-options tbody').append($output);
 		}

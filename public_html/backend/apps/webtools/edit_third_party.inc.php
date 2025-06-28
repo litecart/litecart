@@ -10,18 +10,18 @@
 		$_POST = $third_party->data;
 	}
 
-	breadcrumbs::add(!empty($third_party->data['id']) ? language::translate('title_edit_third_party', 'Edit Third Party') : language::translate('title_create_new_third_party', 'Create New Third Party'));
+	breadcrumbs::add(!empty($third_party->data['id']) ? t('title_edit_third_party', 'Edit Third Party') : t('title_create_new_third_party', 'Create New Third Party'));
 
 	if (isset($_POST['save'])) {
 
 		try {
 
 			if (empty($_POST['privacy_classes'])) {
-				throw new Exception(language::translate('error_must_provide_cookie_type', 'You must provide a cookie type'));
+				throw new Exception(t('error_must_provide_cookie_type', 'You must provide a cookie type'));
 			}
 
 			if (empty($_POST['name'])) {
-				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
+				throw new Exception(t('error_must_provide_name', 'You must provide a name'));
 			}
 
 			foreach ([
@@ -45,7 +45,7 @@
 
 			$third_party->save();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/third_parties'));
 			exit;
 
@@ -59,12 +59,12 @@
 		try {
 
 			if (empty($third_party->data['id'])) {
-				throw new Exception(language::translate('error_must_provide_third_party', 'You must provide a third party'));
+				throw new Exception(t('error_must_provide_third_party', 'You must provide a third party'));
 			}
 
 			$third_party->delete();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::link(__APP__.'/third_parties'));
 			exit;
 
@@ -74,12 +74,12 @@
 	}
 
 	$privacy_classes_options = [
-		'necessary' => language::translate('title_necessary', 'Necessary'),
-		'functionality' => language::translate('title_functionality', 'Functionality'),
-		'personalization' => language::translate('title_personalization', 'Personalization'),
-		'security' => language::translate('title_security', 'Security'),
-		'measurement' => language::translate('title_measurement', 'Measurement'),
-		'marketing' => language::translate('title_marketing', 'Marketing'),
+		'necessary' => t('title_necessary', 'Necessary'),
+		'functionality' => t('title_functionality', 'Functionality'),
+		'personalization' => t('title_personalization', 'Personalization'),
+		'security' => t('title_security', 'Security'),
+		'measurement' => t('title_measurement', 'Measurement'),
+		'marketing' => t('title_marketing', 'Marketing'),
 	];
 ?>
 <style>
@@ -91,7 +91,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($third_party->data['id']) ? language::translate('title_edit_third_party', 'Edit Third Party') : language::translate('title_create_new_third_party', 'Create New Third Party'); ?>
+			<?php echo $app_icon; ?> <?php echo !empty($third_party->data['id']) ? t('title_edit_third_party', 'Edit Third Party') : t('title_create_new_third_party', 'Create New Third Party'); ?>
 		</div>
 	</div>
 
@@ -101,21 +101,21 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<div class="form-group">
-						<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
+						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
 						<?php echo functions::form_toggle('status', 'e/d', true); ?>
 					</div>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 						<?php echo functions::form_input_text('name', true, 'required'); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo language::translate('title_privacy_classes', 'Privacy Classes'); ?></div>
+				<div class="form-label"><?php echo t('title_privacy_classes', 'Privacy Classes'); ?></div>
 				<?php echo functions::form_select('privacy_classes[]', $privacy_classes_options, true); ?>
 			</label>
 
@@ -131,17 +131,17 @@
 				<div id="<?php echo $language_code; ?>" class="tab-pane<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 
 					<div class="form-group">
-						<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
+						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
 						<?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true); ?>
 					</div>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_collected_data', 'Collected Data'); ?></div>
+						<div class="form-label"><?php echo t('title_collected_data', 'Collected Data'); ?></div>
 						<?php echo functions::form_regional_textarea('collected_data['. $language_code .']', $language_code, true); ?>
 					</label>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_purposes', 'Purposes'); ?></div>
+						<div class="form-label"><?php echo t('title_purposes', 'Purposes'); ?></div>
 						<?php echo functions::form_regional_textarea('purposes['. $language_code .']', $language_code, true); ?>
 					</label>
 
@@ -152,36 +152,36 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_country_of_juristiction', 'Country of Juristiction'); ?></div>
+						<div class="form-label"><?php echo t('title_country_of_juristiction', 'Country of Juristiction'); ?></div>
 						<?php echo functions::form_select_country('country_code', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_homepage', 'Homepage'); ?></div>
+						<div class="form-label"><?php echo t('title_homepage', 'Homepage'); ?></div>
 						<?php echo functions::form_input_url('homepage', true, 'placeholder="https://..."'); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo language::translate('title_third_policy', 'Cookie Policy'); ?></div>
+				<div class="form-label"><?php echo t('title_third_policy', 'Cookie Policy'); ?></div>
 				<?php echo functions::form_input_url('cookie_policy_url', true, 'placeholder="https://..."'); ?>
 			</label>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo language::translate('title_privacy_policy', 'Privacy Policy'); ?></div>
+				<div class="form-label"><?php echo t('title_privacy_policy', 'Privacy Policy'); ?></div>
 				<?php echo functions::form_input_url('privacy_policy_url', true, 'placeholder="https://..."'); ?>
 			</label>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo language::translate('title_opt_out', 'Opt Out'); ?></div>
+				<div class="form-label"><?php echo t('title_opt_out', 'Opt Out'); ?></div>
 				<?php echo functions::form_input_url('opt_out_url', true, 'placeholder="https://..."'); ?>
 			</label>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo language::translate('title_do_not_sell', 'Do Not Sell'); ?></div>
+				<div class="form-label"><?php echo t('title_do_not_sell', 'Do Not Sell'); ?></div>
 				<?php echo functions::form_input_url('do_not_sell_url', true, 'placeholder="https://..."'); ?>
 			</label>
 

@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_geo_zones', 'Geo Zones'),
+		'name' => t('title_geo_zones', 'Geo Zones'),
 		'group' => 'regional',
 		'default' => 'geo_zones',
 		'priority' => 0,

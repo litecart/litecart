@@ -23,8 +23,8 @@ body {
 <section id="box-maintenance-mode">
 	<img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>">
 	<hr>
-	<h1><?php echo language::translate('maintenance_mode:title', 'Maintenance Mode'); ?></h1>
-	<p><?php echo language::translate('maintenance_mode:description', 'This site is currently in maintenance mode. We\'ll be back shortly.'); ?></p>
+	<h1><?php echo t('maintenance_mode:title', 'Maintenance Mode'); ?></h1>
+	<p><?php echo t('maintenance_mode:description', 'This site is currently in maintenance mode. We\'ll be back shortly.'); ?></p>
 		</section>
 	</main>
 </div>

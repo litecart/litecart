@@ -88,12 +88,12 @@
 			header('Content-Type: application/json');
 
 			if ($stock_option['quantity'] > 0) {
-				$notice = strtr(language::translate('text_there_are_n_items_in_stock_for_option', 'There are %quantity items remaining in stock for this option'), ['%quantity' => (int)$stock_option['quantity']]);
+				$notice = strtr(t('text_there_are_n_items_in_stock_for_option', 'There are %quantity items remaining in stock for this option'), ['%quantity' => (int)$stock_option['quantity']]);
 				echo json_encode(['status' => 'ok', 'notice' => $notice]);
 				exit;
 
 			} else if (empty($product->sold_out_status['orderable'])) {
-				$notice = language::translate('notice_option_out_of_stock', 'We are out of stock for this option');
+				$notice = t('notice_option_out_of_stock', 'We are out of stock for this option');
 				echo json_encode(['status' => 'warning', 'notice' => $notice]);
 				exit;
 			}

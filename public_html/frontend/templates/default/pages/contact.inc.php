@@ -7,45 +7,45 @@
 				<div class="card-body">
 					{{notices}}
 
-					<h1><?php echo language::translate('title_contact_us', 'Contact Us'); ?></h1>
+					<h1><?php echo t('title_contact_us', 'Contact Us'); ?></h1>
 
 					<?php echo functions::form_begin('contact_form', 'post'); ?>
 
 						<div class="grid">
 							<div class="col-md-6">
 								<div class="form-group">
-									<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+									<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 									<?php echo functions::form_input_text('name', true, 'required'); ?>
 								 </div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="form-group">
-									<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
+									<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
 									<?php echo functions::form_input_email('email', true, 'required'); ?>
 								 </div>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<div class="form-label"><?php echo language::translate('title_subject', 'Subject'); ?></div>
+							<div class="form-label"><?php echo t('title_subject', 'Subject'); ?></div>
 							<?php echo functions::form_input_text('subject', true, 'required'); ?>
 						 </div>
 
 						<div class="form-group">
-							<div class="form-label"><?php echo language::translate('title_message', 'Message'); ?></div>
+							<div class="form-label"><?php echo t('title_message', 'Message'); ?></div>
 							<?php echo functions::form_textarea('message', true, 'required style="height: 250px;"'); ?>
 						 </div>
 
 						<?php if (settings::get('captcha_enabled')) { ?>
 						<div class="form-group" style="max-width: 250px;">
-							<div class="form-label"><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></div>
+							<div class="form-label"><?php echo t('title_captcha', 'CAPTCHA'); ?></div>
 							<?php echo functions::form_captcha('contact_us'); ?>
 						 </div>
 						<?php } ?>
 
 						<div>
-							<?php echo functions::form_button('send', language::translate('title_send', 'Send'), 'submit', 'style="font-weight: bold;"'); ?>
+							<?php echo functions::form_button('send', t('title_send', 'Send'), 'submit', 'style="font-weight: bold;"'); ?>
 						</div>
 
 					<?php echo functions::form_end(); ?>
@@ -57,7 +57,7 @@
 			<article class="card">
 
 				<div class="card-header">
-					<h2 class="card-title"><?php echo language::translate('title_contact_details', 'Contact Details'); ?></h2>
+					<h2 class="card-title"><?php echo t('title_contact_details', 'Contact Details'); ?></h2>
 				</div>
 
 				<div class="card-body">

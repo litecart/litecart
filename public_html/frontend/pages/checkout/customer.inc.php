@@ -61,11 +61,11 @@
 				try {
 
 					if (empty($_POST['customer']['email']) || !filter_var($_POST['customer']['email'], FILTER_VALIDATE_EMAIL)) {
-						throw new Exception(language::translate('error_must_provide_email', 'You must provide an email address'));
+						throw new Exception(t('error_must_provide_email', 'You must provide an email address'));
 					}
 
 					if (!functions::validate_email($_POST['customer']['email'])) {
-						throw new Exception(language::translate('error_invalid_email', 'The email address is invalid'));
+						throw new Exception(t('error_invalid_email', 'The email address is invalid'));
 					}
 
 					if (!database::query(
@@ -75,11 +75,11 @@
 					)->num_rows) {
 
 						if (empty($_POST['password'])) {
-							throw new Exception(language::translate('error_must_provide_password', 'You must provide a password'));
+							throw new Exception(t('error_must_provide_password', 'You must provide a password'));
 						}
 
 						if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']) {
-							throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
+							throw new Exception(t('error_passwords_missmatch', 'The passwords did not match.'));
 						}
 					}
 
@@ -181,8 +181,8 @@
 							'%customer_password' => $_POST['password']
 						];
 
-						$subject = language::translate('email_subject_customer_account_created', 'Customer Account Created');
-						$message = strtr(language::translate('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email.\r\n\r\n%store_name\r\n\r\n%store_link"), $aliases);
+						$subject = t('email_subject_customer_account_created', 'Customer Account Created');
+						$message = strtr(t('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email.\r\n\r\n%store_name\r\n\r\n%store_link"), $aliases);
 
 						$email = new ent_email();
 						$email->add_recipient($_POST['customer']['email'], $_POST['customer']['firstname'] .' '. $_POST['customer']['lastname'])
@@ -190,7 +190,7 @@
 									->add_body($message)
 									->send();
 
-						notices::add('success', language::translate('success_account_has_been_created', 'A customer account has been created that will let you keep track of orders.'));
+						notices::add('success', t('success_account_has_been_created', 'A customer account has been created that will let you keep track of orders.'));
 
 						database::query(
 							"update ". DB_TABLE_PREFIX ."customers

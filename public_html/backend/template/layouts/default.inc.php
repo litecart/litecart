@@ -28,7 +28,7 @@
 		</a>
 
 		<div class="filter">
-			<?php echo functions::form_input_search('filter', false, 'placeholder="'. functions::escape_attr(language::translate('title_filter', 'Filter')) .'&hellip;" autocomplete="off"'); ?>
+			<?php echo functions::form_input_search('filter', false, 'placeholder="'. functions::escape_attr(t('title_filter', 'Filter')) .'&hellip;" autocomplete="off"'); ?>
 		</div>
 
 		<?php include 'app://backend/partials/box_apps_menu.inc.php'; ?>

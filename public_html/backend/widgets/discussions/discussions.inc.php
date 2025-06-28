@@ -52,7 +52,7 @@
 <div id="widget-discussions" class="widget card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?>
+			<?php echo t('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?>
 		</div>
 	</div>
 
@@ -61,7 +61,7 @@
 			<?php foreach ($discussions as $item) { ?>
 			<div class="topic">
 				<div class="title"><a href="<?php echo functions::escape_html((string)$item->link); ?>" target="_blank"><?php echo functions::escape_html((string)$item->title); ?></a></div>
-				<div class="description"><?php echo strtr(language::translate('text_posted_date_by_author', 'Posted %date by %author'), ['%date' => functions::datetime_format('%e %b', strtotime($item->pubDate)), '%author' => (string)$item->author]); ?></div>
+				<div class="description"><?php echo strtr(t('text_posted_date_by_author', 'Posted %date by %author'), ['%date' => functions::datetime_format('%e %b', strtotime($item->pubDate)), '%author' => (string)$item->author]); ?></div>
 			</div>
 			<?php } ?>
 		</div>

@@ -34,7 +34,7 @@
 <div id="widget-orders" class="widget card" style="padding-bottom: .5em;">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo language::translate('title_orders', 'Orders'); ?>
+			<?php echo t('title_orders', 'Orders'); ?>
 		</div>
 	</div>
 
@@ -42,13 +42,13 @@
 		<thead>
 			<tr>
 				<th></th>
-				<th><?php echo language::translate('title_numer', 'Number'); ?></th>
-				<th class="main"><?php echo language::translate('title_customer', 'Customer'); ?></th>
-				<th><?php echo language::translate('title_country', 'Country'); ?></th>
-				<th><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
-				<th><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
-				<th class="text-end"><?php echo language::translate('title_amount', 'Amount'); ?></th>
-				<th><?php echo language::translate('title_date', 'Date'); ?></th>
+				<th><?php echo t('title_numer', 'Number'); ?></th>
+				<th class="main"><?php echo t('title_customer', 'Customer'); ?></th>
+				<th><?php echo t('title_country', 'Country'); ?></th>
+				<th><?php echo t('title_payment_method', 'Payment Method'); ?></th>
+				<th><?php echo t('title_order_status', 'Order Status'); ?></th>
+				<th class="text-end"><?php echo t('title_amount', 'Amount'); ?></th>
+				<th><?php echo t('title_date', 'Date'); ?></th>
 				<th></th>
 				<th></th>
 				<th></th>
@@ -68,7 +68,7 @@
 				</td>
 				<td><?php echo ($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>
 				<td><?php echo $order['payment_option_name']; ?></td>
-				<td><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
+				<td><?php echo $order['order_status_id'] ? $order['order_status_name'] : t('title_uncompleted', 'Uncompleted'); ?></td>
 				<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
 				<td class="text-end"><?php echo functions::datetime_when($order['created_at']); ?></td>
 				<td class="text-end">
@@ -79,16 +79,16 @@
 						</div>
 						<nav class="dropdown-menu">
 							<a class="dropdown-item" href="<?php echo  document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank">
-								<?php echo functions::escape_html(language::translate('title_packing_slip', 'Packing Slip')); ?>
+								<?php echo functions::escape_html(t('title_packing_slip', 'Packing Slip')); ?>
 							</a>
 							<a class="dropdown-item" href="<?php echo document::href_ilink('f:printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="">
-								<?php echo functions::escape_html(language::translate('title_order_copy', 'Order Copy')); ?>
+								<?php echo functions::escape_html(t('title_order_copy', 'Order Copy')); ?>
 							</a>
 						</nav>
 					</div>
 				</td>
 				<td class="text-end">
-					<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('orders/edit_order', ['order_id' => $order['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
+					<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('orders/edit_order', ['order_id' => $order['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
 				</td>
 			</tr>
 			<?php } ?>

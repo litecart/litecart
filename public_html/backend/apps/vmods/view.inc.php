@@ -2,21 +2,21 @@
 
 	$_GET['vmod'] = basename($_GET['vmod']);
 
-	breadcrumbs::add(language::translate('title_vMods', 'vMods'), document::href_ilink(__APP__.'/vmods'));
-	breadcrumbs::add(language::translate('title_view_vMod', 'View vMod') .' '. basename($_GET['vmod']), document::href_ilink());
+	breadcrumbs::add(t('title_vMods', 'vMods'), document::href_ilink(__APP__.'/vmods'));
+	breadcrumbs::add(t('title_view_vMod', 'View vMod') .' '. basename($_GET['vmod']), document::href_ilink());
 
-	document::$title[] = language::translate('title_view_vmod', 'View vMod');
+	document::$title[] = t('title_view_vmod', 'View vMod');
 
 	try {
 
 		if (empty($_GET['vmod'])) {
-			throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
+			throw new Exception(t('error_must_provide_vmod', 'You must provide a vMod'));
 		}
 
 		$file = 'storage://vmods/' . basename($_GET['vmod']);
 
 		if (!is_file($file)) {
-			throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
+			throw new Exception(t('error_file_could_not_be_found', 'The file could not be found'));
 		}
 
 		$directives = [];
@@ -24,11 +24,11 @@
 		$xml = simplexml_load_file($file);
 
 		if ($xml->getName() != 'vmod') {
-			throw new Exception(language::translate('error_not_a_valid_vmod_file', 'Not a valid vMod file'));
+			throw new Exception(t('error_not_a_valid_vmod_file', 'Not a valid vMod file'));
 		}
 
 		if (empty($xml->file)) {
-			throw new Exception(language::translate('error_no_files_to_modify', 'No files to modify'));
+			throw new Exception(t('error_no_files_to_modify', 'No files to modify'));
 		}
 
 		foreach ($xml->file as $file) {
@@ -64,7 +64,7 @@ pre {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_view_modification', 'View Modification'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_view_modification', 'View Modification'); ?>
 		</div>
 	</div>
 
@@ -72,7 +72,7 @@ pre {
 
 		<h1><?php echo $xml->id; ?></h1>
 
-		<p><?php echo language::translate('description_view_vmod', 'Please note: These are the contents of the virtual modification to give you a good understanding of what it does. Do NOT make these changes yourself.'); ?></p>
+		<p><?php echo t('description_view_vmod', 'Please note: These are the contents of the virtual modification to give you a good understanding of what it does. Do NOT make these changes yourself.'); ?></p>
 
 		<ul class="list-unstyled">
 			<?php foreach ($xml->file as $file) { ?>

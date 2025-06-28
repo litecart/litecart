@@ -31,15 +31,15 @@
 
 		'shortcuts' => [
 			[
-				'name' => language::translate('title_categories', 'Categories'),
+				'name' => t('title_categories', 'Categories'),
 				'url' => document::ilink('categories'),
 			],
 			[
-				'name' => language::translate('title_brands', 'Brands'),
+				'name' => t('title_brands', 'Brands'),
 				'url' => document::ilink('brands'),
 			],
 			[
-				'name' => language::translate('title_customer_service', 'Customer Service'),
+				'name' => t('title_customer_service', 'Customer Service'),
 				'url' => document::ilink('customer_service'),
 			],
 		],

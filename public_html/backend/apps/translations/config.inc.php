@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_translations', 'Translations'),
+		'name' => t('title_translations', 'Translations'),
 		'group' => 'regional',
 		'default' => 'translations',
 		'priority' => 0,
@@ -13,17 +13,17 @@
 
 		'menu' => [
 			[
-				'title' => language::translate('title_translations', 'Translations'),
+				'title' => t('title_translations', 'Translations'),
 				'doc' => 'translations',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_scan_files', 'Scan Files'),
+				'title' => t('title_scan_files', 'Scan Files'),
 				'doc' => 'scan',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_csv_import_export', 'CSV Import/Export'),
+				'title' => t('title_csv_import_export', 'CSV Import/Export'),
 				'doc' => 'csv',
 				'params' => [],
 			],

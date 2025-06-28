@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_tax', 'Tax'),
+		'name' => t('title_tax', 'Tax'),
 		'group' => 'regional',
 		'default' => 'tax_rates',
 		'priority' => 0,
@@ -13,12 +13,12 @@
 
 		'menu' => [
 			[
-				'title' => language::translate('title_tax_rates', 'Tax Rates'),
+				'title' => t('title_tax_rates', 'Tax Rates'),
 				'doc' => 'tax_rates',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_tax_classes', 'Tax Classes'),
+				'title' => t('title_tax_classes', 'Tax Classes'),
 				'doc' => 'tax_classes',
 				'params' => [],
 			],

@@ -4,26 +4,26 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_currencies', 'Currencies');
+	document::$title[] = t('title_currencies', 'Currencies');
 
-	breadcrumbs::add(language::translate('title_currencies', 'Currencies'), document::ilink());
+	breadcrumbs::add(t('title_currencies', 'Currencies'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
 		try {
 
 			if (empty($_POST['currencies'])) {
-				throw new Exception(language::translate('error_must_select_currencies', 'You must select currencies'));
+				throw new Exception(t('error_must_select_currencies', 'You must select currencies'));
 			}
 
 			foreach (array_keys($_POST['currencies']) as $currency_code) {
 
 				if (!empty($_POST['disable']) && $currency_code == settings::get('default_currency_code')) {
-					throw new Exception(language::translate('error_cannot_disable_default_currency', 'You cannot disable the default currency'));
+					throw new Exception(t('error_cannot_disable_default_currency', 'You cannot disable the default currency'));
 				}
 
 				if (!empty($_POST['disable']) && $currency_code == settings::get('store_currency_code')) {
-					throw new Exception(language::translate('error_cannot_disable_store_currency', 'You cannot disable the store currency'));
+					throw new Exception(t('error_cannot_disable_store_currency', 'You cannot disable the store currency'));
 				}
 
 				$currency = new ent_currency($_POST['currencies'][$currency_code]);
@@ -31,7 +31,7 @@
 				$currency->save();
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -53,12 +53,12 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_currencies', 'Currencies'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_currencies', 'Currencies'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_currency'), language::translate('title_create_new_currency', 'Create New Currency'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_currency'), t('title_create_new_currency', 'Create New Currency'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('currencies_form', 'post'); ?>
@@ -68,14 +68,14 @@
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th><?php echo language::translate('title_code', 'Code'); ?></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_value', 'Value'); ?></th>
-					<th><?php echo language::translate('title_format_example', 'Format Example'); ?></th>
-					<th><?php echo language::translate('title_default_currency', 'Default Currency'); ?></th>
-					<th><?php echo language::translate('title_store_currency', 'Store Currency'); ?></th>
-					<th><?php echo language::translate('title_priority', 'Priority'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
+					<th><?php echo t('title_code', 'Code'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_value', 'Value'); ?></th>
+					<th><?php echo t('title_format_example', 'Format Example'); ?></th>
+					<th><?php echo t('title_default_currency', 'Default Currency'); ?></th>
+					<th><?php echo t('title_store_currency', 'Store Currency'); ?></th>
+					<th><?php echo t('title_priority', 'Priority'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -94,7 +94,7 @@
 					<td class="text-center"><?php echo ($currency['code'] == settings::get('store_currency_code')) ? functions::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo $currency['priority']; ?></td>
 					<td class="text-end">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_currency', ['currency_code' => $currency['code']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_currency', ['currency_code' => $currency['code']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
 							<?php echo functions::draw_fonticon('edit'); ?>
 						</a>
 					</td>
@@ -105,7 +105,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_currencies', 'Currencies'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_currencies', 'Currencies'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -115,12 +115,12 @@
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
 				<div class="btn-group">
-					<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+					<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
 
 			</fieldset>

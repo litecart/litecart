@@ -9,7 +9,7 @@
 				<section id="box-shopping-cart" class="card">
 
 					<div class="card-header">
-						<h2 class="card-title"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></h2>
+						<h2 class="card-title"><?php echo t('title_shopping_cart', 'Shopping Cart'); ?></h2>
 					</div>
 
 					<div class="card-body">
@@ -47,7 +47,7 @@
 																<?php } else { ?>
 																<?php echo !empty($item['quantity_unit']->decimals) ? functions::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0"') : functions::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
 																<?php } ?>
-																<?php echo functions::form_button('update_cart_item', [$key, functions::draw_fonticon('icon-sync')], 'submit', 'title="'. functions::escape_attr(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
+																<?php echo functions::form_button('update_cart_item', [$key, functions::draw_fonticon('icon-sync')], 'submit', 'title="'. functions::escape_attr(t('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
 															</div>
 														</div>
 													</div>
@@ -65,7 +65,7 @@
 										</div>
 
 										<div class="col-2 text-end">
-											<td><?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('icon-trash')], 'submit', 'class="btn btn-danger" title="'. functions::escape_attr(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
+											<td><?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('icon-trash')], 'submit', 'class="btn btn-danger" title="'. functions::escape_attr(t('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
 										</div>
 									</div>
 								</li>
@@ -73,7 +73,7 @@
 							</ul>
 
 							<div class="subtotal text-lg text-end">
-								<?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format($subtotal['value'] + $subtotal['tax']) : currency::format($subtotal['value']); ?></strong>
+								<?php echo t('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format($subtotal['value'] + $subtotal['tax']) : currency::format($subtotal['value']); ?></strong>
 							</div>
 
 						<?php echo functions::form_end(); ?>
@@ -88,7 +88,7 @@
 				<section id="box-shopping-cart" class="card">
 
 					<div class="card-header">
-						<h2 class="card-title"><?php echo language::translate('title_checkout', 'Checkout'); ?></h2>
+						<h2 class="card-title"><?php echo t('title_checkout', 'Checkout'); ?></h2>
 					</div>
 
 					<div class="card-body">
@@ -98,18 +98,18 @@
 							<div class="flex">
 
 								<div class="form-group flex-grow">
-									<div class="form-label"><?php echo language::translate('title_language', 'Language'); ?></div>
+									<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
 									<div style="line-height: 2;"><?php echo language::$selected['name']; ?></div>
 								</div>
 
 								<div class="form-group flex-grow">
-									<div class="form-label"><?php echo language::translate('title_currency', 'Currency'); ?></div>
+									<div class="form-label"><?php echo t('title_currency', 'Currency'); ?></div>
 									<div style="line-height: 2;"><?php echo currency::$selected['code']; ?></div>
 								</div>
 
 								<div>
 									<a class="btn btn-default change" href="<?php echo document::href_ilink('regional_settings', ['redirect_url' => document::link()]); ?>#box-regional-settings" data-toggle="lightbox" data-seamless="true">
-										<?php echo language::translate('title_change', 'Change'); ?>
+										<?php echo t('title_change', 'Change'); ?>
 									</a>
 								</div>
 							</div>
@@ -117,14 +117,14 @@
 							<div class="grid">
 								<div class="col-8">
 									<div class="form-group">
-										<div class="form-label"><?php echo language::translate('title_country', 'Country'); ?></div>
+										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
 										<div style="line-height: 2;"><?php echo functions::form_select_country('country_code', true); ?></div>
 									</div>
 								</div>
 
 								<div class="col-4">
 									<div class="form-group">
-										<div class="form-label"><?php echo language::translate('title_postcode', 'Postal Code'); ?></div>
+										<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
 										<div style="line-height: 2;"><?php echo functions::form_input_text('postcode', true); ?></div>
 									</div>
 								</div>
@@ -132,18 +132,18 @@
 
 							<?php if (empty(customer::$data['email'])) { ?>
 							<div class="form-group">
-								<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
+								<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
 								<?php echo functions::form_input_email('email', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
 							</div>
 							<?php } ?>
 
 							<div class="">
-								<?php echo functions::form_button('checkout', ['standard', language::translate('title_continue_to_checkout', 'Continue To Checkout') .' '. functions::draw_fonticon('icon-arrow-right')], 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>
+								<?php echo functions::form_button('checkout', ['standard', t('title_continue_to_checkout', 'Continue To Checkout') .' '. functions::draw_fonticon('icon-arrow-right')], 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>
 							</div>
 
 							<?php if ($checkouts) { ?>
 							<div class="strikethrough-divider">
-								<span><?php echo language::translate('text_or_checkout_with', 'Or checkout with'); ?></span>
+								<span><?php echo t('text_or_checkout_with', 'Or checkout with'); ?></span>
 							</div>
 
 							<?php foreach ($checkouts as $checkout) { ?>

@@ -43,7 +43,7 @@
 
 	document::$head_tags['canonical'] = '<link rel="canonical" href="'. document::href_ilink('brand', ['brand_id' => (int)$brand->id], false) .'">';
 
-	breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
+	breadcrumbs::add(t('title_brands', 'Brands'), document::ilink('brands'));
 	breadcrumbs::add($brand->name, document::ilink('brand', ['brand_id' => $brand->id]));
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/brand.inc.php');
@@ -57,10 +57,10 @@
 		'image' => $brand->image ? 'storage://images/' . $brand->image : '',
 		'products' => [],
 		'sort_alternatives' => [
-			'name' => language::translate('title_name', 'Name'),
-			'price' => language::translate('title_price', 'Price'),
-			'popularity' => language::translate('title_popularity', 'Popularity'),
-			'date' => language::translate('title_date', 'Date'),
+			'name' => t('title_name', 'Name'),
+			'price' => t('title_price', 'Price'),
+			'popularity' => t('title_popularity', 'Popularity'),
+			'date' => t('title_date', 'Date'),
 		],
 		'num_products_page' => null,
 		'num_products_total' => null,

@@ -1,9 +1,9 @@
 <?php
 
-	document::$title[] = language::translate('title_storage_encoding', 'Storage Encoding');
+	document::$title[] = t('title_storage_encoding', 'Storage Encoding');
 
-	breadcrumbs::add(language::translate('title_languages', 'Languages'), document::ilink(__APP__.'/languages'));
-	breadcrumbs::add(language::translate('title_storage_encoding', 'Storage Encoding'), document::ilink());
+	breadcrumbs::add(t('title_languages', 'Languages'), document::ilink(__APP__.'/languages'));
+	breadcrumbs::add(t('title_storage_encoding', 'Storage Encoding'), document::ilink());
 
 	// Get all tables in database
 	$tables = database::query(
@@ -26,22 +26,22 @@
 		try {
 
 			if (empty($_POST['tables'])) {
-				throw new Exception(language::translate('error_must_select_tables', 'You must select tables'));
+				throw new Exception(t('error_must_select_tables', 'You must select tables'));
 			}
 
 			if (empty($_POST['collation']) && empty($_POST['engine'])) {
-				throw new Exception(language::translate('error_must_select_action_to_perform', 'You must select an action to perform'));
+				throw new Exception(t('error_must_select_action_to_perform', 'You must select an action to perform'));
 			}
 
 			if (!preg_match('#^[a-z0-9_]+$#', $_POST['collation'])) {
-				throw new Exception(language::translate('error_invalid_collation', 'Invalid collation'));
+				throw new Exception(t('error_invalid_collation', 'Invalid collation'));
 			}
 
 			$table_names = array_column($tables, 'TABLE_NAME');
 
 			foreach ($_POST['tables'] as $table) {
 				if (!in_array($table, $table_names)) {
-					throw new Exception(strtr(language::translate('error_unknown_table_x', 'Unknown table (%table)'), ['%table' => $table]));
+					throw new Exception(strtr(t('error_unknown_table_x', 'Unknown table (%table)'), ['%table' => $table]));
 				}
 			}
 
@@ -120,7 +120,7 @@
 				"commit;"
 			);
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -142,7 +142,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_storage_encoding', 'Storage Encoding'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_storage_encoding', 'Storage Encoding'); ?>
 		</div>
 	</div>
 
@@ -151,9 +151,9 @@
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th class="main"><?php echo language::translate('title_table', 'Table'); ?></th>
-					<th><?php echo language::translate('title_collation', 'Collation'); ?></th>
-					<th><?php echo language::translate('title_engine', 'Engine'); ?></th>
+					<th class="main"><?php echo t('title_table', 'Table'); ?></th>
+					<th><?php echo t('title_collation', 'Collation'); ?></th>
+					<th><?php echo t('title_engine', 'Engine'); ?></th>
 				</tr>
 			</thead>
 
@@ -171,7 +171,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_tables', 'Tables'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_tables', 'Tables'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -180,24 +180,24 @@
 		<div class="card-body">
 			<div style="width: 640px;">
 				<label class="form-group">
-					<div class="form-label"><?php echo language::translate('title_collation', 'Collation'); ?></div>
+					<div class="form-label"><?php echo t('title_collation', 'Collation'); ?></div>
 					<?php echo functions::form_select_mysql_collation('collation', true); ?>
 				</label>
 
 				<div class="form-group">
-					<?php echo functions::form_checkbox('set_database_default', ['1', language::translate('text_also_set_as_database_default', 'Also set as database default (when new tables are created)')], true); ?>
+					<?php echo functions::form_checkbox('set_database_default', ['1', t('text_also_set_as_database_default', 'Also set as database default (when new tables are created)')], true); ?>
 				</div>
 
 				<label class="form-group">
-					<div class="form-label"><?php echo language::translate('title_engine', 'Engine'); ?></div>
+					<div class="form-label"><?php echo t('title_engine', 'Engine'); ?></div>
 					<?php echo functions::form_select_mysql_engine('engine', true); ?>
 				</label>
 			</div>
 
-			<p><?php echo language::translate('description_set_mysql_collation', 'This will recursively convert the charset and collation for all selected database tables and belonging columns.'); ?></p>
+			<p><?php echo t('description_set_mysql_collation', 'This will recursively convert the charset and collation for all selected database tables and belonging columns.'); ?></p>
 
 			<div class="btn-group">
-				<?php echo functions::form_button('convert', language::translate('title_convert', 'Convert'), 'submit'); ?>
+				<?php echo functions::form_button('convert', t('title_convert', 'Convert'), 'submit'); ?>
 			</div>
 		</div>
 

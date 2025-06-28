@@ -20,7 +20,7 @@
 		header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
 	}
 
-	notices::add('success', language::translate('description_logged_out', 'You are now logged out.'));
+	notices::add('success', t('description_logged_out', 'You are now logged out.'));
 
 	header('Location: ' . document::ilink(''));
 	exit;

@@ -92,16 +92,16 @@
 					)->fetch();
 
 					if (!$customer) {
-						throw new Exception(language::translate('error_your_account_has_been_removed', 'Your account has been removed'));
+						throw new Exception(t('error_your_account_has_been_removed', 'Your account has been removed'));
 					}
 
 					if (!$customer['status']) {
-						throw new Exception(language::translate('error_your_account_is_disabled', 'Your account is disabled'));
+						throw new Exception(t('error_your_account_is_disabled', 'Your account is disabled'));
 					}
 
 					if (!empty($customer['date_expire_sessions'])) {
 						if (!isset(session::$data['customer_security_timestamp']) || session::$data['customer_security_timestamp'] < strtotime($customer['date_expire_sessions'])) {
-							throw new Exception(language::translate('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
+							throw new Exception(t('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
 						}
 					}
 
@@ -353,7 +353,7 @@
 		public static function require_login() {
 
 			if (!self::check_login()) {
-				notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
+				notices::add('warnings', t('warning_must_login_page', 'You must be logged in to view the page.'));
 				$redirect_url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
 				header('Location: ' . document::ilink('f:account/sign_in', ['redirect_url' => $redirect_url]));
 				exit;

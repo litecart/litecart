@@ -1,7 +1,7 @@
 <?php
 
 	$result = [
-		'name' => language::translate('title_orders', 'Orders'),
+		'name' => t('title_orders', 'Orders'),
 		'results' => [],
 	];
 
@@ -25,7 +25,7 @@
 	)->fetch_all(function($order) use ($app) {
 		return [
 			'id' => $order['id'],
-			'title' => language::translate('title_order', 'Order') .' '. $order['id'],
+			'title' => t('title_order', 'Order') .' '. $order['id'],
 			'description' => $order['customer_name'],
 			'link' => document::ilink($app.'/edit_order', ['order_id' => $order['id']]),
 		];

@@ -51,9 +51,9 @@
 </style>
 
 <nav class="tabs">
-	<a class="tab-item active" data-toggle="tab" href="#tab-system"><?php echo language::translate('title_system', 'System'); ?></a>
-	<a class="tab-item" data-toggle="tab" href="#tab-php-ini"><?php echo language::translate('title_php_ini', 'PHP.ini'); ?></a>
-	<a class="tab-item" data-toggle="tab" href="#tab-errors"><?php echo language::translate('title_error_log', 'Error Log'); ?></a>
+	<a class="tab-item active" data-toggle="tab" href="#tab-system"><?php echo t('title_system', 'System'); ?></a>
+	<a class="tab-item" data-toggle="tab" href="#tab-php-ini"><?php echo t('title_php_ini', 'PHP.ini'); ?></a>
+	<a class="tab-item" data-toggle="tab" href="#tab-errors"><?php echo t('title_error_log', 'Error Log'); ?></a>
 </nav>
 
 <div class="tab-contents">
@@ -225,20 +225,20 @@
 		<div class="card">
 			<div class="card-header">
 				<div class="card-title">
-					<?php echo language::translate('title_php_configuration', 'PHP Configuration'); ?>
+					<?php echo t('title_php_configuration', 'PHP Configuration'); ?>
 				</div>
 				<div>&nbsp;</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo functions::form_input_search('filter', true, 'placeholder="'. language::translate('title_filter', 'Filter') .'"'); ?>
+				<?php echo functions::form_input_search('filter', true, 'placeholder="'. t('title_filter', 'Filter') .'"'); ?>
 			</div>
 
 			<table id="php-config" class="table data-table">
 				<thead>
 					<tr>
-						<th><?php echo language::translate('title_setting', 'Setting'); ?></th>
-						<th><?php echo language::translate('title_value', 'Value'); ?></th>
+						<th><?php echo t('title_setting', 'Setting'); ?></th>
+						<th><?php echo t('title_value', 'Value'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -257,7 +257,7 @@
 		<div id="box-error-log" class="card">
 			<div class="card-header">
 				<div class="card-title">
-					<?php echo language::translate('title_error_log', 'Error Log'); ?>
+					<?php echo t('title_error_log', 'Error Log'); ?>
 				</div>
 			</div>
 
@@ -267,9 +267,9 @@
 				<thead>
 					<tr>
 						<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-						<th class="main"><?php echo language::translate('title_error', 'Error'); ?></th>
-						<th><?php echo language::translate('title_occurrences', 'Occurrences'); ?></th>
-						<th><?php echo language::translate('title_last_occurrence', 'Last Occurrence'); ?></th>
+						<th class="main"><?php echo t('title_error', 'Error'); ?></th>
+						<th><?php echo t('title_occurrences', 'Occurrences'); ?></th>
+						<th><?php echo t('title_last_occurrence', 'Last Occurrence'); ?></th>
 					</tr>
 				</thead>
 				<tbody>

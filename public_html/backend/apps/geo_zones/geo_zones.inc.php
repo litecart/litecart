@@ -4,16 +4,16 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_geo_zones', 'Geo Zones');
+	document::$title[] = t('title_geo_zones', 'Geo Zones');
 
-	breadcrumbs::add(language::translate('title_geo_zones', 'Geo Zones'), document::ilink());
+	breadcrumbs::add(t('title_geo_zones', 'Geo Zones'), document::ilink());
 
 	if (isset($_POST['clone'])) {
 
 		try {
 
 			if (empty($_POST['geo_zones'])) {
-				throw new Exception(language::translate('error_must_select_geo_zones', 'You must select geo zones'));
+				throw new Exception(t('error_must_select_geo_zones', 'You must select geo zones'));
 			}
 
 			foreach ($_POST['geo_zones'] as $geo_zone_id) {
@@ -31,7 +31,7 @@
 				$geo_zone->save();
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -59,12 +59,12 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_geo_zones', 'Geo Zones'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_geo_zones', 'Geo Zones'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_geo_zone'), language::translate('title_create_new_geo_zone', 'Create New Geo Zone'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_geo_zone'), t('title_create_new_geo_zone', 'Create New Geo Zone'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('geo_zones_form', 'post'); ?>
@@ -73,9 +73,9 @@
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_zones', 'Zones'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_zones', 'Zones'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -87,7 +87,7 @@
 					<td><?php echo $geo_zone['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>"><?php echo $geo_zone['name']; ?></a></td>
 					<td class="text-center"><?php echo $geo_zone['num_zones']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -95,7 +95,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_geo_zones', 'Geo Zones'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_geo_zones', 'Geo Zones'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -105,10 +105,10 @@
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
-				<?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
+				<?php echo functions::form_button('clone', t('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
 
 			</fieldset>
 		</div>

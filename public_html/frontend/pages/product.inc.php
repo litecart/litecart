@@ -27,11 +27,11 @@
 	}
 
 	if ($product->valid_from && $product->valid_from > date('Y-m-d H:i:s')) {
-		notices::add('errors', sprintf(language::translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), functions::datetime_format('date', $product->valid_from)));
+		notices::add('errors', sprintf(t('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), functions::datetime_format('date', $product->valid_from)));
 	}
 
 	if ($product->valid_to && $product->valid_to < date('Y-m-d H:i:s')) {
-		notices::add('errors', language::translate('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
+		notices::add('errors', t('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
 	}
 
 	database::query(
@@ -61,7 +61,7 @@
 
 	if (!empty($_GET['category_id'])) {
 
-		breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
+		breadcrumbs::add(t('title_categories', 'Categories'), document::ilink('categories'));
 
 		foreach (reference::category($_GET['category_id'])->path as $category_crumb) {
 			document::$title[] = $category_crumb->name;
@@ -70,12 +70,12 @@
 
 	} else if ($product->default_category) {
 		document::$title[] = $product->default_category->name;
-		breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
+		breadcrumbs::add(t('title_categories', 'Categories'), document::ilink('categories'));
 		breadcrumbs::add($product->default_category->name, document::ilink('category', ['category_id' => $product->default_category->id]));
 
 	} else if ($product->brand) {
 		document::$title[] = $product->brand->name;
-		breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
+		breadcrumbs::add(t('title_brands', 'Brands'), document::ilink('brands'));
 		breadcrumbs::add($product->brand->name, document::ilink('brand', ['brand_id' => $product->brand->id]));
 	}
 
@@ -185,9 +185,9 @@
 	// Sticker
 	if (!empty($product->campaign['price']) && $product->price > 0 && $product->campaign['price'] > 0) {
 		$percentage = round(($product->price - $product->campaign['price']) / $product->price * 100);
-		$_page->snippets['sticker'] = '<div class="sticker sale">'. language::translate('sticker_sale', 'Sale') .' -'. $percentage .'%</div>';
+		$_page->snippets['sticker'] = '<div class="sticker sale">'. t('sticker_sale', 'Sale') .' -'. $percentage .'%</div>';
 	} else if ($product->created_at > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
-		$_page->snippets['sticker'] = '<div class="sticker new">'. language::translate('sticker_new', 'New') .'</div>';
+		$_page->snippets['sticker'] = '<div class="sticker new">'. t('sticker_new', 'New') .'</div>';
 	}
 
 	// Main Category
@@ -283,7 +283,7 @@
 
 			case 'select':
 
-				$customizations = [['-- '. language::translate('title_select', 'Select') .' --', '']];
+				$customizations = [['-- '. t('title_select', 'Select') .' --', '']];
 				foreach ($group['values'] as $value) {
 
 					$price_adjustment_text = '';
@@ -335,9 +335,9 @@
 
 	// Stock Status
 	if (!empty($product->quantity_unit['name'])) {
-		$_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity_available, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : language::translate('title_in_stock', 'In Stock');
+		$_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity_available, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : t('title_in_stock', 'In Stock');
 	} else {
-		$_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity_available) : language::translate('title_in_stock', 'In Stock');
+		$_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity_available) : t('title_in_stock', 'In Stock');
 	}
 
 	// Cheapest shipping

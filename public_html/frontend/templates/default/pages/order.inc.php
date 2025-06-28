@@ -34,10 +34,10 @@ body {
 	<div id="sidebar" class="hidden-print shadow">
 
 		<ul id="actions" class="list-unstyled">
-			<li><button id="print" class="btn btn-default btn-block btn-lg" type="button"><?php echo functions::draw_fonticon('icon-print'); ?> <?php echo language::translate('title_print', 'Print'); ?></button></li>
+			<li><button id="print" class="btn btn-default btn-block btn-lg" type="button"><?php echo functions::draw_fonticon('icon-print'); ?> <?php echo t('title_print', 'Print'); ?></button></li>
 		</ul>
 
-		<h1 style="margin-top: 0;"><?php echo language::translate('title_comments', 'Comments'); ?></h1>
+		<h1 style="margin-top: 0;"><?php echo t('title_comments', 'Comments'); ?></h1>
 
 		<div id="comments" class="bubbles">
 			<?php foreach ($comments as $comment) { ?>

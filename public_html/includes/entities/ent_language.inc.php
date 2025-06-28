@@ -55,11 +55,11 @@
 		public function save() {
 
 			if (empty($this->data['status']) && $this->data['code'] == settings::get('default_language_code')) {
-				throw new Exception(language::translate('error_cannot_disable_default_language', 'You must change the default language before disabling it.'));
+				throw new Exception(t('error_cannot_disable_default_language', 'You must change the default language before disabling it.'));
 			}
 
 			if (empty($this->data['status']) && $this->data['code'] == settings::get('store_language_code')) {
-				throw new Exception(language::translate('error_cannot_disable_store_language', 'You must change the store language before disabling it.'));
+				throw new Exception(t('error_cannot_disable_store_language', 'You must change the store language before disabling it.'));
 			}
 
 			if (database::query(
@@ -71,7 +71,7 @@
 				". (!empty($this->data['id']) ? "and id != ". (int)$this->data['id'] : "") ."
 				limit 1;"
 			)->num_rows) {
-				throw new Exception(language::translate('error_language_conflict', 'The language conflicts with another language in the database'));
+				throw new Exception(t('error_language_conflict', 'The language conflicts with another language in the database'));
 			}
 
 			if (!$this->data['id']) {
@@ -189,15 +189,15 @@
 		public function delete() {
 
 			if ($this->data['code'] == 'en') {
-				throw new Exception(language::translate('error_cannot_delete_framework_language', 'You cannot delete the PHP framework language. But you can disable it.'));
+				throw new Exception(t('error_cannot_delete_framework_language', 'You cannot delete the PHP framework language. But you can disable it.'));
 			}
 
 			if ($this->data['code'] == settings::get('default_language_code')) {
-				throw new Exception(language::translate('error_cannot_delete_default_language', 'You must change the default language before it can be deleted.'));
+				throw new Exception(t('error_cannot_delete_default_language', 'You must change the default language before it can be deleted.'));
 			}
 
 			if ($this->data['code'] == settings::get('store_language_code')) {
-				throw new Exception(language::translate('error_cannot_delete_store_language', 'You must change the store language before it can be deleted.'));
+				throw new Exception(t('error_cannot_delete_store_language', 'You must change the store language before it can be deleted.'));
 			}
 
 			database::query(

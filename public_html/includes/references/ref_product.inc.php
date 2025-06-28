@@ -611,7 +611,7 @@
 						}
 
 						if (empty($parameters['userdata'][$matched_group]) && !empty($option['required'])) {
-							throw new Exception(language::translate('error_set_product_customizations', 'Please set your product customizations'));
+							throw new Exception(t('error_set_product_customizations', 'Please set your product customizations'));
 						}
 
 						// Check values
@@ -643,7 +643,7 @@
 								}
 
 								if (empty($found_match)) {
-									throw new Exception(strtr(language::translate('error_must_select_valid_customization_for_group', 'You must select a valid customization for %group'), ['%group' => $matched_group]));
+									throw new Exception(strtr(t('error_must_select_valid_customization_for_group', 'You must select a valid customization for %group'), ['%group' => $matched_group]));
 								}
 
 								break;
@@ -673,7 +673,7 @@
 								}
 
 								if (empty($found_match)) {
-									throw new Exception(strtr(language::translate('error_must_select_valid_customization_for_group', 'You must select a valid customization for %group'), ['%group' => $matched_group]));
+									throw new Exception(strtr(t('error_must_select_valid_customization_for_group', 'You must select a valid customization for %group'), ['%group' => $matched_group]));
 								}
 
 								break;
@@ -684,7 +684,7 @@
 								$matched_value = $parameters['userdata'][$matched_group];
 
 								if (empty($matched_value) && !empty($customization['required'])) {
-									throw new Exception(strtr(language::translate('error_must_provide_valid_input_for_group', 'You must provide a valid input for %group'), ['%group' => $matched_group]));
+									throw new Exception(strtr(t('error_must_provide_valid_input_for_group', 'You must provide a valid input for %group'), ['%group' => $matched_group]));
 								}
 
 								break;

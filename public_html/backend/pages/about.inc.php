@@ -1,15 +1,15 @@
 <?php
 
 	breadcrumbs::reset();
-	breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), WS_DIR_ADMIN);
-	breadcrumbs::add(language::translate('title_about', 'About'), document::link());
+	breadcrumbs::add(t('title_dashboard', 'Dashboard'), WS_DIR_ADMIN);
+	breadcrumbs::add(t('title_about', 'About'), document::link());
 
 	if (isset($_POST['delete'])) {
 
 		try {
 
 			if (empty($_POST['errors'])) {
-				throw new Exception(language::translate('error_must_select_errors', 'You must select errors'));
+				throw new Exception(t('error_must_select_errors', 'You must select errors'));
 			}
 
 			$log_file = ini_get('error_log');
@@ -26,7 +26,7 @@
 
 			file_put_contents($log_file, $content);
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -93,7 +93,7 @@
 	if ($log_file = ini_get('error_log')) {
 
 		if (($filesize = filesize($log_file)) > 1024e6) {
-			notices::add('warnings', language::translate('warning_truncating_extremely_large_log_file', 'Truncating an extremely large log file') .' ('. language::number_format($filesize / (1024 * 1024)) .' Mbytes)');
+			notices::add('warnings', t('warning_truncating_extremely_large_log_file', 'Truncating an extremely large log file') .' ('. language::number_format($filesize / (1024 * 1024)) .' Mbytes)');
 			file_put_contents($logfile, '');
 		}
 

@@ -10,7 +10,7 @@
 		$_POST = $redirect->data;
 	}
 
-	breadcrumbs::add(!empty($redirect->data['id']) ? language::translate('title_edit_redirect', 'Edit Redirect') : language::translate('title_create_new_redirect', 'Create New Redirect'));
+	breadcrumbs::add(!empty($redirect->data['id']) ? t('title_edit_redirect', 'Edit Redirect') : t('title_create_new_redirect', 'Create New Redirect'));
 
 	if (isset($_POST['save'])) {
 
@@ -36,7 +36,7 @@
 
 			$redirect->save();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::link('', ['doc' => 'redirects'], ['app']));
 			exit;
 
@@ -50,12 +50,12 @@
 		try {
 
 			if (empty($redirect->data['id'])) {
-				throw new Exception(language::translate('error_must_provide_url', 'You must provide a url'));
+				throw new Exception(t('error_must_provide_url', 'You must provide a url'));
 			}
 
 			$redirect->delete();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::link('', ['doc' => 'redirects'], ['app']));
 			exit;
 
@@ -73,30 +73,30 @@
 	];
 
 	$domain_options = [
-		['', language::translate('text_irrelevant', 'Irrelevant')],
-		['=', language::translate('text_matches_exactly', 'Matches exactly')],
-		['*', language::translate('text_contains', 'Contains')],
-		['^', language::translate('text_starts_with', 'Starts with')],
-		['$', language::translate('text_ends_with', 'Ends with')],
-		['regex', language::translate('text_matches_regex', 'Matches RegEx')],
+		['', t('text_irrelevant', 'Irrelevant')],
+		['=', t('text_matches_exactly', 'Matches exactly')],
+		['*', t('text_contains', 'Contains')],
+		['^', t('text_starts_with', 'Starts with')],
+		['$', t('text_ends_with', 'Ends with')],
+		['regex', t('text_matches_regex', 'Matches RegEx')],
 	];
 
 	$path_options = [
-		['', language::translate('text_irrelevant', 'Irrelevant')],
-		['=', language::translate('text_matches_exactly', 'Matches exactly')],
-		['*', language::translate('text_contains', 'Contains')],
-		['^', language::translate('text_starts_with', 'Starts with')],
-		['$', language::translate('text_ends_with', 'Ends with')],
-		['regex', language::translate('text_matches_regex', 'Matches RegEx')],
+		['', t('text_irrelevant', 'Irrelevant')],
+		['=', t('text_matches_exactly', 'Matches exactly')],
+		['*', t('text_contains', 'Contains')],
+		['^', t('text_starts_with', 'Starts with')],
+		['$', t('text_ends_with', 'Ends with')],
+		['regex', t('text_matches_regex', 'Matches RegEx')],
 	];
 
 	$query_options = [
-		['', language::translate('text_irrelevant', 'Irrelevant')],
-		['=', language::translate('text_matches_exactly', 'Matches exactly')],
-		['*', language::translate('text_contains', 'Contains')],
-		['^', language::translate('text_starts_with', 'Starts with')],
-		['$', language::translate('text_ends_with', 'Ends with')],
-		['regex', language::translate('text_matches_regex', 'Matches RegEx')],
+		['', t('text_irrelevant', 'Irrelevant')],
+		['=', t('text_matches_exactly', 'Matches exactly')],
+		['*', t('text_contains', 'Contains')],
+		['^', t('text_starts_with', 'Starts with')],
+		['$', t('text_ends_with', 'Ends with')],
+		['regex', t('text_matches_regex', 'Matches RegEx')],
 	];
 
 	if (empty($_POST['pattern'])) {
@@ -111,7 +111,7 @@
 ?>
 <div class="card">
 	<div class="card-header">
-		<h1 class="card-title"><?php echo $app_icon; ?> <?php echo !empty($redirect->data['id']) ? language::translate('title_edit_redirect', 'Edit Redirect') : language::translate('title_create_new_redirect', 'Create New Redirect'); ?></h1>
+		<h1 class="card-title"><?php echo $app_icon; ?> <?php echo !empty($redirect->data['id']) ? t('title_edit_redirect', 'Edit Redirect') : t('title_create_new_redirect', 'Create New Redirect'); ?></h1>
 	</div>
 
 	<div class="card-body">
@@ -120,32 +120,32 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
+						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
 						<?php echo functions::form_toggle('status', 'e/d', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<?php echo functions::form_radio_button('immediate', ['1', language::translate('title_firstly', 'Firstly')], true); ?>
-				<div><?php echo language::translate('text_process_rule_firstly', 'Process the rule before processing any logical resource'); ?></div>
+				<?php echo functions::form_radio_button('immediate', ['1', t('title_firstly', 'Firstly')], true); ?>
+				<div><?php echo t('text_process_rule_firstly', 'Process the rule before processing any logical resource'); ?></div>
 			</div>
 
 			<div class="form-group">
-				<?php echo functions::form_radio_button('immediate', ['0', language::translate('title_lastly', 'Lastly')], !file_get_contents('php://input') ? '0' : true); ?>
-				<div><?php echo language::translate('text_process_rule_lastly', 'Process the rule as a last destination if no logical resource was found'); ?></div>
+				<?php echo functions::form_radio_button('immediate', ['0', t('title_lastly', 'Lastly')], !file_get_contents('php://input') ? '0' : true); ?>
+				<div><?php echo t('text_process_rule_lastly', 'Process the rule as a last destination if no logical resource was found'); ?></div>
 			</div>
 
 			<fieldset id="regex-helper" style="margin-bottom: 2em;">
 				<legend>
 					<strong>
-						<?php echo functions::form_checkbox('use_helper', ['1', language::translate('text_use_regex_helper', 'Use regex helper')]); ?>
+						<?php echo functions::form_checkbox('use_helper', ['1', t('text_use_regex_helper', 'Use regex helper')]); ?>
 					</strong>
 				</legend>
 
 				<div class="grid form-group">
 					<div class="col-md-4">
-						<?php echo language::translate('title_http_protocol', 'HTTP Protocol'); ?>
+						<?php echo t('title_http_protocol', 'HTTP Protocol'); ?>
 					</div>
 					<div class="col-md-8">
 						<?php echo functions::form_select('regex_helper[protocol][criteria]', $protocol_options, true, 'style="width: auto;"'); ?>
@@ -154,7 +154,7 @@
 
 				<div class="grid form-group">
 					<div class="col-md-4">
-						<?php echo language::translate('title_domain_name', 'Domain Name'); ?>
+						<?php echo t('title_domain_name', 'Domain Name'); ?>
 					</div>
 					<div class="col-md-8">
 						<div class="input-group">
@@ -166,7 +166,7 @@
 
 				<div class="grid form-group">
 					<div class="col-md-4">
-						<?php echo language::translate('title_path', 'Path'); ?>
+						<?php echo t('title_path', 'Path'); ?>
 					</div>
 					<div class="col-md-8">
 						<div class="input-group">
@@ -178,7 +178,7 @@
 
 				<div class="grid form-group">
 					<div class="col-md-4">
-						<?php echo language::translate('title_query_parameters', 'Query Parameters'); ?>
+						<?php echo t('title_query_parameters', 'Query Parameters'); ?>
 					</div>
 					<div class="col-md-8">
 						<div class="input-group">
@@ -191,7 +191,7 @@
 			</fieldset>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo language::translate('title_url_regex_pattern', 'URL Regex Pattern'); ?></div>
+				<div class="form-label"><?php echo t('title_url_regex_pattern', 'URL Regex Pattern'); ?></div>
 				<?php echo functions::form_input_text('pattern', true, 'list="sources" required'); ?>
 				<datalist id="sources">
 					<option value="^https://<?php echo strtr($hostname, ['.' => '\\.']); ?>/path/to/file(\?|$)">Exact match of path with optional query at the end</option>
@@ -209,7 +209,7 @@
 			</label>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo language::translate('title_destination', 'Destination'); ?></div>
+				<div class="form-label"><?php echo t('title_destination', 'Destination'); ?></div>
 				<div class="input-group">
 					<?php echo functions::form_input_text('destination', true, 'list="destinations" required'); ?>
 					<?php echo functions::form_select('http_response_code', $type_options, true, 'required'); ?>
@@ -224,14 +224,14 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_valid_from', 'Valid From'); ?></div>
+						<div class="form-label"><?php echo t('title_valid_from', 'Valid From'); ?></div>
 						<?php echo functions::form_input_datetime('valid_from', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_valid_to', 'Valid To'); ?></div>
+						<div class="form-label"><?php echo t('title_valid_to', 'Valid To'); ?></div>
 						<?php echo functions::form_input_datetime('valid_to', true); ?>
 					</label>
 				</div>
@@ -241,14 +241,14 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_redirects', 'Redirects'); ?></div>
+						<div class="form-label"><?php echo t('title_redirects', 'Redirects'); ?></div>
 						<div class="form-input" readonly><?php echo (int)$redirect->data['total_redirects']; ?></div>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_last_redirected', 'Last Redirected'); ?></div>
+						<div class="form-label"><?php echo t('title_last_redirected', 'Last Redirected'); ?></div>
 						<div class="form-input" readonly><?php echo $redirect->data['last_redirected'] ? functions::datetime_when($redirect->data['last_redirected']): '-'; ?></div>
 					</label>
 				</div>

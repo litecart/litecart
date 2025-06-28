@@ -4,16 +4,16 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_administrators', 'Administrators');
+	document::$title[] = t('title_administrators', 'Administrators');
 
-	breadcrumbs::add(language::translate('title_administrators', 'Administrators'), document::ilink());
+	breadcrumbs::add(t('title_administrators', 'Administrators'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
 		try {
 
 			if (empty($_POST['administrators'])) {
-				throw new Exception(language::translate('error_must_select_administrators', 'You must select administrators'));
+				throw new Exception(t('error_must_select_administrators', 'You must select administrators'));
 			}
 
 			foreach ($_POST['administrators'] as $administrator_id) {
@@ -23,7 +23,7 @@
 				$administrator->save();
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -42,11 +42,11 @@
 		try {
 
 			if ($administrator['valid_from'] && $administrator['valid_from'] > date('Y-m-d H:i:s')) {
-				throw new Exception(strtr(language::translate('text_acount_cannot_be_used_until_x', 'The account cannot be used until %datetime'), ['%datetime' => functions::datetime_format('datetime', $administrator['valid_from'])]));
+				throw new Exception(strtr(t('text_acount_cannot_be_used_until_x', 'The account cannot be used until %datetime'), ['%datetime' => functions::datetime_format('datetime', $administrator['valid_from'])]));
 			}
 
 			if ($administrator['valid_to'] && $administrator['valid_to'] < date('Y-m-d H:i:s')) {
-				throw new Exception(strtr(language::translate('text_account_expired_at_x', 'The account expired at %datetime and can no longer be used'), ['%datetime' => functions::datetime_format('datetime', $administrator['valid_to'])]));
+				throw new Exception(strtr(t('text_account_expired_at_x', 'The account expired at %datetime and can no longer be used'), ['%datetime' => functions::datetime_format('datetime', $administrator['valid_to'])]));
 			}
 
 			$administrator['warning'] = null;
@@ -69,12 +69,12 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_administrators', 'Administrators'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_administrators', 'Administrators'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_administrator'), language::translate('title_create_new_administrator', 'Create New Administrator'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_administrator'), t('title_create_new_administrator', 'Create New Administrator'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('administrators_form', 'post'); ?>
@@ -85,13 +85,13 @@
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th></th>
-					<th><?php echo language::translate('title_username', 'Username'); ?></th>
-					<th><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
-					<th><?php echo language::translate('title_restrictions', 'Restrictions'); ?></th>
-					<th class="text-end" style="min-width: 200px;"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
-					<th class="text-end" style="min-width: 200px;"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
-					<th class="text-end"><?php echo language::translate('title_last_login', 'Last Login'); ?></th>
+					<th><?php echo t('title_username', 'Username'); ?></th>
+					<th><?php echo t('title_name', 'Name'); ?></th>
+					<th class="main"><?php echo t('title_email', 'Email'); ?></th>
+					<th><?php echo t('title_restrictions', 'Restrictions'); ?></th>
+					<th class="text-end" style="min-width: 200px;"><?php echo t('title_valid_from', 'Valid From'); ?></th>
+					<th class="text-end" style="min-width: 200px;"><?php echo t('title_valid_to', 'Valid To'); ?></th>
+					<th class="text-end"><?php echo t('title_last_login', 'Last Login'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -105,11 +105,11 @@
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>"><?php echo $administrator['username']; ?></a></td>
 					<td><?php echo $administrator['name']; ?></td>
 					<td><?php echo $administrator['email']; ?></td>
-					<td><?php echo (json_decode($administrator['apps'], true)) ? language::translate('title_restricted', 'Restricted') : '-'; ?></td>
+					<td><?php echo (json_decode($administrator['apps'], true)) ? t('title_restricted', 'Restricted') : '-'; ?></td>
 					<td class="text-end"><?php echo $administrator['valid_from'] ? functions::datetime_when($administrator['valid_from']) : '-'; ?></td>
 					<td class="text-end"><?php echo $administrator['valid_to'] ? functions::datetime_when($administrator['valid_to']) : '-'; ?></td>
 					<td class="text-end"><?php echo $administrator['last_login'] ? functions::datetime_when($administrator['last_login']) : '-'; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -117,7 +117,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_administrators', 'Administrators'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_administrators', 'Administrators'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -127,12 +127,12 @@
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
 				<div class="btn-group">
-					<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+					<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
 
 			</fieldset>

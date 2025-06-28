@@ -4,10 +4,10 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_attribute_groups', 'Attribute Groups');
+	document::$title[] = t('title_attribute_groups', 'Attribute Groups');
 
-	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::ilink(__APP__.'/attribute_groups'));
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_attribute_groups', 'Attribute Groups'), document::ilink(__APP__.'/attribute_groups'));
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$attribute_groups = database::query(
@@ -25,12 +25,12 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_attributes', 'Attributes'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_attributes', 'Attributes'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_attribute_group'), language::translate('title_create_new_group', 'Create New Group'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_attribute_group'), t('title_create_new_group', 'Create New Group'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('attributes_form', 'post'); ?>
@@ -39,10 +39,10 @@
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th class="text-center"><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th class="text-center"><?php echo language::translate('title_code', 'Code'); ?></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_values', 'Values'); ?></th>
+					<th class="text-center"><?php echo t('title_id', 'ID'); ?></th>
+					<th class="text-center"><?php echo t('title_code', 'Code'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_values', 'Values'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -55,7 +55,7 @@
 					<td><?php echo $attribute_group['code']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_attribute_group', ['group_id' => $attribute_group['id']]); ?>"><?php echo $attribute_group['name']; ?></a></td>
 					<td class="text-center"><?php echo $attribute_group['num_values']; ?></td>
-					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_attribute_group', ['group_id' => $attribute_group['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_attribute_group', ['group_id' => $attribute_group['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -63,7 +63,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_attributes', 'Attributes'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_attributes', 'Attributes'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

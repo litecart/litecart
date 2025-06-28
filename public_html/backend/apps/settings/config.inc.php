@@ -1,7 +1,7 @@
 <?php
 
 	$app_config = [
-		'name' => language::translate('title_settings', 'Settings'),
+		'name' => t('title_settings', 'Settings'),
 		'group' => 'system',
 		'default' => 'store_info',
 		'priority' => 0,
@@ -21,7 +21,7 @@
 	)->each(function($group) use (&$app_config) {
 
 		$app_config['menu'][] = [
-			'title' => language::translate('settings_group:title_'.$group['key'], $group['name']),
+			'title' => t('settings_group:title_'.$group['key'], $group['name']),
 			'doc' => $group['key'],
 			'params' => [],
 		];

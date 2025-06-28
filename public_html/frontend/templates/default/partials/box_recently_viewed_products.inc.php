@@ -1,6 +1,6 @@
 <section id="box-recently-viewed-products" class="hidden-xs">
 
-	<h2 class="title"><?php echo language::translate('title_recently_viewed', 'Recently Viewed'); ?></h2>
+	<h2 class="title"><?php echo t('title_recently_viewed', 'Recently Viewed'); ?></h2>
 
 	<div class="products">
 

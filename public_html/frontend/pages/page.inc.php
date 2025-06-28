@@ -30,7 +30,7 @@
 		document::$title[] = $page->head_title ?: $page->title;
 		document::$description = $page->meta_description;
 
-		//breadcrumbs::add(language::translate('title_Pages', 'Pages'));
+		//breadcrumbs::add(t('title_Pages', 'Pages'));
 		foreach (array_slice($page->path, 0, -1, true) as $crumb) {
 			breadcrumbs::add($crumb->title, document::ilink('page', ['page_id' => $crumb->id]));
 		}

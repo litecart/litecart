@@ -327,9 +327,9 @@
 
 		$sticker = '';
 		if ($product['campaign_price']) {
-			$sticker = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'</div>';
+			$sticker = '<div class="sticker sale" title="'. t('title_on_sale', 'On Sale') .'">'. t('sticker_sale', 'Sale') .'</div>';
 		} else if ($product['created_at'] > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
-			$sticker = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
+			$sticker = '<div class="sticker new" title="'. t('title_new', 'New') .'">'. t('sticker_new', 'New') .'</div>';
 		}
 
 		list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
@@ -449,7 +449,7 @@
 
 		$pagination->snippets['items'][] = [
 			'page' => $_GET['page']-1,
-			'title' => language::translate('title_previous', 'Previous'),
+			'title' => t('title_previous', 'Previous'),
 			'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']-1]),
 			'disabled' => ($_GET['page'] <= 1),
 			'active' => false,
@@ -497,7 +497,7 @@
 
 		$pagination->snippets['items'][] = [
 			'page' => $_GET['page']+1,
-			'title' => language::translate('title_next', 'Next'),
+			'title' => t('title_next', 'Next'),
 			'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]),
 			'disabled' => ($_GET['page'] >= $pages) ? true : false,
 			'active' => false,

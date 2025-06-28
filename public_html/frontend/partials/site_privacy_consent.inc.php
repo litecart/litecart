@@ -15,38 +15,38 @@
 	$privacy_classes = [
 		'necessary' => [
 			'id' => 'necessary',
-			'title' => language::translate('title_strictly_necessary', 'Strictly Necessary'),
-			'description' => language::translate('description_privacy_necessary', 'These features are used for activities that are absolutely necessary to operate or deliver a service you request from us. Therefore, we do not need your consent.'),
+			'title' => t('title_strictly_necessary', 'Strictly Necessary'),
+			'description' => t('description_privacy_necessary', 'These features are used for activities that are absolutely necessary to operate or deliver a service you request from us. Therefore, we do not need your consent.'),
 			'third_parties' => [],
 		],
 		'functionality' =>  [
 			'id' => 'functionality',
-			'title' => language::translate('title_functionality', 'Functionality'),
-			'description' => language::translate('description_privacy_functionality', 'These features enable basic interaction and functionality that allows you to use selected features of our Service and communicate smoothly with us.'),
+			'title' => t('title_functionality', 'Functionality'),
+			'description' => t('description_privacy_functionality', 'These features enable basic interaction and functionality that allows you to use selected features of our Service and communicate smoothly with us.'),
 			'third_parties' => [],
 		],
 		'personalization' =>  [
 			'id' => 'personalization',
-			'title' => language::translate('title_personalization', 'Personalization'),
-			'description' => language::translate('description_privacy_personalization', 'These features help us improve your user personalization and enable you to interact with external content, external networks and external platforms.'),
+			'title' => t('title_personalization', 'Personalization'),
+			'description' => t('description_privacy_personalization', 'These features help us improve your user personalization and enable you to interact with external content, external networks and external platforms.'),
 			'third_parties' => [],
 		],
 		'security' =>  [
 			'id' => 'security',
-			'title' => language::translate('title_security', 'Security'),
-			'description' => language::translate('description_privacy_security', 'These features help us keep our service secure and prevent fraud.'),
+			'title' => t('title_security', 'Security'),
+			'description' => t('description_privacy_security', 'These features help us keep our service secure and prevent fraud.'),
 			'third_parties' => [],
 		],
 		'measurement' => [
 			'id' => 'measurement',
-			'title' => language::translate('title_measurement', 'Measurement'),
-			'description' => language::translate('description_privacy_measurement ', 'These features help us measure traffic and analyze your behavior to improve our service.'),
+			'title' => t('title_measurement', 'Measurement'),
+			'description' => t('description_privacy_measurement ', 'These features help us measure traffic and analyze your behavior to improve our service.'),
 			'third_parties' => [],
 		],
 		'marketing' => [
 			'id' => 'marketing',
-			'title' => language::translate('title_marketing', 'Marketing'),
-			'description' => language::translate('description_privacy_marketing', 'These features help us deliver personalized ads or personalized marketing to you. They also help us measure the performance of ads or marketing.'),
+			'title' => t('title_marketing', 'Marketing'),
+			'description' => t('description_privacy_marketing', 'These features help us deliver personalized ads or personalized marketing to you. They also help us measure the performance of ads or marketing.'),
 			'third_parties' => [],
 		],
 	];
@@ -88,7 +88,7 @@
 					'measurement',
 					'marketing',
 				])) {
-					throw new Exception(language::translate('error_invalid_privacy_class', 'Invalid privacy class') .' ('. $privacy_class .')');
+					throw new Exception(t('error_invalid_privacy_class', 'Invalid privacy class') .' ('. $privacy_class .')');
 				}
 			}
 

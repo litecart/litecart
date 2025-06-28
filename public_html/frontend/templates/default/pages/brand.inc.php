@@ -29,7 +29,7 @@
 						<div class="flex flex-gap">
 							<div class="dropdown" style="flex-grow: 0;">
 								<div class="form-select" data-toggle="dropdown">
-									<?php echo language::translate('title_sort_by', 'Sort By'); ?>
+									<?php echo t('title_sort_by', 'Sort By'); ?>
 								</div>
 
 								<ul class="dropdown-content">
@@ -40,7 +40,7 @@
 							</div>
 
 							<div style="flex-grow: 0;">
-								<?php echo functions::form_toggle('list_style', ['columns' => functions::draw_fonticon('icon-th-large'), 'rows' => functions::draw_fonticon('icon-bars')], true, 'data-token-group="list_style" data-token-title="'. language::translate('title_list_style', 'List Style') .'"'); ?>
+								<?php echo functions::form_toggle('list_style', ['columns' => functions::draw_fonticon('icon-th-large'), 'rows' => functions::draw_fonticon('icon-bars')], true, 'data-token-group="list_style" data-token-title="'. t('title_list_style', 'List Style') .'"'); ?>
 							</div>
 						</div>
 

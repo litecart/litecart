@@ -33,7 +33,7 @@
 
 		<div>
 			<a class="btn btn-default" href="<?php echo document::href_ilink(''); ?>">
-				<?php echo functions::draw_fonticon('icon-home'); ?> <?php echo language::translate('title_home', 'Home'); ?>
+				<?php echo functions::draw_fonticon('icon-home'); ?> <?php echo t('title_home', 'Home'); ?>
 			</a>
 		</div>
 	</article>

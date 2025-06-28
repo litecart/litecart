@@ -1,7 +1,7 @@
 <?php
 
 	breadcrumbs::reset();
-	breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), document::ilink(''));
+	breadcrumbs::add(t('title_dashboard', 'Dashboard'), document::ilink(''));
 
 	// Display app content
 	if (defined('__APP__')) {
@@ -21,7 +21,7 @@
 
 		// Check if administrator is permitted to access document
 		if (!empty(administrator::$data['apps'][__APP__]['status']) && !in_array(__DOC__, administrator::$data['apps'][__APP__]['docs'])) {
-			notices::add('errors', language::translate('title_access_denied', 'Access Denied'));
+			notices::add('errors', t('title_access_denied', 'Access Denied'));
 			return;
 		}
 
@@ -62,14 +62,14 @@
 	// Display the start page
 	} else {
 
-		document::$title[] = language::translate('title_dashboard', 'Dashboard');
+		document::$title[] = t('title_dashboard', 'Dashboard');
 
 		if (file_exists(FS_DIR_APP . 'install/')) {
-			notices::add('warnings', language::translate('warning_install_folder_exists', 'Warning: The installation directory is still available and should be deleted.'), 'install_folder');
+			notices::add('warnings', t('warning_install_folder_exists', 'Warning: The installation directory is still available and should be deleted.'), 'install_folder');
 		}
 
 		if (settings::get('maintenance_mode')) {
-			notices::add('notices', language::translate('reminder_store_in_maintenance_mode', 'The store is in maintenance mode.'));
+			notices::add('notices', t('reminder_store_in_maintenance_mode', 'The store is in maintenance mode.'));
 		}
 
 		// Widgets

@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_vMods', 'vMods').'™',
+		'name' => t('title_vMods', 'vMods').'™',
 		'default' => 'vmods',
 		'group' => 'system',
 		'priority' => 0,

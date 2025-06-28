@@ -4,10 +4,10 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_suppliers', 'Suppliers');
+	document::$title[] = t('title_suppliers', 'Suppliers');
 
-	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_suppliers', 'Suppliers'), document::ilink());
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_suppliers', 'Suppliers'), document::ilink());
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$suppliers = database::query(
@@ -20,12 +20,12 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_suppliers', 'Suppliers'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_suppliers', 'Suppliers'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_supplier'), language::translate('title_create_new_supplier', 'Create New Supplier'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_supplier'), t('title_create_new_supplier', 'Create New Supplier'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('suppliers_form', 'post'); ?>
@@ -34,7 +34,7 @@
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -44,7 +44,7 @@
 				<tr>
 					<td><?php echo functions::form_checkbox('suppliers[]', $supplier['id']); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_supplier', ['supplier_id' => $supplier['id']]); ?>"><?php echo $supplier['name']; ?></a></td>
-					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_supplier', ['supplier_id' => $supplier['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_supplier', ['supplier_id' => $supplier['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -52,7 +52,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_suppliers', 'Suppliers'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_suppliers', 'Suppliers'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

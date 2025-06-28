@@ -17,7 +17,7 @@
 			". implode(', ', array_map(function($language) {
 				return "json_value(c.name, '$.". database::input($language['code']) ."')";
 			}, language::$languages)) .",
-			'(". database::input(language::translate('title_untitled', 'Untitled')) .")'
+			'(". database::input(t('title_untitled', 'Untitled')) .")'
 		) as name
 		from ". DB_TABLE_PREFIX ."categories c
 		where ". (!empty($_GET['parent_id']) ? "c.parent_id = ". (int)$_GET['parent_id'] : "c.parent_id is null") ."
@@ -29,14 +29,14 @@
 
 	<div class="modal-body">
 
-		<button class="btn btn-default" name="select" type="button" data-id="<?php echo !empty($_GET['parent_id']) ? (int)$_GET['parent_id'] : '0'; ?>" data-name="<?php echo !empty($_GET['parent_id']) ? reference::category($_GET['parent_id'])->name : language::translate('title_root', 'Root'); ?>" style="position: absolute; inset-inline-end: 1.5em; margin-inline-start: 1em;">
-			<?php echo language::translate('title_select', 'Select'); ?>
+		<button class="btn btn-default" name="select" type="button" data-id="<?php echo !empty($_GET['parent_id']) ? (int)$_GET['parent_id'] : '0'; ?>" data-name="<?php echo !empty($_GET['parent_id']) ? reference::category($_GET['parent_id'])->name : t('title_root', 'Root'); ?>" style="position: absolute; inset-inline-end: 1.5em; margin-inline-start: 1em;">
+			<?php echo t('title_select', 'Select'); ?>
 		</button>
 
 		<nav class="pills" style="margin-bottom: 1em;">
 
 			<a class="pill-item" href="<?php echo document::href_ilink(null, ['parent_id' => 0]); ?>" data-id="0">
-				<?php echo language::translate('title_root', 'Root'); ?>
+				<?php echo t('title_root', 'Root'); ?>
 			</a>
 
 			<?php foreach ($breadcrumbs as $category) { ?>
@@ -51,7 +51,7 @@
 
 			<?php if (!empty($_GET['parent_id'])) { ?>
 			<a class="pill-item" href="<?php echo document::href_ilink(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id]); ?>">
-				<?php echo functions::draw_fonticon('icon-arrow-left'); ?> <?php echo language::translate('title_back', 'Back'); ?>
+				<?php echo functions::draw_fonticon('icon-arrow-left'); ?> <?php echo t('title_back', 'Back'); ?>
 			</a>
 			<?php } ?>
 

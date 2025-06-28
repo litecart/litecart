@@ -64,11 +64,11 @@
 		public function save() {
 
 			if (!$this->data['status'] && $this->data['iso_code_2'] == settings::get('store_country_code')) {
-				throw new Exception(language::translate('error_cannot_disable_store_country', 'You must change the store country before disabling it.'));
+				throw new Exception(t('error_cannot_disable_store_country', 'You must change the store country before disabling it.'));
 			}
 
 			if (empty($this->data['status']) && $this->data['iso_code_2'] == settings::get('default_country_code')) {
-				throw new Exception(language::translate('error_cannot_disable_default_country', 'You must change the default country before disabling it.'));
+				throw new Exception(t('error_cannot_disable_default_country', 'You must change the default country before disabling it.'));
 			}
 
 			if (database::query(
@@ -81,7 +81,7 @@
 				)
 				limit 1;"
 			)->num_rows) {
-				throw new Exception(language::translate('error_country_conflict', 'The country conflicts another country in the database'));
+				throw new Exception(t('error_country_conflict', 'The country conflicts another country in the database'));
 			}
 
 			if (!$this->data['id']) {
@@ -153,11 +153,11 @@
 		public function delete() {
 
 			if ($this->data['iso_code_2'] == settings::get('store_country_code')) {
-				throw new Exception(language::translate('error_cannot_delete_store_country', 'You must change the store country before it can be deleted.'));
+				throw new Exception(t('error_cannot_delete_store_country', 'You must change the store country before it can be deleted.'));
 			}
 
 			if ($this->data['iso_code_2'] == settings::get('default_country_code')) {
-				throw new Exception(language::translate('error_cannot_delete_default_country', 'You must change the default country before it can be deleted.'));
+				throw new Exception(t('error_cannot_delete_default_country', 'You must change the default country before it can be deleted.'));
 			}
 
 			database::query(

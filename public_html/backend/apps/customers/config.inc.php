@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_customers', 'Customers'),
+		'name' => t('title_customers', 'Customers'),
 		'group' => 'ecommerce',
 		'default' => 'customers',
 		'priority' => 0,
@@ -13,22 +13,22 @@
 
 		'menu' => [
 			[
-				'title' => language::translate('title_customers', 'Customers'),
+				'title' => t('title_customers', 'Customers'),
 				'doc' => 'customers',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_customer_groups', 'Customer Groups'),
+				'title' => t('title_customer_groups', 'Customer Groups'),
 				'doc' => 'customer_groups',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_newsletter_recipients', 'Newsletter Recipients'),
+				'title' => t('title_newsletter_recipients', 'Newsletter Recipients'),
 				'doc' => 'newsletter_recipients',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_csv_import_export', 'CSV Import/Export'),
+				'title' => t('title_csv_import_export', 'CSV Import/Export'),
 				'doc' => 'csv',
 				'params' => [],
 			],

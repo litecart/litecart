@@ -41,7 +41,7 @@
 	if ($products) {
 
 		$result = [
-			'name' => language::translate('title_products', 'Products'),
+			'name' => t('title_products', 'Products'),
 			'results' => [],
 		];
 
@@ -49,7 +49,7 @@
 			$result['results'][] = [
 				'id' => $product['id'],
 				'title' => $product['name'],
-				'description' => $product['default_category_id'] ? reference::category($product['default_category_id'])->name : '['.language::translate('title_root', 'Root').']',
+				'description' => $product['default_category_id'] ? reference::category($product['default_category_id'])->name : '['.t('title_root', 'Root').']',
 				'link' => document::ilink($app.'/edit_product', ['product_id' => $product['id']]),
 			];
 		}
@@ -60,7 +60,7 @@
 // Stock Items
 
 	$result = [
-		'name' => language::translate('title_stock_items', 'Stock Items'),
+		'name' => t('title_stock_items', 'Stock Items'),
 		'results' => [],
 	];
 
@@ -94,7 +94,7 @@
 	if ($stock_items) {
 
 		$result = [
-			'name' => language::translate('title_stok_items', 'Stock Items'),
+			'name' => t('title_stok_items', 'Stock Items'),
 			'results' => [],
 		];
 

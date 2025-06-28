@@ -26,7 +26,7 @@
 
 						<div class="col-md-6 text-end">
 							<a class="navigate-back btn btn-default" href="<?php echo document::ilink(''); ?>" >
-								<?php echo functions::draw_fonticon('icon-arrow-left'); ?> <?php echo language::translate('title_back_to_store', 'Back To Store'); ?>
+								<?php echo functions::draw_fonticon('icon-arrow-left'); ?> <?php echo t('title_back_to_store', 'Back To Store'); ?>
 							</a>
 						</div>
 					</div>
@@ -36,11 +36,11 @@
 						<div class="card-header">
 							<div class="float-end">
 								<a href="<?php echo document::ilink('checkout/customer'); ?>" class="btn btn-default" style="margin-inline-start: 1em;">
-									<?php echo functions::draw_fonticon('icon-pencil'); ?> <?php echo language::translate('title_change', 'Change'); ?>
+									<?php echo functions::draw_fonticon('icon-pencil'); ?> <?php echo t('title_change', 'Change'); ?>
 								</a>
 							</div>
 							<h2 class="card-title">
-								<?php echo language::translate('title_customer_details', 'Customer Details'); ?>
+								<?php echo t('title_customer_details', 'Customer Details'); ?>
 							</h2>
 						</div>
 
@@ -50,24 +50,24 @@
 
 								<div class="col-md-6 detail">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_buyer', 'Buyer'); ?></div>
+										<div class="form-label"><?php echo t('title_buyer', 'Buyer'); ?></div>
 										<div class="billing-address"><?php echo nl2br(reference::country($order['customer']['country_code'])->format_address($order['customer'])); ?></div>
 									</label>
 
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
+										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
 										<div><?php echo fallback($order['customer']['email'], '&nbsp;'); ?></div>
 									</label>
 
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
+										<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
 										<div><?php echo fallback($order['customer']['phone'], '&nbsp;'); ?></div>
 									</label>
 								</div>
 
 								<div class="col-md-6 detail">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_deliver_to', 'Deliver To'); ?></div>
+										<div class="form-label"><?php echo t('title_deliver_to', 'Deliver To'); ?></div>
 										<div class="shipping-address"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])); ?></div>
 									</label>
 								</div>
@@ -86,7 +86,7 @@
 						<section id="box-checkout-shipping">
 
 							<h2>
-								<?php echo language::translate('text_select_a_shipping_option', 'Select a shipping option'); ?>
+								<?php echo t('text_select_a_shipping_option', 'Select a shipping option'); ?>
 							</h2>
 
 							<div class="options">
@@ -108,7 +108,7 @@
 											<div class="description"><?php echo $option['description']; ?></div>
 											<?php } ?>
 
-											<div class="price"><?php echo (empty($option['error']) && $option['fee'] != 0) ? '+ ' . currency::format(tax::get_price($option['fee'], $option['tax_class_id'])) : language::translate('text_no_fee', 'No fee'); ?></div>
+											<div class="price"><?php echo (empty($option['error']) && $option['fee'] != 0) ? '+ ' . currency::format(tax::get_price($option['fee'], $option['tax_class_id'])) : t('text_no_fee', 'No fee'); ?></div>
 											<?php if (!empty($option['error'])) { ?>
 											<div class="error"><?php echo $option['error']; ?></div>
 											<?php } ?>
@@ -132,7 +132,7 @@
 					<div class="payment wrapper">
 						<section id="box-checkout-payment">
 							<div class="card-header">
-								<h2 class="card-title"><?php echo language::translate('text_choose_how_you_would_like_to_pay', 'Choose how you would like to pay'); ?></h2>
+								<h2 class="card-title"><?php echo t('text_choose_how_you_would_like_to_pay', 'Choose how you would like to pay'); ?></h2>
 							</div>
 
 							<div class="card-body">
@@ -181,16 +181,16 @@
 						<section id="box-checkout-summary">
 
 							<h2 class="title">
-								<?php echo language::translate('title_order_summary', 'Order Summary'); ?>
+								<?php echo t('title_order_summary', 'Order Summary'); ?>
 							</h2>
 
 							<table class="table data-table">
 								<thead>
 									<tr>
-										<th class="text-start"><?php echo language::translate('title_item', 'Item'); ?></td>
-										<th class="text-end"><?php echo language::translate('title_price', 'Price'); ?></td>
-										<th class="text-end"><?php echo language::translate('title_discount', 'Discount'); ?></td>
-										<th class="text-end"><?php echo language::translate('title_sum', 'Sum'); ?></td>
+										<th class="text-start"><?php echo t('title_item', 'Item'); ?></td>
+										<th class="text-end"><?php echo t('title_price', 'Price'); ?></td>
+										<th class="text-end"><?php echo t('title_discount', 'Discount'); ?></td>
+										<th class="text-end"><?php echo t('title_sum', 'Sum'); ?></td>
 									</tr>
 								</thead>
 
@@ -205,13 +205,13 @@
 									<?php } ?>
 
 									<tr>
-										<td colspan="3" class="text-end"><strong><?php echo language::translate('title_subtotal', 'Subtotal'); ?>:</strong></td>
+										<td colspan="3" class="text-end"><strong><?php echo t('title_subtotal', 'Subtotal'); ?>:</strong></td>
 										<td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $order['subtotal'] + $order['subtotal_tax'] : $order['subtotal'], false, $order['currency_code'], $order['currency_value']); ?></td>
 									</tr>
 
 									<?php if ($order['total_tax']) { ?>
 									<tr>
-										<td colspan="3" class="text-end text-muted"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+										<td colspan="3" class="text-end text-muted"><?php echo !empty(customer::$data['display_prices_including_tax']) ? t('title_including_tax', 'Including Tax') : t('title_excluding_tax', 'Excluding Tax'); ?>:</td>
 										<td class="text-end text-muted"><?php echo currency::format($order['total_tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
 									</tr>
 									<?php } ?>
@@ -219,14 +219,14 @@
 
 								<tfoot>
 									<tr>
-										<td colspan="3" class="text-end"><strong><?php echo language::translate('title_total', 'Payment Due'); ?>:</strong></td>
+										<td colspan="3" class="text-end"><strong><?php echo t('title_total', 'Payment Due'); ?>:</strong></td>
 										<td class="text-end" style="width: 25%;"><strong><?php echo currency::format_html($order['total'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
 									</tr>
 								</tfoot>
 							</table>
 
 							<div class="comments form-group">
-								<label><?php echo language::translate('title_comments', 'Comments'); ?></label>
+								<label><?php echo t('title_comments', 'Comments'); ?></label>
 								<?php echo functions::form_textarea('comments', true, 'maxlength="250" rows="2"'); ?>
 								<small class="remaining"></small>
 							</div>
@@ -408,7 +408,7 @@
 
 	// Replace submit button with spinner when form is submitting
 	$('form[name="checkout_form"]').submit(function(e) {
-		let new_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('icon-spinner'); ?> <?php echo functions::escape_js(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>';
+		let new_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('icon-spinner'); ?> <?php echo functions::escape_js(t('text_please_wait', 'Please wait')); ?>&hellip;</div>';
 		$('#box-checkout-summary button[name="confirm"]').css('display', 'none').before(new_button);
 	});
 </script>

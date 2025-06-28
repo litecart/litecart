@@ -20,9 +20,9 @@
 		$_GET['sort'] = 'created_at';
 	}
 
-	document::$title[] = language::translate('title_orders', 'Orders');
+	document::$title[] = t('title_orders', 'Orders');
 
-	breadcrumbs::add(language::translate('title_orders', 'Orders'), document::ilink());
+	breadcrumbs::add(t('title_orders', 'Orders'), document::ilink());
 
 	if (isset($_POST['star']) || isset($_POST['unstar'])) {
 		database::query(
@@ -39,7 +39,7 @@
 		try {
 
 			if (empty($_POST['orders'])) {
-				throw new Exception(language::translate('error_must_select_orders', 'You must select orders to perform the operation'));
+				throw new Exception(t('error_must_select_orders', 'You must select orders to perform the operation'));
 			}
 
 			sort($_POST['orders']);
@@ -52,7 +52,7 @@
 				case 'set_order_status':
 
 					if (empty($_POST['order_status_id'])) {
-						throw new Exception(language::translate('error_must_select_order_status', 'You must select an order status'));
+						throw new Exception(t('error_must_select_order_status', 'You must select an order status'));
 					}
 
 					foreach ($_POST['orders'] as $order_id) {
@@ -91,7 +91,7 @@
 								throw new Exception($result['error']);
 							}
 
-							notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+							notices::add('success', t('success_changes_saved', 'Changes saved'));
 
 						} catch (Exception $e) {
 							notices::add('errors', $e->getMessage());
@@ -128,7 +128,7 @@
 								throw new Exception($result['error']);
 							}
 
-							notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+							notices::add('success', t('success_changes_saved', 'Changes saved'));
 
 						} catch (Exception $e) {
 							notices::add('errors', $e->getMessage());
@@ -145,7 +145,7 @@
 					$actions = (new mod_order())->actions();
 
 					if (!method_exists($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function'])) {
-						throw new Exception(language::translate('error_method_doesnt_exist', 'The method doesn\'t exist'));
+						throw new Exception(t('error_method_doesnt_exist', 'The method doesn\'t exist'));
 					}
 
 					sort($_POST['orders']);
@@ -326,15 +326,15 @@
 	// Order Statuses
 	$order_status_options = [
 		[
-			'label' => language::translate('title_collections', 'Collections'),
+			'label' => t('title_collections', 'Collections'),
 			'options' => [
-				'' => language::translate('title_current', 'Current Orders'),
-				'archived' => language::translate('title_archived_orders', 'Archived Orders'),
-				'all' => language::translate('title_all_orders', 'All Orders'),
+				'' => t('title_current', 'Current Orders'),
+				'archived' => t('title_archived_orders', 'Archived Orders'),
+				'all' => t('title_all_orders', 'All Orders'),
 			],
 		],
 		[
-			'label' => language::translate('title_order_statuses', 'Order Statuses'),
+			'label' => t('title_order_statuses', 'Order Statuses'),
 			'options' => [],
 		],
 	];
@@ -390,24 +390,24 @@ table .tag {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_orders', 'Orders'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_orders', 'Orders'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_order', ['redirect_url' => $_SERVER['REQUEST_URI']]), language::translate('title_create_new_order', 'Create New Order'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_order', ['redirect_url' => $_SERVER['REQUEST_URI']]), t('title_create_new_order', 'Create New Order'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
 			<?php echo functions::form_select_optgroup('order_status_id', $order_status_options, true, 'style="width: auto;"'); ?>
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
+			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
 			<div class="input-group" style="max-width: 380px;">
 				<?php echo functions::form_input_date('date_from', true); ?>
 				<span class="input-group-text"> - </span>
 				<?php echo functions::form_input_date('date_to', true); ?>
 			</div>
-			<?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
+			<?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
 		</div>
 	<?php echo functions::form_end(); ?>
 
@@ -418,14 +418,14 @@ table .tag {
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
-					<th data-sort="id" class="text-end"><?php echo language::translate('title_order_no', 'Order No'); ?></th>
+					<th data-sort="id" class="text-end"><?php echo t('title_order_no', 'Order No'); ?></th>
 					<th></th>
-					<th data-sort="customer" class="main"><?php echo language::translate('title_customer', 'Customer'); ?></th>
-					<th><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
-					<th data-sort="payment_method"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
-					<th class="text-center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
-					<th data-sort="order_status" class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
-					<th class="text-end" data-sort="created_at"><?php echo language::translate('title_created_at', 'Created At'); ?></th>
+					<th data-sort="customer" class="main"><?php echo t('title_customer', 'Customer'); ?></th>
+					<th><?php echo t('title_in_stock', 'In Stock'); ?></th>
+					<th data-sort="payment_method"><?php echo t('title_payment_method', 'Payment Method'); ?></th>
+					<th class="text-center"><?php echo t('title_amount', 'Amount'); ?></th>
+					<th data-sort="order_status" class="text-center"><?php echo t('title_order_status', 'Order Status'); ?></th>
+					<th class="text-end" data-sort="created_at"><?php echo t('title_created_at', 'Created At'); ?></th>
 					<th></th>
 					<th></th>
 				</tr>
@@ -441,19 +441,19 @@ table .tag {
 					<td>
 						<a class="link" href="<?php echo document::href_ilink(__APP__.'/order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>">
 							<?php echo functions::draw_fonticon($order['customer_company'] ? 'icon-building' : 'icon-user', 'style="opacity: .5;"'); ?>
-							<?php echo $order['customer_company'] ?: $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php if (!$order['customer_id']) echo ' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?>
+							<?php echo $order['customer_company'] ?: $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php if (!$order['customer_id']) echo ' <em>('. t('title_guest', 'Guest') .')</em>'; ?>
 						</a>
 
 						<?php foreach ($order['tags'] as $tag) echo '<code class="tag">'. functions::escape_html($tag) .'</code>'; ?>
 
 						<?php if ($order['has_notes']) { ?>
-						<?php echo functions::draw_fonticon('icon-sticky-note', 'title="'. language::translate('title_notes', 'Notes') .'" style="color: #f2b01e; margin-left: .5em;"'); ?>
+						<?php echo functions::draw_fonticon('icon-sticky-note', 'title="'. t('title_notes', 'Notes') .'" style="color: #f2b01e; margin-left: .5em;"'); ?>
 						<?php } ?>
 					</td>
 					<td class="text-center"><?php $order['sufficient_stock_icon'] ?: '-'; ?></td>
 					<td><?php echo $order['payment_option_name']; ?></td>
 					<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
-					<td class="text-center"><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
+					<td class="text-center"><?php echo $order['order_status_id'] ? $order['order_status_name'] : t('title_uncompleted', 'Uncompleted'); ?></td>
 					<td class="text-end"><?php echo functions::datetime_when($order['created_at']); ?></td>
 					<td>
 						<div class="dropdown dropdown-end">
@@ -462,16 +462,16 @@ table .tag {
 							</div>
 							<nav class="dropdown-menu">
 								<a class="dropdown-item" href="<?php echo  document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank">
-									<?php echo functions::escape_html(language::translate('title_packing_slip', 'Packing Slip')); ?>
+									<?php echo functions::escape_html(t('title_packing_slip', 'Packing Slip')); ?>
 								</a>
 								<a class="dropdown-item" href="<?php echo document::href_ilink('f:printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="">
-									<?php echo functions::escape_html(language::translate('title_order_copy', 'Order Copy')); ?>
+									<?php echo functions::escape_html(t('title_order_copy', 'Order Copy')); ?>
 								</a>
 							</nav>
 						</div>
 					</td>
 					<td>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
 					</td>
 				</tr>
 				<?php } ?>
@@ -480,7 +480,7 @@ table .tag {
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_orders', 'Orders'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -491,12 +491,12 @@ table .tag {
 
 				<li>
 					<fieldset>
-						<legend><?php echo language::translate('title_set_order_status', 'Set Order Status'); ?></legend>
+						<legend><?php echo t('title_set_order_status', 'Set Order Status'); ?></legend>
 						<div class="form-group">
 							<div class="input-group">
 								<?php echo functions::form_select_order_status('order_status_id', true); ?>
 								<button class="btn btn-default" name="action" value="set_order_status" type="submit" formtarget="_self">
-									<?php echo language::translate('title_set', 'Set'); ?>
+									<?php echo t('title_set', 'Set'); ?>
 								</button>
 							</div>
 						</div>
@@ -505,10 +505,10 @@ table .tag {
 
 				<li>
 					<fieldset>
-						<legend><?php echo language::translate('title_shipping', 'Shipping'); ?></legend>
+						<legend><?php echo t('title_shipping', 'Shipping'); ?></legend>
 
 						<div>
-							<?php echo functions::form_button('action', ['book_shipping', language::translate('title_book_shipping', 'Book Shipping')]); ?>
+							<?php echo functions::form_button('action', ['book_shipping', t('title_book_shipping', 'Book Shipping')]); ?>
 						</div>
 
 					</fieldset>
@@ -516,10 +516,10 @@ table .tag {
 
 				<li>
 					<fieldset>
-						<legend><?php echo language::translate('title_payment', 'Payment'); ?></legend>
+						<legend><?php echo t('title_payment', 'Payment'); ?></legend>
 
 						<div>
-							<?php echo functions::form_button('action', ['cancel_payment', language::translate('title_cancel_payment', 'Cancel Payment')]); ?>
+							<?php echo functions::form_button('action', ['cancel_payment', t('title_cancel_payment', 'Cancel Payment')]); ?>
 						</div>
 					</fieldset>
 				</li>
@@ -582,7 +582,7 @@ table .tag {
 	});
 
 	$('#actions button').on('click', function(e) {
-		if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
+		if (!confirm('<?php echo t('text_are_you_sure', 'Are you sure?'); ?>')) {
 			e.preventDefault();
 			return false;
 		}

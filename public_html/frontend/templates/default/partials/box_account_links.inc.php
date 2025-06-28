@@ -12,7 +12,7 @@
 <section id="box-account">
 
 	<h2 class="title">
-		<?php echo language::translate('title_account', 'Account'); ?>
+		<?php echo t('title_account', 'Account'); ?>
 	</h2>
 
 	<nav class="pills">

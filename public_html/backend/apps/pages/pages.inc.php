@@ -12,16 +12,16 @@
 		$_GET['expanded'] = [];
 	}
 
-	document::$title[] = language::translate('title_pages', 'Pages');
+	document::$title[] = t('title_pages', 'Pages');
 
-	breadcrumbs::add(language::translate('title_pages', 'Pages'), document::ilink());
+	breadcrumbs::add(t('title_pages', 'Pages'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
 		try {
 
 			if (empty($_POST['pages'])) {
-				throw new Exception(language::translate('error_must_select_pages', 'You must select pages'));
+				throw new Exception(t('error_must_select_pages', 'You must select pages'));
 			}
 
 			foreach ($_POST['pages'] as $page_id) {
@@ -30,7 +30,7 @@
 				$page->save();
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -44,15 +44,15 @@
 		try {
 
 			if (empty($_POST['pages']) && empty($_POST['pages'])) {
-				throw new Exception(language::translate('error_must_select_pages', 'You must select pages'));
+				throw new Exception(t('error_must_select_pages', 'You must select pages'));
 			}
 
 			if (isset($_POST['page_id']) && $_POST['page_id'] == '') {
-				throw new Exception(language::translate('error_must_select_destination', 'You must select a destination'));
+				throw new Exception(t('error_must_select_destination', 'You must select a destination'));
 			}
 
 			if (isset($_POST['page_id']) && isset($_POST['pages']) && in_array($_POST['page_id'], $_POST['pages'])) {
-				throw new Exception(language::translate('error_cant_move_page_to_itself', 'You can\'t move a page to itself'));
+				throw new Exception(t('error_cant_move_page_to_itself', 'You can\'t move a page to itself'));
 			}
 
 			if (!empty($_POST['pages'])) {
@@ -61,7 +61,7 @@
 					$page->data['parent_id'] = $_POST['page_id'];
 					$page->save();
 				}
-				notices::add('success', sprintf(language::translate('success_moved_d_pages', 'Moved %d pages'), count($_POST['pages'])));
+				notices::add('success', sprintf(t('success_moved_d_pages', 'Moved %d pages'), count($_POST['pages'])));
 			}
 
 			redirect(document::ilink(null, ['page_id' => $_POST['page_id']]));
@@ -77,7 +77,7 @@
 		try {
 
 			if (empty($_POST['pages'])) {
-				throw new Exception(language::translate('error_must_select_pages', 'You must select pages'));
+				throw new Exception(t('error_must_select_pages', 'You must select pages'));
 			}
 
 			foreach ($_POST['pages'] as $page_id) {
@@ -85,7 +85,7 @@
 				$page->delete();
 			}
 
-			notices::add('success', sprintf(language::translate('success_deleted_d_pages', 'Deleted %d pages'), count($_POST['pages'])));
+			notices::add('success', sprintf(t('success_deleted_d_pages', 'Deleted %d pages'), count($_POST['pages'])));
 			reload();
 			exit;
 
@@ -95,9 +95,9 @@
 	}
 
 	$dock_options = [
-		'' => '-- '. language::translate('title_all', 'All') .' --',
-		'menu' => language::translate('title_site_menu', 'Site Menu'),
-		'information' => language::translate('title_information', 'Information'),
+		'' => '-- '. t('title_all', 'All') .' --',
+		'menu' => t('title_site_menu', 'Site Menu'),
+		'information' => t('title_information', 'Information'),
 	];
 ?>
 <style>
@@ -110,19 +110,19 @@ table tbody .toggle {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_pages', 'Pages'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_pages', 'Pages'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_page'), language::translate('title_create_new_page', 'Create New Page'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_page'), t('title_create_new_page', 'Create New Page'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
 			<div class="max-width: max-content;"><?php echo functions::form_select('dock', $dock_options, true); ?></div>
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
-			<?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
+			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
+			<?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
 		</div>
 	<?php echo functions::form_end(); ?>
 
@@ -133,10 +133,10 @@ table tbody .toggle {
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th class="main" style="padding-inline-start: 30px;"><?php echo language::translate('title_title', 'Title'); ?></th>
-					<th><?php echo language::translate('title_site_navigation', 'Site Navigation'); ?></th>
-					<th><?php echo language::translate('title_information', 'Information'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
+					<th class="main" style="padding-inline-start: 30px;"><?php echo t('title_title', 'Title'); ?></th>
+					<th><?php echo t('title_site_navigation', 'Site Navigation'); ?></th>
+					<th><?php echo t('title_information', 'Information'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -174,7 +174,7 @@ table tbody .toggle {
 					<td><?php echo functions::draw_fonticon('icon-file-o'); ?> <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
 					<td class="text-center"><?php if (in_array('menu', $page['dock'])) echo functions::draw_fonticon('icon-check'); ?></td>
 					<td class="text-center"><?php if (in_array('information', $page['dock'])) echo functions::draw_fonticon('icon-check'); ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 <?php
 		}
@@ -228,7 +228,7 @@ table tbody .toggle {
 					</td>
 					<td class="text-center"><?php if (in_array('menu', $page['dock'])) echo functions::draw_fonticon('icon-check'); ?></td>
 					<td class="text-center"><?php if (in_array('information', $page['dock'])) echo functions::draw_fonticon('icon-check'); ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 <?php
 				if (in_array($page['id'], $_GET['expanded'])) {
@@ -252,7 +252,7 @@ table tbody .toggle {
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_pages', 'Pages'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -262,7 +262,7 @@ table tbody .toggle {
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
 				<div class="flex">
@@ -274,7 +274,7 @@ table tbody .toggle {
 
 					<?php echo functions::form_select_page('page_id', true); ?>
 
-					<?php echo functions::form_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
+					<?php echo functions::form_button('move', t('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", t('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
 
 					<?php echo functions::form_button_predefined('delete'); ?>
 

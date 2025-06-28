@@ -9,7 +9,7 @@
 		try {
 
 			if (empty($_POST['redirects'])) {
-				throw new Exception(language::translate('error_must_select_redirects', 'You must select redirects'));
+				throw new Exception(t('error_must_select_redirects', 'You must select redirects'));
 			}
 
 			foreach ($_POST['redirects'] as $redirect_id) {
@@ -19,7 +19,7 @@
 				$redirect->save();
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -33,11 +33,11 @@
 		try {
 
 			if (empty($currency->data['id'])) {
-				throw new Exception(language::translate('error_must_provide_currency', 'You must provide a currency'));
+				throw new Exception(t('error_must_provide_currency', 'You must provide a currency'));
 			}
 
 			if (empty($_POST['redirects'])) {
-				throw new Exception(language::translate('error_must_select_redirects', 'You must select redirects'));
+				throw new Exception(t('error_must_select_redirects', 'You must select redirects'));
 			}
 
 			foreach ($_POST['redirects'] as $redirect_id) {
@@ -45,7 +45,7 @@
 				$redirect->delete();
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/redirects'));
 			exit;
 
@@ -63,13 +63,13 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_redirects', 'Redirects'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_redirects', 'Redirects'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
 		<ul class="list-inline pull-right">
-			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_redirect'), language::translate('title_create_new_redirect', 'Create New Redirect'), '', 'create'); ?></li>
+			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_redirect'), t('title_create_new_redirect', 'Create New Redirect'), '', 'create'); ?></li>
 		</ul>
 	</div>
 
@@ -80,10 +80,10 @@
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
-					<th><?php echo language::translate('title_pattern', 'Pattern'); ?> (Regex)</th>
-					<th class="main"><?php echo language::translate('title_destination', 'Destination'); ?></th>
-					<th><?php echo language::translate('title_redirects', 'Redirects'); ?></th>
-					<th><?php echo language::translate('title_last_redirected', 'Last Redirected'); ?></th>
+					<th><?php echo t('title_pattern', 'Pattern'); ?> (Regex)</th>
+					<th class="main"><?php echo t('title_destination', 'Destination'); ?></th>
+					<th><?php echo t('title_redirects', 'Redirects'); ?></th>
+					<th><?php echo t('title_last_redirected', 'Last Redirected'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -97,7 +97,7 @@
 					<td><?php echo $redirect['destination']; ?></td>
 					<td class="text-end"><?php echo $redirect['redirects']; ?></td>
 					<td class="text-end"><?php echo $redirect['last_redirected'] ? functions::datetime_when($redirect['last_redirected']) : '-'; ?></td>
-					<td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -105,7 +105,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_redirects', 'Redirects'); ?>: <?php echo $num_rows; ?>
+						<?php echo t('title_redirects', 'Redirects'); ?>: <?php echo $num_rows; ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -115,14 +115,14 @@
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
 				<div class="flex">
 
 					<div class="btn-group">
-						<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-						<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+						<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+						<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 					</div>
 
 					<?php echo functions::form_button_predefined('delete'); ?>

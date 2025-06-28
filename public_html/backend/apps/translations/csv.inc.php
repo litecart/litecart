@@ -1,8 +1,8 @@
 <?php
 
-	document::$title[] = language::translate('title_import_export_csv', 'Import/Export CSV');
+	document::$title[] = t('title_import_export_csv', 'Import/Export CSV');
 
-	breadcrumbs::add(language::translate('title_import_export_csv', 'Import/Export CSV'), document::ilink());
+	breadcrumbs::add(t('title_import_export_csv', 'Import/Export CSV'), document::ilink());
 
 	$collections = include __DIR__.'/collections.inc.php';
 
@@ -11,21 +11,21 @@
 		try {
 
 			if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
-				throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+				throw new Exception(t('error_must_select_file_to_upload', 'You must select a file to upload'));
 			}
 
 			if (!empty($_FILES['file']['error'])) {
-				throw new Exception(language::translate('error_uploaded_file_rejected', 'An uploaded file was rejected for unknown reason'));
+				throw new Exception(t('error_uploaded_file_rejected', 'An uploaded file was rejected for unknown reason'));
 			}
 
 			$csv = file_get_contents($_FILES['file']['tmp_name']);
 
 			if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
-				throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
+				throw new Exception(t('error_failed_decoding_csv', 'Failed decoding CSV'));
 			}
 
 			if (empty($csv[0]['code'])) {
-				throw new Exception(language::translate('error_missing_column_code', 'Missing column for code'));
+				throw new Exception(t('error_missing_column_code', 'Missing column for code'));
 			}
 
 			$installed_language_codes = database::query(
@@ -142,8 +142,8 @@
 
 			cache::clear_cache();
 
-			notices::add($updated ? 'success' : 'notice', strtr(language::translate('success_updated_n_existing_entries', 'Updated %n existing entries'), ['%n' => $updated]));
-			notices::add($inserted ? 'success' : 'notice', strtr(language::translate('success_insert_n_new_entries', 'Inserted %n new entries'), ['%n' => $inserted]));
+			notices::add($updated ? 'success' : 'notice', strtr(t('success_updated_n_existing_entries', 'Updated %n existing entries'), ['%n' => $updated]));
+			notices::add($inserted ? 'success' : 'notice', strtr(t('success_insert_n_new_entries', 'Inserted %n new entries'), ['%n' => $inserted]));
 
 			reload();
 			exit;
@@ -158,11 +158,11 @@
 		try {
 
 			if (empty($_POST['collections'])) {
-				throw new Exception(language::translate('error_must_select_at_least_one_collection', 'You must select at least one collection'));
+				throw new Exception(t('error_must_select_at_least_one_collection', 'You must select at least one collection'));
 			}
 
 			if (empty($_POST['language_codes'])) {
-				throw new Exception(language::translate('error_must_select_at_least_one_language', 'You must select at least one language'));
+				throw new Exception(t('error_must_select_at_least_one_language', 'You must select at least one language'));
 			}
 
 			$_POST['language_codes'] = array_filter($_POST['language_codes']);
@@ -273,7 +273,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_csv_import_export', 'CSV Import/Export'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_csv_import_export', 'CSV Import/Export'); ?>
 		</div>
 	</div>
 
@@ -284,25 +284,25 @@
 				<?php echo functions::form_begin('import_form', 'post', '', true); ?>
 
 					<fieldset>
-						<legend><?php echo language::translate('title_import', 'Import'); ?></legend>
+						<legend><?php echo t('title_import', 'Import'); ?></legend>
 
 						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('title_csv_file', 'CSV File'); ?></div>
+							<div class="form-label"><?php echo t('title_csv_file', 'CSV File'); ?></div>
 							<?php echo functions::form_input_file('file', 'accept=".csv, .dsv, .tab, .tsv"'); ?></label>
 						</label>
 
 						<div class="grid">
 							<div class="col-md-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo language::translate('title_delimiter', 'Delimiter'); ?></div>
-									<?php echo functions::form_select('delimiter', ['' => language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ',' => ',',  ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
+									<div class="form-label"><?php echo t('title_delimiter', 'Delimiter'); ?></div>
+									<?php echo functions::form_select('delimiter', ['' => t('title_auto', 'Auto') .' ('. t('text_default', 'default') .')', ',' => ',',  ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
 								</label>
 							</div>
 
 							<div class="col-md-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo language::translate('title_enclosure', 'Enclosure'); ?></div>
-									<?php echo functions::form_select('enclosure', ['"' => '" ('. language::translate('text_default', 'default') .')'], true); ?>
+									<div class="form-label"><?php echo t('title_enclosure', 'Enclosure'); ?></div>
+									<?php echo functions::form_select('enclosure', ['"' => '" ('. t('text_default', 'default') .')'], true); ?>
 								</label>
 							</div>
 						</div>
@@ -310,30 +310,30 @@
 						<div class="grid">
 							<div class="col-md-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo language::translate('title_escape_character', 'Escape Character'); ?></div>
-									<?php echo functions::form_select('escapechar', ['"' => '" ('. language::translate('text_default', 'default') .')', '\\' => '\\'], true); ?>
+									<div class="form-label"><?php echo t('title_escape_character', 'Escape Character'); ?></div>
+									<?php echo functions::form_select('escapechar', ['"' => '" ('. t('text_default', 'default') .')', '\\' => '\\'], true); ?>
 								</label>
 							</div>
 
 							<div class="col-md-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo language::translate('title_charset', 'Charset'); ?></div>
+									<div class="form-label"><?php echo t('title_charset', 'Charset'); ?></div>
 									<?php echo functions::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
 								</label>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<?php echo functions::form_checkbox('insert', ['1', language::translate('text_insert_new_entries', 'Insert new entries')], true); ?>
-							<?php echo functions::form_checkbox('overwrite', ['1', language::translate('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
-							<?php echo functions::form_checkbox('append', ['1', language::translate('text_append_missing_entries', 'Append missing entries')], true); ?>
+							<?php echo functions::form_checkbox('insert', ['1', t('text_insert_new_entries', 'Insert new entries')], true); ?>
+							<?php echo functions::form_checkbox('overwrite', ['1', t('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
+							<?php echo functions::form_checkbox('append', ['1', t('text_append_missing_entries', 'Append missing entries')], true); ?>
 						</div>
 
 						<p>
-							<?php echo language::translate('description_scan_before_importing_translations', 'It is recommended to always scan your installation for unregistered translations before performing an import or export.'); ?>
+							<?php echo t('description_scan_before_importing_translations', 'It is recommended to always scan your installation for unregistered translations before performing an import or export.'); ?>
 						</p>
 
-						<?php echo functions::form_button('import', language::translate('title_import', 'Import'), 'submit'); ?>
+						<?php echo functions::form_button('import', t('title_import', 'Import'), 'submit'); ?>
 					</fieldset>
 
 				<?php echo functions::form_end(); ?>
@@ -343,30 +343,30 @@
 				<?php echo functions::form_begin('export_form', 'post'); ?>
 
 					<fieldset>
-						<legend><?php echo language::translate('title_export', 'Export'); ?></legend>
+						<legend><?php echo t('title_export', 'Export'); ?></legend>
 
 						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('title_collections', 'Collections'); ?></div>
+							<div class="form-label"><?php echo t('title_collections', 'Collections'); ?></div>
 							<?php echo functions::form_select('collections[]', array_map(function($c) { return [$c['id'], $c['name']]; }, $collections), true); ?>
 						</label>
 
 						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('title_languages', 'Languages'); ?></div>
+							<div class="form-label"><?php echo t('title_languages', 'Languages'); ?></div>
 							<?php echo functions::form_select_language('language_codes[]', true); ?></label>
 						</label>
 
 						<div class="grid">
 							<div class="col-md-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo language::translate('title_delimiter', 'Delimiter'); ?></div>
-									<?php echo functions::form_select('delimiter', [',' => ', ('. language::translate('text_default', 'default') .')', ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
+									<div class="form-label"><?php echo t('title_delimiter', 'Delimiter'); ?></div>
+									<?php echo functions::form_select('delimiter', [',' => ', ('. t('text_default', 'default') .')', ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
 								</label>
 							</div>
 
 							<div class="col-md-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo language::translate('title_enclosure', 'Enclosure'); ?></div>
-									<?php echo functions::form_select('enclosure', ['"' => '" ('. language::translate('text_default', 'default') .')'], true); ?>
+									<div class="form-label"><?php echo t('title_enclosure', 'Enclosure'); ?></div>
+									<?php echo functions::form_select('enclosure', ['"' => '" ('. t('text_default', 'default') .')'], true); ?>
 								</label>
 							</div>
 						</div>
@@ -374,14 +374,14 @@
 						<div class="grid">
 							<div class="col-md-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo language::translate('title_escape_character', 'Escape Character'); ?></div>
-									<?php echo functions::form_select('escapechar', ['"' => '" ('. language::translate('text_default', 'default') .')', '\\' => '\\'], true); ?>
+									<div class="form-label"><?php echo t('title_escape_character', 'Escape Character'); ?></div>
+									<?php echo functions::form_select('escapechar', ['"' => '" ('. t('text_default', 'default') .')', '\\' => '\\'], true); ?>
 								</label>
 							</div>
 
 							<div class="col-md-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo language::translate('title_charset', 'Charset'); ?></div>
+									<div class="form-label"><?php echo t('title_charset', 'Charset'); ?></div>
 									<?php echo functions::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
 								</label>
 							</div>
@@ -390,20 +390,20 @@
 						<div class="grid">
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo language::translate('title_line_ending', 'Line Ending'); ?></div>
+									<div class="form-label"><?php echo t('title_line_ending', 'Line Ending'); ?></div>
 									<?php echo functions::form_select('eol', ['Win', 'Mac', 'Linux'], true); ?>
 								</label>
 							</div>
 
 							<div class="col-md-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo language::translate('title_output', 'Output'); ?></div>
-									<?php echo functions::form_select('output', ['screen' => language::translate('title_screen', 'Screen'), 'file' => language::translate('title_file', 'File')], true); ?>
+									<div class="form-label"><?php echo t('title_output', 'Output'); ?></div>
+									<?php echo functions::form_select('output', ['screen' => t('title_screen', 'Screen'), 'file' => t('title_file', 'File')], true); ?>
 								</label>
 							</div>
 						</div>
 
-						<?php echo functions::form_button('export', language::translate('title_export', 'Export'), 'submit'); ?>
+						<?php echo functions::form_button('export', t('title_export', 'Export'), 'submit'); ?>
 					</fieldset>
 
 				<?php echo functions::form_end(); ?>

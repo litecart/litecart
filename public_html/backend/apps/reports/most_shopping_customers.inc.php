@@ -1,9 +1,9 @@
 <?php
 
-	document::$title[] = language::translate('title_most_shopping_customers', 'Most Shopping Customers');
+	document::$title[] = t('title_most_shopping_customers', 'Most Shopping Customers');
 
-	breadcrumbs::add(language::translate('title_reports', 'Reports'));
-	breadcrumbs::add(language::translate('title_most_shopping_customers', 'Most Shopping Customers'), document::ilink());
+	breadcrumbs::add(t('title_reports', 'Reports'));
+	breadcrumbs::add(t('title_most_shopping_customers', 'Most Shopping Customers'), document::ilink());
 
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
@@ -79,7 +79,7 @@ form[name="filter_form"] li {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_most_shopping_customers', 'Most Shopping Customers'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_most_shopping_customers', 'Most Shopping Customers'); ?>
 		</div>
 	</div>
 
@@ -93,8 +93,8 @@ form[name="filter_form"] li {
 						<?php echo functions::form_input_date('date_to', true); ?>
 					</div>
 				</li>
-				<li><?php echo functions::form_button('filter', ['true', functions::draw_fonticon('icon-funnel') .' '. language::translate('title_filter_now', 'Filter')]); ?></li>
-				<li><?php echo functions::form_button('download', ['true', functions::draw_fonticon('icon-download') .' '. language::translate('title_download', 'Download')]); ?></li>
+				<li><?php echo functions::form_button('filter', ['true', functions::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]); ?></li>
+				<li><?php echo functions::form_button('download', ['true', functions::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]); ?></li>
 			</ul>
 		<?php echo functions::form_end(); ?>
 	</div>
@@ -102,16 +102,16 @@ form[name="filter_form"] li {
 	<table class="table data-table">
 		<thead>
 			<tr>
-				<th><?php echo language::translate('title_customer', 'Customer'); ?></th>
-				<th class="main"><?php echo language::translate('title_email_address', 'Email Address'); ?></th>
-				<th class="text-center"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
+				<th><?php echo t('title_customer', 'Customer'); ?></th>
+				<th class="main"><?php echo t('title_email_address', 'Email Address'); ?></th>
+				<th class="text-center"><?php echo t('title_total_amount', 'Total Amount'); ?></th>
 			</tr>
 		</thead>
 
 		<tbody>
 			<?php foreach ($customers as $customer) { ?>
 			<tr>
-				<td><?php echo !empty($customer['id']) ? '<a href="'. document::href_ilink('customers/edit_customer', ['customer_id' => $customer['id']]) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
+				<td><?php echo !empty($customer['id']) ? '<a href="'. document::href_ilink('customers/edit_customer', ['customer_id' => $customer['id']]) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. t('title_guest', 'Guest') .')</em>'; ?></td>
 				<td><?php echo $customer['email']; ?></td>
 				<td class="text-end"><?php echo currency::format($customer['total_amount'], false, settings::get('store_currency_code')); ?></td>
 			</tr>

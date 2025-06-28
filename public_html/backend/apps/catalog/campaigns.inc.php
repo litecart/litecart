@@ -4,17 +4,17 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_campaigns', 'Campaigns');
+	document::$title[] = t('title_campaigns', 'Campaigns');
 
-	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_campaigns', 'Campaigns'), document::ilink());
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_campaigns', 'Campaigns'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
 		try {
 
 			if (empty($_POST['campaigns'])) {
-				throw new Exception(language::translate('error_must_select_campaigns', 'You must select campaigns'));
+				throw new Exception(t('error_must_select_campaigns', 'You must select campaigns'));
 			}
 
 			foreach ($_POST['campaigns'] as $campaign_id) {
@@ -23,7 +23,7 @@
 				$campaign->save();
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -48,12 +48,12 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_campaigns', 'Campaigns'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_campaigns', 'Campaigns'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_campaign'), language::translate('title_create_new_campaign', 'Create New Campaign'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_campaign'), t('title_create_new_campaign', 'Create New Campaign'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('campaigns_form', 'post'); ?>
@@ -62,11 +62,11 @@
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo language::translate('title_ID', 'ID'); ?></th>
-					<th class="main"><?php echo language::translate('title_Name', 'Name'); ?></th>
-					<th class="text-end"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
-					<th class="text-end"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
-					<th class="text-end"><?php echo language::translate('title_products', 'Products'); ?></th>
+					<th><?php echo t('title_ID', 'ID'); ?></th>
+					<th class="main"><?php echo t('title_Name', 'Name'); ?></th>
+					<th class="text-end"><?php echo t('title_valid_from', 'Valid From'); ?></th>
+					<th class="text-end"><?php echo t('title_valid_to', 'Valid To'); ?></th>
+					<th class="text-end"><?php echo t('title_products', 'Products'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -81,7 +81,7 @@
 					<td class="text-end"><?php echo $campaign['valid_to'] ? functions::datetime_format('datetime', $campaign['valid_to']) : ''; ?></td>
 					<td class="text-center"><?php echo language::number_format($campaign['num_products']); ?></td>
 					<td class="text-end">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
 							<?php echo functions::draw_fonticon('edit'); ?>
 						</a>
 					</td>
@@ -92,7 +92,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_campaigns', 'Campaigns'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_campaigns', 'Campaigns'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

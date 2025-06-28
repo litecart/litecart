@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_modules', 'Modules'),
+		'name' => t('title_modules', 'Modules'),
 		'group' => 'system',
 		'default' => 'customer',
 		'priority' => 0,
@@ -13,23 +13,23 @@
 
 		'menu' => [
 			[
-				'title' => language::translate('title_customer_modules', 'Customer Modules'),
+				'title' => t('title_customer_modules', 'Customer Modules'),
 				'doc' => 'customer',
 			],
 			[
-				'title' => language::translate('title_shipping_modules', 'Shipping Modules'),
+				'title' => t('title_shipping_modules', 'Shipping Modules'),
 				'doc' => 'shipping',
 			],
 			[
-				'title' => language::translate('title_payment_modules', 'Payment Modules'),
+				'title' => t('title_payment_modules', 'Payment Modules'),
 				'doc' => 'payment',
 			],
 			[
-				'title' => language::translate('title_order_modules', 'Order Modules'),
+				'title' => t('title_order_modules', 'Order Modules'),
 				'doc' => 'order',
 			],
 			[
-				'title' => language::translate('title_job_modules', 'Job Modules'),
+				'title' => t('title_job_modules', 'Job Modules'),
 				'doc' => 'jobs',
 			],
 		],

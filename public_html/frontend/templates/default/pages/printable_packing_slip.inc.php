@@ -55,8 +55,8 @@ table.items tbody tr:nth-child(11) {
 			</div>
 
 			<div class="col-6 text-end">
-				<h1><?php echo language::translate('title_packing_slip', 'Packing Slip'); ?></h1>
-				<div><?php echo language::translate('title_order', 'Order'); ?> <?php echo $order['no']; ?></div>
+				<h1><?php echo t('title_packing_slip', 'Packing Slip'); ?></h1>
+				<div><?php echo t('title_order', 'Order'); ?> <?php echo $order['no']; ?></div>
 				<div><?php echo !empty($order['created_at']) ? date(language::$selected['raw_date'], strtotime($order['created_at'])) : date(language::$selected['raw_date']); ?></div>
 			</div>
 		</div>
@@ -67,26 +67,26 @@ table.items tbody tr:nth-child(11) {
 		<div class="addresses">
 			<div class="grid">
 				<div class="col-6">
-					<div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
+					<div class="label"><?php echo t('title_shipping_option', 'Shipping Option'); ?></div>
 					<div class="value"><?php echo fallback($order['shipping_option']['name'], '-'); ?></div>
 
-					<div class="label"><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
+					<div class="label"><?php echo t('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
 					<div class="value"><?php echo fallback($order['shipping_tracking_id'], '-'); ?></div>
 
-					<div class="label"><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></div>
+					<div class="label"><?php echo t('title_shipping_weight', 'Shipping Weight'); ?></div>
 					<div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_unit'])  : '-'; ?></div>
 				</div>
 
 				<div class="col-6 shipping-address">
 					<div class="rounded-rectangle">
-						<div class="label"><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></div>
+						<div class="label"><?php echo t('title_shipping_address', 'Shipping Address'); ?></div>
 						<div class="value"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])); ?></div>
 					</div>
 
-					<div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
+					<div class="label"><?php echo t('title_email', 'Email'); ?></div>
 					<div class="value"><?php echo fallback($order['customer']['email'], '-'); ?></div>
 
-					<div class="label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
+					<div class="label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
 					<div class="value"><?php echo fallback($order['customer']['shipping_address']['phone'], '-'); ?></div>
 				</div>
 			</div>
@@ -95,9 +95,9 @@ table.items tbody tr:nth-child(11) {
 		<table class="items table data-table">
 			<thead>
 				<tr>
-					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
-					<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-					<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
+					<th><?php echo t('title_qty', 'Qty'); ?></th>
+					<th><?php echo t('title_sku', 'SKU'); ?></th>
+					<th class="main"><?php echo t('title_item', 'Item'); ?></th>
 				</tr>
 			</thead>
 
@@ -119,9 +119,9 @@ table.items tbody tr:nth-child(11) {
 		<table class="items table data-table">
 			<thead>
 				<tr>
-					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
-					<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-					<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
+					<th><?php echo t('title_qty', 'Qty'); ?></th>
+					<th><?php echo t('title_sku', 'SKU'); ?></th>
+					<th class="main"><?php echo t('title_item', 'Item'); ?></th>
 				</tr>
 			</thead>
 <?php
@@ -147,27 +147,27 @@ table.items tbody tr:nth-child(11) {
 
 		<div class="grid">
 			<div class="col-3">
-				<div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
+				<div class="label"><?php echo t('title_address', 'Address'); ?></div>
 				<div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
 			</div>
 
 			<div class="col-3">
 				<?php if (settings::get('store_phone')) { ?>
-				<div class="label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
+				<div class="label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
 				<div class="value"><?php echo settings::get('store_phone'); ?></div>
 				<?php } ?>
 
 				<?php if (settings::get('store_tax_id')) { ?>
-				<div class="label"><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></div>
+				<div class="label"><?php echo t('title_vat_registration_id', 'VAT Registration ID'); ?></div>
 				<div class="value"><?php echo settings::get('store_tax_id'); ?></div>
 				<?php } ?>
 			</div>
 
 			<div class="col-3">
-				<div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
+				<div class="label"><?php echo t('title_email', 'Email'); ?></div>
 				<div class="value"><?php echo settings::get('store_email'); ?></div>
 
-				<div class="label"><?php echo language::translate('title_website', 'Website'); ?></div>
+				<div class="label"><?php echo t('title_website', 'Website'); ?></div>
 				<div class="value"><?php echo document::ilink(''); ?></div>
 			</div>
 
@@ -182,7 +182,7 @@ table.items tbody tr:nth-child(11) {
 	<ul class="list-unstyled">
 		<li>
 			<button name="print" class="btn btn-default btn-lg">
-				<?php echo functions::draw_fonticon('icon-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
+				<?php echo functions::draw_fonticon('icon-print'); ?> <?php echo t('title_print', 'Print'); ?>
 			</button>
 		</li>
 	</ul>

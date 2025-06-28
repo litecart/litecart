@@ -10,17 +10,17 @@
 		$_POST = $order_status->data;
 	}
 
-	document::$title[] = !empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status');
+	document::$title[] = !empty($order_status->data['id']) ? t('title_edit_order_status', 'Edit Order Status') : t('title_create_new_order_status', 'Create New Order Status');
 
-	breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'), document::ilink(__APP__.'/order_statuses'));
-	breadcrumbs::add(!empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status'), document::ilink());
+	breadcrumbs::add(t('title_order_statuses', 'Order Statuses'), document::ilink(__APP__.'/order_statuses'));
+	breadcrumbs::add(!empty($order_status->data['id']) ? t('title_edit_order_status', 'Edit Order Status') : t('title_create_new_order_status', 'Create New Order Status'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
 		try {
 
 			if (empty($_POST['name'])) {
-				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
+				throw new Exception(t('error_must_provide_name', 'You must provide a name'));
 			}
 
 			if (empty($_POST['hidden'])) {
@@ -65,7 +65,7 @@
 
 			$order_status->save();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/order_statuses'));
 			exit;
 
@@ -79,12 +79,12 @@
 		try {
 
 			if (empty($order_status->data['id'])) {
-				throw new Exception(language::translate('error_must_provide_order_status', 'You must provide an order status'));
+				throw new Exception(t('error_must_provide_order_status', 'You must provide an order status'));
 			}
 
 			$order_status->delete();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/order_statuses'));
 			exit;
 
@@ -94,18 +94,18 @@
 	}
 
 	$states = [
-		'created' => language::translate('title_created', 'Created'),
-		'on_hold' => language::translate('title_on_hold', 'On Hold'),
-		'ready' => language::translate('title_ready', 'Ready'),
-		'delayed' => language::translate('title_delayed', 'Delayed'),
-		'processing' => language::translate('title_processing', 'Processing'),
-		'completed' => language::translate('title_completed', 'Completed'),
-		'dispatched' => language::translate('title_dispatched', 'Dispatched'),
-		'in_transit' => language::translate('title_in_transit', 'In Transit'),
-		'delivered' => language::translate('title_delivered', 'Delivered'),
-		'returning' => language::translate('title_returning', 'Returning'),
-		'returned' => language::translate('title_returned', 'Returned'),
-		'cancelled' => language::translate('title_cancelled', 'Cancelled'),
+		'created' => t('title_created', 'Created'),
+		'on_hold' => t('title_on_hold', 'On Hold'),
+		'ready' => t('title_ready', 'Ready'),
+		'delayed' => t('title_delayed', 'Delayed'),
+		'processing' => t('title_processing', 'Processing'),
+		'completed' => t('title_completed', 'Completed'),
+		'dispatched' => t('title_dispatched', 'Dispatched'),
+		'in_transit' => t('title_in_transit', 'In Transit'),
+		'delivered' => t('title_delivered', 'Delivered'),
+		'returning' => t('title_returning', 'Returning'),
+		'returned' => t('title_returned', 'Returned'),
+		'cancelled' => t('title_cancelled', 'Cancelled'),
 	];
 
 	$language_codes = array_unique(array_merge([language::$selected['code']], [settings::get('store_language_code')], array_keys(language::$languages)));
@@ -119,7 +119,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status'); ?>
+			<?php echo $app_icon; ?> <?php echo !empty($order_status->data['id']) ? t('title_edit_order_status', 'Edit Order Status') : t('title_create_new_order_status', 'Create New Order Status'); ?>
 		</div>
 	</div>
 
@@ -131,7 +131,7 @@
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+								<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 								<?php foreach ($language_codes as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true); ?>
 							</label>
 						</div>
@@ -141,14 +141,14 @@
 							<div class="grid">
 								<div class="col-md-8">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_order_state', 'State'); ?></div>
+										<div class="form-label"><?php echo t('title_order_state', 'State'); ?></div>
 										<?php echo functions::form_select('state', $states, true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-4">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_priority', 'Priority'); ?></div>
+										<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
 										<?php echo functions::form_input_number('priority', true); ?>
 									</label>
 								</div>
@@ -157,14 +157,14 @@
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_font_icon', 'Font Icon'); ?></div>
+										<div class="form-label"><?php echo t('title_font_icon', 'Font Icon'); ?></div>
 										<?php echo functions::form_input_text('icon', true, 'placeholder="icon-circle-thin"'); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_color', 'Color'); ?></div>
+										<div class="form-label"><?php echo t('title_color', 'Color'); ?></div>
 										<?php echo functions::form_input_color('color', empty($_POST['color']) ? '#cccccc' : true, 'placeholder="#cccccc"'); ?>
 									</label>
 								</div>
@@ -173,54 +173,54 @@
 					</div>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
+						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
 						<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 50px;"'); ?>
 					</label>
 
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_properties', 'Properties'); ?></div>
+								<div class="form-label"><?php echo t('title_properties', 'Properties'); ?></div>
 
 								<div>
-									<strong><?php echo functions::form_checkbox('hidden', ['1', language::translate('text_hidden', 'Hidden')], empty($_POST['hidden']) ? '0' : '1'); ?></strong>
-									<?php echo language::translate('text_hidden_from_customer', 'Hidden from the customer\'s order history'); ?>
+									<strong><?php echo functions::form_checkbox('hidden', ['1', t('text_hidden', 'Hidden')], empty($_POST['hidden']) ? '0' : '1'); ?></strong>
+									<?php echo t('text_hidden_from_customer', 'Hidden from the customer\'s order history'); ?>
 								</div>
 
 								<div>
-									<strong><?php echo functions::form_checkbox('is_sale', ['1', language::translate('text_is_sale', 'Is sale')], empty($_POST['is_sale']) ? '0' : '1'); ?></strong>
-									<?php echo language::translate('text_include_in_sales_reports', 'Include in sales reports'); ?>
+									<strong><?php echo functions::form_checkbox('is_sale', ['1', t('text_is_sale', 'Is sale')], empty($_POST['is_sale']) ? '0' : '1'); ?></strong>
+									<?php echo t('text_include_in_sales_reports', 'Include in sales reports'); ?>
 								</div>
 
 								<div>
-									<strong><?php echo functions::form_checkbox('is_archived', ['1', language::translate('text_is_archived', 'Is archived')], empty($_POST['is_archived']) ? '0' : '1'); ?></strong>
-									<?php echo language::translate('text_exclude_from_list_of_orders', 'Exclude from the default list of orders'); ?>
+									<strong><?php echo functions::form_checkbox('is_archived', ['1', t('text_is_archived', 'Is archived')], empty($_POST['is_archived']) ? '0' : '1'); ?></strong>
+									<?php echo t('text_exclude_from_list_of_orders', 'Exclude from the default list of orders'); ?>
 								</div>
 
 								<div class="checkbox">
-									<strong><?php echo functions::form_checkbox('is_trackable', ['1', language::translate('text_is_trackable', 'Is trackable')], empty($_POST['is_trackable']) ? '0' : '1'); ?> </strong>
-									<?php echo language::translate('text_will_send_tracking_event_to_shipping_module', 'Will send a request to the shipping module for tracking the shipment.'); ?></label>
+									<strong><?php echo functions::form_checkbox('is_trackable', ['1', t('text_is_trackable', 'Is trackable')], empty($_POST['is_trackable']) ? '0' : '1'); ?> </strong>
+									<?php echo t('text_will_send_tracking_event_to_shipping_module', 'Will send a request to the shipping module for tracking the shipment.'); ?></label>
 								</div>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_stock_action', 'Stock Action'); ?></div>
+								<div class="form-label"><?php echo t('title_stock_action', 'Stock Action'); ?></div>
 
 								<div>
-									<strong><?php echo functions::form_radio_button('stock_action', ['none', language::translate('title_none', 'None')], empty($_POST['stock_action']) ? 'none' : true); ?></strong>
-									<?php echo language::translate('text_stock_remains_without_an_action', 'Stock remains without an action.'); ?>
+									<strong><?php echo functions::form_radio_button('stock_action', ['none', t('title_none', 'None')], empty($_POST['stock_action']) ? 'none' : true); ?></strong>
+									<?php echo t('text_stock_remains_without_an_action', 'Stock remains without an action.'); ?>
 								</div>
 
 								<div>
-									<strong><?php echo functions::form_radio_button('stock_action', ['reserve', language::translate('title_reserve_stock', 'Reserve Stock')], true); ?></strong>
-									<?php echo language::translate('text_reserve_stock_for_orders_having_this_status', 'Reserve stock for orders having this status.'); ?>
+									<strong><?php echo functions::form_radio_button('stock_action', ['reserve', t('title_reserve_stock', 'Reserve Stock')], true); ?></strong>
+									<?php echo t('text_reserve_stock_for_orders_having_this_status', 'Reserve stock for orders having this status.'); ?>
 								</div>
 
 								<div class="checkbox">
-									<strong><?php echo functions::form_radio_button('stock_action', ['commit', language::translate('title_commit_changes', 'Commit Changes')], true); ?> </strong>
-									<?php echo language::translate('text_commit_changes_to_the_stock', 'Commit changes to stock withdrawing or depositing quantities determined by if an order is a sale or return.'); ?></label>
+									<strong><?php echo functions::form_radio_button('stock_action', ['commit', t('title_commit_changes', 'Commit Changes')], true); ?> </strong>
+									<?php echo t('text_commit_changes_to_the_stock', 'Commit changes to stock withdrawing or depositing quantities determined by if an order is a sale or return.'); ?></label>
 								</div>
 							</label>
 						</div>
@@ -229,7 +229,7 @@
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_priority', 'Priority'); ?></div>
+								<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
 									<?php echo functions::form_input_number('priority', true); ?>
 								</label>
 						</div>
@@ -239,7 +239,7 @@
 				<div class="col-md-6">
 					<fieldset>
 						<legend>
-							<?php echo functions::form_checkbox('notify', ['1', language::translate('title_email_notification', 'Email Notification')], empty($_POST['notify']) ? '0' : '1'); ?>
+							<?php echo functions::form_checkbox('notify', ['1', t('title_email_notification', 'Email Notification')], empty($_POST['notify']) ? '0' : '1'); ?>
 						</legend>
 
 						<?php if (count(language::$languages) > 1) { ?>
@@ -254,19 +254,19 @@
 							<?php foreach (array_keys(language::$languages) as $language_code) { ?>
 							<div id="<?php echo $language_code; ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 								<div class="form-group">
-									<div class="form-label"><?php echo language::translate('title_subject', 'Subject'); ?></div>
+									<div class="form-label"><?php echo t('title_subject', 'Subject'); ?></div>
 									<?php echo functions::form_regional_text('email_subject['. $language_code .']', $language_code, true); ?>
 								</div>
 
 								<div class="form-group">
-									<div class="form-label"><?php echo language::translate('title_message', 'Message'); ?></div>
+									<div class="form-label"><?php echo t('title_message', 'Message'); ?></div>
 									<?php echo functions::form_regional_wysiwyg('email_message['. $language_code .']', $language_code, true); ?>
 								</div>
 							</div>
 							<?php } ?>
 						</div>
 
-						<div><?php echo language::translate('title_aliases', 'Aliases'); ?>: <code>%order_id, %order_status, %firstname, %lastname, %billing_address, %order_items, %total, %payment_transaction_id, %shipping_address, %shipping_tracking_id, %shipping_tracking_url, %shipping_current_status, %shipping_current_location, %order_copy_url, %store_name, %store_url</code></div>
+						<div><?php echo t('title_aliases', 'Aliases'); ?>: <code>%order_id, %order_status, %firstname, %lastname, %billing_address, %order_items, %total, %payment_transaction_id, %shipping_address, %shipping_tracking_id, %shipping_tracking_url, %shipping_current_status, %shipping_current_location, %order_copy_url, %store_name, %store_url</code></div>
 					</fieldset>
 				</div>
 			</div>

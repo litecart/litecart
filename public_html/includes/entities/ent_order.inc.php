@@ -170,7 +170,7 @@
 			if ($this->previous['id'] && $this->data['order_status_id'] != $this->previous['order_status_id']) {
 				$this->data['comments'][] = [
 					'author' => 'system',
-					'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status', settings::get('store_language_code')), [
+					'text' => strtr(t('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status', settings::get('store_language_code')), [
 						'%username' => fallback(administrator::$data['username'], 'system'),
 						'%new_status' => reference::order_status($this->data['order_status_id'], settings::get('store_language_code'))->name,
 					]),
@@ -449,9 +449,9 @@
 
 				if (!empty($notify_comments)) {
 
-					$subject = '['. language::translate('title_order', 'Order') .' '. $this->data['no'] .'] ' . language::translate('title_new_comments_added', 'New Comments Added', $this->data['language_code']);
+					$subject = '['. t('title_order', 'Order') .' '. $this->data['no'] .'] ' . t('title_new_comments_added', 'New Comments Added', $this->data['language_code']);
 
-					$message = language::translate('text_new_comments_added_to_your_order', 'New comments added to your order', $this->data['language_code']) . ":\r\n\r\n";
+					$message = t('text_new_comments_added_to_your_order', 'New comments added to your order', $this->data['language_code']) . ":\r\n\r\n";
 					foreach ($notify_comments as $comment) {
 						$message .= functions::datetime_format('datetime', $comment['created_at']) ." – ". trim($comment['text']) . "\r\n\r\n";
 					}
@@ -580,17 +580,17 @@
 			if (empty($filters) || in_array('customer', $filters)) {
 
 				if (empty($this->data['items'])) {
-					return language::translate('error_order_missing_items', 'The order does not contain any items');
+					return t('error_order_missing_items', 'The order does not contain any items');
 				}
 
 				foreach ($this->data['items'] as $item) {
 					if (!empty($item['error'])) {
-						return language::translate('error_cart_contains_errors', 'Your cart contains errors');
+						return t('error_cart_contains_errors', 'Your cart contains errors');
 					}
 				}
 
 				if ($this->data['total'] < 0) {
-					return language::translate('error_total_cannot_be_a_negative_amount', 'The total cannot be a negative amount');
+					return t('error_total_cannot_be_a_negative_amount', 'The total cannot be a negative amount');
 				}
 			}
 
@@ -601,41 +601,41 @@
 				try {
 
 					if (empty($this->data['customer']['firstname'])) {
-						throw new Exception(language::translate('error_must_provide_firstname', 'You must provide a first name'));
+						throw new Exception(t('error_must_provide_firstname', 'You must provide a first name'));
 					}
 
 					if (empty($this->data['customer']['lastname'])) {
-						throw new Exception(language::translate('error_must_provide_lastname', 'You must provide a last name'));
+						throw new Exception(t('error_must_provide_lastname', 'You must provide a last name'));
 					}
 
 					if (empty($this->data['customer']['address1'])) {
-						throw new Exception(language::translate('error_must_provide_address1', 'You must provide an address'));
+						throw new Exception(t('error_must_provide_address1', 'You must provide an address'));
 					}
 
 					if (empty($this->data['customer']['city'])) {
-						throw new Exception(language::translate('error_must_provide_city', 'You must provide a city'));
+						throw new Exception(t('error_must_provide_city', 'You must provide a city'));
 					}
 
 					if (empty($this->data['customer']['country_code'])) {
-						throw new Exception(language::translate('error_must_select_country', 'You must select a country'));
+						throw new Exception(t('error_must_select_country', 'You must select a country'));
 					}
 
 					if (empty($this->data['customer']['email'])) {
-						throw new Exception(language::translate('error_must_provide_email', 'You must provide an email address'));
+						throw new Exception(t('error_must_provide_email', 'You must provide an email address'));
 					}
 
 					if (empty($this->data['customer']['phone'])) {
-						throw new Exception(language::translate('error_must_provide_phone', 'You must provide a phone number'));
+						throw new Exception(t('error_must_provide_phone', 'You must provide a phone number'));
 					}
 
 					if (!functions::validate_email($this->data['customer']['email'])) {
-						throw new Exception(language::translate('error_invalid_email_address', 'Invalid email address'));
+						throw new Exception(t('error_invalid_email_address', 'Invalid email address'));
 					}
 
 					if (reference::country($this->data['customer']['country_code'])->tax_id_format) {
 						if (!empty($this->data['customer']['tax_id'])) {
 							if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->tax_id_format .'#i', $this->data['customer']['tax_id'])) {
-								throw new Exception(language::translate('error_invalid_tax_id_format', 'Invalid tax ID format'));
+								throw new Exception(t('error_invalid_tax_id_format', 'Invalid tax ID format'));
 							}
 						}
 					}
@@ -643,16 +643,16 @@
 					if (reference::country($this->data['customer']['country_code'])->postcode_format) {
 						if (!empty($this->data['customer']['postcode'])) {
 							if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->postcode_format .'#i', $this->data['customer']['postcode'])) {
-								throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format'));
+								throw new Exception(t('error_invalid_postcode_format', 'Invalid postcode format'));
 							}
 						} else {
-							throw new Exception(language::translate('error_must_provide_postcode', 'You must provide a postcode'));
+							throw new Exception(t('error_must_provide_postcode', 'You must provide a postcode'));
 						}
 					}
 
 					if (settings::get('customer_field_zone') && reference::country($this->data['customer']['country_code'])->zones) {
 						if (empty($this->data['customer']['zone_code']) && reference::country($this->data['customer']['country_code'])->zones) {
-							throw new Exception(language::translate('error_must_select_zone', 'You must select a zone.'));
+							throw new Exception(t('error_must_select_zone', 'You must select a zone.'));
 						}
 					}
 
@@ -664,12 +664,12 @@
 							and status = 0
 							limit 1;"
 						)->num_rows) {
-							throw new Exception(language::translate('error_customer_account_is_disabled', 'The customer account is disabled'));
+							throw new Exception(t('error_customer_account_is_disabled', 'The customer account is disabled'));
 						}
 					}
 
 				} catch (Exception $e) {
-					return language::translate('title_customer_details', 'Customer Details') .': '. $e->getMessage();
+					return t('title_customer_details', 'Customer Details') .': '. $e->getMessage();
 				}
 
 				try {
@@ -677,44 +677,44 @@
 					if (!empty($this->data['customer']['different_shipping_address'])) {
 
 						if (empty($this->data['customer']['shipping_address']['firstname'])) {
-							throw new Exception(language::translate('error_must_provide_firstname', 'You must provide a first name'));
+							throw new Exception(t('error_must_provide_firstname', 'You must provide a first name'));
 						}
 
 						if (empty($this->data['customer']['shipping_address']['lastname'])) {
-							throw new Exception(language::translate('error_must_provide_lastname', 'You must provide a last name'));
+							throw new Exception(t('error_must_provide_lastname', 'You must provide a last name'));
 						}
 
 						if (empty($this->data['customer']['shipping_address']['address1'])) {
-							throw new Exception(language::translate('error_must_provide_address1', 'You must provide an address'));
+							throw new Exception(t('error_must_provide_address1', 'You must provide an address'));
 						}
 
 						if (empty($this->data['customer']['shipping_address']['city'])) {
-							throw new Exception(language::translate('error_must_provide_city', 'You must provide a city'));
+							throw new Exception(t('error_must_provide_city', 'You must provide a city'));
 						}
 
 						if (empty($this->data['customer']['shipping_address']['country_code'])) {
-							throw new Exception(language::translate('error_must_select_country', 'You must select a country'));
+							throw new Exception(t('error_must_select_country', 'You must select a country'));
 						}
 
 						if (reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format) {
 							if (!empty($this->data['customer']['shipping_address']['postcode'])) {
 								if (!preg_match('#'. reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format .'#i', $this->data['customer']['shipping_address']['postcode'])) {
-									throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format.'));
+									throw new Exception(t('error_invalid_postcode_format', 'Invalid postcode format.'));
 								}
 							} else {
-								throw new Exception(language::translate('error_must_provide_postcode', 'You must provide a postcode'));
+								throw new Exception(t('error_must_provide_postcode', 'You must provide a postcode'));
 							}
 						}
 
 						if (settings::get('customer_field_zone') && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) {
 							if (empty($this->data['customer']['shipping_address']['zone_code']) && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) {
-								return language::translate('error_must_select_zone', 'You must select a zone');
+								return t('error_must_select_zone', 'You must select a zone');
 							}
 						}
 					}
 
 				} catch (Exception $e) {
-					return language::translate('title_shipping_address', 'Shipping Address') .': '. $e->getMessage();
+					return t('title_shipping_address', 'Shipping Address') .': '. $e->getMessage();
 				}
 
 				// Additional Customer Validation
@@ -735,11 +735,11 @@
 						list($module_id, $option_id) = $this->data['shipping_option']['id'] ? preg_split('#:#', $this->data['shipping_option']['id'], 2) : ['', ''];
 
 						if (empty($shipping->data['options'][$module_id]['options'][$option_id])) {
-							return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
+							return t('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
 						}
 
 						if (!empty($shipping->data['options'][$module_id]['options'][$option_id]['error'])) {
-							return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains errors');
+							return t('error_shipping_method_contains_error', 'The selected shipping method contains errors');
 						}
 
 						if ($error = $shipping->run('validate', $module_id, $this)) {
@@ -747,7 +747,7 @@
 						}
 
 					} else {
-						return language::translate('error_no_shipping_method_selected', 'No shipping method selected');
+						return t('error_no_shipping_method_selected', 'No shipping method selected');
 					}
 				}
 			}
@@ -762,11 +762,11 @@
 						list($module_id, $option_id) = $this->data['payment_option']['id'] ? preg_split('#:#', $this->data['payment_option']['id'], 2) : ['', ''];
 
 						if (empty($payment->options[$module_id]['options'][$option_id])) {
-							return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
+							return t('error_invalid_payment_method_selected', 'Invalid payment method selected');
 						}
 
 						if (!empty($payment->options[$module_id]['options'][$option_id]['error'])) {
-							return language::translate('error_payment_method_contains_error', 'The selected payment method contains errors');
+							return t('error_payment_method_contains_error', 'The selected payment method contains errors');
 						}
 
 						if ($error = $payment->run('validate', $module_id, $this)) {
@@ -774,7 +774,7 @@
 						}
 
 					} else {
-						return language::translate('error_no_payment_method_selected', 'No payment method selected');
+						return t('error_no_payment_method_selected', 'No payment method selected');
 					}
 				}
 			}
@@ -842,7 +842,7 @@
 
 			$aliases['%order_items'] = trim($aliases['%order_items']);
 
-			$subject = '['. language::translate('title_order', 'Order', $language_code) .' '. $this->data['no'] .'] '. language::translate('title_order_confirmation', 'Order Confirmation', $language_code);
+			$subject = '['. t('title_order', 'Order', $language_code) .' '. $this->data['no'] .'] '. t('title_order_confirmation', 'Order Confirmation', $language_code);
 
 			$message = implode("\r\n", [
 				'Thank you for your purchase!',
@@ -859,7 +859,7 @@
 				'%store_url',
 			]);
 
-			$message = strtr(language::translate('email_order_confirmation', $message, $language_code), $aliases);
+			$message = strtr(t('email_order_confirmation', $message, $language_code), $aliases);
 
 			if (!empty(language::$languages[$this->data['language_code']]) && language::$languages[$this->data['language_code']]['direction'] == 'rtl') {
 				$message = "\xe2\x80\x8f" . $message;
@@ -935,11 +935,11 @@
 			$message = strtr($order_status->email_message, $aliases);
 
 			if (!$subject) {
-				$subject = '['. language::translate('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['no'] .'] '. $order_status->name;
+				$subject = '['. t('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['no'] .'] '. $order_status->name;
 			}
 
 			if (!$message) {
-				$message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), $aliases);
+				$message = strtr(t('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), $aliases);
 			}
 
 			if (!empty(language::$languages[$this->data['language_code']]) && language::$languages[$this->data['language_code']]['direction'] == 'rtl') {

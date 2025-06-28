@@ -10,18 +10,18 @@
 		$_POST = $brand->data;
 	}
 
-	document::$title[] = !empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_create_new_brand', 'Create New Brand');
+	document::$title[] = !empty($brand->data['id']) ? t('title_edit_brand', 'Edit Brand') :  t('title_create_new_brand', 'Create New Brand');
 
-	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink(__APP__.'/brands'));
-	breadcrumbs::add(!empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_create_new_brand', 'Create New Brand'), document::ilink());
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_brands', 'Brands'), document::ilink(__APP__.'/brands'));
+	breadcrumbs::add(!empty($brand->data['id']) ? t('title_edit_brand', 'Edit Brand') :  t('title_create_new_brand', 'Create New Brand'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
 		try {
 
 			if (empty($_POST['name'])) {
-				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
+				throw new Exception(t('error_must_provide_name', 'You must provide a name'));
 			}
 
 			if (!empty($_POST['code'])) {
@@ -30,7 +30,7 @@
 					where id != '". (isset($_GET['brand_id']) ? (int)$_GET['brand_id'] : 0) ."'
 					and code = '". database::input($_POST['code']) ."' limit 1;"
 				)->num_rows) {
-					throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+					throw new Exception(t('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
 				}
 			}
 
@@ -60,7 +60,7 @@
 				$brand->save_image($_FILES['image']['tmp_name']);
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/brands'));
 			exit;
 
@@ -74,12 +74,12 @@
 		try {
 
 			if (empty($brand->data['id'])) {
-				throw new Exception(language::translate('error_must_provide_brand', 'You must provide a brand'));
+				throw new Exception(t('error_must_provide_brand', 'You must provide a brand'));
 			}
 
 			$brand->delete();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/brands'));
 			exit;
 
@@ -92,7 +92,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_create_new_brand', 'Create New Brand'); ?>
+			<?php echo $app_icon; ?> <?php echo !empty($brand->data['id']) ? t('title_edit_brand', 'Edit Brand') :  t('title_create_new_brand', 'Create New Brand'); ?>
 		</div>
 	</div>
 
@@ -102,14 +102,14 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
+						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
 						<?php echo functions::form_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1'); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 						<?php echo functions::form_input_text('name', true); ?>
 					</label>
 				</div>
@@ -118,14 +118,14 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_featured', 'Featured'); ?></div>
+						<div class="form-label"><?php echo t('title_featured', 'Featured'); ?></div>
 						<?php echo functions::form_toggle('featured', 'y/n', fallback($_POST['featured'], '1')); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_code', 'Code'); ?></div>
+						<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
 						<?php echo functions::form_input_text('code', true); ?>
 					</label>
 				</div>
@@ -141,10 +141,10 @@
 						<?php } ?>
 
 						<label class="form-group">
-							<div class="form-label"><?php echo !empty($brand->data['image']) ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image'); ?></div>
+							<div class="form-label"><?php echo !empty($brand->data['image']) ? t('title_new_image', 'New Image') : t('title_image', 'Image'); ?></div>
 							<?php echo functions::form_input_file('image', 'accept="image/*"'); ?>
 							<?php if (!empty($brand->data['image'])) { ?>
-							<?php echo functions::form_checkbox('delete_image', ['true', language::translate('title_delete', 'Delete')], true); ?>
+							<?php echo functions::form_checkbox('delete_image', ['true', t('title_delete', 'Delete')], true); ?>
 							<?php } ?>
 						</label>
 					</div>
@@ -152,7 +152,7 @@
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_keywords', 'Keywords'); ?></div>
+						<div class="form-label"><?php echo t('title_keywords', 'Keywords'); ?></div>
 						<?php echo functions::form_input_tags('keywords', true); ?>
 					</label>
 				</div>
@@ -170,36 +170,36 @@
 					<div id="<?php echo $language_code; ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' selected'; ?>">
 
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_h1_title', 'H1 Title'); ?></div>
+						<div class="form-label"><?php echo t('title_h1_title', 'H1 Title'); ?></div>
 						<?php echo functions::form_regional_text('h1_title['. $language_code .']', $language_code, true, ''); ?>
 					</label>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_short_description', 'Short Description'); ?></div>
+						<div class="form-label"><?php echo t('title_short_description', 'Short Description'); ?></div>
 						<?php echo functions::form_regional_text('short_description['. $language_code .']', $language_code, true); ?>
 					</label>
 
 					<div class="form-group">
-						<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
+						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
 						<?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
 					</div>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_link', 'Link'); ?></div>
+						<div class="form-label"><?php echo t('title_link', 'Link'); ?></div>
 						<?php echo functions::form_regional_text('link['. $language_code .']', $language_code, true); ?>
 					</label>
 
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_head_title', 'Head Title'); ?></div>
+								<div class="form-label"><?php echo t('title_head_title', 'Head Title'); ?></div>
 								<?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true, ''); ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_meta_description', 'Meta Description'); ?></div>
+								<div class="form-label"><?php echo t('title_meta_description', 'Meta Description'); ?></div>
 								<?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
 							</label>
 						</div>

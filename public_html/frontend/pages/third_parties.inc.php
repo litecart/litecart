@@ -9,8 +9,8 @@
 
 	header('X-Robots-Tag: noindex, nofollow', true);
 
-	document::$title[] = language::translate('title_third_parties', 'Third Parties');
-	//document::$description = language::translate('third_parties:meta_description', '');
+	document::$title[] = t('title_third_parties', 'Third Parties');
+	//document::$description = t('third_parties:meta_description', '');
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/third_parties.inc.php');
 

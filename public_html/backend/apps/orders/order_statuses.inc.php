@@ -4,17 +4,17 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_order_statuses', 'Order Statuses');
+	document::$title[] = t('title_order_statuses', 'Order Statuses');
 
-	breadcrumbs::add(language::translate('title_orders', 'Orders'), document::ilink('orders'));
-	breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'), document::ilink());
+	breadcrumbs::add(t('title_orders', 'Orders'), document::ilink('orders'));
+	breadcrumbs::add(t('title_order_statuses', 'Order Statuses'), document::ilink());
 
 	if (!empty($_POST['change'])) {
 
 		try {
 
 			if (empty($_POST['from_order_status_id'])) {
-				throw new Exception(language::translate('error_must_select_from_order_status', 'You must select "from" order status'));
+				throw new Exception(t('error_must_select_from_order_status', 'You must select "from" order status'));
 			}
 
 			$num_orders = 0;
@@ -29,7 +29,7 @@
 				$num_orders++;
 			});
 
-			notices::add('success', strtr(language::translate('success_changed_order_status_for_n_orders', 'Changed order status for %num orders'), ['%num' => $num_orders]));
+			notices::add('success', strtr(t('success_changed_order_status_for_n_orders', 'Changed order status for %num orders'), ['%num' => $num_orders]));
 
 			reload();
 			exit;
@@ -67,30 +67,30 @@
 	$num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
 
 	$states = [
-		'created' => language::translate('title_created', 'Created'),
-		'on_hold' => language::translate('title_on_hold', 'On Hold'),
-		'ready' => language::translate('title_ready', 'Ready'),
-		'delayed' => language::translate('title_delayed', 'Delayed'),
-		'processing' => language::translate('title_processing', 'Processing'),
-		'completed' => language::translate('title_completed', 'Completed'),
-		'dispatched' => language::translate('title_dispatched', 'Dispatched'),
-		'in_transit' => language::translate('title_in_transit', 'In Transit'),
-		'delivered' => language::translate('title_delivered', 'Delivered'),
-		'returning' => language::translate('title_returning', 'Returning'),
-		'returned' => language::translate('title_returned', 'Returned'),
-		'cancelled' => language::translate('title_cancelled', 'Cancelled'),
+		'created' => t('title_created', 'Created'),
+		'on_hold' => t('title_on_hold', 'On Hold'),
+		'ready' => t('title_ready', 'Ready'),
+		'delayed' => t('title_delayed', 'Delayed'),
+		'processing' => t('title_processing', 'Processing'),
+		'completed' => t('title_completed', 'Completed'),
+		'dispatched' => t('title_dispatched', 'Dispatched'),
+		'in_transit' => t('title_in_transit', 'In Transit'),
+		'delivered' => t('title_delivered', 'Delivered'),
+		'returning' => t('title_returning', 'Returning'),
+		'returned' => t('title_returned', 'Returned'),
+		'cancelled' => t('title_cancelled', 'Cancelled'),
 	];
 
 ?>
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_order_statuses', 'Order Statuses'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_order_status'), language::translate('title_create_new_order_status', 'Create New Order Status'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_order_status'), t('title_create_new_order_status', 'Create New Order Status'), '', 'create'); ?>
 		</ul>
 	</div>
 
@@ -100,18 +100,18 @@
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
 					<th></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_status_state', 'State'); ?></th>
-					<th><?php echo language::translate('title_stock_action', 'Stock Action'); ?></th>
-					<th><?php echo language::translate('title_hidden', 'Hidden'); ?></th>
-					<th><?php echo language::translate('title_sales', 'Sales'); ?></th>
-					<th><?php echo language::translate('title_archived', 'Archived'); ?></th>
-					<th><?php echo language::translate('title_track', 'Track'); ?></th>
-					<th><?php echo language::translate('title_notify', 'Notify'); ?></th>
-					<th><?php echo language::translate('title_priority', 'Priority'); ?></th>
-					<th><?php echo language::translate('title_orders', 'Orders'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_status_state', 'State'); ?></th>
+					<th><?php echo t('title_stock_action', 'Stock Action'); ?></th>
+					<th><?php echo t('title_hidden', 'Hidden'); ?></th>
+					<th><?php echo t('title_sales', 'Sales'); ?></th>
+					<th><?php echo t('title_archived', 'Archived'); ?></th>
+					<th><?php echo t('title_track', 'Track'); ?></th>
+					<th><?php echo t('title_notify', 'Notify'); ?></th>
+					<th><?php echo t('title_priority', 'Priority'); ?></th>
+					<th><?php echo t('title_orders', 'Orders'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -124,15 +124,15 @@
 					<td class="text-center"><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>
 					<td><?php echo strtr($order_status['state'], $states); ?></td>
-					<td class="text-center"><?php echo strtr($order_status['stock_action'], ['none' => language::translate('title_none', 'None'), 'reserve' => language::translate('title_reserve', 'Reserve'), 'commit' => language::translate('title_commit', 'Commit')]); ?></td>
+					<td class="text-center"><?php echo strtr($order_status['stock_action'], ['none' => t('title_none', 'None'), 'reserve' => t('title_reserve', 'Reserve'), 'commit' => t('title_commit', 'Commit')]); ?></td>
 					<td class="text-center"><?php echo !empty($order_status['hidden']) ? functions::draw_fonticon('icon-check') : '-'; ?></td>
 					<td class="text-center"><?php echo !empty($order_status['is_sale']) ? functions::draw_fonticon('icon-check') : '-'; ?></td>
 					<td class="text-center"><?php echo !empty($order_status['is_archived']) ? functions::draw_fonticon('icon-check') : '-'; ?></td>
 					<td class="text-center"><?php echo !empty($order_status['is_trackable']) ? functions::draw_fonticon('icon-check') : '-'; ?></td>
 					<td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('icon-check') : '-'; ?></td>
 					<td class="text-center"><?php echo language::number_format($order_status['num_orders'], 0); ?></td>
-					<td class="text-center"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/orders', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></td>
-					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-center"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/orders', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo t('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></td>
+					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -140,7 +140,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_order_statuses', 'Order Statuses'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -152,22 +152,22 @@
 		<?php echo functions::form_begin('order_statuses_form', 'post'); ?>
 
 			<fieldset id="actions">
-				<legend><?php echo language::translate('text_change_status_for_orders', 'Change status for orders'); ?></legend>
+				<legend><?php echo t('text_change_status_for_orders', 'Change status for orders'); ?></legend>
 
 				<div class="grid">
 					<div class="col-md-2">
-						<label class="form-label"><?php echo language::translate('title_from_order_status', 'From Order Status'); ?></label>
+						<label class="form-label"><?php echo t('title_from_order_status', 'From Order Status'); ?></label>
 						<?php echo functions::form_select_order_status('from_order_status_id', true); ?>
 					</div>
 
 					<div class="col-md-2">
-						<label class="form-label"><?php echo language::translate('title_to_order_status', 'To Order Status'); ?></label>
+						<label class="form-label"><?php echo t('title_to_order_status', 'To Order Status'); ?></label>
 						<?php echo functions::form_select_order_status('to_order_status_id', true); ?>
 					</div>
 
 					<div class="col-md-1">
 						<br>
-						<?php echo functions::form_button('change', [1, language::translate('title_change', 'Change')], 'submit'); ?>
+						<?php echo functions::form_button('change', [1, t('title_change', 'Change')], 'submit'); ?>
 					</div>
 				</div>
 			</fieldset>

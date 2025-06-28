@@ -54,7 +54,7 @@
 			if (!$brand) {
 				throw new Exception('Could not find brand (ID: '. (int)$id .') in database.');
 			}
-			
+
 			$this->data = array_replace($this->data, array_intersect_key($brand, $this->data));
 
 			foreach ([
@@ -181,7 +181,7 @@
 				where brand_id = ". (int)$this->data['id'] ."
 				limit 1;"
 			)->num_rows) {
-				notices::add('errors', language::translate('error_delete_brand_not_empty_products', 'The brand could not be deleted because there are products linked to it.'));
+				notices::add('errors', t('error_delete_brand_not_empty_products', 'The brand could not be deleted because there are products linked to it.'));
 				reload();
 				exit;
 			}

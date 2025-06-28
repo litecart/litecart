@@ -12,13 +12,13 @@
 	document::$layout = 'checkout';
 
 	if (settings::get('catalog_only_mode')) {
-		notice::add('errors', language::translate('warning_no_checkout_in_catalog_only_mode', 'The store is currently in catalog mode only and cannot accept orders.'));
+		notice::add('errors', t('warning_no_checkout_in_catalog_only_mode', 'The store is currently in catalog mode only and cannot accept orders.'));
 		return;
 	}
 
-	document::$title[] = language::translate('checkout:head_title', 'Checkout');
+	document::$title[] = t('checkout:head_title', 'Checkout');
 
-	breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::ilink());
+	breadcrumbs::add(t('title_checkout', 'Checkout'), document::ilink());
 
 	// If Confirm Order button was pressed
 	if (isset($_POST['confirm'])) {
@@ -26,7 +26,7 @@
 		try {
 
 			if (empty(session::$data['checkout']['order'])) {
-				notices::add('errors', language::translate('error_no_order_in_session', 'No order in session'));
+				notices::add('errors', t('error_no_order_in_session', 'No order in session'));
 				redirect(document::ilink('checkout/index'));
 				exit;
 			}
@@ -62,7 +62,7 @@
 			if ($payment->options($session_order)) {
 
 				if (empty($payment->selected)) {
-					notices::add('errors', language::translate('error_no_payment_method_selected', 'No payment method selected'));
+					notices::add('errors', t('error_no_payment_method_selected', 'No payment method selected'));
 					redirect(document::ilink('checkout/index'));
 					exit;
 				}
@@ -95,7 +95,7 @@
 
 								document::$template = 'blank';
 
-								echo '<div>'. language::translate('title_redirecting', 'Redirecting') .'...</div>' . PHP_EOL
+								echo '<div>'. t('title_redirecting', 'Redirecting') .'...</div>' . PHP_EOL
 									 . '<form name="gateway_form" method="post" action="'. fallback($gateway['action'], document::ilink('checkout/process')) .'">' . PHP_EOL;
 
 								if (is_array($gateway['fields'])) {
@@ -181,7 +181,7 @@
 
 			if ($order['order_status_id']) {
 				http_response_code(403);
-				notices::add('errors', language::translate('error_order_already_processed', 'This order has already been processed'));
+				notices::add('errors', t('error_order_already_processed', 'This order has already been processed'));
 				return;
 			}
 
@@ -223,7 +223,7 @@
 		'selected_shipping' => null,
 		'selected_payment' => null,
 		'consent' => null,
-		'confirm' => !empty($order->payment->data['selected']['confirm']) ? $order->payment->data['selected']['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
+		'confirm' => !empty($order->payment->data['selected']['confirm']) ? $order->payment->data['selected']['confirm'] : t('title_confirm_order', 'Confirm Order'),
 	];
 
 	customer::log(

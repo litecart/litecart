@@ -10,18 +10,18 @@
 		$_POST = $quantity_unit->data;
 	}
 
-	document::$title[] = !empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_create_new_quantity_unit', 'Create New Quantity Unit');
+	document::$title[] = !empty($quantity_unit->data['id']) ? t('title_edit_quantity_unit', 'Edit Quantity Unit') : t('title_create_new_quantity_unit', 'Create New Quantity Unit');
 
-	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_quantity_units', 'Quantity Units'), document::ilink(__APP__.'/quantity_units'));
-	breadcrumbs::add(!empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_create_new_quantity_unit', 'Create New Quantity Unit'), document::ilink());
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_quantity_units', 'Quantity Units'), document::ilink(__APP__.'/quantity_units'));
+	breadcrumbs::add(!empty($quantity_unit->data['id']) ? t('title_edit_quantity_unit', 'Edit Quantity Unit') : t('title_create_new_quantity_unit', 'Create New Quantity Unit'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
 		try {
 
 			if (empty($_POST['name'])) {
-				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
+				throw new Exception(t('error_must_provide_name', 'You must provide a name'));
 			}
 
 			if (empty($_POST['separate'])) $_POST['separate'] = 0;
@@ -40,7 +40,7 @@
 
 			$quantity_unit->save();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/quantity_units'));
 			exit;
 
@@ -54,12 +54,12 @@
 		try {
 
 			if (empty($quantity_unit->data['id'])) {
-				throw new Exception(language::translate('error_must_provide_quantity_unit', 'You must provide a quantity unit'));
+				throw new Exception(t('error_must_provide_quantity_unit', 'You must provide a quantity unit'));
 			}
 
 			$quantity_unit->delete();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/quantity_units'));
 			exit;
 
@@ -72,7 +72,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_create_new_quantity_unit', 'Create New Quantity Unit'); ?>
+			<?php echo $app_icon; ?> <?php echo !empty($quantity_unit->data['id']) ? t('title_edit_quantity_unit', 'Edit Quantity Unit') : t('title_create_new_quantity_unit', 'Create New Quantity Unit'); ?>
 		</div>
 	</div>
 
@@ -82,28 +82,28 @@
 			<div class="grid">
 				<div class="col-md-8">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 						<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true); ?>
 					 </label>
 				</div>
 
 				<div class="col-md-4">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_priority', 'Priority'); ?></div>
+						<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
 						<?php echo functions::form_input_number('priority', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
+				<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
 				<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text('description['. $language_code .']', $language_code, true); ?>
 			 </label>
 
 			<div class="grid">
 				<div class="col-md-4">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_decimals', 'Decimals'); ?></div>
+						<div class="form-label"><?php echo t('title_decimals', 'Decimals'); ?></div>
 						<?php echo functions::form_input_number('decimals', true); ?>
 					</label>
 				</div>
@@ -111,7 +111,7 @@
 				<div class="col-md-8">
 					<div class="form-group">
 						<div class="form-label">&nbsp;</div>
-						<?php echo functions::form_checkbox('separate', ['1', language::translate('text_separate_added_cart_items', 'Separate added cart items')], true); ?>
+						<?php echo functions::form_checkbox('separate', ['1', t('text_separate_added_cart_items', 'Separate added cart items')], true); ?>
 					</div>
 				</div>
 			</div>

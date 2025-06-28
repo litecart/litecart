@@ -71,7 +71,7 @@
 
 <div id="modal-add-order-item" class="modal fade" style="max-width: 720px;">
 
-	<h2><?php echo language::translate('title_add_product', 'Add Product'); ?></h2>
+	<h2><?php echo t('title_add_product', 'Add Product'); ?></h2>
 
 	<div class="modal-body">
 
@@ -88,7 +88,7 @@
 					<div class="grid">
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+								<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 								<?php echo functions::form_input_text('name', true, (!isset($_GET['collect']) || !in_array('name', $_GET['collect'])) ? 'readonly' : ''); ?>
 							</label>
 						</div>
@@ -98,7 +98,7 @@
 						<?php if (isset($_GET['collect']) && in_array('quantity', $_GET['collect'])) { ?>
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_quantity', 'Quantity'); ?></div>
+								<div class="form-label"><?php echo t('title_quantity', 'Quantity'); ?></div>
 								<?php echo functions::form_input_decimal('quantity', 1); ?>
 							</label>
 						</div>
@@ -107,14 +107,14 @@
 						<?php if (isset($_GET['collect']) && in_array('price', $_GET['collect'])) { ?>
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_price', 'Price'); ?></div>
+								<div class="form-label"><?php echo t('title_price', 'Price'); ?></div>
 								<?php echo functions::form_input_money('price', $_GET['currency_code'], true); ?>
 							</label>
 						</div>
 
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo language::translate('title_tax', 'Tax'); ?></div>
+								<div class="form-label"><?php echo t('title_tax', 'Tax'); ?></div>
 								<?php echo functions::form_input_money('tax', $_GET['currency_code'], true); ?>
 							</label>
 						</div>
@@ -128,9 +128,9 @@
 							<thead>
 								<tr>
 									<th></th>
-									<th><?php echo language::translate('title_stock_option', 'Stock Option'); ?></th>
-									<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-									<th class="text-end"><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
+									<th><?php echo t('title_stock_option', 'Stock Option'); ?></th>
+									<th><?php echo t('title_sku', 'SKU'); ?></th>
+									<th class="text-end"><?php echo t('title_in_stock', 'In Stock'); ?></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -146,7 +146,7 @@
 							<tfoot>
 								<tr>
 									<td colspan="99" class="text-end">
-										<strong><?php echo language::translate('title_total', 'Total'); ?>: </strong><?php echo (float)$product->quantity; ?>
+										<strong><?php echo t('title_total', 'Total'); ?>: </strong><?php echo (float)$product->quantity; ?>
 									</td>
 								</tr>
 							</tfoot>
@@ -156,8 +156,8 @@
 					<?php } ?>
 
 					<div class="card-action">
-						<?php echo functions::form_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
-						<?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel'); ?>
+						<?php echo functions::form_button('ok', t('title_ok', 'OK'), 'button', '', 'ok'); ?>
+						<?php echo functions::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel'); ?>
 					</div>
 
 				</div>

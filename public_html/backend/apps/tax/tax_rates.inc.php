@@ -4,9 +4,9 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_tax_rates', 'Tax Rates');
+	document::$title[] = t('title_tax_rates', 'Tax Rates');
 
-	breadcrumbs::add(language::translate('title_tax_rates', 'Tax Rates'), document::ilink());
+	breadcrumbs::add(t('title_tax_rates', 'Tax Rates'), document::ilink());
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$tax_rates = database::query(
@@ -20,12 +20,12 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_tax_rates', 'Tax Rates'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_tax_rates', 'Tax Rates'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_tax_rate'), language::translate('title_create_new_tax_rate', 'Create New Tax Rate'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_tax_rate'), t('title_create_new_tax_rate', 'Create New Tax Rate'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('tax_rates_form', 'post'); ?>
@@ -34,12 +34,12 @@
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th><?php echo language::translate('title_tax_class', 'Tax Class'); ?></th>
-					<th><?php echo language::translate('title_geo_zone', 'Geo Zone'); ?></th>
-					<th><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
-					<th><?php echo language::translate('title_rate', 'Rate'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
+					<th><?php echo t('title_tax_class', 'Tax Class'); ?></th>
+					<th><?php echo t('title_geo_zone', 'Geo Zone'); ?></th>
+					<th><?php echo t('title_name', 'Name'); ?></th>
+					<th class="main"><?php echo t('title_description', 'Description'); ?></th>
+					<th><?php echo t('title_rate', 'Rate'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -54,7 +54,7 @@
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>"><?php echo $tax_rate['name']; ?></a></td>
 					<td><?php echo $tax_rate['description']; ?></td>
 					<td><?php echo language::number_format($tax_rate['rate'], 4); ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -62,7 +62,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_tax_rates', 'Tax Rates'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_tax_rates', 'Tax Rates'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

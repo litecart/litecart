@@ -12,11 +12,11 @@
 		try {
 
 			if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-				throw new Exception(language::translate('error_must_provide_email', 'You must provide an email address'));
+				throw new Exception(t('error_must_provide_email', 'You must provide an email address'));
 			}
 
 			if (settings::get('captcha_enabled') && !functions::captcha_validate('newsletter_subscribe')) {
-				throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
+				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 
 			$_POST['email'] = strtolower($_POST['email']);
@@ -62,7 +62,7 @@
 				'%unsubscribe_link' => document::ilink('newsletter', ['email' => $_POST['email']]),
 			];
 
-			$message = strtr(language::translate('email_body:newsletter_subscription_confirmation', implode("\r\n", [
+			$message = strtr(t('email_body:newsletter_subscription_confirmation', implode("\r\n", [
 				'This is a confirmation that we have recieved your request to subscribe to our newsletter.',
 				'',
 				'If this was not you, click the link to unsubscribe: %unsubscribe_link',
@@ -72,11 +72,11 @@
 
 			$email = new ent_email();
 			$email->add_recipient($_POST['email'])
-					->set_subject(language::translate('email_subject:newsletter_subscription_confirmation', 'Confirmation of newsletter subscription'))
+					->set_subject(t('email_subject:newsletter_subscription_confirmation', 'Confirmation of newsletter subscription'))
 					->add_body($message)
 					->send();
 
-			notices::add('success', language::translate('success_subscribed_to_newsletter', 'Thank you for subscribing to our newsletter'));
+			notices::add('success', t('success_subscribed_to_newsletter', 'Thank you for subscribing to our newsletter'));
 			reload();
 			exit;
 
@@ -90,11 +90,11 @@
 		try {
 
 			if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-				throw new Exception(language::translate('error_must_provide_email', 'You must provide an email address'));
+				throw new Exception(t('error_must_provide_email', 'You must provide an email address'));
 			}
 
 			if (settings::get('captcha_enabled') && !functions::captcha_validate('newsletter_unsubscribe')) {
-				throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
+				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 
 			$_POST['email'] = strtolower($_POST['email']);
@@ -105,7 +105,7 @@
 				and subscribed = 1
 				limit 1;"
 			)->num_rows) {
-				throw new Exception(language::translate('error_given_email_not_subscribed_to_newsletter', 'The given email address is not subscribed to our newsletter'));
+				throw new Exception(t('error_given_email_not_subscribed_to_newsletter', 'The given email address is not subscribed to our newsletter'));
 			}
 
 		// Collect scraps
@@ -131,7 +131,7 @@
 				'%subscribe_link' => document::ilink('newsletter', ['email' => $_POST['email']]),
 			];
 
-			$message = strtr(language::translate('email_body:newsletter_subscription_confirmation', implode("\r\n", [
+			$message = strtr(t('email_body:newsletter_subscription_confirmation', implode("\r\n", [
 				'This is a confirmation that we have recieved your request to unsubscribe to our newsletter.',
 				'',
 				'You can subscribe again at any time using the link:',
@@ -142,11 +142,11 @@
 
 			$email = new ent_email();
 			$email->add_recipient($_POST['email'])
-					->set_subject(language::translate('email_subject:newsletter_subscription_confirmation', 'Confirmation of newsletter subscription'))
+					->set_subject(t('email_subject:newsletter_subscription_confirmation', 'Confirmation of newsletter subscription'))
 					->add_body($message)
 					->send();
 
-			notices::add('success', language::translate('success_unsubscribed_from_newsletter', 'You have been unsubscribed from the newsletter'));
+			notices::add('success', t('success_unsubscribed_from_newsletter', 'You have been unsubscribed from the newsletter'));
 			reload();
 			exit;
 
@@ -165,7 +165,7 @@
 		$aliases = [
 			'%privacy_policy_link' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
 		];
-		$_page->snippets['consent'] = strtr(language::translate('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
+		$_page->snippets['consent'] = strtr(t('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
 	}
 
 	echo $_page->stitch();

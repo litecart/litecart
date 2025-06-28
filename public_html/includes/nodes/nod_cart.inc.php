@@ -227,44 +227,44 @@
 			try {
 
 				if (!$product->id) {
-					throw new Exception(language::translate('error_item_not_a_valid_product', 'The item is not a valid product'));
+					throw new Exception(t('error_item_not_a_valid_product', 'The item is not a valid product'));
 				}
 
 				if (!$product->status) {
-					throw new Exception(language::translate('error_product_currently_not_available_for_purchase', 'The product is currently not available for purchase'));
+					throw new Exception(t('error_product_currently_not_available_for_purchase', 'The product is currently not available for purchase'));
 				}
 
 				if ($product->valid_from && $product->valid_from > date('Y-m-d H:i:s')) {
-					throw new Exception(strtr(language::translate('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product->valid_from)]));
+					throw new Exception(strtr(t('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product->valid_from)]));
 				}
 
 				if ($product->valid_to && $product->valid_to < date('Y-m-d H:i:s')) {
-					throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), ['%date' => functions::datetime_format('date', $product->valid_to)]));
+					throw new Exception(strtr(t('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), ['%date' => functions::datetime_format('date', $product->valid_to)]));
 				}
 
 				if ($stock_option_id && !in_array($stock_option_id, array_column($product->stock_options, 'id'))) {
-					throw new Exception(language::translate('error_invalid_stock_option', 'Invalid stock option'));
+					throw new Exception(t('error_invalid_stock_option', 'Invalid stock option'));
 				}
 
 				if ($quantity <= 0) {
-					throw new Exception(language::translate('error_invalid_item_quantity', 'Invalid item quantity'));
+					throw new Exception(t('error_invalid_item_quantity', 'Invalid item quantity'));
 				}
 
 				if ($product->quantity_min > 0 && $quantity < $product->quantity_min) {
-					throw new Exception(strtr(language::translate('error_must_purchase_min_items', 'You must purchase a minimum of %num for this item'), ['%num' => (float)$product->quantity_min]));
+					throw new Exception(strtr(t('error_must_purchase_min_items', 'You must purchase a minimum of %num for this item'), ['%num' => (float)$product->quantity_min]));
 				}
 
 				if ($product->quantity_max > 0 && $quantity > $product->quantity_max) {
-					throw new Exception(strtr(language::translate('error_cannot_purchase_more_than_max_items', 'You cannot purchase more than %num of this item'), ['%num' => (float)$product->quantity_max]));
+					throw new Exception(strtr(t('error_cannot_purchase_more_than_max_items', 'You cannot purchase more than %num of this item'), ['%num' => (float)$product->quantity_max]));
 				}
 
 				if ($product->quantity_step > 0 && ($quantity % $product->quantity_step) != 0) {
-					throw new Exception(strtr(language::translate('error_can_only_purchase_sets_for_item', 'You can only purchase sets by %num for this item'), ['%num' => (float)$product->quantity_step]));
+					throw new Exception(strtr(t('error_can_only_purchase_sets_for_item', 'You can only purchase sets by %num for this item'), ['%num' => (float)$product->quantity_step]));
 				}
 
 				if ($product->quantity !== null && empty($product->sold_out_status['orderable'])) {
 					if (($product->quantity_available - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0) {
-						throw new Exception(strtr(language::translate('error_only_n_remaining_products_available_for_purchase', 'There are only %quantity remaining products available for purchase'), ['%quantity' => round((float)$product->quantity_available, isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0)]));
+						throw new Exception(strtr(t('error_only_n_remaining_products_available_for_purchase', 'There are only %quantity remaining products available for purchase'), ['%quantity' => round((float)$product->quantity_available, isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0)]));
 					}
 				}
 
@@ -273,7 +273,7 @@
 					'stock_option_id' => $stock_option_id,
 					'userdata' => $userdata,
 				])) === false) {
-					throw new Exception(language::translate('error_price_not_available_or_determined', 'Price is not yet available or could not be determined'));
+					throw new Exception(t('error_price_not_available_or_determined', 'Price is not yet available or could not be determined'));
 				} else {
 					$item['price'] = $calculated_price;
 					$item['tax'] = tax::get_tax($calculated_price, $product->tax_class_id);
@@ -338,7 +338,7 @@
 			self::_calculate_total();
 
 			if (!$force) {
-				notices::add('success', language::translate('success_product_added_to_cart', 'Your product was successfully added to the cart.'));
+				notices::add('success', t('success_product_added_to_cart', 'Your product was successfully added to the cart.'));
 			}
 
 			return true;

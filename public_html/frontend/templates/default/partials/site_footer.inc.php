@@ -10,14 +10,14 @@
 					<section class="account col-6 col-sm-4">
 
 						<h3 class="title">
-							<?php echo language::translate('title_account', 'Account'); ?>
+							<?php echo t('title_account', 'Account'); ?>
 						</h3>
 
 						<ul class="list-unstyled">
 
 							<li>
 								<a href="<?php echo document::href_ilink('regional_settings'); ?>">
-									<?php echo language::translate('title_regional_settings', 'Regional Settings'); ?>
+									<?php echo t('title_regional_settings', 'Regional Settings'); ?>
 								</a>
 							</li>
 
@@ -25,13 +25,13 @@
 
 							<li>
 								<a href="<?php echo document::href_ilink('account/sign_up'); ?>">
-									<?php echo language::translate('title_sign_up', 'Sign Up'); ?>
+									<?php echo t('title_sign_up', 'Sign Up'); ?>
 								</a>
 							</li>
 
 							<li>
 								<a href="<?php echo document::href_ilink('account/sign_in'); ?>">
-									<?php echo language::translate('title_sign_in', 'Sign In'); ?>
+									<?php echo t('title_sign_in', 'Sign In'); ?>
 								</a>
 							</li>
 
@@ -39,19 +39,19 @@
 
 							<li>
 								<a href="<?php echo document::href_ilink('account/order_history'); ?>">
-									<?php echo language::translate('title_order_history', 'Order History'); ?>
+									<?php echo t('title_order_history', 'Order History'); ?>
 								</a>
 							</li>
 
 							<li>
 								<a href="<?php echo document::href_ilink('account/edit'); ?>">
-									<?php echo language::translate('title_edit_account', 'Edit Account'); ?>
+									<?php echo t('title_edit_account', 'Edit Account'); ?>
 								</a>
 
 							</li>
 							<li>
 								<a href="<?php echo document::href_ilink('account/sign_out'); ?>">
-									<?php echo language::translate('title_sign_out', 'Sign Out'); ?>
+									<?php echo t('title_sign_out', 'Sign Out'); ?>
 								</a>
 							</li>
 
@@ -64,7 +64,7 @@
 					<section class="information col-6 col-sm-4">
 
 						<h3 class="title">
-							<?php echo language::translate('title_information', 'Information'); ?>
+							<?php echo t('title_information', 'Information'); ?>
 						</h3>
 
 						<ul class="list-unstyled">
@@ -76,7 +76,7 @@
 					<section class="store-info hidden-xs col-sm-4">
 
 						<h3 class="title">
-							<?php echo language::translate('title_contact', 'Contact'); ?>
+							<?php echo t('title_contact', 'Contact'); ?>
 						</h3>
 
 						<p class="address">

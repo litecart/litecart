@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_catalog', 'Catalog'),
+		'name' => t('title_catalog', 'Catalog'),
 		'group' => 'ecommerce',
 		'default' => 'category_tree',
 		'priority' => 0,
@@ -15,62 +15,62 @@
 
 		'menu' => [
 			[
-				'title' => language::translate('title_category_tree', 'Category Tree'),
+				'title' => t('title_category_tree', 'Category Tree'),
 				'doc' => 'category_tree',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_products', 'Products'),
+				'title' => t('title_products', 'Products'),
 				'doc' => 'products',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_brands', 'Brands'),
+				'title' => t('title_brands', 'Brands'),
 				'doc' => 'brands',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_suppliers', 'Suppliers'),
+				'title' => t('title_suppliers', 'Suppliers'),
 				'doc' => 'suppliers',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_attributes', 'Attributes'),
+				'title' => t('title_attributes', 'Attributes'),
 				'doc' => 'attribute_groups',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_campaigns', 'Campaigns'),
+				'title' => t('title_campaigns', 'Campaigns'),
 				'doc' => 'campaigns',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_stock_items', 'Stock Items'),
+				'title' => t('title_stock_items', 'Stock Items'),
 				'doc' => 'stock_items',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_stock_transactions', 'Stock Transactions'),
+				'title' => t('title_stock_transactions', 'Stock Transactions'),
 				'doc' => 'stock_transactions',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_delivery_statuses', 'Delivery Statuses'),
+				'title' => t('title_delivery_statuses', 'Delivery Statuses'),
 				'doc' => 'delivery_statuses',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_sold_out_statuses', 'Sold Out Statuses'),
+				'title' => t('title_sold_out_statuses', 'Sold Out Statuses'),
 				'doc' => 'sold_out_statuses',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_quantity_units', 'Quantity Units'),
+				'title' => t('title_quantity_units', 'Quantity Units'),
 				'doc' => 'quantity_units',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_csv_import_export', 'CSV Import/Export'),
+				'title' => t('title_csv_import_export', 'CSV Import/Export'),
 				'doc' => 'csv',
 				'params' => [],
 			],

@@ -4,16 +4,16 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_banners', 'Banners');
+	document::$title[] = t('title_banners', 'Banners');
 
-	breadcrumbs::add(language::translate('title_banners', 'Banners'), document::ilink());
+	breadcrumbs::add(t('title_banners', 'Banners'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
 		try {
 
 			if (empty($_POST['banners'])) {
-				throw new Exception(language::translate('error_must_select_banners', 'You must select banners'));
+				throw new Exception(t('error_must_select_banners', 'You must select banners'));
 			}
 
 			foreach ($_POST['banners'] as $banner_id) {
@@ -23,7 +23,7 @@
 				$banner->save();
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -45,15 +45,15 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_banners', 'Banners'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_banners', 'Banners'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
 		<?php echo functions::form_begin('filter_form', 'get'); ?>
 			<ul class="list-inline">
-				<li><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
-				<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_banner'), language::translate('title_create_new_banner', 'Create New Banner'), '', 'create'); ?></li>
+				<li><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
+				<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_banner'), t('title_create_new_banner', 'Create New Banner'), '', 'create'); ?></li>
 			</ul>
 		<?php echo functions::form_end(); ?>
 	</div>
@@ -65,14 +65,14 @@
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_keywords', 'Keywords'); ?></th>
-					<th class="text-center"><?php echo language::translate('title_clicks', 'Clicks'); ?></th>
-					<th class="text-center"><?php echo language::translate('title_views', 'Views'); ?></th>
-					<th class="text-center"><?php echo language::translate('title_ratio', 'Ratio'); ?></th>
-					<th class="text-center"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
-					<th class="text-center"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
+					<th width="100%"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_keywords', 'Keywords'); ?></th>
+					<th class="text-center"><?php echo t('title_clicks', 'Clicks'); ?></th>
+					<th class="text-center"><?php echo t('title_views', 'Views'); ?></th>
+					<th class="text-center"><?php echo t('title_ratio', 'Ratio'); ?></th>
+					<th class="text-center"><?php echo t('title_valid_from', 'Valid From'); ?></th>
+					<th class="text-center"><?php echo t('title_valid_to', 'Valid To'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -90,7 +90,7 @@
 					<td class="text-end"><?php echo !empty($banner['total_clicks']) ? '1:'.round($banner['total_views']/$banner['total_clicks']) : '-'; ?></td>
 					<td class="text-center"><?php echo $banner['valid_from'] ? functions::datetime_when($banner['valid_from']) : '-'; ?></td>
 					<td class="text-center"><?php echo $banner['valid_to'] ? functions::datetime_when($banner['valid_to']) : '-'; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -98,7 +98,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_banners', 'Banners'); ?>: <?php echo $num_rows; ?>
+						<?php echo t('title_banners', 'Banners'); ?>: <?php echo $num_rows; ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -108,12 +108,12 @@
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
 				<div class="btn-group">
-					<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+					<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
 
 			</fieldset>

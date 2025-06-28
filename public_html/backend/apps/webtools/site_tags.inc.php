@@ -9,7 +9,7 @@
 		try {
 
 			if (empty($_POST['site_tags'])) {
-				throw new Exception(language::translate('error_must_select_site_tags', 'You must select site_tags'));
+				throw new Exception(t('error_must_select_site_tags', 'You must select site_tags'));
 			}
 
 			foreach ($_POST['site_tags'] as $site_tag_id) {
@@ -18,7 +18,7 @@
 				$site_tag->save();
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -37,13 +37,13 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_site_tags', 'Site Tags'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_site_tags', 'Site Tags'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
 		<ul class="list-inline">
-			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_site_tag'), language::translate('title_create_new_site_tag', 'Create New Site Tag'), '', 'create'); ?></li>
+			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_site_tag'), t('title_create_new_site_tag', 'Create New Site Tag'), '', 'create'); ?></li>
 		</ul>
 	</div>
 
@@ -54,10 +54,10 @@
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_require_consent', 'Require Consent'); ?></th>
-					<th><?php echo language::translate('title_position', 'Position'); ?></th>
-					<th><?php echo language::translate('title_priority', 'Priority'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_require_consent', 'Require Consent'); ?></th>
+					<th><?php echo t('title_position', 'Position'); ?></th>
+					<th><?php echo t('title_priority', 'Priority'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -71,7 +71,7 @@
 					<td class="text-center"><?php echo $site_tag['require_consent'] ? functions::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo $site_tag['position']; ?></td>
 					<td class="text-center"><?php echo (int)$site_tag['priority']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php }?>
 			</tbody>
@@ -79,7 +79,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_site_tags', 'Site Tags'); ?>: <?php echo $num_rows; ?>
+						<?php echo t('title_site_tags', 'Site Tags'); ?>: <?php echo $num_rows; ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -89,12 +89,12 @@
 			<fieldset id="actions" disabled>
 
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
 				<div class="btn-group">
-					<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+					<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
 			</fieldset>
 		</div>

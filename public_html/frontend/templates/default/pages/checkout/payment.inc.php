@@ -1,12 +1,12 @@
 <style>
 .option:has(input[name="payment_option[id]"]:checked)::after {
-	content: '<?php echo language::translate('title_selected', 'Selected'); ?>';
+	content: '<?php echo t('title_selected', 'Selected'); ?>';
 }
 </style>
 
 <section id="box-checkout-payment">
 	<div class="card-header">
-		<h2 class="card-title"><?php echo language::translate('text_choose_how_you_would_like_to_pay', 'Choose how you would like to pay'); ?></h2>
+		<h2 class="card-title"><?php echo t('text_choose_how_you_would_like_to_pay', 'Choose how you would like to pay'); ?></h2>
 	</div>
 
 	<div class="card-body">

@@ -15,11 +15,11 @@
 		try {
 
 			if (empty($_POST['name'])) {
-				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
+				throw new Exception(t('error_must_provide_name', 'You must provide a name'));
 			}
 
 			if ($_POST['valid_from'] > $_POST['valid_to']) {
-				throw new Exception(language::translate('error_svalid_from_cannot_be_later_than_valid_to', 'The valid from cannot be later than valid to'));
+				throw new Exception(t('error_svalid_from_cannot_be_later_than_valid_to', 'The valid from cannot be later than valid to'));
 			}
 
 			if (empty($_POST['products'])) {
@@ -40,7 +40,7 @@
 
 			$campaign->save();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/campaigns'));
 			exit;
 
@@ -54,12 +54,12 @@
 		try {
 
 			if (empty($campaign->data['id'])) {
-				throw new Exception(language::translate('error_must_provide_campaign', 'You must provide a campaign'));
+				throw new Exception(t('error_must_provide_campaign', 'You must provide a campaign'));
 			}
 
 			$campaign->delete();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/campaigns'));
 			exit;
 
@@ -78,7 +78,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($campaign->data['id']) ? language::translate('title_edit_campaign', 'Edit Campaign') : language::translate('title_create_new_campaign', 'Create New Campaign'); ?>
+			<?php echo $app_icon; ?> <?php echo !empty($campaign->data['id']) ? t('title_edit_campaign', 'Edit Campaign') : t('title_create_new_campaign', 'Create New Campaign'); ?>
 		</div>
 	</div>
 
@@ -90,14 +90,14 @@
 				<div class="grid">
 					<div class="col-md-6">
 						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('title_status', 'Status'); ?></div>
+							<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
 							<?php echo functions::form_toggle('status', 'e/d', true); ?>
 						</label>
 					</div>
 
 					<div class="col-md-6">
 						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+							<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 							<?php echo functions::form_input_text('name', true); ?>
 						</label>
 					</div>
@@ -106,14 +106,14 @@
 				<div class="grid">
 					<div class="col-md-6">
 						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('title_valid_from', 'Valid From'); ?></div>
+							<div class="form-label"><?php echo t('title_valid_from', 'Valid From'); ?></div>
 							<?php echo functions::form_input_datetime('valid_from', true); ?>
 						</label>
 					</div>
 
 					<div class="col-md-6">
 						<label class="form-group">
-							<div class="form-label"><?php echo language::translate('title_valid_to', 'Valid To'); ?></div>
+							<div class="form-label"><?php echo t('title_valid_to', 'Valid To'); ?></div>
 							<?php echo functions::form_input_datetime('valid_to', true); ?>
 						</label>
 					</div>
@@ -125,10 +125,10 @@
 		<table id="campaigns" class="table data-table">
 			<thead>
 				<tr>
-					<th class="main"><?php echo language::translate('title_product', 'Product'); ?></th>
-					<th class="text-center"><?php echo language::translate('title_regular_price', 'Regular Price'); ?></th>
-					<th class="text-center"><?php echo language::translate('title_campaign_price', 'Campaign Price'); ?></th>
-					<th class="text-center"><?php echo language::translate('title_percentage', 'Percentage'); ?></th>
+					<th class="main"><?php echo t('title_product', 'Product'); ?></th>
+					<th class="text-center"><?php echo t('title_regular_price', 'Regular Price'); ?></th>
+					<th class="text-center"><?php echo t('title_campaign_price', 'Campaign Price'); ?></th>
+					<th class="text-center"><?php echo t('title_percentage', 'Percentage'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -157,7 +157,7 @@
 					</td>
 					<td><?php echo functions::form_input_percent('products['.$key.'][percentage]', true, 2, 'style="width: 100px;"'); ?></td>
 					<td class="text-end">
-						<button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
+						<button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo t('title_edit', 'Edit'); ?>">
 							<?php echo functions::draw_fonticon('icon-times'); ?>
 						</button>
 					</td>
@@ -168,7 +168,7 @@
 
 		<div class="card-body">
 			<a href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>" class="btn btn-default" data-toggle="lightbox" data-max-width="800px" data-callback="add_product">
-				<?php echo functions::draw_fonticon('icon-plus', 'style="margin-inline-end: .5em;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?>
+				<?php echo functions::draw_fonticon('icon-plus', 'style="margin-inline-end: .5em;"'); ?> <?php echo t('title_add_product', 'Add Product'); ?>
 			</a>
 		</div>
 
@@ -241,7 +241,7 @@
 
 	$('#campaigns').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
-		if (confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) {
+		if (confirm('<?php echo t('text_are_you_sure', 'Are you sure?'); ?>')) {
 			$(this).closest('tr').remove();
 		}
 	});
@@ -274,7 +274,7 @@
 			'  </td>',
 			'  <td><?php echo functions::escape_js(functions::form_input_percent('products[__index__][percentage]', '0.00', 2)); ?></td>',
 			'  <td class="text-end">',
-			'    <button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo language::translate('title_edit', 'Edit'); ?>">',
+			'    <button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo t('title_edit', 'Edit'); ?>">',
 			'      <?php echo functions::draw_fonticon('icon-times'); ?>',
 			'    </button>',
 			'  </td>',

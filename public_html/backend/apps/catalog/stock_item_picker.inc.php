@@ -13,18 +13,18 @@
 
 	<div class="card-header">
 		<h2 class="card-title">
-			<?php echo language::translate('title_stock_items', 'Stock Items'); ?>
+			<?php echo t('title_stock_items', 'Stock Items'); ?>
 		</h2>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_item', [], ['js_callback']), language::translate('title_create_new_stock_item', 'Create New Stock Item'), 'class="btn btn-default" data-toggle="lightbox" data-seamless=true data-width="980px"', 'add'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_item', [], ['js_callback']), t('title_create_new_stock_item', 'Create New Stock Item'), 'class="btn btn-default" data-toggle="lightbox" data-seamless=true data-width="980px"', 'add'); ?>
 	</div>
 
 	<div class="card-body">
 		<label class="form-group">
-			<div class="form-label"><?php echo language::translate('title_search', 'Search'); ?></div>
-			<?php echo functions::form_input_text('query', true, 'placeholder="'. functions::escape_attr(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
+			<div class="form-label"><?php echo t('title_search', 'Search'); ?></div>
+			<?php echo functions::form_input_text('query', true, 'placeholder="'. functions::escape_attr(t('title_search', 'Search')) .'" autocomplete="off"'); ?>
 		 </label>
 	</div>
 
@@ -32,13 +32,13 @@
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-					<th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
-					<th><?php echo language::translate('title_mpn', 'MPN'); ?></th>
-					<th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-					<th><?php echo language::translate('title_created_at', 'Created At'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_sku', 'SKU'); ?></th>
+					<th><?php echo t('title_gtin', 'GTIN'); ?></th>
+					<th><?php echo t('title_mpn', 'MPN'); ?></th>
+					<th><?php echo t('title_quantity', 'Quantity'); ?></th>
+					<th><?php echo t('title_created_at', 'Created At'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -99,7 +99,7 @@
 					$('#stock-item-picker tbody').html([
 						'<tr>',
 						'  <td colspan="99">',
-						'    <em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em>',
+						'    <em><?php echo functions::escape_js(t('text_no_results', 'No results')); ?></em>',
 						'</td>',
 						'</tr>',
 					].join('\n'));

@@ -10,18 +10,18 @@
 		$_POST = $supplier->data;
 	}
 
-	document::$title[] = !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_create_new_supplier', 'Create New Supplier');
+	document::$title[] = !empty($supplier->data['id']) ? t('title_edit_supplier', 'Edit Supplier') : t('title_create_new_supplier', 'Create New Supplier');
 
-	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_suppliers', 'Suppliers'), document::ilink(__APP__.'/suppliers'));
-	breadcrumbs::add(!empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_create_new_supplier', 'Create New Supplier'), document::ilink());
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_suppliers', 'Suppliers'), document::ilink(__APP__.'/suppliers'));
+	breadcrumbs::add(!empty($supplier->data['id']) ? t('title_edit_supplier', 'Edit Supplier') : t('title_create_new_supplier', 'Create New Supplier'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
 		try {
 
 			if (empty($_POST['name'])) {
-				throw new Exception(language::translate('error_must_provide_name', 'You must provide a name'));
+				throw new Exception(t('error_must_provide_name', 'You must provide a name'));
 			}
 
 			if (!isset($_POST['status'])) $_POST['status'] = '0';
@@ -41,7 +41,7 @@
 
 			$supplier->save();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/suppliers'));
 			exit;
 
@@ -55,12 +55,12 @@
 		try {
 
 			if (empty($supplier->data['id'])) {
-				throw new Exception(language::translate('error_must_provide_supplier', 'You must provide a supplier'));
+				throw new Exception(t('error_must_provide_supplier', 'You must provide a supplier'));
 			}
 
 			$supplier->delete();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/suppliers'));
 			exit;
 
@@ -72,7 +72,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_create_new_supplier', 'Create New Supplier'); ?>
+			<?php echo $app_icon; ?> <?php echo !empty($supplier->data['id']) ? t('title_edit_supplier', 'Edit Supplier') : t('title_create_new_supplier', 'Create New Supplier'); ?>
 		</div>
 	</div>
 
@@ -82,42 +82,42 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_code', 'Code'); ?></div>
+						<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
 						<?php echo functions::form_input_text('code', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_name', 'Name'); ?></div>
+						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 						<?php echo functions::form_input_text('name', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo language::translate('title_description', 'Description'); ?></div>
+				<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
 				<?php echo functions::form_textarea('description', true); ?>
 			</label>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_email_address', 'Email Address'); ?></div>
+						<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
 						<?php echo functions::form_input_email('email', true, 'email', ''); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
+						<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
 						<?php echo functions::form_input_text('phone', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo language::translate('title_link', 'Link'); ?></div>
+				<div class="form-label"><?php echo t('title_link', 'Link'); ?></div>
 				<?php echo functions::form_input_text('link', true); ?>
 			</label>
 

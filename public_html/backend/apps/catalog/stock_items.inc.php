@@ -4,17 +4,17 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_stock_items', 'Stock Items');
+	document::$title[] = t('title_stock_items', 'Stock Items');
 
-	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_stock_items', 'Stock Items'), document::ilink());
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_stock_items', 'Stock Items'), document::ilink());
 
 	if (isset($_POST['delete'])) {
 
 		try {
 
 			if (empty($_POST['stock_items'])) {
-				throw new Exception(language::translate('error_must_select_stock_items', 'You must select stock items'));
+				throw new Exception(t('error_must_select_stock_items', 'You must select stock items'));
 			}
 
 			foreach ($_POST['stock_items'] as $stock_item_id) {
@@ -22,7 +22,7 @@
 				$stock_item->delete();
 			}
 
-			notices::add('success', sprintf(language::translate('success_deleted_d_stock_items', 'Deleted %d stock_items'), count($_POST['stock_items'])));
+			notices::add('success', sprintf(t('success_deleted_d_stock_items', 'Deleted %d stock_items'), count($_POST['stock_items'])));
 			reload();
 			exit;
 
@@ -87,7 +87,7 @@
 
 	foreach ($stock_items as $i => $stock_item) {
 		if ($stock_item['quantity'] != $stock_item['total_deposited'] - $stock_item['total_withdrawn']) {
-			$stock_items[$i]['warning'] = language::translate('text_stock_inconsistency_detected', 'Stock inconsistency detected');
+			$stock_items[$i]['warning'] = t('text_stock_inconsistency_detected', 'Stock inconsistency detected');
 		}
 	}
 
@@ -102,19 +102,19 @@
 	<div class="card-header">
 		<div class="card-title">
 			<div class="card-title">
-				<?php echo $app_icon; ?> <?php echo language::translate('title_stock_items', 'Stock Items'); ?>
+				<?php echo $app_icon; ?> <?php echo t('title_stock_items', 'Stock Items'); ?>
 			</div>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_item'), language::translate('title_create_new_stock_item', 'Create New Stock Item'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_item'), t('title_create_new_stock_item', 'Create New Stock Item'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_items', 'Search items').'"'); ?></div>
-			<?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
+			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_items', 'Search items').'"'); ?></div>
+			<?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
 		</div>
 	<?php echo functions::form_end(); ?>
 
@@ -125,15 +125,15 @@
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check'); ?></th>
 					<th></th>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
 					<th style="min-width: 52px;"></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-					<th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
-					<th><?php echo language::translate('title_mpn', 'MPN'); ?></th>
-					<th><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
-					<th><?php echo language::translate('title_reserved', 'Reserved'); ?></th>
-					<th><?php echo language::translate('title_backordered', 'Backordered'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_sku', 'SKU'); ?></th>
+					<th><?php echo t('title_gtin', 'GTIN'); ?></th>
+					<th><?php echo t('title_mpn', 'MPN'); ?></th>
+					<th><?php echo t('title_in_stock', 'In Stock'); ?></th>
+					<th><?php echo t('title_reserved', 'Reserved'); ?></th>
+					<th><?php echo t('title_backordered', 'Backordered'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -152,7 +152,7 @@
 					<td class="text-end"><?php echo (float)$stock_item['quantity']; ?></td>
 					<td class="text-end"><?php echo (float)$stock_item['total_reserved']; ?></td>
 					<td class="text-end"><?php echo (float)$stock_item['backordered']; ?></td>
-					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -160,7 +160,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_stock_items', 'Stock Items'); ?>: <?php echo $num_rows; ?>
+						<?php echo t('title_stock_items', 'Stock Items'); ?>: <?php echo $num_rows; ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -170,7 +170,7 @@
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
 				<?php echo functions::form_button_predefined('delete'); ?>

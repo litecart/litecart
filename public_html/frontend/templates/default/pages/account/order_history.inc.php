@@ -13,17 +13,17 @@
 				<section id="box-order-history" class="card">
 
 					<div class="card-header">
-						<h1 class="card-title"><?php echo language::translate('title_order_history', 'Order History'); ?></h1>
+						<h1 class="card-title"><?php echo t('title_order_history', 'Order History'); ?></h1>
 					</div>
 
 					<table class="table data-table">
 						<thead>
 						<tr>
-							<th class="main"><?php echo language::translate('title_order', 'Order'); ?></th>
+							<th class="main"><?php echo t('title_order', 'Order'); ?></th>
 							<th class="text-end"></th>
-							<th class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
-							<th class="text-end"><?php echo language::translate('title_amount', 'Amount'); ?></th>
-							<th class="text-end"><?php echo language::translate('title_date', 'Date'); ?></th>
+							<th class="text-center"><?php echo t('title_order_status', 'Order Status'); ?></th>
+							<th class="text-end"><?php echo t('title_amount', 'Amount'); ?></th>
+							<th class="text-end"><?php echo t('title_date', 'Date'); ?></th>
 							<th></th>
 						</tr>
 						</thead>
@@ -31,11 +31,11 @@
 						<?php foreach ($orders as $order) { ?>
 						<tr>
 							<td><a href="<?php echo functions::escape_html($order['link']); ?>" class="lightbox-iframe"><?php echo $order['no']; ?></a></td>
-							<td class="text-center"><?php echo $order['num_downloads'] ? '<a href="'. document::href_ilink('downloads') .'">'. language::translate('title_downloads', 'Downloads') .'</a>' : ''; ?></td>
+							<td class="text-center"><?php echo $order['num_downloads'] ? '<a href="'. document::href_ilink('downloads') .'">'. t('title_downloads', 'Downloads') .'</a>' : ''; ?></td>
 							<td class="text-center"><?php echo $order['order_status']; ?></td>
 							<td class="text-end"><?php echo $order['total']; ?></td>
 							<td class="text-end"><?php echo $order['created_at']; ?></td>
-							<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo functions::escape_html($order['printable_link']); ?>" target="_blank" title="<?php echo functions::escape_html(language::translate('title_print', 'Print')); ?>"><?php echo functions::draw_fonticon('icon-print'); ?></a></td>
+							<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo functions::escape_html($order['printable_link']); ?>" target="_blank" title="<?php echo functions::escape_html(t('title_print', 'Print')); ?>"><?php echo functions::draw_fonticon('icon-print'); ?></a></td>
 						</tr>
 						<?php } ?>
 						</tbody>

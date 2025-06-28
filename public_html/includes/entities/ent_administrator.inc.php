@@ -67,7 +67,7 @@
 				". (!empty($this->data['id']) ? "and id != ". (int)$this->data['id'] : "") ."
 				limit 1;"
 			)->num_rows) {
-				throw new Exception(language::translate('error_administrator_conflict', 'The administrator conflicts another administrator in the database'));
+				throw new Exception(t('error_administrator_conflict', 'The administrator conflicts another administrator in the database'));
 			}
 
 			if (!$this->data['id']) {

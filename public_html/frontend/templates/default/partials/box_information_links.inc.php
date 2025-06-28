@@ -23,7 +23,7 @@
 
 <section id="box-information-links">
 
-	<h2 class="title"><?php echo language::translate('title_information', 'Information'); ?></h2>
+	<h2 class="title"><?php echo t('title_information', 'Information'); ?></h2>
 
 	<nav class="pills">
 		<ul>

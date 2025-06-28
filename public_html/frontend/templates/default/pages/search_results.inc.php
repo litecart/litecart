@@ -36,14 +36,14 @@
 
 						<div class="filter">
 							<div>
-								<?php echo functions::form_input_search('query', true, 'autocomplete="off" placeholder="'. functions::escape_attr(language::translate('text_search_products', 'Search products')) .' ..."'); ?>
+								<?php echo functions::form_input_search('query', true, 'autocomplete="off" placeholder="'. functions::escape_attr(t('text_search_products', 'Search products')) .' ..."'); ?>
 							</div>
 
 							<div>
 								<div class="dropdown">
 
 									<div class="form-select" data-toggle="dropdown">
-										<?php echo language::translate('title_sort_by', 'Sort By'); ?>
+										<?php echo t('title_sort_by', 'Sort By'); ?>
 									</div>
 
 									<ul class="dropdown-menu">
@@ -64,7 +64,7 @@
 				<?php if ($categories) { ?>
 				<nav class="pills" style="margin-bottom: 1em;">
 					<a class="pill-item" href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>">
-						<?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo language::translate('title_back', 'Back'); ?>
+						<?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_back', 'Back'); ?>
 					</a>
 
 					<?php foreach ($subcategories as $subcategory) { ?>
@@ -82,7 +82,7 @@
 				<?php } ?>
 
 				<?php if (!$categories && !$products) { ?>
-				<div><em><?php echo language::translate('text_no_matching_results', 'No matching results'); ?></em></div>
+				<div><em><?php echo t('text_no_matching_results', 'No matching results'); ?></em></div>
 				<?php } ?>
 
 			</div>

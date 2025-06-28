@@ -5,27 +5,27 @@
 	try {
 
 		if (empty($_GET['vmod'])) {
-			throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
+			throw new Exception(t('error_must_provide_vmod', 'You must provide a vMod'));
 		}
 
 		$file = 'storage://vmods/' . basename($_GET['vmod']);
 
 		if (!is_file($file)) {
-			throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
+			throw new Exception(t('error_file_could_not_be_found', 'The file could not be found'));
 		}
 
 	// Load XML
 
 		if (!$xml = simplexml_load_file($file)) {
-			throw new Exception(language::translate('error_invalid_xml', 'Invalid XML'));
+			throw new Exception(t('error_invalid_xml', 'Invalid XML'));
 		}
 
 		if ($xml->getName() != 'vmod') {
-			throw new Exception(language::translate('error_invalid_vmod', 'Invalid vMod'));
+			throw new Exception(t('error_invalid_vmod', 'Invalid vMod'));
 		}
 
 		if (empty($xml->setting)) {
-			throw new Exception(language::translate('error_nothing_to_configure', 'Nothing to configure'));
+			throw new Exception(t('error_nothing_to_configure', 'Nothing to configure'));
 		}
 
 		if (!$vmods_settings = @json_decode(file_get_contents('storage://vmods/.settings'), true)) {
@@ -61,7 +61,7 @@
 
 			file_put_contents('storage://vmods/' . '.settings', json_encode($vmods_settings, JSON_UNESCAPED_SLASHES), LOCK_EX);
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/vmods'));
 			exit;
 
@@ -70,7 +70,7 @@
 		}
 	}
 
-	breadcrumbs::add(language::translate('title_vmods', 'vMods'), document::ilink(__APP__.'/vmods'));
+	breadcrumbs::add(t('title_vmods', 'vMods'), document::ilink(__APP__.'/vmods'));
 	breadcrumbs::add(basename($_GET['vmod']), document::ilink());
 ?>
 <style>
@@ -92,7 +92,7 @@ pre {
 
 <div class="card">
 	<div class="card-header">
-		<div class="card-title"><?php echo $app_icon; ?> <?php echo language::translate('title_configure_vmod', 'Configure vMod'); ?></div>
+		<div class="card-title"><?php echo $app_icon; ?> <?php echo t('title_configure_vmod', 'Configure vMod'); ?></div>
 	</div>
 
 	<div class="card-body">
@@ -119,7 +119,7 @@ pre {
 
 			<div class="card-action">
 				<?php echo functions::form_button_predefined('save'); ?>
-				<?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
+				<?php echo functions::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
 			</div>
 
 		<?php echo functions::form_end(); ?>

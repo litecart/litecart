@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_orders', 'Orders'),
+		'name' => t('title_orders', 'Orders'),
 		'group' => 'ecommerce',
 		'default' => 'orders',
 		'priority' => 0,
@@ -12,12 +12,12 @@
 		],
 		'menu' => [
 			[
-				'title' => language::translate('title_orders', 'Orders'),
+				'title' => t('title_orders', 'Orders'),
 				'doc' => 'orders',
 				'params' => [],
 			],
 			[
-				'title' => language::translate('title_order_statuses', 'Order Statuses'),
+				'title' => t('title_order_statuses', 'Order Statuses'),
 				'doc' => 'order_statuses',
 				'params' => [],
 			],

@@ -68,19 +68,19 @@ input[autocomplete="one-time-code"] {
 
 				{{notices}}
 
-				<h1><?php echo language::translate('title_two_factor_authentication', 'Two-Factor Authentication'); ?></h1>
+				<h1><?php echo t('title_two_factor_authentication', 'Two-Factor Authentication'); ?></h1>
 
 				<label class="form-group">
-					<div class="form-label"><?php echo language::translate('title_verification_code', 'Verification Code'); ?></div>
+					<div class="form-label"><?php echo t('title_verification_code', 'Verification Code'); ?></div>
 					<?php echo functions::form_input_text('code', '', 'autocomplete="one-time-code" inputmode="numeric" maxlength="6" pattern="\d{6}"'); ?>
 				</label>
 
 				<label class="form-group">
-					<?php echo functions::form_button('verify', language::translate('title_verify', 'Verify'), 'submit', 'class="btn btn-default btn-block btn-lg"'); ?>
+					<?php echo functions::form_button('verify', t('title_verify', 'Verify'), 'submit', 'class="btn btn-default btn-block btn-lg"'); ?>
 				</label>
 
 				<label class="form-group text-center">
-					<?php echo functions::form_button('resend', language::translate('title_resend_code', 'Resend Code'), 'submit', 'class="btn btn-default btn-sm"'); ?>
+					<?php echo functions::form_button('resend', t('title_resend_code', 'Resend Code'), 'submit', 'class="btn btn-default btn-sm"'); ?>
 				</label>
 			</div>
 

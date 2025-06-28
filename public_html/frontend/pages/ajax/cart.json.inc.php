@@ -7,7 +7,7 @@
 			'num_items' => cart::$total['num_items'],
 			'total_value' => !empty(customer::$data['display_prices_including_tax']) ? cart::$total['subtotal'] + cart::$total['subtotal_tax'] : cart::$total['subtotal'],
 			'formatted_total_value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(cart::$total['subtotal'] + cart::$total['subtotal_tax']) : currency::format(cart::$total['subtotal']),
-			'text_total' => language::translate('title_total', 'Total'),
+			'text_total' => t('title_total', 'Total'),
 		];
 
 		foreach (cart::$items as $key => $item) {

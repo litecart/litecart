@@ -59,20 +59,20 @@ html.dark-mode body {
 
 				{{notices}}
 
-				<h1><?php echo language::translate('title_sign_in', 'Sign In'); ?></h1>
+				<h1><?php echo t('title_sign_in', 'Sign In'); ?></h1>
 
 				<label class="form-group">
-					<?php echo functions::form_input_username('username', true, 'placeholder="'. language::translate('title_username_or_email_address', 'Username or Email Address') .'"'); ?>
+					<?php echo functions::form_input_username('username', true, 'placeholder="'. t('title_username_or_email_address', 'Username or Email Address') .'"'); ?>
 					<div class="form-label"></div>
 				</label>
 
 				<label class="form-group">
-					<?php echo functions::form_input_password('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'" autocomplete="current-password"'); ?>
+					<?php echo functions::form_input_password('password', '', 'placeholder="'. t('title_password', 'Password') .'" autocomplete="current-password"'); ?>
 					<div class="form-label"></div>
 				</label>
 
 				<div class="form-group">
-					<?php echo functions::form_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
+					<?php echo functions::form_checkbox('remember_me', ['1', t('title_remember_me', 'Remember Me')], true); ?>
 				</div>
 			</div>
 
@@ -80,11 +80,11 @@ html.dark-mode body {
 				<div class="grid">
 					<div class="col-md-6 text-start">
 						<a class="btn btn-outline btn-lg" href="<?php echo document::href_ilink('f:'); ?>">
-							<?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo language::translate('title_go_to_frontend', 'Go To Frontend'); ?>
+							<?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_go_to_frontend', 'Go To Frontend'); ?>
 						</a>
 					</div>
 					<div class="col-md-6 text-end">
-						<?php echo functions::form_button('login', language::translate('title_login', 'Login'), 'submit', 'class="btn btn-default btn-lg"'); ?>
+						<?php echo functions::form_button('login', t('title_login', 'Login'), 'submit', 'class="btn btn-default btn-lg"'); ?>
 					</div>
 				</div>
 			</div>

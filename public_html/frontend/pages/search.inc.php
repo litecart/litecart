@@ -26,23 +26,23 @@
 		exit;
 	}
 
-	document::$title[] = !empty($_GET['query']) ? sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])) : language::translate('title_search_results', 'Search Results');
+	document::$title[] = !empty($_GET['query']) ? sprintf(t('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])) : t('title_search_results', 'Search Results');
 
-	breadcrumbs::add(language::translate('title_search_results', 'Search Results'), document::ilink('search'));
-	breadcrumbs::add(!empty($_GET['query']) ? strip_tags($_GET['query']) : language::translate('title_all_products', 'All Products'), document::ilink());
+	breadcrumbs::add(t('title_search_results', 'Search Results'), document::ilink('search'));
+	breadcrumbs::add(!empty($_GET['query']) ? strip_tags($_GET['query']) : t('title_all_products', 'All Products'), document::ilink());
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/search_results.inc.php');
 
 	$_page->snippets = [
-		'title' => sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])),
+		'title' => sprintf(t('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])),
 		'categories' => [],
 		'products' => [],
 		'sort_alternatives' => [
-			'relevance' => language::translate('title_relevance', 'Relevance'),
-			'name' => language::translate('title_name', 'Name'),
-			'price' => language::translate('title_price', 'Price'),
-			'popularity' => language::translate('title_popularity', 'Popularity'),
-			'date' => language::translate('title_date', 'Date'),
+			'relevance' => t('title_relevance', 'Relevance'),
+			'name' => t('title_name', 'Name'),
+			'price' => t('title_price', 'Price'),
+			'popularity' => t('title_popularity', 'Popularity'),
+			'date' => t('title_date', 'Date'),
 		],
 		'pagination' => null,
 	];

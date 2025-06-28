@@ -19,26 +19,26 @@
 
 		$email = new ent_email();
 		$email->add_recipient(administrator::$data['email'])
-					->set_subject(language::translate('title_verification_code', 'Verification Code'))
-					->add_body(strtr(language::translate('email_verification_code', 'Verification code: %code'), ['%code' => session::$data['security_verification']['code']]))
+					->set_subject(t('title_verification_code', 'Verification Code'))
+					->add_body(strtr(t('email_verification_code', 'Verification code: %code'), ['%code' => session::$data['security_verification']['code']]))
 					->send();
 
-		notices::add('notices', language::translate('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
+		notices::add('notices', t('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
 	};
 
 	if (isset($_POST['verify'])) {
 		try {
 
 			if (empty($_POST['code'])) {
-				throw new Exception(language::translate('error_must_provide_verification_code', 'You must provide a verification code'));
+				throw new Exception(t('error_must_provide_verification_code', 'You must provide a verification code'));
 			}
 
 			if ($_POST['code'] != session::$data['security_verification']['code']) {
-				throw new Exception(language::translate('error_invalid_verification_code', 'Invalid verification code'));
+				throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
 			}
 
 			if (time() > session::$data['security_verification']['expires']) {
-				throw new Exception(language::translate('error_verification_code_expired', 'The verification code has expired'));
+				throw new Exception(t('error_verification_code_expired', 'The verification code has expired'));
 			}
 
 			$known_ips = preg_split('#\s*,\s*#', administrator::$data['known_ips'], -1, PREG_SPLIT_NO_EMPTY);
@@ -66,7 +66,7 @@
 				$redirect_url = document::ilink('b:');
 			}
 
-			notices::add('success', str_replace(['%username'], [administrator::$data['username']], language::translate('success_now_logged_in_as', 'You are now logged in as %username')));
+			notices::add('success', str_replace(['%username'], [administrator::$data['username']], t('success_now_logged_in_as', 'You are now logged in as %username')));
 			redirect($redirect_url);
 			exit;
 

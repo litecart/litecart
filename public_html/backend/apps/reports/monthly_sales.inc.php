@@ -1,9 +1,9 @@
 <?php
 
-	document::$title[] = language::translate('title_monthly_sales', 'Monthly Sales');
+	document::$title[] = t('title_monthly_sales', 'Monthly Sales');
 
-	breadcrumbs::add(language::translate('title_reports', 'Reports'));
-	breadcrumbs::add(language::translate('title_monthly_sales', 'Monthly Sales'), document::ilink());
+	breadcrumbs::add(t('title_reports', 'Reports'));
+	breadcrumbs::add(t('title_monthly_sales', 'Monthly Sales'), document::ilink());
 
 	$_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : date('Y-01-01 00:00:00');
 	$_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
@@ -65,7 +65,7 @@ form[name="filter_form"] li {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_monthly_sales', 'Monthly Sales'); ?>
 		</div>
 	</div>
 
@@ -79,8 +79,8 @@ form[name="filter_form"] li {
 						<?php echo functions::form_input_date('date_to'); ?>
 					</div>
 				</li>
-				<li><?php echo functions::form_button('filter', ['true', functions::draw_fonticon('icon-funnel') .' '. language::translate('title_filter_now', 'Filter')]); ?></li>
-				<li><?php echo functions::form_button('download', ['true', functions::draw_fonticon('icon-download') .' '. language::translate('title_download', 'Download')]); ?></li>
+				<li><?php echo functions::form_button('filter', ['true', functions::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]); ?></li>
+				<li><?php echo functions::form_button('download', ['true', functions::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]); ?></li>
 			</ul>
 		<?php echo functions::form_end(); ?>
 	</div>
@@ -88,12 +88,12 @@ form[name="filter_form"] li {
 	<table class="table data-table">
 		<thead>
 			<tr>
-				<th width="100%"><?php echo language::translate('title_month', 'Month'); ?></th>
-				<th class="border-start text-center"><?php echo language::translate('title_subtotal', 'Subtotal'); ?></th>
-				<th class="border-start text-center"><?php echo language::translate('title_shipping_fees', 'Shipping Fees'); ?></th>
-				<th class="border-start text-center"><?php echo language::translate('title_payment_fees', 'Payment Fees'); ?></th>
-				<th class="border-start text-center"><?php echo language::translate('title_total', 'Total'); ?></th>
-				<th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+				<th width="100%"><?php echo t('title_month', 'Month'); ?></th>
+				<th class="border-start text-center"><?php echo t('title_subtotal', 'Subtotal'); ?></th>
+				<th class="border-start text-center"><?php echo t('title_shipping_fees', 'Shipping Fees'); ?></th>
+				<th class="border-start text-center"><?php echo t('title_payment_fees', 'Payment Fees'); ?></th>
+				<th class="border-start text-center"><?php echo t('title_total', 'Total'); ?></th>
+				<th class="text-center"><?php echo t('title_tax', 'Tax'); ?></th>
 			</tr>
 		</thead>
 
@@ -113,7 +113,7 @@ form[name="filter_form"] li {
 		<?php if (!empty($total)) { ?>
 		<tfoot>
 			<tr>
-				<td class="text-end"><?php echo strtoupper(language::translate('title_total', 'Total')); ?></td>
+				<td class="text-end"><?php echo strtoupper(t('title_total', 'Total')); ?></td>
 				<td class="border-start text-end"><?php echo currency::format($total['total_subtotal'], false, settings::get('store_currency_code')); ?></td>
 				<td class="border-start text-end"><?php echo currency::format($total['total_shipping_fees'], false, settings::get('store_currency_code')); ?></td>
 				<td class="border-start text-end"><?php echo currency::format($total['total_payment_fees'], false, settings::get('store_currency_code')); ?></td>

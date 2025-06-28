@@ -2,11 +2,11 @@
 
 	document::$layout = 'blank';
 
-	document::$title[] = language::translate('title_login', 'Login');
+	document::$title[] = t('title_login', 'Login');
 	document::$head_tags[] = '<meta name="viewport" content="width=device-width, initial-scale=1">';
 
 	if (!session_name()) {
-		notices::add('notices', language::translate('error_missing_session_cookie', 'We failed to identify your browser session. Make sure your browser has cookies enabled or try another browser.'));
+		notices::add('notices', t('error_missing_session_cookie', 'We failed to identify your browser session. Make sure your browser has cookies enabled or try another browser.'));
 	}
 
 	if (isset($_POST['login'])) {
@@ -18,11 +18,11 @@
 			}
 
 			if (empty($_POST['username'])) {
-				throw new Exception(language::translate('error_must_provide_username_or_email', 'You must provide your username or email address'));
+				throw new Exception(t('error_must_provide_username_or_email', 'You must provide your username or email address'));
 			}
 
 			if (empty($_POST['password'])) {
-				throw new Exception(language::translate('error_must_provide_password', 'You must provide a password'));
+				throw new Exception(t('error_must_provide_password', 'You must provide a password'));
 			}
 
 			$administrator = database::query(
@@ -36,19 +36,19 @@
 			});
 
 			if (!$administrator) {
-				throw new Exception(language::translate('error_administrator_not_found', 'The administrator could not be found in our database'));
+				throw new Exception(t('error_administrator_not_found', 'The administrator could not be found in our database'));
 			}
 
 			if (empty($administrator['status'])) {
-				throw new Exception(language::translate('error_administrator_account_disabled', 'The administrator account is disabled'));
+				throw new Exception(t('error_administrator_account_disabled', 'The administrator account is disabled'));
 			}
 
 			if (!empty($administrator['valid_from']) && date('Y-m-d H:i:s') < $administrator['valid_from']) {
-				throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), functions::datetime_format('datetime', $administrator['valid_from'])));
+				throw new Exception(sprintf(t('error_account_is_blocked', 'The account is blocked until %s'), functions::datetime_format('datetime', $administrator['valid_from'])));
 			}
 
 			if (!empty($administrator['valid_to']) && date('Y-m-d H:i:s') > $administrator['valid_to']) {
-				throw new Exception(sprintf(language::translate('error_account_expired', 'The account expired %s'), functions::datetime_format('datetime', $administrator['valid_to'])));
+				throw new Exception(sprintf(t('error_account_expired', 'The account expired %s'), functions::datetime_format('datetime', $administrator['valid_to'])));
 			}
 
 			if (!password_verify($_POST['password'], $administrator['password_hash'])) {
@@ -62,7 +62,7 @@
 						limit 1;"
 					);
 
-					throw new Exception(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
+					throw new Exception(t('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
 
 				} else {
 
@@ -86,8 +86,8 @@
 							'%user_agent' => $_SERVER['HTTP_USER_AGENT'],
 						];
 
-						$subject = language::translate('title_administrator_account_blocked', 'Administrator Account Blocked');
-						$message = strtr(language::translate('administrator_account_blocked:email_body', implode("\r\n", [
+						$subject = t('title_administrator_account_blocked', 'Administrator Account Blocked');
+						$message = strtr(t('administrator_account_blocked:email_body', implode("\r\n", [
 							'Your administrator account %username has been blocked until %expires because of too many invalid login attempts.',
 							'',
 							'Client: %ip_address (%hostname)',
@@ -104,10 +104,10 @@
 									->send();
 					}
 
-					throw new Exception(strtr(language::translate('error_account_has_been_blocked', 'This account has been temporary blocked %n minutes'), ['%n' => 15, '%d' => 15]));
+					throw new Exception(strtr(t('error_account_has_been_blocked', 'This account has been temporary blocked %n minutes'), ['%n' => 15, '%d' => 15]));
 				}
 
-				throw new Exception(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
+				throw new Exception(t('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
 			}
 
 			if (password_needs_rehash($administrator['password_hash'], PASSWORD_DEFAULT)) {
@@ -120,7 +120,7 @@
 			}
 
 			if (!empty($administrator['last_ip_address']) && $administrator['last_ip_address'] != $_SERVER['REMOTE_ADDR']) {
-				notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_ip', 'Your account was previously used by another IP address %ip_address (%hostname). If this was not you then your login credentials might be compromised.'), [
+				notices::add('warnings', strtr(t('warning_account_previously_used_by_another_ip', 'Your account was previously used by another IP address %ip_address (%hostname). If this was not you then your login credentials might be compromised.'), [
 					'%username' => $administrator['username'],
 					'%ip_address' => $administrator['last_ip_address'],
 					'%hostname' => $administrator['last_hostname'],
@@ -156,11 +156,11 @@
 
 				$email = new ent_email();
 				$email->add_recipient($administrator['email'])
-							->set_subject(language::translate('title_verification_code', 'Verification Code'))
-							->add_body(strtr(language::translate('email_verification_code', 'Verification code: %code'), ['%code' => session::$data['security_verification']['code']]))
+							->set_subject(t('title_verification_code', 'Verification Code'))
+							->add_body(strtr(t('email_verification_code', 'Verification code: %code'), ['%code' => session::$data['security_verification']['code']]))
 							->send();
 
-				notices::add('notices', language::translate('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
+				notices::add('notices', t('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
 
 				if (!empty($_POST['redirect_url'])) {
 					redirect(document::ilink('verify', ['redirect_url' => $_POST['redirect_url']]));
@@ -201,7 +201,7 @@
 				$redirect_url = document::ilink('b:');
 			}
 
-			notices::add('success', str_replace(['%username'], [administrator::$data['username']], language::translate('success_now_logged_in_as', 'You are now logged in as %username')));
+			notices::add('success', str_replace(['%username'], [administrator::$data['username']], t('success_now_logged_in_as', 'You are now logged in as %username')));
 			redirect($redirect_url);
 			exit;
 

@@ -200,7 +200,7 @@
 
 			// If tomorrow
 			if ($timestamp > (new \DateTime())->modify('+1 day')->setTime(0, 0)) {
-				return language::translate('text_tomorrow', 'Tomorrow') . ' ' . datetime_format('time', $timestamp);
+				return t('text_tomorrow', 'Tomorrow') . ' ' . datetime_format('time', $timestamp);
 			}
 
 			// If later today
@@ -210,19 +210,19 @@
 		}
 
 		if ($timestamp > (new \DateTime())->modify('-1 minute')) {
-			return language::translate('text_just_now', 'Just now');
+			return t('text_just_now', 'Just now');
 		}
 
 		if ($timestamp > (new \DateTime())->modify('-1 hour')) {
-			return strtr(language::translate('text_n_minutes_ago', '%n minutes ago'), ['%n' => (new \DateTime())->diff($timestamp)->i]);
+			return strtr(t('text_n_minutes_ago', '%n minutes ago'), ['%n' => (new \DateTime())->diff($timestamp)->i]);
 		}
 
 		if ($timestamp > (new \DateTime())->setTime(0, 0)) {
-			return language::translate('text_today', 'Today') . ' ' . datetime_format('time', $timestamp);
+			return t('text_today', 'Today') . ' ' . datetime_format('time', $timestamp);
 		}
 
 		if ($timestamp > (new \DateTime())->modify('-1 day')->setTime(0, 0)) {
-			return language::translate('text_yesterday', 'Yesterday') . ' ' . datetime_format('time', $timestamp);
+			return t('text_yesterday', 'Yesterday') . ' ' . datetime_format('time', $timestamp);
 		}
 
 		return datetime_format('datetime', $timestamp);

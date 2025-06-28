@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_administrators', 'Administrators'),
+		'name' => t('title_administrators', 'Administrators'),
 		'group' => 'system',
 		'default' => 'administrators',
 		'priority' => 0,

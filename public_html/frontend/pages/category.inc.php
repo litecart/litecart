@@ -57,7 +57,7 @@
 		document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink(FS_DIR_STORAGE . $og_image) .'">';
 	}
 
-	breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
+	breadcrumbs::add(t('title_categories', 'Categories'), document::ilink('categories'));
 	foreach (array_slice($category->path, 0, -1, true) as $category_crumb) {
 		breadcrumbs::add($category_crumb->name, document::ilink('category', ['category_id' => $category_crumb->id]));
 	}
@@ -87,10 +87,10 @@
 		'attributes' => [],
 		'list_style' => $category->list_style,
 		'sort_alternatives' => [
-			'name' => language::translate('title_name', 'Name'),
-			'price' => language::translate('title_price', 'Price'),
-			'popularity' => language::translate('title_popularity', 'Popularity'),
-			'date' => language::translate('title_date', 'Date'),
+			'name' => t('title_name', 'Name'),
+			'price' => t('title_price', 'Price'),
+			'popularity' => t('title_popularity', 'Popularity'),
+			'date' => t('title_date', 'Date'),
 		],
 		'pagination' => null,
 	];

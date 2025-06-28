@@ -7,8 +7,8 @@
 	 *   ~/frontend/templates/default/pages/index.inc.php
 	 */
 
-	document::$title = [language::translate('index:head_title', 'Online Store'), settings::get('store_name')];
-	document::$description = language::translate('index:meta_description', '');
+	document::$title = [t('index:head_title', 'Online Store'), settings::get('store_name')];
+	document::$description = t('index:meta_description', '');
 
 	document::$head_tags['canonical'] = '<link rel="canonical" href="'. document::href_ilink('') .'">';
 

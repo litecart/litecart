@@ -65,8 +65,8 @@ h1 {
 			</div>
 
 			<div class="col-6 text-end">
-				<h1><?php echo language::translate('title_order_copy', 'Order Copy'); ?></h1>
-				<div><?php echo language::translate('title_order', 'Order'); ?> <?php echo $order['no']; ?></div>
+				<h1><?php echo t('title_order_copy', 'Order Copy'); ?></h1>
+				<div><?php echo t('title_order', 'Order'); ?> <?php echo $order['no']; ?></div>
 				<div><?php echo !empty($order['created_at']) ? date(language::$selected['raw_date'], strtotime($order['created_at'])) : date(language::$selected['raw_date']); ?></div>
 			</div>
 		</div>
@@ -76,21 +76,21 @@ h1 {
 		<div class="addresses">
 			<div class="grid">
 				<div class="col-3 shipping-address">
-					<div class="label"><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></div>
+					<div class="label"><?php echo t('title_shipping_address', 'Shipping Address'); ?></div>
 					<div class="value"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])); ?></div>
 				</div>
 
 				<div class="col-3">
-					<div class="label"><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></div>
+					<div class="label"><?php echo t('title_shipping_weight', 'Shipping Weight'); ?></div>
 					<div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_unit'])  : '-'; ?></div>
 
-					<div class="label"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></div>
+					<div class="label"><?php echo t('title_tax_id', 'Tax ID'); ?></div>
 					<div class="value"><?php echo $order['customer']['tax_id']; ?></div>
 				</div>
 
 				<div class="col-6 billing-address">
 					<div class="rounded-rectangle">
-						<div class="label"><?php echo language::translate('title_billing_address', 'Billing Address'); ?></div>
+						<div class="label"><?php echo t('title_billing_address', 'Billing Address'); ?></div>
 						<div class="value"><?php echo nl2br(reference::country($order['customer']['country_code'])->format_address($order['customer'])); ?></div>
 					</div>
 				</div>
@@ -99,18 +99,18 @@ h1 {
 
 		<div class="grid">
 			<div class="col-6">
-				<div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
+				<div class="label"><?php echo t('title_shipping_option', 'Shipping Option'); ?></div>
 				<div class="value"><?php echo fallback($order['shipping_option']['name'], '-'); ?></div>
 
-				<div class="label"><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
+				<div class="label"><?php echo t('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
 				<div class="value"><?php echo fallback($order['shipping_tracking_id'], '-'); ?></div>
 			</div>
 
 			<div class="col-6">
-				<div class="label"><?php echo language::translate('title_payment_option', 'Payment Option'); ?></div>
+				<div class="label"><?php echo t('title_payment_option', 'Payment Option'); ?></div>
 				<div class="value"><?php echo fallback($order['payment_option']['name'], '-'); ?></div>
 
-				<div class="label"><?php echo language::translate('title_transaction_number', 'Transaction Number'); ?></div>
+				<div class="label"><?php echo t('title_transaction_number', 'Transaction Number'); ?></div>
 				<div class="value"><?php echo fallback($order['payment_transaction_id'], '-'); ?></div>
 			</div>
 		</div>
@@ -118,12 +118,12 @@ h1 {
 		<table class="items table data-table">
 			<thead>
 				<tr>
-					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
-					<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
-					<th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
-					<th class="text-end"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
-					<th class="text-end"><?php echo language::translate('title_tax', 'Tax'); ?> </th>
-					<th class="text-end"><?php echo language::translate('title_sum', 'Sum'); ?></th>
+					<th><?php echo t('title_qty', 'Qty'); ?></th>
+					<th class="main"><?php echo t('title_item', 'Item'); ?></th>
+					<th><?php echo t('title_gtin', 'GTIN'); ?></th>
+					<th class="text-end"><?php echo t('title_unit_price', 'Unit Price'); ?></th>
+					<th class="text-end"><?php echo t('title_tax', 'Tax'); ?> </th>
+					<th class="text-end"><?php echo t('title_sum', 'Sum'); ?></th>
 				</tr>
 			</thead>
 
@@ -147,12 +147,12 @@ h1 {
 		<table class="items table data-table">
 			<thead>
 				<tr>
-					<th><?php echo language::translate('title_qty', 'Qty'); ?></th>
-					<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
-					<th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
-					<th class="text-end"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
-					<th class="text-end"><?php echo language::translate('title_tax', 'Tax'); ?> </th>
-					<th class="text-end"><?php echo language::translate('title_sum', 'Sum'); ?></th>
+					<th><?php echo t('title_qty', 'Qty'); ?></th>
+					<th class="main"><?php echo t('title_item', 'Item'); ?></th>
+					<th><?php echo t('title_gtin', 'GTIN'); ?></th>
+					<th class="text-end"><?php echo t('title_unit_price', 'Unit Price'); ?></th>
+					<th class="text-end"><?php echo t('title_tax', 'Tax'); ?> </th>
+					<th class="text-end"><?php echo t('title_sum', 'Sum'); ?></th>
 				</tr>
 			</thead>
 
@@ -177,22 +177,22 @@ h1 {
 		<div id="invoice-total" class="flex flex-columns">
 
 			<div id="subtotal" class="summary">
-				<div class="title"><?php echo language::translate('title_subtotal', 'Subtotal'); ?></div>
+				<div class="title"><?php echo t('title_subtotal', 'Subtotal'); ?></div>
 				<div class="amount"><?php echo currency::format(fallback($_POST['discount'], 0), true, $order['currency_code'], $order['currency_value']); ?></div>
 			</div>
 
 			<div id="total-discount" class="summary">
-				<div class="title"><?php echo language::translate('title_total_discount', 'Total Discount'); ?></div>
+				<div class="title"><?php echo t('title_total_discount', 'Total Discount'); ?></div>
 				<div class="amount"><?php echo currency::format(fallback($_POST['discount'], 0), true, $order['currency_code'], $order['currency_value']); ?></div>
 			</div>
 
 			<div id="total-tax" class="summary">
-				<div class="title"><?php echo language::translate('title_total_tax', 'Total Tax'); ?></div>
+				<div class="title"><?php echo t('title_total_tax', 'Total Tax'); ?></div>
 				<div class="amount"><?php echo currency::format(fallback($_POST['total_tax'], 0), true, $order['currency_code'], $order['currency_value']); ?></div>
 			</div>
 
 			<div id="grand-total" class="summary">
-				<div class="title"><?php echo language::translate('title_grand_total', 'Grand Total'); ?></div>
+				<div class="title"><?php echo t('title_grand_total', 'Grand Total'); ?></div>
 				<div class="amount"><?php echo currency::format_html(fallback($_POST['total'], 0), true, $order['currency_code'], $order['currency_value']); ?></div>
 			</div>
 		</div>
@@ -204,27 +204,27 @@ h1 {
 
 		<div class="flex">
 			<div class="column">
-				<div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
+				<div class="label"><?php echo t('title_address', 'Address'); ?></div>
 				<div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
 			</div>
 
 			<div class="column">
 				<?php if (settings::get('store_phone')) { ?>
-				<div class="label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
+				<div class="label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
 				<div class="value"><?php echo settings::get('store_phone'); ?></div>
 				<?php } ?>
 
 				<?php if (settings::get('store_tax_id')) { ?>
-				<div class="label"><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></div>
+				<div class="label"><?php echo t('title_vat_registration_id', 'VAT Registration ID'); ?></div>
 				<div class="value"><?php echo settings::get('store_tax_id'); ?></div>
 				<?php } ?>
 			</div>
 
 			<div class="column">
-				<div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
+				<div class="label"><?php echo t('title_email', 'Email'); ?></div>
 				<div class="value"><?php echo settings::get('store_email'); ?></div>
 
-				<div class="label"><?php echo language::translate('title_website', 'Website'); ?></div>
+				<div class="label"><?php echo t('title_website', 'Website'); ?></div>
 				<div class="value"><?php echo document::ilink(''); ?></div>
 			</div>
 
@@ -243,7 +243,7 @@ h1 {
 	<ul class="list-unstyled">
 		<li>
 			<button name="print" class="btn btn-default btn-lg">
-				<?php echo functions::draw_fonticon('icon-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
+				<?php echo functions::draw_fonticon('icon-print'); ?> <?php echo t('title_print', 'Print'); ?>
 			</button>
 		</li>
 	</ul>

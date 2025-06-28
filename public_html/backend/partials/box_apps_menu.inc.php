@@ -5,27 +5,27 @@
 	$groups = [
 		'ecommerce' => [
 			'id' => 'ecommerce',
-			'name' => language::translate('title_ecommerce', 'Ecommerce'),
+			'name' => t('title_ecommerce', 'Ecommerce'),
 			'apps' => [],
 		],
 		'website' => [
 			'id' => 'website',
-			'name' => language::translate('title_website', 'Website'),
+			'name' => t('title_website', 'Website'),
 			'apps' => [],
 		],
 		'regional' => [
 			'id' => 'regional',
-			'name' => language::translate('title_regional', 'Regional'),
+			'name' => t('title_regional', 'Regional'),
 			'apps' => [],
 		],
 		'system' => [
 			'id' => 'system',
-			'name' => language::translate('title_system', 'System'),
+			'name' => t('title_system', 'System'),
 			'apps' => [],
 		],
 		'other' => [
 			'id' => 'other',
-			'name' => language::translate('title_other', 'Other'),
+			'name' => t('title_other', 'Other'),
 			'apps' => [],
 		],
 	];

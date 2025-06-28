@@ -4,9 +4,9 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_tax_classes', 'Tax Classes');
+	document::$title[] = t('title_tax_classes', 'Tax Classes');
 
-	breadcrumbs::add(language::translate('title_tax_classes', 'Tax Classes'), document::ilink());
+	breadcrumbs::add(t('title_tax_classes', 'Tax Classes'), document::ilink());
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$tax_classes = database::query(
@@ -18,12 +18,12 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_tax_classes', 'Tax Classes'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_tax_classes', 'Tax Classes'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_tax_class'), language::translate('title_create_new_tax_class', 'Create New Tax Class'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_tax_class'), t('title_create_new_tax_class', 'Create New Tax Class'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('tax_classs_form', 'post'); ?>
@@ -32,9 +32,9 @@
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
+					<th><?php echo t('title_name', 'Name'); ?></th>
+					<th class="main"><?php echo t('title_description', 'Description'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -46,7 +46,7 @@
 					<td><?php echo $tax_class['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>"><?php echo $tax_class['name']; ?></a></td>
 					<td style="color: #999;"><?php echo $tax_class['description']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -54,7 +54,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_tax_classes', 'Tax Classes'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_tax_classes', 'Tax Classes'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

@@ -16,7 +16,7 @@
 	}
 
 	$box_information_links->snippets = [
-		'title' =>  language::translate('title_information', 'Information'),
+		'title' =>  t('title_information', 'Information'),
 		'pages' => [],
 		'page_path' => $current_page_path,
 	];

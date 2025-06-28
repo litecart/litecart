@@ -45,7 +45,7 @@
 			if (!$geo_zone) {
 				throw new Exception('Could not find geo zone (ID: '. (int)$id .') in database.');
 			}
-			
+
 			$this->data = array_replace($this->data, array_intersect_key($geo_zone, $this->data));
 
 			$this->data['zones'] = database::query(
@@ -56,7 +56,7 @@
 				order by c.name, z.name;"
 			)->fetch_all(function($zone){
 				if (!$zone['zone_code']) {
-					$zone['zone_name'] = '-- '. language::translate('title_all_zones', 'All Zones') .' --';
+					$zone['zone_name'] = '-- '. t('title_all_zones', 'All Zones') .' --';
 				}
 				return $zone;
 			});

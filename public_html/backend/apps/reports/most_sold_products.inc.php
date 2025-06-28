@@ -1,9 +1,9 @@
 <?php
 
-	document::$title[] = language::translate('title_most_sold_products', 'Most Sold Products');
+	document::$title[] = t('title_most_sold_products', 'Most Sold Products');
 
-	breadcrumbs::add(language::translate('title_reports', 'Reports'));
-	breadcrumbs::add(language::translate('title_most_sold_products', 'Most Sold Products'), document::ilink());
+	breadcrumbs::add(t('title_reports', 'Reports'));
+	breadcrumbs::add(t('title_most_sold_products', 'Most Sold Products'), document::ilink());
 
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
@@ -73,14 +73,14 @@ form[name="filter_form"] li {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_most_sold_products', 'Most Sold Products'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_most_sold_products', 'Most Sold Products'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
 		<?php echo functions::form_begin('filter_form', 'get'); ?>
 			<ul class="list-inline">
-				<li><?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_attr(language::translate('title_item_name_or_sku', 'Item Name or SKU')) .'"'); ?></li>
+				<li><?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_attr(t('title_item_name_or_sku', 'Item Name or SKU')) .'"'); ?></li>
 				<li>
 					<div class="input-group" style="max-width: 380px;">
 						<?php echo functions::form_input_date('date_from', true); ?>
@@ -89,8 +89,8 @@ form[name="filter_form"] li {
 					</div>
 				</li>
 				<li><?php echo functions::form_select('brand_id', true, 'style="width: 320px;"'); ?></li>
-				<li><?php echo functions::form_button('filter', ['true', functions::draw_fonticon('icon-funnel') .' '. language::translate('title_filter_now', 'Filter')]); ?></li>
-				<li><?php echo functions::form_button('download', ['true', functions::draw_fonticon('icon-download') .' '. language::translate('title_download', 'Download')]); ?></li>
+				<li><?php echo functions::form_button('filter', ['true', functions::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]); ?></li>
+				<li><?php echo functions::form_button('download', ['true', functions::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]); ?></li>
 			</ul>
 		<?php echo functions::form_end(); ?>
 	</div>
@@ -98,10 +98,10 @@ form[name="filter_form"] li {
 	<table class="table data-table">
 		<thead>
 			<tr>
-				<th class="main"><?php echo language::translate('title_product', 'Product'); ?></th>
-				<th class="text-center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-				<th class="text-center"><?php echo language::translate('title_sales', 'Sales'); ?></th>
-				<th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+				<th class="main"><?php echo t('title_product', 'Product'); ?></th>
+				<th class="text-center"><?php echo t('title_quantity', 'Quantity'); ?></th>
+				<th class="text-center"><?php echo t('title_sales', 'Sales'); ?></th>
+				<th class="text-center"><?php echo t('title_tax', 'Tax'); ?></th>
 			</tr>
 		</thead>
 		<tbody>

@@ -1,10 +1,10 @@
 <?php
 
-	document::$title[] = language::translate('title_template_settings', 'Template Settings');
+	document::$title[] = t('title_template_settings', 'Template Settings');
 
-	breadcrumbs::add(language::translate('title_appearance', 'Appearance'));
-	breadcrumbs::add(language::translate('title_template', 'Template'), document::ilink(__APP__.'/template'));
-	breadcrumbs::add(language::translate('title_template_settings', 'Template Settings'), document::ilink());
+	breadcrumbs::add(t('title_appearance', 'Appearance'));
+	breadcrumbs::add(t('title_template', 'Template'), document::ilink(__APP__.'/template'));
+	breadcrumbs::add(t('title_template_settings', 'Template Settings'), document::ilink());
 
 	// Get template settings structure
 	$settings = include 'app://frontend/templates/' . settings::get('template') .'/config.inc.php';
@@ -68,7 +68,7 @@
 				limit 1;"
 			);
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 
 			redirect(document::ilink(null, [], true, ['action']));
 			exit;
@@ -99,9 +99,9 @@
 			case (substr($setting['function'], 0, 6) == 'toggle'):
 
 				if (in_array(strtolower($setting['value']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
-				 $settings[$key]['value'] = language::translate('title_true', 'True');
+				 $settings[$key]['value'] = t('title_true', 'True');
 				} else if (in_array(strtolower($setting['value']), ['', '0', 'inactive', 'disabled', 'off', 'false', 'no'])) {
-				 $settings[$key]['value'] = language::translate('title_false', 'False');
+				 $settings[$key]['value'] = t('title_false', 'False');
 				}
 
 				break;
@@ -116,7 +116,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_template_settings', 'Template Settings'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_template_settings', 'Template Settings'); ?>
 		</div>
 	</div>
 
@@ -127,8 +127,8 @@
 				<?php foreach ($settings as $setting) { ?>
 				<tr>
 					<td style="white-space: normal;">
-						<u><?php echo language::translate(settings::get('template').':title_'.$setting['key'], $setting['title']); ?></u><br>
-						<?php echo language::translate(settings::get('template').':description_'.$setting['key'], $setting['description']); ?>
+						<u><?php echo t(settings::get('template').':title_'.$setting['key'], $setting['title']); ?></u><br>
+						<?php echo t(settings::get('template').':description_'.$setting['key'], $setting['description']); ?>
 					</td>
 					<td><?php echo functions::form_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
 
@@ -138,7 +138,7 @@
 				<?php if (!$settings) { ?>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('text_no_frontend_template_settings', 'There are no settings available for the frontend template.'); ?>
+						<?php echo t('text_no_frontend_template_settings', 'There are no settings available for the frontend template.'); ?>
 					</td>
 				</tr>
 				<?php } ?>

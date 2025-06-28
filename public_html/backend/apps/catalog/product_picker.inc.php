@@ -9,24 +9,24 @@
 
 <div id="modal-product-picker" class="modal fade" style="max-width: 980px; display: none;">
 
-	<h2><?php echo language::translate('title_products', 'Products'); ?></h2>
+	<h2><?php echo t('title_products', 'Products'); ?></h2>
 
 	<div class="modal-body">
 		<label class="form-group">
-			<div class="form-label"><?php echo language::translate('title_search', 'Search'); ?></div>
-			<?php echo functions::form_input_text('query', true, 'placeholder="'. functions::escape_attr(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
+			<div class="form-label"><?php echo t('title_search', 'Search'); ?></div>
+			<?php echo functions::form_input_text('query', true, 'placeholder="'. functions::escape_attr(t('title_search', 'Search')) .'" autocomplete="off"'); ?>
 		 </label>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_stock_options', 'Stock Options'); ?></th>
-					<th><?php echo language::translate('title_price', 'Price'); ?></th>
-					<th><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
-					<th><?php echo language::translate('title_reserved', 'Reserved'); ?></th>
-					<th><?php echo language::translate('title_created_at', 'Created At'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_stock_options', 'Stock Options'); ?></th>
+					<th><?php echo t('title_price', 'Price'); ?></th>
+					<th><?php echo t('title_in_stock', 'In Stock'); ?></th>
+					<th><?php echo t('title_reserved', 'Reserved'); ?></th>
+					<th><?php echo t('title_created_at', 'Created At'); ?></th>
 				</tr>
 			</thead>
 			<tbody></tbody>
@@ -67,7 +67,7 @@
 					var $output = $([
 						'<tr>',
 						'  <td colspan="99">',
-						'    <em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em>',
+						'    <em><?php echo functions::escape_js(t('text_no_results', 'No results')); ?></em>',
 						'  </td>',
 						'</tr>'
 					].join('\n'));

@@ -46,7 +46,7 @@
 			if (!$currency) {
 				throw new Exception('Could not find currency ('. functions::escape_html($currency_code) .') in database.');
 			}
-			
+
 			$this->data = array_replace($this->data, array_intersect_key($currency, $this->data));
 
 			$this->previous = $this->data;
@@ -55,11 +55,11 @@
 		public function save() {
 
 			if (!$this->data['status'] && $this->data['code'] == settings::get('store_currency_code')) {
-				throw new Exception(language::translate('error_cannot_disable_store_currency', 'You must change the store currency before disabling it.'));
+				throw new Exception(t('error_cannot_disable_store_currency', 'You must change the store currency before disabling it.'));
 			}
 
 			if (empty($this->data['status']) && $this->data['code'] == settings::get('default_currency_code')) {
-				throw new Exception(language::translate('error_cannot_disable_default_currency', 'You must change the default currency before disabling it.'));
+				throw new Exception(t('error_cannot_disable_default_currency', 'You must change the default currency before disabling it.'));
 			}
 
 			if (!empty($this->previous['code'])) {
@@ -79,7 +79,7 @@
 				". (!empty($this->data['id']) ? "and id != ". $this->data['id'] : "") ."
 				limit 1;"
 			)->num_rows) {
-				throw new Exception(language::translate('error_currency_conflict', 'The currency conflicts another currency in the database'));
+				throw new Exception(t('error_currency_conflict', 'The currency conflicts another currency in the database'));
 			}
 
 			if (!$this->data['id']) {
@@ -149,11 +149,11 @@
 		public function delete() {
 
 			if ($this->data['code'] == settings::get('store_currency_code')) {
-				throw new Exception(language::translate('error_cannot_delete_store_currency', 'You must change the store currency before it can be deleted.'));
+				throw new Exception(t('error_cannot_delete_store_currency', 'You must change the store currency before it can be deleted.'));
 			}
 
 			if ($this->data['code'] == settings::get('default_currency_code')) {
-				throw new Exception(language::translate('error_cannot_delete_default_currency', 'You must change the default currency before it can be deleted.'));
+				throw new Exception(t('error_cannot_delete_default_currency', 'You must change the default currency before it can be deleted.'));
 			}
 
 			database::query(

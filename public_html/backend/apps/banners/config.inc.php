@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_banners', 'Banners'),
+		'name' => t('title_banners', 'Banners'),
 		'group' => 'website',
 		'default' => 'banners',
 		'priority' => 0,

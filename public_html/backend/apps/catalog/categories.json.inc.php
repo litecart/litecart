@@ -22,10 +22,10 @@
 		$json = [
 			'status' => 'ok',
 			'id' => fallback($_GET['parent_id'], 0),
-			'name' => !empty($_GET['parent_id']) ? $category->name : '['. language::translate('title_root', 'Root') .']',
+			'name' => !empty($_GET['parent_id']) ? $category->name : '['. t('title_root', 'Root') .']',
 			'parent' => [
 				'id' => $category->parent ? $category->parent->id : 0,
-				'name' => $category->parent ? $category->parent->name : '['. language::translate('title_root', 'Root') .']',
+				'name' => $category->parent ? $category->parent->name : '['. t('title_root', 'Root') .']',
 			],
 			'subcategories' => [],
 		];
@@ -35,7 +35,7 @@
 				". implode(', ', array_map(function($language) {
 					return "json_value(c.name, '$.". database::input($language['code']) ."')";
 				}, language::$languages)) .",
-				'(". database::input(language::translate('title_untitled', 'Untitled')) .")'
+				'(". database::input(t('title_untitled', 'Untitled')) .")'
 			) as name
 			from ". DB_TABLE_PREFIX ."categories c
 			where ". (!empty($_GET['parent_id']) ? "c.parent_id = ". (int)$_GET['parent_id'] : "c.parent_id is null") ."

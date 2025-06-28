@@ -3,7 +3,7 @@
 	switch (__DOC__) {
 
 		case 'customer':
-			$title = language::translate('title_customer_modules', 'Customer Modules');
+			$title = t('title_customer_modules', 'Customer Modules');
 			$files = functions::file_search('app://includes/modules/customer/*.inc.php');
 			$mod_class = new mod_customer();
 			$type = 'customer';
@@ -11,7 +11,7 @@
 			break;
 
 		case 'jobs':
-			$title = language::translate('title_job_modules', 'Job Modules');
+			$title = t('title_job_modules', 'Job Modules');
 			$files = functions::file_search('app://includes/modules/jobs/*.inc.php');
 			$mod_class = new mod_jobs();
 			$type = 'job';
@@ -19,7 +19,7 @@
 			break;
 
 		case 'order':
-			$title = language::translate('title_order_modules', 'Order Modules');
+			$title = t('title_order_modules', 'Order Modules');
 			$files = functions::file_search('app://includes/modules/order/*.inc.php');
 			$mod_class = new mod_order();
 			$type = 'order';
@@ -27,7 +27,7 @@
 			break;
 
 		case 'payment':
-			$title = language::translate('title_payment_modules', 'Payment Modules');
+			$title = t('title_payment_modules', 'Payment Modules');
 			$files = functions::file_search('app://includes/modules/payment/*.inc.php');
 			$mod_class = new mod_payment();
 			$type = 'payment';
@@ -35,7 +35,7 @@
 			break;
 
 		case 'shipping':
-			$title = language::translate('title_shipping_modules', 'Shipping Modules');
+			$title = t('title_shipping_modules', 'Shipping Modules');
 			$files = functions::file_search('app://includes/modules/shipping/*.inc.php');
 			$mod_class = new mod_shipping();
 			$type = 'shipping';
@@ -51,7 +51,7 @@
 		try {
 
 			if (empty($_POST['modules'])) {
-				throw new Exception(language::translate('error_must_select_modules', 'You must select modules'));
+				throw new Exception(t('error_must_select_modules', 'You must select modules'));
 			}
 
 			foreach ($_POST['modules'] as $module_id) {
@@ -60,7 +60,7 @@
 				$module->save();
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -71,7 +71,7 @@
 
 	document::$title[] = $title;
 
-	breadcrumbs::add(language::translate('title_modules', 'Modules'));
+	breadcrumbs::add(t('title_modules', 'Modules'));
 	breadcrumbs::add($title, document::ilink());
 
 	// Installed Modules
@@ -130,7 +130,7 @@
 
 		<?php if ($type == 'job') { ?>
 		<button id="cron-example" class="btn btn-default" type="button" style="margin-inline-end: 1em;">
-			<?php echo functions::draw_fonticon('icon-info'); ?> <?php echo language::translate('title_cron_job', 'Cron Job'); ?>
+			<?php echo functions::draw_fonticon('icon-info'); ?> <?php echo t('title_cron_job', 'Cron Job'); ?>
 		</button>
 		<?php } ?>
 
@@ -146,12 +146,12 @@
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
 					<th></th>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th><?php echo language::translate('title_version', 'Version'); ?></th>
-					<th><?php echo language::translate('title_developer', 'Developer'); ?></th>
-					<th class="text-center"><?php echo language::translate('title_priority', 'Priority'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
+					<th><?php echo t('title_version', 'Version'); ?></th>
+					<th><?php echo t('title_developer', 'Developer'); ?></th>
+					<th class="text-center"><?php echo t('title_priority', 'Priority'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -166,7 +166,7 @@
 					<?php if (__DOC__ == 'jobs' && !empty($module['status'])) { ?>
 					<td class="text-center">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/run_job', ['module_id' => $module['id']]); ?>" target="_blank">
-							<strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong>
+							<strong><?php echo t('title_run_now', 'Run Now'); ?></strong>
 						</a>
 					</td>
 					<?php } else { ?>
@@ -176,7 +176,7 @@
 					<td class="text-end"><?php echo $module['version']; ?></td>
 					<td><?php echo !empty($module['website']) ? '<a href="'. functions::escape_attr($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
 					<td class="text-center"><?php echo $module['priority']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/'.$edit_doc, ['module_id' => $module['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/'.$edit_doc, ['module_id' => $module['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } else { ?>
 				<tr class="semi-transparent">
@@ -188,7 +188,7 @@
 					<td class="text-end"><?php echo $module['version']; ?></td>
 					<td><?php echo !empty($module['website']) ? '<a href="'. functions::escape_attr($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
 					<td class="text-center">-</td>
-					<td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_install', 'Install'); ?></a></td>
+					<td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo functions::draw_fonticon('add'); ?> <?php echo t('title_install', 'Install'); ?></a></td>
 				</tr>
 				<?php } ?>
 				<?php } ?>
@@ -197,7 +197,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_modules', 'Modules'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_modules', 'Modules'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -207,12 +207,12 @@
 			<fieldset id="actions" disabled>
 
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
 				<div class="btn-group">
-					<?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+					<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
 
 			</fieldset>
@@ -223,7 +223,7 @@
 
 <script>
 	$('#cron-example').on('click', function() {
-		prompt("<?php echo language::translate('title_cron_job_configuration', 'Cron Job Configuration'); ?>", "*/5 * * * * curl --silent <?php echo document::ilink('f:push_jobs'); ?> &>/dev/null");
+		prompt("<?php echo t('title_cron_job_configuration', 'Cron Job Configuration'); ?>", "*/5 * * * * curl --silent <?php echo document::ilink('f:push_jobs'); ?> &>/dev/null");
 	});
 
 	$('.data-table :checkbox').on('change', function() {

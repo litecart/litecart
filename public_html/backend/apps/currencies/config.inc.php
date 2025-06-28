@@ -1,7 +1,7 @@
 <?php
 
 	return [
-		'name' => language::translate('title_currencies', 'Currencies'),
+		'name' => t('title_currencies', 'Currencies'),
 		'group' => 'regional',
 		'default' => 'currencies',
 		'priority' => 0,

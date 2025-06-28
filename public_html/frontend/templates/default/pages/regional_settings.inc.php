@@ -1,11 +1,11 @@
 <?php
 
-	$currency_options = ['' => '-- '. language::translate('title_select', 'Select') .' --'];
+	$currency_options = ['' => '-- '. t('title_select', 'Select') .' --'];
 	foreach ($currencies as $currency) {
 		$currency_options[$currency['code']] = $currency['name'];
 	}
 
-	$language_options = ['' => '-- '. language::translate('title_select', 'Select') .' --',];
+	$language_options = ['' => '-- '. t('title_select', 'Select') .' --',];
 	foreach ($languages as $language) {
 		$language_options[$language['code']] = $language['name'];
 	}
@@ -26,7 +26,7 @@
 
 				<section id="box-regional-settings" class="card">
 					<div class="card-header">
-						<h1 class="card-title"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h1>
+						<h1 class="card-title"><?php echo t('title_regional_settings', 'Regional Settings'); ?></h1>
 					</div>
 
 					<div class="card-body">
@@ -37,7 +37,7 @@
 								<?php if (count($languages) > 1) { ?>
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_language', 'Language'); ?></div>
+										<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
 										<?php echo functions::form_select('language_code', $language_options, language::$selected['code']); ?>
 									</label>
 								</div>
@@ -46,7 +46,7 @@
 								<?php if (count($currencies) > 1) { ?>
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_currency', 'Currency'); ?></div>
+										<div class="form-label"><?php echo t('title_currency', 'Currency'); ?></div>
 										<?php echo functions::form_select('currency_code', $currency_options, currency::$selected['code']); ?>
 									</label>
 								</div>
@@ -56,14 +56,14 @@
 							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_country', 'Country'); ?></div>
+										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
 										<?php echo functions::form_select_country('country_code', customer::$data['country_code']); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></div>
+										<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
 										<?php echo functions::form_select_zone('zone_code', customer::$data['country_code'], customer::$data['zone_code']); ?>
 									</label>
 								</div>
@@ -72,20 +72,20 @@
 							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_postcode', 'Postal Code'); ?></div>
+										<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
 										<?php echo functions::form_input_text('postcode', customer::$data['postcode']); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo language::translate('title_display_prices_including_tax', 'Display Prices Including Tax'); ?></div>
+										<div class="form-label"><?php echo t('title_display_prices_including_tax', 'Display Prices Including Tax'); ?></div>
 										<?php echo functions::form_toggle('display_prices_including_tax', 'y/n', customer::$data['display_prices_including_tax']); ?>
 									</label>
 								</div>
 							</div>
 
-							<?php echo functions::form_button('save', language::translate('title_save', 'Save')); ?>
+							<?php echo functions::form_button('save', t('title_save', 'Save')); ?>
 
 						<?php echo functions::form_end(); ?>
 					</div>

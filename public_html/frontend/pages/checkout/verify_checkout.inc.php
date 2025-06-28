@@ -1,7 +1,7 @@
 <?php
 
 	if (empty(session::$data['checkout']['order'])) {
-		notices::add('errors', language::translate('error_missing_order_in_session', 'Missing order in session'));
+		notices::add('errors', t('error_missing_order_in_session', 'Missing order in session'));
 		redirect(document::ilink('checkout/index'));
 		exit;
 	}

@@ -4,10 +4,10 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$title[] = language::translate('title_sold_out_statuses', 'Sold-Out Statuses');
+	document::$title[] = t('title_sold_out_statuses', 'Sold-Out Statuses');
 
-	breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-	breadcrumbs::add(language::translate('title_sold_out_statuses', 'Sold-Out Statuses'), document::ilink());
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_sold_out_statuses', 'Sold-Out Statuses'), document::ilink());
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$sold_out_statuses = database::query(
@@ -20,12 +20,12 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_sold_out_statuses', 'Sold Out Statuses'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_sold_out_statuses', 'Sold Out Statuses'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_sold_out_status'), language::translate('title_create_new_status', 'Create New Status'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_sold_out_status'), t('title_create_new_status', 'Create New Status'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('sold_out_statuses_form', 'post'); ?>
@@ -34,10 +34,10 @@
 			<thead>
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo language::translate('title_id', 'ID'); ?></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_hidden', 'Hidden'); ?></th>
-					<th><?php echo language::translate('title_orderable', 'Orderable'); ?></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_hidden', 'Hidden'); ?></th>
+					<th><?php echo t('title_orderable', 'Orderable'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -50,7 +50,7 @@
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_sold_out_status', ['sold_out_status_id' => $sold_out_status['id']]); ?>"><?php echo $sold_out_status['name']; ?></a></td>
 					<td class="text-center"><?php if (!empty($sold_out_status['hidden'])) echo functions::draw_fonticon('icon-check'); ?></td>
 					<td class="text-center"><?php if (!empty($sold_out_status['orderable'])) echo functions::draw_fonticon('icon-check'); ?></td>
-					<td style="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_sold_out_status', ['sold_out_status_id' => $sold_out_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td style="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_sold_out_status', ['sold_out_status_id' => $sold_out_status['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -58,7 +58,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_sold_out_statuses', 'Sold Out Statuses'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_sold_out_statuses', 'Sold Out Statuses'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

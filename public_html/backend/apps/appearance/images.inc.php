@@ -1,20 +1,20 @@
 <?php
 
-	document::$title[] = language::translate('title_logotype', 'Logotype');
+	document::$title[] = t('title_logotype', 'Logotype');
 
-	breadcrumbs::add(language::translate('title_appearance', 'Appearance'));
-	breadcrumbs::add(language::translate('title_logotype', 'Logotype'), document::ilink());
+	breadcrumbs::add(t('title_appearance', 'Appearance'));
+	breadcrumbs::add(t('title_logotype', 'Logotype'), document::ilink());
 
 	$images = [
 		[
 			'id' => 'logotype',
-			'name' => language::translate('title_logotype', 'Logotype'),
+			'name' => t('title_logotype', 'Logotype'),
 			'file' => 'storage://images/logotype.png',
 			'max' => ['width' => 600, 'height' => 200],
 		],
 		[
 			'id' => 'facility',
-			'name' => language::translate('title_facility', 'Facility'),
+			'name' => t('title_facility', 'Facility'),
 			'file' => 'storage://images/illustration/facility.jpg',
 			'max' => ['width' => 800, 'height' => 600],
 		]
@@ -32,7 +32,7 @@
 					$image = new ent_image($_FILES[$_image['id']]['tmp_name']);
 
 					if (!$image->width) {
-						throw new Exception(language::translate('error_invalid_image', 'The image is invalid'));
+						throw new Exception(t('error_invalid_image', 'The image is invalid'));
 					}
 
 					if (is_file($_image['file'])) {
@@ -44,12 +44,12 @@
 					$image->resample($_image['file']['max']['width'], $_image['file']['max']['height'], 'FIT_ONLY_BIGGER');
 
 					if (!$image->save($_image['file'])) {
-						throw new Exception(language::translate('error_failed_uploading_image', 'The uploaded image failed saving to disk. Make sure permissions are set.'));
+						throw new Exception(t('error_failed_uploading_image', 'The uploaded image failed saving to disk. Make sure permissions are set.'));
 					}
 				}
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -84,7 +84,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_images', 'Images'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_images', 'Images'); ?>
 		</div>
 	</div>
 

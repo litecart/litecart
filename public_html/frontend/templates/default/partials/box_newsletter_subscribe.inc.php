@@ -23,14 +23,14 @@
 
 			<?php echo functions::form_begin('newsletter_subscribe_form', 'post'); ?>
 
-				<h2><?php echo language::translate('box-newsletter-subscribe:title', 'Subscribe to our newsletter!'); ?></h2>
+				<h2><?php echo t('box-newsletter-subscribe:title', 'Subscribe to our newsletter!'); ?></h2>
 
-				<p><?php echo language::translate('box_newsletter_subscribe:description', 'Get the latest news and offers straight to your inbox. Sign up now.'); ?></p>
+				<p><?php echo t('box_newsletter_subscribe:description', 'Get the latest news and offers straight to your inbox. Sign up now.'); ?></p>
 
 				<div class="form-label">
 					<div style="display: flex; flex-direction: row; gap: 1em">
-						<?php echo functions::form_input_email('email', true, 'placeholder="'. functions::escape_attr(language::translate('text_enter_your_email_address', 'Enter your email address')) .'" required'); ?>
-						<?php echo functions::form_button('subscribe', language::translate('title_subscribe', 'Subscribe')); ?>
+						<?php echo functions::form_input_email('email', true, 'placeholder="'. functions::escape_attr(t('text_enter_your_email_address', 'Enter your email address')) .'" required'); ?>
+						<?php echo functions::form_button('subscribe', t('title_subscribe', 'Subscribe')); ?>
 					</div>
 				</div>
 

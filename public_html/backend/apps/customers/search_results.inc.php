@@ -1,7 +1,7 @@
 <?php
 
 	$result = [
-		'name' => language::translate('title_customers', 'Customers'),
+		'name' => t('title_customers', 'Customers'),
 		'results' => [],
 	];
 

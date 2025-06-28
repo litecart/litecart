@@ -7,10 +7,10 @@
 	 *   ~/frontend/templates/default/pages/brands.inc.php
 	 */
 
-	document::$title[] = language::translate('brands:head_title', 'Brands');
-	document::$description = language::translate('brands:meta_description', '');
+	document::$title[] = t('brands:head_title', 'Brands');
+	document::$description = t('brands:meta_description', '');
 
-	breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
+	breadcrumbs::add(t('title_brands', 'Brands'), document::ilink('brands'));
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/brands.inc.php');
 

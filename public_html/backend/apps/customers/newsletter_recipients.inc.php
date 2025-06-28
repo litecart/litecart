@@ -9,7 +9,7 @@
 		try {
 
 			if (empty($_POST['recipients'])) {
-				throw new Exception(language::translate('error_must_provide_recipients', 'You must provide recipients'));
+				throw new Exception(t('error_must_provide_recipients', 'You must provide recipients'));
 			}
 
 			$added = 0;
@@ -47,7 +47,7 @@
 				$newsletter_recipient->save();
 			}
 
-			notices::add('success', strtr(language::translate('success_added_n_new_recipients', 'Added %n new recipients'), ['%n' => $added]));
+			notices::add('success', strtr(t('success_added_n_new_recipients', 'Added %n new recipients'), ['%n' => $added]));
 			reload();
 			exit;
 
@@ -61,14 +61,14 @@
 		try {
 
 			if (empty($_POST['recipients'])) {
-				throw new Exception(language::translate('error_must_select_recipients', 'You must select recipients'));
+				throw new Exception(t('error_must_select_recipients', 'You must select recipients'));
 			}
 
 			$newsletter_recipient = new ent_newsletter_recipient($recipient);
 			$newsletter_recipient->data['subscribed'] = isset($_POST['subscribe']) ? 1 : 0;
 			$newsletter_recipient->delete();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -82,13 +82,13 @@
 		try {
 
 			if (empty($_POST['recipients'])) {
-				throw new Exception(language::translate('error_must_select_recipients', 'You must select recipients'));
+				throw new Exception(t('error_must_select_recipients', 'You must select recipients'));
 			}
 
 			$newsletter_recipient = new ent_newsletter_recipient($recipient);
 			$newsletter_recipient->delete();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
@@ -125,28 +125,28 @@
 		order by created_at desc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 	$filter_options = [
-		['', '-- '. language::translate('title_all_recipients', 'All Recipients')],
-		['1', language::translate('title_subscribed', 'Subscribed')],
-		['0', language::translate('title_unsubscribed', 'Unsubscribed')],
+		['', '-- '. t('title_all_recipients', 'All Recipients')],
+		['1', t('title_subscribed', 'Subscribed')],
+		['0', t('title_unsubscribed', 'Unsubscribed')],
 	];
 
 ?>
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_newletter_recipients', 'Newsletter Recipients'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_newletter_recipients', 'Newsletter Recipients'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button('add_recipients', language::translate('title_add_recipients', 'Add Recipients'), 'button', '', 'create'); ?>
-		<?php echo functions::form_button_link(document::ilink(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"', 'icon-output'); ?>
+		<?php echo functions::form_button('add_recipients', t('title_add_recipients', 'Add Recipients'), 'button', '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(null, ['action' => 'export']), t('title_export', 'Export'), 'target="_blank"', 'icon-output'); ?>
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
-			<div><?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
+			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+			<div><?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>
 		</div>
 	<?php echo functions::form_end(); ?>
 
@@ -156,13 +156,13 @@
 			<thead>
 				<tr>
 					<th style="width: 50px;"><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo language::translate('title_subscribed', 'Subscribed'); ?></th>
-					<th style="width: 480px;"><?php echo language::translate('title_email', 'Email'); ?></th>
-					<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-					<th><?php echo language::translate('title_ip_address', 'IP Address'); ?></th>
-					<th style="width: 200px;"><?php echo language::translate('title_hostname', 'Hostname'); ?></th>
-					<th class="text-end" style="width: 200px;"><?php echo language::translate('title_updated_at', 'Updated At'); ?></th>
-					<th class="text-end" style="width: 200px;"><?php echo language::translate('title_created_at', 'Created At'); ?></th>
+					<th><?php echo t('title_subscribed', 'Subscribed'); ?></th>
+					<th style="width: 480px;"><?php echo t('title_email', 'Email'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_ip_address', 'IP Address'); ?></th>
+					<th style="width: 200px;"><?php echo t('title_hostname', 'Hostname'); ?></th>
+					<th class="text-end" style="width: 200px;"><?php echo t('title_updated_at', 'Updated At'); ?></th>
+					<th class="text-end" style="width: 200px;"><?php echo t('title_created_at', 'Created At'); ?></th>
 				</tr>
 			</thead>
 
@@ -184,7 +184,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo language::translate('title_recipients', 'Recipients'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_recipients', 'Recipients'); ?>: <?php echo language::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -194,14 +194,14 @@
 			<fieldset id="actions" disabled>
 
 				<legend>
-					<?php echo language::translate('text_with_selected', 'With selected'); ?>:
+					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
 				<div class="flex">
 
 					<div class="btn-group">
-						<?php echo functions::form_button('subscribe', language::translate('title_set_as_subscribed', 'Set As Subscribed'), 'submit', 'class="btn btn-default"', 'icon-check'); ?>
-						<?php echo functions::form_button('unsubscribe', language::translate('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'icon-times'); ?>
+						<?php echo functions::form_button('subscribe', t('title_set_as_subscribed', 'Set As Subscribed'), 'submit', 'class="btn btn-default"', 'icon-check'); ?>
+						<?php echo functions::form_button('unsubscribe', t('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'icon-times'); ?>
 					</div>
 
 					<?php echo functions::form_button_predefined('delete'); ?>
@@ -223,16 +223,16 @@
 	<?php echo functions::form_begin('recipients_form', 'post'); ?>
 
 		<label class="form-group">
-			<div class="form-label"><?php echo language::translate('title_recipients', 'Recipients'); ?></div>
+			<div class="form-label"><?php echo t('title_recipients', 'Recipients'); ?></div>
 			<?php echo functions::form_textarea('recipients', '', 'style="height: 480px;"'); ?>
 		</label>
 
 		<label class="form-group">
-			<div class="form-label"><?php echo language::translate('title_subscribed', 'Subscribed'); ?></div>
-			<?php echo functions::form_toggle('subscribe', [1 => language::translate('title_subscribe', 'Subscribed'), 0 => language::translate('title_unsubscribe', 'Unsubscribed')], '1'); ?>
+			<div class="form-label"><?php echo t('title_subscribed', 'Subscribed'); ?></div>
+			<?php echo functions::form_toggle('subscribe', [1 => t('title_subscribe', 'Subscribed'), 0 => t('title_unsubscribe', 'Unsubscribed')], '1'); ?>
 		</label>
 
-		<?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'submit', 'class="btn btn-default btn-block"'); ?>
+		<?php echo functions::form_button('add', t('title_add', 'Add'), 'submit', 'class="btn btn-default btn-block"'); ?>
 
 	<?php echo functions::form_end(); ?>
 </div>

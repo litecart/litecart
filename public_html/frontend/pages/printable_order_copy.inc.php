@@ -47,7 +47,7 @@
 		}
 
 		document::$layout = 'printable';
-		document::$title = [language::translate('title_order', 'Order') .' '. $order->data['no']];
+		document::$title = [t('title_order', 'Order') .' '. $order->data['no']];
 
 		$session_language = language::$selected['code'];
 		language::set($order->data['language_code']);
