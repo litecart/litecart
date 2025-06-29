@@ -90,14 +90,14 @@
 	if (settings::get('send_order_confirmation')) {
 		$bccs = [];
 
-		if (settings::get('email_order_copy')) {
-			foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy')) as $email) {
+		if (settings::get('send_order_copy_email')) {
+			foreach (preg_split('#[\s;,]+#', settings::get('send_order_copy_email')) as $email) {
 				if (empty($email)) continue;
 				$bccs[] = $email;
 			}
 		}
 
-		$order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['language_code']);
+		$order->send_order_copy_email($order->data['customer']['email'], $bccs, $order->data['language_code']);
 	}
 
 	// Run after process operations

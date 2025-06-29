@@ -577,7 +577,7 @@
 
 			// Items
 
-			if (empty($filters) || in_array('customer', $filters)) {
+			if (!$filters || in_array('customer', $filters)) {
 
 				if (empty($this->data['items'])) {
 					return t('error_order_missing_items', 'The order does not contain any items');
@@ -596,7 +596,7 @@
 
 			// Customer Details
 
-			if (empty($filters) || in_array('customer', $filters)) {
+			if (!$filters || in_array('customer', $filters)) {
 
 				try {
 
@@ -658,7 +658,7 @@
 
 					if (empty($this->data['customer']['id'])) {
 
-						if (!database::query(
+						if (database::query(
 							"select id from ". DB_TABLE_PREFIX ."customers
 							where email = '". database::input($this->data['customer']['email']) ."'
 							and status = 0
@@ -726,7 +726,7 @@
 			}
 
 			// Shipping Option Validation
-			if (empty($filters) || in_array('customer', $filters)) {
+			if (!$filters || in_array('customer', $filters)) {
 
 				if (!empty($shipping->modules) && count($shipping->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
 
@@ -753,7 +753,7 @@
 			}
 
 			// Payment Option Validation
-			if (empty($filters) || in_array('customer', $filters)) {
+			if (!$filters || in_array('customer', $filters)) {
 
 				if (!empty($payment->modules) && count($payment->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
 
@@ -780,7 +780,7 @@
 			}
 
 			// Additional Order Validation
-			if (empty($filters) || in_array('customer', $filters)) {
+			if (!$filters || in_array('customer', $filters)) {
 
 				$mod_order = new mod_order();
 				$result = $mod_order->validate($this);

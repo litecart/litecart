@@ -2147,9 +2147,7 @@
 
 			$option = implode(PHP_EOL, [
 				'<div class="dropdown-item flex flex-nogap">',
-				'  <div style="flex: 0 0 auto;">',
-				'  '. ($has_images ? functions::draw_thumbnail('storage://images/' . fallback($stock_option['image'], 'no_image.svg'), 0, 64, 'product') : ''),
-				'  </div>',
+				'  '. functions::draw_thumbnail('storage://images/' . fallback($stock_option['image'], 'no_image.svg'), 0, 64, 'product', 'style="width: 64px; height: 64px; margin-inline-end: 1em;"'),
 				'  <div class="flex-grow">',
 				'    <div class="name">'. $stock_option['name'] .' ['. $stock_option['sku'] .']</div>',
 				'    <div class="notice">'. $icon .' '. $notice .'</div>',

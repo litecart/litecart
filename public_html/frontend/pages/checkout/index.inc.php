@@ -11,6 +11,34 @@
 
 	document::$layout = 'checkout';
 
+	try {
+
+		// Halt on no order in session
+		if (empty(session::$data['checkout']['order'])) {
+			throw new Exception(t('error_no_order_in_session', 'No order in session'), 404);
+		}
+
+		// Halt on no items
+		if (empty(session::$data['checkout']['order']->data['items'])) {
+			throw new Exception(t('error_order_has_no_items', 'The order has no items to checkout'), 404);
+		}
+
+		// Redirect to customer details if not sufficient
+		if ($validation_error = session::$data['checkout']['order']->validate('customer')) {
+			notices::add('notices', t('error_we_need_some_additional_info_from_you', 'We need some additional information from you'));
+			redirect(document::ilink('checkout/customer'));
+			exit;
+		}
+
+		// Connect session order to shorthand variable
+		$order = &session::$data['checkout']['order'];
+
+	} catch (Exception $e) {
+		http_response_code($e->getCode() ?: 500);
+		notices::add('errors', $e->getMessage());
+		redirect(document::ilink('shopping_cart'));
+	}
+
 	if (settings::get('catalog_only_mode')) {
 		notice::add('errors', t('warning_no_checkout_in_catalog_only_mode', 'The store is currently in catalog mode only and cannot accept orders.'));
 		return;
@@ -19,6 +47,69 @@
 	document::$title[] = t('checkout:head_title', 'Checkout');
 
 	breadcrumbs::add(t('title_checkout', 'Checkout'), document::ilink());
+
+	// Select shipping
+	if (!empty($_POST['select_shipping'])) {
+		$order->shipping->select($_POST['shipping_option']['id'], $_POST);
+
+		if (!empty($order->shipping->selected['incoterm'])) {
+			$order->data['incoterm'] = $order->shipping->selected['incoterm'];
+		}
+
+		if (route::$selected['route'] != 'f:checkout/process') {
+			reload();
+			exit;
+		}
+	}
+
+	// Select payment
+	if (!empty($_POST['select_payment'])) {
+		$order->payment->select($_POST['payment_option']['id'], $_POST);
+
+		if (route::$selected['route'] != 'f:checkout/process') {
+			reload();
+			exit;
+		}
+	}
+
+	// Prepare shipping options
+	if (!empty($order->shipping->selected['id'])) {
+		if (array_search($order->shipping->selected['id'], array_column($order->shipping->options(), 'id')) === false) {
+			$order->shipping->selected = []; // Clear option no longer being present
+		} else {
+			$order->shipping->select($order->shipping->selected['id'], $order->shipping->selected['userdata']); // Reinstate a present option
+		}
+	}
+
+	if (empty($order->shipping->selected['id'])) {
+		if ($cheapest = $order->shipping->cheapest($order->data['items'], $order->data['currency_code'], $order->data['customer'])) {
+			$order->shipping->select($cheapest['id'], $_POST);
+		}
+	}
+
+	if (!empty($order->shipping->selected)) {
+		$_POST['shipping_option'] = $order->shipping->selected;
+	}
+
+	// Prepare payment options
+	if (!empty($order->payment->selected['id'])) {
+		if (array_search($order->payment->selected['id'], array_column($order->payment->options(), 'id')) === false) {
+			$order->payment->selected = []; // Clear option no longer being present
+		} else {
+			$order->payment->select($order->payment->selected['id'], $order->payment->selected['userdata']); // Reinstate a present option
+		}
+	}
+
+	if (empty($order->payment->selected['id'])) {
+		if ($cheapest = $order->payment->cheapest($order)) {
+			$order->payment->select($cheapest['id']);
+		}
+	}
+
+	if (!empty($order->payment->selected)) {
+		$_POST['payment_option'] = $order->payment->selected;
+	}
+
 
 	// If Confirm Order button was pressed
 	if (isset($_POST['confirm'])) {
@@ -210,8 +301,8 @@
 		$order->data['incoterm'] = $shipping->data['selected']['incoterm'];
 	}
 
-	if (!empty($payment->data['selected'])) {
-		$order->data['payment_option'] = $payment->data['selected'];
+	if (!empty($payment->selected)) {
+		$order->data['payment_option'] = $payment->selected;
 	}
 
 	$order->data['processable'] = false; // Whether or not it is allowed to be processed in checkout/process
@@ -220,12 +311,25 @@
 
 	$_page->snippets = [
 		//'error' => $session_order->validate($shipping, $payment),
-		'selected_shipping' => null,
-		'selected_payment' => null,
-		'consent' => null,
-		'confirm' => !empty($order->payment->data['selected']['confirm']) ? $order->payment->data['selected']['confirm'] : t('title_confirm_order', 'Confirm Order'),
+		'order' => $order->data,
+		'shipping_options' => $order->shipping->options(),
+		'payment_options' => $order->payment->options(),
+		'consent' => null, // Placeholder for consent
+		'error' => $order->validate(),
+		'confirm' => fallback($order->payment->selected['confirm'], t('title_confirm_order', 'Confirm Order')),
 	];
 
+	// Determine if we have terms of purchase
+	if ($terms_of_purchase_id = settings::get('terms_of_purchase')) {
+		$_page->snippets['consent'] = t('consent:terms_of_purchase', 'I have read the <a href="%terms_of_purchase_link" target="_blank">Terms of Purchase</a> and I consent.');
+
+		// Set link to terms of purchase
+		$_page->snippets['consent'] = strtr($_page->snippets['consent'], [
+			'%terms_of_purchase_link' => document::href_ilink('information', ['page_id' => $terms_of_purchase_id]),
+		]);
+	}
+
+	// Log the event
 	customer::log(
 		[
 			'type' => 'checkout',
@@ -242,3 +346,8 @@
 	);
 
 	echo $_page;
+
+	// Don't process layout if this is an ajax request
+	if (is_ajax_request()) {
+		exit;
+	}

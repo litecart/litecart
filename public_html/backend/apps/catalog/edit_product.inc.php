@@ -842,12 +842,12 @@
 									<td><?php echo functions::form_select('stock_options['.$key.'][price_modifier]', ['+', '*', '%', '='], '+'); ?></td>
 									<td>
 										<div class="dropdown">
-											<?php echo functions::form_input_money('stock_options['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
+											<?php echo functions::form_input_money('stock_options['.$key.'][price_adjustment]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
 											<ul class="dropdown-menu">
 												<?php foreach (currency::$currencies as $currency) { ?>
 												<?php if ($currency['code'] == settings::get('store_currency_code')) continue; ?>
 												<li>
-													<?php echo functions::form_input_money('stock_options['.$key.'][price]['. $currency['code'] .']', $currency['code'], true, 'style="width: 125px;"'); ?>
+													<?php echo functions::form_input_money('stock_options['.$key.'][price_adjustment]['. $currency['code'] .']', $currency['code'], true, 'style="width: 125px;"'); ?>
 												</li>
 												<?php } ?>
 											</ul>
@@ -914,10 +914,6 @@
 		$('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
 	});
 
-	$('input[name="sku"]').on('input change', function() {
-		$('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
-	});
-
 	// Initiate
 
 	$('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').first().trigger('input');
@@ -951,12 +947,6 @@
 			$('select[name="default_category_id"]').val($('select[name="default_category_id"] option:first').val());
 		}
 	}).trigger('change');
-
-	// SKU
-
-	$('input[name="sku"]').on('input', function() {
-		$('input[name="sku"]').not(this).val($(this).val());
-	});
 
 	// Images
 
@@ -1009,7 +999,6 @@
 			reader.onload = function(e) {
 				$img.attr('src', e.target.result);
 				$img.attr('srcset', e.target.result);
-				console.log('Image loaded:', $img.attr('src'));
 				refreshMainImage();
 			};
 			reader.readAsDataURL(this.files[0]);
@@ -1242,7 +1231,7 @@
 			'  </td>',
 			'</tr>'
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
+			.replace(/__index__/g, 'new_' + __index__)
 		);
 
 		$('.price-name', $output).text();
@@ -1368,7 +1357,7 @@
 			'  </td>',
 			'</tr>'
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
+			.replace(/__index__/g, 'new_' + __index__)
 		);
 
 		$('.campaign-name', $output).text();
@@ -1443,7 +1432,6 @@
 				if (Array.isArray(data)) {
 					$.each(data, function(i, value) {
 						let $output = $('<option></option>', { value: value.id }).text(value.name);
-						console.log($output[0].outerHTML);
 						$select_value.append($output);
 					});
 
@@ -1485,7 +1473,7 @@
 			'  </td>',
 			'</tr>'
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
+			.replace(/__index__/g, 'new_' + __index__)
 		);
 
 		$('#attributes tbody').append($output);
@@ -1568,12 +1556,12 @@
 			'  </td>',
 			'</tr>'
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
-			.replace('new_group_id', $('select[name="new_attribute[group_id]"] option:selected').val())
-			.replace('new_group_name', $('select[name="new_attribute[group_id]"] option:selected').text())
-			.replace('new_value_id', $('select[name="new_attribute[value_id]"] option:selected').val())
-			.replace('new_custom_value', $('input[name="new_attribute[custom_value]"]').val())
-			.replace('new_value_name', ($('select[name="new_attribute[value_id]"] option:selected').val() != '0') ? $('select[name="new_attribute[value_id]"] option:selected').text() : '')
+			.replace(/__index__/g, 'new_' + __index__)
+			.replace(/new_group_id/g, $('select[name="new_attribute[group_id]"] option:selected').val())
+			.replace(/new_group_name/g, $('select[name="new_attribute[group_id]"] option:selected').text())
+			.replace(/new_value_id/g, $('select[name="new_attribute[value_id]"] option:selected').val())
+			.replace(/new_custom_value/g, $('input[name="new_attribute[custom_value]"]').val())
+			.replace(/new_value_name/g, ($('select[name="new_attribute[value_id]"] option:selected').val() != '0') ? $('select[name="new_attribute[value_id]"] option:selected').text() : '')
 		)
 
 		$('#tab-attributes tbody').append($output)
@@ -1759,7 +1747,6 @@
 			}
 		} else {
 			if ($(customValueElement).val() != '') {
-				console.log($(valueElement).val(), $(customValueElement).val());
 				alert("<?php echo functions::escape_js(t('error_cannot_define_both_value_and_custom_value', 'You cannot define both a value and a custom value')); ?>");
 				return;
 			}
@@ -1827,9 +1814,9 @@
 				'  </div>',
 				'</li>'
 			].join('\n')
-				.replace('new_customization_group_i', 'new_' + new_customization_group_i++)
-				.replace('new_group_id', $(groupElement).val())
-				.replace('new_group_name', $(groupElement).find('option:selected').text())
+				.replace(/new_customization_group_i/g, 'new_' + new_customization_group_i++)
+				.replace(/new_group_id/g, $(groupElement).val())
+				.replace(/new_group_name/g, $(groupElement).find('option:selected').text())
 			);
 
 			$('#customizations').append($output);
@@ -1843,10 +1830,10 @@
 			'  <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_js(t('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_js(t('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>',
 			'</tr>'
 		].join('\n')
-			.replace('new_customization_value_i', 'new_' + new_customization_value_i++)
-			.replace('new_group_id', $(groupElement).val())
-			.replace('new_value_id', $(valueElement).val())
-			.replace('new_custom_value', $(customValueElement).val().replace('"', '&quot;'))
+			.replace(/new_customization_value_i/g, 'new_' + new_customization_value_i++)
+			.replace(/new_group_id/g, $(groupElement).val())
+			.replace(/new_value_id/g, $(valueElement).val())
+			.replace(/new_custom_value/g, $(customValueElement).val().replace('"', '&quot;'))
 		);
 
 		$(':input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('tbody').append($output);
@@ -1894,8 +1881,8 @@
 			'  </div>',
 			'</li>'
 		].join('\n')
-			.replace('new_group_id', $(groupElement).val())
-			.replace('new_group_name', $(groupElement).find('option:selected').text())
+			.replace(/new_group_id/g, $(groupElement).val())
+			.replace(/new_group_name/g, $(groupElement).find('option:selected').text())
 		);
 
 		$('#customizations').append($output);
@@ -1906,8 +1893,8 @@
 	// Stock
 
 	<?php if (currency::$currencies > 1) { ?>
-	$('#stock-options').on('focusin', 'input[name^="stock_options"][name*="[price]"]', function() {
-		$(this).closest('.dropdown').dropdown();
+	$('#stock-options').on('focusin', 'input[name^="stock_options"][name*="[price_adjustment]"]', function() {
+		$(this).closest('.dropdown').addClass('open');
 	});
 	<?php } ?>
 
@@ -1992,20 +1979,14 @@
 			'  <td>',
 			'    <span class="sku"></span>',
 			'  </td>',
-			'  <td class="text-end">',
-			'    <span class="weight"></span> <span class="weight_unit"></span>',
-			'  </td>',
-			'  <td class="text-end">',
-			'    <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>',
-			'  </td>',
 			'  <td><?php echo functions::escape_js(functions::form_select('stock_options[new_stock_item_i][price_modifier]', ['+', '*', '%', '='], '+')); ?></td>',
 			'  <td>',
 			'    <div class="dropdown">',
-			'      <?php echo functions::escape_js(functions::form_input_money('stock_options[new_stock_item_i][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '', 'style="width: 125px;"')); ?>',
+			'      <?php echo functions::escape_js(functions::form_input_money('stock_options[new_stock_item_i][price_adjustment]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '', 'style="width: 125px;"')); ?>',
 			'      <ul class="dropdown-menu">',
 			<?php foreach (currency::$currencies as $currency) { ?>
 			<?php if ($currency['code'] == settings::get('store_currency_code')) continue; ?>
-			'        <li><?php echo functions::escape_js(functions::form_input_money('stock_options[new_stock_item_i][price]['. $currency['code'] .']', $currency['code'], '', 'style="width: 125px;"')); ?></li>',
+			'        <li><?php echo functions::escape_js(functions::form_input_money('stock_options[new_stock_item_i][price_adjustment]['. $currency['code'] .']', $currency['code'], '', 'style="width: 125px;"')); ?></li>',
 			<?php } ?>
 			'      </ul>',
 			'    </div>',
@@ -2031,8 +2012,8 @@
 			'  </td>',
 			'</tr>'
 		].join('\n')
-			.replace('new_stock_item_id', stock_item.id)
-			.replace('new_stock_item_i', 'new_'+new_stock_item_i)
+			.replace(/new_stock_item_i/g, 'new_'+new_stock_item_i)
+			.replace(/new_stock_item_id/g, stock_item.id)
 		);
 
 		$.each(Object.keys(stock_item), function(i, key) { // Iterate Object.keys() because jQuery.each() doesn't support a property named length
@@ -2065,7 +2046,6 @@
 
 		if ($('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').length) {
 			$('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').replaceWith($output);
-			//alert("<?php echo t('error_item_already_defined', 'This item is already defined'); ?>");
 		} else {
 			$('#stock-options tbody').append($output);
 		}

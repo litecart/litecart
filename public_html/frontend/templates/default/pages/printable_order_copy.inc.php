@@ -77,7 +77,7 @@ h1 {
 			<div class="grid">
 				<div class="col-3 shipping-address">
 					<div class="label"><?php echo t('title_shipping_address', 'Shipping Address'); ?></div>
-					<div class="value"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])); ?></div>
+					<div class="value"><?php echo nl2br(functions::format_address($order['customer']['shipping_address'])); ?></div>
 				</div>
 
 				<div class="col-3">
@@ -91,7 +91,7 @@ h1 {
 				<div class="col-6 billing-address">
 					<div class="rounded-rectangle">
 						<div class="label"><?php echo t('title_billing_address', 'Billing Address'); ?></div>
-						<div class="value"><?php echo nl2br(reference::country($order['customer']['country_code'])->format_address($order['customer'])); ?></div>
+						<div class="value"><?php echo nl2br(functions::format_address($order['customer'])); ?></div>
 					</div>
 				</div>
 			</div>

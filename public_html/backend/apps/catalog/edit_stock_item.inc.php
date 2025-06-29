@@ -417,7 +417,7 @@
 		$(backordered_field).val(0);
 	});
 
-	if ($.litebox && $.litebox.opened) {
+	if ($.litebox?.opened?.length) {
 		$('form[name="stock_item_form"]').submit(function(e){
 			e.preventDefault();
 			$.ajax({
@@ -433,10 +433,10 @@
 						return;
 					}
 					<?php if (!empty($_GET['js_callback'])) { ?>
-					if (typeof window[<?php echo functions::escape_js(json_encode($_GET['js_callback'])); ?>] === 'function') {
-						window[<?php echo functions::escape_js(json_encode($_GET['js_callback'])); ?>](result.data);
+					if (typeof window["<?php echo functions::escape_js($_GET['js_callback']); ?>"] === 'function') {
+						window["<?php echo functions::escape_js($_GET['js_callback']); ?>"](result.data);
 					} else {
-						alert("Unknown callback function <?php echo functions::escape_js(json_encode($_GET['js_callback'])); ?>");
+						alert("Unknown callback function <?php echo functions::escape_js($_GET['js_callback']); ?>");
 					}
 					<?php } ?>
 					$.litebox.close();
@@ -471,7 +471,7 @@
 			'  <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>',
 			'</tr>',
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
+			.replace(/__index__/g, 'new_' + __index__)
 		);
 
 		$('#table-references tbody').append($output);

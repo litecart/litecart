@@ -134,8 +134,10 @@
 			'value' => cart::$total['value'],
 			'tax' => cart::$total['tax'],
 		],
+		'cheapest_shipping_fee' => null,
 		'display_prices_including_tax' => customer::$data['display_prices_including_tax'],
 		'error' => false,
+		'box_also_purchased_products' => null,
 	];
 
 	foreach (currency::$currencies as $currency) {
@@ -147,6 +149,45 @@
 	foreach (language::$languages as $language) {
 		if (administrator::check_login() || $language['status'] == 1) {
 			$_page->snippets['languages'][] = $language;
+		}
+	}
+
+	// Cheapest shipping
+	if (settings::get('display_cheapest_shipping')) {
+
+		$tmp_order = (object)[
+			'data' => [
+				'items' => array_map(function($item) {
+					return [
+						'product_id' => $item['product_id'],
+						'stock_option_id' => $item['stock_option_id'],
+						'name' => $item['name'],
+						'sku' => $item['sku'],
+						'image' => $item['image'],
+						'quantity' => $item['quantity'],
+						'price' => $item['price'],
+						'tax_class_id' => $item['tax_class_id'],
+						'tax' => $item['tax'],
+						'weight' => $item['weight'],
+						'weight_unit' => $item['weight_unit'],
+						'length' => $item['length'],
+						'width' => $item['width'],
+						'height' => $item['height'],
+						'length_unit' => $item['length_unit'],
+					];
+				}, cart::$items),
+				'subtotal' => cart::$total['value'],
+				'subtotal_tax' => cart::$total['tax'],
+				'customer' => customer::$data,
+				'currency_code' => currency::$selected['code'],
+			],
+		];
+
+		$cheapest_shipping = (new mod_shipping)->cheapest($tmp_order);
+
+		if ($cheapest_shipping) {
+			$_page->snippets['cheapest_shipping'] = $cheapest_shipping;
+			var_dump($_page->snippets['cheapest_shipping']);
 		}
 	}
 
@@ -179,6 +220,38 @@
 			'sum_tax' => fallback($item['sum_tax'], 0),
 			'error' => fallback($item['error']),
 		];
+	}
+
+	// Also purchased products
+	if (settings::get('box_also_purchased_products_num_items')) {
+
+		$box_also_purchased_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_also_purchased_products.inc.php');
+
+		$product_ids = database::query(
+			"select oi.product_id, sum(oi.quantity) as num_purchases from ". DB_TABLE_PREFIX ."orders_items oi
+			left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
+			where p.status
+			and (oi.product_id != 0 and oi.product_id not in ('". implode("', '", database::input(array_column(cart::$items, 'product_id'))) ."'))
+			and order_id in (
+				select distinct order_id as id from ". DB_TABLE_PREFIX ."orders_items
+				where product_id in ('". implode("', '", database::input(array_column(cart::$items, 'product_id'))) ."')
+			)
+			group by oi.product_id
+			order by num_purchases desc
+			limit ". (settings::get('box_also_purchased_products_num_items') * 3) .";"
+		)->fetch_all('product_id');
+
+		if ($product_ids) {
+			$box_also_purchased_products->snippets['products'] = functions::catalog_products_query([
+				'products' => array_keys($product_ids),
+				'sort' => 'random',
+				'limit' => settings::get('box_also_purchased_products_num_items'),
+			])->fetch_all();
+		}
+
+		if (!empty($box_also_purchased_products->snippets['products'])) {
+			$_page->snippets['box_also_purchased_products'] = $box_also_purchased_products->render();
+		}
 	}
 
 	// Express checkout

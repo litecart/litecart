@@ -302,14 +302,14 @@
 
 			$order->save();
 
-			if (!empty($_POST['email_order_copy'])) {
+			if (!empty($_POST['send_order_copy_email'])) {
 
 				$bccs = [];
-				foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy'), -1, PREG_SPLIT_NO_EMPTY) as $email) {
+				foreach (preg_split('#[\s;,]+#', settings::get('send_order_copy_email'), -1, PREG_SPLIT_NO_EMPTY) as $email) {
 					$bccs[] = $email;
 				}
 
-				$order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['language_code']);
+				$order->send_order_copy_email($order->data['customer']['email'], $bccs, $order->data['language_code']);
 			}
 
 			if (!empty($_GET['redirect_url'])) {
@@ -1636,7 +1636,7 @@
 			'  </div>',
 			'</div>'
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
+			.replace(/__index__/g, 'new_' + __index__)
 		);
 
 		$(this).before($output);
@@ -1882,7 +1882,7 @@
 				'    </td>',
 				'  </tr>'
 			].join('\n')
-				.replace('__index__', 'new_' + __index__)
+				.replace(/__index__/g, 'new_' + __index__)
 			);
 
 			$row = $output;

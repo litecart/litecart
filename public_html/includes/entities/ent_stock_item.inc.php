@@ -35,16 +35,15 @@
 
 			$this->reset();
 
-			if (!preg_match('#^[0-9]$#', $id)) {
-				$stock_item = database::query(
-				"select * from ". DB_TABLE_PREFIX ."stock_items
-				where id = ". (int)$id ."
-				limit 1;"
-				)->fetch();
-			}
+			if (preg_match('#^[0-9]+$#', $id)) {
 
-			// If not a number or not found, try to find by sku, gtin or mpn
-			if (!$stock_item) {
+				$stock_item = database::query(
+					"select * from ". DB_TABLE_PREFIX ."stock_items
+					where id = ". (int)$id ."
+					limit 1;"
+				)->fetch();
+
+			} else {
 
 				foreach ([
 					'sku',
@@ -158,10 +157,9 @@
 			);
 
 			if ($this->previous['quantity'] != $this->data['quantity']) {
-				if (isset($this->data['quantity_adjustment']) && $this->data['quantity_adjustment'] != 0) {
-					throw new Exception('Quantity adjustment cannot be set when quantity is changed');
+				if (!isset($this->data['quantity_adjustment']) ||  $this->data['quantity_adjustment'] == 0) {
+					$this->data['quantity_adjustment'] = $this->data['quantity'] - $this->previous['quantity'];
 				}
-				$this->data['quantity_adjustment'] = $this->data['quantity'] - $this->previous['quantity'];
 			}
 
 			// If quantity adjustment is set
@@ -171,7 +169,7 @@
 
 				foreach ($stock_transaction->data['contents'] as $key => $row) {
 					if ($row['stock_item_id'] == $this->data['id']) {
-						$stock_transaction->data['contents'][$key]['quantity_adjustment'] += $this->data['quantity_adjustment'];
+						$stock_transaction->data['contents'][$key]['quantity_adjustment'] += (float)$this->data['quantity_adjustment'];
 						$updated_existing = true;
 						break;
 					}

@@ -51,7 +51,7 @@
 								<div class="col-md-6 detail">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_buyer', 'Buyer'); ?></div>
-										<div class="billing-address"><?php echo nl2br(reference::country($order['customer']['country_code'])->format_address($order['customer'])); ?></div>
+										<div class="billing-address"><?php echo nl2br(functions::format_address($order['customer'])); ?></div>
 									</label>
 
 									<label class="form-group">
@@ -68,7 +68,7 @@
 								<div class="col-md-6 detail">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_deliver_to', 'Deliver To'); ?></div>
-										<div class="shipping-address"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])); ?></div>
+										<div class="shipping-address"><?php echo nl2br(functions::format_address($order['customer']['shipping_address'])); ?></div>
 									</label>
 								</div>
 							</div>

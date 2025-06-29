@@ -227,7 +227,7 @@
 			'	</td>',
 			'</tr>'
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
+			.replace(/__index__/g, 'new_' + __index__)
 		);
 
 		$(':input[name$="[country_code]"]', $output).val($(':input[name="new_zone[country_code]"]').val());

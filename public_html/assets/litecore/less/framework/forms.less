@@ -115,23 +115,6 @@ label.form-check > input {
 	}
 }
 
-.dropdown .form-select + .dropdown-menu {
-	.option {
-		label:hover {
-			backdrop-filter: brightness(0.95);
-		}
-		input[type="checkbox"],
-		input[type="radio"] {
-			display: none;
-		}
-		&:has(input[type="checkbox"]:checked),
-		&:has(input[type="radio"]:checked) {
-			font-weight: bold;
-			backdrop-filter: brightness(0.90);
-		}
-	}
-}
-
 .form-select {
 	padding-inline-end: 2.5em;
 	appearance: none;
@@ -143,13 +126,6 @@ label.form-check > input {
 		background-repeat: no-repeat;
 		background-position: right 1em center;
 		background-size: 16px 12px;
-	}
-
-	+ .dropdown-menu {
-		min-width: 100%;
-		> li > label:hover {
-			background: #efefef;
-		}
 	}
 
 	option {

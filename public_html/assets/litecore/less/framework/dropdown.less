@@ -55,10 +55,17 @@
 
 	&.dropdown-end > .dropdown-content,
 	&.dropdown-end > .dropdown-menu,
-	&.dropdown-end > .dropdown-content,
-	&.dropdown-end > .dropdown-menu {
+	&.dropdown-start > .dropdown-content,
+	&.dropdown-start > .dropdown-menu {
 		inset-inline-start: auto;
 		inset-inline-end: 0;
+	}
+
+	&.dropdown-block > .dropdown-content,
+	&.dropdown-block > .dropdown-menu {
+		inset-inline-start: 0;
+		inset-inline-end: 0;
+		width: 100%;
 	}
 
 	// Multi-level dropdown
@@ -129,7 +136,7 @@
 }
 
 .dropdown-menu {
-	padding: 0;
+	padding: 1em;
 	margin: 2px 0 0;
 }
 
@@ -141,25 +148,36 @@
 .dropdown-item {
 	background: var(--dropdown-item-background);
 	color: var(--dropdown-item-text-color);
-	padding: .75em 1em;
+	//padding: .75em 1em;
 
-	&:is(a, label):hover,
-	&:has(input[type="checkbox"], input[type="radio"]):hover {
-		background: var(--dropdown-item-background--hover);
+	a, label {
+		display: block;
+	}
+
+	//&:hover, &:has(input[type="checkbox"], input[type="radio"]):hover {
+	&:hover a, &:hover label {
+		//background: var(--dropdown-item-background--hover);
 		color: var(--dropdown-item-text-color--hover);
 		cursor: pointer;
 	}
 
-	&:has(input:checked) {
-		background: var(--dropdown-item-background--active);
+	&:has(input:checked) label {
+		//background: var(--dropdown-item-background--active);
 		color: var(--dropdown-item-text-color--active);
-		font-weight: bold;
+		font-weight: 500;
 	}
-
+/*
 	input[type="checkbox"],
 	input[type="radio"] {
 		display: none;
 	}
+	*/
+}
+
+.form-select + .dropdown-menu,
+.form-select + .dropdown-content {
+	inset-inline-start: 0 !important;
+	inset-inline-end: 0 !important;
 }
 
 html[dir="rtl"] {

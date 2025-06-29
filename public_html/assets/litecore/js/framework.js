@@ -473,10 +473,9 @@ waitFor('jQuery', ($) => {
 });
 
 
-/* Context Menu */
-
 waitFor('jQuery', ($) => {
 
+	// Context Menu
 	$.fn.contextMenu = function(config){
 		this.each(function() {
 
@@ -621,19 +620,31 @@ waitFor('jQuery', ($) => {
 		$(this).closest('.dropdown').toggleClass('open');
 	});
 
-	$('.dropdown-item').on('click', 'a', function(e) {
+	$('.dropdown-item').on('click', 'a,button,input[type="radio"]', function(e) {
 		$(this).closest('.dropdown').removeClass('open');
+	});
+
+	$('.dropdown').on('change', ':input', function(e) {
+
+		let $dropdown = $(this).closest('.dropdown');
+
+		let values = [];
+		$dropdown.find(':input:checked').each(function() {
+			values.push( $(this).parent().text().trim() );
+		});
+
+		if (!values.length) {
+			values = [ $dropdown.find('.dropdown-toggle').data('placeholder') ];
+		}
+		console.log('"'+values.join(', ')+'"');
+
+		$dropdown.find('.dropdown-toggle').text(values.join(', '));
 	});
 
 	// Listen for clicks outside the dropdown to uncheck the input
 	$(document).on('click', function(e) {
-
-		if ($('.dropdown.open').length === 0) {
-			return;
-		}
-
 		// If click is on dropdown::before psuedo element, remove open class
-		if ($(e.target).closest('.dropdown').length === 0) {
+		if ($('.dropdown.open').length && !$(e.target).closest('.dropdown').length) {
 			$('.dropdown.open').removeClass('open');
 		}
 	});
@@ -985,7 +996,7 @@ waitFor('jQuery', ($) => {
 						const deferred = $.Deferred();
 						const $img = $('<img>', { src: url, alt: '' });
 						$img.on('load', () => deferred.resolve($img));
-						$img.on('error', () => deferred.reject());
+						$img.on('error', () => deferred.resolve($('<div>Failed to load image</div>')));
 						return deferred.promise();
 					}
 				},
@@ -1009,7 +1020,10 @@ waitFor('jQuery', ($) => {
 					process: function (url) {
 						const deferred = $.Deferred();
 						const $iframe = $('<iframe/>', { src: url });
-						$iframe.on('load', () => { $iframe.show().appendTo(this.$instance.find('.litebox-modal')); deferred.resolve($iframe); });
+						$iframe.on('load', () => {
+							$iframe.show().appendTo(this.$instance.find('.litebox-modal'));
+							deferred.resolve($iframe);
+						});
 						return deferred.promise();
 					}
 				},
@@ -1018,7 +1032,7 @@ waitFor('jQuery', ($) => {
 					process: function(url) {
 						const deferred = $.Deferred();
 						const $content = $('<div>').css({ "white-space": 'pre-wrap', "max-width": '90vw' });
-						$.get(url, raw => $content.text(raw)).done(() => deferred.resolve($content));
+						$.get(url, raw => $content.text(raw)).done(() => deferred.resolve($content)).fail(() => deferred.resolve($('<div>Failed to load file</div>')));
 						return deferred.promise();
 					}
 				},
@@ -1235,6 +1249,9 @@ waitFor('jQuery', ($) => {
 	// Expose the Litebox.current method
 	$.litebox.current = Litebox.current.bind(Litebox);
 
+	// Expose the Litebox.attach method
+	$.litebox.opened = Litebox.opened;
+
 	// Expose the Litebox.close method
 	$.litebox.close = function(){
 		this.current()?.close();
@@ -1419,9 +1436,9 @@ waitFor('jQuery', ($) => {
 
 });
 
-// Password Strength
 waitFor('jQuery', ($) => {
 
+	// Password Strength
 	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function() {
 
 		$(this).siblings('meter').remove();
@@ -1447,9 +1464,9 @@ waitFor('jQuery', ($) => {
 });
 
 
-// jQuery Placeholders by LiteCart
 waitFor('jQuery', ($) => {
-
+	
+	// jQuery Placeholders by LiteCart
 	let Placeholders = [];
 
 	$.fn.Placeholder = function(options){

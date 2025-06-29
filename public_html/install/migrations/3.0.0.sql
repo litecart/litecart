@@ -478,7 +478,8 @@ CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `options` `userdata` VARCHAR(2048) NULL AFTER `name`,
 CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT '',
 CHANGE COLUMN `priority` `priority` INT NOT NULL DEFAULT '0',
-ADD COLUMN `stock_item_id` INT(10) UNSIGNED NULL AFTER `product_id`,
+ADD COLUMN `stock_option_id` INT(10) UNSIGNED NULL AFTER `product_id`,
+ADD COLUMN `stock_items` INT(10) UNSIGNED NULL AFTER `stock_option_id`,
 ADD COLUMN `serial_number` VARCHAR(32) NOT NULL DEFAULT '' AFTER `name`,
 ADD COLUMN `tax_rate` FLOAT(4,2) UNSIGNED NULL AFTER `tax`,
 ADD COLUMN `tax_class_id` INT(10) UNSIGNED NULL AFTER `tax_rate`,
@@ -488,7 +489,8 @@ ADD COLUMN `sum` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount_tax`,
 ADD COLUMN `sum_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `sum`,
 ADD COLUMN `downloads` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `length_unit`,
 ADD INDEX `product_id` (`product_id`),
-ADD INDEX `stock_item_id` (`stock_item_id`);
+ADD INDEX `stock_option_id` (`stock_option_id`),
+ADD INDEX `stock_items` (`stock_items`);
 -- -----
 ALTER TABLE `lc_orders_totals`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -736,6 +738,7 @@ INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALU
 -- -----
 INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, `function`, `required`, `priority`, `date_created`, `date_updated`) VALUES
 ('defaults', 'Default Order Status', 'Default order status for new orders if nothing else is set.', 'default_order_status_id', '1', 'order_status()', 0, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('defaults', 'Default Address Format', 'The default address format if not specified otherwise.', 'default_address_format', '%company\n%firstname %lastname\n%address1\n%address2\n%country_code-%postcode %city\n%country_name', 'textarea()', 1, 14, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('customer_details', 'Different Shipping Address', 'Allow customers to provide a different address for shipping.', 'customer_shipping_address', '1', 'toggle("y/n")', 0, 24, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('listings', 'Featured Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_featured_products_num_items', '10', 'number()', 0, 17, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('checkout', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id, {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 1, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),

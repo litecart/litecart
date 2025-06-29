@@ -270,6 +270,7 @@ html.dark-mode {
   --input-background: #1a2133;
   --input-border: 1px solid #31384a;
   --input-border-focus: 1px solid #555e74;
+  --input-code-background: #1a2133;
   --input-addon-background: #3d485e;
   --input-toggle-background: #354362;
   --input-text-color: #acb6c2;
@@ -281,6 +282,7 @@ html.dark-mode {
   --card-background: #283144;
   --card-text-color: #acb6c2;
   --card-border-color: #253046;
+  --card-footer-background: #1d2534;
   --pill-item-background: #333c4e;
   --pill-item-text-color: #acb6c2;
   --pill-item-border-color: transparent;
@@ -292,16 +294,16 @@ html.dark-mode {
   --tab-item-border-color--active: transparent;
   --tab-item-background--hover: #1c243a;
   --tab-item-background--active: #1c243a;
-  --table-header-background: #1d2534;
+  --table-header-background: #283144;
   --table-header-text-color: #acb6c2;
-  --table-body-background: #151a23;
-  --table-body-background--even: #1c243a;
+  --table-body-background: #283144;
+  --table-body-background--even: #283144;
   --table-body-background--hover: #2d374c;
   --table-body-text-color: #acb6c2;
   --table-link-background: #1a2133;
   --table-link-background--hover: #2d374c;
   --table-link-text-color: #acb6c2;
-  --table-footer-background: #1d2534;
+  --table-footer-background: #222b3d;
   --table-footer-text-color: #acb6c2;
   --table-border-color: #1c243a;
   --table-border-width: 1px;

@@ -36,8 +36,10 @@
 			$order->load($order->data['id']);
 		}
 
+		$payment_options = $order->payment->options($order);
+
 		// Verify transaction
-		if ($payment->modules && count($payment->options($order)) > 0) {
+		if ($payment_options) {
 			$result = $order->payment->verify($order);
 
 			// If payment error
@@ -115,7 +117,7 @@
 		'type' => 'checkout_success',
 		'description' => 'User completed checkout successfully',
 		'data' => [
-			'order_id' => $order->data['order_id'],
+			'order_id' => $order->data['id'],
 			'products' => array_filter(array_column($order->data['items'], 'product_id')),
 			'shipping_option_id' => $order->data['shipping_option']['id'],
 			'payment_option_id' => $order->data['payment_option']['id'],
@@ -133,14 +135,14 @@
 	if (settings::get('send_order_confirmation')) {
 		$bccs = [];
 
-		if (settings::get('email_order_copy')) {
-			foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy')) as $email) {
+		if (settings::get('send_order_copy_email')) {
+			foreach (preg_split('#[\s;,]+#', settings::get('send_order_copy_email')) as $email) {
 				if (empty($email)) continue;
 				$bccs[] = $email;
 			}
 		}
 
-		$order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['language_code']);
+		$order->send_order_copy_email($order->data['customer']['email'], $bccs, $order->data['language_code']);
 	}
 
 	// Run after process operations

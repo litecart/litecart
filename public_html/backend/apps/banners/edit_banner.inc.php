@@ -205,7 +205,7 @@ table th:last-child {
 			'  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(t('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a></td>',
 			'</tr>'
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
+			.replace(/__index__/g, 'new_' + __index__)
 		);
 
 		$('.data-table tbody').append($output);

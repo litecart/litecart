@@ -37,7 +37,6 @@
 
 			$this->data['status'] = 1;
 			$this->data['tax_class_id'] = settings::get('default_tax_class_id');
-			$this->data['purchase_price_currency_code'] = settings::get('store_currency_code');
 			$this->data['quantity_unit_id'] = settings::get('default_quantity_unit_id');
 			$this->data['delivery_status_id'] = settings::get('default_delivery_status_id');
 			$this->data['sold_out_status_id'] = settings::get('default_sold_out_status_id');
@@ -172,7 +171,10 @@
 				) oi on (oi.product_id = pso.product_id and oi.stock_option_id = pso.id)
 				where pso.product_id = ". (int)$this->data['id'] ."
 				order by pso.priority;"
-			)->fetch_all();
+			)->fetch_all(function($stock_item){
+				$stock_item['price_adjustment'] = !empty($stock_item['price_adjustment']) ? json_decode($stock_item['price_adjustment'], true) : [];
+				return $stock_item;
+			});
 
 			$this->previous = $this->data;
 		}
@@ -235,8 +237,6 @@
 					quantity_max = ". (float)$this->data['quantity_max'] .",
 					quantity_step = ". (float)$this->data['quantity_step'] .",
 					quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
-					purchase_price = ". (float)$this->data['purchase_price'] .",
-					purchase_price_currency_code = '". database::input($this->data['purchase_price_currency_code']) ."',
 					recommended_price = ". (float)$this->data['recommended_price'] .",
 					tax_class_id = ". (int)$this->data['tax_class_id'] .",
 					autofill_technical_data = ". (int)$this->data['autofill_technical_data'] .",

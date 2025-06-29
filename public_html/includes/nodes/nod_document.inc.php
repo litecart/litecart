@@ -26,10 +26,11 @@
 
 		public static function before_capture() {
 
+			header('X-Powered-By: '. PLATFORM_NAME);
 			header('Strict-Transport-Security: max-age=63072000; includeSubDomains; preload'); // HSTS
 			header('Access-Control-Allow-Origin: '. self::ilink('')); // Only allow HTTP POST data from own domain
-			header('X-Frame-Options: SAMEORIGIN'); // Clickjacking Protection
-			header('X-Powered-By: '. PLATFORM_NAME);
+			header('Referrer-Policy: strict-origin-when-cross-origin'); // Referrer Policy
+			header('X-Content-Type-Options: nosniff'); // Prevent MIME type sniffing
 
 			header('Content-Security-Policy: '. implode(';', [
 				"frame-ancestors 'self'", // Clickjacking Protection
@@ -38,6 +39,16 @@
 					//"style-src 'self'",
 					//"base-uri 'self'",
 					//"form-action 'self'",
+			]));
+
+			header('Permissions-Policy: ', implode(',', [
+					'camera=()',
+					'clipboard-read=()',
+					'clipboard-write=()',
+					'fullscreen=(self)',
+					'payment=()',
+					'geolocation=()',
+					'browsing-topics()',
 			]));
 
 			// Default to AJAX layout on AJAX request
@@ -512,11 +523,11 @@
 						case 'backend':
 							$resource = WS_DIR_APP . BACKEND_ALIAS .'/'. $resource;
 							break;
-							
+
 						case 'frontend':
 							$resource = WS_DIR_APP . $resource;
 							break;
-							
+
 						default:
 							$resource = WS_DIR_APP . $resource;
 							break;

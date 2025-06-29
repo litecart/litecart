@@ -8,10 +8,39 @@
 			limit 1;"
 		)->fetch();
 
-		if (!$country) {
-			trigger_error('Invalid country code for address format', E_USER_WARNING);
-			return;
+		if (!empty($address['zone_code'])) {
+			$zone = database::query(
+				"select * from ". DB_TABLE_PREFIX ."zones
+				where country_code = '". database::input($address['country_code']) ."'
+				and code = '". database::input($address['zone_code']) ."'
+				limit 1;"
+			)->fetch();
 		}
+
+		if ($country && !empty($country['address_format'])) {
+			$address_format = $country['address_format'];
+		} else {
+			$address_format = settings::get('default_address_format');
+		}
+
+		$output = strtr($address_format, [
+			'%company' => fallback($address['company'], ''),
+			'%firstname' => fallback($address['firstname'], ''),
+			'%lastname' => fallback($address['lastname'], ''),
+			'%address1' => fallback($address['address1'], ''),
+			'%address2' => fallback($address['address2'], ''),
+			'%city' => fallback($address['city'], ''),
+			'%postcode' => fallback($address['postcode'], ''),
+			'%country_code' => $address['country_code'], '',
+			'%country_name' => fallback($country['name'], $address['country_code'], ''),
+			'%country_domestic_name' => fallback($country['domestic_name'], $country['name'], $address['country_code'], ''),
+			'%zone_code' => fallback($address['zone_code'], ''),
+			'%zone_name' => fallback($zone['name'], ''),
+		]);
+
+		$output = preg_replace('#(\r\n?|\n)+#', "\r\n", $output);
+
+		return trim($output);
 
 		return reference::country($address['country_code'])->format_address($address);
 	}

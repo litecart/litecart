@@ -280,7 +280,7 @@
 			'  </td>',
 			'</tr>',
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
+			.replace(/__index__/g, 'new_' + __index__)
 			.replace('product.id', product.id)
 		);
 

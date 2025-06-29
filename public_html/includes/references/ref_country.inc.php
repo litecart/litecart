@@ -51,29 +51,8 @@
 		}
 
 		public function format_address($address) {
-
-			$address_format = $this->address_format ?: settings::get('default_address_format');
-
-			$output = strtr($address_format, [
-				'%code' => fallback($address['code']),
-				'%tax_id' => fallback($address['tax_id']),
-				'%company' => fallback($address['company']),
-				'%firstname' => fallback($address['firstname']),
-				'%lastname' => fallback($address['lastname']),
-				'%address1' => fallback($address['address1']),
-				'%address2' => fallback($address['address2']),
-				'%city' => fallback($address['city']),
-				'%postcode' => fallback($address['postcode']),
-				'%country_code' => $address['country_code'],
-				'%country_name' => $this->name,
-				'%country_domestic_name' => $this->domestic_name,
-				'%zone_code' => fallback($address['zone_code']),
-				'%zone_name' => (!empty($address['zone_code']) && !empty($this->zones[$address['zone_code']])) ? $this->zones[$address['zone_code']]['name'] : '',
-			]);
-
-			$output = preg_replace('#(\r\n?|\n)+#', "\r\n", $output);
-
-			return trim($output);
+			trigger_error('The method format_address() is deprecated. Use functions::format_address() instead.', E_USER_DEPRECATED);
+			return functions::format_address($address);
 		}
 
 		public function in_geo_zone($geo_zones, $address=[]) {

@@ -282,7 +282,7 @@
 			'    <td class="text-center"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(t('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a></td>',
 			'  </tr>'
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
+			.replace(/__index__/g, 'new_' + __index__)
 		);
 
 		// Insert values

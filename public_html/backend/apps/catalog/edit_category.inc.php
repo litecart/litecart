@@ -419,9 +419,9 @@
 			'	</td>',
 			'</tr>',
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
-			.replace('new_attribute_group_id', $('select[name="new_attribute_group"] option:selected').val())
-			.replace('new_attribute_group_name', $('select[name="new_attribute_group"] option:selected').text())
+			.replace(/__index__/g, 'new_' + __index__)
+			.replace(/new_attribute_group_id/g, $('select[name="new_attribute_group"] option:selected').val())
+			.replace(/new_attribute_group_name/g, $('select[name="new_attribute_group"] option:selected').text())
 		);
 
 		$('#tab-filters tbody').append($output);

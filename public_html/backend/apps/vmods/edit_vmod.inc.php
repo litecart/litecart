@@ -760,8 +760,6 @@ textarea.warning {
 
 	// Tabs
 
-	let new_tab_index = 1;
-	while ($('.tab-content[id="tab-'+new_tab_index+'"]').length) new_tab_index++;
 
 	$('.tabs').on('click', '[data-toggle="tab"]', function(e) {
 		$($(this).attr('href')).find(':input[name$="[content]"]').trigger('input');
@@ -770,18 +768,20 @@ textarea.warning {
 	$('.tabs .add').on('click', function(e) {
 		e.preventDefault();
 
+		let __index__ = 1;
+		while ($('.tab-content[id="tab-new_'+__index__+'"]').length) __index__++;
+
 		let $tab = $([
-			'<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'">',
-			'  <span class="file">new'+ new_tab_index +'</span> <span class="btn btn-default btn-sm remove" title="<?php t('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('icon-times'); ?>',
-			'</span>',
+			'<a class="nav-link" data-toggle="tab" href="#tab-__index__">',
+			'  <span class="file">__index__</span> <span class="btn btn-default btn-sm remove" title="<?php echo t('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('icon-times'); ?></span>',
 			'</a>'
 		].join('')
-			.replace('new_tab_index', new_tab_index)
+			.replace(/__index__/g, 'new_'+ __index__)
 		);
 
 		let $tab_pane = $(
 			$('#new-tab-content-template').html()
-				.replace('new_tab_index', new_tab_index++)
+				.replace(/__index__/g, 'new_'+ __index__)
 		).hide();
 
 		$(this).before($tab);
@@ -896,7 +896,6 @@ textarea.warning {
 
 	$(':input[name^="files"][name$="[name]"]').trigger('input');
 
-	let new_operation_index = $(':input[name$="[find][content]"]').length || 0;
 
 	$('#files').on('click', '.add', function(e) {
 		e.preventDefault();
@@ -904,10 +903,12 @@ textarea.warning {
 		let $operations = $(this).closest('.tab-content').find('.operations'),
 			tab_index = $(this).closest('.tab-content').data('tab-index');
 
+		let __index__ = $(':input[name$="[find][content]"]').length || 0;
+
 		let $output = $(
 			$('#new-operation-template').html()
+			.replace(/__index__/g, 'new_'+ __index__)
 			.replace('current_tab_index', tab_index)
-			.replace('new_operation_index', new_operation_index++)
 		);
 
 		$operations.append($output);
@@ -1089,7 +1090,7 @@ textarea.warning {
 			'	</div>',
 			'</fieldset>'
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
+			.replace(/__index__/g, 'new_' + __index__)
 		);
 
 		$('.aliases').append($output);
@@ -1174,7 +1175,7 @@ textarea.warning {
 			'',
 			'</fieldset>'
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
+			.replace(/__index__/g, 'new_' + __index__)
 		);
 
 		$('#settings').append($output);
@@ -1218,7 +1219,7 @@ textarea.warning {
 			'	</label>',
 			'</fieldset>'
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
+			.replace(/__index__/g, 'new_' + __index__)
 		);
 
 		$('.upgrades').append($output);

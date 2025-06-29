@@ -731,6 +731,7 @@
 				"order_id": { "type": "INT", "length": 10, "unsigned": true },
 				"product_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"stock_option_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"stock_items": { "type": "VARCHAR", "length": 64, "unsigned": true, "default": "'{}'" },
 				"userdata": { "type": "VARCHAR", "length": 2048, "nullable": true },
 				"name": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"serial_number": { "type": "VARCHAR", "length": 32, "default": "''" },
@@ -758,7 +759,9 @@
 			"primary_key": ["id"],
 			"keys": {
 				"order_id": ["order_id"],
-				"product_id": ["product_id"]
+				"product_id": ["product_id"],
+				"stock_option_id": ["stock_option_id"],
+				"stock_items": ["stock_items"]
 			},
 			"foreign_keys": {
 				"order_item_to_order": {
@@ -874,13 +877,11 @@
 				"meta_description": { "type": "TEXT", "default": "'{}'" },
 				"synonyms": { "type": "TEXT", "default": "'{}'" },
 				"keywords": { "type": "VARCHAR", "length": 255, "default": "''" },
-				"stock_option_type": { "type": "FLOAT", "length": "10,4", "default": 0.0000 },
+				"stock_option_type": { "type": "ENUM('variant','bundle')", "default": "'variant'" },
 				"quantity_min": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 1.0000 },
 				"quantity_max": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
 				"quantity_step": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
 				"quantity_unit_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
-				"purchase_price": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
-				"purchase_price_currency_code": { "type": "VARCHAR", "length": "3", "unsigned": true, "default": "''" },
 				"recommended_price": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
 				"tax_class_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"image": { "type": "VARCHAR", "length": 255, "default": "''" },

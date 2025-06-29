@@ -392,6 +392,9 @@ waitFor('jQuery', ($) => {
 	// Expose the Litebox.current method
 	$.litebox.current = Litebox.current.bind(Litebox);
 
+	// Expose the Litebox.attach method
+	$.litebox.opened = Litebox.opened;
+
 	// Expose the Litebox.close method
 	$.litebox.close = function(){
 		this.current()?.close();

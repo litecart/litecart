@@ -323,9 +323,9 @@
 			'  <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>',
 			'</tr>',
 		].join('\n')
-			.replace('__index__', 'new_' + __index__)
-			.replace('new_zone_code', $('input[name="zone[code]"]').val())
-			.replace('new_zone_name', $('input[name="zone[name]"]').val())
+			.replace(/__index__/g, 'new_' + __index__)
+			.replace(/new_zone_code/g, $('input[name="zone[code]"]').val())
+			.replace(/new_zone_name/g, $('input[name="zone[name]"]').val())
 		);
 
 		$(this).closest('table').find('tbody').append($output);

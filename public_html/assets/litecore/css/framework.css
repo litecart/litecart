@@ -123,9 +123,11 @@ input[type=submit] {
 }
 fieldset {
   padding: 1em 2em;
-  margin-bottom: var(--gutter-y);
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
+}
+fieldset:has(+ *) {
+  margin-bottom: var(--gutter-y);
 }
 fieldset legend {
   display: table;
@@ -898,10 +900,16 @@ template {
 }
 .dropdown.dropdown-end > .dropdown-content,
 .dropdown.dropdown-end > .dropdown-menu,
-.dropdown.dropdown-end > .dropdown-content,
-.dropdown.dropdown-end > .dropdown-menu {
+.dropdown.dropdown-start > .dropdown-content,
+.dropdown.dropdown-start > .dropdown-menu {
   inset-inline-start: auto;
   inset-inline-end: 0;
+}
+.dropdown.dropdown-block > .dropdown-content,
+.dropdown.dropdown-block > .dropdown-menu {
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  width: 100%;
 }
 .dropdown .dropdown .dropdown-content,
 .dropdown .dropdown .dropdown-menu {
@@ -975,7 +983,7 @@ template {
   cursor: not-allowed;
 }
 .dropdown-menu {
-  padding: 0;
+  padding: 1em;
   margin: 2px 0 0;
 }
 .dropdown-content {
@@ -985,22 +993,30 @@ template {
 .dropdown-item {
   background: var(--dropdown-item-background);
   color: var(--dropdown-item-text-color);
-  padding: 0.75em 1em;
+  /*
+	input[type="checkbox"],
+	input[type="radio"] {
+		display: none;
+	}
+	*/
 }
-.dropdown-item:is(a, label):hover,
-.dropdown-item:has(input[type="checkbox"], input[type="radio"]):hover {
-  background: var(--dropdown-item-background--hover);
+.dropdown-item a,
+.dropdown-item label {
+  display: block;
+}
+.dropdown-item:hover a,
+.dropdown-item:hover label {
   color: var(--dropdown-item-text-color--hover);
   cursor: pointer;
 }
-.dropdown-item:has(input:checked) {
-  background: var(--dropdown-item-background--active);
+.dropdown-item:has(input:checked) label {
   color: var(--dropdown-item-text-color--active);
-  font-weight: bold;
+  font-weight: 500;
 }
-.dropdown-item input[type="checkbox"],
-.dropdown-item input[type="radio"] {
-  display: none;
+.form-select + .dropdown-menu,
+.form-select + .dropdown-content {
+  inset-inline-start: 0 !important;
+  inset-inline-end: 0 !important;
 }
 html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
   background-position: left 1em center;
@@ -1961,18 +1977,6 @@ label.form-check > input:is([type="radio"]):checked {
 .input-group [readonly] {
   color: #999;
 }
-.dropdown .form-select + .dropdown-menu .option label:hover {
-  backdrop-filter: brightness(0.95);
-}
-.dropdown .form-select + .dropdown-menu .option input[type="checkbox"],
-.dropdown .form-select + .dropdown-menu .option input[type="radio"] {
-  display: none;
-}
-.dropdown .form-select + .dropdown-menu .option:has(input[type="checkbox"]:checked),
-.dropdown .form-select + .dropdown-menu .option:has(input[type="radio"]:checked) {
-  font-weight: bold;
-  backdrop-filter: brightness(0.9);
-}
 .form-select {
   padding-inline-end: 2.5em;
   appearance: none;
@@ -1984,12 +1988,6 @@ label.form-check > input:is([type="radio"]):checked {
   background-repeat: no-repeat;
   background-position: right 1em center;
   background-size: 16px 12px;
-}
-.form-select + .dropdown-menu {
-  min-width: 100%;
-}
-.form-select + .dropdown-menu > li > label:hover {
-  background: #efefef;
 }
 .form-select option {
   background: var(--input-background);
@@ -3645,6 +3643,8 @@ body.navbar-expanded {
 }
 .table.data-table {
   white-space: nowrap;
+  margin-bottom: 0.5em;
+  display: inline-table;
 }
 .table.data-table thead th.main {
   width: 100%;
@@ -3751,6 +3751,10 @@ body.navbar-expanded {
 }
 .text-muted {
   opacity: 0.75;
+}
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .text-sm {
   font-size: 0.875em;
