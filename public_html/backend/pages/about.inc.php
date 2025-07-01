@@ -1,6 +1,5 @@
 <?php
 
-	breadcrumbs::reset();
 	breadcrumbs::add(t('title_dashboard', 'Dashboard'), WS_DIR_ADMIN);
 	breadcrumbs::add(t('title_about', 'About'), document::link());
 

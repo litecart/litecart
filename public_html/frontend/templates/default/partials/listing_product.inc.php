@@ -32,7 +32,7 @@
 		<?php } ?>
 
 		<?php if ($num_stock_options) { ?>
-		<a class="view-options btn btn-default btn-sm" title="<?php echo t('title_view_options', 'View Options'); ?>">
+		<a class="view-options btn btn-default btn-sm" href="<?php echo functions::escape_html($link) ?>" title="<?php echo t('title_view_options', 'View Options'); ?>">
 			<?php echo functions::draw_fonticon('icon-copy'); ?>
 			<?php //echo $num_stock_options; ?>
 		</a>

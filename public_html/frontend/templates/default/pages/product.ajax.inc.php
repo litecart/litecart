@@ -137,13 +137,11 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 							<legend><?php echo t('title_purchase_now', 'Purchase Now'); ?></legend>
 
-							<?php if (count($stock_options) > 1) { ?>
-							<label class="form-group">
+							<?php if ($stock_options) { ?>
+							<div class="form-group">
 								<div class="form-label"><?php echo t('text_select_desired_option', 'Select desired option'); ?></div>
 								<?php echo form_select_product_stock_option('stock_option_id', $product_id, true); ?>
-							</label>
-							<?php } else if (count($stock_options) == 1) { ?>
-							<?php echo functions::form_input_hidden('stock_option_id', $stock_options[0]['stock_option_id']); ?>
+							</div>
 							<?php } ?>
 
 							<div class="grid" style="margin-bottom: 0;">

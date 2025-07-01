@@ -103,7 +103,9 @@
 				<section class="col-12 col-sm-12 col-md-3 col-lg-3 text-center" style="align-self: center;">
 
 					<div class="facility hidden-xs hidden-sm">
-						<img class="responsive" src="<?php echo document::href_rlink('storage://images/illustration/facility.jpg'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>">
+						<a href="<?php echo document::href_rlink('storage://images/illustration/facility.jpg'); ?>" title="<?php echo settings::get('store_name'); ?>" data-toggle="lightbox">
+							<img class="responsive" src="<?php echo document::href_rlink('storage://images/illustration/facility.jpg'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>">
+						</a>
 					</div>
 
 					<?php if ($modules) { ?>

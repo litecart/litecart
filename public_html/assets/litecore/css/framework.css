@@ -3072,10 +3072,6 @@ body.litebox-open {
   border-top: none;
   font-weight: 400;
 }
-.navbar .dropdown-menu .navbar-item,
-.navbar .dropdown-content .navbar-item {
-  border-radius: 0;
-}
 .navbar .dropdown-menu li > .nav-item,
 .navbar .dropdown-content li > .nav-item {
   padding: 0.5em 1em;

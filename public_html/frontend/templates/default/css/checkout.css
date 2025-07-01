@@ -121,8 +121,7 @@
   position: relative;
   padding: 0.5em;
   background: var(--default-background);
-  border: var(--default-border);
-  border-width: 2px;
+  border: 2px solid var(--default-border-color);
   border-radius: var(--border-radius);
   user-select: none;
   overflow: hidden;
@@ -142,13 +141,12 @@
 #box-checkout-shipping .option:hover:not(:has(input[name$="_option[id]"]:checked)):not(:has(input[name$="_option[id]"][disabled])),
 #box-checkout-payment .option:hover:not(:has(input[name$="_option[id]"]:checked)):not(:has(input[name$="_option[id]"][disabled])) {
   cursor: pointer;
-  backdrop-filter: brightness(0.9);
+  border-color: #ccc;
 }
 #box-checkout-shipping .option:has(input[name$="_option[id]"]:checked),
 #box-checkout-payment .option:has(input[name$="_option[id]"]:checked) {
   cursor: default;
-  background: #e0e0ed;
-  border-color: #488ac3;
+  border-color: #000;
 }
 #box-checkout-shipping .option:has(input[name$="_option[id]"]:checked) .thumbnail,
 #box-checkout-payment .option:has(input[name$="_option[id]"]:checked) .thumbnail {

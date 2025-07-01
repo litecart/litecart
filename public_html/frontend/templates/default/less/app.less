@@ -935,7 +935,9 @@ body {
 
 	.main-image {
 		position: relative;
+		display: block;
 		overflow: hidden;
+		margin-bottom: 2em;
 
 		.sticker {
 			color: #fff;
@@ -1004,11 +1006,14 @@ body {
 
 		.btn {
 			background: #fff;
-			transition: all 200ms linear;
+			transition: background 500ms linear;
 
 			&:hover {
-				background: #555;
-				color: #fff;
+				background: #333;
+				color: #fff !important;
+				i {
+					color: #fff !important;
+				}
 			}
 		}
 	}

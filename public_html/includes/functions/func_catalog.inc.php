@@ -210,7 +210,7 @@
 		$query = (
 			"select p.*, b.id as brand_id, b.name as brand_name,
 				pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price,
-				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.quantity, pso.quantity_available,
+				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.total_quantity, pso.quantity_available,
 				pa.attributes, ss.hidden
 
 			from (
@@ -271,7 +271,7 @@
 
 			left join (
 				select pso.product_id, pso.id as stock_option_id, count(pso.id) as num_stock_options,
-					sum(si.quantity) as quantity, (si.quantity - oi.quantity_reserved) as quantity_available
+					sum(si.quantity) as total_quantity, sum(si.quantity - oi.quantity_reserved) as quantity_available
 				from ". DB_TABLE_PREFIX ."products_stock_options pso
 
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
@@ -455,7 +455,7 @@
 
 		$query = (
 			"select	p.*, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price,
-				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.quantity, pso.quantity_available, pa.attributes
+				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.total_quantity, pso.quantity_available, pa.attributes
 
 			from (
 				select id, delivery_status_id, sold_out_status_id,code,	brand_id,	keywords,	image, recommended_price, tax_class_id,
@@ -504,7 +504,7 @@
 			) pc on (pc.product_id = p.id)
 
 			left join (
-				select pso.product_id, pso.id as stock_option_id, count(pso.id) as num_stock_options, sum(si.quantity) as quantity, (si.quantity - oi.quantity_reserved) as quantity_available
+				select pso.product_id, pso.id as stock_option_id, count(pso.id) as num_stock_options, sum(si.quantity) as total_quantity, sum(si.quantity - oi.quantity_reserved) as quantity_available
 				from ". DB_TABLE_PREFIX ."products_stock_options pso
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 				left join (

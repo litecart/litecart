@@ -510,7 +510,7 @@ table .icon-folder-open {
 				$products = database::query(
 					"select p.id, p.status, p.code, p.sold_out_status_id, p.image, p.valid_from, p.valid_to,
 						json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
-						pp.price, pc.campaign_price, pso.num_stock_options, pso.quantity, oi.total_reserved, pso.quantity - oi.total_reserved as available,
+						pp.price, pc.campaign_price, pso.num_stock_options, pso.total_quantity, oi.total_reserved, pso.quantity - oi.total_reserved as available,
 						ptc.category_id
 
 					from ". DB_TABLE_PREFIX ."products p
@@ -537,7 +537,7 @@ table .icon-folder-open {
 					) pc on (pc.product_id = p.id)
 
 					left join (
-						select pso.id, pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as quantity
+						select pso.id, pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as total_quantity
 						from ". DB_TABLE_PREFIX ."products_stock_options pso
 						left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 						group by pso.product_id
@@ -579,7 +579,7 @@ table .icon-folder-open {
 							throw new Exception(strtr(t('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => functions::datetime_format('date', $product['valid_to'])]));
 						}
 
-						if ($product['num_stock_options'] && $product['quantity'] <= 0) {
+						if ($product['num_stock_options'] && $product['total_quantity'] <= 0) {
 							throw new Exception(t('text_product_is_out_of_stock', 'The product is out of stock'));
 						}
 

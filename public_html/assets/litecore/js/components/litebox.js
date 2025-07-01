@@ -370,11 +370,9 @@ waitFor('jQuery', ($) => {
 
 			return $.when(
 				this.getContent(),
-				$inner.fadeTo(this.galleryFadeOut, 0.2)
 			).always(($newContent) => {
 				this.setContent($newContent);
 				this.afterContent();
-				$newContent.fadeTo(this.galleryFadeIn, 1);
 			});
 		}
 	}

@@ -727,8 +727,7 @@ INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`
 INSERT INTO `lc_customer_groups` (`id`, `type`, `name`, `description`, `updated_at`, `created_at`)
 VALUES (NULL, 'retail', 'Default', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
-INSERT INTO `lc_orders_items`
-(order_id, sku, name, quantity, price, tax_rate)
+INSERT INTO `lc_orders_items` (order_id, sku, name, quantity, price, tax_rate)
 SELECT order_id, module_id, `title`, 1, amount, ROUND(tax / `amount` * 100, 2) from `lc_orders_totals`
 WHERE calculate
 ORDER BY order_id, priority;

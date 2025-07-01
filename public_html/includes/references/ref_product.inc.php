@@ -362,23 +362,24 @@
 
 					break;
 
-				case 'quantity':
+				case 'total_quantity':
 				case 'num_stock_options':
 
 					$this->_data['quantity'] = null;
 					$this->_data['num_stock_options'] = null;
 
 					$stock_options = database::query(
-						"select count(id) as num_stock_options, sum(quantity) as total_quantity
-						from ". DB_TABLE_PREFIX ."products_stock_options
-						where product_id = ". (int)$this->_data['id'] ."
-						group by product_id;"
+						"select count(pso.id) as num_stock_options, sum(si.quantity) as total_quantity
+						from ". DB_TABLE_PREFIX ."products_stock_options pso
+						left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+						where pso.product_id = ". (int)$this->_data['id'] ."
+						group by pso.product_id;"
 					)->fetch();
 
 					$this->_data['num_stock_options'] = $stock_options['num_stock_options'];
 
 					if ($stock_options['num_stock_options']) {
-						$this->_data['quantity'] = $stock_options['total_quantity'];
+						$this->_data['total_quantity'] = $stock_options['total_quantity'];
 					}
 
 					break;
@@ -406,7 +407,7 @@
 						);"
 					)->fetch('total_reserved');
 
-					$this->_data['quantity_available'] = $this->quantity - $this->_data['quantity_reserved'];
+					$this->_data['quantity_available'] = $this->total_quantity - $this->_data['quantity_reserved'];
 
 					break;
 

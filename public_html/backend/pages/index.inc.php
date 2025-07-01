@@ -1,6 +1,5 @@
 <?php
 
-	breadcrumbs::reset();
 	breadcrumbs::add(t('title_dashboard', 'Dashboard'), document::ilink(''));
 
 	// Display app content

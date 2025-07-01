@@ -139,8 +139,7 @@
 		position: relative;
 		padding: .5em;
 		background: var(--default-background);
-		border: var(--default-border);
-		border-width: 2px;
+		border: 2px solid var(--default-border-color);
 		border-radius: var(--border-radius);
 		user-select: none;
 		overflow: hidden;
@@ -158,13 +157,12 @@
 
 		&:hover:not(:has(input[name$="_option[id]"]:checked)):not(:has(input[name$="_option[id]"][disabled])) {
 			cursor: pointer;
-			backdrop-filter: brightness(.9);
+			border-color: #ccc;
 		}
 
 		&:has(input[name$="_option[id]"]:checked) {
 			cursor: default;
-			background: #e0e0ed;
-			border-color: #488ac3;
+			border-color: #000;
 			.thumbnail {
 				padding: .5em;
 			}

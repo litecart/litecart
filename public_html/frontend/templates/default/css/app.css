@@ -786,7 +786,9 @@ body {
 }
 #box-product .main-image {
   position: relative;
+  display: block;
   overflow: hidden;
+  margin-bottom: 2em;
 }
 #box-product .main-image .sticker {
   color: #fff;
@@ -837,11 +839,14 @@ body {
 }
 #box-product .social-bookmarks .btn {
   background: #fff;
-  transition: all 200ms linear;
+  transition: background 500ms linear;
 }
 #box-product .social-bookmarks .btn:hover {
-  background: #555;
-  color: #fff;
+  background: #333;
+  color: #fff !important;
+}
+#box-product .social-bookmarks .btn:hover i {
+  color: #fff !important;
 }
 #box-product .description p:first-child {
   margin-top: 0;

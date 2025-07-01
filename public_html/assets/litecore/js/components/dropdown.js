@@ -1,15 +1,15 @@
 // Dropdown
 waitFor('jQuery', ($) => {
 
-	$('.dropdown [data-toggle="dropdown"]').on('click', function(e) {
+	$(document).on('click', '.dropdown [data-toggle="dropdown"]', function(e) {
 		$(this).closest('.dropdown').toggleClass('open');
 	});
 
-	$('.dropdown-item').on('click', 'a,button,input[type="radio"]', function(e) {
+	$(document).on('click', '.dropdown-item a,button,input[type="radio"]', function(e) {
 		$(this).closest('.dropdown').removeClass('open');
 	});
 
-	$('.dropdown').on('change', ':input', function(e) {
+	$(document).on('change', '.dropdown :input', function(e) {
 
 		let $dropdown = $(this).closest('.dropdown');
 
