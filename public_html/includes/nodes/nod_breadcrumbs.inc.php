@@ -5,8 +5,6 @@
 		public static $data = [];
 
 		public static function init() {
-
-			self::add(functions::draw_fonticon('icon-home', 'title="'. functions::escape_attr(t('title_home', 'Home')) .'"'), WS_DIR_APP);
 		}
 
 		public static function reset() {

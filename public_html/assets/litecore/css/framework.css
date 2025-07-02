@@ -382,6 +382,8 @@ template {
   background: var(--button-outline-background);
   color: var(--button-outline-text-color);
   border: var(--button-border-width) solid var(--button-outline-border-color);
+  box-shadow: none;
+  border: var(--button-outline-text-color) solid var(--button-outline-border-width);
 }
 .btn.btn-outline:hover:not(.active, .disabled, [disabled]),
 .btn.btn-outline:focus:not(.active, .disabled, [disabled]),
@@ -1846,7 +1848,7 @@ label.form-check > input:is(input),
 label.form-check > input:is(label) > input {
   display: inline-block;
   margin-inline-end: 0.25em;
-  background: var(--input-background);
+  background: var(--input-checkbox-background);
   border: var(--input-border-color);
   vertical-align: text-bottom;
   height: 1.33em;
@@ -2796,7 +2798,7 @@ body.litebox-open {
   }
 }
 .shadow {
-  box-shadow: 0 0 0.5rem var(--shadow-color);
+  box-shadow: var(--default-shadow);
 }
 .semi-transparent {
   opacity: 0.5;

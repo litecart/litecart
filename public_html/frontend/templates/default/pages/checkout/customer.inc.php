@@ -237,7 +237,7 @@
 
 					<?php } else { ?>
 
-					<h3><?php echo functions::form_checkbox('sign_up', ['1', t('text_create_a_new_account', 'Create a new account')], !empty($_POST['sign_up']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
+					<h3><?php echo functions::form_checkbox('sign_up', ['1', t('text_create_an_account', 'Create an account')], !empty($_POST['sign_up']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
 
 					<fieldset<?php echo (empty($_POST['sign_up'])) ? ' style="display: none;" disabled' : ''; ?>>
 

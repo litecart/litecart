@@ -5,7 +5,7 @@
 }
 </style>
 
-<ul id="toolbar" class="hidden-print">
+<ul id="toolbar" class="shadow hidden-print">
 	<li>
 		<div>
 			<label class="nav-toggle btn btn-default" for="sidebar-compact">

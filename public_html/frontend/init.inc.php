@@ -36,6 +36,9 @@
 		'<link rel="icon" href="'. document::href_rlink('storage://images/favicons/favicon-256x256.png') .'" type="image/png" sizes="256x256">',
 	]);
 
+	// Breadcrumbs
+	breadcrumbs::add(functions::draw_fonticon('icon-home', 'title="'. functions::escape_attr(t('title_home', 'Home')) .'"'), WS_DIR_APP);
+
 	// Hreflang
 	(function() {
 		$hreflangs = [];

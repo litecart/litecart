@@ -135,7 +135,7 @@
 		});
 	}
 
-	// Turn an array of [foo => [bar => ...]] into foo.bar
+	// Turn an array of [foo => [bar => ...]] into foo.bar => ...
 	function array_flatten($array, $delimiter='.', $preceding='') {
 
 		$result = [];

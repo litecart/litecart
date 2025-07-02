@@ -510,7 +510,7 @@ table .icon-folder-open {
 				$products = database::query(
 					"select p.id, p.status, p.code, p.sold_out_status_id, p.image, p.valid_from, p.valid_to,
 						json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
-						pp.price, pc.campaign_price, pso.num_stock_options, pso.total_quantity, oi.total_reserved, pso.quantity - oi.total_reserved as available,
+						pp.price, pc.campaign_price, pso.num_stock_options, pso.total_quantity, oi.total_reserved, pso.total_quantity - oi.total_reserved as quantity_available,
 						ptc.category_id
 
 					from ". DB_TABLE_PREFIX ."products p

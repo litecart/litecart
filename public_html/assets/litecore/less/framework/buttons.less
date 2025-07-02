@@ -32,10 +32,23 @@
 	touch-action: manipulation;
 	user-select: none;
 
-	&.btn-default { .btn('default'); }
-	&.btn-success { .btn('success'); }
-	&.btn-danger { .btn('danger'); }
-	&.btn-outline { .btn('outline'); }
+	&.btn-default {
+		.btn('default');
+	}
+
+	&.btn-success {
+		.btn('success');
+	}
+
+	&.btn-danger {
+		.btn('danger');
+	}
+
+	&.btn-outline {
+		.btn('outline');
+		box-shadow: none;
+		border: var(--button-outline-text-color) solid var(--button-outline-border-width);
+	}
 
 	.btn-outline-gradient {
 		border: solid 2px transparent;

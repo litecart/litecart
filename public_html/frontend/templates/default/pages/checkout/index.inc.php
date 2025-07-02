@@ -14,7 +14,7 @@
 
 		{{notices}}
 
-		<div class="grid">
+		<div class="grid" style="min-height: 100vh;">
 
 			<div class="left-wrapper col-md-6">
 				<div class="left">
@@ -35,7 +35,7 @@
 
 						<div class="card-header">
 							<div class="float-end">
-								<a href="<?php echo document::ilink('checkout/customer'); ?>" class="btn btn-default" style="margin-inline-start: 1em;">
+								<a href="<?php echo document::ilink('checkout/customer'); ?>" class="btn btn-default btn-sm" style="margin-inline-start: 1em;">
 									<?php echo functions::draw_fonticon('icon-pencil'); ?> <?php echo t('title_change', 'Change'); ?>
 								</a>
 							</div>
@@ -70,6 +70,17 @@
 										<div class="form-label"><?php echo t('title_deliver_to', 'Deliver To'); ?></div>
 										<div class="shipping-address"><?php echo nl2br(functions::format_address($order['customer']['shipping_address'])); ?></div>
 									</label>
+
+									<label class="form-group">
+										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
+										<div><?php echo fallback($order['customer']['shipping_address']['email'], '&nbsp;'); ?></div>
+									</label>
+
+									<label class="form-group">
+										<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
+										<div><?php echo fallback($order['customer']['shipping_address']['phone'], '&nbsp;'); ?></div>
+									</label>
+
 								</div>
 							</div>
 
