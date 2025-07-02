@@ -1324,6 +1324,7 @@
 				"height": { "type": "FLOAT", "length": "10,4", "default": 0.0000 },
 				"length_unit": { "type": "VARCHAR", "length": 2, "default": "''" },
 				"quantity": { "type": "FLOAT", "length": "10,4", "default": 0.0000 },
+				"quantity_unit_id": { "type": "INT", "length": 10, "unsigned": true, "default": 0.0000 },
 				"backordered": { "type": "FLOAT", "length": "10,4", "default": 0.0000 },
 				"purchase_price": { "type": "FLOAT", "length": "10,4", "default": 0.0000 },
 				"purchase_price_currency_code": { "type": "VARCHAR", "length": 3, "default": "''" },
