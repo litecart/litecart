@@ -95,9 +95,13 @@
 				!empty($_SERVER['HTTP_USER_AGENT']) ? 'User Agent: '. $_SERVER['HTTP_USER_AGENT'] : '',
 				!empty($_SERVER['HTTP_REFERER']) ? 'Referer: '. $_SERVER['HTTP_REFERER'] : '',
 				!empty($_SERVER['HTTP_REFERER']) ? 'Referer: '. $_SERVER['HTTP_REFERER'] : '',
-				'Elapsed Time: '. number_format((microtime(true) - SCRIPT_TIMESTAMP_START) * 1000, 0, '.', ' ') .' ms',
-				'Platform: '. PLATFORM_NAME .'/'. PLATFORM_VERSION,
 			]));
+
+			if (defined('SCRIPT_TIMESTAMP_START')) {
+				$output[] = 'Elapsed Time: '. number_format((microtime(true) - SCRIPT_TIMESTAMP_START) * 1000, 0, '.', ' ') .' ms';
+			}
+
+			$output[] = 'Platform: '. PLATFORM_NAME .'/'. PLATFORM_VERSION;
 
 			error_log(html_entity_decode(strip_tags(
 				implode(PHP_EOL, $output))) . PHP_EOL

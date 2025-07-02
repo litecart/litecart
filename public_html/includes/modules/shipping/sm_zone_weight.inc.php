@@ -38,7 +38,7 @@
 					'description' => t(__CLASS__.':title_option_description_zone_'.$i, ''),
 					'fields' => '',
 					'cost' => $fee,
-					'tax_class_id' => $this->settings['tax_class_id'],
+					'tax_class_id' => $this->settings['tax_class_id'] + (float)$this->settings['handling_fee'],
 					'exclude_cheapest' => false,
 				];
 			}

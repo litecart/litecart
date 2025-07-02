@@ -17,6 +17,9 @@
 	"bugs": {
 		"url": "https://github.com/litecart/litecart/issues"
 	},
+	"engines": {
+		"node": ">=19"
+	},
 	"devDependencies": {
 		"@sequencemedia/gulp-clean-css": "^1.0.251",
 		"@sequencemedia/gulp-sourcemaps": "^1.0.265",
