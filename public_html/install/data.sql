@@ -1,5 +1,5 @@
 INSERT INTO `lc_banners` (`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `valid_from`, `valid_to`, `updated_at`, `created_at`) VALUES
-(1, 1, 'Jumbotron', '', '', 'banners/jumbotron.svg', '', 'jumbotron', 0, 0, NULL, NULL, NOW(), NOW()),
+(1, 1, 'Jumbotron', '', '<div class="placeholder" data-aspect-ratio="3:1" style="background: white; font-size: 48px; width: 100%; height: 480px;">1440×480 (3:1)</div>', '', '', 'jumbotron', 0, 0, NULL, NULL, NOW(), NOW()),
 (2, 1, 'Left', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Left</div>', '', '', 'left', 0, 0, NULL, NULL, NOW(), NOW()),
 (3, 1, 'Middle', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Middle</div>', '', '', 'middle', 0, 0, NULL, NULL, NOW(), NOW()),
 (4, 1, 'Right', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: seashell;">Right</div>', '', '', 'right', 0, 0, NULL, NULL, NOW(), NOW());
