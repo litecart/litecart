@@ -731,7 +731,7 @@
 				"order_id": { "type": "INT", "length": 10, "unsigned": true },
 				"product_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"stock_option_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
-				"stock_items": { "type": "VARCHAR", "length": 64, "unsigned": true, "default": "'{}'" },
+				"stock_items": { "type": "VARCHAR", "length": 256, "default": "'{}'" },
 				"userdata": { "type": "VARCHAR", "length": 2048, "nullable": true },
 				"name": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"serial_number": { "type": "VARCHAR", "length": 32, "default": "''" },
