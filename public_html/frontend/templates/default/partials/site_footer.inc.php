@@ -57,6 +57,12 @@
 
 							<?php } ?>
 
+							<li>
+								<a href="<?php echo document::href_ilink('newsletter'); ?>">
+									<?php echo t('title_newsletter', 'Newsletter'); ?>
+								</a>
+							</li>
+
 						</ul>
 					</section>
 					<?php } ?>

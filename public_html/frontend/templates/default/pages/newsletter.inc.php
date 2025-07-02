@@ -57,7 +57,7 @@
 							<div class="col-xs-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_captcha', 'CAPTCHA'); ?></div>
-									<?php echo functions::form_captcha('newsletter_subscribe', 'required'); ?>
+									<?php echo functions::form_captcha('newsletter_subscribe'); ?>
 								 </label>
 							</div>
 						</div>
@@ -90,7 +90,7 @@
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_captcha', 'CAPTCHA'); ?></div>
-							<?php echo functions::form_captcha('newsletter_unsubscribe', 'required'); ?>
+							<?php echo functions::form_captcha('newsletter_unsubscribe'); ?>
 						 </label>
 
 						<?php echo functions::form_button('unsubscribe', t('title_unsubscribe', 'Unsubscribe')); ?>
