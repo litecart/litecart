@@ -54,11 +54,11 @@ INSERT INTO `lc_orders_items` (`id`, `order_id`, `product_id`, `stock_option_id`
 (1, 1, 1, 1, '', 'Yellow Duck', 'RD001-S', '4006381333931', 1, 8.00, 0, 1.00, 'kg');
 -- -----
 INSERT INTO `lc_products` (`id`, `status`, `brand_id`, `supplier_id`, `delivery_status_id`, `sold_out_status_id`, `default_category_id`, `code`, `name`, `quantity_unit_id`, `tax_class_id`, `image`, `views`, `purchases`, `valid_from`, `valid_to`, `updated_at`, `created_at`) VALUES
-(1, 1, 1, 0, 1, 2, 2, 'rd001', '{"en": "Yellow Duck"}', 1, 1, 'products/1-yellow-duck-1.jpg', 0, 0, NULL, NULL, NOW(), NOW()),
-(2, 1, 1, 0, 1, 2, 2, 'rd002', '{"en": "Green Duck"}', 1, 1, 'products/2-green-duck-1.jpg', 0, 0, NULL, NULL, NOW(), NOW()),
-(3, 1, 1, 0, 1, 2, 1, 'rd003', '{"en": "Red Duck"}', 1, 1, 'products/3-red-duck-1.jpg', 0, 0, NULL, NULL, NOW(), NOW()),
-(4, 1, 1, 0, 1, 2, 1, 'rd004', '{"en": "Blue Duck"}', 1, 1, 'products/4-blue-duck-1.jpg', 0, 0, NULL, NULL, NOW(), NOW()),
-(5, 1, 1, 0, 1, 2, 1, 'rd005', '{"en": "Purple Duck"}', 1, 1, 'products/5-purple-duck-1.jpg', 0, 0, NULL, NULL, NOW(), NOW());
+(1, 1, 1, 0, 1, 2, 2, 'rd001', '{"en": "Yellow Duck"}', 1, 1, 'products/1-yellow-duck-1.webp', 0, 0, NULL, NULL, NOW(), NOW()),
+(2, 1, 1, 0, 1, 2, 2, 'rd002', '{"en": "Green Duck"}', 1, 1, 'products/2-green-duck-1.webp', 0, 0, NULL, NULL, NOW(), NOW()),
+(3, 1, 1, 0, 1, 2, 1, 'rd003', '{"en": "Red Duck"}', 1, 1, 'products/3-red-duck-1.webp', 0, 0, NULL, NULL, NOW(), NOW()),
+(4, 1, 1, 0, 1, 2, 1, 'rd004', '{"en": "Blue Duck"}', 1, 1, 'products/4-blue-duck-1.webp', 0, 0, NULL, NULL, NOW(), NOW()),
+(5, 1, 1, 0, 1, 2, 1, 'rd005', '{"en": "Purple Duck"}', 1, 1, 'products/5-purple-duck-1.webp', 0, 0, NULL, NULL, NOW(), NOW());
 -- -----
 UPDATE `lc_products` SET `description` = '{"en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue. <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue. Cras scelerisque dui non consequat sollicitudin. Sed pretium tortor ac auctor molestie. Nulla facilisi. Maecenas pulvinar nibh vitae lectus vehicula semper. Donec et aliquet velit. Curabitur non ullamcorper mauris. In hac habitasse platea dictumst. Phasellus ut pretium justo, sit amet bibendum urna. Maecenas sit amet arcu pulvinar, facilisis quam at, viverra nisi. Morbi sit amet adipiscing ante. Integer imperdiet volutpat ante, sed venenatis urna volutpat a. Proin justo massa, convallis vitae consectetur sit amet, facilisis id libero.</p>"}';
 -- -----
@@ -108,9 +108,9 @@ INSERT INTO `lc_products_prices` (`id`, `product_id`, `price`) VALUES
 (5, 5, '{"USD": 20.00}');
 -- -----
 INSERT INTO `lc_stock_items` (`id`, `brand_id`, `sku`, `gtin`, `name`, `image`, `weight`, `weight_unit`, `length`, `width`, `height`, `length_unit`, `quantity`, `backordered`, `priority`, `updated_at`, `created_at`) VALUES
-(1, 1, 'RD001-S', '4006381333931', '{"en": "Yellow Duck (Small)"}', 'stock_items/1-yellow-duck-1.webp', 1.0000, 'kg', 10.0000, 10.0000, 10.0000, 'cm', 50.0000, 0.0000, 1, NOW(), NOW()),
-(2, 1, 'RD001-M', '4006381333932', '{"en": "Yellow Duck (Medium)"}', 'stock_items/2-yellow-duck-1.webp', 1.0000, 'kg', 12.0000, 12.0000, 12.0000, 'cm', 50.0000, 0.0000, 2, NOW(), NOW()),
-(3, 1, 'RD001-L', '4006381333933', '{"en": "Yellow Duck (Large)"}', 'stock_items/3-yellow-duck-1.webp', 1.0000, 'kg', 15.0000, 15.0000, 15.0000, 'cm', 0.0000, 50.0000, 3, NOW(), NOW());
+(1, 1, 'RD001-S', '4006381333931', '{"en": "Yellow Duck (Small)"}', 'stock_items/1-yellow-duck-small.webp', 1.0000, 'kg', 10.0000, 10.0000, 10.0000, 'cm', 50.0000, 0.0000, 1, NOW(), NOW()),
+(2, 1, 'RD001-M', '4006381333932', '{"en": "Yellow Duck (Medium)"}', 'stock_items/2-yellow-duck-medium.webp', 1.0000, 'kg', 12.0000, 12.0000, 12.0000, 'cm', 50.0000, 0.0000, 2, NOW(), NOW()),
+(3, 1, 'RD001-L', '4006381333933', '{"en": "Yellow Duck (Large)"}', 'stock_items/3-yellow-duck-large.webp', 1.0000, 'kg', 15.0000, 15.0000, 15.0000, 'cm', 0.0000, 50.0000, 3, NOW(), NOW());
 -- -----
 UPDATE `lc_settings` SET `value` = 2 WHERE `key` = 'cookie_policy';
 -- -----

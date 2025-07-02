@@ -67,7 +67,7 @@
 				throw new Exception(t('error_cannot_disable_store_country', 'You must change the store country before disabling it.'));
 			}
 
-			if (empty($this->data['status']) && $this->data['iso_code_2'] == settings::get('default_country_code')) {
+			if (!$this->data['status'] && $this->data['iso_code_2'] == settings::get('default_country_code')) {
 				throw new Exception(t('error_cannot_disable_default_country', 'You must change the default country before disabling it.'));
 			}
 

@@ -58,7 +58,7 @@
 				throw new Exception(t('error_cannot_disable_store_currency', 'You must change the store currency before disabling it.'));
 			}
 
-			if (empty($this->data['status']) && $this->data['code'] == settings::get('default_currency_code')) {
+			if (!$this->data['status'] && $this->data['code'] == settings::get('default_currency_code')) {
 				throw new Exception(t('error_cannot_disable_default_currency', 'You must change the default currency before disabling it.'));
 			}
 
@@ -111,34 +111,10 @@
 
 			if (!empty($this->previous['code'])) {
 				if ($this->data['code'] != $this->previous['code']) {
-
 					if ($this->previous['code'] == settings::get('store_currency_code')) {
 						throw new Exception('Cannot rename the store currency.');
 					}
 				}
-
-			} else {
-
-				if (!database::query(
-					"show fields from ". DB_TABLE_PREFIX ."campaigns_products
-					where `Field` = '". database::input($this->data['code']) ."';"
-				)->num_rows) {
-					database::query(
-						"alter table ". DB_TABLE_PREFIX ."campaigns_products
-						add `". database::input($this->data['code']) ."` float(10, 4) unsigned null;"
-					);
-				}
-
-				if (!database::query(
-					"show fields from ". DB_TABLE_PREFIX ."products_prices
-					where `Field` = '". database::input($this->data['code']) ."';"
-				)->num_rows) {
-					database::query(
-						"alter table ". DB_TABLE_PREFIX ."products_prices
-						add `". database::input($this->data['code']) ."` float(10, 4) unsigned null;"
-					);
-				}
-
 			}
 
 			$this->previous = $this->data;

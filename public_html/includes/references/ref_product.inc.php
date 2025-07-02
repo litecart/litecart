@@ -443,6 +443,12 @@
 
 				case 'stock_options':
 
+					$this->_data['stock_options'] = [];
+
+					if ($this->stock_option_type != 'variant') {
+						break;
+					}
+
 					$this->_data['stock_options'] = database::query(
 						"select si.*, pso.*,
 							json_value(si.name, '$.".database::input(language::$selected['code'])."') as name,

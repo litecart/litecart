@@ -48,6 +48,6 @@
 			}
 		}
 
-		// Last destination method handler for prevent throwing errors if called methods are not defined
+		// Last destination method handler to prevent throwing an error if called methods are not defined
 		public function __call($name, $arguments) {}
 	}

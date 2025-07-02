@@ -65,7 +65,7 @@
 			database::query(
 				"update ". DB_TABLE_PREFIX ."translations
 				set ". ((isset(route::$request['endpoint']) && route::$request['endpoint'] == 'backend') ? "backend = 1" : "frontend = 1") .",
-					date_accessed = '". date('Y-m-d H:i:s') ."'
+					last_accessed = '". date('Y-m-d H:i:s') ."'
 				where code in ('". implode("', '", database::input(self::$_accessed_translations)) ."');"
 			);
 

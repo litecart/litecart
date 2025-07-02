@@ -17,8 +17,9 @@
 	"bugs": {
 		"url": "https://github.com/litecart/litecart/issues"
 	},
+	"type": "module",
 	"engines": {
-		"node": ">=19"
+		"node": ">=22"
 	},
 	"devDependencies": {
 		"@sequencemedia/gulp-clean-css": "^1.0.251",
@@ -37,10 +38,6 @@
 		"gulp-watch": "^5.0.1",
 		"phplint": "^2.0.5",
 		"sass": "^1.89.2"
-	},
-	"type": "module",
-	"engines": {
-		"node": ">=22"
 	},
 	"scripts": {
 		"iconly": "gulp iconly && gulp less-framework",

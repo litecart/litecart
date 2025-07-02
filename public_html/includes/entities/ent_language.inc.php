@@ -54,11 +54,11 @@
 
 		public function save() {
 
-			if (empty($this->data['status']) && $this->data['code'] == settings::get('default_language_code')) {
+			if (!$this->data['status'] && $this->data['code'] == settings::get('default_language_code')) {
 				throw new Exception(t('error_cannot_disable_default_language', 'You must change the default language before disabling it.'));
 			}
 
-			if (empty($this->data['status']) && $this->data['code'] == settings::get('store_language_code')) {
+			if (!$this->data['status'] && $this->data['code'] == settings::get('store_language_code')) {
 				throw new Exception(t('error_cannot_disable_store_language', 'You must change the store language before disabling it.'));
 			}
 

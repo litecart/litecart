@@ -1555,7 +1555,7 @@
 				"html": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"frontend": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"backend": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
-				"date_accessed": { "type": "TIMESTAMP", "nullable": true },
+				"last_accessed": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},

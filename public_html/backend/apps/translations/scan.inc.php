@@ -113,9 +113,9 @@
 		database::query(
 			"select * from ". DB_TABLE_PREFIX ."translations
 			where code not in ('". implode("', '", database::input($translation_keys)) ."')
-			order by date_accessed desc;"
+			order by last_accessed desc;"
 		)->each(function($translation) use (&$orphan) {
-			if (empty($translation['date_accessed']) || strtotime($translation['date_accessed']) < strtotime('-12 months')) {
+			if (empty($translation['last_accessed']) || strtotime($translation['last_accessed']) < strtotime('-12 months')) {
 				if (mb_strlen($translation['text_'.language::$selected['code']]) > 100) {
 					$translation['text_'.language::$selected['code']] = mb_substr($translation['text_'.language::$selected['code']], 0, 100) . '...';
 				}
