@@ -420,7 +420,7 @@
 	}
 
 	echo '<p>Writing fresh new .htaccess file... ';
-	$htaccess = file_get_contents(__DIR__.'/htaccess');
+	$htaccess = file_get_contents(__DIR__.'/../htaccess');
 
 	$htaccess = strtr($htaccess, [
 		'{WS_DIR_APP}' => WS_DIR_APP,
@@ -785,7 +785,7 @@
 			set stock_option_id = ". (int)$stock_option['id'] .",
 				attributes = trim(both ',' from replace(concat(',', attributes, ','), concat(',', '". $stock_option['attributes'] ."', ','), ','))
 			where product_id = ". (int)$stock_option['product_id'] ."
-			and attributes regex '(^|,)". $stock_option['attributes'] ."(,|$)';"
+			and attributes regexp '(^|,)". $stock_option['attributes'] ."(,|$)';"
 		);
 	});
 
@@ -806,12 +806,6 @@
 		"alter table `". DB_TABLE_PREFIX ."orders_items`
 		drop column `attributes`,
 		drop column `tax`;"
-	);
-
-	database::query(
-		"alter table `". DB_TABLE_PREFIX ."products_stock_options`
-		drop index `product_stock_option`,
-		drop column `attributes`;"
 	);
 
 	// Set hostname for recent orders
@@ -987,7 +981,7 @@
 		}
 	});
 
-	// Create stock options from products having quantities but no stock options
+	// Migrate products (having a quantity but no stock option) to stock options
 	database::query(
 		"select id, sku, weight, weight_unit, length, width, height, length_unit, quantity
 		from ". DB_TABLE_PREFIX ."products
@@ -1013,11 +1007,13 @@
 			);"
 		);
 
+		$stock_option_id = database::insert_id();
+
 		database::query(
 			"update ". DB_TABLE_PREFIX ."orders_items
-			set stock_item_id = ". database::insert_id() ."
-			where product_id = ". (int)$stock_option['id'] ."
-			and stock_item_id is null;"
+			set stock_option_id = ". (int)$stock_option_id."
+			where product_id = ". (int)$product['id'] ."
+			and stock_option_id is null;"
 		);
 	});
 
@@ -1066,7 +1062,7 @@
 
 		database::query(
 			"update ". DB_TABLE_PREFIX ."orders_items
-			set stock_items = concat_ws(',', if(stock_items = '', NULL, stock_items), '". (int)$stock_item_id ."')
+			set stock_items = '". json_encode(['id' => $stock_item_id, 'quantity' => 1], true) ."'
 			where (
 				product_id = ". (int)$stock_option['product_id'] ."
 				stock_option_id = ". (int)$stock_option['id'] ."
@@ -1101,32 +1097,39 @@
 		values (1, 'Initial Stock Transaction', 'This is an initial system generated stock transaction to deposit stock for all sold items and items in stock. We need this for future inconcistency checks.');"
 	);
 
+	// Insert initial stock into stock transactions contents
 	database::query(
 		"insert into `". DB_TABLE_PREFIX ."stock_transactions_contents` (transaction_id, stock_item_id, quantity_adjustment)
-		select '1' AS transaction_id, stock_item_id, quantity_adjustment
-		from (
-			select product_id, stock_item_id, sum(quantity) as quantity_adjustment
-			from (
-				select pso.product_id, pso.stock_item_id, pso.quantity
-				from `". DB_TABLE_PREFIX ."products_stock_options` pso
-
-				union
-
-				select oi.product_id, oi.stock_item_id, oi.quantity
-				from `". DB_TABLE_PREFIX ."orders_items` oi
-				where oi.order_id in (
-					select id
-					from `". DB_TABLE_PREFIX ."orders` o
-					where o.order_status_id in (
-						select id
-						from `". DB_TABLE_PREFIX ."order_statuses` os
-						where os.stock_action = 'withdraw'
-					)
-				)
-			) as temp_table
-			group by product_id, stock_item_id
-		);"
+		select '1', pso.product_id, pso.stock_item_id, sum(pso.quantity) total_quantity
+		from `". DB_TABLE_PREFIX ."products_stock_options` pso
+		group by product_id, stock_item_id;"
 	);
+
+	// Append initial stock with sold quantities
+	database::query(
+		"select oi.product_id, oi.stock_item_id, oi.quantity
+			from `". DB_TABLE_PREFIX ."orders_items` oi
+			where oi.order_id in (
+				select id
+				from `". DB_TABLE_PREFIX ."orders` o
+				where o.order_status_id in (
+					select id
+					from `". DB_TABLE_PREFIX ."order_statuses` os
+					where os.stock_action = 'withdraw'
+				)
+			)
+		) as temp_table
+		group by product_id;"
+	)->each(function($order_item) {
+		$order_item['stock_items'] = json_decode($order_item['stock_items'], true);
+		foreach ($order_item['stock_items'] as $stock_item) {
+			database::query(
+				"insert into `". DB_TABLE_PREFIX ."stock_transactions_contents` (transaction_id, stock_item_id, quantity_adjustment)
+				values (1, ". (int)$stock_item_id .", ". (int)$order_item['quantity'] .")
+				on duplicate key update quantity_adjustment = quantity_adjustment + ". ((float)$order_item['quantity'] * $stock_item['quantity']) .";"
+			);
+		}
+	});
 
 	// Make all 11 digit unsigned integers standard int(10) unsigned
 	database::query(

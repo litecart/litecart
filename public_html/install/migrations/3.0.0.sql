@@ -156,7 +156,6 @@ CREATE TABLE `lc_stock_items` (
 	INDEX `mpn` (`mpn`) USING BTREE,
 	INDEX `gtin` (`gtin`) USING BTREE,
 	INDEX `sku` (`sku`) USING BTREE,
-	INDEX `product_id` (`product_id`) USING BTREE,
 	INDEX `brand_id` (`brand_id`) USING BTREE,
 	INDEX `supplier_id` (`supplier_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -165,7 +164,7 @@ CREATE TABLE `lc_stock_transactions` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(128) NOT NULL DEFAULT '',
 	`description` MEDIUMTEXT NOT NULL DEFAULT '',
-	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP.
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -716,7 +715,7 @@ CHANGE COLUMN `city` `city` VARCHAR(32) NULL;
 -- -----
 INSERT IGNORE INTO `lc_banners`
 (`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `valid_from`, `valid_to`)
-SELECT id, status, name, languages, '', replace(image, 'slides/', 'banners/'), '', 'jumbotron', valid_from, valid_to FROM `lc_slides`;
+SELECT id, status, name, languages, '', replace(image, 'slides/', 'banners/'), '', 'jumbotron', date_valid_from, date_valid_to FROM `lc_slides`;
 -- -----
 INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `valid_from`, `valid_to`, `updated_at`, `created_at`) VALUES
 (0, 'Jumbotron', '', '', 'banners/leaderboard.svg', '', 'jumbotron', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
