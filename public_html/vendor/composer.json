@@ -1,0 +1,19 @@
+{
+	  "type": "project",
+	  "name": "litecart/litecart",
+	  "description": "E-commerce platform",
+	  "keywords": ["litecart", "ecommerce"],
+	  "license": "CC-BY-ND-4.0",
+	  "authors": [
+	      {
+	          "name": "LiteCart Dev Team",
+	          "email": "info@litecart.net"
+	      }
+	  ],
+	  "require-dev": {
+	      "php": ">=5.6",
+	  },
+	  "config": {
+	      "vendor-dir": "./"
+	  }
+}
