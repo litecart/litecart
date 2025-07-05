@@ -303,6 +303,9 @@
           self::$data['shipping_address'][$key] = self::$data[$key];
         }
       }
+
+      session::$data['customer_security_timestamp'] = time();
+      session::regenerate_id();
     }
 
     public static function require_login() {

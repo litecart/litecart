@@ -99,9 +99,6 @@
 
       customer::load($customer['id']);
 
-      session::$data['customer_security_timestamp'] = time();
-      session::regenerate_id();
-
       if (!empty($_POST['remember_me'])) {
         $checksum = sha1($customer['email'] . $customer['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
         header('Set-Cookie: customer_remember_me='. $customer['email'] .':'. $checksum .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Lax', false);

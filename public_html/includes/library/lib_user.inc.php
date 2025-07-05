@@ -151,6 +151,8 @@
       $user['widgets'] = $user['widgets'] ? json_decode($user['widgets'], true) : [];
 
       session::$data['user'] = $user;
+      session::$data['user_security_timestamp'] = time();
+      session::regenerate_id();
     }
 
     public static function require_login() {
