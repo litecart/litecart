@@ -232,7 +232,7 @@
             $tmp = preg_replace($operation['find']['pattern'], $operation['insert'], $tmp, -1, $count);
 
             if (!$count && $operation['onerror'] != 'skip') {
-              trigger_error("Vmod failed to perform insert", E_USER_ERROR);
+              throw new Error("Vmod failed to perform insert");
               continue 2;
             }
           }
@@ -244,12 +244,12 @@
     // Create cache folder for modified files if missing
       if (!is_dir(FS_DIR_STORAGE . 'vmods/.cache/')) {
         if (!mkdir(FS_DIR_STORAGE . 'vmods/.cache/', 0777)) {
-          throw new \Exception('The modifications cache directory could not be created', E_USER_ERROR);
+          throw new Error('The modifications cache directory could not be created');
         }
       }
 
       if (!is_writable(FS_DIR_STORAGE . 'vmods/.cache/')) {
-        throw new \Exception('The modifications cache directory is not writable', E_USER_ERROR);
+        throw new Error('The modifications cache directory is not writable');
       }
 
     // Return original if nothing was modified
@@ -283,7 +283,7 @@
 
       // Get XML file contents
         if (!$xml = file_get_contents($file)) {
-          throw new \Exception('Could not read file', E_USER_ERROR);
+          throw new Error('Could not read file');
         }
 
       // Normalize line endings
@@ -294,7 +294,7 @@
         $dom->preserveWhiteSpace = false;
 
         if (!$dom->loadXml($xml)) {
-          throw new \Exception(libxml_get_last_error()->message);
+          throw new Exception(libxml_get_last_error()->message);
         }
 
         switch ($dom->documentElement->tagName) {
@@ -308,7 +308,7 @@
             break;
 
           default:
-            throw new \Exception("File ($file) is not a valid vmod or vQmod");
+            throw new Exception("File ($file) is not a valid vmod or vQmod");
         }
 
       // Load modification if it is installed
@@ -420,7 +420,7 @@
           self::$_installed[$vmod['id']] = $vmod['version'];
         }
 
-      } catch (\Exception $e) {
+      } catch (Exception $e) {
         trigger_error("Could not load vMod ($file): " . $e->getMessage(), E_USER_WARNING);
       }
     }
@@ -428,11 +428,11 @@
     public static function parse_vmod($dom, $file) {
 
       if ($dom->documentElement->tagName != 'vmod') {
-        throw new \Exception("File is not a valid vMod ($file)");
+        throw new Exception("File is not a valid vMod ($file)");
       }
 
       if (empty($dom->getElementsByTagName('name')->item(0))) {
-        throw new \Exception('File is missing the name element');
+        throw new Exception('File is missing the name element');
       }
 
       $vmod = [
@@ -464,7 +464,7 @@
       }
 
       if (empty($dom->getElementsByTagName('file'))) {
-        throw new \Exception('File has no defined files to modify');
+        throw new Exception('File has no defined files to modify');
       }
 
       foreach ($dom->getElementsByTagName('file') as $file_node) {
@@ -591,7 +591,7 @@
                 break;
 
               default:
-                throw new \Exception("Unknown value \"$method\" for operation method (before|after|replace|bottom|top|all)");
+                throw new Exception("Unknown value \"$method\" for operation method (before|after|replace|bottom|top|all)");
                 continue 2;
             }
           }
@@ -616,11 +616,11 @@
     public static function parse_vqmod($dom, $file) {
 
       if ($dom->documentElement->tagName != 'modification') {
-        throw new \Exception("File is not a valid vQmod");
+        throw new Exception("File is not a valid vQmod");
       }
 
       if (empty($dom->getElementsByTagName('id')->item(0))) {
-        throw new \Exception("File is missing the id element");
+        throw new Exception("File is missing the id element");
       }
 
       $mod = [
@@ -638,7 +638,7 @@
       }
 
       if (empty($dom->getElementsByTagName('file'))) {
-        throw new \Exception("File has no defined files to modify");
+        throw new Exception("File has no defined files to modify");
       }
 
       foreach ($dom->getElementsByTagName('file') as $file_node) {
@@ -780,7 +780,7 @@
                 break;
 
               default:
-                throw new \Exception('Unknown value ('. $search_node->getAttribute('position') .') for attribute position (replace|before|after|ireplace|ibefore|iafter|all)');
+                throw new Exception('Unknown value ('. $search_node->getAttribute('position') .') for attribute position (replace|before|after|ireplace|ibefore|iafter|all)');
                 continue 2;
             }
           }

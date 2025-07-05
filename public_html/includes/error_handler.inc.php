@@ -9,6 +9,10 @@
     $output = [];
 
     switch ($errno) {
+      case 2048: // Equals E_STRICT but deprecated in PHP 8.4
+        $output[] = '<div class="php-feedback error"><strong>Strict:</strong> <pre style="white-space:pre-wrap;"> '. htmlspecialchars($errstr) .' </pre> in <strong>$errfile</strong> on line <strong>'. (int)$errline .'</strong></div>';
+        break;
+
       case E_NOTICE:
       case E_USER_NOTICE:
         $output[] = "<strong>Notice:</strong> ". htmlspecialchars($errstr) ." in <strong>$errfile</strong> on line <strong>$errline</strong>";
@@ -30,7 +34,7 @@
       case E_ERROR:
       case E_CORE_ERROR:
       case E_COMPILE_ERROR:
-      case E_USER_ERROR:
+      case 256: // Equals E_USER_ERROR but deprecated in PHP 8.4
         $output[] = "<strong>Fatal error:</strong> ". htmlspecialchars($errstr) ." in <strong>$errfile</strong> on line <strong>$errline</strong>";
         break;
 
@@ -92,7 +96,7 @@
       );
     }
 
-    if (in_array($errno, [E_PARSE, E_ERROR, E_COMPILE_ERROR, E_CORE_ERROR, E_USER_ERROR])) {
+    if (in_array($errno, [E_PARSE, E_ERROR, E_COMPILE_ERROR, E_CORE_ERROR, 256])) { // 256 = E_USER_ERROR, deprecated in PHP 8.4
       http_response_code(500);
       exit;
     }

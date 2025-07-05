@@ -24,7 +24,7 @@
         $possible = '1234567890';
         break;
       default:
-        trigger_error('Unknown captcha set.', E_USER_ERROR);
+        throw new Error('Unknown captcha set.');
     }
 
     for ($i=0; $i<$length; $i++) {
@@ -33,7 +33,9 @@
 
     $font_size = round($height * 0.75); // font size will be 75% of the image height
 
-    $image = imagecreate($width, $height) or trigger_error('Cannot initialize new GD image stream', E_USER_ERROR);
+    if (!$image = imagecreate($width, $height)) {
+      throw new Error('Cannot initialize new GD image stream');
+    }
 
   // Set colors
     $background_color = imagecolorallocate($image, 255, 255, 255);

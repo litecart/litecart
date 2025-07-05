@@ -244,7 +244,7 @@
                     . '</script>' . PHP_EOL;
 
         if (!$GLOBALS['output'] = preg_replace('#</body>#is', addcslashes($javascript . '</body>', '\\$'), $GLOBALS['output'], 1)) {
-          trigger_error('Failed extracting javascripts', E_USER_ERROR);
+          throw new Error('Failed extracting javascripts');
         }
       }
 

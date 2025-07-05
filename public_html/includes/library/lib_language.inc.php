@@ -65,7 +65,9 @@
     }
 
     public static function before_output() {
-      if (empty(self::$selected['code'])) trigger_error('Error: No language set', E_USER_ERROR);
+      if (empty(self::$selected['code'])) {
+        throw new Error('No language set');
+      }
     }
 
     public static function shutdown() {
