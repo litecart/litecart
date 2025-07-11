@@ -297,7 +297,7 @@
         where p.status
           and (p.id
           ". (!empty($filter['products']) ? "or p.id in ('". implode("', '", database::input($filter['products'])) ."')" : "") ."
-          ". (!empty($filter['categories']) ? "or ptc.category_id in (". implode(",", database::input($filter['categories'])) .")" : "") ."
+          ". (!empty($filter['categories']) ? "or ptc.category_id in ('". implode("', '", database::input($filter['categories'])) ."')" : "") ."
           ". (!empty($filter['manufacturers']) ? "or manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : "") ."
           ". (!empty($filter['keywords']) ? "or (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : "") ."
         )
