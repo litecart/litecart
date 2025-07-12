@@ -227,7 +227,7 @@ e6cc47dff8152e7131cc0aa1937d7761	includes/boxes/box_manufacturer_logotypes.inc.p
 36bbcf82fde4a9a27727181579b9c3e5	includes/boxes/box_newsletter_subscribe.inc.php
 ef7eb684af5b095b31dc97de052c5e85	includes/boxes/box_popular_products.inc.php
 8a897cd2a31efd57ca3a99d14ec73e29	includes/boxes/box_recently_viewed_products.inc.php
-c73e11ba3fc8fc37075be16b05dc11b2	includes/boxes/box_similar_products.inc.php
+b1b5e0d7663bda3342556e1367d9da52	includes/boxes/box_similar_products.inc.php
 8c894fe6172e020d39bb05715f9f9627	includes/boxes/box_site_footer.inc.php
 b4806f71b682a0a0754ade967716ed0b	includes/boxes/box_site_menu.inc.php
 02426a41d7e9ae11739c7f6b17165126	includes/boxes/box_slides.inc.php
@@ -529,7 +529,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/views/index.
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
 f9d8be06239f09f565a93421d9643fff	includes/wrappers/wrap_http.inc.php
-147d97584a52b261149641e67dbbecc7	includes/wrappers/wrap_smtp.inc.php
+f4541a15a651c94be795c0cfbf33e471	includes/wrappers/wrap_smtp.inc.php
 dcfec2e7e70483de52cb0012f9d8440f	index.php
 db7b7a833baf1b6f47160530e9a9bc9f	install/clean.sql
 537d76f832f5e95c8e81f2bdbe462659	install/config
