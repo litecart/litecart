@@ -21,9 +21,6 @@
 
       customer::load($_GET['customer_id']);
 
-      session::$data['security.timestamp'] = time();
-      session::regenerate_id();
-
       notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), [
         '%email' => customer::$data['email'],
         '%firstname' => customer::$data['firstname'],

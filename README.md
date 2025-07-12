@@ -16,6 +16,7 @@ What you need:
   * An Apache2 web server running PHP 5.6 or higher. Latest stable PHP release recommended for best performance.
   * A MySQL 5.7+ or MariaDB database.
 
+
 ## Instructions
 
 Please note running your own website requires some common sense of web knowledge. If this is not your area of expertise, ask a friend or collegue to assist you.

@@ -16,7 +16,7 @@
       }
 
       if (!extension_loaded('imagick')) {
-        throw new Exception('Install Imagick for PHP to continue this operation');
+        throw new Exception('The .ico format requires that you enable Imagick for PHP to perform this operation');
       }
 
       if (empty(Imagick::queryFormats('ICO'))) {
@@ -25,6 +25,14 @@
 
       if (preg_match('#\.svg$#i', $_FILES['image']['name']) && empty(Imagick::queryFormats('SVG'))) {
         throw new Exception('Install SVG support for Imagick to continue this operation');
+      }
+
+      if (preg_match('#\.webp$#i', $_FILES['image']['name']) && empty(Imagick::queryFormats('WebP'))) {
+        throw new Exception('Install WebP support for Imagick to continue this operation');
+      }
+
+      if (preg_match('#\.avif$#i', $_FILES['image']['name']) && empty(Imagick::queryFormats('AVIF'))) {
+        throw new Exception('Install AVIF support for Imagick to continue this operation');
       }
 
       $image = new Imagick();

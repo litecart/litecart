@@ -112,7 +112,7 @@
             $buffer = preg_replace($operation['find']['pattern'], $operation['insert'], $buffer, -1, $count);
 
             if (!$count && $operation['onerror'] != 'skip') {
-              throw new Exception('Failed to perform insert', E_USER_ERROR);
+              throw new Error('Failed to perform insert');
               continue;
             }
           }

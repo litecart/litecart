@@ -676,7 +676,16 @@
         <?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
         <tr class="item">
           <td>
-            <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'edit_product', 'product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. functions::escape_html($_POST['items'][$key]['name']) .'</a>' : functions::escape_html($_POST['items'][$key]['name']); ?> <?php echo '<a class="float-end" href="'. document::href_ilink('product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a>'; ?>
+            <?php if (!empty($_POST['items'][$key]['product_id'])) { ?>
+            <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'edit_product', 'product_id' => $_POST['items'][$key]['product_id']]); ?>" target="_blank">
+              <?php functions::escape_html($_POST['items'][$key]['name']); ?>
+            </a>
+            <a class="float-end" href="<?php echo document::href_ilink('product', ['product_id' => $_POST['items'][$key]['product_id']]); ?>" target="_blank">
+              <?php echo functions::draw_fonticon('fa-external-link'); ?>
+            </a>
+            <?php } else { ?>
+            <span class="name"><?php echo functions::escape_html($_POST['items'][$key]['name']); ?></span>
+            <?php } ?>
             <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
             <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
             <?php echo functions::form_draw_hidden_field('items['.$key.'][option_stock_combination]', true); ?>
@@ -712,13 +721,9 @@
       }
 ?>
           </td>
-              <td class="sku"><?php echo functions::escape_html($_POST['items'][$key]['sku']); ?></td>
-          <td>
-                <span class="weight"><?php echo (float)$_POST['items'][$key]['weight']; ?></span> <span class="weight_class"><?php echo functions::escape_html($_POST['items'][$key]['weight_class']); ?></span>
-          </td>
-          <td>
-                <span class="dim_x"><?php echo (float)$_POST['items'][$key]['dim_x']; ?></span> x <span class="dim_y"><?php echo (float)$_POST['items'][$key]['dim_y']; ?></span> x <span class="dim_z"><?php echo (float)$_POST['items'][$key]['dim_z']; ?></span> <span class="dim_class"><?php echo functions::escape_html($_POST['items'][$key]['dim_class']); ?></span>
-          </td>
+          <td class="sku"><?php echo functions::escape_html($_POST['items'][$key]['sku']); ?></td>
+          <td><span class="weight"><?php echo (float)$_POST['items'][$key]['weight']; ?></span> <span class="weight_class"><?php echo functions::escape_html($_POST['items'][$key]['weight_class']); ?></span></td>
+          <td><span class="dim_x"><?php echo (float)$_POST['items'][$key]['dim_x']; ?></span> x <span class="dim_y"><?php echo (float)$_POST['items'][$key]['dim_y']; ?></span> x <span class="dim_z"><?php echo (float)$_POST['items'][$key]['dim_z']; ?></span> <span class="dim_class"><?php echo functions::escape_html($_POST['items'][$key]['dim_class']); ?></span></td>
           <td><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
           <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][price]', true); ?></td>
           <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
@@ -1393,7 +1398,8 @@
     new_item_index++;
 
     var output = '  <tr class="item">'
-               + '    <td>' + item.name
+               + '    <td>'
+               + '      <span class="name">'+ item.name +'</span>'
                + '      <?php echo functions::escape_js(functions::form_draw_hidden_field('items[new_item_index][id]', '')); ?>'
                + '      <?php echo functions::escape_js(functions::form_draw_hidden_field('items[new_item_index][product_id]', '')); ?>'
                + '      <?php echo functions::escape_js(functions::form_draw_hidden_field('items[new_item_index][option_stock_combination]', '')); ?>'
@@ -1409,7 +1415,7 @@
                + '      <?php echo functions::escape_js(functions::form_draw_hidden_field('items[new_item_index][dim_z]', '')); ?>'
                + '      <?php echo functions::escape_js(functions::form_draw_hidden_field('items[new_item_index][dim_class]', '')); ?>'
                + '    </td>'
-               + '    <td>'+ item.sku +'</td>'
+               + '    <td class="sku">'+ item.sku +'</td>'
                + '    <td>'
                + '      <span class="weight"></span> <span class="weight_class"></span>'
                + '    </td>'

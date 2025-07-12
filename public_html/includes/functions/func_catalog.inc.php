@@ -44,7 +44,9 @@
 // Filter function using AND syntax
   function catalog_products_query($filter=[]) {
 
-    if (!is_array($filter)) trigger_error('Invalid array filter for products query', E_USER_ERROR);
+    if (!is_array($filter)) {
+      throw new Error('Invalid array filter for products query');
+    }
 
     if (!empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
     if (!empty($filter['manufacturers'])) $filter['manufacturers'] = array_filter($filter['manufacturers']);
@@ -194,7 +196,9 @@
 // Search function using OR syntax
   function catalog_products_search_query($filter=[]) {
 
-    if (!is_array($filter)) trigger_error('Invalid array filter for products query', E_USER_ERROR);
+    if (!is_array($filter)) {
+      throw new Error('Invalid array filter for products query');
+    }
 
     if (!empty($filter['categories'])) $filter['categories'] = array_filter($filter['categories']);
     if (!empty($filter['manufacturers'])) $filter['manufacturers'] = array_filter($filter['manufacturers']);
@@ -293,7 +297,7 @@
         where p.status
           and (p.id
           ". (!empty($filter['products']) ? "or p.id in ('". implode("', '", database::input($filter['products'])) ."')" : "") ."
-          ". (!empty($filter['categories']) ? "or ptc.category_id in (". implode(",", database::input($filter['categories'])) .")" : "") ."
+          ". (!empty($filter['categories']) ? "or ptc.category_id in ('". implode("', '", database::input($filter['categories'])) ."')" : "") ."
           ". (!empty($filter['manufacturers']) ? "or manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : "") ."
           ". (!empty($filter['keywords']) ? "or (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : "") ."
         )

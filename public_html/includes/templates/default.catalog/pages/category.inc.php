@@ -28,7 +28,9 @@
               <h1 class="title"><?php echo $h1_title; ?></h1>
 
               <?php if ($_GET['page'] == 1 && $description) { ?>
-              <div class="description" style="margin-bottom: var(--gutter-y);"><?php echo $description; ?></div>
+              <div class="description" style="margin-bottom: var(--gutter-y);">
+                <?php echo $description; ?>
+              </div>
               <?php } ?>
             </div>
           </div>

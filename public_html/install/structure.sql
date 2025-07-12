@@ -547,7 +547,8 @@ CREATE TABLE `lc_products` (
   KEY `date_valid_from` (`date_valid_from`),
   KEY `date_valid_to` (`date_valid_to`),
   KEY `purchases` (`purchases`),
-  KEY `views` (`views`)
+  KEY `views` (`views`),
+  KEY `date_created` (`date_created`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- -----
 CREATE TABLE `lc_products_attributes` (
@@ -572,7 +573,9 @@ CREATE TABLE `lc_products_campaigns` (
   `USD` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
   `EUR` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`)
+  KEY `product_id` (`product_id`),
+  KEY `start_date` (`start_date`),
+  KEY `end_date` (`end_date`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- -----
 CREATE TABLE `lc_products_images` (
@@ -664,9 +667,10 @@ CREATE TABLE `lc_products_prices` (
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- -----
 CREATE TABLE `lc_products_to_categories` (
-   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-   `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-   PRIMARY KEY(`product_id`, `category_id`)
+  `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY(`product_id`, `category_id`),
+  KEY `category_id` (`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- -----
 CREATE TABLE `lc_quantity_units` (

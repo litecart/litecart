@@ -40,7 +40,7 @@
     }
 
     public function __set($name, $value) {
-      trigger_error('Setting data is prohibited ('.$name.')', E_USER_ERROR);
+      throw new Error('Setting data is prohibited ('.$name.')');
     }
 
     private function _load($field) {

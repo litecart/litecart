@@ -69,7 +69,9 @@
         }
       }
 
-      if (empty($delimiter)) trigger_error('Unable to determine CSV delimiter', E_USER_ERROR);
+      if (empty($delimiter)) {
+        throw new Error('Unable to determine CSV delimiter');
+      }
     }
 
   // Decode CSV using temporary buffer for file handle

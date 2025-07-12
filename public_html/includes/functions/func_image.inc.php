@@ -99,7 +99,7 @@
 
     // Return an already existing file
       if (is_file($options['destination'])) {
-        if (filemtime($options['destination']) >= filemtime($options['destination'])) {
+        if (!$options['overwrite'] && filemtime($options['destination']) >= filemtime($source)) {
           return image_relative_file($options['destination']);
         } else {
           unlink($options['destination']);

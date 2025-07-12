@@ -1,9 +1,14 @@
 <?php
 
+  ob_clean();
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex">';
 
-  document::$layout = 'default';
+  if (document::$template == 'template.admin') {
+    document::$layout = 'blank';
+  } else {
+    document::$layout = 'default';
+  }
 
   if (!empty($_GET['code'])) {
     http_response_code((int)$_GET['code']);

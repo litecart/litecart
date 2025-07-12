@@ -34,7 +34,7 @@
     }
 
     public function __set($name, $value) {
-      trigger_error('Setting data ('. $name .') is prohibited', E_USER_ERROR);
+      throw new Error('Setting data ('. $name .') is prohibited');
     }
 
     private function _load($field) {

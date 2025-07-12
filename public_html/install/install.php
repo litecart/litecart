@@ -5,7 +5,7 @@
   if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
     if (!isset($argv[1]) || $argv[1] == 'help' || $argv[1] == '-h' || $argv[1] == '--help' || $argv[1] == '/?') {
-      echo "\nLiteCart® 2.6.2\n"
+      echo "\nLiteCart® 2.6.3\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"

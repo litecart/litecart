@@ -249,7 +249,7 @@
 
     if ($value === true) $value = form_reinsert_value($name);
 
-    if ($value != '') {
+    if ($value != '' && is_numeric($decimals)) {
 
       // Circumvent floating point precision problem if differing by one 10th of the smallest fraction
 
@@ -1078,7 +1078,9 @@
 
   function form_draw_customers_list($name, $input=true, $multiple=false, $parameters='') {
 
-    if (empty(user::$data['id'])) trigger_error('Must be logged in to use form_draw_customers_list()', E_USER_ERROR);
+    if (empty(user::$data['id'])) {
+      throw new Error('Must be logged in to use form_draw_customers_list()');
+    }
 
     $options = [];
 

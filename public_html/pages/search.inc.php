@@ -44,6 +44,7 @@
 
   $products_query = functions::catalog_products_search_query([
     'query' => $_GET['query'],
+    'sort' => $_GET['sort'],
   ]);
 
   $num_rows = database::num_rows($products_query);

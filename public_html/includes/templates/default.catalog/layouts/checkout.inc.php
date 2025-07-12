@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<header id="header" class="fourteen-forty container">
+<header id="header" class="twelve-eighty container">
 
   <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
     <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>">

@@ -2,7 +2,7 @@
 	"name": "litecart",
 	"title": "LiteCart",
 	"description": "Lightweight e-commerce platform built with PHP, jQuery and HTML.",
-	"version": "2.6.2",
+	"version": "2.6.3",
 	"author": {
 		"name": "T. Almroth",
 		"url": "https://www.litecart.net/"
@@ -17,9 +17,12 @@
 	"bugs": {
 		"url": "https://github.com/litecart/litecart/issues"
 	},
+	"engines": {
+		"node": ">=19"
+	},
 	"devDependencies": {
 		"grunt": "^1.6.1",
-		"grunt-cli": "^1.4.3",
+		"grunt-cli": "^1.5.0",
 		"grunt-contrib-less": "^3.0.0",
 		"grunt-contrib-uglify": "^5.2.2",
 		"grunt-contrib-watch": "^1.1.0",
@@ -27,10 +30,7 @@
 		"grunt-phplint": "^0.1.0",
 		"grunt-text-replace": "^0.4.0",
 		"phplint": "^2.0.5",
-		"sass": "^1.69.5"
-	},
-	"engines": {
-		"node": ">=19"
+		"sass": "^1.86.3"
 	},
 	"scripts": {
 		"archive": "git archive --format=zip --output latest.zip",
@@ -40,8 +40,8 @@
 		"less": "grunt less",
 		"phplint": "grunt phplint",
 		"test": "grunt test",
-		"uglify": "grunt replace",
+		"uglify": "grunt uglify",
 		"watch": "grunt watch",
-		"update": "ncu -u && npm install"
+		"update": "ncu -u && npm install && npm audit fix"
 	}
 }

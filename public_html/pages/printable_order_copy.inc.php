@@ -9,17 +9,17 @@
   try {
 
     if (empty($_GET['order_id']) || empty($_GET['public_key'])) {
-      throw new Exception('Missing order_id or public_key');
+      throw new Exception('Missing order_id or public_key', 404);
     }
 
     $order = new ent_order($_GET['order_id']);
 
     if (empty($order->data['id']) || $_GET['public_key'] != $order->data['public_key']) {
-      throw new Exception('Not found or invalid public_key');
+      throw new Exception('Not found or invalid public_key', 400);
     }
 
   } catch (Exception $e) {
-    http_response_code(404);
+    http_response_code($e->getCode() ?: 500);
     include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
     return;
   }

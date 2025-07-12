@@ -39,7 +39,7 @@
       }
 
       foreach ($_POST['vmods'] as $vmod) {
-        $vmod = new ent_vmod($vmod);
+        $vmod = new ent_vmod(pathinfo($vmod, PATHINFO_BASENAME));
         $vmod->delete();
       }
 
@@ -190,7 +190,7 @@
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo language::translate('title_vmods', 'vMods'); ?>™
+      <?php echo $app_icon; ?> <?php echo language::translate('title_vmods', 'vMods'); ?>&trade;
     </div>
   </div>
 

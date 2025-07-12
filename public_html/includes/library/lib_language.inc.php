@@ -65,7 +65,9 @@
     }
 
     public static function before_output() {
-      if (empty(self::$selected['code'])) trigger_error('Error: No language set', E_USER_ERROR);
+      if (empty(self::$selected['code'])) {
+        throw new Error('No language set');
+      }
     }
 
     public static function shutdown() {
@@ -336,7 +338,7 @@
         '%P' => 'aa',	// lower-case 'am' or 'pm' based on the given time	Example: am for 00:31, pm for 22:23
       ];
 
-      $intl_formatter = function (\DateTimeInterface $timestamp, string $format) use ($intl_formats) {
+      $intl_formatter = function (\DateTimeInterface $timestamp, $format) use ($intl_formats) {
         $tz = $timestamp->getTimezone();
         $date_type = IntlDateFormatter::FULL;
         $time_type = IntlDateFormatter::FULL;

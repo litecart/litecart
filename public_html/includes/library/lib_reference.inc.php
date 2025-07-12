@@ -54,7 +54,7 @@
         default:
 
           self::$_cache[$resource][$checksum] = null;
-          trigger_error('Unsupported reference or entity ('.$resource.')', E_USER_ERROR);
+          throw new Error('Unsupported reference or entity ('.$resource.')');
       }
     }
   }

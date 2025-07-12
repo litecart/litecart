@@ -1058,7 +1058,7 @@
 
     var gross_price = Number( parseFloat($(this).val() || 0) * (1 + (get_tax_rate()/100)) ).toFixed(decimals);
 
-    if ($(this).val() == 0) {
+    if ($(this).val() == '') {
       if (currency_code != '<?php echo settings::get('store_currency_code'); ?>') {
         $(this).val('');
       }
@@ -1078,7 +1078,7 @@
 
     var net_price = Number( parseFloat($(this).val() || 0) / (1 + (get_tax_rate()/100)) ).toFixed(decimals);
 
-    if ($(this).val() == 0) {
+    if ($(this).val() == '') {
       $(net_field).val('');
     } else {
       $(net_field).val(net_price);

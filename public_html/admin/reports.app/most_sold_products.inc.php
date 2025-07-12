@@ -52,9 +52,9 @@
       )" : "") ."
       and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'
       and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'
-    
+
     ". (!empty($_GET['manufacturer_id']) ? "and p.manufacturer_id = '". (int)$_GET['manufacturer_id'] ."'" : "") ."
-    
+
     ". (!empty($_GET['query']) ? "and (
       oi.product_id = '". database::input($_GET['query']) ."'
       or oi.name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
@@ -92,6 +92,9 @@
 form[name="filter_form"] li {
   vertical-align: middle;
 }
+select[name="manufacturer_id"] {
+  width: 250px;
+}
 </style>
 
 <div class="card card-app">
@@ -110,7 +113,7 @@ form[name="filter_form"] li {
       <div class="expandable">
         <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. functions::escape_html(language::translate('title_item_name_or_sku', 'Item Name or SKU')) .'"'); ?>
       </div>
-      
+
       <?php echo functions::form_draw_countries_list('country_code', isset($_GET['country_code']) ? $_GET['country_code'] : '', false, 'style="width: 250px;"'); ?>
 
       <?php echo functions::form_draw_categories_list('category_id', true, 'placeholder="'. functions::escape_html(language::translate('title_item_name', 'Item Name')) .'"', 'style="width: 320px;"'); ?>
@@ -167,7 +170,7 @@ form[name="filter_form"] li {
   $('select[name="manufacturer_id"]').on('change', function(){
     $('form[name="filter_form"]').submit();
   });
-  
+
   $('select[name="country_code"] option[value=""]').text('-- <?php echo functions::escape_js(language::translate('title_all_countries', 'All Countries')); ?> --');
 
   $('select[name="country_code"]').on('change', function(){
