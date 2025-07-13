@@ -885,8 +885,6 @@
 				"recommended_price": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
 				"tax_class_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"image": { "type": "VARCHAR", "length": 255, "default": "''" },
-				"views": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
-				"purchases": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
 				"valid_from": { "type": "TIMESTAMP", "nullable": true },
 				"valid_to": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
@@ -1302,6 +1300,28 @@
 			"check_constraints": {
 				"chk_name": "JSON_VALID(name)",
 				"chk_description": "JSON_VALID(description)"
+			}
+		},
+		"lc_statistics": {
+			"columns": {
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"type": { "type": "VARCHAR", "length": 32, "default": "''" },
+				"entity_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"entity_type": { "type": "VARCHAR", "length": 32, "nullable": true },
+				"measure_group_type": { "type": "VARCHAR", "length": 32, "default": "''" },
+				"measure_group_value": { "type": "VARCHAR", "length": 64, "default": "''" },
+				"count": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
+				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"keys": {
+				"entity_id": ["entity_id"],
+				"entity_type": ["entity_type"],
+				"measure_group_type": ["measure_group_type"],
+				"measure_group_value": ["measure_group_value"]
+			},
+			"unique_keys": {
+				"measure": ["type", "entity_id", "entity_type", "measure_group_type", "measure_group_value"]
 			}
 		},
 		"lc_stock_items": {

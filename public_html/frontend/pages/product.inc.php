@@ -34,12 +34,15 @@
 		notices::add('errors', t('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
 	}
 
-	database::query(
-		"update ". DB_TABLE_PREFIX ."products
-		set views = views + 1
-		where id = ". (int)$_GET['product_id'] ."
-		limit 1;"
-	);
+  if (empty(self::$data['is_bot'])) { // Needs an addon to detect bots
+    database::query(
+      "insert into ". DB_TABLE_PREFIX ."statistics
+      (type, entity_type, entity_id, measure_group_type, measure_group_value, `count`)
+      values ('product_views', 'product', ". (int)$product->id .", 'week', '". database::input(date('Y-W')) ."', 1)
+      on duplicate key update
+      `count` = `count` + 1;"
+    );
+  }
 
 	customer::log([
 		'type' => 'product_view',

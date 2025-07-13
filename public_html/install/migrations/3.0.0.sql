@@ -124,6 +124,24 @@ CREATE TABLE `lc_site_tags` (
 	INDEX `priority` (`priority`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
+CREATE TABLE `lc_statistics` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`type` VARCHAR(32) NOT NULL DEFAULT '',
+	`entity_id` INT(10) UNSIGNED NULL DEFAULT NULL,
+	`entity_type` VARCHAR(32) NULL DEFAULT NULL,
+	`measure_group_type` VARCHAR(32) NOT NULL DEFAULT '',
+	`measure_group_value` VARCHAR(64) NOT NULL DEFAULT '',
+	`count` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `measure` (`type`, `entity_id`, `entity_type`, `measure_group_type`, `measure_group_value`),
+	INDEX `entity_id` (`entity_id`),
+	INDEX `entity_type` (`entity_type`),
+	INDEX `measure_group_type` (`measure_group_type`),
+	INDEX `measure_group_value` (`measure_group_value`),
+	INDEX `type` (`type`)
+) ENGINE=InnoDB CHARSET=utf8mb4;
+-- -----
 CREATE TABLE `lc_stock_items` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`brand_id` INT(10) UNSIGNED NULL,
@@ -551,8 +569,6 @@ CHANGE COLUMN `dim_y` `width` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_z` `height` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `tax_class_id` `tax_class_id` INT(10) UNSIGNED NULL,
-CHANGE COLUMN `views` `views` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `purchases` `purchases` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 ADD COLUMN `featured` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `status`,
 ADD COLUMN `name` TEXT NOT NULL DEFAULT '{}' AFTER `default_category_id`,
 ADD COLUMN `short_description` TEXT NOT NULL DEFAULT '{}' AFTER `name`,
@@ -565,6 +581,8 @@ ADD COLUMN `meta_description` TEXT NOT NULL DEFAULT '{}' AFTER `head_title`,
 ADD COLUMN `stock_option_type` ENUM('variants','bundle') NOT NULL DEFAULT 'variants' AFTER `keywords`,
 ADD COLUMN `valid_from` TIMESTAMP NULL DEFAULT NULL AFTER `purchases`,
 ADD COLUMN `valid_to` TIMESTAMP NULL DEFAULT NULL AFTER `valid_from`,
+DROP COLUMN `views`,
+DROP COLUMN `purchases`,
 DROP INDEX `manufacturer_id`,
 DROP INDEX `date_valid_from`,
 DROP INDEX `date_valid_to`,

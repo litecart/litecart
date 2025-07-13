@@ -167,8 +167,7 @@
 				break;
 
 			case 'popularity':
-				$sql_inner_sort[] = "(p.purchases / ceil(datediff(now(), p.created_at)/7)) desc, (p.views / ceil(datediff(now(), p.created_at)/7)) desc";
-				$sql_outer_sort[] = "(p.purchases / ceil(datediff(now(), p.created_at)/7)) desc, (p.views / ceil(datediff(now(), p.created_at)/7)) desc";
+				$sql_outer_sort[] = "st.views desc";
 				break;
 
 			case 'products':
@@ -215,7 +214,7 @@
 
 			from (
 				select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, p.keywords, p.image,
-					p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.views, p.purchases, p.created_at,
+					p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.created_at,
 					json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
 					json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') as short_description
 
@@ -231,12 +230,21 @@
 				". (!empty($filter['keywords']) ? "and (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
 				and (p.valid_from is null or p.valid_from <= '". date('Y-m-d H:i:s') ."')
 				and (p.valid_to is null or p.valid_to >= '". date('Y-m-d H:i:s') ."')
-				". (!empty($filter['purchased']) ? "and p.purchases" : "") ."
+				". (!empty($filter['purchased']) ? "and p.id in (select product_id from ". DB_TABLE_PREFIX ."orders_items group by product_id)" : "") ."
 				". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : "") ."
 
 				". ((!empty($sql_inner_sort) && !empty($filter['limit'])) ? "order by " . implode(",", $sql_inner_sort) : "") ."
 				". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") ."
 			) p
+
+			left join (
+				select entity_id as product_id, sum(count) as views
+				from ". DB_TABLE_PREFIX ."statistics
+				where entity_type = 'product'
+				and measure_group_type = 'week'
+				and measure_group_value in ('". date('Y-W') ."', '". date('Y-W') ."')
+				group by entity_id
+			) st on st.product_id = p.id
 
 			left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
 
@@ -444,7 +452,7 @@
 					break;
 
 				case 'popularity':
-					$sql_order_by = "(p.purchases / (datediff(now(), p.created_at)/7)) desc, (p.views / (datediff(now(), p.created_at)/7)) desc";
+					$sql_order_by = "st.views desc";
 					break;
 			}
 		}
@@ -461,7 +469,7 @@
 				select id, delivery_status_id, sold_out_status_id,code,	brand_id,	keywords,	image, recommended_price, tax_class_id,
 					json_value(name, '$.". database::input(language::$selected['code']) ."') as name,
 					json_value(short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
-					quantity_unit_id, views, purchases, created_at, (
+					quantity_unit_id, created_at, (
 						". implode(" + ", $sql_select_relevance) ."
 					) as relevance
 				from ". DB_TABLE_PREFIX ."products p
@@ -472,6 +480,15 @@
 				and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
 				having relevance > 0
 			) p
+
+			left join (
+				select entity_id as product_id, sum(count) as views
+				from ". DB_TABLE_PREFIX ."statistics
+				where entity_type = 'product'
+				and measure_group_type = 'week'
+				and measure_group_value in ('". date('Y-W') ."', '". date('Y-W') ."')
+				group by entity_id
+			) st on st.product_id = p.id
 
 			left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
 

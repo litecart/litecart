@@ -45,6 +45,16 @@
 					self::$data['utm'][$key] = $_GET['utm_'.$key];
 				}
 			}
+
+			if (empty(self::$data['is_bot'])) { // Needs an addon to detect bots
+				database::query(
+					"insert into ". DB_TABLE_PREFIX ."statistics
+					(type, entity_type, entity_id, measure_group_type, measure_group_value, `count`)
+					values ('page_views', 'domain', '". database::input($_SERVER['HTTP_HOST']) ."', 'day', '". database::input(date('Y-m-d')) ."', 1)
+					on duplicate key update
+					`count` = `count` + 1;"
+				);
+			}
 		}
 
 		public static function start() {
