@@ -653,6 +653,7 @@ edbbadc9a441dfc5ec7f569b8d144bfb	install/data/XX/zones_au.sql
 e211d87c4a7c287aa080434544cd95ec	install/data/XX/zones_ca.sql
 09002497933f9ca48154d1cad7060d0a	install/data/XX/zones_eu.sql
 3b345001b72c5863d0138616b46df0cb	install/data/XX/zones_us.sql
+d19c29a96a967e79b5402872a5ceae74	install/data/default/public_html/vendor/composer.json
 df4a4d1fdb3fe4e7d6f32afe60d9d958	install/data/default/storage/backups/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	install/data/default/storage/backups/index.html
 4cc2ea9d6634917355158e3cd38d8300	install/data/default/storage/cache/.htaccess
@@ -660,7 +661,6 @@ d41d8cd98f00b204e9800998ecf8427e	install/data/default/storage/cache/index.html
 df4a4d1fdb3fe4e7d6f32afe60d9d958	install/data/default/storage/files/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	install/data/default/storage/files/index.html
 d41d8cd98f00b204e9800998ecf8427e	install/data/default/storage/images/banners/index.html
-26ed7942719137ccfc3d9b0c24e28035	install/data/default/storage/images/banners/jumbotron.svg
 d41d8cd98f00b204e9800998ecf8427e	install/data/default/storage/images/brands/index.html
 d41d8cd98f00b204e9800998ecf8427e	install/data/default/storage/images/categories/index.html
 0f44dfdaf67727e45005fd20b00eba7e	install/data/default/storage/images/favicons/favicon-128x128.png
@@ -828,5 +828,4 @@ a2d964f9475446afe9a063296cd7c696	install/requirements.json
 8950517b649d947741b66d5bcd9dac78	install/upgrade.php
 df4a4d1fdb3fe4e7d6f32afe60d9d958	vendor/.htaccess
 8297b8ccf4c3e90ebbf0e7d79aaae1da	vendor/Composer.txt
-d19c29a96a967e79b5402872a5ceae74	vendor/composer.json
 d41d8cd98f00b204e9800998ecf8427e	vendor/index.html

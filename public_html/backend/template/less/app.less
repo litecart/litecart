@@ -222,7 +222,9 @@ h4 { font-size: 1.10em; }
 	padding: 0;
 	color: var(--sidebar-text-color);
 
-	ul.groups, ul.apps, ul.docs {
+	ul.groups,
+	ul.apps,
+	ul.docs {
 		padding: 0;
 		margin: 0;
 		list-style: none;
@@ -237,7 +239,7 @@ h4 { font-size: 1.10em; }
 
 	.group {
 		margin: 0;
-		padding: 1em 0;
+		padding: .5em 0;
 		list-style: none;
 		border-bottom: 1px solid var(--default-border-color);
 		> .title {
@@ -259,8 +261,7 @@ h4 { font-size: 1.10em; }
 		}
 
 		> a {
-			padding: .25em;
-
+			padding: .25em .5em;
 			&:hover {
 				background: var(--sidebar-app-background--hover);
 				color: var(--sidebar-text-color--hover);
@@ -272,6 +273,7 @@ h4 { font-size: 1.10em; }
 		}
 
 		.app-icon {
+			background: none;
 			margin-inline-end: 0;
 		}
 
@@ -283,6 +285,7 @@ h4 { font-size: 1.10em; }
 			border-color: var(--app-color);
 			background: var(--sidebar-app-background--active);
 			border-radius: var(--border-radius);
+			margin-bottom: .25em;
 
 			.docs {
 				display: block;
@@ -300,7 +303,7 @@ h4 { font-size: 1.10em; }
 					border-radius: var(--border-radius);
 				}
 				a {
-					padding: .5em .75em;
+					padding: .5em;
 				}
 			}
 		}

@@ -921,6 +921,7 @@ template {
 .dropdown-menu,
 .dropdown-content {
   position: fixed;
+  min-width: max-content;
   text-align: start;
   border-radius: var(--border-radius);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
@@ -936,10 +937,6 @@ template {
   margin: 9px 0;
   overflow: hidden;
   background: #e5e5e5;
-}
-.dropdown-menu > li > *:not(.btn),
-.dropdown-content > li > *:not(.btn) {
-  white-space: nowrap;
 }
 .dropdown-menu > li > *:not(.btn)a:hover,
 .dropdown-content > li > *:not(.btn)a:hover,
@@ -1840,7 +1837,7 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
 label.form-check {
   display: block;
   user-select: none;
-  line-height: 2.5;
+  line-height: 2;
 }
 .form-check:is(input),
 label.form-check > input:is(input),
@@ -3586,7 +3583,6 @@ body.navbar-expanded {
 .table thead tr th {
   padding: 0.5em 1em;
   vertical-align: bottom;
-  font-weight: 500;
 }
 .table thead tr td {
   vertical-align: middle;
@@ -3594,6 +3590,9 @@ body.navbar-expanded {
 .table tbody {
   background: var(--table-body-background);
   color: var(--table-body-text-color);
+}
+.table th {
+  font-weight: 500;
 }
 .table td,
 .table th {

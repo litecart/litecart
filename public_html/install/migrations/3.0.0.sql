@@ -24,10 +24,10 @@ CREATE TABLE `lc_campaigns` (
 	`valid_to` TIMESTAMP NULL DEFAULT NULL,
 	`updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `valid_from` (`valid_from`) USING BTREE,
-	INDEX `valid_to` (`valid_to`) USING BTREE,
-	INDEX `status` (`status`) USING BTREE
+	PRIMARY KEY (`id`),
+	INDEX `valid_from` (`valid_from`),
+	INDEX `valid_to` (`valid_to`),
+	INDEX `status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_campaigns_products` (
@@ -35,9 +35,9 @@ CREATE TABLE `lc_campaigns_products` (
 	`campaign_id` INT(10) UNSIGNED NOT NULL,
 	`product_id` INT(10) UNSIGNED NOT NULL,
 	`price` VARCHAR(512) NOT NULL DEFAULT '{}',
-	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `product_id` (`product_id`) USING BTREE,
-	INDEX `campaign_id` (`campaign_id`) USING BTREE
+	PRIMARY KEY (`id`),
+	INDEX `product_id` (`product_id`),
+	INDEX `campaign_id` (`campaign_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_customer_groups` (
@@ -64,14 +64,14 @@ CREATE TABLE IF NOT EXISTS `lc_customers_activity` (
 	`fingerprint` VARCHAR(32) NULL,
 	`expires_at` TIMESTAMP NULL DEFAULT NULL,
 	`created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
-	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `customer_id` (`customer_id`) USING BTREE,
-	INDEX `session_id` (`session_id`) USING BTREE,
-	INDEX `ip_address` (`ip_address`) USING BTREE,
-	INDEX `hostname` (`hostname`) USING BTREE,
-	INDEX `user_agent` (`user_agent`) USING BTREE,
-	INDEX `fingerprint` (`fingerprint`) USING BTREE,
-	INDEX `expires_at` (`expires_at`) USING BTREE
+	PRIMARY KEY (`id`),
+	INDEX `customer_id` (`customer_id`),
+	INDEX `session_id` (`session_id`),
+	INDEX `ip_address` (`ip_address`),
+	INDEX `hostname` (`hostname`),
+	INDEX `user_agent` (`user_agent`),
+	INDEX `fingerprint` (`fingerprint`),
+	INDEX `expires_at` (`expires_at`)
 );
 -- -----
 CREATE TABLE `lc_products_references` (
@@ -153,12 +153,12 @@ CREATE TABLE `lc_stock_items` (
 	`priority` INT(11) NOT NULL DEFAULT '0',
 	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `mpn` (`mpn`) USING BTREE,
-	INDEX `gtin` (`gtin`) USING BTREE,
-	INDEX `sku` (`sku`) USING BTREE,
-	INDEX `brand_id` (`brand_id`) USING BTREE,
-	INDEX `supplier_id` (`supplier_id`) USING BTREE
+	PRIMARY KEY (`id`),
+	INDEX `mpn` (`mpn`),
+	INDEX `gtin` (`gtin`),
+	INDEX `sku` (`sku`),
+	INDEX `brand_id` (`brand_id`),
+	INDEX `supplier_id` (`supplier_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_stock_transactions` (
@@ -197,9 +197,9 @@ CREATE TABLE `lc_third_parties` (
 	`country_code` CHAR(2) NULL DEFAULT NULL,
 	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `status` (`status`) USING BTREE,
-	INDEX `country_code` (`country_code`) USING BTREE
+	PRIMARY KEY (`id`),
+	INDEX `status` (`status`),
+	INDEX `country_code` (`country_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 RENAME TABLE `lc_manufacturers` TO `lc_brands`;
@@ -479,7 +479,7 @@ CHANGE COLUMN `options` `userdata` VARCHAR(2048) NULL AFTER `name`,
 CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT '',
 CHANGE COLUMN `priority` `priority` INT NOT NULL DEFAULT '0',
 ADD COLUMN `stock_option_id` INT(10) UNSIGNED NULL AFTER `product_id`,
-ADD COLUMN `stock_items` INT(10) UNSIGNED NULL AFTER `stock_option_id`,
+ADD COLUMN `stock_items` VARCHAR(255) DEFAULT '[]' AFTER `stock_option_id`,
 ADD COLUMN `serial_number` VARCHAR(32) NOT NULL DEFAULT '' AFTER `name`,
 ADD COLUMN `tax_rate` FLOAT(4,2) UNSIGNED NULL AFTER `tax`,
 ADD COLUMN `tax_class_id` INT(10) UNSIGNED NULL AFTER `tax_rate`,
@@ -562,7 +562,7 @@ ADD COLUMN `autofill_technical_data` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AF
 ADD COLUMN `synonyms` TEXT NOT NULL DEFAULT '{}' AFTER `description`,
 ADD COLUMN `head_title` TEXT NOT NULL DEFAULT '{}' AFTER `synonyms`,
 ADD COLUMN `meta_description` TEXT NOT NULL DEFAULT '{}' AFTER `head_title`,
-ADD COLUMN `stock_option_type` ENUM('variant','bundle') NOT NULL DEFAULT 'variant' AFTER `keywords`,
+ADD COLUMN `stock_option_type` ENUM('variants','bundle') NOT NULL DEFAULT 'variants' AFTER `keywords`,
 ADD COLUMN `valid_from` TIMESTAMP NULL DEFAULT NULL AFTER `purchases`,
 ADD COLUMN `valid_to` TIMESTAMP NULL DEFAULT NULL AFTER `valid_from`,
 DROP INDEX `manufacturer_id`,

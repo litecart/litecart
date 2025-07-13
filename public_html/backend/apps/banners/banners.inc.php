@@ -66,7 +66,7 @@
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th width="100%"><?php echo t('title_name', 'Name'); ?></th>
+					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
 					<th><?php echo t('title_keywords', 'Keywords'); ?></th>
 					<th class="text-center"><?php echo t('title_clicks', 'Clicks'); ?></th>
 					<th class="text-center"><?php echo t('title_views', 'Views'); ?></th>

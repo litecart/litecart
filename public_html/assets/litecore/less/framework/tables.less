@@ -20,15 +20,10 @@
 		color: var(--table-header-text-color);
 		border-bottom: ~"calc(var(--table-border-width) *2)" solid var(--table-border-color);
 		tr {
-
 			th {
-
 				padding: .5em 1em;
-
 				vertical-align: bottom;
-				font-weight: 500;
 			}
-
 			td {
 				vertical-align: middle;
 			}
@@ -40,11 +35,18 @@
 		color: var(--table-body-text-color);
 	}
 
+	th {
+		font-weight: 500;
+	}
+
 	td, th {
 		padding: .5em 1em;
-
-		&:first-child { padding-inline-start: var(--gutter-x); }
-		&:last-child { padding-inline-end: var(--gutter-x); }
+		&:first-child {
+			padding-inline-start: var(--gutter-x);
+		}
+		&:last-child {
+			padding-inline-end: var(--gutter-x);
+		}
 	}
 
 	> thead > tr > th {
@@ -70,10 +72,18 @@
 		}
 	}
 
-	.border-start { border-inline-start: var(--table-border-width) solid var(--table-border-color); }
-	.border-left { border-left: var(--table-border-width) solid var(--table-border-color); }
-	.border-right { border-right: var(--table-border-width) solid var(--table-border-color); }
-	.border-end { border-inline-end: var(--table-border-width) solid var(--table-border-color); }
+	.border-start {
+		border-inline-start: var(--table-border-width) solid var(--table-border-color);
+	}
+	.border-left {
+		border-left: var(--table-border-width) solid var(--table-border-color);
+	}
+	.border-right {
+		border-right: var(--table-border-width) solid var(--table-border-color);
+	}
+	.border-end {
+		border-inline-end: var(--table-border-width) solid var(--table-border-color);
+	}
 
 	&.data-table {
 		white-space: nowrap;

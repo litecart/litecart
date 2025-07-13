@@ -2112,7 +2112,7 @@
 
 		$product = reference::product($product_id);
 
-		if (!$product->stock_option_type != 'variant' || !$product->stock_options) {
+		if ($product->stock_option_type != 'variants' || !$product->stock_options) {
 			trigger_error('Product '. $product->id .' has no stock options', E_USER_WARNING);
 			return;
 		}

@@ -308,7 +308,7 @@
 								<div class="image flex">
 									<?php echo functions::form_input_hidden('images['.$key.'][id]', true); ?>
 									<?php echo functions::form_input_hidden('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
-									<?php echo functions::draw_thumbnail('storage://images/' . $product->data['images'][$key]['filename'], 64, 0, 'product'); ?>
+									<?php echo functions::draw_thumbnail('storage://images/' . $product->data['images'][$key]['filename'], 480, 0, 'product'); ?>
 									<?php echo functions::form_input_text('images['.$key.'][new_filename]', fallback($_POST['images'][$key]['new_filename'], $_POST['images'][$key]['filename'])); ?>
 
 									<div style="align-content: center;">
@@ -554,13 +554,15 @@
 						<tbody>
 							<?php if (!empty($_POST['attributes'])) foreach (array_keys($_POST['attributes']) as $key) { ?>
 							<tr draggable="true">
-								<?php echo functions::form_input_hidden('attributes['.$key.'][id]', true); ?>
-								<?php echo functions::form_input_hidden('attributes['.$key.'][group_id]', true); ?>
-								<?php echo functions::form_input_hidden('attributes['.$key.'][group_name]', true); ?>
-								<?php echo functions::form_input_hidden('attributes['.$key.'][value_id]', true); ?>
-								<?php echo functions::form_input_hidden('attributes['.$key.'][value_name]', true); ?>
-								<?php echo functions::form_input_hidden('attributes['.$key.'][custom_value]', true); ?>
-								<td class="grabbable"><?php echo $_POST['attributes'][$key]['group_name']; ?></td>
+								<td class="grabbable">
+									<?php echo functions::form_input_hidden('attributes['.$key.'][id]', true); ?>
+									<?php echo functions::form_input_hidden('attributes['.$key.'][group_id]', true); ?>
+									<?php echo functions::form_input_hidden('attributes['.$key.'][group_name]', true); ?>
+									<?php echo functions::form_input_hidden('attributes['.$key.'][value_id]', true); ?>
+									<?php echo functions::form_input_hidden('attributes['.$key.'][value_name]', true); ?>
+									<?php echo functions::form_input_hidden('attributes['.$key.'][custom_value]', true); ?>
+									<?php echo $_POST['attributes'][$key]['group_name']; ?>
+								</td>
 								<td class="grabbable">
 									<?php echo $_POST['attributes'][$key]['value_name']; ?>
 									<?php echo $_POST['attributes'][$key]['custom_value']; ?>
@@ -568,7 +570,7 @@
 								<td class="text-end">
 									<button name="remove" type="button" class="btn btn-default btn-sm" title="<?php echo t('title_remove', 'Remove'); ?>">
 										<?php echo functions::draw_fonticon('remove'); ?>
-									</a>
+									</button>
 								</td>
 							</tr>
 							<?php } ?>
@@ -578,7 +580,7 @@
 							<tr>
 								<td><?php echo functions::form_select_attribute_group('new_attribute[group_id]', ''); ?></td>
 								<td>
-									<?php echo functions::form_select('new_attribute[value_id]', [], ''); ?></td>
+									<?php echo functions::form_select('new_attribute[value_id]', [], ''); ?>
 									<?php echo functions::form_input_text('new_attribute[custom_value]', '', 'disabled hidden'); ?>
 								</td>
 								<td class="text-end"><?php echo functions::form_button('add', t('title_add', 'Add'), 'button'); ?></td>
@@ -800,7 +802,7 @@
 						<div class="col-md-3">
 							<div class="form-group">
 								<div class="form-label"><?php echo t('title_type', 'Type'); ?></div>
-								<?php echo functions::form_toggle('stock_option_type', ['variation' => t('title_variation', 'Variation'), 'bundle' => t('title_bundle', 'Bundle')], true); ?>
+								<?php echo functions::form_toggle('stock_option_type', ['variants' => t('title_variants', 'Variants'), 'bundle' => t('title_bundle', 'Bundle')], true); ?>
 							</div>
 						</div>
 					</div>
@@ -1389,15 +1391,18 @@
 
 	$('#attributes select[name="new_attribute[group_id]"]').on('change', function(e) {
 
-		let $select = $(this);
-		let $select_value = $('select[name="new_attribute[value_id]"]');
-		let $custom_value = $('input[name="new_attribute[custom_value]"]');
+		let $newAttributeGroup = $(this),
+			$newAttributeValue = $('select[name="new_attribute[value_id]"]'),
+			$newCustomValue = $('input[name="new_attribute[custom_value]"]');
 
-		if ($select.val() == '') {
-			$select_value.prop('disabled', true).html(
-				'<option value=""><?php echo functions::escape_js(t('title_select_attribute_group_first', 'Select attribute group first')); ?></option>'
-			);
-			$custom_value.prop('disabled', true).val('');
+		if ($newAttributeGroup.val() == '') {
+			$newAttributeValue
+				.prop('disabled', true)
+				.html('<option value=""><?php echo functions::escape_js(t('title_select_attribute_group_first', 'Select attribute group first')); ?></option>');
+			$newCustomValue
+				.prop('disabled', true)
+				.prop('hidden', true)
+				.val('');
 			return;
 		}
 
@@ -1405,57 +1410,97 @@
 			url: '<?php echo document::href_ilink(__APP__.'/attribute_values.json'); ?>',
 			type: 'get',
 			data: {
-				group_id: $select.val(),
+				group_id: $newAttributeGroup.val(),
 			},
 			dataType: 'json',
-			success: function(data) {
+			success: function(values) {
 
-				if (!data.length) {
+				$newAttributeValue.html('<option value="" style="opacity: .5;"><?php echo functions::escape_js(t('title_custom_value', 'Custom Value')); ?>:</option>');
 
-					$select_value.prop({
-						disabled:  true,
-						hidden: true
-					}).html(
-						'<option value=""><?php echo functions::escape_js(t('title_no_values_found', 'No values found')); ?></option>'
-					);
+				if (values?.length) {
 
-					$custom_value.prop({
+					$.each(values, function(i, value) {
+						let $output = $('<option></option>', { value: value.id }).text(value.name).appendTo($newAttributeValue);
+					});
+
+					$newAttributeValue.prop('disabled', false);
+
+					$newCustomValue.prop({
 						disabled:  false,
 						hidden: false
 					}).val('');
 
-					return;
-				}
-
-				$select_value.html('');
-
-				if (Array.isArray(data)) {
-					$.each(data, function(i, value) {
-						let $output = $('<option></option>', { value: value.id }).text(value.name);
-						$select_value.append($output);
-					});
-
 				} else {
-					console.error('Expected data to be an array, but received:', data);
+
+					$newCustomValue.prop({
+						disabled:  false,
+						hidden: false
+					}).val('');
 				}
-
-				$select_value.prop('disabled', false).html(data);
-
-				$custom_value.prop({
-					disabled:  true,
-					hidden: true
-				}).val('');
-
-				return;
 			}
 		});
+	});
+
+	$('#attributes select[name="new_attribute[value_id]"]').on('change', function(e) {
+
+		let $newAttributeGroup = $(this),
+			$newAttributeValue = $('select[name="new_attribute[value_id]"]'),
+			$newCustomValue = $('input[name="new_attribute[custom_value]"]');
+
+		$newCustomValue.prop({
+			disabled: !!$newAttributeValue.val(),
+			hidden: !!$newAttributeValue.val()
+		}).val('');
 	});
 
 	$('#attributes button[name="add"]').on('click', function(e) {
 		e.preventDefault();
 
+		let $newAttributeGroup = $('select[name="new_attribute[group_id]"]'),
+			$newAttributeValue = $('select[name="new_attribute[value_id]"]'),
+			$newCustomValue = $('input[name="new_attribute[custom_value]"]');
+
+		if ($newAttributeGroup.val() == '') {
+			alert("<?php echo t('error_must_select_attribute_group', 'You must select an attribute group'); ?>")
+			return
+		}
+
+		if ($newAttributeValue.val() == '' || $newAttributeValue.val() == '0') {
+			if ($newCustomValue.val() == '') {
+				alert("<?php echo t('error_must_select_attribute_value', 'You must select an attribute value'); ?>")
+				return
+			}
+		} else {
+			if ($newCustomValue.val() != '') {
+				alert("<?php echo t('error_cannot_define_both_value_and_custom_value', 'You can not define both a value and a custom value'); ?>")
+				return
+			}
+		}
+
+		// Check if already in list
+		// Prevent duplicate attribute group/value/custom_value
+		let exists = false;
+		$('#attributes tbody tr').each(function() {
+			let group_id = $(this).find('input[name^="attributes"][name$="[group_id]"]').val();
+			let value_id = $(this).find('input[name^="attributes"][name$="[value_id]"]').val();
+			let custom_value = $(this).find('input[name^="attributes"][name$="[custom_value]"]').val();
+
+			if (
+				group_id == $newAttributeGroup.val() &&
+				value_id == $newAttributeValue.val() &&
+				custom_value == $newCustomValue.val()
+			) {
+				exists = true;
+				return false; // break loop
+			}
+		});
+		if (exists) {
+			alert("<?php echo t('error_attribute_already_defined', 'This attribute is already defined'); ?>");
+			return;
+		}
+
 		let __index__ = 0;
-		while ($('select[name="new_attribute[new_'+__index__+']"]').length) __index__++;
+		while ($('select[name^="attributes[new_'+__index__+']"]').length) __index__++;
 
 		let $output = $([
 			'<tr draggable="true">',
@@ -1463,7 +1508,7 @@
 			'    <?php echo functions::form_input_hidden('attributes[__index__][group_id]', ''); ?>',
 			'  </td>',
 			'  <td class="grabbable">',
-			'    <?php echo functions::form_input_hidden('attributes[__index__][value_id]', [], ''); ?>',
+			'    <?php echo functions::form_input_hidden('attributes[__index__][value_id]', ''); ?>',
 			'    <?php echo functions::form_input_hidden('attributes[__index__][custom_value]', ''); ?>',
 			'  </td>',
 			'  <td class="text-end">',
@@ -1476,104 +1521,26 @@
 			.replace(/__index__/g, 'new_' + __index__)
 		);
 
+		$output.find(':input[name^="attributes[new_'+__index__+'][group_id]"]')
+			.val( $newAttributeGroup.val() )
+			.after( $('select[name="new_attribute[group_id]"] option:selected').text() );
+
+		$output.find(':input[name^="attributes[new_'+__index__+'][value_id]"]')
+			.val( $newAttributeValue.val() )
+			.after(  $newAttributeValue.val() ? $('select[name="new_attribute[value_id]"] option:selected').text() : '' );
+
+		$output.find(':input[name^="attributes[new_'+__index__+'][custom_value]"]')
+			.val( $newCustomValue.val() )
+			.after( $newCustomValue.val() );
+
 		$('#attributes tbody').append($output);
 	});
 
-/*
-	// Attributes
+	$('#tab-attributes').on('click', 'button[name="remove"]', function(e) {
+		e.preventDefault();
+		$(this).closest('tr').remove();
+	});
 
-	$('select[name="new_attribute[group_id]"]').on('change', function() {
-
-		if ($(this).val() == '') {
-			$('select[name="new_attribute[value_id]"]').html('').prop('disabled', true)
-			$(':input[name="new_attribute[custom_value]"]').prop('disabled', true)
-			return
-		}
-
-		$.ajax({
-			url: '<?php echo document::ilink(__APP__.'/attribute_values.json'); ?>?group_id=' + $(this).val(),
-			type: 'get',
-			cache: true,
-			async: true,
-			dataType: 'json',
-			success: function(data) {
-				$('select[name="new_attribute[value_id]"]').html('')
-				if (data) {
-					$('select[name="new_attribute[value_id]"]').prop('disabled', false)
-					$(':input[name="new_attribute[custom_value]"]').prop('disabled', false)
-					$('select[name="new_attribute[value_id]"]').append('<option value="0">-- <?php echo t('title_select', 'Select'); ?> --</option>')
-					$.each(data, function(i, zone) {
-						$('select[name="new_attribute[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>')
-					})
-				} else {
-					$('select[name="new_attribute[value_id]"]').prop('disabled', true)
-					$(':input[name="new_attribute[custom_value]"]').prop('disabled', false)
-				}
-			},
-		})
-		}).trigger('change')
-
-
-		$('#tab-attributes button[name="add"]').on('click', function() {
-
-			let __index__ = 0
-			while ($(':input[name^="attributes[new_'+__index__+']"]').length) __index__++
-
-		if ($('select[name="new_attribute[group_id]"]').val() == '') {
-			alert("<?php echo t('error_must_select_attribute_group', 'You must select an attribute group'); ?>")
-			return
-		}
-
-		if ($('select[name="new_attribute[value_id]"]').val() == '' || $('select[name="new_attribute[value_id]"]').val() == '0') {
-			if ($('input[name="new_attribute[custom_value]"]').val() == '') {
-				alert("<?php echo t('error_must_select_attribute_value', 'You must select an attribute value'); ?>")
-				return
-			}
-		} else {
-			if ($('input[name="new_attribute[custom_value]"]').val() != '') {
-				alert("<?php echo t('error_cannot_define_both_value_and_custom_value', 'You can not define both a value and a custom value'); ?>")
-				return
-			}
-		}
-
-		let $output = $([
-			'<tr>',
-			'  <td>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[__index__][id]', '')); ?>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[__index__][group_id]', 'new_group_id')); ?>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[__index__][group_name]', 'new_group_name')); ?>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[__index__][value_id]', 'new_value_id')); ?>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[__index__][value_name]', 'new_value_name')); ?>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('attributes[__index__][custom_value]', 'new_custom_value')); ?>',
-			'    new_group_name',
-			'  </td>',
-			'  <td>new_value_name</td>',
-			'  <td>new_custom_value</td>',
-			'  <td class="text-end">',
-			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>">',
-			'      <?php echo functions::draw_fonticon('remove'); ?>',
-			'    </a>',
-			'  </td>',
-			'</tr>'
-		].join('\n')
-			.replace(/__index__/g, 'new_' + __index__)
-			.replace(/new_group_id/g, $('select[name="new_attribute[group_id]"] option:selected').val())
-			.replace(/new_group_name/g, $('select[name="new_attribute[group_id]"] option:selected').text())
-			.replace(/new_value_id/g, $('select[name="new_attribute[value_id]"] option:selected').val())
-			.replace(/new_custom_value/g, $('input[name="new_attribute[custom_value]"]').val())
-			.replace(/new_value_name/g, ($('select[name="new_attribute[value_id]"] option:selected').val() != '0') ? $('select[name="new_attribute[value_id]"] option:selected').text() : '')
-		)
-
-		$('#tab-attributes tbody').append($output)
-
-		$('select[name="new_attribute[group_id]"]').val('').trigger('change')
-		})
-
-		$('#tab-attributes tbody').on('click', '.remove', function(e) {
-		e.preventDefault()
-		$(this).closest('tr').remove()
-		})
-*/
 	// Quantity Unit
 
 	$('select[name="quantity_unit_id"]').on('change', function() {

@@ -81,6 +81,7 @@
 .dropdown-menu,
 .dropdown-content {
 	position: fixed;
+	min-width: max-content;
 	//width: max-content;
 	text-align: start;
 	border-radius: var(--border-radius);
@@ -99,7 +100,6 @@
 	}
 
 	> li > *:not(.btn) {
-		white-space: nowrap;
 		&a:hover,
 		&a:focus,
 		&a:active {

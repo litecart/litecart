@@ -731,7 +731,7 @@
 				"order_id": { "type": "INT", "length": 10, "unsigned": true },
 				"product_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"stock_option_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
-				"stock_items": { "type": "VARCHAR", "length": 256, "default": "'{}'" },
+				"stock_items": { "type": "VARCHAR", "length": 256, "default": "'[]'" },
 				"userdata": { "type": "VARCHAR", "length": 2048, "nullable": true },
 				"name": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"serial_number": { "type": "VARCHAR", "length": 32, "default": "''" },
@@ -877,7 +877,7 @@
 				"meta_description": { "type": "TEXT", "default": "'{}'" },
 				"synonyms": { "type": "TEXT", "default": "'{}'" },
 				"keywords": { "type": "VARCHAR", "length": 255, "default": "''" },
-				"stock_option_type": { "type": "ENUM('variant','bundle')", "default": "'variant'" },
+				"stock_option_type": { "type": "ENUM('variants','bundle')", "default": "'variants'" },
 				"quantity_min": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 1.0000 },
 				"quantity_max": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
 				"quantity_step": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
@@ -1343,6 +1343,9 @@
 				"sku": ["sku"],
 				"brand_id": ["brand_id"],
 				"supplier_id": ["supplier_id"]
+			},
+			"fulltext_keys": {
+				"name": ["name"]
 			},
 			"check_constraints": {
 				"chk_name": "JSON_VALID(name)"

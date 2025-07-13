@@ -356,28 +356,22 @@
 
 				$update_file = function($file) use ($client) {
 
-					$local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
 					$response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
 
 					if ($client->last_response['status_code'] != 200) return false;
 
-					if (!is_dir(dirname(FS_DIR_APP . $local_file))) {
-						mkdir(dirname(FS_DIR_APP . $local_file), 0777, true);
+					if (!is_dir(dirname(FS_DIR_APP . $file))) {
+						mkdir(dirname(FS_DIR_APP . $file), 0777, true);
 					}
 
-					file_put_contents(FS_DIR_APP . $local_file, $response);
+					file_put_contents(FS_DIR_APP . $file, $response);
 
 					return true;
 				};
 
 				$calculate_md5 = function($file) {
-
-					$local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
-
-					if (!is_file(FS_DIR_APP . $local_file)) return;
-
-					$contents = preg_replace('#(\r\n?|\n)#', "\n", file_get_contents(FS_DIR_APP . $local_file));
-
+					if (!is_file(FS_DIR_APP . $file)) return;
+					$contents = preg_replace('#(\r\n?|\n)#', "\n", file_get_contents(FS_DIR_APP . $file));
 					return md5($contents);
 				};
 

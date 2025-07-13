@@ -16,24 +16,24 @@
 		switch ($errno) {
 
 			case 2048: // Equals E_STRICT but deprecated in PHP 8.4
-				$output[] = '<div class="php-feedback error"><strong>Strict:</strong> <pre style="white-space:pre-wrap;"> '. htmlspecialchars($errstr) .' </pre> in <strong>$errfile</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback error">❌ <strong>Strict:</strong> <pre style="white-space:pre-wrap;"> '. htmlspecialchars($errstr) .' </pre> in <strong>$errfile</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			case E_NOTICE:
 			case E_USER_NOTICE:
-				$output[] = '<div class="php-feedback notice"><strong>Notice:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback notice">ℹ️ <strong>Notice:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			case E_WARNING:
 			case E_USER_WARNING:
 			case E_COMPILE_WARNING:
 			case E_RECOVERABLE_ERROR:
-				$output[] = '<div class="php-feedback warning"><strong>Warning:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback warning">⚠️ <strong>Warning:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
-				$output[] = '<div class="php-feedback notice"><strong>Deprecated:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback notice">ℹ️ <strong>Deprecated:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			case E_PARSE:
@@ -41,15 +41,17 @@
 			case E_CORE_ERROR:
 			case E_COMPILE_ERROR:
 			case 256: // Equals E_USER_ERROR but deprecated in PHP 8.4
-				$output[] = '<div class="php-feedback error"><strong>Fatal error:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback error">❌ <strong>Fatal Error:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			default:
-				$output[] = '<div class="php-feedback error"><strong>Fatal error:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback error">❌ <strong>Unknown Error:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 		}
 
 		if ($backtraces = debug_backtrace()) {
+
+			$output[] = 'Backtrace:';
 
 			// Remove self from backtrace
 			array_shift($backtraces);
@@ -70,7 +72,7 @@
 					$backtrace['file'] = preg_replace('#^'. preg_quote($search, '#') .'#', $replace, str_replace('\\', '/', $backtrace['file']));
 				}
 
-				$output[] = "<div> → <strong>$backtrace[file]</strong> on line <strong>$backtrace[line]</strong> in <strong>$backtrace[function]()</strong></div>";
+				$output[] = "<div> ↪ <strong>$backtrace[file]</strong> on line <strong>$backtrace[line]</strong> in <strong>$backtrace[function]()</strong></div>";
 			}
 		}
 
@@ -94,7 +96,6 @@
 				!empty($_SERVER['REMOTE_ADDR']) ? 'Client: '. $_SERVER['REMOTE_ADDR'] .' ('. gethostbyaddr($_SERVER['REMOTE_ADDR']) .')' : '',
 				!empty($_SERVER['HTTP_USER_AGENT']) ? 'User Agent: '. $_SERVER['HTTP_USER_AGENT'] : '',
 				!empty($_SERVER['HTTP_REFERER']) ? 'Referer: '. $_SERVER['HTTP_REFERER'] : '',
-				!empty($_SERVER['HTTP_REFERER']) ? 'Referer: '. $_SERVER['HTTP_REFERER'] : '',
 			]));
 
 			if (defined('SCRIPT_TIMESTAMP_START')) {
@@ -108,7 +109,7 @@
 			);
 		}
 
-		if (in_array($errno, [E_PARSE, E_ERROR, E_COMPILE_ERROR, E_CORE_ERROR, E_USER_ERROR])) {
+		if (in_array($errno, [E_PARSE, E_ERROR, E_COMPILE_ERROR, E_CORE_ERROR, 256])) {
 			http_response_code(500);
 			exit(500);
 		}

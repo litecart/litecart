@@ -10,15 +10,11 @@
 	$products = database::query(
 		"select p.id, p.default_category_id, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name, (
 			if(p.id = '". database::input($query) ."', 10, 0)
-			+ (p.code regexp '". database::input($code_regex) ."', 5, 0)
+			+ if(p.code regexp '". database::input($code_regex) ."', 5, 0)
 
-			+ (match(json_value(p.name, '$.". database::input(language::$selected['code']) ."')) against ('". database::input($query_fulltext) ."' in boolean mode))
-			+ (match(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."')) against ('". database::input($query_fulltext) ."' in boolean mode) /2)
-			+ (match(json_value(p.description, '$.". database::input(language::$selected['code']) ."')) against ('". database::input($query_fulltext) ."' in boolean mode) /3)
-
-			+ if (json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query) ."%', 3, 0)
-			+ if (json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query) ."%', 2, 0)
-			+ if (json_value(p.description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query) ."%', 1, 0)
+			+ if (json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query) ."%', 5, 0)
+			+ if (json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query) ."%', 3, 0)
+			+ if (json_value(p.description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query) ."%', 2, 0)
 
 			+ if (p.id in (
 				select product_id from ". DB_TABLE_PREFIX ."products_stock_options
@@ -68,14 +64,14 @@
 	$query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
 
 	$stock_items = database::query(
-		"select s.id, s.sku, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name, (
-			if(s.id = '". database::input($query) ."', 10, 0)
+		"select si.id, si.sku, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name, (
+			if(si.id = '". database::input($query) ."', 10, 0)
 			+ (match(si.name) against ('". database::input($query_fulltext) ."' in boolean mode))
 			+ if(si.name like '%". database::input($query) ."%', 3, 0)
-			+ if(s.sku regexp '". database::input($code_regex) ."', 5, 0)
-			+ if(s.mpn regexp '". database::input($code_regex) ."', 5, 0)
-			+ if(s.gtin regexp '". database::input($code_regex) ."', 5, 0)
-			+ if (s.id in (
+			+ if(si.sku regexp '". database::input($code_regex) ."', 5, 0)
+			+ if(si.mpn regexp '". database::input($code_regex) ."', 5, 0)
+			+ if(si.gtin regexp '". database::input($code_regex) ."', 5, 0)
+			+ if (si.id in (
 				select stock_item_id from ". DB_TABLE_PREFIX ."stock_items_references
 				where stock_item_id in (
 					select id from ". DB_TABLE_PREFIX ."stock_items_references
@@ -84,7 +80,7 @@
 			), 5, 0)
 		) as relevance
 
-		from ". DB_TABLE_PREFIX ."stock_items s
+		from ". DB_TABLE_PREFIX ."stock_items si
 
 		having relevance > 0
 		order by relevance desc, id asc

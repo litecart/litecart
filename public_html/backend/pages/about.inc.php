@@ -143,23 +143,23 @@
 
 		$entries = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($log_file));
 
-		if (preg_match_all('#\[(\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/]+)\] (.*?)'. addcslashes(PHP_EOL, "\r\n") .'([^\[]*)#s', $entries, $matches)) {
+		if (preg_match_all('#\[(\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/]+)\] ([^\r\n]+)(.*?)(?=\R*\[|\R*$)#us', $entries, $matches)) {
 
 			foreach (array_keys($matches[0]) as $i) {
 
 				$checksum = crc32($matches[2][$i]);
+				$backtrace = trim(preg_replace('#(\r\n?|\n)+#', '$1', $matches[3][$i]), "\r\n"); // Clean line breaks
 
 				if (!isset($errors[$checksum])) {
 					$errors[$checksum] = [
 						'error' => $matches[2][$i],
-						'backtrace' => $matches[3][$i],
+						'backtrace' => $backtrace,
 						'occurrences' => 1,
 						'last_occurrence' => strtotime($matches[1][$i]),
-						'critical' => preg_match('#(Parse|Fatal) error:#s', $matches[2][$i]) ? true : false,
+						'critical' => preg_match('#(Parse|Fatal) error:#is', $matches[2][$i]) ? true : false,
 					];
 				} else {
 					$errors[$checksum]['occurrences']++;
-					//$rows[$checksum]['backtrace'] = $matches[3][$i];
 					$errors[$checksum]['last_occurrence'] = strtotime($matches[1][$i]);
 				}
 			}
@@ -233,6 +233,15 @@
 #box-error-log td {
 	white-space: wrap !important;
 	cursor: default;
+}
+#box-error-log .backtrace {
+	background: #f8f8f8;
+	white-space: pre-wrap;
+	padding: 1em;
+	border: 1px solid var(--default-border-color);
+	border-radius: var(--border-radius);
+	font-family: monospace;
+	tab-size: 2;
 }
 </style>
 
@@ -427,6 +436,7 @@
 						<th><?php echo t('title_value', 'Value'); ?></th>
 					</tr>
 				</thead>
+
 				<tbody>
 					<?php foreach ($php['ini'] as $key => $value) { ?>
 					<tr>
@@ -458,14 +468,14 @@
 						<th><?php echo t('title_last_occurrence', 'Last Occurrence'); ?></th>
 					</tr>
 				</thead>
+
 				<tbody>
 					<?php foreach ($errors as $error) { ?>
-					<tr>
-						<td><?php echo functions::form_checkbox('errors[]', $error['error'], !empty($_POST['parse']) ? 'disabled' : ''); ?></td>
-						<td style="white-space: normal;"><?php echo functions::escape_html($error['error']); ?><br>
-							<div class="backtrace">
-								<?php echo nl2br(functions::escape_html($error['backtrace'])); ?>
-							</div>
+					<tr<?php echo $error['critical'] ? ' class="critical"' : ''; ?>>
+						<td><?php echo functions::form_checkbox('errors[]', $error['error']); ?></td>
+						<td style="white-space: normal;">
+							<?php echo functions::escape_html($error['error']); ?><br>
+							<div class="backtrace"><?php echo functions::escape_html($error['backtrace']); ?></div>
 						</td>
 						<td class="text-center"><?php echo $error['occurrences']; ?></td>
 						<td><?php echo functions::datetime_when($error['last_occurrence']); ?></td>

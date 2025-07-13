@@ -445,7 +445,7 @@
 
 					$this->_data['stock_options'] = [];
 
-					if ($this->stock_option_type != 'variant') {
+					if ($this->stock_option_type != 'variants') {
 						break;
 					}
 
