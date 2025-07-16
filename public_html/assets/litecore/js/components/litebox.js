@@ -39,20 +39,39 @@ waitFor('jQuery', ($) => {
 			this.$instance = $([
 				'<div class="litebox litebox-loading">',
 				`	<div class="litebox-modal${this.seamless ? ' litebox-seamless' : ''}">`,
-				`		<div class="litebox-inner">${this.loading}</div>`,
+				`		${this.loading}`,
 				'	</div>',
 				'</div>'
 			].join('\n'));
 
+			// Track mousedown and mouseup to ensure both happen outside modal before closing
+			let mousedownOutsideModal = false;
+
+			const isOutsideModal = (e) => {
+				const $modal = this.$instance.find('.litebox-modal');
+				if (!$modal.length) return true;
+				const rect = $modal[0].getBoundingClientRect();
+				return e.clientX < rect.left || e.clientX > rect.right ||
+					e.clientY < rect.top || e.clientY > rect.bottom;
+			};
+
+			this.$instance.on('mousedown.litebox', (e) => {
+				mousedownOutsideModal = isOutsideModal(e);
+			});
+
+			this.$instance.on('mouseup.litebox', (e) => {
+				if (mousedownOutsideModal && isOutsideModal(e) && this.closeOnClick === 'backdrop') {
+					this.close(e);
+					e.preventDefault();
+				}
+			});
+
 			this.$instance.on('click.litebox', (e) => {
-				if (e.isDefaultPrevented() || !(
-						(this.closeOnClick === 'backdrop' && $(e.target).is('.litebox')) ||
-						this.closeOnClick === 'anywhere' ||
-						$(e.target).is('.litebox-close')
-					)
-				) return;
-				this.close(e);
-				e.preventDefault();
+				if (e.isDefaultPrevented()) return;
+				if (this.closeOnClick === 'anywhere' || $(e.target).is('.litebox-close')) {
+					this.close(e);
+					e.preventDefault();
+				}
 			});
 		}
 
