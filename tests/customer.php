@@ -67,6 +67,18 @@
 		}
 
 		########################################################################
+		## Loading the customer
+		########################################################################
+
+		customer::load($administrator->data['id']);
+
+		if (!functions::array_intersect_compare($customer->data, customer::$data)) {
+			throw new Exception('customer::$data does not match $customer->data');
+		}
+
+		customer::reset();
+
+		########################################################################
 		## Delete the customer
 		########################################################################
 

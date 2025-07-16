@@ -26,8 +26,12 @@
 	}
 
 	if (file_get_contents('php://input') == '') {
-		foreach ($order->data['customer'] as $key => $value) {
-			$_POST['customer'][$key] = $value;
+		$_POST['customer'] = $order->data['customer'];
+
+		if (!empty($_POST['company'])) {
+			$_POST['customer']['type'] = 'business';
+		} else {
+			$_POST['customer']['type'] = 'individual';
 		}
 	}
 
@@ -130,6 +134,7 @@
 			'country_code',
 			'zone_code',
 			'phone',
+			'email',
 		] as $field) {
 			if (settings::get('customer_shipping_address') && !empty($order->data['different_shipping_address'])) {
 				if (isset($_POST['shipping_address'][$field])) {
@@ -247,6 +252,7 @@
 		'order' => $order->data,
 		'account_exists' => $account_exists,
 		'subscribed_to_newsletter' => $subscribed_to_newsletter,
+		'privacy_policy' => settings::get('privacy_policy'),
 	];
 
 	echo $_page;

@@ -103,6 +103,18 @@
 		}
 
 		########################################################################
+		## Loading the administrator
+		########################################################################
+
+		administrator::load($administrator->data['id']);
+
+		if (!functions::array_intersect_compare($administrator->data, administrator::$data)) {
+			throw new Exception('administrator::$data does not match $administrator->data');
+		}
+
+		administrator::reset();
+
+		########################################################################
 		## Deleting the administrator
 		########################################################################
 

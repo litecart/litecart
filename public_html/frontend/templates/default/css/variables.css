@@ -67,6 +67,7 @@
   --default-line-height: 1.2;
   --default-title-color: #333;
   --default-border-color: #ececf1;
+  --default-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 1px 3px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   --link-text-color: #5292b1;
   /* Forms */
   --input-padding-x: 1.25em;
@@ -76,7 +77,7 @@
   --input-border-color: #e5e6e9;
   --input-border-width: 0;
   --input-outline-color: #ccc;
-  --input-outline-color--hover: #4e4e55;
+  --input-outline-color--hover: #e0e0e6;
   --input-outline-width: 1px;
   --input-shadow: none;
   --input-addon-background: #e9ebf1;
@@ -90,11 +91,12 @@
   --badge-text-color: #fff;
   /* Banners */
   --banner-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  --banner-shadow: var(--default-shadow);
   /* Breadcrumbs */
   --breadcrumbs-background: #dcdce5;
   --breadcrumbs-border-width: 1px;
   --breadcrumbs-border-color: #d6d6e1;
-  --breadcrumbs-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  --breadcrumbs-shadow: var(--default-shadow);
   --breadcrumb-item-background: #f1f1f7;
   --breadcrumb-item-text-color: #444;
   --breadcrumb-item-border-width: 1px;
@@ -135,9 +137,9 @@
   --card-title-text-weight: 500;
   --card-border-color: #e7e7e7;
   --card-border-width: 1px;
-  --card-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --card-shadow: var(--default-shadow);
   --card-footer-background: #f2f3f6;
-  --carousel-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  --carousel-shadow: var(--default-shadow);
   /* Dropdowns */
   --dropdown-background: #fff;
   --dropdown-text-color: var(--default-text-color);
@@ -151,13 +153,14 @@
   /* Navigation */
   --navbar-background: linear-gradient(to bottom, #dadbe3, #cdcdd8, #dcdae5);
   --navbar-text-color: #4e4e55;
-  --navbar-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
+  --navbar-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  --navbar-shadow: var(--default-shadow);
   --navbar-border-width: 1px;
   --navbar-border-color: #e3e3e3;
   --navbar-outline-width: 1px;
   --navbar-outline-color: #d1d1e0;
   /* Notices */
-  --notice-default-background: #f0f0f0;
+  --notice-default-background: #e5e3e3;
   --notice-default-text-color: #333;
   --notice-success-background: #d6eca6;
   --notice-success-text-color: #567d00;
@@ -191,7 +194,7 @@
   --tab-item-background: #e5e5ea;
   --tab-item-background--hover: rgba(255, 255, 255, 0.75);
   --tab-item-background--active: #fff;
-  --tab-item-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  --tab-item-shadow: var(--default-shadow);
   /* Tables */
   --table-border-color: var(--default-border-color);
   --table-border-width: 1px;

@@ -758,6 +758,7 @@ INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, 
 ('defaults', 'Default Order Status', 'Default order status for new orders if nothing else is set.', 'default_order_status_id', '1', 'order_status()', 0, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('defaults', 'Default Address Format', 'The default address format if not specified otherwise.', 'default_address_format', '%company\n%firstname %lastname\n%address1\n%address2\n%country_code-%postcode %city\n%country_name', 'textarea()', 1, 14, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('customer_details', 'Different Shipping Address', 'Allow customers to provide a different address for shipping.', 'customer_shipping_address', '1', 'toggle("y/n")', 0, 24, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('customer_details', 'Newsletter Subscription', 'Allow customers to subscribe to newsletter.', 'newsletter_enabled', '1', 'toggle("e/d")', 0, 25, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('listings', 'Featured Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_featured_products_num_items', '10', 'number()', 0, 17, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('checkout', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id, {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 1, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('advanced', 'Static Content Domain Name', 'Use the given alias domain name for static content (fonts, images, stylesheets, javascripts, etc.).', 'static_domain', '', 'text()', 0, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -1033,6 +1034,10 @@ AND EXISTS (
 	AND `value` = 1
 );
 -- -----
+UPDATE `lc_settings`
+SET `function` = 'select("1:1","1:2","2:1","2:3","3:2","3:4","4:3","9:16","16:9")'
+WHERE `key` IN ('category_image_ratio', 'product_image_ratio');
+-- -----
 UPDATE `lc_sold_out_statuses`
 SET name = '{}',
 	description = '{}';
@@ -1060,7 +1065,7 @@ ALTER TABLE `lc_categories`
 DROP COLUMN `list_style`;
 -- -----
 DELETE FROM `lc_settings`
-WHERE `key` IN ('auto_decimals', 'cache_system_breakpoint', 'development_mode', 'jobs_interval', 'round_amounts', 'store_template_admin', 'store_template_admin_settings');
+WHERE `key` IN ('auto_decimals', 'cache_system_breakpoint', 'development_mode', 'jobs_interval', 'auto_decimals', 'round_amounts', 'store_template_admin', 'store_template_admin_settings', 'gzip_enabled');
 -- -----
 DELETE FROM `lc_modules`
 WHERE `module_id` = 'ot_subtotal'
@@ -1185,9 +1190,6 @@ OR category_id NOT IN (SELECT id from `lc_categories`);
 DELETE FROM `lc_quantity_units_info`
 WHERE quantity_unit_id NOT IN (SELECT id from `lc_quantity_units`)
 OR language_code NOT IN (SELECT code from `lc_languages`);
--- -----
-DELETE FROM `lc_settings`
-WHERE `key` IN ('gzip_enabled');
 -- -----
 DELETE FROM `lc_sold_out_statuses_info`
 WHERE sold_out_status_id NOT IN (SELECT id from `lc_sold_out_statuses`)

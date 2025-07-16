@@ -378,7 +378,6 @@
 				"group_id": { "type": "INT", "length": 1, "unsigned": true, "nullable": true },
 				"code": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"email": { "type": "VARCHAR", "length": 64, "default": "''" },
-				"type": { "type": "ENUM('','business','individual')", "default": "''" },
 				"tax_id": { "type": "VARCHAR", "length": 24, "default": "''" },
 				"company": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"firstname": { "type": "VARCHAR", "length": 32, "default": "''" },

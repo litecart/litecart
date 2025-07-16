@@ -104,13 +104,13 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."customers
-				set known_ips = '". database::input(implode(',', $administrator['known_ips'])) ."'
+				set known_ips = '". database::input(implode(',', $customer['known_ips'])) ."',
 					last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 					last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
-					last_login = '". date('Y-m-d H:i:s') ."'
+					last_login = '". date('Y-m-d H:i:s') ."',
 					login_attempts = 0,
-					total_logins = total_logins + 1,
+					total_logins = total_logins + 1
 				where id = ". (int)$customer['id'] ."
 				limit 1;"
 			);

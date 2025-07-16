@@ -2159,7 +2159,7 @@
 				return 'data-'. $key .'="'. functions::escape_attr($stock_option[$key]) .'"';
 			}, ['name', 'sku', 'weight', 'weight_unit', 'length', 'width', 'height', 'length_unit']));
 
-			return [$stock_option['id'], $option, $parameters];
+			return [$stock_option['id'], $option, 'hidden '.$parameters];
 		}, $product->stock_options);
 
 		if (preg_match('#\[\]$#', $name)) {

@@ -33,7 +33,9 @@
 										<?php echo functions::form_input_password('password', '', 'required'); ?>
 									</label>
 								</div>
+							</div>
 
+							<div class="form-grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_new_password', 'New Password'); ?> (<?php echo t('text_or_leave_blank', 'Or leave blank'); ?>)</div>
@@ -64,19 +66,20 @@
 						<?php echo functions::form_begin('customer_details_form', 'post', null, false, 'style="max-width: 720px;"'); ?>
 
 							<div class="form-grid">
-
 								<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
 								<div class="col-6">
 									<div class="form-group">
 										<div class="form-label"><?php echo t('title_customer_type', 'Customer Type'); ?></div>
-										<?php echo functions::form_toggle('type', ['individual' => t('title_individual', 'Individual'), 'company' => t('title_company', 'Company')], empty($_POST['type']) ? 'individual' : true); ?>
+										<?php echo functions::form_toggle('type', ['business' => t('title_business', 'Business'), 'individual' => t('title_individual', 'Individual')], empty($_POST['type']) ? 'individual' : true); ?>
 									</div>
 								</div>
 
 								<div class="col-6">
 								</div>
 								<?php } ?>
+							</div>
 
+							<div id="company-details" class="form-grid">
 								<?php if (settings::get('customer_field_company')) { ?>
 								<div class="col-sm-6">
 									<label class="form-group">
@@ -94,7 +97,9 @@
 									</label>
 								</div>
 								<?php } ?>
+							</div>
 
+							<div class="form-grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
@@ -108,7 +113,9 @@
 										<?php echo functions::form_input_text('lastname', true, 'required'); ?>
 									</label>
 								</div>
+							</div>
 
+							<div class="form-grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_address1', 'Address 1'); ?></div>
@@ -122,7 +129,9 @@
 										<?php echo functions::form_input_text('address2', true); ?>
 									</label>
 								</div>
+							</div>
 
+							<div class="form-grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
@@ -136,7 +145,9 @@
 										<?php echo functions::form_input_text('city', true); ?>
 									</label>
 								</div>
+							</div>
 
+							<div class="form-grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
@@ -150,24 +161,23 @@
 										<?php echo form_select_zone('zone_code', fallback($_POST['country_code']), true, 'required'); ?>
 									</label>
 								</div>
+							</div>
 
+							<div class="form-grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
 										<?php echo functions::form_input_phone('phone', true, 'placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
 									</label>
 								</div>
+							</div>
 
-								<div class="col-12">
-									<div class="form-group">
-										<?php echo functions::form_checkbox('newsletter', ['1', t('consent_newsletter', 'I would like to be notified occasionally via email when there are new products or campaigns.')], true); ?>
-									</div>
-								</div>
+							<div class="form-group">
+								<?php echo functions::form_checkbox('newsletter', ['1', t('consent_newsletter', 'I would like to be notified occasionally via email when there are new products or campaigns.')], true); ?>
+							</div>
 
-								<div class="col-12">
-									<?php echo functions::form_button('save_details', t('title_save', 'Save')); ?>
-								</div>
-
+							<div class="form-group">
+								<?php echo functions::form_button('save_details', t('title_save', 'Save')); ?>
 							</div>
 
 						<?php echo functions::form_end(); ?>
@@ -180,12 +190,12 @@
 
 <script>
 	$('input[name="type"]').on('change', function() {
-		if ($(this).val() == 'company') {
-			$('.company-details :input').prop('disabled', false);
-			$('.company-details').slideDown('fast');
+		if ($(this).val() == 'business') {
+			$('.business-details :input').prop('disabled', false);
+			$('.business-details').slideDown('fast');
 		} else {
-			$('.company-details :input').prop('disabled', true);
-			$('.company-details').slideUp('fast');
+			$('.business-details :input').prop('disabled', true);
+			$('.business-details').slideUp('fast');
 		}
 	}).first().trigger('change');
 

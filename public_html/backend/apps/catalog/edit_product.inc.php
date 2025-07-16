@@ -441,7 +441,7 @@
 										<?php echo functions::form_input_hidden('prices['.$key.'][id]', true); ?>
 										<?php echo functions::form_select_campaign('customer_group_id', true); ?>
 									</td>
-									<td><?php echo functions::form_input_decimal('prices['.$key.'][min_quantity]', true, 'min="1"'); ?></td>
+									<td><?php echo functions::form_input_decimal('prices['.$key.'][min_quantity]', true, 'min="0"'); ?></td>
 									<td>
 										<div class="dropdown dropdown-end">
 											<?php echo functions::form_input_money('prices['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>

@@ -96,14 +96,14 @@
 									</div>
 									<?php } ?>
 
-									<label class="form-group">
+									<div class="form-group">
 										<div class="form-label"><?php echo t('title_price_range', 'Price Range'); ?></div>
 										<div class="input-group">
 											<?php echo functions::form_input_number('price_range[min]', true, 'placeholder="'. t('title_min', 'Min') .'"'); ?>
 											<span class="input-group-text"> &ndash; </span>
 											<?php echo functions::form_input_number('price_range[max]', true, 'placeholder="'. t('title_max', 'Max') .'"'); ?>
 										</div>
-									</label>
+									</div>
 
 							<?php echo functions::form_end(); ?>
 						</section>

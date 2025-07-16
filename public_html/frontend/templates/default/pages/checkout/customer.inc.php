@@ -29,27 +29,38 @@
 
 			<?php echo functions::form_begin('customer_form', 'post'); ?>
 
-				<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
 				<div class="grid">
-					<div class="col-sm-6">
-						<?php if (settings::get('customer_field_company')) { ?>
-						<label class="form-group">
-							<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?> (<?php echo t('text_or_leave_blank', 'Or leave blank'); ?>)</div>
-							<?php echo functions::form_input_text('customer[company]', true); ?>
-						</label>
-						<?php } ?>
+					<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
+					<div class="col-6">
+						<div class="form-group">
+							<div class="form-label"><?php echo t('title_customer_type', 'Customer Type'); ?></div>
+							<?php echo functions::form_toggle('customer[type]', ['business' => t('title_business', 'Business'), 'individual' => t('title_individual', 'Individual')], empty($_POST['type']) ? 'individual' : true); ?>
+						</div>
 					</div>
+					<?php } ?>
+				</div>
 
-					<div class="col-sm-6">
+				<div id="business-details"<?php echo (isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ' style="display: none;"' : ''; ?>>
+					<div class="grid">
+						<?php if (settings::get('customer_field_company')) { ?>
+						<div class="col-sm-6">
+							<label class="form-group">
+								<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?></div>
+								<?php echo functions::form_input_text('customer[company]', true, 'required' . ((isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ' disabled' : '')); ?>
+							</label>
+						</div>
+						<?php } ?>
+
 						<?php if (settings::get('customer_field_tax_id')) { ?>
-						<label class="form-group">
-							<div class="form-label"><?php echo t('title_tax_id', 'Tax ID'); ?></div>
-							<?php echo functions::form_input_text('customer[tax_id]', true); ?>
-						</label>
+						<div class="col-sm-6">
+							<label class="form-group">
+								<div class="form-label"><?php echo t('title_tax_id', 'Tax ID'); ?> / <?php echo t('title_vat_number', 'VAT Number'); ?></div>
+								<?php echo functions::form_input_text('tax_id', true, (isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? 'disabled' : ''); ?>
+							</label>
+						</div>
 						<?php } ?>
 					</div>
 				</div>
-				<?php } ?>
 
 				<div class="grid">
 					<div class="col-sm-6">
@@ -143,7 +154,7 @@
 						<div class="form-grid">
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?> (<?php echo t('text_or_leave_blank', 'Or leave blank'); ?>)</div>
+									<div class="form-label"><?php echo t('title_business_name', 'Business Name'); ?> (<?php echo t('text_or_leave_blank', 'Or leave blank'); ?>)</div>
 									<?php echo functions::form_input_text('shipping_address[company]', true); ?>
 								</label>
 							</div>
@@ -188,7 +199,9 @@
 									<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
 									<?php echo functions::form_input_text('shipping_address[postcode]', true); ?>
 								</label>
+							</div>
 
+							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_city', 'City'); ?></div>
 									<?php echo functions::form_input_text('shipping_address[city]', true); ?>
@@ -217,6 +230,13 @@
 						<div class="grid">
 							<div class="col-sm-6">
 								<label class="form-group">
+									<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
+									<?php echo functions::form_input_email('shipping_address[email]', true); ?>
+								</label>
+							</div>
+
+							<div class="col-sm-6">
+								<label class="form-group">
 									<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
 									<?php echo functions::form_input_phone('shipping_address[phone]', true); ?>
 								</label>
@@ -231,8 +251,10 @@
 
 					<?php if (!empty($account_exists)) { ?>
 
-					<div class="alert alert-info">
-						<?php echo functions::draw_fonticon('icon-info'); ?> <?php echo t('notice_existing_customer_account_will_be_used', 'We found an existing customer account that will be used for this order'); ?>
+					<div class="notices">
+						<div class="notice notice-default">
+							<?php echo functions::draw_fonticon('icon-info'); ?> <?php echo t('notice_sign_in_to_connect_purchase_to_account', 'Sign in to connect this purchase to your account'); ?>
+						</div>
 					</div>
 
 					<?php } else { ?>
@@ -265,8 +287,8 @@
 				<div class="form-group">
 					<?php echo functions::form_checkbox('newsletter', ['1', t('consent_newsletter', 'I would like to be notified occasionally via email when there are new products or campaigns.')], true); ?>
 
-					<?php if ($privacy_policy_consent) { ?>
-					<?php echo functions::form_checkbox('privacy_policy_consent', ['1', $privacy_policy_consent], true, 'required'); ?>
+					<?php if ($privacy_policy) { ?>
+					<?php echo functions::form_checkbox('privacy_policy_consent', ['1', t('consent_privacy_policy', 'I have read and I consent to the terms and policy for privacy data management.')], true, 'required'); ?>
 					<?php } ?>
 				</div>
 
@@ -322,7 +344,18 @@
 
 	$('input[name="sign_up"][type="checkbox"]').trigger('change');
 
-	// On Toggle Shipping Address
+	// Toggle customer type
+	$('input[name="customer[type]"]').on('change', function() {
+		if ($(this).val() == 'business') {
+			$('#business-details :input').prop('disabled', false);
+			$('#business-details').slideDown('fast');
+		} else {
+			$('#business-details :input').prop('disabled', true);
+			$('#business-details').slideUp('fast');
+		}
+	});
+
+	// Toggle shipping address
 	$('input[name="different_shipping_address"]').on('change', function(e) {
 		if (this.checked == true) {
 			$('.shipping-address fieldset').prop('disabled', false).slideDown('fast');

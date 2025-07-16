@@ -52,12 +52,6 @@ body {
   left: 0;
   right: 0;
 }
-@media (min-width: 576px) {
-  #site-navigation .navbar-search .dropdown-menu {
-    width: 400px;
-    max-width: 400px;
-  }
-}
 @media (min-width: 768px) {
   #site-navigation .navbar-search {
     margin: 0 1em;
