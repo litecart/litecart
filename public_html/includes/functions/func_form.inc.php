@@ -335,6 +335,17 @@
 		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'" step="any" data-decimals="'. (int)$decimals .'"'. ($parameters ? ' '. $parameters : '') .'>';
 	}
 
+	function form_input_decimal_toggle($name, $input=true, $decimals=null, $parameters='') {
+
+		return implode(PHP_EOL, [
+			'<div class="input-group">',
+			'  <button name="decrease" class="btn btn-default" type="button">-</button>',
+			'  ' . form_input_decimal($name, $input, $decimals, $parameters),
+			'  <button name="increase" class="btn btn-default" type="button">+</button>',
+			'</div>',
+		]);
+	}
+
 	function form_input_email($name, $input=true, $parameters='') {
 
 		if ($input === true) {
@@ -420,6 +431,25 @@
 		}
 
 		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($input) .'" step="1"'. ($parameters ? ' '. $parameters : '') .'>';
+	}
+
+	function form_input_number_toggle($name, $input=true, $parameters='') {
+
+		if ($input === true) {
+			$input = form_reinsert_value($name);
+		}
+
+		if ($input != '') {
+			$input = round((int)$input);
+		}
+
+		return implode(PHP_EOL, [
+			'<div class="input-group">',
+			'  <button name="decrease" class="btn btn-default" type="button">-</button>',
+			'  '. form_input_number($name, $input, $parameters),
+			'  <button name="increase" class="btn btn-default" type="button">+</button>',
+			'</div>',
+		]);
 	}
 
 	function form_input_password($name, $input='', $parameters='') {
