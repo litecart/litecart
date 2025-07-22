@@ -44,3 +44,12 @@
   stats::$data['before_content'] = microtime(true) - SCRIPT_TIMESTAMP_START;
 
   stats::start_watch('content_capture');
+
+  $modules_hooks_dirs = glob(FS_DIR_APP . 'includes/modules/*/hooks', GLOB_ONLYDIR);
+
+  foreach ($modules_hooks_dirs as $hook_dir) {
+    foreach (glob($hook_dir . '/*.php') as $hook_file) {
+      require_once vmod::check($hook_file);
+    }
+  }
+
