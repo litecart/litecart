@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/app.min.css'); ?>">
 {snippet:head_tags}
 {snippet:style}
+<?php Hooks::do_action('render_header'); ?>
 </head>
 <body>
 
@@ -44,5 +45,6 @@
 {snippet:foot_tags}
 <script src="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'js/app.min.js'); ?>"></script>
 {snippet:javascript}
+<?php Hooks::do_action('render_footer'); ?>
 </body>
 </html>
