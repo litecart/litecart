@@ -127,14 +127,21 @@
 
 		cache::clear_cache('translations');
 
-		notices::add('notices', sprintf(t('text_found_d_translations', 'Found %d translations in %d files'), $found, $files));
+		notices::add('notices', strtr(t('text_found_d_translations', 'Found {n} translations in {files} files'), [
+			'{n}' => $found,
+			'{files}' => $files
+		]));
 
 		if ($new_translations) {
-			notices::add('notices', sprintf(t('text_added_d_new_translations', 'Added %d new translations'), $new_translations));
+			notices::add('notices', strtr(t('text_added_d_new_translations', 'Added {n} new translations'), [
+				'{n}' => $new_translations
+			]));
 		}
 
 		if ($updated) {
-			notices::add('notices', sprintf(t('text_updated_d_translations', 'Updated %d translations'), $updated));
+			notices::add('notices', strtr(t('text_updated_d_translations', 'Updated {n} translations'), [
+				'{n}' => $updated
+			]));
 		}
 	}
 
@@ -154,7 +161,9 @@
 				);
 			}
 
-			notices::add('success', sprintf(t('text_deleted_d_translations', 'Deleted %d translations'), count($_POST['translations'])));
+			notices::add('success', strtr(t('text_deleted_d_translations', 'Deleted {n} translations'), [
+				'{n}' => count($_POST['translations'])
+			]));
 
 		} catch (Exception $e) {
 			notices::add('errors', $e->getMessage());

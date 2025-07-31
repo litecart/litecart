@@ -27,7 +27,9 @@
 			foreach ($_POST['values'] as $value) {
 				foreach ($value['name'] as $name) {
 					if (preg_match('#(["\',\[\]<>])#', $name, $matches)) {
-						throw new Exception(strtr(t('error_attribute_value_contains_forbidden_character', 'An attribute value contains a forbidden character (%char)'), ['%char' => $matches[1]]));
+						throw new Exception(strtr(t('error_attribute_value_contains_forbidden_character', 'An attribute value contains a forbidden character "{char}"'), [
+							'{char}' => $matches[1]
+						]));
 					}
 				}
 			}

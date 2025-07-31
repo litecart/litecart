@@ -54,27 +54,27 @@
 			$newsletter_recipient->data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 
 			$aliases = [
-				'%ipaddress' => $_SERVER['REMOTE_ADDR'],
-				'%hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
-				'%datetime' => functions::datetime_format('datetime'),
-				'%store_name' => settings::get('store_name'),
-				'%store_link' => document::ilink(),
-				'%unsubscribe_link' => document::ilink('newsletter', ['email' => $_POST['email']]),
+				'{ipaddress}' => $_SERVER['REMOTE_ADDR'],
+				'{hostname}' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
+				'{datetime}' => functions::datetime_format('datetime'),
+				'{store_name}' => settings::get('store_name'),
+				'{store_link}' => document::ilink(),
+				'{unsubscribe_link}' => document::ilink('newsletter', ['email' => $_POST['email']]),
 			];
 
 			$message = strtr(t('email_body:newsletter_subscription_confirmation', implode("\r\n", [
 				'This is a confirmation that we have recieved your request to subscribe to our newsletter.',
 				'',
-				'If this was not you, click the link to unsubscribe: %unsubscribe_link',
-				'IP address: %ipaddress',
-				'Date: %datetime',
+				'If this was not you, click the link to unsubscribe: {unsubscribe_link}',
+				'IP address: {ipaddress}',
+				'Date: {datetime}',
 			])), $aliases);
 
-			$email = new ent_email();
-			$email->add_recipient($_POST['email'])
-					->set_subject(t('email_subject:newsletter_subscription_confirmation', 'Confirmation of newsletter subscription'))
-					->add_body($message)
-					->send();
+			(new ent_email())
+				->add_recipient($_POST['email'])
+				->set_subject(t('email_subject:newsletter_subscription_confirmation', 'Confirmation of newsletter subscription'))
+				->add_body($message)
+				->send();
 
 			notices::add('success', t('success_subscribed_to_newsletter', 'Thank you for subscribing to our newsletter'));
 			reload();
@@ -123,28 +123,28 @@
 			$newsletter_recipient->save();
 
 			$aliases = [
-				'%ipaddress' => $_SERVER['REMOTE_ADDR'],
-				'%hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
-				'%datetime' => functions::datetime_format('datetime'),
-				'%store_name' => settings::get('store_name'),
-				'%store_link' => document::ilink(),
-				'%subscribe_link' => document::ilink('newsletter', ['email' => $_POST['email']]),
+				'{ipaddress}' => $_SERVER['REMOTE_ADDR'],
+				'{hostname}' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
+				'{datetime}' => functions::datetime_format('datetime'),
+				'{store_name}' => settings::get('store_name'),
+				'{store_link}' => document::ilink(),
+				'{subscribe_link}' => document::ilink('newsletter', ['email' => $_POST['email']]),
 			];
 
 			$message = strtr(t('email_body:newsletter_subscription_confirmation', implode("\r\n", [
 				'This is a confirmation that we have recieved your request to unsubscribe to our newsletter.',
 				'',
 				'You can subscribe again at any time using the link:',
-				'%subscribe_link',
-				'IP-address: %ipaddress',
-				'Date: %datetime',
+				'{subscribe_link}',
+				'IP-address: {ipaddress}',
+				'Date: {datetime}',
 			])), $aliases);
 
-			$email = new ent_email();
-			$email->add_recipient($_POST['email'])
-					->set_subject(t('email_subject:newsletter_subscription_confirmation', 'Confirmation of newsletter subscription'))
-					->add_body($message)
-					->send();
+			(new ent_email())
+				->add_recipient($_POST['email'])
+				->set_subject(t('email_subject:newsletter_subscription_confirmation', 'Confirmation of newsletter subscription'))
+				->add_body($message)
+				->send();
 
 			notices::add('success', t('success_unsubscribed_from_newsletter', 'You have been unsubscribed from the newsletter'));
 			reload();
@@ -162,10 +162,9 @@
 	];
 
 	if ($privacy_policy_id = settings::get('privacy_policy')) {
-		$aliases = [
-			'%privacy_policy_link' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
-		];
-		$_page->snippets['consent'] = strtr(t('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
+		$_page->snippets['consent'] = strtr(t('consent:privacy_policy', 'I have read the <a href="{privacy_policy_link}" target="_blank">Privacy Policy</a> and I consent.'), [
+			'{privacy_policy_link}' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
+		]);
 	}
 
 	echo $_page->stitch();

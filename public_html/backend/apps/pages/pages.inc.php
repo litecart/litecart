@@ -61,7 +61,9 @@
 					$page->data['parent_id'] = $_POST['page_id'];
 					$page->save();
 				}
-				notices::add('success', sprintf(t('success_moved_d_pages', 'Moved %d pages'), count($_POST['pages'])));
+				notices::add('success', strtr(t('success_moved_d_pages', 'Moved {n} pages'), [
+					'{n}' => count($_POST['pages'])
+				]));
 			}
 
 			redirect(document::ilink(null, ['page_id' => $_POST['page_id']]));
@@ -85,7 +87,9 @@
 				$page->delete();
 			}
 
-			notices::add('success', sprintf(t('success_deleted_d_pages', 'Deleted %d pages'), count($_POST['pages'])));
+			notices::add('success', strtr(t('success_deleted_d_pages', 'Deleted {n} pages'), [
+				'{n}' => count($_POST['pages'])
+			]));
 			reload();
 			exit;
 

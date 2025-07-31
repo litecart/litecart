@@ -117,10 +117,10 @@
 			if (administrator::check_login()) {
 
 				// Show notice
-				notices::add('notices', strtr('%message [<a href="%link">%preview</a>]', [
-					'%message' => t('reminder_store_in_maintenance_mode', 'The store is in maintenance mode.'),
-					'%preview' => t('title_preview', 'Preview'),
-					'%link' => document::href_ilink('maintenance_mode'),
+				notices::add('notices', strtr('{message} [<a href="{link}">{preview}</a>]', [
+					'{message}' => t('reminder_store_in_maintenance_mode', 'The store is in maintenance mode.'),
+					'{preview}' => t('title_preview', 'Preview'),
+					'{link}' => document::href_ilink('maintenance_mode'),
 				]), 'maintenance_mode');
 
 			} else {

@@ -56,7 +56,9 @@
 			}
 
 			if ($customer['blocked_until'] && strtotime($customer['blocked_until']) > time()) {
-				throw new Exception(sprintf(t('error_account_is_blocked', 'The account is blocked until %s'), functions::datetime_format('datetime', $customer['blocked_until'])));
+				throw new Exception(strtr(t('error_account_is_blocked', 'The account is blocked until {datetime}'), [
+					'{datetime}' => functions::datetime_format('datetime', $customer['blocked_until'])
+				]));
 			}
 
 			if (!password_verify($_POST['password'], $customer['password_hash'])) {
@@ -82,7 +84,9 @@
 						limit 1;"
 					);
 
-					throw new Exception(strtr(t('error_this_account_has_been_temporarily_blocked_n_minutes', 'This account has been temporarily blocked %n minutes'), ['%n' => 15, '%d' => 15]));
+					throw new Exception(strtr(t('error_this_account_has_been_temporarily_blocked_n_minutes', 'This account has been temporarily blocked {n} minutes'), [
+						'{n}' => 15
+					]));
 				}
 			}
 
@@ -125,10 +129,10 @@
 				header('Set-Cookie: customer_remember_me='. $customer['email'] .':'. $checksum .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Lax', false);
 			}
 
-			notices::add('success', strtr(t('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), [
-				'%email' => customer::$data['email'],
-				'%firstname' => customer::$data['firstname'],
-				'%lastname' => customer::$data['lastname'],
+			notices::add('success', strtr(t('success_logged_in_as_user', 'You are now logged in as {firstname} {lastname}.'), [
+				'{email}' => customer::$data['email'],
+				'{firstname}' => customer::$data['firstname'],
+				'{lastname}' => customer::$data['lastname'],
 			]));
 
 			if (!empty($_POST['redirect_url'])) {

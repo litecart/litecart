@@ -88,7 +88,9 @@
 			header('Content-Type: application/json');
 
 			if ($stock_option['quantity'] > 0) {
-				$notice = strtr(t('text_there_are_n_items_in_stock_for_option', 'There are %quantity items remaining in stock for this option'), ['%quantity' => (int)$stock_option['quantity']]);
+				$notice = strtr(t('text_there_are_n_items_in_stock_for_option', 'There are {n} items remaining in stock for this option'), [
+					'{n}' => (int)$stock_option['quantity'],
+				]);
 				echo json_encode(['status' => 'ok', 'notice' => $notice]);
 				exit;
 

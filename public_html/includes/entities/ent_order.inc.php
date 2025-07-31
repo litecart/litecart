@@ -170,9 +170,9 @@
 			if ($this->previous['id'] && $this->data['order_status_id'] != $this->previous['order_status_id']) {
 				$this->data['comments'][] = [
 					'author' => 'system',
-					'text' => strtr(t('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status', settings::get('store_language_code')), [
-						'%username' => fallback(administrator::$data['username'], 'system'),
-						'%new_status' => reference::order_status($this->data['order_status_id'], settings::get('store_language_code'))->name,
+					'text' => strtr(t('text_user_changed_order_status_to_new_status', 'Order status changed to {new_status}', settings::get('store_language_code')), [
+						'{username}' => fallback(administrator::$data['username'], 'system'),
+						'{new_status}' => reference::order_status($this->data['order_status_id'], settings::get('store_language_code'))->name,
 					]),
 					'hidden' => 1,
 				];
@@ -804,21 +804,21 @@
 			$order_status = $this->data['order_status_id'] ? reference::order_status($this->data['order_status_id'], $language_code) : '';
 
 			$aliases = [
-				'%order_id' => $this->data['no'], // Backwards compatibility
-				'%order_no' => $this->data['no'],
-				'%firstname' => $this->data['customer']['firstname'],
-				'%lastname' => $this->data['customer']['lastname'],
-				'%billing_address' => functions::format_address($this->data['customer']),
-				'%payment_transaction_id' => $this->data['payment_transaction_id'] ?: '-',
-				'%shipping_address' => functions::format_address($this->data['customer']['shipping_address']),
-				'%shipping_tracking_id' => $this->data['shipping_tracking_id'] ?: '-',
-				'%shipping_tracking_url' => $this->data['shipping_tracking_url'] ?: '',
-				'%order_items' => null,
-				'%total' => currency::format($this->data['total'], true, $this->data['currency_code'], $this->data['currency_value']),
-				'%order_copy_url' => document::ilink('order', ['order_no' => $this->data['no'], 'public_key' => $this->data['public_key']], false, [], $language_code),
-				'%order_status' => $order_status ? $order_status->name : null,
-				'%store_name' => settings::get('store_name'),
-				'%store_url' => document::ilink('', [], false, [], $language_code),
+				'{order_id}' => $this->data['no'], // Backwards compatibility
+				'{order_no}' => $this->data['no'],
+				'{firstname}' => $this->data['customer']['firstname'],
+				'{lastname}' => $this->data['customer']['lastname'],
+				'{billing_address}' => functions::format_address($this->data['customer']),
+				'{payment_transaction_id}' => $this->data['payment_transaction_id'] ?: '-',
+				'{shipping_address}' => functions::format_address($this->data['customer']['shipping_address']),
+				'{shipping_tracking_id}' => $this->data['shipping_tracking_id'] ?: '-',
+				'{shipping_tracking_url}' => $this->data['shipping_tracking_url'] ?: '',
+				'{order_items}' => null,
+				'{total}' => currency::format($this->data['total'], true, $this->data['currency_code'], $this->data['currency_value']),
+				'{order_copy_url}' => document::ilink('order', ['order_no' => $this->data['no'], 'public_key' => $this->data['public_key']], false, [], $language_code),
+				'{order_status}' => $order_status ? $order_status->name : null,
+				'{store_name}' => settings::get('store_name'),
+				'{store_url}' => document::ilink('', [], false, [], $language_code),
 			];
 
 			foreach ($this->data['items'] as $item) {
@@ -833,30 +833,30 @@
 						}
 					}
 
-					$aliases['%order_items'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($userdata) ? ' ('. implode(', ', $userdata) .')' : '') . "\r\n";
+					$aliases['{order_items}'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($userdata) ? ' ('. implode(', ', $userdata) .')' : '') . "\r\n";
 
 				} else {
-					$aliases['%order_items'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($userdata) ? ' ('. implode(', ', $userdata) .')' : '') . "\r\n";
+					$aliases['{order_items}'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($userdata) ? ' ('. implode(', ', $userdata) .')' : '') . "\r\n";
 				}
 			}
 
-			$aliases['%order_items'] = trim($aliases['%order_items']);
+			$aliases['{order_items}'] = trim($aliases['{order_items}']);
 
 			$subject = '['. t('title_order', 'Order', $language_code) .' '. $this->data['no'] .'] '. t('title_order_confirmation', 'Order Confirmation', $language_code);
 
 			$message = implode("\r\n", [
 				'Thank you for your purchase!',
 				'',
-				'Your order #%order_no has successfully been created with a total of %total for the following ordered items:',
+				'Your order #{order_no} has successfully been created with a total of {total} for the following ordered items:',
 				'',
-				'. %order_items',
+				'. {order_items}',
 				'',
 				'A printable order copy is available here:',
-				'%order_copy_url',
+				'{order_copy_url}',
 				'',
 				'Regards,',
-				'%store_name',
-				'%store_url',
+				'{store_name}',
+				'{store_url}',
 			]);
 
 			$message = strtr(t('email_order_confirmation', $message, $language_code), $aliases);
@@ -892,24 +892,24 @@
 			$order_status = reference::order_status($this->data['order_status_id'], $this->data['language_code']);
 
 			$aliases = [
-				'%order_id' => $this->data['no'], // Backwards compatibility
-				'%order_no' => $this->data['no'],
-				'%new_status' => $order_status->name,
-				'%firstname' => $this->data['customer']['firstname'],
-				'%lastname' => $this->data['customer']['lastname'],
-				'%billing_address' => nl2br(functions::format_address($this->data['customer']), false),
-				'%payment_transaction_id' => $this->data['payment_transaction_id'] ?: '-',
-				'%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address']), false),
-				'%shipping_tracking_id' => $this->data['shipping_tracking_id'] ?: '-',
-				'%shipping_tracking_url' => $this->data['shipping_tracking_url'],
-				'%shipping_current_status' => $this->data['shipping_current_status'],
-				'%shipping_current_location' => $this->data['shipping_current_location'],
-				'%order_items' => null,
-				'%total' => currency::format($this->data['total'], true, $this->data['currency_code'], $this->data['currency_value']),
-				'%order_copy_url' => document::ilink('order', ['order_no' => $this->data['no'], 'public_key' => $this->data['public_key']], false, [], $this->data['language_code']),
-				'%order_status' => $order_status->name,
-				'%store_name' => settings::get('store_name'),
-				'%store_url' => document::ilink('', [], false, [], $this->data['language_code']),
+				'{order_id}' => $this->data['no'], // Backwards compatibility
+				'{order_no}' => $this->data['no'],
+				'{new_status}' => $order_status->name,
+				'{firstname}' => $this->data['customer']['firstname'],
+				'{lastname}' => $this->data['customer']['lastname'],
+				'{billing_address}' => nl2br(functions::format_address($this->data['customer']), false),
+				'{payment_transaction_id}' => $this->data['payment_transaction_id'] ?: '-',
+				'{shipping_address}' => nl2br(functions::format_address($this->data['customer']['shipping_address']), false),
+				'{shipping_tracking_id}' => $this->data['shipping_tracking_id'] ?: '-',
+				'{shipping_tracking_url}' => $this->data['shipping_tracking_url'],
+				'{shipping_current_status}' => $this->data['shipping_current_status'],
+				'{shipping_current_location}' => $this->data['shipping_current_location'],
+				'{order_items}' => null,
+				'{total}' => currency::format($this->data['total'], true, $this->data['currency_code'], $this->data['currency_value']),
+				'{order_copy_url}' => document::ilink('order', ['order_no' => $this->data['no'], 'public_key' => $this->data['public_key']], false, [], $this->data['language_code']),
+				'{order_status}' => $order_status->name,
+				'{store_name}' => settings::get('store_name'),
+				'{store_url}' => document::ilink('', [], false, [], $this->data['language_code']),
 			];
 
 			foreach ($this->data['items'] as $item) {
@@ -924,10 +924,10 @@
 						}
 					}
 
-					$aliases['%order_items'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($userdata) ? ' ('. implode(', ', $userdata) .')' : '') . "<br>\r\n";
+					$aliases['{order_items}'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($userdata) ? ' ('. implode(', ', $userdata) .')' : '') . "<br>\r\n";
 
 				} else {
-					$aliases['%order_items'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($userdata) ? ' ('. implode(', ', $userdata) .')' : '') . "<br>\r\n";
+					$aliases['{order_items}'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($userdata) ? ' ('. implode(', ', $userdata) .')' : '') . "<br>\r\n";
 				}
 			}
 
@@ -939,7 +939,7 @@
 			}
 
 			if (!$message) {
-				$message = strtr(t('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), $aliases);
+				$message = strtr(t('text_order_status_changed_to_new_status', 'Order status changed to {new_status}', $this->data['language_code']), $aliases);
 			}
 
 			if (!empty(language::$languages[$this->data['language_code']]) && language::$languages[$this->data['language_code']]['direction'] == 'rtl') {

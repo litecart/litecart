@@ -5,7 +5,7 @@
 		<section id="box-order-success" class="card" data-id="<?php echo $order['id']; ?>" data-total="<?php echo currency::format_raw($order['total'], $order['currency_code']); ?>" data-total-tax="<?php echo currency::format_raw($order['total_tax'], $order['currency_code']); ?>" data-currency-code="<?php echo $order['currency_code']; ?>" data-transaction-id="<?php echo $order['payment_transaction_id']; ?>">
 
 			<div class="card-header">
-				<h1 class="card-title"><?php echo strtr(t('title_order_completed', 'Your order #%order_id was completed successfully!'), ['%order_id' => $order['id']]); ?></h1>
+				<h1 class="card-title"><?php echo strtr(t('title_order_completed', 'Your order #{order_id} was completed successfully!'), ['{order_id}' => $order['id']]); ?></h1>
 			</div>
 
 			<div class="card-body">

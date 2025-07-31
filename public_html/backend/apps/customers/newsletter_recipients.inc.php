@@ -47,7 +47,10 @@
 				$newsletter_recipient->save();
 			}
 
-			notices::add('success', strtr(t('success_added_n_new_recipients', 'Added %n new recipients'), ['%n' => $added]));
+			notices::add('success', strtr(t('success_added_n_new_recipients', 'Added {n} new recipients'), [
+				'{n}' => $added
+			]));
+			
 			reload();
 			exit;
 

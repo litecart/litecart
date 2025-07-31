@@ -132,7 +132,10 @@
 				}
 			}
 
-			notices::add('success', sprintf(t('success_copied_d_products', 'Copied %d products'), count($_POST['products'])));
+			notices::add('success', strtr(t('success_copied_d_products', 'Copied {n} products'), [
+				'{n}' => count($_POST['products'])
+			]));
+
 			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]));
 			exit;
 
@@ -572,11 +575,15 @@ table .icon-folder-open {
 						$product['warning'] = null;
 
 						if (!empty($product['valid_from']) && strtotime($product['valid_from']) > time()) {
-							throw new Exception(strtr(t('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product['valid_from'])]));
+							throw new Exception(strtr(t('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until {date}'), [
+								'{date}' => functions::datetime_format('date', $product['valid_from']),
+							]));
 						}
 
 						if (!empty($product['valid_to']) && strtotime($product['valid_to']) < time()) {
-							throw new Exception(strtr(t('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => functions::datetime_format('date', $product['valid_to'])]));
+							throw new Exception(strtr(t('text_product_expired_at_x', 'The product expired at {date} and can no longer be purchased'), [
+								'{date}' => functions::datetime_format('date', $product['valid_to']),
+							]));
 						}
 
 						if ($product['num_stock_options'] && $product['total_quantity'] <= 0) {

@@ -26,7 +26,9 @@
 		exit;
 	}
 
-	document::$title[] = !empty($_GET['query']) ? sprintf(t('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])) : t('title_search_results', 'Search Results');
+	document::$title[] = !empty($_GET['query']) ? strtr(t('title_search_results_for_s', 'Search Results for &quot;{query}&quot;'), [
+		'{query}' => functions::escape_html($_GET['query'])
+	]) : t('title_search_results', 'Search Results');
 
 	breadcrumbs::add(t('title_search_results', 'Search Results'), document::ilink('search'));
 	breadcrumbs::add(!empty($_GET['query']) ? strip_tags($_GET['query']) : t('title_all_products', 'All Products'), document::ilink());
@@ -34,7 +36,9 @@
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/search_results.inc.php');
 
 	$_page->snippets = [
-		'title' => sprintf(t('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])),
+		'title' => strtr(t('title_search_results_for_s', 'Search Results for &quot;{query}&quot;'), [
+			'{query}' => functions::escape_html($_GET['query'])
+		]),
 		'categories' => [],
 		'products' => [],
 		'sort_alternatives' => [

@@ -235,11 +235,15 @@
 				}
 
 				if ($product->valid_from && $product->valid_from > date('Y-m-d H:i:s')) {
-					throw new Exception(strtr(t('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product->valid_from)]));
+					throw new Exception(strtr(t('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until {date}'), [
+						'{date}' => functions::datetime_format('date', $product->valid_from)
+					]));
 				}
 
 				if ($product->valid_to && $product->valid_to < date('Y-m-d H:i:s')) {
-					throw new Exception(strtr(t('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), ['%date' => functions::datetime_format('date', $product->valid_to)]));
+					throw new Exception(strtr(t('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of {date}'), [
+						'{date}' => functions::datetime_format('date', $product->valid_to)
+					]));
 				}
 
 				if ($stock_option_id && !in_array($stock_option_id, array_column($product->stock_options, 'id'))) {
@@ -251,20 +255,28 @@
 				}
 
 				if ($product->quantity_min > 0 && $quantity < $product->quantity_min) {
-					throw new Exception(strtr(t('error_must_purchase_min_items', 'You must purchase a minimum of %num for this item'), ['%num' => (float)$product->quantity_min]));
+					throw new Exception(strtr(t('error_must_purchase_min_items', 'You must purchase a minimum of {n} for this item'), [
+						'{n}' => (float)$product->quantity_min
+					]));
 				}
 
 				if ($product->quantity_max > 0 && $quantity > $product->quantity_max) {
-					throw new Exception(strtr(t('error_cannot_purchase_more_than_max_items', 'You cannot purchase more than %num of this item'), ['%num' => (float)$product->quantity_max]));
+					throw new Exception(strtr(t('error_cannot_purchase_more_than_max_items', 'You cannot purchase more than {n} of this item'), [
+						'{n}' => (float)$product->quantity_max
+					]));
 				}
 
 				if ($product->quantity_step > 0 && ($quantity % $product->quantity_step) != 0) {
-					throw new Exception(strtr(t('error_can_only_purchase_sets_for_item', 'You can only purchase sets by %num for this item'), ['%num' => (float)$product->quantity_step]));
+					throw new Exception(strtr(t('error_can_only_purchase_sets_for_item', 'You can only purchase sets by {n} for this item'), [
+						'{n}' => (float)$product->quantity_step
+					]));
 				}
 
 				if ($product->quantity !== null && empty($product->sold_out_status['orderable'])) {
 					if (($product->quantity_available - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0) {
-						throw new Exception(strtr(t('error_only_n_remaining_products_available_for_purchase', 'There are only %quantity remaining products available for purchase'), ['%quantity' => round((float)$product->quantity_available, isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0)]));
+						throw new Exception(strtr(t('error_only_n_remaining_products_available_for_purchase', 'There are only {n} remaining products available for purchase'), [
+							'{n}' => round((float)$product->quantity_available, isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0)
+						]));
 					}
 				}
 

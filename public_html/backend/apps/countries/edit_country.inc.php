@@ -299,10 +299,10 @@
 		alert([
 			'<?php echo t('title_syntax', 'Syntax'); ?>:',
 			'',
-			'%company, %firstname, %lastname',
-			'%address1, %address2, %postcode, %city',
-			'%zone_code, %zone_name',
-			'%country_number, %country_code, %country_code_3, %country_name, %country_domestic_name',
+			'{company}, {firstname}, {lastname}',
+			'{address1}, {address2}, {postcode}, {city}',
+			'{zone_code}, {zone_name}',
+			'{country_number}, {country_code}, {country_code_3}, {country_name}, {country_domestic_name}',
 		].join('\n'));
 	});
 

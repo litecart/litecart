@@ -430,7 +430,13 @@
 
 			// Rewrite link
 			foreach (self::$_routes as $route) {
-				if (preg_match('#^'. strtr(preg_quote($route['resource'], '#'), ['\\*' => '.+', '\\?' => '.', '\\{' => '(', '\\}' => ')', ',' => '|']) .'$#i', $ilink)) { // Use preg_match() as fnmatch() does not support GLOB_BRACE
+				$operators = [
+					'\\*' => '.+',
+					'\\?' => '.',
+					'\\{' => '(', '\\}' => ')',
+					',' => '|'
+				];
+				if (preg_match('#^'. strtr(preg_quote($route['resource'], '#'), $operators) .'$#i', $ilink)) { // Use preg_match() as fnmatch() does not support GLOB_BRACE
 					if (isset($route['rewrite']) && is_callable($route['rewrite'])) {
 						if ($rewritten_link = call_user_func_array($route['rewrite'], [$link, $language_code])) {
 							$link = $rewritten_link;

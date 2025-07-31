@@ -22,7 +22,9 @@
 				$stock_item->delete();
 			}
 
-			notices::add('success', sprintf(t('success_deleted_d_stock_items', 'Deleted %d stock_items'), count($_POST['stock_items'])));
+			notices::add('success', strtr(t('success_deleted_d_stock_items', 'Deleted {n} stock items'), [
+				'{n}' => count($_POST['stock_items'])
+			]));
 			reload();
 			exit;
 

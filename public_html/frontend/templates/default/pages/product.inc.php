@@ -201,24 +201,24 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						</a>
 
 						<?php /* Requires appId
-						<a class="x btn btn-default" href="<?php echo document::href_link('fb-messenger://share/', ['link' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_via_s', 'Share via %s'), ['%s' => 'Messenger'])); ?>">
+						<a class="x btn btn-default" href="<?php echo document::href_link('fb-messenger://share/', ['link' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_via_s', 'Share via {s}'), ['{s}' => 'Messenger'])); ?>">
 							<?php echo functions::draw_fonticon('icon-brand-messenger', 'style="color: #000;"'); ?>
 						</a>
 							*/ ?>
 
-						<a class="x btn btn-default" href="<?php echo document::href_link('https://wa.me/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_via_s', 'Share via %s'), ['%s' => 'WhatsApp'])); ?>">
+						<a class="x btn btn-default" href="<?php echo document::href_link('https://wa.me/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_via_s', 'Share via {s}'), ['{s}' => 'WhatsApp'])); ?>">
 							<?php echo functions::draw_fonticon('icon-brand-whatsapp', 'style="color: #000;"'); ?>
 						</a>
 
-						<a class="facebook btn btn-default" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_on_s', 'Share on %s'), ['%s' => 'Facebook'])); ?>">
+						<a class="facebook btn btn-default" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Facebook'])); ?>">
 							<?php echo functions::draw_fonticon('icon-brand-facebook', 'style="color: #3b5998;"'); ?>
 						</a>
 
-						<a class="x btn btn-default" href="<?php echo document::href_link('https://x.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_on_s', 'Share on %s'), ['%s' => 'X'])); ?>">
+						<a class="x btn btn-default" href="<?php echo document::href_link('https://x.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'X'])); ?>">
 							<?php echo functions::draw_fonticon('icon-brand-x', 'style="color: #000;"'); ?>
 						</a>
 
-						<a class="pinterest btn btn-default" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_on_s', 'Share on %s'), ['%s' => 'Pinterest'])); ?>">
+						<a class="pinterest btn btn-default" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Pinterest'])); ?>">
 							<?php echo functions::draw_fonticon('icon-brand-pinterest', 'style="color: #bd081c;"'); ?>
 						</a>
 

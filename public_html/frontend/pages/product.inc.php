@@ -27,7 +27,9 @@
 	}
 
 	if ($product->valid_from && $product->valid_from > date('Y-m-d H:i:s')) {
-		notices::add('errors', sprintf(t('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), functions::datetime_format('date', $product->valid_from)));
+		notices::add('errors', strtr(t('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until {date}}'), [
+			'{date}' => functions::datetime_format('date', $product->valid_from)
+		]));
 	}
 
 	if ($product->valid_to && $product->valid_to < date('Y-m-d H:i:s')) {

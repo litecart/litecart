@@ -48,26 +48,56 @@
 				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 
-			// Collect scraps
-			if (!customer::check_login()) {
-				customer::$data = array_replace(customer::$data, array_intersect_key(array_filter(array_diff_key($_POST, array_flip(['id']))), customer::$data));
+			if (!empty($_FILES['attachments']) && !empty($_FILES['attachments']['name'][0])) {
+				foreach ($_FILES['attachments']['tmp_name'] as $i => $tmp_name) {
+					$filename = $_FILES['attachments']['name'][$i];
+					$filesize = $_FILES['attachments']['size'][$i];
+					$filetype = pathinfo($filename, PATHINFO_EXTENSION);
+					if (!is_uploaded_file($tmp_name)) {
+						throw new Exception(t('error_invalid_attachment', 'Invalid attachment'));
+					}
+
+					$accepted_filetypes = [
+						'jpg', 'png', 'gif', 'mp4', 'pdf', 'txt', 'doc', 'docx',  'xls', 'xlsx'
+					];
+
+					if (!in_array($filetype, $accepted_filetypes)) {
+						throw new Exception(strtr(t('error_invalid_attachment_type', '{filename} is not of an accepted file type ({accepted_filetypes})'), [
+							'{filename}' => $filename,
+							'{accepted_filetypes}' => implode(', ', $accepted_filetypes)
+						]));
+					}
+
+					if ($filesize > 4*1024*1024) { // 4MB limit
+						throw new Exception(t('error_attachments_cannot_exceed_size', 'Attachments cannot exceed {size}', ['{size}' => '4 MB']));
+					}
+				}
 			}
 
 			$message = strtr(t('email_customer_feedback', implode("\r\n", [
-				'** This is an email message from %sender_name <%sender_email> **',
+				'** This is an email message from {sender_name} <{sender_email}> **',
 				'',
-				'%message',
-			]), [
-				'%sender_name' => $_POST['firstname'] .' '. $_POST['lastname'],
-				'%sender_email' => $_POST['email'],
-				'%message' => $_POST['message'],
-			]));
+				'{message}',
+			])), [
+				'{sender_name}' => $_POST['firstname'] .' '. $_POST['lastname'],
+				'{sender_email}' => $_POST['email'],
+				'{message}' => $_POST['message'],
+			]);
 
-			$email = new ent_email();
-			$email->set_sender($_POST['email'], $_POST['firstname'] .' '. $_POST['lastname'])
-						->add_recipient(settings::get('store_email'), settings::get('store_name'))
-						->set_subject($_POST['subject'])
-						->add_body($message);
+			$email = (new ent_email())
+				->set_sender($_POST['email'], $_POST['firstname'] .' '. $_POST['lastname'])
+				->add_recipient(settings::get('store_email'), settings::get('store_name'))
+				->set_subject($_POST['subject'])
+				->add_body($message);
+
+			if (!empty($_FILES['attachments']) && !empty($_FILES['attachments']['name'][0])) {
+				foreach ($_FILES['attachments']['tmp_name'] as $i => $tmp_name) {
+					if (!is_uploaded_file($tmp_name)) continue;
+					$filename = $_FILES['attachments']['name'][$i];
+					$filetype = $_FILES['attachments']['type'][$i];
+					$email->add_attachment($tmp_name, $filename);
+				}
+			}
 
 			$result = $email->send();
 

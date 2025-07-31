@@ -321,11 +321,11 @@
 
 	// Determine if we have terms of purchase
 	if ($terms_of_purchase_id = settings::get('terms_of_purchase')) {
-		$_page->snippets['consent'] = t('consent:terms_of_purchase', 'I have read the <a href="%terms_of_purchase_link" target="_blank">Terms of Purchase</a> and I consent.');
+		$_page->snippets['consent'] = t('consent:terms_of_purchase', 'I have read the <a href="{terms_of_purchase_link}" target="_blank">Terms of Purchase</a> and I consent.');
 
 		// Set link to terms of purchase
 		$_page->snippets['consent'] = strtr($_page->snippets['consent'], [
-			'%terms_of_purchase_link' => document::href_ilink('information', ['page_id' => $terms_of_purchase_id]),
+			'{terms_of_purchase_link}' => document::href_ilink('information', ['page_id' => $terms_of_purchase_id]),
 		]);
 	}
 

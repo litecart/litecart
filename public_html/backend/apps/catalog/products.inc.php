@@ -100,7 +100,9 @@
 				$product->save();
 			}
 
-			notices::add('success', sprintf(t('success_cloned_d_products', 'Cloned %d products'), count($_POST['products'])));
+			notices::add('success', strtr(t('success_cloned_d_products', 'Cloned {n} products'), [
+				'{n}' => count($_POST['products'])
+			]));
 			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]));
 			exit;
 
@@ -122,7 +124,9 @@
 				$product->delete();
 			}
 
-			notices::add('success', sprintf(t('success_deleted_d_products', 'Deleted %d products'), count($_POST['products'])));
+			notices::add('success', strtr(t('success_deleted_d_products', 'Deleted {n} products'), [
+				'{n}' => count($_POST['products'])
+			]));
 			reload();
 			exit;
 
@@ -241,11 +245,15 @@
 		try {
 
 			if (!empty($product['valid_from']) && $product['valid_from'] < date('Y-m-d H:i:s')) {
-				throw new Exception(strtr(t('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => functions::datetime_format('date', $product['valid_from'])]));
+				throw new Exception(strtr(t('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until {date}'), [
+					'{date}' => functions::datetime_format('date', $product['valid_from'])
+				]));
 			}
 
 			if (!empty($product['valid_to']) && $product['valid_to'] < date('Y-m-d H:i:s')) {
-				throw new Exception(strtr(t('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => functions::datetime_format('date', $product['valid_to'])]));
+				throw new Exception(strtr(t('text_product_expired_at_x', 'The product expired at {date} and can no longer be purchased'), [
+					'{date}' => functions::datetime_format('date', $product['valid_to'])
+				]));
 			}
 
 			if ($product['num_stock_options'] && $product['quantity'] <= 0) {

@@ -214,7 +214,9 @@
 		}
 
 		if ($timestamp > (new \DateTime())->modify('-1 hour')) {
-			return strtr(t('text_n_minutes_ago', '%n minutes ago'), ['%n' => (new \DateTime())->diff($timestamp)->i]);
+			return strtr(t('text_n_minutes_ago', '{n} minutes ago'), [
+				'{n}' => (new \DateTime())->diff($timestamp)->i
+			]);
 		}
 
 		if ($timestamp > (new \DateTime())->setTime(0, 0)) {

@@ -41,7 +41,9 @@
 
 			foreach ($_POST['tables'] as $table) {
 				if (!in_array($table, $table_names)) {
-					throw new Exception(strtr(t('error_unknown_table_x', 'Unknown table (%table)'), ['%table' => $table]));
+					throw new Exception(strtr(t('error_unknown_table_x', 'Unknown table "{table}"'), [
+						'{table}' => $table
+					]));
 				}
 			}
 

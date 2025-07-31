@@ -1199,6 +1199,9 @@ DELETE FROM `lc_tax_rates`
 WHERE tax_class_id NOT IN (SELECT id from `lc_tax_classes`)
 OR geo_zone_id NOT IN (SELECT id from `lc_geo_zones`);
 -- -----
+DELETE FROM `lc_translations`
+WHERE text_en LIKE '%\%%';
+-- -----
 DELETE FROM `lc_zones`
 WHERE country_code NOT IN (SELECT iso_code_2 from `lc_countries`);
 -- -----

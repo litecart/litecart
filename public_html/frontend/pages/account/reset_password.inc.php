@@ -88,20 +88,28 @@
 				);
 
 				$aliases = [
-					'%email' => $customer['email'],
-					'%store_name' => settings::get('store_name'),
-					'%token' => $reset_token['token'],
-					'%link' => document::ilink('account/reset_password', ['email' => $customer['email'], 'reset_token' => $reset_token['token']]),
+					'{email}' => $customer['email'],
+					'{store_name}' => settings::get('store_name'),
+					'{token}' => $reset_token['token'],
+					'{link}' => document::ilink('account/reset_password', ['email' => $customer['email'], 'reset_token' => $reset_token['token']]),
 				];
 
 				$subject = t('title_reset_password', 'Reset Password');
-				$message = strtr(t('email_body_reset_password', "You recently requested to reset your password for %store_name. If you did not request a password reset, please ignore this email. Visit the link below to reset your password:\r\n\r\n%link\r\n\r\nReset Token: %token"), $aliases);
+				$message = strtr(implode("\r\n", [
+					t('email_body_reset_password_intro', "You recently requested to reset your password for {store_name}."),
+					t('email_body_reset_password_ignore', "If you did not request a password reset, please ignore this email."),
+					t('email_body_reset_password_instruction', "Visit the link below to reset your password:"),
+					"",
+					"{link}",
+					"",
+					t('email_body_reset_password_token', "Reset Token: {token}")
+				]), $aliases);
 
-				$email = new ent_email();
-				$email->add_recipient($customer['email'], $customer['firstname'] .' '. $customer['lastname'])
-							->set_subject($subject)
-							->add_body($message)
-							->send();
+				(new ent_email())
+					->add_recipient($customer['email'], $customer['firstname'] .' '. $customer['lastname'])
+					->set_subject($subject)
+					->add_body($message)
+					->send();
 
 				notices::add('success', t('success_reset_password_email_sent', 'An email with instructions has been sent to your email address.'));
 				redirect(document::ilink('account/reset_password', ['email' => $_REQUEST['email'], 'reset_token' => '']));

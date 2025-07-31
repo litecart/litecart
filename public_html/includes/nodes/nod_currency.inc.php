@@ -235,19 +235,19 @@
 
 			return strtr(implode('', [
 				'<span class="currency-amount">',
-					'<small class="currency">%currency_code</small>',
+					'<small class="currency">{currency_code}</small>',
 					'&nbsp;',
-					'%negative%prefix%integers' . ($fractions ? '<span class="decimals">%decimal_point%fractions</span>' : ''),
-					'%suffix',
+					'{negative}{prefix}{integers}' . ($fractions ? '<span class="decimals">{decimal_point}{fractions}</span>' : ''),
+					'{suffix}',
 				'</span>',
 			]), [
-				'%negative' => $is_negative ? '-' : '',
-				'%currency_code' => $currency_code,
-				'%prefix' => $prefix,
-				'%integers' => number_format(abs((int)$integers), 0, '', language::$selected['thousands_sep']),
-				'%decimal_point' => language::$selected['decimal_point'],
-				'%fractions' => $fractions,
-				'%suffix' => $suffix,
+				'{negative}' => $is_negative ? '-' : '',
+				'{currency_code}' => $currency_code,
+				'{prefix}' => $prefix,
+				'{integers}' => number_format(abs((int)$integers), 0, '', language::$selected['thousands_sep']),
+				'{decimal_point}' => language::$selected['decimal_point'],
+				'{fractions}' => $fractions,
+				'{suffix}' => $suffix,
 			]);
 		}
 

@@ -42,11 +42,15 @@
 		try {
 
 			if ($administrator['valid_from'] && $administrator['valid_from'] > date('Y-m-d H:i:s')) {
-				throw new Exception(strtr(t('text_acount_cannot_be_used_until_x', 'The account cannot be used until %datetime'), ['%datetime' => functions::datetime_format('datetime', $administrator['valid_from'])]));
+				throw new Exception(strtr(t('text_acount_cannot_be_used_until_x', 'The account cannot be used until {datetime}'), [
+					'{datetime}' => functions::datetime_format('datetime', $administrator['valid_from'])
+				]));
 			}
 
 			if ($administrator['valid_to'] && $administrator['valid_to'] < date('Y-m-d H:i:s')) {
-				throw new Exception(strtr(t('text_account_expired_at_x', 'The account expired at %datetime and can no longer be used'), ['%datetime' => functions::datetime_format('datetime', $administrator['valid_to'])]));
+				throw new Exception(strtr(t('text_account_expired_at_x', 'The account expired at {datetime} and can no longer be used'), [
+					'{datetime}' => functions::datetime_format('datetime', $administrator['valid_to'])
+				]));
 			}
 
 			$administrator['warning'] = null;

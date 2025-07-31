@@ -23,19 +23,21 @@
 			$address_format = settings::get('default_address_format');
 		}
 
+		$address_format = preg_replace('#%([a-z0-9_]+)#', '{$1}', $address_format); // Convert % to {} for compatibility with older versions
+
 		$output = strtr($address_format, [
-			'%company' => fallback($address['company'], ''),
-			'%firstname' => fallback($address['firstname'], ''),
-			'%lastname' => fallback($address['lastname'], ''),
-			'%address1' => fallback($address['address1'], ''),
-			'%address2' => fallback($address['address2'], ''),
-			'%city' => fallback($address['city'], ''),
-			'%postcode' => fallback($address['postcode'], ''),
-			'%country_code' => $address['country_code'], '',
-			'%country_name' => fallback($country['name'], $address['country_code'], ''),
-			'%country_domestic_name' => fallback($country['domestic_name'], $country['name'], $address['country_code'], ''),
-			'%zone_code' => fallback($address['zone_code'], ''),
-			'%zone_name' => fallback($zone['name'], ''),
+			'{company}' => fallback($address['company'], ''),
+			'{firstname}' => fallback($address['firstname'], ''),
+			'{lastname}' => fallback($address['lastname'], ''),
+			'{address1}' => fallback($address['address1'], ''),
+			'{address2}' => fallback($address['address2'], ''),
+			'{city}' => fallback($address['city'], ''),
+			'{postcode}' => fallback($address['postcode'], ''),
+			'{country_code}' => $address['country_code'], '',
+			'{country_name}' => fallback($country['name'], $address['country_code'], ''),
+			'{country_domestic_name}' => fallback($country['domestic_name'], $country['name'], $address['country_code'], ''),
+			'{zone_code}' => fallback($address['zone_code'], ''),
+			'{zone_name}' => fallback($zone['name'], ''),
 		]);
 
 		$output = preg_replace('#(\r\n?|\n)+#', "\r\n", $output);

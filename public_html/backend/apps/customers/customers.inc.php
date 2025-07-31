@@ -48,7 +48,9 @@
 				$customer->delete();
 			}
 
-			notices::add('success', strtr(t('success_deleted_n_customers', 'Deleted %n customers'), ['%n' => count($_POST['customers'])]));
+			notices::add('success', strtr(t('success_deleted_n_customers', 'Deleted {n} customers'), [
+				'{n}' => count($_POST['customers'])
+			]));
 
 			reload();
 			exit;

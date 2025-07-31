@@ -133,7 +133,9 @@
 				</div>
 			</div>
 
-			<p><?php echo strtr(t('note_favicon_best_result_achieved', 'Note: Best results are achieved by uploading a %size pixels PNG image with alpha transparency.'), ['%size' => '256x256']); ?></p>
+			<p><?php echo strtr(t('note_favicon_best_result_achieved', 'Note: Best results are achieved by uploading a {size} pixels PNG image with alpha transparency.'), [
+				'{size}' => '256x256'
+			]); ?></p>
 
 		<?php echo functions::form_end(); ?>
 	</div>

@@ -172,22 +172,32 @@
 			customer::load($customer->data['id']);
 
 			$aliases = [
-				'%store_name' => settings::get('store_name'),
-				'%store_link' => document::ilink(''),
-				'%customer_id' => $customer->data['id'],
-				'%customer_firstname' => $customer->data['firstname'],
-				'%customer_lastname' => $customer->data['lastname'],
-				'%customer_email' => $customer->data['email'],
+				'{store_name}' => settings::get('store_name'),
+				'{store_link}' => document::ilink(''),
+				'{customer_id}' => $customer->data['id'],
+				'{customer_firstname}' => $customer->data['firstname'],
+				'{customer_lastname}' => $customer->data['lastname'],
+				'{customer_email}' => $customer->data['email'],
 			];
 
 			$subject = t('email_subject_customer_account_created', 'Customer Account Created');
-			$message = strtr(t('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email.\r\n\r\n%store_name\r\n\r\n%store_link"), $aliases);
+			$message = strtr(implode("\r\n", [
+				t('email_account_created_greeting', "Welcome {customer_firstname} {customer_lastname} to {store_name}!"),
+				'',
+				t('email_account_created_body', "Your account has been created. You can now make purchases in our online store and keep track of history."),
+				'',
+				t('email_account_created_login', "Login using your email address {customer_email}."),
+				'',
+				'{store_name}',
+				'',
+				'{store_link}',
+			]), $aliases);
 
-			$email = new ent_email();
-			$email->add_recipient($_POST['email'], $_POST['firstname'] .' '. $_POST['lastname'])
-						->set_subject($subject)
-						->add_body($message)
-						->send();
+			(new ent_email())
+				->add_recipient($_POST['email'], $_POST['firstname'] .' '. $_POST['lastname'])
+				->set_subject($subject)
+				->add_body($message)
+				->send();
 
 			notices::add('success', t('success_your_customer_account_has_been_created', 'Your customer account has been created.'));
 			redirect(document::ilink(''));
@@ -207,10 +217,10 @@
 	if ($privacy_policy_id = settings::get('privacy_policy')) {
 
 		$aliases = [
-			'%privacy_policy_link' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
+			'{privacy_policy_link}' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
 		];
 
-		$_page->snippets['consent'] = strtr(t('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
+		$_page->snippets['consent'] = strtr(t('consent:privacy_policy', 'I have read the <a href="{privacy_policy_link}" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
 	}
 
 	echo $_page->render();

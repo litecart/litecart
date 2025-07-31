@@ -142,8 +142,13 @@
 
 			cache::clear_cache();
 
-			notices::add($updated ? 'success' : 'notice', strtr(t('success_updated_n_existing_entries', 'Updated %n existing entries'), ['%n' => $updated]));
-			notices::add($inserted ? 'success' : 'notice', strtr(t('success_insert_n_new_entries', 'Inserted %n new entries'), ['%n' => $inserted]));
+			notices::add($updated ? 'success' : 'notice', strtr(t('success_updated_n_existing_entries', 'Updated {n} existing entries'), [
+				'{n}' => $updated
+			]));
+
+			notices::add($inserted ? 'success' : 'notice', strtr(t('success_insert_n_new_entries', 'Inserted {n} new entries'), [
+				'{n}' => $inserted
+			]));
 
 			reload();
 			exit;

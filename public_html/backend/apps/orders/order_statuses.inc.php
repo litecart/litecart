@@ -29,7 +29,9 @@
 				$num_orders++;
 			});
 
-			notices::add('success', strtr(t('success_changed_order_status_for_n_orders', 'Changed order status for %num orders'), ['%num' => $num_orders]));
+			notices::add('success', strtr(t('success_changed_order_status_for_n_orders', 'Changed order status for {n} orders'), [
+				'{n}' => $num_orders
+			]));
 
 			reload();
 			exit;
